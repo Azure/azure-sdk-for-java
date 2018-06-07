@@ -301,6 +301,69 @@ public class FeaturesImpl implements Features {
                 .build(response);
     }
 
+    @Override
+    public FeaturesListPhraseListsParameters listPhraseLists() {
+        return new FeaturesListPhraseListsParameters(this);
+    }
+
+    /**
+     * Internal class implementing FeaturesListPhraseListsDefinition.
+     */
+    class FeaturesListPhraseListsParameters implements FeaturesListPhraseListsDefinition {
+        private FeaturesImpl parent;
+        private UUID appId;
+        private String versionId;
+        private Integer skip;
+        private Integer take;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        FeaturesListPhraseListsParameters(FeaturesImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public FeaturesListPhraseListsParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public FeaturesListPhraseListsParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public FeaturesListPhraseListsParameters withSkip(Integer skip) {
+            this.skip = skip;
+            return this;
+        }
+
+        @Override
+        public FeaturesListPhraseListsParameters withTake(Integer take) {
+            this.take = take;
+            return this;
+        }
+
+        @Override
+        public List<PhraseListFeatureInfo> execute() {
+        return listPhraseListsWithServiceResponseAsync(appId, versionId, skip, take).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<List<PhraseListFeatureInfo>> executeAsync() {
+            return listPhraseListsWithServiceResponseAsync(appId, versionId, skip, take).map(new Func1<ServiceResponse<List<PhraseListFeatureInfo>>, List<PhraseListFeatureInfo>>() {
+                @Override
+                public List<PhraseListFeatureInfo> call(ServiceResponse<List<PhraseListFeatureInfo>> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
 
     /**
      * Gets all the extraction features for the specified application version.
@@ -414,6 +477,69 @@ public class FeaturesImpl implements Features {
                 .register(200, new TypeToken<FeaturesResponseObject>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
+    }
+
+    @Override
+    public FeaturesListParameters list() {
+        return new FeaturesListParameters(this);
+    }
+
+    /**
+     * Internal class implementing FeaturesListDefinition.
+     */
+    class FeaturesListParameters implements FeaturesListDefinition {
+        private FeaturesImpl parent;
+        private UUID appId;
+        private String versionId;
+        private Integer skip;
+        private Integer take;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        FeaturesListParameters(FeaturesImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public FeaturesListParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public FeaturesListParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public FeaturesListParameters withSkip(Integer skip) {
+            this.skip = skip;
+            return this;
+        }
+
+        @Override
+        public FeaturesListParameters withTake(Integer take) {
+            this.take = take;
+            return this;
+        }
+
+        @Override
+        public FeaturesResponseObject execute() {
+        return listWithServiceResponseAsync(appId, versionId, skip, take).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<FeaturesResponseObject> executeAsync() {
+            return listWithServiceResponseAsync(appId, versionId, skip, take).map(new Func1<ServiceResponse<FeaturesResponseObject>, FeaturesResponseObject>() {
+                @Override
+                public FeaturesResponseObject call(ServiceResponse<FeaturesResponseObject> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
     /**
@@ -621,6 +747,69 @@ public class FeaturesImpl implements Features {
                 .register(200, new TypeToken<OperationStatus>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
+    }
+
+    @Override
+    public FeaturesUpdatePhraseListParameters updatePhraseList() {
+        return new FeaturesUpdatePhraseListParameters(this);
+    }
+
+    /**
+     * Internal class implementing FeaturesUpdatePhraseListDefinition.
+     */
+    class FeaturesUpdatePhraseListParameters implements FeaturesUpdatePhraseListDefinition {
+        private FeaturesImpl parent;
+        private UUID appId;
+        private String versionId;
+        private int phraselistId;
+        private PhraselistUpdateObject phraselistUpdateObject;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        FeaturesUpdatePhraseListParameters(FeaturesImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public FeaturesUpdatePhraseListParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public FeaturesUpdatePhraseListParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public FeaturesUpdatePhraseListParameters withPhraselistId(int phraselistId) {
+            this.phraselistId = phraselistId;
+            return this;
+        }
+
+        @Override
+        public FeaturesUpdatePhraseListParameters withPhraselistUpdateObject(PhraselistUpdateObject phraselistUpdateObject) {
+            this.phraselistUpdateObject = phraselistUpdateObject;
+            return this;
+        }
+
+        @Override
+        public OperationStatus execute() {
+        return updatePhraseListWithServiceResponseAsync(appId, versionId, phraselistId, phraselistUpdateObject).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<OperationStatus> executeAsync() {
+            return updatePhraseListWithServiceResponseAsync(appId, versionId, phraselistId, phraselistUpdateObject).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
+                @Override
+                public OperationStatus call(ServiceResponse<OperationStatus> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
     /**

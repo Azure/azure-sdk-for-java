@@ -142,9 +142,6 @@ public class TextAnalyticsImpl implements TextAnalytics {
             throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
         }
         final List<MultiLanguageInput> documents = entitiesOptionalParameter != null ? entitiesOptionalParameter.documents() : null;
-    MultiLanguageBatchInput input = new MultiLanguageBatchInput();
-    input.withDocuments(null);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
 
         return entitiesWithServiceResponseAsync(documents);
     }
@@ -184,6 +181,48 @@ public class TextAnalyticsImpl implements TextAnalytics {
                 .register(200, new TypeToken<EntitiesBatchResult>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
+    }
+
+    @Override
+    public TextAnalyticsEntitiesParameters entities() {
+        return new TextAnalyticsEntitiesParameters(this);
+    }
+
+    /**
+     * Internal class implementing TextAnalyticsEntitiesDefinition.
+     */
+    class TextAnalyticsEntitiesParameters implements TextAnalyticsEntitiesDefinition {
+        private TextAnalyticsImpl parent;
+        private List<MultiLanguageInput> documents;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        TextAnalyticsEntitiesParameters(TextAnalyticsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public TextAnalyticsEntitiesParameters withDocuments(List<MultiLanguageInput> documents) {
+            this.documents = documents;
+            return this;
+        }
+
+        @Override
+        public EntitiesBatchResult execute() {
+        return entitiesWithServiceResponseAsync(documents).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<EntitiesBatchResult> executeAsync() {
+            return entitiesWithServiceResponseAsync(documents).map(new Func1<ServiceResponse<EntitiesBatchResult>, EntitiesBatchResult>() {
+                @Override
+                public EntitiesBatchResult call(ServiceResponse<EntitiesBatchResult> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 
@@ -244,9 +283,6 @@ public class TextAnalyticsImpl implements TextAnalytics {
             throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
         }
         final List<MultiLanguageInput> documents = sentimentOptionalParameter != null ? sentimentOptionalParameter.documents() : null;
-    MultiLanguageBatchInput input = new MultiLanguageBatchInput();
-    input.withDocuments(null);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
 
         return sentimentWithServiceResponseAsync(documents);
     }
@@ -286,6 +322,48 @@ public class TextAnalyticsImpl implements TextAnalytics {
                 .register(200, new TypeToken<SentimentBatchResult>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
+    }
+
+    @Override
+    public TextAnalyticsSentimentParameters sentiment() {
+        return new TextAnalyticsSentimentParameters(this);
+    }
+
+    /**
+     * Internal class implementing TextAnalyticsSentimentDefinition.
+     */
+    class TextAnalyticsSentimentParameters implements TextAnalyticsSentimentDefinition {
+        private TextAnalyticsImpl parent;
+        private List<MultiLanguageInput> documents;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        TextAnalyticsSentimentParameters(TextAnalyticsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public TextAnalyticsSentimentParameters withDocuments(List<MultiLanguageInput> documents) {
+            this.documents = documents;
+            return this;
+        }
+
+        @Override
+        public SentimentBatchResult execute() {
+        return sentimentWithServiceResponseAsync(documents).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<SentimentBatchResult> executeAsync() {
+            return sentimentWithServiceResponseAsync(documents).map(new Func1<ServiceResponse<SentimentBatchResult>, SentimentBatchResult>() {
+                @Override
+                public SentimentBatchResult call(ServiceResponse<SentimentBatchResult> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 
@@ -346,9 +424,6 @@ public class TextAnalyticsImpl implements TextAnalytics {
             throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
         }
         final List<Input> documents = detectLanguageOptionalParameter != null ? detectLanguageOptionalParameter.documents() : null;
-    BatchInput input = new BatchInput();
-    input.withDocuments(null);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
 
         return detectLanguageWithServiceResponseAsync(documents);
     }
@@ -388,6 +463,48 @@ public class TextAnalyticsImpl implements TextAnalytics {
                 .register(200, new TypeToken<LanguageBatchResult>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
+    }
+
+    @Override
+    public TextAnalyticsDetectLanguageParameters detectLanguage() {
+        return new TextAnalyticsDetectLanguageParameters(this);
+    }
+
+    /**
+     * Internal class implementing TextAnalyticsDetectLanguageDefinition.
+     */
+    class TextAnalyticsDetectLanguageParameters implements TextAnalyticsDetectLanguageDefinition {
+        private TextAnalyticsImpl parent;
+        private List<Input> documents;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        TextAnalyticsDetectLanguageParameters(TextAnalyticsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public TextAnalyticsDetectLanguageParameters withDocuments(List<Input> documents) {
+            this.documents = documents;
+            return this;
+        }
+
+        @Override
+        public LanguageBatchResult execute() {
+        return detectLanguageWithServiceResponseAsync(documents).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<LanguageBatchResult> executeAsync() {
+            return detectLanguageWithServiceResponseAsync(documents).map(new Func1<ServiceResponse<LanguageBatchResult>, LanguageBatchResult>() {
+                @Override
+                public LanguageBatchResult call(ServiceResponse<LanguageBatchResult> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 
@@ -448,9 +565,6 @@ public class TextAnalyticsImpl implements TextAnalytics {
             throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
         }
         final List<MultiLanguageInput> documents = keyPhrasesOptionalParameter != null ? keyPhrasesOptionalParameter.documents() : null;
-    MultiLanguageBatchInput input = new MultiLanguageBatchInput();
-    input.withDocuments(null);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
 
         return keyPhrasesWithServiceResponseAsync(documents);
     }
@@ -490,6 +604,48 @@ public class TextAnalyticsImpl implements TextAnalytics {
                 .register(200, new TypeToken<KeyPhraseBatchResult>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
+    }
+
+    @Override
+    public TextAnalyticsKeyPhrasesParameters keyPhrases() {
+        return new TextAnalyticsKeyPhrasesParameters(this);
+    }
+
+    /**
+     * Internal class implementing TextAnalyticsKeyPhrasesDefinition.
+     */
+    class TextAnalyticsKeyPhrasesParameters implements TextAnalyticsKeyPhrasesDefinition {
+        private TextAnalyticsImpl parent;
+        private List<MultiLanguageInput> documents;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        TextAnalyticsKeyPhrasesParameters(TextAnalyticsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public TextAnalyticsKeyPhrasesParameters withDocuments(List<MultiLanguageInput> documents) {
+            this.documents = documents;
+            return this;
+        }
+
+        @Override
+        public KeyPhraseBatchResult execute() {
+        return keyPhrasesWithServiceResponseAsync(documents).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<KeyPhraseBatchResult> executeAsync() {
+            return keyPhrasesWithServiceResponseAsync(documents).map(new Func1<ServiceResponse<KeyPhraseBatchResult>, KeyPhraseBatchResult>() {
+                @Override
+                public KeyPhraseBatchResult call(ServiceResponse<KeyPhraseBatchResult> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 }

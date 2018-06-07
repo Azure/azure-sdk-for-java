@@ -10,33 +10,56 @@ package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
 
 /**
- * The optional parameters class for "addEntity" method.
+ * The AddEntityOptionalParameter model.
  */
 public class AddEntityOptionalParameter {
     /**
-    * Name of the new entity extractor.
-    */
+     * Name of the new entity extractor.
+     */
     private String name;
 
     /**
-    * Get the name value.
-    *
-    * @return the name value
-    */
+     * Gets or sets the preferred language for the response.
+     */
+    private String thisclientacceptLanguage;
+
+    /**
+     * Get the name value.
+     *
+     * @return the name value
+     */
     public String name() {
         return this.name;
     }
 
     /**
-    * Set the name value.
-    * <p>
-    * Name of the new entity extractor.
-    *
-    * @param name the name value to set
-    * @return the AddEntityOptionalParameter object itself.
-    */
+     * Set the name value.
+     *
+     * @param name the name value to set
+     * @return the AddEntityOptionalParameter object itself.
+     */
     public AddEntityOptionalParameter withName(String name) {
         this.name = name;
+        return this;
+    }
+
+    /**
+     * Get the thisclientacceptLanguage value.
+     *
+     * @return the thisclientacceptLanguage value
+     */
+    public String thisclientacceptLanguage() {
+        return this.thisclientacceptLanguage;
+    }
+
+    /**
+     * Set the thisclientacceptLanguage value.
+     *
+     * @param thisclientacceptLanguage the thisclientacceptLanguage value to set
+     * @return the AddEntityOptionalParameter object itself.
+     */
+    public AddEntityOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
+        this.thisclientacceptLanguage = thisclientacceptLanguage;
         return this;
     }
 

@@ -122,7 +122,6 @@ public class BingEntitiesImpl implements BingEntities {
         if (query == null) {
             throw new IllegalArgumentException("Parameter query is required and cannot be null.");
         }
-        final String xBingApisSDK = "true";
         final String acceptLanguage = searchOptionalParameter != null ? searchOptionalParameter.acceptLanguage() : null;
         final String pragma = searchOptionalParameter != null ? searchOptionalParameter.pragma() : null;
         final String userAgent = searchOptionalParameter != null ? searchOptionalParameter.userAgent() : this.client.userAgent();
@@ -135,8 +134,6 @@ public class BingEntitiesImpl implements BingEntities {
         final List<ResponseFormat> responseFormat = searchOptionalParameter != null ? searchOptionalParameter.responseFormat() : null;
         final SafeSearch safeSearch = searchOptionalParameter != null ? searchOptionalParameter.safeSearch() : null;
         final String setLang = searchOptionalParameter != null ? searchOptionalParameter.setLang() : null;
-    String responseFilterConverted = this.client.serializerAdapter().serializeList(responseFilter, CollectionFormat.CSV);
-    String responseFormatConverted = this.client.serializerAdapter().serializeList(responseFormat, CollectionFormat.CSV);
 
         return searchWithServiceResponseAsync(query, acceptLanguage, pragma, userAgent, clientId, clientIp, location, countryCode, market, responseFilter, responseFormat, safeSearch, setLang);
     }
@@ -188,6 +185,132 @@ public class BingEntitiesImpl implements BingEntities {
                 .register(200, new TypeToken<SearchResponse>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
+    }
+
+    @Override
+    public BingEntitiesSearchParameters search() {
+        return new BingEntitiesSearchParameters(this);
+    }
+
+    /**
+     * Internal class implementing BingEntitiesSearchDefinition.
+     */
+    class BingEntitiesSearchParameters implements BingEntitiesSearchDefinition {
+        private BingEntitiesImpl parent;
+        private String query;
+        private String acceptLanguage;
+        private String pragma;
+        private String userAgent;
+        private String clientId;
+        private String clientIp;
+        private String location;
+        private String countryCode;
+        private String market;
+        private List<AnswerType> responseFilter;
+        private List<ResponseFormat> responseFormat;
+        private SafeSearch safeSearch;
+        private String setLang;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        BingEntitiesSearchParameters(BingEntitiesImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public BingEntitiesSearchParameters withQuery(String query) {
+            this.query = query;
+            return this;
+        }
+
+        @Override
+        public BingEntitiesSearchParameters withAcceptLanguage(String acceptLanguage) {
+            this.acceptLanguage = acceptLanguage;
+            return this;
+        }
+
+        @Override
+        public BingEntitiesSearchParameters withPragma(String pragma) {
+            this.pragma = pragma;
+            return this;
+        }
+
+        @Override
+        public BingEntitiesSearchParameters withUserAgent(String userAgent) {
+            this.userAgent = userAgent;
+            return this;
+        }
+
+        @Override
+        public BingEntitiesSearchParameters withClientId(String clientId) {
+            this.clientId = clientId;
+            return this;
+        }
+
+        @Override
+        public BingEntitiesSearchParameters withClientIp(String clientIp) {
+            this.clientIp = clientIp;
+            return this;
+        }
+
+        @Override
+        public BingEntitiesSearchParameters withLocation(String location) {
+            this.location = location;
+            return this;
+        }
+
+        @Override
+        public BingEntitiesSearchParameters withCountryCode(String countryCode) {
+            this.countryCode = countryCode;
+            return this;
+        }
+
+        @Override
+        public BingEntitiesSearchParameters withMarket(String market) {
+            this.market = market;
+            return this;
+        }
+
+        @Override
+        public BingEntitiesSearchParameters withResponseFilter(List<AnswerType> responseFilter) {
+            this.responseFilter = responseFilter;
+            return this;
+        }
+
+        @Override
+        public BingEntitiesSearchParameters withResponseFormat(List<ResponseFormat> responseFormat) {
+            this.responseFormat = responseFormat;
+            return this;
+        }
+
+        @Override
+        public BingEntitiesSearchParameters withSafeSearch(SafeSearch safeSearch) {
+            this.safeSearch = safeSearch;
+            return this;
+        }
+
+        @Override
+        public BingEntitiesSearchParameters withSetLang(String setLang) {
+            this.setLang = setLang;
+            return this;
+        }
+
+        @Override
+        public SearchResponse execute() {
+        return searchWithServiceResponseAsync(query, acceptLanguage, pragma, userAgent, clientId, clientIp, location, countryCode, market, responseFilter, responseFormat, safeSearch, setLang).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<SearchResponse> executeAsync() {
+            return searchWithServiceResponseAsync(query, acceptLanguage, pragma, userAgent, clientId, clientIp, location, countryCode, market, responseFilter, responseFormat, safeSearch, setLang).map(new Func1<ServiceResponse<SearchResponse>, SearchResponse>() {
+                @Override
+                public SearchResponse call(ServiceResponse<SearchResponse> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 }

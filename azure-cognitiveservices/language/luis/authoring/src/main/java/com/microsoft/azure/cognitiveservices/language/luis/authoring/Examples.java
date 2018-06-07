@@ -87,6 +87,7 @@ public interface Examples {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;LabeledUtterance&gt; object if successful.
      */
+    @Deprecated
     List<LabeledUtterance> list(UUID appId, String versionId, ListExamplesOptionalParameter listOptionalParameter);
 
     /**
@@ -98,7 +99,91 @@ public interface Examples {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;LabeledUtterance&gt; object
      */
+    @Deprecated
     Observable<List<LabeledUtterance>> listAsync(UUID appId, String versionId, ListExamplesOptionalParameter listOptionalParameter);
+
+    /**
+     * Returns examples to be reviewed.
+     *
+     * @return the first stage of the list call
+     */
+    ExamplesListDefinitionStages.WithAppId list();
+
+    /**
+     * Grouping of list definition stages.
+     */
+    interface ExamplesListDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            ExamplesListDefinitionStages.WithExecute withVersionId(String versionId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The number of entries to skip. Default value is 0.
+             *
+             * @return next definition stage
+             */
+            ExamplesListDefinitionStages.WithExecute withSkip(Integer skip);
+
+            /**
+             * The number of entries to return. Maximum page size is 500. Default is 100.
+             *
+             * @return next definition stage
+             */
+            ExamplesListDefinitionStages.WithExecute withTake(Integer take);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ExamplesListDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the List&lt;LabeledUtterance&gt; object if successful.
+             */
+            List<LabeledUtterance> execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the List&lt;LabeledUtterance&gt; object
+             */
+            Observable<List<LabeledUtterance>> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of list definition.
+     */
+    interface ExamplesListDefinition extends
+        ExamplesListDefinitionStages.WithAppId,
+        ExamplesListDefinitionStages.WithVersionId,
+        ExamplesListDefinitionStages.WithExecute {
+    }
 
 
     /**

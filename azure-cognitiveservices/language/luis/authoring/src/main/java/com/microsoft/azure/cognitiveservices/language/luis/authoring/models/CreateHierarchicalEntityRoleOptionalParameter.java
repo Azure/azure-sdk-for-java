@@ -10,33 +10,56 @@ package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
 
 /**
- * The optional parameters class for "createHierarchicalEntityRole" method.
+ * The CreateHierarchicalEntityRoleOptionalParameter model.
  */
 public class CreateHierarchicalEntityRoleOptionalParameter {
     /**
-    * The entity role name.
-    */
+     * The entity role name.
+     */
     private String name;
 
     /**
-    * Get the name value.
-    *
-    * @return the name value
-    */
+     * Gets or sets the preferred language for the response.
+     */
+    private String thisclientacceptLanguage;
+
+    /**
+     * Get the name value.
+     *
+     * @return the name value
+     */
     public String name() {
         return this.name;
     }
 
     /**
-    * Set the name value.
-    * <p>
-    * The entity role name.
-    *
-    * @param name the name value to set
-    * @return the CreateHierarchicalEntityRoleOptionalParameter object itself.
-    */
+     * Set the name value.
+     *
+     * @param name the name value to set
+     * @return the CreateHierarchicalEntityRoleOptionalParameter object itself.
+     */
     public CreateHierarchicalEntityRoleOptionalParameter withName(String name) {
         this.name = name;
+        return this;
+    }
+
+    /**
+     * Get the thisclientacceptLanguage value.
+     *
+     * @return the thisclientacceptLanguage value
+     */
+    public String thisclientacceptLanguage() {
+        return this.thisclientacceptLanguage;
+    }
+
+    /**
+     * Set the thisclientacceptLanguage value.
+     *
+     * @param thisclientacceptLanguage the thisclientacceptLanguage value to set
+     * @return the CreateHierarchicalEntityRoleOptionalParameter object itself.
+     */
+    public CreateHierarchicalEntityRoleOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
+        this.thisclientacceptLanguage = thisclientacceptLanguage;
         return this;
     }
 

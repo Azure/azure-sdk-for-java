@@ -10,33 +10,56 @@ package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
 
 /**
- * The optional parameters class for "addCustomPrebuiltDomain" method.
+ * The AddCustomPrebuiltDomainModelsOptionalParameter model.
  */
 public class AddCustomPrebuiltDomainModelsOptionalParameter {
     /**
-    * The domain name.
-    */
+     * The domain name.
+     */
     private String domainName;
 
     /**
-    * Get the domainName value.
-    *
-    * @return the domainName value
-    */
+     * Gets or sets the preferred language for the response.
+     */
+    private String thisclientacceptLanguage;
+
+    /**
+     * Get the domainName value.
+     *
+     * @return the domainName value
+     */
     public String domainName() {
         return this.domainName;
     }
 
     /**
-    * Set the domainName value.
-    * <p>
-    * The domain name.
-    *
-    * @param domainName the domainName value to set
-    * @return the AddCustomPrebuiltDomainModelsOptionalParameter object itself.
-    */
+     * Set the domainName value.
+     *
+     * @param domainName the domainName value to set
+     * @return the AddCustomPrebuiltDomainModelsOptionalParameter object itself.
+     */
     public AddCustomPrebuiltDomainModelsOptionalParameter withDomainName(String domainName) {
         this.domainName = domainName;
+        return this;
+    }
+
+    /**
+     * Get the thisclientacceptLanguage value.
+     *
+     * @return the thisclientacceptLanguage value
+     */
+    public String thisclientacceptLanguage() {
+        return this.thisclientacceptLanguage;
+    }
+
+    /**
+     * Set the thisclientacceptLanguage value.
+     *
+     * @param thisclientacceptLanguage the thisclientacceptLanguage value to set
+     * @return the AddCustomPrebuiltDomainModelsOptionalParameter object itself.
+     */
+    public AddCustomPrebuiltDomainModelsOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
+        this.thisclientacceptLanguage = thisclientacceptLanguage;
         return this;
     }
 

@@ -185,4 +185,95 @@ public class PredictionsImpl implements Predictions {
                 .build(response);
     }
 
+    @Override
+    public PredictionsResolveParameters resolve() {
+        return new PredictionsResolveParameters(this);
+    }
+
+    /**
+     * Internal class implementing PredictionsResolveDefinition.
+     */
+    class PredictionsResolveParameters implements PredictionsResolveDefinition {
+        private PredictionsImpl parent;
+        private String appId;
+        private String query;
+        private Double timezoneOffset;
+        private Boolean verbose;
+        private Boolean staging;
+        private Boolean spellCheck;
+        private String bingSpellCheckSubscriptionKey;
+        private Boolean log;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        PredictionsResolveParameters(PredictionsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public PredictionsResolveParameters withAppId(String appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public PredictionsResolveParameters withQuery(String query) {
+            this.query = query;
+            return this;
+        }
+
+        @Override
+        public PredictionsResolveParameters withTimezoneOffset(Double timezoneOffset) {
+            this.timezoneOffset = timezoneOffset;
+            return this;
+        }
+
+        @Override
+        public PredictionsResolveParameters withVerbose(Boolean verbose) {
+            this.verbose = verbose;
+            return this;
+        }
+
+        @Override
+        public PredictionsResolveParameters withStaging(Boolean staging) {
+            this.staging = staging;
+            return this;
+        }
+
+        @Override
+        public PredictionsResolveParameters withSpellCheck(Boolean spellCheck) {
+            this.spellCheck = spellCheck;
+            return this;
+        }
+
+        @Override
+        public PredictionsResolveParameters withBingSpellCheckSubscriptionKey(String bingSpellCheckSubscriptionKey) {
+            this.bingSpellCheckSubscriptionKey = bingSpellCheckSubscriptionKey;
+            return this;
+        }
+
+        @Override
+        public PredictionsResolveParameters withLog(Boolean log) {
+            this.log = log;
+            return this;
+        }
+
+        @Override
+        public LuisResult execute() {
+        return resolveWithServiceResponseAsync(appId, query, timezoneOffset, verbose, staging, spellCheck, bingSpellCheckSubscriptionKey, log).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<LuisResult> executeAsync() {
+            return resolveWithServiceResponseAsync(appId, query, timezoneOffset, verbose, staging, spellCheck, bingSpellCheckSubscriptionKey, log).map(new Func1<ServiceResponse<LuisResult>, LuisResult>() {
+                @Override
+                public LuisResult call(ServiceResponse<LuisResult> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
 }

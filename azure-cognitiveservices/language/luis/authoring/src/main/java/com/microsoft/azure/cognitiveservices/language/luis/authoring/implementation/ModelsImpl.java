@@ -683,6 +683,62 @@ public class ModelsImpl implements Models {
                 .build(response);
     }
 
+    @Override
+    public ModelsAddIntentParameters addIntent() {
+        return new ModelsAddIntentParameters(this);
+    }
+
+    /**
+     * Internal class implementing ModelsAddIntentDefinition.
+     */
+    class ModelsAddIntentParameters implements ModelsAddIntentDefinition {
+        private ModelsImpl parent;
+        private UUID appId;
+        private String versionId;
+        private String name;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ModelsAddIntentParameters(ModelsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ModelsAddIntentParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public ModelsAddIntentParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public ModelsAddIntentParameters withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        @Override
+        public UUID execute() {
+        return addIntentWithServiceResponseAsync(appId, versionId, name).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<UUID> executeAsync() {
+            return addIntentWithServiceResponseAsync(appId, versionId, name).map(new Func1<ServiceResponse<UUID>, UUID>() {
+                @Override
+                public UUID call(ServiceResponse<UUID> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
 
     /**
      * Gets information about the intent models.
@@ -796,6 +852,69 @@ public class ModelsImpl implements Models {
                 .register(200, new TypeToken<List<IntentClassifier>>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
+    }
+
+    @Override
+    public ModelsListIntentsParameters listIntents() {
+        return new ModelsListIntentsParameters(this);
+    }
+
+    /**
+     * Internal class implementing ModelsListIntentsDefinition.
+     */
+    class ModelsListIntentsParameters implements ModelsListIntentsDefinition {
+        private ModelsImpl parent;
+        private UUID appId;
+        private String versionId;
+        private Integer skip;
+        private Integer take;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ModelsListIntentsParameters(ModelsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ModelsListIntentsParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public ModelsListIntentsParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public ModelsListIntentsParameters withSkip(Integer skip) {
+            this.skip = skip;
+            return this;
+        }
+
+        @Override
+        public ModelsListIntentsParameters withTake(Integer take) {
+            this.take = take;
+            return this;
+        }
+
+        @Override
+        public List<IntentClassifier> execute() {
+        return listIntentsWithServiceResponseAsync(appId, versionId, skip, take).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<List<IntentClassifier>> executeAsync() {
+            return listIntentsWithServiceResponseAsync(appId, versionId, skip, take).map(new Func1<ServiceResponse<List<IntentClassifier>>, List<IntentClassifier>>() {
+                @Override
+                public List<IntentClassifier> call(ServiceResponse<List<IntentClassifier>> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 
@@ -913,6 +1032,62 @@ public class ModelsImpl implements Models {
                 .build(response);
     }
 
+    @Override
+    public ModelsAddEntityParameters addEntity() {
+        return new ModelsAddEntityParameters(this);
+    }
+
+    /**
+     * Internal class implementing ModelsAddEntityDefinition.
+     */
+    class ModelsAddEntityParameters implements ModelsAddEntityDefinition {
+        private ModelsImpl parent;
+        private UUID appId;
+        private String versionId;
+        private String name;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ModelsAddEntityParameters(ModelsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ModelsAddEntityParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public ModelsAddEntityParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public ModelsAddEntityParameters withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        @Override
+        public UUID execute() {
+        return addEntityWithServiceResponseAsync(appId, versionId, name).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<UUID> executeAsync() {
+            return addEntityWithServiceResponseAsync(appId, versionId, name).map(new Func1<ServiceResponse<UUID>, UUID>() {
+                @Override
+                public UUID call(ServiceResponse<UUID> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
 
     /**
      * Gets information about the entity models.
@@ -1026,6 +1201,69 @@ public class ModelsImpl implements Models {
                 .register(200, new TypeToken<List<EntityExtractor>>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
+    }
+
+    @Override
+    public ModelsListEntitiesParameters listEntities() {
+        return new ModelsListEntitiesParameters(this);
+    }
+
+    /**
+     * Internal class implementing ModelsListEntitiesDefinition.
+     */
+    class ModelsListEntitiesParameters implements ModelsListEntitiesDefinition {
+        private ModelsImpl parent;
+        private UUID appId;
+        private String versionId;
+        private Integer skip;
+        private Integer take;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ModelsListEntitiesParameters(ModelsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ModelsListEntitiesParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public ModelsListEntitiesParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public ModelsListEntitiesParameters withSkip(Integer skip) {
+            this.skip = skip;
+            return this;
+        }
+
+        @Override
+        public ModelsListEntitiesParameters withTake(Integer take) {
+            this.take = take;
+            return this;
+        }
+
+        @Override
+        public List<EntityExtractor> execute() {
+        return listEntitiesWithServiceResponseAsync(appId, versionId, skip, take).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<List<EntityExtractor>> executeAsync() {
+            return listEntitiesWithServiceResponseAsync(appId, versionId, skip, take).map(new Func1<ServiceResponse<List<EntityExtractor>>, List<EntityExtractor>>() {
+                @Override
+                public List<EntityExtractor> call(ServiceResponse<List<EntityExtractor>> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
     /**
@@ -1235,6 +1473,69 @@ public class ModelsImpl implements Models {
                 .build(response);
     }
 
+    @Override
+    public ModelsListHierarchicalEntitiesParameters listHierarchicalEntities() {
+        return new ModelsListHierarchicalEntitiesParameters(this);
+    }
+
+    /**
+     * Internal class implementing ModelsListHierarchicalEntitiesDefinition.
+     */
+    class ModelsListHierarchicalEntitiesParameters implements ModelsListHierarchicalEntitiesDefinition {
+        private ModelsImpl parent;
+        private UUID appId;
+        private String versionId;
+        private Integer skip;
+        private Integer take;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ModelsListHierarchicalEntitiesParameters(ModelsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ModelsListHierarchicalEntitiesParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public ModelsListHierarchicalEntitiesParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public ModelsListHierarchicalEntitiesParameters withSkip(Integer skip) {
+            this.skip = skip;
+            return this;
+        }
+
+        @Override
+        public ModelsListHierarchicalEntitiesParameters withTake(Integer take) {
+            this.take = take;
+            return this;
+        }
+
+        @Override
+        public List<HierarchicalEntityExtractor> execute() {
+        return listHierarchicalEntitiesWithServiceResponseAsync(appId, versionId, skip, take).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<List<HierarchicalEntityExtractor>> executeAsync() {
+            return listHierarchicalEntitiesWithServiceResponseAsync(appId, versionId, skip, take).map(new Func1<ServiceResponse<List<HierarchicalEntityExtractor>>, List<HierarchicalEntityExtractor>>() {
+                @Override
+                public List<HierarchicalEntityExtractor> call(ServiceResponse<List<HierarchicalEntityExtractor>> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
     /**
      * Adds a composite entity extractor to the application.
      *
@@ -1442,6 +1743,69 @@ public class ModelsImpl implements Models {
                 .build(response);
     }
 
+    @Override
+    public ModelsListCompositeEntitiesParameters listCompositeEntities() {
+        return new ModelsListCompositeEntitiesParameters(this);
+    }
+
+    /**
+     * Internal class implementing ModelsListCompositeEntitiesDefinition.
+     */
+    class ModelsListCompositeEntitiesParameters implements ModelsListCompositeEntitiesDefinition {
+        private ModelsImpl parent;
+        private UUID appId;
+        private String versionId;
+        private Integer skip;
+        private Integer take;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ModelsListCompositeEntitiesParameters(ModelsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ModelsListCompositeEntitiesParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public ModelsListCompositeEntitiesParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public ModelsListCompositeEntitiesParameters withSkip(Integer skip) {
+            this.skip = skip;
+            return this;
+        }
+
+        @Override
+        public ModelsListCompositeEntitiesParameters withTake(Integer take) {
+            this.take = take;
+            return this;
+        }
+
+        @Override
+        public List<CompositeEntityExtractor> execute() {
+        return listCompositeEntitiesWithServiceResponseAsync(appId, versionId, skip, take).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<List<CompositeEntityExtractor>> executeAsync() {
+            return listCompositeEntitiesWithServiceResponseAsync(appId, versionId, skip, take).map(new Func1<ServiceResponse<List<CompositeEntityExtractor>>, List<CompositeEntityExtractor>>() {
+                @Override
+                public List<CompositeEntityExtractor> call(ServiceResponse<List<CompositeEntityExtractor>> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
 
     /**
      * Gets information about the closedlist models.
@@ -1555,6 +1919,69 @@ public class ModelsImpl implements Models {
                 .register(200, new TypeToken<List<ClosedListEntityExtractor>>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
+    }
+
+    @Override
+    public ModelsListClosedListsParameters listClosedLists() {
+        return new ModelsListClosedListsParameters(this);
+    }
+
+    /**
+     * Internal class implementing ModelsListClosedListsDefinition.
+     */
+    class ModelsListClosedListsParameters implements ModelsListClosedListsDefinition {
+        private ModelsImpl parent;
+        private UUID appId;
+        private String versionId;
+        private Integer skip;
+        private Integer take;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ModelsListClosedListsParameters(ModelsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ModelsListClosedListsParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public ModelsListClosedListsParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public ModelsListClosedListsParameters withSkip(Integer skip) {
+            this.skip = skip;
+            return this;
+        }
+
+        @Override
+        public ModelsListClosedListsParameters withTake(Integer take) {
+            this.take = take;
+            return this;
+        }
+
+        @Override
+        public List<ClosedListEntityExtractor> execute() {
+        return listClosedListsWithServiceResponseAsync(appId, versionId, skip, take).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<List<ClosedListEntityExtractor>> executeAsync() {
+            return listClosedListsWithServiceResponseAsync(appId, versionId, skip, take).map(new Func1<ServiceResponse<List<ClosedListEntityExtractor>>, List<ClosedListEntityExtractor>>() {
+                @Override
+                public List<ClosedListEntityExtractor> call(ServiceResponse<List<ClosedListEntityExtractor>> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
     /**
@@ -1856,6 +2283,69 @@ public class ModelsImpl implements Models {
                 .build(response);
     }
 
+    @Override
+    public ModelsListPrebuiltsParameters listPrebuilts() {
+        return new ModelsListPrebuiltsParameters(this);
+    }
+
+    /**
+     * Internal class implementing ModelsListPrebuiltsDefinition.
+     */
+    class ModelsListPrebuiltsParameters implements ModelsListPrebuiltsDefinition {
+        private ModelsImpl parent;
+        private UUID appId;
+        private String versionId;
+        private Integer skip;
+        private Integer take;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ModelsListPrebuiltsParameters(ModelsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ModelsListPrebuiltsParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public ModelsListPrebuiltsParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public ModelsListPrebuiltsParameters withSkip(Integer skip) {
+            this.skip = skip;
+            return this;
+        }
+
+        @Override
+        public ModelsListPrebuiltsParameters withTake(Integer take) {
+            this.take = take;
+            return this;
+        }
+
+        @Override
+        public List<PrebuiltEntityExtractor> execute() {
+        return listPrebuiltsWithServiceResponseAsync(appId, versionId, skip, take).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<List<PrebuiltEntityExtractor>> executeAsync() {
+            return listPrebuiltsWithServiceResponseAsync(appId, versionId, skip, take).map(new Func1<ServiceResponse<List<PrebuiltEntityExtractor>>, List<PrebuiltEntityExtractor>>() {
+                @Override
+                public List<PrebuiltEntityExtractor> call(ServiceResponse<List<PrebuiltEntityExtractor>> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
     /**
      * Gets all the available prebuilt entity extractors for the application.
      *
@@ -2055,6 +2545,69 @@ public class ModelsImpl implements Models {
                 .build(response);
     }
 
+    @Override
+    public ModelsListModelsParameters listModels() {
+        return new ModelsListModelsParameters(this);
+    }
+
+    /**
+     * Internal class implementing ModelsListModelsDefinition.
+     */
+    class ModelsListModelsParameters implements ModelsListModelsDefinition {
+        private ModelsImpl parent;
+        private UUID appId;
+        private String versionId;
+        private Integer skip;
+        private Integer take;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ModelsListModelsParameters(ModelsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ModelsListModelsParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public ModelsListModelsParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public ModelsListModelsParameters withSkip(Integer skip) {
+            this.skip = skip;
+            return this;
+        }
+
+        @Override
+        public ModelsListModelsParameters withTake(Integer take) {
+            this.take = take;
+            return this;
+        }
+
+        @Override
+        public List<ModelInfoResponse> execute() {
+        return listModelsWithServiceResponseAsync(appId, versionId, skip, take).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<List<ModelInfoResponse>> executeAsync() {
+            return listModelsWithServiceResponseAsync(appId, versionId, skip, take).map(new Func1<ServiceResponse<List<ModelInfoResponse>>, List<ModelInfoResponse>>() {
+                @Override
+                public List<ModelInfoResponse> call(ServiceResponse<List<ModelInfoResponse>> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
 
     /**
      * Gets the utterances for the given model in the given app version.
@@ -2179,6 +2732,76 @@ public class ModelsImpl implements Models {
                 .register(200, new TypeToken<List<LabelTextObject>>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
+    }
+
+    @Override
+    public ModelsExamplesMethodParameters examplesMethod() {
+        return new ModelsExamplesMethodParameters(this);
+    }
+
+    /**
+     * Internal class implementing ModelsExamplesMethodDefinition.
+     */
+    class ModelsExamplesMethodParameters implements ModelsExamplesMethodDefinition {
+        private ModelsImpl parent;
+        private UUID appId;
+        private String versionId;
+        private String modelId;
+        private Integer skip;
+        private Integer take;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ModelsExamplesMethodParameters(ModelsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ModelsExamplesMethodParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public ModelsExamplesMethodParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public ModelsExamplesMethodParameters withModelId(String modelId) {
+            this.modelId = modelId;
+            return this;
+        }
+
+        @Override
+        public ModelsExamplesMethodParameters withSkip(Integer skip) {
+            this.skip = skip;
+            return this;
+        }
+
+        @Override
+        public ModelsExamplesMethodParameters withTake(Integer take) {
+            this.take = take;
+            return this;
+        }
+
+        @Override
+        public List<LabelTextObject> execute() {
+        return examplesMethodWithServiceResponseAsync(appId, versionId, modelId, skip, take).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<List<LabelTextObject>> executeAsync() {
+            return examplesMethodWithServiceResponseAsync(appId, versionId, modelId, skip, take).map(new Func1<ServiceResponse<List<LabelTextObject>>, List<LabelTextObject>>() {
+                @Override
+                public List<LabelTextObject> call(ServiceResponse<List<LabelTextObject>> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
     /**
@@ -2398,6 +3021,69 @@ public class ModelsImpl implements Models {
                 .build(response);
     }
 
+    @Override
+    public ModelsUpdateIntentParameters updateIntent() {
+        return new ModelsUpdateIntentParameters(this);
+    }
+
+    /**
+     * Internal class implementing ModelsUpdateIntentDefinition.
+     */
+    class ModelsUpdateIntentParameters implements ModelsUpdateIntentDefinition {
+        private ModelsImpl parent;
+        private UUID appId;
+        private String versionId;
+        private UUID intentId;
+        private String name;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ModelsUpdateIntentParameters(ModelsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ModelsUpdateIntentParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public ModelsUpdateIntentParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public ModelsUpdateIntentParameters withIntentId(UUID intentId) {
+            this.intentId = intentId;
+            return this;
+        }
+
+        @Override
+        public ModelsUpdateIntentParameters withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        @Override
+        public OperationStatus execute() {
+        return updateIntentWithServiceResponseAsync(appId, versionId, intentId, name).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<OperationStatus> executeAsync() {
+            return updateIntentWithServiceResponseAsync(appId, versionId, intentId, name).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
+                @Override
+                public OperationStatus call(ServiceResponse<OperationStatus> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
 
     /**
      * Deletes an intent classifier from the application.
@@ -2520,6 +3206,69 @@ public class ModelsImpl implements Models {
                 .register(200, new TypeToken<OperationStatus>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
+    }
+
+    @Override
+    public ModelsDeleteIntentParameters deleteIntent() {
+        return new ModelsDeleteIntentParameters(this);
+    }
+
+    /**
+     * Internal class implementing ModelsDeleteIntentDefinition.
+     */
+    class ModelsDeleteIntentParameters implements ModelsDeleteIntentDefinition {
+        private ModelsImpl parent;
+        private UUID appId;
+        private String versionId;
+        private UUID intentId;
+        private Boolean deleteUtterances;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ModelsDeleteIntentParameters(ModelsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ModelsDeleteIntentParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public ModelsDeleteIntentParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public ModelsDeleteIntentParameters withIntentId(UUID intentId) {
+            this.intentId = intentId;
+            return this;
+        }
+
+        @Override
+        public ModelsDeleteIntentParameters withDeleteUtterances(Boolean deleteUtterances) {
+            this.deleteUtterances = deleteUtterances;
+            return this;
+        }
+
+        @Override
+        public OperationStatus execute() {
+        return deleteIntentWithServiceResponseAsync(appId, versionId, intentId, deleteUtterances).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<OperationStatus> executeAsync() {
+            return deleteIntentWithServiceResponseAsync(appId, versionId, intentId, deleteUtterances).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
+                @Override
+                public OperationStatus call(ServiceResponse<OperationStatus> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
     /**
@@ -2737,6 +3486,69 @@ public class ModelsImpl implements Models {
                 .register(200, new TypeToken<OperationStatus>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
+    }
+
+    @Override
+    public ModelsUpdateEntityParameters updateEntity() {
+        return new ModelsUpdateEntityParameters(this);
+    }
+
+    /**
+     * Internal class implementing ModelsUpdateEntityDefinition.
+     */
+    class ModelsUpdateEntityParameters implements ModelsUpdateEntityDefinition {
+        private ModelsImpl parent;
+        private UUID appId;
+        private String versionId;
+        private UUID entityId;
+        private String name;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ModelsUpdateEntityParameters(ModelsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ModelsUpdateEntityParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public ModelsUpdateEntityParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public ModelsUpdateEntityParameters withEntityId(UUID entityId) {
+            this.entityId = entityId;
+            return this;
+        }
+
+        @Override
+        public ModelsUpdateEntityParameters withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        @Override
+        public OperationStatus execute() {
+        return updateEntityWithServiceResponseAsync(appId, versionId, entityId, name).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<OperationStatus> executeAsync() {
+            return updateEntityWithServiceResponseAsync(appId, versionId, entityId, name).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
+                @Override
+                public OperationStatus call(ServiceResponse<OperationStatus> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
     /**
@@ -3709,6 +4521,69 @@ public class ModelsImpl implements Models {
                 .build(response);
     }
 
+    @Override
+    public ModelsPatchClosedListParameters patchClosedList() {
+        return new ModelsPatchClosedListParameters(this);
+    }
+
+    /**
+     * Internal class implementing ModelsPatchClosedListDefinition.
+     */
+    class ModelsPatchClosedListParameters implements ModelsPatchClosedListDefinition {
+        private ModelsImpl parent;
+        private UUID appId;
+        private String versionId;
+        private UUID clEntityId;
+        private List<WordListObject> subLists;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ModelsPatchClosedListParameters(ModelsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ModelsPatchClosedListParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public ModelsPatchClosedListParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public ModelsPatchClosedListParameters withClEntityId(UUID clEntityId) {
+            this.clEntityId = clEntityId;
+            return this;
+        }
+
+        @Override
+        public ModelsPatchClosedListParameters withSubLists(List<WordListObject> subLists) {
+            this.subLists = subLists;
+            return this;
+        }
+
+        @Override
+        public OperationStatus execute() {
+        return patchClosedListWithServiceResponseAsync(appId, versionId, clEntityId, subLists).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<OperationStatus> executeAsync() {
+            return patchClosedListWithServiceResponseAsync(appId, versionId, clEntityId, subLists).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
+                @Override
+                public OperationStatus call(ServiceResponse<OperationStatus> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
     /**
      * Deletes a closed list model from the application.
      *
@@ -4304,6 +5179,69 @@ public class ModelsImpl implements Models {
                 .build(response);
     }
 
+    @Override
+    public ModelsGetIntentSuggestionsParameters getIntentSuggestions() {
+        return new ModelsGetIntentSuggestionsParameters(this);
+    }
+
+    /**
+     * Internal class implementing ModelsGetIntentSuggestionsDefinition.
+     */
+    class ModelsGetIntentSuggestionsParameters implements ModelsGetIntentSuggestionsDefinition {
+        private ModelsImpl parent;
+        private UUID appId;
+        private String versionId;
+        private UUID intentId;
+        private Integer take;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ModelsGetIntentSuggestionsParameters(ModelsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ModelsGetIntentSuggestionsParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public ModelsGetIntentSuggestionsParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public ModelsGetIntentSuggestionsParameters withIntentId(UUID intentId) {
+            this.intentId = intentId;
+            return this;
+        }
+
+        @Override
+        public ModelsGetIntentSuggestionsParameters withTake(Integer take) {
+            this.take = take;
+            return this;
+        }
+
+        @Override
+        public List<IntentsSuggestionExample> execute() {
+        return getIntentSuggestionsWithServiceResponseAsync(appId, versionId, intentId, take).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<List<IntentsSuggestionExample>> executeAsync() {
+            return getIntentSuggestionsWithServiceResponseAsync(appId, versionId, intentId, take).map(new Func1<ServiceResponse<List<IntentsSuggestionExample>>, List<IntentsSuggestionExample>>() {
+                @Override
+                public List<IntentsSuggestionExample> call(ServiceResponse<List<IntentsSuggestionExample>> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
 
     /**
      * Get suggestion examples that would improve the accuracy of the entity model.
@@ -4426,6 +5364,69 @@ public class ModelsImpl implements Models {
                 .register(200, new TypeToken<List<EntitiesSuggestionExample>>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
+    }
+
+    @Override
+    public ModelsGetEntitySuggestionsParameters getEntitySuggestions() {
+        return new ModelsGetEntitySuggestionsParameters(this);
+    }
+
+    /**
+     * Internal class implementing ModelsGetEntitySuggestionsDefinition.
+     */
+    class ModelsGetEntitySuggestionsParameters implements ModelsGetEntitySuggestionsDefinition {
+        private ModelsImpl parent;
+        private UUID appId;
+        private String versionId;
+        private UUID entityId;
+        private Integer take;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ModelsGetEntitySuggestionsParameters(ModelsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ModelsGetEntitySuggestionsParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public ModelsGetEntitySuggestionsParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public ModelsGetEntitySuggestionsParameters withEntityId(UUID entityId) {
+            this.entityId = entityId;
+            return this;
+        }
+
+        @Override
+        public ModelsGetEntitySuggestionsParameters withTake(Integer take) {
+            this.take = take;
+            return this;
+        }
+
+        @Override
+        public List<EntitiesSuggestionExample> execute() {
+        return getEntitySuggestionsWithServiceResponseAsync(appId, versionId, entityId, take).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<List<EntitiesSuggestionExample>> executeAsync() {
+            return getEntitySuggestionsWithServiceResponseAsync(appId, versionId, entityId, take).map(new Func1<ServiceResponse<List<EntitiesSuggestionExample>>, List<EntitiesSuggestionExample>>() {
+                @Override
+                public List<EntitiesSuggestionExample> call(ServiceResponse<List<EntitiesSuggestionExample>> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
     /**
@@ -4640,6 +5641,62 @@ public class ModelsImpl implements Models {
                 .register(201, new TypeToken<List<UUID>>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
+    }
+
+    @Override
+    public ModelsAddCustomPrebuiltDomainParameters addCustomPrebuiltDomain() {
+        return new ModelsAddCustomPrebuiltDomainParameters(this);
+    }
+
+    /**
+     * Internal class implementing ModelsAddCustomPrebuiltDomainDefinition.
+     */
+    class ModelsAddCustomPrebuiltDomainParameters implements ModelsAddCustomPrebuiltDomainDefinition {
+        private ModelsImpl parent;
+        private UUID appId;
+        private String versionId;
+        private String domainName;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ModelsAddCustomPrebuiltDomainParameters(ModelsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ModelsAddCustomPrebuiltDomainParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public ModelsAddCustomPrebuiltDomainParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public ModelsAddCustomPrebuiltDomainParameters withDomainName(String domainName) {
+            this.domainName = domainName;
+            return this;
+        }
+
+        @Override
+        public List<UUID> execute() {
+        return addCustomPrebuiltDomainWithServiceResponseAsync(appId, versionId, domainName).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<List<UUID>> executeAsync() {
+            return addCustomPrebuiltDomainWithServiceResponseAsync(appId, versionId, domainName).map(new Func1<ServiceResponse<List<UUID>>, List<UUID>>() {
+                @Override
+                public List<UUID> call(ServiceResponse<List<UUID>> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
     /**
@@ -5404,6 +6461,76 @@ public class ModelsImpl implements Models {
                 .build(response);
     }
 
+    @Override
+    public ModelsUpdateHierarchicalEntityChildParameters updateHierarchicalEntityChild() {
+        return new ModelsUpdateHierarchicalEntityChildParameters(this);
+    }
+
+    /**
+     * Internal class implementing ModelsUpdateHierarchicalEntityChildDefinition.
+     */
+    class ModelsUpdateHierarchicalEntityChildParameters implements ModelsUpdateHierarchicalEntityChildDefinition {
+        private ModelsImpl parent;
+        private UUID appId;
+        private String versionId;
+        private UUID hEntityId;
+        private UUID hChildId;
+        private String name;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ModelsUpdateHierarchicalEntityChildParameters(ModelsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ModelsUpdateHierarchicalEntityChildParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public ModelsUpdateHierarchicalEntityChildParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public ModelsUpdateHierarchicalEntityChildParameters withHEntityId(UUID hEntityId) {
+            this.hEntityId = hEntityId;
+            return this;
+        }
+
+        @Override
+        public ModelsUpdateHierarchicalEntityChildParameters withHChildId(UUID hChildId) {
+            this.hChildId = hChildId;
+            return this;
+        }
+
+        @Override
+        public ModelsUpdateHierarchicalEntityChildParameters withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        @Override
+        public OperationStatus execute() {
+        return updateHierarchicalEntityChildWithServiceResponseAsync(appId, versionId, hEntityId, hChildId, name).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<OperationStatus> executeAsync() {
+            return updateHierarchicalEntityChildWithServiceResponseAsync(appId, versionId, hEntityId, hChildId, name).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
+                @Override
+                public OperationStatus call(ServiceResponse<OperationStatus> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
     /**
      * Deletes a hierarchical entity extractor child from the application.
      *
@@ -5628,6 +6755,69 @@ public class ModelsImpl implements Models {
                 .build(response);
     }
 
+    @Override
+    public ModelsAddHierarchicalEntityChildParameters addHierarchicalEntityChild() {
+        return new ModelsAddHierarchicalEntityChildParameters(this);
+    }
+
+    /**
+     * Internal class implementing ModelsAddHierarchicalEntityChildDefinition.
+     */
+    class ModelsAddHierarchicalEntityChildParameters implements ModelsAddHierarchicalEntityChildDefinition {
+        private ModelsImpl parent;
+        private UUID appId;
+        private String versionId;
+        private UUID hEntityId;
+        private String name;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ModelsAddHierarchicalEntityChildParameters(ModelsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ModelsAddHierarchicalEntityChildParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public ModelsAddHierarchicalEntityChildParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public ModelsAddHierarchicalEntityChildParameters withHEntityId(UUID hEntityId) {
+            this.hEntityId = hEntityId;
+            return this;
+        }
+
+        @Override
+        public ModelsAddHierarchicalEntityChildParameters withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        @Override
+        public UUID execute() {
+        return addHierarchicalEntityChildWithServiceResponseAsync(appId, versionId, hEntityId, name).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<UUID> executeAsync() {
+            return addHierarchicalEntityChildWithServiceResponseAsync(appId, versionId, hEntityId, name).map(new Func1<ServiceResponse<UUID>, UUID>() {
+                @Override
+                public UUID call(ServiceResponse<UUID> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
 
     /**
      * Creates a single child in an existing composite entity model.
@@ -5752,6 +6942,69 @@ public class ModelsImpl implements Models {
                 .register(201, new TypeToken<UUID>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
+    }
+
+    @Override
+    public ModelsAddCompositeEntityChildParameters addCompositeEntityChild() {
+        return new ModelsAddCompositeEntityChildParameters(this);
+    }
+
+    /**
+     * Internal class implementing ModelsAddCompositeEntityChildDefinition.
+     */
+    class ModelsAddCompositeEntityChildParameters implements ModelsAddCompositeEntityChildDefinition {
+        private ModelsImpl parent;
+        private UUID appId;
+        private String versionId;
+        private UUID cEntityId;
+        private String name;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ModelsAddCompositeEntityChildParameters(ModelsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ModelsAddCompositeEntityChildParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public ModelsAddCompositeEntityChildParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public ModelsAddCompositeEntityChildParameters withCEntityId(UUID cEntityId) {
+            this.cEntityId = cEntityId;
+            return this;
+        }
+
+        @Override
+        public ModelsAddCompositeEntityChildParameters withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        @Override
+        public UUID execute() {
+        return addCompositeEntityChildWithServiceResponseAsync(appId, versionId, cEntityId, name).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<UUID> executeAsync() {
+            return addCompositeEntityChildWithServiceResponseAsync(appId, versionId, cEntityId, name).map(new Func1<ServiceResponse<UUID>, UUID>() {
+                @Override
+                public UUID call(ServiceResponse<UUID> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
     /**
@@ -5967,6 +7220,69 @@ public class ModelsImpl implements Models {
                 .build(response);
     }
 
+    @Override
+    public ModelsGetRegexEntityInfosParameters getRegexEntityInfos() {
+        return new ModelsGetRegexEntityInfosParameters(this);
+    }
+
+    /**
+     * Internal class implementing ModelsGetRegexEntityInfosDefinition.
+     */
+    class ModelsGetRegexEntityInfosParameters implements ModelsGetRegexEntityInfosDefinition {
+        private ModelsImpl parent;
+        private UUID appId;
+        private String versionId;
+        private Integer skip;
+        private Integer take;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ModelsGetRegexEntityInfosParameters(ModelsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ModelsGetRegexEntityInfosParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public ModelsGetRegexEntityInfosParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public ModelsGetRegexEntityInfosParameters withSkip(Integer skip) {
+            this.skip = skip;
+            return this;
+        }
+
+        @Override
+        public ModelsGetRegexEntityInfosParameters withTake(Integer take) {
+            this.take = take;
+            return this;
+        }
+
+        @Override
+        public List<RegexEntityExtractor> execute() {
+        return getRegexEntityInfosWithServiceResponseAsync(appId, versionId, skip, take).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<List<RegexEntityExtractor>> executeAsync() {
+            return getRegexEntityInfosWithServiceResponseAsync(appId, versionId, skip, take).map(new Func1<ServiceResponse<List<RegexEntityExtractor>>, List<RegexEntityExtractor>>() {
+                @Override
+                public List<RegexEntityExtractor> call(ServiceResponse<List<RegexEntityExtractor>> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
     /**
      * Adds a regex entity model to the application version.
      *
@@ -6172,6 +7488,69 @@ public class ModelsImpl implements Models {
                 .register(200, new TypeToken<List<PatternAnyEntityExtractor>>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
+    }
+
+    @Override
+    public ModelsGetPatternAnyEntityInfosParameters getPatternAnyEntityInfos() {
+        return new ModelsGetPatternAnyEntityInfosParameters(this);
+    }
+
+    /**
+     * Internal class implementing ModelsGetPatternAnyEntityInfosDefinition.
+     */
+    class ModelsGetPatternAnyEntityInfosParameters implements ModelsGetPatternAnyEntityInfosDefinition {
+        private ModelsImpl parent;
+        private UUID appId;
+        private String versionId;
+        private Integer skip;
+        private Integer take;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ModelsGetPatternAnyEntityInfosParameters(ModelsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ModelsGetPatternAnyEntityInfosParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public ModelsGetPatternAnyEntityInfosParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public ModelsGetPatternAnyEntityInfosParameters withSkip(Integer skip) {
+            this.skip = skip;
+            return this;
+        }
+
+        @Override
+        public ModelsGetPatternAnyEntityInfosParameters withTake(Integer take) {
+            this.take = take;
+            return this;
+        }
+
+        @Override
+        public List<PatternAnyEntityExtractor> execute() {
+        return getPatternAnyEntityInfosWithServiceResponseAsync(appId, versionId, skip, take).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<List<PatternAnyEntityExtractor>> executeAsync() {
+            return getPatternAnyEntityInfosWithServiceResponseAsync(appId, versionId, skip, take).map(new Func1<ServiceResponse<List<PatternAnyEntityExtractor>>, List<PatternAnyEntityExtractor>>() {
+                @Override
+                public List<PatternAnyEntityExtractor> call(ServiceResponse<List<PatternAnyEntityExtractor>> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
     /**
@@ -6483,6 +7862,69 @@ public class ModelsImpl implements Models {
                 .build(response);
     }
 
+    @Override
+    public ModelsCreateEntityRoleParameters createEntityRole() {
+        return new ModelsCreateEntityRoleParameters(this);
+    }
+
+    /**
+     * Internal class implementing ModelsCreateEntityRoleDefinition.
+     */
+    class ModelsCreateEntityRoleParameters implements ModelsCreateEntityRoleDefinition {
+        private ModelsImpl parent;
+        private UUID appId;
+        private String versionId;
+        private UUID entityId;
+        private String name;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ModelsCreateEntityRoleParameters(ModelsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ModelsCreateEntityRoleParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public ModelsCreateEntityRoleParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public ModelsCreateEntityRoleParameters withEntityId(UUID entityId) {
+            this.entityId = entityId;
+            return this;
+        }
+
+        @Override
+        public ModelsCreateEntityRoleParameters withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        @Override
+        public UUID execute() {
+        return createEntityRoleWithServiceResponseAsync(appId, versionId, entityId, name).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<UUID> executeAsync() {
+            return createEntityRoleWithServiceResponseAsync(appId, versionId, entityId, name).map(new Func1<ServiceResponse<UUID>, UUID>() {
+                @Override
+                public UUID call(ServiceResponse<UUID> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
     /**
      * Get All Entity Roles for a given entity.
      *
@@ -6698,6 +8140,69 @@ public class ModelsImpl implements Models {
                 .register(201, new TypeToken<UUID>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
+    }
+
+    @Override
+    public ModelsCreatePrebuiltEntityRoleParameters createPrebuiltEntityRole() {
+        return new ModelsCreatePrebuiltEntityRoleParameters(this);
+    }
+
+    /**
+     * Internal class implementing ModelsCreatePrebuiltEntityRoleDefinition.
+     */
+    class ModelsCreatePrebuiltEntityRoleParameters implements ModelsCreatePrebuiltEntityRoleDefinition {
+        private ModelsImpl parent;
+        private UUID appId;
+        private String versionId;
+        private UUID entityId;
+        private String name;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ModelsCreatePrebuiltEntityRoleParameters(ModelsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ModelsCreatePrebuiltEntityRoleParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public ModelsCreatePrebuiltEntityRoleParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public ModelsCreatePrebuiltEntityRoleParameters withEntityId(UUID entityId) {
+            this.entityId = entityId;
+            return this;
+        }
+
+        @Override
+        public ModelsCreatePrebuiltEntityRoleParameters withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        @Override
+        public UUID execute() {
+        return createPrebuiltEntityRoleWithServiceResponseAsync(appId, versionId, entityId, name).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<UUID> executeAsync() {
+            return createPrebuiltEntityRoleWithServiceResponseAsync(appId, versionId, entityId, name).map(new Func1<ServiceResponse<UUID>, UUID>() {
+                @Override
+                public UUID call(ServiceResponse<UUID> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
     /**
@@ -6917,6 +8422,69 @@ public class ModelsImpl implements Models {
                 .build(response);
     }
 
+    @Override
+    public ModelsCreateClosedListEntityRoleParameters createClosedListEntityRole() {
+        return new ModelsCreateClosedListEntityRoleParameters(this);
+    }
+
+    /**
+     * Internal class implementing ModelsCreateClosedListEntityRoleDefinition.
+     */
+    class ModelsCreateClosedListEntityRoleParameters implements ModelsCreateClosedListEntityRoleDefinition {
+        private ModelsImpl parent;
+        private UUID appId;
+        private String versionId;
+        private UUID entityId;
+        private String name;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ModelsCreateClosedListEntityRoleParameters(ModelsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ModelsCreateClosedListEntityRoleParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public ModelsCreateClosedListEntityRoleParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public ModelsCreateClosedListEntityRoleParameters withEntityId(UUID entityId) {
+            this.entityId = entityId;
+            return this;
+        }
+
+        @Override
+        public ModelsCreateClosedListEntityRoleParameters withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        @Override
+        public UUID execute() {
+        return createClosedListEntityRoleWithServiceResponseAsync(appId, versionId, entityId, name).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<UUID> executeAsync() {
+            return createClosedListEntityRoleWithServiceResponseAsync(appId, versionId, entityId, name).map(new Func1<ServiceResponse<UUID>, UUID>() {
+                @Override
+                public UUID call(ServiceResponse<UUID> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
     /**
      * Get All Entity Roles for a given entity.
      *
@@ -7132,6 +8700,69 @@ public class ModelsImpl implements Models {
                 .register(201, new TypeToken<UUID>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
+    }
+
+    @Override
+    public ModelsCreateRegexEntityRoleParameters createRegexEntityRole() {
+        return new ModelsCreateRegexEntityRoleParameters(this);
+    }
+
+    /**
+     * Internal class implementing ModelsCreateRegexEntityRoleDefinition.
+     */
+    class ModelsCreateRegexEntityRoleParameters implements ModelsCreateRegexEntityRoleDefinition {
+        private ModelsImpl parent;
+        private UUID appId;
+        private String versionId;
+        private UUID entityId;
+        private String name;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ModelsCreateRegexEntityRoleParameters(ModelsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ModelsCreateRegexEntityRoleParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public ModelsCreateRegexEntityRoleParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public ModelsCreateRegexEntityRoleParameters withEntityId(UUID entityId) {
+            this.entityId = entityId;
+            return this;
+        }
+
+        @Override
+        public ModelsCreateRegexEntityRoleParameters withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        @Override
+        public UUID execute() {
+        return createRegexEntityRoleWithServiceResponseAsync(appId, versionId, entityId, name).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<UUID> executeAsync() {
+            return createRegexEntityRoleWithServiceResponseAsync(appId, versionId, entityId, name).map(new Func1<ServiceResponse<UUID>, UUID>() {
+                @Override
+                public UUID call(ServiceResponse<UUID> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
     /**
@@ -7351,6 +8982,69 @@ public class ModelsImpl implements Models {
                 .build(response);
     }
 
+    @Override
+    public ModelsCreateCompositeEntityRoleParameters createCompositeEntityRole() {
+        return new ModelsCreateCompositeEntityRoleParameters(this);
+    }
+
+    /**
+     * Internal class implementing ModelsCreateCompositeEntityRoleDefinition.
+     */
+    class ModelsCreateCompositeEntityRoleParameters implements ModelsCreateCompositeEntityRoleDefinition {
+        private ModelsImpl parent;
+        private UUID appId;
+        private String versionId;
+        private UUID cEntityId;
+        private String name;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ModelsCreateCompositeEntityRoleParameters(ModelsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ModelsCreateCompositeEntityRoleParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public ModelsCreateCompositeEntityRoleParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public ModelsCreateCompositeEntityRoleParameters withCEntityId(UUID cEntityId) {
+            this.cEntityId = cEntityId;
+            return this;
+        }
+
+        @Override
+        public ModelsCreateCompositeEntityRoleParameters withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        @Override
+        public UUID execute() {
+        return createCompositeEntityRoleWithServiceResponseAsync(appId, versionId, cEntityId, name).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<UUID> executeAsync() {
+            return createCompositeEntityRoleWithServiceResponseAsync(appId, versionId, cEntityId, name).map(new Func1<ServiceResponse<UUID>, UUID>() {
+                @Override
+                public UUID call(ServiceResponse<UUID> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
     /**
      * Get All Entity Roles for a given entity.
      *
@@ -7566,6 +9260,69 @@ public class ModelsImpl implements Models {
                 .register(201, new TypeToken<UUID>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
+    }
+
+    @Override
+    public ModelsCreatePatternAnyEntityRoleParameters createPatternAnyEntityRole() {
+        return new ModelsCreatePatternAnyEntityRoleParameters(this);
+    }
+
+    /**
+     * Internal class implementing ModelsCreatePatternAnyEntityRoleDefinition.
+     */
+    class ModelsCreatePatternAnyEntityRoleParameters implements ModelsCreatePatternAnyEntityRoleDefinition {
+        private ModelsImpl parent;
+        private UUID appId;
+        private String versionId;
+        private UUID entityId;
+        private String name;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ModelsCreatePatternAnyEntityRoleParameters(ModelsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ModelsCreatePatternAnyEntityRoleParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public ModelsCreatePatternAnyEntityRoleParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public ModelsCreatePatternAnyEntityRoleParameters withEntityId(UUID entityId) {
+            this.entityId = entityId;
+            return this;
+        }
+
+        @Override
+        public ModelsCreatePatternAnyEntityRoleParameters withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        @Override
+        public UUID execute() {
+        return createPatternAnyEntityRoleWithServiceResponseAsync(appId, versionId, entityId, name).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<UUID> executeAsync() {
+            return createPatternAnyEntityRoleWithServiceResponseAsync(appId, versionId, entityId, name).map(new Func1<ServiceResponse<UUID>, UUID>() {
+                @Override
+                public UUID call(ServiceResponse<UUID> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
     /**
@@ -7785,6 +9542,69 @@ public class ModelsImpl implements Models {
                 .build(response);
     }
 
+    @Override
+    public ModelsCreateHierarchicalEntityRoleParameters createHierarchicalEntityRole() {
+        return new ModelsCreateHierarchicalEntityRoleParameters(this);
+    }
+
+    /**
+     * Internal class implementing ModelsCreateHierarchicalEntityRoleDefinition.
+     */
+    class ModelsCreateHierarchicalEntityRoleParameters implements ModelsCreateHierarchicalEntityRoleDefinition {
+        private ModelsImpl parent;
+        private UUID appId;
+        private String versionId;
+        private UUID hEntityId;
+        private String name;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ModelsCreateHierarchicalEntityRoleParameters(ModelsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ModelsCreateHierarchicalEntityRoleParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public ModelsCreateHierarchicalEntityRoleParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public ModelsCreateHierarchicalEntityRoleParameters withHEntityId(UUID hEntityId) {
+            this.hEntityId = hEntityId;
+            return this;
+        }
+
+        @Override
+        public ModelsCreateHierarchicalEntityRoleParameters withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        @Override
+        public UUID execute() {
+        return createHierarchicalEntityRoleWithServiceResponseAsync(appId, versionId, hEntityId, name).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<UUID> executeAsync() {
+            return createHierarchicalEntityRoleWithServiceResponseAsync(appId, versionId, hEntityId, name).map(new Func1<ServiceResponse<UUID>, UUID>() {
+                @Override
+                public UUID call(ServiceResponse<UUID> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
     /**
      * Get All Entity Roles for a given entity.
      *
@@ -8002,6 +9822,69 @@ public class ModelsImpl implements Models {
                 .build(response);
     }
 
+    @Override
+    public ModelsCreateCustomPrebuiltEntityRoleParameters createCustomPrebuiltEntityRole() {
+        return new ModelsCreateCustomPrebuiltEntityRoleParameters(this);
+    }
+
+    /**
+     * Internal class implementing ModelsCreateCustomPrebuiltEntityRoleDefinition.
+     */
+    class ModelsCreateCustomPrebuiltEntityRoleParameters implements ModelsCreateCustomPrebuiltEntityRoleDefinition {
+        private ModelsImpl parent;
+        private UUID appId;
+        private String versionId;
+        private UUID entityId;
+        private String name;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ModelsCreateCustomPrebuiltEntityRoleParameters(ModelsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ModelsCreateCustomPrebuiltEntityRoleParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public ModelsCreateCustomPrebuiltEntityRoleParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public ModelsCreateCustomPrebuiltEntityRoleParameters withEntityId(UUID entityId) {
+            this.entityId = entityId;
+            return this;
+        }
+
+        @Override
+        public ModelsCreateCustomPrebuiltEntityRoleParameters withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        @Override
+        public UUID execute() {
+        return createCustomPrebuiltEntityRoleWithServiceResponseAsync(appId, versionId, entityId, name).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<UUID> executeAsync() {
+            return createCustomPrebuiltEntityRoleWithServiceResponseAsync(appId, versionId, entityId, name).map(new Func1<ServiceResponse<UUID>, UUID>() {
+                @Override
+                public UUID call(ServiceResponse<UUID> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
     /**
      * Get the explicit list of the pattern.any entity.
      *
@@ -8217,6 +10100,69 @@ public class ModelsImpl implements Models {
                 .register(201, new TypeToken<Integer>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
+    }
+
+    @Override
+    public ModelsAddExplicitListItemParameters addExplicitListItem() {
+        return new ModelsAddExplicitListItemParameters(this);
+    }
+
+    /**
+     * Internal class implementing ModelsAddExplicitListItemDefinition.
+     */
+    class ModelsAddExplicitListItemParameters implements ModelsAddExplicitListItemDefinition {
+        private ModelsImpl parent;
+        private UUID appId;
+        private String versionId;
+        private UUID entityId;
+        private String explicitListItem;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ModelsAddExplicitListItemParameters(ModelsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ModelsAddExplicitListItemParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public ModelsAddExplicitListItemParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public ModelsAddExplicitListItemParameters withEntityId(UUID entityId) {
+            this.entityId = entityId;
+            return this;
+        }
+
+        @Override
+        public ModelsAddExplicitListItemParameters withExplicitListItem(String explicitListItem) {
+            this.explicitListItem = explicitListItem;
+            return this;
+        }
+
+        @Override
+        public int execute() {
+        return addExplicitListItemWithServiceResponseAsync(appId, versionId, entityId, explicitListItem).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<Integer> executeAsync() {
+            return addExplicitListItemWithServiceResponseAsync(appId, versionId, entityId, explicitListItem).map(new Func1<ServiceResponse<Integer>, Integer>() {
+                @Override
+                public Integer call(ServiceResponse<Integer> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
     /**
@@ -9016,6 +10962,76 @@ public class ModelsImpl implements Models {
                 .build(response);
     }
 
+    @Override
+    public ModelsUpdateEntityRoleParameters updateEntityRole() {
+        return new ModelsUpdateEntityRoleParameters(this);
+    }
+
+    /**
+     * Internal class implementing ModelsUpdateEntityRoleDefinition.
+     */
+    class ModelsUpdateEntityRoleParameters implements ModelsUpdateEntityRoleDefinition {
+        private ModelsImpl parent;
+        private UUID appId;
+        private String versionId;
+        private UUID entityId;
+        private UUID roleId;
+        private String name;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ModelsUpdateEntityRoleParameters(ModelsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ModelsUpdateEntityRoleParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public ModelsUpdateEntityRoleParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public ModelsUpdateEntityRoleParameters withEntityId(UUID entityId) {
+            this.entityId = entityId;
+            return this;
+        }
+
+        @Override
+        public ModelsUpdateEntityRoleParameters withRoleId(UUID roleId) {
+            this.roleId = roleId;
+            return this;
+        }
+
+        @Override
+        public ModelsUpdateEntityRoleParameters withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        @Override
+        public OperationStatus execute() {
+        return updateEntityRoleWithServiceResponseAsync(appId, versionId, entityId, roleId, name).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<OperationStatus> executeAsync() {
+            return updateEntityRoleWithServiceResponseAsync(appId, versionId, entityId, roleId, name).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
+                @Override
+                public OperationStatus call(ServiceResponse<OperationStatus> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
     /**
      * Delete an entity role.
      *
@@ -9347,6 +11363,76 @@ public class ModelsImpl implements Models {
                 .register(200, new TypeToken<OperationStatus>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
+    }
+
+    @Override
+    public ModelsUpdatePrebuiltEntityRoleParameters updatePrebuiltEntityRole() {
+        return new ModelsUpdatePrebuiltEntityRoleParameters(this);
+    }
+
+    /**
+     * Internal class implementing ModelsUpdatePrebuiltEntityRoleDefinition.
+     */
+    class ModelsUpdatePrebuiltEntityRoleParameters implements ModelsUpdatePrebuiltEntityRoleDefinition {
+        private ModelsImpl parent;
+        private UUID appId;
+        private String versionId;
+        private UUID entityId;
+        private UUID roleId;
+        private String name;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ModelsUpdatePrebuiltEntityRoleParameters(ModelsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ModelsUpdatePrebuiltEntityRoleParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public ModelsUpdatePrebuiltEntityRoleParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public ModelsUpdatePrebuiltEntityRoleParameters withEntityId(UUID entityId) {
+            this.entityId = entityId;
+            return this;
+        }
+
+        @Override
+        public ModelsUpdatePrebuiltEntityRoleParameters withRoleId(UUID roleId) {
+            this.roleId = roleId;
+            return this;
+        }
+
+        @Override
+        public ModelsUpdatePrebuiltEntityRoleParameters withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        @Override
+        public OperationStatus execute() {
+        return updatePrebuiltEntityRoleWithServiceResponseAsync(appId, versionId, entityId, roleId, name).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<OperationStatus> executeAsync() {
+            return updatePrebuiltEntityRoleWithServiceResponseAsync(appId, versionId, entityId, roleId, name).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
+                @Override
+                public OperationStatus call(ServiceResponse<OperationStatus> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
     /**
@@ -9682,6 +11768,76 @@ public class ModelsImpl implements Models {
                 .build(response);
     }
 
+    @Override
+    public ModelsUpdateClosedListEntityRoleParameters updateClosedListEntityRole() {
+        return new ModelsUpdateClosedListEntityRoleParameters(this);
+    }
+
+    /**
+     * Internal class implementing ModelsUpdateClosedListEntityRoleDefinition.
+     */
+    class ModelsUpdateClosedListEntityRoleParameters implements ModelsUpdateClosedListEntityRoleDefinition {
+        private ModelsImpl parent;
+        private UUID appId;
+        private String versionId;
+        private UUID entityId;
+        private UUID roleId;
+        private String name;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ModelsUpdateClosedListEntityRoleParameters(ModelsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ModelsUpdateClosedListEntityRoleParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public ModelsUpdateClosedListEntityRoleParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public ModelsUpdateClosedListEntityRoleParameters withEntityId(UUID entityId) {
+            this.entityId = entityId;
+            return this;
+        }
+
+        @Override
+        public ModelsUpdateClosedListEntityRoleParameters withRoleId(UUID roleId) {
+            this.roleId = roleId;
+            return this;
+        }
+
+        @Override
+        public ModelsUpdateClosedListEntityRoleParameters withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        @Override
+        public OperationStatus execute() {
+        return updateClosedListEntityRoleWithServiceResponseAsync(appId, versionId, entityId, roleId, name).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<OperationStatus> executeAsync() {
+            return updateClosedListEntityRoleWithServiceResponseAsync(appId, versionId, entityId, roleId, name).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
+                @Override
+                public OperationStatus call(ServiceResponse<OperationStatus> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
     /**
      * Delete an entity role.
      *
@@ -10013,6 +12169,76 @@ public class ModelsImpl implements Models {
                 .register(200, new TypeToken<OperationStatus>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
+    }
+
+    @Override
+    public ModelsUpdateRegexEntityRoleParameters updateRegexEntityRole() {
+        return new ModelsUpdateRegexEntityRoleParameters(this);
+    }
+
+    /**
+     * Internal class implementing ModelsUpdateRegexEntityRoleDefinition.
+     */
+    class ModelsUpdateRegexEntityRoleParameters implements ModelsUpdateRegexEntityRoleDefinition {
+        private ModelsImpl parent;
+        private UUID appId;
+        private String versionId;
+        private UUID entityId;
+        private UUID roleId;
+        private String name;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ModelsUpdateRegexEntityRoleParameters(ModelsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ModelsUpdateRegexEntityRoleParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public ModelsUpdateRegexEntityRoleParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public ModelsUpdateRegexEntityRoleParameters withEntityId(UUID entityId) {
+            this.entityId = entityId;
+            return this;
+        }
+
+        @Override
+        public ModelsUpdateRegexEntityRoleParameters withRoleId(UUID roleId) {
+            this.roleId = roleId;
+            return this;
+        }
+
+        @Override
+        public ModelsUpdateRegexEntityRoleParameters withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        @Override
+        public OperationStatus execute() {
+        return updateRegexEntityRoleWithServiceResponseAsync(appId, versionId, entityId, roleId, name).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<OperationStatus> executeAsync() {
+            return updateRegexEntityRoleWithServiceResponseAsync(appId, versionId, entityId, roleId, name).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
+                @Override
+                public OperationStatus call(ServiceResponse<OperationStatus> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
     /**
@@ -10348,6 +12574,76 @@ public class ModelsImpl implements Models {
                 .build(response);
     }
 
+    @Override
+    public ModelsUpdateCompositeEntityRoleParameters updateCompositeEntityRole() {
+        return new ModelsUpdateCompositeEntityRoleParameters(this);
+    }
+
+    /**
+     * Internal class implementing ModelsUpdateCompositeEntityRoleDefinition.
+     */
+    class ModelsUpdateCompositeEntityRoleParameters implements ModelsUpdateCompositeEntityRoleDefinition {
+        private ModelsImpl parent;
+        private UUID appId;
+        private String versionId;
+        private UUID cEntityId;
+        private UUID roleId;
+        private String name;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ModelsUpdateCompositeEntityRoleParameters(ModelsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ModelsUpdateCompositeEntityRoleParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public ModelsUpdateCompositeEntityRoleParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public ModelsUpdateCompositeEntityRoleParameters withCEntityId(UUID cEntityId) {
+            this.cEntityId = cEntityId;
+            return this;
+        }
+
+        @Override
+        public ModelsUpdateCompositeEntityRoleParameters withRoleId(UUID roleId) {
+            this.roleId = roleId;
+            return this;
+        }
+
+        @Override
+        public ModelsUpdateCompositeEntityRoleParameters withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        @Override
+        public OperationStatus execute() {
+        return updateCompositeEntityRoleWithServiceResponseAsync(appId, versionId, cEntityId, roleId, name).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<OperationStatus> executeAsync() {
+            return updateCompositeEntityRoleWithServiceResponseAsync(appId, versionId, cEntityId, roleId, name).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
+                @Override
+                public OperationStatus call(ServiceResponse<OperationStatus> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
     /**
      * Delete an entity role.
      *
@@ -10679,6 +12975,76 @@ public class ModelsImpl implements Models {
                 .register(200, new TypeToken<OperationStatus>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
+    }
+
+    @Override
+    public ModelsUpdatePatternAnyEntityRoleParameters updatePatternAnyEntityRole() {
+        return new ModelsUpdatePatternAnyEntityRoleParameters(this);
+    }
+
+    /**
+     * Internal class implementing ModelsUpdatePatternAnyEntityRoleDefinition.
+     */
+    class ModelsUpdatePatternAnyEntityRoleParameters implements ModelsUpdatePatternAnyEntityRoleDefinition {
+        private ModelsImpl parent;
+        private UUID appId;
+        private String versionId;
+        private UUID entityId;
+        private UUID roleId;
+        private String name;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ModelsUpdatePatternAnyEntityRoleParameters(ModelsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ModelsUpdatePatternAnyEntityRoleParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public ModelsUpdatePatternAnyEntityRoleParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public ModelsUpdatePatternAnyEntityRoleParameters withEntityId(UUID entityId) {
+            this.entityId = entityId;
+            return this;
+        }
+
+        @Override
+        public ModelsUpdatePatternAnyEntityRoleParameters withRoleId(UUID roleId) {
+            this.roleId = roleId;
+            return this;
+        }
+
+        @Override
+        public ModelsUpdatePatternAnyEntityRoleParameters withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        @Override
+        public OperationStatus execute() {
+        return updatePatternAnyEntityRoleWithServiceResponseAsync(appId, versionId, entityId, roleId, name).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<OperationStatus> executeAsync() {
+            return updatePatternAnyEntityRoleWithServiceResponseAsync(appId, versionId, entityId, roleId, name).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
+                @Override
+                public OperationStatus call(ServiceResponse<OperationStatus> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
     /**
@@ -11014,6 +13380,76 @@ public class ModelsImpl implements Models {
                 .build(response);
     }
 
+    @Override
+    public ModelsUpdateHierarchicalEntityRoleParameters updateHierarchicalEntityRole() {
+        return new ModelsUpdateHierarchicalEntityRoleParameters(this);
+    }
+
+    /**
+     * Internal class implementing ModelsUpdateHierarchicalEntityRoleDefinition.
+     */
+    class ModelsUpdateHierarchicalEntityRoleParameters implements ModelsUpdateHierarchicalEntityRoleDefinition {
+        private ModelsImpl parent;
+        private UUID appId;
+        private String versionId;
+        private UUID hEntityId;
+        private UUID roleId;
+        private String name;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ModelsUpdateHierarchicalEntityRoleParameters(ModelsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ModelsUpdateHierarchicalEntityRoleParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public ModelsUpdateHierarchicalEntityRoleParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public ModelsUpdateHierarchicalEntityRoleParameters withHEntityId(UUID hEntityId) {
+            this.hEntityId = hEntityId;
+            return this;
+        }
+
+        @Override
+        public ModelsUpdateHierarchicalEntityRoleParameters withRoleId(UUID roleId) {
+            this.roleId = roleId;
+            return this;
+        }
+
+        @Override
+        public ModelsUpdateHierarchicalEntityRoleParameters withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        @Override
+        public OperationStatus execute() {
+        return updateHierarchicalEntityRoleWithServiceResponseAsync(appId, versionId, hEntityId, roleId, name).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<OperationStatus> executeAsync() {
+            return updateHierarchicalEntityRoleWithServiceResponseAsync(appId, versionId, hEntityId, roleId, name).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
+                @Override
+                public OperationStatus call(ServiceResponse<OperationStatus> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
     /**
      * Delete an entity role.
      *
@@ -11347,6 +13783,76 @@ public class ModelsImpl implements Models {
                 .build(response);
     }
 
+    @Override
+    public ModelsUpdateCustomPrebuiltEntityRoleParameters updateCustomPrebuiltEntityRole() {
+        return new ModelsUpdateCustomPrebuiltEntityRoleParameters(this);
+    }
+
+    /**
+     * Internal class implementing ModelsUpdateCustomPrebuiltEntityRoleDefinition.
+     */
+    class ModelsUpdateCustomPrebuiltEntityRoleParameters implements ModelsUpdateCustomPrebuiltEntityRoleDefinition {
+        private ModelsImpl parent;
+        private UUID appId;
+        private String versionId;
+        private UUID entityId;
+        private UUID roleId;
+        private String name;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ModelsUpdateCustomPrebuiltEntityRoleParameters(ModelsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ModelsUpdateCustomPrebuiltEntityRoleParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public ModelsUpdateCustomPrebuiltEntityRoleParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public ModelsUpdateCustomPrebuiltEntityRoleParameters withEntityId(UUID entityId) {
+            this.entityId = entityId;
+            return this;
+        }
+
+        @Override
+        public ModelsUpdateCustomPrebuiltEntityRoleParameters withRoleId(UUID roleId) {
+            this.roleId = roleId;
+            return this;
+        }
+
+        @Override
+        public ModelsUpdateCustomPrebuiltEntityRoleParameters withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        @Override
+        public OperationStatus execute() {
+        return updateCustomPrebuiltEntityRoleWithServiceResponseAsync(appId, versionId, entityId, roleId, name).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<OperationStatus> executeAsync() {
+            return updateCustomPrebuiltEntityRoleWithServiceResponseAsync(appId, versionId, entityId, roleId, name).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
+                @Override
+                public OperationStatus call(ServiceResponse<OperationStatus> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
     /**
      * Delete an entity role.
      *
@@ -11669,6 +14175,76 @@ public class ModelsImpl implements Models {
                 .register(200, new TypeToken<OperationStatus>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
+    }
+
+    @Override
+    public ModelsUpdateExplicitListItemParameters updateExplicitListItem() {
+        return new ModelsUpdateExplicitListItemParameters(this);
+    }
+
+    /**
+     * Internal class implementing ModelsUpdateExplicitListItemDefinition.
+     */
+    class ModelsUpdateExplicitListItemParameters implements ModelsUpdateExplicitListItemDefinition {
+        private ModelsImpl parent;
+        private UUID appId;
+        private String versionId;
+        private UUID entityId;
+        private long itemId;
+        private String explicitListItem;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ModelsUpdateExplicitListItemParameters(ModelsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ModelsUpdateExplicitListItemParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public ModelsUpdateExplicitListItemParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public ModelsUpdateExplicitListItemParameters withEntityId(UUID entityId) {
+            this.entityId = entityId;
+            return this;
+        }
+
+        @Override
+        public ModelsUpdateExplicitListItemParameters withItemId(long itemId) {
+            this.itemId = itemId;
+            return this;
+        }
+
+        @Override
+        public ModelsUpdateExplicitListItemParameters withExplicitListItem(String explicitListItem) {
+            this.explicitListItem = explicitListItem;
+            return this;
+        }
+
+        @Override
+        public OperationStatus execute() {
+        return updateExplicitListItemWithServiceResponseAsync(appId, versionId, entityId, itemId, explicitListItem).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<OperationStatus> executeAsync() {
+            return updateExplicitListItemWithServiceResponseAsync(appId, versionId, entityId, itemId, explicitListItem).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
+                @Override
+                public OperationStatus call(ServiceResponse<OperationStatus> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
     /**

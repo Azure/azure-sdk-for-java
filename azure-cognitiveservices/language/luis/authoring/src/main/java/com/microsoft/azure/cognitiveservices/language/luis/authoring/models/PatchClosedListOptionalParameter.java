@@ -11,33 +11,56 @@ package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 import java.util.List;
 
 /**
- * The optional parameters class for "patchClosedList" method.
+ * The PatchClosedListOptionalParameter model.
  */
 public class PatchClosedListOptionalParameter {
     /**
-    * Sublists to add.
-    */
+     * Sublists to add.
+     */
     private List<WordListObject> subLists;
 
     /**
-    * Get the subLists value.
-    *
-    * @return the subLists value
-    */
+     * Gets or sets the preferred language for the response.
+     */
+    private String thisclientacceptLanguage;
+
+    /**
+     * Get the subLists value.
+     *
+     * @return the subLists value
+     */
     public List<WordListObject> subLists() {
         return this.subLists;
     }
 
     /**
-    * Set the subLists value.
-    * <p>
-    * Sublists to add.
-    *
-    * @param subLists the subLists value to set
-    * @return the PatchClosedListOptionalParameter object itself.
-    */
+     * Set the subLists value.
+     *
+     * @param subLists the subLists value to set
+     * @return the PatchClosedListOptionalParameter object itself.
+     */
     public PatchClosedListOptionalParameter withSubLists(List<WordListObject> subLists) {
         this.subLists = subLists;
+        return this;
+    }
+
+    /**
+     * Get the thisclientacceptLanguage value.
+     *
+     * @return the thisclientacceptLanguage value
+     */
+    public String thisclientacceptLanguage() {
+        return this.thisclientacceptLanguage;
+    }
+
+    /**
+     * Set the thisclientacceptLanguage value.
+     *
+     * @param thisclientacceptLanguage the thisclientacceptLanguage value to set
+     * @return the PatchClosedListOptionalParameter object itself.
+     */
+    public PatchClosedListOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
+        this.thisclientacceptLanguage = thisclientacceptLanguage;
         return this;
     }
 

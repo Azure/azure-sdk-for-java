@@ -14,6 +14,7 @@ import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.Upda
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.OperationStatus;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.UserAccessList;
+import java.util.List;
 import java.util.UUID;
 import rx.Observable;
 
@@ -55,6 +56,7 @@ public interface Permissions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
+    @Deprecated
     OperationStatus add(UUID appId, AddPermissionsOptionalParameter addOptionalParameter);
 
     /**
@@ -66,7 +68,73 @@ public interface Permissions {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
+    @Deprecated
     Observable<OperationStatus> addAsync(UUID appId, AddPermissionsOptionalParameter addOptionalParameter);
+
+    /**
+     * Adds a user to the allowed list of users to access this LUIS application. Users are added using their email
+     *   address.
+     *
+     * @return the first stage of the add call
+     */
+    PermissionsAddDefinitionStages.WithAppId add();
+
+    /**
+     * Grouping of add definition stages.
+     */
+    interface PermissionsAddDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            PermissionsAddDefinitionStages.WithExecute withAppId(UUID appId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The email address of the user.
+             *
+             * @return next definition stage
+             */
+            PermissionsAddDefinitionStages.WithExecute withEmail(String email);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends PermissionsAddDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the OperationStatus object if successful.
+             */
+            OperationStatus execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the OperationStatus object
+             */
+            Observable<OperationStatus> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of add definition.
+     */
+    interface PermissionsAddDefinition extends
+        PermissionsAddDefinitionStages.WithAppId,
+        PermissionsAddDefinitionStages.WithExecute {
+    }
 
     /**
      * Removes a user from the allowed list of users to access this LUIS application. Users are removed using their
@@ -79,6 +147,7 @@ public interface Permissions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
+    @Deprecated
     OperationStatus delete(UUID appId, DeletePermissionsOptionalParameter deleteOptionalParameter);
 
     /**
@@ -90,7 +159,73 @@ public interface Permissions {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
+    @Deprecated
     Observable<OperationStatus> deleteAsync(UUID appId, DeletePermissionsOptionalParameter deleteOptionalParameter);
+
+    /**
+     * Removes a user from the allowed list of users to access this LUIS application. Users are removed using their
+     *   email address.
+     *
+     * @return the first stage of the delete call
+     */
+    PermissionsDeleteDefinitionStages.WithAppId delete();
+
+    /**
+     * Grouping of delete definition stages.
+     */
+    interface PermissionsDeleteDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            PermissionsDeleteDefinitionStages.WithExecute withAppId(UUID appId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The email address of the user.
+             *
+             * @return next definition stage
+             */
+            PermissionsDeleteDefinitionStages.WithExecute withEmail(String email);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends PermissionsDeleteDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the OperationStatus object if successful.
+             */
+            OperationStatus execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the OperationStatus object
+             */
+            Observable<OperationStatus> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of delete definition.
+     */
+    interface PermissionsDeleteDefinition extends
+        PermissionsDeleteDefinitionStages.WithAppId,
+        PermissionsDeleteDefinitionStages.WithExecute {
+    }
 
     /**
      * Replaces the current users access list with the one sent in the body. If an empty list is sent, all access
@@ -103,6 +238,7 @@ public interface Permissions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
+    @Deprecated
     OperationStatus update(UUID appId, UpdatePermissionsOptionalParameter updateOptionalParameter);
 
     /**
@@ -114,6 +250,72 @@ public interface Permissions {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
+    @Deprecated
     Observable<OperationStatus> updateAsync(UUID appId, UpdatePermissionsOptionalParameter updateOptionalParameter);
+
+    /**
+     * Replaces the current users access list with the one sent in the body. If an empty list is sent, all access
+     *   to other users will be removed.
+     *
+     * @return the first stage of the update call
+     */
+    PermissionsUpdateDefinitionStages.WithAppId update();
+
+    /**
+     * Grouping of update definition stages.
+     */
+    interface PermissionsUpdateDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            PermissionsUpdateDefinitionStages.WithExecute withAppId(UUID appId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The email address of the users.
+             *
+             * @return next definition stage
+             */
+            PermissionsUpdateDefinitionStages.WithExecute withEmails(List<String> emails);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends PermissionsUpdateDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the OperationStatus object if successful.
+             */
+            OperationStatus execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the OperationStatus object
+             */
+            Observable<OperationStatus> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of update definition.
+     */
+    interface PermissionsUpdateDefinition extends
+        PermissionsUpdateDefinitionStages.WithAppId,
+        PermissionsUpdateDefinitionStages.WithExecute {
+    }
 
 }

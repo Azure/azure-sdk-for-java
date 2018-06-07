@@ -61,6 +61,7 @@ public interface Patterns {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;PatternRuleInfo&gt; object if successful.
      */
+    @Deprecated
     List<PatternRuleInfo> getPatterns(UUID appId, String versionId, GetPatternsOptionalParameter getPatternsOptionalParameter);
 
     /**
@@ -72,7 +73,91 @@ public interface Patterns {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;PatternRuleInfo&gt; object
      */
+    @Deprecated
     Observable<List<PatternRuleInfo>> getPatternsAsync(UUID appId, String versionId, GetPatternsOptionalParameter getPatternsOptionalParameter);
+
+    /**
+     * Returns an application version's patterns.
+     *
+     * @return the first stage of the getPatterns call
+     */
+    PatternsGetPatternsDefinitionStages.WithAppId getPatterns();
+
+    /**
+     * Grouping of getPatterns definition stages.
+     */
+    interface PatternsGetPatternsDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            PatternsGetPatternsDefinitionStages.WithExecute withVersionId(String versionId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The number of entries to skip. Default value is 0.
+             *
+             * @return next definition stage
+             */
+            PatternsGetPatternsDefinitionStages.WithExecute withSkip(Integer skip);
+
+            /**
+             * The number of entries to return. Maximum page size is 500. Default is 100.
+             *
+             * @return next definition stage
+             */
+            PatternsGetPatternsDefinitionStages.WithExecute withTake(Integer take);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends PatternsGetPatternsDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the List&lt;PatternRuleInfo&gt; object if successful.
+             */
+            List<PatternRuleInfo> execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the List&lt;PatternRuleInfo&gt; object
+             */
+            Observable<List<PatternRuleInfo>> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of getPatterns definition.
+     */
+    interface PatternsGetPatternsDefinition extends
+        PatternsGetPatternsDefinitionStages.WithAppId,
+        PatternsGetPatternsDefinitionStages.WithVersionId,
+        PatternsGetPatternsDefinitionStages.WithExecute {
+    }
 
 
     /**
@@ -218,6 +303,7 @@ public interface Patterns {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;PatternRuleInfo&gt; object if successful.
      */
+    @Deprecated
     List<PatternRuleInfo> getIntentPatterns(UUID appId, String versionId, UUID intentId, GetIntentPatternsOptionalParameter getIntentPatternsOptionalParameter);
 
     /**
@@ -230,6 +316,102 @@ public interface Patterns {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;PatternRuleInfo&gt; object
      */
+    @Deprecated
     Observable<List<PatternRuleInfo>> getIntentPatternsAsync(UUID appId, String versionId, UUID intentId, GetIntentPatternsOptionalParameter getIntentPatternsOptionalParameter);
+
+    /**
+     * Returns patterns to be retrieved for the specific intent.
+     *
+     * @return the first stage of the getIntentPatterns call
+     */
+    PatternsGetIntentPatternsDefinitionStages.WithAppId getIntentPatterns();
+
+    /**
+     * Grouping of getIntentPatterns definition stages.
+     */
+    interface PatternsGetIntentPatternsDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            WithIntentId withVersionId(String versionId);
+        }
+        /**
+         * The stage of the definition to be specify intentId.
+         */
+        interface WithIntentId {
+            /**
+             * The intent classifier ID.
+             *
+             * @return next definition stage
+             */
+            PatternsGetIntentPatternsDefinitionStages.WithExecute withIntentId(UUID intentId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The number of entries to skip. Default value is 0.
+             *
+             * @return next definition stage
+             */
+            PatternsGetIntentPatternsDefinitionStages.WithExecute withSkip(Integer skip);
+
+            /**
+             * The number of entries to return. Maximum page size is 500. Default is 100.
+             *
+             * @return next definition stage
+             */
+            PatternsGetIntentPatternsDefinitionStages.WithExecute withTake(Integer take);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends PatternsGetIntentPatternsDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the List&lt;PatternRuleInfo&gt; object if successful.
+             */
+            List<PatternRuleInfo> execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the List&lt;PatternRuleInfo&gt; object
+             */
+            Observable<List<PatternRuleInfo>> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of getIntentPatterns definition.
+     */
+    interface PatternsGetIntentPatternsDefinition extends
+        PatternsGetIntentPatternsDefinitionStages.WithAppId,
+        PatternsGetIntentPatternsDefinitionStages.WithVersionId,
+        PatternsGetIntentPatternsDefinitionStages.WithIntentId,
+        PatternsGetIntentPatternsDefinitionStages.WithExecute {
+    }
 
 }

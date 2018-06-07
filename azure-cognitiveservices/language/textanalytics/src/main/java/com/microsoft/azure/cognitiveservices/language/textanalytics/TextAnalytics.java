@@ -14,9 +14,12 @@ import com.microsoft.azure.cognitiveservices.language.textanalytics.models.Detec
 import com.microsoft.azure.cognitiveservices.language.textanalytics.models.KeyPhrasesOptionalParameter;
 import com.microsoft.azure.cognitiveservices.language.textanalytics.models.EntitiesBatchResult;
 import com.microsoft.azure.cognitiveservices.language.textanalytics.models.ErrorResponseException;
+import com.microsoft.azure.cognitiveservices.language.textanalytics.models.Input;
 import com.microsoft.azure.cognitiveservices.language.textanalytics.models.KeyPhraseBatchResult;
 import com.microsoft.azure.cognitiveservices.language.textanalytics.models.LanguageBatchResult;
+import com.microsoft.azure.cognitiveservices.language.textanalytics.models.MultiLanguageInput;
 import com.microsoft.azure.cognitiveservices.language.textanalytics.models.SentimentBatchResult;
+import java.util.List;
 import rx.Observable;
 
 /**
@@ -37,6 +40,7 @@ public interface TextAnalytics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the EntitiesBatchResult object if successful.
      */
+    @Deprecated
     EntitiesBatchResult entities(EntitiesOptionalParameter entitiesOptionalParameter);
 
     /**
@@ -50,7 +54,64 @@ public interface TextAnalytics {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the EntitiesBatchResult object
      */
+    @Deprecated
     Observable<EntitiesBatchResult> entitiesAsync(EntitiesOptionalParameter entitiesOptionalParameter);
+
+    /**
+     * The API returns a list of recognized entities in a given document.
+     * To get even more information on each recognized entity we recommend using the Bing Entity Search API by
+     *   querying for the recognized entities names. See the
+     *   &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/text-analytics-supported-languages"&gt;Supported languages
+     *   in Text Analytics API&lt;/a&gt; for the list of enabled languages.
+     *
+     * @return the first stage of the entities call
+     */
+    TextAnalyticsEntitiesDefinitionStages.WithExecute entities();
+
+    /**
+     * Grouping of entities definition stages.
+     */
+    interface TextAnalyticsEntitiesDefinitionStages {
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             *
+             *
+             * @return next definition stage
+             */
+            TextAnalyticsEntitiesDefinitionStages.WithExecute withDocuments(List<MultiLanguageInput> documents);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends TextAnalyticsEntitiesDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the EntitiesBatchResult object if successful.
+             */
+            EntitiesBatchResult execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the EntitiesBatchResult object
+             */
+            Observable<EntitiesBatchResult> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of entities definition.
+     */
+    interface TextAnalyticsEntitiesDefinition extends
+        TextAnalyticsEntitiesDefinitionStages.WithExecute {
+    }
 
     /**
      * The API returns a numeric score between 0 and 1.
@@ -65,6 +126,7 @@ public interface TextAnalytics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SentimentBatchResult object if successful.
      */
+    @Deprecated
     SentimentBatchResult sentiment(SentimentOptionalParameter sentimentOptionalParameter);
 
     /**
@@ -78,7 +140,64 @@ public interface TextAnalytics {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SentimentBatchResult object
      */
+    @Deprecated
     Observable<SentimentBatchResult> sentimentAsync(SentimentOptionalParameter sentimentOptionalParameter);
+
+    /**
+     * The API returns a numeric score between 0 and 1.
+     * Scores close to 1 indicate positive sentiment, while scores close to 0 indicate negative sentiment. A score
+     *   of 0.5 indicates the lack of sentiment (e.g. a factoid statement). See the
+     *   &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/overview#supported-languages"&gt;Text Analytics Documentation&lt;/a&gt; for
+     *   details about the languages that are supported by sentiment analysis.
+     *
+     * @return the first stage of the sentiment call
+     */
+    TextAnalyticsSentimentDefinitionStages.WithExecute sentiment();
+
+    /**
+     * Grouping of sentiment definition stages.
+     */
+    interface TextAnalyticsSentimentDefinitionStages {
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             *
+             *
+             * @return next definition stage
+             */
+            TextAnalyticsSentimentDefinitionStages.WithExecute withDocuments(List<MultiLanguageInput> documents);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends TextAnalyticsSentimentDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the SentimentBatchResult object if successful.
+             */
+            SentimentBatchResult execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the SentimentBatchResult object
+             */
+            Observable<SentimentBatchResult> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of sentiment definition.
+     */
+    interface TextAnalyticsSentimentDefinition extends
+        TextAnalyticsSentimentDefinitionStages.WithExecute {
+    }
 
     /**
      * The API returns the detected language and a numeric score between 0 and 1.
@@ -91,6 +210,7 @@ public interface TextAnalytics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the LanguageBatchResult object if successful.
      */
+    @Deprecated
     LanguageBatchResult detectLanguage(DetectLanguageOptionalParameter detectLanguageOptionalParameter);
 
     /**
@@ -102,7 +222,62 @@ public interface TextAnalytics {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the LanguageBatchResult object
      */
+    @Deprecated
     Observable<LanguageBatchResult> detectLanguageAsync(DetectLanguageOptionalParameter detectLanguageOptionalParameter);
+
+    /**
+     * The API returns the detected language and a numeric score between 0 and 1.
+     * Scores close to 1 indicate 100% certainty that the identified language is true. A total of 120 languages are
+     *   supported.
+     *
+     * @return the first stage of the detectLanguage call
+     */
+    TextAnalyticsDetectLanguageDefinitionStages.WithExecute detectLanguage();
+
+    /**
+     * Grouping of detectLanguage definition stages.
+     */
+    interface TextAnalyticsDetectLanguageDefinitionStages {
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             *
+             *
+             * @return next definition stage
+             */
+            TextAnalyticsDetectLanguageDefinitionStages.WithExecute withDocuments(List<Input> documents);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends TextAnalyticsDetectLanguageDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the LanguageBatchResult object if successful.
+             */
+            LanguageBatchResult execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the LanguageBatchResult object
+             */
+            Observable<LanguageBatchResult> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of detectLanguage definition.
+     */
+    interface TextAnalyticsDetectLanguageDefinition extends
+        TextAnalyticsDetectLanguageDefinitionStages.WithExecute {
+    }
 
     /**
      * The API returns a list of strings denoting the key talking points in the input text.
@@ -116,6 +291,7 @@ public interface TextAnalytics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the KeyPhraseBatchResult object if successful.
      */
+    @Deprecated
     KeyPhraseBatchResult keyPhrases(KeyPhrasesOptionalParameter keyPhrasesOptionalParameter);
 
     /**
@@ -128,6 +304,62 @@ public interface TextAnalytics {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the KeyPhraseBatchResult object
      */
+    @Deprecated
     Observable<KeyPhraseBatchResult> keyPhrasesAsync(KeyPhrasesOptionalParameter keyPhrasesOptionalParameter);
+
+    /**
+     * The API returns a list of strings denoting the key talking points in the input text.
+     * See the
+     *   &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/overview#supported-languages"&gt;Text Analytics Documentation&lt;/a&gt;
+     *   for details about the languages that are supported by key phrase extraction.
+     *
+     * @return the first stage of the keyPhrases call
+     */
+    TextAnalyticsKeyPhrasesDefinitionStages.WithExecute keyPhrases();
+
+    /**
+     * Grouping of keyPhrases definition stages.
+     */
+    interface TextAnalyticsKeyPhrasesDefinitionStages {
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             *
+             *
+             * @return next definition stage
+             */
+            TextAnalyticsKeyPhrasesDefinitionStages.WithExecute withDocuments(List<MultiLanguageInput> documents);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends TextAnalyticsKeyPhrasesDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the KeyPhraseBatchResult object if successful.
+             */
+            KeyPhraseBatchResult execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the KeyPhraseBatchResult object
+             */
+            Observable<KeyPhraseBatchResult> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of keyPhrases definition.
+     */
+    interface TextAnalyticsKeyPhrasesDefinition extends
+        TextAnalyticsKeyPhrasesDefinitionStages.WithExecute {
+    }
 
 }

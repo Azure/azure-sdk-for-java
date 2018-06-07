@@ -10,33 +10,57 @@ package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
 
 /**
- * The optional parameters class for "updateSettings" method.
+ * The UpdateSettingsOptionalParameter model.
  */
 public class UpdateSettingsOptionalParameter {
     /**
-    * Setting your application as public allows other people to use your application's endpoint using their own keys.
-    */
+     * Setting your application as public allows other people to use your
+     * application's endpoint using their own keys.
+     */
     private boolean publicParameter;
 
     /**
-    * Get the publicParameter value.
-    *
-    * @return the publicParameter value
-    */
+     * Gets or sets the preferred language for the response.
+     */
+    private String thisclientacceptLanguage;
+
+    /**
+     * Get the publicParameter value.
+     *
+     * @return the publicParameter value
+     */
     public boolean publicParameter() {
         return this.publicParameter;
     }
 
     /**
-    * Set the publicParameter value.
-    * <p>
-    * Setting your application as public allows other people to use your application's endpoint using their own keys.
-    *
-    * @param publicParameter the publicParameter value to set
-    * @return the UpdateSettingsOptionalParameter object itself.
-    */
+     * Set the publicParameter value.
+     *
+     * @param publicParameter the publicParameter value to set
+     * @return the UpdateSettingsOptionalParameter object itself.
+     */
     public UpdateSettingsOptionalParameter withPublicParameter(boolean publicParameter) {
         this.publicParameter = publicParameter;
+        return this;
+    }
+
+    /**
+     * Get the thisclientacceptLanguage value.
+     *
+     * @return the thisclientacceptLanguage value
+     */
+    public String thisclientacceptLanguage() {
+        return this.thisclientacceptLanguage;
+    }
+
+    /**
+     * Set the thisclientacceptLanguage value.
+     *
+     * @param thisclientacceptLanguage the thisclientacceptLanguage value to set
+     * @return the UpdateSettingsOptionalParameter object itself.
+     */
+    public UpdateSettingsOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
+        this.thisclientacceptLanguage = thisclientacceptLanguage;
         return this;
     }
 

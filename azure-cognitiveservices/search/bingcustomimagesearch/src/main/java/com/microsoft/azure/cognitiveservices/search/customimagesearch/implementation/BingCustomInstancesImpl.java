@@ -128,7 +128,6 @@ public class BingCustomInstancesImpl implements BingCustomInstances {
         if (query == null) {
             throw new IllegalArgumentException("Parameter query is required and cannot be null.");
         }
-        final String xBingApisSDK = "true";
         final String acceptLanguage = imageSearchOptionalParameter != null ? imageSearchOptionalParameter.acceptLanguage() : null;
         final String userAgent = imageSearchOptionalParameter != null ? imageSearchOptionalParameter.userAgent() : this.client.userAgent();
         final String clientId = imageSearchOptionalParameter != null ? imageSearchOptionalParameter.clientId() : null;
@@ -219,6 +218,244 @@ public class BingCustomInstancesImpl implements BingCustomInstances {
                 .register(200, new TypeToken<Images>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
+    }
+
+    @Override
+    public BingCustomInstancesImageSearchParameters imageSearch() {
+        return new BingCustomInstancesImageSearchParameters(this);
+    }
+
+    /**
+     * Internal class implementing BingCustomInstancesImageSearchDefinition.
+     */
+    class BingCustomInstancesImageSearchParameters implements BingCustomInstancesImageSearchDefinition {
+        private BingCustomInstancesImpl parent;
+        private long customConfig;
+        private String query;
+        private String acceptLanguage;
+        private String userAgent;
+        private String clientId;
+        private String clientIp;
+        private String location;
+        private ImageAspect aspect;
+        private ImageColor color;
+        private String countryCode;
+        private Integer count;
+        private Freshness freshness;
+        private Integer height;
+        private String id;
+        private ImageContent imageContent;
+        private ImageType imageType;
+        private ImageLicense license;
+        private String market;
+        private Long maxFileSize;
+        private Long maxHeight;
+        private Long maxWidth;
+        private Long minFileSize;
+        private Long minHeight;
+        private Long minWidth;
+        private Long offset;
+        private SafeSearch safeSearch;
+        private ImageSize size;
+        private String setLang;
+        private Integer width;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        BingCustomInstancesImageSearchParameters(BingCustomInstancesImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public BingCustomInstancesImageSearchParameters withCustomConfig(long customConfig) {
+            this.customConfig = customConfig;
+            return this;
+        }
+
+        @Override
+        public BingCustomInstancesImageSearchParameters withQuery(String query) {
+            this.query = query;
+            return this;
+        }
+
+        @Override
+        public BingCustomInstancesImageSearchParameters withAcceptLanguage(String acceptLanguage) {
+            this.acceptLanguage = acceptLanguage;
+            return this;
+        }
+
+        @Override
+        public BingCustomInstancesImageSearchParameters withUserAgent(String userAgent) {
+            this.userAgent = userAgent;
+            return this;
+        }
+
+        @Override
+        public BingCustomInstancesImageSearchParameters withClientId(String clientId) {
+            this.clientId = clientId;
+            return this;
+        }
+
+        @Override
+        public BingCustomInstancesImageSearchParameters withClientIp(String clientIp) {
+            this.clientIp = clientIp;
+            return this;
+        }
+
+        @Override
+        public BingCustomInstancesImageSearchParameters withLocation(String location) {
+            this.location = location;
+            return this;
+        }
+
+        @Override
+        public BingCustomInstancesImageSearchParameters withAspect(ImageAspect aspect) {
+            this.aspect = aspect;
+            return this;
+        }
+
+        @Override
+        public BingCustomInstancesImageSearchParameters withColor(ImageColor color) {
+            this.color = color;
+            return this;
+        }
+
+        @Override
+        public BingCustomInstancesImageSearchParameters withCountryCode(String countryCode) {
+            this.countryCode = countryCode;
+            return this;
+        }
+
+        @Override
+        public BingCustomInstancesImageSearchParameters withCount(Integer count) {
+            this.count = count;
+            return this;
+        }
+
+        @Override
+        public BingCustomInstancesImageSearchParameters withFreshness(Freshness freshness) {
+            this.freshness = freshness;
+            return this;
+        }
+
+        @Override
+        public BingCustomInstancesImageSearchParameters withHeight(Integer height) {
+            this.height = height;
+            return this;
+        }
+
+        @Override
+        public BingCustomInstancesImageSearchParameters withId(String id) {
+            this.id = id;
+            return this;
+        }
+
+        @Override
+        public BingCustomInstancesImageSearchParameters withImageContent(ImageContent imageContent) {
+            this.imageContent = imageContent;
+            return this;
+        }
+
+        @Override
+        public BingCustomInstancesImageSearchParameters withImageType(ImageType imageType) {
+            this.imageType = imageType;
+            return this;
+        }
+
+        @Override
+        public BingCustomInstancesImageSearchParameters withLicense(ImageLicense license) {
+            this.license = license;
+            return this;
+        }
+
+        @Override
+        public BingCustomInstancesImageSearchParameters withMarket(String market) {
+            this.market = market;
+            return this;
+        }
+
+        @Override
+        public BingCustomInstancesImageSearchParameters withMaxFileSize(Long maxFileSize) {
+            this.maxFileSize = maxFileSize;
+            return this;
+        }
+
+        @Override
+        public BingCustomInstancesImageSearchParameters withMaxHeight(Long maxHeight) {
+            this.maxHeight = maxHeight;
+            return this;
+        }
+
+        @Override
+        public BingCustomInstancesImageSearchParameters withMaxWidth(Long maxWidth) {
+            this.maxWidth = maxWidth;
+            return this;
+        }
+
+        @Override
+        public BingCustomInstancesImageSearchParameters withMinFileSize(Long minFileSize) {
+            this.minFileSize = minFileSize;
+            return this;
+        }
+
+        @Override
+        public BingCustomInstancesImageSearchParameters withMinHeight(Long minHeight) {
+            this.minHeight = minHeight;
+            return this;
+        }
+
+        @Override
+        public BingCustomInstancesImageSearchParameters withMinWidth(Long minWidth) {
+            this.minWidth = minWidth;
+            return this;
+        }
+
+        @Override
+        public BingCustomInstancesImageSearchParameters withOffset(Long offset) {
+            this.offset = offset;
+            return this;
+        }
+
+        @Override
+        public BingCustomInstancesImageSearchParameters withSafeSearch(SafeSearch safeSearch) {
+            this.safeSearch = safeSearch;
+            return this;
+        }
+
+        @Override
+        public BingCustomInstancesImageSearchParameters withSize(ImageSize size) {
+            this.size = size;
+            return this;
+        }
+
+        @Override
+        public BingCustomInstancesImageSearchParameters withSetLang(String setLang) {
+            this.setLang = setLang;
+            return this;
+        }
+
+        @Override
+        public BingCustomInstancesImageSearchParameters withWidth(Integer width) {
+            this.width = width;
+            return this;
+        }
+
+        @Override
+        public Images execute() {
+        return imageSearchWithServiceResponseAsync(customConfig, query, acceptLanguage, userAgent, clientId, clientIp, location, aspect, color, countryCode, count, freshness, height, id, imageContent, imageType, license, market, maxFileSize, maxHeight, maxWidth, minFileSize, minHeight, minWidth, offset, safeSearch, size, setLang, width).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<Images> executeAsync() {
+            return imageSearchWithServiceResponseAsync(customConfig, query, acceptLanguage, userAgent, clientId, clientIp, location, aspect, color, countryCode, count, freshness, height, id, imageContent, imageType, license, market, maxFileSize, maxHeight, maxWidth, minFileSize, minHeight, minWidth, offset, safeSearch, size, setLang, width).map(new Func1<ServiceResponse<Images>, Images>() {
+                @Override
+                public Images call(ServiceResponse<Images> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 }

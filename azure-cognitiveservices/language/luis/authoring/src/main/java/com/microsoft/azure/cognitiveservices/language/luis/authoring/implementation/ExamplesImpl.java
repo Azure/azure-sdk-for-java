@@ -383,6 +383,69 @@ public class ExamplesImpl implements Examples {
                 .build(response);
     }
 
+    @Override
+    public ExamplesListParameters list() {
+        return new ExamplesListParameters(this);
+    }
+
+    /**
+     * Internal class implementing ExamplesListDefinition.
+     */
+    class ExamplesListParameters implements ExamplesListDefinition {
+        private ExamplesImpl parent;
+        private UUID appId;
+        private String versionId;
+        private Integer skip;
+        private Integer take;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ExamplesListParameters(ExamplesImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ExamplesListParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public ExamplesListParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public ExamplesListParameters withSkip(Integer skip) {
+            this.skip = skip;
+            return this;
+        }
+
+        @Override
+        public ExamplesListParameters withTake(Integer take) {
+            this.take = take;
+            return this;
+        }
+
+        @Override
+        public List<LabeledUtterance> execute() {
+        return listWithServiceResponseAsync(appId, versionId, skip, take).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<List<LabeledUtterance>> executeAsync() {
+            return listWithServiceResponseAsync(appId, versionId, skip, take).map(new Func1<ServiceResponse<List<LabeledUtterance>>, List<LabeledUtterance>>() {
+                @Override
+                public List<LabeledUtterance> call(ServiceResponse<List<LabeledUtterance>> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
     /**
      * Deletes the labeled example with the specified ID.
      *

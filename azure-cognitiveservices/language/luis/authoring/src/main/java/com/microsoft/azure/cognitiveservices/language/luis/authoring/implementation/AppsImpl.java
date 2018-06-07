@@ -336,6 +336,55 @@ public class AppsImpl implements Apps {
                 .build(response);
     }
 
+    @Override
+    public AppsListParameters list() {
+        return new AppsListParameters(this);
+    }
+
+    /**
+     * Internal class implementing AppsListDefinition.
+     */
+    class AppsListParameters implements AppsListDefinition {
+        private AppsImpl parent;
+        private Integer skip;
+        private Integer take;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        AppsListParameters(AppsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public AppsListParameters withSkip(Integer skip) {
+            this.skip = skip;
+            return this;
+        }
+
+        @Override
+        public AppsListParameters withTake(Integer take) {
+            this.take = take;
+            return this;
+        }
+
+        @Override
+        public List<ApplicationInfoResponse> execute() {
+        return listWithServiceResponseAsync(skip, take).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<List<ApplicationInfoResponse>> executeAsync() {
+            return listWithServiceResponseAsync(skip, take).map(new Func1<ServiceResponse<List<ApplicationInfoResponse>>, List<ApplicationInfoResponse>>() {
+                @Override
+                public List<ApplicationInfoResponse> call(ServiceResponse<List<ApplicationInfoResponse>> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
 
     /**
      * Imports an application to LUIS, the application's structure should be included in in the request body.
@@ -438,6 +487,55 @@ public class AppsImpl implements Apps {
                 .register(201, new TypeToken<UUID>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
+    }
+
+    @Override
+    public AppsImportMethodParameters importMethod() {
+        return new AppsImportMethodParameters(this);
+    }
+
+    /**
+     * Internal class implementing AppsImportMethodDefinition.
+     */
+    class AppsImportMethodParameters implements AppsImportMethodDefinition {
+        private AppsImpl parent;
+        private LuisApp luisApp;
+        private String appName;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        AppsImportMethodParameters(AppsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public AppsImportMethodParameters withLuisApp(LuisApp luisApp) {
+            this.luisApp = luisApp;
+            return this;
+        }
+
+        @Override
+        public AppsImportMethodParameters withAppName(String appName) {
+            this.appName = appName;
+            return this;
+        }
+
+        @Override
+        public UUID execute() {
+        return importMethodWithServiceResponseAsync(luisApp, appName).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<UUID> executeAsync() {
+            return importMethodWithServiceResponseAsync(luisApp, appName).map(new Func1<ServiceResponse<UUID>, UUID>() {
+                @Override
+                public UUID call(ServiceResponse<UUID> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
     /**
@@ -1300,6 +1398,55 @@ public class AppsImpl implements Apps {
                 .register(200, new TypeToken<OperationStatus>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
+    }
+
+    @Override
+    public AppsUpdateSettingsParameters updateSettings() {
+        return new AppsUpdateSettingsParameters(this);
+    }
+
+    /**
+     * Internal class implementing AppsUpdateSettingsDefinition.
+     */
+    class AppsUpdateSettingsParameters implements AppsUpdateSettingsDefinition {
+        private AppsImpl parent;
+        private UUID appId;
+        private boolean publicParameter;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        AppsUpdateSettingsParameters(AppsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public AppsUpdateSettingsParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public AppsUpdateSettingsParameters withPublicParameter(boolean publicParameter) {
+            this.publicParameter = publicParameter;
+            return this;
+        }
+
+        @Override
+        public OperationStatus execute() {
+        return updateSettingsWithServiceResponseAsync(appId, publicParameter).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<OperationStatus> executeAsync() {
+            return updateSettingsWithServiceResponseAsync(appId, publicParameter).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
+                @Override
+                public OperationStatus call(ServiceResponse<OperationStatus> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
     /**

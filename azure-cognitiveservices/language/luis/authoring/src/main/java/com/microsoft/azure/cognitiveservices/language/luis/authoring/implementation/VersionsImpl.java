@@ -220,6 +220,62 @@ public class VersionsImpl implements Versions {
                 .build(response);
     }
 
+    @Override
+    public VersionsCloneParameters clone() {
+        return new VersionsCloneParameters(this);
+    }
+
+    /**
+     * Internal class implementing VersionsCloneDefinition.
+     */
+    class VersionsCloneParameters implements VersionsCloneDefinition {
+        private VersionsImpl parent;
+        private UUID appId;
+        private String versionId;
+        private String version;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        VersionsCloneParameters(VersionsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public VersionsCloneParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public VersionsCloneParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public VersionsCloneParameters withVersion(String version) {
+            this.version = version;
+            return this;
+        }
+
+        @Override
+        public String execute() {
+        return cloneWithServiceResponseAsync(appId, versionId, version).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<String> executeAsync() {
+            return cloneWithServiceResponseAsync(appId, versionId, version).map(new Func1<ServiceResponse<String>, String>() {
+                @Override
+                public String call(ServiceResponse<String> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
 
     /**
      * Gets the application versions info.
@@ -322,6 +378,62 @@ public class VersionsImpl implements Versions {
                 .register(200, new TypeToken<List<VersionInfo>>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
+    }
+
+    @Override
+    public VersionsListParameters list() {
+        return new VersionsListParameters(this);
+    }
+
+    /**
+     * Internal class implementing VersionsListDefinition.
+     */
+    class VersionsListParameters implements VersionsListDefinition {
+        private VersionsImpl parent;
+        private UUID appId;
+        private Integer skip;
+        private Integer take;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        VersionsListParameters(VersionsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public VersionsListParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public VersionsListParameters withSkip(Integer skip) {
+            this.skip = skip;
+            return this;
+        }
+
+        @Override
+        public VersionsListParameters withTake(Integer take) {
+            this.take = take;
+            return this;
+        }
+
+        @Override
+        public List<VersionInfo> execute() {
+        return listWithServiceResponseAsync(appId, skip, take).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<List<VersionInfo>> executeAsync() {
+            return listWithServiceResponseAsync(appId, skip, take).map(new Func1<ServiceResponse<List<VersionInfo>>, List<VersionInfo>>() {
+                @Override
+                public List<VersionInfo> call(ServiceResponse<List<VersionInfo>> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
     /**
@@ -521,6 +633,62 @@ public class VersionsImpl implements Versions {
                 .register(200, new TypeToken<OperationStatus>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
+    }
+
+    @Override
+    public VersionsUpdateParameters update() {
+        return new VersionsUpdateParameters(this);
+    }
+
+    /**
+     * Internal class implementing VersionsUpdateDefinition.
+     */
+    class VersionsUpdateParameters implements VersionsUpdateDefinition {
+        private VersionsImpl parent;
+        private UUID appId;
+        private String versionId;
+        private String version;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        VersionsUpdateParameters(VersionsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public VersionsUpdateParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public VersionsUpdateParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public VersionsUpdateParameters withVersion(String version) {
+            this.version = version;
+            return this;
+        }
+
+        @Override
+        public OperationStatus execute() {
+        return updateWithServiceResponseAsync(appId, versionId, version).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<OperationStatus> executeAsync() {
+            return updateWithServiceResponseAsync(appId, versionId, version).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
+                @Override
+                public OperationStatus call(ServiceResponse<OperationStatus> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
     /**
@@ -804,6 +972,62 @@ public class VersionsImpl implements Versions {
                 .register(201, new TypeToken<String>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
+    }
+
+    @Override
+    public VersionsImportMethodParameters importMethod() {
+        return new VersionsImportMethodParameters(this);
+    }
+
+    /**
+     * Internal class implementing VersionsImportMethodDefinition.
+     */
+    class VersionsImportMethodParameters implements VersionsImportMethodDefinition {
+        private VersionsImpl parent;
+        private UUID appId;
+        private LuisApp luisApp;
+        private String versionId;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        VersionsImportMethodParameters(VersionsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public VersionsImportMethodParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public VersionsImportMethodParameters withLuisApp(LuisApp luisApp) {
+            this.luisApp = luisApp;
+            return this;
+        }
+
+        @Override
+        public VersionsImportMethodParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public String execute() {
+        return importMethodWithServiceResponseAsync(appId, luisApp, versionId).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<String> executeAsync() {
+            return importMethodWithServiceResponseAsync(appId, luisApp, versionId).map(new Func1<ServiceResponse<String>, String>() {
+                @Override
+                public String call(ServiceResponse<String> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
     /**

@@ -164,4 +164,95 @@ public class BingImagesImpl implements BingImages {
                 .build(response);
     }
 
+    @Override
+    public BingImagesVisualSearchParameters visualSearch() {
+        return new BingImagesVisualSearchParameters(this);
+    }
+
+    /**
+     * Internal class implementing BingImagesVisualSearchDefinition.
+     */
+    class BingImagesVisualSearchParameters implements BingImagesVisualSearchDefinition {
+        private BingImagesImpl parent;
+        private String acceptLanguage;
+        private String contentType;
+        private String userAgent;
+        private String clientId;
+        private String clientIp;
+        private String location;
+        private String knowledgeRequest;
+        private byte[] image;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        BingImagesVisualSearchParameters(BingImagesImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public BingImagesVisualSearchParameters withAcceptLanguage(String acceptLanguage) {
+            this.acceptLanguage = acceptLanguage;
+            return this;
+        }
+
+        @Override
+        public BingImagesVisualSearchParameters withContentType(String contentType) {
+            this.contentType = contentType;
+            return this;
+        }
+
+        @Override
+        public BingImagesVisualSearchParameters withUserAgent(String userAgent) {
+            this.userAgent = userAgent;
+            return this;
+        }
+
+        @Override
+        public BingImagesVisualSearchParameters withClientId(String clientId) {
+            this.clientId = clientId;
+            return this;
+        }
+
+        @Override
+        public BingImagesVisualSearchParameters withClientIp(String clientIp) {
+            this.clientIp = clientIp;
+            return this;
+        }
+
+        @Override
+        public BingImagesVisualSearchParameters withLocation(String location) {
+            this.location = location;
+            return this;
+        }
+
+        @Override
+        public BingImagesVisualSearchParameters withKnowledgeRequest(String knowledgeRequest) {
+            this.knowledgeRequest = knowledgeRequest;
+            return this;
+        }
+
+        @Override
+        public BingImagesVisualSearchParameters withImage(byte[] image) {
+            this.image = image;
+            return this;
+        }
+
+        @Override
+        public ImageKnowledge execute() {
+        return visualSearchWithServiceResponseAsync(acceptLanguage, contentType, userAgent, clientId, clientIp, location, knowledgeRequest, image).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<ImageKnowledge> executeAsync() {
+            return visualSearchWithServiceResponseAsync(acceptLanguage, contentType, userAgent, clientId, clientIp, location, knowledgeRequest, image).map(new Func1<ServiceResponse<ImageKnowledge>, ImageKnowledge>() {
+                @Override
+                public ImageKnowledge call(ServiceResponse<ImageKnowledge> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
 }

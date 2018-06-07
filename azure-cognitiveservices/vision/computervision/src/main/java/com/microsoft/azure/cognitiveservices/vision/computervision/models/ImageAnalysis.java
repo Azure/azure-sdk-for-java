@@ -22,20 +22,19 @@ public class ImageAnalysis {
     private List<Category> categories;
 
     /**
-     * A property scoring on whether the image is adult-oriented and/or racy.
+     * The adult property.
      */
     @JsonProperty(value = "adult")
     private AdultInfo adult;
 
     /**
-     * A property scoring on color spectrums.
+     * The color property.
      */
     @JsonProperty(value = "color")
     private ColorInfo color;
 
     /**
-     * A property indicating type of image (whether it's clipart or line
-     * drawing).
+     * The imageType property.
      */
     @JsonProperty(value = "imageType")
     private ImageType imageType;
@@ -47,7 +46,7 @@ public class ImageAnalysis {
     private List<ImageTag> tags;
 
     /**
-     * Description of the image.
+     * The description property.
      */
     @JsonProperty(value = "description")
     private ImageDescriptionDetails description;
@@ -65,7 +64,7 @@ public class ImageAnalysis {
     private String requestId;
 
     /**
-     * Image metadata.
+     * The metadata property.
      */
     @JsonProperty(value = "metadata")
     private ImageMetadata metadata;

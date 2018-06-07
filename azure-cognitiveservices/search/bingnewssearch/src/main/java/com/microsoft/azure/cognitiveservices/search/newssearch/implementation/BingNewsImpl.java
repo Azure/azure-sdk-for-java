@@ -130,7 +130,6 @@ public class BingNewsImpl implements BingNews {
         if (query == null) {
             throw new IllegalArgumentException("Parameter query is required and cannot be null.");
         }
-        final String xBingApisSDK = "true";
         final String acceptLanguage = searchOptionalParameter != null ? searchOptionalParameter.acceptLanguage() : null;
         final String userAgent = searchOptionalParameter != null ? searchOptionalParameter.userAgent() : this.client.userAgent();
         final String clientId = searchOptionalParameter != null ? searchOptionalParameter.clientId() : null;
@@ -200,6 +199,160 @@ public class BingNewsImpl implements BingNews {
                 .build(response);
     }
 
+    @Override
+    public BingNewsSearchParameters search() {
+        return new BingNewsSearchParameters(this);
+    }
+
+    /**
+     * Internal class implementing BingNewsSearchDefinition.
+     */
+    class BingNewsSearchParameters implements BingNewsSearchDefinition {
+        private BingNewsImpl parent;
+        private String query;
+        private String acceptLanguage;
+        private String userAgent;
+        private String clientId;
+        private String clientIp;
+        private String location;
+        private String countryCode;
+        private Integer count;
+        private Freshness freshness;
+        private String market;
+        private Integer offset;
+        private Boolean originalImage;
+        private SafeSearch safeSearch;
+        private String setLang;
+        private String sortBy;
+        private Boolean textDecorations;
+        private TextFormat textFormat;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        BingNewsSearchParameters(BingNewsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public BingNewsSearchParameters withQuery(String query) {
+            this.query = query;
+            return this;
+        }
+
+        @Override
+        public BingNewsSearchParameters withAcceptLanguage(String acceptLanguage) {
+            this.acceptLanguage = acceptLanguage;
+            return this;
+        }
+
+        @Override
+        public BingNewsSearchParameters withUserAgent(String userAgent) {
+            this.userAgent = userAgent;
+            return this;
+        }
+
+        @Override
+        public BingNewsSearchParameters withClientId(String clientId) {
+            this.clientId = clientId;
+            return this;
+        }
+
+        @Override
+        public BingNewsSearchParameters withClientIp(String clientIp) {
+            this.clientIp = clientIp;
+            return this;
+        }
+
+        @Override
+        public BingNewsSearchParameters withLocation(String location) {
+            this.location = location;
+            return this;
+        }
+
+        @Override
+        public BingNewsSearchParameters withCountryCode(String countryCode) {
+            this.countryCode = countryCode;
+            return this;
+        }
+
+        @Override
+        public BingNewsSearchParameters withCount(Integer count) {
+            this.count = count;
+            return this;
+        }
+
+        @Override
+        public BingNewsSearchParameters withFreshness(Freshness freshness) {
+            this.freshness = freshness;
+            return this;
+        }
+
+        @Override
+        public BingNewsSearchParameters withMarket(String market) {
+            this.market = market;
+            return this;
+        }
+
+        @Override
+        public BingNewsSearchParameters withOffset(Integer offset) {
+            this.offset = offset;
+            return this;
+        }
+
+        @Override
+        public BingNewsSearchParameters withOriginalImage(Boolean originalImage) {
+            this.originalImage = originalImage;
+            return this;
+        }
+
+        @Override
+        public BingNewsSearchParameters withSafeSearch(SafeSearch safeSearch) {
+            this.safeSearch = safeSearch;
+            return this;
+        }
+
+        @Override
+        public BingNewsSearchParameters withSetLang(String setLang) {
+            this.setLang = setLang;
+            return this;
+        }
+
+        @Override
+        public BingNewsSearchParameters withSortBy(String sortBy) {
+            this.sortBy = sortBy;
+            return this;
+        }
+
+        @Override
+        public BingNewsSearchParameters withTextDecorations(Boolean textDecorations) {
+            this.textDecorations = textDecorations;
+            return this;
+        }
+
+        @Override
+        public BingNewsSearchParameters withTextFormat(TextFormat textFormat) {
+            this.textFormat = textFormat;
+            return this;
+        }
+
+        @Override
+        public NewsModel execute() {
+        return searchWithServiceResponseAsync(query, acceptLanguage, userAgent, clientId, clientIp, location, countryCode, count, freshness, market, offset, originalImage, safeSearch, setLang, sortBy, textDecorations, textFormat).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<NewsModel> executeAsync() {
+            return searchWithServiceResponseAsync(query, acceptLanguage, userAgent, clientId, clientIp, location, countryCode, count, freshness, market, offset, originalImage, safeSearch, setLang, sortBy, textDecorations, textFormat).map(new Func1<ServiceResponse<NewsModel>, NewsModel>() {
+                @Override
+                public NewsModel call(ServiceResponse<NewsModel> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
 
     /**
      * The News Category API lets lets you search on Bing and get back a list of top news articles by category. This section provides technical details about the query parameters and headers that you use to request news and the JSON response objects that contain them.  For examples that show how to make requests, see [Searching the web for news](https://docs.microsoft.com/en-us/azure/cognitive-services/bing-news-search/search-the-web).
@@ -250,7 +403,6 @@ public class BingNewsImpl implements BingNews {
      * @return the observable to the NewsModel object
      */
     public Observable<ServiceResponse<NewsModel>> categoryWithServiceResponseAsync(CategoryOptionalParameter categoryOptionalParameter) {
-        final String xBingApisSDK = "true";
         final String acceptLanguage = categoryOptionalParameter != null ? categoryOptionalParameter.acceptLanguage() : null;
         final String userAgent = categoryOptionalParameter != null ? categoryOptionalParameter.userAgent() : this.client.userAgent();
         final String clientId = categoryOptionalParameter != null ? categoryOptionalParameter.clientId() : null;
@@ -316,6 +468,153 @@ public class BingNewsImpl implements BingNews {
                 .build(response);
     }
 
+    @Override
+    public BingNewsCategoryParameters category() {
+        return new BingNewsCategoryParameters(this);
+    }
+
+    /**
+     * Internal class implementing BingNewsCategoryDefinition.
+     */
+    class BingNewsCategoryParameters implements BingNewsCategoryDefinition {
+        private BingNewsImpl parent;
+        private String acceptLanguage;
+        private String userAgent;
+        private String clientId;
+        private String clientIp;
+        private String location;
+        private String countryCode;
+        private String category;
+        private Integer count;
+        private Integer headlineCount;
+        private String market;
+        private Integer offset;
+        private Boolean originalImage;
+        private SafeSearch safeSearch;
+        private String setLang;
+        private Boolean textDecorations;
+        private TextFormat textFormat;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        BingNewsCategoryParameters(BingNewsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public BingNewsCategoryParameters withAcceptLanguage(String acceptLanguage) {
+            this.acceptLanguage = acceptLanguage;
+            return this;
+        }
+
+        @Override
+        public BingNewsCategoryParameters withUserAgent(String userAgent) {
+            this.userAgent = userAgent;
+            return this;
+        }
+
+        @Override
+        public BingNewsCategoryParameters withClientId(String clientId) {
+            this.clientId = clientId;
+            return this;
+        }
+
+        @Override
+        public BingNewsCategoryParameters withClientIp(String clientIp) {
+            this.clientIp = clientIp;
+            return this;
+        }
+
+        @Override
+        public BingNewsCategoryParameters withLocation(String location) {
+            this.location = location;
+            return this;
+        }
+
+        @Override
+        public BingNewsCategoryParameters withCountryCode(String countryCode) {
+            this.countryCode = countryCode;
+            return this;
+        }
+
+        @Override
+        public BingNewsCategoryParameters withCategory(String category) {
+            this.category = category;
+            return this;
+        }
+
+        @Override
+        public BingNewsCategoryParameters withCount(Integer count) {
+            this.count = count;
+            return this;
+        }
+
+        @Override
+        public BingNewsCategoryParameters withHeadlineCount(Integer headlineCount) {
+            this.headlineCount = headlineCount;
+            return this;
+        }
+
+        @Override
+        public BingNewsCategoryParameters withMarket(String market) {
+            this.market = market;
+            return this;
+        }
+
+        @Override
+        public BingNewsCategoryParameters withOffset(Integer offset) {
+            this.offset = offset;
+            return this;
+        }
+
+        @Override
+        public BingNewsCategoryParameters withOriginalImage(Boolean originalImage) {
+            this.originalImage = originalImage;
+            return this;
+        }
+
+        @Override
+        public BingNewsCategoryParameters withSafeSearch(SafeSearch safeSearch) {
+            this.safeSearch = safeSearch;
+            return this;
+        }
+
+        @Override
+        public BingNewsCategoryParameters withSetLang(String setLang) {
+            this.setLang = setLang;
+            return this;
+        }
+
+        @Override
+        public BingNewsCategoryParameters withTextDecorations(Boolean textDecorations) {
+            this.textDecorations = textDecorations;
+            return this;
+        }
+
+        @Override
+        public BingNewsCategoryParameters withTextFormat(TextFormat textFormat) {
+            this.textFormat = textFormat;
+            return this;
+        }
+
+        @Override
+        public NewsModel execute() {
+        return categoryWithServiceResponseAsync(acceptLanguage, userAgent, clientId, clientIp, location, countryCode, category, count, headlineCount, market, offset, originalImage, safeSearch, setLang, textDecorations, textFormat).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<NewsModel> executeAsync() {
+            return categoryWithServiceResponseAsync(acceptLanguage, userAgent, clientId, clientIp, location, countryCode, category, count, headlineCount, market, offset, originalImage, safeSearch, setLang, textDecorations, textFormat).map(new Func1<ServiceResponse<NewsModel>, NewsModel>() {
+                @Override
+                public NewsModel call(ServiceResponse<NewsModel> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
 
     /**
      * The News Trending Topics API lets lets you search on Bing and get back a list of trending news topics that are currently trending on Bing. This section provides technical details about the query parameters and headers that you use to request news and the JSON response objects that contain them.  For examples that show how to make requests, see [Searching the web for news](https://docs.microsoft.com/en-us/azure/cognitive-services/bing-news-search/search-the-web).
@@ -366,7 +665,6 @@ public class BingNewsImpl implements BingNews {
      * @return the observable to the TrendingTopics object
      */
     public Observable<ServiceResponse<TrendingTopics>> trendingWithServiceResponseAsync(TrendingOptionalParameter trendingOptionalParameter) {
-        final String xBingApisSDK = "true";
         final String acceptLanguage = trendingOptionalParameter != null ? trendingOptionalParameter.acceptLanguage() : null;
         final String userAgent = trendingOptionalParameter != null ? trendingOptionalParameter.userAgent() : this.client.userAgent();
         final String clientId = trendingOptionalParameter != null ? trendingOptionalParameter.clientId() : null;
@@ -428,6 +726,146 @@ public class BingNewsImpl implements BingNews {
                 .register(200, new TypeToken<TrendingTopics>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
+    }
+
+    @Override
+    public BingNewsTrendingParameters trending() {
+        return new BingNewsTrendingParameters(this);
+    }
+
+    /**
+     * Internal class implementing BingNewsTrendingDefinition.
+     */
+    class BingNewsTrendingParameters implements BingNewsTrendingDefinition {
+        private BingNewsImpl parent;
+        private String acceptLanguage;
+        private String userAgent;
+        private String clientId;
+        private String clientIp;
+        private String location;
+        private String countryCode;
+        private Integer count;
+        private String market;
+        private Integer offset;
+        private SafeSearch safeSearch;
+        private String setLang;
+        private Long since;
+        private String sortBy;
+        private Boolean textDecorations;
+        private TextFormat textFormat;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        BingNewsTrendingParameters(BingNewsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public BingNewsTrendingParameters withAcceptLanguage(String acceptLanguage) {
+            this.acceptLanguage = acceptLanguage;
+            return this;
+        }
+
+        @Override
+        public BingNewsTrendingParameters withUserAgent(String userAgent) {
+            this.userAgent = userAgent;
+            return this;
+        }
+
+        @Override
+        public BingNewsTrendingParameters withClientId(String clientId) {
+            this.clientId = clientId;
+            return this;
+        }
+
+        @Override
+        public BingNewsTrendingParameters withClientIp(String clientIp) {
+            this.clientIp = clientIp;
+            return this;
+        }
+
+        @Override
+        public BingNewsTrendingParameters withLocation(String location) {
+            this.location = location;
+            return this;
+        }
+
+        @Override
+        public BingNewsTrendingParameters withCountryCode(String countryCode) {
+            this.countryCode = countryCode;
+            return this;
+        }
+
+        @Override
+        public BingNewsTrendingParameters withCount(Integer count) {
+            this.count = count;
+            return this;
+        }
+
+        @Override
+        public BingNewsTrendingParameters withMarket(String market) {
+            this.market = market;
+            return this;
+        }
+
+        @Override
+        public BingNewsTrendingParameters withOffset(Integer offset) {
+            this.offset = offset;
+            return this;
+        }
+
+        @Override
+        public BingNewsTrendingParameters withSafeSearch(SafeSearch safeSearch) {
+            this.safeSearch = safeSearch;
+            return this;
+        }
+
+        @Override
+        public BingNewsTrendingParameters withSetLang(String setLang) {
+            this.setLang = setLang;
+            return this;
+        }
+
+        @Override
+        public BingNewsTrendingParameters withSince(Long since) {
+            this.since = since;
+            return this;
+        }
+
+        @Override
+        public BingNewsTrendingParameters withSortBy(String sortBy) {
+            this.sortBy = sortBy;
+            return this;
+        }
+
+        @Override
+        public BingNewsTrendingParameters withTextDecorations(Boolean textDecorations) {
+            this.textDecorations = textDecorations;
+            return this;
+        }
+
+        @Override
+        public BingNewsTrendingParameters withTextFormat(TextFormat textFormat) {
+            this.textFormat = textFormat;
+            return this;
+        }
+
+        @Override
+        public TrendingTopics execute() {
+        return trendingWithServiceResponseAsync(acceptLanguage, userAgent, clientId, clientIp, location, countryCode, count, market, offset, safeSearch, setLang, since, sortBy, textDecorations, textFormat).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<TrendingTopics> executeAsync() {
+            return trendingWithServiceResponseAsync(acceptLanguage, userAgent, clientId, clientIp, location, countryCode, count, market, offset, safeSearch, setLang, since, sortBy, textDecorations, textFormat).map(new Func1<ServiceResponse<TrendingTopics>, TrendingTopics>() {
+                @Override
+                public TrendingTopics call(ServiceResponse<TrendingTopics> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 }

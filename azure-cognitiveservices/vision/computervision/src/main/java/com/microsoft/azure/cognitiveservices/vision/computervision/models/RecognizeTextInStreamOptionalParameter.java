@@ -10,35 +10,58 @@ package com.microsoft.azure.cognitiveservices.vision.computervision.models;
 
 
 /**
- * The optional parameters class for "recognizeTextInStream" method.
+ * The RecognizeTextInStreamOptionalParameter model.
  */
 public class RecognizeTextInStreamOptionalParameter {
     /**
-    * If “true” is specified, handwriting recognition is performed. If this parameter is set to “false” or is not specified,
-    *  printed text recognition is performed.
-    */
+     * If 'true' is specified, handwriting recognition is performed. If this
+     * parameter is set to 'false' or is not specified, printed text
+     * recognition is performed.
+     */
     private Boolean detectHandwriting;
 
     /**
-    * Get the detectHandwriting value.
-    *
-    * @return the detectHandwriting value
-    */
+     * Gets or sets the preferred language for the response.
+     */
+    private String thisclientacceptLanguage;
+
+    /**
+     * Get the detectHandwriting value.
+     *
+     * @return the detectHandwriting value
+     */
     public Boolean detectHandwriting() {
         return this.detectHandwriting;
     }
 
     /**
-    * Set the detectHandwriting value.
-    * <p>
-    * If “true” is specified, handwriting recognition is performed. If this parameter is set to “false” or is not specified,
-    *  printed text recognition is performed.
-    *
-    * @param detectHandwriting the detectHandwriting value to set
-    * @return the RecognizeTextInStreamOptionalParameter object itself.
-    */
+     * Set the detectHandwriting value.
+     *
+     * @param detectHandwriting the detectHandwriting value to set
+     * @return the RecognizeTextInStreamOptionalParameter object itself.
+     */
     public RecognizeTextInStreamOptionalParameter withDetectHandwriting(Boolean detectHandwriting) {
         this.detectHandwriting = detectHandwriting;
+        return this;
+    }
+
+    /**
+     * Get the thisclientacceptLanguage value.
+     *
+     * @return the thisclientacceptLanguage value
+     */
+    public String thisclientacceptLanguage() {
+        return this.thisclientacceptLanguage;
+    }
+
+    /**
+     * Set the thisclientacceptLanguage value.
+     *
+     * @param thisclientacceptLanguage the thisclientacceptLanguage value to set
+     * @return the RecognizeTextInStreamOptionalParameter object itself.
+     */
+    public RecognizeTextInStreamOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
+        this.thisclientacceptLanguage = thisclientacceptLanguage;
         return this;
     }
 

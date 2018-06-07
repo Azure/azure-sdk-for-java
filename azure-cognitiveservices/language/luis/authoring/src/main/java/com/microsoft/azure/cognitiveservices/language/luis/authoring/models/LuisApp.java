@@ -19,7 +19,6 @@ public class LuisApp {
     /**
      * Unmatched properties from the message are deserialized this collection.
      */
-    @JsonProperty(value = "")
     private Map<String, Object> additionalProperties;
 
     /**

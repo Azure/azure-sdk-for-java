@@ -10,33 +10,56 @@ package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
 
 /**
- * The optional parameters class for "update" method.
+ * The UpdateVersionsOptionalParameter model.
  */
 public class UpdateVersionsOptionalParameter {
     /**
-    * The new version for the cloned model.
-    */
+     * The new version for the cloned model.
+     */
     private String version;
 
     /**
-    * Get the version value.
-    *
-    * @return the version value
-    */
+     * Gets or sets the preferred language for the response.
+     */
+    private String thisclientacceptLanguage;
+
+    /**
+     * Get the version value.
+     *
+     * @return the version value
+     */
     public String version() {
         return this.version;
     }
 
     /**
-    * Set the version value.
-    * <p>
-    * The new version for the cloned model.
-    *
-    * @param version the version value to set
-    * @return the UpdateVersionsOptionalParameter object itself.
-    */
+     * Set the version value.
+     *
+     * @param version the version value to set
+     * @return the UpdateVersionsOptionalParameter object itself.
+     */
     public UpdateVersionsOptionalParameter withVersion(String version) {
         this.version = version;
+        return this;
+    }
+
+    /**
+     * Get the thisclientacceptLanguage value.
+     *
+     * @return the thisclientacceptLanguage value
+     */
+    public String thisclientacceptLanguage() {
+        return this.thisclientacceptLanguage;
+    }
+
+    /**
+     * Set the thisclientacceptLanguage value.
+     *
+     * @param thisclientacceptLanguage the thisclientacceptLanguage value to set
+     * @return the UpdateVersionsOptionalParameter object itself.
+     */
+    public UpdateVersionsOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
+        this.thisclientacceptLanguage = thisclientacceptLanguage;
         return this;
     }
 

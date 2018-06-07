@@ -195,6 +195,90 @@ public class TextModerationsImpl implements TextModerations {
                 .build(response);
     }
 
+    @Override
+    public TextModerationsScreenTextParameters screenText() {
+        return new TextModerationsScreenTextParameters(this);
+    }
+
+    /**
+     * Internal class implementing TextModerationsScreenTextDefinition.
+     */
+    class TextModerationsScreenTextParameters implements TextModerationsScreenTextDefinition {
+        private TextModerationsImpl parent;
+        private String textContentType;
+        private byte[] textContent;
+        private String language;
+        private Boolean autocorrect;
+        private Boolean pII;
+        private String listId;
+        private Boolean classify;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        TextModerationsScreenTextParameters(TextModerationsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public TextModerationsScreenTextParameters withTextContentType(String textContentType) {
+            this.textContentType = textContentType;
+            return this;
+        }
+
+        @Override
+        public TextModerationsScreenTextParameters withTextContent(byte[] textContent) {
+            this.textContent = textContent;
+            return this;
+        }
+
+        @Override
+        public TextModerationsScreenTextParameters withLanguage(String language) {
+            this.language = language;
+            return this;
+        }
+
+        @Override
+        public TextModerationsScreenTextParameters withAutocorrect(Boolean autocorrect) {
+            this.autocorrect = autocorrect;
+            return this;
+        }
+
+        @Override
+        public TextModerationsScreenTextParameters withPII(Boolean pII) {
+            this.pII = pII;
+            return this;
+        }
+
+        @Override
+        public TextModerationsScreenTextParameters withListId(String listId) {
+            this.listId = listId;
+            return this;
+        }
+
+        @Override
+        public TextModerationsScreenTextParameters withClassify(Boolean classify) {
+            this.classify = classify;
+            return this;
+        }
+
+        @Override
+        public Screen execute() {
+        return screenTextWithServiceResponseAsync(textContentType, textContent, language, autocorrect, pII, listId, classify).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<Screen> executeAsync() {
+            return screenTextWithServiceResponseAsync(textContentType, textContent, language, autocorrect, pII, listId, classify).map(new Func1<ServiceResponse<Screen>, Screen>() {
+                @Override
+                public Screen call(ServiceResponse<Screen> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
     /**
      * This operation will detect the language of given input content. Returns the &lt;a href="http://www-01.sil.org/iso639-3/codes.asp"&gt;ISO 639-3 code&lt;/a&gt; for the predominant language comprising the submitted text. Over 110 languages supported.
      *

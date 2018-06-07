@@ -214,6 +214,48 @@ public class ImageModerationsImpl implements ImageModerations {
                 .build(response);
     }
 
+    @Override
+    public ImageModerationsFindFacesParameters findFaces() {
+        return new ImageModerationsFindFacesParameters(this);
+    }
+
+    /**
+     * Internal class implementing ImageModerationsFindFacesDefinition.
+     */
+    class ImageModerationsFindFacesParameters implements ImageModerationsFindFacesDefinition {
+        private ImageModerationsImpl parent;
+        private Boolean cacheImage;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ImageModerationsFindFacesParameters(ImageModerationsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ImageModerationsFindFacesParameters withCacheImage(Boolean cacheImage) {
+            this.cacheImage = cacheImage;
+            return this;
+        }
+
+        @Override
+        public FoundFaces execute() {
+        return findFacesWithServiceResponseAsync(cacheImage).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<FoundFaces> executeAsync() {
+            return findFacesWithServiceResponseAsync(cacheImage).map(new Func1<ServiceResponse<FoundFaces>, FoundFaces>() {
+                @Override
+                public FoundFaces call(ServiceResponse<FoundFaces> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
 
     /**
      * Returns any text found in the image for the language specified. If no language is specified in input then the detection defaults to English.
@@ -320,6 +362,62 @@ public class ImageModerationsImpl implements ImageModerations {
                 .build(response);
     }
 
+    @Override
+    public ImageModerationsOCRMethodParameters oCRMethod() {
+        return new ImageModerationsOCRMethodParameters(this);
+    }
+
+    /**
+     * Internal class implementing ImageModerationsOCRMethodDefinition.
+     */
+    class ImageModerationsOCRMethodParameters implements ImageModerationsOCRMethodDefinition {
+        private ImageModerationsImpl parent;
+        private String language;
+        private Boolean cacheImage;
+        private Boolean enhanced;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ImageModerationsOCRMethodParameters(ImageModerationsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ImageModerationsOCRMethodParameters withLanguage(String language) {
+            this.language = language;
+            return this;
+        }
+
+        @Override
+        public ImageModerationsOCRMethodParameters withCacheImage(Boolean cacheImage) {
+            this.cacheImage = cacheImage;
+            return this;
+        }
+
+        @Override
+        public ImageModerationsOCRMethodParameters withEnhanced(Boolean enhanced) {
+            this.enhanced = enhanced;
+            return this;
+        }
+
+        @Override
+        public OCR execute() {
+        return oCRMethodWithServiceResponseAsync(language, cacheImage, enhanced).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<OCR> executeAsync() {
+            return oCRMethodWithServiceResponseAsync(language, cacheImage, enhanced).map(new Func1<ServiceResponse<OCR>, OCR>() {
+                @Override
+                public OCR call(ServiceResponse<OCR> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
 
     /**
      * Returns probabilities of the image containing racy or adult content.
@@ -409,6 +507,48 @@ public class ImageModerationsImpl implements ImageModerations {
                 .register(200, new TypeToken<Evaluate>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public ImageModerationsEvaluateMethodParameters evaluateMethod() {
+        return new ImageModerationsEvaluateMethodParameters(this);
+    }
+
+    /**
+     * Internal class implementing ImageModerationsEvaluateMethodDefinition.
+     */
+    class ImageModerationsEvaluateMethodParameters implements ImageModerationsEvaluateMethodDefinition {
+        private ImageModerationsImpl parent;
+        private Boolean cacheImage;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ImageModerationsEvaluateMethodParameters(ImageModerationsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ImageModerationsEvaluateMethodParameters withCacheImage(Boolean cacheImage) {
+            this.cacheImage = cacheImage;
+            return this;
+        }
+
+        @Override
+        public Evaluate execute() {
+        return evaluateMethodWithServiceResponseAsync(cacheImage).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<Evaluate> executeAsync() {
+            return evaluateMethodWithServiceResponseAsync(cacheImage).map(new Func1<ServiceResponse<Evaluate>, Evaluate>() {
+                @Override
+                public Evaluate call(ServiceResponse<Evaluate> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 
@@ -519,6 +659,55 @@ public class ImageModerationsImpl implements ImageModerations {
                 .build(response);
     }
 
+    @Override
+    public ImageModerationsMatchMethodParameters matchMethod() {
+        return new ImageModerationsMatchMethodParameters(this);
+    }
+
+    /**
+     * Internal class implementing ImageModerationsMatchMethodDefinition.
+     */
+    class ImageModerationsMatchMethodParameters implements ImageModerationsMatchMethodDefinition {
+        private ImageModerationsImpl parent;
+        private String listId;
+        private Boolean cacheImage;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ImageModerationsMatchMethodParameters(ImageModerationsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ImageModerationsMatchMethodParameters withListId(String listId) {
+            this.listId = listId;
+            return this;
+        }
+
+        @Override
+        public ImageModerationsMatchMethodParameters withCacheImage(Boolean cacheImage) {
+            this.cacheImage = cacheImage;
+            return this;
+        }
+
+        @Override
+        public MatchResponse execute() {
+        return matchMethodWithServiceResponseAsync(listId, cacheImage).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<MatchResponse> executeAsync() {
+            return matchMethodWithServiceResponseAsync(listId, cacheImage).map(new Func1<ServiceResponse<MatchResponse>, MatchResponse>() {
+                @Override
+                public MatchResponse call(ServiceResponse<MatchResponse> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
 
     /**
      * Returns the list of faces found.
@@ -620,6 +809,55 @@ public class ImageModerationsImpl implements ImageModerations {
                 .register(200, new TypeToken<FoundFaces>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public ImageModerationsFindFacesFileInputParameters findFacesFileInput() {
+        return new ImageModerationsFindFacesFileInputParameters(this);
+    }
+
+    /**
+     * Internal class implementing ImageModerationsFindFacesFileInputDefinition.
+     */
+    class ImageModerationsFindFacesFileInputParameters implements ImageModerationsFindFacesFileInputDefinition {
+        private ImageModerationsImpl parent;
+        private byte[] imageStream;
+        private Boolean cacheImage;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ImageModerationsFindFacesFileInputParameters(ImageModerationsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ImageModerationsFindFacesFileInputParameters withImageStream(byte[] imageStream) {
+            this.imageStream = imageStream;
+            return this;
+        }
+
+        @Override
+        public ImageModerationsFindFacesFileInputParameters withCacheImage(Boolean cacheImage) {
+            this.cacheImage = cacheImage;
+            return this;
+        }
+
+        @Override
+        public FoundFaces execute() {
+        return findFacesFileInputWithServiceResponseAsync(imageStream, cacheImage).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<FoundFaces> executeAsync() {
+            return findFacesFileInputWithServiceResponseAsync(imageStream, cacheImage).map(new Func1<ServiceResponse<FoundFaces>, FoundFaces>() {
+                @Override
+                public FoundFaces call(ServiceResponse<FoundFaces> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 
@@ -735,6 +973,62 @@ public class ImageModerationsImpl implements ImageModerations {
                 .register(200, new TypeToken<FoundFaces>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public ImageModerationsFindFacesUrlInputParameters findFacesUrlInput() {
+        return new ImageModerationsFindFacesUrlInputParameters(this);
+    }
+
+    /**
+     * Internal class implementing ImageModerationsFindFacesUrlInputDefinition.
+     */
+    class ImageModerationsFindFacesUrlInputParameters implements ImageModerationsFindFacesUrlInputDefinition {
+        private ImageModerationsImpl parent;
+        private String contentType;
+        private BodyModelModel imageUrl;
+        private Boolean cacheImage;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ImageModerationsFindFacesUrlInputParameters(ImageModerationsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ImageModerationsFindFacesUrlInputParameters withContentType(String contentType) {
+            this.contentType = contentType;
+            return this;
+        }
+
+        @Override
+        public ImageModerationsFindFacesUrlInputParameters withImageUrl(BodyModelModel imageUrl) {
+            this.imageUrl = imageUrl;
+            return this;
+        }
+
+        @Override
+        public ImageModerationsFindFacesUrlInputParameters withCacheImage(Boolean cacheImage) {
+            this.cacheImage = cacheImage;
+            return this;
+        }
+
+        @Override
+        public FoundFaces execute() {
+        return findFacesUrlInputWithServiceResponseAsync(contentType, imageUrl, cacheImage).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<FoundFaces> executeAsync() {
+            return findFacesUrlInputWithServiceResponseAsync(contentType, imageUrl, cacheImage).map(new Func1<ServiceResponse<FoundFaces>, FoundFaces>() {
+                @Override
+                public FoundFaces call(ServiceResponse<FoundFaces> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 
@@ -867,6 +1161,76 @@ public class ImageModerationsImpl implements ImageModerations {
                 .build(response);
     }
 
+    @Override
+    public ImageModerationsOCRUrlInputParameters oCRUrlInput() {
+        return new ImageModerationsOCRUrlInputParameters(this);
+    }
+
+    /**
+     * Internal class implementing ImageModerationsOCRUrlInputDefinition.
+     */
+    class ImageModerationsOCRUrlInputParameters implements ImageModerationsOCRUrlInputDefinition {
+        private ImageModerationsImpl parent;
+        private String language;
+        private String contentType;
+        private BodyModelModel imageUrl;
+        private Boolean cacheImage;
+        private Boolean enhanced;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ImageModerationsOCRUrlInputParameters(ImageModerationsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ImageModerationsOCRUrlInputParameters withLanguage(String language) {
+            this.language = language;
+            return this;
+        }
+
+        @Override
+        public ImageModerationsOCRUrlInputParameters withContentType(String contentType) {
+            this.contentType = contentType;
+            return this;
+        }
+
+        @Override
+        public ImageModerationsOCRUrlInputParameters withImageUrl(BodyModelModel imageUrl) {
+            this.imageUrl = imageUrl;
+            return this;
+        }
+
+        @Override
+        public ImageModerationsOCRUrlInputParameters withCacheImage(Boolean cacheImage) {
+            this.cacheImage = cacheImage;
+            return this;
+        }
+
+        @Override
+        public ImageModerationsOCRUrlInputParameters withEnhanced(Boolean enhanced) {
+            this.enhanced = enhanced;
+            return this;
+        }
+
+        @Override
+        public OCR execute() {
+        return oCRUrlInputWithServiceResponseAsync(language, contentType, imageUrl, cacheImage, enhanced).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<OCR> executeAsync() {
+            return oCRUrlInputWithServiceResponseAsync(language, contentType, imageUrl, cacheImage, enhanced).map(new Func1<ServiceResponse<OCR>, OCR>() {
+                @Override
+                public OCR call(ServiceResponse<OCR> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
 
     /**
      * Returns any text found in the image for the language specified. If no language is specified in input then the detection defaults to English.
@@ -985,6 +1349,69 @@ public class ImageModerationsImpl implements ImageModerations {
                 .build(response);
     }
 
+    @Override
+    public ImageModerationsOCRFileInputParameters oCRFileInput() {
+        return new ImageModerationsOCRFileInputParameters(this);
+    }
+
+    /**
+     * Internal class implementing ImageModerationsOCRFileInputDefinition.
+     */
+    class ImageModerationsOCRFileInputParameters implements ImageModerationsOCRFileInputDefinition {
+        private ImageModerationsImpl parent;
+        private String language;
+        private byte[] imageStream;
+        private Boolean cacheImage;
+        private Boolean enhanced;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ImageModerationsOCRFileInputParameters(ImageModerationsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ImageModerationsOCRFileInputParameters withLanguage(String language) {
+            this.language = language;
+            return this;
+        }
+
+        @Override
+        public ImageModerationsOCRFileInputParameters withImageStream(byte[] imageStream) {
+            this.imageStream = imageStream;
+            return this;
+        }
+
+        @Override
+        public ImageModerationsOCRFileInputParameters withCacheImage(Boolean cacheImage) {
+            this.cacheImage = cacheImage;
+            return this;
+        }
+
+        @Override
+        public ImageModerationsOCRFileInputParameters withEnhanced(Boolean enhanced) {
+            this.enhanced = enhanced;
+            return this;
+        }
+
+        @Override
+        public OCR execute() {
+        return oCRFileInputWithServiceResponseAsync(language, imageStream, cacheImage, enhanced).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<OCR> executeAsync() {
+            return oCRFileInputWithServiceResponseAsync(language, imageStream, cacheImage, enhanced).map(new Func1<ServiceResponse<OCR>, OCR>() {
+                @Override
+                public OCR call(ServiceResponse<OCR> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
 
     /**
      * Returns probabilities of the image containing racy or adult content.
@@ -1086,6 +1513,55 @@ public class ImageModerationsImpl implements ImageModerations {
                 .register(200, new TypeToken<Evaluate>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public ImageModerationsEvaluateFileInputParameters evaluateFileInput() {
+        return new ImageModerationsEvaluateFileInputParameters(this);
+    }
+
+    /**
+     * Internal class implementing ImageModerationsEvaluateFileInputDefinition.
+     */
+    class ImageModerationsEvaluateFileInputParameters implements ImageModerationsEvaluateFileInputDefinition {
+        private ImageModerationsImpl parent;
+        private byte[] imageStream;
+        private Boolean cacheImage;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ImageModerationsEvaluateFileInputParameters(ImageModerationsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ImageModerationsEvaluateFileInputParameters withImageStream(byte[] imageStream) {
+            this.imageStream = imageStream;
+            return this;
+        }
+
+        @Override
+        public ImageModerationsEvaluateFileInputParameters withCacheImage(Boolean cacheImage) {
+            this.cacheImage = cacheImage;
+            return this;
+        }
+
+        @Override
+        public Evaluate execute() {
+        return evaluateFileInputWithServiceResponseAsync(imageStream, cacheImage).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<Evaluate> executeAsync() {
+            return evaluateFileInputWithServiceResponseAsync(imageStream, cacheImage).map(new Func1<ServiceResponse<Evaluate>, Evaluate>() {
+                @Override
+                public Evaluate call(ServiceResponse<Evaluate> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 
@@ -1201,6 +1677,62 @@ public class ImageModerationsImpl implements ImageModerations {
                 .register(200, new TypeToken<Evaluate>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public ImageModerationsEvaluateUrlInputParameters evaluateUrlInput() {
+        return new ImageModerationsEvaluateUrlInputParameters(this);
+    }
+
+    /**
+     * Internal class implementing ImageModerationsEvaluateUrlInputDefinition.
+     */
+    class ImageModerationsEvaluateUrlInputParameters implements ImageModerationsEvaluateUrlInputDefinition {
+        private ImageModerationsImpl parent;
+        private String contentType;
+        private BodyModelModel imageUrl;
+        private Boolean cacheImage;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ImageModerationsEvaluateUrlInputParameters(ImageModerationsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ImageModerationsEvaluateUrlInputParameters withContentType(String contentType) {
+            this.contentType = contentType;
+            return this;
+        }
+
+        @Override
+        public ImageModerationsEvaluateUrlInputParameters withImageUrl(BodyModelModel imageUrl) {
+            this.imageUrl = imageUrl;
+            return this;
+        }
+
+        @Override
+        public ImageModerationsEvaluateUrlInputParameters withCacheImage(Boolean cacheImage) {
+            this.cacheImage = cacheImage;
+            return this;
+        }
+
+        @Override
+        public Evaluate execute() {
+        return evaluateUrlInputWithServiceResponseAsync(contentType, imageUrl, cacheImage).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<Evaluate> executeAsync() {
+            return evaluateUrlInputWithServiceResponseAsync(contentType, imageUrl, cacheImage).map(new Func1<ServiceResponse<Evaluate>, Evaluate>() {
+                @Override
+                public Evaluate call(ServiceResponse<Evaluate> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 
@@ -1335,6 +1867,69 @@ public class ImageModerationsImpl implements ImageModerations {
                 .build(response);
     }
 
+    @Override
+    public ImageModerationsMatchUrlInputParameters matchUrlInput() {
+        return new ImageModerationsMatchUrlInputParameters(this);
+    }
+
+    /**
+     * Internal class implementing ImageModerationsMatchUrlInputDefinition.
+     */
+    class ImageModerationsMatchUrlInputParameters implements ImageModerationsMatchUrlInputDefinition {
+        private ImageModerationsImpl parent;
+        private String contentType;
+        private BodyModelModel imageUrl;
+        private String listId;
+        private Boolean cacheImage;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ImageModerationsMatchUrlInputParameters(ImageModerationsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ImageModerationsMatchUrlInputParameters withContentType(String contentType) {
+            this.contentType = contentType;
+            return this;
+        }
+
+        @Override
+        public ImageModerationsMatchUrlInputParameters withImageUrl(BodyModelModel imageUrl) {
+            this.imageUrl = imageUrl;
+            return this;
+        }
+
+        @Override
+        public ImageModerationsMatchUrlInputParameters withListId(String listId) {
+            this.listId = listId;
+            return this;
+        }
+
+        @Override
+        public ImageModerationsMatchUrlInputParameters withCacheImage(Boolean cacheImage) {
+            this.cacheImage = cacheImage;
+            return this;
+        }
+
+        @Override
+        public MatchResponse execute() {
+        return matchUrlInputWithServiceResponseAsync(contentType, imageUrl, listId, cacheImage).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<MatchResponse> executeAsync() {
+            return matchUrlInputWithServiceResponseAsync(contentType, imageUrl, listId, cacheImage).map(new Func1<ServiceResponse<MatchResponse>, MatchResponse>() {
+                @Override
+                public MatchResponse call(ServiceResponse<MatchResponse> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
 
     /**
      * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image lists using &lt;a href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
@@ -1453,6 +2048,62 @@ public class ImageModerationsImpl implements ImageModerations {
                 .register(200, new TypeToken<MatchResponse>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public ImageModerationsMatchFileInputParameters matchFileInput() {
+        return new ImageModerationsMatchFileInputParameters(this);
+    }
+
+    /**
+     * Internal class implementing ImageModerationsMatchFileInputDefinition.
+     */
+    class ImageModerationsMatchFileInputParameters implements ImageModerationsMatchFileInputDefinition {
+        private ImageModerationsImpl parent;
+        private byte[] imageStream;
+        private String listId;
+        private Boolean cacheImage;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ImageModerationsMatchFileInputParameters(ImageModerationsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ImageModerationsMatchFileInputParameters withImageStream(byte[] imageStream) {
+            this.imageStream = imageStream;
+            return this;
+        }
+
+        @Override
+        public ImageModerationsMatchFileInputParameters withListId(String listId) {
+            this.listId = listId;
+            return this;
+        }
+
+        @Override
+        public ImageModerationsMatchFileInputParameters withCacheImage(Boolean cacheImage) {
+            this.cacheImage = cacheImage;
+            return this;
+        }
+
+        @Override
+        public MatchResponse execute() {
+        return matchFileInputWithServiceResponseAsync(imageStream, listId, cacheImage).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<MatchResponse> executeAsync() {
+            return matchFileInputWithServiceResponseAsync(imageStream, listId, cacheImage).map(new Func1<ServiceResponse<MatchResponse>, MatchResponse>() {
+                @Override
+                public MatchResponse call(ServiceResponse<MatchResponse> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 }

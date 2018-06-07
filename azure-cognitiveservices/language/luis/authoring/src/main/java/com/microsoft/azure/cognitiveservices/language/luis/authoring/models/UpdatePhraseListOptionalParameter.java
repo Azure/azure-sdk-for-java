@@ -10,35 +10,58 @@ package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
 
 /**
- * The optional parameters class for "updatePhraseList" method.
+ * The UpdatePhraseListOptionalParameter model.
  */
 public class UpdatePhraseListOptionalParameter {
     /**
-    * The new values for: - Just a boolean called IsActive, in which case the status of the feature will be changed. - Name,
-    *  Pattern, Mode, and a boolean called IsActive to update the feature.
-    */
+     * The new values for: - Just a boolean called IsActive, in which case the
+     * status of the feature will be changed. - Name, Pattern, Mode, and a
+     * boolean called IsActive to update the feature.
+     */
     private PhraselistUpdateObject phraselistUpdateObject;
 
     /**
-    * Get the phraselistUpdateObject value.
-    *
-    * @return the phraselistUpdateObject value
-    */
+     * Gets or sets the preferred language for the response.
+     */
+    private String thisclientacceptLanguage;
+
+    /**
+     * Get the phraselistUpdateObject value.
+     *
+     * @return the phraselistUpdateObject value
+     */
     public PhraselistUpdateObject phraselistUpdateObject() {
         return this.phraselistUpdateObject;
     }
 
     /**
-    * Set the phraselistUpdateObject value.
-    * <p>
-    * The new values for: - Just a boolean called IsActive, in which case the status of the feature will be changed. - Name,
-    *  Pattern, Mode, and a boolean called IsActive to update the feature.
-    *
-    * @param phraselistUpdateObject the phraselistUpdateObject value to set
-    * @return the UpdatePhraseListOptionalParameter object itself.
-    */
+     * Set the phraselistUpdateObject value.
+     *
+     * @param phraselistUpdateObject the phraselistUpdateObject value to set
+     * @return the UpdatePhraseListOptionalParameter object itself.
+     */
     public UpdatePhraseListOptionalParameter withPhraselistUpdateObject(PhraselistUpdateObject phraselistUpdateObject) {
         this.phraselistUpdateObject = phraselistUpdateObject;
+        return this;
+    }
+
+    /**
+     * Get the thisclientacceptLanguage value.
+     *
+     * @return the thisclientacceptLanguage value
+     */
+    public String thisclientacceptLanguage() {
+        return this.thisclientacceptLanguage;
+    }
+
+    /**
+     * Set the thisclientacceptLanguage value.
+     *
+     * @param thisclientacceptLanguage the thisclientacceptLanguage value to set
+     * @return the UpdatePhraseListOptionalParameter object itself.
+     */
+    public UpdatePhraseListOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
+        this.thisclientacceptLanguage = thisclientacceptLanguage;
         return this;
     }
 

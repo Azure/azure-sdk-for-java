@@ -31,6 +31,7 @@ public interface PersonGroups {
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
+    @Deprecated
     void create(String personGroupId, CreatePersonGroupsOptionalParameter createOptionalParameter);
 
     /**
@@ -41,7 +42,78 @@ public interface PersonGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return a representation of the deferred computation of this call if successful.
      */
+    @Deprecated
     Observable<Void> createAsync(String personGroupId, CreatePersonGroupsOptionalParameter createOptionalParameter);
+
+    /**
+     * Create a new person group with specified personGroupId, name and user-provided userData.
+     *
+     * @return the first stage of the create call
+     */
+    PersonGroupsCreateDefinitionStages.WithPersonGroupId create();
+
+    /**
+     * Grouping of create definition stages.
+     */
+    interface PersonGroupsCreateDefinitionStages {
+        /**
+         * The stage of the definition to be specify personGroupId.
+         */
+        interface WithPersonGroupId {
+            /**
+             * Id referencing a particular person group.
+             *
+             * @return next definition stage
+             */
+            PersonGroupsCreateDefinitionStages.WithExecute withPersonGroupId(String personGroupId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * User defined name, maximum length is 128.
+             *
+             * @return next definition stage
+             */
+            PersonGroupsCreateDefinitionStages.WithExecute withName(String name);
+
+            /**
+             * User specified data. Length should not exceed 16KB.
+             *
+             * @return next definition stage
+             */
+            PersonGroupsCreateDefinitionStages.WithExecute withUserData(String userData);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends PersonGroupsCreateDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             */
+            void execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return a representation of the deferred computation of this call if successful.
+             */
+            Observable<Void> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of create definition.
+     */
+    interface PersonGroupsCreateDefinition extends
+        PersonGroupsCreateDefinitionStages.WithPersonGroupId,
+        PersonGroupsCreateDefinitionStages.WithExecute {
+    }
 
 
     /**
@@ -98,6 +170,7 @@ public interface PersonGroups {
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
+    @Deprecated
     void update(String personGroupId, UpdatePersonGroupsOptionalParameter updateOptionalParameter);
 
     /**
@@ -109,7 +182,79 @@ public interface PersonGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return a representation of the deferred computation of this call if successful.
      */
+    @Deprecated
     Observable<Void> updateAsync(String personGroupId, UpdatePersonGroupsOptionalParameter updateOptionalParameter);
+
+    /**
+     * Update an existing person group's display name and userData. The properties which does not appear in request
+     *   body will not be updated.
+     *
+     * @return the first stage of the update call
+     */
+    PersonGroupsUpdateDefinitionStages.WithPersonGroupId update();
+
+    /**
+     * Grouping of update definition stages.
+     */
+    interface PersonGroupsUpdateDefinitionStages {
+        /**
+         * The stage of the definition to be specify personGroupId.
+         */
+        interface WithPersonGroupId {
+            /**
+             * Id referencing a particular person group.
+             *
+             * @return next definition stage
+             */
+            PersonGroupsUpdateDefinitionStages.WithExecute withPersonGroupId(String personGroupId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * User defined name, maximum length is 128.
+             *
+             * @return next definition stage
+             */
+            PersonGroupsUpdateDefinitionStages.WithExecute withName(String name);
+
+            /**
+             * User specified data. Length should not exceed 16KB.
+             *
+             * @return next definition stage
+             */
+            PersonGroupsUpdateDefinitionStages.WithExecute withUserData(String userData);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends PersonGroupsUpdateDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             */
+            void execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return a representation of the deferred computation of this call if successful.
+             */
+            Observable<Void> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of update definition.
+     */
+    interface PersonGroupsUpdateDefinition extends
+        PersonGroupsUpdateDefinitionStages.WithPersonGroupId,
+        PersonGroupsUpdateDefinitionStages.WithExecute {
+    }
 
 
     /**
@@ -142,6 +287,7 @@ public interface PersonGroups {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;PersonGroup&gt; object if successful.
      */
+    @Deprecated
     List<PersonGroup> list(ListPersonGroupsOptionalParameter listOptionalParameter);
 
     /**
@@ -151,7 +297,67 @@ public interface PersonGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;PersonGroup&gt; object
      */
+    @Deprecated
     Observable<List<PersonGroup>> listAsync(ListPersonGroupsOptionalParameter listOptionalParameter);
+
+    /**
+     * List person groups and their information.
+     *
+     * @return the first stage of the list call
+     */
+    PersonGroupsListDefinitionStages.WithExecute list();
+
+    /**
+     * Grouping of list definition stages.
+     */
+    interface PersonGroupsListDefinitionStages {
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * List person groups from the least personGroupId greater than the "start".
+             *
+             * @return next definition stage
+             */
+            PersonGroupsListDefinitionStages.WithExecute withStart(String start);
+
+            /**
+             * The number of person groups to list.
+             *
+             * @return next definition stage
+             */
+            PersonGroupsListDefinitionStages.WithExecute withTop(Integer top);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends PersonGroupsListDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the List&lt;PersonGroup&gt; object if successful.
+             */
+            List<PersonGroup> execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the List&lt;PersonGroup&gt; object
+             */
+            Observable<List<PersonGroup>> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of list definition.
+     */
+    interface PersonGroupsListDefinition extends
+        PersonGroupsListDefinitionStages.WithExecute {
+    }
 
 
     /**
