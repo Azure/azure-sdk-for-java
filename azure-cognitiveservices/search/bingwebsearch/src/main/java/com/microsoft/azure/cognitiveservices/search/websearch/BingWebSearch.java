@@ -35,7 +35,7 @@ public interface BingWebSearch {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SearchResponse object if successful.
      */
-    @Deprecated
+    
     SearchResponse search(String query, SearchOptionalParameter searchOptionalParameter);
 
     /**
@@ -48,7 +48,7 @@ public interface BingWebSearch {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SearchResponse object
      */
-    @Deprecated
+    
     Observable<SearchResponse> searchAsync(String query, SearchOptionalParameter searchOptionalParameter);
 
     /**

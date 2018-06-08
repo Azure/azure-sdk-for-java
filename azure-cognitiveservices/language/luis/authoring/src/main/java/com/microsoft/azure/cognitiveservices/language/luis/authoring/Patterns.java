@@ -61,7 +61,7 @@ public interface Patterns {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;PatternRuleInfo&gt; object if successful.
      */
-    @Deprecated
+    
     List<PatternRuleInfo> getPatterns(UUID appId, String versionId, GetPatternsOptionalParameter getPatternsOptionalParameter);
 
     /**
@@ -73,7 +73,7 @@ public interface Patterns {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;PatternRuleInfo&gt; object
      */
-    @Deprecated
+    
     Observable<List<PatternRuleInfo>> getPatternsAsync(UUID appId, String versionId, GetPatternsOptionalParameter getPatternsOptionalParameter);
 
     /**
@@ -303,7 +303,7 @@ public interface Patterns {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;PatternRuleInfo&gt; object if successful.
      */
-    @Deprecated
+    
     List<PatternRuleInfo> getIntentPatterns(UUID appId, String versionId, UUID intentId, GetIntentPatternsOptionalParameter getIntentPatternsOptionalParameter);
 
     /**
@@ -316,7 +316,7 @@ public interface Patterns {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;PatternRuleInfo&gt; object
      */
-    @Deprecated
+    
     Observable<List<PatternRuleInfo>> getIntentPatternsAsync(UUID appId, String versionId, UUID intentId, GetIntentPatternsOptionalParameter getIntentPatternsOptionalParameter);
 
     /**

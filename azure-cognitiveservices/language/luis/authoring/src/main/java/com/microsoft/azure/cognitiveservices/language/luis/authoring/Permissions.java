@@ -56,7 +56,7 @@ public interface Permissions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
+    
     OperationStatus add(UUID appId, AddPermissionsOptionalParameter addOptionalParameter);
 
     /**
@@ -68,7 +68,7 @@ public interface Permissions {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    @Deprecated
+    
     Observable<OperationStatus> addAsync(UUID appId, AddPermissionsOptionalParameter addOptionalParameter);
 
     /**
@@ -147,7 +147,7 @@ public interface Permissions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
+    
     OperationStatus delete(UUID appId, DeletePermissionsOptionalParameter deleteOptionalParameter);
 
     /**
@@ -159,7 +159,7 @@ public interface Permissions {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    @Deprecated
+    
     Observable<OperationStatus> deleteAsync(UUID appId, DeletePermissionsOptionalParameter deleteOptionalParameter);
 
     /**
@@ -238,7 +238,7 @@ public interface Permissions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
+    
     OperationStatus update(UUID appId, UpdatePermissionsOptionalParameter updateOptionalParameter);
 
     /**
@@ -250,7 +250,7 @@ public interface Permissions {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    @Deprecated
+    
     Observable<OperationStatus> updateAsync(UUID appId, UpdatePermissionsOptionalParameter updateOptionalParameter);
 
     /**

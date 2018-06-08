@@ -114,7 +114,7 @@ public interface Reviews {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;String&gt; object if successful.
      */
-    @Deprecated
+    
     List<String> createReviews(String teamName, String urlContentType, List<CreateReviewBodyItem> createReviewBody, CreateReviewsOptionalParameter createReviewsOptionalParameter);
 
     /**
@@ -149,7 +149,7 @@ public interface Reviews {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;String&gt; object
      */
-    @Deprecated
+    
     Observable<List<String>> createReviewsAsync(String teamName, String urlContentType, List<CreateReviewBodyItem> createReviewBody, CreateReviewsOptionalParameter createReviewsOptionalParameter);
 
     /**
@@ -320,7 +320,7 @@ public interface Reviews {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the JobId object if successful.
      */
-    @Deprecated
+    
     JobId createJob(String teamName, String contentType, String contentId, String workflowName, String jobContentType, String contentValue, CreateJobOptionalParameter createJobOptionalParameter);
 
     /**
@@ -379,7 +379,7 @@ public interface Reviews {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the JobId object
      */
-    @Deprecated
+    
     Observable<JobId> createJobAsync(String teamName, String contentType, String contentId, String workflowName, String jobContentType, String contentValue, CreateJobOptionalParameter createJobOptionalParameter);
 
     /**
@@ -581,7 +581,7 @@ public interface Reviews {
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    @Deprecated
+    
     void addVideoFrame(String teamName, String reviewId, AddVideoFrameOptionalParameter addVideoFrameOptionalParameter);
 
     /**
@@ -615,7 +615,7 @@ public interface Reviews {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return a representation of the deferred computation of this call if successful.
      */
-    @Deprecated
+    
     Observable<Void> addVideoFrameAsync(String teamName, String reviewId, AddVideoFrameOptionalParameter addVideoFrameOptionalParameter);
 
     /**
@@ -748,7 +748,7 @@ public interface Reviews {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Frames object if successful.
      */
-    @Deprecated
+    
     Frames getVideoFrames(String teamName, String reviewId, GetVideoFramesOptionalParameter getVideoFramesOptionalParameter);
 
     /**
@@ -782,7 +782,7 @@ public interface Reviews {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Frames object
      */
-    @Deprecated
+    
     Observable<Frames> getVideoFramesAsync(String teamName, String reviewId, GetVideoFramesOptionalParameter getVideoFramesOptionalParameter);
 
     /**
@@ -1012,7 +1012,7 @@ public interface Reviews {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;String&gt; object if successful.
      */
-    @Deprecated
+    
     List<String> createVideoReviews(String teamName, String contentType, List<CreateVideoReviewsBodyItem> createVideoReviewsBody, CreateVideoReviewsOptionalParameter createVideoReviewsOptionalParameter);
 
     /**
@@ -1047,7 +1047,7 @@ public interface Reviews {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;String&gt; object
      */
-    @Deprecated
+    
     Observable<List<String>> createVideoReviewsAsync(String teamName, String contentType, List<CreateVideoReviewsBodyItem> createVideoReviewsBody, CreateVideoReviewsOptionalParameter createVideoReviewsOptionalParameter);
 
     /**
@@ -1175,7 +1175,7 @@ public interface Reviews {
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    @Deprecated
+    
     void addVideoFrameUrl(String teamName, String reviewId, String contentType, List<VideoFrameBodyItem> videoFrameBody, AddVideoFrameUrlOptionalParameter addVideoFrameUrlOptionalParameter);
 
     /**
@@ -1192,7 +1192,7 @@ public interface Reviews {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return a representation of the deferred computation of this call if successful.
      */
-    @Deprecated
+    
     Observable<Void> addVideoFrameUrlAsync(String teamName, String reviewId, String contentType, List<VideoFrameBodyItem> videoFrameBody, AddVideoFrameUrlOptionalParameter addVideoFrameUrlOptionalParameter);
 
     /**
@@ -1313,7 +1313,7 @@ public interface Reviews {
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    @Deprecated
+    
     void addVideoFrameStream(String teamName, String reviewId, String contentType, byte[] frameImageZip, String frameMetadata, AddVideoFrameStreamOptionalParameter addVideoFrameStreamOptionalParameter);
 
     /**
@@ -1331,7 +1331,7 @@ public interface Reviews {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return a representation of the deferred computation of this call if successful.
      */
-    @Deprecated
+    
     Observable<Void> addVideoFrameStreamAsync(String teamName, String reviewId, String contentType, byte[] frameImageZip, String frameMetadata, AddVideoFrameStreamOptionalParameter addVideoFrameStreamOptionalParameter);
 
     /**

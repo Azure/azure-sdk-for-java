@@ -35,7 +35,7 @@ public interface BingSpellCheckOperations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SpellCheck object if successful.
      */
-    @Deprecated
+    
     SpellCheck spellChecker(String text, SpellCheckerOptionalParameter spellCheckerOptionalParameter);
 
     /**
@@ -52,7 +52,7 @@ public interface BingSpellCheckOperations {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SpellCheck object
      */
-    @Deprecated
+    
     Observable<SpellCheck> spellCheckerAsync(String text, SpellCheckerOptionalParameter spellCheckerOptionalParameter);
 
     /**

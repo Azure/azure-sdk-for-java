@@ -40,7 +40,7 @@ public interface Faces {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;SimilarFace&gt; object if successful.
      */
-    @Deprecated
+    
     List<SimilarFace> findSimilar(UUID faceId, FindSimilarOptionalParameter findSimilarOptionalParameter);
 
     /**
@@ -52,7 +52,7 @@ public interface Faces {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;SimilarFace&gt; object
      */
-    @Deprecated
+    
     Observable<List<SimilarFace>> findSimilarAsync(UUID faceId, FindSimilarOptionalParameter findSimilarOptionalParameter);
 
     /**
@@ -179,7 +179,7 @@ public interface Faces {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;IdentifyResult&gt; object if successful.
      */
-    @Deprecated
+    
     List<IdentifyResult> identify(String personGroupId, List<UUID> faceIds, IdentifyOptionalParameter identifyOptionalParameter);
 
     /**
@@ -192,7 +192,7 @@ public interface Faces {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;IdentifyResult&gt; object
      */
-    @Deprecated
+    
     Observable<List<IdentifyResult>> identifyAsync(String personGroupId, List<UUID> faceIds, IdentifyOptionalParameter identifyOptionalParameter);
 
     /**
@@ -315,7 +315,7 @@ public interface Faces {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;DetectedFace&gt; object if successful.
      */
-    @Deprecated
+    
     List<DetectedFace> detectWithUrl(String url, DetectWithUrlOptionalParameter detectWithUrlOptionalParameter);
 
     /**
@@ -327,7 +327,7 @@ public interface Faces {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;DetectedFace&gt; object
      */
-    @Deprecated
+    
     Observable<List<DetectedFace>> detectWithUrlAsync(String url, DetectWithUrlOptionalParameter detectWithUrlOptionalParameter);
 
     /**
@@ -451,7 +451,7 @@ public interface Faces {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;DetectedFace&gt; object if successful.
      */
-    @Deprecated
+    
     List<DetectedFace> detectWithStream(byte[] image, DetectWithStreamOptionalParameter detectWithStreamOptionalParameter);
 
     /**
@@ -463,7 +463,7 @@ public interface Faces {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;DetectedFace&gt; object
      */
-    @Deprecated
+    
     Observable<List<DetectedFace>> detectWithStreamAsync(byte[] image, DetectWithStreamOptionalParameter detectWithStreamOptionalParameter);
 
     /**

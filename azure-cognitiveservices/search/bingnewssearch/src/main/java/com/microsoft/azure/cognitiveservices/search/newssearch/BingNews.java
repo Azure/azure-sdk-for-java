@@ -42,7 +42,7 @@ public interface BingNews {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the NewsModel object if successful.
      */
-    @Deprecated
+    
     NewsModel search(String query, SearchOptionalParameter searchOptionalParameter);
 
     /**
@@ -61,7 +61,7 @@ public interface BingNews {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the NewsModel object
      */
-    @Deprecated
+    
     Observable<NewsModel> searchAsync(String query, SearchOptionalParameter searchOptionalParameter);
 
     /**
@@ -396,7 +396,7 @@ public interface BingNews {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the NewsModel object if successful.
      */
-    @Deprecated
+    
     NewsModel category(CategoryOptionalParameter categoryOptionalParameter);
 
     /**
@@ -410,7 +410,7 @@ public interface BingNews {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the NewsModel object
      */
-    @Deprecated
+    
     Observable<NewsModel> categoryAsync(CategoryOptionalParameter categoryOptionalParameter);
 
     /**
@@ -738,7 +738,7 @@ public interface BingNews {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TrendingTopics object if successful.
      */
-    @Deprecated
+    
     TrendingTopics trending(TrendingOptionalParameter trendingOptionalParameter);
 
     /**
@@ -752,7 +752,7 @@ public interface BingNews {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TrendingTopics object
      */
-    @Deprecated
+    
     Observable<TrendingTopics> trendingAsync(TrendingOptionalParameter trendingOptionalParameter);
 
     /**

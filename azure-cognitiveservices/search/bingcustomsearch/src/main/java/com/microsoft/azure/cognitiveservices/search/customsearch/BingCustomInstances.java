@@ -33,7 +33,7 @@ public interface BingCustomInstances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SearchResponse object if successful.
      */
-    @Deprecated
+    
     SearchResponse search(long customConfig, String query, SearchOptionalParameter searchOptionalParameter);
 
     /**
@@ -47,7 +47,7 @@ public interface BingCustomInstances {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SearchResponse object
      */
-    @Deprecated
+    
     Observable<SearchResponse> searchAsync(long customConfig, String query, SearchOptionalParameter searchOptionalParameter);
 
     /**

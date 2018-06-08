@@ -31,7 +31,7 @@ public interface TextModerations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Screen object if successful.
      */
-    @Deprecated
+    
     Screen screenText(String textContentType, byte[] textContent, ScreenTextOptionalParameter screenTextOptionalParameter);
 
     /**
@@ -44,7 +44,7 @@ public interface TextModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Screen object
      */
-    @Deprecated
+    
     Observable<Screen> screenTextAsync(String textContentType, byte[] textContent, ScreenTextOptionalParameter screenTextOptionalParameter);
 
     /**

@@ -30,7 +30,7 @@ public interface BingImages {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImageKnowledge object if successful.
      */
-    @Deprecated
+    
     ImageKnowledge visualSearch(VisualSearchOptionalParameter visualSearchOptionalParameter);
 
     /**
@@ -43,7 +43,7 @@ public interface BingImages {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageKnowledge object
      */
-    @Deprecated
+    
     Observable<ImageKnowledge> visualSearchAsync(VisualSearchOptionalParameter visualSearchOptionalParameter);
 
     /**

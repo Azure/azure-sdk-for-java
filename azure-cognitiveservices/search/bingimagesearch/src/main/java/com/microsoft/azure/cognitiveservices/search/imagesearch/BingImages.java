@@ -52,7 +52,7 @@ public interface BingImages {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImagesModel object if successful.
      */
-    @Deprecated
+    
     ImagesModel search(String query, SearchOptionalParameter searchOptionalParameter);
 
     /**
@@ -72,7 +72,7 @@ public interface BingImages {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagesModel object
      */
-    @Deprecated
+    
     Observable<ImagesModel> searchAsync(String query, SearchOptionalParameter searchOptionalParameter);
 
     /**
@@ -530,7 +530,7 @@ public interface BingImages {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImageInsights object if successful.
      */
-    @Deprecated
+    
     ImageInsights details(String query, DetailsOptionalParameter detailsOptionalParameter);
 
     /**
@@ -551,7 +551,7 @@ public interface BingImages {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageInsights object
      */
-    @Deprecated
+    
     Observable<ImageInsights> detailsAsync(String query, DetailsOptionalParameter detailsOptionalParameter);
 
     /**
@@ -934,7 +934,7 @@ public interface BingImages {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TrendingImages object if successful.
      */
-    @Deprecated
+    
     TrendingImages trending(TrendingOptionalParameter trendingOptionalParameter);
 
     /**
@@ -947,7 +947,7 @@ public interface BingImages {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TrendingImages object
      */
-    @Deprecated
+    
     Observable<TrendingImages> trendingAsync(TrendingOptionalParameter trendingOptionalParameter);
 
     /**

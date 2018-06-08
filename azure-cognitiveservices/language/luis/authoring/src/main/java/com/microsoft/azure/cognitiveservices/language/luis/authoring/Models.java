@@ -99,7 +99,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UUID object if successful.
      */
-    @Deprecated
+    
     UUID addIntent(UUID appId, String versionId, AddIntentOptionalParameter addIntentOptionalParameter);
 
     /**
@@ -111,7 +111,7 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
-    @Deprecated
+    
     Observable<UUID> addIntentAsync(UUID appId, String versionId, AddIntentOptionalParameter addIntentOptionalParameter);
 
     /**
@@ -201,7 +201,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;IntentClassifier&gt; object if successful.
      */
-    @Deprecated
+    
     List<IntentClassifier> listIntents(UUID appId, String versionId, ListIntentsOptionalParameter listIntentsOptionalParameter);
 
     /**
@@ -213,7 +213,7 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;IntentClassifier&gt; object
      */
-    @Deprecated
+    
     Observable<List<IntentClassifier>> listIntentsAsync(UUID appId, String versionId, ListIntentsOptionalParameter listIntentsOptionalParameter);
 
     /**
@@ -310,7 +310,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UUID object if successful.
      */
-    @Deprecated
+    
     UUID addEntity(UUID appId, String versionId, AddEntityOptionalParameter addEntityOptionalParameter);
 
     /**
@@ -322,7 +322,7 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
-    @Deprecated
+    
     Observable<UUID> addEntityAsync(UUID appId, String versionId, AddEntityOptionalParameter addEntityOptionalParameter);
 
     /**
@@ -412,7 +412,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;EntityExtractor&gt; object if successful.
      */
-    @Deprecated
+    
     List<EntityExtractor> listEntities(UUID appId, String versionId, ListEntitiesOptionalParameter listEntitiesOptionalParameter);
 
     /**
@@ -424,7 +424,7 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;EntityExtractor&gt; object
      */
-    @Deprecated
+    
     Observable<List<EntityExtractor>> listEntitiesAsync(UUID appId, String versionId, ListEntitiesOptionalParameter listEntitiesOptionalParameter);
 
     /**
@@ -547,7 +547,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;HierarchicalEntityExtractor&gt; object if successful.
      */
-    @Deprecated
+    
     List<HierarchicalEntityExtractor> listHierarchicalEntities(UUID appId, String versionId, ListHierarchicalEntitiesOptionalParameter listHierarchicalEntitiesOptionalParameter);
 
     /**
@@ -559,7 +559,7 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;HierarchicalEntityExtractor&gt; object
      */
-    @Deprecated
+    
     Observable<List<HierarchicalEntityExtractor>> listHierarchicalEntitiesAsync(UUID appId, String versionId, ListHierarchicalEntitiesOptionalParameter listHierarchicalEntitiesOptionalParameter);
 
     /**
@@ -682,7 +682,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;CompositeEntityExtractor&gt; object if successful.
      */
-    @Deprecated
+    
     List<CompositeEntityExtractor> listCompositeEntities(UUID appId, String versionId, ListCompositeEntitiesOptionalParameter listCompositeEntitiesOptionalParameter);
 
     /**
@@ -694,7 +694,7 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;CompositeEntityExtractor&gt; object
      */
-    @Deprecated
+    
     Observable<List<CompositeEntityExtractor>> listCompositeEntitiesAsync(UUID appId, String versionId, ListCompositeEntitiesOptionalParameter listCompositeEntitiesOptionalParameter);
 
     /**
@@ -791,7 +791,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;ClosedListEntityExtractor&gt; object if successful.
      */
-    @Deprecated
+    
     List<ClosedListEntityExtractor> listClosedLists(UUID appId, String versionId, ListClosedListsOptionalParameter listClosedListsOptionalParameter);
 
     /**
@@ -803,7 +803,7 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;ClosedListEntityExtractor&gt; object
      */
-    @Deprecated
+    
     Observable<List<ClosedListEntityExtractor>> listClosedListsAsync(UUID appId, String versionId, ListClosedListsOptionalParameter listClosedListsOptionalParameter);
 
     /**
@@ -952,7 +952,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;PrebuiltEntityExtractor&gt; object if successful.
      */
-    @Deprecated
+    
     List<PrebuiltEntityExtractor> listPrebuilts(UUID appId, String versionId, ListPrebuiltsOptionalParameter listPrebuiltsOptionalParameter);
 
     /**
@@ -964,7 +964,7 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;PrebuiltEntityExtractor&gt; object
      */
-    @Deprecated
+    
     Observable<List<PrebuiltEntityExtractor>> listPrebuiltsAsync(UUID appId, String versionId, ListPrebuiltsOptionalParameter listPrebuiltsOptionalParameter);
 
     /**
@@ -1085,7 +1085,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;ModelInfoResponse&gt; object if successful.
      */
-    @Deprecated
+    
     List<ModelInfoResponse> listModels(UUID appId, String versionId, ListModelsOptionalParameter listModelsOptionalParameter);
 
     /**
@@ -1097,7 +1097,7 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;ModelInfoResponse&gt; object
      */
-    @Deprecated
+    
     Observable<List<ModelInfoResponse>> listModelsAsync(UUID appId, String versionId, ListModelsOptionalParameter listModelsOptionalParameter);
 
     /**
@@ -1195,7 +1195,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;LabelTextObject&gt; object if successful.
      */
-    @Deprecated
+    
     List<LabelTextObject> examplesMethod(UUID appId, String versionId, String modelId, ExamplesMethodOptionalParameter examplesMethodOptionalParameter);
 
     /**
@@ -1208,7 +1208,7 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;LabelTextObject&gt; object
      */
-    @Deprecated
+    
     Observable<List<LabelTextObject>> examplesMethodAsync(UUID appId, String versionId, String modelId, ExamplesMethodOptionalParameter examplesMethodOptionalParameter);
 
     /**
@@ -1344,7 +1344,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
+    
     OperationStatus updateIntent(UUID appId, String versionId, UUID intentId, UpdateIntentOptionalParameter updateIntentOptionalParameter);
 
     /**
@@ -1357,7 +1357,7 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    @Deprecated
+    
     Observable<OperationStatus> updateIntentAsync(UUID appId, String versionId, UUID intentId, UpdateIntentOptionalParameter updateIntentOptionalParameter);
 
     /**
@@ -1460,7 +1460,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
+    
     OperationStatus deleteIntent(UUID appId, String versionId, UUID intentId, DeleteIntentOptionalParameter deleteIntentOptionalParameter);
 
     /**
@@ -1473,7 +1473,7 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    @Deprecated
+    
     Observable<OperationStatus> deleteIntentAsync(UUID appId, String versionId, UUID intentId, DeleteIntentOptionalParameter deleteIntentOptionalParameter);
 
     /**
@@ -1603,7 +1603,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
+    
     OperationStatus updateEntity(UUID appId, String versionId, UUID entityId, UpdateEntityOptionalParameter updateEntityOptionalParameter);
 
     /**
@@ -1616,7 +1616,7 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    @Deprecated
+    
     Observable<OperationStatus> updateEntityAsync(UUID appId, String versionId, UUID entityId, UpdateEntityOptionalParameter updateEntityOptionalParameter);
 
     /**
@@ -1959,7 +1959,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
+    
     OperationStatus patchClosedList(UUID appId, String versionId, UUID clEntityId, PatchClosedListOptionalParameter patchClosedListOptionalParameter);
 
     /**
@@ -1972,7 +1972,7 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    @Deprecated
+    
     Observable<OperationStatus> patchClosedListAsync(UUID appId, String versionId, UUID clEntityId, PatchClosedListOptionalParameter patchClosedListOptionalParameter);
 
     /**
@@ -2211,7 +2211,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;IntentsSuggestionExample&gt; object if successful.
      */
-    @Deprecated
+    
     List<IntentsSuggestionExample> getIntentSuggestions(UUID appId, String versionId, UUID intentId, GetIntentSuggestionsOptionalParameter getIntentSuggestionsOptionalParameter);
 
     /**
@@ -2224,7 +2224,7 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;IntentsSuggestionExample&gt; object
      */
-    @Deprecated
+    
     Observable<List<IntentsSuggestionExample>> getIntentSuggestionsAsync(UUID appId, String versionId, UUID intentId, GetIntentSuggestionsOptionalParameter getIntentSuggestionsOptionalParameter);
 
     /**
@@ -2327,7 +2327,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;EntitiesSuggestionExample&gt; object if successful.
      */
-    @Deprecated
+    
     List<EntitiesSuggestionExample> getEntitySuggestions(UUID appId, String versionId, UUID entityId, GetEntitySuggestionsOptionalParameter getEntitySuggestionsOptionalParameter);
 
     /**
@@ -2340,7 +2340,7 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;EntitiesSuggestionExample&gt; object
      */
-    @Deprecated
+    
     Observable<List<EntitiesSuggestionExample>> getEntitySuggestionsAsync(UUID appId, String versionId, UUID entityId, GetEntitySuggestionsOptionalParameter getEntitySuggestionsOptionalParameter);
 
     /**
@@ -2470,7 +2470,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;UUID&gt; object if successful.
      */
-    @Deprecated
+    
     List<UUID> addCustomPrebuiltDomain(UUID appId, String versionId, AddCustomPrebuiltDomainModelsOptionalParameter addCustomPrebuiltDomainOptionalParameter);
 
     /**
@@ -2482,7 +2482,7 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;UUID&gt; object
      */
-    @Deprecated
+    
     Observable<List<UUID>> addCustomPrebuiltDomainAsync(UUID appId, String versionId, AddCustomPrebuiltDomainModelsOptionalParameter addCustomPrebuiltDomainOptionalParameter);
 
     /**
@@ -2756,7 +2756,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
+    
     OperationStatus updateHierarchicalEntityChild(UUID appId, String versionId, UUID hEntityId, UUID hChildId, UpdateHierarchicalEntityChildOptionalParameter updateHierarchicalEntityChildOptionalParameter);
 
     /**
@@ -2770,7 +2770,7 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    @Deprecated
+    
     Observable<OperationStatus> updateHierarchicalEntityChildAsync(UUID appId, String versionId, UUID hEntityId, UUID hChildId, UpdateHierarchicalEntityChildOptionalParameter updateHierarchicalEntityChildOptionalParameter);
 
     /**
@@ -2913,7 +2913,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UUID object if successful.
      */
-    @Deprecated
+    
     UUID addHierarchicalEntityChild(UUID appId, String versionId, UUID hEntityId, AddHierarchicalEntityChildOptionalParameter addHierarchicalEntityChildOptionalParameter);
 
     /**
@@ -2926,7 +2926,7 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
-    @Deprecated
+    
     Observable<UUID> addHierarchicalEntityChildAsync(UUID appId, String versionId, UUID hEntityId, AddHierarchicalEntityChildOptionalParameter addHierarchicalEntityChildOptionalParameter);
 
     /**
@@ -3029,7 +3029,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UUID object if successful.
      */
-    @Deprecated
+    
     UUID addCompositeEntityChild(UUID appId, String versionId, UUID cEntityId, AddCompositeEntityChildOptionalParameter addCompositeEntityChildOptionalParameter);
 
     /**
@@ -3042,7 +3042,7 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
-    @Deprecated
+    
     Observable<UUID> addCompositeEntityChildAsync(UUID appId, String versionId, UUID cEntityId, AddCompositeEntityChildOptionalParameter addCompositeEntityChildOptionalParameter);
 
     /**
@@ -3172,7 +3172,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;RegexEntityExtractor&gt; object if successful.
      */
-    @Deprecated
+    
     List<RegexEntityExtractor> getRegexEntityInfos(UUID appId, String versionId, GetRegexEntityInfosOptionalParameter getRegexEntityInfosOptionalParameter);
 
     /**
@@ -3184,7 +3184,7 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;RegexEntityExtractor&gt; object
      */
-    @Deprecated
+    
     Observable<List<RegexEntityExtractor>> getRegexEntityInfosAsync(UUID appId, String versionId, GetRegexEntityInfosOptionalParameter getRegexEntityInfosOptionalParameter);
 
     /**
@@ -3307,7 +3307,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;PatternAnyEntityExtractor&gt; object if successful.
      */
-    @Deprecated
+    
     List<PatternAnyEntityExtractor> getPatternAnyEntityInfos(UUID appId, String versionId, GetPatternAnyEntityInfosOptionalParameter getPatternAnyEntityInfosOptionalParameter);
 
     /**
@@ -3319,7 +3319,7 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;PatternAnyEntityExtractor&gt; object
      */
-    @Deprecated
+    
     Observable<List<PatternAnyEntityExtractor>> getPatternAnyEntityInfosAsync(UUID appId, String versionId, GetPatternAnyEntityInfosOptionalParameter getPatternAnyEntityInfosOptionalParameter);
 
     /**
@@ -3469,7 +3469,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UUID object if successful.
      */
-    @Deprecated
+    
     UUID createEntityRole(UUID appId, String versionId, UUID entityId, CreateEntityRoleOptionalParameter createEntityRoleOptionalParameter);
 
     /**
@@ -3482,7 +3482,7 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
-    @Deprecated
+    
     Observable<UUID> createEntityRoleAsync(UUID appId, String versionId, UUID entityId, CreateEntityRoleOptionalParameter createEntityRoleOptionalParameter);
 
     /**
@@ -3611,7 +3611,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UUID object if successful.
      */
-    @Deprecated
+    
     UUID createPrebuiltEntityRole(UUID appId, String versionId, UUID entityId, CreatePrebuiltEntityRoleOptionalParameter createPrebuiltEntityRoleOptionalParameter);
 
     /**
@@ -3624,7 +3624,7 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
-    @Deprecated
+    
     Observable<UUID> createPrebuiltEntityRoleAsync(UUID appId, String versionId, UUID entityId, CreatePrebuiltEntityRoleOptionalParameter createPrebuiltEntityRoleOptionalParameter);
 
     /**
@@ -3753,7 +3753,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UUID object if successful.
      */
-    @Deprecated
+    
     UUID createClosedListEntityRole(UUID appId, String versionId, UUID entityId, CreateClosedListEntityRoleOptionalParameter createClosedListEntityRoleOptionalParameter);
 
     /**
@@ -3766,7 +3766,7 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
-    @Deprecated
+    
     Observable<UUID> createClosedListEntityRoleAsync(UUID appId, String versionId, UUID entityId, CreateClosedListEntityRoleOptionalParameter createClosedListEntityRoleOptionalParameter);
 
     /**
@@ -3895,7 +3895,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UUID object if successful.
      */
-    @Deprecated
+    
     UUID createRegexEntityRole(UUID appId, String versionId, UUID entityId, CreateRegexEntityRoleOptionalParameter createRegexEntityRoleOptionalParameter);
 
     /**
@@ -3908,7 +3908,7 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
-    @Deprecated
+    
     Observable<UUID> createRegexEntityRoleAsync(UUID appId, String versionId, UUID entityId, CreateRegexEntityRoleOptionalParameter createRegexEntityRoleOptionalParameter);
 
     /**
@@ -4037,7 +4037,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UUID object if successful.
      */
-    @Deprecated
+    
     UUID createCompositeEntityRole(UUID appId, String versionId, UUID cEntityId, CreateCompositeEntityRoleOptionalParameter createCompositeEntityRoleOptionalParameter);
 
     /**
@@ -4050,7 +4050,7 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
-    @Deprecated
+    
     Observable<UUID> createCompositeEntityRoleAsync(UUID appId, String versionId, UUID cEntityId, CreateCompositeEntityRoleOptionalParameter createCompositeEntityRoleOptionalParameter);
 
     /**
@@ -4179,7 +4179,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UUID object if successful.
      */
-    @Deprecated
+    
     UUID createPatternAnyEntityRole(UUID appId, String versionId, UUID entityId, CreatePatternAnyEntityRoleOptionalParameter createPatternAnyEntityRoleOptionalParameter);
 
     /**
@@ -4192,7 +4192,7 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
-    @Deprecated
+    
     Observable<UUID> createPatternAnyEntityRoleAsync(UUID appId, String versionId, UUID entityId, CreatePatternAnyEntityRoleOptionalParameter createPatternAnyEntityRoleOptionalParameter);
 
     /**
@@ -4321,7 +4321,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UUID object if successful.
      */
-    @Deprecated
+    
     UUID createHierarchicalEntityRole(UUID appId, String versionId, UUID hEntityId, CreateHierarchicalEntityRoleOptionalParameter createHierarchicalEntityRoleOptionalParameter);
 
     /**
@@ -4334,7 +4334,7 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
-    @Deprecated
+    
     Observable<UUID> createHierarchicalEntityRoleAsync(UUID appId, String versionId, UUID hEntityId, CreateHierarchicalEntityRoleOptionalParameter createHierarchicalEntityRoleOptionalParameter);
 
     /**
@@ -4463,7 +4463,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UUID object if successful.
      */
-    @Deprecated
+    
     UUID createCustomPrebuiltEntityRole(UUID appId, String versionId, UUID entityId, CreateCustomPrebuiltEntityRoleOptionalParameter createCustomPrebuiltEntityRoleOptionalParameter);
 
     /**
@@ -4476,7 +4476,7 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
-    @Deprecated
+    
     Observable<UUID> createCustomPrebuiltEntityRoleAsync(UUID appId, String versionId, UUID entityId, CreateCustomPrebuiltEntityRoleOptionalParameter createCustomPrebuiltEntityRoleOptionalParameter);
 
     /**
@@ -4605,7 +4605,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the int object if successful.
      */
-    @Deprecated
+    
     int addExplicitListItem(UUID appId, String versionId, UUID entityId, AddExplicitListItemOptionalParameter addExplicitListItemOptionalParameter);
 
     /**
@@ -4618,7 +4618,7 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the int object
      */
-    @Deprecated
+    
     Observable<Integer> addExplicitListItemAsync(UUID appId, String versionId, UUID entityId, AddExplicitListItemOptionalParameter addExplicitListItemOptionalParameter);
 
     /**
@@ -4910,7 +4910,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
+    
     OperationStatus updateEntityRole(UUID appId, String versionId, UUID entityId, UUID roleId, UpdateEntityRoleOptionalParameter updateEntityRoleOptionalParameter);
 
     /**
@@ -4924,7 +4924,7 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    @Deprecated
+    
     Observable<OperationStatus> updateEntityRoleAsync(UUID appId, String versionId, UUID entityId, UUID roleId, UpdateEntityRoleOptionalParameter updateEntityRoleOptionalParameter);
 
     /**
@@ -5096,7 +5096,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
+    
     OperationStatus updatePrebuiltEntityRole(UUID appId, String versionId, UUID entityId, UUID roleId, UpdatePrebuiltEntityRoleOptionalParameter updatePrebuiltEntityRoleOptionalParameter);
 
     /**
@@ -5110,7 +5110,7 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    @Deprecated
+    
     Observable<OperationStatus> updatePrebuiltEntityRoleAsync(UUID appId, String versionId, UUID entityId, UUID roleId, UpdatePrebuiltEntityRoleOptionalParameter updatePrebuiltEntityRoleOptionalParameter);
 
     /**
@@ -5282,7 +5282,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
+    
     OperationStatus updateClosedListEntityRole(UUID appId, String versionId, UUID entityId, UUID roleId, UpdateClosedListEntityRoleOptionalParameter updateClosedListEntityRoleOptionalParameter);
 
     /**
@@ -5296,7 +5296,7 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    @Deprecated
+    
     Observable<OperationStatus> updateClosedListEntityRoleAsync(UUID appId, String versionId, UUID entityId, UUID roleId, UpdateClosedListEntityRoleOptionalParameter updateClosedListEntityRoleOptionalParameter);
 
     /**
@@ -5468,7 +5468,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
+    
     OperationStatus updateRegexEntityRole(UUID appId, String versionId, UUID entityId, UUID roleId, UpdateRegexEntityRoleOptionalParameter updateRegexEntityRoleOptionalParameter);
 
     /**
@@ -5482,7 +5482,7 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    @Deprecated
+    
     Observable<OperationStatus> updateRegexEntityRoleAsync(UUID appId, String versionId, UUID entityId, UUID roleId, UpdateRegexEntityRoleOptionalParameter updateRegexEntityRoleOptionalParameter);
 
     /**
@@ -5654,7 +5654,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
+    
     OperationStatus updateCompositeEntityRole(UUID appId, String versionId, UUID cEntityId, UUID roleId, UpdateCompositeEntityRoleOptionalParameter updateCompositeEntityRoleOptionalParameter);
 
     /**
@@ -5668,7 +5668,7 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    @Deprecated
+    
     Observable<OperationStatus> updateCompositeEntityRoleAsync(UUID appId, String versionId, UUID cEntityId, UUID roleId, UpdateCompositeEntityRoleOptionalParameter updateCompositeEntityRoleOptionalParameter);
 
     /**
@@ -5840,7 +5840,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
+    
     OperationStatus updatePatternAnyEntityRole(UUID appId, String versionId, UUID entityId, UUID roleId, UpdatePatternAnyEntityRoleOptionalParameter updatePatternAnyEntityRoleOptionalParameter);
 
     /**
@@ -5854,7 +5854,7 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    @Deprecated
+    
     Observable<OperationStatus> updatePatternAnyEntityRoleAsync(UUID appId, String versionId, UUID entityId, UUID roleId, UpdatePatternAnyEntityRoleOptionalParameter updatePatternAnyEntityRoleOptionalParameter);
 
     /**
@@ -6026,7 +6026,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
+    
     OperationStatus updateHierarchicalEntityRole(UUID appId, String versionId, UUID hEntityId, UUID roleId, UpdateHierarchicalEntityRoleOptionalParameter updateHierarchicalEntityRoleOptionalParameter);
 
     /**
@@ -6040,7 +6040,7 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    @Deprecated
+    
     Observable<OperationStatus> updateHierarchicalEntityRoleAsync(UUID appId, String versionId, UUID hEntityId, UUID roleId, UpdateHierarchicalEntityRoleOptionalParameter updateHierarchicalEntityRoleOptionalParameter);
 
     /**
@@ -6212,7 +6212,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
+    
     OperationStatus updateCustomPrebuiltEntityRole(UUID appId, String versionId, UUID entityId, UUID roleId, UpdateCustomPrebuiltEntityRoleOptionalParameter updateCustomPrebuiltEntityRoleOptionalParameter);
 
     /**
@@ -6226,7 +6226,7 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    @Deprecated
+    
     Observable<OperationStatus> updateCustomPrebuiltEntityRoleAsync(UUID appId, String versionId, UUID entityId, UUID roleId, UpdateCustomPrebuiltEntityRoleOptionalParameter updateCustomPrebuiltEntityRoleOptionalParameter);
 
     /**
@@ -6398,7 +6398,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
+    
     OperationStatus updateExplicitListItem(UUID appId, String versionId, UUID entityId, long itemId, UpdateExplicitListItemOptionalParameter updateExplicitListItemOptionalParameter);
 
     /**
@@ -6412,7 +6412,7 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    @Deprecated
+    
     Observable<OperationStatus> updateExplicitListItemAsync(UUID appId, String versionId, UUID entityId, long itemId, UpdateExplicitListItemOptionalParameter updateExplicitListItemOptionalParameter);
 
     /**

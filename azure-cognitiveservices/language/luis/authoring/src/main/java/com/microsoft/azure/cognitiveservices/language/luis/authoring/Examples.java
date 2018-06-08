@@ -87,7 +87,7 @@ public interface Examples {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;LabeledUtterance&gt; object if successful.
      */
-    @Deprecated
+    
     List<LabeledUtterance> list(UUID appId, String versionId, ListExamplesOptionalParameter listOptionalParameter);
 
     /**
@@ -99,7 +99,7 @@ public interface Examples {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;LabeledUtterance&gt; object
      */
-    @Deprecated
+    
     Observable<List<LabeledUtterance>> listAsync(UUID appId, String versionId, ListExamplesOptionalParameter listOptionalParameter);
 
     /**

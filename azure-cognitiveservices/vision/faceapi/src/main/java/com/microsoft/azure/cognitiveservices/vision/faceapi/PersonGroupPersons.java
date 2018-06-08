@@ -36,7 +36,7 @@ public interface PersonGroupPersons {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Person object if successful.
      */
-    @Deprecated
+    
     Person create(String personGroupId, CreatePersonGroupPersonsOptionalParameter createOptionalParameter);
 
     /**
@@ -47,7 +47,7 @@ public interface PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Person object
      */
-    @Deprecated
+    
     Observable<Person> createAsync(String personGroupId, CreatePersonGroupPersonsOptionalParameter createOptionalParameter);
 
     /**
@@ -132,7 +132,7 @@ public interface PersonGroupPersons {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;Person&gt; object if successful.
      */
-    @Deprecated
+    
     List<Person> list(String personGroupId, ListPersonGroupPersonsOptionalParameter listOptionalParameter);
 
     /**
@@ -144,7 +144,7 @@ public interface PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;Person&gt; object
      */
-    @Deprecated
+    
     Observable<List<Person>> listAsync(String personGroupId, ListPersonGroupPersonsOptionalParameter listOptionalParameter);
 
     /**
@@ -278,7 +278,7 @@ public interface PersonGroupPersons {
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    @Deprecated
+    
     void update(String personGroupId, UUID personId, UpdatePersonGroupPersonsOptionalParameter updateOptionalParameter);
 
     /**
@@ -290,7 +290,7 @@ public interface PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return a representation of the deferred computation of this call if successful.
      */
-    @Deprecated
+    
     Observable<Void> updateAsync(String personGroupId, UUID personId, UpdatePersonGroupPersonsOptionalParameter updateOptionalParameter);
 
     /**
@@ -439,7 +439,7 @@ public interface PersonGroupPersons {
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    @Deprecated
+    
     void updateFace(String personGroupId, UUID personId, UUID persistedFaceId, UpdateFaceOptionalParameter updateFaceOptionalParameter);
 
     /**
@@ -452,7 +452,7 @@ public interface PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return a representation of the deferred computation of this call if successful.
      */
-    @Deprecated
+    
     Observable<Void> updateFaceAsync(String personGroupId, UUID personId, UUID persistedFaceId, UpdateFaceOptionalParameter updateFaceOptionalParameter);
 
     /**
@@ -555,7 +555,7 @@ public interface PersonGroupPersons {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PersistedFace object if successful.
      */
-    @Deprecated
+    
     PersistedFace addPersonFaceFromUrl(String personGroupId, UUID personId, String url, AddPersonFaceFromUrlOptionalParameter addPersonFaceFromUrlOptionalParameter);
 
     /**
@@ -569,7 +569,7 @@ public interface PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
      */
-    @Deprecated
+    
     Observable<PersistedFace> addPersonFaceFromUrlAsync(String personGroupId, UUID personId, String url, AddPersonFaceFromUrlOptionalParameter addPersonFaceFromUrlOptionalParameter);
 
     /**
@@ -684,7 +684,7 @@ public interface PersonGroupPersons {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PersistedFace object if successful.
      */
-    @Deprecated
+    
     PersistedFace addPersonFaceFromStream(String personGroupId, UUID personId, byte[] image, AddPersonFaceFromStreamOptionalParameter addPersonFaceFromStreamOptionalParameter);
 
     /**
@@ -698,7 +698,7 @@ public interface PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
      */
-    @Deprecated
+    
     Observable<PersistedFace> addPersonFaceFromStreamAsync(String personGroupId, UUID personId, byte[] image, AddPersonFaceFromStreamOptionalParameter addPersonFaceFromStreamOptionalParameter);
 
     /**

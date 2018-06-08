@@ -36,7 +36,7 @@ public interface Versions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the String object if successful.
      */
-    @Deprecated
+    
     String clone(UUID appId, String versionId, CloneOptionalParameter cloneOptionalParameter);
 
     /**
@@ -48,7 +48,7 @@ public interface Versions {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the String object
      */
-    @Deprecated
+    
     Observable<String> cloneAsync(UUID appId, String versionId, CloneOptionalParameter cloneOptionalParameter);
 
     /**
@@ -137,7 +137,7 @@ public interface Versions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;VersionInfo&gt; object if successful.
      */
-    @Deprecated
+    
     List<VersionInfo> list(UUID appId, ListVersionsOptionalParameter listOptionalParameter);
 
     /**
@@ -148,7 +148,7 @@ public interface Versions {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;VersionInfo&gt; object
      */
-    @Deprecated
+    
     Observable<List<VersionInfo>> listAsync(UUID appId, ListVersionsOptionalParameter listOptionalParameter);
 
     /**
@@ -257,7 +257,7 @@ public interface Versions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
+    
     OperationStatus update(UUID appId, String versionId, UpdateVersionsOptionalParameter updateOptionalParameter);
 
     /**
@@ -269,7 +269,7 @@ public interface Versions {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    @Deprecated
+    
     Observable<OperationStatus> updateAsync(UUID appId, String versionId, UpdateVersionsOptionalParameter updateOptionalParameter);
 
     /**
@@ -407,7 +407,7 @@ public interface Versions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the String object if successful.
      */
-    @Deprecated
+    
     String importMethod(UUID appId, LuisApp luisApp, ImportMethodVersionsOptionalParameter importMethodOptionalParameter);
 
     /**
@@ -419,7 +419,7 @@ public interface Versions {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the String object
      */
-    @Deprecated
+    
     Observable<String> importMethodAsync(UUID appId, LuisApp luisApp, ImportMethodVersionsOptionalParameter importMethodOptionalParameter);
 
     /**

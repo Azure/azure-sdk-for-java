@@ -65,7 +65,7 @@ public interface Features {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;PhraseListFeatureInfo&gt; object if successful.
      */
-    @Deprecated
+    
     List<PhraseListFeatureInfo> listPhraseLists(UUID appId, String versionId, ListPhraseListsOptionalParameter listPhraseListsOptionalParameter);
 
     /**
@@ -77,7 +77,7 @@ public interface Features {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;PhraseListFeatureInfo&gt; object
      */
-    @Deprecated
+    
     Observable<List<PhraseListFeatureInfo>> listPhraseListsAsync(UUID appId, String versionId, ListPhraseListsOptionalParameter listPhraseListsOptionalParameter);
 
     /**
@@ -174,7 +174,7 @@ public interface Features {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the FeaturesResponseObject object if successful.
      */
-    @Deprecated
+    
     FeaturesResponseObject list(UUID appId, String versionId, ListFeaturesOptionalParameter listOptionalParameter);
 
     /**
@@ -186,7 +186,7 @@ public interface Features {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the FeaturesResponseObject object
      */
-    @Deprecated
+    
     Observable<FeaturesResponseObject> listAsync(UUID appId, String versionId, ListFeaturesOptionalParameter listOptionalParameter);
 
     /**
@@ -310,7 +310,7 @@ public interface Features {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
+    
     OperationStatus updatePhraseList(UUID appId, String versionId, int phraselistId, UpdatePhraseListOptionalParameter updatePhraseListOptionalParameter);
 
     /**
@@ -323,7 +323,7 @@ public interface Features {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    @Deprecated
+    
     Observable<OperationStatus> updatePhraseListAsync(UUID appId, String versionId, int phraselistId, UpdatePhraseListOptionalParameter updatePhraseListOptionalParameter);
 
     /**

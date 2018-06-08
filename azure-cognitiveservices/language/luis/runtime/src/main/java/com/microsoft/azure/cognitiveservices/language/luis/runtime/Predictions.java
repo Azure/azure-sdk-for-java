@@ -30,7 +30,7 @@ public interface Predictions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the LuisResult object if successful.
      */
-    @Deprecated
+    
     LuisResult resolve(String appId, String query, ResolveOptionalParameter resolveOptionalParameter);
 
     /**
@@ -43,7 +43,7 @@ public interface Predictions {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the LuisResult object
      */
-    @Deprecated
+    
     Observable<LuisResult> resolveAsync(String appId, String query, ResolveOptionalParameter resolveOptionalParameter);
 
     /**

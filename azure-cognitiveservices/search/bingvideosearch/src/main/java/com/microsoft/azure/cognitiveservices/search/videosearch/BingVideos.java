@@ -48,7 +48,7 @@ public interface BingVideos {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the VideosModel object if successful.
      */
-    @Deprecated
+    
     VideosModel search(String query, SearchOptionalParameter searchOptionalParameter);
 
     /**
@@ -67,7 +67,7 @@ public interface BingVideos {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VideosModel object
      */
-    @Deprecated
+    
     Observable<VideosModel> searchAsync(String query, SearchOptionalParameter searchOptionalParameter);
 
     /**
@@ -429,7 +429,7 @@ public interface BingVideos {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the VideoDetails object if successful.
      */
-    @Deprecated
+    
     VideoDetails details(String query, DetailsOptionalParameter detailsOptionalParameter);
 
     /**
@@ -448,7 +448,7 @@ public interface BingVideos {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VideoDetails object
      */
-    @Deprecated
+    
     Observable<VideoDetails> detailsAsync(String query, DetailsOptionalParameter detailsOptionalParameter);
 
     /**
@@ -762,7 +762,7 @@ public interface BingVideos {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TrendingVideos object if successful.
      */
-    @Deprecated
+    
     TrendingVideos trending(TrendingOptionalParameter trendingOptionalParameter);
 
     /**
@@ -775,7 +775,7 @@ public interface BingVideos {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TrendingVideos object
      */
-    @Deprecated
+    
     Observable<TrendingVideos> trendingAsync(TrendingOptionalParameter trendingOptionalParameter);
 
     /**

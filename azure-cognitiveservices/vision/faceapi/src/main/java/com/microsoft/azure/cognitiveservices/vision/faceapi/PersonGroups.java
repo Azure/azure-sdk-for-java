@@ -31,7 +31,7 @@ public interface PersonGroups {
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    @Deprecated
+    
     void create(String personGroupId, CreatePersonGroupsOptionalParameter createOptionalParameter);
 
     /**
@@ -42,7 +42,7 @@ public interface PersonGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return a representation of the deferred computation of this call if successful.
      */
-    @Deprecated
+    
     Observable<Void> createAsync(String personGroupId, CreatePersonGroupsOptionalParameter createOptionalParameter);
 
     /**
@@ -170,7 +170,7 @@ public interface PersonGroups {
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    @Deprecated
+    
     void update(String personGroupId, UpdatePersonGroupsOptionalParameter updateOptionalParameter);
 
     /**
@@ -182,7 +182,7 @@ public interface PersonGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return a representation of the deferred computation of this call if successful.
      */
-    @Deprecated
+    
     Observable<Void> updateAsync(String personGroupId, UpdatePersonGroupsOptionalParameter updateOptionalParameter);
 
     /**
@@ -287,7 +287,7 @@ public interface PersonGroups {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;PersonGroup&gt; object if successful.
      */
-    @Deprecated
+    
     List<PersonGroup> list(ListPersonGroupsOptionalParameter listOptionalParameter);
 
     /**
@@ -297,7 +297,7 @@ public interface PersonGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;PersonGroup&gt; object
      */
-    @Deprecated
+    
     Observable<List<PersonGroup>> listAsync(ListPersonGroupsOptionalParameter listOptionalParameter);
 
     /**

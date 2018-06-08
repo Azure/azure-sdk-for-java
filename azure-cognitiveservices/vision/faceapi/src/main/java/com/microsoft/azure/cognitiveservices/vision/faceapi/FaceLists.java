@@ -33,7 +33,7 @@ public interface FaceLists {
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    @Deprecated
+    
     void create(String faceListId, CreateFaceListsOptionalParameter createOptionalParameter);
 
     /**
@@ -44,7 +44,7 @@ public interface FaceLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return a representation of the deferred computation of this call if successful.
      */
-    @Deprecated
+    
     Observable<Void> createAsync(String faceListId, CreateFaceListsOptionalParameter createOptionalParameter);
 
     /**
@@ -148,7 +148,7 @@ public interface FaceLists {
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    @Deprecated
+    
     void update(String faceListId, UpdateFaceListsOptionalParameter updateOptionalParameter);
 
     /**
@@ -159,7 +159,7 @@ public interface FaceLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return a representation of the deferred computation of this call if successful.
      */
-    @Deprecated
+    
     Observable<Void> updateAsync(String faceListId, UpdateFaceListsOptionalParameter updateOptionalParameter);
 
     /**
@@ -314,7 +314,7 @@ public interface FaceLists {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PersistedFace object if successful.
      */
-    @Deprecated
+    
     PersistedFace addFaceFromUrl(String faceListId, String url, AddFaceFromUrlOptionalParameter addFaceFromUrlOptionalParameter);
 
     /**
@@ -327,7 +327,7 @@ public interface FaceLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
      */
-    @Deprecated
+    
     Observable<PersistedFace> addFaceFromUrlAsync(String faceListId, String url, AddFaceFromUrlOptionalParameter addFaceFromUrlOptionalParameter);
 
     /**
@@ -429,7 +429,7 @@ public interface FaceLists {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PersistedFace object if successful.
      */
-    @Deprecated
+    
     PersistedFace addFaceFromStream(String faceListId, byte[] image, AddFaceFromStreamOptionalParameter addFaceFromStreamOptionalParameter);
 
     /**
@@ -442,7 +442,7 @@ public interface FaceLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
      */
-    @Deprecated
+    
     Observable<PersistedFace> addFaceFromStreamAsync(String faceListId, byte[] image, AddFaceFromStreamOptionalParameter addFaceFromStreamOptionalParameter);
 
     /**

@@ -42,7 +42,7 @@ public interface ImageModerations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the FoundFaces object if successful.
      */
-    @Deprecated
+    
     FoundFaces findFaces(FindFacesOptionalParameter findFacesOptionalParameter);
 
     /**
@@ -52,7 +52,7 @@ public interface ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the FoundFaces object
      */
-    @Deprecated
+    
     Observable<FoundFaces> findFacesAsync(FindFacesOptionalParameter findFacesOptionalParameter);
 
     /**
@@ -118,7 +118,7 @@ public interface ImageModerations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OCR object if successful.
      */
-    @Deprecated
+    
     OCR oCRMethod(String language, OCRMethodOptionalParameter oCRMethodOptionalParameter);
 
     /**
@@ -130,7 +130,7 @@ public interface ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OCR object
      */
-    @Deprecated
+    
     Observable<OCR> oCRMethodAsync(String language, OCRMethodOptionalParameter oCRMethodOptionalParameter);
 
     /**
@@ -216,7 +216,7 @@ public interface ImageModerations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Evaluate object if successful.
      */
-    @Deprecated
+    
     Evaluate evaluateMethod(EvaluateMethodOptionalParameter evaluateMethodOptionalParameter);
 
     /**
@@ -226,7 +226,7 @@ public interface ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Evaluate object
      */
-    @Deprecated
+    
     Observable<Evaluate> evaluateMethodAsync(EvaluateMethodOptionalParameter evaluateMethodOptionalParameter);
 
     /**
@@ -295,7 +295,7 @@ public interface ImageModerations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the MatchResponse object if successful.
      */
-    @Deprecated
+    
     MatchResponse matchMethod(MatchMethodOptionalParameter matchMethodOptionalParameter);
 
     /**
@@ -310,7 +310,7 @@ public interface ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the MatchResponse object
      */
-    @Deprecated
+    
     Observable<MatchResponse> matchMethodAsync(MatchMethodOptionalParameter matchMethodOptionalParameter);
 
     /**
@@ -387,7 +387,7 @@ public interface ImageModerations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the FoundFaces object if successful.
      */
-    @Deprecated
+    
     FoundFaces findFacesFileInput(byte[] imageStream, FindFacesFileInputOptionalParameter findFacesFileInputOptionalParameter);
 
     /**
@@ -398,7 +398,7 @@ public interface ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the FoundFaces object
      */
-    @Deprecated
+    
     Observable<FoundFaces> findFacesFileInputAsync(byte[] imageStream, FindFacesFileInputOptionalParameter findFacesFileInputOptionalParameter);
 
     /**
@@ -476,7 +476,7 @@ public interface ImageModerations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the FoundFaces object if successful.
      */
-    @Deprecated
+    
     FoundFaces findFacesUrlInput(String contentType, BodyModelModel imageUrl, FindFacesUrlInputOptionalParameter findFacesUrlInputOptionalParameter);
 
     /**
@@ -488,7 +488,7 @@ public interface ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the FoundFaces object
      */
-    @Deprecated
+    
     Observable<FoundFaces> findFacesUrlInputAsync(String contentType, BodyModelModel imageUrl, FindFacesUrlInputOptionalParameter findFacesUrlInputOptionalParameter);
 
     /**
@@ -580,7 +580,7 @@ public interface ImageModerations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OCR object if successful.
      */
-    @Deprecated
+    
     OCR oCRUrlInput(String language, String contentType, BodyModelModel imageUrl, OCRUrlInputOptionalParameter oCRUrlInputOptionalParameter);
 
     /**
@@ -594,7 +594,7 @@ public interface ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OCR object
      */
-    @Deprecated
+    
     Observable<OCR> oCRUrlInputAsync(String language, String contentType, BodyModelModel imageUrl, OCRUrlInputOptionalParameter oCRUrlInputOptionalParameter);
 
     /**
@@ -707,7 +707,7 @@ public interface ImageModerations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OCR object if successful.
      */
-    @Deprecated
+    
     OCR oCRFileInput(String language, byte[] imageStream, OCRFileInputOptionalParameter oCRFileInputOptionalParameter);
 
     /**
@@ -720,7 +720,7 @@ public interface ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OCR object
      */
-    @Deprecated
+    
     Observable<OCR> oCRFileInputAsync(String language, byte[] imageStream, OCRFileInputOptionalParameter oCRFileInputOptionalParameter);
 
     /**
@@ -819,7 +819,7 @@ public interface ImageModerations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Evaluate object if successful.
      */
-    @Deprecated
+    
     Evaluate evaluateFileInput(byte[] imageStream, EvaluateFileInputOptionalParameter evaluateFileInputOptionalParameter);
 
     /**
@@ -830,7 +830,7 @@ public interface ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Evaluate object
      */
-    @Deprecated
+    
     Observable<Evaluate> evaluateFileInputAsync(byte[] imageStream, EvaluateFileInputOptionalParameter evaluateFileInputOptionalParameter);
 
     /**
@@ -908,7 +908,7 @@ public interface ImageModerations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Evaluate object if successful.
      */
-    @Deprecated
+    
     Evaluate evaluateUrlInput(String contentType, BodyModelModel imageUrl, EvaluateUrlInputOptionalParameter evaluateUrlInputOptionalParameter);
 
     /**
@@ -920,7 +920,7 @@ public interface ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Evaluate object
      */
-    @Deprecated
+    
     Observable<Evaluate> evaluateUrlInputAsync(String contentType, BodyModelModel imageUrl, EvaluateUrlInputOptionalParameter evaluateUrlInputOptionalParameter);
 
     /**
@@ -1015,7 +1015,7 @@ public interface ImageModerations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the MatchResponse object if successful.
      */
-    @Deprecated
+    
     MatchResponse matchUrlInput(String contentType, BodyModelModel imageUrl, MatchUrlInputOptionalParameter matchUrlInputOptionalParameter);
 
     /**
@@ -1032,7 +1032,7 @@ public interface ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the MatchResponse object
      */
-    @Deprecated
+    
     Observable<MatchResponse> matchUrlInputAsync(String contentType, BodyModelModel imageUrl, MatchUrlInputOptionalParameter matchUrlInputOptionalParameter);
 
     /**
@@ -1138,7 +1138,7 @@ public interface ImageModerations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the MatchResponse object if successful.
      */
-    @Deprecated
+    
     MatchResponse matchFileInput(byte[] imageStream, MatchFileInputOptionalParameter matchFileInputOptionalParameter);
 
     /**
@@ -1154,7 +1154,7 @@ public interface ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the MatchResponse object
      */
-    @Deprecated
+    
     Observable<MatchResponse> matchFileInputAsync(byte[] imageStream, MatchFileInputOptionalParameter matchFileInputOptionalParameter);
 
     /**

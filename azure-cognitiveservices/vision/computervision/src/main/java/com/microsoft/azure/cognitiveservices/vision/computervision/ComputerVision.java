@@ -54,7 +54,7 @@ public interface ComputerVision {
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    @Deprecated
+    
     void recognizeTextInStream(byte[] image, RecognizeTextInStreamOptionalParameter recognizeTextInStreamOptionalParameter);
 
     /**
@@ -67,7 +67,7 @@ public interface ComputerVision {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return a representation of the deferred computation of this call if successful.
      */
-    @Deprecated
+    
     Observable<Void> recognizeTextInStreamAsync(byte[] image, RecognizeTextInStreamOptionalParameter recognizeTextInStreamOptionalParameter);
 
     /**
@@ -152,7 +152,7 @@ public interface ComputerVision {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DomainModelResults object if successful.
      */
-    @Deprecated
+    
     DomainModelResults analyzeImageByDomainInStream(String model, byte[] image, AnalyzeImageByDomainInStreamOptionalParameter analyzeImageByDomainInStreamOptionalParameter);
 
     /**
@@ -169,7 +169,7 @@ public interface ComputerVision {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DomainModelResults object
      */
-    @Deprecated
+    
     Observable<DomainModelResults> analyzeImageByDomainInStreamAsync(String model, byte[] image, AnalyzeImageByDomainInStreamOptionalParameter analyzeImageByDomainInStreamOptionalParameter);
 
     /**
@@ -269,7 +269,7 @@ public interface ComputerVision {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TagResult object if successful.
      */
-    @Deprecated
+    
     TagResult tagImageInStream(byte[] image, TagImageInStreamOptionalParameter tagImageInStreamOptionalParameter);
 
     /**
@@ -284,7 +284,7 @@ public interface ComputerVision {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TagResult object
      */
-    @Deprecated
+    
     Observable<TagResult> tagImageInStreamAsync(byte[] image, TagImageInStreamOptionalParameter tagImageInStreamOptionalParameter);
 
     /**
@@ -372,7 +372,7 @@ public interface ComputerVision {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImageDescription object if successful.
      */
-    @Deprecated
+    
     ImageDescription describeImageInStream(byte[] image, DescribeImageInStreamOptionalParameter describeImageInStreamOptionalParameter);
 
     /**
@@ -388,7 +388,7 @@ public interface ComputerVision {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageDescription object
      */
-    @Deprecated
+    
     Observable<ImageDescription> describeImageInStreamAsync(byte[] image, DescribeImageInStreamOptionalParameter describeImageInStreamOptionalParameter);
 
     /**
@@ -484,7 +484,7 @@ public interface ComputerVision {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OcrResult object if successful.
      */
-    @Deprecated
+    
     OcrResult recognizePrintedTextInStream(boolean detectOrientation, byte[] image, RecognizePrintedTextInStreamOptionalParameter recognizePrintedTextInStreamOptionalParameter);
 
     /**
@@ -500,7 +500,7 @@ public interface ComputerVision {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OcrResult object
      */
-    @Deprecated
+    
     Observable<OcrResult> recognizePrintedTextInStreamAsync(boolean detectOrientation, byte[] image, RecognizePrintedTextInStreamOptionalParameter recognizePrintedTextInStreamOptionalParameter);
 
     /**
@@ -601,7 +601,7 @@ public interface ComputerVision {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the InputStream object if successful.
      */
-    @Deprecated
+    
     InputStream generateThumbnailInStream(int width, int height, byte[] image, GenerateThumbnailInStreamOptionalParameter generateThumbnailInStreamOptionalParameter);
 
     /**
@@ -618,7 +618,7 @@ public interface ComputerVision {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InputStream object
      */
-    @Deprecated
+    
     Observable<InputStream> generateThumbnailInStreamAsync(int width, int height, byte[] image, GenerateThumbnailInStreamOptionalParameter generateThumbnailInStreamOptionalParameter);
 
     /**
@@ -723,7 +723,7 @@ public interface ComputerVision {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImageAnalysis object if successful.
      */
-    @Deprecated
+    
     ImageAnalysis analyzeImageInStream(byte[] image, AnalyzeImageInStreamOptionalParameter analyzeImageInStreamOptionalParameter);
 
     /**
@@ -734,7 +734,7 @@ public interface ComputerVision {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageAnalysis object
      */
-    @Deprecated
+    
     Observable<ImageAnalysis> analyzeImageInStreamAsync(byte[] image, AnalyzeImageInStreamOptionalParameter analyzeImageInStreamOptionalParameter);
 
     /**
@@ -861,7 +861,7 @@ public interface ComputerVision {
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    @Deprecated
+    
     void recognizeText(String url, RecognizeTextOptionalParameter recognizeTextOptionalParameter);
 
     /**
@@ -874,7 +874,7 @@ public interface ComputerVision {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return a representation of the deferred computation of this call if successful.
      */
-    @Deprecated
+    
     Observable<Void> recognizeTextAsync(String url, RecognizeTextOptionalParameter recognizeTextOptionalParameter);
 
     /**
@@ -959,7 +959,7 @@ public interface ComputerVision {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DomainModelResults object if successful.
      */
-    @Deprecated
+    
     DomainModelResults analyzeImageByDomain(String model, String url, AnalyzeImageByDomainOptionalParameter analyzeImageByDomainOptionalParameter);
 
     /**
@@ -976,7 +976,7 @@ public interface ComputerVision {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DomainModelResults object
      */
-    @Deprecated
+    
     Observable<DomainModelResults> analyzeImageByDomainAsync(String model, String url, AnalyzeImageByDomainOptionalParameter analyzeImageByDomainOptionalParameter);
 
     /**
@@ -1076,7 +1076,7 @@ public interface ComputerVision {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TagResult object if successful.
      */
-    @Deprecated
+    
     TagResult tagImage(String url, TagImageOptionalParameter tagImageOptionalParameter);
 
     /**
@@ -1091,7 +1091,7 @@ public interface ComputerVision {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TagResult object
      */
-    @Deprecated
+    
     Observable<TagResult> tagImageAsync(String url, TagImageOptionalParameter tagImageOptionalParameter);
 
     /**
@@ -1179,7 +1179,7 @@ public interface ComputerVision {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImageDescription object if successful.
      */
-    @Deprecated
+    
     ImageDescription describeImage(String url, DescribeImageOptionalParameter describeImageOptionalParameter);
 
     /**
@@ -1195,7 +1195,7 @@ public interface ComputerVision {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageDescription object
      */
-    @Deprecated
+    
     Observable<ImageDescription> describeImageAsync(String url, DescribeImageOptionalParameter describeImageOptionalParameter);
 
     /**
@@ -1291,7 +1291,7 @@ public interface ComputerVision {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OcrResult object if successful.
      */
-    @Deprecated
+    
     OcrResult recognizePrintedText(boolean detectOrientation, String url, RecognizePrintedTextOptionalParameter recognizePrintedTextOptionalParameter);
 
     /**
@@ -1307,7 +1307,7 @@ public interface ComputerVision {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OcrResult object
      */
-    @Deprecated
+    
     Observable<OcrResult> recognizePrintedTextAsync(boolean detectOrientation, String url, RecognizePrintedTextOptionalParameter recognizePrintedTextOptionalParameter);
 
     /**
@@ -1408,7 +1408,7 @@ public interface ComputerVision {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the InputStream object if successful.
      */
-    @Deprecated
+    
     InputStream generateThumbnail(int width, int height, String url, GenerateThumbnailOptionalParameter generateThumbnailOptionalParameter);
 
     /**
@@ -1425,7 +1425,7 @@ public interface ComputerVision {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InputStream object
      */
-    @Deprecated
+    
     Observable<InputStream> generateThumbnailAsync(int width, int height, String url, GenerateThumbnailOptionalParameter generateThumbnailOptionalParameter);
 
     /**
@@ -1533,7 +1533,7 @@ public interface ComputerVision {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImageAnalysis object if successful.
      */
-    @Deprecated
+    
     ImageAnalysis analyzeImage(String url, AnalyzeImageOptionalParameter analyzeImageOptionalParameter);
 
     /**
@@ -1547,7 +1547,7 @@ public interface ComputerVision {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageAnalysis object
      */
-    @Deprecated
+    
     Observable<ImageAnalysis> analyzeImageAsync(String url, AnalyzeImageOptionalParameter analyzeImageOptionalParameter);
 
     /**

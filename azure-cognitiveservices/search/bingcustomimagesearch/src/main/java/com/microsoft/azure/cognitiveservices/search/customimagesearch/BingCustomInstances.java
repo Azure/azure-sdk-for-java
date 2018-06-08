@@ -44,7 +44,7 @@ public interface BingCustomInstances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Images object if successful.
      */
-    @Deprecated
+    
     Images imageSearch(long customConfig, String query, ImageSearchOptionalParameter imageSearchOptionalParameter);
 
     /**
@@ -63,7 +63,7 @@ public interface BingCustomInstances {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Images object
      */
-    @Deprecated
+    
     Observable<Images> imageSearchAsync(long customConfig, String query, ImageSearchOptionalParameter imageSearchOptionalParameter);
 
     /**

@@ -40,7 +40,7 @@ public interface TextAnalytics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the EntitiesBatchResult object if successful.
      */
-    @Deprecated
+    
     EntitiesBatchResult entities(EntitiesOptionalParameter entitiesOptionalParameter);
 
     /**
@@ -54,7 +54,7 @@ public interface TextAnalytics {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the EntitiesBatchResult object
      */
-    @Deprecated
+    
     Observable<EntitiesBatchResult> entitiesAsync(EntitiesOptionalParameter entitiesOptionalParameter);
 
     /**
@@ -126,7 +126,7 @@ public interface TextAnalytics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SentimentBatchResult object if successful.
      */
-    @Deprecated
+    
     SentimentBatchResult sentiment(SentimentOptionalParameter sentimentOptionalParameter);
 
     /**
@@ -140,7 +140,7 @@ public interface TextAnalytics {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SentimentBatchResult object
      */
-    @Deprecated
+    
     Observable<SentimentBatchResult> sentimentAsync(SentimentOptionalParameter sentimentOptionalParameter);
 
     /**
@@ -210,7 +210,7 @@ public interface TextAnalytics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the LanguageBatchResult object if successful.
      */
-    @Deprecated
+    
     LanguageBatchResult detectLanguage(DetectLanguageOptionalParameter detectLanguageOptionalParameter);
 
     /**
@@ -222,7 +222,7 @@ public interface TextAnalytics {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the LanguageBatchResult object
      */
-    @Deprecated
+    
     Observable<LanguageBatchResult> detectLanguageAsync(DetectLanguageOptionalParameter detectLanguageOptionalParameter);
 
     /**
@@ -291,7 +291,7 @@ public interface TextAnalytics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the KeyPhraseBatchResult object if successful.
      */
-    @Deprecated
+    
     KeyPhraseBatchResult keyPhrases(KeyPhrasesOptionalParameter keyPhrasesOptionalParameter);
 
     /**
@@ -304,7 +304,7 @@ public interface TextAnalytics {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the KeyPhraseBatchResult object
      */
-    @Deprecated
+    
     Observable<KeyPhraseBatchResult> keyPhrasesAsync(KeyPhrasesOptionalParameter keyPhrasesOptionalParameter);
 
     /**

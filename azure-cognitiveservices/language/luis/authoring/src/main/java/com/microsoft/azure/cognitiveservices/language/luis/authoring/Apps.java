@@ -73,7 +73,7 @@ public interface Apps {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;ApplicationInfoResponse&gt; object if successful.
      */
-    @Deprecated
+    
     List<ApplicationInfoResponse> list(ListAppsOptionalParameter listOptionalParameter);
 
     /**
@@ -83,7 +83,7 @@ public interface Apps {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;ApplicationInfoResponse&gt; object
      */
-    @Deprecated
+    
     Observable<List<ApplicationInfoResponse>> listAsync(ListAppsOptionalParameter listOptionalParameter);
 
     /**
@@ -155,7 +155,7 @@ public interface Apps {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UUID object if successful.
      */
-    @Deprecated
+    
     UUID importMethod(LuisApp luisApp, ImportMethodAppsOptionalParameter importMethodOptionalParameter);
 
     /**
@@ -166,7 +166,7 @@ public interface Apps {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
-    @Deprecated
+    
     Observable<UUID> importMethodAsync(LuisApp luisApp, ImportMethodAppsOptionalParameter importMethodOptionalParameter);
 
     /**
@@ -462,7 +462,7 @@ public interface Apps {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
+    
     OperationStatus updateSettings(UUID appId, UpdateSettingsOptionalParameter updateSettingsOptionalParameter);
 
     /**
@@ -473,7 +473,7 @@ public interface Apps {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    @Deprecated
+    
     Observable<OperationStatus> updateSettingsAsync(UUID appId, UpdateSettingsOptionalParameter updateSettingsOptionalParameter);
 
     /**

@@ -81,7 +81,7 @@ public interface ListManagementTerms {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Terms object if successful.
      */
-    @Deprecated
+    
     Terms getAllTerms(String listId, String language, GetAllTermsOptionalParameter getAllTermsOptionalParameter);
 
     /**
@@ -93,7 +93,7 @@ public interface ListManagementTerms {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Terms object
      */
-    @Deprecated
+    
     Observable<Terms> getAllTermsAsync(String listId, String language, GetAllTermsOptionalParameter getAllTermsOptionalParameter);
 
     /**

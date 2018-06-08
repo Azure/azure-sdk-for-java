@@ -32,7 +32,7 @@ public interface ListManagementImages {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Image object if successful.
      */
-    @Deprecated
+    
     Image addImage(String listId, AddImageOptionalParameter addImageOptionalParameter);
 
     /**
@@ -43,7 +43,7 @@ public interface ListManagementImages {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Image object
      */
-    @Deprecated
+    
     Observable<Image> addImageAsync(String listId, AddImageOptionalParameter addImageOptionalParameter);
 
     /**
@@ -197,7 +197,7 @@ public interface ListManagementImages {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Image object if successful.
      */
-    @Deprecated
+    
     Image addImageUrlInput(String listId, String contentType, BodyModelModel imageUrl, AddImageUrlInputOptionalParameter addImageUrlInputOptionalParameter);
 
     /**
@@ -210,7 +210,7 @@ public interface ListManagementImages {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Image object
      */
-    @Deprecated
+    
     Observable<Image> addImageUrlInputAsync(String listId, String contentType, BodyModelModel imageUrl, AddImageUrlInputOptionalParameter addImageUrlInputOptionalParameter);
 
     /**
@@ -319,7 +319,7 @@ public interface ListManagementImages {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Image object if successful.
      */
-    @Deprecated
+    
     Image addImageFileInput(String listId, byte[] imageStream, AddImageFileInputOptionalParameter addImageFileInputOptionalParameter);
 
     /**
@@ -331,7 +331,7 @@ public interface ListManagementImages {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Image object
      */
-    @Deprecated
+    
     Observable<Image> addImageFileInputAsync(String listId, byte[] imageStream, AddImageFileInputOptionalParameter addImageFileInputOptionalParameter);
 
     /**
