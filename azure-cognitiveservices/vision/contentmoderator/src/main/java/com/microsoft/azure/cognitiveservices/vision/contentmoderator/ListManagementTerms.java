@@ -23,7 +23,7 @@ public interface ListManagementTerms {
      * Add a term to the term list with list Id equal to list Id passed.
      *
      * @param listId List Id of the image list.
-     * @param term Term to be deleted
+     * @param term Term to be deleted.
      * @param language Language of the terms.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
@@ -36,7 +36,7 @@ public interface ListManagementTerms {
      * Add a term to the term list with list Id equal to list Id passed.
      *
      * @param listId List Id of the image list.
-     * @param term Term to be deleted
+     * @param term Term to be deleted.
      * @param language Language of the terms.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Object object
@@ -49,7 +49,7 @@ public interface ListManagementTerms {
      * Deletes a term from the list with list Id equal to the list Id passed.
      *
      * @param listId List Id of the image list.
-     * @param term Term to be deleted
+     * @param term Term to be deleted.
      * @param language Language of the terms.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
@@ -62,7 +62,7 @@ public interface ListManagementTerms {
      * Deletes a term from the list with list Id equal to the list Id passed.
      *
      * @param listId List Id of the image list.
-     * @param term Term to be deleted
+     * @param term Term to be deleted.
      * @param language Language of the terms.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the String object
@@ -81,6 +81,7 @@ public interface ListManagementTerms {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Terms object if successful.
      */
+    
     Terms getAllTerms(String listId, String language, GetAllTermsOptionalParameter getAllTermsOptionalParameter);
 
     /**
@@ -92,7 +93,91 @@ public interface ListManagementTerms {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Terms object
      */
+    
     Observable<Terms> getAllTermsAsync(String listId, String language, GetAllTermsOptionalParameter getAllTermsOptionalParameter);
+
+    /**
+     * Gets all terms from the list with list Id equal to the list Id passed.
+     *
+     * @return the first stage of the getAllTerms call
+     */
+    ListManagementTermsGetAllTermsDefinitionStages.WithListId getAllTerms();
+
+    /**
+     * Grouping of getAllTerms definition stages.
+     */
+    interface ListManagementTermsGetAllTermsDefinitionStages {
+        /**
+         * The stage of the definition to be specify listId.
+         */
+        interface WithListId {
+            /**
+             * List Id of the image list.
+             *
+             * @return next definition stage
+             */
+            WithLanguage withListId(String listId);
+        }
+        /**
+         * The stage of the definition to be specify language.
+         */
+        interface WithLanguage {
+            /**
+             * Language of the terms.
+             *
+             * @return next definition stage
+             */
+            ListManagementTermsGetAllTermsDefinitionStages.WithExecute withLanguage(String language);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The pagination start index.
+             *
+             * @return next definition stage
+             */
+            ListManagementTermsGetAllTermsDefinitionStages.WithExecute withOffset(Integer offset);
+
+            /**
+             * The max limit.
+             *
+             * @return next definition stage
+             */
+            ListManagementTermsGetAllTermsDefinitionStages.WithExecute withLimit(Integer limit);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ListManagementTermsGetAllTermsDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the Terms object if successful.
+             */
+            Terms execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the Terms object
+             */
+            Observable<Terms> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of getAllTerms definition.
+     */
+    interface ListManagementTermsGetAllTermsDefinition extends
+        ListManagementTermsGetAllTermsDefinitionStages.WithListId,
+        ListManagementTermsGetAllTermsDefinitionStages.WithLanguage,
+        ListManagementTermsGetAllTermsDefinitionStages.WithExecute {
+    }
 
 
     /**

@@ -307,6 +307,69 @@ public class PatternsImpl implements Patterns {
                 .build(response);
     }
 
+    @Override
+    public PatternsGetPatternsParameters getPatterns() {
+        return new PatternsGetPatternsParameters(this);
+    }
+
+    /**
+     * Internal class implementing PatternsGetPatternsDefinition.
+     */
+    class PatternsGetPatternsParameters implements PatternsGetPatternsDefinition {
+        private PatternsImpl parent;
+        private UUID appId;
+        private String versionId;
+        private Integer skip;
+        private Integer take;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        PatternsGetPatternsParameters(PatternsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public PatternsGetPatternsParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public PatternsGetPatternsParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public PatternsGetPatternsParameters withSkip(Integer skip) {
+            this.skip = skip;
+            return this;
+        }
+
+        @Override
+        public PatternsGetPatternsParameters withTake(Integer take) {
+            this.take = take;
+            return this;
+        }
+
+        @Override
+        public List<PatternRuleInfo> execute() {
+        return getPatternsWithServiceResponseAsync(appId, versionId, skip, take).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<List<PatternRuleInfo>> executeAsync() {
+            return getPatternsWithServiceResponseAsync(appId, versionId, skip, take).map(new Func1<ServiceResponse<List<PatternRuleInfo>>, List<PatternRuleInfo>>() {
+                @Override
+                public List<PatternRuleInfo> call(ServiceResponse<List<PatternRuleInfo>> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
     /**
      * Updates patterns.
      *
@@ -897,6 +960,76 @@ public class PatternsImpl implements Patterns {
                 .register(200, new TypeToken<List<PatternRuleInfo>>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
+    }
+
+    @Override
+    public PatternsGetIntentPatternsParameters getIntentPatterns() {
+        return new PatternsGetIntentPatternsParameters(this);
+    }
+
+    /**
+     * Internal class implementing PatternsGetIntentPatternsDefinition.
+     */
+    class PatternsGetIntentPatternsParameters implements PatternsGetIntentPatternsDefinition {
+        private PatternsImpl parent;
+        private UUID appId;
+        private String versionId;
+        private UUID intentId;
+        private Integer skip;
+        private Integer take;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        PatternsGetIntentPatternsParameters(PatternsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public PatternsGetIntentPatternsParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public PatternsGetIntentPatternsParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public PatternsGetIntentPatternsParameters withIntentId(UUID intentId) {
+            this.intentId = intentId;
+            return this;
+        }
+
+        @Override
+        public PatternsGetIntentPatternsParameters withSkip(Integer skip) {
+            this.skip = skip;
+            return this;
+        }
+
+        @Override
+        public PatternsGetIntentPatternsParameters withTake(Integer take) {
+            this.take = take;
+            return this;
+        }
+
+        @Override
+        public List<PatternRuleInfo> execute() {
+        return getIntentPatternsWithServiceResponseAsync(appId, versionId, intentId, skip, take).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<List<PatternRuleInfo>> executeAsync() {
+            return getIntentPatternsWithServiceResponseAsync(appId, versionId, intentId, skip, take).map(new Func1<ServiceResponse<List<PatternRuleInfo>>, List<PatternRuleInfo>>() {
+                @Override
+                public List<PatternRuleInfo> call(ServiceResponse<List<PatternRuleInfo>> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 }

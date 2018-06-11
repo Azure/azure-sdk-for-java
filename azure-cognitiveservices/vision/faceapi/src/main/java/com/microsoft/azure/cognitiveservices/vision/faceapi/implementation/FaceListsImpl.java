@@ -212,6 +212,62 @@ public class FaceListsImpl implements FaceLists {
                 .build(response);
     }
 
+    @Override
+    public FaceListsCreateParameters create() {
+        return new FaceListsCreateParameters(this);
+    }
+
+    /**
+     * Internal class implementing FaceListsCreateDefinition.
+     */
+    class FaceListsCreateParameters implements FaceListsCreateDefinition {
+        private FaceListsImpl parent;
+        private String faceListId;
+        private String name;
+        private String userData;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        FaceListsCreateParameters(FaceListsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public FaceListsCreateParameters withFaceListId(String faceListId) {
+            this.faceListId = faceListId;
+            return this;
+        }
+
+        @Override
+        public FaceListsCreateParameters withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        @Override
+        public FaceListsCreateParameters withUserData(String userData) {
+            this.userData = userData;
+            return this;
+        }
+
+        @Override
+        public void execute() {
+        createWithServiceResponseAsync(faceListId, name, userData).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<Void> executeAsync() {
+            return createWithServiceResponseAsync(faceListId, name, userData).map(new Func1<ServiceResponse<Void>, Void>() {
+                @Override
+                public Void call(ServiceResponse<Void> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
     /**
      * Retrieve a face list's information.
      *
@@ -393,6 +449,62 @@ public class FaceListsImpl implements FaceLists {
                 .register(200, new TypeToken<Void>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public FaceListsUpdateParameters update() {
+        return new FaceListsUpdateParameters(this);
+    }
+
+    /**
+     * Internal class implementing FaceListsUpdateDefinition.
+     */
+    class FaceListsUpdateParameters implements FaceListsUpdateDefinition {
+        private FaceListsImpl parent;
+        private String faceListId;
+        private String name;
+        private String userData;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        FaceListsUpdateParameters(FaceListsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public FaceListsUpdateParameters withFaceListId(String faceListId) {
+            this.faceListId = faceListId;
+            return this;
+        }
+
+        @Override
+        public FaceListsUpdateParameters withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        @Override
+        public FaceListsUpdateParameters withUserData(String userData) {
+            this.userData = userData;
+            return this;
+        }
+
+        @Override
+        public void execute() {
+        updateWithServiceResponseAsync(faceListId, name, userData).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<Void> executeAsync() {
+            return updateWithServiceResponseAsync(faceListId, name, userData).map(new Func1<ServiceResponse<Void>, Void>() {
+                @Override
+                public Void call(ServiceResponse<Void> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
     /**
@@ -629,7 +741,7 @@ public class FaceListsImpl implements FaceLists {
      * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
      *
      * @param faceListId Id referencing a particular face list.
-     * @param url the String value
+     * @param url Publicly reachable URL of an image
      * @param addFaceFromUrlOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
@@ -644,7 +756,7 @@ public class FaceListsImpl implements FaceLists {
      * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
      *
      * @param faceListId Id referencing a particular face list.
-     * @param url the String value
+     * @param url Publicly reachable URL of an image
      * @param addFaceFromUrlOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -658,7 +770,7 @@ public class FaceListsImpl implements FaceLists {
      * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
      *
      * @param faceListId Id referencing a particular face list.
-     * @param url the String value
+     * @param url Publicly reachable URL of an image
      * @param addFaceFromUrlOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
@@ -676,7 +788,7 @@ public class FaceListsImpl implements FaceLists {
      * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
      *
      * @param faceListId Id referencing a particular face list.
-     * @param url the String value
+     * @param url Publicly reachable URL of an image
      * @param addFaceFromUrlOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
@@ -701,7 +813,7 @@ public class FaceListsImpl implements FaceLists {
      * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
      *
      * @param faceListId Id referencing a particular face list.
-     * @param url the String value
+     * @param url Publicly reachable URL of an image
      * @param userData User-specified data about the face for any purpose. The maximum length is 1KB.
      * @param targetFace A face rectangle to specify the target face to be added to a person in the format of "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the image, targetFace is required to specify which face to add. No targetFace means there is only one face detected in the entire image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -741,6 +853,69 @@ public class FaceListsImpl implements FaceLists {
                 .register(200, new TypeToken<PersistedFace>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public FaceListsAddFaceFromUrlParameters addFaceFromUrl() {
+        return new FaceListsAddFaceFromUrlParameters(this);
+    }
+
+    /**
+     * Internal class implementing FaceListsAddFaceFromUrlDefinition.
+     */
+    class FaceListsAddFaceFromUrlParameters implements FaceListsAddFaceFromUrlDefinition {
+        private FaceListsImpl parent;
+        private String faceListId;
+        private String url;
+        private String userData;
+        private List<Integer> targetFace;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        FaceListsAddFaceFromUrlParameters(FaceListsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public FaceListsAddFaceFromUrlParameters withFaceListId(String faceListId) {
+            this.faceListId = faceListId;
+            return this;
+        }
+
+        @Override
+        public FaceListsAddFaceFromUrlParameters withUrl(String url) {
+            this.url = url;
+            return this;
+        }
+
+        @Override
+        public FaceListsAddFaceFromUrlParameters withUserData(String userData) {
+            this.userData = userData;
+            return this;
+        }
+
+        @Override
+        public FaceListsAddFaceFromUrlParameters withTargetFace(List<Integer> targetFace) {
+            this.targetFace = targetFace;
+            return this;
+        }
+
+        @Override
+        public PersistedFace execute() {
+        return addFaceFromUrlWithServiceResponseAsync(faceListId, url, userData, targetFace).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<PersistedFace> executeAsync() {
+            return addFaceFromUrlWithServiceResponseAsync(faceListId, url, userData, targetFace).map(new Func1<ServiceResponse<PersistedFace>, PersistedFace>() {
+                @Override
+                public PersistedFace call(ServiceResponse<PersistedFace> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 
@@ -859,6 +1034,69 @@ public class FaceListsImpl implements FaceLists {
                 .register(200, new TypeToken<PersistedFace>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public FaceListsAddFaceFromStreamParameters addFaceFromStream() {
+        return new FaceListsAddFaceFromStreamParameters(this);
+    }
+
+    /**
+     * Internal class implementing FaceListsAddFaceFromStreamDefinition.
+     */
+    class FaceListsAddFaceFromStreamParameters implements FaceListsAddFaceFromStreamDefinition {
+        private FaceListsImpl parent;
+        private String faceListId;
+        private byte[] image;
+        private String userData;
+        private List<Integer> targetFace;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        FaceListsAddFaceFromStreamParameters(FaceListsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public FaceListsAddFaceFromStreamParameters withFaceListId(String faceListId) {
+            this.faceListId = faceListId;
+            return this;
+        }
+
+        @Override
+        public FaceListsAddFaceFromStreamParameters withImage(byte[] image) {
+            this.image = image;
+            return this;
+        }
+
+        @Override
+        public FaceListsAddFaceFromStreamParameters withUserData(String userData) {
+            this.userData = userData;
+            return this;
+        }
+
+        @Override
+        public FaceListsAddFaceFromStreamParameters withTargetFace(List<Integer> targetFace) {
+            this.targetFace = targetFace;
+            return this;
+        }
+
+        @Override
+        public PersistedFace execute() {
+        return addFaceFromStreamWithServiceResponseAsync(faceListId, image, userData, targetFace).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<PersistedFace> executeAsync() {
+            return addFaceFromStreamWithServiceResponseAsync(faceListId, image, userData, targetFace).map(new Func1<ServiceResponse<PersistedFace>, PersistedFace>() {
+                @Override
+                public PersistedFace call(ServiceResponse<PersistedFace> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 }

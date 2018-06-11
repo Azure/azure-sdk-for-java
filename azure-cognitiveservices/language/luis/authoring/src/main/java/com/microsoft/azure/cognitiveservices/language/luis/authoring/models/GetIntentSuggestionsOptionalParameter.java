@@ -10,33 +10,57 @@ package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
 
 /**
- * The optional parameters class for "getIntentSuggestions" method.
+ * The GetIntentSuggestionsOptionalParameter model.
  */
 public class GetIntentSuggestionsOptionalParameter {
     /**
-    * The number of entries to return. Maximum page size is 500. Default is 100.
-    */
+     * The number of entries to return. Maximum page size is 500. Default is
+     * 100.
+     */
     private Integer take;
 
     /**
-    * Get the take value.
-    *
-    * @return the take value
-    */
+     * Gets or sets the preferred language for the response.
+     */
+    private String thisclientacceptLanguage;
+
+    /**
+     * Get the take value.
+     *
+     * @return the take value
+     */
     public Integer take() {
         return this.take;
     }
 
     /**
-    * Set the take value.
-    * <p>
-    * The number of entries to return. Maximum page size is 500. Default is 100.
-    *
-    * @param take the take value to set
-    * @return the GetIntentSuggestionsOptionalParameter object itself.
-    */
-    public GetIntentSuggestionsOptionalParameter withTake(int take) {
+     * Set the take value.
+     *
+     * @param take the take value to set
+     * @return the GetIntentSuggestionsOptionalParameter object itself.
+     */
+    public GetIntentSuggestionsOptionalParameter withTake(Integer take) {
         this.take = take;
+        return this;
+    }
+
+    /**
+     * Get the thisclientacceptLanguage value.
+     *
+     * @return the thisclientacceptLanguage value
+     */
+    public String thisclientacceptLanguage() {
+        return this.thisclientacceptLanguage;
+    }
+
+    /**
+     * Set the thisclientacceptLanguage value.
+     *
+     * @param thisclientacceptLanguage the thisclientacceptLanguage value to set
+     * @return the GetIntentSuggestionsOptionalParameter object itself.
+     */
+    public GetIntentSuggestionsOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
+        this.thisclientacceptLanguage = thisclientacceptLanguage;
         return this;
     }
 

@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ImageUrl {
     /**
-     * The url property.
+     * Publicly reachable URL of an image.
      */
     @JsonProperty(value = "url", required = true)
     private String url;

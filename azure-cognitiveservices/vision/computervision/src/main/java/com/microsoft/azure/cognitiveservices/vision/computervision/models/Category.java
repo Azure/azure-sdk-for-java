@@ -27,7 +27,7 @@ public class Category {
     private Double score;
 
     /**
-     * Additional category detail if available.
+     * The detail property.
      */
     @JsonProperty(value = "detail")
     private CategoryDetail detail;

@@ -223,6 +223,62 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
                 .build(response);
     }
 
+    @Override
+    public PersonGroupPersonsCreateParameters create() {
+        return new PersonGroupPersonsCreateParameters(this);
+    }
+
+    /**
+     * Internal class implementing PersonGroupPersonsCreateDefinition.
+     */
+    class PersonGroupPersonsCreateParameters implements PersonGroupPersonsCreateDefinition {
+        private PersonGroupPersonsImpl parent;
+        private String personGroupId;
+        private String name;
+        private String userData;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        PersonGroupPersonsCreateParameters(PersonGroupPersonsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public PersonGroupPersonsCreateParameters withPersonGroupId(String personGroupId) {
+            this.personGroupId = personGroupId;
+            return this;
+        }
+
+        @Override
+        public PersonGroupPersonsCreateParameters withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        @Override
+        public PersonGroupPersonsCreateParameters withUserData(String userData) {
+            this.userData = userData;
+            return this;
+        }
+
+        @Override
+        public Person execute() {
+        return createWithServiceResponseAsync(personGroupId, name, userData).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<Person> executeAsync() {
+            return createWithServiceResponseAsync(personGroupId, name, userData).map(new Func1<ServiceResponse<Person>, Person>() {
+                @Override
+                public Person call(ServiceResponse<Person> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
 
     /**
      * List all persons in a person group, and retrieve person information (including personId, name, userData and persistedFaceIds of registered faces of the person).
@@ -325,6 +381,62 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
                 .register(200, new TypeToken<List<Person>>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public PersonGroupPersonsListParameters list() {
+        return new PersonGroupPersonsListParameters(this);
+    }
+
+    /**
+     * Internal class implementing PersonGroupPersonsListDefinition.
+     */
+    class PersonGroupPersonsListParameters implements PersonGroupPersonsListDefinition {
+        private PersonGroupPersonsImpl parent;
+        private String personGroupId;
+        private String start;
+        private Integer top;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        PersonGroupPersonsListParameters(PersonGroupPersonsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public PersonGroupPersonsListParameters withPersonGroupId(String personGroupId) {
+            this.personGroupId = personGroupId;
+            return this;
+        }
+
+        @Override
+        public PersonGroupPersonsListParameters withStart(String start) {
+            this.start = start;
+            return this;
+        }
+
+        @Override
+        public PersonGroupPersonsListParameters withTop(Integer top) {
+            this.top = top;
+            return this;
+        }
+
+        @Override
+        public List<Person> execute() {
+        return listWithServiceResponseAsync(personGroupId, start, top).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<List<Person>> executeAsync() {
+            return listWithServiceResponseAsync(personGroupId, start, top).map(new Func1<ServiceResponse<List<Person>>, List<Person>>() {
+                @Override
+                public List<Person> call(ServiceResponse<List<Person>> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
     /**
@@ -609,6 +721,69 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
                 .register(200, new TypeToken<Void>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public PersonGroupPersonsUpdateParameters update() {
+        return new PersonGroupPersonsUpdateParameters(this);
+    }
+
+    /**
+     * Internal class implementing PersonGroupPersonsUpdateDefinition.
+     */
+    class PersonGroupPersonsUpdateParameters implements PersonGroupPersonsUpdateDefinition {
+        private PersonGroupPersonsImpl parent;
+        private String personGroupId;
+        private UUID personId;
+        private String name;
+        private String userData;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        PersonGroupPersonsUpdateParameters(PersonGroupPersonsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public PersonGroupPersonsUpdateParameters withPersonGroupId(String personGroupId) {
+            this.personGroupId = personGroupId;
+            return this;
+        }
+
+        @Override
+        public PersonGroupPersonsUpdateParameters withPersonId(UUID personId) {
+            this.personId = personId;
+            return this;
+        }
+
+        @Override
+        public PersonGroupPersonsUpdateParameters withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        @Override
+        public PersonGroupPersonsUpdateParameters withUserData(String userData) {
+            this.userData = userData;
+            return this;
+        }
+
+        @Override
+        public void execute() {
+        updateWithServiceResponseAsync(personGroupId, personId, name, userData).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<Void> executeAsync() {
+            return updateWithServiceResponseAsync(personGroupId, personId, name, userData).map(new Func1<ServiceResponse<Void>, Void>() {
+                @Override
+                public Void call(ServiceResponse<Void> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
     /**
@@ -917,13 +1092,76 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
                 .build(response);
     }
 
+    @Override
+    public PersonGroupPersonsUpdateFaceParameters updateFace() {
+        return new PersonGroupPersonsUpdateFaceParameters(this);
+    }
+
+    /**
+     * Internal class implementing PersonGroupPersonsUpdateFaceDefinition.
+     */
+    class PersonGroupPersonsUpdateFaceParameters implements PersonGroupPersonsUpdateFaceDefinition {
+        private PersonGroupPersonsImpl parent;
+        private String personGroupId;
+        private UUID personId;
+        private UUID persistedFaceId;
+        private String userData;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        PersonGroupPersonsUpdateFaceParameters(PersonGroupPersonsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public PersonGroupPersonsUpdateFaceParameters withPersonGroupId(String personGroupId) {
+            this.personGroupId = personGroupId;
+            return this;
+        }
+
+        @Override
+        public PersonGroupPersonsUpdateFaceParameters withPersonId(UUID personId) {
+            this.personId = personId;
+            return this;
+        }
+
+        @Override
+        public PersonGroupPersonsUpdateFaceParameters withPersistedFaceId(UUID persistedFaceId) {
+            this.persistedFaceId = persistedFaceId;
+            return this;
+        }
+
+        @Override
+        public PersonGroupPersonsUpdateFaceParameters withUserData(String userData) {
+            this.userData = userData;
+            return this;
+        }
+
+        @Override
+        public void execute() {
+        updateFaceWithServiceResponseAsync(personGroupId, personId, persistedFaceId, userData).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<Void> executeAsync() {
+            return updateFaceWithServiceResponseAsync(personGroupId, personId, persistedFaceId, userData).map(new Func1<ServiceResponse<Void>, Void>() {
+                @Override
+                public Void call(ServiceResponse<Void> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
 
     /**
      * Add a representative face to a person for identification. The input face is specified as an image with a targetFace rectangle.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
-     * @param url the String value
+     * @param url Publicly reachable URL of an image
      * @param addPersonFaceFromUrlOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
@@ -939,7 +1177,7 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
-     * @param url the String value
+     * @param url Publicly reachable URL of an image
      * @param addPersonFaceFromUrlOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -954,7 +1192,7 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
-     * @param url the String value
+     * @param url Publicly reachable URL of an image
      * @param addPersonFaceFromUrlOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
@@ -973,7 +1211,7 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
-     * @param url the String value
+     * @param url Publicly reachable URL of an image
      * @param addPersonFaceFromUrlOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
@@ -1002,7 +1240,7 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
-     * @param url the String value
+     * @param url Publicly reachable URL of an image
      * @param userData User-specified data about the face for any purpose. The maximum length is 1KB.
      * @param targetFace A face rectangle to specify the target face to be added to a person in the format of "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the image, targetFace is required to specify which face to add. No targetFace means there is only one face detected in the entire image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1045,6 +1283,76 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
                 .register(200, new TypeToken<PersistedFace>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public PersonGroupPersonsAddPersonFaceFromUrlParameters addPersonFaceFromUrl() {
+        return new PersonGroupPersonsAddPersonFaceFromUrlParameters(this);
+    }
+
+    /**
+     * Internal class implementing PersonGroupPersonsAddPersonFaceFromUrlDefinition.
+     */
+    class PersonGroupPersonsAddPersonFaceFromUrlParameters implements PersonGroupPersonsAddPersonFaceFromUrlDefinition {
+        private PersonGroupPersonsImpl parent;
+        private String personGroupId;
+        private UUID personId;
+        private String url;
+        private String userData;
+        private List<Integer> targetFace;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        PersonGroupPersonsAddPersonFaceFromUrlParameters(PersonGroupPersonsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public PersonGroupPersonsAddPersonFaceFromUrlParameters withPersonGroupId(String personGroupId) {
+            this.personGroupId = personGroupId;
+            return this;
+        }
+
+        @Override
+        public PersonGroupPersonsAddPersonFaceFromUrlParameters withPersonId(UUID personId) {
+            this.personId = personId;
+            return this;
+        }
+
+        @Override
+        public PersonGroupPersonsAddPersonFaceFromUrlParameters withUrl(String url) {
+            this.url = url;
+            return this;
+        }
+
+        @Override
+        public PersonGroupPersonsAddPersonFaceFromUrlParameters withUserData(String userData) {
+            this.userData = userData;
+            return this;
+        }
+
+        @Override
+        public PersonGroupPersonsAddPersonFaceFromUrlParameters withTargetFace(List<Integer> targetFace) {
+            this.targetFace = targetFace;
+            return this;
+        }
+
+        @Override
+        public PersistedFace execute() {
+        return addPersonFaceFromUrlWithServiceResponseAsync(personGroupId, personId, url, userData, targetFace).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<PersistedFace> executeAsync() {
+            return addPersonFaceFromUrlWithServiceResponseAsync(personGroupId, personId, url, userData, targetFace).map(new Func1<ServiceResponse<PersistedFace>, PersistedFace>() {
+                @Override
+                public PersistedFace call(ServiceResponse<PersistedFace> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 
@@ -1174,6 +1482,76 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
                 .register(200, new TypeToken<PersistedFace>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public PersonGroupPersonsAddPersonFaceFromStreamParameters addPersonFaceFromStream() {
+        return new PersonGroupPersonsAddPersonFaceFromStreamParameters(this);
+    }
+
+    /**
+     * Internal class implementing PersonGroupPersonsAddPersonFaceFromStreamDefinition.
+     */
+    class PersonGroupPersonsAddPersonFaceFromStreamParameters implements PersonGroupPersonsAddPersonFaceFromStreamDefinition {
+        private PersonGroupPersonsImpl parent;
+        private String personGroupId;
+        private UUID personId;
+        private byte[] image;
+        private String userData;
+        private List<Integer> targetFace;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        PersonGroupPersonsAddPersonFaceFromStreamParameters(PersonGroupPersonsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public PersonGroupPersonsAddPersonFaceFromStreamParameters withPersonGroupId(String personGroupId) {
+            this.personGroupId = personGroupId;
+            return this;
+        }
+
+        @Override
+        public PersonGroupPersonsAddPersonFaceFromStreamParameters withPersonId(UUID personId) {
+            this.personId = personId;
+            return this;
+        }
+
+        @Override
+        public PersonGroupPersonsAddPersonFaceFromStreamParameters withImage(byte[] image) {
+            this.image = image;
+            return this;
+        }
+
+        @Override
+        public PersonGroupPersonsAddPersonFaceFromStreamParameters withUserData(String userData) {
+            this.userData = userData;
+            return this;
+        }
+
+        @Override
+        public PersonGroupPersonsAddPersonFaceFromStreamParameters withTargetFace(List<Integer> targetFace) {
+            this.targetFace = targetFace;
+            return this;
+        }
+
+        @Override
+        public PersistedFace execute() {
+        return addPersonFaceFromStreamWithServiceResponseAsync(personGroupId, personId, image, userData, targetFace).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<PersistedFace> executeAsync() {
+            return addPersonFaceFromStreamWithServiceResponseAsync(personGroupId, personId, image, userData, targetFace).map(new Func1<ServiceResponse<PersistedFace>, PersistedFace>() {
+                @Override
+                public PersistedFace call(ServiceResponse<PersistedFace> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 }

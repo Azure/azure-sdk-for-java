@@ -37,7 +37,7 @@ public class ImageDescription {
     private String requestId;
 
     /**
-     * Image metadata.
+     * The metadata property.
      */
     @JsonProperty(value = "description.metadata")
     private ImageMetadata metadata;

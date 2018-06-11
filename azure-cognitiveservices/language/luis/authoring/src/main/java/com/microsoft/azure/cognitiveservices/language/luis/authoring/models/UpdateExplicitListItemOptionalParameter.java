@@ -10,33 +10,56 @@ package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
 
 /**
- * The optional parameters class for "updateExplicitListItem" method.
+ * The UpdateExplicitListItemOptionalParameter model.
  */
 public class UpdateExplicitListItemOptionalParameter {
     /**
-    * The explicit list item.
-    */
+     * The explicit list item.
+     */
     private String explicitListItem;
 
     /**
-    * Get the explicitListItem value.
-    *
-    * @return the explicitListItem value
-    */
+     * Gets or sets the preferred language for the response.
+     */
+    private String thisclientacceptLanguage;
+
+    /**
+     * Get the explicitListItem value.
+     *
+     * @return the explicitListItem value
+     */
     public String explicitListItem() {
         return this.explicitListItem;
     }
 
     /**
-    * Set the explicitListItem value.
-    * <p>
-    * The explicit list item.
-    *
-    * @param explicitListItem the explicitListItem value to set
-    * @return the UpdateExplicitListItemOptionalParameter object itself.
-    */
+     * Set the explicitListItem value.
+     *
+     * @param explicitListItem the explicitListItem value to set
+     * @return the UpdateExplicitListItemOptionalParameter object itself.
+     */
     public UpdateExplicitListItemOptionalParameter withExplicitListItem(String explicitListItem) {
         this.explicitListItem = explicitListItem;
+        return this;
+    }
+
+    /**
+     * Get the thisclientacceptLanguage value.
+     *
+     * @return the thisclientacceptLanguage value
+     */
+    public String thisclientacceptLanguage() {
+        return this.thisclientacceptLanguage;
+    }
+
+    /**
+     * Set the thisclientacceptLanguage value.
+     *
+     * @param thisclientacceptLanguage the thisclientacceptLanguage value to set
+     * @return the UpdateExplicitListItemOptionalParameter object itself.
+     */
+    public UpdateExplicitListItemOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
+        this.thisclientacceptLanguage = thisclientacceptLanguage;
         return this;
     }
 

@@ -27,7 +27,7 @@ public class ListPersonGroupsOptionalParameter {
     /**
      * Gets or sets the preferred language for the response.
      */
-    private String acceptLanguage;
+    private String thisclientacceptLanguage;
 
     /**
      * Get the start value.
@@ -70,22 +70,22 @@ public class ListPersonGroupsOptionalParameter {
     }
 
     /**
-     * Get the acceptLanguage value.
+     * Get the thisclientacceptLanguage value.
      *
-     * @return the acceptLanguage value
+     * @return the thisclientacceptLanguage value
      */
-    public String acceptLanguage() {
-        return this.acceptLanguage;
+    public String thisclientacceptLanguage() {
+        return this.thisclientacceptLanguage;
     }
 
     /**
-     * Set the acceptLanguage value.
+     * Set the thisclientacceptLanguage value.
      *
-     * @param acceptLanguage the acceptLanguage value to set
+     * @param thisclientacceptLanguage the thisclientacceptLanguage value to set
      * @return the ListPersonGroupsOptionalParameter object itself.
      */
-    public ListPersonGroupsOptionalParameter withAcceptLanguage(String acceptLanguage) {
-        this.acceptLanguage = acceptLanguage;
+    public ListPersonGroupsOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
+        this.thisclientacceptLanguage = thisclientacceptLanguage;
         return this;
     }
 

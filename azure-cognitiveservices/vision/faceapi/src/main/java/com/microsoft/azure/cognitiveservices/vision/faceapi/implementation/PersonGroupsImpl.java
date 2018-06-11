@@ -201,6 +201,62 @@ public class PersonGroupsImpl implements PersonGroups {
                 .build(response);
     }
 
+    @Override
+    public PersonGroupsCreateParameters create() {
+        return new PersonGroupsCreateParameters(this);
+    }
+
+    /**
+     * Internal class implementing PersonGroupsCreateDefinition.
+     */
+    class PersonGroupsCreateParameters implements PersonGroupsCreateDefinition {
+        private PersonGroupsImpl parent;
+        private String personGroupId;
+        private String name;
+        private String userData;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        PersonGroupsCreateParameters(PersonGroupsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public PersonGroupsCreateParameters withPersonGroupId(String personGroupId) {
+            this.personGroupId = personGroupId;
+            return this;
+        }
+
+        @Override
+        public PersonGroupsCreateParameters withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        @Override
+        public PersonGroupsCreateParameters withUserData(String userData) {
+            this.userData = userData;
+            return this;
+        }
+
+        @Override
+        public void execute() {
+        createWithServiceResponseAsync(personGroupId, name, userData).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<Void> executeAsync() {
+            return createWithServiceResponseAsync(personGroupId, name, userData).map(new Func1<ServiceResponse<Void>, Void>() {
+                @Override
+                public Void call(ServiceResponse<Void> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
     /**
      * Delete an existing person group. Persisted face images of all people in the person group will also be deleted.
      *
@@ -460,6 +516,62 @@ public class PersonGroupsImpl implements PersonGroups {
                 .build(response);
     }
 
+    @Override
+    public PersonGroupsUpdateParameters update() {
+        return new PersonGroupsUpdateParameters(this);
+    }
+
+    /**
+     * Internal class implementing PersonGroupsUpdateDefinition.
+     */
+    class PersonGroupsUpdateParameters implements PersonGroupsUpdateDefinition {
+        private PersonGroupsImpl parent;
+        private String personGroupId;
+        private String name;
+        private String userData;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        PersonGroupsUpdateParameters(PersonGroupsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public PersonGroupsUpdateParameters withPersonGroupId(String personGroupId) {
+            this.personGroupId = personGroupId;
+            return this;
+        }
+
+        @Override
+        public PersonGroupsUpdateParameters withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        @Override
+        public PersonGroupsUpdateParameters withUserData(String userData) {
+            this.userData = userData;
+            return this;
+        }
+
+        @Override
+        public void execute() {
+        updateWithServiceResponseAsync(personGroupId, name, userData).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<Void> executeAsync() {
+            return updateWithServiceResponseAsync(personGroupId, name, userData).map(new Func1<ServiceResponse<Void>, Void>() {
+                @Override
+                public Void call(ServiceResponse<Void> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
     /**
      * Retrieve the training status of a person group (completed or ongoing).
      *
@@ -628,6 +740,55 @@ public class PersonGroupsImpl implements PersonGroups {
                 .register(200, new TypeToken<List<PersonGroup>>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public PersonGroupsListParameters list() {
+        return new PersonGroupsListParameters(this);
+    }
+
+    /**
+     * Internal class implementing PersonGroupsListDefinition.
+     */
+    class PersonGroupsListParameters implements PersonGroupsListDefinition {
+        private PersonGroupsImpl parent;
+        private String start;
+        private Integer top;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        PersonGroupsListParameters(PersonGroupsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public PersonGroupsListParameters withStart(String start) {
+            this.start = start;
+            return this;
+        }
+
+        @Override
+        public PersonGroupsListParameters withTop(Integer top) {
+            this.top = top;
+            return this;
+        }
+
+        @Override
+        public List<PersonGroup> execute() {
+        return listWithServiceResponseAsync(start, top).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<List<PersonGroup>> executeAsync() {
+            return listWithServiceResponseAsync(start, top).map(new Func1<ServiceResponse<List<PersonGroup>>, List<PersonGroup>>() {
+                @Override
+                public List<PersonGroup> call(ServiceResponse<List<PersonGroup>> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
     /**

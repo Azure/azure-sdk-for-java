@@ -16,6 +16,7 @@ import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.Feat
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.OperationStatus;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.PhraselistCreateObject;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.PhraseListFeatureInfo;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.PhraselistUpdateObject;
 import java.util.List;
 import java.util.UUID;
 import rx.Observable;
@@ -64,6 +65,7 @@ public interface Features {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;PhraseListFeatureInfo&gt; object if successful.
      */
+    
     List<PhraseListFeatureInfo> listPhraseLists(UUID appId, String versionId, ListPhraseListsOptionalParameter listPhraseListsOptionalParameter);
 
     /**
@@ -75,7 +77,91 @@ public interface Features {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;PhraseListFeatureInfo&gt; object
      */
+    
     Observable<List<PhraseListFeatureInfo>> listPhraseListsAsync(UUID appId, String versionId, ListPhraseListsOptionalParameter listPhraseListsOptionalParameter);
+
+    /**
+     * Gets all the phraselist features.
+     *
+     * @return the first stage of the listPhraseLists call
+     */
+    FeaturesListPhraseListsDefinitionStages.WithAppId listPhraseLists();
+
+    /**
+     * Grouping of listPhraseLists definition stages.
+     */
+    interface FeaturesListPhraseListsDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            FeaturesListPhraseListsDefinitionStages.WithExecute withVersionId(String versionId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The number of entries to skip. Default value is 0.
+             *
+             * @return next definition stage
+             */
+            FeaturesListPhraseListsDefinitionStages.WithExecute withSkip(Integer skip);
+
+            /**
+             * The number of entries to return. Maximum page size is 500. Default is 100.
+             *
+             * @return next definition stage
+             */
+            FeaturesListPhraseListsDefinitionStages.WithExecute withTake(Integer take);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends FeaturesListPhraseListsDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the List&lt;PhraseListFeatureInfo&gt; object if successful.
+             */
+            List<PhraseListFeatureInfo> execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the List&lt;PhraseListFeatureInfo&gt; object
+             */
+            Observable<List<PhraseListFeatureInfo>> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of listPhraseLists definition.
+     */
+    interface FeaturesListPhraseListsDefinition extends
+        FeaturesListPhraseListsDefinitionStages.WithAppId,
+        FeaturesListPhraseListsDefinitionStages.WithVersionId,
+        FeaturesListPhraseListsDefinitionStages.WithExecute {
+    }
 
     /**
      * Gets all the extraction features for the specified application version.
@@ -88,6 +174,7 @@ public interface Features {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the FeaturesResponseObject object if successful.
      */
+    
     FeaturesResponseObject list(UUID appId, String versionId, ListFeaturesOptionalParameter listOptionalParameter);
 
     /**
@@ -99,7 +186,91 @@ public interface Features {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the FeaturesResponseObject object
      */
+    
     Observable<FeaturesResponseObject> listAsync(UUID appId, String versionId, ListFeaturesOptionalParameter listOptionalParameter);
+
+    /**
+     * Gets all the extraction features for the specified application version.
+     *
+     * @return the first stage of the list call
+     */
+    FeaturesListDefinitionStages.WithAppId list();
+
+    /**
+     * Grouping of list definition stages.
+     */
+    interface FeaturesListDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            FeaturesListDefinitionStages.WithExecute withVersionId(String versionId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The number of entries to skip. Default value is 0.
+             *
+             * @return next definition stage
+             */
+            FeaturesListDefinitionStages.WithExecute withSkip(Integer skip);
+
+            /**
+             * The number of entries to return. Maximum page size is 500. Default is 100.
+             *
+             * @return next definition stage
+             */
+            FeaturesListDefinitionStages.WithExecute withTake(Integer take);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends FeaturesListDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the FeaturesResponseObject object if successful.
+             */
+            FeaturesResponseObject execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the FeaturesResponseObject object
+             */
+            Observable<FeaturesResponseObject> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of list definition.
+     */
+    interface FeaturesListDefinition extends
+        FeaturesListDefinitionStages.WithAppId,
+        FeaturesListDefinitionStages.WithVersionId,
+        FeaturesListDefinitionStages.WithExecute {
+    }
 
 
     /**
@@ -139,6 +310,7 @@ public interface Features {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
+    
     OperationStatus updatePhraseList(UUID appId, String versionId, int phraselistId, UpdatePhraseListOptionalParameter updatePhraseListOptionalParameter);
 
     /**
@@ -151,7 +323,97 @@ public interface Features {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
+    
     Observable<OperationStatus> updatePhraseListAsync(UUID appId, String versionId, int phraselistId, UpdatePhraseListOptionalParameter updatePhraseListOptionalParameter);
+
+    /**
+     * Updates the phrases, the state and the name of the phraselist feature.
+     *
+     * @return the first stage of the updatePhraseList call
+     */
+    FeaturesUpdatePhraseListDefinitionStages.WithAppId updatePhraseList();
+
+    /**
+     * Grouping of updatePhraseList definition stages.
+     */
+    interface FeaturesUpdatePhraseListDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            WithPhraselistId withVersionId(String versionId);
+        }
+        /**
+         * The stage of the definition to be specify phraselistId.
+         */
+        interface WithPhraselistId {
+            /**
+             * The ID of the feature to be updated.
+             *
+             * @return next definition stage
+             */
+            FeaturesUpdatePhraseListDefinitionStages.WithExecute withPhraselistId(int phraselistId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The new values for: - Just a boolean called IsActive, in which case the status of the feature will be
+             *   changed. - Name, Pattern, Mode, and a boolean called IsActive to update the feature.
+             *
+             * @return next definition stage
+             */
+            FeaturesUpdatePhraseListDefinitionStages.WithExecute withPhraselistUpdateObject(PhraselistUpdateObject phraselistUpdateObject);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends FeaturesUpdatePhraseListDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the OperationStatus object if successful.
+             */
+            OperationStatus execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the OperationStatus object
+             */
+            Observable<OperationStatus> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of updatePhraseList definition.
+     */
+    interface FeaturesUpdatePhraseListDefinition extends
+        FeaturesUpdatePhraseListDefinitionStages.WithAppId,
+        FeaturesUpdatePhraseListDefinitionStages.WithVersionId,
+        FeaturesUpdatePhraseListDefinitionStages.WithPhraselistId,
+        FeaturesUpdatePhraseListDefinitionStages.WithExecute {
+    }
 
 
     /**

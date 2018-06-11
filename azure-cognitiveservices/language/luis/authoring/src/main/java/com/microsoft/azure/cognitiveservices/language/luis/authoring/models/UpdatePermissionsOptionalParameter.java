@@ -11,33 +11,56 @@ package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 import java.util.List;
 
 /**
- * The optional parameters class for "update" method.
+ * The UpdatePermissionsOptionalParameter model.
  */
 public class UpdatePermissionsOptionalParameter {
     /**
-    * The email address of the users.
-    */
+     * The email address of the users.
+     */
     private List<String> emails;
 
     /**
-    * Get the emails value.
-    *
-    * @return the emails value
-    */
+     * Gets or sets the preferred language for the response.
+     */
+    private String thisclientacceptLanguage;
+
+    /**
+     * Get the emails value.
+     *
+     * @return the emails value
+     */
     public List<String> emails() {
         return this.emails;
     }
 
     /**
-    * Set the emails value.
-    * <p>
-    * The email address of the users.
-    *
-    * @param emails the emails value to set
-    * @return the UpdatePermissionsOptionalParameter object itself.
-    */
+     * Set the emails value.
+     *
+     * @param emails the emails value to set
+     * @return the UpdatePermissionsOptionalParameter object itself.
+     */
     public UpdatePermissionsOptionalParameter withEmails(List<String> emails) {
         this.emails = emails;
+        return this;
+    }
+
+    /**
+     * Get the thisclientacceptLanguage value.
+     *
+     * @return the thisclientacceptLanguage value
+     */
+    public String thisclientacceptLanguage() {
+        return this.thisclientacceptLanguage;
+    }
+
+    /**
+     * Set the thisclientacceptLanguage value.
+     *
+     * @param thisclientacceptLanguage the thisclientacceptLanguage value to set
+     * @return the UpdatePermissionsOptionalParameter object itself.
+     */
+    public UpdatePermissionsOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
+        this.thisclientacceptLanguage = thisclientacceptLanguage;
         return this;
     }
 

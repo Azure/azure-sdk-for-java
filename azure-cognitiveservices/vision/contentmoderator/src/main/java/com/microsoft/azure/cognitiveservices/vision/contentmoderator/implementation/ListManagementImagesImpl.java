@@ -195,6 +195,62 @@ public class ListManagementImagesImpl implements ListManagementImages {
                 .build(response);
     }
 
+    @Override
+    public ListManagementImagesAddImageParameters addImage() {
+        return new ListManagementImagesAddImageParameters(this);
+    }
+
+    /**
+     * Internal class implementing ListManagementImagesAddImageDefinition.
+     */
+    class ListManagementImagesAddImageParameters implements ListManagementImagesAddImageDefinition {
+        private ListManagementImagesImpl parent;
+        private String listId;
+        private Integer tag;
+        private String label;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ListManagementImagesAddImageParameters(ListManagementImagesImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ListManagementImagesAddImageParameters withListId(String listId) {
+            this.listId = listId;
+            return this;
+        }
+
+        @Override
+        public ListManagementImagesAddImageParameters withTag(Integer tag) {
+            this.tag = tag;
+            return this;
+        }
+
+        @Override
+        public ListManagementImagesAddImageParameters withLabel(String label) {
+            this.label = label;
+            return this;
+        }
+
+        @Override
+        public Image execute() {
+        return addImageWithServiceResponseAsync(listId, tag, label).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<Image> executeAsync() {
+            return addImageWithServiceResponseAsync(listId, tag, label).map(new Func1<ServiceResponse<Image>, Image>() {
+                @Override
+                public Image call(ServiceResponse<Image> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
     /**
      * Deletes all images from the list with list Id equal to list Id passed.
      *
@@ -561,6 +617,76 @@ public class ListManagementImagesImpl implements ListManagementImages {
                 .build(response);
     }
 
+    @Override
+    public ListManagementImagesAddImageUrlInputParameters addImageUrlInput() {
+        return new ListManagementImagesAddImageUrlInputParameters(this);
+    }
+
+    /**
+     * Internal class implementing ListManagementImagesAddImageUrlInputDefinition.
+     */
+    class ListManagementImagesAddImageUrlInputParameters implements ListManagementImagesAddImageUrlInputDefinition {
+        private ListManagementImagesImpl parent;
+        private String listId;
+        private String contentType;
+        private BodyModelModel imageUrl;
+        private Integer tag;
+        private String label;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ListManagementImagesAddImageUrlInputParameters(ListManagementImagesImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ListManagementImagesAddImageUrlInputParameters withListId(String listId) {
+            this.listId = listId;
+            return this;
+        }
+
+        @Override
+        public ListManagementImagesAddImageUrlInputParameters withContentType(String contentType) {
+            this.contentType = contentType;
+            return this;
+        }
+
+        @Override
+        public ListManagementImagesAddImageUrlInputParameters withImageUrl(BodyModelModel imageUrl) {
+            this.imageUrl = imageUrl;
+            return this;
+        }
+
+        @Override
+        public ListManagementImagesAddImageUrlInputParameters withTag(Integer tag) {
+            this.tag = tag;
+            return this;
+        }
+
+        @Override
+        public ListManagementImagesAddImageUrlInputParameters withLabel(String label) {
+            this.label = label;
+            return this;
+        }
+
+        @Override
+        public Image execute() {
+        return addImageUrlInputWithServiceResponseAsync(listId, contentType, imageUrl, tag, label).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<Image> executeAsync() {
+            return addImageUrlInputWithServiceResponseAsync(listId, contentType, imageUrl, tag, label).map(new Func1<ServiceResponse<Image>, Image>() {
+                @Override
+                public Image call(ServiceResponse<Image> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
 
     /**
      * Add an image to the list with list Id equal to list Id passed.
@@ -675,6 +801,69 @@ public class ListManagementImagesImpl implements ListManagementImages {
                 .register(200, new TypeToken<Image>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public ListManagementImagesAddImageFileInputParameters addImageFileInput() {
+        return new ListManagementImagesAddImageFileInputParameters(this);
+    }
+
+    /**
+     * Internal class implementing ListManagementImagesAddImageFileInputDefinition.
+     */
+    class ListManagementImagesAddImageFileInputParameters implements ListManagementImagesAddImageFileInputDefinition {
+        private ListManagementImagesImpl parent;
+        private String listId;
+        private byte[] imageStream;
+        private Integer tag;
+        private String label;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ListManagementImagesAddImageFileInputParameters(ListManagementImagesImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ListManagementImagesAddImageFileInputParameters withListId(String listId) {
+            this.listId = listId;
+            return this;
+        }
+
+        @Override
+        public ListManagementImagesAddImageFileInputParameters withImageStream(byte[] imageStream) {
+            this.imageStream = imageStream;
+            return this;
+        }
+
+        @Override
+        public ListManagementImagesAddImageFileInputParameters withTag(Integer tag) {
+            this.tag = tag;
+            return this;
+        }
+
+        @Override
+        public ListManagementImagesAddImageFileInputParameters withLabel(String label) {
+            this.label = label;
+            return this;
+        }
+
+        @Override
+        public Image execute() {
+        return addImageFileInputWithServiceResponseAsync(listId, imageStream, tag, label).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<Image> executeAsync() {
+            return addImageFileInputWithServiceResponseAsync(listId, imageStream, tag, label).map(new Func1<ServiceResponse<Image>, Image>() {
+                @Override
+                public Image call(ServiceResponse<Image> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 }

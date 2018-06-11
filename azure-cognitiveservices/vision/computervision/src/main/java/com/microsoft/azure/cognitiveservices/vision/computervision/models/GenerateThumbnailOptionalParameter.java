@@ -10,33 +10,56 @@ package com.microsoft.azure.cognitiveservices.vision.computervision.models;
 
 
 /**
- * The optional parameters class for "generateThumbnail" method.
+ * The GenerateThumbnailOptionalParameter model.
  */
 public class GenerateThumbnailOptionalParameter {
     /**
-    * Boolean flag for enabling smart cropping.
-    */
+     * Boolean flag for enabling smart cropping.
+     */
     private Boolean smartCropping;
 
     /**
-    * Get the smartCropping value.
-    *
-    * @return the smartCropping value
-    */
+     * Gets or sets the preferred language for the response.
+     */
+    private String thisclientacceptLanguage;
+
+    /**
+     * Get the smartCropping value.
+     *
+     * @return the smartCropping value
+     */
     public Boolean smartCropping() {
         return this.smartCropping;
     }
 
     /**
-    * Set the smartCropping value.
-    * <p>
-    * Boolean flag for enabling smart cropping.
-    *
-    * @param smartCropping the smartCropping value to set
-    * @return the GenerateThumbnailOptionalParameter object itself.
-    */
+     * Set the smartCropping value.
+     *
+     * @param smartCropping the smartCropping value to set
+     * @return the GenerateThumbnailOptionalParameter object itself.
+     */
     public GenerateThumbnailOptionalParameter withSmartCropping(Boolean smartCropping) {
         this.smartCropping = smartCropping;
+        return this;
+    }
+
+    /**
+     * Get the thisclientacceptLanguage value.
+     *
+     * @return the thisclientacceptLanguage value
+     */
+    public String thisclientacceptLanguage() {
+        return this.thisclientacceptLanguage;
+    }
+
+    /**
+     * Set the thisclientacceptLanguage value.
+     *
+     * @param thisclientacceptLanguage the thisclientacceptLanguage value to set
+     * @return the GenerateThumbnailOptionalParameter object itself.
+     */
+    public GenerateThumbnailOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
+        this.thisclientacceptLanguage = thisclientacceptLanguage;
         return this;
     }
 

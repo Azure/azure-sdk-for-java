@@ -58,91 +58,91 @@
     "dir": "azure-cognitiveservices/search/bingnewssearch",
     "source": "cognitiveservices/data-plane/NewsSearch/readme.md",
     "package": "com.microsoft.azure.cognitiveservices.search.newssearch",
-    "args": "--license-header=MICROSOFT_MIT_NO_CODEGEN --java.fluent=false --payload-flattening-threshold=1 --tag=release_1_0 --java.with-optional-parameters --java.prefix-model-type=Bing --java.with-single-async-method"
+    "args": "--license-header=MICROSOFT_MIT_NO_CODEGEN --java.fluent=false --payload-flattening-threshold=1 --tag=release_1_0 --java.with-optional-parameters --java.prefix-model-type=Bing --java.with-single-async-method --java.with-expanded-parameters"
   },
   "cognitiveserviceswebsearch": {
     "dir": "azure-cognitiveservices/search/bingwebsearch",
     "source": "cognitiveservices/data-plane/WebSearch/readme.md",
     "package": "com.microsoft.azure.cognitiveservices.search.websearch",
-    "args": "--license-header=MICROSOFT_MIT_NO_CODEGEN --java.fluent=false --payload-flattening-threshold=1 --tag=release_1_0 --java.with-optional-parameters --java.prefix-model-type=Bing --java.with-single-async-method"
+    "args": "--license-header=MICROSOFT_MIT_NO_CODEGEN --java.fluent=false --payload-flattening-threshold=1 --tag=release_1_0 --java.with-optional-parameters --java.prefix-model-type=Bing --java.with-single-async-method --java.with-expanded-parameters"
   },
   "cognitiveservicescustomsearch": {
     "dir": "azure-cognitiveservices/search/bingcustomsearch",
-    "source": "cognitiveservices/data-plane/CustomSearch/readme.md",
+    "source": "cognitiveservices/data-plane/CustomWebSearch/readme.md",
     "package": "com.microsoft.azure.cognitiveservices.search.customsearch",
-    "args": "--license-header=MICROSOFT_MIT_NO_CODEGEN --java.fluent=false --payload-flattening-threshold=1 --tag=release_1_0 --java.with-optional-parameters --java.prefix-model-type=Bing --java.with-single-async-method"
+    "args": "--license-header=MICROSOFT_MIT_NO_CODEGEN --java.fluent=false --payload-flattening-threshold=1 --tag=release_1_0 --java.with-optional-parameters --java.prefix-model-type=Bing --java.with-single-async-method --java.with-expanded-parameters"
   },
   "cognitiveservicescustomimagesearch": {
     "dir": "azure-cognitiveservices/search/bingcustomimagesearch",
     "source": "cognitiveservices/data-plane/CustomImageSearch/readme.md",
     "package": "com.microsoft.azure.cognitiveservices.search.customimagesearch",
-    "args": "--license-header=MICROSOFT_MIT_NO_CODEGEN --java.fluent=false --payload-flattening-threshold=1 --tag=release_1_0 --java.with-optional-parameters --java.prefix-model-type=Bing --java.with-single-async-method"
+    "args": "--license-header=MICROSOFT_MIT_NO_CODEGEN --java.fluent=false --payload-flattening-threshold=1 --tag=release_1_0 --java.with-optional-parameters --java.prefix-model-type=Bing --java.with-single-async-method --java.with-expanded-parameters"
   },
   "cognitiveservicesentitysearch": {
     "dir": "azure-cognitiveservices/search/bingentitysearch",
     "source": "cognitiveservices/data-plane/EntitySearch/readme.md",
     "package": "com.microsoft.azure.cognitiveservices.search.entitysearch",
-    "args": "--license-header=MICROSOFT_MIT_NO_CODEGEN --java.fluent=false --payload-flattening-threshold=1 --tag=release_1_0 --java.with-optional-parameters --java.prefix-model-type=Bing --java.with-single-async-method"
+    "args": "--license-header=MICROSOFT_MIT_NO_CODEGEN --java.fluent=false --payload-flattening-threshold=1 --tag=release_1_0 --java.with-optional-parameters --java.prefix-model-type=Bing --java.with-single-async-method --java.with-expanded-parameters"
   },
   "cognitiveservicesimagesearch": {
     "dir": "azure-cognitiveservices/search/bingimagesearch",
     "source": "cognitiveservices/data-plane/ImageSearch/readme.md",
     "package": "com.microsoft.azure.cognitiveservices.search.imagesearch",
-    "args": "--license-header=MICROSOFT_MIT_NO_CODEGEN --java.fluent=false --payload-flattening-threshold=1 --tag=release_1_0 --java.with-optional-parameters --java.prefix-model-type=Bing --java.with-single-async-method"
+    "args": "--license-header=MICROSOFT_MIT_NO_CODEGEN --java.fluent=false --payload-flattening-threshold=1 --tag=release_1_0 --java.with-optional-parameters --java.prefix-model-type=Bing --java.with-single-async-method --java.with-expanded-parameters"
   },
   "cognitiveservicesvideosearch": {
     "dir": "azure-cognitiveservices/search/bingvideosearch",
     "source": "cognitiveservices/data-plane/VideoSearch/readme.md",
     "package": "com.microsoft.azure.cognitiveservices.search.videosearch",
-    "args": "--license-header=MICROSOFT_MIT_NO_CODEGEN --java.fluent=false --payload-flattening-threshold=1 --tag=release_1_0 --java.with-optional-parameters --java.prefix-model-type=Bing --java.with-single-async-method"
+    "args": "--license-header=MICROSOFT_MIT_NO_CODEGEN --java.fluent=false --payload-flattening-threshold=1 --tag=release_1_0 --java.with-optional-parameters --java.prefix-model-type=Bing --java.with-single-async-method --java.with-expanded-parameters"
   },
   "cognitiveservicesvisualsearch": {
     "dir": "azure-cognitiveservices/search/bingvisualsearch",
     "source": "cognitiveservices/data-plane/VisualSearch/readme.md",
     "package": "com.microsoft.azure.cognitiveservices.search.visualsearch",
-    "args": "--license-header=MICROSOFT_MIT_NO_CODEGEN --java.fluent=false --payload-flattening-threshold=1 --tag=release_1_0 --java.with-optional-parameters --java.prefix-model-type=Bing --java.with-single-async-method"
+    "args": "--license-header=MICROSOFT_MIT_NO_CODEGEN --java.fluent=false --payload-flattening-threshold=1 --tag=release_1_0 --java.with-optional-parameters --java.prefix-model-type=Bing --java.with-single-async-method --java.with-expanded-parameters"
   },
   "cognitiveservicesspellcheck": {
     "dir": "azure-cognitiveservices/language/bingspellcheck",
     "source": "cognitiveservices/data-plane/SpellCheck/readme.md",
     "package": "com.microsoft.azure.cognitiveservices.language.spellcheck",
-    "args": "--license-header=MICROSOFT_MIT_NO_CODEGEN --java.fluent=false --payload-flattening-threshold=1 --tag=release_1_0 --java.with-optional-parameters --java.prefix-model-type=Bing --java.with-single-async-method --java.with-default-group-name=BingSpellCheckOperations"
+    "args": "--license-header=MICROSOFT_MIT_NO_CODEGEN --java.fluent=false --payload-flattening-threshold=1 --tag=release_1_0 --java.with-optional-parameters --java.prefix-model-type=Bing --java.with-single-async-method --java.with-default-group-name=BingSpellCheckOperations --java.with-expanded-parameters"
   },
   "cognitiveservicestextanalytics": {
     "dir": "azure-cognitiveservices/language/textanalytics",
     "source": "cognitiveservices/data-plane/TextAnalytics/readme.md",
     "package": "com.microsoft.azure.cognitiveservices.language.textanalytics",
-    "args": "--license-header=MICROSOFT_MIT_NO_CODEGEN --java.fluent=false --payload-flattening-threshold=1 --tag=release_2_0 --java.with-optional-parameters --java.with-single-async-method --java.with-default-group-name=TextAnalytics"
+    "args": "--license-header=MICROSOFT_MIT_NO_CODEGEN --java.fluent=false --payload-flattening-threshold=1 --tag=release_2_0 --java.with-optional-parameters --java.with-single-async-method --java.with-default-group-name=TextAnalytics --java.with-expanded-parameters"
   },
   "cognitiveservicesluisauthoring": {
     "dir": "azure-cognitiveservices/language/luis/authoring",
     "source": "cognitiveservices/data-plane/LUIS/Authoring/readme.md",
     "package": "com.microsoft.azure.cognitiveservices.language.luis.authoring",
-    "args": "--license-header=MICROSOFT_MIT_NO_CODEGEN --java.fluent=false --payload-flattening-threshold=1 --tag=authoring_2_0 --java.with-optional-parameters --java.with-single-async-method"
+    "args": "--license-header=MICROSOFT_MIT_NO_CODEGEN --java.fluent=false --payload-flattening-threshold=1 --tag=authoring_2_0 --java.with-optional-parameters --java.with-single-async-method --java.with-expanded-parameters"
   },
   "cognitiveservicesluisruntime": {
     "dir": "azure-cognitiveservices/language/luis/runtime",
     "source": "cognitiveservices/data-plane/LUIS/Runtime/readme.md",
     "package": "com.microsoft.azure.cognitiveservices.language.luis.runtime",
-    "args": "--license-header=MICROSOFT_MIT_NO_CODEGEN --java.fluent=false --payload-flattening-threshold=1 --tag=runtime_2_0 --java.with-optional-parameters --java.with-single-async-method"
+    "args": "--license-header=MICROSOFT_MIT_NO_CODEGEN --java.fluent=false --payload-flattening-threshold=1 --tag=runtime_2_0 --java.with-optional-parameters --java.with-single-async-method --java.with-expanded-parameters"
   },
   "cognitiveservicescomputervision": {
     "dir": "azure-cognitiveservices/vision/computervision",
     "source": "cognitiveservices/data-plane/ComputerVision/readme.md",
     "package": "com.microsoft.azure.cognitiveservices.vision.computervision",
-    "args": "--license-header=MICROSOFT_MIT_NO_CODEGEN --java.fluent=false --payload-flattening-threshold=1 --tag=release_2_0 --java.with-optional-parameters --java.with-single-async-method --java.with-default-group-name=ComputerVision"
+    "args": "--license-header=MICROSOFT_MIT_NO_CODEGEN --java.fluent=false --payload-flattening-threshold=1 --tag=release_2_0 --java.with-optional-parameters --java.with-single-async-method --java.with-default-group-name=ComputerVision --java.with-expanded-parameters"
   },
   "cognitiveservicescontentmoderator": {
     "dir": "azure-cognitiveservices/vision/contentmoderator",
     "source": "cognitiveservices/data-plane/ContentModerator/readme.md",
     "package": "com.microsoft.azure.cognitiveservices.vision.contentmoderator",
-    "args": "--license-header=MICROSOFT_MIT_NO_CODEGEN --java.fluent=false --payload-flattening-threshold=1 --tag=release_2_0 --java.with-optional-parameters --java.with-single-async-method"
+    "args": "--license-header=MICROSOFT_MIT_NO_CODEGEN --java.fluent=false --payload-flattening-threshold=1 --tag=release_2_0 --java.with-optional-parameters --java.with-single-async-method --java.with-expanded-parameters"
   },
   "cognitiveservicesfaceapi": {
     "dir": "azure-cognitiveservices/vision/faceapi",
     "source": "cognitiveservices/data-plane/Face/readme.md",
     "package": "com.microsoft.azure.cognitiveservices.vision.faceapi",
-    "args": "--license-header=MICROSOFT_MIT_NO_CODEGEN --java.fluent=false --payload-flattening-threshold=1 --tag=release_2_0 --java.with-optional-parameters --java.with-single-async-method"
+    "args": "--license-header=MICROSOFT_MIT_NO_CODEGEN --java.fluent=false --payload-flattening-threshold=1 --tag=release_2_0 --java.with-optional-parameters --java.with-single-async-method --java.with-expanded-parameters"
   },
   "compute": {
     "dir": "archive/azure-mgmt-compute",

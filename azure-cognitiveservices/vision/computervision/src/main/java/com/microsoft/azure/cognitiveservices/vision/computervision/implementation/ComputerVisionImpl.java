@@ -9,11 +9,15 @@
 package com.microsoft.azure.cognitiveservices.vision.computervision.implementation;
 
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.RecognizeTextInStreamOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.AnalyzeImageByDomainInStreamOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.TagImageInStreamOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.DescribeImageInStreamOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.RecognizePrintedTextInStreamOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.GenerateThumbnailInStreamOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.AnalyzeImageInStreamOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.RecognizeTextOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.AnalyzeImageByDomainOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.TagImageOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.DescribeImageOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.RecognizePrintedTextOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.GenerateThumbnailOptionalParameter;
@@ -26,11 +30,9 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.ComputerVisionErrorException;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.Details;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.DomainModelResults;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.DomainModels;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.ImageAnalysis;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.ImageDescription;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.ImageUrl;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.Language1;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.ListModelsResult;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.OcrLanguages;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.OcrResult;
@@ -95,15 +97,15 @@ public class ComputerVisionImpl implements ComputerVision {
 
         @Headers({ "Content-Type: application/octet-stream", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.computervision.ComputerVision analyzeImageByDomainInStream" })
         @POST("models/{model}/analyze")
-        Observable<Response<ResponseBody>> analyzeImageByDomainInStream(@Path("model") String model, @Body RequestBody image, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> analyzeImageByDomainInStream(@Path("model") String model, @Query("language") String language, @Body RequestBody image, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/octet-stream", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.computervision.ComputerVision tagImageInStream" })
         @POST("tag")
-        Observable<Response<ResponseBody>> tagImageInStream(@Body RequestBody image, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> tagImageInStream(@Query("language") String language, @Body RequestBody image, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/octet-stream", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.computervision.ComputerVision describeImageInStream" })
         @POST("describe")
-        Observable<Response<ResponseBody>> describeImageInStream(@Query("maxCandidates") String maxCandidates, @Body RequestBody image, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> describeImageInStream(@Query("maxCandidates") String maxCandidates, @Query("language") String language, @Body RequestBody image, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/octet-stream", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.computervision.ComputerVision recognizePrintedTextInStream" })
         @POST("ocr")
@@ -128,15 +130,15 @@ public class ComputerVisionImpl implements ComputerVision {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.computervision.ComputerVision analyzeImageByDomain" })
         @POST("models/{model}/analyze")
-        Observable<Response<ResponseBody>> analyzeImageByDomain(@Path("model") DomainModels model, @Header("accept-language") String acceptLanguage, @Body ImageUrl imageUrl, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> analyzeImageByDomain(@Path("model") String model, @Query("language") String language, @Header("accept-language") String acceptLanguage, @Body ImageUrl imageUrl, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.computervision.ComputerVision tagImage" })
         @POST("tag")
-        Observable<Response<ResponseBody>> tagImage(@Header("accept-language") String acceptLanguage, @Body ImageUrl imageUrl, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> tagImage(@Query("language") String language, @Header("accept-language") String acceptLanguage, @Body ImageUrl imageUrl, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.computervision.ComputerVision describeImage" })
         @POST("describe")
-        Observable<Response<ResponseBody>> describeImage(@Query("maxCandidates") String maxCandidates, @Header("accept-language") String acceptLanguage, @Body ImageUrl imageUrl, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> describeImage(@Query("maxCandidates") String maxCandidates, @Query("language") String language, @Header("accept-language") String acceptLanguage, @Body ImageUrl imageUrl, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.computervision.ComputerVision recognizePrintedText" })
         @POST("ocr")
@@ -149,7 +151,7 @@ public class ComputerVisionImpl implements ComputerVision {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.computervision.ComputerVision analyzeImage" })
         @POST("analyze")
-        Observable<Response<ResponseBody>> analyzeImage(@Query("visualFeatures") String visualFeatures, @Query("details") String details, @Query("language") Language1 language, @Header("accept-language") String acceptLanguage, @Body ImageUrl imageUrl, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> analyzeImage(@Query("visualFeatures") String visualFeatures, @Query("details") String details, @Query("language") String language, @Header("accept-language") String acceptLanguage, @Body ImageUrl imageUrl, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.computervision.ComputerVision listModels" })
         @GET("models")
@@ -159,7 +161,7 @@ public class ComputerVisionImpl implements ComputerVision {
 
 
     /**
-     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called “Operation-Location”. The “Operation-Location” field contains the URL that you must use for your Get Handwritten Text Operation Result operation.
+     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Handwritten Text Operation Result operation.
      *
      * @param image An image stream.
      * @param recognizeTextInStreamOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -172,7 +174,7 @@ public class ComputerVisionImpl implements ComputerVision {
     }
 
     /**
-     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called “Operation-Location”. The “Operation-Location” field contains the URL that you must use for your Get Handwritten Text Operation Result operation.
+     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Handwritten Text Operation Result operation.
      *
      * @param image An image stream.
      * @param recognizeTextInStreamOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -185,7 +187,7 @@ public class ComputerVisionImpl implements ComputerVision {
     }
 
     /**
-     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called “Operation-Location”. The “Operation-Location” field contains the URL that you must use for your Get Handwritten Text Operation Result operation.
+     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Handwritten Text Operation Result operation.
      *
      * @param image An image stream.
      * @param recognizeTextInStreamOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -202,7 +204,7 @@ public class ComputerVisionImpl implements ComputerVision {
     }
 
     /**
-     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called “Operation-Location”. The “Operation-Location” field contains the URL that you must use for your Get Handwritten Text Operation Result operation.
+     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Handwritten Text Operation Result operation.
      *
      * @param image An image stream.
      * @param recognizeTextInStreamOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -222,10 +224,10 @@ public class ComputerVisionImpl implements ComputerVision {
     }
 
     /**
-     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called “Operation-Location”. The “Operation-Location” field contains the URL that you must use for your Get Handwritten Text Operation Result operation.
+     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Handwritten Text Operation Result operation.
      *
      * @param image An image stream.
-     * @param detectHandwriting If “true” is specified, handwriting recognition is performed. If this parameter is set to “false” or is not specified, printed text recognition is performed.
+     * @param detectHandwriting If 'true' is specified, handwriting recognition is performed. If this parameter is set to 'false' or is not specified, printed text recognition is performed.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
@@ -259,18 +261,69 @@ public class ComputerVisionImpl implements ComputerVision {
                 .buildWithHeaders(response, RecognizeTextInStreamHeaders.class);
     }
 
+    @Override
+    public ComputerVisionRecognizeTextInStreamParameters recognizeTextInStream() {
+        return new ComputerVisionRecognizeTextInStreamParameters(this);
+    }
+
+    /**
+     * Internal class implementing ComputerVisionRecognizeTextInStreamDefinition.
+     */
+    class ComputerVisionRecognizeTextInStreamParameters implements ComputerVisionRecognizeTextInStreamDefinition {
+        private ComputerVisionImpl parent;
+        private byte[] image;
+        private Boolean detectHandwriting;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ComputerVisionRecognizeTextInStreamParameters(ComputerVisionImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ComputerVisionRecognizeTextInStreamParameters withImage(byte[] image) {
+            this.image = image;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionRecognizeTextInStreamParameters withDetectHandwriting(Boolean detectHandwriting) {
+            this.detectHandwriting = detectHandwriting;
+            return this;
+        }
+
+        @Override
+        public void execute() {
+        recognizeTextInStreamWithServiceResponseAsync(image, detectHandwriting).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<Void> executeAsync() {
+            return recognizeTextInStreamWithServiceResponseAsync(image, detectHandwriting).map(new Func1<ServiceResponseWithHeaders<Void, RecognizeTextInStreamHeaders>, Void>() {
+                @Override
+                public Void call(ServiceResponseWithHeaders<Void, RecognizeTextInStreamHeaders> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
+
     /**
      * This operation recognizes content within an image by applying a domain-specific model.  The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request.  Currently, the API only provides a single domain-specific model: celebrities. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
      * @param model The domain-specific content to recognize.
      * @param image An image stream.
+     * @param analyzeImageByDomainInStreamOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DomainModelResults object if successful.
      */
-    public DomainModelResults analyzeImageByDomainInStream(String model, byte[] image) {
-        return analyzeImageByDomainInStreamWithServiceResponseAsync(model, image).toBlocking().single().body();
+    public DomainModelResults analyzeImageByDomainInStream(String model, byte[] image, AnalyzeImageByDomainInStreamOptionalParameter analyzeImageByDomainInStreamOptionalParameter) {
+        return analyzeImageByDomainInStreamWithServiceResponseAsync(model, image, analyzeImageByDomainInStreamOptionalParameter).toBlocking().single().body();
     }
 
     /**
@@ -278,12 +331,13 @@ public class ComputerVisionImpl implements ComputerVision {
      *
      * @param model The domain-specific content to recognize.
      * @param image An image stream.
+     * @param analyzeImageByDomainInStreamOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<DomainModelResults> analyzeImageByDomainInStreamAsync(String model, byte[] image, final ServiceCallback<DomainModelResults> serviceCallback) {
-        return ServiceFuture.fromResponse(analyzeImageByDomainInStreamWithServiceResponseAsync(model, image), serviceCallback);
+    public ServiceFuture<DomainModelResults> analyzeImageByDomainInStreamAsync(String model, byte[] image, AnalyzeImageByDomainInStreamOptionalParameter analyzeImageByDomainInStreamOptionalParameter, final ServiceCallback<DomainModelResults> serviceCallback) {
+        return ServiceFuture.fromResponse(analyzeImageByDomainInStreamWithServiceResponseAsync(model, image, analyzeImageByDomainInStreamOptionalParameter), serviceCallback);
     }
 
     /**
@@ -291,11 +345,12 @@ public class ComputerVisionImpl implements ComputerVision {
      *
      * @param model The domain-specific content to recognize.
      * @param image An image stream.
+     * @param analyzeImageByDomainInStreamOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DomainModelResults object
      */
-    public Observable<DomainModelResults> analyzeImageByDomainInStreamAsync(String model, byte[] image) {
-        return analyzeImageByDomainInStreamWithServiceResponseAsync(model, image).map(new Func1<ServiceResponse<DomainModelResults>, DomainModelResults>() {
+    public Observable<DomainModelResults> analyzeImageByDomainInStreamAsync(String model, byte[] image, AnalyzeImageByDomainInStreamOptionalParameter analyzeImageByDomainInStreamOptionalParameter) {
+        return analyzeImageByDomainInStreamWithServiceResponseAsync(model, image, analyzeImageByDomainInStreamOptionalParameter).map(new Func1<ServiceResponse<DomainModelResults>, DomainModelResults>() {
             @Override
             public DomainModelResults call(ServiceResponse<DomainModelResults> response) {
                 return response.body();
@@ -308,10 +363,35 @@ public class ComputerVisionImpl implements ComputerVision {
      *
      * @param model The domain-specific content to recognize.
      * @param image An image stream.
+     * @param analyzeImageByDomainInStreamOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DomainModelResults object
      */
-    public Observable<ServiceResponse<DomainModelResults>> analyzeImageByDomainInStreamWithServiceResponseAsync(String model, byte[] image) {
+    public Observable<ServiceResponse<DomainModelResults>> analyzeImageByDomainInStreamWithServiceResponseAsync(String model, byte[] image, AnalyzeImageByDomainInStreamOptionalParameter analyzeImageByDomainInStreamOptionalParameter) {
+        if (this.client.azureRegion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        }
+        if (model == null) {
+            throw new IllegalArgumentException("Parameter model is required and cannot be null.");
+        }
+        if (image == null) {
+            throw new IllegalArgumentException("Parameter image is required and cannot be null.");
+        }
+        final String language = analyzeImageByDomainInStreamOptionalParameter != null ? analyzeImageByDomainInStreamOptionalParameter.language() : null;
+
+        return analyzeImageByDomainInStreamWithServiceResponseAsync(model, image, language);
+    }
+
+    /**
+     * This operation recognizes content within an image by applying a domain-specific model.  The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request.  Currently, the API only provides a single domain-specific model: celebrities. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param model The domain-specific content to recognize.
+     * @param image An image stream.
+     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default.ja - Japanese pt - Portuguese zh - Simplified Chinese. Possible values include: 'en', 'ja', 'pt', 'zh'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the DomainModelResults object
+     */
+    public Observable<ServiceResponse<DomainModelResults>> analyzeImageByDomainInStreamWithServiceResponseAsync(String model, byte[] image, String language) {
         if (this.client.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
         }
@@ -323,7 +403,7 @@ public class ComputerVisionImpl implements ComputerVision {
         }
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
         RequestBody imageConverted = RequestBody.create(MediaType.parse("application/octet-stream"), image);
-        return service.analyzeImageByDomainInStream(model, imageConverted, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.analyzeImageByDomainInStream(model, language, imageConverted, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DomainModelResults>>>() {
                 @Override
                 public Observable<ServiceResponse<DomainModelResults>> call(Response<ResponseBody> response) {
@@ -344,40 +424,100 @@ public class ComputerVisionImpl implements ComputerVision {
                 .build(response);
     }
 
+    @Override
+    public ComputerVisionAnalyzeImageByDomainInStreamParameters analyzeImageByDomainInStream() {
+        return new ComputerVisionAnalyzeImageByDomainInStreamParameters(this);
+    }
+
     /**
-     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag “cello” may be accompanied by the hint “musical instrument”. All tags are in English.
+     * Internal class implementing ComputerVisionAnalyzeImageByDomainInStreamDefinition.
+     */
+    class ComputerVisionAnalyzeImageByDomainInStreamParameters implements ComputerVisionAnalyzeImageByDomainInStreamDefinition {
+        private ComputerVisionImpl parent;
+        private String model;
+        private byte[] image;
+        private String language;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ComputerVisionAnalyzeImageByDomainInStreamParameters(ComputerVisionImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ComputerVisionAnalyzeImageByDomainInStreamParameters withModel(String model) {
+            this.model = model;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionAnalyzeImageByDomainInStreamParameters withImage(byte[] image) {
+            this.image = image;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionAnalyzeImageByDomainInStreamParameters withLanguage(String language) {
+            this.language = language;
+            return this;
+        }
+
+        @Override
+        public DomainModelResults execute() {
+        return analyzeImageByDomainInStreamWithServiceResponseAsync(model, image, language).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<DomainModelResults> executeAsync() {
+            return analyzeImageByDomainInStreamWithServiceResponseAsync(model, image, language).map(new Func1<ServiceResponse<DomainModelResults>, DomainModelResults>() {
+                @Override
+                public DomainModelResults call(ServiceResponse<DomainModelResults> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
+
+    /**
+     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag 'cello' may be accompanied by the hint 'musical instrument'. All tags are in English.
      *
      * @param image An image stream.
+     * @param tagImageInStreamOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TagResult object if successful.
      */
-    public TagResult tagImageInStream(byte[] image) {
-        return tagImageInStreamWithServiceResponseAsync(image).toBlocking().single().body();
+    public TagResult tagImageInStream(byte[] image, TagImageInStreamOptionalParameter tagImageInStreamOptionalParameter) {
+        return tagImageInStreamWithServiceResponseAsync(image, tagImageInStreamOptionalParameter).toBlocking().single().body();
     }
 
     /**
-     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag “cello” may be accompanied by the hint “musical instrument”. All tags are in English.
+     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag 'cello' may be accompanied by the hint 'musical instrument'. All tags are in English.
      *
      * @param image An image stream.
+     * @param tagImageInStreamOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<TagResult> tagImageInStreamAsync(byte[] image, final ServiceCallback<TagResult> serviceCallback) {
-        return ServiceFuture.fromResponse(tagImageInStreamWithServiceResponseAsync(image), serviceCallback);
+    public ServiceFuture<TagResult> tagImageInStreamAsync(byte[] image, TagImageInStreamOptionalParameter tagImageInStreamOptionalParameter, final ServiceCallback<TagResult> serviceCallback) {
+        return ServiceFuture.fromResponse(tagImageInStreamWithServiceResponseAsync(image, tagImageInStreamOptionalParameter), serviceCallback);
     }
 
     /**
-     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag “cello” may be accompanied by the hint “musical instrument”. All tags are in English.
+     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag 'cello' may be accompanied by the hint 'musical instrument'. All tags are in English.
      *
      * @param image An image stream.
+     * @param tagImageInStreamOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TagResult object
      */
-    public Observable<TagResult> tagImageInStreamAsync(byte[] image) {
-        return tagImageInStreamWithServiceResponseAsync(image).map(new Func1<ServiceResponse<TagResult>, TagResult>() {
+    public Observable<TagResult> tagImageInStreamAsync(byte[] image, TagImageInStreamOptionalParameter tagImageInStreamOptionalParameter) {
+        return tagImageInStreamWithServiceResponseAsync(image, tagImageInStreamOptionalParameter).map(new Func1<ServiceResponse<TagResult>, TagResult>() {
             @Override
             public TagResult call(ServiceResponse<TagResult> response) {
                 return response.body();
@@ -386,13 +526,34 @@ public class ComputerVisionImpl implements ComputerVision {
     }
 
     /**
-     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag “cello” may be accompanied by the hint “musical instrument”. All tags are in English.
+     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag 'cello' may be accompanied by the hint 'musical instrument'. All tags are in English.
      *
      * @param image An image stream.
+     * @param tagImageInStreamOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TagResult object
      */
-    public Observable<ServiceResponse<TagResult>> tagImageInStreamWithServiceResponseAsync(byte[] image) {
+    public Observable<ServiceResponse<TagResult>> tagImageInStreamWithServiceResponseAsync(byte[] image, TagImageInStreamOptionalParameter tagImageInStreamOptionalParameter) {
+        if (this.client.azureRegion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        }
+        if (image == null) {
+            throw new IllegalArgumentException("Parameter image is required and cannot be null.");
+        }
+        final String language = tagImageInStreamOptionalParameter != null ? tagImageInStreamOptionalParameter.language() : null;
+
+        return tagImageInStreamWithServiceResponseAsync(image, language);
+    }
+
+    /**
+     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag 'cello' may be accompanied by the hint 'musical instrument'. All tags are in English.
+     *
+     * @param image An image stream.
+     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default.ja - Japanese pt - Portuguese zh - Simplified Chinese. Possible values include: 'en', 'ja', 'pt', 'zh'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the TagResult object
+     */
+    public Observable<ServiceResponse<TagResult>> tagImageInStreamWithServiceResponseAsync(byte[] image, String language) {
         if (this.client.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
         }
@@ -401,7 +562,7 @@ public class ComputerVisionImpl implements ComputerVision {
         }
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
         RequestBody imageConverted = RequestBody.create(MediaType.parse("application/octet-stream"), image);
-        return service.tagImageInStream(imageConverted, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.tagImageInStream(language, imageConverted, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TagResult>>>() {
                 @Override
                 public Observable<ServiceResponse<TagResult>> call(Response<ResponseBody> response) {
@@ -420,6 +581,55 @@ public class ComputerVisionImpl implements ComputerVision {
                 .register(200, new TypeToken<TagResult>() { }.getType())
                 .registerError(ComputerVisionErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public ComputerVisionTagImageInStreamParameters tagImageInStream() {
+        return new ComputerVisionTagImageInStreamParameters(this);
+    }
+
+    /**
+     * Internal class implementing ComputerVisionTagImageInStreamDefinition.
+     */
+    class ComputerVisionTagImageInStreamParameters implements ComputerVisionTagImageInStreamDefinition {
+        private ComputerVisionImpl parent;
+        private byte[] image;
+        private String language;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ComputerVisionTagImageInStreamParameters(ComputerVisionImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ComputerVisionTagImageInStreamParameters withImage(byte[] image) {
+            this.image = image;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionTagImageInStreamParameters withLanguage(String language) {
+            this.language = language;
+            return this;
+        }
+
+        @Override
+        public TagResult execute() {
+        return tagImageInStreamWithServiceResponseAsync(image, language).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<TagResult> executeAsync() {
+            return tagImageInStreamWithServiceResponseAsync(image, language).map(new Func1<ServiceResponse<TagResult>, TagResult>() {
+                @Override
+                public TagResult call(ServiceResponse<TagResult> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 
@@ -483,8 +693,9 @@ public class ComputerVisionImpl implements ComputerVision {
             throw new IllegalArgumentException("Parameter image is required and cannot be null.");
         }
         final String maxCandidates = describeImageInStreamOptionalParameter != null ? describeImageInStreamOptionalParameter.maxCandidates() : null;
+        final String language = describeImageInStreamOptionalParameter != null ? describeImageInStreamOptionalParameter.language() : null;
 
-        return describeImageInStreamWithServiceResponseAsync(image, maxCandidates);
+        return describeImageInStreamWithServiceResponseAsync(image, maxCandidates, language);
     }
 
     /**
@@ -492,10 +703,11 @@ public class ComputerVisionImpl implements ComputerVision {
      *
      * @param image An image stream.
      * @param maxCandidates Maximum number of candidate descriptions to be returned.  The default is 1.
+     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default.ja - Japanese pt - Portuguese zh - Simplified Chinese. Possible values include: 'en', 'ja', 'pt', 'zh'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageDescription object
      */
-    public Observable<ServiceResponse<ImageDescription>> describeImageInStreamWithServiceResponseAsync(byte[] image, String maxCandidates) {
+    public Observable<ServiceResponse<ImageDescription>> describeImageInStreamWithServiceResponseAsync(byte[] image, String maxCandidates, String language) {
         if (this.client.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
         }
@@ -504,7 +716,7 @@ public class ComputerVisionImpl implements ComputerVision {
         }
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
         RequestBody imageConverted = RequestBody.create(MediaType.parse("application/octet-stream"), image);
-        return service.describeImageInStream(maxCandidates, imageConverted, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.describeImageInStream(maxCandidates, language, imageConverted, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImageDescription>>>() {
                 @Override
                 public Observable<ServiceResponse<ImageDescription>> call(Response<ResponseBody> response) {
@@ -523,6 +735,62 @@ public class ComputerVisionImpl implements ComputerVision {
                 .register(200, new TypeToken<ImageDescription>() { }.getType())
                 .registerError(ComputerVisionErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public ComputerVisionDescribeImageInStreamParameters describeImageInStream() {
+        return new ComputerVisionDescribeImageInStreamParameters(this);
+    }
+
+    /**
+     * Internal class implementing ComputerVisionDescribeImageInStreamDefinition.
+     */
+    class ComputerVisionDescribeImageInStreamParameters implements ComputerVisionDescribeImageInStreamDefinition {
+        private ComputerVisionImpl parent;
+        private byte[] image;
+        private String maxCandidates;
+        private String language;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ComputerVisionDescribeImageInStreamParameters(ComputerVisionImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ComputerVisionDescribeImageInStreamParameters withImage(byte[] image) {
+            this.image = image;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionDescribeImageInStreamParameters withMaxCandidates(String maxCandidates) {
+            this.maxCandidates = maxCandidates;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionDescribeImageInStreamParameters withLanguage(String language) {
+            this.language = language;
+            return this;
+        }
+
+        @Override
+        public ImageDescription execute() {
+        return describeImageInStreamWithServiceResponseAsync(image, maxCandidates, language).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<ImageDescription> executeAsync() {
+            return describeImageInStreamWithServiceResponseAsync(image, maxCandidates, language).map(new Func1<ServiceResponse<ImageDescription>, ImageDescription>() {
+                @Override
+                public ImageDescription call(ServiceResponse<ImageDescription> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 
@@ -633,6 +901,62 @@ public class ComputerVisionImpl implements ComputerVision {
                 .build(response);
     }
 
+    @Override
+    public ComputerVisionRecognizePrintedTextInStreamParameters recognizePrintedTextInStream() {
+        return new ComputerVisionRecognizePrintedTextInStreamParameters(this);
+    }
+
+    /**
+     * Internal class implementing ComputerVisionRecognizePrintedTextInStreamDefinition.
+     */
+    class ComputerVisionRecognizePrintedTextInStreamParameters implements ComputerVisionRecognizePrintedTextInStreamDefinition {
+        private ComputerVisionImpl parent;
+        private boolean detectOrientation;
+        private byte[] image;
+        private OcrLanguages language;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ComputerVisionRecognizePrintedTextInStreamParameters(ComputerVisionImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ComputerVisionRecognizePrintedTextInStreamParameters withDetectOrientation(boolean detectOrientation) {
+            this.detectOrientation = detectOrientation;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionRecognizePrintedTextInStreamParameters withImage(byte[] image) {
+            this.image = image;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionRecognizePrintedTextInStreamParameters withLanguage(OcrLanguages language) {
+            this.language = language;
+            return this;
+        }
+
+        @Override
+        public OcrResult execute() {
+        return recognizePrintedTextInStreamWithServiceResponseAsync(detectOrientation, image, language).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<OcrResult> executeAsync() {
+            return recognizePrintedTextInStreamWithServiceResponseAsync(detectOrientation, image, language).map(new Func1<ServiceResponse<OcrResult>, OcrResult>() {
+                @Override
+                public OcrResult call(ServiceResponse<OcrResult> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
 
     /**
      * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image. A successful response contains the thumbnail image binary. If the request failed, the response contains an error code and a message to help determine what went wrong.
@@ -642,7 +966,7 @@ public class ComputerVisionImpl implements ComputerVision {
      * @param image An image stream.
      * @param generateThumbnailInStreamOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ComputerVisionErrorException thrown if the request is rejected by server
+     * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the InputStream object if successful.
      */
@@ -739,11 +1063,74 @@ public class ComputerVisionImpl implements ComputerVision {
             });
     }
 
-    private ServiceResponse<InputStream> generateThumbnailInStreamDelegate(Response<ResponseBody> response) throws ComputerVisionErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<InputStream, ComputerVisionErrorException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<InputStream> generateThumbnailInStreamDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<InputStream, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<InputStream>() { }.getType())
-                .registerError(ComputerVisionErrorException.class)
+                .registerError(CloudException.class)
                 .build(response);
+    }
+
+    @Override
+    public ComputerVisionGenerateThumbnailInStreamParameters generateThumbnailInStream() {
+        return new ComputerVisionGenerateThumbnailInStreamParameters(this);
+    }
+
+    /**
+     * Internal class implementing ComputerVisionGenerateThumbnailInStreamDefinition.
+     */
+    class ComputerVisionGenerateThumbnailInStreamParameters implements ComputerVisionGenerateThumbnailInStreamDefinition {
+        private ComputerVisionImpl parent;
+        private int width;
+        private int height;
+        private byte[] image;
+        private Boolean smartCropping;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ComputerVisionGenerateThumbnailInStreamParameters(ComputerVisionImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ComputerVisionGenerateThumbnailInStreamParameters withWidth(int width) {
+            this.width = width;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionGenerateThumbnailInStreamParameters withHeight(int height) {
+            this.height = height;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionGenerateThumbnailInStreamParameters withImage(byte[] image) {
+            this.image = image;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionGenerateThumbnailInStreamParameters withSmartCropping(Boolean smartCropping) {
+            this.smartCropping = smartCropping;
+            return this;
+        }
+
+        @Override
+        public InputStream execute() {
+        return generateThumbnailInStreamWithServiceResponseAsync(width, height, image, smartCropping).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<InputStream> executeAsync() {
+            return generateThumbnailInStreamWithServiceResponseAsync(width, height, image, smartCropping).map(new Func1<ServiceResponse<InputStream>, InputStream>() {
+                @Override
+                public InputStream call(ServiceResponse<InputStream> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 
@@ -819,7 +1206,7 @@ public class ComputerVisionImpl implements ComputerVision {
      * @param image An image stream.
      * @param visualFeatures A string indicating what visual feature types to return. Multiple values should be comma-separated. Valid visual feature types include:Categories - categorizes image content according to a taxonomy defined in documentation. Tags - tags the image with a detailed list of words related to the image content. Description - describes the image content with a complete English sentence. Faces - detects if faces are present. If present, generate coordinates, gender and age. ImageType - detects if image is clipart or a line drawing. Color - determines the accent color, dominant color, and whether an image is black&amp;white.Adult - detects if the image is pornographic in nature (depicts nudity or a sex act).  Sexually suggestive content is also detected.
      * @param details A string indicating which domain-specific details to return. Multiple values should be comma-separated. Valid visual feature types include:Celebrities - identifies celebrities if detected in the image. Possible values include: 'Celebrities', 'Landmarks'
-     * @param language A string indicating which language to return. The service will return recognition results in specified language. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default.zh - Simplified Chinese. Possible values include: 'en', 'zh'
+     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default.ja - Japanese pt - Portuguese zh - Simplified Chinese. Possible values include: 'en', 'ja', 'pt', 'zh'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageAnalysis object
      */
@@ -853,6 +1240,69 @@ public class ComputerVisionImpl implements ComputerVision {
                 .register(200, new TypeToken<ImageAnalysis>() { }.getType())
                 .registerError(ComputerVisionErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public ComputerVisionAnalyzeImageInStreamParameters analyzeImageInStream() {
+        return new ComputerVisionAnalyzeImageInStreamParameters(this);
+    }
+
+    /**
+     * Internal class implementing ComputerVisionAnalyzeImageInStreamDefinition.
+     */
+    class ComputerVisionAnalyzeImageInStreamParameters implements ComputerVisionAnalyzeImageInStreamDefinition {
+        private ComputerVisionImpl parent;
+        private byte[] image;
+        private List<VisualFeatureTypes> visualFeatures;
+        private String details;
+        private String language;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ComputerVisionAnalyzeImageInStreamParameters(ComputerVisionImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ComputerVisionAnalyzeImageInStreamParameters withImage(byte[] image) {
+            this.image = image;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionAnalyzeImageInStreamParameters withVisualFeatures(List<VisualFeatureTypes> visualFeatures) {
+            this.visualFeatures = visualFeatures;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionAnalyzeImageInStreamParameters withDetails(String details) {
+            this.details = details;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionAnalyzeImageInStreamParameters withLanguage(String language) {
+            this.language = language;
+            return this;
+        }
+
+        @Override
+        public ImageAnalysis execute() {
+        return analyzeImageInStreamWithServiceResponseAsync(image, visualFeatures, details, language).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<ImageAnalysis> executeAsync() {
+            return analyzeImageInStreamWithServiceResponseAsync(image, visualFeatures, details, language).map(new Func1<ServiceResponse<ImageAnalysis>, ImageAnalysis>() {
+                @Override
+                public ImageAnalysis call(ServiceResponse<ImageAnalysis> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
     /**
@@ -934,9 +1384,9 @@ public class ComputerVisionImpl implements ComputerVision {
 
 
     /**
-     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called “Operation-Location”. The “Operation-Location” field contains the URL that you must use for your Get Handwritten Text Operation Result operation.
+     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Handwritten Text Operation Result operation.
      *
-     * @param url the String value
+     * @param url Publicly reachable URL of an image
      * @param recognizeTextOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
@@ -947,9 +1397,9 @@ public class ComputerVisionImpl implements ComputerVision {
     }
 
     /**
-     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called “Operation-Location”. The “Operation-Location” field contains the URL that you must use for your Get Handwritten Text Operation Result operation.
+     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Handwritten Text Operation Result operation.
      *
-     * @param url the String value
+     * @param url Publicly reachable URL of an image
      * @param recognizeTextOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -960,9 +1410,9 @@ public class ComputerVisionImpl implements ComputerVision {
     }
 
     /**
-     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called “Operation-Location”. The “Operation-Location” field contains the URL that you must use for your Get Handwritten Text Operation Result operation.
+     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Handwritten Text Operation Result operation.
      *
-     * @param url the String value
+     * @param url Publicly reachable URL of an image
      * @param recognizeTextOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
@@ -977,9 +1427,9 @@ public class ComputerVisionImpl implements ComputerVision {
     }
 
     /**
-     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called “Operation-Location”. The “Operation-Location” field contains the URL that you must use for your Get Handwritten Text Operation Result operation.
+     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Handwritten Text Operation Result operation.
      *
-     * @param url the String value
+     * @param url Publicly reachable URL of an image
      * @param recognizeTextOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
@@ -997,10 +1447,10 @@ public class ComputerVisionImpl implements ComputerVision {
     }
 
     /**
-     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called “Operation-Location”. The “Operation-Location” field contains the URL that you must use for your Get Handwritten Text Operation Result operation.
+     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Handwritten Text Operation Result operation.
      *
-     * @param url the String value
-     * @param detectHandwriting If “true” is specified, handwriting recognition is performed. If this parameter is set to “false” or is not specified, printed text recognition is performed.
+     * @param url Publicly reachable URL of an image
+     * @param detectHandwriting If 'true' is specified, handwriting recognition is performed. If this parameter is set to 'false' or is not specified, printed text recognition is performed.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
@@ -1035,43 +1485,96 @@ public class ComputerVisionImpl implements ComputerVision {
                 .buildWithHeaders(response, RecognizeTextHeaders.class);
     }
 
+    @Override
+    public ComputerVisionRecognizeTextParameters recognizeText() {
+        return new ComputerVisionRecognizeTextParameters(this);
+    }
+
+    /**
+     * Internal class implementing ComputerVisionRecognizeTextDefinition.
+     */
+    class ComputerVisionRecognizeTextParameters implements ComputerVisionRecognizeTextDefinition {
+        private ComputerVisionImpl parent;
+        private String url;
+        private Boolean detectHandwriting;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ComputerVisionRecognizeTextParameters(ComputerVisionImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ComputerVisionRecognizeTextParameters withUrl(String url) {
+            this.url = url;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionRecognizeTextParameters withDetectHandwriting(Boolean detectHandwriting) {
+            this.detectHandwriting = detectHandwriting;
+            return this;
+        }
+
+        @Override
+        public void execute() {
+        recognizeTextWithServiceResponseAsync(url, detectHandwriting).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<Void> executeAsync() {
+            return recognizeTextWithServiceResponseAsync(url, detectHandwriting).map(new Func1<ServiceResponseWithHeaders<Void, RecognizeTextHeaders>, Void>() {
+                @Override
+                public Void call(ServiceResponseWithHeaders<Void, RecognizeTextHeaders> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
+
     /**
      * This operation recognizes content within an image by applying a domain-specific model.  The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request.  Currently, the API only provides a single domain-specific model: celebrities. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
-     * @param model The domain-specific content to recognize. Possible values include: 'Celebrities', 'Landmarks'
-     * @param url the String value
+     * @param model The domain-specific content to recognize.
+     * @param url Publicly reachable URL of an image
+     * @param analyzeImageByDomainOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DomainModelResults object if successful.
      */
-    public DomainModelResults analyzeImageByDomain(DomainModels model, String url) {
-        return analyzeImageByDomainWithServiceResponseAsync(model, url).toBlocking().single().body();
+    public DomainModelResults analyzeImageByDomain(String model, String url, AnalyzeImageByDomainOptionalParameter analyzeImageByDomainOptionalParameter) {
+        return analyzeImageByDomainWithServiceResponseAsync(model, url, analyzeImageByDomainOptionalParameter).toBlocking().single().body();
     }
 
     /**
      * This operation recognizes content within an image by applying a domain-specific model.  The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request.  Currently, the API only provides a single domain-specific model: celebrities. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
-     * @param model The domain-specific content to recognize. Possible values include: 'Celebrities', 'Landmarks'
-     * @param url the String value
+     * @param model The domain-specific content to recognize.
+     * @param url Publicly reachable URL of an image
+     * @param analyzeImageByDomainOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<DomainModelResults> analyzeImageByDomainAsync(DomainModels model, String url, final ServiceCallback<DomainModelResults> serviceCallback) {
-        return ServiceFuture.fromResponse(analyzeImageByDomainWithServiceResponseAsync(model, url), serviceCallback);
+    public ServiceFuture<DomainModelResults> analyzeImageByDomainAsync(String model, String url, AnalyzeImageByDomainOptionalParameter analyzeImageByDomainOptionalParameter, final ServiceCallback<DomainModelResults> serviceCallback) {
+        return ServiceFuture.fromResponse(analyzeImageByDomainWithServiceResponseAsync(model, url, analyzeImageByDomainOptionalParameter), serviceCallback);
     }
 
     /**
      * This operation recognizes content within an image by applying a domain-specific model.  The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request.  Currently, the API only provides a single domain-specific model: celebrities. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
-     * @param model The domain-specific content to recognize. Possible values include: 'Celebrities', 'Landmarks'
-     * @param url the String value
+     * @param model The domain-specific content to recognize.
+     * @param url Publicly reachable URL of an image
+     * @param analyzeImageByDomainOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DomainModelResults object
      */
-    public Observable<DomainModelResults> analyzeImageByDomainAsync(DomainModels model, String url) {
-        return analyzeImageByDomainWithServiceResponseAsync(model, url).map(new Func1<ServiceResponse<DomainModelResults>, DomainModelResults>() {
+    public Observable<DomainModelResults> analyzeImageByDomainAsync(String model, String url, AnalyzeImageByDomainOptionalParameter analyzeImageByDomainOptionalParameter) {
+        return analyzeImageByDomainWithServiceResponseAsync(model, url, analyzeImageByDomainOptionalParameter).map(new Func1<ServiceResponse<DomainModelResults>, DomainModelResults>() {
             @Override
             public DomainModelResults call(ServiceResponse<DomainModelResults> response) {
                 return response.body();
@@ -1082,12 +1585,37 @@ public class ComputerVisionImpl implements ComputerVision {
     /**
      * This operation recognizes content within an image by applying a domain-specific model.  The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request.  Currently, the API only provides a single domain-specific model: celebrities. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
-     * @param model The domain-specific content to recognize. Possible values include: 'Celebrities', 'Landmarks'
-     * @param url the String value
+     * @param model The domain-specific content to recognize.
+     * @param url Publicly reachable URL of an image
+     * @param analyzeImageByDomainOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DomainModelResults object
      */
-    public Observable<ServiceResponse<DomainModelResults>> analyzeImageByDomainWithServiceResponseAsync(DomainModels model, String url) {
+    public Observable<ServiceResponse<DomainModelResults>> analyzeImageByDomainWithServiceResponseAsync(String model, String url, AnalyzeImageByDomainOptionalParameter analyzeImageByDomainOptionalParameter) {
+        if (this.client.azureRegion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        }
+        if (model == null) {
+            throw new IllegalArgumentException("Parameter model is required and cannot be null.");
+        }
+        if (url == null) {
+            throw new IllegalArgumentException("Parameter url is required and cannot be null.");
+        }
+        final String language = analyzeImageByDomainOptionalParameter != null ? analyzeImageByDomainOptionalParameter.language() : null;
+
+        return analyzeImageByDomainWithServiceResponseAsync(model, url, language);
+    }
+
+    /**
+     * This operation recognizes content within an image by applying a domain-specific model.  The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request.  Currently, the API only provides a single domain-specific model: celebrities. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param model The domain-specific content to recognize.
+     * @param url Publicly reachable URL of an image
+     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default.ja - Japanese pt - Portuguese zh - Simplified Chinese. Possible values include: 'en', 'ja', 'pt', 'zh'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the DomainModelResults object
+     */
+    public Observable<ServiceResponse<DomainModelResults>> analyzeImageByDomainWithServiceResponseAsync(String model, String url, String language) {
         if (this.client.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
         }
@@ -1100,7 +1628,7 @@ public class ComputerVisionImpl implements ComputerVision {
         ImageUrl imageUrl = new ImageUrl();
         imageUrl.withUrl(url);
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.analyzeImageByDomain(model, this.client.acceptLanguage(), imageUrl, parameterizedHost, this.client.userAgent())
+        return service.analyzeImageByDomain(model, language, this.client.acceptLanguage(), imageUrl, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DomainModelResults>>>() {
                 @Override
                 public Observable<ServiceResponse<DomainModelResults>> call(Response<ResponseBody> response) {
@@ -1121,40 +1649,100 @@ public class ComputerVisionImpl implements ComputerVision {
                 .build(response);
     }
 
+    @Override
+    public ComputerVisionAnalyzeImageByDomainParameters analyzeImageByDomain() {
+        return new ComputerVisionAnalyzeImageByDomainParameters(this);
+    }
+
     /**
-     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag “cello” may be accompanied by the hint “musical instrument”. All tags are in English.
+     * Internal class implementing ComputerVisionAnalyzeImageByDomainDefinition.
+     */
+    class ComputerVisionAnalyzeImageByDomainParameters implements ComputerVisionAnalyzeImageByDomainDefinition {
+        private ComputerVisionImpl parent;
+        private String model;
+        private String url;
+        private String language;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ComputerVisionAnalyzeImageByDomainParameters(ComputerVisionImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ComputerVisionAnalyzeImageByDomainParameters withModel(String model) {
+            this.model = model;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionAnalyzeImageByDomainParameters withUrl(String url) {
+            this.url = url;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionAnalyzeImageByDomainParameters withLanguage(String language) {
+            this.language = language;
+            return this;
+        }
+
+        @Override
+        public DomainModelResults execute() {
+        return analyzeImageByDomainWithServiceResponseAsync(model, url, language).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<DomainModelResults> executeAsync() {
+            return analyzeImageByDomainWithServiceResponseAsync(model, url, language).map(new Func1<ServiceResponse<DomainModelResults>, DomainModelResults>() {
+                @Override
+                public DomainModelResults call(ServiceResponse<DomainModelResults> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
+
+    /**
+     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag 'cello' may be accompanied by the hint 'musical instrument'. All tags are in English.
      *
-     * @param url the String value
+     * @param url Publicly reachable URL of an image
+     * @param tagImageOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TagResult object if successful.
      */
-    public TagResult tagImage(String url) {
-        return tagImageWithServiceResponseAsync(url).toBlocking().single().body();
+    public TagResult tagImage(String url, TagImageOptionalParameter tagImageOptionalParameter) {
+        return tagImageWithServiceResponseAsync(url, tagImageOptionalParameter).toBlocking().single().body();
     }
 
     /**
-     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag “cello” may be accompanied by the hint “musical instrument”. All tags are in English.
+     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag 'cello' may be accompanied by the hint 'musical instrument'. All tags are in English.
      *
-     * @param url the String value
+     * @param url Publicly reachable URL of an image
+     * @param tagImageOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<TagResult> tagImageAsync(String url, final ServiceCallback<TagResult> serviceCallback) {
-        return ServiceFuture.fromResponse(tagImageWithServiceResponseAsync(url), serviceCallback);
+    public ServiceFuture<TagResult> tagImageAsync(String url, TagImageOptionalParameter tagImageOptionalParameter, final ServiceCallback<TagResult> serviceCallback) {
+        return ServiceFuture.fromResponse(tagImageWithServiceResponseAsync(url, tagImageOptionalParameter), serviceCallback);
     }
 
     /**
-     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag “cello” may be accompanied by the hint “musical instrument”. All tags are in English.
+     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag 'cello' may be accompanied by the hint 'musical instrument'. All tags are in English.
      *
-     * @param url the String value
+     * @param url Publicly reachable URL of an image
+     * @param tagImageOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TagResult object
      */
-    public Observable<TagResult> tagImageAsync(String url) {
-        return tagImageWithServiceResponseAsync(url).map(new Func1<ServiceResponse<TagResult>, TagResult>() {
+    public Observable<TagResult> tagImageAsync(String url, TagImageOptionalParameter tagImageOptionalParameter) {
+        return tagImageWithServiceResponseAsync(url, tagImageOptionalParameter).map(new Func1<ServiceResponse<TagResult>, TagResult>() {
             @Override
             public TagResult call(ServiceResponse<TagResult> response) {
                 return response.body();
@@ -1163,13 +1751,34 @@ public class ComputerVisionImpl implements ComputerVision {
     }
 
     /**
-     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag “cello” may be accompanied by the hint “musical instrument”. All tags are in English.
+     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag 'cello' may be accompanied by the hint 'musical instrument'. All tags are in English.
      *
-     * @param url the String value
+     * @param url Publicly reachable URL of an image
+     * @param tagImageOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TagResult object
      */
-    public Observable<ServiceResponse<TagResult>> tagImageWithServiceResponseAsync(String url) {
+    public Observable<ServiceResponse<TagResult>> tagImageWithServiceResponseAsync(String url, TagImageOptionalParameter tagImageOptionalParameter) {
+        if (this.client.azureRegion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        }
+        if (url == null) {
+            throw new IllegalArgumentException("Parameter url is required and cannot be null.");
+        }
+        final String language = tagImageOptionalParameter != null ? tagImageOptionalParameter.language() : null;
+
+        return tagImageWithServiceResponseAsync(url, language);
+    }
+
+    /**
+     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag 'cello' may be accompanied by the hint 'musical instrument'. All tags are in English.
+     *
+     * @param url Publicly reachable URL of an image
+     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default.ja - Japanese pt - Portuguese zh - Simplified Chinese. Possible values include: 'en', 'ja', 'pt', 'zh'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the TagResult object
+     */
+    public Observable<ServiceResponse<TagResult>> tagImageWithServiceResponseAsync(String url, String language) {
         if (this.client.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
         }
@@ -1179,7 +1788,7 @@ public class ComputerVisionImpl implements ComputerVision {
         ImageUrl imageUrl = new ImageUrl();
         imageUrl.withUrl(url);
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.tagImage(this.client.acceptLanguage(), imageUrl, parameterizedHost, this.client.userAgent())
+        return service.tagImage(language, this.client.acceptLanguage(), imageUrl, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TagResult>>>() {
                 @Override
                 public Observable<ServiceResponse<TagResult>> call(Response<ResponseBody> response) {
@@ -1200,11 +1809,60 @@ public class ComputerVisionImpl implements ComputerVision {
                 .build(response);
     }
 
+    @Override
+    public ComputerVisionTagImageParameters tagImage() {
+        return new ComputerVisionTagImageParameters(this);
+    }
+
+    /**
+     * Internal class implementing ComputerVisionTagImageDefinition.
+     */
+    class ComputerVisionTagImageParameters implements ComputerVisionTagImageDefinition {
+        private ComputerVisionImpl parent;
+        private String url;
+        private String language;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ComputerVisionTagImageParameters(ComputerVisionImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ComputerVisionTagImageParameters withUrl(String url) {
+            this.url = url;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionTagImageParameters withLanguage(String language) {
+            this.language = language;
+            return this;
+        }
+
+        @Override
+        public TagResult execute() {
+        return tagImageWithServiceResponseAsync(url, language).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<TagResult> executeAsync() {
+            return tagImageWithServiceResponseAsync(url, language).map(new Func1<ServiceResponse<TagResult>, TagResult>() {
+                @Override
+                public TagResult call(ServiceResponse<TagResult> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
 
     /**
      * This operation generates a description of an image in human readable language with complete sentences.  The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image.  Descriptions are ordered by their confidence score. All descriptions are in English. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
-     * @param url the String value
+     * @param url Publicly reachable URL of an image
      * @param describeImageOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
@@ -1218,7 +1876,7 @@ public class ComputerVisionImpl implements ComputerVision {
     /**
      * This operation generates a description of an image in human readable language with complete sentences.  The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image.  Descriptions are ordered by their confidence score. All descriptions are in English. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
-     * @param url the String value
+     * @param url Publicly reachable URL of an image
      * @param describeImageOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1231,7 +1889,7 @@ public class ComputerVisionImpl implements ComputerVision {
     /**
      * This operation generates a description of an image in human readable language with complete sentences.  The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image.  Descriptions are ordered by their confidence score. All descriptions are in English. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
-     * @param url the String value
+     * @param url Publicly reachable URL of an image
      * @param describeImageOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageDescription object
@@ -1248,7 +1906,7 @@ public class ComputerVisionImpl implements ComputerVision {
     /**
      * This operation generates a description of an image in human readable language with complete sentences.  The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image.  Descriptions are ordered by their confidence score. All descriptions are in English. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
-     * @param url the String value
+     * @param url Publicly reachable URL of an image
      * @param describeImageOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageDescription object
@@ -1261,19 +1919,21 @@ public class ComputerVisionImpl implements ComputerVision {
             throw new IllegalArgumentException("Parameter url is required and cannot be null.");
         }
         final String maxCandidates = describeImageOptionalParameter != null ? describeImageOptionalParameter.maxCandidates() : null;
+        final String language = describeImageOptionalParameter != null ? describeImageOptionalParameter.language() : null;
 
-        return describeImageWithServiceResponseAsync(url, maxCandidates);
+        return describeImageWithServiceResponseAsync(url, maxCandidates, language);
     }
 
     /**
      * This operation generates a description of an image in human readable language with complete sentences.  The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image.  Descriptions are ordered by their confidence score. All descriptions are in English. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
-     * @param url the String value
+     * @param url Publicly reachable URL of an image
      * @param maxCandidates Maximum number of candidate descriptions to be returned.  The default is 1.
+     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default.ja - Japanese pt - Portuguese zh - Simplified Chinese. Possible values include: 'en', 'ja', 'pt', 'zh'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageDescription object
      */
-    public Observable<ServiceResponse<ImageDescription>> describeImageWithServiceResponseAsync(String url, String maxCandidates) {
+    public Observable<ServiceResponse<ImageDescription>> describeImageWithServiceResponseAsync(String url, String maxCandidates, String language) {
         if (this.client.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
         }
@@ -1283,7 +1943,7 @@ public class ComputerVisionImpl implements ComputerVision {
         ImageUrl imageUrl = new ImageUrl();
         imageUrl.withUrl(url);
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.describeImage(maxCandidates, this.client.acceptLanguage(), imageUrl, parameterizedHost, this.client.userAgent())
+        return service.describeImage(maxCandidates, language, this.client.acceptLanguage(), imageUrl, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImageDescription>>>() {
                 @Override
                 public Observable<ServiceResponse<ImageDescription>> call(Response<ResponseBody> response) {
@@ -1304,12 +1964,68 @@ public class ComputerVisionImpl implements ComputerVision {
                 .build(response);
     }
 
+    @Override
+    public ComputerVisionDescribeImageParameters describeImage() {
+        return new ComputerVisionDescribeImageParameters(this);
+    }
+
+    /**
+     * Internal class implementing ComputerVisionDescribeImageDefinition.
+     */
+    class ComputerVisionDescribeImageParameters implements ComputerVisionDescribeImageDefinition {
+        private ComputerVisionImpl parent;
+        private String url;
+        private String maxCandidates;
+        private String language;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ComputerVisionDescribeImageParameters(ComputerVisionImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ComputerVisionDescribeImageParameters withUrl(String url) {
+            this.url = url;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionDescribeImageParameters withMaxCandidates(String maxCandidates) {
+            this.maxCandidates = maxCandidates;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionDescribeImageParameters withLanguage(String language) {
+            this.language = language;
+            return this;
+        }
+
+        @Override
+        public ImageDescription execute() {
+        return describeImageWithServiceResponseAsync(url, maxCandidates, language).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<ImageDescription> executeAsync() {
+            return describeImageWithServiceResponseAsync(url, maxCandidates, language).map(new Func1<ServiceResponse<ImageDescription>, ImageDescription>() {
+                @Override
+                public ImageDescription call(ServiceResponse<ImageDescription> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
 
     /**
      * Optical Character Recognition (OCR) detects printed text in an image and extracts the recognized characters into a machine-usable character stream.   Upon success, the OCR results will be returned. Upon failure, the error code together with an error message will be returned. The error code can be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage,  NotSupportedLanguage, or InternalServerError.
      *
      * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
-     * @param url the String value
+     * @param url Publicly reachable URL of an image
      * @param recognizePrintedTextOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
@@ -1324,7 +2040,7 @@ public class ComputerVisionImpl implements ComputerVision {
      * Optical Character Recognition (OCR) detects printed text in an image and extracts the recognized characters into a machine-usable character stream.   Upon success, the OCR results will be returned. Upon failure, the error code together with an error message will be returned. The error code can be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage,  NotSupportedLanguage, or InternalServerError.
      *
      * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
-     * @param url the String value
+     * @param url Publicly reachable URL of an image
      * @param recognizePrintedTextOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1338,7 +2054,7 @@ public class ComputerVisionImpl implements ComputerVision {
      * Optical Character Recognition (OCR) detects printed text in an image and extracts the recognized characters into a machine-usable character stream.   Upon success, the OCR results will be returned. Upon failure, the error code together with an error message will be returned. The error code can be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage,  NotSupportedLanguage, or InternalServerError.
      *
      * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
-     * @param url the String value
+     * @param url Publicly reachable URL of an image
      * @param recognizePrintedTextOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OcrResult object
@@ -1356,7 +2072,7 @@ public class ComputerVisionImpl implements ComputerVision {
      * Optical Character Recognition (OCR) detects printed text in an image and extracts the recognized characters into a machine-usable character stream.   Upon success, the OCR results will be returned. Upon failure, the error code together with an error message will be returned. The error code can be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage,  NotSupportedLanguage, or InternalServerError.
      *
      * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
-     * @param url the String value
+     * @param url Publicly reachable URL of an image
      * @param recognizePrintedTextOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OcrResult object
@@ -1377,7 +2093,7 @@ public class ComputerVisionImpl implements ComputerVision {
      * Optical Character Recognition (OCR) detects printed text in an image and extracts the recognized characters into a machine-usable character stream.   Upon success, the OCR results will be returned. Upon failure, the error code together with an error message will be returned. The error code can be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage,  NotSupportedLanguage, or InternalServerError.
      *
      * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
-     * @param url the String value
+     * @param url Publicly reachable URL of an image
      * @param language The BCP-47 language code of the text to be detected in the image. The default value is 'unk'. Possible values include: 'unk', 'zh-Hans', 'zh-Hant', 'cs', 'da', 'nl', 'en', 'fi', 'fr', 'de', 'el', 'hu', 'it', 'ja', 'ko', 'nb', 'pl', 'pt', 'ru', 'es', 'sv', 'tr', 'ar', 'ro', 'sr-Cyrl', 'sr-Latn', 'sk'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OcrResult object
@@ -1413,13 +2129,69 @@ public class ComputerVisionImpl implements ComputerVision {
                 .build(response);
     }
 
+    @Override
+    public ComputerVisionRecognizePrintedTextParameters recognizePrintedText() {
+        return new ComputerVisionRecognizePrintedTextParameters(this);
+    }
+
+    /**
+     * Internal class implementing ComputerVisionRecognizePrintedTextDefinition.
+     */
+    class ComputerVisionRecognizePrintedTextParameters implements ComputerVisionRecognizePrintedTextDefinition {
+        private ComputerVisionImpl parent;
+        private boolean detectOrientation;
+        private String url;
+        private OcrLanguages language;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ComputerVisionRecognizePrintedTextParameters(ComputerVisionImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ComputerVisionRecognizePrintedTextParameters withDetectOrientation(boolean detectOrientation) {
+            this.detectOrientation = detectOrientation;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionRecognizePrintedTextParameters withUrl(String url) {
+            this.url = url;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionRecognizePrintedTextParameters withLanguage(OcrLanguages language) {
+            this.language = language;
+            return this;
+        }
+
+        @Override
+        public OcrResult execute() {
+        return recognizePrintedTextWithServiceResponseAsync(detectOrientation, url, language).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<OcrResult> executeAsync() {
+            return recognizePrintedTextWithServiceResponseAsync(detectOrientation, url, language).map(new Func1<ServiceResponse<OcrResult>, OcrResult>() {
+                @Override
+                public OcrResult call(ServiceResponse<OcrResult> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
 
     /**
      * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image. A successful response contains the thumbnail image binary. If the request failed, the response contains an error code and a message to help determine what went wrong.
      *
      * @param width Width of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
      * @param height Height of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
-     * @param url the String value
+     * @param url Publicly reachable URL of an image
      * @param generateThumbnailOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -1435,7 +2207,7 @@ public class ComputerVisionImpl implements ComputerVision {
      *
      * @param width Width of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
      * @param height Height of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
-     * @param url the String value
+     * @param url Publicly reachable URL of an image
      * @param generateThumbnailOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1450,7 +2222,7 @@ public class ComputerVisionImpl implements ComputerVision {
      *
      * @param width Width of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
      * @param height Height of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
-     * @param url the String value
+     * @param url Publicly reachable URL of an image
      * @param generateThumbnailOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InputStream object
@@ -1469,7 +2241,7 @@ public class ComputerVisionImpl implements ComputerVision {
      *
      * @param width Width of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
      * @param height Height of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
-     * @param url the String value
+     * @param url Publicly reachable URL of an image
      * @param generateThumbnailOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InputStream object
@@ -1491,7 +2263,7 @@ public class ComputerVisionImpl implements ComputerVision {
      *
      * @param width Width of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
      * @param height Height of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
-     * @param url the String value
+     * @param url Publicly reachable URL of an image
      * @param smartCropping Boolean flag for enabling smart cropping.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InputStream object
@@ -1527,11 +2299,74 @@ public class ComputerVisionImpl implements ComputerVision {
                 .build(response);
     }
 
+    @Override
+    public ComputerVisionGenerateThumbnailParameters generateThumbnail() {
+        return new ComputerVisionGenerateThumbnailParameters(this);
+    }
+
+    /**
+     * Internal class implementing ComputerVisionGenerateThumbnailDefinition.
+     */
+    class ComputerVisionGenerateThumbnailParameters implements ComputerVisionGenerateThumbnailDefinition {
+        private ComputerVisionImpl parent;
+        private int width;
+        private int height;
+        private String url;
+        private Boolean smartCropping;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ComputerVisionGenerateThumbnailParameters(ComputerVisionImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ComputerVisionGenerateThumbnailParameters withWidth(int width) {
+            this.width = width;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionGenerateThumbnailParameters withHeight(int height) {
+            this.height = height;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionGenerateThumbnailParameters withUrl(String url) {
+            this.url = url;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionGenerateThumbnailParameters withSmartCropping(Boolean smartCropping) {
+            this.smartCropping = smartCropping;
+            return this;
+        }
+
+        @Override
+        public InputStream execute() {
+        return generateThumbnailWithServiceResponseAsync(width, height, url, smartCropping).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<InputStream> executeAsync() {
+            return generateThumbnailWithServiceResponseAsync(width, height, url, smartCropping).map(new Func1<ServiceResponse<InputStream>, InputStream>() {
+                @Override
+                public InputStream call(ServiceResponse<InputStream> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
 
     /**
      * This operation extracts a rich set of visual features based on the image content. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.  Within your request, there is an optional parameter to allow you to choose which features to return.  By default, image categories are returned in the response.
      *
-     * @param url the String value
+     * @param url Publicly reachable URL of an image
      * @param analyzeImageOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
@@ -1545,7 +2380,7 @@ public class ComputerVisionImpl implements ComputerVision {
     /**
      * This operation extracts a rich set of visual features based on the image content. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.  Within your request, there is an optional parameter to allow you to choose which features to return.  By default, image categories are returned in the response.
      *
-     * @param url the String value
+     * @param url Publicly reachable URL of an image
      * @param analyzeImageOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1558,7 +2393,7 @@ public class ComputerVisionImpl implements ComputerVision {
     /**
      * This operation extracts a rich set of visual features based on the image content. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.  Within your request, there is an optional parameter to allow you to choose which features to return.  By default, image categories are returned in the response.
      *
-     * @param url the String value
+     * @param url Publicly reachable URL of an image
      * @param analyzeImageOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageAnalysis object
@@ -1575,7 +2410,7 @@ public class ComputerVisionImpl implements ComputerVision {
     /**
      * This operation extracts a rich set of visual features based on the image content. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.  Within your request, there is an optional parameter to allow you to choose which features to return.  By default, image categories are returned in the response.
      *
-     * @param url the String value
+     * @param url Publicly reachable URL of an image
      * @param analyzeImageOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageAnalysis object
@@ -1589,7 +2424,7 @@ public class ComputerVisionImpl implements ComputerVision {
         }
         final List<VisualFeatureTypes> visualFeatures = analyzeImageOptionalParameter != null ? analyzeImageOptionalParameter.visualFeatures() : null;
         final List<Details> details = analyzeImageOptionalParameter != null ? analyzeImageOptionalParameter.details() : null;
-        final Language1 language = analyzeImageOptionalParameter != null ? analyzeImageOptionalParameter.language() : null;
+        final String language = analyzeImageOptionalParameter != null ? analyzeImageOptionalParameter.language() : null;
 
         return analyzeImageWithServiceResponseAsync(url, visualFeatures, details, language);
     }
@@ -1597,14 +2432,14 @@ public class ComputerVisionImpl implements ComputerVision {
     /**
      * This operation extracts a rich set of visual features based on the image content. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.  Within your request, there is an optional parameter to allow you to choose which features to return.  By default, image categories are returned in the response.
      *
-     * @param url the String value
+     * @param url Publicly reachable URL of an image
      * @param visualFeatures A string indicating what visual feature types to return. Multiple values should be comma-separated. Valid visual feature types include:Categories - categorizes image content according to a taxonomy defined in documentation. Tags - tags the image with a detailed list of words related to the image content. Description - describes the image content with a complete English sentence. Faces - detects if faces are present. If present, generate coordinates, gender and age. ImageType - detects if image is clipart or a line drawing. Color - determines the accent color, dominant color, and whether an image is black&amp;white.Adult - detects if the image is pornographic in nature (depicts nudity or a sex act).  Sexually suggestive content is also detected.
      * @param details A string indicating which domain-specific details to return. Multiple values should be comma-separated. Valid visual feature types include:Celebrities - identifies celebrities if detected in the image.
-     * @param language A string indicating which language to return. The service will return recognition results in specified language. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default.zh - Simplified Chinese. Possible values include: 'en', 'zh'
+     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default.ja - Japanese pt - Portuguese zh - Simplified Chinese. Possible values include: 'en', 'ja', 'pt', 'zh'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageAnalysis object
      */
-    public Observable<ServiceResponse<ImageAnalysis>> analyzeImageWithServiceResponseAsync(String url, List<VisualFeatureTypes> visualFeatures, List<Details> details, Language1 language) {
+    public Observable<ServiceResponse<ImageAnalysis>> analyzeImageWithServiceResponseAsync(String url, List<VisualFeatureTypes> visualFeatures, List<Details> details, String language) {
         if (this.client.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
         }
@@ -1637,6 +2472,69 @@ public class ComputerVisionImpl implements ComputerVision {
                 .register(200, new TypeToken<ImageAnalysis>() { }.getType())
                 .registerError(ComputerVisionErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public ComputerVisionAnalyzeImageParameters analyzeImage() {
+        return new ComputerVisionAnalyzeImageParameters(this);
+    }
+
+    /**
+     * Internal class implementing ComputerVisionAnalyzeImageDefinition.
+     */
+    class ComputerVisionAnalyzeImageParameters implements ComputerVisionAnalyzeImageDefinition {
+        private ComputerVisionImpl parent;
+        private String url;
+        private List<VisualFeatureTypes> visualFeatures;
+        private List<Details> details;
+        private String language;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ComputerVisionAnalyzeImageParameters(ComputerVisionImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ComputerVisionAnalyzeImageParameters withUrl(String url) {
+            this.url = url;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionAnalyzeImageParameters withVisualFeatures(List<VisualFeatureTypes> visualFeatures) {
+            this.visualFeatures = visualFeatures;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionAnalyzeImageParameters withDetails(List<Details> details) {
+            this.details = details;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionAnalyzeImageParameters withLanguage(String language) {
+            this.language = language;
+            return this;
+        }
+
+        @Override
+        public ImageAnalysis execute() {
+        return analyzeImageWithServiceResponseAsync(url, visualFeatures, details, language).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<ImageAnalysis> executeAsync() {
+            return analyzeImageWithServiceResponseAsync(url, visualFeatures, details, language).map(new Func1<ServiceResponse<ImageAnalysis>, ImageAnalysis>() {
+                @Override
+                public ImageAnalysis call(ServiceResponse<ImageAnalysis> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
     /**

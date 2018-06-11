@@ -26,7 +26,7 @@ public class GetAllTermsOptionalParameter {
     /**
      * Gets or sets the preferred language for the response.
      */
-    private String acceptLanguage;
+    private String thisclientacceptLanguage;
 
     /**
      * Get the offset value.
@@ -69,22 +69,22 @@ public class GetAllTermsOptionalParameter {
     }
 
     /**
-     * Get the acceptLanguage value.
+     * Get the thisclientacceptLanguage value.
      *
-     * @return the acceptLanguage value
+     * @return the thisclientacceptLanguage value
      */
-    public String acceptLanguage() {
-        return this.acceptLanguage;
+    public String thisclientacceptLanguage() {
+        return this.thisclientacceptLanguage;
     }
 
     /**
-     * Set the acceptLanguage value.
+     * Set the thisclientacceptLanguage value.
      *
-     * @param acceptLanguage the acceptLanguage value to set
+     * @param thisclientacceptLanguage the thisclientacceptLanguage value to set
      * @return the GetAllTermsOptionalParameter object itself.
      */
-    public GetAllTermsOptionalParameter withAcceptLanguage(String acceptLanguage) {
-        this.acceptLanguage = acceptLanguage;
+    public GetAllTermsOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
+        this.thisclientacceptLanguage = thisclientacceptLanguage;
         return this;
     }
 

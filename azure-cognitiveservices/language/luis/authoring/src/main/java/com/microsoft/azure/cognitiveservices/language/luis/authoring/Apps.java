@@ -73,6 +73,7 @@ public interface Apps {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;ApplicationInfoResponse&gt; object if successful.
      */
+    
     List<ApplicationInfoResponse> list(ListAppsOptionalParameter listOptionalParameter);
 
     /**
@@ -82,7 +83,67 @@ public interface Apps {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;ApplicationInfoResponse&gt; object
      */
+    
     Observable<List<ApplicationInfoResponse>> listAsync(ListAppsOptionalParameter listOptionalParameter);
+
+    /**
+     * Lists all of the user applications.
+     *
+     * @return the first stage of the list call
+     */
+    AppsListDefinitionStages.WithExecute list();
+
+    /**
+     * Grouping of list definition stages.
+     */
+    interface AppsListDefinitionStages {
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The number of entries to skip. Default value is 0.
+             *
+             * @return next definition stage
+             */
+            AppsListDefinitionStages.WithExecute withSkip(Integer skip);
+
+            /**
+             * The number of entries to return. Maximum page size is 500. Default is 100.
+             *
+             * @return next definition stage
+             */
+            AppsListDefinitionStages.WithExecute withTake(Integer take);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends AppsListDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the List&lt;ApplicationInfoResponse&gt; object if successful.
+             */
+            List<ApplicationInfoResponse> execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the List&lt;ApplicationInfoResponse&gt; object
+             */
+            Observable<List<ApplicationInfoResponse>> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of list definition.
+     */
+    interface AppsListDefinition extends
+        AppsListDefinitionStages.WithExecute {
+    }
 
     /**
      * Imports an application to LUIS, the application's structure should be included in in the request body.
@@ -94,6 +155,7 @@ public interface Apps {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UUID object if successful.
      */
+    
     UUID importMethod(LuisApp luisApp, ImportMethodAppsOptionalParameter importMethodOptionalParameter);
 
     /**
@@ -104,7 +166,73 @@ public interface Apps {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
+    
     Observable<UUID> importMethodAsync(LuisApp luisApp, ImportMethodAppsOptionalParameter importMethodOptionalParameter);
+
+    /**
+     * Imports an application to LUIS, the application's structure should be included in in the request body.
+     *
+     * @return the first stage of the importMethod call
+     */
+    AppsImportMethodDefinitionStages.WithLuisApp importMethod();
+
+    /**
+     * Grouping of importMethod definition stages.
+     */
+    interface AppsImportMethodDefinitionStages {
+        /**
+         * The stage of the definition to be specify luisApp.
+         */
+        interface WithLuisApp {
+            /**
+             * A LUIS application structure.
+             *
+             * @return next definition stage
+             */
+            AppsImportMethodDefinitionStages.WithExecute withLuisApp(LuisApp luisApp);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The application name to create. If not specified, the application name will be read from the imported
+             *   object.
+             *
+             * @return next definition stage
+             */
+            AppsImportMethodDefinitionStages.WithExecute withAppName(String appName);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends AppsImportMethodDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the UUID object if successful.
+             */
+            UUID execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the UUID object
+             */
+            Observable<UUID> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of importMethod definition.
+     */
+    interface AppsImportMethodDefinition extends
+        AppsImportMethodDefinitionStages.WithLuisApp,
+        AppsImportMethodDefinitionStages.WithExecute {
+    }
 
 
     /**
@@ -334,6 +462,7 @@ public interface Apps {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
+    
     OperationStatus updateSettings(UUID appId, UpdateSettingsOptionalParameter updateSettingsOptionalParameter);
 
     /**
@@ -344,7 +473,73 @@ public interface Apps {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
+    
     Observable<OperationStatus> updateSettingsAsync(UUID appId, UpdateSettingsOptionalParameter updateSettingsOptionalParameter);
+
+    /**
+     * Updates the application settings.
+     *
+     * @return the first stage of the updateSettings call
+     */
+    AppsUpdateSettingsDefinitionStages.WithAppId updateSettings();
+
+    /**
+     * Grouping of updateSettings definition stages.
+     */
+    interface AppsUpdateSettingsDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            AppsUpdateSettingsDefinitionStages.WithExecute withAppId(UUID appId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * Setting your application as public allows other people to use your application's endpoint using their own
+             *   keys.
+             *
+             * @return next definition stage
+             */
+            AppsUpdateSettingsDefinitionStages.WithExecute withPublicParameter(boolean publicParameter);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends AppsUpdateSettingsDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the OperationStatus object if successful.
+             */
+            OperationStatus execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the OperationStatus object
+             */
+            Observable<OperationStatus> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of updateSettings definition.
+     */
+    interface AppsUpdateSettingsDefinition extends
+        AppsUpdateSettingsDefinitionStages.WithAppId,
+        AppsUpdateSettingsDefinitionStages.WithExecute {
+    }
 
 
     /**

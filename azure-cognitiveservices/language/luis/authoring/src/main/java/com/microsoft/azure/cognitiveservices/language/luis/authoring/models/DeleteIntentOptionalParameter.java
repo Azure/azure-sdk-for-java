@@ -10,33 +10,57 @@ package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
 
 /**
- * The optional parameters class for "deleteIntent" method.
+ * The DeleteIntentOptionalParameter model.
  */
 public class DeleteIntentOptionalParameter {
     /**
-    * Also delete the intent's utterances (true). Or move the utterances to the None intent (false - the default value).
-    */
+     * Also delete the intent's utterances (true). Or move the utterances to
+     * the None intent (false - the default value).
+     */
     private Boolean deleteUtterances;
 
     /**
-    * Get the deleteUtterances value.
-    *
-    * @return the deleteUtterances value
-    */
+     * Gets or sets the preferred language for the response.
+     */
+    private String thisclientacceptLanguage;
+
+    /**
+     * Get the deleteUtterances value.
+     *
+     * @return the deleteUtterances value
+     */
     public Boolean deleteUtterances() {
         return this.deleteUtterances;
     }
 
     /**
-    * Set the deleteUtterances value.
-    * <p>
-    * Also delete the intent's utterances (true). Or move the utterances to the None intent (false - the default value).
-    *
-    * @param deleteUtterances the deleteUtterances value to set
-    * @return the DeleteIntentOptionalParameter object itself.
-    */
-    public DeleteIntentOptionalParameter withDeleteUtterances(boolean deleteUtterances) {
+     * Set the deleteUtterances value.
+     *
+     * @param deleteUtterances the deleteUtterances value to set
+     * @return the DeleteIntentOptionalParameter object itself.
+     */
+    public DeleteIntentOptionalParameter withDeleteUtterances(Boolean deleteUtterances) {
         this.deleteUtterances = deleteUtterances;
+        return this;
+    }
+
+    /**
+     * Get the thisclientacceptLanguage value.
+     *
+     * @return the thisclientacceptLanguage value
+     */
+    public String thisclientacceptLanguage() {
+        return this.thisclientacceptLanguage;
+    }
+
+    /**
+     * Set the thisclientacceptLanguage value.
+     *
+     * @param thisclientacceptLanguage the thisclientacceptLanguage value to set
+     * @return the DeleteIntentOptionalParameter object itself.
+     */
+    public DeleteIntentOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
+        this.thisclientacceptLanguage = thisclientacceptLanguage;
         return this;
     }
 

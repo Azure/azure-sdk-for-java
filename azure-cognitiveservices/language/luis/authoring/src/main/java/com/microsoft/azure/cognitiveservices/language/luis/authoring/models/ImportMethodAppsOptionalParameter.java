@@ -10,33 +10,57 @@ package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
 
 /**
- * The optional parameters class for "importMethod" method.
+ * The ImportMethodAppsOptionalParameter model.
  */
 public class ImportMethodAppsOptionalParameter {
     /**
-    * The application name to create. If not specified, the application name will be read from the imported object.
-    */
+     * The application name to create. If not specified, the application name
+     * will be read from the imported object.
+     */
     private String appName;
 
     /**
-    * Get the appName value.
-    *
-    * @return the appName value
-    */
+     * Gets or sets the preferred language for the response.
+     */
+    private String thisclientacceptLanguage;
+
+    /**
+     * Get the appName value.
+     *
+     * @return the appName value
+     */
     public String appName() {
         return this.appName;
     }
 
     /**
-    * Set the appName value.
-    * <p>
-    * The application name to create. If not specified, the application name will be read from the imported object.
-    *
-    * @param appName the appName value to set
-    * @return the ImportMethodAppsOptionalParameter object itself.
-    */
+     * Set the appName value.
+     *
+     * @param appName the appName value to set
+     * @return the ImportMethodAppsOptionalParameter object itself.
+     */
     public ImportMethodAppsOptionalParameter withAppName(String appName) {
         this.appName = appName;
+        return this;
+    }
+
+    /**
+     * Get the thisclientacceptLanguage value.
+     *
+     * @return the thisclientacceptLanguage value
+     */
+    public String thisclientacceptLanguage() {
+        return this.thisclientacceptLanguage;
+    }
+
+    /**
+     * Set the thisclientacceptLanguage value.
+     *
+     * @param thisclientacceptLanguage the thisclientacceptLanguage value to set
+     * @return the ImportMethodAppsOptionalParameter object itself.
+     */
+    public ImportMethodAppsOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
+        this.thisclientacceptLanguage = thisclientacceptLanguage;
         return this;
     }
 

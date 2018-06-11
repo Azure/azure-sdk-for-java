@@ -265,6 +265,55 @@ public class PermissionsImpl implements Permissions {
                 .build(response);
     }
 
+    @Override
+    public PermissionsAddParameters add() {
+        return new PermissionsAddParameters(this);
+    }
+
+    /**
+     * Internal class implementing PermissionsAddDefinition.
+     */
+    class PermissionsAddParameters implements PermissionsAddDefinition {
+        private PermissionsImpl parent;
+        private UUID appId;
+        private String email;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        PermissionsAddParameters(PermissionsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public PermissionsAddParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public PermissionsAddParameters withEmail(String email) {
+            this.email = email;
+            return this;
+        }
+
+        @Override
+        public OperationStatus execute() {
+        return addWithServiceResponseAsync(appId, email).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<OperationStatus> executeAsync() {
+            return addWithServiceResponseAsync(appId, email).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
+                @Override
+                public OperationStatus call(ServiceResponse<OperationStatus> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
 
     /**
      * Removes a user from the allowed list of users to access this LUIS application. Users are removed using their email address.
@@ -367,6 +416,55 @@ public class PermissionsImpl implements Permissions {
                 .register(200, new TypeToken<OperationStatus>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
+    }
+
+    @Override
+    public PermissionsDeleteParameters delete() {
+        return new PermissionsDeleteParameters(this);
+    }
+
+    /**
+     * Internal class implementing PermissionsDeleteDefinition.
+     */
+    class PermissionsDeleteParameters implements PermissionsDeleteDefinition {
+        private PermissionsImpl parent;
+        private UUID appId;
+        private String email;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        PermissionsDeleteParameters(PermissionsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public PermissionsDeleteParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public PermissionsDeleteParameters withEmail(String email) {
+            this.email = email;
+            return this;
+        }
+
+        @Override
+        public OperationStatus execute() {
+        return deleteWithServiceResponseAsync(appId, email).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<OperationStatus> executeAsync() {
+            return deleteWithServiceResponseAsync(appId, email).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
+                @Override
+                public OperationStatus call(ServiceResponse<OperationStatus> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 
@@ -472,6 +570,55 @@ public class PermissionsImpl implements Permissions {
                 .register(200, new TypeToken<OperationStatus>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
+    }
+
+    @Override
+    public PermissionsUpdateParameters update() {
+        return new PermissionsUpdateParameters(this);
+    }
+
+    /**
+     * Internal class implementing PermissionsUpdateDefinition.
+     */
+    class PermissionsUpdateParameters implements PermissionsUpdateDefinition {
+        private PermissionsImpl parent;
+        private UUID appId;
+        private List<String> emails;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        PermissionsUpdateParameters(PermissionsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public PermissionsUpdateParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public PermissionsUpdateParameters withEmails(List<String> emails) {
+            this.emails = emails;
+            return this;
+        }
+
+        @Override
+        public OperationStatus execute() {
+        return updateWithServiceResponseAsync(appId, emails).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<OperationStatus> executeAsync() {
+            return updateWithServiceResponseAsync(appId, emails).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
+                @Override
+                public OperationStatus call(ServiceResponse<OperationStatus> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 }

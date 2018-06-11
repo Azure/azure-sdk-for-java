@@ -36,6 +36,7 @@ public interface Versions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the String object if successful.
      */
+    
     String clone(UUID appId, String versionId, CloneOptionalParameter cloneOptionalParameter);
 
     /**
@@ -47,7 +48,84 @@ public interface Versions {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the String object
      */
+    
     Observable<String> cloneAsync(UUID appId, String versionId, CloneOptionalParameter cloneOptionalParameter);
+
+    /**
+     * Creates a new version using the current snapshot of the selected application version.
+     *
+     * @return the first stage of the clone call
+     */
+    VersionsCloneDefinitionStages.WithAppId clone();
+
+    /**
+     * Grouping of clone definition stages.
+     */
+    interface VersionsCloneDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            VersionsCloneDefinitionStages.WithExecute withVersionId(String versionId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The new version for the cloned model.
+             *
+             * @return next definition stage
+             */
+            VersionsCloneDefinitionStages.WithExecute withVersion(String version);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends VersionsCloneDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the String object if successful.
+             */
+            String execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the String object
+             */
+            Observable<String> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of clone definition.
+     */
+    interface VersionsCloneDefinition extends
+        VersionsCloneDefinitionStages.WithAppId,
+        VersionsCloneDefinitionStages.WithVersionId,
+        VersionsCloneDefinitionStages.WithExecute {
+    }
 
     /**
      * Gets the application versions info.
@@ -59,6 +137,7 @@ public interface Versions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;VersionInfo&gt; object if successful.
      */
+    
     List<VersionInfo> list(UUID appId, ListVersionsOptionalParameter listOptionalParameter);
 
     /**
@@ -69,7 +148,79 @@ public interface Versions {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;VersionInfo&gt; object
      */
+    
     Observable<List<VersionInfo>> listAsync(UUID appId, ListVersionsOptionalParameter listOptionalParameter);
+
+    /**
+     * Gets the application versions info.
+     *
+     * @return the first stage of the list call
+     */
+    VersionsListDefinitionStages.WithAppId list();
+
+    /**
+     * Grouping of list definition stages.
+     */
+    interface VersionsListDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            VersionsListDefinitionStages.WithExecute withAppId(UUID appId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The number of entries to skip. Default value is 0.
+             *
+             * @return next definition stage
+             */
+            VersionsListDefinitionStages.WithExecute withSkip(Integer skip);
+
+            /**
+             * The number of entries to return. Maximum page size is 500. Default is 100.
+             *
+             * @return next definition stage
+             */
+            VersionsListDefinitionStages.WithExecute withTake(Integer take);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends VersionsListDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the List&lt;VersionInfo&gt; object if successful.
+             */
+            List<VersionInfo> execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the List&lt;VersionInfo&gt; object
+             */
+            Observable<List<VersionInfo>> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of list definition.
+     */
+    interface VersionsListDefinition extends
+        VersionsListDefinitionStages.WithAppId,
+        VersionsListDefinitionStages.WithExecute {
+    }
 
 
     /**
@@ -106,6 +257,7 @@ public interface Versions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
+    
     OperationStatus update(UUID appId, String versionId, UpdateVersionsOptionalParameter updateOptionalParameter);
 
     /**
@@ -117,7 +269,84 @@ public interface Versions {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
+    
     Observable<OperationStatus> updateAsync(UUID appId, String versionId, UpdateVersionsOptionalParameter updateOptionalParameter);
+
+    /**
+     * Updates the name or description of the application version.
+     *
+     * @return the first stage of the update call
+     */
+    VersionsUpdateDefinitionStages.WithAppId update();
+
+    /**
+     * Grouping of update definition stages.
+     */
+    interface VersionsUpdateDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            VersionsUpdateDefinitionStages.WithExecute withVersionId(String versionId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The new version for the cloned model.
+             *
+             * @return next definition stage
+             */
+            VersionsUpdateDefinitionStages.WithExecute withVersion(String version);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends VersionsUpdateDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the OperationStatus object if successful.
+             */
+            OperationStatus execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the OperationStatus object
+             */
+            Observable<OperationStatus> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of update definition.
+     */
+    interface VersionsUpdateDefinition extends
+        VersionsUpdateDefinitionStages.WithAppId,
+        VersionsUpdateDefinitionStages.WithVersionId,
+        VersionsUpdateDefinitionStages.WithExecute {
+    }
 
 
     /**
@@ -178,6 +407,7 @@ public interface Versions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the String object if successful.
      */
+    
     String importMethod(UUID appId, LuisApp luisApp, ImportMethodVersionsOptionalParameter importMethodOptionalParameter);
 
     /**
@@ -189,7 +419,84 @@ public interface Versions {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the String object
      */
+    
     Observable<String> importMethodAsync(UUID appId, LuisApp luisApp, ImportMethodVersionsOptionalParameter importMethodOptionalParameter);
+
+    /**
+     * Imports a new version into a LUIS application.
+     *
+     * @return the first stage of the importMethod call
+     */
+    VersionsImportMethodDefinitionStages.WithAppId importMethod();
+
+    /**
+     * Grouping of importMethod definition stages.
+     */
+    interface VersionsImportMethodDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithLuisApp withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify luisApp.
+         */
+        interface WithLuisApp {
+            /**
+             * A LUIS application structure.
+             *
+             * @return next definition stage
+             */
+            VersionsImportMethodDefinitionStages.WithExecute withLuisApp(LuisApp luisApp);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The new versionId to import. If not specified, the versionId will be read from the imported object.
+             *
+             * @return next definition stage
+             */
+            VersionsImportMethodDefinitionStages.WithExecute withVersionId(String versionId);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends VersionsImportMethodDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the String object if successful.
+             */
+            String execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the String object
+             */
+            Observable<String> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of importMethod definition.
+     */
+    interface VersionsImportMethodDefinition extends
+        VersionsImportMethodDefinitionStages.WithAppId,
+        VersionsImportMethodDefinitionStages.WithLuisApp,
+        VersionsImportMethodDefinitionStages.WithExecute {
+    }
 
 
     /**

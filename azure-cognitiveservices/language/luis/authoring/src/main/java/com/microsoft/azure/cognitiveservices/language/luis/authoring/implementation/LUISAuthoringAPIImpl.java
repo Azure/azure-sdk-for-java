@@ -15,11 +15,11 @@ import com.microsoft.azure.cognitiveservices.language.luis.authoring.Examples;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.Features;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.LUISAuthoringAPI;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.Models;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AzureRegions;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.Patterns;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.Permissions;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.Trains;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.Versions;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AzureRegions;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.RestClient;
 
@@ -239,8 +239,8 @@ public class LUISAuthoringAPIImpl extends AzureServiceClient implements LUISAuth
      *
      * @param credentials the management credentials for Azure
      */
-    private LUISAuthoringAPIImpl(ServiceClientCredentials credentials) {
-        this("https://{AzureRegion}.api.cognitive.microsoft.com/luis/api/v2.0/", credentials);
+    public LUISAuthoringAPIImpl(ServiceClientCredentials credentials) {
+        this("https://{AzureRegion}.api.cognitive.microsoft.com/luis/api/v2.0", credentials);
     }
 
     /**

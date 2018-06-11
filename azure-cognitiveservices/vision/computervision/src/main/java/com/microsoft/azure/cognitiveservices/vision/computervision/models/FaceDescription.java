@@ -24,7 +24,7 @@ public class FaceDescription {
      * Possible gender of the face. Possible values include: 'Male', 'Female'.
      */
     @JsonProperty(value = "gender")
-    private String gender;
+    private Gender gender;
 
     /**
      * The faceRectangle property.
@@ -57,7 +57,7 @@ public class FaceDescription {
      *
      * @return the gender value
      */
-    public String gender() {
+    public Gender gender() {
         return this.gender;
     }
 
@@ -67,7 +67,7 @@ public class FaceDescription {
      * @param gender the gender value to set
      * @return the FaceDescription object itself.
      */
-    public FaceDescription withGender(String gender) {
+    public FaceDescription withGender(Gender gender) {
         this.gender = gender;
         return this;
     }

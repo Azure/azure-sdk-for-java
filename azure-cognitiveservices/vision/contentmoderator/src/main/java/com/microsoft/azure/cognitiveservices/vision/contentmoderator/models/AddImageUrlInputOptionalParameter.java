@@ -26,7 +26,7 @@ public class AddImageUrlInputOptionalParameter {
     /**
      * Gets or sets the preferred language for the response.
      */
-    private String acceptLanguage;
+    private String thisclientacceptLanguage;
 
     /**
      * Get the tag value.
@@ -69,22 +69,22 @@ public class AddImageUrlInputOptionalParameter {
     }
 
     /**
-     * Get the acceptLanguage value.
+     * Get the thisclientacceptLanguage value.
      *
-     * @return the acceptLanguage value
+     * @return the thisclientacceptLanguage value
      */
-    public String acceptLanguage() {
-        return this.acceptLanguage;
+    public String thisclientacceptLanguage() {
+        return this.thisclientacceptLanguage;
     }
 
     /**
-     * Set the acceptLanguage value.
+     * Set the thisclientacceptLanguage value.
      *
-     * @param acceptLanguage the acceptLanguage value to set
+     * @param thisclientacceptLanguage the thisclientacceptLanguage value to set
      * @return the AddImageUrlInputOptionalParameter object itself.
      */
-    public AddImageUrlInputOptionalParameter withAcceptLanguage(String acceptLanguage) {
-        this.acceptLanguage = acceptLanguage;
+    public AddImageUrlInputOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
+        this.thisclientacceptLanguage = thisclientacceptLanguage;
         return this;
     }
 

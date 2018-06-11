@@ -10,33 +10,56 @@ package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
 
 /**
- * The optional parameters class for "add" method.
+ * The AddPermissionsOptionalParameter model.
  */
 public class AddPermissionsOptionalParameter {
     /**
-    * The email address of the user.
-    */
+     * The email address of the user.
+     */
     private String email;
 
     /**
-    * Get the email value.
-    *
-    * @return the email value
-    */
+     * Gets or sets the preferred language for the response.
+     */
+    private String thisclientacceptLanguage;
+
+    /**
+     * Get the email value.
+     *
+     * @return the email value
+     */
     public String email() {
         return this.email;
     }
 
     /**
-    * Set the email value.
-    * <p>
-    * The email address of the user.
-    *
-    * @param email the email value to set
-    * @return the AddPermissionsOptionalParameter object itself.
-    */
+     * Set the email value.
+     *
+     * @param email the email value to set
+     * @return the AddPermissionsOptionalParameter object itself.
+     */
     public AddPermissionsOptionalParameter withEmail(String email) {
         this.email = email;
+        return this;
+    }
+
+    /**
+     * Get the thisclientacceptLanguage value.
+     *
+     * @return the thisclientacceptLanguage value
+     */
+    public String thisclientacceptLanguage() {
+        return this.thisclientacceptLanguage;
+    }
+
+    /**
+     * Set the thisclientacceptLanguage value.
+     *
+     * @param thisclientacceptLanguage the thisclientacceptLanguage value to set
+     * @return the AddPermissionsOptionalParameter object itself.
+     */
+    public AddPermissionsOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
+        this.thisclientacceptLanguage = thisclientacceptLanguage;
         return this;
     }
 

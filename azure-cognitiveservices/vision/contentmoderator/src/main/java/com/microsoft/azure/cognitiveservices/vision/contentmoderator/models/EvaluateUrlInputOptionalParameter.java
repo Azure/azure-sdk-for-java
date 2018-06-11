@@ -22,7 +22,7 @@ public class EvaluateUrlInputOptionalParameter {
     /**
      * Gets or sets the preferred language for the response.
      */
-    private String acceptLanguage;
+    private String thisclientacceptLanguage;
 
     /**
      * Get the cacheImage value.
@@ -45,22 +45,22 @@ public class EvaluateUrlInputOptionalParameter {
     }
 
     /**
-     * Get the acceptLanguage value.
+     * Get the thisclientacceptLanguage value.
      *
-     * @return the acceptLanguage value
+     * @return the thisclientacceptLanguage value
      */
-    public String acceptLanguage() {
-        return this.acceptLanguage;
+    public String thisclientacceptLanguage() {
+        return this.thisclientacceptLanguage;
     }
 
     /**
-     * Set the acceptLanguage value.
+     * Set the thisclientacceptLanguage value.
      *
-     * @param acceptLanguage the acceptLanguage value to set
+     * @param thisclientacceptLanguage the thisclientacceptLanguage value to set
      * @return the EvaluateUrlInputOptionalParameter object itself.
      */
-    public EvaluateUrlInputOptionalParameter withAcceptLanguage(String acceptLanguage) {
-        this.acceptLanguage = acceptLanguage;
+    public EvaluateUrlInputOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
+        this.thisclientacceptLanguage = thisclientacceptLanguage;
         return this;
     }
 

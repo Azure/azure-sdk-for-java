@@ -123,7 +123,6 @@ public class BingWebSearchImpl implements BingWebSearch {
         if (query == null) {
             throw new IllegalArgumentException("Parameter query is required and cannot be null.");
         }
-        final String xBingApisSDK = "true";
         final String acceptLanguage = searchOptionalParameter != null ? searchOptionalParameter.acceptLanguage() : null;
         final String pragma = searchOptionalParameter != null ? searchOptionalParameter.pragma() : null;
         final String userAgent = searchOptionalParameter != null ? searchOptionalParameter.userAgent() : this.client.userAgent();
@@ -142,8 +141,6 @@ public class BingWebSearchImpl implements BingWebSearch {
         final String setLang = searchOptionalParameter != null ? searchOptionalParameter.setLang() : null;
         final Boolean textDecorations = searchOptionalParameter != null ? searchOptionalParameter.textDecorations() : null;
         final TextFormat textFormat = searchOptionalParameter != null ? searchOptionalParameter.textFormat() : null;
-        String promoteConverted = this.client.serializerAdapter().serializeList(promote, CollectionFormat.CSV);
-        String responseFilterConverted = this.client.serializerAdapter().serializeList(responseFilter, CollectionFormat.CSV);
 
         return searchWithServiceResponseAsync(query, acceptLanguage, pragma, userAgent, clientId, clientIp, location, answerCount, countryCode, count, freshness, market, offset, promote, responseFilter, safeSearch, setLang, textDecorations, textFormat);
     }
@@ -201,6 +198,174 @@ public class BingWebSearchImpl implements BingWebSearch {
                 .register(200, new TypeToken<SearchResponse>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
+    }
+
+    @Override
+    public BingWebsSearchParameters search() {
+        return new BingWebsSearchParameters(this);
+    }
+
+    /**
+     * Internal class implementing BingWebsSearchDefinition.
+     */
+    class BingWebsSearchParameters implements BingWebsSearchDefinition {
+        private BingWebSearchImpl parent;
+        private String query;
+        private String acceptLanguage;
+        private String pragma;
+        private String userAgent;
+        private String clientId;
+        private String clientIp;
+        private String location;
+        private Integer answerCount;
+        private String countryCode;
+        private Integer count;
+        private Freshness freshness;
+        private String market;
+        private Integer offset;
+        private List<AnswerType> promote;
+        private List<AnswerType> responseFilter;
+        private SafeSearch safeSearch;
+        private String setLang;
+        private Boolean textDecorations;
+        private TextFormat textFormat;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        BingWebsSearchParameters(BingWebSearchImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public BingWebsSearchParameters withQuery(String query) {
+            this.query = query;
+            return this;
+        }
+
+        @Override
+        public BingWebsSearchParameters withAcceptLanguage(String acceptLanguage) {
+            this.acceptLanguage = acceptLanguage;
+            return this;
+        }
+
+        @Override
+        public BingWebsSearchParameters withPragma(String pragma) {
+            this.pragma = pragma;
+            return this;
+        }
+
+        @Override
+        public BingWebsSearchParameters withUserAgent(String userAgent) {
+            this.userAgent = userAgent;
+            return this;
+        }
+
+        @Override
+        public BingWebsSearchParameters withClientId(String clientId) {
+            this.clientId = clientId;
+            return this;
+        }
+
+        @Override
+        public BingWebsSearchParameters withClientIp(String clientIp) {
+            this.clientIp = clientIp;
+            return this;
+        }
+
+        @Override
+        public BingWebsSearchParameters withLocation(String location) {
+            this.location = location;
+            return this;
+        }
+
+        @Override
+        public BingWebsSearchParameters withAnswerCount(Integer answerCount) {
+            this.answerCount = answerCount;
+            return this;
+        }
+
+        @Override
+        public BingWebsSearchParameters withCountryCode(String countryCode) {
+            this.countryCode = countryCode;
+            return this;
+        }
+
+        @Override
+        public BingWebsSearchParameters withCount(Integer count) {
+            this.count = count;
+            return this;
+        }
+
+        @Override
+        public BingWebsSearchParameters withFreshness(Freshness freshness) {
+            this.freshness = freshness;
+            return this;
+        }
+
+        @Override
+        public BingWebsSearchParameters withMarket(String market) {
+            this.market = market;
+            return this;
+        }
+
+        @Override
+        public BingWebsSearchParameters withOffset(Integer offset) {
+            this.offset = offset;
+            return this;
+        }
+
+        @Override
+        public BingWebsSearchParameters withPromote(List<AnswerType> promote) {
+            this.promote = promote;
+            return this;
+        }
+
+        @Override
+        public BingWebsSearchParameters withResponseFilter(List<AnswerType> responseFilter) {
+            this.responseFilter = responseFilter;
+            return this;
+        }
+
+        @Override
+        public BingWebsSearchParameters withSafeSearch(SafeSearch safeSearch) {
+            this.safeSearch = safeSearch;
+            return this;
+        }
+
+        @Override
+        public BingWebsSearchParameters withSetLang(String setLang) {
+            this.setLang = setLang;
+            return this;
+        }
+
+        @Override
+        public BingWebsSearchParameters withTextDecorations(Boolean textDecorations) {
+            this.textDecorations = textDecorations;
+            return this;
+        }
+
+        @Override
+        public BingWebsSearchParameters withTextFormat(TextFormat textFormat) {
+            this.textFormat = textFormat;
+            return this;
+        }
+
+        @Override
+        public SearchResponse execute() {
+        return searchWithServiceResponseAsync(query, acceptLanguage, pragma, userAgent, clientId, clientIp, location, answerCount, countryCode, count, freshness, market, offset, promote, responseFilter, safeSearch, setLang, textDecorations, textFormat).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<SearchResponse> executeAsync() {
+            return searchWithServiceResponseAsync(query, acceptLanguage, pragma, userAgent, clientId, clientIp, location, answerCount, countryCode, count, freshness, market, offset, promote, responseFilter, safeSearch, setLang, textDecorations, textFormat).map(new Func1<ServiceResponse<SearchResponse>, SearchResponse>() {
+                @Override
+                public SearchResponse call(ServiceResponse<SearchResponse> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 }

@@ -99,6 +99,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UUID object if successful.
      */
+    
     UUID addIntent(UUID appId, String versionId, AddIntentOptionalParameter addIntentOptionalParameter);
 
     /**
@@ -110,7 +111,84 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
+    
     Observable<UUID> addIntentAsync(UUID appId, String versionId, AddIntentOptionalParameter addIntentOptionalParameter);
+
+    /**
+     * Adds an intent classifier to the application.
+     *
+     * @return the first stage of the addIntent call
+     */
+    ModelsAddIntentDefinitionStages.WithAppId addIntent();
+
+    /**
+     * Grouping of addIntent definition stages.
+     */
+    interface ModelsAddIntentDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            ModelsAddIntentDefinitionStages.WithExecute withVersionId(String versionId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * Name of the new entity extractor.
+             *
+             * @return next definition stage
+             */
+            ModelsAddIntentDefinitionStages.WithExecute withName(String name);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ModelsAddIntentDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the UUID object if successful.
+             */
+            UUID execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the UUID object
+             */
+            Observable<UUID> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of addIntent definition.
+     */
+    interface ModelsAddIntentDefinition extends
+        ModelsAddIntentDefinitionStages.WithAppId,
+        ModelsAddIntentDefinitionStages.WithVersionId,
+        ModelsAddIntentDefinitionStages.WithExecute {
+    }
 
     /**
      * Gets information about the intent models.
@@ -123,6 +201,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;IntentClassifier&gt; object if successful.
      */
+    
     List<IntentClassifier> listIntents(UUID appId, String versionId, ListIntentsOptionalParameter listIntentsOptionalParameter);
 
     /**
@@ -134,7 +213,91 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;IntentClassifier&gt; object
      */
+    
     Observable<List<IntentClassifier>> listIntentsAsync(UUID appId, String versionId, ListIntentsOptionalParameter listIntentsOptionalParameter);
+
+    /**
+     * Gets information about the intent models.
+     *
+     * @return the first stage of the listIntents call
+     */
+    ModelsListIntentsDefinitionStages.WithAppId listIntents();
+
+    /**
+     * Grouping of listIntents definition stages.
+     */
+    interface ModelsListIntentsDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            ModelsListIntentsDefinitionStages.WithExecute withVersionId(String versionId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The number of entries to skip. Default value is 0.
+             *
+             * @return next definition stage
+             */
+            ModelsListIntentsDefinitionStages.WithExecute withSkip(Integer skip);
+
+            /**
+             * The number of entries to return. Maximum page size is 500. Default is 100.
+             *
+             * @return next definition stage
+             */
+            ModelsListIntentsDefinitionStages.WithExecute withTake(Integer take);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ModelsListIntentsDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the List&lt;IntentClassifier&gt; object if successful.
+             */
+            List<IntentClassifier> execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the List&lt;IntentClassifier&gt; object
+             */
+            Observable<List<IntentClassifier>> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of listIntents definition.
+     */
+    interface ModelsListIntentsDefinition extends
+        ModelsListIntentsDefinitionStages.WithAppId,
+        ModelsListIntentsDefinitionStages.WithVersionId,
+        ModelsListIntentsDefinitionStages.WithExecute {
+    }
 
     /**
      * Adds an entity extractor to the application.
@@ -147,6 +310,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UUID object if successful.
      */
+    
     UUID addEntity(UUID appId, String versionId, AddEntityOptionalParameter addEntityOptionalParameter);
 
     /**
@@ -158,7 +322,84 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
+    
     Observable<UUID> addEntityAsync(UUID appId, String versionId, AddEntityOptionalParameter addEntityOptionalParameter);
+
+    /**
+     * Adds an entity extractor to the application.
+     *
+     * @return the first stage of the addEntity call
+     */
+    ModelsAddEntityDefinitionStages.WithAppId addEntity();
+
+    /**
+     * Grouping of addEntity definition stages.
+     */
+    interface ModelsAddEntityDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            ModelsAddEntityDefinitionStages.WithExecute withVersionId(String versionId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * Name of the new entity extractor.
+             *
+             * @return next definition stage
+             */
+            ModelsAddEntityDefinitionStages.WithExecute withName(String name);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ModelsAddEntityDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the UUID object if successful.
+             */
+            UUID execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the UUID object
+             */
+            Observable<UUID> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of addEntity definition.
+     */
+    interface ModelsAddEntityDefinition extends
+        ModelsAddEntityDefinitionStages.WithAppId,
+        ModelsAddEntityDefinitionStages.WithVersionId,
+        ModelsAddEntityDefinitionStages.WithExecute {
+    }
 
     /**
      * Gets information about the entity models.
@@ -171,6 +412,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;EntityExtractor&gt; object if successful.
      */
+    
     List<EntityExtractor> listEntities(UUID appId, String versionId, ListEntitiesOptionalParameter listEntitiesOptionalParameter);
 
     /**
@@ -182,7 +424,91 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;EntityExtractor&gt; object
      */
+    
     Observable<List<EntityExtractor>> listEntitiesAsync(UUID appId, String versionId, ListEntitiesOptionalParameter listEntitiesOptionalParameter);
+
+    /**
+     * Gets information about the entity models.
+     *
+     * @return the first stage of the listEntities call
+     */
+    ModelsListEntitiesDefinitionStages.WithAppId listEntities();
+
+    /**
+     * Grouping of listEntities definition stages.
+     */
+    interface ModelsListEntitiesDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            ModelsListEntitiesDefinitionStages.WithExecute withVersionId(String versionId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The number of entries to skip. Default value is 0.
+             *
+             * @return next definition stage
+             */
+            ModelsListEntitiesDefinitionStages.WithExecute withSkip(Integer skip);
+
+            /**
+             * The number of entries to return. Maximum page size is 500. Default is 100.
+             *
+             * @return next definition stage
+             */
+            ModelsListEntitiesDefinitionStages.WithExecute withTake(Integer take);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ModelsListEntitiesDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the List&lt;EntityExtractor&gt; object if successful.
+             */
+            List<EntityExtractor> execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the List&lt;EntityExtractor&gt; object
+             */
+            Observable<List<EntityExtractor>> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of listEntities definition.
+     */
+    interface ModelsListEntitiesDefinition extends
+        ModelsListEntitiesDefinitionStages.WithAppId,
+        ModelsListEntitiesDefinitionStages.WithVersionId,
+        ModelsListEntitiesDefinitionStages.WithExecute {
+    }
 
 
     /**
@@ -221,6 +547,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;HierarchicalEntityExtractor&gt; object if successful.
      */
+    
     List<HierarchicalEntityExtractor> listHierarchicalEntities(UUID appId, String versionId, ListHierarchicalEntitiesOptionalParameter listHierarchicalEntitiesOptionalParameter);
 
     /**
@@ -232,7 +559,91 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;HierarchicalEntityExtractor&gt; object
      */
+    
     Observable<List<HierarchicalEntityExtractor>> listHierarchicalEntitiesAsync(UUID appId, String versionId, ListHierarchicalEntitiesOptionalParameter listHierarchicalEntitiesOptionalParameter);
+
+    /**
+     * Gets information about the hierarchical entity models.
+     *
+     * @return the first stage of the listHierarchicalEntities call
+     */
+    ModelsListHierarchicalEntitiesDefinitionStages.WithAppId listHierarchicalEntities();
+
+    /**
+     * Grouping of listHierarchicalEntities definition stages.
+     */
+    interface ModelsListHierarchicalEntitiesDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            ModelsListHierarchicalEntitiesDefinitionStages.WithExecute withVersionId(String versionId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The number of entries to skip. Default value is 0.
+             *
+             * @return next definition stage
+             */
+            ModelsListHierarchicalEntitiesDefinitionStages.WithExecute withSkip(Integer skip);
+
+            /**
+             * The number of entries to return. Maximum page size is 500. Default is 100.
+             *
+             * @return next definition stage
+             */
+            ModelsListHierarchicalEntitiesDefinitionStages.WithExecute withTake(Integer take);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ModelsListHierarchicalEntitiesDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the List&lt;HierarchicalEntityExtractor&gt; object if successful.
+             */
+            List<HierarchicalEntityExtractor> execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the List&lt;HierarchicalEntityExtractor&gt; object
+             */
+            Observable<List<HierarchicalEntityExtractor>> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of listHierarchicalEntities definition.
+     */
+    interface ModelsListHierarchicalEntitiesDefinition extends
+        ModelsListHierarchicalEntitiesDefinitionStages.WithAppId,
+        ModelsListHierarchicalEntitiesDefinitionStages.WithVersionId,
+        ModelsListHierarchicalEntitiesDefinitionStages.WithExecute {
+    }
 
 
     /**
@@ -271,6 +682,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;CompositeEntityExtractor&gt; object if successful.
      */
+    
     List<CompositeEntityExtractor> listCompositeEntities(UUID appId, String versionId, ListCompositeEntitiesOptionalParameter listCompositeEntitiesOptionalParameter);
 
     /**
@@ -282,7 +694,91 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;CompositeEntityExtractor&gt; object
      */
+    
     Observable<List<CompositeEntityExtractor>> listCompositeEntitiesAsync(UUID appId, String versionId, ListCompositeEntitiesOptionalParameter listCompositeEntitiesOptionalParameter);
+
+    /**
+     * Gets information about the composite entity models.
+     *
+     * @return the first stage of the listCompositeEntities call
+     */
+    ModelsListCompositeEntitiesDefinitionStages.WithAppId listCompositeEntities();
+
+    /**
+     * Grouping of listCompositeEntities definition stages.
+     */
+    interface ModelsListCompositeEntitiesDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            ModelsListCompositeEntitiesDefinitionStages.WithExecute withVersionId(String versionId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The number of entries to skip. Default value is 0.
+             *
+             * @return next definition stage
+             */
+            ModelsListCompositeEntitiesDefinitionStages.WithExecute withSkip(Integer skip);
+
+            /**
+             * The number of entries to return. Maximum page size is 500. Default is 100.
+             *
+             * @return next definition stage
+             */
+            ModelsListCompositeEntitiesDefinitionStages.WithExecute withTake(Integer take);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ModelsListCompositeEntitiesDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the List&lt;CompositeEntityExtractor&gt; object if successful.
+             */
+            List<CompositeEntityExtractor> execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the List&lt;CompositeEntityExtractor&gt; object
+             */
+            Observable<List<CompositeEntityExtractor>> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of listCompositeEntities definition.
+     */
+    interface ModelsListCompositeEntitiesDefinition extends
+        ModelsListCompositeEntitiesDefinitionStages.WithAppId,
+        ModelsListCompositeEntitiesDefinitionStages.WithVersionId,
+        ModelsListCompositeEntitiesDefinitionStages.WithExecute {
+    }
 
     /**
      * Gets information about the closedlist models.
@@ -295,6 +791,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;ClosedListEntityExtractor&gt; object if successful.
      */
+    
     List<ClosedListEntityExtractor> listClosedLists(UUID appId, String versionId, ListClosedListsOptionalParameter listClosedListsOptionalParameter);
 
     /**
@@ -306,7 +803,91 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;ClosedListEntityExtractor&gt; object
      */
+    
     Observable<List<ClosedListEntityExtractor>> listClosedListsAsync(UUID appId, String versionId, ListClosedListsOptionalParameter listClosedListsOptionalParameter);
+
+    /**
+     * Gets information about the closedlist models.
+     *
+     * @return the first stage of the listClosedLists call
+     */
+    ModelsListClosedListsDefinitionStages.WithAppId listClosedLists();
+
+    /**
+     * Grouping of listClosedLists definition stages.
+     */
+    interface ModelsListClosedListsDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            ModelsListClosedListsDefinitionStages.WithExecute withVersionId(String versionId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The number of entries to skip. Default value is 0.
+             *
+             * @return next definition stage
+             */
+            ModelsListClosedListsDefinitionStages.WithExecute withSkip(Integer skip);
+
+            /**
+             * The number of entries to return. Maximum page size is 500. Default is 100.
+             *
+             * @return next definition stage
+             */
+            ModelsListClosedListsDefinitionStages.WithExecute withTake(Integer take);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ModelsListClosedListsDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the List&lt;ClosedListEntityExtractor&gt; object if successful.
+             */
+            List<ClosedListEntityExtractor> execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the List&lt;ClosedListEntityExtractor&gt; object
+             */
+            Observable<List<ClosedListEntityExtractor>> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of listClosedLists definition.
+     */
+    interface ModelsListClosedListsDefinition extends
+        ModelsListClosedListsDefinitionStages.WithAppId,
+        ModelsListClosedListsDefinitionStages.WithVersionId,
+        ModelsListClosedListsDefinitionStages.WithExecute {
+    }
 
 
     /**
@@ -371,6 +952,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;PrebuiltEntityExtractor&gt; object if successful.
      */
+    
     List<PrebuiltEntityExtractor> listPrebuilts(UUID appId, String versionId, ListPrebuiltsOptionalParameter listPrebuiltsOptionalParameter);
 
     /**
@@ -382,7 +964,91 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;PrebuiltEntityExtractor&gt; object
      */
+    
     Observable<List<PrebuiltEntityExtractor>> listPrebuiltsAsync(UUID appId, String versionId, ListPrebuiltsOptionalParameter listPrebuiltsOptionalParameter);
+
+    /**
+     * Gets information about the prebuilt entity models.
+     *
+     * @return the first stage of the listPrebuilts call
+     */
+    ModelsListPrebuiltsDefinitionStages.WithAppId listPrebuilts();
+
+    /**
+     * Grouping of listPrebuilts definition stages.
+     */
+    interface ModelsListPrebuiltsDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            ModelsListPrebuiltsDefinitionStages.WithExecute withVersionId(String versionId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The number of entries to skip. Default value is 0.
+             *
+             * @return next definition stage
+             */
+            ModelsListPrebuiltsDefinitionStages.WithExecute withSkip(Integer skip);
+
+            /**
+             * The number of entries to return. Maximum page size is 500. Default is 100.
+             *
+             * @return next definition stage
+             */
+            ModelsListPrebuiltsDefinitionStages.WithExecute withTake(Integer take);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ModelsListPrebuiltsDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the List&lt;PrebuiltEntityExtractor&gt; object if successful.
+             */
+            List<PrebuiltEntityExtractor> execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the List&lt;PrebuiltEntityExtractor&gt; object
+             */
+            Observable<List<PrebuiltEntityExtractor>> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of listPrebuilts definition.
+     */
+    interface ModelsListPrebuiltsDefinition extends
+        ModelsListPrebuiltsDefinitionStages.WithAppId,
+        ModelsListPrebuiltsDefinitionStages.WithVersionId,
+        ModelsListPrebuiltsDefinitionStages.WithExecute {
+    }
 
 
     /**
@@ -419,6 +1085,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;ModelInfoResponse&gt; object if successful.
      */
+    
     List<ModelInfoResponse> listModels(UUID appId, String versionId, ListModelsOptionalParameter listModelsOptionalParameter);
 
     /**
@@ -430,7 +1097,91 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;ModelInfoResponse&gt; object
      */
+    
     Observable<List<ModelInfoResponse>> listModelsAsync(UUID appId, String versionId, ListModelsOptionalParameter listModelsOptionalParameter);
+
+    /**
+     * Gets information about the application version models.
+     *
+     * @return the first stage of the listModels call
+     */
+    ModelsListModelsDefinitionStages.WithAppId listModels();
+
+    /**
+     * Grouping of listModels definition stages.
+     */
+    interface ModelsListModelsDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            ModelsListModelsDefinitionStages.WithExecute withVersionId(String versionId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The number of entries to skip. Default value is 0.
+             *
+             * @return next definition stage
+             */
+            ModelsListModelsDefinitionStages.WithExecute withSkip(Integer skip);
+
+            /**
+             * The number of entries to return. Maximum page size is 500. Default is 100.
+             *
+             * @return next definition stage
+             */
+            ModelsListModelsDefinitionStages.WithExecute withTake(Integer take);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ModelsListModelsDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the List&lt;ModelInfoResponse&gt; object if successful.
+             */
+            List<ModelInfoResponse> execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the List&lt;ModelInfoResponse&gt; object
+             */
+            Observable<List<ModelInfoResponse>> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of listModels definition.
+     */
+    interface ModelsListModelsDefinition extends
+        ModelsListModelsDefinitionStages.WithAppId,
+        ModelsListModelsDefinitionStages.WithVersionId,
+        ModelsListModelsDefinitionStages.WithExecute {
+    }
 
     /**
      * Gets the utterances for the given model in the given app version.
@@ -444,6 +1195,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;LabelTextObject&gt; object if successful.
      */
+    
     List<LabelTextObject> examplesMethod(UUID appId, String versionId, String modelId, ExamplesMethodOptionalParameter examplesMethodOptionalParameter);
 
     /**
@@ -456,7 +1208,103 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;LabelTextObject&gt; object
      */
+    
     Observable<List<LabelTextObject>> examplesMethodAsync(UUID appId, String versionId, String modelId, ExamplesMethodOptionalParameter examplesMethodOptionalParameter);
+
+    /**
+     * Gets the utterances for the given model in the given app version.
+     *
+     * @return the first stage of the examplesMethod call
+     */
+    ModelsExamplesMethodDefinitionStages.WithAppId examplesMethod();
+
+    /**
+     * Grouping of examplesMethod definition stages.
+     */
+    interface ModelsExamplesMethodDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            WithModelId withVersionId(String versionId);
+        }
+        /**
+         * The stage of the definition to be specify modelId.
+         */
+        interface WithModelId {
+            /**
+             * The ID (GUID) of the model.
+             *
+             * @return next definition stage
+             */
+            ModelsExamplesMethodDefinitionStages.WithExecute withModelId(String modelId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The number of entries to skip. Default value is 0.
+             *
+             * @return next definition stage
+             */
+            ModelsExamplesMethodDefinitionStages.WithExecute withSkip(Integer skip);
+
+            /**
+             * The number of entries to return. Maximum page size is 500. Default is 100.
+             *
+             * @return next definition stage
+             */
+            ModelsExamplesMethodDefinitionStages.WithExecute withTake(Integer take);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ModelsExamplesMethodDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the List&lt;LabelTextObject&gt; object if successful.
+             */
+            List<LabelTextObject> execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the List&lt;LabelTextObject&gt; object
+             */
+            Observable<List<LabelTextObject>> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of examplesMethod definition.
+     */
+    interface ModelsExamplesMethodDefinition extends
+        ModelsExamplesMethodDefinitionStages.WithAppId,
+        ModelsExamplesMethodDefinitionStages.WithVersionId,
+        ModelsExamplesMethodDefinitionStages.WithModelId,
+        ModelsExamplesMethodDefinitionStages.WithExecute {
+    }
 
 
     /**
@@ -496,6 +1344,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
+    
     OperationStatus updateIntent(UUID appId, String versionId, UUID intentId, UpdateIntentOptionalParameter updateIntentOptionalParameter);
 
     /**
@@ -508,7 +1357,96 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
+    
     Observable<OperationStatus> updateIntentAsync(UUID appId, String versionId, UUID intentId, UpdateIntentOptionalParameter updateIntentOptionalParameter);
+
+    /**
+     * Updates the name of an intent classifier.
+     *
+     * @return the first stage of the updateIntent call
+     */
+    ModelsUpdateIntentDefinitionStages.WithAppId updateIntent();
+
+    /**
+     * Grouping of updateIntent definition stages.
+     */
+    interface ModelsUpdateIntentDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            WithIntentId withVersionId(String versionId);
+        }
+        /**
+         * The stage of the definition to be specify intentId.
+         */
+        interface WithIntentId {
+            /**
+             * The intent classifier ID.
+             *
+             * @return next definition stage
+             */
+            ModelsUpdateIntentDefinitionStages.WithExecute withIntentId(UUID intentId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The entity's new name.
+             *
+             * @return next definition stage
+             */
+            ModelsUpdateIntentDefinitionStages.WithExecute withName(String name);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ModelsUpdateIntentDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the OperationStatus object if successful.
+             */
+            OperationStatus execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the OperationStatus object
+             */
+            Observable<OperationStatus> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of updateIntent definition.
+     */
+    interface ModelsUpdateIntentDefinition extends
+        ModelsUpdateIntentDefinitionStages.WithAppId,
+        ModelsUpdateIntentDefinitionStages.WithVersionId,
+        ModelsUpdateIntentDefinitionStages.WithIntentId,
+        ModelsUpdateIntentDefinitionStages.WithExecute {
+    }
 
     /**
      * Deletes an intent classifier from the application.
@@ -522,6 +1460,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
+    
     OperationStatus deleteIntent(UUID appId, String versionId, UUID intentId, DeleteIntentOptionalParameter deleteIntentOptionalParameter);
 
     /**
@@ -534,7 +1473,97 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
+    
     Observable<OperationStatus> deleteIntentAsync(UUID appId, String versionId, UUID intentId, DeleteIntentOptionalParameter deleteIntentOptionalParameter);
+
+    /**
+     * Deletes an intent classifier from the application.
+     *
+     * @return the first stage of the deleteIntent call
+     */
+    ModelsDeleteIntentDefinitionStages.WithAppId deleteIntent();
+
+    /**
+     * Grouping of deleteIntent definition stages.
+     */
+    interface ModelsDeleteIntentDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            WithIntentId withVersionId(String versionId);
+        }
+        /**
+         * The stage of the definition to be specify intentId.
+         */
+        interface WithIntentId {
+            /**
+             * The intent classifier ID.
+             *
+             * @return next definition stage
+             */
+            ModelsDeleteIntentDefinitionStages.WithExecute withIntentId(UUID intentId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * Also delete the intent's utterances (true). Or move the utterances to the None intent (false - the default
+             *   value).
+             *
+             * @return next definition stage
+             */
+            ModelsDeleteIntentDefinitionStages.WithExecute withDeleteUtterances(Boolean deleteUtterances);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ModelsDeleteIntentDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the OperationStatus object if successful.
+             */
+            OperationStatus execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the OperationStatus object
+             */
+            Observable<OperationStatus> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of deleteIntent definition.
+     */
+    interface ModelsDeleteIntentDefinition extends
+        ModelsDeleteIntentDefinitionStages.WithAppId,
+        ModelsDeleteIntentDefinitionStages.WithVersionId,
+        ModelsDeleteIntentDefinitionStages.WithIntentId,
+        ModelsDeleteIntentDefinitionStages.WithExecute {
+    }
 
 
     /**
@@ -574,6 +1603,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
+    
     OperationStatus updateEntity(UUID appId, String versionId, UUID entityId, UpdateEntityOptionalParameter updateEntityOptionalParameter);
 
     /**
@@ -586,7 +1616,96 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
+    
     Observable<OperationStatus> updateEntityAsync(UUID appId, String versionId, UUID entityId, UpdateEntityOptionalParameter updateEntityOptionalParameter);
+
+    /**
+     * Updates the name of an entity extractor.
+     *
+     * @return the first stage of the updateEntity call
+     */
+    ModelsUpdateEntityDefinitionStages.WithAppId updateEntity();
+
+    /**
+     * Grouping of updateEntity definition stages.
+     */
+    interface ModelsUpdateEntityDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            WithEntityId withVersionId(String versionId);
+        }
+        /**
+         * The stage of the definition to be specify entityId.
+         */
+        interface WithEntityId {
+            /**
+             * The entity extractor ID.
+             *
+             * @return next definition stage
+             */
+            ModelsUpdateEntityDefinitionStages.WithExecute withEntityId(UUID entityId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The entity's new name.
+             *
+             * @return next definition stage
+             */
+            ModelsUpdateEntityDefinitionStages.WithExecute withName(String name);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ModelsUpdateEntityDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the OperationStatus object if successful.
+             */
+            OperationStatus execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the OperationStatus object
+             */
+            Observable<OperationStatus> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of updateEntity definition.
+     */
+    interface ModelsUpdateEntityDefinition extends
+        ModelsUpdateEntityDefinitionStages.WithAppId,
+        ModelsUpdateEntityDefinitionStages.WithVersionId,
+        ModelsUpdateEntityDefinitionStages.WithEntityId,
+        ModelsUpdateEntityDefinitionStages.WithExecute {
+    }
 
 
     /**
@@ -840,6 +1959,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
+    
     OperationStatus patchClosedList(UUID appId, String versionId, UUID clEntityId, PatchClosedListOptionalParameter patchClosedListOptionalParameter);
 
     /**
@@ -852,7 +1972,96 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
+    
     Observable<OperationStatus> patchClosedListAsync(UUID appId, String versionId, UUID clEntityId, PatchClosedListOptionalParameter patchClosedListOptionalParameter);
+
+    /**
+     * Adds a batch of sublists to an existing closedlist.
+     *
+     * @return the first stage of the patchClosedList call
+     */
+    ModelsPatchClosedListDefinitionStages.WithAppId patchClosedList();
+
+    /**
+     * Grouping of patchClosedList definition stages.
+     */
+    interface ModelsPatchClosedListDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            WithClEntityId withVersionId(String versionId);
+        }
+        /**
+         * The stage of the definition to be specify clEntityId.
+         */
+        interface WithClEntityId {
+            /**
+             * The closed list model ID.
+             *
+             * @return next definition stage
+             */
+            ModelsPatchClosedListDefinitionStages.WithExecute withClEntityId(UUID clEntityId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * Sublists to add.
+             *
+             * @return next definition stage
+             */
+            ModelsPatchClosedListDefinitionStages.WithExecute withSubLists(List<WordListObject> subLists);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ModelsPatchClosedListDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the OperationStatus object if successful.
+             */
+            OperationStatus execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the OperationStatus object
+             */
+            Observable<OperationStatus> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of patchClosedList definition.
+     */
+    interface ModelsPatchClosedListDefinition extends
+        ModelsPatchClosedListDefinitionStages.WithAppId,
+        ModelsPatchClosedListDefinitionStages.WithVersionId,
+        ModelsPatchClosedListDefinitionStages.WithClEntityId,
+        ModelsPatchClosedListDefinitionStages.WithExecute {
+    }
 
 
     /**
@@ -1002,6 +2211,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;IntentsSuggestionExample&gt; object if successful.
      */
+    
     List<IntentsSuggestionExample> getIntentSuggestions(UUID appId, String versionId, UUID intentId, GetIntentSuggestionsOptionalParameter getIntentSuggestionsOptionalParameter);
 
     /**
@@ -1014,7 +2224,96 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;IntentsSuggestionExample&gt; object
      */
+    
     Observable<List<IntentsSuggestionExample>> getIntentSuggestionsAsync(UUID appId, String versionId, UUID intentId, GetIntentSuggestionsOptionalParameter getIntentSuggestionsOptionalParameter);
+
+    /**
+     * Suggests examples that would improve the accuracy of the intent model.
+     *
+     * @return the first stage of the getIntentSuggestions call
+     */
+    ModelsGetIntentSuggestionsDefinitionStages.WithAppId getIntentSuggestions();
+
+    /**
+     * Grouping of getIntentSuggestions definition stages.
+     */
+    interface ModelsGetIntentSuggestionsDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            WithIntentId withVersionId(String versionId);
+        }
+        /**
+         * The stage of the definition to be specify intentId.
+         */
+        interface WithIntentId {
+            /**
+             * The intent classifier ID.
+             *
+             * @return next definition stage
+             */
+            ModelsGetIntentSuggestionsDefinitionStages.WithExecute withIntentId(UUID intentId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The number of entries to return. Maximum page size is 500. Default is 100.
+             *
+             * @return next definition stage
+             */
+            ModelsGetIntentSuggestionsDefinitionStages.WithExecute withTake(Integer take);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ModelsGetIntentSuggestionsDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the List&lt;IntentsSuggestionExample&gt; object if successful.
+             */
+            List<IntentsSuggestionExample> execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the List&lt;IntentsSuggestionExample&gt; object
+             */
+            Observable<List<IntentsSuggestionExample>> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of getIntentSuggestions definition.
+     */
+    interface ModelsGetIntentSuggestionsDefinition extends
+        ModelsGetIntentSuggestionsDefinitionStages.WithAppId,
+        ModelsGetIntentSuggestionsDefinitionStages.WithVersionId,
+        ModelsGetIntentSuggestionsDefinitionStages.WithIntentId,
+        ModelsGetIntentSuggestionsDefinitionStages.WithExecute {
+    }
 
     /**
      * Get suggestion examples that would improve the accuracy of the entity model.
@@ -1028,6 +2327,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;EntitiesSuggestionExample&gt; object if successful.
      */
+    
     List<EntitiesSuggestionExample> getEntitySuggestions(UUID appId, String versionId, UUID entityId, GetEntitySuggestionsOptionalParameter getEntitySuggestionsOptionalParameter);
 
     /**
@@ -1040,7 +2340,96 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;EntitiesSuggestionExample&gt; object
      */
+    
     Observable<List<EntitiesSuggestionExample>> getEntitySuggestionsAsync(UUID appId, String versionId, UUID entityId, GetEntitySuggestionsOptionalParameter getEntitySuggestionsOptionalParameter);
+
+    /**
+     * Get suggestion examples that would improve the accuracy of the entity model.
+     *
+     * @return the first stage of the getEntitySuggestions call
+     */
+    ModelsGetEntitySuggestionsDefinitionStages.WithAppId getEntitySuggestions();
+
+    /**
+     * Grouping of getEntitySuggestions definition stages.
+     */
+    interface ModelsGetEntitySuggestionsDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            WithEntityId withVersionId(String versionId);
+        }
+        /**
+         * The stage of the definition to be specify entityId.
+         */
+        interface WithEntityId {
+            /**
+             * The target entity extractor model to enhance.
+             *
+             * @return next definition stage
+             */
+            ModelsGetEntitySuggestionsDefinitionStages.WithExecute withEntityId(UUID entityId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The number of entries to return. Maximum page size is 500. Default is 100.
+             *
+             * @return next definition stage
+             */
+            ModelsGetEntitySuggestionsDefinitionStages.WithExecute withTake(Integer take);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ModelsGetEntitySuggestionsDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the List&lt;EntitiesSuggestionExample&gt; object if successful.
+             */
+            List<EntitiesSuggestionExample> execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the List&lt;EntitiesSuggestionExample&gt; object
+             */
+            Observable<List<EntitiesSuggestionExample>> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of getEntitySuggestions definition.
+     */
+    interface ModelsGetEntitySuggestionsDefinition extends
+        ModelsGetEntitySuggestionsDefinitionStages.WithAppId,
+        ModelsGetEntitySuggestionsDefinitionStages.WithVersionId,
+        ModelsGetEntitySuggestionsDefinitionStages.WithEntityId,
+        ModelsGetEntitySuggestionsDefinitionStages.WithExecute {
+    }
 
 
     /**
@@ -1081,6 +2470,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;UUID&gt; object if successful.
      */
+    
     List<UUID> addCustomPrebuiltDomain(UUID appId, String versionId, AddCustomPrebuiltDomainModelsOptionalParameter addCustomPrebuiltDomainOptionalParameter);
 
     /**
@@ -1092,7 +2482,84 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;UUID&gt; object
      */
+    
     Observable<List<UUID>> addCustomPrebuiltDomainAsync(UUID appId, String versionId, AddCustomPrebuiltDomainModelsOptionalParameter addCustomPrebuiltDomainOptionalParameter);
+
+    /**
+     * Adds a customizable prebuilt domain along with all of its models to this application.
+     *
+     * @return the first stage of the addCustomPrebuiltDomain call
+     */
+    ModelsAddCustomPrebuiltDomainDefinitionStages.WithAppId addCustomPrebuiltDomain();
+
+    /**
+     * Grouping of addCustomPrebuiltDomain definition stages.
+     */
+    interface ModelsAddCustomPrebuiltDomainDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            ModelsAddCustomPrebuiltDomainDefinitionStages.WithExecute withVersionId(String versionId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The domain name.
+             *
+             * @return next definition stage
+             */
+            ModelsAddCustomPrebuiltDomainDefinitionStages.WithExecute withDomainName(String domainName);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ModelsAddCustomPrebuiltDomainDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the List&lt;UUID&gt; object if successful.
+             */
+            List<UUID> execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the List&lt;UUID&gt; object
+             */
+            Observable<List<UUID>> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of addCustomPrebuiltDomain definition.
+     */
+    interface ModelsAddCustomPrebuiltDomainDefinition extends
+        ModelsAddCustomPrebuiltDomainDefinitionStages.WithAppId,
+        ModelsAddCustomPrebuiltDomainDefinitionStages.WithVersionId,
+        ModelsAddCustomPrebuiltDomainDefinitionStages.WithExecute {
+    }
 
 
     /**
@@ -1289,6 +2756,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
+    
     OperationStatus updateHierarchicalEntityChild(UUID appId, String versionId, UUID hEntityId, UUID hChildId, UpdateHierarchicalEntityChildOptionalParameter updateHierarchicalEntityChildOptionalParameter);
 
     /**
@@ -1302,7 +2770,108 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
+    
     Observable<OperationStatus> updateHierarchicalEntityChildAsync(UUID appId, String versionId, UUID hEntityId, UUID hChildId, UpdateHierarchicalEntityChildOptionalParameter updateHierarchicalEntityChildOptionalParameter);
+
+    /**
+     * Renames a single child in an existing hierarchical entity model.
+     *
+     * @return the first stage of the updateHierarchicalEntityChild call
+     */
+    ModelsUpdateHierarchicalEntityChildDefinitionStages.WithAppId updateHierarchicalEntityChild();
+
+    /**
+     * Grouping of updateHierarchicalEntityChild definition stages.
+     */
+    interface ModelsUpdateHierarchicalEntityChildDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            WithHEntityId withVersionId(String versionId);
+        }
+        /**
+         * The stage of the definition to be specify hEntityId.
+         */
+        interface WithHEntityId {
+            /**
+             * The hierarchical entity extractor ID.
+             *
+             * @return next definition stage
+             */
+            WithHChildId withHEntityId(UUID hEntityId);
+        }
+        /**
+         * The stage of the definition to be specify hChildId.
+         */
+        interface WithHChildId {
+            /**
+             * The hierarchical entity extractor child ID.
+             *
+             * @return next definition stage
+             */
+            ModelsUpdateHierarchicalEntityChildDefinitionStages.WithExecute withHChildId(UUID hChildId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             *
+             *
+             * @return next definition stage
+             */
+            ModelsUpdateHierarchicalEntityChildDefinitionStages.WithExecute withName(String name);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ModelsUpdateHierarchicalEntityChildDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the OperationStatus object if successful.
+             */
+            OperationStatus execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the OperationStatus object
+             */
+            Observable<OperationStatus> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of updateHierarchicalEntityChild definition.
+     */
+    interface ModelsUpdateHierarchicalEntityChildDefinition extends
+        ModelsUpdateHierarchicalEntityChildDefinitionStages.WithAppId,
+        ModelsUpdateHierarchicalEntityChildDefinitionStages.WithVersionId,
+        ModelsUpdateHierarchicalEntityChildDefinitionStages.WithHEntityId,
+        ModelsUpdateHierarchicalEntityChildDefinitionStages.WithHChildId,
+        ModelsUpdateHierarchicalEntityChildDefinitionStages.WithExecute {
+    }
 
 
     /**
@@ -1344,6 +2913,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UUID object if successful.
      */
+    
     UUID addHierarchicalEntityChild(UUID appId, String versionId, UUID hEntityId, AddHierarchicalEntityChildOptionalParameter addHierarchicalEntityChildOptionalParameter);
 
     /**
@@ -1356,7 +2926,96 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
+    
     Observable<UUID> addHierarchicalEntityChildAsync(UUID appId, String versionId, UUID hEntityId, AddHierarchicalEntityChildOptionalParameter addHierarchicalEntityChildOptionalParameter);
+
+    /**
+     * Creates a single child in an existing hierarchical entity model.
+     *
+     * @return the first stage of the addHierarchicalEntityChild call
+     */
+    ModelsAddHierarchicalEntityChildDefinitionStages.WithAppId addHierarchicalEntityChild();
+
+    /**
+     * Grouping of addHierarchicalEntityChild definition stages.
+     */
+    interface ModelsAddHierarchicalEntityChildDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            WithHEntityId withVersionId(String versionId);
+        }
+        /**
+         * The stage of the definition to be specify hEntityId.
+         */
+        interface WithHEntityId {
+            /**
+             * The hierarchical entity extractor ID.
+             *
+             * @return next definition stage
+             */
+            ModelsAddHierarchicalEntityChildDefinitionStages.WithExecute withHEntityId(UUID hEntityId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             *
+             *
+             * @return next definition stage
+             */
+            ModelsAddHierarchicalEntityChildDefinitionStages.WithExecute withName(String name);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ModelsAddHierarchicalEntityChildDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the UUID object if successful.
+             */
+            UUID execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the UUID object
+             */
+            Observable<UUID> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of addHierarchicalEntityChild definition.
+     */
+    interface ModelsAddHierarchicalEntityChildDefinition extends
+        ModelsAddHierarchicalEntityChildDefinitionStages.WithAppId,
+        ModelsAddHierarchicalEntityChildDefinitionStages.WithVersionId,
+        ModelsAddHierarchicalEntityChildDefinitionStages.WithHEntityId,
+        ModelsAddHierarchicalEntityChildDefinitionStages.WithExecute {
+    }
 
     /**
      * Creates a single child in an existing composite entity model.
@@ -1370,6 +3029,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UUID object if successful.
      */
+    
     UUID addCompositeEntityChild(UUID appId, String versionId, UUID cEntityId, AddCompositeEntityChildOptionalParameter addCompositeEntityChildOptionalParameter);
 
     /**
@@ -1382,7 +3042,96 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
+    
     Observable<UUID> addCompositeEntityChildAsync(UUID appId, String versionId, UUID cEntityId, AddCompositeEntityChildOptionalParameter addCompositeEntityChildOptionalParameter);
+
+    /**
+     * Creates a single child in an existing composite entity model.
+     *
+     * @return the first stage of the addCompositeEntityChild call
+     */
+    ModelsAddCompositeEntityChildDefinitionStages.WithAppId addCompositeEntityChild();
+
+    /**
+     * Grouping of addCompositeEntityChild definition stages.
+     */
+    interface ModelsAddCompositeEntityChildDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            WithCEntityId withVersionId(String versionId);
+        }
+        /**
+         * The stage of the definition to be specify cEntityId.
+         */
+        interface WithCEntityId {
+            /**
+             * The composite entity extractor ID.
+             *
+             * @return next definition stage
+             */
+            ModelsAddCompositeEntityChildDefinitionStages.WithExecute withCEntityId(UUID cEntityId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             *
+             *
+             * @return next definition stage
+             */
+            ModelsAddCompositeEntityChildDefinitionStages.WithExecute withName(String name);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ModelsAddCompositeEntityChildDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the UUID object if successful.
+             */
+            UUID execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the UUID object
+             */
+            Observable<UUID> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of addCompositeEntityChild definition.
+     */
+    interface ModelsAddCompositeEntityChildDefinition extends
+        ModelsAddCompositeEntityChildDefinitionStages.WithAppId,
+        ModelsAddCompositeEntityChildDefinitionStages.WithVersionId,
+        ModelsAddCompositeEntityChildDefinitionStages.WithCEntityId,
+        ModelsAddCompositeEntityChildDefinitionStages.WithExecute {
+    }
 
 
     /**
@@ -1423,6 +3172,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;RegexEntityExtractor&gt; object if successful.
      */
+    
     List<RegexEntityExtractor> getRegexEntityInfos(UUID appId, String versionId, GetRegexEntityInfosOptionalParameter getRegexEntityInfosOptionalParameter);
 
     /**
@@ -1434,7 +3184,91 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;RegexEntityExtractor&gt; object
      */
+    
     Observable<List<RegexEntityExtractor>> getRegexEntityInfosAsync(UUID appId, String versionId, GetRegexEntityInfosOptionalParameter getRegexEntityInfosOptionalParameter);
+
+    /**
+     * Gets information about the regex entity models.
+     *
+     * @return the first stage of the getRegexEntityInfos call
+     */
+    ModelsGetRegexEntityInfosDefinitionStages.WithAppId getRegexEntityInfos();
+
+    /**
+     * Grouping of getRegexEntityInfos definition stages.
+     */
+    interface ModelsGetRegexEntityInfosDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            ModelsGetRegexEntityInfosDefinitionStages.WithExecute withVersionId(String versionId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The number of entries to skip. Default value is 0.
+             *
+             * @return next definition stage
+             */
+            ModelsGetRegexEntityInfosDefinitionStages.WithExecute withSkip(Integer skip);
+
+            /**
+             * The number of entries to return. Maximum page size is 500. Default is 100.
+             *
+             * @return next definition stage
+             */
+            ModelsGetRegexEntityInfosDefinitionStages.WithExecute withTake(Integer take);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ModelsGetRegexEntityInfosDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the List&lt;RegexEntityExtractor&gt; object if successful.
+             */
+            List<RegexEntityExtractor> execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the List&lt;RegexEntityExtractor&gt; object
+             */
+            Observable<List<RegexEntityExtractor>> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of getRegexEntityInfos definition.
+     */
+    interface ModelsGetRegexEntityInfosDefinition extends
+        ModelsGetRegexEntityInfosDefinitionStages.WithAppId,
+        ModelsGetRegexEntityInfosDefinitionStages.WithVersionId,
+        ModelsGetRegexEntityInfosDefinitionStages.WithExecute {
+    }
 
 
     /**
@@ -1473,6 +3307,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;PatternAnyEntityExtractor&gt; object if successful.
      */
+    
     List<PatternAnyEntityExtractor> getPatternAnyEntityInfos(UUID appId, String versionId, GetPatternAnyEntityInfosOptionalParameter getPatternAnyEntityInfosOptionalParameter);
 
     /**
@@ -1484,7 +3319,91 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;PatternAnyEntityExtractor&gt; object
      */
+    
     Observable<List<PatternAnyEntityExtractor>> getPatternAnyEntityInfosAsync(UUID appId, String versionId, GetPatternAnyEntityInfosOptionalParameter getPatternAnyEntityInfosOptionalParameter);
+
+    /**
+     * Get information about the Pattern.Any entity models.
+     *
+     * @return the first stage of the getPatternAnyEntityInfos call
+     */
+    ModelsGetPatternAnyEntityInfosDefinitionStages.WithAppId getPatternAnyEntityInfos();
+
+    /**
+     * Grouping of getPatternAnyEntityInfos definition stages.
+     */
+    interface ModelsGetPatternAnyEntityInfosDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            ModelsGetPatternAnyEntityInfosDefinitionStages.WithExecute withVersionId(String versionId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The number of entries to skip. Default value is 0.
+             *
+             * @return next definition stage
+             */
+            ModelsGetPatternAnyEntityInfosDefinitionStages.WithExecute withSkip(Integer skip);
+
+            /**
+             * The number of entries to return. Maximum page size is 500. Default is 100.
+             *
+             * @return next definition stage
+             */
+            ModelsGetPatternAnyEntityInfosDefinitionStages.WithExecute withTake(Integer take);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ModelsGetPatternAnyEntityInfosDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the List&lt;PatternAnyEntityExtractor&gt; object if successful.
+             */
+            List<PatternAnyEntityExtractor> execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the List&lt;PatternAnyEntityExtractor&gt; object
+             */
+            Observable<List<PatternAnyEntityExtractor>> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of getPatternAnyEntityInfos definition.
+     */
+    interface ModelsGetPatternAnyEntityInfosDefinition extends
+        ModelsGetPatternAnyEntityInfosDefinitionStages.WithAppId,
+        ModelsGetPatternAnyEntityInfosDefinitionStages.WithVersionId,
+        ModelsGetPatternAnyEntityInfosDefinitionStages.WithExecute {
+    }
 
 
     /**
@@ -1518,7 +3437,7 @@ public interface Models {
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param entityId entity Id
+     * @param entityId entity Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -1531,7 +3450,7 @@ public interface Models {
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param entityId entity Id
+     * @param entityId entity Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;EntityRole&gt; object
      */
@@ -1550,6 +3469,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UUID object if successful.
      */
+    
     UUID createEntityRole(UUID appId, String versionId, UUID entityId, CreateEntityRoleOptionalParameter createEntityRoleOptionalParameter);
 
     /**
@@ -1562,7 +3482,96 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
+    
     Observable<UUID> createEntityRoleAsync(UUID appId, String versionId, UUID entityId, CreateEntityRoleOptionalParameter createEntityRoleOptionalParameter);
+
+    /**
+     * Create an entity role for an entity in the application.
+     *
+     * @return the first stage of the createEntityRole call
+     */
+    ModelsCreateEntityRoleDefinitionStages.WithAppId createEntityRole();
+
+    /**
+     * Grouping of createEntityRole definition stages.
+     */
+    interface ModelsCreateEntityRoleDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            WithEntityId withVersionId(String versionId);
+        }
+        /**
+         * The stage of the definition to be specify entityId.
+         */
+        interface WithEntityId {
+            /**
+             * The entity model ID.
+             *
+             * @return next definition stage
+             */
+            ModelsCreateEntityRoleDefinitionStages.WithExecute withEntityId(UUID entityId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The entity role name.
+             *
+             * @return next definition stage
+             */
+            ModelsCreateEntityRoleDefinitionStages.WithExecute withName(String name);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ModelsCreateEntityRoleDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the UUID object if successful.
+             */
+            UUID execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the UUID object
+             */
+            Observable<UUID> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of createEntityRole definition.
+     */
+    interface ModelsCreateEntityRoleDefinition extends
+        ModelsCreateEntityRoleDefinitionStages.WithAppId,
+        ModelsCreateEntityRoleDefinitionStages.WithVersionId,
+        ModelsCreateEntityRoleDefinitionStages.WithEntityId,
+        ModelsCreateEntityRoleDefinitionStages.WithExecute {
+    }
 
 
     /**
@@ -1570,7 +3579,7 @@ public interface Models {
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param entityId entity Id
+     * @param entityId entity Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -1583,7 +3592,7 @@ public interface Models {
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param entityId entity Id
+     * @param entityId entity Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;EntityRole&gt; object
      */
@@ -1602,6 +3611,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UUID object if successful.
      */
+    
     UUID createPrebuiltEntityRole(UUID appId, String versionId, UUID entityId, CreatePrebuiltEntityRoleOptionalParameter createPrebuiltEntityRoleOptionalParameter);
 
     /**
@@ -1614,7 +3624,96 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
+    
     Observable<UUID> createPrebuiltEntityRoleAsync(UUID appId, String versionId, UUID entityId, CreatePrebuiltEntityRoleOptionalParameter createPrebuiltEntityRoleOptionalParameter);
+
+    /**
+     * Create an entity role for an entity in the application.
+     *
+     * @return the first stage of the createPrebuiltEntityRole call
+     */
+    ModelsCreatePrebuiltEntityRoleDefinitionStages.WithAppId createPrebuiltEntityRole();
+
+    /**
+     * Grouping of createPrebuiltEntityRole definition stages.
+     */
+    interface ModelsCreatePrebuiltEntityRoleDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            WithEntityId withVersionId(String versionId);
+        }
+        /**
+         * The stage of the definition to be specify entityId.
+         */
+        interface WithEntityId {
+            /**
+             * The entity model ID.
+             *
+             * @return next definition stage
+             */
+            ModelsCreatePrebuiltEntityRoleDefinitionStages.WithExecute withEntityId(UUID entityId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The entity role name.
+             *
+             * @return next definition stage
+             */
+            ModelsCreatePrebuiltEntityRoleDefinitionStages.WithExecute withName(String name);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ModelsCreatePrebuiltEntityRoleDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the UUID object if successful.
+             */
+            UUID execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the UUID object
+             */
+            Observable<UUID> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of createPrebuiltEntityRole definition.
+     */
+    interface ModelsCreatePrebuiltEntityRoleDefinition extends
+        ModelsCreatePrebuiltEntityRoleDefinitionStages.WithAppId,
+        ModelsCreatePrebuiltEntityRoleDefinitionStages.WithVersionId,
+        ModelsCreatePrebuiltEntityRoleDefinitionStages.WithEntityId,
+        ModelsCreatePrebuiltEntityRoleDefinitionStages.WithExecute {
+    }
 
 
     /**
@@ -1622,7 +3721,7 @@ public interface Models {
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param entityId entity Id
+     * @param entityId entity Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -1635,7 +3734,7 @@ public interface Models {
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param entityId entity Id
+     * @param entityId entity Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;EntityRole&gt; object
      */
@@ -1654,6 +3753,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UUID object if successful.
      */
+    
     UUID createClosedListEntityRole(UUID appId, String versionId, UUID entityId, CreateClosedListEntityRoleOptionalParameter createClosedListEntityRoleOptionalParameter);
 
     /**
@@ -1666,7 +3766,96 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
+    
     Observable<UUID> createClosedListEntityRoleAsync(UUID appId, String versionId, UUID entityId, CreateClosedListEntityRoleOptionalParameter createClosedListEntityRoleOptionalParameter);
+
+    /**
+     * Create an entity role for an entity in the application.
+     *
+     * @return the first stage of the createClosedListEntityRole call
+     */
+    ModelsCreateClosedListEntityRoleDefinitionStages.WithAppId createClosedListEntityRole();
+
+    /**
+     * Grouping of createClosedListEntityRole definition stages.
+     */
+    interface ModelsCreateClosedListEntityRoleDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            WithEntityId withVersionId(String versionId);
+        }
+        /**
+         * The stage of the definition to be specify entityId.
+         */
+        interface WithEntityId {
+            /**
+             * The entity model ID.
+             *
+             * @return next definition stage
+             */
+            ModelsCreateClosedListEntityRoleDefinitionStages.WithExecute withEntityId(UUID entityId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The entity role name.
+             *
+             * @return next definition stage
+             */
+            ModelsCreateClosedListEntityRoleDefinitionStages.WithExecute withName(String name);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ModelsCreateClosedListEntityRoleDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the UUID object if successful.
+             */
+            UUID execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the UUID object
+             */
+            Observable<UUID> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of createClosedListEntityRole definition.
+     */
+    interface ModelsCreateClosedListEntityRoleDefinition extends
+        ModelsCreateClosedListEntityRoleDefinitionStages.WithAppId,
+        ModelsCreateClosedListEntityRoleDefinitionStages.WithVersionId,
+        ModelsCreateClosedListEntityRoleDefinitionStages.WithEntityId,
+        ModelsCreateClosedListEntityRoleDefinitionStages.WithExecute {
+    }
 
 
     /**
@@ -1674,7 +3863,7 @@ public interface Models {
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param entityId entity Id
+     * @param entityId entity Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -1687,7 +3876,7 @@ public interface Models {
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param entityId entity Id
+     * @param entityId entity Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;EntityRole&gt; object
      */
@@ -1706,6 +3895,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UUID object if successful.
      */
+    
     UUID createRegexEntityRole(UUID appId, String versionId, UUID entityId, CreateRegexEntityRoleOptionalParameter createRegexEntityRoleOptionalParameter);
 
     /**
@@ -1718,7 +3908,96 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
+    
     Observable<UUID> createRegexEntityRoleAsync(UUID appId, String versionId, UUID entityId, CreateRegexEntityRoleOptionalParameter createRegexEntityRoleOptionalParameter);
+
+    /**
+     * Create an entity role for an entity in the application.
+     *
+     * @return the first stage of the createRegexEntityRole call
+     */
+    ModelsCreateRegexEntityRoleDefinitionStages.WithAppId createRegexEntityRole();
+
+    /**
+     * Grouping of createRegexEntityRole definition stages.
+     */
+    interface ModelsCreateRegexEntityRoleDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            WithEntityId withVersionId(String versionId);
+        }
+        /**
+         * The stage of the definition to be specify entityId.
+         */
+        interface WithEntityId {
+            /**
+             * The entity model ID.
+             *
+             * @return next definition stage
+             */
+            ModelsCreateRegexEntityRoleDefinitionStages.WithExecute withEntityId(UUID entityId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The entity role name.
+             *
+             * @return next definition stage
+             */
+            ModelsCreateRegexEntityRoleDefinitionStages.WithExecute withName(String name);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ModelsCreateRegexEntityRoleDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the UUID object if successful.
+             */
+            UUID execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the UUID object
+             */
+            Observable<UUID> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of createRegexEntityRole definition.
+     */
+    interface ModelsCreateRegexEntityRoleDefinition extends
+        ModelsCreateRegexEntityRoleDefinitionStages.WithAppId,
+        ModelsCreateRegexEntityRoleDefinitionStages.WithVersionId,
+        ModelsCreateRegexEntityRoleDefinitionStages.WithEntityId,
+        ModelsCreateRegexEntityRoleDefinitionStages.WithExecute {
+    }
 
 
     /**
@@ -1758,6 +4037,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UUID object if successful.
      */
+    
     UUID createCompositeEntityRole(UUID appId, String versionId, UUID cEntityId, CreateCompositeEntityRoleOptionalParameter createCompositeEntityRoleOptionalParameter);
 
     /**
@@ -1770,7 +4050,96 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
+    
     Observable<UUID> createCompositeEntityRoleAsync(UUID appId, String versionId, UUID cEntityId, CreateCompositeEntityRoleOptionalParameter createCompositeEntityRoleOptionalParameter);
+
+    /**
+     * Create an entity role for an entity in the application.
+     *
+     * @return the first stage of the createCompositeEntityRole call
+     */
+    ModelsCreateCompositeEntityRoleDefinitionStages.WithAppId createCompositeEntityRole();
+
+    /**
+     * Grouping of createCompositeEntityRole definition stages.
+     */
+    interface ModelsCreateCompositeEntityRoleDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            WithCEntityId withVersionId(String versionId);
+        }
+        /**
+         * The stage of the definition to be specify cEntityId.
+         */
+        interface WithCEntityId {
+            /**
+             * The composite entity extractor ID.
+             *
+             * @return next definition stage
+             */
+            ModelsCreateCompositeEntityRoleDefinitionStages.WithExecute withCEntityId(UUID cEntityId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The entity role name.
+             *
+             * @return next definition stage
+             */
+            ModelsCreateCompositeEntityRoleDefinitionStages.WithExecute withName(String name);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ModelsCreateCompositeEntityRoleDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the UUID object if successful.
+             */
+            UUID execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the UUID object
+             */
+            Observable<UUID> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of createCompositeEntityRole definition.
+     */
+    interface ModelsCreateCompositeEntityRoleDefinition extends
+        ModelsCreateCompositeEntityRoleDefinitionStages.WithAppId,
+        ModelsCreateCompositeEntityRoleDefinitionStages.WithVersionId,
+        ModelsCreateCompositeEntityRoleDefinitionStages.WithCEntityId,
+        ModelsCreateCompositeEntityRoleDefinitionStages.WithExecute {
+    }
 
 
     /**
@@ -1778,7 +4147,7 @@ public interface Models {
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param entityId entity Id
+     * @param entityId entity Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -1791,7 +4160,7 @@ public interface Models {
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param entityId entity Id
+     * @param entityId entity Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;EntityRole&gt; object
      */
@@ -1810,6 +4179,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UUID object if successful.
      */
+    
     UUID createPatternAnyEntityRole(UUID appId, String versionId, UUID entityId, CreatePatternAnyEntityRoleOptionalParameter createPatternAnyEntityRoleOptionalParameter);
 
     /**
@@ -1822,7 +4192,96 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
+    
     Observable<UUID> createPatternAnyEntityRoleAsync(UUID appId, String versionId, UUID entityId, CreatePatternAnyEntityRoleOptionalParameter createPatternAnyEntityRoleOptionalParameter);
+
+    /**
+     * Create an entity role for an entity in the application.
+     *
+     * @return the first stage of the createPatternAnyEntityRole call
+     */
+    ModelsCreatePatternAnyEntityRoleDefinitionStages.WithAppId createPatternAnyEntityRole();
+
+    /**
+     * Grouping of createPatternAnyEntityRole definition stages.
+     */
+    interface ModelsCreatePatternAnyEntityRoleDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            WithEntityId withVersionId(String versionId);
+        }
+        /**
+         * The stage of the definition to be specify entityId.
+         */
+        interface WithEntityId {
+            /**
+             * The entity model ID.
+             *
+             * @return next definition stage
+             */
+            ModelsCreatePatternAnyEntityRoleDefinitionStages.WithExecute withEntityId(UUID entityId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The entity role name.
+             *
+             * @return next definition stage
+             */
+            ModelsCreatePatternAnyEntityRoleDefinitionStages.WithExecute withName(String name);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ModelsCreatePatternAnyEntityRoleDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the UUID object if successful.
+             */
+            UUID execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the UUID object
+             */
+            Observable<UUID> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of createPatternAnyEntityRole definition.
+     */
+    interface ModelsCreatePatternAnyEntityRoleDefinition extends
+        ModelsCreatePatternAnyEntityRoleDefinitionStages.WithAppId,
+        ModelsCreatePatternAnyEntityRoleDefinitionStages.WithVersionId,
+        ModelsCreatePatternAnyEntityRoleDefinitionStages.WithEntityId,
+        ModelsCreatePatternAnyEntityRoleDefinitionStages.WithExecute {
+    }
 
 
     /**
@@ -1862,6 +4321,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UUID object if successful.
      */
+    
     UUID createHierarchicalEntityRole(UUID appId, String versionId, UUID hEntityId, CreateHierarchicalEntityRoleOptionalParameter createHierarchicalEntityRoleOptionalParameter);
 
     /**
@@ -1874,7 +4334,96 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
+    
     Observable<UUID> createHierarchicalEntityRoleAsync(UUID appId, String versionId, UUID hEntityId, CreateHierarchicalEntityRoleOptionalParameter createHierarchicalEntityRoleOptionalParameter);
+
+    /**
+     * Create an entity role for an entity in the application.
+     *
+     * @return the first stage of the createHierarchicalEntityRole call
+     */
+    ModelsCreateHierarchicalEntityRoleDefinitionStages.WithAppId createHierarchicalEntityRole();
+
+    /**
+     * Grouping of createHierarchicalEntityRole definition stages.
+     */
+    interface ModelsCreateHierarchicalEntityRoleDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            WithHEntityId withVersionId(String versionId);
+        }
+        /**
+         * The stage of the definition to be specify hEntityId.
+         */
+        interface WithHEntityId {
+            /**
+             * The hierarchical entity extractor ID.
+             *
+             * @return next definition stage
+             */
+            ModelsCreateHierarchicalEntityRoleDefinitionStages.WithExecute withHEntityId(UUID hEntityId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The entity role name.
+             *
+             * @return next definition stage
+             */
+            ModelsCreateHierarchicalEntityRoleDefinitionStages.WithExecute withName(String name);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ModelsCreateHierarchicalEntityRoleDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the UUID object if successful.
+             */
+            UUID execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the UUID object
+             */
+            Observable<UUID> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of createHierarchicalEntityRole definition.
+     */
+    interface ModelsCreateHierarchicalEntityRoleDefinition extends
+        ModelsCreateHierarchicalEntityRoleDefinitionStages.WithAppId,
+        ModelsCreateHierarchicalEntityRoleDefinitionStages.WithVersionId,
+        ModelsCreateHierarchicalEntityRoleDefinitionStages.WithHEntityId,
+        ModelsCreateHierarchicalEntityRoleDefinitionStages.WithExecute {
+    }
 
 
     /**
@@ -1882,7 +4431,7 @@ public interface Models {
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param entityId entity Id
+     * @param entityId entity Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -1895,7 +4444,7 @@ public interface Models {
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param entityId entity Id
+     * @param entityId entity Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;EntityRole&gt; object
      */
@@ -1914,6 +4463,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UUID object if successful.
      */
+    
     UUID createCustomPrebuiltEntityRole(UUID appId, String versionId, UUID entityId, CreateCustomPrebuiltEntityRoleOptionalParameter createCustomPrebuiltEntityRoleOptionalParameter);
 
     /**
@@ -1926,7 +4476,96 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
+    
     Observable<UUID> createCustomPrebuiltEntityRoleAsync(UUID appId, String versionId, UUID entityId, CreateCustomPrebuiltEntityRoleOptionalParameter createCustomPrebuiltEntityRoleOptionalParameter);
+
+    /**
+     * Create an entity role for an entity in the application.
+     *
+     * @return the first stage of the createCustomPrebuiltEntityRole call
+     */
+    ModelsCreateCustomPrebuiltEntityRoleDefinitionStages.WithAppId createCustomPrebuiltEntityRole();
+
+    /**
+     * Grouping of createCustomPrebuiltEntityRole definition stages.
+     */
+    interface ModelsCreateCustomPrebuiltEntityRoleDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            WithEntityId withVersionId(String versionId);
+        }
+        /**
+         * The stage of the definition to be specify entityId.
+         */
+        interface WithEntityId {
+            /**
+             * The entity model ID.
+             *
+             * @return next definition stage
+             */
+            ModelsCreateCustomPrebuiltEntityRoleDefinitionStages.WithExecute withEntityId(UUID entityId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The entity role name.
+             *
+             * @return next definition stage
+             */
+            ModelsCreateCustomPrebuiltEntityRoleDefinitionStages.WithExecute withName(String name);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ModelsCreateCustomPrebuiltEntityRoleDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the UUID object if successful.
+             */
+            UUID execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the UUID object
+             */
+            Observable<UUID> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of createCustomPrebuiltEntityRole definition.
+     */
+    interface ModelsCreateCustomPrebuiltEntityRoleDefinition extends
+        ModelsCreateCustomPrebuiltEntityRoleDefinitionStages.WithAppId,
+        ModelsCreateCustomPrebuiltEntityRoleDefinitionStages.WithVersionId,
+        ModelsCreateCustomPrebuiltEntityRoleDefinitionStages.WithEntityId,
+        ModelsCreateCustomPrebuiltEntityRoleDefinitionStages.WithExecute {
+    }
 
 
     /**
@@ -1966,6 +4605,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the int object if successful.
      */
+    
     int addExplicitListItem(UUID appId, String versionId, UUID entityId, AddExplicitListItemOptionalParameter addExplicitListItemOptionalParameter);
 
     /**
@@ -1978,7 +4618,96 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the int object
      */
+    
     Observable<Integer> addExplicitListItemAsync(UUID appId, String versionId, UUID entityId, AddExplicitListItemOptionalParameter addExplicitListItemOptionalParameter);
+
+    /**
+     * Add a new item to the explicit list for the Pattern.Any entity.
+     *
+     * @return the first stage of the addExplicitListItem call
+     */
+    ModelsAddExplicitListItemDefinitionStages.WithAppId addExplicitListItem();
+
+    /**
+     * Grouping of addExplicitListItem definition stages.
+     */
+    interface ModelsAddExplicitListItemDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            WithEntityId withVersionId(String versionId);
+        }
+        /**
+         * The stage of the definition to be specify entityId.
+         */
+        interface WithEntityId {
+            /**
+             * The Pattern.Any entity extractor ID.
+             *
+             * @return next definition stage
+             */
+            ModelsAddExplicitListItemDefinitionStages.WithExecute withEntityId(UUID entityId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The explicit list item.
+             *
+             * @return next definition stage
+             */
+            ModelsAddExplicitListItemDefinitionStages.WithExecute withExplicitListItem(String explicitListItem);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ModelsAddExplicitListItemDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the int object if successful.
+             */
+            int execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the int object
+             */
+            Observable<Integer> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of addExplicitListItem definition.
+     */
+    interface ModelsAddExplicitListItemDefinition extends
+        ModelsAddExplicitListItemDefinitionStages.WithAppId,
+        ModelsAddExplicitListItemDefinitionStages.WithVersionId,
+        ModelsAddExplicitListItemDefinitionStages.WithEntityId,
+        ModelsAddExplicitListItemDefinitionStages.WithExecute {
+    }
 
 
     /**
@@ -2181,6 +4910,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
+    
     OperationStatus updateEntityRole(UUID appId, String versionId, UUID entityId, UUID roleId, UpdateEntityRoleOptionalParameter updateEntityRoleOptionalParameter);
 
     /**
@@ -2194,7 +4924,108 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
+    
     Observable<OperationStatus> updateEntityRoleAsync(UUID appId, String versionId, UUID entityId, UUID roleId, UpdateEntityRoleOptionalParameter updateEntityRoleOptionalParameter);
+
+    /**
+     * Update an entity role for a given entity.
+     *
+     * @return the first stage of the updateEntityRole call
+     */
+    ModelsUpdateEntityRoleDefinitionStages.WithAppId updateEntityRole();
+
+    /**
+     * Grouping of updateEntityRole definition stages.
+     */
+    interface ModelsUpdateEntityRoleDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            WithEntityId withVersionId(String versionId);
+        }
+        /**
+         * The stage of the definition to be specify entityId.
+         */
+        interface WithEntityId {
+            /**
+             * The entity ID.
+             *
+             * @return next definition stage
+             */
+            WithRoleId withEntityId(UUID entityId);
+        }
+        /**
+         * The stage of the definition to be specify roleId.
+         */
+        interface WithRoleId {
+            /**
+             * The entity role ID.
+             *
+             * @return next definition stage
+             */
+            ModelsUpdateEntityRoleDefinitionStages.WithExecute withRoleId(UUID roleId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The entity role name.
+             *
+             * @return next definition stage
+             */
+            ModelsUpdateEntityRoleDefinitionStages.WithExecute withName(String name);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ModelsUpdateEntityRoleDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the OperationStatus object if successful.
+             */
+            OperationStatus execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the OperationStatus object
+             */
+            Observable<OperationStatus> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of updateEntityRole definition.
+     */
+    interface ModelsUpdateEntityRoleDefinition extends
+        ModelsUpdateEntityRoleDefinitionStages.WithAppId,
+        ModelsUpdateEntityRoleDefinitionStages.WithVersionId,
+        ModelsUpdateEntityRoleDefinitionStages.WithEntityId,
+        ModelsUpdateEntityRoleDefinitionStages.WithRoleId,
+        ModelsUpdateEntityRoleDefinitionStages.WithExecute {
+    }
 
 
     /**
@@ -2265,6 +5096,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
+    
     OperationStatus updatePrebuiltEntityRole(UUID appId, String versionId, UUID entityId, UUID roleId, UpdatePrebuiltEntityRoleOptionalParameter updatePrebuiltEntityRoleOptionalParameter);
 
     /**
@@ -2278,7 +5110,108 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
+    
     Observable<OperationStatus> updatePrebuiltEntityRoleAsync(UUID appId, String versionId, UUID entityId, UUID roleId, UpdatePrebuiltEntityRoleOptionalParameter updatePrebuiltEntityRoleOptionalParameter);
+
+    /**
+     * Update an entity role for a given entity.
+     *
+     * @return the first stage of the updatePrebuiltEntityRole call
+     */
+    ModelsUpdatePrebuiltEntityRoleDefinitionStages.WithAppId updatePrebuiltEntityRole();
+
+    /**
+     * Grouping of updatePrebuiltEntityRole definition stages.
+     */
+    interface ModelsUpdatePrebuiltEntityRoleDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            WithEntityId withVersionId(String versionId);
+        }
+        /**
+         * The stage of the definition to be specify entityId.
+         */
+        interface WithEntityId {
+            /**
+             * The entity ID.
+             *
+             * @return next definition stage
+             */
+            WithRoleId withEntityId(UUID entityId);
+        }
+        /**
+         * The stage of the definition to be specify roleId.
+         */
+        interface WithRoleId {
+            /**
+             * The entity role ID.
+             *
+             * @return next definition stage
+             */
+            ModelsUpdatePrebuiltEntityRoleDefinitionStages.WithExecute withRoleId(UUID roleId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The entity role name.
+             *
+             * @return next definition stage
+             */
+            ModelsUpdatePrebuiltEntityRoleDefinitionStages.WithExecute withName(String name);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ModelsUpdatePrebuiltEntityRoleDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the OperationStatus object if successful.
+             */
+            OperationStatus execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the OperationStatus object
+             */
+            Observable<OperationStatus> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of updatePrebuiltEntityRole definition.
+     */
+    interface ModelsUpdatePrebuiltEntityRoleDefinition extends
+        ModelsUpdatePrebuiltEntityRoleDefinitionStages.WithAppId,
+        ModelsUpdatePrebuiltEntityRoleDefinitionStages.WithVersionId,
+        ModelsUpdatePrebuiltEntityRoleDefinitionStages.WithEntityId,
+        ModelsUpdatePrebuiltEntityRoleDefinitionStages.WithRoleId,
+        ModelsUpdatePrebuiltEntityRoleDefinitionStages.WithExecute {
+    }
 
 
     /**
@@ -2349,6 +5282,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
+    
     OperationStatus updateClosedListEntityRole(UUID appId, String versionId, UUID entityId, UUID roleId, UpdateClosedListEntityRoleOptionalParameter updateClosedListEntityRoleOptionalParameter);
 
     /**
@@ -2362,7 +5296,108 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
+    
     Observable<OperationStatus> updateClosedListEntityRoleAsync(UUID appId, String versionId, UUID entityId, UUID roleId, UpdateClosedListEntityRoleOptionalParameter updateClosedListEntityRoleOptionalParameter);
+
+    /**
+     * Update an entity role for a given entity.
+     *
+     * @return the first stage of the updateClosedListEntityRole call
+     */
+    ModelsUpdateClosedListEntityRoleDefinitionStages.WithAppId updateClosedListEntityRole();
+
+    /**
+     * Grouping of updateClosedListEntityRole definition stages.
+     */
+    interface ModelsUpdateClosedListEntityRoleDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            WithEntityId withVersionId(String versionId);
+        }
+        /**
+         * The stage of the definition to be specify entityId.
+         */
+        interface WithEntityId {
+            /**
+             * The entity ID.
+             *
+             * @return next definition stage
+             */
+            WithRoleId withEntityId(UUID entityId);
+        }
+        /**
+         * The stage of the definition to be specify roleId.
+         */
+        interface WithRoleId {
+            /**
+             * The entity role ID.
+             *
+             * @return next definition stage
+             */
+            ModelsUpdateClosedListEntityRoleDefinitionStages.WithExecute withRoleId(UUID roleId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The entity role name.
+             *
+             * @return next definition stage
+             */
+            ModelsUpdateClosedListEntityRoleDefinitionStages.WithExecute withName(String name);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ModelsUpdateClosedListEntityRoleDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the OperationStatus object if successful.
+             */
+            OperationStatus execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the OperationStatus object
+             */
+            Observable<OperationStatus> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of updateClosedListEntityRole definition.
+     */
+    interface ModelsUpdateClosedListEntityRoleDefinition extends
+        ModelsUpdateClosedListEntityRoleDefinitionStages.WithAppId,
+        ModelsUpdateClosedListEntityRoleDefinitionStages.WithVersionId,
+        ModelsUpdateClosedListEntityRoleDefinitionStages.WithEntityId,
+        ModelsUpdateClosedListEntityRoleDefinitionStages.WithRoleId,
+        ModelsUpdateClosedListEntityRoleDefinitionStages.WithExecute {
+    }
 
 
     /**
@@ -2433,6 +5468,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
+    
     OperationStatus updateRegexEntityRole(UUID appId, String versionId, UUID entityId, UUID roleId, UpdateRegexEntityRoleOptionalParameter updateRegexEntityRoleOptionalParameter);
 
     /**
@@ -2446,7 +5482,108 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
+    
     Observable<OperationStatus> updateRegexEntityRoleAsync(UUID appId, String versionId, UUID entityId, UUID roleId, UpdateRegexEntityRoleOptionalParameter updateRegexEntityRoleOptionalParameter);
+
+    /**
+     * Update an entity role for a given entity.
+     *
+     * @return the first stage of the updateRegexEntityRole call
+     */
+    ModelsUpdateRegexEntityRoleDefinitionStages.WithAppId updateRegexEntityRole();
+
+    /**
+     * Grouping of updateRegexEntityRole definition stages.
+     */
+    interface ModelsUpdateRegexEntityRoleDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            WithEntityId withVersionId(String versionId);
+        }
+        /**
+         * The stage of the definition to be specify entityId.
+         */
+        interface WithEntityId {
+            /**
+             * The entity ID.
+             *
+             * @return next definition stage
+             */
+            WithRoleId withEntityId(UUID entityId);
+        }
+        /**
+         * The stage of the definition to be specify roleId.
+         */
+        interface WithRoleId {
+            /**
+             * The entity role ID.
+             *
+             * @return next definition stage
+             */
+            ModelsUpdateRegexEntityRoleDefinitionStages.WithExecute withRoleId(UUID roleId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The entity role name.
+             *
+             * @return next definition stage
+             */
+            ModelsUpdateRegexEntityRoleDefinitionStages.WithExecute withName(String name);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ModelsUpdateRegexEntityRoleDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the OperationStatus object if successful.
+             */
+            OperationStatus execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the OperationStatus object
+             */
+            Observable<OperationStatus> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of updateRegexEntityRole definition.
+     */
+    interface ModelsUpdateRegexEntityRoleDefinition extends
+        ModelsUpdateRegexEntityRoleDefinitionStages.WithAppId,
+        ModelsUpdateRegexEntityRoleDefinitionStages.WithVersionId,
+        ModelsUpdateRegexEntityRoleDefinitionStages.WithEntityId,
+        ModelsUpdateRegexEntityRoleDefinitionStages.WithRoleId,
+        ModelsUpdateRegexEntityRoleDefinitionStages.WithExecute {
+    }
 
 
     /**
@@ -2517,6 +5654,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
+    
     OperationStatus updateCompositeEntityRole(UUID appId, String versionId, UUID cEntityId, UUID roleId, UpdateCompositeEntityRoleOptionalParameter updateCompositeEntityRoleOptionalParameter);
 
     /**
@@ -2530,7 +5668,108 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
+    
     Observable<OperationStatus> updateCompositeEntityRoleAsync(UUID appId, String versionId, UUID cEntityId, UUID roleId, UpdateCompositeEntityRoleOptionalParameter updateCompositeEntityRoleOptionalParameter);
+
+    /**
+     * Update an entity role for a given entity.
+     *
+     * @return the first stage of the updateCompositeEntityRole call
+     */
+    ModelsUpdateCompositeEntityRoleDefinitionStages.WithAppId updateCompositeEntityRole();
+
+    /**
+     * Grouping of updateCompositeEntityRole definition stages.
+     */
+    interface ModelsUpdateCompositeEntityRoleDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            WithCEntityId withVersionId(String versionId);
+        }
+        /**
+         * The stage of the definition to be specify cEntityId.
+         */
+        interface WithCEntityId {
+            /**
+             * The composite entity extractor ID.
+             *
+             * @return next definition stage
+             */
+            WithRoleId withCEntityId(UUID cEntityId);
+        }
+        /**
+         * The stage of the definition to be specify roleId.
+         */
+        interface WithRoleId {
+            /**
+             * The entity role ID.
+             *
+             * @return next definition stage
+             */
+            ModelsUpdateCompositeEntityRoleDefinitionStages.WithExecute withRoleId(UUID roleId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The entity role name.
+             *
+             * @return next definition stage
+             */
+            ModelsUpdateCompositeEntityRoleDefinitionStages.WithExecute withName(String name);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ModelsUpdateCompositeEntityRoleDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the OperationStatus object if successful.
+             */
+            OperationStatus execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the OperationStatus object
+             */
+            Observable<OperationStatus> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of updateCompositeEntityRole definition.
+     */
+    interface ModelsUpdateCompositeEntityRoleDefinition extends
+        ModelsUpdateCompositeEntityRoleDefinitionStages.WithAppId,
+        ModelsUpdateCompositeEntityRoleDefinitionStages.WithVersionId,
+        ModelsUpdateCompositeEntityRoleDefinitionStages.WithCEntityId,
+        ModelsUpdateCompositeEntityRoleDefinitionStages.WithRoleId,
+        ModelsUpdateCompositeEntityRoleDefinitionStages.WithExecute {
+    }
 
 
     /**
@@ -2601,6 +5840,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
+    
     OperationStatus updatePatternAnyEntityRole(UUID appId, String versionId, UUID entityId, UUID roleId, UpdatePatternAnyEntityRoleOptionalParameter updatePatternAnyEntityRoleOptionalParameter);
 
     /**
@@ -2614,7 +5854,108 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
+    
     Observable<OperationStatus> updatePatternAnyEntityRoleAsync(UUID appId, String versionId, UUID entityId, UUID roleId, UpdatePatternAnyEntityRoleOptionalParameter updatePatternAnyEntityRoleOptionalParameter);
+
+    /**
+     * Update an entity role for a given entity.
+     *
+     * @return the first stage of the updatePatternAnyEntityRole call
+     */
+    ModelsUpdatePatternAnyEntityRoleDefinitionStages.WithAppId updatePatternAnyEntityRole();
+
+    /**
+     * Grouping of updatePatternAnyEntityRole definition stages.
+     */
+    interface ModelsUpdatePatternAnyEntityRoleDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            WithEntityId withVersionId(String versionId);
+        }
+        /**
+         * The stage of the definition to be specify entityId.
+         */
+        interface WithEntityId {
+            /**
+             * The entity ID.
+             *
+             * @return next definition stage
+             */
+            WithRoleId withEntityId(UUID entityId);
+        }
+        /**
+         * The stage of the definition to be specify roleId.
+         */
+        interface WithRoleId {
+            /**
+             * The entity role ID.
+             *
+             * @return next definition stage
+             */
+            ModelsUpdatePatternAnyEntityRoleDefinitionStages.WithExecute withRoleId(UUID roleId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The entity role name.
+             *
+             * @return next definition stage
+             */
+            ModelsUpdatePatternAnyEntityRoleDefinitionStages.WithExecute withName(String name);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ModelsUpdatePatternAnyEntityRoleDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the OperationStatus object if successful.
+             */
+            OperationStatus execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the OperationStatus object
+             */
+            Observable<OperationStatus> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of updatePatternAnyEntityRole definition.
+     */
+    interface ModelsUpdatePatternAnyEntityRoleDefinition extends
+        ModelsUpdatePatternAnyEntityRoleDefinitionStages.WithAppId,
+        ModelsUpdatePatternAnyEntityRoleDefinitionStages.WithVersionId,
+        ModelsUpdatePatternAnyEntityRoleDefinitionStages.WithEntityId,
+        ModelsUpdatePatternAnyEntityRoleDefinitionStages.WithRoleId,
+        ModelsUpdatePatternAnyEntityRoleDefinitionStages.WithExecute {
+    }
 
 
     /**
@@ -2685,6 +6026,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
+    
     OperationStatus updateHierarchicalEntityRole(UUID appId, String versionId, UUID hEntityId, UUID roleId, UpdateHierarchicalEntityRoleOptionalParameter updateHierarchicalEntityRoleOptionalParameter);
 
     /**
@@ -2698,7 +6040,108 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
+    
     Observable<OperationStatus> updateHierarchicalEntityRoleAsync(UUID appId, String versionId, UUID hEntityId, UUID roleId, UpdateHierarchicalEntityRoleOptionalParameter updateHierarchicalEntityRoleOptionalParameter);
+
+    /**
+     * Update an entity role for a given entity.
+     *
+     * @return the first stage of the updateHierarchicalEntityRole call
+     */
+    ModelsUpdateHierarchicalEntityRoleDefinitionStages.WithAppId updateHierarchicalEntityRole();
+
+    /**
+     * Grouping of updateHierarchicalEntityRole definition stages.
+     */
+    interface ModelsUpdateHierarchicalEntityRoleDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            WithHEntityId withVersionId(String versionId);
+        }
+        /**
+         * The stage of the definition to be specify hEntityId.
+         */
+        interface WithHEntityId {
+            /**
+             * The hierarchical entity extractor ID.
+             *
+             * @return next definition stage
+             */
+            WithRoleId withHEntityId(UUID hEntityId);
+        }
+        /**
+         * The stage of the definition to be specify roleId.
+         */
+        interface WithRoleId {
+            /**
+             * The entity role ID.
+             *
+             * @return next definition stage
+             */
+            ModelsUpdateHierarchicalEntityRoleDefinitionStages.WithExecute withRoleId(UUID roleId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The entity role name.
+             *
+             * @return next definition stage
+             */
+            ModelsUpdateHierarchicalEntityRoleDefinitionStages.WithExecute withName(String name);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ModelsUpdateHierarchicalEntityRoleDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the OperationStatus object if successful.
+             */
+            OperationStatus execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the OperationStatus object
+             */
+            Observable<OperationStatus> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of updateHierarchicalEntityRole definition.
+     */
+    interface ModelsUpdateHierarchicalEntityRoleDefinition extends
+        ModelsUpdateHierarchicalEntityRoleDefinitionStages.WithAppId,
+        ModelsUpdateHierarchicalEntityRoleDefinitionStages.WithVersionId,
+        ModelsUpdateHierarchicalEntityRoleDefinitionStages.WithHEntityId,
+        ModelsUpdateHierarchicalEntityRoleDefinitionStages.WithRoleId,
+        ModelsUpdateHierarchicalEntityRoleDefinitionStages.WithExecute {
+    }
 
 
     /**
@@ -2769,6 +6212,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
+    
     OperationStatus updateCustomPrebuiltEntityRole(UUID appId, String versionId, UUID entityId, UUID roleId, UpdateCustomPrebuiltEntityRoleOptionalParameter updateCustomPrebuiltEntityRoleOptionalParameter);
 
     /**
@@ -2782,7 +6226,108 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
+    
     Observable<OperationStatus> updateCustomPrebuiltEntityRoleAsync(UUID appId, String versionId, UUID entityId, UUID roleId, UpdateCustomPrebuiltEntityRoleOptionalParameter updateCustomPrebuiltEntityRoleOptionalParameter);
+
+    /**
+     * Update an entity role for a given entity.
+     *
+     * @return the first stage of the updateCustomPrebuiltEntityRole call
+     */
+    ModelsUpdateCustomPrebuiltEntityRoleDefinitionStages.WithAppId updateCustomPrebuiltEntityRole();
+
+    /**
+     * Grouping of updateCustomPrebuiltEntityRole definition stages.
+     */
+    interface ModelsUpdateCustomPrebuiltEntityRoleDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            WithEntityId withVersionId(String versionId);
+        }
+        /**
+         * The stage of the definition to be specify entityId.
+         */
+        interface WithEntityId {
+            /**
+             * The entity ID.
+             *
+             * @return next definition stage
+             */
+            WithRoleId withEntityId(UUID entityId);
+        }
+        /**
+         * The stage of the definition to be specify roleId.
+         */
+        interface WithRoleId {
+            /**
+             * The entity role ID.
+             *
+             * @return next definition stage
+             */
+            ModelsUpdateCustomPrebuiltEntityRoleDefinitionStages.WithExecute withRoleId(UUID roleId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The entity role name.
+             *
+             * @return next definition stage
+             */
+            ModelsUpdateCustomPrebuiltEntityRoleDefinitionStages.WithExecute withName(String name);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ModelsUpdateCustomPrebuiltEntityRoleDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the OperationStatus object if successful.
+             */
+            OperationStatus execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the OperationStatus object
+             */
+            Observable<OperationStatus> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of updateCustomPrebuiltEntityRole definition.
+     */
+    interface ModelsUpdateCustomPrebuiltEntityRoleDefinition extends
+        ModelsUpdateCustomPrebuiltEntityRoleDefinitionStages.WithAppId,
+        ModelsUpdateCustomPrebuiltEntityRoleDefinitionStages.WithVersionId,
+        ModelsUpdateCustomPrebuiltEntityRoleDefinitionStages.WithEntityId,
+        ModelsUpdateCustomPrebuiltEntityRoleDefinitionStages.WithRoleId,
+        ModelsUpdateCustomPrebuiltEntityRoleDefinitionStages.WithExecute {
+    }
 
 
     /**
@@ -2853,6 +6398,7 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
+    
     OperationStatus updateExplicitListItem(UUID appId, String versionId, UUID entityId, long itemId, UpdateExplicitListItemOptionalParameter updateExplicitListItemOptionalParameter);
 
     /**
@@ -2866,7 +6412,108 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
+    
     Observable<OperationStatus> updateExplicitListItemAsync(UUID appId, String versionId, UUID entityId, long itemId, UpdateExplicitListItemOptionalParameter updateExplicitListItemOptionalParameter);
+
+    /**
+     * Updates an explicit list item for a Pattern.Any entity.
+     *
+     * @return the first stage of the updateExplicitListItem call
+     */
+    ModelsUpdateExplicitListItemDefinitionStages.WithAppId updateExplicitListItem();
+
+    /**
+     * Grouping of updateExplicitListItem definition stages.
+     */
+    interface ModelsUpdateExplicitListItemDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            WithEntityId withVersionId(String versionId);
+        }
+        /**
+         * The stage of the definition to be specify entityId.
+         */
+        interface WithEntityId {
+            /**
+             * The Pattern.Any entity extractor ID.
+             *
+             * @return next definition stage
+             */
+            WithItemId withEntityId(UUID entityId);
+        }
+        /**
+         * The stage of the definition to be specify itemId.
+         */
+        interface WithItemId {
+            /**
+             * The explicit list item ID.
+             *
+             * @return next definition stage
+             */
+            ModelsUpdateExplicitListItemDefinitionStages.WithExecute withItemId(long itemId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The explicit list item.
+             *
+             * @return next definition stage
+             */
+            ModelsUpdateExplicitListItemDefinitionStages.WithExecute withExplicitListItem(String explicitListItem);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ModelsUpdateExplicitListItemDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the OperationStatus object if successful.
+             */
+            OperationStatus execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the OperationStatus object
+             */
+            Observable<OperationStatus> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of updateExplicitListItem definition.
+     */
+    interface ModelsUpdateExplicitListItemDefinition extends
+        ModelsUpdateExplicitListItemDefinitionStages.WithAppId,
+        ModelsUpdateExplicitListItemDefinitionStages.WithVersionId,
+        ModelsUpdateExplicitListItemDefinitionStages.WithEntityId,
+        ModelsUpdateExplicitListItemDefinitionStages.WithItemId,
+        ModelsUpdateExplicitListItemDefinitionStages.WithExecute {
+    }
 
 
     /**

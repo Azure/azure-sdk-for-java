@@ -16,10 +16,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class OcrResult {
     /**
-     * The language property.
+     * The BCP-47 language code of the text in the image.
      */
     @JsonProperty(value = "language")
-    private OcrResult language;
+    private String language;
 
     /**
      * The angle, in degrees, of the detected text with respect to the closest
@@ -57,7 +57,7 @@ public class OcrResult {
      *
      * @return the language value
      */
-    public OcrResult language() {
+    public String language() {
         return this.language;
     }
 
@@ -67,7 +67,7 @@ public class OcrResult {
      * @param language the language value to set
      * @return the OcrResult object itself.
      */
-    public OcrResult withLanguage(OcrResult language) {
+    public OcrResult withLanguage(String language) {
         this.language = language;
         return this;
     }
