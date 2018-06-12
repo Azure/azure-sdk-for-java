@@ -25,7 +25,6 @@ package com.microsoft.azure.cosmosdb;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.microsoft.azure.cosmosdb.internal.Constants;
 
 /**
@@ -36,7 +35,6 @@ import com.microsoft.azure.cosmosdb.internal.Constants;
  * For instance, if unique key policy defines a unique key with single property path, there could be only one document that has missing value for this property.
  * @see UniqueKeyPolicy
  */
-@SuppressWarnings("serial")
 public class UniqueKey extends JsonSerializable {
     private Collection<String> paths;
 
@@ -46,10 +44,6 @@ public class UniqueKey extends JsonSerializable {
 
     public UniqueKey(String jsonString) {
         super(jsonString);
-    }
-
-    public UniqueKey(ObjectNode jsonObject) {
-        super(jsonObject);
     }
 
     /**

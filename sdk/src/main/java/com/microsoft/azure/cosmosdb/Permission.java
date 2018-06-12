@@ -25,14 +25,12 @@ package com.microsoft.azure.cosmosdb;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.apache.commons.lang3.text.WordUtils;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import com.microsoft.azure.cosmosdb.internal.Constants;
 
 /**
  * Represents a per-User Permission to access a specific resource e.g. Document or Collection in the Azure Cosmos DB database service.
  */
-@SuppressWarnings("serial")
 public class Permission extends Resource {
     /**
      * Initialize a permission object.
@@ -48,15 +46,6 @@ public class Permission extends Resource {
      */
     public Permission(String jsonString) {
         super(jsonString);
-    }
-
-    /**
-     * Initialize a permission object from json object.
-     *
-     * @param jsonObject the json object that represents the permission.
-     */
-    public Permission(ObjectNode jsonObject) {
-        super(jsonObject);
     }
 
     /**

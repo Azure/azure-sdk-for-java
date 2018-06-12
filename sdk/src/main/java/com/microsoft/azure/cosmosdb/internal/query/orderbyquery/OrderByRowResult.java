@@ -32,7 +32,6 @@ import com.microsoft.azure.cosmosdb.internal.query.QueryItem;
 /**
  * Represents the result of a query in the Azure Cosmos DB database service.
  */
-@SuppressWarnings("serial")
 public final class OrderByRowResult<T> extends Document {
     private final PartitionKeyRange targetRange;
     private final Class<T> klass;

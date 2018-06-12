@@ -93,7 +93,7 @@ public class PartitionKey {
             return Utils.getSimpleObjectMapper().readTree(json);
         } catch (IOException e) {
             //Should not happen while reading from String
-            throw new IllegalArgumentException(e);
+            throw new IllegalArgumentException(String.format("Unable to parse PartitionKey JSON %s", json), e);
         }
     }
 
@@ -101,7 +101,7 @@ public class PartitionKey {
         try {
             return Utils.getSimpleObjectMapper().writeValueAsString(object);
         } catch (JsonProcessingException e) {
-            throw new IllegalArgumentException(e);
+            throw new IllegalArgumentException("Unable to convert Partitionkey to String", e);
         }
     }
 }

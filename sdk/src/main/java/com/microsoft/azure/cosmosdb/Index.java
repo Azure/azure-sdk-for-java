@@ -24,14 +24,12 @@
 package com.microsoft.azure.cosmosdb;
 
 import org.apache.commons.lang3.text.WordUtils;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import com.microsoft.azure.cosmosdb.internal.Constants;
 
 /**
  * Represents the index of a collection in the Azure Cosmos DB database service.
  */
-@SuppressWarnings("serial")
 public abstract class Index extends JsonSerializable {
 
     /**
@@ -52,17 +50,6 @@ public abstract class Index extends JsonSerializable {
      */
     protected Index(String jsonString, IndexKind indexKind) {
         super(jsonString);
-        this.setKind(indexKind);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param jsonObject the json object that represents the index.
-     * @param indexKind the kind of the index
-     */
-    protected Index(ObjectNode jsonObject, IndexKind indexKind) {
-        super(jsonObject);
         this.setKind(indexKind);
     }
 

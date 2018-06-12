@@ -23,8 +23,6 @@
 
 package com.microsoft.azure.cosmosdb;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import com.microsoft.azure.cosmosdb.internal.Constants;
 
 /**
@@ -33,7 +31,6 @@ import com.microsoft.azure.cosmosdb.internal.Constants;
  * During rare failure scenarios, conflicts are generated for the documents in transit. Clients can inspect the
  * respective conflict instances  for resources and operations in conflict.
  */
-@SuppressWarnings("serial")
 public final class Conflict extends Resource {
     /**
      * Initialize a conflict object.
@@ -49,15 +46,6 @@ public final class Conflict extends Resource {
      */
     public Conflict(String jsonString) {
         super(jsonString);
-    }
-
-    /**
-     * Initialize a conflict object from json object.
-     *
-     * @param jsonObject the json object that represents the conflict.
-     */
-    public Conflict(ObjectNode jsonObject) {
-        super(jsonObject);
     }
 
     /**

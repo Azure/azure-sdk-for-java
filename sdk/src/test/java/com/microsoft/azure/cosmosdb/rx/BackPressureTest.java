@@ -172,9 +172,9 @@ public class BackPressureTest extends TestSuiteBase {
                 String.format("SELECT * FROM r WHERE r.offerResourceId = '%s'",
                         createdCollection.getResourceId())
                         , null).first().map(FeedResponse::getResults).toBlocking().single().get(0);
-        offer.getContent().put("offerThroughput", 10000);
+        offer.setThroughput(10000);
         offer = client.replaceOffer(offer).toBlocking().single().getResource();
-        assertThat(offer.getContent().get("offerThroughput").asInt()).isEqualTo(10000);
+        assertThat(offer.getThroughput()).isEqualTo(10000);
 
         ArrayList<Document> docDefList = new ArrayList<>();
         for(int i = 0; i < 1000; i++) {

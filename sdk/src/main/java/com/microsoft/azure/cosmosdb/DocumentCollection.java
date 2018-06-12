@@ -24,7 +24,6 @@
 package com.microsoft.azure.cosmosdb;
 
 import org.apache.commons.lang3.StringUtils;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import com.microsoft.azure.cosmosdb.internal.Constants;
 
@@ -36,7 +35,6 @@ import com.microsoft.azure.cosmosdb.internal.Constants;
  * Being schema-free, the documents in a collection do not need to share the same structure or fields. Since collections
  * are application resources, they can be authorized using either the master key or resource keys.
  */
-@SuppressWarnings("serial")
 public final class DocumentCollection extends Resource {
     private IndexingPolicy indexingPolicy;
     private UniqueKeyPolicy uniqueKeyPolicy;
@@ -55,15 +53,6 @@ public final class DocumentCollection extends Resource {
      */
     public DocumentCollection(String jsonString) {
         super(jsonString);
-    }
-
-    /**
-     * Initialize a document collection object from json object.
-     *
-     * @param jsonObject the json object that represents the document collection.
-     */
-    public DocumentCollection(ObjectNode jsonObject) {
-        super(jsonObject);
     }
 
     /**

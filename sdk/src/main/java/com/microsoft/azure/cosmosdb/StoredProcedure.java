@@ -23,7 +23,6 @@
 
 package com.microsoft.azure.cosmosdb;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.microsoft.azure.cosmosdb.internal.Constants;
 
 /**
@@ -33,7 +32,6 @@ import com.microsoft.azure.cosmosdb.internal.Constants;
  * script gets executed under ACID transactions on the primary storage partition of the specified collection. For
  * additional details, refer to the server-side JavaScript API documentation.
  */
-@SuppressWarnings("serial")
 public class StoredProcedure extends Resource {
 
     /**
@@ -50,15 +48,6 @@ public class StoredProcedure extends Resource {
      */
     public StoredProcedure(String jsonString) {
         super(jsonString);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param jsonObject the json object that represents the stored procedure.
-     */
-    public StoredProcedure(ObjectNode jsonObject) {
-        super(jsonObject);
     }
 
     /**

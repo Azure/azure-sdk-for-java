@@ -23,15 +23,12 @@
 
 package com.microsoft.azure.cosmosdb.internal.directconnectivity;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import com.microsoft.azure.cosmosdb.Resource;
 import com.microsoft.azure.cosmosdb.internal.Constants;
 
 /**
  * Used internally to represent a physical address in the Azure Cosmos DB database service.
  */
-@SuppressWarnings("serial")
 public class Address extends Resource {
     /**
      * Initialize an offer object.
@@ -47,15 +44,6 @@ public class Address extends Resource {
      */
     public Address(String jsonString) {
         super(jsonString);
-    }
-
-    /**
-     * Initialize an address object from json object.
-     *
-     * @param jsonObject the json object that represents the address.
-     */
-    public Address(ObjectNode jsonObject) {
-        super(jsonObject);
     }
 
     public boolean IsPrimary() {

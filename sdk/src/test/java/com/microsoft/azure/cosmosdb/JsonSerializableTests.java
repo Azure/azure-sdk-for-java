@@ -1,6 +1,7 @@
 package com.microsoft.azure.cosmosdb;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.testng.Assert.fail;
 
 import java.io.Serializable;
 
@@ -8,6 +9,7 @@ import org.testng.annotations.Test;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonParseException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -87,5 +89,47 @@ public class JsonSerializableTests {
         document.set("innerDocument", innerDocument);
         Document readInnerDocument = document.getObject("innerDocument", Document.class);
         assertThat(readInnerDocument.getId()).isEqualTo(innerDocument.getId());
+    }
+
+    @Test(groups = { "simple" })
+    public void objectMapperInvalidJsonNoQuotesForFieldAndValue() {
+        // Invalid Json - field and value must be quoted
+        try {
+            new Document("{ field: value }");
+            fail("failure expected");
+        } catch (Exception e) {
+            assertThat(e.getCause() instanceof JsonParseException).isTrue();
+        }
+    }
+
+    @Test(groups = { "simple" })
+    public void objectMapperInvalidJsonNoQuotesForField() {
+        // Invalid Json - field must be quoted
+        try {
+            new Document("{ field: 'value' }");
+            fail("failure expected");
+        } catch (Exception e) {
+            assertThat(e.getCause() instanceof JsonParseException).isTrue();
+        }
+    }
+
+    @Test(groups = { "simple" })
+    public void objectMapperInvalidJsonNoDuplicatesAllowed() {
+        // Invalid Json - duplicates must not exist in Json string
+        try {
+            new Document("{ 'field': 'value1', 'field': 'value2' }");
+            fail("failure expected");
+        } catch (Exception e) {
+            assertThat(e.getCause() instanceof JsonParseException).isTrue();
+        }
+    }
+
+    @Test(groups = { "simple" })
+    public void objectMapperValidJsonWithSingleQuotesAndTrailingComma() {
+        Document document = null;
+
+        // Valid Json - Single quotes and trailing commas allowed in Json string
+        document = new Document("{ 'field1': 'value1', 'field2': 'value2', }");
+        assertThat(document.toJson().equals("{\"field1\":\"value1\",\"field2\":\"value2\"}")).isEqualTo(true);
     }
 }

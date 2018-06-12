@@ -27,13 +27,11 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.microsoft.azure.cosmosdb.internal.Constants;
 
 /**
  * Represents the base resource in the Azure Cosmos DB database service.
  */
-@SuppressWarnings("serial")
 public class Resource extends JsonSerializable {
 
     /**
@@ -60,15 +58,6 @@ public class Resource extends JsonSerializable {
      */
     protected Resource(String jsonString) {
         super(jsonString);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param jsonObject the json object that represents the resource.
-     */
-    protected Resource(ObjectNode jsonObject) {
-        super(jsonObject);
     }
 
     /**

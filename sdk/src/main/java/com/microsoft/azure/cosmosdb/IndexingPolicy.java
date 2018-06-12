@@ -28,14 +28,12 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import org.apache.commons.lang3.text.WordUtils;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import com.microsoft.azure.cosmosdb.internal.Constants;
 
 /**
  * Represents the indexing policy configuration for a collection in the Azure Cosmos DB database service.
  */
-@SuppressWarnings("serial")
 public final class IndexingPolicy extends JsonSerializable {
 
     private static final String DEFAULT_PATH = "/*";
@@ -97,15 +95,6 @@ public final class IndexingPolicy extends JsonSerializable {
      */
     public IndexingPolicy(String jsonString) {
         super(jsonString);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param jsonObject the json object that represents the indexing policy.
-     */
-    public IndexingPolicy(ObjectNode jsonObject) {
-        super(jsonObject);
     }
 
     /**

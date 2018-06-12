@@ -29,7 +29,6 @@ import java.util.Collection;
 /**
  * Represents a SQL query in the Azure Cosmos DB database service.
  */
-@SuppressWarnings("serial")
 public final class SqlQuerySpec extends JsonSerializable {
 
     private SqlParameterCollection parameters;

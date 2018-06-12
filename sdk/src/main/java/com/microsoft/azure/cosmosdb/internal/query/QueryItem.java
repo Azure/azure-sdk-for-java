@@ -24,24 +24,17 @@
 
 package com.microsoft.azure.cosmosdb.internal.query;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import com.microsoft.azure.cosmosdb.JsonSerializable;
 import com.microsoft.azure.cosmosdb.Undefined;
 
 /**
  * Used internally for query in the Azure Cosmos DB database service.
  */
-@SuppressWarnings("serial")
 public final class QueryItem extends JsonSerializable {
     private Object item;
 
     public QueryItem(String jsonString) {
         super(jsonString);
-    }
-
-    public QueryItem(ObjectNode jsonObject) {
-        super(jsonObject);
     }
 
     public Object getItem() {

@@ -26,7 +26,6 @@ package com.microsoft.azure.cosmosdb;
 import java.io.IOException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.microsoft.azure.cosmosdb.internal.Constants;
 
 /**
@@ -36,7 +35,6 @@ import com.microsoft.azure.cosmosdb.internal.Constants;
  * any number of custom properties as well as an optional list of attachments. Document is an application resource and
  * can be authorized using the master key or resource keys.
  */
-@SuppressWarnings("serial")
 public class Document extends Resource {
 
     /**
@@ -63,15 +61,6 @@ public class Document extends Resource {
      */
     public Document(String jsonString) {
         super(jsonString);
-    }
-
-    /**
-     * Initialize a document object from json object.
-     *
-     * @param jsonObject the json object that represents the document object.
-     */
-    public Document(ObjectNode jsonObject) {
-        super(jsonObject);
     }
 
     static Document FromObject(Object document, ObjectMapper objectMapper) {

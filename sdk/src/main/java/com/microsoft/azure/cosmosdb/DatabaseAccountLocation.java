@@ -23,14 +23,11 @@
 
 package com.microsoft.azure.cosmosdb;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import com.microsoft.azure.cosmosdb.internal.Constants;
 
 /**
  * Represents the location of a database account in the Azure Cosmos DB database service.
  */
-@SuppressWarnings("serial")
 public class DatabaseAccountLocation extends JsonSerializable {
 
     /**
@@ -49,16 +46,6 @@ public class DatabaseAccountLocation extends JsonSerializable {
      */
     public DatabaseAccountLocation(String jsonString) {
         super(jsonString);
-    }
-
-    /**
-     * Creates a new instance of the DatabaseAccountLocation object from a
-     * JSON object.
-     *
-     * @param jsonObject the JSON object that represents the DatabaseAccountLocation object.
-     */
-    public DatabaseAccountLocation(ObjectNode jsonObject) {
-        super(jsonObject);
     }
 
     /**

@@ -33,7 +33,6 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -44,8 +43,6 @@ import java.util.concurrent.TimeUnit;
 import javax.net.ssl.SSLEngine;
 import javax.net.ssl.SSLException;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.commons.lang3.StringUtils;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
@@ -154,7 +151,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final CompositeHttpClient<ByteBuf, ByteBuf> rxClient;
     private final EndpointManager globalEndpointManager;
     private final RetryPolicy retryPolicy;
-    private static final ObjectMapper mapper = new ObjectMapper();
+    private static final ObjectMapper mapper = Utils.getSimpleObjectMapper();
 
     private Configs config = new Configs();
 
@@ -644,11 +641,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Object object = objectArray[i];
             if (object instanceof JsonSerializable) {
                 stringArray[i] = ((JsonSerializable) object).toJson();
-            } else if (object instanceof ObjectNode) {
-                stringArray[i] = toJson(object);
             } else {
 
-                // POJO, number, String or Boolean
+                // POJO, ObjectNode, number, String or Boolean
                 try {
                     stringArray[i] = mapper.writeValueAsString(object);
                 } catch (IOException e) {
@@ -658,14 +653,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         return String.format("[%s]", StringUtils.join(stringArray, ","));
-    }
-
-    private static String toJson(Object object){
-        try {
-            return Utils.getSimpleObjectMapper().writeValueAsString(object);
-        } catch (JsonProcessingException e) {
-            throw new IllegalArgumentException(e);
-        }
     }
 
     private static void validateResource(Resource resource) {

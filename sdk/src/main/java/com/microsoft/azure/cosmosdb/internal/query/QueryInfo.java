@@ -26,7 +26,6 @@ package com.microsoft.azure.cosmosdb.internal.query;
 import java.util.Collection;
 
 import org.apache.commons.lang3.StringUtils;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import com.microsoft.azure.cosmosdb.JsonSerializable;
 import com.microsoft.azure.cosmosdb.internal.query.aggregation.AggregateOperator;
@@ -34,7 +33,6 @@ import com.microsoft.azure.cosmosdb.internal.query.aggregation.AggregateOperator
 /**
  * Used internally to encapsulates a query's information in the Azure Cosmos DB database service.
  */
-@SuppressWarnings("serial")
 public final class QueryInfo extends JsonSerializable {
     private Integer top;
     private Collection<SortOrder> orderBy;
@@ -46,10 +44,6 @@ public final class QueryInfo extends JsonSerializable {
 
     public QueryInfo(String jsonString) {
         super(jsonString);
-    }
-
-    public QueryInfo(ObjectNode jsonObject) {
-        super(jsonObject);
     }
 
     public Integer getTop() {

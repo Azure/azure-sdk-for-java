@@ -24,14 +24,12 @@
 package com.microsoft.azure.cosmosdb;
 
 import org.apache.commons.lang3.text.WordUtils;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import com.microsoft.azure.cosmosdb.internal.Constants;
 
 /**
  * Represents a spatial index in the Azure Cosmos DB database service.
  */
-@SuppressWarnings("serial")
 public final class SpatialIndex extends Index {
 
     /**
@@ -62,18 +60,6 @@ public final class SpatialIndex extends Index {
         super(jsonString, IndexKind.Spatial);
         if (this.getDataType() == null) {
             throw new IllegalArgumentException("The jsonString doesn't contain a valid 'dataType'.");
-        }
-    }
-
-    /**
-     * Initializes a new instance of the SpatialIndex class.
-     *
-     * @param jsonObject the json object that represents the index.
-     */
-    public SpatialIndex(ObjectNode jsonObject) {
-        super(jsonObject, IndexKind.Spatial);
-        if (this.getDataType() == null) {
-            throw new IllegalArgumentException("The jsonObject doesn't contain a valid 'dataType'.");
         }
     }
 

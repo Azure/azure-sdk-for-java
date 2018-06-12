@@ -26,7 +26,6 @@ package com.microsoft.azure.cosmosdb;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -34,29 +33,23 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.microsoft.azure.cosmosdb.internal.Utils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Represents a base resource that can be serialized to JSON in the Azure Cosmos DB database service.
  */
-@SuppressWarnings("serial")
-public class JsonSerializable implements Serializable {
+public class JsonSerializable {
     private final static Logger logger = LoggerFactory.getLogger(JsonSerializable.class);
-    private final static ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-    static {
-        OBJECT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        OBJECT_MAPPER.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
-        OBJECT_MAPPER.configure(JsonParser.Feature.ALLOW_TRAILING_COMMA, true);
-    }
+    private final static ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
     private ObjectMapper om;
     transient ObjectNode propertyBag = null;
     
@@ -71,7 +64,7 @@ public class JsonSerializable implements Serializable {
      * @param objectMapper the custom object mapper
      */
     protected JsonSerializable(String jsonString, ObjectMapper objectMapper) {
-        this.propertyBag = (ObjectNode) fromJson(jsonString);
+        this.propertyBag = fromJson(jsonString);
         this.om = objectMapper;
     }
     
@@ -81,18 +74,9 @@ public class JsonSerializable implements Serializable {
      * @param jsonString the json string that represents the JsonSerializable.
      */
     protected JsonSerializable(String jsonString) {
-        this.propertyBag = (ObjectNode) fromJson(jsonString);
+        this.propertyBag = fromJson(jsonString);
     }
 
-    /**
-     * Constructor.
-     * 
-     * @param jsonObject the json object that represents the JsonSerializable.
-     */
-    protected JsonSerializable(ObjectNode jsonObject) {
-        this.propertyBag = jsonObject.deepCopy();
-    }
-    
     protected ObjectMapper getMapper() {
     if (this.om != null) { return this.om; }
         return OBJECT_MAPPER;
@@ -169,9 +153,10 @@ public class JsonSerializable implements Serializable {
             if (castedValue != null) {
                 castedValue.populatePropertyBag();
             }
-            this.propertyBag.put(propertyName, castedValue != null ? castedValue.propertyBag : null);
+            this.propertyBag.set(propertyName, castedValue != null ? castedValue.propertyBag : null);
         } else {
-            // POJO
+            // POJO, ObjectNode, number (includes int, float, double etc), boolean,
+            // and string.
             this.propertyBag.set(propertyName, getMapper().valueToTree(value));
         }
     }
@@ -187,8 +172,6 @@ public class JsonSerializable implements Serializable {
                 ArrayNode childArray = targetArray.addArray();
                 this.internalSetCollection(propertyName, (Collection) childValue, childArray);
             } else if (childValue instanceof JsonNode) {
-                // JSONObject, Number (includes Int, Float, Double etc),
-                // Boolean, and String.
                 targetArray.add((JsonNode) childValue);
             } else if (childValue instanceof JsonSerializable) {
                 // JsonSerializable
@@ -196,7 +179,8 @@ public class JsonSerializable implements Serializable {
                 castedValue.populatePropertyBag();
                 targetArray.add(castedValue.propertyBag != null ? castedValue.propertyBag : this.getMapper().createObjectNode());
             } else {
-                // POJO
+                // POJO, JSONObject, Number (includes Int, Float, Double etc),
+                // Boolean, and String.
                 targetArray.add(this.getMapper().valueToTree(childValue));
             }
         }
@@ -462,7 +446,7 @@ public class JsonSerializable implements Serializable {
         return null;
     }
 
-    public static Object getValue(JsonNode value) {
+    static Object getValue(JsonNode value) {
         if (value.isValueNode()) {
             switch (value.getNodeType()) {
                 case BOOLEAN:
@@ -482,12 +466,11 @@ public class JsonSerializable implements Serializable {
         return value;
     }
 
-    private JsonNode fromJson(String json){
+    private ObjectNode fromJson(String json){
         try {
-            return getMapper().readTree(json);
+            return (ObjectNode) getMapper().readTree(json);
         } catch (IOException e) {
-            //Should not happen while reading from String
-            throw new IllegalArgumentException(e);
+            throw new IllegalArgumentException(String.format("Unable to parse JSON %s", json), e);
         }
     }
 
@@ -495,7 +478,7 @@ public class JsonSerializable implements Serializable {
         try {
             return getMapper().writeValueAsString(object);
         } catch (JsonProcessingException e) {
-            throw new IllegalStateException(e);
+            throw new IllegalStateException("Unable to convert JSON to String", e);
         }
     }
 
@@ -503,7 +486,7 @@ public class JsonSerializable implements Serializable {
         try {
             return getMapper().writerWithDefaultPrettyPrinter().writeValueAsString(object);
         } catch (JsonProcessingException e) {
-            throw new IllegalStateException(e);
+            throw new IllegalStateException("Unable to convert JSON to String", e);
         }
     }
 
@@ -571,15 +554,5 @@ public class JsonSerializable implements Serializable {
      */
     public String toString() {
         return toJson(propertyBag);
-    }
-
-    private void writeObject(ObjectOutputStream outputStream) throws IOException {
-        outputStream.defaultWriteObject();
-        outputStream.writeObject(toJson(propertyBag));
-    }
-
-    private void readObject(ObjectInputStream inputStream) throws ClassNotFoundException, IOException {
-        inputStream.defaultReadObject();
-        propertyBag = (ObjectNode) fromJson((String) inputStream.readObject());
     }
 }

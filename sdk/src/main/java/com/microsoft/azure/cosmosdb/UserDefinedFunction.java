@@ -23,8 +23,6 @@
 
 package com.microsoft.azure.cosmosdb;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import com.microsoft.azure.cosmosdb.internal.Constants;
 
 /**
@@ -33,7 +31,6 @@ import com.microsoft.azure.cosmosdb.internal.Constants;
  * Cosmos DB supports JavaScript UDFs which can be used inside queries, stored procedures and triggers. For additional
  * details, refer to the server-side JavaScript API documentation.
  */
-@SuppressWarnings("serial")
 public class UserDefinedFunction extends Resource {
 
     /**
@@ -50,15 +47,6 @@ public class UserDefinedFunction extends Resource {
      */
     public UserDefinedFunction(String jsonString) {
         super(jsonString);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param jsonObject the json object that represents the user defined function.
-     */
-    public UserDefinedFunction(ObjectNode jsonObject) {
-        super(jsonObject);
     }
 
     /**

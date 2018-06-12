@@ -25,8 +25,6 @@ package com.microsoft.azure.cosmosdb.internal.query;
 
 import java.util.List;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.microsoft.azure.cosmosdb.JsonSerializable;
 import com.microsoft.azure.cosmosdb.internal.Constants;
@@ -34,7 +32,6 @@ import com.microsoft.azure.cosmosdb.internal.Utils;
 import com.microsoft.azure.cosmosdb.internal.routing.PartitionKeyInternal;
 import com.microsoft.azure.cosmosdb.internal.routing.Range;
 
-@SuppressWarnings("serial")
 public final class PartitionedQueryExecutionInfoInternal extends JsonSerializable {
     static final String QUERY_INFO_PROPERTY = "queryInfo";
     static final String QUERY_RANGES_PROPERTY = "queryRanges";
@@ -53,10 +50,6 @@ public final class PartitionedQueryExecutionInfoInternal extends JsonSerializabl
 
     public PartitionedQueryExecutionInfoInternal(String jsonString) {
         super(jsonString);
-    }
-
-    public PartitionedQueryExecutionInfoInternal(ObjectNode jsonObject) {
-        super(jsonObject);
     }
 
     public int getVersion() {

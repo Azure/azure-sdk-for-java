@@ -23,33 +23,28 @@
 
 package com.microsoft.azure.cosmosdb;
 
-import org.apache.commons.lang3.StringUtils;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import com.microsoft.azure.cosmosdb.internal.Constants;
+import com.microsoft.azure.cosmosdb.internal.Utils;
 
 /**
- * Represents the offer for a resource in the Azure Cosmos DB database service.
+ * Represents an offer in the Azure Cosmos DB database service.
  */
-@SuppressWarnings("serial")
 public class Offer extends Resource {
-    /**
-     * Initialize an offer object.
-     */
-    public Offer() {
-        super();
-        this.setOfferVersion(Constants.Properties.OFFER_VERSION_V1);
-    }
 
     /**
-     * Initialize an offer object and copy all properties from the other offer.
+     * Initialize an new instance of the Offer object.
      *
-     * @param otherOffer the Offer object whose properties to copy over.
+     * @param offerThroughput the throughput value for this offer.
      */
-    public Offer(Offer otherOffer) {
+    public Offer(int offerThroughput) {
         super();
-        String serializedString = otherOffer.toJson();
-        this.propertyBag = new Offer(serializedString).propertyBag;
+        this.setOfferVersion(Constants.Properties.OFFER_VERSION_V2);
+        this.setOfferType("");
+        ObjectNode content = Utils.getSimpleObjectMapper().createObjectNode();
+        content.put(Constants.Properties.OFFER_THROUGHPUT, offerThroughput);
+        this.setContent(content);
     }
 
     /**
@@ -60,16 +55,7 @@ public class Offer extends Resource {
     public Offer(String jsonString) {
         super(jsonString);
     }
-
-    /**
-     * Initialize an offer object from json object.
-     *
-     * @param jsonObject the json object that represents the offer.
-     */
-    public Offer(ObjectNode jsonObject) {
-        super(jsonObject);
-    }
-
+    
     /**
      * Gets the self-link of a resource to which the resource offer applies.
      *
@@ -122,10 +108,6 @@ public class Offer extends Resource {
      */
     public void setOfferType(String offerType) {
         super.set(Constants.Properties.OFFER_TYPE, offerType);
-        if (StringUtils.isNotEmpty(offerType)) {
-            // OfferType is only supported for V2 offers.
-            this.setOfferVersion(Constants.Properties.OFFER_VERSION_V1);
-        }
     }
 
     /**
@@ -147,20 +129,28 @@ public class Offer extends Resource {
     }
 
     /**
-     * Gets the content object that contains the details of the offer.
+     * Gets the offer throughput for this offer.
      *
-     * @return the offer content.
+     * @return the offer throughput.
      */
-    public ObjectNode getContent() {
-        return super.getObject(Constants.Properties.OFFER_CONTENT);
+    public int getThroughput() {
+        return this.getContent().get(Constants.Properties.OFFER_THROUGHPUT).asInt();
     }
 
     /**
-     * Sets the offer content that contains the details of the offer.
+     * Sets the offer throughput for this offer.
      *
-     * @param offerContent the content object.
+     * @param throughput the throughput of this offer.
      */
-    public void setContent(ObjectNode offerContent) {
+    public void setThroughput(int throughput) {
+        this.getContent().put(Constants.Properties.OFFER_THROUGHPUT, throughput);
+    }
+
+    private ObjectNode getContent() {
+        return super.getObject(Constants.Properties.OFFER_CONTENT);
+    }
+
+    private void setContent(ObjectNode offerContent) {
         super.set(Constants.Properties.OFFER_CONTENT, offerContent);
     }
 }

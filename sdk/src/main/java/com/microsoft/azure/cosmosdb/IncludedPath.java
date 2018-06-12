@@ -29,14 +29,12 @@ import java.util.Collection;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.apache.commons.lang3.text.WordUtils;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import com.microsoft.azure.cosmosdb.internal.Constants;
 
 /**
  * Represents an included path of the IndexingPolicy in the Azure Cosmos DB database service.
  */
-@SuppressWarnings("serial")
 public class IncludedPath extends JsonSerializable {
 
     private Collection<Index> indexes;
@@ -55,15 +53,6 @@ public class IncludedPath extends JsonSerializable {
      */
     public IncludedPath(String jsonString) {
         super(jsonString);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param jsonObject the json object that represents the included path.
-     */
-    public IncludedPath(ObjectNode jsonObject) {
-        super(jsonObject);
     }
 
     /**

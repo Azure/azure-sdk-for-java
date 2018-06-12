@@ -68,7 +68,7 @@ public class OfferReadReplaceTest extends TestSuiteBase {
                 }
 
                 Offer rOffer = client.readOffer(offers.get(i).getSelfLink()).toBlocking().single().getResource();
-                int oldThroughput = rOffer.getContent().get("offerThroughput").asInt();
+                int oldThroughput = rOffer.getThroughput();
                 
                 Observable<ResourceResponse<Offer>> readObservable = client.readOffer(offers.get(i).getSelfLink());
 
@@ -82,9 +82,7 @@ public class OfferReadReplaceTest extends TestSuiteBase {
 
                 // update offer
                 int newThroughput = oldThroughput + 100;
-                ObjectNode modifiedContent = Utils.getSimpleObjectMapper().readValue(
-                        "{\"offerThroughput\":" + Integer.toString(newThroughput) + "}", ObjectNode.class);
-                offers.get(i).setContent(modifiedContent);
+                offers.get(i).setThroughput(newThroughput);
                 Observable<ResourceResponse<Offer>> replaceObservable = client.replaceOffer(offers.get(i));
 
                 // validate offer replace

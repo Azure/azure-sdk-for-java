@@ -23,14 +23,11 @@
 
 package com.microsoft.azure.cosmosdb;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import com.microsoft.azure.cosmosdb.internal.Constants;
 
 /**
  * Represents an excluded path of the IndexingPolicy in the Azure Cosmos DB database service.
  */
-@SuppressWarnings("serial")
 public class ExcludedPath extends JsonSerializable {
 
     /**
@@ -47,15 +44,6 @@ public class ExcludedPath extends JsonSerializable {
      */
     public ExcludedPath(String jsonString) {
         super(jsonString);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param jsonObject the json object that represents the excluded path.
-     */
-    public ExcludedPath(ObjectNode jsonObject) {
-        super(jsonObject);
     }
 
     /**

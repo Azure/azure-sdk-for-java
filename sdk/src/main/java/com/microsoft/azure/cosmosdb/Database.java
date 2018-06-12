@@ -23,7 +23,6 @@
 
 package com.microsoft.azure.cosmosdb;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.StringUtils;
 
 import com.microsoft.azure.cosmosdb.internal.Constants;
@@ -36,7 +35,6 @@ import com.microsoft.azure.cosmosdb.internal.Constants;
  * more documents. Since databases are an an administrative resource and the Service Master Key will be required in
  * order to access and successfully complete any action using the User APIs.
  */
-@SuppressWarnings("serial")
 public final class Database extends Resource {
 
     /**
@@ -53,15 +51,6 @@ public final class Database extends Resource {
      */
     public Database(String jsonString) {
         super(jsonString);
-    }
-
-    /**
-     * Initialize a database object from json string.
-     *
-     * @param jsonObject the json object.
-     */
-    public Database(ObjectNode jsonObject) {
-        super(jsonObject);
     }
 
     /**

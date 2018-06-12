@@ -23,7 +23,6 @@
 
 package com.microsoft.azure.cosmosdb;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.text.WordUtils;
 import com.microsoft.azure.cosmosdb.internal.Constants;
 
@@ -33,7 +32,6 @@ import com.microsoft.azure.cosmosdb.internal.Constants;
  * Cosmos DB supports pre and post triggers defined in JavaScript to be executed on creates, updates and deletes. For
  * additional details, refer to the server-side JavaScript API documentation.
  */
-@SuppressWarnings("serial")
 public class Trigger extends Resource {
 
     /**
@@ -50,15 +48,6 @@ public class Trigger extends Resource {
      */
     public Trigger(String jsonString) {
         super(jsonString);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param jsonObject the json object that represents the trigger.
-     */
-    public Trigger(ObjectNode jsonObject) {
-        super(jsonObject);
     }
 
     /**

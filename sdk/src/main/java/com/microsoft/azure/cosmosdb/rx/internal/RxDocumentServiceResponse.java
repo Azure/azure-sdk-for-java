@@ -155,7 +155,7 @@ public class RxDocumentServiceResponse {
 
         // Aggregate queries may return a nested array
         ArrayNode innerArray;
-        while (jTokenArray != null && jTokenArray.size() == 1 && (innerArray = optJSONArray(jTokenArray.get(0))) != null) {
+        while (jTokenArray != null && jTokenArray.size() == 1 && (innerArray = toArrayNode(jTokenArray.get(0))) != null) {
             jTokenArray = innerArray;
         }
 
@@ -184,7 +184,7 @@ public class RxDocumentServiceResponse {
         return queryResults;
     }
 
-    private ArrayNode optJSONArray(JsonNode n) {
+    private ArrayNode toArrayNode(JsonNode n) {
         if (n.isArray()) {
             return (ArrayNode) n;
         } else {
@@ -196,8 +196,7 @@ public class RxDocumentServiceResponse {
         try {
             return Utils.getSimpleObjectMapper().readTree(json);
         } catch (IOException e) {
-            //Should not happen while reading from String
-            throw new IllegalStateException(e);
+            throw new IllegalStateException(String.format("Unable to parse JSON %s", json), e);
         }
     }
 
@@ -205,7 +204,7 @@ public class RxDocumentServiceResponse {
         try {
             return Utils.getSimpleObjectMapper().writeValueAsString(object);
         } catch (JsonProcessingException e) {
-            throw new IllegalStateException(e);
+            throw new IllegalStateException("Can't serialize the object into the json string", e);
         }
     }
 

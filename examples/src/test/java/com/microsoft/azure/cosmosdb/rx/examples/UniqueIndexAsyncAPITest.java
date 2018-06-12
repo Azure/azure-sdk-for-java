@@ -74,7 +74,7 @@ public class UniqueIndexAsyncAPITest {
         DocumentCollection collection = client.createCollection(getDatabaseLink(), collectionDefinition, null).toBlocking().single().getResource();
 
         Document doc1 = new Document("{ 'name':'Alan Turning', 'field': 'Mathematics', 'other' : 'Logic' }");
-        Document doc2 = new Document("{ 'name':'Al-Khwarizmi', 'field': 'Mathematics' , other' : 'Algebra '}");
+        Document doc2 = new Document("{ 'name':'Al-Khwarizmi', 'field': 'Mathematics' , 'other' : 'Algebra '}");
         Document doc3 = new Document("{ 'name':'Alan Turning', 'field': 'Mathematics', 'other' : 'CS' }");
 
         client.createDocument(getCollectionLink(collection), doc1, null, false).toBlocking().single().getResource();
