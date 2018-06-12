@@ -10,61 +10,82 @@ package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
 
 /**
- * The optional parameters class for "getAllTerms" method.
+ * The GetAllTermsOptionalParameter model.
  */
 public class GetAllTermsOptionalParameter {
     /**
-    * The pagination start index.
-    */
+     * The pagination start index.
+     */
     private Integer offset;
 
     /**
-    * The max limit.
-    */
+     * The max limit.
+     */
     private Integer limit;
 
     /**
-    * Get the offset value.
-    *
-    * @return the offset value
-    */
+     * Gets or sets the preferred language for the response.
+     */
+    private String thisclientacceptLanguage;
+
+    /**
+     * Get the offset value.
+     *
+     * @return the offset value
+     */
     public Integer offset() {
         return this.offset;
     }
 
     /**
-    * Get the limit value.
-    *
-    * @return the limit value
-    */
-    public Integer limit() {
-        return this.limit;
-    }
-
-    /**
-    * Set the offset value.
-    * <p>
-    * The pagination start index.
-    *
-    * @param offset the offset value to set
-    * @return the getAllTermsOptionalParameter object itself.
-    */
-    public GetAllTermsOptionalParameter withOffset(int offset) {
+     * Set the offset value.
+     *
+     * @param offset the offset value to set
+     * @return the GetAllTermsOptionalParameter object itself.
+     */
+    public GetAllTermsOptionalParameter withOffset(Integer offset) {
         this.offset = offset;
         return this;
     }
 
     /**
-    * Set the limit value.
-    * <p>
-    * The max limit.
-    *
-    * @param limit the limit value to set
-    * @return the getAllTermsOptionalParameter object itself.
-    */
-    public GetAllTermsOptionalParameter withLimit(int limit) {
+     * Get the limit value.
+     *
+     * @return the limit value
+     */
+    public Integer limit() {
+        return this.limit;
+    }
+
+    /**
+     * Set the limit value.
+     *
+     * @param limit the limit value to set
+     * @return the GetAllTermsOptionalParameter object itself.
+     */
+    public GetAllTermsOptionalParameter withLimit(Integer limit) {
         this.limit = limit;
         return this;
     }
 
+    /**
+     * Get the thisclientacceptLanguage value.
+     *
+     * @return the thisclientacceptLanguage value
+     */
+    public String thisclientacceptLanguage() {
+        return this.thisclientacceptLanguage;
     }
+
+    /**
+     * Set the thisclientacceptLanguage value.
+     *
+     * @param thisclientacceptLanguage the thisclientacceptLanguage value to set
+     * @return the GetAllTermsOptionalParameter object itself.
+     */
+    public GetAllTermsOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
+        this.thisclientacceptLanguage = thisclientacceptLanguage;
+        return this;
+    }
+
+}

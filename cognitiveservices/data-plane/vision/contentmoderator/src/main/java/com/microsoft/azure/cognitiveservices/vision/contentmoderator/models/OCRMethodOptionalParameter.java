@@ -10,65 +10,88 @@ package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
 
 /**
- * The optional parameters class for "oCRMethod" method.
+ * The OCRMethodOptionalParameter model.
  */
 public class OCRMethodOptionalParameter {
     /**
-    * Whether to retain the submitted image for future use; defaults to false if omitted.
-    */
+     * Whether to retain the submitted image for future use; defaults to false
+     * if omitted.
+     */
     private Boolean cacheImage;
 
     /**
-    * When set to True, the image goes through additional processing to come with additional candidates.
-    * image/tiff is not supported when enhanced is set to true
-    * Note: This impacts the response time.
-    */
+     * When set to True, the image goes through additional processing to come
+     * with additional candidates.
+     *
+     * image/tiff is not supported when enhanced is set to true
+     *
+     * Note: This impacts the response time.
+     */
     private Boolean enhanced;
 
     /**
-    * Get the cacheImage value.
-    *
-    * @return the cacheImage value
-    */
+     * Gets or sets the preferred language for the response.
+     */
+    private String thisclientacceptLanguage;
+
+    /**
+     * Get the cacheImage value.
+     *
+     * @return the cacheImage value
+     */
     public Boolean cacheImage() {
         return this.cacheImage;
     }
 
     /**
-    * Get the enhanced value.
-    *
-    * @return the enhanced value
-    */
-    public Boolean enhanced() {
-        return this.enhanced;
-    }
-
-    /**
-    * Set the cacheImage value.
-    * <p>
-    * Whether to retain the submitted image for future use; defaults to false if omitted.
-    *
-    * @param cacheImage the cacheImage value to set
-    * @return the oCRMethodOptionalParameter object itself.
-    */
-    public OCRMethodOptionalParameter withCacheImage(boolean cacheImage) {
+     * Set the cacheImage value.
+     *
+     * @param cacheImage the cacheImage value to set
+     * @return the OCRMethodOptionalParameter object itself.
+     */
+    public OCRMethodOptionalParameter withCacheImage(Boolean cacheImage) {
         this.cacheImage = cacheImage;
         return this;
     }
 
     /**
-    * Set the enhanced value.
-    * <p>
-    * When set to True, the image goes through additional processing to come with additional candidates.
-    * image/tiff is not supported when enhanced is set to true
-    * Note: This impacts the response time.
-    *
-    * @param enhanced the enhanced value to set
-    * @return the oCRMethodOptionalParameter object itself.
-    */
-    public OCRMethodOptionalParameter withEnhanced(boolean enhanced) {
+     * Get the enhanced value.
+     *
+     * @return the enhanced value
+     */
+    public Boolean enhanced() {
+        return this.enhanced;
+    }
+
+    /**
+     * Set the enhanced value.
+     *
+     * @param enhanced the enhanced value to set
+     * @return the OCRMethodOptionalParameter object itself.
+     */
+    public OCRMethodOptionalParameter withEnhanced(Boolean enhanced) {
         this.enhanced = enhanced;
         return this;
     }
 
+    /**
+     * Get the thisclientacceptLanguage value.
+     *
+     * @return the thisclientacceptLanguage value
+     */
+    public String thisclientacceptLanguage() {
+        return this.thisclientacceptLanguage;
     }
+
+    /**
+     * Set the thisclientacceptLanguage value.
+     *
+     * @param thisclientacceptLanguage the thisclientacceptLanguage value to set
+     * @return the OCRMethodOptionalParameter object itself.
+     */
+    public OCRMethodOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
+        this.thisclientacceptLanguage = thisclientacceptLanguage;
+        return this;
+    }
+
+}

@@ -10,142 +10,157 @@ package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
 
 /**
- * The optional parameters class for "screenText" method.
+ * The ScreenTextOptionalParameter model.
  */
 public class ScreenTextOptionalParameter {
     /**
-    * Language of the text.
-    */
+     * Language of the text.
+     */
     private String language;
 
     /**
-    * Autocorrect text.
-    */
+     * Autocorrect text.
+     */
     private Boolean autocorrect;
 
     /**
-    * Detect personal identifiable information.
-    */
+     * Detect personal identifiable information.
+     */
     private Boolean pII;
 
     /**
-    * The list Id.
-    */
+     * The list Id.
+     */
     private String listId;
 
     /**
-    * Classify input.
-    */
+     * Classify input.
+     */
     private Boolean classify;
 
     /**
-    * Get the language value.
-    *
-    * @return the language value
-    */
+     * Gets or sets the preferred language for the response.
+     */
+    private String thisclientacceptLanguage;
+
+    /**
+     * Get the language value.
+     *
+     * @return the language value
+     */
     public String language() {
         return this.language;
     }
 
     /**
-    * Get the autocorrect value.
-    *
-    * @return the autocorrect value
-    */
-    public Boolean autocorrect() {
-        return this.autocorrect;
-    }
-
-    /**
-    * Get the pII value.
-    *
-    * @return the pII value
-    */
-    public Boolean pII() {
-        return this.pII;
-    }
-
-    /**
-    * Get the listId value.
-    *
-    * @return the listId value
-    */
-    public String listId() {
-        return this.listId;
-    }
-
-    /**
-    * Get the classify value.
-    *
-    * @return the classify value
-    */
-    public Boolean classify() {
-        return this.classify;
-    }
-
-    /**
-    * Set the language value.
-    * <p>
-    * Language of the text.
-    *
-    * @param language the language value to set
-    * @return the screenTextOptionalParameter object itself.
-    */
+     * Set the language value.
+     *
+     * @param language the language value to set
+     * @return the ScreenTextOptionalParameter object itself.
+     */
     public ScreenTextOptionalParameter withLanguage(String language) {
         this.language = language;
         return this;
     }
 
     /**
-    * Set the autocorrect value.
-    * <p>
-    * Autocorrect text.
-    *
-    * @param autocorrect the autocorrect value to set
-    * @return the screenTextOptionalParameter object itself.
-    */
-    public ScreenTextOptionalParameter withAutocorrect(boolean autocorrect) {
+     * Get the autocorrect value.
+     *
+     * @return the autocorrect value
+     */
+    public Boolean autocorrect() {
+        return this.autocorrect;
+    }
+
+    /**
+     * Set the autocorrect value.
+     *
+     * @param autocorrect the autocorrect value to set
+     * @return the ScreenTextOptionalParameter object itself.
+     */
+    public ScreenTextOptionalParameter withAutocorrect(Boolean autocorrect) {
         this.autocorrect = autocorrect;
         return this;
     }
 
     /**
-    * Set the pII value.
-    * <p>
-    * Detect personal identifiable information.
-    *
-    * @param pII the pII value to set
-    * @return the screenTextOptionalParameter object itself.
-    */
-    public ScreenTextOptionalParameter withPII(boolean pII) {
+     * Get the pII value.
+     *
+     * @return the pII value
+     */
+    public Boolean pII() {
+        return this.pII;
+    }
+
+    /**
+     * Set the pII value.
+     *
+     * @param pII the pII value to set
+     * @return the ScreenTextOptionalParameter object itself.
+     */
+    public ScreenTextOptionalParameter withPII(Boolean pII) {
         this.pII = pII;
         return this;
     }
 
     /**
-    * Set the listId value.
-    * <p>
-    * The list Id.
-    *
-    * @param listId the listId value to set
-    * @return the screenTextOptionalParameter object itself.
-    */
+     * Get the listId value.
+     *
+     * @return the listId value
+     */
+    public String listId() {
+        return this.listId;
+    }
+
+    /**
+     * Set the listId value.
+     *
+     * @param listId the listId value to set
+     * @return the ScreenTextOptionalParameter object itself.
+     */
     public ScreenTextOptionalParameter withListId(String listId) {
         this.listId = listId;
         return this;
     }
 
     /**
-    * Set the classify value.
-    * <p>
-    * Classify input.
-    *
-    * @param classify the classify value to set
-    * @return the screenTextOptionalParameter object itself.
-    */
-    public ScreenTextOptionalParameter withClassify(boolean classify) {
+     * Get the classify value.
+     *
+     * @return the classify value
+     */
+    public Boolean classify() {
+        return this.classify;
+    }
+
+    /**
+     * Set the classify value.
+     *
+     * @param classify the classify value to set
+     * @return the ScreenTextOptionalParameter object itself.
+     */
+    public ScreenTextOptionalParameter withClassify(Boolean classify) {
         this.classify = classify;
         return this;
     }
 
+    /**
+     * Get the thisclientacceptLanguage value.
+     *
+     * @return the thisclientacceptLanguage value
+     */
+    public String thisclientacceptLanguage() {
+        return this.thisclientacceptLanguage;
     }
+
+    /**
+     * Set the thisclientacceptLanguage value.
+     *
+     * @param thisclientacceptLanguage the thisclientacceptLanguage value to set
+     * @return the ScreenTextOptionalParameter object itself.
+     */
+    public ScreenTextOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
+        this.thisclientacceptLanguage = thisclientacceptLanguage;
+        return this;
+    }
+
+}

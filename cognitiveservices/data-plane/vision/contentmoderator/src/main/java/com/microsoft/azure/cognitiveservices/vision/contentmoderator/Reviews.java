@@ -32,6 +32,7 @@ import rx.Observable;
  * in Reviews.
  */
 public interface Reviews {
+
     /**
      * Returns review details for the review Id passed.
      *
@@ -53,6 +54,8 @@ public interface Reviews {
      * @return the observable to the Review object
      */
     Observable<Review> getReviewAsync(String teamName, String reviewId);
+
+
 
     /**
      * Get the Job Details for a Job Id.
@@ -76,125 +79,240 @@ public interface Reviews {
      */
     Observable<Job> getJobDetailsAsync(String teamName, String jobId);
 
+
     /**
      * The reviews created would show up for Reviewers on your team. As Reviewers complete reviewing, results of
-     *  the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
-     *  &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
-     *  &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
-     *  &lt;p&gt;
-     *  {&lt;br/&gt;
-     *  "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
-     *  "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
-     *  "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
-     *  "CallBackType": "Review",&lt;br/&gt;
-     *  "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
-     *  "Metadata": {&lt;br/&gt;
-     *  "adultscore": "0.xxx",&lt;br/&gt;
-     *  "a": "False",&lt;br/&gt;
-     *  "racyscore": "0.xxx",&lt;br/&gt;
-     *  "r": "True"&lt;br/&gt;
-     *  },&lt;br/&gt;
-     *  "ReviewerResultTags": {&lt;br/&gt;
-     *  "a": "False",&lt;br/&gt;
-     *  "r": "True"&lt;br/&gt;
-     *  }&lt;br/&gt;
-     *  }&lt;br/&gt;
-     *  &lt;/p&gt;.
+     *   the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
+     *   &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
+     *   &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
+     *   &lt;p&gt;
+     *   {&lt;br/&gt;
+     *   "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
+     *   "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
+     *   "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
+     *   "CallBackType": "Review",&lt;br/&gt;
+     *   "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *   "adultscore": "0.xxx",&lt;br/&gt;
+     *   "a": "False",&lt;br/&gt;
+     *   "racyscore": "0.xxx",&lt;br/&gt;
+     *   "r": "True"&lt;br/&gt;
+     *   },&lt;br/&gt;
+     *   "ReviewerResultTags": {&lt;br/&gt;
+     *   "a": "False",&lt;br/&gt;
+     *   "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     *   }&lt;br/&gt;
+     *   &lt;/p&gt;.
      *
      * @param teamName Your team name.
      * @param urlContentType The content type.
-     * @param createReviewBody Body for create reviews API
+     * @param createReviewBody Body for create reviews API.
      * @param createReviewsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;String&gt; object if successful.
      */
+    
     List<String> createReviews(String teamName, String urlContentType, List<CreateReviewBodyItem> createReviewBody, CreateReviewsOptionalParameter createReviewsOptionalParameter);
 
     /**
      * The reviews created would show up for Reviewers on your team. As Reviewers complete reviewing, results of
-     *  the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
-     *  &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
-     *  &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
-     *  &lt;p&gt;
-     *  {&lt;br/&gt;
-     *  "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
-     *  "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
-     *  "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
-     *  "CallBackType": "Review",&lt;br/&gt;
-     *  "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
-     *  "Metadata": {&lt;br/&gt;
-     *  "adultscore": "0.xxx",&lt;br/&gt;
-     *  "a": "False",&lt;br/&gt;
-     *  "racyscore": "0.xxx",&lt;br/&gt;
-     *  "r": "True"&lt;br/&gt;
-     *  },&lt;br/&gt;
-     *  "ReviewerResultTags": {&lt;br/&gt;
-     *  "a": "False",&lt;br/&gt;
-     *  "r": "True"&lt;br/&gt;
-     *  }&lt;br/&gt;
-     *  }&lt;br/&gt;
-     *  &lt;/p&gt;.
+     *   the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
+     *   &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
+     *   &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
+     *   &lt;p&gt;
+     *   {&lt;br/&gt;
+     *   "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
+     *   "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
+     *   "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
+     *   "CallBackType": "Review",&lt;br/&gt;
+     *   "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *   "adultscore": "0.xxx",&lt;br/&gt;
+     *   "a": "False",&lt;br/&gt;
+     *   "racyscore": "0.xxx",&lt;br/&gt;
+     *   "r": "True"&lt;br/&gt;
+     *   },&lt;br/&gt;
+     *   "ReviewerResultTags": {&lt;br/&gt;
+     *   "a": "False",&lt;br/&gt;
+     *   "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     *   }&lt;br/&gt;
+     *   &lt;/p&gt;.
      *
      * @param teamName Your team name.
      * @param urlContentType The content type.
-     * @param createReviewBody Body for create reviews API
+     * @param createReviewBody Body for create reviews API.
      * @param createReviewsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;String&gt; object
      */
+    
     Observable<List<String>> createReviewsAsync(String teamName, String urlContentType, List<CreateReviewBodyItem> createReviewBody, CreateReviewsOptionalParameter createReviewsOptionalParameter);
 
     /**
+     * The reviews created would show up for Reviewers on your team. As Reviewers complete reviewing, results of
+     *   the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
+     *   &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
+     *   &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
+     *   &lt;p&gt;
+     *   {&lt;br/&gt;
+     *   "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
+     *   "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
+     *   "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
+     *   "CallBackType": "Review",&lt;br/&gt;
+     *   "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *   "adultscore": "0.xxx",&lt;br/&gt;
+     *   "a": "False",&lt;br/&gt;
+     *   "racyscore": "0.xxx",&lt;br/&gt;
+     *   "r": "True"&lt;br/&gt;
+     *   },&lt;br/&gt;
+     *   "ReviewerResultTags": {&lt;br/&gt;
+     *   "a": "False",&lt;br/&gt;
+     *   "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     *   }&lt;br/&gt;
+     *   &lt;/p&gt;.
+     *
+     * @return the first stage of the createReviews call
+     */
+    ReviewsCreateReviewsDefinitionStages.WithTeamName createReviews();
+
+    /**
+     * Grouping of createReviews definition stages.
+     */
+    interface ReviewsCreateReviewsDefinitionStages {
+        /**
+         * The stage of the definition to be specify teamName.
+         */
+        interface WithTeamName {
+            /**
+             * Your team name.
+             *
+             * @return next definition stage
+             */
+            WithUrlContentType withTeamName(String teamName);
+        }
+        /**
+         * The stage of the definition to be specify urlContentType.
+         */
+        interface WithUrlContentType {
+            /**
+             * The content type.
+             *
+             * @return next definition stage
+             */
+            WithCreateReviewBody withUrlContentType(String urlContentType);
+        }
+        /**
+         * The stage of the definition to be specify createReviewBody.
+         */
+        interface WithCreateReviewBody {
+            /**
+             * Body for create reviews API.
+             *
+             * @return next definition stage
+             */
+            ReviewsCreateReviewsDefinitionStages.WithExecute withCreateReviewBody(List<CreateReviewBodyItem> createReviewBody);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * SubTeam of your team, you want to assign the created review to.
+             *
+             * @return next definition stage
+             */
+            ReviewsCreateReviewsDefinitionStages.WithExecute withSubTeam(String subTeam);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ReviewsCreateReviewsDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the List&lt;String&gt; object if successful.
+             */
+            List<String> execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the List&lt;String&gt; object
+             */
+            Observable<List<String>> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of createReviews definition.
+     */
+    interface ReviewsCreateReviewsDefinition extends
+        ReviewsCreateReviewsDefinitionStages.WithTeamName,
+        ReviewsCreateReviewsDefinitionStages.WithUrlContentType,
+        ReviewsCreateReviewsDefinitionStages.WithCreateReviewBody,
+        ReviewsCreateReviewsDefinitionStages.WithExecute {
+    }
+
+    /**
      * A job Id will be returned for the content posted on this endpoint.
-     *  Once the content is evaluated against the Workflow provided the review will be created or ignored based on
-     *  the workflow expression.
-     *  &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
-     *  &lt;p&gt;
-     *  &lt;h4&gt;Job Completion CallBack Sample&lt;/h4&gt;&lt;br/&gt;
-     *  {&lt;br/&gt;
-     *  "JobId": "&lt;Job Id&gt;,&lt;br/&gt;
-     *  "ReviewId": "&lt;Review Id, if the Job resulted in a Review to be created&gt;",&lt;br/&gt;
-     *  "WorkFlowId": "default",&lt;br/&gt;
-     *  "Status": "&lt;This will be one of Complete, InProgress, Error&gt;",&lt;br/&gt;
-     *  "ContentType": "Image",&lt;br/&gt;
-     *  "ContentId": "&lt;This is the ContentId that was specified on input&gt;",&lt;br/&gt;
-     *  "CallBackType": "Job",&lt;br/&gt;
-     *  "Metadata": {&lt;br/&gt;
-     *  "adultscore": "0.xxx",&lt;br/&gt;
-     *  "a": "False",&lt;br/&gt;
-     *  "racyscore": "0.xxx",&lt;br/&gt;
-     *  "r": "True"&lt;br/&gt;
-     *  }&lt;br/&gt;
-     *  }&lt;br/&gt;
-     *  &lt;/p&gt;
-     *  &lt;p&gt;
-     *  &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;&lt;br/&gt;
-     *  {
-     *  "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
-     *  "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
-     *  "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
-     *  "CallBackType": "Review",&lt;br/&gt;
-     *  "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
-     *  "Metadata": {&lt;br/&gt;
-     *  "adultscore": "0.xxx",
-     *  "a": "False",&lt;br/&gt;
-     *  "racyscore": "0.xxx",&lt;br/&gt;
-     *  "r": "True"&lt;br/&gt;
-     *  },&lt;br/&gt;
-     *  "ReviewerResultTags": {&lt;br/&gt;
-     *  "a": "False",&lt;br/&gt;
-     *  "r": "True"&lt;br/&gt;
-     *  }&lt;br/&gt;
-     *  }&lt;br/&gt;
-     *  &lt;/p&gt;.
+     *   Once the content is evaluated against the Workflow provided the review will be created or ignored based on
+     *   the workflow expression.
+     *   &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
+     *   &lt;p&gt;
+     *   &lt;h4&gt;Job Completion CallBack
+     *   Sample&lt;/h4&gt;&lt;br/&gt;
+     *   {&lt;br/&gt;
+     *   "JobId": "&lt;Job Id&gt;,&lt;br/&gt;
+     *   "ReviewId": "&lt;Review Id, if the Job resulted in a Review to be created&gt;",&lt;br/&gt;
+     *   "WorkFlowId": "default",&lt;br/&gt;
+     *   "Status": "&lt;This will be one of Complete, InProgress, Error&gt;",&lt;br/&gt;
+     *   "ContentType": "Image",&lt;br/&gt;
+     *   "ContentId": "&lt;This is the ContentId that was specified on input&gt;",&lt;br/&gt;
+     *   "CallBackType": "Job",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *   "adultscore": "0.xxx",&lt;br/&gt;
+     *   "a": "False",&lt;br/&gt;
+     *   "racyscore": "0.xxx",&lt;br/&gt;
+     *   "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     *   }&lt;br/&gt;
+     *   &lt;/p&gt;
+     *   &lt;p&gt;
+     *   &lt;h4&gt;Review Completion CallBack
+     *   Sample&lt;/h4&gt;&lt;br/&gt;
+     *   {
+     *   "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
+     *   "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
+     *   "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
+     *   "CallBackType": "Review",&lt;br/&gt;
+     *   "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *   "adultscore": "0.xxx",
+     *   "a": "False",&lt;br/&gt;
+     *   "racyscore": "0.xxx",&lt;br/&gt;
+     *   "r": "True"&lt;br/&gt;
+     *   },&lt;br/&gt;
+     *   "ReviewerResultTags": {&lt;br/&gt;
+     *   "a": "False",&lt;br/&gt;
+     *   "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     *   }&lt;br/&gt;
+     *   &lt;/p&gt;.
      *
      * @param teamName Your team name.
-     * @param contentType Image, Text or Video. Possible values include: 'Image', 'Text', 'Video'
+     * @param contentType Image, Text or Video. Possible values include: 'Image', 'Text', 'Video'.
      * @param contentId Id/Name to identify the content submitted.
      * @param workflowName Workflow Name that you want to invoke.
-     * @param jobContentType The content type. Possible values include: 'application/json', 'image/jpeg'
+     * @param jobContentType The content type. Possible values include: 'application/json', 'image/jpeg'.
      * @param contentValue Content to evaluate for a job.
      * @param createJobOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -202,88 +320,259 @@ public interface Reviews {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the JobId object if successful.
      */
+    
     JobId createJob(String teamName, String contentType, String contentId, String workflowName, String jobContentType, String contentValue, CreateJobOptionalParameter createJobOptionalParameter);
 
     /**
      * A job Id will be returned for the content posted on this endpoint.
-     *  Once the content is evaluated against the Workflow provided the review will be created or ignored based on
-     *  the workflow expression.
-     *  &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
-     *  &lt;p&gt;
-     *  &lt;h4&gt;Job Completion CallBack Sample&lt;/h4&gt;&lt;br/&gt;
-     *  {&lt;br/&gt;
-     *  "JobId": "&lt;Job Id&gt;,&lt;br/&gt;
-     *  "ReviewId": "&lt;Review Id, if the Job resulted in a Review to be created&gt;",&lt;br/&gt;
-     *  "WorkFlowId": "default",&lt;br/&gt;
-     *  "Status": "&lt;This will be one of Complete, InProgress, Error&gt;",&lt;br/&gt;
-     *  "ContentType": "Image",&lt;br/&gt;
-     *  "ContentId": "&lt;This is the ContentId that was specified on input&gt;",&lt;br/&gt;
-     *  "CallBackType": "Job",&lt;br/&gt;
-     *  "Metadata": {&lt;br/&gt;
-     *  "adultscore": "0.xxx",&lt;br/&gt;
-     *  "a": "False",&lt;br/&gt;
-     *  "racyscore": "0.xxx",&lt;br/&gt;
-     *  "r": "True"&lt;br/&gt;
-     *  }&lt;br/&gt;
-     *  }&lt;br/&gt;
-     *  &lt;/p&gt;
-     *  &lt;p&gt;
-     *  &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;&lt;br/&gt;
-     *  {
-     *  "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
-     *  "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
-     *  "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
-     *  "CallBackType": "Review",&lt;br/&gt;
-     *  "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
-     *  "Metadata": {&lt;br/&gt;
-     *  "adultscore": "0.xxx",
-     *  "a": "False",&lt;br/&gt;
-     *  "racyscore": "0.xxx",&lt;br/&gt;
-     *  "r": "True"&lt;br/&gt;
-     *  },&lt;br/&gt;
-     *  "ReviewerResultTags": {&lt;br/&gt;
-     *  "a": "False",&lt;br/&gt;
-     *  "r": "True"&lt;br/&gt;
-     *  }&lt;br/&gt;
-     *  }&lt;br/&gt;
-     *  &lt;/p&gt;.
+     *   Once the content is evaluated against the Workflow provided the review will be created or ignored based on
+     *   the workflow expression.
+     *   &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
+     *   &lt;p&gt;
+     *   &lt;h4&gt;Job Completion CallBack
+     *   Sample&lt;/h4&gt;&lt;br/&gt;
+     *   {&lt;br/&gt;
+     *   "JobId": "&lt;Job Id&gt;,&lt;br/&gt;
+     *   "ReviewId": "&lt;Review Id, if the Job resulted in a Review to be created&gt;",&lt;br/&gt;
+     *   "WorkFlowId": "default",&lt;br/&gt;
+     *   "Status": "&lt;This will be one of Complete, InProgress, Error&gt;",&lt;br/&gt;
+     *   "ContentType": "Image",&lt;br/&gt;
+     *   "ContentId": "&lt;This is the ContentId that was specified on input&gt;",&lt;br/&gt;
+     *   "CallBackType": "Job",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *   "adultscore": "0.xxx",&lt;br/&gt;
+     *   "a": "False",&lt;br/&gt;
+     *   "racyscore": "0.xxx",&lt;br/&gt;
+     *   "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     *   }&lt;br/&gt;
+     *   &lt;/p&gt;
+     *   &lt;p&gt;
+     *   &lt;h4&gt;Review Completion CallBack
+     *   Sample&lt;/h4&gt;&lt;br/&gt;
+     *   {
+     *   "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
+     *   "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
+     *   "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
+     *   "CallBackType": "Review",&lt;br/&gt;
+     *   "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *   "adultscore": "0.xxx",
+     *   "a": "False",&lt;br/&gt;
+     *   "racyscore": "0.xxx",&lt;br/&gt;
+     *   "r": "True"&lt;br/&gt;
+     *   },&lt;br/&gt;
+     *   "ReviewerResultTags": {&lt;br/&gt;
+     *   "a": "False",&lt;br/&gt;
+     *   "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     *   }&lt;br/&gt;
+     *   &lt;/p&gt;.
      *
      * @param teamName Your team name.
-     * @param contentType Image, Text or Video. Possible values include: 'Image', 'Text', 'Video'
+     * @param contentType Image, Text or Video. Possible values include: 'Image', 'Text', 'Video'.
      * @param contentId Id/Name to identify the content submitted.
      * @param workflowName Workflow Name that you want to invoke.
-     * @param jobContentType The content type. Possible values include: 'application/json', 'image/jpeg'
+     * @param jobContentType The content type. Possible values include: 'application/json', 'image/jpeg'.
      * @param contentValue Content to evaluate for a job.
      * @param createJobOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the JobId object
      */
+    
     Observable<JobId> createJobAsync(String teamName, String contentType, String contentId, String workflowName, String jobContentType, String contentValue, CreateJobOptionalParameter createJobOptionalParameter);
 
     /**
+     * A job Id will be returned for the content posted on this endpoint.
+     *   Once the content is evaluated against the Workflow provided the review will be created or ignored based on
+     *   the workflow expression.
+     *   &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
+     *   &lt;p&gt;
+     *   &lt;h4&gt;Job Completion CallBack
+     *   Sample&lt;/h4&gt;&lt;br/&gt;
+     *   {&lt;br/&gt;
+     *   "JobId": "&lt;Job Id&gt;,&lt;br/&gt;
+     *   "ReviewId": "&lt;Review Id, if the Job resulted in a Review to be created&gt;",&lt;br/&gt;
+     *   "WorkFlowId": "default",&lt;br/&gt;
+     *   "Status": "&lt;This will be one of Complete, InProgress, Error&gt;",&lt;br/&gt;
+     *   "ContentType": "Image",&lt;br/&gt;
+     *   "ContentId": "&lt;This is the ContentId that was specified on input&gt;",&lt;br/&gt;
+     *   "CallBackType": "Job",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *   "adultscore": "0.xxx",&lt;br/&gt;
+     *   "a": "False",&lt;br/&gt;
+     *   "racyscore": "0.xxx",&lt;br/&gt;
+     *   "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     *   }&lt;br/&gt;
+     *   &lt;/p&gt;
+     *   &lt;p&gt;
+     *   &lt;h4&gt;Review Completion CallBack
+     *   Sample&lt;/h4&gt;&lt;br/&gt;
+     *   {
+     *   "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
+     *   "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
+     *   "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
+     *   "CallBackType": "Review",&lt;br/&gt;
+     *   "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *   "adultscore": "0.xxx",
+     *   "a": "False",&lt;br/&gt;
+     *   "racyscore": "0.xxx",&lt;br/&gt;
+     *   "r": "True"&lt;br/&gt;
+     *   },&lt;br/&gt;
+     *   "ReviewerResultTags": {&lt;br/&gt;
+     *   "a": "False",&lt;br/&gt;
+     *   "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     *   }&lt;br/&gt;
+     *   &lt;/p&gt;.
+     *
+     * @return the first stage of the createJob call
+     */
+    ReviewsCreateJobDefinitionStages.WithTeamName createJob();
+
+    /**
+     * Grouping of createJob definition stages.
+     */
+    interface ReviewsCreateJobDefinitionStages {
+        /**
+         * The stage of the definition to be specify teamName.
+         */
+        interface WithTeamName {
+            /**
+             * Your team name.
+             *
+             * @return next definition stage
+             */
+            WithContentType withTeamName(String teamName);
+        }
+        /**
+         * The stage of the definition to be specify contentType.
+         */
+        interface WithContentType {
+            /**
+             * Image, Text or Video. Possible values include: 'Image', 'Text', 'Video'.
+             *
+             * @return next definition stage
+             */
+            WithContentId withContentType(String contentType);
+        }
+        /**
+         * The stage of the definition to be specify contentId.
+         */
+        interface WithContentId {
+            /**
+             * Id/Name to identify the content submitted.
+             *
+             * @return next definition stage
+             */
+            WithWorkflowName withContentId(String contentId);
+        }
+        /**
+         * The stage of the definition to be specify workflowName.
+         */
+        interface WithWorkflowName {
+            /**
+             * Workflow Name that you want to invoke.
+             *
+             * @return next definition stage
+             */
+            WithJobContentType withWorkflowName(String workflowName);
+        }
+        /**
+         * The stage of the definition to be specify jobContentType.
+         */
+        interface WithJobContentType {
+            /**
+             * The content type. Possible values include: 'application/json', 'image/jpeg'.
+             *
+             * @return next definition stage
+             */
+            WithContentValue withJobContentType(String jobContentType);
+        }
+        /**
+         * The stage of the definition to be specify contentValue.
+         */
+        interface WithContentValue {
+            /**
+             * Content to evaluate for a job.
+             *
+             * @return next definition stage
+             */
+            ReviewsCreateJobDefinitionStages.WithExecute withContentValue(String contentValue);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * Callback endpoint for posting the create job result.
+             *
+             * @return next definition stage
+             */
+            ReviewsCreateJobDefinitionStages.WithExecute withCallBackEndpoint(String callBackEndpoint);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ReviewsCreateJobDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the JobId object if successful.
+             */
+            JobId execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the JobId object
+             */
+            Observable<JobId> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of createJob definition.
+     */
+    interface ReviewsCreateJobDefinition extends
+        ReviewsCreateJobDefinitionStages.WithTeamName,
+        ReviewsCreateJobDefinitionStages.WithContentType,
+        ReviewsCreateJobDefinitionStages.WithContentId,
+        ReviewsCreateJobDefinitionStages.WithWorkflowName,
+        ReviewsCreateJobDefinitionStages.WithJobContentType,
+        ReviewsCreateJobDefinitionStages.WithContentValue,
+        ReviewsCreateJobDefinitionStages.WithExecute {
+    }
+
+    /**
      * The reviews created would show up for Reviewers on your team. As Reviewers complete reviewing, results of
-     *  the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
-     *  &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
-     *  &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
-     *  &lt;p&gt;
-     *  {&lt;br/&gt;
-     *  "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
-     *  "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
-     *  "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
-     *  "CallBackType": "Review",&lt;br/&gt;
-     *  "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
-     *  "Metadata": {&lt;br/&gt;
-     *  "adultscore": "0.xxx",&lt;br/&gt;
-     *  "a": "False",&lt;br/&gt;
-     *  "racyscore": "0.xxx",&lt;br/&gt;
-     *  "r": "True"&lt;br/&gt;
-     *  },&lt;br/&gt;
-     *  "ReviewerResultTags": {&lt;br/&gt;
-     *  "a": "False",&lt;br/&gt;
-     *  "r": "True"&lt;br/&gt;
-     *  }&lt;br/&gt;
-     *  }&lt;br/&gt;
-     *  &lt;/p&gt;.
+     *   the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
+     *   &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
+     *   &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
+     *   &lt;p&gt;
+     *   {&lt;br/&gt;
+     *   "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
+     *   "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
+     *   "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
+     *   "CallBackType": "Review",&lt;br/&gt;
+     *   "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *   "adultscore": "0.xxx",&lt;br/&gt;
+     *   "a": "False",&lt;br/&gt;
+     *   "racyscore": "0.xxx",&lt;br/&gt;
+     *   "r": "True"&lt;br/&gt;
+     *   },&lt;br/&gt;
+     *   "ReviewerResultTags": {&lt;br/&gt;
+     *   "a": "False",&lt;br/&gt;
+     *   "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     *   }&lt;br/&gt;
+     *   &lt;/p&gt;.
      *
      * @param teamName Your team name.
      * @param reviewId Id of the review.
@@ -292,65 +581,164 @@ public interface Reviews {
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
+    
     void addVideoFrame(String teamName, String reviewId, AddVideoFrameOptionalParameter addVideoFrameOptionalParameter);
 
     /**
      * The reviews created would show up for Reviewers on your team. As Reviewers complete reviewing, results of
-     *  the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
-     *  &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
-     *  &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
-     *  &lt;p&gt;
-     *  {&lt;br/&gt;
-     *  "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
-     *  "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
-     *  "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
-     *  "CallBackType": "Review",&lt;br/&gt;
-     *  "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
-     *  "Metadata": {&lt;br/&gt;
-     *  "adultscore": "0.xxx",&lt;br/&gt;
-     *  "a": "False",&lt;br/&gt;
-     *  "racyscore": "0.xxx",&lt;br/&gt;
-     *  "r": "True"&lt;br/&gt;
-     *  },&lt;br/&gt;
-     *  "ReviewerResultTags": {&lt;br/&gt;
-     *  "a": "False",&lt;br/&gt;
-     *  "r": "True"&lt;br/&gt;
-     *  }&lt;br/&gt;
-     *  }&lt;br/&gt;
-     *  &lt;/p&gt;.
+     *   the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
+     *   &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
+     *   &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
+     *   &lt;p&gt;
+     *   {&lt;br/&gt;
+     *   "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
+     *   "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
+     *   "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
+     *   "CallBackType": "Review",&lt;br/&gt;
+     *   "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *   "adultscore": "0.xxx",&lt;br/&gt;
+     *   "a": "False",&lt;br/&gt;
+     *   "racyscore": "0.xxx",&lt;br/&gt;
+     *   "r": "True"&lt;br/&gt;
+     *   },&lt;br/&gt;
+     *   "ReviewerResultTags": {&lt;br/&gt;
+     *   "a": "False",&lt;br/&gt;
+     *   "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     *   }&lt;br/&gt;
+     *   &lt;/p&gt;.
      *
      * @param teamName Your team name.
      * @param reviewId Id of the review.
      * @param addVideoFrameOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the deferred object if successful.
+     * @return a representation of the deferred computation of this call if successful.
      */
+    
     Observable<Void> addVideoFrameAsync(String teamName, String reviewId, AddVideoFrameOptionalParameter addVideoFrameOptionalParameter);
 
     /**
      * The reviews created would show up for Reviewers on your team. As Reviewers complete reviewing, results of
-     *  the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
-     *  &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
-     *  &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
-     *  &lt;p&gt;
-     *  {&lt;br/&gt;
-     *  "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
-     *  "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
-     *  "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
-     *  "CallBackType": "Review",&lt;br/&gt;
-     *  "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
-     *  "Metadata": {&lt;br/&gt;
-     *  "adultscore": "0.xxx",&lt;br/&gt;
-     *  "a": "False",&lt;br/&gt;
-     *  "racyscore": "0.xxx",&lt;br/&gt;
-     *  "r": "True"&lt;br/&gt;
-     *  },&lt;br/&gt;
-     *  "ReviewerResultTags": {&lt;br/&gt;
-     *  "a": "False",&lt;br/&gt;
-     *  "r": "True"&lt;br/&gt;
-     *  }&lt;br/&gt;
-     *  }&lt;br/&gt;
-     *  &lt;/p&gt;.
+     *   the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
+     *   &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
+     *   &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
+     *   &lt;p&gt;
+     *   {&lt;br/&gt;
+     *   "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
+     *   "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
+     *   "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
+     *   "CallBackType": "Review",&lt;br/&gt;
+     *   "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *   "adultscore": "0.xxx",&lt;br/&gt;
+     *   "a": "False",&lt;br/&gt;
+     *   "racyscore": "0.xxx",&lt;br/&gt;
+     *   "r": "True"&lt;br/&gt;
+     *   },&lt;br/&gt;
+     *   "ReviewerResultTags": {&lt;br/&gt;
+     *   "a": "False",&lt;br/&gt;
+     *   "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     *   }&lt;br/&gt;
+     *   &lt;/p&gt;.
+     *
+     * @return the first stage of the addVideoFrame call
+     */
+    ReviewsAddVideoFrameDefinitionStages.WithTeamName addVideoFrame();
+
+    /**
+     * Grouping of addVideoFrame definition stages.
+     */
+    interface ReviewsAddVideoFrameDefinitionStages {
+        /**
+         * The stage of the definition to be specify teamName.
+         */
+        interface WithTeamName {
+            /**
+             * Your team name.
+             *
+             * @return next definition stage
+             */
+            WithReviewId withTeamName(String teamName);
+        }
+        /**
+         * The stage of the definition to be specify reviewId.
+         */
+        interface WithReviewId {
+            /**
+             * Id of the review.
+             *
+             * @return next definition stage
+             */
+            ReviewsAddVideoFrameDefinitionStages.WithExecute withReviewId(String reviewId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * Timescale of the video you are adding frames to.
+             *
+             * @return next definition stage
+             */
+            ReviewsAddVideoFrameDefinitionStages.WithExecute withTimescale(Integer timescale);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ReviewsAddVideoFrameDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             */
+            void execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return a representation of the deferred computation of this call if successful.
+             */
+            Observable<Void> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of addVideoFrame definition.
+     */
+    interface ReviewsAddVideoFrameDefinition extends
+        ReviewsAddVideoFrameDefinitionStages.WithTeamName,
+        ReviewsAddVideoFrameDefinitionStages.WithReviewId,
+        ReviewsAddVideoFrameDefinitionStages.WithExecute {
+    }
+
+    /**
+     * The reviews created would show up for Reviewers on your team. As Reviewers complete reviewing, results of
+     *   the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
+     *   &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
+     *   &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
+     *   &lt;p&gt;
+     *   {&lt;br/&gt;
+     *   "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
+     *   "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
+     *   "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
+     *   "CallBackType": "Review",&lt;br/&gt;
+     *   "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *   "adultscore": "0.xxx",&lt;br/&gt;
+     *   "a": "False",&lt;br/&gt;
+     *   "racyscore": "0.xxx",&lt;br/&gt;
+     *   "r": "True"&lt;br/&gt;
+     *   },&lt;br/&gt;
+     *   "ReviewerResultTags": {&lt;br/&gt;
+     *   "a": "False",&lt;br/&gt;
+     *   "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     *   }&lt;br/&gt;
+     *   &lt;/p&gt;.
      *
      * @param teamName Your team name.
      * @param reviewId Id of the review.
@@ -360,32 +748,33 @@ public interface Reviews {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Frames object if successful.
      */
+    
     Frames getVideoFrames(String teamName, String reviewId, GetVideoFramesOptionalParameter getVideoFramesOptionalParameter);
 
     /**
      * The reviews created would show up for Reviewers on your team. As Reviewers complete reviewing, results of
-     *  the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
-     *  &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
-     *  &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
-     *  &lt;p&gt;
-     *  {&lt;br/&gt;
-     *  "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
-     *  "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
-     *  "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
-     *  "CallBackType": "Review",&lt;br/&gt;
-     *  "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
-     *  "Metadata": {&lt;br/&gt;
-     *  "adultscore": "0.xxx",&lt;br/&gt;
-     *  "a": "False",&lt;br/&gt;
-     *  "racyscore": "0.xxx",&lt;br/&gt;
-     *  "r": "True"&lt;br/&gt;
-     *  },&lt;br/&gt;
-     *  "ReviewerResultTags": {&lt;br/&gt;
-     *  "a": "False",&lt;br/&gt;
-     *  "r": "True"&lt;br/&gt;
-     *  }&lt;br/&gt;
-     *  }&lt;br/&gt;
-     *  &lt;/p&gt;.
+     *   the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
+     *   &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
+     *   &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
+     *   &lt;p&gt;
+     *   {&lt;br/&gt;
+     *   "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
+     *   "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
+     *   "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
+     *   "CallBackType": "Review",&lt;br/&gt;
+     *   "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *   "adultscore": "0.xxx",&lt;br/&gt;
+     *   "a": "False",&lt;br/&gt;
+     *   "racyscore": "0.xxx",&lt;br/&gt;
+     *   "r": "True"&lt;br/&gt;
+     *   },&lt;br/&gt;
+     *   "ReviewerResultTags": {&lt;br/&gt;
+     *   "a": "False",&lt;br/&gt;
+     *   "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     *   }&lt;br/&gt;
+     *   &lt;/p&gt;.
      *
      * @param teamName Your team name.
      * @param reviewId Id of the review.
@@ -393,7 +782,121 @@ public interface Reviews {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Frames object
      */
+    
     Observable<Frames> getVideoFramesAsync(String teamName, String reviewId, GetVideoFramesOptionalParameter getVideoFramesOptionalParameter);
+
+    /**
+     * The reviews created would show up for Reviewers on your team. As Reviewers complete reviewing, results of
+     *   the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
+     *   &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
+     *   &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
+     *   &lt;p&gt;
+     *   {&lt;br/&gt;
+     *   "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
+     *   "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
+     *   "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
+     *   "CallBackType": "Review",&lt;br/&gt;
+     *   "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *   "adultscore": "0.xxx",&lt;br/&gt;
+     *   "a": "False",&lt;br/&gt;
+     *   "racyscore": "0.xxx",&lt;br/&gt;
+     *   "r": "True"&lt;br/&gt;
+     *   },&lt;br/&gt;
+     *   "ReviewerResultTags": {&lt;br/&gt;
+     *   "a": "False",&lt;br/&gt;
+     *   "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     *   }&lt;br/&gt;
+     *   &lt;/p&gt;.
+     *
+     * @return the first stage of the getVideoFrames call
+     */
+    ReviewsGetVideoFramesDefinitionStages.WithTeamName getVideoFrames();
+
+    /**
+     * Grouping of getVideoFrames definition stages.
+     */
+    interface ReviewsGetVideoFramesDefinitionStages {
+        /**
+         * The stage of the definition to be specify teamName.
+         */
+        interface WithTeamName {
+            /**
+             * Your team name.
+             *
+             * @return next definition stage
+             */
+            WithReviewId withTeamName(String teamName);
+        }
+        /**
+         * The stage of the definition to be specify reviewId.
+         */
+        interface WithReviewId {
+            /**
+             * Id of the review.
+             *
+             * @return next definition stage
+             */
+            ReviewsGetVideoFramesDefinitionStages.WithExecute withReviewId(String reviewId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * Time stamp of the frame from where you want to start fetching the frames.
+             *
+             * @return next definition stage
+             */
+            ReviewsGetVideoFramesDefinitionStages.WithExecute withStartSeed(Integer startSeed);
+
+            /**
+             * Number of frames to fetch.
+             *
+             * @return next definition stage
+             */
+            ReviewsGetVideoFramesDefinitionStages.WithExecute withNoOfRecords(Integer noOfRecords);
+
+            /**
+             * Get frames filtered by tags.
+             *
+             * @return next definition stage
+             */
+            ReviewsGetVideoFramesDefinitionStages.WithExecute withFilter(String filter);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ReviewsGetVideoFramesDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the Frames object if successful.
+             */
+            Frames execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the Frames object
+             */
+            Observable<Frames> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of getVideoFrames definition.
+     */
+    interface ReviewsGetVideoFramesDefinition extends
+        ReviewsGetVideoFramesDefinitionStages.WithTeamName,
+        ReviewsGetVideoFramesDefinitionStages.WithReviewId,
+        ReviewsGetVideoFramesDefinitionStages.WithExecute {
+    }
+
 
     /**
      * Publish video review to make it available for review.
@@ -412,17 +915,21 @@ public interface Reviews {
      * @param teamName Your team name.
      * @param reviewId Id of the review.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the deferred object if successful.
+     * @return a representation of the deferred computation of this call if successful.
      */
     Observable<Void> publishVideoReviewAsync(String teamName, String reviewId);
 
+
+
     /**
-     * This API adds a transcript screen text result file for a video review. Transcript screen text result file is a result of Screen Text API . In order to generate transcript screen text result file , a transcript file has to be screened for profanity using Screen Text API.
+     * This API adds a transcript screen text result file for a video review. Transcript screen text
+      *  result file is a result of Screen Text API . In order to generate transcript screen text result
+      *  file , a transcript file has to be screened for profanity using Screen Text API.
      *
      * @param teamName Your team name.
      * @param reviewId Id of the review.
      * @param contentType The content type.
-     * @param transcriptModerationBody Body for add video transcript moderation result API
+     * @param transcriptModerationBody Body for add video transcript moderation result API.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -430,19 +937,24 @@ public interface Reviews {
     void addVideoTranscriptModerationResult(String teamName, String reviewId, String contentType, List<TranscriptModerationBodyItem> transcriptModerationBody);
 
     /**
-     * This API adds a transcript screen text result file for a video review. Transcript screen text result file is a result of Screen Text API . In order to generate transcript screen text result file , a transcript file has to be screened for profanity using Screen Text API.
+     * This API adds a transcript screen text result file for a video review. Transcript screen text
+      *  result file is a result of Screen Text API . In order to generate transcript screen text result
+      *  file , a transcript file has to be screened for profanity using Screen Text API.
      *
      * @param teamName Your team name.
      * @param reviewId Id of the review.
      * @param contentType The content type.
-     * @param transcriptModerationBody Body for add video transcript moderation result API
+     * @param transcriptModerationBody Body for add video transcript moderation result API.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the deferred object if successful.
+     * @return a representation of the deferred computation of this call if successful.
      */
     Observable<Void> addVideoTranscriptModerationResultAsync(String teamName, String reviewId, String contentType, List<TranscriptModerationBodyItem> transcriptModerationBody);
 
+
+
     /**
-     * This API adds a transcript file (text version of all the words spoken in a video) to a video review. The file should be a valid WebVTT format.
+     * This API adds a transcript file (text version of all the words spoken in a video) to a video
+      *  review. The file should be a valid WebVTT format.
      *
      * @param teamName Your team name.
      * @param reviewId Id of the review.
@@ -454,124 +966,342 @@ public interface Reviews {
     void addVideoTranscript(String teamName, String reviewId, byte[] vTTfile);
 
     /**
-     * This API adds a transcript file (text version of all the words spoken in a video) to a video review. The file should be a valid WebVTT format.
+     * This API adds a transcript file (text version of all the words spoken in a video) to a video
+      *  review. The file should be a valid WebVTT format.
      *
      * @param teamName Your team name.
      * @param reviewId Id of the review.
      * @param vTTfile Transcript file of the video.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the deferred object if successful.
+     * @return a representation of the deferred computation of this call if successful.
      */
     Observable<Void> addVideoTranscriptAsync(String teamName, String reviewId, byte[] vTTfile);
 
+
     /**
      * The reviews created would show up for Reviewers on your team. As Reviewers complete reviewing, results of
-     *  the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
-     *  &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
-     *  &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
-     *  &lt;p&gt;
-     *  {&lt;br/&gt;
-     *  "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
-     *  "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
-     *  "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
-     *  "CallBackType": "Review",&lt;br/&gt;
-     *  "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
-     *  "Metadata": {&lt;br/&gt;
-     *  "adultscore": "0.xxx",&lt;br/&gt;
-     *  "a": "False",&lt;br/&gt;
-     *  "racyscore": "0.xxx",&lt;br/&gt;
-     *  "r": "True"&lt;br/&gt;
-     *  },&lt;br/&gt;
-     *  "ReviewerResultTags": {&lt;br/&gt;
-     *  "a": "False",&lt;br/&gt;
-     *  "r": "True"&lt;br/&gt;
-     *  }&lt;br/&gt;
-     *  }&lt;br/&gt;
-     *  &lt;/p&gt;.
+     *   the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
+     *   &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
+     *   &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
+     *   &lt;p&gt;
+     *   {&lt;br/&gt;
+     *   "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
+     *   "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
+     *   "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
+     *   "CallBackType": "Review",&lt;br/&gt;
+     *   "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *   "adultscore": "0.xxx",&lt;br/&gt;
+     *   "a": "False",&lt;br/&gt;
+     *   "racyscore": "0.xxx",&lt;br/&gt;
+     *   "r": "True"&lt;br/&gt;
+     *   },&lt;br/&gt;
+     *   "ReviewerResultTags": {&lt;br/&gt;
+     *   "a": "False",&lt;br/&gt;
+     *   "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     *   }&lt;br/&gt;
+     *   &lt;/p&gt;.
      *
      * @param teamName Your team name.
      * @param contentType The content type.
-     * @param createVideoReviewsBody Body for create reviews API
+     * @param createVideoReviewsBody Body for create reviews API.
      * @param createVideoReviewsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;String&gt; object if successful.
      */
+    
     List<String> createVideoReviews(String teamName, String contentType, List<CreateVideoReviewsBodyItem> createVideoReviewsBody, CreateVideoReviewsOptionalParameter createVideoReviewsOptionalParameter);
 
     /**
      * The reviews created would show up for Reviewers on your team. As Reviewers complete reviewing, results of
-     *  the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
-     *  &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
-     *  &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
-     *  &lt;p&gt;
-     *  {&lt;br/&gt;
-     *  "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
-     *  "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
-     *  "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
-     *  "CallBackType": "Review",&lt;br/&gt;
-     *  "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
-     *  "Metadata": {&lt;br/&gt;
-     *  "adultscore": "0.xxx",&lt;br/&gt;
-     *  "a": "False",&lt;br/&gt;
-     *  "racyscore": "0.xxx",&lt;br/&gt;
-     *  "r": "True"&lt;br/&gt;
-     *  },&lt;br/&gt;
-     *  "ReviewerResultTags": {&lt;br/&gt;
-     *  "a": "False",&lt;br/&gt;
-     *  "r": "True"&lt;br/&gt;
-     *  }&lt;br/&gt;
-     *  }&lt;br/&gt;
-     *  &lt;/p&gt;.
+     *   the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
+     *   &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
+     *   &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
+     *   &lt;p&gt;
+     *   {&lt;br/&gt;
+     *   "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
+     *   "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
+     *   "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
+     *   "CallBackType": "Review",&lt;br/&gt;
+     *   "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *   "adultscore": "0.xxx",&lt;br/&gt;
+     *   "a": "False",&lt;br/&gt;
+     *   "racyscore": "0.xxx",&lt;br/&gt;
+     *   "r": "True"&lt;br/&gt;
+     *   },&lt;br/&gt;
+     *   "ReviewerResultTags": {&lt;br/&gt;
+     *   "a": "False",&lt;br/&gt;
+     *   "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     *   }&lt;br/&gt;
+     *   &lt;/p&gt;.
      *
      * @param teamName Your team name.
      * @param contentType The content type.
-     * @param createVideoReviewsBody Body for create reviews API
+     * @param createVideoReviewsBody Body for create reviews API.
      * @param createVideoReviewsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;String&gt; object
      */
+    
     Observable<List<String>> createVideoReviewsAsync(String teamName, String contentType, List<CreateVideoReviewsBodyItem> createVideoReviewsBody, CreateVideoReviewsOptionalParameter createVideoReviewsOptionalParameter);
 
     /**
+     * The reviews created would show up for Reviewers on your team. As Reviewers complete reviewing, results of
+     *   the Review would be POSTED (i.e. HTTP POST) on the specified CallBackEndpoint.
+     *   &lt;h3&gt;CallBack Schemas &lt;/h3&gt;
+     *   &lt;h4&gt;Review Completion CallBack Sample&lt;/h4&gt;
+     *   &lt;p&gt;
+     *   {&lt;br/&gt;
+     *   "ReviewId": "&lt;Review Id&gt;",&lt;br/&gt;
+     *   "ModifiedOn": "2016-10-11T22:36:32.9934851Z",&lt;br/&gt;
+     *   "ModifiedBy": "&lt;Name of the Reviewer&gt;",&lt;br/&gt;
+     *   "CallBackType": "Review",&lt;br/&gt;
+     *   "ContentId": "&lt;The ContentId that was specified input&gt;",&lt;br/&gt;
+     *   "Metadata": {&lt;br/&gt;
+     *   "adultscore": "0.xxx",&lt;br/&gt;
+     *   "a": "False",&lt;br/&gt;
+     *   "racyscore": "0.xxx",&lt;br/&gt;
+     *   "r": "True"&lt;br/&gt;
+     *   },&lt;br/&gt;
+     *   "ReviewerResultTags": {&lt;br/&gt;
+     *   "a": "False",&lt;br/&gt;
+     *   "r": "True"&lt;br/&gt;
+     *   }&lt;br/&gt;
+     *   }&lt;br/&gt;
+     *   &lt;/p&gt;.
+     *
+     * @return the first stage of the createVideoReviews call
+     */
+    ReviewsCreateVideoReviewsDefinitionStages.WithTeamName createVideoReviews();
+
+    /**
+     * Grouping of createVideoReviews definition stages.
+     */
+    interface ReviewsCreateVideoReviewsDefinitionStages {
+        /**
+         * The stage of the definition to be specify teamName.
+         */
+        interface WithTeamName {
+            /**
+             * Your team name.
+             *
+             * @return next definition stage
+             */
+            WithContentType withTeamName(String teamName);
+        }
+        /**
+         * The stage of the definition to be specify contentType.
+         */
+        interface WithContentType {
+            /**
+             * The content type.
+             *
+             * @return next definition stage
+             */
+            WithCreateVideoReviewsBody withContentType(String contentType);
+        }
+        /**
+         * The stage of the definition to be specify createVideoReviewsBody.
+         */
+        interface WithCreateVideoReviewsBody {
+            /**
+             * Body for create reviews API.
+             *
+             * @return next definition stage
+             */
+            ReviewsCreateVideoReviewsDefinitionStages.WithExecute withCreateVideoReviewsBody(List<CreateVideoReviewsBodyItem> createVideoReviewsBody);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * SubTeam of your team, you want to assign the created review to.
+             *
+             * @return next definition stage
+             */
+            ReviewsCreateVideoReviewsDefinitionStages.WithExecute withSubTeam(String subTeam);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ReviewsCreateVideoReviewsDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the List&lt;String&gt; object if successful.
+             */
+            List<String> execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the List&lt;String&gt; object
+             */
+            Observable<List<String>> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of createVideoReviews definition.
+     */
+    interface ReviewsCreateVideoReviewsDefinition extends
+        ReviewsCreateVideoReviewsDefinitionStages.WithTeamName,
+        ReviewsCreateVideoReviewsDefinitionStages.WithContentType,
+        ReviewsCreateVideoReviewsDefinitionStages.WithCreateVideoReviewsBody,
+        ReviewsCreateVideoReviewsDefinitionStages.WithExecute {
+    }
+
+    /**
      * Use this method to add frames for a video review.Timescale: This parameter is a factor which is used to
-     *  convert the timestamp on a frame into milliseconds. Timescale is provided in the output of the Content
-     *  Moderator video media processor on the Azure Media Services platform.Timescale in the Video Moderation
-     *  output is Ticks/Second.
+     *   convert the timestamp on a frame into milliseconds. Timescale is provided in the output of the Content
+     *   Moderator video media processor on the Azure Media Services platform.Timescale in the Video Moderation
+     *   output is Ticks/Second.
      *
      * @param teamName Your team name.
      * @param reviewId Id of the review.
      * @param contentType The content type.
-     * @param videoFrameBody Body for add video frames API
+     * @param videoFrameBody Body for add video frames API.
      * @param addVideoFrameUrlOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
+    
     void addVideoFrameUrl(String teamName, String reviewId, String contentType, List<VideoFrameBodyItem> videoFrameBody, AddVideoFrameUrlOptionalParameter addVideoFrameUrlOptionalParameter);
 
     /**
      * Use this method to add frames for a video review.Timescale: This parameter is a factor which is used to
-     *  convert the timestamp on a frame into milliseconds. Timescale is provided in the output of the Content
-     *  Moderator video media processor on the Azure Media Services platform.Timescale in the Video Moderation
-     *  output is Ticks/Second.
+     *   convert the timestamp on a frame into milliseconds. Timescale is provided in the output of the Content
+     *   Moderator video media processor on the Azure Media Services platform.Timescale in the Video Moderation
+     *   output is Ticks/Second.
      *
      * @param teamName Your team name.
      * @param reviewId Id of the review.
      * @param contentType The content type.
-     * @param videoFrameBody Body for add video frames API
+     * @param videoFrameBody Body for add video frames API.
      * @param addVideoFrameUrlOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the deferred object if successful.
+     * @return a representation of the deferred computation of this call if successful.
      */
+    
     Observable<Void> addVideoFrameUrlAsync(String teamName, String reviewId, String contentType, List<VideoFrameBodyItem> videoFrameBody, AddVideoFrameUrlOptionalParameter addVideoFrameUrlOptionalParameter);
 
     /**
      * Use this method to add frames for a video review.Timescale: This parameter is a factor which is used to
-     *  convert the timestamp on a frame into milliseconds. Timescale is provided in the output of the Content
-     *  Moderator video media processor on the Azure Media Services platform.Timescale in the Video Moderation
-     *  output is Ticks/Second.
+     *   convert the timestamp on a frame into milliseconds. Timescale is provided in the output of the Content
+     *   Moderator video media processor on the Azure Media Services platform.Timescale in the Video Moderation
+     *   output is Ticks/Second.
+     *
+     * @return the first stage of the addVideoFrameUrl call
+     */
+    ReviewsAddVideoFrameUrlDefinitionStages.WithTeamName addVideoFrameUrl();
+
+    /**
+     * Grouping of addVideoFrameUrl definition stages.
+     */
+    interface ReviewsAddVideoFrameUrlDefinitionStages {
+        /**
+         * The stage of the definition to be specify teamName.
+         */
+        interface WithTeamName {
+            /**
+             * Your team name.
+             *
+             * @return next definition stage
+             */
+            WithReviewId withTeamName(String teamName);
+        }
+        /**
+         * The stage of the definition to be specify reviewId.
+         */
+        interface WithReviewId {
+            /**
+             * Id of the review.
+             *
+             * @return next definition stage
+             */
+            WithContentType withReviewId(String reviewId);
+        }
+        /**
+         * The stage of the definition to be specify contentType.
+         */
+        interface WithContentType {
+            /**
+             * The content type.
+             *
+             * @return next definition stage
+             */
+            WithVideoFrameBody withContentType(String contentType);
+        }
+        /**
+         * The stage of the definition to be specify videoFrameBody.
+         */
+        interface WithVideoFrameBody {
+            /**
+             * Body for add video frames API.
+             *
+             * @return next definition stage
+             */
+            ReviewsAddVideoFrameUrlDefinitionStages.WithExecute withVideoFrameBody(List<VideoFrameBodyItem> videoFrameBody);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * Timescale of the video.
+             *
+             * @return next definition stage
+             */
+            ReviewsAddVideoFrameUrlDefinitionStages.WithExecute withTimescale(Integer timescale);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ReviewsAddVideoFrameUrlDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             */
+            void execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return a representation of the deferred computation of this call if successful.
+             */
+            Observable<Void> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of addVideoFrameUrl definition.
+     */
+    interface ReviewsAddVideoFrameUrlDefinition extends
+        ReviewsAddVideoFrameUrlDefinitionStages.WithTeamName,
+        ReviewsAddVideoFrameUrlDefinitionStages.WithReviewId,
+        ReviewsAddVideoFrameUrlDefinitionStages.WithContentType,
+        ReviewsAddVideoFrameUrlDefinitionStages.WithVideoFrameBody,
+        ReviewsAddVideoFrameUrlDefinitionStages.WithExecute {
+    }
+
+    /**
+     * Use this method to add frames for a video review.Timescale: This parameter is a factor which is used to
+     *   convert the timestamp on a frame into milliseconds. Timescale is provided in the output of the Content
+     *   Moderator video media processor on the Azure Media Services platform.Timescale in the Video Moderation
+     *   output is Ticks/Second.
      *
      * @param teamName Your team name.
      * @param reviewId Id of the review.
@@ -583,13 +1313,14 @@ public interface Reviews {
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
+    
     void addVideoFrameStream(String teamName, String reviewId, String contentType, byte[] frameImageZip, String frameMetadata, AddVideoFrameStreamOptionalParameter addVideoFrameStreamOptionalParameter);
 
     /**
      * Use this method to add frames for a video review.Timescale: This parameter is a factor which is used to
-     *  convert the timestamp on a frame into milliseconds. Timescale is provided in the output of the Content
-     *  Moderator video media processor on the Azure Media Services platform.Timescale in the Video Moderation
-     *  output is Ticks/Second.
+     *   convert the timestamp on a frame into milliseconds. Timescale is provided in the output of the Content
+     *   Moderator video media processor on the Azure Media Services platform.Timescale in the Video Moderation
+     *   output is Ticks/Second.
      *
      * @param teamName Your team name.
      * @param reviewId Id of the review.
@@ -598,8 +1329,123 @@ public interface Reviews {
      * @param frameMetadata Metadata of the frame.
      * @param addVideoFrameStreamOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the deferred object if successful.
+     * @return a representation of the deferred computation of this call if successful.
      */
+    
     Observable<Void> addVideoFrameStreamAsync(String teamName, String reviewId, String contentType, byte[] frameImageZip, String frameMetadata, AddVideoFrameStreamOptionalParameter addVideoFrameStreamOptionalParameter);
+
+    /**
+     * Use this method to add frames for a video review.Timescale: This parameter is a factor which is used to
+     *   convert the timestamp on a frame into milliseconds. Timescale is provided in the output of the Content
+     *   Moderator video media processor on the Azure Media Services platform.Timescale in the Video Moderation
+     *   output is Ticks/Second.
+     *
+     * @return the first stage of the addVideoFrameStream call
+     */
+    ReviewsAddVideoFrameStreamDefinitionStages.WithTeamName addVideoFrameStream();
+
+    /**
+     * Grouping of addVideoFrameStream definition stages.
+     */
+    interface ReviewsAddVideoFrameStreamDefinitionStages {
+        /**
+         * The stage of the definition to be specify teamName.
+         */
+        interface WithTeamName {
+            /**
+             * Your team name.
+             *
+             * @return next definition stage
+             */
+            WithReviewId withTeamName(String teamName);
+        }
+        /**
+         * The stage of the definition to be specify reviewId.
+         */
+        interface WithReviewId {
+            /**
+             * Id of the review.
+             *
+             * @return next definition stage
+             */
+            WithContentType withReviewId(String reviewId);
+        }
+        /**
+         * The stage of the definition to be specify contentType.
+         */
+        interface WithContentType {
+            /**
+             * The content type.
+             *
+             * @return next definition stage
+             */
+            WithFrameImageZip withContentType(String contentType);
+        }
+        /**
+         * The stage of the definition to be specify frameImageZip.
+         */
+        interface WithFrameImageZip {
+            /**
+             * Zip file containing frame images.
+             *
+             * @return next definition stage
+             */
+            WithFrameMetadata withFrameImageZip(byte[] frameImageZip);
+        }
+        /**
+         * The stage of the definition to be specify frameMetadata.
+         */
+        interface WithFrameMetadata {
+            /**
+             * Metadata of the frame.
+             *
+             * @return next definition stage
+             */
+            ReviewsAddVideoFrameStreamDefinitionStages.WithExecute withFrameMetadata(String frameMetadata);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * Timescale of the video .
+             *
+             * @return next definition stage
+             */
+            ReviewsAddVideoFrameStreamDefinitionStages.WithExecute withTimescale(Integer timescale);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ReviewsAddVideoFrameStreamDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             */
+            void execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return a representation of the deferred computation of this call if successful.
+             */
+            Observable<Void> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of addVideoFrameStream definition.
+     */
+    interface ReviewsAddVideoFrameStreamDefinition extends
+        ReviewsAddVideoFrameStreamDefinitionStages.WithTeamName,
+        ReviewsAddVideoFrameStreamDefinitionStages.WithReviewId,
+        ReviewsAddVideoFrameStreamDefinitionStages.WithContentType,
+        ReviewsAddVideoFrameStreamDefinitionStages.WithFrameImageZip,
+        ReviewsAddVideoFrameStreamDefinitionStages.WithFrameMetadata,
+        ReviewsAddVideoFrameStreamDefinitionStages.WithExecute {
+    }
 
 }

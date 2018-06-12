@@ -118,7 +118,7 @@ public class BingCustomSearchAPIImpl extends AzureServiceClient implements BingC
      * @param credentials the management credentials for Azure
      */
     public BingCustomSearchAPIImpl(ServiceClientCredentials credentials) {
-        this("https://api.cognitive.microsoft.com/bingcustomsearch/v7.0/", credentials);
+        this("https://api.cognitive.microsoft.com/bingcustomsearch/v7.0", credentials);
     }
 
     /**

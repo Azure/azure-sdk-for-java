@@ -138,7 +138,6 @@ public class BingVideosImpl implements BingVideos {
         if (query == null) {
             throw new IllegalArgumentException("Parameter query is required and cannot be null.");
         }
-        final String xBingApisSDK = "true";
         final String acceptLanguage = searchOptionalParameter != null ? searchOptionalParameter.acceptLanguage() : null;
         final String userAgent = searchOptionalParameter != null ? searchOptionalParameter.userAgent() : this.client.userAgent();
         final String clientId = searchOptionalParameter != null ? searchOptionalParameter.clientId() : null;
@@ -212,6 +211,174 @@ public class BingVideosImpl implements BingVideos {
                 .build(response);
     }
 
+    @Override
+    public BingVideosSearchParameters search() {
+        return new BingVideosSearchParameters(this);
+    }
+
+    /**
+     * Internal class implementing BingVideosSearchDefinition.
+     */
+    class BingVideosSearchParameters implements BingVideosSearchDefinition {
+        private BingVideosImpl parent;
+        private String query;
+        private String acceptLanguage;
+        private String userAgent;
+        private String clientId;
+        private String clientIp;
+        private String location;
+        private String countryCode;
+        private Integer count;
+        private Freshness freshness;
+        private String id;
+        private VideoLength length;
+        private String market;
+        private Integer offset;
+        private VideoPricing pricing;
+        private VideoResolution resolution;
+        private SafeSearch safeSearch;
+        private String setLang;
+        private Boolean textDecorations;
+        private TextFormat textFormat;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        BingVideosSearchParameters(BingVideosImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public BingVideosSearchParameters withQuery(String query) {
+            this.query = query;
+            return this;
+        }
+
+        @Override
+        public BingVideosSearchParameters withAcceptLanguage(String acceptLanguage) {
+            this.acceptLanguage = acceptLanguage;
+            return this;
+        }
+
+        @Override
+        public BingVideosSearchParameters withUserAgent(String userAgent) {
+            this.userAgent = userAgent;
+            return this;
+        }
+
+        @Override
+        public BingVideosSearchParameters withClientId(String clientId) {
+            this.clientId = clientId;
+            return this;
+        }
+
+        @Override
+        public BingVideosSearchParameters withClientIp(String clientIp) {
+            this.clientIp = clientIp;
+            return this;
+        }
+
+        @Override
+        public BingVideosSearchParameters withLocation(String location) {
+            this.location = location;
+            return this;
+        }
+
+        @Override
+        public BingVideosSearchParameters withCountryCode(String countryCode) {
+            this.countryCode = countryCode;
+            return this;
+        }
+
+        @Override
+        public BingVideosSearchParameters withCount(Integer count) {
+            this.count = count;
+            return this;
+        }
+
+        @Override
+        public BingVideosSearchParameters withFreshness(Freshness freshness) {
+            this.freshness = freshness;
+            return this;
+        }
+
+        @Override
+        public BingVideosSearchParameters withId(String id) {
+            this.id = id;
+            return this;
+        }
+
+        @Override
+        public BingVideosSearchParameters withLength(VideoLength length) {
+            this.length = length;
+            return this;
+        }
+
+        @Override
+        public BingVideosSearchParameters withMarket(String market) {
+            this.market = market;
+            return this;
+        }
+
+        @Override
+        public BingVideosSearchParameters withOffset(Integer offset) {
+            this.offset = offset;
+            return this;
+        }
+
+        @Override
+        public BingVideosSearchParameters withPricing(VideoPricing pricing) {
+            this.pricing = pricing;
+            return this;
+        }
+
+        @Override
+        public BingVideosSearchParameters withResolution(VideoResolution resolution) {
+            this.resolution = resolution;
+            return this;
+        }
+
+        @Override
+        public BingVideosSearchParameters withSafeSearch(SafeSearch safeSearch) {
+            this.safeSearch = safeSearch;
+            return this;
+        }
+
+        @Override
+        public BingVideosSearchParameters withSetLang(String setLang) {
+            this.setLang = setLang;
+            return this;
+        }
+
+        @Override
+        public BingVideosSearchParameters withTextDecorations(Boolean textDecorations) {
+            this.textDecorations = textDecorations;
+            return this;
+        }
+
+        @Override
+        public BingVideosSearchParameters withTextFormat(TextFormat textFormat) {
+            this.textFormat = textFormat;
+            return this;
+        }
+
+        @Override
+        public VideosModel execute() {
+        return searchWithServiceResponseAsync(query, acceptLanguage, userAgent, clientId, clientIp, location, countryCode, count, freshness, id, length, market, offset, pricing, resolution, safeSearch, setLang, textDecorations, textFormat).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<VideosModel> executeAsync() {
+            return searchWithServiceResponseAsync(query, acceptLanguage, userAgent, clientId, clientIp, location, countryCode, count, freshness, id, length, market, offset, pricing, resolution, safeSearch, setLang, textDecorations, textFormat).map(new Func1<ServiceResponse<VideosModel>, VideosModel>() {
+                @Override
+                public VideosModel call(ServiceResponse<VideosModel> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
 
     /**
      * The Video Detail Search API lets you search on Bing and get back insights about a video, such as related videos. This section provides technical details about the query parameters and headers that you use to request insights of videos and the JSON response objects that contain them. For examples that show how to make requests, see [Searching the Web for Videos](https://docs.microsoft.com/azure/cognitive-services/bing-video-search/search-the-web).
@@ -269,7 +436,6 @@ public class BingVideosImpl implements BingVideos {
         if (query == null) {
             throw new IllegalArgumentException("Parameter query is required and cannot be null.");
         }
-        final String xBingApisSDK = "true";
         final String acceptLanguage = detailsOptionalParameter != null ? detailsOptionalParameter.acceptLanguage() : null;
         final String userAgent = detailsOptionalParameter != null ? detailsOptionalParameter.userAgent() : this.client.userAgent();
         final String clientId = detailsOptionalParameter != null ? detailsOptionalParameter.clientId() : null;
@@ -284,7 +450,6 @@ public class BingVideosImpl implements BingVideos {
         final String setLang = detailsOptionalParameter != null ? detailsOptionalParameter.setLang() : null;
         final Boolean textDecorations = detailsOptionalParameter != null ? detailsOptionalParameter.textDecorations() : null;
         final TextFormat textFormat = detailsOptionalParameter != null ? detailsOptionalParameter.textFormat() : null;
-        String modulesConverted = this.client.serializerAdapter().serializeList(modules, CollectionFormat.CSV);
 
         return detailsWithServiceResponseAsync(query, acceptLanguage, userAgent, clientId, clientIp, location, countryCode, id, modules, market, resolution, safeSearch, setLang, textDecorations, textFormat);
     }
@@ -338,6 +503,146 @@ public class BingVideosImpl implements BingVideos {
                 .build(response);
     }
 
+    @Override
+    public BingVideosDetailsParameters details() {
+        return new BingVideosDetailsParameters(this);
+    }
+
+    /**
+     * Internal class implementing BingVideosDetailsDefinition.
+     */
+    class BingVideosDetailsParameters implements BingVideosDetailsDefinition {
+        private BingVideosImpl parent;
+        private String query;
+        private String acceptLanguage;
+        private String userAgent;
+        private String clientId;
+        private String clientIp;
+        private String location;
+        private String countryCode;
+        private String id;
+        private List<VideoInsightModule> modules;
+        private String market;
+        private VideoResolution resolution;
+        private SafeSearch safeSearch;
+        private String setLang;
+        private Boolean textDecorations;
+        private TextFormat textFormat;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        BingVideosDetailsParameters(BingVideosImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public BingVideosDetailsParameters withQuery(String query) {
+            this.query = query;
+            return this;
+        }
+
+        @Override
+        public BingVideosDetailsParameters withAcceptLanguage(String acceptLanguage) {
+            this.acceptLanguage = acceptLanguage;
+            return this;
+        }
+
+        @Override
+        public BingVideosDetailsParameters withUserAgent(String userAgent) {
+            this.userAgent = userAgent;
+            return this;
+        }
+
+        @Override
+        public BingVideosDetailsParameters withClientId(String clientId) {
+            this.clientId = clientId;
+            return this;
+        }
+
+        @Override
+        public BingVideosDetailsParameters withClientIp(String clientIp) {
+            this.clientIp = clientIp;
+            return this;
+        }
+
+        @Override
+        public BingVideosDetailsParameters withLocation(String location) {
+            this.location = location;
+            return this;
+        }
+
+        @Override
+        public BingVideosDetailsParameters withCountryCode(String countryCode) {
+            this.countryCode = countryCode;
+            return this;
+        }
+
+        @Override
+        public BingVideosDetailsParameters withId(String id) {
+            this.id = id;
+            return this;
+        }
+
+        @Override
+        public BingVideosDetailsParameters withModules(List<VideoInsightModule> modules) {
+            this.modules = modules;
+            return this;
+        }
+
+        @Override
+        public BingVideosDetailsParameters withMarket(String market) {
+            this.market = market;
+            return this;
+        }
+
+        @Override
+        public BingVideosDetailsParameters withResolution(VideoResolution resolution) {
+            this.resolution = resolution;
+            return this;
+        }
+
+        @Override
+        public BingVideosDetailsParameters withSafeSearch(SafeSearch safeSearch) {
+            this.safeSearch = safeSearch;
+            return this;
+        }
+
+        @Override
+        public BingVideosDetailsParameters withSetLang(String setLang) {
+            this.setLang = setLang;
+            return this;
+        }
+
+        @Override
+        public BingVideosDetailsParameters withTextDecorations(Boolean textDecorations) {
+            this.textDecorations = textDecorations;
+            return this;
+        }
+
+        @Override
+        public BingVideosDetailsParameters withTextFormat(TextFormat textFormat) {
+            this.textFormat = textFormat;
+            return this;
+        }
+
+        @Override
+        public VideoDetails execute() {
+        return detailsWithServiceResponseAsync(query, acceptLanguage, userAgent, clientId, clientIp, location, countryCode, id, modules, market, resolution, safeSearch, setLang, textDecorations, textFormat).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<VideoDetails> executeAsync() {
+            return detailsWithServiceResponseAsync(query, acceptLanguage, userAgent, clientId, clientIp, location, countryCode, id, modules, market, resolution, safeSearch, setLang, textDecorations, textFormat).map(new Func1<ServiceResponse<VideoDetails>, VideoDetails>() {
+                @Override
+                public VideoDetails call(ServiceResponse<VideoDetails> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
 
     /**
      * The Video Trending Search API lets you search on Bing and get back a list of videos that are trending based on search requests made by others. The videos are broken out into different categories. For example, Top Music Videos. For a list of markets that support trending videos, see [Trending Videos](https://docs.microsoft.com/azure/cognitive-services/bing-video-search/trending-videos).
@@ -388,7 +693,6 @@ public class BingVideosImpl implements BingVideos {
      * @return the observable to the TrendingVideos object
      */
     public Observable<ServiceResponse<TrendingVideos>> trendingWithServiceResponseAsync(TrendingOptionalParameter trendingOptionalParameter) {
-        final String xBingApisSDK = "true";
         final String acceptLanguage = trendingOptionalParameter != null ? trendingOptionalParameter.acceptLanguage() : null;
         final String userAgent = trendingOptionalParameter != null ? trendingOptionalParameter.userAgent() : this.client.userAgent();
         final String clientId = trendingOptionalParameter != null ? trendingOptionalParameter.clientId() : null;
@@ -442,6 +746,118 @@ public class BingVideosImpl implements BingVideos {
                 .register(200, new TypeToken<TrendingVideos>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
+    }
+
+    @Override
+    public BingVideosTrendingParameters trending() {
+        return new BingVideosTrendingParameters(this);
+    }
+
+    /**
+     * Internal class implementing BingVideosTrendingDefinition.
+     */
+    class BingVideosTrendingParameters implements BingVideosTrendingDefinition {
+        private BingVideosImpl parent;
+        private String acceptLanguage;
+        private String userAgent;
+        private String clientId;
+        private String clientIp;
+        private String location;
+        private String countryCode;
+        private String market;
+        private SafeSearch safeSearch;
+        private String setLang;
+        private Boolean textDecorations;
+        private TextFormat textFormat;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        BingVideosTrendingParameters(BingVideosImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public BingVideosTrendingParameters withAcceptLanguage(String acceptLanguage) {
+            this.acceptLanguage = acceptLanguage;
+            return this;
+        }
+
+        @Override
+        public BingVideosTrendingParameters withUserAgent(String userAgent) {
+            this.userAgent = userAgent;
+            return this;
+        }
+
+        @Override
+        public BingVideosTrendingParameters withClientId(String clientId) {
+            this.clientId = clientId;
+            return this;
+        }
+
+        @Override
+        public BingVideosTrendingParameters withClientIp(String clientIp) {
+            this.clientIp = clientIp;
+            return this;
+        }
+
+        @Override
+        public BingVideosTrendingParameters withLocation(String location) {
+            this.location = location;
+            return this;
+        }
+
+        @Override
+        public BingVideosTrendingParameters withCountryCode(String countryCode) {
+            this.countryCode = countryCode;
+            return this;
+        }
+
+        @Override
+        public BingVideosTrendingParameters withMarket(String market) {
+            this.market = market;
+            return this;
+        }
+
+        @Override
+        public BingVideosTrendingParameters withSafeSearch(SafeSearch safeSearch) {
+            this.safeSearch = safeSearch;
+            return this;
+        }
+
+        @Override
+        public BingVideosTrendingParameters withSetLang(String setLang) {
+            this.setLang = setLang;
+            return this;
+        }
+
+        @Override
+        public BingVideosTrendingParameters withTextDecorations(Boolean textDecorations) {
+            this.textDecorations = textDecorations;
+            return this;
+        }
+
+        @Override
+        public BingVideosTrendingParameters withTextFormat(TextFormat textFormat) {
+            this.textFormat = textFormat;
+            return this;
+        }
+
+        @Override
+        public TrendingVideos execute() {
+        return trendingWithServiceResponseAsync(acceptLanguage, userAgent, clientId, clientIp, location, countryCode, market, safeSearch, setLang, textDecorations, textFormat).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<TrendingVideos> executeAsync() {
+            return trendingWithServiceResponseAsync(acceptLanguage, userAgent, clientId, clientIp, location, countryCode, market, safeSearch, setLang, textDecorations, textFormat).map(new Func1<ServiceResponse<TrendingVideos>, TrendingVideos>() {
+                @Override
+                public TrendingVideos call(ServiceResponse<TrendingVideos> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 }

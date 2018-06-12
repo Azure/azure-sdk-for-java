@@ -13,9 +13,9 @@ import com.microsoft.azure.AzureServiceClient;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.FaceAPI;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.FaceLists;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.Faces;
+import com.microsoft.azure.cognitiveservices.vision.faceapi.models.AzureRegions;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroupPersons;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroups;
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.AzureRegions;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.RestClient;
 
@@ -193,7 +193,7 @@ public class FaceAPIImpl extends AzureServiceClient implements FaceAPI {
      * @param baseUrl the base URL of the host
      * @param credentials the management credentials for Azure
      */
-    private FaceAPIImpl(String baseUrl, ServiceClientCredentials credentials) {
+    public FaceAPIImpl(String baseUrl, ServiceClientCredentials credentials) {
         super(baseUrl, credentials);
         initialize();
     }

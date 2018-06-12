@@ -10,34 +10,57 @@ package com.microsoft.azure.cognitiveservices.vision.faceapi.models;
 
 
 /**
- * The optional parameters class for "updateFace" method.
+ * The UpdateFaceOptionalParameter model.
  */
 public class UpdateFaceOptionalParameter {
     /**
-    * User-provided data attached to the face. The size limit is 1KB.
-    */
+     * User-provided data attached to the face. The size limit is 1KB.
+     */
     private String userData;
 
     /**
-    * Get the userData value.
-    *
-    * @return the userData value
-    */
+     * Gets or sets the preferred language for the response.
+     */
+    private String thisclientacceptLanguage;
+
+    /**
+     * Get the userData value.
+     *
+     * @return the userData value
+     */
     public String userData() {
         return this.userData;
     }
 
     /**
-    * Set the userData value.
-    * <p>
-    * User-provided data attached to the face. The size limit is 1KB.
-    *
-    * @param userData the userData value to set
-    * @return the updateFaceOptionalParameter object itself.
-    */
+     * Set the userData value.
+     *
+     * @param userData the userData value to set
+     * @return the UpdateFaceOptionalParameter object itself.
+     */
     public UpdateFaceOptionalParameter withUserData(String userData) {
         this.userData = userData;
         return this;
     }
 
+    /**
+     * Get the thisclientacceptLanguage value.
+     *
+     * @return the thisclientacceptLanguage value
+     */
+    public String thisclientacceptLanguage() {
+        return this.thisclientacceptLanguage;
     }
+
+    /**
+     * Set the thisclientacceptLanguage value.
+     *
+     * @param thisclientacceptLanguage the thisclientacceptLanguage value to set
+     * @return the UpdateFaceOptionalParameter object itself.
+     */
+    public UpdateFaceOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
+        this.thisclientacceptLanguage = thisclientacceptLanguage;
+        return this;
+    }
+
+}

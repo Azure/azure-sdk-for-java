@@ -8,35 +8,59 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
+
 /**
- * The optional parameters class for "addVideoFrameUrl" method.
+ * The AddVideoFrameUrlOptionalParameter model.
  */
 public class AddVideoFrameUrlOptionalParameter {
     /**
-    * Timescale of the video.
-    */
+     * Timescale of the video.
+     */
     private Integer timescale;
 
     /**
-    * Get the timescale value.
-    *
-    * @return the timescale value
-    */
+     * Gets or sets the preferred language for the response.
+     */
+    private String thisclientacceptLanguage;
+
+    /**
+     * Get the timescale value.
+     *
+     * @return the timescale value
+     */
     public Integer timescale() {
         return this.timescale;
     }
 
     /**
-    * Set the timescale value.
-    * <p>
-    * Timescale of the video.
-    *
-    * @param timescale the timescale value to set
-    * @return the addVideoFrameUrlOptionalParameter object itself.
-    */
-    public AddVideoFrameUrlOptionalParameter withTimescale(int timescale) {
+     * Set the timescale value.
+     *
+     * @param timescale the timescale value to set
+     * @return the AddVideoFrameUrlOptionalParameter object itself.
+     */
+    public AddVideoFrameUrlOptionalParameter withTimescale(Integer timescale) {
         this.timescale = timescale;
         return this;
     }
 
+    /**
+     * Get the thisclientacceptLanguage value.
+     *
+     * @return the thisclientacceptLanguage value
+     */
+    public String thisclientacceptLanguage() {
+        return this.thisclientacceptLanguage;
     }
+
+    /**
+     * Set the thisclientacceptLanguage value.
+     *
+     * @param thisclientacceptLanguage the thisclientacceptLanguage value to set
+     * @return the AddVideoFrameUrlOptionalParameter object itself.
+     */
+    public AddVideoFrameUrlOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
+        this.thisclientacceptLanguage = thisclientacceptLanguage;
+        return this;
+    }
+
+}

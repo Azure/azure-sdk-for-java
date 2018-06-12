@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("ImageKnowledge")
 public class ImageKnowledge extends Response {
     /**
-     * Includes a list of image knowledge tags.
+     * A list of visual search tags.
      */
     @JsonProperty(value = "tags", access = JsonProperty.Access.WRITE_ONLY)
     private List<ImageTag> tags;

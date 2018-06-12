@@ -16,8 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ImagesImageMetadata {
     /**
-     * The number of websites that offer goods of the products seen in the
-     * image.
+     * The number of websites that sell the products seen in the image.
      */
     @JsonProperty(value = "shoppingSourcesCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer shoppingSourcesCount;

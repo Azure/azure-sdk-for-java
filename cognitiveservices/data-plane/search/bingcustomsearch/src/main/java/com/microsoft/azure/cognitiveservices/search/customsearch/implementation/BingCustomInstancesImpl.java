@@ -122,7 +122,6 @@ public class BingCustomInstancesImpl implements BingCustomInstances {
         if (query == null) {
             throw new IllegalArgumentException("Parameter query is required and cannot be null.");
         }
-        final String xBingApisSDK = "true";
         final String acceptLanguage = searchOptionalParameter != null ? searchOptionalParameter.acceptLanguage() : null;
         final String userAgent = searchOptionalParameter != null ? searchOptionalParameter.userAgent() : this.client.userAgent();
         final String clientId = searchOptionalParameter != null ? searchOptionalParameter.clientId() : null;
@@ -185,6 +184,146 @@ public class BingCustomInstancesImpl implements BingCustomInstances {
                 .register(200, new TypeToken<SearchResponse>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
+    }
+
+    @Override
+    public BingCustomInstancesSearchParameters search() {
+        return new BingCustomInstancesSearchParameters(this);
+    }
+
+    /**
+     * Internal class implementing BingCustomInstancesSearchDefinition.
+     */
+    class BingCustomInstancesSearchParameters implements BingCustomInstancesSearchDefinition {
+        private BingCustomInstancesImpl parent;
+        private long customConfig;
+        private String query;
+        private String acceptLanguage;
+        private String userAgent;
+        private String clientId;
+        private String clientIp;
+        private String location;
+        private String countryCode;
+        private Integer count;
+        private String market;
+        private Integer offset;
+        private SafeSearch safeSearch;
+        private String setLang;
+        private Boolean textDecorations;
+        private TextFormat textFormat;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        BingCustomInstancesSearchParameters(BingCustomInstancesImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public BingCustomInstancesSearchParameters withCustomConfig(long customConfig) {
+            this.customConfig = customConfig;
+            return this;
+        }
+
+        @Override
+        public BingCustomInstancesSearchParameters withQuery(String query) {
+            this.query = query;
+            return this;
+        }
+
+        @Override
+        public BingCustomInstancesSearchParameters withAcceptLanguage(String acceptLanguage) {
+            this.acceptLanguage = acceptLanguage;
+            return this;
+        }
+
+        @Override
+        public BingCustomInstancesSearchParameters withUserAgent(String userAgent) {
+            this.userAgent = userAgent;
+            return this;
+        }
+
+        @Override
+        public BingCustomInstancesSearchParameters withClientId(String clientId) {
+            this.clientId = clientId;
+            return this;
+        }
+
+        @Override
+        public BingCustomInstancesSearchParameters withClientIp(String clientIp) {
+            this.clientIp = clientIp;
+            return this;
+        }
+
+        @Override
+        public BingCustomInstancesSearchParameters withLocation(String location) {
+            this.location = location;
+            return this;
+        }
+
+        @Override
+        public BingCustomInstancesSearchParameters withCountryCode(String countryCode) {
+            this.countryCode = countryCode;
+            return this;
+        }
+
+        @Override
+        public BingCustomInstancesSearchParameters withCount(Integer count) {
+            this.count = count;
+            return this;
+        }
+
+        @Override
+        public BingCustomInstancesSearchParameters withMarket(String market) {
+            this.market = market;
+            return this;
+        }
+
+        @Override
+        public BingCustomInstancesSearchParameters withOffset(Integer offset) {
+            this.offset = offset;
+            return this;
+        }
+
+        @Override
+        public BingCustomInstancesSearchParameters withSafeSearch(SafeSearch safeSearch) {
+            this.safeSearch = safeSearch;
+            return this;
+        }
+
+        @Override
+        public BingCustomInstancesSearchParameters withSetLang(String setLang) {
+            this.setLang = setLang;
+            return this;
+        }
+
+        @Override
+        public BingCustomInstancesSearchParameters withTextDecorations(Boolean textDecorations) {
+            this.textDecorations = textDecorations;
+            return this;
+        }
+
+        @Override
+        public BingCustomInstancesSearchParameters withTextFormat(TextFormat textFormat) {
+            this.textFormat = textFormat;
+            return this;
+        }
+
+        @Override
+        public SearchResponse execute() {
+        return searchWithServiceResponseAsync(customConfig, query, acceptLanguage, userAgent, clientId, clientIp, location, countryCode, count, market, offset, safeSearch, setLang, textDecorations, textFormat).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<SearchResponse> executeAsync() {
+            return searchWithServiceResponseAsync(customConfig, query, acceptLanguage, userAgent, clientId, clientIp, location, countryCode, count, market, offset, safeSearch, setLang, textDecorations, textFormat).map(new Func1<ServiceResponse<SearchResponse>, SearchResponse>() {
+                @Override
+                public SearchResponse call(ServiceResponse<SearchResponse> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 }

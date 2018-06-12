@@ -456,7 +456,6 @@ public class ReviewsImpl implements Reviews {
         }
         Validator.validate(createReviewBody);
         final String subTeam = createReviewsOptionalParameter != null ? createReviewsOptionalParameter.subTeam() : null;
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
 
         return createReviewsWithServiceResponseAsync(teamName, urlContentType, createReviewBody, subTeam);
     }
@@ -526,6 +525,69 @@ public class ReviewsImpl implements Reviews {
                 .register(200, new TypeToken<List<String>>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public ReviewsCreateReviewsParameters createReviews() {
+        return new ReviewsCreateReviewsParameters(this);
+    }
+
+    /**
+     * Internal class implementing ReviewsCreateReviewsDefinition.
+     */
+    class ReviewsCreateReviewsParameters implements ReviewsCreateReviewsDefinition {
+        private ReviewsImpl parent;
+        private String teamName;
+        private String urlContentType;
+        private List<CreateReviewBodyItem> createReviewBody;
+        private String subTeam;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ReviewsCreateReviewsParameters(ReviewsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ReviewsCreateReviewsParameters withTeamName(String teamName) {
+            this.teamName = teamName;
+            return this;
+        }
+
+        @Override
+        public ReviewsCreateReviewsParameters withUrlContentType(String urlContentType) {
+            this.urlContentType = urlContentType;
+            return this;
+        }
+
+        @Override
+        public ReviewsCreateReviewsParameters withCreateReviewBody(List<CreateReviewBodyItem> createReviewBody) {
+            this.createReviewBody = createReviewBody;
+            return this;
+        }
+
+        @Override
+        public ReviewsCreateReviewsParameters withSubTeam(String subTeam) {
+            this.subTeam = subTeam;
+            return this;
+        }
+
+        @Override
+        public List<String> execute() {
+        return createReviewsWithServiceResponseAsync(teamName, urlContentType, createReviewBody, subTeam).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<List<String>> executeAsync() {
+            return createReviewsWithServiceResponseAsync(teamName, urlContentType, createReviewBody, subTeam).map(new Func1<ServiceResponse<List<String>>, List<String>>() {
+                @Override
+                public List<String> call(ServiceResponse<List<String>> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 
@@ -784,9 +846,6 @@ public class ReviewsImpl implements Reviews {
             throw new IllegalArgumentException("Parameter contentValue is required and cannot be null.");
         }
         final String callBackEndpoint = createJobOptionalParameter != null ? createJobOptionalParameter.callBackEndpoint() : null;
-        Content content = new Content();
-        content.withContentValue(contentValue);
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
 
         return createJobWithServiceResponseAsync(teamName, contentType, contentId, workflowName, jobContentType, contentValue, callBackEndpoint);
     }
@@ -888,6 +947,90 @@ public class ReviewsImpl implements Reviews {
                 .register(200, new TypeToken<JobId>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public ReviewsCreateJobParameters createJob() {
+        return new ReviewsCreateJobParameters(this);
+    }
+
+    /**
+     * Internal class implementing ReviewsCreateJobDefinition.
+     */
+    class ReviewsCreateJobParameters implements ReviewsCreateJobDefinition {
+        private ReviewsImpl parent;
+        private String teamName;
+        private String contentType;
+        private String contentId;
+        private String workflowName;
+        private String jobContentType;
+        private String contentValue;
+        private String callBackEndpoint;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ReviewsCreateJobParameters(ReviewsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ReviewsCreateJobParameters withTeamName(String teamName) {
+            this.teamName = teamName;
+            return this;
+        }
+
+        @Override
+        public ReviewsCreateJobParameters withContentType(String contentType) {
+            this.contentType = contentType;
+            return this;
+        }
+
+        @Override
+        public ReviewsCreateJobParameters withContentId(String contentId) {
+            this.contentId = contentId;
+            return this;
+        }
+
+        @Override
+        public ReviewsCreateJobParameters withWorkflowName(String workflowName) {
+            this.workflowName = workflowName;
+            return this;
+        }
+
+        @Override
+        public ReviewsCreateJobParameters withJobContentType(String jobContentType) {
+            this.jobContentType = jobContentType;
+            return this;
+        }
+
+        @Override
+        public ReviewsCreateJobParameters withContentValue(String contentValue) {
+            this.contentValue = contentValue;
+            return this;
+        }
+
+        @Override
+        public ReviewsCreateJobParameters withCallBackEndpoint(String callBackEndpoint) {
+            this.callBackEndpoint = callBackEndpoint;
+            return this;
+        }
+
+        @Override
+        public JobId execute() {
+        return createJobWithServiceResponseAsync(teamName, contentType, contentId, workflowName, jobContentType, contentValue, callBackEndpoint).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<JobId> executeAsync() {
+            return createJobWithServiceResponseAsync(teamName, contentType, contentId, workflowName, jobContentType, contentValue, callBackEndpoint).map(new Func1<ServiceResponse<JobId>, JobId>() {
+                @Override
+                public JobId call(ServiceResponse<JobId> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 
@@ -1041,7 +1184,6 @@ public class ReviewsImpl implements Reviews {
             throw new IllegalArgumentException("Parameter reviewId is required and cannot be null.");
         }
         final Integer timescale = addVideoFrameOptionalParameter != null ? addVideoFrameOptionalParameter.timescale() : null;
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
 
         return addVideoFrameWithServiceResponseAsync(teamName, reviewId, timescale);
     }
@@ -1106,6 +1248,62 @@ public class ReviewsImpl implements Reviews {
                 .register(200, new TypeToken<Void>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public ReviewsAddVideoFrameParameters addVideoFrame() {
+        return new ReviewsAddVideoFrameParameters(this);
+    }
+
+    /**
+     * Internal class implementing ReviewsAddVideoFrameDefinition.
+     */
+    class ReviewsAddVideoFrameParameters implements ReviewsAddVideoFrameDefinition {
+        private ReviewsImpl parent;
+        private String teamName;
+        private String reviewId;
+        private Integer timescale;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ReviewsAddVideoFrameParameters(ReviewsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ReviewsAddVideoFrameParameters withTeamName(String teamName) {
+            this.teamName = teamName;
+            return this;
+        }
+
+        @Override
+        public ReviewsAddVideoFrameParameters withReviewId(String reviewId) {
+            this.reviewId = reviewId;
+            return this;
+        }
+
+        @Override
+        public ReviewsAddVideoFrameParameters withTimescale(Integer timescale) {
+            this.timescale = timescale;
+            return this;
+        }
+
+        @Override
+        public void execute() {
+        addVideoFrameWithServiceResponseAsync(teamName, reviewId, timescale).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<Void> executeAsync() {
+            return addVideoFrameWithServiceResponseAsync(teamName, reviewId, timescale).map(new Func1<ServiceResponse<Void>, Void>() {
+                @Override
+                public Void call(ServiceResponse<Void> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 
@@ -1262,7 +1460,6 @@ public class ReviewsImpl implements Reviews {
         final Integer startSeed = getVideoFramesOptionalParameter != null ? getVideoFramesOptionalParameter.startSeed() : null;
         final Integer noOfRecords = getVideoFramesOptionalParameter != null ? getVideoFramesOptionalParameter.noOfRecords() : null;
         final String filter = getVideoFramesOptionalParameter != null ? getVideoFramesOptionalParameter.filter() : null;
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
 
         return getVideoFramesWithServiceResponseAsync(teamName, reviewId, startSeed, noOfRecords, filter);
     }
@@ -1329,6 +1526,76 @@ public class ReviewsImpl implements Reviews {
                 .register(200, new TypeToken<Frames>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public ReviewsGetVideoFramesParameters getVideoFrames() {
+        return new ReviewsGetVideoFramesParameters(this);
+    }
+
+    /**
+     * Internal class implementing ReviewsGetVideoFramesDefinition.
+     */
+    class ReviewsGetVideoFramesParameters implements ReviewsGetVideoFramesDefinition {
+        private ReviewsImpl parent;
+        private String teamName;
+        private String reviewId;
+        private Integer startSeed;
+        private Integer noOfRecords;
+        private String filter;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ReviewsGetVideoFramesParameters(ReviewsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ReviewsGetVideoFramesParameters withTeamName(String teamName) {
+            this.teamName = teamName;
+            return this;
+        }
+
+        @Override
+        public ReviewsGetVideoFramesParameters withReviewId(String reviewId) {
+            this.reviewId = reviewId;
+            return this;
+        }
+
+        @Override
+        public ReviewsGetVideoFramesParameters withStartSeed(Integer startSeed) {
+            this.startSeed = startSeed;
+            return this;
+        }
+
+        @Override
+        public ReviewsGetVideoFramesParameters withNoOfRecords(Integer noOfRecords) {
+            this.noOfRecords = noOfRecords;
+            return this;
+        }
+
+        @Override
+        public ReviewsGetVideoFramesParameters withFilter(String filter) {
+            this.filter = filter;
+            return this;
+        }
+
+        @Override
+        public Frames execute() {
+        return getVideoFramesWithServiceResponseAsync(teamName, reviewId, startSeed, noOfRecords, filter).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<Frames> executeAsync() {
+            return getVideoFramesWithServiceResponseAsync(teamName, reviewId, startSeed, noOfRecords, filter).map(new Func1<ServiceResponse<Frames>, Frames>() {
+                @Override
+                public Frames call(ServiceResponse<Frames> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
     /**
@@ -1764,7 +2031,6 @@ public class ReviewsImpl implements Reviews {
         }
         Validator.validate(createVideoReviewsBody);
         final String subTeam = createVideoReviewsOptionalParameter != null ? createVideoReviewsOptionalParameter.subTeam() : null;
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
 
         return createVideoReviewsWithServiceResponseAsync(teamName, contentType, createVideoReviewsBody, subTeam);
     }
@@ -1834,6 +2100,69 @@ public class ReviewsImpl implements Reviews {
                 .register(200, new TypeToken<List<String>>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public ReviewsCreateVideoReviewsParameters createVideoReviews() {
+        return new ReviewsCreateVideoReviewsParameters(this);
+    }
+
+    /**
+     * Internal class implementing ReviewsCreateVideoReviewsDefinition.
+     */
+    class ReviewsCreateVideoReviewsParameters implements ReviewsCreateVideoReviewsDefinition {
+        private ReviewsImpl parent;
+        private String teamName;
+        private String contentType;
+        private List<CreateVideoReviewsBodyItem> createVideoReviewsBody;
+        private String subTeam;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ReviewsCreateVideoReviewsParameters(ReviewsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ReviewsCreateVideoReviewsParameters withTeamName(String teamName) {
+            this.teamName = teamName;
+            return this;
+        }
+
+        @Override
+        public ReviewsCreateVideoReviewsParameters withContentType(String contentType) {
+            this.contentType = contentType;
+            return this;
+        }
+
+        @Override
+        public ReviewsCreateVideoReviewsParameters withCreateVideoReviewsBody(List<CreateVideoReviewsBodyItem> createVideoReviewsBody) {
+            this.createVideoReviewsBody = createVideoReviewsBody;
+            return this;
+        }
+
+        @Override
+        public ReviewsCreateVideoReviewsParameters withSubTeam(String subTeam) {
+            this.subTeam = subTeam;
+            return this;
+        }
+
+        @Override
+        public List<String> execute() {
+        return createVideoReviewsWithServiceResponseAsync(teamName, contentType, createVideoReviewsBody, subTeam).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<List<String>> executeAsync() {
+            return createVideoReviewsWithServiceResponseAsync(teamName, contentType, createVideoReviewsBody, subTeam).map(new Func1<ServiceResponse<List<String>>, List<String>>() {
+                @Override
+                public List<String> call(ServiceResponse<List<String>> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 
@@ -1918,7 +2247,6 @@ public class ReviewsImpl implements Reviews {
         }
         Validator.validate(videoFrameBody);
         final Integer timescale = addVideoFrameUrlOptionalParameter != null ? addVideoFrameUrlOptionalParameter.timescale() : null;
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
 
         return addVideoFrameUrlWithServiceResponseAsync(teamName, reviewId, contentType, videoFrameBody, timescale);
     }
@@ -1971,6 +2299,76 @@ public class ReviewsImpl implements Reviews {
                 .register(204, new TypeToken<Void>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public ReviewsAddVideoFrameUrlParameters addVideoFrameUrl() {
+        return new ReviewsAddVideoFrameUrlParameters(this);
+    }
+
+    /**
+     * Internal class implementing ReviewsAddVideoFrameUrlDefinition.
+     */
+    class ReviewsAddVideoFrameUrlParameters implements ReviewsAddVideoFrameUrlDefinition {
+        private ReviewsImpl parent;
+        private String teamName;
+        private String reviewId;
+        private String contentType;
+        private List<VideoFrameBodyItem> videoFrameBody;
+        private Integer timescale;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ReviewsAddVideoFrameUrlParameters(ReviewsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ReviewsAddVideoFrameUrlParameters withTeamName(String teamName) {
+            this.teamName = teamName;
+            return this;
+        }
+
+        @Override
+        public ReviewsAddVideoFrameUrlParameters withReviewId(String reviewId) {
+            this.reviewId = reviewId;
+            return this;
+        }
+
+        @Override
+        public ReviewsAddVideoFrameUrlParameters withContentType(String contentType) {
+            this.contentType = contentType;
+            return this;
+        }
+
+        @Override
+        public ReviewsAddVideoFrameUrlParameters withVideoFrameBody(List<VideoFrameBodyItem> videoFrameBody) {
+            this.videoFrameBody = videoFrameBody;
+            return this;
+        }
+
+        @Override
+        public ReviewsAddVideoFrameUrlParameters withTimescale(Integer timescale) {
+            this.timescale = timescale;
+            return this;
+        }
+
+        @Override
+        public void execute() {
+        addVideoFrameUrlWithServiceResponseAsync(teamName, reviewId, contentType, videoFrameBody, timescale).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<Void> executeAsync() {
+            return addVideoFrameUrlWithServiceResponseAsync(teamName, reviewId, contentType, videoFrameBody, timescale).map(new Func1<ServiceResponse<Void>, Void>() {
+                @Override
+                public Void call(ServiceResponse<Void> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 
@@ -2061,8 +2459,6 @@ public class ReviewsImpl implements Reviews {
             throw new IllegalArgumentException("Parameter frameMetadata is required and cannot be null.");
         }
         final Integer timescale = addVideoFrameStreamOptionalParameter != null ? addVideoFrameStreamOptionalParameter.timescale() : null;
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
-        RequestBody frameImageZipConverted = RequestBody.create(MediaType.parse("multipart/form-data"), frameImageZip);
 
         return addVideoFrameStreamWithServiceResponseAsync(teamName, reviewId, contentType, frameImageZip, frameMetadata, timescale);
     }
@@ -2119,6 +2515,83 @@ public class ReviewsImpl implements Reviews {
                 .register(204, new TypeToken<Void>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public ReviewsAddVideoFrameStreamParameters addVideoFrameStream() {
+        return new ReviewsAddVideoFrameStreamParameters(this);
+    }
+
+    /**
+     * Internal class implementing ReviewsAddVideoFrameStreamDefinition.
+     */
+    class ReviewsAddVideoFrameStreamParameters implements ReviewsAddVideoFrameStreamDefinition {
+        private ReviewsImpl parent;
+        private String teamName;
+        private String reviewId;
+        private String contentType;
+        private byte[] frameImageZip;
+        private String frameMetadata;
+        private Integer timescale;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ReviewsAddVideoFrameStreamParameters(ReviewsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ReviewsAddVideoFrameStreamParameters withTeamName(String teamName) {
+            this.teamName = teamName;
+            return this;
+        }
+
+        @Override
+        public ReviewsAddVideoFrameStreamParameters withReviewId(String reviewId) {
+            this.reviewId = reviewId;
+            return this;
+        }
+
+        @Override
+        public ReviewsAddVideoFrameStreamParameters withContentType(String contentType) {
+            this.contentType = contentType;
+            return this;
+        }
+
+        @Override
+        public ReviewsAddVideoFrameStreamParameters withFrameImageZip(byte[] frameImageZip) {
+            this.frameImageZip = frameImageZip;
+            return this;
+        }
+
+        @Override
+        public ReviewsAddVideoFrameStreamParameters withFrameMetadata(String frameMetadata) {
+            this.frameMetadata = frameMetadata;
+            return this;
+        }
+
+        @Override
+        public ReviewsAddVideoFrameStreamParameters withTimescale(Integer timescale) {
+            this.timescale = timescale;
+            return this;
+        }
+
+        @Override
+        public void execute() {
+        addVideoFrameStreamWithServiceResponseAsync(teamName, reviewId, contentType, frameImageZip, frameMetadata, timescale).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<Void> executeAsync() {
+            return addVideoFrameStreamWithServiceResponseAsync(teamName, reviewId, contentType, frameImageZip, frameMetadata, timescale).map(new Func1<ServiceResponse<Void>, Void>() {
+                @Override
+                public Void call(ServiceResponse<Void> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 }

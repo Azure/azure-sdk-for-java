@@ -97,9 +97,9 @@ public interface ComputerVisionAPI {
     ComputerVisionAPI withGenerateClientRequestId(boolean generateClientRequestId);
 
     /**
-     * Gets the ComputerVisions object to access its operations.
-     * @return the ComputerVisions object.
+     * Gets the ComputerVision object to access its operations.
+     * @return the ComputerVision object.
      */
-    ComputerVisions computerVisions();
+    ComputerVision computerVision();
 
 }

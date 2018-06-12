@@ -8,21 +8,18 @@
 
 package com.microsoft.azure.cognitiveservices.vision.computervision.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
  * Result of image analysis using a specific domain model including additional
  * metadata.
  */
-@JsonFlatten
 public class DomainModelResults {
     /**
-     * An array of possible celebritied identified in the image.
+     * Model-specific response.
      */
-    @JsonProperty(value = "result.celebrities")
-    private List<CelebritiesModel> celebrities;
+    @JsonProperty(value = "result")
+    private Object result;
 
     /**
      * Id of the REST API request.
@@ -31,28 +28,28 @@ public class DomainModelResults {
     private String requestId;
 
     /**
-     * Additional image metadata.
+     * The metadata property.
      */
     @JsonProperty(value = "metadata")
     private ImageMetadata metadata;
 
     /**
-     * Get the celebrities value.
+     * Get the result value.
      *
-     * @return the celebrities value
+     * @return the result value
      */
-    public List<CelebritiesModel> celebrities() {
-        return this.celebrities;
+    public Object result() {
+        return this.result;
     }
 
     /**
-     * Set the celebrities value.
+     * Set the result value.
      *
-     * @param celebrities the celebrities value to set
+     * @param result the result value to set
      * @return the DomainModelResults object itself.
      */
-    public DomainModelResults withCelebrities(List<CelebritiesModel> celebrities) {
-        this.celebrities = celebrities;
+    public DomainModelResults withResult(Object result) {
+        this.result = result;
         return this;
     }
 

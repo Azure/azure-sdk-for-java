@@ -10,34 +10,58 @@ package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
 
 /**
- * The optional parameters class for "evaluateUrlInput" method.
+ * The EvaluateUrlInputOptionalParameter model.
  */
 public class EvaluateUrlInputOptionalParameter {
     /**
-    * Whether to retain the submitted image for future use; defaults to false if omitted.
-    */
+     * Whether to retain the submitted image for future use; defaults to false
+     * if omitted.
+     */
     private Boolean cacheImage;
 
     /**
-    * Get the cacheImage value.
-    *
-    * @return the cacheImage value
-    */
+     * Gets or sets the preferred language for the response.
+     */
+    private String thisclientacceptLanguage;
+
+    /**
+     * Get the cacheImage value.
+     *
+     * @return the cacheImage value
+     */
     public Boolean cacheImage() {
         return this.cacheImage;
     }
 
     /**
-    * Set the cacheImage value.
-    * <p>
-    * Whether to retain the submitted image for future use; defaults to false if omitted.
-    *
-    * @param cacheImage the cacheImage value to set
-    * @return the evaluateUrlInputOptionalParameter object itself.
-    */
-    public EvaluateUrlInputOptionalParameter withCacheImage(boolean cacheImage) {
+     * Set the cacheImage value.
+     *
+     * @param cacheImage the cacheImage value to set
+     * @return the EvaluateUrlInputOptionalParameter object itself.
+     */
+    public EvaluateUrlInputOptionalParameter withCacheImage(Boolean cacheImage) {
         this.cacheImage = cacheImage;
         return this;
     }
 
+    /**
+     * Get the thisclientacceptLanguage value.
+     *
+     * @return the thisclientacceptLanguage value
+     */
+    public String thisclientacceptLanguage() {
+        return this.thisclientacceptLanguage;
     }
+
+    /**
+     * Set the thisclientacceptLanguage value.
+     *
+     * @param thisclientacceptLanguage the thisclientacceptLanguage value to set
+     * @return the EvaluateUrlInputOptionalParameter object itself.
+     */
+    public EvaluateUrlInputOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
+        this.thisclientacceptLanguage = thisclientacceptLanguage;
+        return this;
+    }
+
+}

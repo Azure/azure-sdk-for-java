@@ -18,14 +18,14 @@ public class VisualSearchRequest {
     /**
      * A JSON object that identities the image to get insights of.
      */
-    @JsonProperty(value = "imageInfo", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "imageInfo")
     private ImageInfo imageInfo;
 
     /**
      * A JSON object containing information about the request, such as filters,
      * or a description.
      */
-    @JsonProperty(value = "knowledgeRequest", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "knowledgeRequest")
     private KnowledgeRequest knowledgeRequest;
 
     /**
@@ -38,12 +38,34 @@ public class VisualSearchRequest {
     }
 
     /**
+     * Set the imageInfo value.
+     *
+     * @param imageInfo the imageInfo value to set
+     * @return the VisualSearchRequest object itself.
+     */
+    public VisualSearchRequest withImageInfo(ImageInfo imageInfo) {
+        this.imageInfo = imageInfo;
+        return this;
+    }
+
+    /**
      * Get the knowledgeRequest value.
      *
      * @return the knowledgeRequest value
      */
     public KnowledgeRequest knowledgeRequest() {
         return this.knowledgeRequest;
+    }
+
+    /**
+     * Set the knowledgeRequest value.
+     *
+     * @param knowledgeRequest the knowledgeRequest value to set
+     * @return the VisualSearchRequest object itself.
+     */
+    public VisualSearchRequest withKnowledgeRequest(KnowledgeRequest knowledgeRequest) {
+        this.knowledgeRequest = knowledgeRequest;
+        return this;
     }
 
 }

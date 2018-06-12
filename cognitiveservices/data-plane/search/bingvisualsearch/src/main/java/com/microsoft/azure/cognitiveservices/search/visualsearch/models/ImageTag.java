@@ -20,13 +20,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("ImageTag")
 public class ImageTag extends Thing {
     /**
-     * Display name for this tag, for default tag, there is no display name.
+     * Display name for this tag. For the default tag, the display name is
+     * empty.
      */
     @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
     /**
-     * The bounding box for this tag, for default tag, there is no bounding
+     * The bounding box for this tag. For the default tag, there is no bounding
      * box.
      */
     @JsonProperty(value = "boundingBox", access = JsonProperty.Access.WRITE_ONLY)
@@ -34,7 +35,8 @@ public class ImageTag extends Thing {
 
     /**
      * Actions within this tag. The order of the items denotes the default
-     * ranking order of these actions.
+     * ranking order of these actions, with the first action being the most
+     * likely user intent.
      */
     @JsonProperty(value = "actions", access = JsonProperty.Access.WRITE_ONLY)
     private List<ImageAction> actions;
