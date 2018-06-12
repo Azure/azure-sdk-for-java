@@ -51,7 +51,7 @@ class APISpec extends Specification {
     int defaultDataSize = defaultData.remaining()
 
     // If debugging is enabled, recordings cannot run as there can only be one proxy at a time.
-    static final boolean enableDebugging = true
+    static final boolean enableDebugging = false
 
     static final String containerPrefix = "jtc" // java test container
 
@@ -201,6 +201,15 @@ class APISpec extends Specification {
         return ByteBuffer.wrap(data)
     }
 
+    static File getRandomFile(long size) {
+        File file = File.createTempFile("testUpload", ".txt");
+        file.deleteOnExit();
+        FileOutputStream fos = new FileOutputStream(file);
+        fos.write(getRandomData(size).array())
+        fos.close();
+        return file
+    }
+
     static long getRandomSeed() {
         return System.currentTimeMillis()
     }
@@ -222,6 +231,18 @@ class APISpec extends Specification {
         iterationNo = updateIterationNo(specificationContext, iterationNo)
     }
 
+    /**
+     * This will retrieve the etag to be used in testing match conditions. The result will typically be assigned to
+     * the ifMatch condition when testing success and the ifNoneMatch condition when testing failure.
+     *
+     * @param bu
+     *      The URL to the blob to get the etag on.
+     * @param match
+     *      The ETag value for this test. If {@code receivedEtag} is passed, that will signal that the test is expecting
+     *      the blob's actual etag for this test, so it is retrieved.
+     * @return
+     *      The appropriate etag value to run the current test.
+     */
     def setupBlobMatchCondition(BlobURL bu, ETag match) {
         if (match == receivedEtag) {
             BlobsGetPropertiesHeaders headers = bu.getProperties(null).blockingGet().headers()
@@ -289,6 +310,14 @@ class APISpec extends Specification {
         }
     }
 
+    /**
+     * Validates the presence of headers that are present on a large number of responses. These headers are generally
+     * random and can really only be checked as not null.
+     * @param headers
+     *      The object (may be headers object or response object) that has properties which expose these common headers.
+     * @return
+     *      Whether or not the header values are appropriate.
+     */
     def validateBasicHeaders(Object headers) {
         return headers.class.getMethod("eTag").invoke(headers) != null &&
                 headers.class.getMethod("lastModified").invoke(headers) != null &&

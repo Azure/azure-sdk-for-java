@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.UUID;
 
+import static java.lang.StrictMath.toIntExact;
+
 /**
  * This class contains a collection of methods (and structures associated with those methods) which perform higher-level
  * operations. Whereas operations on the URL types guarantee a single REST request and make no assumptions on desired
@@ -101,7 +103,7 @@ public class TransferManager {
      *      If the data must be broken up into blocks, this value determines what size those blocks will be. This will
      *      affect the total number of service requests made. This value will be ignored if the data can be uploaded in
      *      a single put-blob operation. Must be between 1 and {@link BlockBlobURL#MAX_PUT_BLOCK_BYTES}. Note as well
-     *      that fileLength/blockLength must be less than or equal to {@link BlockBlobURL#MAX_BLOCKS}.
+     *      that {@code fileLength/blockLength} must be less than or equal to {@link BlockBlobURL#MAX_BLOCKS}.
      * @param options
      *      {@link UploadToBlockBlobOptions}
      * @return
@@ -122,8 +124,8 @@ public class TransferManager {
                         Flowable.just(file.map(FileChannel.MapMode.READ_ONLY, 0, file.size())), file.size(),
                         blockBlobURL, optionsReal);
             }
-            // Can successfully cast to an int because MaxBlockSize is an int, which this expression must be less than.
-            int numBlocks = (int)(file.size()/blockLength);
+
+            int numBlocks = calculateNumBlocks(file.size(), blockLength);
             return Observable.range(0, numBlocks)
                     .map((Function<Integer, ByteBuffer>) i -> {
                         /*
@@ -144,6 +146,16 @@ public class TransferManager {
         catch (IOException e) {
             throw new Error(e);
         }
+    }
+
+    static int calculateNumBlocks(long dataSize, int blockLength) {
+        // Can successfully cast to an int because MaxBlockSize is an int, which this expression must be less than.
+        int numBlocks = toIntExact(dataSize/blockLength);
+        // Include an extra block for trailing data.
+        if (dataSize%blockLength != 0) {
+            numBlocks++;
+        }
+        return numBlocks;
     }
 
     /**
@@ -175,7 +187,8 @@ public class TransferManager {
             return doSingleShotUpload(Flowable.just(data), data.remaining(), blockBlobURL, optionsReal);
         }
 
-        int numBlocks = data.remaining()/blockLength;
+        int numBlocks = calculateNumBlocks(data.remaining(), blockLength);
+
         return Observable.range(0, numBlocks)
                 .map(i -> {
                     int count = Math.min(blockLength, data.remaining()-i*blockLength);

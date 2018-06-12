@@ -461,7 +461,7 @@ class BlockBlobAPITest extends APISpec {
     }
 
     @Unroll
-    def "Block blob upload AC"() {
+    def "Upload AC"() {
         setup:
         match = setupBlobMatchCondition(bu, match)
         leaseID = setupBlobLeaseCondition(bu, leaseID)
@@ -509,7 +509,7 @@ class BlockBlobAPITest extends APISpec {
         null     | null       | null        | null         | garbageLeaseID
     }
 
-    def "Block blob upload error"() {
+    def "Upload error"() {
         setup:
         bu = cu.createBlockBlobURL(generateBlobName())
 
