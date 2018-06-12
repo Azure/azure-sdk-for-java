@@ -18,8 +18,8 @@ public class CropArea {
     /**
      * The top coordinate of the region to be cropped. The coordinate is a
      * fractional value of the original image's height and is measured from the
-     * top, left corner of the image. Specify the coordinate as a value from
-     * 0.0 through 1.0.
+     * top edge of the image. Specify the coordinate as a value from 0.0
+     * through 1.0.
      */
     @JsonProperty(value = "top", required = true)
     private double top;
@@ -27,26 +27,26 @@ public class CropArea {
     /**
      * The bottom coordinate of the region to be cropped. The coordinate is a
      * fractional value of the original image's height and is measured from the
-     * top, left corner of the image. Specify the coordinate as a value from
-     * 0.0 through 1.0.
+     * top edge of the image. Specify the coordinate as a value from 0.0
+     * through 1.0.
      */
     @JsonProperty(value = "bottom", required = true)
     private double bottom;
 
     /**
      * The left coordinate of the region to be cropped. The coordinate is a
-     * fractional value of the original image's height and is measured from the
-     * top, left corner of the image. Specify the coordinate as a value from
-     * 0.0 through 1.0.
+     * fractional value of the original image's width and is measured from the
+     * left edge of the image. Specify the coordinate as a value from 0.0
+     * through 1.0.
      */
     @JsonProperty(value = "left", required = true)
     private double left;
 
     /**
      * The right coordinate of the region to be cropped. The coordinate is a
-     * fractional value of the original image's height and is measured from the
-     * top, left corner of the image. Specify the coordinate as a value from
-     * 0.0 through 1.0.
+     * fractional value of the original image's width and is measured from the
+     * left edge of the image. Specify the coordinate as a value from 0.0
+     * through 1.0.
      */
     @JsonProperty(value = "right", required = true)
     private double right;

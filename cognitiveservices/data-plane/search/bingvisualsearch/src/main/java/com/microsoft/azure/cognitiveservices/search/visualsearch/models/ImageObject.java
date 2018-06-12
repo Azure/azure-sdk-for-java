@@ -25,9 +25,10 @@ public class ImageObject extends MediaObject {
     private ImageObject thumbnail;
 
     /**
-     * The token that you use in a subsequent call to the Image Search API to
-     * get additional information about the image. For information about using
-     * this token, see the insightsToken query parameter.
+     * The token that you use in a subsequent call to Visual Search API to get
+     * additional information about the image. For information about using this
+     * token, see the imageInsightsToken field inside the knowledgeRequest
+     * request parameter.
      */
     @JsonProperty(value = "imageInsightsToken", access = JsonProperty.Access.WRITE_ONLY)
     private String imageInsightsToken;
@@ -38,8 +39,8 @@ public class ImageObject extends MediaObject {
      * pie, this object includes a count of the number of websites where you
      * can buy an apple pie. To indicate the number of offers in your UX,
      * include badging such as a shopping cart icon that contains the count.
-     * When the user clicks on the icon, use imageInisghtsToken to get the list
-     * of websites.
+     * When the user clicks on the icon, use imageInisghtsToken in a subsequent
+     * Visual Search API call to get the list of shopping websites.
      */
     @JsonProperty(value = "insightsMetadata", access = JsonProperty.Access.WRITE_ONLY)
     private ImagesImageMetadata insightsMetadata;
@@ -59,7 +60,7 @@ public class ImageObject extends MediaObject {
     private String accentColor;
 
     /**
-     * Visual representation of the image. Used for getting more sizes.
+     * For interal use only.
      */
     @JsonProperty(value = "visualWords", access = JsonProperty.Access.WRITE_ONLY)
     private String visualWords;

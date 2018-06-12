@@ -35,7 +35,7 @@ public class BingSpellCheckManager {
      *
      * @param baseUrl the base URL of the service
      * @param subscriptionKey the Bing Search API key
-     * @return the Bing News Search API client
+     * @return the Bing Spell Check API client
      */
     public static BingSpellCheckAPI authenticate(String baseUrl, final String subscriptionKey) {
         ServiceClientCredentials serviceClientCredentials = new ServiceClientCredentials() {
@@ -63,7 +63,7 @@ public class BingSpellCheckManager {
      * Initializes an instance of Bing Spell Check API client.
      *
      * @param credentials the management credentials for Azure
-     * @return the Bing News Search API client
+     * @return the Bing Spell Check API client
      */
     public static BingSpellCheckAPI authenticate(ServiceClientCredentials credentials) {
         return authenticate("https://api.cognitive.microsoft.com/bing/v7.0/", credentials);

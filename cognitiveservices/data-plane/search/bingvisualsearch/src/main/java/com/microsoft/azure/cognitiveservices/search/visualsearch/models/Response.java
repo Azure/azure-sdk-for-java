@@ -14,8 +14,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 
 /**
- * Defines a response. All schemas that could be returned at the root of a
- * response should inherit from this.
+ * Defines a response. All schemas that return at the root of the response must
+ * inherit from this object.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = Response.class)
 @JsonTypeName("Response")
@@ -26,13 +26,15 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 })
 public class Response extends Identifiable {
     /**
-     * The URL that returns this resource.
+     * The URL that returns this resource. To use the URL, append query
+     * parameters as appropriate and include the Ocp-Apim-Subscription-Key
+     * header.
      */
     @JsonProperty(value = "readLink", access = JsonProperty.Access.WRITE_ONLY)
     private String readLink;
 
     /**
-     * The URL To Bing's search result for this item.
+     * The URL to Bing's search result for this item.
      */
     @JsonProperty(value = "webSearchUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String webSearchUrl;

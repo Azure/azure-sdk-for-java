@@ -11,34 +11,57 @@ package com.microsoft.azure.cognitiveservices.language.textanalytics.models;
 import java.util.List;
 
 /**
- * The optional parameters class for "keyPhrases" method.
+ * The KeyPhrasesOptionalParameter model.
  */
 public class KeyPhrasesOptionalParameter {
     /**
-    * The documents value.
-    */
+     * The documents property.
+     */
     private List<MultiLanguageInput> documents;
 
     /**
-    * Get the documents value.
-    *
-    * @return the documents value
-    */
+     * Gets or sets the preferred language for the response.
+     */
+    private String thisclientacceptLanguage;
+
+    /**
+     * Get the documents value.
+     *
+     * @return the documents value
+     */
     public List<MultiLanguageInput> documents() {
         return this.documents;
     }
 
     /**
-    * Set the documents value.
-    * <p>
-    * The documents value.
-    *
-    * @param documents the documents value to set
-    * @return the keyPhrasesOptionalParameter object itself.
-    */
+     * Set the documents value.
+     *
+     * @param documents the documents value to set
+     * @return the KeyPhrasesOptionalParameter object itself.
+     */
     public KeyPhrasesOptionalParameter withDocuments(List<MultiLanguageInput> documents) {
         this.documents = documents;
         return this;
     }
 
+    /**
+     * Get the thisclientacceptLanguage value.
+     *
+     * @return the thisclientacceptLanguage value
+     */
+    public String thisclientacceptLanguage() {
+        return this.thisclientacceptLanguage;
     }
+
+    /**
+     * Set the thisclientacceptLanguage value.
+     *
+     * @param thisclientacceptLanguage the thisclientacceptLanguage value to set
+     * @return the KeyPhrasesOptionalParameter object itself.
+     */
+    public KeyPhrasesOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
+        this.thisclientacceptLanguage = thisclientacceptLanguage;
+        return this;
+    }
+
+}

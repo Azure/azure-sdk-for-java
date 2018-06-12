@@ -25,7 +25,7 @@ import com.microsoft.azure.cognitiveservices.vision.contentmoderator.ImageModera
 import com.google.common.base.Joiner;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.APIErrorException;
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.BodyModel;
+import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.BodyModelModel;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.Evaluate;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.FoundFaces;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.MatchResponse;
@@ -95,11 +95,11 @@ public class ImageModerationsImpl implements ImageModerations {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.contentmoderator.ImageModerations findFacesUrlInput" })
         @POST("contentmoderator/moderate/v1.0/ProcessImage/FindFaces")
-        Observable<Response<ResponseBody>> findFacesUrlInput(@Query("CacheImage") Boolean cacheImage, @Header("Content-Type") String contentType, @Body BodyModel imageUrl, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> findFacesUrlInput(@Query("CacheImage") Boolean cacheImage, @Header("Content-Type") String contentType, @Body BodyModelModel imageUrl, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.contentmoderator.ImageModerations oCRUrlInput" })
         @POST("contentmoderator/moderate/v1.0/ProcessImage/OCR")
-        Observable<Response<ResponseBody>> oCRUrlInput(@Query("language") String language, @Query("CacheImage") Boolean cacheImage, @Query("enhanced") Boolean enhanced, @Header("Content-Type") String contentType, @Body BodyModel imageUrl, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> oCRUrlInput(@Query("language") String language, @Query("CacheImage") Boolean cacheImage, @Query("enhanced") Boolean enhanced, @Header("Content-Type") String contentType, @Body BodyModelModel imageUrl, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: image/gif", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.contentmoderator.ImageModerations oCRFileInput" })
         @POST("contentmoderator/moderate/v1.0/ProcessImage/OCR")
@@ -111,11 +111,11 @@ public class ImageModerationsImpl implements ImageModerations {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.contentmoderator.ImageModerations evaluateUrlInput" })
         @POST("contentmoderator/moderate/v1.0/ProcessImage/Evaluate")
-        Observable<Response<ResponseBody>> evaluateUrlInput(@Query("CacheImage") Boolean cacheImage, @Header("Content-Type") String contentType, @Body BodyModel imageUrl, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> evaluateUrlInput(@Query("CacheImage") Boolean cacheImage, @Header("Content-Type") String contentType, @Body BodyModelModel imageUrl, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.contentmoderator.ImageModerations matchUrlInput" })
         @POST("contentmoderator/moderate/v1.0/ProcessImage/Match")
-        Observable<Response<ResponseBody>> matchUrlInput(@Query("listId") String listId, @Query("CacheImage") Boolean cacheImage, @Header("Content-Type") String contentType, @Body BodyModel imageUrl, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> matchUrlInput(@Query("listId") String listId, @Query("CacheImage") Boolean cacheImage, @Header("Content-Type") String contentType, @Body BodyModelModel imageUrl, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: image/gif", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.contentmoderator.ImageModerations matchFileInput" })
         @POST("contentmoderator/moderate/v1.0/ProcessImage/Match")
@@ -177,7 +177,6 @@ public class ImageModerationsImpl implements ImageModerations {
             throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
         }
         final Boolean cacheImage = findFacesOptionalParameter != null ? findFacesOptionalParameter.cacheImage() : null;
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
 
         return findFacesWithServiceResponseAsync(cacheImage);
     }
@@ -213,6 +212,48 @@ public class ImageModerationsImpl implements ImageModerations {
                 .register(200, new TypeToken<FoundFaces>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public ImageModerationsFindFacesParameters findFaces() {
+        return new ImageModerationsFindFacesParameters(this);
+    }
+
+    /**
+     * Internal class implementing ImageModerationsFindFacesDefinition.
+     */
+    class ImageModerationsFindFacesParameters implements ImageModerationsFindFacesDefinition {
+        private ImageModerationsImpl parent;
+        private Boolean cacheImage;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ImageModerationsFindFacesParameters(ImageModerationsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ImageModerationsFindFacesParameters withCacheImage(Boolean cacheImage) {
+            this.cacheImage = cacheImage;
+            return this;
+        }
+
+        @Override
+        public FoundFaces execute() {
+        return findFacesWithServiceResponseAsync(cacheImage).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<FoundFaces> executeAsync() {
+            return findFacesWithServiceResponseAsync(cacheImage).map(new Func1<ServiceResponse<FoundFaces>, FoundFaces>() {
+                @Override
+                public FoundFaces call(ServiceResponse<FoundFaces> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 
@@ -277,7 +318,6 @@ public class ImageModerationsImpl implements ImageModerations {
         }
         final Boolean cacheImage = oCRMethodOptionalParameter != null ? oCRMethodOptionalParameter.cacheImage() : null;
         final Boolean enhanced = oCRMethodOptionalParameter != null ? oCRMethodOptionalParameter.enhanced() : null;
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
 
         return oCRMethodWithServiceResponseAsync(language, cacheImage, enhanced);
     }
@@ -320,6 +360,62 @@ public class ImageModerationsImpl implements ImageModerations {
                 .register(200, new TypeToken<OCR>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public ImageModerationsOCRMethodParameters oCRMethod() {
+        return new ImageModerationsOCRMethodParameters(this);
+    }
+
+    /**
+     * Internal class implementing ImageModerationsOCRMethodDefinition.
+     */
+    class ImageModerationsOCRMethodParameters implements ImageModerationsOCRMethodDefinition {
+        private ImageModerationsImpl parent;
+        private String language;
+        private Boolean cacheImage;
+        private Boolean enhanced;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ImageModerationsOCRMethodParameters(ImageModerationsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ImageModerationsOCRMethodParameters withLanguage(String language) {
+            this.language = language;
+            return this;
+        }
+
+        @Override
+        public ImageModerationsOCRMethodParameters withCacheImage(Boolean cacheImage) {
+            this.cacheImage = cacheImage;
+            return this;
+        }
+
+        @Override
+        public ImageModerationsOCRMethodParameters withEnhanced(Boolean enhanced) {
+            this.enhanced = enhanced;
+            return this;
+        }
+
+        @Override
+        public OCR execute() {
+        return oCRMethodWithServiceResponseAsync(language, cacheImage, enhanced).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<OCR> executeAsync() {
+            return oCRMethodWithServiceResponseAsync(language, cacheImage, enhanced).map(new Func1<ServiceResponse<OCR>, OCR>() {
+                @Override
+                public OCR call(ServiceResponse<OCR> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 
@@ -376,7 +472,6 @@ public class ImageModerationsImpl implements ImageModerations {
             throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
         }
         final Boolean cacheImage = evaluateMethodOptionalParameter != null ? evaluateMethodOptionalParameter.cacheImage() : null;
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
 
         return evaluateMethodWithServiceResponseAsync(cacheImage);
     }
@@ -412,6 +507,48 @@ public class ImageModerationsImpl implements ImageModerations {
                 .register(200, new TypeToken<Evaluate>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public ImageModerationsEvaluateMethodParameters evaluateMethod() {
+        return new ImageModerationsEvaluateMethodParameters(this);
+    }
+
+    /**
+     * Internal class implementing ImageModerationsEvaluateMethodDefinition.
+     */
+    class ImageModerationsEvaluateMethodParameters implements ImageModerationsEvaluateMethodDefinition {
+        private ImageModerationsImpl parent;
+        private Boolean cacheImage;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ImageModerationsEvaluateMethodParameters(ImageModerationsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ImageModerationsEvaluateMethodParameters withCacheImage(Boolean cacheImage) {
+            this.cacheImage = cacheImage;
+            return this;
+        }
+
+        @Override
+        public Evaluate execute() {
+        return evaluateMethodWithServiceResponseAsync(cacheImage).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<Evaluate> executeAsync() {
+            return evaluateMethodWithServiceResponseAsync(cacheImage).map(new Func1<ServiceResponse<Evaluate>, Evaluate>() {
+                @Override
+                public Evaluate call(ServiceResponse<Evaluate> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 
@@ -481,7 +618,6 @@ public class ImageModerationsImpl implements ImageModerations {
         }
         final String listId = matchMethodOptionalParameter != null ? matchMethodOptionalParameter.listId() : null;
         final Boolean cacheImage = matchMethodOptionalParameter != null ? matchMethodOptionalParameter.cacheImage() : null;
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
 
         return matchMethodWithServiceResponseAsync(listId, cacheImage);
     }
@@ -521,6 +657,55 @@ public class ImageModerationsImpl implements ImageModerations {
                 .register(200, new TypeToken<MatchResponse>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public ImageModerationsMatchMethodParameters matchMethod() {
+        return new ImageModerationsMatchMethodParameters(this);
+    }
+
+    /**
+     * Internal class implementing ImageModerationsMatchMethodDefinition.
+     */
+    class ImageModerationsMatchMethodParameters implements ImageModerationsMatchMethodDefinition {
+        private ImageModerationsImpl parent;
+        private String listId;
+        private Boolean cacheImage;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ImageModerationsMatchMethodParameters(ImageModerationsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ImageModerationsMatchMethodParameters withListId(String listId) {
+            this.listId = listId;
+            return this;
+        }
+
+        @Override
+        public ImageModerationsMatchMethodParameters withCacheImage(Boolean cacheImage) {
+            this.cacheImage = cacheImage;
+            return this;
+        }
+
+        @Override
+        public MatchResponse execute() {
+        return matchMethodWithServiceResponseAsync(listId, cacheImage).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<MatchResponse> executeAsync() {
+            return matchMethodWithServiceResponseAsync(listId, cacheImage).map(new Func1<ServiceResponse<MatchResponse>, MatchResponse>() {
+                @Override
+                public MatchResponse call(ServiceResponse<MatchResponse> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 
@@ -584,8 +769,6 @@ public class ImageModerationsImpl implements ImageModerations {
             throw new IllegalArgumentException("Parameter imageStream is required and cannot be null.");
         }
         final Boolean cacheImage = findFacesFileInputOptionalParameter != null ? findFacesFileInputOptionalParameter.cacheImage() : null;
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
-        RequestBody imageStreamConverted = RequestBody.create(MediaType.parse("image/gif"), imageStream);
 
         return findFacesFileInputWithServiceResponseAsync(imageStream, cacheImage);
     }
@@ -628,6 +811,55 @@ public class ImageModerationsImpl implements ImageModerations {
                 .build(response);
     }
 
+    @Override
+    public ImageModerationsFindFacesFileInputParameters findFacesFileInput() {
+        return new ImageModerationsFindFacesFileInputParameters(this);
+    }
+
+    /**
+     * Internal class implementing ImageModerationsFindFacesFileInputDefinition.
+     */
+    class ImageModerationsFindFacesFileInputParameters implements ImageModerationsFindFacesFileInputDefinition {
+        private ImageModerationsImpl parent;
+        private byte[] imageStream;
+        private Boolean cacheImage;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ImageModerationsFindFacesFileInputParameters(ImageModerationsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ImageModerationsFindFacesFileInputParameters withImageStream(byte[] imageStream) {
+            this.imageStream = imageStream;
+            return this;
+        }
+
+        @Override
+        public ImageModerationsFindFacesFileInputParameters withCacheImage(Boolean cacheImage) {
+            this.cacheImage = cacheImage;
+            return this;
+        }
+
+        @Override
+        public FoundFaces execute() {
+        return findFacesFileInputWithServiceResponseAsync(imageStream, cacheImage).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<FoundFaces> executeAsync() {
+            return findFacesFileInputWithServiceResponseAsync(imageStream, cacheImage).map(new Func1<ServiceResponse<FoundFaces>, FoundFaces>() {
+                @Override
+                public FoundFaces call(ServiceResponse<FoundFaces> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
 
     /**
      * Returns the list of faces found.
@@ -640,7 +872,7 @@ public class ImageModerationsImpl implements ImageModerations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the FoundFaces object if successful.
      */
-    public FoundFaces findFacesUrlInput(String contentType, BodyModel imageUrl, FindFacesUrlInputOptionalParameter findFacesUrlInputOptionalParameter) {
+    public FoundFaces findFacesUrlInput(String contentType, BodyModelModel imageUrl, FindFacesUrlInputOptionalParameter findFacesUrlInputOptionalParameter) {
         return findFacesUrlInputWithServiceResponseAsync(contentType, imageUrl, findFacesUrlInputOptionalParameter).toBlocking().single().body();
     }
 
@@ -654,7 +886,7 @@ public class ImageModerationsImpl implements ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<FoundFaces> findFacesUrlInputAsync(String contentType, BodyModel imageUrl, FindFacesUrlInputOptionalParameter findFacesUrlInputOptionalParameter, final ServiceCallback<FoundFaces> serviceCallback) {
+    public ServiceFuture<FoundFaces> findFacesUrlInputAsync(String contentType, BodyModelModel imageUrl, FindFacesUrlInputOptionalParameter findFacesUrlInputOptionalParameter, final ServiceCallback<FoundFaces> serviceCallback) {
         return ServiceFuture.fromResponse(findFacesUrlInputWithServiceResponseAsync(contentType, imageUrl, findFacesUrlInputOptionalParameter), serviceCallback);
     }
 
@@ -667,7 +899,7 @@ public class ImageModerationsImpl implements ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the FoundFaces object
      */
-    public Observable<FoundFaces> findFacesUrlInputAsync(String contentType, BodyModel imageUrl, FindFacesUrlInputOptionalParameter findFacesUrlInputOptionalParameter) {
+    public Observable<FoundFaces> findFacesUrlInputAsync(String contentType, BodyModelModel imageUrl, FindFacesUrlInputOptionalParameter findFacesUrlInputOptionalParameter) {
         return findFacesUrlInputWithServiceResponseAsync(contentType, imageUrl, findFacesUrlInputOptionalParameter).map(new Func1<ServiceResponse<FoundFaces>, FoundFaces>() {
             @Override
             public FoundFaces call(ServiceResponse<FoundFaces> response) {
@@ -685,7 +917,7 @@ public class ImageModerationsImpl implements ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the FoundFaces object
      */
-    public Observable<ServiceResponse<FoundFaces>> findFacesUrlInputWithServiceResponseAsync(String contentType, BodyModel imageUrl, FindFacesUrlInputOptionalParameter findFacesUrlInputOptionalParameter) {
+    public Observable<ServiceResponse<FoundFaces>> findFacesUrlInputWithServiceResponseAsync(String contentType, BodyModelModel imageUrl, FindFacesUrlInputOptionalParameter findFacesUrlInputOptionalParameter) {
         if (this.client.baseUrl() == null) {
             throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
         }
@@ -697,7 +929,6 @@ public class ImageModerationsImpl implements ImageModerations {
         }
         Validator.validate(imageUrl);
         final Boolean cacheImage = findFacesUrlInputOptionalParameter != null ? findFacesUrlInputOptionalParameter.cacheImage() : null;
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
 
         return findFacesUrlInputWithServiceResponseAsync(contentType, imageUrl, cacheImage);
     }
@@ -711,7 +942,7 @@ public class ImageModerationsImpl implements ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the FoundFaces object
      */
-    public Observable<ServiceResponse<FoundFaces>> findFacesUrlInputWithServiceResponseAsync(String contentType, BodyModel imageUrl, Boolean cacheImage) {
+    public Observable<ServiceResponse<FoundFaces>> findFacesUrlInputWithServiceResponseAsync(String contentType, BodyModelModel imageUrl, Boolean cacheImage) {
         if (this.client.baseUrl() == null) {
             throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
         }
@@ -744,6 +975,62 @@ public class ImageModerationsImpl implements ImageModerations {
                 .build(response);
     }
 
+    @Override
+    public ImageModerationsFindFacesUrlInputParameters findFacesUrlInput() {
+        return new ImageModerationsFindFacesUrlInputParameters(this);
+    }
+
+    /**
+     * Internal class implementing ImageModerationsFindFacesUrlInputDefinition.
+     */
+    class ImageModerationsFindFacesUrlInputParameters implements ImageModerationsFindFacesUrlInputDefinition {
+        private ImageModerationsImpl parent;
+        private String contentType;
+        private BodyModelModel imageUrl;
+        private Boolean cacheImage;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ImageModerationsFindFacesUrlInputParameters(ImageModerationsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ImageModerationsFindFacesUrlInputParameters withContentType(String contentType) {
+            this.contentType = contentType;
+            return this;
+        }
+
+        @Override
+        public ImageModerationsFindFacesUrlInputParameters withImageUrl(BodyModelModel imageUrl) {
+            this.imageUrl = imageUrl;
+            return this;
+        }
+
+        @Override
+        public ImageModerationsFindFacesUrlInputParameters withCacheImage(Boolean cacheImage) {
+            this.cacheImage = cacheImage;
+            return this;
+        }
+
+        @Override
+        public FoundFaces execute() {
+        return findFacesUrlInputWithServiceResponseAsync(contentType, imageUrl, cacheImage).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<FoundFaces> executeAsync() {
+            return findFacesUrlInputWithServiceResponseAsync(contentType, imageUrl, cacheImage).map(new Func1<ServiceResponse<FoundFaces>, FoundFaces>() {
+                @Override
+                public FoundFaces call(ServiceResponse<FoundFaces> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
 
     /**
      * Returns any text found in the image for the language specified. If no language is specified in input then the detection defaults to English.
@@ -757,7 +1044,7 @@ public class ImageModerationsImpl implements ImageModerations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OCR object if successful.
      */
-    public OCR oCRUrlInput(String language, String contentType, BodyModel imageUrl, OCRUrlInputOptionalParameter oCRUrlInputOptionalParameter) {
+    public OCR oCRUrlInput(String language, String contentType, BodyModelModel imageUrl, OCRUrlInputOptionalParameter oCRUrlInputOptionalParameter) {
         return oCRUrlInputWithServiceResponseAsync(language, contentType, imageUrl, oCRUrlInputOptionalParameter).toBlocking().single().body();
     }
 
@@ -772,7 +1059,7 @@ public class ImageModerationsImpl implements ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<OCR> oCRUrlInputAsync(String language, String contentType, BodyModel imageUrl, OCRUrlInputOptionalParameter oCRUrlInputOptionalParameter, final ServiceCallback<OCR> serviceCallback) {
+    public ServiceFuture<OCR> oCRUrlInputAsync(String language, String contentType, BodyModelModel imageUrl, OCRUrlInputOptionalParameter oCRUrlInputOptionalParameter, final ServiceCallback<OCR> serviceCallback) {
         return ServiceFuture.fromResponse(oCRUrlInputWithServiceResponseAsync(language, contentType, imageUrl, oCRUrlInputOptionalParameter), serviceCallback);
     }
 
@@ -786,7 +1073,7 @@ public class ImageModerationsImpl implements ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OCR object
      */
-    public Observable<OCR> oCRUrlInputAsync(String language, String contentType, BodyModel imageUrl, OCRUrlInputOptionalParameter oCRUrlInputOptionalParameter) {
+    public Observable<OCR> oCRUrlInputAsync(String language, String contentType, BodyModelModel imageUrl, OCRUrlInputOptionalParameter oCRUrlInputOptionalParameter) {
         return oCRUrlInputWithServiceResponseAsync(language, contentType, imageUrl, oCRUrlInputOptionalParameter).map(new Func1<ServiceResponse<OCR>, OCR>() {
             @Override
             public OCR call(ServiceResponse<OCR> response) {
@@ -805,7 +1092,7 @@ public class ImageModerationsImpl implements ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OCR object
      */
-    public Observable<ServiceResponse<OCR>> oCRUrlInputWithServiceResponseAsync(String language, String contentType, BodyModel imageUrl, OCRUrlInputOptionalParameter oCRUrlInputOptionalParameter) {
+    public Observable<ServiceResponse<OCR>> oCRUrlInputWithServiceResponseAsync(String language, String contentType, BodyModelModel imageUrl, OCRUrlInputOptionalParameter oCRUrlInputOptionalParameter) {
         if (this.client.baseUrl() == null) {
             throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
         }
@@ -821,7 +1108,6 @@ public class ImageModerationsImpl implements ImageModerations {
         Validator.validate(imageUrl);
         final Boolean cacheImage = oCRUrlInputOptionalParameter != null ? oCRUrlInputOptionalParameter.cacheImage() : null;
         final Boolean enhanced = oCRUrlInputOptionalParameter != null ? oCRUrlInputOptionalParameter.enhanced() : null;
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
 
         return oCRUrlInputWithServiceResponseAsync(language, contentType, imageUrl, cacheImage, enhanced);
     }
@@ -839,7 +1125,7 @@ public class ImageModerationsImpl implements ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OCR object
      */
-    public Observable<ServiceResponse<OCR>> oCRUrlInputWithServiceResponseAsync(String language, String contentType, BodyModel imageUrl, Boolean cacheImage, Boolean enhanced) {
+    public Observable<ServiceResponse<OCR>> oCRUrlInputWithServiceResponseAsync(String language, String contentType, BodyModelModel imageUrl, Boolean cacheImage, Boolean enhanced) {
         if (this.client.baseUrl() == null) {
             throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
         }
@@ -873,6 +1159,76 @@ public class ImageModerationsImpl implements ImageModerations {
                 .register(200, new TypeToken<OCR>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public ImageModerationsOCRUrlInputParameters oCRUrlInput() {
+        return new ImageModerationsOCRUrlInputParameters(this);
+    }
+
+    /**
+     * Internal class implementing ImageModerationsOCRUrlInputDefinition.
+     */
+    class ImageModerationsOCRUrlInputParameters implements ImageModerationsOCRUrlInputDefinition {
+        private ImageModerationsImpl parent;
+        private String language;
+        private String contentType;
+        private BodyModelModel imageUrl;
+        private Boolean cacheImage;
+        private Boolean enhanced;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ImageModerationsOCRUrlInputParameters(ImageModerationsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ImageModerationsOCRUrlInputParameters withLanguage(String language) {
+            this.language = language;
+            return this;
+        }
+
+        @Override
+        public ImageModerationsOCRUrlInputParameters withContentType(String contentType) {
+            this.contentType = contentType;
+            return this;
+        }
+
+        @Override
+        public ImageModerationsOCRUrlInputParameters withImageUrl(BodyModelModel imageUrl) {
+            this.imageUrl = imageUrl;
+            return this;
+        }
+
+        @Override
+        public ImageModerationsOCRUrlInputParameters withCacheImage(Boolean cacheImage) {
+            this.cacheImage = cacheImage;
+            return this;
+        }
+
+        @Override
+        public ImageModerationsOCRUrlInputParameters withEnhanced(Boolean enhanced) {
+            this.enhanced = enhanced;
+            return this;
+        }
+
+        @Override
+        public OCR execute() {
+        return oCRUrlInputWithServiceResponseAsync(language, contentType, imageUrl, cacheImage, enhanced).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<OCR> executeAsync() {
+            return oCRUrlInputWithServiceResponseAsync(language, contentType, imageUrl, cacheImage, enhanced).map(new Func1<ServiceResponse<OCR>, OCR>() {
+                @Override
+                public OCR call(ServiceResponse<OCR> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 
@@ -944,8 +1300,6 @@ public class ImageModerationsImpl implements ImageModerations {
         }
         final Boolean cacheImage = oCRFileInputOptionalParameter != null ? oCRFileInputOptionalParameter.cacheImage() : null;
         final Boolean enhanced = oCRFileInputOptionalParameter != null ? oCRFileInputOptionalParameter.enhanced() : null;
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
-        RequestBody imageStreamConverted = RequestBody.create(MediaType.parse("image/gif"), imageStream);
 
         return oCRFileInputWithServiceResponseAsync(language, imageStream, cacheImage, enhanced);
     }
@@ -993,6 +1347,69 @@ public class ImageModerationsImpl implements ImageModerations {
                 .register(200, new TypeToken<OCR>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public ImageModerationsOCRFileInputParameters oCRFileInput() {
+        return new ImageModerationsOCRFileInputParameters(this);
+    }
+
+    /**
+     * Internal class implementing ImageModerationsOCRFileInputDefinition.
+     */
+    class ImageModerationsOCRFileInputParameters implements ImageModerationsOCRFileInputDefinition {
+        private ImageModerationsImpl parent;
+        private String language;
+        private byte[] imageStream;
+        private Boolean cacheImage;
+        private Boolean enhanced;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ImageModerationsOCRFileInputParameters(ImageModerationsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ImageModerationsOCRFileInputParameters withLanguage(String language) {
+            this.language = language;
+            return this;
+        }
+
+        @Override
+        public ImageModerationsOCRFileInputParameters withImageStream(byte[] imageStream) {
+            this.imageStream = imageStream;
+            return this;
+        }
+
+        @Override
+        public ImageModerationsOCRFileInputParameters withCacheImage(Boolean cacheImage) {
+            this.cacheImage = cacheImage;
+            return this;
+        }
+
+        @Override
+        public ImageModerationsOCRFileInputParameters withEnhanced(Boolean enhanced) {
+            this.enhanced = enhanced;
+            return this;
+        }
+
+        @Override
+        public OCR execute() {
+        return oCRFileInputWithServiceResponseAsync(language, imageStream, cacheImage, enhanced).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<OCR> executeAsync() {
+            return oCRFileInputWithServiceResponseAsync(language, imageStream, cacheImage, enhanced).map(new Func1<ServiceResponse<OCR>, OCR>() {
+                @Override
+                public OCR call(ServiceResponse<OCR> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 
@@ -1056,8 +1473,6 @@ public class ImageModerationsImpl implements ImageModerations {
             throw new IllegalArgumentException("Parameter imageStream is required and cannot be null.");
         }
         final Boolean cacheImage = evaluateFileInputOptionalParameter != null ? evaluateFileInputOptionalParameter.cacheImage() : null;
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
-        RequestBody imageStreamConverted = RequestBody.create(MediaType.parse("image/gif"), imageStream);
 
         return evaluateFileInputWithServiceResponseAsync(imageStream, cacheImage);
     }
@@ -1100,6 +1515,55 @@ public class ImageModerationsImpl implements ImageModerations {
                 .build(response);
     }
 
+    @Override
+    public ImageModerationsEvaluateFileInputParameters evaluateFileInput() {
+        return new ImageModerationsEvaluateFileInputParameters(this);
+    }
+
+    /**
+     * Internal class implementing ImageModerationsEvaluateFileInputDefinition.
+     */
+    class ImageModerationsEvaluateFileInputParameters implements ImageModerationsEvaluateFileInputDefinition {
+        private ImageModerationsImpl parent;
+        private byte[] imageStream;
+        private Boolean cacheImage;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ImageModerationsEvaluateFileInputParameters(ImageModerationsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ImageModerationsEvaluateFileInputParameters withImageStream(byte[] imageStream) {
+            this.imageStream = imageStream;
+            return this;
+        }
+
+        @Override
+        public ImageModerationsEvaluateFileInputParameters withCacheImage(Boolean cacheImage) {
+            this.cacheImage = cacheImage;
+            return this;
+        }
+
+        @Override
+        public Evaluate execute() {
+        return evaluateFileInputWithServiceResponseAsync(imageStream, cacheImage).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<Evaluate> executeAsync() {
+            return evaluateFileInputWithServiceResponseAsync(imageStream, cacheImage).map(new Func1<ServiceResponse<Evaluate>, Evaluate>() {
+                @Override
+                public Evaluate call(ServiceResponse<Evaluate> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
 
     /**
      * Returns probabilities of the image containing racy or adult content.
@@ -1112,7 +1576,7 @@ public class ImageModerationsImpl implements ImageModerations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Evaluate object if successful.
      */
-    public Evaluate evaluateUrlInput(String contentType, BodyModel imageUrl, EvaluateUrlInputOptionalParameter evaluateUrlInputOptionalParameter) {
+    public Evaluate evaluateUrlInput(String contentType, BodyModelModel imageUrl, EvaluateUrlInputOptionalParameter evaluateUrlInputOptionalParameter) {
         return evaluateUrlInputWithServiceResponseAsync(contentType, imageUrl, evaluateUrlInputOptionalParameter).toBlocking().single().body();
     }
 
@@ -1126,7 +1590,7 @@ public class ImageModerationsImpl implements ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Evaluate> evaluateUrlInputAsync(String contentType, BodyModel imageUrl, EvaluateUrlInputOptionalParameter evaluateUrlInputOptionalParameter, final ServiceCallback<Evaluate> serviceCallback) {
+    public ServiceFuture<Evaluate> evaluateUrlInputAsync(String contentType, BodyModelModel imageUrl, EvaluateUrlInputOptionalParameter evaluateUrlInputOptionalParameter, final ServiceCallback<Evaluate> serviceCallback) {
         return ServiceFuture.fromResponse(evaluateUrlInputWithServiceResponseAsync(contentType, imageUrl, evaluateUrlInputOptionalParameter), serviceCallback);
     }
 
@@ -1139,7 +1603,7 @@ public class ImageModerationsImpl implements ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Evaluate object
      */
-    public Observable<Evaluate> evaluateUrlInputAsync(String contentType, BodyModel imageUrl, EvaluateUrlInputOptionalParameter evaluateUrlInputOptionalParameter) {
+    public Observable<Evaluate> evaluateUrlInputAsync(String contentType, BodyModelModel imageUrl, EvaluateUrlInputOptionalParameter evaluateUrlInputOptionalParameter) {
         return evaluateUrlInputWithServiceResponseAsync(contentType, imageUrl, evaluateUrlInputOptionalParameter).map(new Func1<ServiceResponse<Evaluate>, Evaluate>() {
             @Override
             public Evaluate call(ServiceResponse<Evaluate> response) {
@@ -1157,7 +1621,7 @@ public class ImageModerationsImpl implements ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Evaluate object
      */
-    public Observable<ServiceResponse<Evaluate>> evaluateUrlInputWithServiceResponseAsync(String contentType, BodyModel imageUrl, EvaluateUrlInputOptionalParameter evaluateUrlInputOptionalParameter) {
+    public Observable<ServiceResponse<Evaluate>> evaluateUrlInputWithServiceResponseAsync(String contentType, BodyModelModel imageUrl, EvaluateUrlInputOptionalParameter evaluateUrlInputOptionalParameter) {
         if (this.client.baseUrl() == null) {
             throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
         }
@@ -1169,7 +1633,6 @@ public class ImageModerationsImpl implements ImageModerations {
         }
         Validator.validate(imageUrl);
         final Boolean cacheImage = evaluateUrlInputOptionalParameter != null ? evaluateUrlInputOptionalParameter.cacheImage() : null;
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
 
         return evaluateUrlInputWithServiceResponseAsync(contentType, imageUrl, cacheImage);
     }
@@ -1183,7 +1646,7 @@ public class ImageModerationsImpl implements ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Evaluate object
      */
-    public Observable<ServiceResponse<Evaluate>> evaluateUrlInputWithServiceResponseAsync(String contentType, BodyModel imageUrl, Boolean cacheImage) {
+    public Observable<ServiceResponse<Evaluate>> evaluateUrlInputWithServiceResponseAsync(String contentType, BodyModelModel imageUrl, Boolean cacheImage) {
         if (this.client.baseUrl() == null) {
             throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
         }
@@ -1216,6 +1679,62 @@ public class ImageModerationsImpl implements ImageModerations {
                 .build(response);
     }
 
+    @Override
+    public ImageModerationsEvaluateUrlInputParameters evaluateUrlInput() {
+        return new ImageModerationsEvaluateUrlInputParameters(this);
+    }
+
+    /**
+     * Internal class implementing ImageModerationsEvaluateUrlInputDefinition.
+     */
+    class ImageModerationsEvaluateUrlInputParameters implements ImageModerationsEvaluateUrlInputDefinition {
+        private ImageModerationsImpl parent;
+        private String contentType;
+        private BodyModelModel imageUrl;
+        private Boolean cacheImage;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ImageModerationsEvaluateUrlInputParameters(ImageModerationsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ImageModerationsEvaluateUrlInputParameters withContentType(String contentType) {
+            this.contentType = contentType;
+            return this;
+        }
+
+        @Override
+        public ImageModerationsEvaluateUrlInputParameters withImageUrl(BodyModelModel imageUrl) {
+            this.imageUrl = imageUrl;
+            return this;
+        }
+
+        @Override
+        public ImageModerationsEvaluateUrlInputParameters withCacheImage(Boolean cacheImage) {
+            this.cacheImage = cacheImage;
+            return this;
+        }
+
+        @Override
+        public Evaluate execute() {
+        return evaluateUrlInputWithServiceResponseAsync(contentType, imageUrl, cacheImage).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<Evaluate> executeAsync() {
+            return evaluateUrlInputWithServiceResponseAsync(contentType, imageUrl, cacheImage).map(new Func1<ServiceResponse<Evaluate>, Evaluate>() {
+                @Override
+                public Evaluate call(ServiceResponse<Evaluate> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
 
     /**
      * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image lists using &lt;a href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
@@ -1231,7 +1750,7 @@ public class ImageModerationsImpl implements ImageModerations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the MatchResponse object if successful.
      */
-    public MatchResponse matchUrlInput(String contentType, BodyModel imageUrl, MatchUrlInputOptionalParameter matchUrlInputOptionalParameter) {
+    public MatchResponse matchUrlInput(String contentType, BodyModelModel imageUrl, MatchUrlInputOptionalParameter matchUrlInputOptionalParameter) {
         return matchUrlInputWithServiceResponseAsync(contentType, imageUrl, matchUrlInputOptionalParameter).toBlocking().single().body();
     }
 
@@ -1248,7 +1767,7 @@ public class ImageModerationsImpl implements ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<MatchResponse> matchUrlInputAsync(String contentType, BodyModel imageUrl, MatchUrlInputOptionalParameter matchUrlInputOptionalParameter, final ServiceCallback<MatchResponse> serviceCallback) {
+    public ServiceFuture<MatchResponse> matchUrlInputAsync(String contentType, BodyModelModel imageUrl, MatchUrlInputOptionalParameter matchUrlInputOptionalParameter, final ServiceCallback<MatchResponse> serviceCallback) {
         return ServiceFuture.fromResponse(matchUrlInputWithServiceResponseAsync(contentType, imageUrl, matchUrlInputOptionalParameter), serviceCallback);
     }
 
@@ -1264,7 +1783,7 @@ public class ImageModerationsImpl implements ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the MatchResponse object
      */
-    public Observable<MatchResponse> matchUrlInputAsync(String contentType, BodyModel imageUrl, MatchUrlInputOptionalParameter matchUrlInputOptionalParameter) {
+    public Observable<MatchResponse> matchUrlInputAsync(String contentType, BodyModelModel imageUrl, MatchUrlInputOptionalParameter matchUrlInputOptionalParameter) {
         return matchUrlInputWithServiceResponseAsync(contentType, imageUrl, matchUrlInputOptionalParameter).map(new Func1<ServiceResponse<MatchResponse>, MatchResponse>() {
             @Override
             public MatchResponse call(ServiceResponse<MatchResponse> response) {
@@ -1285,7 +1804,7 @@ public class ImageModerationsImpl implements ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the MatchResponse object
      */
-    public Observable<ServiceResponse<MatchResponse>> matchUrlInputWithServiceResponseAsync(String contentType, BodyModel imageUrl, MatchUrlInputOptionalParameter matchUrlInputOptionalParameter) {
+    public Observable<ServiceResponse<MatchResponse>> matchUrlInputWithServiceResponseAsync(String contentType, BodyModelModel imageUrl, MatchUrlInputOptionalParameter matchUrlInputOptionalParameter) {
         if (this.client.baseUrl() == null) {
             throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
         }
@@ -1298,7 +1817,6 @@ public class ImageModerationsImpl implements ImageModerations {
         Validator.validate(imageUrl);
         final String listId = matchUrlInputOptionalParameter != null ? matchUrlInputOptionalParameter.listId() : null;
         final Boolean cacheImage = matchUrlInputOptionalParameter != null ? matchUrlInputOptionalParameter.cacheImage() : null;
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
 
         return matchUrlInputWithServiceResponseAsync(contentType, imageUrl, listId, cacheImage);
     }
@@ -1316,7 +1834,7 @@ public class ImageModerationsImpl implements ImageModerations {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the MatchResponse object
      */
-    public Observable<ServiceResponse<MatchResponse>> matchUrlInputWithServiceResponseAsync(String contentType, BodyModel imageUrl, String listId, Boolean cacheImage) {
+    public Observable<ServiceResponse<MatchResponse>> matchUrlInputWithServiceResponseAsync(String contentType, BodyModelModel imageUrl, String listId, Boolean cacheImage) {
         if (this.client.baseUrl() == null) {
             throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
         }
@@ -1347,6 +1865,69 @@ public class ImageModerationsImpl implements ImageModerations {
                 .register(200, new TypeToken<MatchResponse>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public ImageModerationsMatchUrlInputParameters matchUrlInput() {
+        return new ImageModerationsMatchUrlInputParameters(this);
+    }
+
+    /**
+     * Internal class implementing ImageModerationsMatchUrlInputDefinition.
+     */
+    class ImageModerationsMatchUrlInputParameters implements ImageModerationsMatchUrlInputDefinition {
+        private ImageModerationsImpl parent;
+        private String contentType;
+        private BodyModelModel imageUrl;
+        private String listId;
+        private Boolean cacheImage;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ImageModerationsMatchUrlInputParameters(ImageModerationsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ImageModerationsMatchUrlInputParameters withContentType(String contentType) {
+            this.contentType = contentType;
+            return this;
+        }
+
+        @Override
+        public ImageModerationsMatchUrlInputParameters withImageUrl(BodyModelModel imageUrl) {
+            this.imageUrl = imageUrl;
+            return this;
+        }
+
+        @Override
+        public ImageModerationsMatchUrlInputParameters withListId(String listId) {
+            this.listId = listId;
+            return this;
+        }
+
+        @Override
+        public ImageModerationsMatchUrlInputParameters withCacheImage(Boolean cacheImage) {
+            this.cacheImage = cacheImage;
+            return this;
+        }
+
+        @Override
+        public MatchResponse execute() {
+        return matchUrlInputWithServiceResponseAsync(contentType, imageUrl, listId, cacheImage).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<MatchResponse> executeAsync() {
+            return matchUrlInputWithServiceResponseAsync(contentType, imageUrl, listId, cacheImage).map(new Func1<ServiceResponse<MatchResponse>, MatchResponse>() {
+                @Override
+                public MatchResponse call(ServiceResponse<MatchResponse> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 
@@ -1423,8 +2004,6 @@ public class ImageModerationsImpl implements ImageModerations {
         }
         final String listId = matchFileInputOptionalParameter != null ? matchFileInputOptionalParameter.listId() : null;
         final Boolean cacheImage = matchFileInputOptionalParameter != null ? matchFileInputOptionalParameter.cacheImage() : null;
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
-        RequestBody imageStreamConverted = RequestBody.create(MediaType.parse("image/gif"), imageStream);
 
         return matchFileInputWithServiceResponseAsync(imageStream, listId, cacheImage);
     }
@@ -1469,6 +2048,62 @@ public class ImageModerationsImpl implements ImageModerations {
                 .register(200, new TypeToken<MatchResponse>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public ImageModerationsMatchFileInputParameters matchFileInput() {
+        return new ImageModerationsMatchFileInputParameters(this);
+    }
+
+    /**
+     * Internal class implementing ImageModerationsMatchFileInputDefinition.
+     */
+    class ImageModerationsMatchFileInputParameters implements ImageModerationsMatchFileInputDefinition {
+        private ImageModerationsImpl parent;
+        private byte[] imageStream;
+        private String listId;
+        private Boolean cacheImage;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ImageModerationsMatchFileInputParameters(ImageModerationsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ImageModerationsMatchFileInputParameters withImageStream(byte[] imageStream) {
+            this.imageStream = imageStream;
+            return this;
+        }
+
+        @Override
+        public ImageModerationsMatchFileInputParameters withListId(String listId) {
+            this.listId = listId;
+            return this;
+        }
+
+        @Override
+        public ImageModerationsMatchFileInputParameters withCacheImage(Boolean cacheImage) {
+            this.cacheImage = cacheImage;
+            return this;
+        }
+
+        @Override
+        public MatchResponse execute() {
+        return matchFileInputWithServiceResponseAsync(imageStream, listId, cacheImage).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<MatchResponse> executeAsync() {
+            return matchFileInputWithServiceResponseAsync(imageStream, listId, cacheImage).map(new Func1<ServiceResponse<MatchResponse>, MatchResponse>() {
+                @Override
+                public MatchResponse call(ServiceResponse<MatchResponse> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 }

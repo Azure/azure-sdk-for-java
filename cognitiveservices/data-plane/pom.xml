@@ -7,7 +7,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.microsoft.azure.cognitiveservices</groupId>
   <artifactId>azure-cognitiveservices-parent</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
   <packaging>pom</packaging>
 
   <name>Microsoft Azure Cognitive Services SDK Parent</name>
@@ -297,7 +297,10 @@
   </build>
   <modules>
     <module>./language/bingspellcheck</module>
+    <module>./language/luis/authoring</module>
+    <module>./language/luis/runtime</module>
     <module>./language/textanalytics</module>
+    <module>./search/bingcustomimagesearch</module>
     <module>./search/bingcustomsearch</module>
     <module>./search/bingentitysearch</module>
     <module>./search/bingimagesearch</module>
@@ -308,11 +311,5 @@
     <module>./vision/computervision</module>
     <module>./vision/contentmoderator</module>
     <module>./vision/faceapi</module>
-    <!--
-    <module>./vision/faceapi</module>
-    <module>./azure-customsearch</module>
-    <module>./azure-faceapi</module>
-    <module>./azure-textanalytics</module>
-    -->
   </modules>
 </project>

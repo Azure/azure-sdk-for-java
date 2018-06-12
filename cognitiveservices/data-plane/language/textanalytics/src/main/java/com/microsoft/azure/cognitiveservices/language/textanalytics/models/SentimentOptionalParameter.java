@@ -11,34 +11,57 @@ package com.microsoft.azure.cognitiveservices.language.textanalytics.models;
 import java.util.List;
 
 /**
- * The optional parameters class for "sentiment" method.
+ * The SentimentOptionalParameter model.
  */
 public class SentimentOptionalParameter {
     /**
-    * The documents value.
-    */
+     * The documents property.
+     */
     private List<MultiLanguageInput> documents;
 
     /**
-    * Get the documents value.
-    *
-    * @return the documents value
-    */
+     * Gets or sets the preferred language for the response.
+     */
+    private String thisclientacceptLanguage;
+
+    /**
+     * Get the documents value.
+     *
+     * @return the documents value
+     */
     public List<MultiLanguageInput> documents() {
         return this.documents;
     }
 
     /**
-    * Set the documents value.
-    * <p>
-    * The documents value.
-    *
-    * @param documents the documents value to set
-    * @return the sentimentOptionalParameter object itself.
-    */
+     * Set the documents value.
+     *
+     * @param documents the documents value to set
+     * @return the SentimentOptionalParameter object itself.
+     */
     public SentimentOptionalParameter withDocuments(List<MultiLanguageInput> documents) {
         this.documents = documents;
         return this;
     }
 
+    /**
+     * Get the thisclientacceptLanguage value.
+     *
+     * @return the thisclientacceptLanguage value
+     */
+    public String thisclientacceptLanguage() {
+        return this.thisclientacceptLanguage;
     }
+
+    /**
+     * Set the thisclientacceptLanguage value.
+     *
+     * @param thisclientacceptLanguage the thisclientacceptLanguage value to set
+     * @return the SentimentOptionalParameter object itself.
+     */
+    public SentimentOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
+        this.thisclientacceptLanguage = thisclientacceptLanguage;
+        return this;
+    }
+
+}

@@ -8,8 +8,8 @@
 
 package com.microsoft.azure.cognitiveservices.vision.faceapi.implementation;
 
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.CreateFaceListOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.UpdateFaceListOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.faceapi.models.CreateFaceListsOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.faceapi.models.UpdateFaceListsOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.AddFaceFromUrlOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.AddFaceFromStreamOptionalParameter;
 import retrofit2.Retrofit;
@@ -72,17 +72,17 @@ public class FaceListsImpl implements FaceLists {
      * used by Retrofit to perform actually REST calls.
      */
     interface FaceListsService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.FaceLists createFaceList" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.FaceLists create" })
         @PUT("facelists/{faceListId}")
-        Observable<Response<ResponseBody>> createFaceList(@Path("faceListId") String faceListId, @Header("accept-language") String acceptLanguage, @Body NameAndUserDataContract body, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> create(@Path("faceListId") String faceListId, @Header("accept-language") String acceptLanguage, @Body NameAndUserDataContract bodyParameter, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.FaceLists get" })
         @GET("facelists/{faceListId}")
         Observable<Response<ResponseBody>> get(@Path("faceListId") String faceListId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.FaceLists updateFaceList" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.FaceLists update" })
         @PATCH("facelists/{faceListId}")
-        Observable<Response<ResponseBody>> updateFaceList(@Path("faceListId") String faceListId, @Header("accept-language") String acceptLanguage, @Body NameAndUserDataContract body, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> update(@Path("faceListId") String faceListId, @Header("accept-language") String acceptLanguage, @Body NameAndUserDataContract bodyParameter, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.FaceLists delete" })
         @HTTP(path = "facelists/{faceListId}", method = "DELETE", hasBody = true)
@@ -111,38 +111,38 @@ public class FaceListsImpl implements FaceLists {
      * Create an empty face list. Up to 64 face lists are allowed to exist in one subscription.
      *
      * @param faceListId Id referencing a particular face list.
-     * @param createFaceListOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param createOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void createFaceList(String faceListId, CreateFaceListOptionalParameter createFaceListOptionalParameter) {
-        createFaceListWithServiceResponseAsync(faceListId, createFaceListOptionalParameter).toBlocking().single().body();
+    public void create(String faceListId, CreateFaceListsOptionalParameter createOptionalParameter) {
+        createWithServiceResponseAsync(faceListId, createOptionalParameter).toBlocking().single().body();
     }
 
     /**
      * Create an empty face list. Up to 64 face lists are allowed to exist in one subscription.
      *
      * @param faceListId Id referencing a particular face list.
-     * @param createFaceListOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param createOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> createFaceListAsync(String faceListId, CreateFaceListOptionalParameter createFaceListOptionalParameter, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(createFaceListWithServiceResponseAsync(faceListId, createFaceListOptionalParameter), serviceCallback);
+    public ServiceFuture<Void> createAsync(String faceListId, CreateFaceListsOptionalParameter createOptionalParameter, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(createWithServiceResponseAsync(faceListId, createOptionalParameter), serviceCallback);
     }
 
     /**
      * Create an empty face list. Up to 64 face lists are allowed to exist in one subscription.
      *
      * @param faceListId Id referencing a particular face list.
-     * @param createFaceListOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param createOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> createFaceListAsync(String faceListId, CreateFaceListOptionalParameter createFaceListOptionalParameter) {
-        return createFaceListWithServiceResponseAsync(faceListId, createFaceListOptionalParameter).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Void> createAsync(String faceListId, CreateFaceListsOptionalParameter createOptionalParameter) {
+        return createWithServiceResponseAsync(faceListId, createOptionalParameter).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
                 return response.body();
@@ -154,25 +154,21 @@ public class FaceListsImpl implements FaceLists {
      * Create an empty face list. Up to 64 face lists are allowed to exist in one subscription.
      *
      * @param faceListId Id referencing a particular face list.
-     * @param createFaceListOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param createOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> createFaceListWithServiceResponseAsync(String faceListId, CreateFaceListOptionalParameter createFaceListOptionalParameter) {
+    public Observable<ServiceResponse<Void>> createWithServiceResponseAsync(String faceListId, CreateFaceListsOptionalParameter createOptionalParameter) {
         if (this.client.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
         }
         if (faceListId == null) {
             throw new IllegalArgumentException("Parameter faceListId is required and cannot be null.");
         }
-        final String name = createFaceListOptionalParameter != null ? createFaceListOptionalParameter.name() : null;
-        final String userData = createFaceListOptionalParameter != null ? createFaceListOptionalParameter.userData() : null;
-        NameAndUserDataContract body = new NameAndUserDataContract();
-        body.withName(null);
-        body.withUserData(null);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        final String name = createOptionalParameter != null ? createOptionalParameter.name() : null;
+        final String userData = createOptionalParameter != null ? createOptionalParameter.userData() : null;
 
-        return createFaceListWithServiceResponseAsync(faceListId, name, userData);
+        return createWithServiceResponseAsync(faceListId, name, userData);
     }
 
     /**
@@ -184,23 +180,23 @@ public class FaceListsImpl implements FaceLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> createFaceListWithServiceResponseAsync(String faceListId, String name, String userData) {
+    public Observable<ServiceResponse<Void>> createWithServiceResponseAsync(String faceListId, String name, String userData) {
         if (this.client.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
         }
         if (faceListId == null) {
             throw new IllegalArgumentException("Parameter faceListId is required and cannot be null.");
         }
-        NameAndUserDataContract body = new NameAndUserDataContract();
-        body.withName(name);
-        body.withUserData(userData);
+        NameAndUserDataContract bodyParameter = new NameAndUserDataContract();
+        bodyParameter.withName(name);
+        bodyParameter.withUserData(userData);
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.createFaceList(faceListId, this.client.acceptLanguage(), body, parameterizedHost, this.client.userAgent())
+        return service.create(faceListId, this.client.acceptLanguage(), bodyParameter, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Void> clientResponse = createFaceListDelegate(response);
+                        ServiceResponse<Void> clientResponse = createDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -209,11 +205,67 @@ public class FaceListsImpl implements FaceLists {
             });
     }
 
-    private ServiceResponse<Void> createFaceListDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
+    private ServiceResponse<Void> createDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, APIErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public FaceListsCreateParameters create() {
+        return new FaceListsCreateParameters(this);
+    }
+
+    /**
+     * Internal class implementing FaceListsCreateDefinition.
+     */
+    class FaceListsCreateParameters implements FaceListsCreateDefinition {
+        private FaceListsImpl parent;
+        private String faceListId;
+        private String name;
+        private String userData;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        FaceListsCreateParameters(FaceListsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public FaceListsCreateParameters withFaceListId(String faceListId) {
+            this.faceListId = faceListId;
+            return this;
+        }
+
+        @Override
+        public FaceListsCreateParameters withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        @Override
+        public FaceListsCreateParameters withUserData(String userData) {
+            this.userData = userData;
+            return this;
+        }
+
+        @Override
+        public void execute() {
+        createWithServiceResponseAsync(faceListId, name, userData).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<Void> executeAsync() {
+            return createWithServiceResponseAsync(faceListId, name, userData).map(new Func1<ServiceResponse<Void>, Void>() {
+                @Override
+                public Void call(ServiceResponse<Void> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
     /**
@@ -298,38 +350,38 @@ public class FaceListsImpl implements FaceLists {
      * Update information of a face list.
      *
      * @param faceListId Id referencing a particular face list.
-     * @param updateFaceListOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param updateOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void updateFaceList(String faceListId, UpdateFaceListOptionalParameter updateFaceListOptionalParameter) {
-        updateFaceListWithServiceResponseAsync(faceListId, updateFaceListOptionalParameter).toBlocking().single().body();
+    public void update(String faceListId, UpdateFaceListsOptionalParameter updateOptionalParameter) {
+        updateWithServiceResponseAsync(faceListId, updateOptionalParameter).toBlocking().single().body();
     }
 
     /**
      * Update information of a face list.
      *
      * @param faceListId Id referencing a particular face list.
-     * @param updateFaceListOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param updateOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> updateFaceListAsync(String faceListId, UpdateFaceListOptionalParameter updateFaceListOptionalParameter, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(updateFaceListWithServiceResponseAsync(faceListId, updateFaceListOptionalParameter), serviceCallback);
+    public ServiceFuture<Void> updateAsync(String faceListId, UpdateFaceListsOptionalParameter updateOptionalParameter, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(faceListId, updateOptionalParameter), serviceCallback);
     }
 
     /**
      * Update information of a face list.
      *
      * @param faceListId Id referencing a particular face list.
-     * @param updateFaceListOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param updateOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> updateFaceListAsync(String faceListId, UpdateFaceListOptionalParameter updateFaceListOptionalParameter) {
-        return updateFaceListWithServiceResponseAsync(faceListId, updateFaceListOptionalParameter).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Void> updateAsync(String faceListId, UpdateFaceListsOptionalParameter updateOptionalParameter) {
+        return updateWithServiceResponseAsync(faceListId, updateOptionalParameter).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
                 return response.body();
@@ -341,25 +393,21 @@ public class FaceListsImpl implements FaceLists {
      * Update information of a face list.
      *
      * @param faceListId Id referencing a particular face list.
-     * @param updateFaceListOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param updateOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> updateFaceListWithServiceResponseAsync(String faceListId, UpdateFaceListOptionalParameter updateFaceListOptionalParameter) {
+    public Observable<ServiceResponse<Void>> updateWithServiceResponseAsync(String faceListId, UpdateFaceListsOptionalParameter updateOptionalParameter) {
         if (this.client.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
         }
         if (faceListId == null) {
             throw new IllegalArgumentException("Parameter faceListId is required and cannot be null.");
         }
-        final String name = updateFaceListOptionalParameter != null ? updateFaceListOptionalParameter.name() : null;
-        final String userData = updateFaceListOptionalParameter != null ? updateFaceListOptionalParameter.userData() : null;
-        NameAndUserDataContract body = new NameAndUserDataContract();
-        body.withName(null);
-        body.withUserData(null);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        final String name = updateOptionalParameter != null ? updateOptionalParameter.name() : null;
+        final String userData = updateOptionalParameter != null ? updateOptionalParameter.userData() : null;
 
-        return updateFaceListWithServiceResponseAsync(faceListId, name, userData);
+        return updateWithServiceResponseAsync(faceListId, name, userData);
     }
 
     /**
@@ -371,23 +419,23 @@ public class FaceListsImpl implements FaceLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> updateFaceListWithServiceResponseAsync(String faceListId, String name, String userData) {
+    public Observable<ServiceResponse<Void>> updateWithServiceResponseAsync(String faceListId, String name, String userData) {
         if (this.client.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
         }
         if (faceListId == null) {
             throw new IllegalArgumentException("Parameter faceListId is required and cannot be null.");
         }
-        NameAndUserDataContract body = new NameAndUserDataContract();
-        body.withName(name);
-        body.withUserData(userData);
+        NameAndUserDataContract bodyParameter = new NameAndUserDataContract();
+        bodyParameter.withName(name);
+        bodyParameter.withUserData(userData);
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.updateFaceList(faceListId, this.client.acceptLanguage(), body, parameterizedHost, this.client.userAgent())
+        return service.update(faceListId, this.client.acceptLanguage(), bodyParameter, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Void> clientResponse = updateFaceListDelegate(response);
+                        ServiceResponse<Void> clientResponse = updateDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -396,11 +444,67 @@ public class FaceListsImpl implements FaceLists {
             });
     }
 
-    private ServiceResponse<Void> updateFaceListDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
+    private ServiceResponse<Void> updateDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, APIErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public FaceListsUpdateParameters update() {
+        return new FaceListsUpdateParameters(this);
+    }
+
+    /**
+     * Internal class implementing FaceListsUpdateDefinition.
+     */
+    class FaceListsUpdateParameters implements FaceListsUpdateDefinition {
+        private FaceListsImpl parent;
+        private String faceListId;
+        private String name;
+        private String userData;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        FaceListsUpdateParameters(FaceListsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public FaceListsUpdateParameters withFaceListId(String faceListId) {
+            this.faceListId = faceListId;
+            return this;
+        }
+
+        @Override
+        public FaceListsUpdateParameters withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        @Override
+        public FaceListsUpdateParameters withUserData(String userData) {
+            this.userData = userData;
+            return this;
+        }
+
+        @Override
+        public void execute() {
+        updateWithServiceResponseAsync(faceListId, name, userData).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<Void> executeAsync() {
+            return updateWithServiceResponseAsync(faceListId, name, userData).map(new Func1<ServiceResponse<Void>, Void>() {
+                @Override
+                public Void call(ServiceResponse<Void> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
     /**
@@ -637,7 +741,7 @@ public class FaceListsImpl implements FaceLists {
      * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
      *
      * @param faceListId Id referencing a particular face list.
-     * @param url the String value
+     * @param url Publicly reachable URL of an image
      * @param addFaceFromUrlOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
@@ -652,7 +756,7 @@ public class FaceListsImpl implements FaceLists {
      * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
      *
      * @param faceListId Id referencing a particular face list.
-     * @param url the String value
+     * @param url Publicly reachable URL of an image
      * @param addFaceFromUrlOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -666,7 +770,7 @@ public class FaceListsImpl implements FaceLists {
      * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
      *
      * @param faceListId Id referencing a particular face list.
-     * @param url the String value
+     * @param url Publicly reachable URL of an image
      * @param addFaceFromUrlOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
@@ -684,7 +788,7 @@ public class FaceListsImpl implements FaceLists {
      * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
      *
      * @param faceListId Id referencing a particular face list.
-     * @param url the String value
+     * @param url Publicly reachable URL of an image
      * @param addFaceFromUrlOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
@@ -701,10 +805,6 @@ public class FaceListsImpl implements FaceLists {
         }
         final String userData = addFaceFromUrlOptionalParameter != null ? addFaceFromUrlOptionalParameter.userData() : null;
         final List<Integer> targetFace = addFaceFromUrlOptionalParameter != null ? addFaceFromUrlOptionalParameter.targetFace() : null;
-        ImageUrl imageUrl = new ImageUrl();
-        imageUrl.withUrl(url);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        String targetFaceConverted = this.client.serializerAdapter().serializeList(targetFace, CollectionFormat.CSV);
 
         return addFaceFromUrlWithServiceResponseAsync(faceListId, url, userData, targetFace);
     }
@@ -713,7 +813,7 @@ public class FaceListsImpl implements FaceLists {
      * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
      *
      * @param faceListId Id referencing a particular face list.
-     * @param url the String value
+     * @param url Publicly reachable URL of an image
      * @param userData User-specified data about the face for any purpose. The maximum length is 1KB.
      * @param targetFace A face rectangle to specify the target face to be added to a person in the format of "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the image, targetFace is required to specify which face to add. No targetFace means there is only one face detected in the entire image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -753,6 +853,69 @@ public class FaceListsImpl implements FaceLists {
                 .register(200, new TypeToken<PersistedFace>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public FaceListsAddFaceFromUrlParameters addFaceFromUrl() {
+        return new FaceListsAddFaceFromUrlParameters(this);
+    }
+
+    /**
+     * Internal class implementing FaceListsAddFaceFromUrlDefinition.
+     */
+    class FaceListsAddFaceFromUrlParameters implements FaceListsAddFaceFromUrlDefinition {
+        private FaceListsImpl parent;
+        private String faceListId;
+        private String url;
+        private String userData;
+        private List<Integer> targetFace;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        FaceListsAddFaceFromUrlParameters(FaceListsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public FaceListsAddFaceFromUrlParameters withFaceListId(String faceListId) {
+            this.faceListId = faceListId;
+            return this;
+        }
+
+        @Override
+        public FaceListsAddFaceFromUrlParameters withUrl(String url) {
+            this.url = url;
+            return this;
+        }
+
+        @Override
+        public FaceListsAddFaceFromUrlParameters withUserData(String userData) {
+            this.userData = userData;
+            return this;
+        }
+
+        @Override
+        public FaceListsAddFaceFromUrlParameters withTargetFace(List<Integer> targetFace) {
+            this.targetFace = targetFace;
+            return this;
+        }
+
+        @Override
+        public PersistedFace execute() {
+        return addFaceFromUrlWithServiceResponseAsync(faceListId, url, userData, targetFace).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<PersistedFace> executeAsync() {
+            return addFaceFromUrlWithServiceResponseAsync(faceListId, url, userData, targetFace).map(new Func1<ServiceResponse<PersistedFace>, PersistedFace>() {
+                @Override
+                public PersistedFace call(ServiceResponse<PersistedFace> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 
@@ -824,9 +987,6 @@ public class FaceListsImpl implements FaceLists {
         }
         final String userData = addFaceFromStreamOptionalParameter != null ? addFaceFromStreamOptionalParameter.userData() : null;
         final List<Integer> targetFace = addFaceFromStreamOptionalParameter != null ? addFaceFromStreamOptionalParameter.targetFace() : null;
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        String targetFaceConverted = this.client.serializerAdapter().serializeList(targetFace, CollectionFormat.CSV);
-        RequestBody imageConverted = RequestBody.create(MediaType.parse("application/octet-stream"), image);
 
         return addFaceFromStreamWithServiceResponseAsync(faceListId, image, userData, targetFace);
     }
@@ -874,6 +1034,69 @@ public class FaceListsImpl implements FaceLists {
                 .register(200, new TypeToken<PersistedFace>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public FaceListsAddFaceFromStreamParameters addFaceFromStream() {
+        return new FaceListsAddFaceFromStreamParameters(this);
+    }
+
+    /**
+     * Internal class implementing FaceListsAddFaceFromStreamDefinition.
+     */
+    class FaceListsAddFaceFromStreamParameters implements FaceListsAddFaceFromStreamDefinition {
+        private FaceListsImpl parent;
+        private String faceListId;
+        private byte[] image;
+        private String userData;
+        private List<Integer> targetFace;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        FaceListsAddFaceFromStreamParameters(FaceListsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public FaceListsAddFaceFromStreamParameters withFaceListId(String faceListId) {
+            this.faceListId = faceListId;
+            return this;
+        }
+
+        @Override
+        public FaceListsAddFaceFromStreamParameters withImage(byte[] image) {
+            this.image = image;
+            return this;
+        }
+
+        @Override
+        public FaceListsAddFaceFromStreamParameters withUserData(String userData) {
+            this.userData = userData;
+            return this;
+        }
+
+        @Override
+        public FaceListsAddFaceFromStreamParameters withTargetFace(List<Integer> targetFace) {
+            this.targetFace = targetFace;
+            return this;
+        }
+
+        @Override
+        public PersistedFace execute() {
+        return addFaceFromStreamWithServiceResponseAsync(faceListId, image, userData, targetFace).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<PersistedFace> executeAsync() {
+            return addFaceFromStreamWithServiceResponseAsync(faceListId, image, userData, targetFace).map(new Func1<ServiceResponse<PersistedFace>, PersistedFace>() {
+                @Override
+                public PersistedFace call(ServiceResponse<PersistedFace> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 }

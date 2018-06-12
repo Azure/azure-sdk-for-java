@@ -10,8 +10,8 @@ package com.microsoft.azure.cognitiveservices.search.imagesearch.implementation;
 
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
-import com.microsoft.azure.cognitiveservices.search.imagesearch.BingImages;
 import com.microsoft.azure.cognitiveservices.search.imagesearch.BingImageSearchAPI;
+import com.microsoft.azure.cognitiveservices.search.imagesearch.BingImages;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.RestClient;
 

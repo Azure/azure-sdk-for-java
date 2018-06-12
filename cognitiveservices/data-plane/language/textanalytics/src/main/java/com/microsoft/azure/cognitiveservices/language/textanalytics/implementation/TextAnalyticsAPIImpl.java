@@ -10,9 +10,9 @@ package com.microsoft.azure.cognitiveservices.language.textanalytics.implementat
 
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
+import com.microsoft.azure.cognitiveservices.language.textanalytics.models.AzureRegions;
 import com.microsoft.azure.cognitiveservices.language.textanalytics.TextAnalytics;
 import com.microsoft.azure.cognitiveservices.language.textanalytics.TextAnalyticsAPI;
-import com.microsoft.azure.cognitiveservices.language.textanalytics.models.AzureRegions;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.RestClient;
 
@@ -151,7 +151,7 @@ public class TextAnalyticsAPIImpl extends AzureServiceClient implements TextAnal
      * @param baseUrl the base URL of the host
      * @param credentials the management credentials for Azure
      */
-    private TextAnalyticsAPIImpl(String baseUrl, ServiceClientCredentials credentials) {
+    public TextAnalyticsAPIImpl(String baseUrl, ServiceClientCredentials credentials) {
         super(baseUrl, credentials);
         initialize();
     }

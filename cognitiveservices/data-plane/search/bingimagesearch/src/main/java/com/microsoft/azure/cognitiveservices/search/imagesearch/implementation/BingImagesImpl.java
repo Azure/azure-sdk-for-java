@@ -141,7 +141,6 @@ public class BingImagesImpl implements BingImages {
         if (query == null) {
             throw new IllegalArgumentException("Parameter query is required and cannot be null.");
         }
-        final String xBingApisSDK = "true";
         final String acceptLanguage = searchOptionalParameter != null ? searchOptionalParameter.acceptLanguage() : null;
         final String userAgent = searchOptionalParameter != null ? searchOptionalParameter.userAgent() : this.client.userAgent();
         final String clientId = searchOptionalParameter != null ? searchOptionalParameter.clientId() : null;
@@ -233,6 +232,237 @@ public class BingImagesImpl implements BingImages {
                 .build(response);
     }
 
+    @Override
+    public BingImagesSearchParameters search() {
+        return new BingImagesSearchParameters(this);
+    }
+
+    /**
+     * Internal class implementing BingImagesSearchDefinition.
+     */
+    class BingImagesSearchParameters implements BingImagesSearchDefinition {
+        private BingImagesImpl parent;
+        private String query;
+        private String acceptLanguage;
+        private String userAgent;
+        private String clientId;
+        private String clientIp;
+        private String location;
+        private ImageAspect aspect;
+        private ImageColor color;
+        private String countryCode;
+        private Integer count;
+        private Freshness freshness;
+        private Integer height;
+        private String id;
+        private ImageContent imageContent;
+        private ImageType imageType;
+        private ImageLicense license;
+        private String market;
+        private Long maxFileSize;
+        private Long maxHeight;
+        private Long maxWidth;
+        private Long minFileSize;
+        private Long minHeight;
+        private Long minWidth;
+        private Long offset;
+        private SafeSearch safeSearch;
+        private ImageSize size;
+        private String setLang;
+        private Integer width;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        BingImagesSearchParameters(BingImagesImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public BingImagesSearchParameters withQuery(String query) {
+            this.query = query;
+            return this;
+        }
+
+        @Override
+        public BingImagesSearchParameters withAcceptLanguage(String acceptLanguage) {
+            this.acceptLanguage = acceptLanguage;
+            return this;
+        }
+
+        @Override
+        public BingImagesSearchParameters withUserAgent(String userAgent) {
+            this.userAgent = userAgent;
+            return this;
+        }
+
+        @Override
+        public BingImagesSearchParameters withClientId(String clientId) {
+            this.clientId = clientId;
+            return this;
+        }
+
+        @Override
+        public BingImagesSearchParameters withClientIp(String clientIp) {
+            this.clientIp = clientIp;
+            return this;
+        }
+
+        @Override
+        public BingImagesSearchParameters withLocation(String location) {
+            this.location = location;
+            return this;
+        }
+
+        @Override
+        public BingImagesSearchParameters withAspect(ImageAspect aspect) {
+            this.aspect = aspect;
+            return this;
+        }
+
+        @Override
+        public BingImagesSearchParameters withColor(ImageColor color) {
+            this.color = color;
+            return this;
+        }
+
+        @Override
+        public BingImagesSearchParameters withCountryCode(String countryCode) {
+            this.countryCode = countryCode;
+            return this;
+        }
+
+        @Override
+        public BingImagesSearchParameters withCount(Integer count) {
+            this.count = count;
+            return this;
+        }
+
+        @Override
+        public BingImagesSearchParameters withFreshness(Freshness freshness) {
+            this.freshness = freshness;
+            return this;
+        }
+
+        @Override
+        public BingImagesSearchParameters withHeight(Integer height) {
+            this.height = height;
+            return this;
+        }
+
+        @Override
+        public BingImagesSearchParameters withId(String id) {
+            this.id = id;
+            return this;
+        }
+
+        @Override
+        public BingImagesSearchParameters withImageContent(ImageContent imageContent) {
+            this.imageContent = imageContent;
+            return this;
+        }
+
+        @Override
+        public BingImagesSearchParameters withImageType(ImageType imageType) {
+            this.imageType = imageType;
+            return this;
+        }
+
+        @Override
+        public BingImagesSearchParameters withLicense(ImageLicense license) {
+            this.license = license;
+            return this;
+        }
+
+        @Override
+        public BingImagesSearchParameters withMarket(String market) {
+            this.market = market;
+            return this;
+        }
+
+        @Override
+        public BingImagesSearchParameters withMaxFileSize(Long maxFileSize) {
+            this.maxFileSize = maxFileSize;
+            return this;
+        }
+
+        @Override
+        public BingImagesSearchParameters withMaxHeight(Long maxHeight) {
+            this.maxHeight = maxHeight;
+            return this;
+        }
+
+        @Override
+        public BingImagesSearchParameters withMaxWidth(Long maxWidth) {
+            this.maxWidth = maxWidth;
+            return this;
+        }
+
+        @Override
+        public BingImagesSearchParameters withMinFileSize(Long minFileSize) {
+            this.minFileSize = minFileSize;
+            return this;
+        }
+
+        @Override
+        public BingImagesSearchParameters withMinHeight(Long minHeight) {
+            this.minHeight = minHeight;
+            return this;
+        }
+
+        @Override
+        public BingImagesSearchParameters withMinWidth(Long minWidth) {
+            this.minWidth = minWidth;
+            return this;
+        }
+
+        @Override
+        public BingImagesSearchParameters withOffset(Long offset) {
+            this.offset = offset;
+            return this;
+        }
+
+        @Override
+        public BingImagesSearchParameters withSafeSearch(SafeSearch safeSearch) {
+            this.safeSearch = safeSearch;
+            return this;
+        }
+
+        @Override
+        public BingImagesSearchParameters withSize(ImageSize size) {
+            this.size = size;
+            return this;
+        }
+
+        @Override
+        public BingImagesSearchParameters withSetLang(String setLang) {
+            this.setLang = setLang;
+            return this;
+        }
+
+        @Override
+        public BingImagesSearchParameters withWidth(Integer width) {
+            this.width = width;
+            return this;
+        }
+
+        @Override
+        public ImagesModel execute() {
+        return searchWithServiceResponseAsync(query, acceptLanguage, userAgent, clientId, clientIp, location, aspect, color, countryCode, count, freshness, height, id, imageContent, imageType, license, market, maxFileSize, maxHeight, maxWidth, minFileSize, minHeight, minWidth, offset, safeSearch, size, setLang, width).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<ImagesModel> executeAsync() {
+            return searchWithServiceResponseAsync(query, acceptLanguage, userAgent, clientId, clientIp, location, aspect, color, countryCode, count, freshness, height, id, imageContent, imageType, license, market, maxFileSize, maxHeight, maxWidth, minFileSize, minHeight, minWidth, offset, safeSearch, size, setLang, width).map(new Func1<ServiceResponse<ImagesModel>, ImagesModel>() {
+                @Override
+                public ImagesModel call(ServiceResponse<ImagesModel> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
 
     /**
      * The Image Detail Search API lets you search on Bing and get back insights about an image, such as webpages that include the image. This section provides technical details about the query parameters and headers that you use to request insights of images and the JSON response objects that contain them. For examples that show how to make requests, see [Searching the Web for Images](https://docs.microsoft.com/azure/cognitive-services/bing-image-search/search-the-web).
@@ -290,7 +520,6 @@ public class BingImagesImpl implements BingImages {
         if (query == null) {
             throw new IllegalArgumentException("Parameter query is required and cannot be null.");
         }
-        final String xBingApisSDK = "true";
         final String acceptLanguage = detailsOptionalParameter != null ? detailsOptionalParameter.acceptLanguage() : null;
         final String contentType = detailsOptionalParameter != null ? detailsOptionalParameter.contentType() : null;
         final String userAgent = detailsOptionalParameter != null ? detailsOptionalParameter.userAgent() : this.client.userAgent();
@@ -310,7 +539,6 @@ public class BingImagesImpl implements BingImages {
         final String market = detailsOptionalParameter != null ? detailsOptionalParameter.market() : null;
         final SafeSearch safeSearch = detailsOptionalParameter != null ? detailsOptionalParameter.safeSearch() : null;
         final String setLang = detailsOptionalParameter != null ? detailsOptionalParameter.setLang() : null;
-        String modulesConverted = this.client.serializerAdapter().serializeList(modules, CollectionFormat.CSV);
 
         return detailsWithServiceResponseAsync(query, acceptLanguage, contentType, userAgent, clientId, clientIp, location, cropBottom, cropLeft, cropRight, cropTop, cropType, countryCode, id, imageUrl, insightsToken, modules, market, safeSearch, setLang);
     }
@@ -369,6 +597,181 @@ public class BingImagesImpl implements BingImages {
                 .build(response);
     }
 
+    @Override
+    public BingImagesDetailsParameters details() {
+        return new BingImagesDetailsParameters(this);
+    }
+
+    /**
+     * Internal class implementing BingImagesDetailsDefinition.
+     */
+    class BingImagesDetailsParameters implements BingImagesDetailsDefinition {
+        private BingImagesImpl parent;
+        private String query;
+        private String acceptLanguage;
+        private String contentType;
+        private String userAgent;
+        private String clientId;
+        private String clientIp;
+        private String location;
+        private Double cropBottom;
+        private Double cropLeft;
+        private Double cropRight;
+        private Double cropTop;
+        private ImageCropType cropType;
+        private String countryCode;
+        private String id;
+        private String imageUrl;
+        private String insightsToken;
+        private List<ImageInsightModule> modules;
+        private String market;
+        private SafeSearch safeSearch;
+        private String setLang;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        BingImagesDetailsParameters(BingImagesImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public BingImagesDetailsParameters withQuery(String query) {
+            this.query = query;
+            return this;
+        }
+
+        @Override
+        public BingImagesDetailsParameters withAcceptLanguage(String acceptLanguage) {
+            this.acceptLanguage = acceptLanguage;
+            return this;
+        }
+
+        @Override
+        public BingImagesDetailsParameters withContentType(String contentType) {
+            this.contentType = contentType;
+            return this;
+        }
+
+        @Override
+        public BingImagesDetailsParameters withUserAgent(String userAgent) {
+            this.userAgent = userAgent;
+            return this;
+        }
+
+        @Override
+        public BingImagesDetailsParameters withClientId(String clientId) {
+            this.clientId = clientId;
+            return this;
+        }
+
+        @Override
+        public BingImagesDetailsParameters withClientIp(String clientIp) {
+            this.clientIp = clientIp;
+            return this;
+        }
+
+        @Override
+        public BingImagesDetailsParameters withLocation(String location) {
+            this.location = location;
+            return this;
+        }
+
+        @Override
+        public BingImagesDetailsParameters withCropBottom(Double cropBottom) {
+            this.cropBottom = cropBottom;
+            return this;
+        }
+
+        @Override
+        public BingImagesDetailsParameters withCropLeft(Double cropLeft) {
+            this.cropLeft = cropLeft;
+            return this;
+        }
+
+        @Override
+        public BingImagesDetailsParameters withCropRight(Double cropRight) {
+            this.cropRight = cropRight;
+            return this;
+        }
+
+        @Override
+        public BingImagesDetailsParameters withCropTop(Double cropTop) {
+            this.cropTop = cropTop;
+            return this;
+        }
+
+        @Override
+        public BingImagesDetailsParameters withCropType(ImageCropType cropType) {
+            this.cropType = cropType;
+            return this;
+        }
+
+        @Override
+        public BingImagesDetailsParameters withCountryCode(String countryCode) {
+            this.countryCode = countryCode;
+            return this;
+        }
+
+        @Override
+        public BingImagesDetailsParameters withId(String id) {
+            this.id = id;
+            return this;
+        }
+
+        @Override
+        public BingImagesDetailsParameters withImageUrl(String imageUrl) {
+            this.imageUrl = imageUrl;
+            return this;
+        }
+
+        @Override
+        public BingImagesDetailsParameters withInsightsToken(String insightsToken) {
+            this.insightsToken = insightsToken;
+            return this;
+        }
+
+        @Override
+        public BingImagesDetailsParameters withModules(List<ImageInsightModule> modules) {
+            this.modules = modules;
+            return this;
+        }
+
+        @Override
+        public BingImagesDetailsParameters withMarket(String market) {
+            this.market = market;
+            return this;
+        }
+
+        @Override
+        public BingImagesDetailsParameters withSafeSearch(SafeSearch safeSearch) {
+            this.safeSearch = safeSearch;
+            return this;
+        }
+
+        @Override
+        public BingImagesDetailsParameters withSetLang(String setLang) {
+            this.setLang = setLang;
+            return this;
+        }
+
+        @Override
+        public ImageInsights execute() {
+        return detailsWithServiceResponseAsync(query, acceptLanguage, contentType, userAgent, clientId, clientIp, location, cropBottom, cropLeft, cropRight, cropTop, cropType, countryCode, id, imageUrl, insightsToken, modules, market, safeSearch, setLang).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<ImageInsights> executeAsync() {
+            return detailsWithServiceResponseAsync(query, acceptLanguage, contentType, userAgent, clientId, clientIp, location, cropBottom, cropLeft, cropRight, cropTop, cropType, countryCode, id, imageUrl, insightsToken, modules, market, safeSearch, setLang).map(new Func1<ServiceResponse<ImageInsights>, ImageInsights>() {
+                @Override
+                public ImageInsights call(ServiceResponse<ImageInsights> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
 
     /**
      * The Image Trending Search API lets you search on Bing and get back a list of images that are trending based on search requests made by others. The images are broken out into different categories. For example, Popular People Searches. For a list of markets that support trending images, see [Trending Images](https://docs.microsoft.com/en-us/azure/cognitive-services/bing-image-search/trending-images).
@@ -419,7 +822,6 @@ public class BingImagesImpl implements BingImages {
      * @return the observable to the TrendingImages object
      */
     public Observable<ServiceResponse<TrendingImages>> trendingWithServiceResponseAsync(TrendingOptionalParameter trendingOptionalParameter) {
-        final String xBingApisSDK = "true";
         final String acceptLanguage = trendingOptionalParameter != null ? trendingOptionalParameter.acceptLanguage() : null;
         final String userAgent = trendingOptionalParameter != null ? trendingOptionalParameter.userAgent() : this.client.userAgent();
         final String clientId = trendingOptionalParameter != null ? trendingOptionalParameter.clientId() : null;
@@ -469,6 +871,104 @@ public class BingImagesImpl implements BingImages {
                 .register(200, new TypeToken<TrendingImages>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
+    }
+
+    @Override
+    public BingImagesTrendingParameters trending() {
+        return new BingImagesTrendingParameters(this);
+    }
+
+    /**
+     * Internal class implementing BingImagesTrendingDefinition.
+     */
+    class BingImagesTrendingParameters implements BingImagesTrendingDefinition {
+        private BingImagesImpl parent;
+        private String acceptLanguage;
+        private String userAgent;
+        private String clientId;
+        private String clientIp;
+        private String location;
+        private String countryCode;
+        private String market;
+        private SafeSearch safeSearch;
+        private String setLang;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        BingImagesTrendingParameters(BingImagesImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public BingImagesTrendingParameters withAcceptLanguage(String acceptLanguage) {
+            this.acceptLanguage = acceptLanguage;
+            return this;
+        }
+
+        @Override
+        public BingImagesTrendingParameters withUserAgent(String userAgent) {
+            this.userAgent = userAgent;
+            return this;
+        }
+
+        @Override
+        public BingImagesTrendingParameters withClientId(String clientId) {
+            this.clientId = clientId;
+            return this;
+        }
+
+        @Override
+        public BingImagesTrendingParameters withClientIp(String clientIp) {
+            this.clientIp = clientIp;
+            return this;
+        }
+
+        @Override
+        public BingImagesTrendingParameters withLocation(String location) {
+            this.location = location;
+            return this;
+        }
+
+        @Override
+        public BingImagesTrendingParameters withCountryCode(String countryCode) {
+            this.countryCode = countryCode;
+            return this;
+        }
+
+        @Override
+        public BingImagesTrendingParameters withMarket(String market) {
+            this.market = market;
+            return this;
+        }
+
+        @Override
+        public BingImagesTrendingParameters withSafeSearch(SafeSearch safeSearch) {
+            this.safeSearch = safeSearch;
+            return this;
+        }
+
+        @Override
+        public BingImagesTrendingParameters withSetLang(String setLang) {
+            this.setLang = setLang;
+            return this;
+        }
+
+        @Override
+        public TrendingImages execute() {
+        return trendingWithServiceResponseAsync(acceptLanguage, userAgent, clientId, clientIp, location, countryCode, market, safeSearch, setLang).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<TrendingImages> executeAsync() {
+            return trendingWithServiceResponseAsync(acceptLanguage, userAgent, clientId, clientIp, location, countryCode, market, safeSearch, setLang).map(new Func1<ServiceResponse<TrendingImages>, TrendingImages>() {
+                @Override
+                public TrendingImages call(ServiceResponse<TrendingImages> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 }

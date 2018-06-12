@@ -10,34 +10,57 @@ package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
 
 /**
- * The optional parameters class for "createJob" method.
+ * The CreateJobOptionalParameter model.
  */
 public class CreateJobOptionalParameter {
     /**
-    * Callback endpoint for posting the create job result.
-    */
+     * Callback endpoint for posting the create job result.
+     */
     private String callBackEndpoint;
 
     /**
-    * Get the callBackEndpoint value.
-    *
-    * @return the callBackEndpoint value
-    */
+     * Gets or sets the preferred language for the response.
+     */
+    private String thisclientacceptLanguage;
+
+    /**
+     * Get the callBackEndpoint value.
+     *
+     * @return the callBackEndpoint value
+     */
     public String callBackEndpoint() {
         return this.callBackEndpoint;
     }
 
     /**
-    * Set the callBackEndpoint value.
-    * <p>
-    * Callback endpoint for posting the create job result.
-    *
-    * @param callBackEndpoint the callBackEndpoint value to set
-    * @return the createJobOptionalParameter object itself.
-    */
+     * Set the callBackEndpoint value.
+     *
+     * @param callBackEndpoint the callBackEndpoint value to set
+     * @return the CreateJobOptionalParameter object itself.
+     */
     public CreateJobOptionalParameter withCallBackEndpoint(String callBackEndpoint) {
         this.callBackEndpoint = callBackEndpoint;
         return this;
     }
 
+    /**
+     * Get the thisclientacceptLanguage value.
+     *
+     * @return the thisclientacceptLanguage value
+     */
+    public String thisclientacceptLanguage() {
+        return this.thisclientacceptLanguage;
     }
+
+    /**
+     * Set the thisclientacceptLanguage value.
+     *
+     * @param thisclientacceptLanguage the thisclientacceptLanguage value to set
+     * @return the CreateJobOptionalParameter object itself.
+     */
+    public CreateJobOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
+        this.thisclientacceptLanguage = thisclientacceptLanguage;
+        return this;
+    }
+
+}

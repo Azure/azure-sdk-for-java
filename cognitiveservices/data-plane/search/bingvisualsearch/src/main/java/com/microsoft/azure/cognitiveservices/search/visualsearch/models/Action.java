@@ -36,15 +36,15 @@ public class Action extends CreativeWork {
     private String displayName;
 
     /**
-     * A boolean representing whether this result is the top action.
+     * A Boolean representing whether this result is the top action.
      */
     @JsonProperty(value = "isTopAction", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isTopAction;
 
     /**
-     * Url inside Thing_x gets you a url to fulfill action directly,however
-     * ServiceUrl Gives you more data to determine how to take action.e.g.
-     * ServiceUrl might return json and an image url in it.
+     * Use this URL to get additional data to determine how to take the
+     * appropriate action. For example, the serviceUrl might return JSON along
+     * with an image URL.
      */
     @JsonProperty(value = "serviceUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceUrl;

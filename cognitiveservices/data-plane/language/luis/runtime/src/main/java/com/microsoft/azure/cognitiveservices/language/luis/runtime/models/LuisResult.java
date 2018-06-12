@@ -52,10 +52,10 @@ public class LuisResult {
     private List<CompositeEntityModel> compositeEntities;
 
     /**
-     * The sentiment property.
+     * The sentimentAnalysis property.
      */
-    @JsonProperty(value = "sentiment")
-    private Sentiment sentiment;
+    @JsonProperty(value = "sentimentAnalysis")
+    private Sentiment sentimentAnalysis;
 
     /**
      * Get the query value.
@@ -178,22 +178,22 @@ public class LuisResult {
     }
 
     /**
-     * Get the sentiment value.
+     * Get the sentimentAnalysis value.
      *
-     * @return the sentiment value
+     * @return the sentimentAnalysis value
      */
-    public Sentiment sentiment() {
-        return this.sentiment;
+    public Sentiment sentimentAnalysis() {
+        return this.sentimentAnalysis;
     }
 
     /**
-     * Set the sentiment value.
+     * Set the sentimentAnalysis value.
      *
-     * @param sentiment the sentiment value to set
+     * @param sentimentAnalysis the sentimentAnalysis value to set
      * @return the LuisResult object itself.
      */
-    public LuisResult withSentiment(Sentiment sentiment) {
-        this.sentiment = sentiment;
+    public LuisResult withSentimentAnalysis(Sentiment sentimentAnalysis) {
+        this.sentimentAnalysis = sentimentAnalysis;
         return this;
     }
 

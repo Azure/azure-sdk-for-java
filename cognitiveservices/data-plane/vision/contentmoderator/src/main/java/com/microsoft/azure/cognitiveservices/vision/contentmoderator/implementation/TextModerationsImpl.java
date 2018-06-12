@@ -144,8 +144,6 @@ public class TextModerationsImpl implements TextModerations {
         final Boolean pII = screenTextOptionalParameter != null ? screenTextOptionalParameter.pII() : null;
         final String listId = screenTextOptionalParameter != null ? screenTextOptionalParameter.listId() : null;
         final Boolean classify = screenTextOptionalParameter != null ? screenTextOptionalParameter.classify() : null;
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
-        RequestBody textContentConverted = RequestBody.create(MediaType.parse("text/plain"), textContent);
 
         return screenTextWithServiceResponseAsync(textContentType, textContent, language, autocorrect, pII, listId, classify);
     }
@@ -195,6 +193,90 @@ public class TextModerationsImpl implements TextModerations {
                 .register(200, new TypeToken<Screen>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public TextModerationsScreenTextParameters screenText() {
+        return new TextModerationsScreenTextParameters(this);
+    }
+
+    /**
+     * Internal class implementing TextModerationsScreenTextDefinition.
+     */
+    class TextModerationsScreenTextParameters implements TextModerationsScreenTextDefinition {
+        private TextModerationsImpl parent;
+        private String textContentType;
+        private byte[] textContent;
+        private String language;
+        private Boolean autocorrect;
+        private Boolean pII;
+        private String listId;
+        private Boolean classify;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        TextModerationsScreenTextParameters(TextModerationsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public TextModerationsScreenTextParameters withTextContentType(String textContentType) {
+            this.textContentType = textContentType;
+            return this;
+        }
+
+        @Override
+        public TextModerationsScreenTextParameters withTextContent(byte[] textContent) {
+            this.textContent = textContent;
+            return this;
+        }
+
+        @Override
+        public TextModerationsScreenTextParameters withLanguage(String language) {
+            this.language = language;
+            return this;
+        }
+
+        @Override
+        public TextModerationsScreenTextParameters withAutocorrect(Boolean autocorrect) {
+            this.autocorrect = autocorrect;
+            return this;
+        }
+
+        @Override
+        public TextModerationsScreenTextParameters withPII(Boolean pII) {
+            this.pII = pII;
+            return this;
+        }
+
+        @Override
+        public TextModerationsScreenTextParameters withListId(String listId) {
+            this.listId = listId;
+            return this;
+        }
+
+        @Override
+        public TextModerationsScreenTextParameters withClassify(Boolean classify) {
+            this.classify = classify;
+            return this;
+        }
+
+        @Override
+        public Screen execute() {
+        return screenTextWithServiceResponseAsync(textContentType, textContent, language, autocorrect, pII, listId, classify).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<Screen> executeAsync() {
+            return screenTextWithServiceResponseAsync(textContentType, textContent, language, autocorrect, pII, listId, classify).map(new Func1<ServiceResponse<Screen>, Screen>() {
+                @Override
+                public Screen call(ServiceResponse<Screen> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
     /**

@@ -326,7 +326,6 @@ public class ListManagementTermsImpl implements ListManagementTerms {
         }
         final Integer offset = getAllTermsOptionalParameter != null ? getAllTermsOptionalParameter.offset() : null;
         final Integer limit = getAllTermsOptionalParameter != null ? getAllTermsOptionalParameter.limit() : null;
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
 
         return getAllTermsWithServiceResponseAsync(listId, language, offset, limit);
     }
@@ -371,6 +370,69 @@ public class ListManagementTermsImpl implements ListManagementTerms {
                 .register(200, new TypeToken<Terms>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public ListManagementTermsGetAllTermsParameters getAllTerms() {
+        return new ListManagementTermsGetAllTermsParameters(this);
+    }
+
+    /**
+     * Internal class implementing ListManagementTermsGetAllTermsDefinition.
+     */
+    class ListManagementTermsGetAllTermsParameters implements ListManagementTermsGetAllTermsDefinition {
+        private ListManagementTermsImpl parent;
+        private String listId;
+        private String language;
+        private Integer offset;
+        private Integer limit;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ListManagementTermsGetAllTermsParameters(ListManagementTermsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ListManagementTermsGetAllTermsParameters withListId(String listId) {
+            this.listId = listId;
+            return this;
+        }
+
+        @Override
+        public ListManagementTermsGetAllTermsParameters withLanguage(String language) {
+            this.language = language;
+            return this;
+        }
+
+        @Override
+        public ListManagementTermsGetAllTermsParameters withOffset(Integer offset) {
+            this.offset = offset;
+            return this;
+        }
+
+        @Override
+        public ListManagementTermsGetAllTermsParameters withLimit(Integer limit) {
+            this.limit = limit;
+            return this;
+        }
+
+        @Override
+        public Terms execute() {
+        return getAllTermsWithServiceResponseAsync(listId, language, offset, limit).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<Terms> executeAsync() {
+            return getAllTermsWithServiceResponseAsync(listId, language, offset, limit).map(new Func1<ServiceResponse<Terms>, Terms>() {
+                @Override
+                public Terms call(ServiceResponse<Terms> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
     /**

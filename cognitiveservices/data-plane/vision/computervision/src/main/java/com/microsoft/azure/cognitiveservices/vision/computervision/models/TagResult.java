@@ -28,7 +28,7 @@ public class TagResult {
     private String requestId;
 
     /**
-     * Image metadata.
+     * The metadata property.
      */
     @JsonProperty(value = "metadata")
     private ImageMetadata metadata;

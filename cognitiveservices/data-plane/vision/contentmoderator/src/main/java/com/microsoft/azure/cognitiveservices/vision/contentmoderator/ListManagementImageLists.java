@@ -9,7 +9,7 @@
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator;
 
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.APIErrorException;
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.Body;
+import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.BodyModel;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.ImageList;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.RefreshIndex;
 import java.util.List;
@@ -20,6 +20,7 @@ import rx.Observable;
  * in ListManagementImageLists.
  */
 public interface ListManagementImageLists {
+
     /**
      * Returns the details of the image list with list Id equal to list Id passed.
      *
@@ -39,6 +40,8 @@ public interface ListManagementImageLists {
      * @return the observable to the ImageList object
      */
     Observable<ImageList> getDetailsAsync(String listId);
+
+
 
     /**
      * Deletes image list with the list Id equal to list Id passed.
@@ -60,51 +63,57 @@ public interface ListManagementImageLists {
      */
     Observable<String> deleteAsync(String listId);
 
-    /**
-     * Updates an image list with list Id equal to list Id passed.
-     *
-     * @param listId List Id of the image list.
-     * @param contentType The content type.
-     * @param body Schema of the body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws APIErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the ImageList object if successful.
-     */
-    ImageList update(String listId, String contentType, Body body);
+
 
     /**
      * Updates an image list with list Id equal to list Id passed.
      *
      * @param listId List Id of the image list.
      * @param contentType The content type.
-     * @param body Schema of the body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ImageList object
-     */
-    Observable<ImageList> updateAsync(String listId, String contentType, Body body);
-
-    /**
-     * Creates an image list.
-     *
-     * @param contentType The content type.
-     * @param body Schema of the body.
+     * @param bodyParameter Schema of the body.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImageList object if successful.
      */
-    ImageList create(String contentType, Body body);
+    ImageList update(String listId, String contentType, BodyModel bodyParameter);
+
+    /**
+     * Updates an image list with list Id equal to list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param contentType The content type.
+     * @param bodyParameter Schema of the body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ImageList object
+     */
+    Observable<ImageList> updateAsync(String listId, String contentType, BodyModel bodyParameter);
+
+
 
     /**
      * Creates an image list.
      *
      * @param contentType The content type.
-     * @param body Schema of the body.
+     * @param bodyParameter Schema of the body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws APIErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ImageList object if successful.
+     */
+    ImageList create(String contentType, BodyModel bodyParameter);
+
+    /**
+     * Creates an image list.
+     *
+     * @param contentType The content type.
+     * @param bodyParameter Schema of the body.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageList object
      */
-    Observable<ImageList> createAsync(String contentType, Body body);
+    Observable<ImageList> createAsync(String contentType, BodyModel bodyParameter);
+
+
 
     /**
      * Gets all the Image Lists.
@@ -123,6 +132,8 @@ public interface ListManagementImageLists {
      * @return the observable to the List&lt;ImageList&gt; object
      */
     Observable<List<ImageList>> getAllImageListsAsync();
+
+
 
     /**
      * Refreshes the index of the list with list Id equal to list Id passed.
@@ -143,5 +154,6 @@ public interface ListManagementImageLists {
      * @return the observable to the RefreshIndex object
      */
     Observable<RefreshIndex> refreshIndexMethodAsync(String listId);
+
 
 }

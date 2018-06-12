@@ -78,19 +78,19 @@ public class FacesImpl implements Faces {
     interface FacesService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.Faces findSimilar" })
         @POST("findsimilars")
-        Observable<Response<ResponseBody>> findSimilar(@Header("accept-language") String acceptLanguage, @Body FindSimilarRequest body, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> findSimilar(@Header("accept-language") String acceptLanguage, @Body FindSimilarRequest bodyParameter, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.Faces group" })
         @POST("group")
-        Observable<Response<ResponseBody>> group(@Header("accept-language") String acceptLanguage, @Body GroupRequest body, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> group(@Header("accept-language") String acceptLanguage, @Body GroupRequest bodyParameter, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.Faces identify" })
         @POST("identify")
-        Observable<Response<ResponseBody>> identify(@Header("accept-language") String acceptLanguage, @Body IdentifyRequest body, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> identify(@Header("accept-language") String acceptLanguage, @Body IdentifyRequest bodyParameter, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.Faces verifyFaceToFace" })
         @POST("verify")
-        Observable<Response<ResponseBody>> verifyFaceToFace(@Header("accept-language") String acceptLanguage, @Body VerifyFaceToFaceRequest body, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> verifyFaceToFace(@Header("accept-language") String acceptLanguage, @Body VerifyFaceToFaceRequest bodyParameter, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.Faces detectWithUrl" })
         @POST("detect")
@@ -98,7 +98,7 @@ public class FacesImpl implements Faces {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.Faces verifyFaceToPerson" })
         @POST("verify")
-        Observable<Response<ResponseBody>> verifyFaceToPerson(@Header("accept-language") String acceptLanguage, @Body VerifyFaceToPersonRequest body, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> verifyFaceToPerson(@Header("accept-language") String acceptLanguage, @Body VerifyFaceToPersonRequest bodyParameter, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/octet-stream", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.Faces detectWithStream" })
         @POST("detect")
@@ -170,13 +170,6 @@ public class FacesImpl implements Faces {
         final List<UUID> faceIds = findSimilarOptionalParameter != null ? findSimilarOptionalParameter.faceIds() : null;
         final Integer maxNumOfCandidatesReturned = findSimilarOptionalParameter != null ? findSimilarOptionalParameter.maxNumOfCandidatesReturned() : null;
         final FindSimilarMatchMode mode = findSimilarOptionalParameter != null ? findSimilarOptionalParameter.mode() : null;
-        FindSimilarRequest body = new FindSimilarRequest();
-        body.withFaceId(faceId);
-        body.withFaceListId(null);
-        body.withFaceIds(null);
-        body.withMaxNumOfCandidatesReturned(null);
-        body.withMode(null);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
 
         return findSimilarWithServiceResponseAsync(faceId, faceListId, faceIds, maxNumOfCandidatesReturned, mode);
     }
@@ -200,14 +193,14 @@ public class FacesImpl implements Faces {
             throw new IllegalArgumentException("Parameter faceId is required and cannot be null.");
         }
         Validator.validate(faceIds);
-        FindSimilarRequest body = new FindSimilarRequest();
-        body.withFaceId(faceId);
-        body.withFaceListId(faceListId);
-        body.withFaceIds(faceIds);
-        body.withMaxNumOfCandidatesReturned(maxNumOfCandidatesReturned);
-        body.withMode(mode);
+        FindSimilarRequest bodyParameter = new FindSimilarRequest();
+        bodyParameter.withFaceId(faceId);
+        bodyParameter.withFaceListId(faceListId);
+        bodyParameter.withFaceIds(faceIds);
+        bodyParameter.withMaxNumOfCandidatesReturned(maxNumOfCandidatesReturned);
+        bodyParameter.withMode(mode);
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.findSimilar(this.client.acceptLanguage(), body, parameterizedHost, this.client.userAgent())
+        return service.findSimilar(this.client.acceptLanguage(), bodyParameter, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<SimilarFace>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<SimilarFace>>> call(Response<ResponseBody> response) {
@@ -226,6 +219,76 @@ public class FacesImpl implements Faces {
                 .register(200, new TypeToken<List<SimilarFace>>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public FacesFindSimilarParameters findSimilar() {
+        return new FacesFindSimilarParameters(this);
+    }
+
+    /**
+     * Internal class implementing FacesFindSimilarDefinition.
+     */
+    class FacesFindSimilarParameters implements FacesFindSimilarDefinition {
+        private FacesImpl parent;
+        private UUID faceId;
+        private String faceListId;
+        private List<UUID> faceIds;
+        private Integer maxNumOfCandidatesReturned;
+        private FindSimilarMatchMode mode;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        FacesFindSimilarParameters(FacesImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public FacesFindSimilarParameters withFaceId(UUID faceId) {
+            this.faceId = faceId;
+            return this;
+        }
+
+        @Override
+        public FacesFindSimilarParameters withFaceListId(String faceListId) {
+            this.faceListId = faceListId;
+            return this;
+        }
+
+        @Override
+        public FacesFindSimilarParameters withFaceIds(List<UUID> faceIds) {
+            this.faceIds = faceIds;
+            return this;
+        }
+
+        @Override
+        public FacesFindSimilarParameters withMaxNumOfCandidatesReturned(Integer maxNumOfCandidatesReturned) {
+            this.maxNumOfCandidatesReturned = maxNumOfCandidatesReturned;
+            return this;
+        }
+
+        @Override
+        public FacesFindSimilarParameters withMode(FindSimilarMatchMode mode) {
+            this.mode = mode;
+            return this;
+        }
+
+        @Override
+        public List<SimilarFace> execute() {
+        return findSimilarWithServiceResponseAsync(faceId, faceListId, faceIds, maxNumOfCandidatesReturned, mode).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<List<SimilarFace>> executeAsync() {
+            return findSimilarWithServiceResponseAsync(faceId, faceListId, faceIds, maxNumOfCandidatesReturned, mode).map(new Func1<ServiceResponse<List<SimilarFace>>, List<SimilarFace>>() {
+                @Override
+                public List<SimilarFace> call(ServiceResponse<List<SimilarFace>> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
     /**
@@ -284,10 +347,10 @@ public class FacesImpl implements Faces {
             throw new IllegalArgumentException("Parameter faceIds is required and cannot be null.");
         }
         Validator.validate(faceIds);
-        GroupRequest body = new GroupRequest();
-        body.withFaceIds(faceIds);
+        GroupRequest bodyParameter = new GroupRequest();
+        bodyParameter.withFaceIds(faceIds);
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.group(this.client.acceptLanguage(), body, parameterizedHost, this.client.userAgent())
+        return service.group(this.client.acceptLanguage(), bodyParameter, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<GroupResult>>>() {
                 @Override
                 public Observable<ServiceResponse<GroupResult>> call(Response<ResponseBody> response) {
@@ -378,12 +441,6 @@ public class FacesImpl implements Faces {
         Validator.validate(faceIds);
         final Integer maxNumOfCandidatesReturned = identifyOptionalParameter != null ? identifyOptionalParameter.maxNumOfCandidatesReturned() : null;
         final Double confidenceThreshold = identifyOptionalParameter != null ? identifyOptionalParameter.confidenceThreshold() : null;
-        IdentifyRequest body = new IdentifyRequest();
-        body.withPersonGroupId(personGroupId);
-        body.withFaceIds(faceIds);
-        body.withMaxNumOfCandidatesReturned(null);
-        body.withConfidenceThreshold(null);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
 
         return identifyWithServiceResponseAsync(personGroupId, faceIds, maxNumOfCandidatesReturned, confidenceThreshold);
     }
@@ -409,13 +466,13 @@ public class FacesImpl implements Faces {
             throw new IllegalArgumentException("Parameter faceIds is required and cannot be null.");
         }
         Validator.validate(faceIds);
-        IdentifyRequest body = new IdentifyRequest();
-        body.withPersonGroupId(personGroupId);
-        body.withFaceIds(faceIds);
-        body.withMaxNumOfCandidatesReturned(maxNumOfCandidatesReturned);
-        body.withConfidenceThreshold(confidenceThreshold);
+        IdentifyRequest bodyParameter = new IdentifyRequest();
+        bodyParameter.withPersonGroupId(personGroupId);
+        bodyParameter.withFaceIds(faceIds);
+        bodyParameter.withMaxNumOfCandidatesReturned(maxNumOfCandidatesReturned);
+        bodyParameter.withConfidenceThreshold(confidenceThreshold);
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.identify(this.client.acceptLanguage(), body, parameterizedHost, this.client.userAgent())
+        return service.identify(this.client.acceptLanguage(), bodyParameter, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<IdentifyResult>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<IdentifyResult>>> call(Response<ResponseBody> response) {
@@ -434,6 +491,69 @@ public class FacesImpl implements Faces {
                 .register(200, new TypeToken<List<IdentifyResult>>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public FacesIdentifyParameters identify() {
+        return new FacesIdentifyParameters(this);
+    }
+
+    /**
+     * Internal class implementing FacesIdentifyDefinition.
+     */
+    class FacesIdentifyParameters implements FacesIdentifyDefinition {
+        private FacesImpl parent;
+        private String personGroupId;
+        private List<UUID> faceIds;
+        private Integer maxNumOfCandidatesReturned;
+        private Double confidenceThreshold;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        FacesIdentifyParameters(FacesImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public FacesIdentifyParameters withPersonGroupId(String personGroupId) {
+            this.personGroupId = personGroupId;
+            return this;
+        }
+
+        @Override
+        public FacesIdentifyParameters withFaceIds(List<UUID> faceIds) {
+            this.faceIds = faceIds;
+            return this;
+        }
+
+        @Override
+        public FacesIdentifyParameters withMaxNumOfCandidatesReturned(Integer maxNumOfCandidatesReturned) {
+            this.maxNumOfCandidatesReturned = maxNumOfCandidatesReturned;
+            return this;
+        }
+
+        @Override
+        public FacesIdentifyParameters withConfidenceThreshold(Double confidenceThreshold) {
+            this.confidenceThreshold = confidenceThreshold;
+            return this;
+        }
+
+        @Override
+        public List<IdentifyResult> execute() {
+        return identifyWithServiceResponseAsync(personGroupId, faceIds, maxNumOfCandidatesReturned, confidenceThreshold).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<List<IdentifyResult>> executeAsync() {
+            return identifyWithServiceResponseAsync(personGroupId, faceIds, maxNumOfCandidatesReturned, confidenceThreshold).map(new Func1<ServiceResponse<List<IdentifyResult>>, List<IdentifyResult>>() {
+                @Override
+                public List<IdentifyResult> call(ServiceResponse<List<IdentifyResult>> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
     /**
@@ -498,11 +618,11 @@ public class FacesImpl implements Faces {
         if (faceId2 == null) {
             throw new IllegalArgumentException("Parameter faceId2 is required and cannot be null.");
         }
-        VerifyFaceToFaceRequest body = new VerifyFaceToFaceRequest();
-        body.withFaceId1(faceId1);
-        body.withFaceId2(faceId2);
+        VerifyFaceToFaceRequest bodyParameter = new VerifyFaceToFaceRequest();
+        bodyParameter.withFaceId1(faceId1);
+        bodyParameter.withFaceId2(faceId2);
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.verifyFaceToFace(this.client.acceptLanguage(), body, parameterizedHost, this.client.userAgent())
+        return service.verifyFaceToFace(this.client.acceptLanguage(), bodyParameter, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<VerifyResult>>>() {
                 @Override
                 public Observable<ServiceResponse<VerifyResult>> call(Response<ResponseBody> response) {
@@ -527,7 +647,7 @@ public class FacesImpl implements Faces {
     /**
      * Detect human faces in an image and returns face locations, and optionally with faceIds, landmarks, and attributes.
      *
-     * @param url the String value
+     * @param url Publicly reachable URL of an image
      * @param detectWithUrlOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
@@ -541,7 +661,7 @@ public class FacesImpl implements Faces {
     /**
      * Detect human faces in an image and returns face locations, and optionally with faceIds, landmarks, and attributes.
      *
-     * @param url the String value
+     * @param url Publicly reachable URL of an image
      * @param detectWithUrlOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -554,7 +674,7 @@ public class FacesImpl implements Faces {
     /**
      * Detect human faces in an image and returns face locations, and optionally with faceIds, landmarks, and attributes.
      *
-     * @param url the String value
+     * @param url Publicly reachable URL of an image
      * @param detectWithUrlOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;DetectedFace&gt; object
@@ -571,7 +691,7 @@ public class FacesImpl implements Faces {
     /**
      * Detect human faces in an image and returns face locations, and optionally with faceIds, landmarks, and attributes.
      *
-     * @param url the String value
+     * @param url Publicly reachable URL of an image
      * @param detectWithUrlOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;DetectedFace&gt; object
@@ -586,10 +706,6 @@ public class FacesImpl implements Faces {
         final Boolean returnFaceId = detectWithUrlOptionalParameter != null ? detectWithUrlOptionalParameter.returnFaceId() : null;
         final Boolean returnFaceLandmarks = detectWithUrlOptionalParameter != null ? detectWithUrlOptionalParameter.returnFaceLandmarks() : null;
         final List<FaceAttributeType> returnFaceAttributes = detectWithUrlOptionalParameter != null ? detectWithUrlOptionalParameter.returnFaceAttributes() : null;
-        ImageUrl imageUrl = new ImageUrl();
-        imageUrl.withUrl(url);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        String returnFaceAttributesConverted = this.client.serializerAdapter().serializeList(returnFaceAttributes, CollectionFormat.CSV);
 
         return detectWithUrlWithServiceResponseAsync(url, returnFaceId, returnFaceLandmarks, returnFaceAttributes);
     }
@@ -597,7 +713,7 @@ public class FacesImpl implements Faces {
     /**
      * Detect human faces in an image and returns face locations, and optionally with faceIds, landmarks, and attributes.
      *
-     * @param url the String value
+     * @param url Publicly reachable URL of an image
      * @param returnFaceId A value indicating whether the operation should return faceIds of detected faces.
      * @param returnFaceLandmarks A value indicating whether the operation should return landmarks of the detected faces.
      * @param returnFaceAttributes Analyze and return the one or more specified face attributes in the comma-separated string like "returnFaceAttributes=age,gender". Supported face attributes include age, gender, headPose, smile, facialHair, glasses and emotion. Note that each face attribute analysis has additional computational and time cost.
@@ -635,6 +751,69 @@ public class FacesImpl implements Faces {
                 .register(200, new TypeToken<List<DetectedFace>>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public FacesDetectWithUrlParameters detectWithUrl() {
+        return new FacesDetectWithUrlParameters(this);
+    }
+
+    /**
+     * Internal class implementing FacesDetectWithUrlDefinition.
+     */
+    class FacesDetectWithUrlParameters implements FacesDetectWithUrlDefinition {
+        private FacesImpl parent;
+        private String url;
+        private Boolean returnFaceId;
+        private Boolean returnFaceLandmarks;
+        private List<FaceAttributeType> returnFaceAttributes;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        FacesDetectWithUrlParameters(FacesImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public FacesDetectWithUrlParameters withUrl(String url) {
+            this.url = url;
+            return this;
+        }
+
+        @Override
+        public FacesDetectWithUrlParameters withReturnFaceId(Boolean returnFaceId) {
+            this.returnFaceId = returnFaceId;
+            return this;
+        }
+
+        @Override
+        public FacesDetectWithUrlParameters withReturnFaceLandmarks(Boolean returnFaceLandmarks) {
+            this.returnFaceLandmarks = returnFaceLandmarks;
+            return this;
+        }
+
+        @Override
+        public FacesDetectWithUrlParameters withReturnFaceAttributes(List<FaceAttributeType> returnFaceAttributes) {
+            this.returnFaceAttributes = returnFaceAttributes;
+            return this;
+        }
+
+        @Override
+        public List<DetectedFace> execute() {
+        return detectWithUrlWithServiceResponseAsync(url, returnFaceId, returnFaceLandmarks, returnFaceAttributes).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<List<DetectedFace>> executeAsync() {
+            return detectWithUrlWithServiceResponseAsync(url, returnFaceId, returnFaceLandmarks, returnFaceAttributes).map(new Func1<ServiceResponse<List<DetectedFace>>, List<DetectedFace>>() {
+                @Override
+                public List<DetectedFace> call(ServiceResponse<List<DetectedFace>> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
     /**
@@ -706,12 +885,12 @@ public class FacesImpl implements Faces {
         if (personId == null) {
             throw new IllegalArgumentException("Parameter personId is required and cannot be null.");
         }
-        VerifyFaceToPersonRequest body = new VerifyFaceToPersonRequest();
-        body.withFaceId(faceId);
-        body.withPersonGroupId(personGroupId);
-        body.withPersonId(personId);
+        VerifyFaceToPersonRequest bodyParameter = new VerifyFaceToPersonRequest();
+        bodyParameter.withFaceId(faceId);
+        bodyParameter.withPersonGroupId(personGroupId);
+        bodyParameter.withPersonId(personId);
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.verifyFaceToPerson(this.client.acceptLanguage(), body, parameterizedHost, this.client.userAgent())
+        return service.verifyFaceToPerson(this.client.acceptLanguage(), bodyParameter, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<VerifyResult>>>() {
                 @Override
                 public Observable<ServiceResponse<VerifyResult>> call(Response<ResponseBody> response) {
@@ -795,9 +974,6 @@ public class FacesImpl implements Faces {
         final Boolean returnFaceId = detectWithStreamOptionalParameter != null ? detectWithStreamOptionalParameter.returnFaceId() : null;
         final Boolean returnFaceLandmarks = detectWithStreamOptionalParameter != null ? detectWithStreamOptionalParameter.returnFaceLandmarks() : null;
         final List<FaceAttributeType> returnFaceAttributes = detectWithStreamOptionalParameter != null ? detectWithStreamOptionalParameter.returnFaceAttributes() : null;
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        String returnFaceAttributesConverted = this.client.serializerAdapter().serializeList(returnFaceAttributes, CollectionFormat.CSV);
-        RequestBody imageConverted = RequestBody.create(MediaType.parse("application/octet-stream"), image);
 
         return detectWithStreamWithServiceResponseAsync(image, returnFaceId, returnFaceLandmarks, returnFaceAttributes);
     }
@@ -842,6 +1018,69 @@ public class FacesImpl implements Faces {
                 .register(200, new TypeToken<List<DetectedFace>>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public FacesDetectWithStreamParameters detectWithStream() {
+        return new FacesDetectWithStreamParameters(this);
+    }
+
+    /**
+     * Internal class implementing FacesDetectWithStreamDefinition.
+     */
+    class FacesDetectWithStreamParameters implements FacesDetectWithStreamDefinition {
+        private FacesImpl parent;
+        private byte[] image;
+        private Boolean returnFaceId;
+        private Boolean returnFaceLandmarks;
+        private List<FaceAttributeType> returnFaceAttributes;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        FacesDetectWithStreamParameters(FacesImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public FacesDetectWithStreamParameters withImage(byte[] image) {
+            this.image = image;
+            return this;
+        }
+
+        @Override
+        public FacesDetectWithStreamParameters withReturnFaceId(Boolean returnFaceId) {
+            this.returnFaceId = returnFaceId;
+            return this;
+        }
+
+        @Override
+        public FacesDetectWithStreamParameters withReturnFaceLandmarks(Boolean returnFaceLandmarks) {
+            this.returnFaceLandmarks = returnFaceLandmarks;
+            return this;
+        }
+
+        @Override
+        public FacesDetectWithStreamParameters withReturnFaceAttributes(List<FaceAttributeType> returnFaceAttributes) {
+            this.returnFaceAttributes = returnFaceAttributes;
+            return this;
+        }
+
+        @Override
+        public List<DetectedFace> execute() {
+        return detectWithStreamWithServiceResponseAsync(image, returnFaceId, returnFaceLandmarks, returnFaceAttributes).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<List<DetectedFace>> executeAsync() {
+            return detectWithStreamWithServiceResponseAsync(image, returnFaceId, returnFaceLandmarks, returnFaceAttributes).map(new Func1<ServiceResponse<List<DetectedFace>>, List<DetectedFace>>() {
+                @Override
+                public List<DetectedFace> call(ServiceResponse<List<DetectedFace>> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 }

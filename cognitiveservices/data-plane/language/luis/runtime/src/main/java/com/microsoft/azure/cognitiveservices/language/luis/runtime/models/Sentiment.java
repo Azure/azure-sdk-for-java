@@ -22,7 +22,7 @@ public class Sentiment {
 
     /**
      * Score of the sentiment, ranges from 0 (most negative) to 1 (most
-     * negative).
+     * positive).
      */
     @JsonProperty(value = "score")
     private Double score;

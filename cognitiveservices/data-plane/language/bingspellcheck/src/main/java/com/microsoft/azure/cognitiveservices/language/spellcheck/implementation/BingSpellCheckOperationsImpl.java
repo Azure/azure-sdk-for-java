@@ -20,9 +20,9 @@ import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
 import okhttp3.ResponseBody;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.Header;
+import retrofit2.http.Multipart;
+import retrofit2.http.Part;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 import retrofit2.Response;
@@ -55,9 +55,9 @@ public class BingSpellCheckOperationsImpl implements BingSpellCheckOperations {
      * used by Retrofit to perform actually REST calls.
      */
     interface BingSpellCheckOperationsService {
-        @FormUrlEncoded
+        @Multipart
         @POST("spellcheck")
-        Observable<Response<ResponseBody>> spellChecker(@Header("X-BingApis-SDK") String xBingApisSDK, @Header("Accept-Language") String acceptLanguage, @Header("Pragma") String pragma, @Header("User-Agent") String userAgent, @Header("X-MSEdge-ClientID") String clientId, @Header("X-MSEdge-ClientIP") String clientIp, @Header("X-Search-Location") String location, @Query("ActionType") ActionType actionType, @Query("AppName") String appName, @Query("cc") String countryCode, @Query("ClientMachineName") String clientMachineName, @Query("DocId") String docId, @Query("mkt") String market, @Query("SessionId") String sessionId, @Query("SetLang") String setLang, @Query("UserId") String userId, @Field("Mode") String mode, @Field("PreContextText") String preContextText, @Field("PostContextText") String postContextText, @Field("Text") String text);
+        Observable<Response<ResponseBody>> spellChecker(@Header("X-BingApis-SDK") String xBingApisSDK, @Header("Accept-Language") String acceptLanguage, @Header("Pragma") String pragma, @Header("User-Agent") String userAgent, @Header("X-MSEdge-ClientID") String clientId, @Header("X-MSEdge-ClientIP") String clientIp, @Header("X-Search-Location") String location, @Query("ActionType") ActionType actionType, @Query("AppName") String appName, @Query("cc") String countryCode, @Query("ClientMachineName") String clientMachineName, @Query("DocId") String docId, @Query("mkt") String market, @Query("SessionId") String sessionId, @Query("SetLang") String setLang, @Query("UserId") String userId, @Part("Mode") String mode, @Part("PreContextText") String preContextText, @Part("PostContextText") String postContextText, @Part("Text") String text);
 
     }
 
@@ -118,7 +118,6 @@ public class BingSpellCheckOperationsImpl implements BingSpellCheckOperations {
         if (text == null) {
             throw new IllegalArgumentException("Parameter text is required and cannot be null.");
         }
-        final String xBingApisSDK = "true";
         final String acceptLanguage = spellCheckerOptionalParameter != null ? spellCheckerOptionalParameter.acceptLanguage() : null;
         final String pragma = spellCheckerOptionalParameter != null ? spellCheckerOptionalParameter.pragma() : null;
         final String userAgent = spellCheckerOptionalParameter != null ? spellCheckerOptionalParameter.userAgent() : this.client.userAgent();
@@ -190,6 +189,174 @@ public class BingSpellCheckOperationsImpl implements BingSpellCheckOperations {
                 .register(200, new TypeToken<SpellCheck>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
+    }
+
+    @Override
+    public BingSpellCheckOperationsSpellCheckerParameters spellChecker() {
+        return new BingSpellCheckOperationsSpellCheckerParameters(this);
+    }
+
+    /**
+     * Internal class implementing BingSpellCheckOperationsSpellCheckerDefinition.
+     */
+    class BingSpellCheckOperationsSpellCheckerParameters implements BingSpellCheckOperationsSpellCheckerDefinition {
+        private BingSpellCheckOperationsImpl parent;
+        private String text;
+        private String acceptLanguage;
+        private String pragma;
+        private String userAgent;
+        private String clientId;
+        private String clientIp;
+        private String location;
+        private ActionType actionType;
+        private String appName;
+        private String countryCode;
+        private String clientMachineName;
+        private String docId;
+        private String market;
+        private String sessionId;
+        private String setLang;
+        private String userId;
+        private String mode;
+        private String preContextText;
+        private String postContextText;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        BingSpellCheckOperationsSpellCheckerParameters(BingSpellCheckOperationsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public BingSpellCheckOperationsSpellCheckerParameters withText(String text) {
+            this.text = text;
+            return this;
+        }
+
+        @Override
+        public BingSpellCheckOperationsSpellCheckerParameters withAcceptLanguage(String acceptLanguage) {
+            this.acceptLanguage = acceptLanguage;
+            return this;
+        }
+
+        @Override
+        public BingSpellCheckOperationsSpellCheckerParameters withPragma(String pragma) {
+            this.pragma = pragma;
+            return this;
+        }
+
+        @Override
+        public BingSpellCheckOperationsSpellCheckerParameters withUserAgent(String userAgent) {
+            this.userAgent = userAgent;
+            return this;
+        }
+
+        @Override
+        public BingSpellCheckOperationsSpellCheckerParameters withClientId(String clientId) {
+            this.clientId = clientId;
+            return this;
+        }
+
+        @Override
+        public BingSpellCheckOperationsSpellCheckerParameters withClientIp(String clientIp) {
+            this.clientIp = clientIp;
+            return this;
+        }
+
+        @Override
+        public BingSpellCheckOperationsSpellCheckerParameters withLocation(String location) {
+            this.location = location;
+            return this;
+        }
+
+        @Override
+        public BingSpellCheckOperationsSpellCheckerParameters withActionType(ActionType actionType) {
+            this.actionType = actionType;
+            return this;
+        }
+
+        @Override
+        public BingSpellCheckOperationsSpellCheckerParameters withAppName(String appName) {
+            this.appName = appName;
+            return this;
+        }
+
+        @Override
+        public BingSpellCheckOperationsSpellCheckerParameters withCountryCode(String countryCode) {
+            this.countryCode = countryCode;
+            return this;
+        }
+
+        @Override
+        public BingSpellCheckOperationsSpellCheckerParameters withClientMachineName(String clientMachineName) {
+            this.clientMachineName = clientMachineName;
+            return this;
+        }
+
+        @Override
+        public BingSpellCheckOperationsSpellCheckerParameters withDocId(String docId) {
+            this.docId = docId;
+            return this;
+        }
+
+        @Override
+        public BingSpellCheckOperationsSpellCheckerParameters withMarket(String market) {
+            this.market = market;
+            return this;
+        }
+
+        @Override
+        public BingSpellCheckOperationsSpellCheckerParameters withSessionId(String sessionId) {
+            this.sessionId = sessionId;
+            return this;
+        }
+
+        @Override
+        public BingSpellCheckOperationsSpellCheckerParameters withSetLang(String setLang) {
+            this.setLang = setLang;
+            return this;
+        }
+
+        @Override
+        public BingSpellCheckOperationsSpellCheckerParameters withUserId(String userId) {
+            this.userId = userId;
+            return this;
+        }
+
+        @Override
+        public BingSpellCheckOperationsSpellCheckerParameters withMode(String mode) {
+            this.mode = mode;
+            return this;
+        }
+
+        @Override
+        public BingSpellCheckOperationsSpellCheckerParameters withPreContextText(String preContextText) {
+            this.preContextText = preContextText;
+            return this;
+        }
+
+        @Override
+        public BingSpellCheckOperationsSpellCheckerParameters withPostContextText(String postContextText) {
+            this.postContextText = postContextText;
+            return this;
+        }
+
+        @Override
+        public SpellCheck execute() {
+        return spellCheckerWithServiceResponseAsync(text, acceptLanguage, pragma, userAgent, clientId, clientIp, location, actionType, appName, countryCode, clientMachineName, docId, market, sessionId, setLang, userId, mode, preContextText, postContextText).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<SpellCheck> executeAsync() {
+            return spellCheckerWithServiceResponseAsync(text, acceptLanguage, pragma, userAgent, clientId, clientIp, location, actionType, appName, countryCode, clientMachineName, docId, market, sessionId, setLang, userId, mode, preContextText, postContextText).map(new Func1<ServiceResponse<SpellCheck>, SpellCheck>() {
+                @Override
+                public SpellCheck call(ServiceResponse<SpellCheck> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 }

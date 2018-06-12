@@ -8,64 +8,87 @@
 
 package com.microsoft.azure.cognitiveservices.vision.faceapi.models;
 
+
 /**
- * The optional parameters class for "identify" method.
+ * The IdentifyOptionalParameter model.
  */
 public class IdentifyOptionalParameter {
     /**
-    * The range of maxNumOfCandidatesReturned is between 1 and 5 (default is 1).
-    */
+     * The range of maxNumOfCandidatesReturned is between 1 and 5 (default is
+     * 1).
+     */
     private Integer maxNumOfCandidatesReturned;
 
     /**
-    * Confidence threshold of identification, used to judge whether one face belong to one person. The range of
-    * confidenceThreshold is [0, 1] (default specified by algorithm).
-    */
+     * Confidence threshold of identification, used to judge whether one face
+     * belong to one person. The range of confidenceThreshold is [0, 1]
+     * (default specified by algorithm).
+     */
     private Double confidenceThreshold;
 
     /**
-    * Get the maxNumOfCandidatesReturned value.
-    *
-    * @return the maxNumOfCandidatesReturned value
-    */
+     * Gets or sets the preferred language for the response.
+     */
+    private String thisclientacceptLanguage;
+
+    /**
+     * Get the maxNumOfCandidatesReturned value.
+     *
+     * @return the maxNumOfCandidatesReturned value
+     */
     public Integer maxNumOfCandidatesReturned() {
         return this.maxNumOfCandidatesReturned;
     }
 
     /**
-    * Get the confidenceThreshold value.
-    *
-    * @return the confidenceThreshold value
-    */
-    public Double confidenceThreshold() {
-        return this.confidenceThreshold;
-    }
-
-    /**
-    * Set the maxNumOfCandidatesReturned value.
-    * <p>
-    * The range of maxNumOfCandidatesReturned is between 1 and 5 (default is 1).
-    *
-    * @param maxNumOfCandidatesReturned the maxNumOfCandidatesReturned value to set
-    * @return the identifyOptionalParameter object itself.
-    */
-    public IdentifyOptionalParameter withMaxNumOfCandidatesReturned(int maxNumOfCandidatesReturned) {
+     * Set the maxNumOfCandidatesReturned value.
+     *
+     * @param maxNumOfCandidatesReturned the maxNumOfCandidatesReturned value to set
+     * @return the IdentifyOptionalParameter object itself.
+     */
+    public IdentifyOptionalParameter withMaxNumOfCandidatesReturned(Integer maxNumOfCandidatesReturned) {
         this.maxNumOfCandidatesReturned = maxNumOfCandidatesReturned;
         return this;
     }
 
     /**
-    * Set the confidenceThreshold value.
-    * <p>
-    * Confidence threshold of identification, used to judge whether one face belong to one person. The range of
-    * confidenceThreshold is [0, 1] (default specified by algorithm).
-    *
-    * @param confidenceThreshold the confidenceThreshold value to set
-    * @return the identifyOptionalParameter object itself.
-    */
-    public IdentifyOptionalParameter withConfidenceThreshold(double confidenceThreshold) {
+     * Get the confidenceThreshold value.
+     *
+     * @return the confidenceThreshold value
+     */
+    public Double confidenceThreshold() {
+        return this.confidenceThreshold;
+    }
+
+    /**
+     * Set the confidenceThreshold value.
+     *
+     * @param confidenceThreshold the confidenceThreshold value to set
+     * @return the IdentifyOptionalParameter object itself.
+     */
+    public IdentifyOptionalParameter withConfidenceThreshold(Double confidenceThreshold) {
         this.confidenceThreshold = confidenceThreshold;
         return this;
     }
 
+    /**
+     * Get the thisclientacceptLanguage value.
+     *
+     * @return the thisclientacceptLanguage value
+     */
+    public String thisclientacceptLanguage() {
+        return this.thisclientacceptLanguage;
     }
+
+    /**
+     * Set the thisclientacceptLanguage value.
+     *
+     * @param thisclientacceptLanguage the thisclientacceptLanguage value to set
+     * @return the IdentifyOptionalParameter object itself.
+     */
+    public IdentifyOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
+        this.thisclientacceptLanguage = thisclientacceptLanguage;
+        return this;
+    }
+
+}

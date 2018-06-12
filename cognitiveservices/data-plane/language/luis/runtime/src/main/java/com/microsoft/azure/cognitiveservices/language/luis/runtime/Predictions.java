@@ -10,9 +10,7 @@ package com.microsoft.azure.cognitiveservices.language.luis.runtime;
 
 import com.microsoft.azure.cognitiveservices.language.luis.runtime.models.ResolveOptionalParameter;
 import com.microsoft.azure.cognitiveservices.language.luis.runtime.models.APIErrorException;
-import com.microsoft.azure.cognitiveservices.language.luis.runtime.models.AzureRegions;
 import com.microsoft.azure.cognitiveservices.language.luis.runtime.models.LuisResult;
-import java.io.IOException;
 import rx.Observable;
 
 /**
@@ -22,7 +20,7 @@ import rx.Observable;
 public interface Predictions {
     /**
      * Gets predictions for a given utterance, in the form of intents and entities. The current maximum query size
-     *  is 500 characters.
+     *   is 500 characters.
      *
      * @param appId The LUIS application ID (Guid).
      * @param query The utterance to predict.
@@ -32,11 +30,12 @@ public interface Predictions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the LuisResult object if successful.
      */
+    
     LuisResult resolve(String appId, String query, ResolveOptionalParameter resolveOptionalParameter);
 
     /**
      * Gets predictions for a given utterance, in the form of intents and entities. The current maximum query size
-     *  is 500 characters.
+     *   is 500 characters.
      *
      * @param appId The LUIS application ID (Guid).
      * @param query The utterance to predict.
@@ -44,6 +43,119 @@ public interface Predictions {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the LuisResult object
      */
+    
     Observable<LuisResult> resolveAsync(String appId, String query, ResolveOptionalParameter resolveOptionalParameter);
+
+    /**
+     * Gets predictions for a given utterance, in the form of intents and entities. The current maximum query size
+     *   is 500 characters.
+     *
+     * @return the first stage of the resolve call
+     */
+    PredictionsResolveDefinitionStages.WithAppId resolve();
+
+    /**
+     * Grouping of resolve definition stages.
+     */
+    interface PredictionsResolveDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The LUIS application ID (Guid).
+             *
+             * @return next definition stage
+             */
+            WithQuery withAppId(String appId);
+        }
+        /**
+         * The stage of the definition to be specify query.
+         */
+        interface WithQuery {
+            /**
+             * The utterance to predict.
+             *
+             * @return next definition stage
+             */
+            PredictionsResolveDefinitionStages.WithExecute withQuery(String query);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The timezone offset for the location of the request.
+             *
+             * @return next definition stage
+             */
+            PredictionsResolveDefinitionStages.WithExecute withTimezoneOffset(Double timezoneOffset);
+
+            /**
+             * If true, return all intents instead of just the top scoring intent.
+             *
+             * @return next definition stage
+             */
+            PredictionsResolveDefinitionStages.WithExecute withVerbose(Boolean verbose);
+
+            /**
+             * Use the staging endpoint slot.
+             *
+             * @return next definition stage
+             */
+            PredictionsResolveDefinitionStages.WithExecute withStaging(Boolean staging);
+
+            /**
+             * Enable spell checking.
+             *
+             * @return next definition stage
+             */
+            PredictionsResolveDefinitionStages.WithExecute withSpellCheck(Boolean spellCheck);
+
+            /**
+             * The subscription key to use when enabling bing spell check.
+             *
+             * @return next definition stage
+             */
+            PredictionsResolveDefinitionStages.WithExecute withBingSpellCheckSubscriptionKey(String bingSpellCheckSubscriptionKey);
+
+            /**
+             * Log query (default is true).
+             *
+             * @return next definition stage
+             */
+            PredictionsResolveDefinitionStages.WithExecute withLog(Boolean log);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends PredictionsResolveDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the LuisResult object if successful.
+             */
+            LuisResult execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the LuisResult object
+             */
+            Observable<LuisResult> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of resolve definition.
+     */
+    interface PredictionsResolveDefinition extends
+        PredictionsResolveDefinitionStages.WithAppId,
+        PredictionsResolveDefinitionStages.WithQuery,
+        PredictionsResolveDefinitionStages.WithExecute {
+    }
 
 }

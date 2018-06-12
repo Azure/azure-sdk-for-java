@@ -12,123 +12,137 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * The optional parameters class for "findSimilar" method.
+ * The FindSimilarOptionalParameter model.
  */
 public class FindSimilarOptionalParameter {
     /**
-    * An existing user-specified unique candidate face list, created in Face List - Create a Face List. Face list contains a
-    * set of persistedFaceIds which are persisted and will never expire. Parameter faceListId and faceIds should not be
-    * provided at the same time.
-    */
+     * An existing user-specified unique candidate face list, created in Face
+     * List - Create a Face List. Face list contains a set of persistedFaceIds
+     * which are persisted and will never expire. Parameter faceListId and
+     * faceIds should not be provided at the same time.
+     */
     private String faceListId;
 
     /**
-    * An array of candidate faceIds. All of them are created by Face - Detect and the faceIds will expire 24 hours after the
-    * detection call.
-    */
+     * An array of candidate faceIds. All of them are created by Face - Detect
+     * and the faceIds will expire 24 hours after the detection call.
+     */
     private List<UUID> faceIds;
 
     /**
-    * The number of top similar faces returned. The valid range is [1, 1000].
-    */
+     * The number of top similar faces returned. The valid range is [1, 1000].
+     */
     private Integer maxNumOfCandidatesReturned;
 
     /**
-    * Similar face searching mode. It can be "matchPerson" or "matchFace". Possible values include: 'matchPerson',
-    * 'matchFace'.
-    */
+     * Similar face searching mode. It can be "matchPerson" or "matchFace".
+     * Possible values include: 'matchPerson', 'matchFace'.
+     */
     private FindSimilarMatchMode mode;
 
     /**
-    * Get the faceListId value.
-    *
-    * @return the faceListId value
-    */
+     * Gets or sets the preferred language for the response.
+     */
+    private String thisclientacceptLanguage;
+
+    /**
+     * Get the faceListId value.
+     *
+     * @return the faceListId value
+     */
     public String faceListId() {
         return this.faceListId;
     }
 
     /**
-    * Get the faceIds value.
-    *
-    * @return the faceIds value
-    */
-    public List<UUID> faceIds() {
-        return this.faceIds;
-    }
-
-    /**
-    * Get the maxNumOfCandidatesReturned value.
-    *
-    * @return the maxNumOfCandidatesReturned value
-    */
-    public Integer maxNumOfCandidatesReturned() {
-        return this.maxNumOfCandidatesReturned;
-    }
-
-    /**
-    * Get the mode value.
-    *
-    * @return the mode value
-    */
-    public FindSimilarMatchMode mode() {
-        return this.mode;
-    }
-
-    /**
-    * Set the faceListId value.
-    * <p>
-    * An existing user-specified unique candidate face list, created in Face List - Create a Face List. Face list contains a
-    * set of persistedFaceIds which are persisted and will never expire. Parameter faceListId and faceIds should not be
-    * provided at the same time.
-    *
-    * @param faceListId the faceListId value to set
-    * @return the findSimilarOptionalParameter object itself.
-    */
+     * Set the faceListId value.
+     *
+     * @param faceListId the faceListId value to set
+     * @return the FindSimilarOptionalParameter object itself.
+     */
     public FindSimilarOptionalParameter withFaceListId(String faceListId) {
         this.faceListId = faceListId;
         return this;
     }
 
     /**
-    * Set the faceIds value.
-    * <p>
-    * An array of candidate faceIds. All of them are created by Face - Detect and the faceIds will expire 24 hours after the
-    * detection call.
-    *
-    * @param faceIds the faceIds value to set
-    * @return the findSimilarOptionalParameter object itself.
-    */
+     * Get the faceIds value.
+     *
+     * @return the faceIds value
+     */
+    public List<UUID> faceIds() {
+        return this.faceIds;
+    }
+
+    /**
+     * Set the faceIds value.
+     *
+     * @param faceIds the faceIds value to set
+     * @return the FindSimilarOptionalParameter object itself.
+     */
     public FindSimilarOptionalParameter withFaceIds(List<UUID> faceIds) {
         this.faceIds = faceIds;
         return this;
     }
 
     /**
-    * Set the maxNumOfCandidatesReturned value.
-    * <p>
-    * The number of top similar faces returned. The valid range is [1, 1000].
-    *
-    * @param maxNumOfCandidatesReturned the maxNumOfCandidatesReturned value to set
-    * @return the findSimilarOptionalParameter object itself.
-    */
-    public FindSimilarOptionalParameter withMaxNumOfCandidatesReturned(int maxNumOfCandidatesReturned) {
+     * Get the maxNumOfCandidatesReturned value.
+     *
+     * @return the maxNumOfCandidatesReturned value
+     */
+    public Integer maxNumOfCandidatesReturned() {
+        return this.maxNumOfCandidatesReturned;
+    }
+
+    /**
+     * Set the maxNumOfCandidatesReturned value.
+     *
+     * @param maxNumOfCandidatesReturned the maxNumOfCandidatesReturned value to set
+     * @return the FindSimilarOptionalParameter object itself.
+     */
+    public FindSimilarOptionalParameter withMaxNumOfCandidatesReturned(Integer maxNumOfCandidatesReturned) {
         this.maxNumOfCandidatesReturned = maxNumOfCandidatesReturned;
         return this;
     }
 
     /**
-    * Set the mode value.
-    * <p>
-    * Similar face searching mode. It can be "matchPerson" or "matchFace". Possible values include: 'matchPerson',
-    * 'matchFace'.
-    *
-    * @param mode the mode value to set
-    * @return the findSimilarOptionalParameter object itself.
-    */
+     * Get the mode value.
+     *
+     * @return the mode value
+     */
+    public FindSimilarMatchMode mode() {
+        return this.mode;
+    }
+
+    /**
+     * Set the mode value.
+     *
+     * @param mode the mode value to set
+     * @return the FindSimilarOptionalParameter object itself.
+     */
     public FindSimilarOptionalParameter withMode(FindSimilarMatchMode mode) {
         this.mode = mode;
         return this;
     }
 
+    /**
+     * Get the thisclientacceptLanguage value.
+     *
+     * @return the thisclientacceptLanguage value
+     */
+    public String thisclientacceptLanguage() {
+        return this.thisclientacceptLanguage;
     }
+
+    /**
+     * Set the thisclientacceptLanguage value.
+     *
+     * @param thisclientacceptLanguage the thisclientacceptLanguage value to set
+     * @return the FindSimilarOptionalParameter object itself.
+     */
+    public FindSimilarOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
+        this.thisclientacceptLanguage = thisclientacceptLanguage;
+        return this;
+    }
+
+}

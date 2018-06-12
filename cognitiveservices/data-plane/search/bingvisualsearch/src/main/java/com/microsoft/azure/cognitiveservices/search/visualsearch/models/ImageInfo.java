@@ -11,9 +11,9 @@ package com.microsoft.azure.cognitiveservices.search.visualsearch.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * A JSON object containing information about the image. The image and
- * imageInsightsToken fields are mutually exclusive – the body of the request
- * must include only one of them.
+ * A JSON object that identities the image to get insights of . It also
+ * includes the optional crop area that you use to identify the region of
+ * interest in the image.
  */
 public class ImageInfo {
     /**
@@ -23,25 +23,29 @@ public class ImageInfo {
      * [Image](https://docs.microsoft.com/en-us/rest/api/cognitiveservices/bing-images-api-v7-reference#image)
      * object's
      * [imageInsightsToken](https://docs.microsoft.com/en-us/rest/api/cognitiveservices/bing-images-api-v7-reference#image-imageinsightstoken)
-     * field contains the token. The image and imageInsightsToken fields are
-     * mutually exclusive – do not specify both.
+     * field contains the token. The imageInsightsToken and url fields mutually
+     * exclusive; do not specify both. Do not specify an insights token if the
+     * request includes the image form data.
      */
-    @JsonProperty(value = "imageInsightsToken", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "imageInsightsToken")
     private String imageInsightsToken;
 
     /**
-     * The URL of the input image. The URL should match the image specified by
-     * the imageInsightsToken fields if both are present. The image and URL
-     * fields are mutually exclusive – do not specify both.
+     * The URL of the input image. The imageInsightsToken and url fields are
+     * mutually exclusive; do not specify both. Do not specify the URL if the
+     * request includes the image form data.
      */
-    @JsonProperty(value = "url", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "url")
     private String url;
 
     /**
      * A JSON object consisting of coordinates specifying the four corners of a
-     * cropped rectangle within the input image.
+     * cropped rectangle within the input image. Use the crop area to identify
+     * the region of interest in the image. You can apply the crop area to the
+     * images specified using the imageInsightsToken or url fields, or an image
+     * binary specified in an image form data.
      */
-    @JsonProperty(value = "cropArea", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "cropArea")
     private CropArea cropArea;
 
     /**
@@ -54,6 +58,17 @@ public class ImageInfo {
     }
 
     /**
+     * Set the imageInsightsToken value.
+     *
+     * @param imageInsightsToken the imageInsightsToken value to set
+     * @return the ImageInfo object itself.
+     */
+    public ImageInfo withImageInsightsToken(String imageInsightsToken) {
+        this.imageInsightsToken = imageInsightsToken;
+        return this;
+    }
+
+    /**
      * Get the url value.
      *
      * @return the url value
@@ -63,12 +78,34 @@ public class ImageInfo {
     }
 
     /**
+     * Set the url value.
+     *
+     * @param url the url value to set
+     * @return the ImageInfo object itself.
+     */
+    public ImageInfo withUrl(String url) {
+        this.url = url;
+        return this;
+    }
+
+    /**
      * Get the cropArea value.
      *
      * @return the cropArea value
      */
     public CropArea cropArea() {
         return this.cropArea;
+    }
+
+    /**
+     * Set the cropArea value.
+     *
+     * @param cropArea the cropArea value to set
+     * @return the ImageInfo object itself.
+     */
+    public ImageInfo withCropArea(CropArea cropArea) {
+        this.cropArea = cropArea;
+        return this;
     }
 
 }
