@@ -111,10 +111,25 @@ public class PartitionManagerOptions {
         this.checkpointTimeoutInSeconds = timeout;
     }
 
+    /**
+     * Gets the delay time between the first scan for available partitions and the second. This is
+     * part of a startup optimization which allows individual hosts to become visible to other
+     * hosts, and thereby get a more accurate count of the number of hosts in the system, before
+     * they try to estimate how many partitions they should own.
+     * 
+     * Defaults to DefaultStartupScanDelayInSeconds.
+     * 
+     * @return delay time in seconds
+     */    
     public int getStartupScanDelayInSeconds() {
         return this.startupScanDelayInSeconds;
     }
 
+    /**
+     * Sets the delay time in seconds between the first scan and the second.
+     * 
+     * @param delay  new delay time in seconds
+     */    
     public void setStartupScanDelayInSeconds(int delay) {
         if (delay <= 0) {
             throw new IllegalArgumentException("Startup scan delay must be greater than 0");
@@ -122,10 +137,24 @@ public class PartitionManagerOptions {
         this.startupScanDelayInSeconds = delay;
     }
 
+    /**
+     * There are two possible interval times between scans for available partitions, fast and slow.
+     * The fast (short) interval is used after a scan in which lease stealing has occurred, to
+     * promote quicker rebalancing.
+     * 
+     * Defaults to DefaultFastScanIntervalInSeconds.
+     * 
+     * @return interval time in seconds
+     */
     public int getFastScanIntervalInSeconds() {
         return this.fastScanIntervalInSeconds;
     }
 
+    /**
+     * Sets the time for fast interval.
+     * 
+     * @param interval  new fast interval in seconds
+     */
     public void setFastScanIntervalInSeconds(int interval) {
         if (interval <= 0) {
             throw new IllegalArgumentException("Fast scan interval must be greater than 0");
@@ -133,10 +162,23 @@ public class PartitionManagerOptions {
         this.fastScanIntervalInSeconds = interval;
     }
 
+    /**
+     * The slow (long) interval is used after a scan in which lease stealing did not occur, to
+     * reduce unnecessary scanning when the system is in steady state.
+     * 
+     * Defaults to DefaultSlowScanIntervalInSeconds.
+     * 
+     * @return interval time in seconds
+     */
     public int getSlowScanIntervalInSeconds() {
         return this.slowScanIntervalInSeconds;
     }
 
+    /**
+     * Sets the time for slow interval.
+     * 
+     * @param interval  new slow interval in seconds
+     */
     public void setSlowScanIntervalInSeconds(int interval) {
         if (interval <= 0) {
             throw new IllegalArgumentException("Slow scan interval must be greater than 0");

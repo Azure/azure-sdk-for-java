@@ -16,7 +16,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import org.junit.Test;
 import static org.junit.Assert.assertTrue;
 
-public class PartitionManagerTest {
+public class PartitionManagerTest extends TestBase {
     private ILeaseManager[] leaseManagers;
     private ICheckpointManager[] checkpointManagers;
     private EventProcessorHost[] hosts;
@@ -35,8 +35,6 @@ public class PartitionManagerTest {
 
     @Test
     public void partitionBalancingExactMultipleTest() throws Exception {
-        TestUtilities.log("partitionBalancingExactMultipleTest");
-
         setup(2, 4, 0, 0); // two hosts, four partitions, no latency, default threadpool
         this.countOfChecks = 0;
         this.desiredDistributionDetected = 0;
@@ -50,7 +48,7 @@ public class PartitionManagerTest {
             try {
                 Thread.sleep(15000);
             } catch (InterruptedException e) {
-                TestUtilities.log("Sleep interrupted, emergency bail");
+            	TestBase.logError("Sleep interrupted, emergency bail");
                 Thread.currentThread().interrupt();
                 throw e;
             }
@@ -62,14 +60,10 @@ public class PartitionManagerTest {
 
         this.leaseManagers[0].deleteLeaseStore().get();
         this.checkpointManagers[0].deleteCheckpointStore().get();
-
-        TestUtilities.log("DONE");
     }
 
     @Test
     public void partitionBalancingUnevenTest() throws Exception {
-        TestUtilities.log("partitionBalancingUnevenTest");
-
         setup(5, 16, 250, 0); // five hosts, sixteen partitions, 250ms latency, default threadpool
         this.countOfChecks = 0;
         this.desiredDistributionDetected = 0;
@@ -83,7 +77,7 @@ public class PartitionManagerTest {
             try {
                 Thread.sleep(15000);
             } catch (InterruptedException e) {
-                TestUtilities.log("Sleep interrupted, emergency bail");
+            	TestBase.logError("Sleep interrupted, emergency bail");
                 Thread.currentThread().interrupt();
                 throw e;
             }
@@ -95,15 +89,11 @@ public class PartitionManagerTest {
 
         this.leaseManagers[0].deleteLeaseStore().get();
         this.checkpointManagers[0].deleteCheckpointStore().get();
-
-        TestUtilities.log("DONE");
     }
 
 
-    //@Test
+    @Test
     public void partitionBalancingHugeTest() throws Exception {
-        TestUtilities.log("partitionBalancingHugeTest");
-
         setup(10, 201, 250, 20); // ten hosts, 201 partitions, 250ms latency, threadpool with 20 threads
         this.countOfChecks = 0;
         this.desiredDistributionDetected = 0;
@@ -117,7 +107,7 @@ public class PartitionManagerTest {
             try {
                 Thread.sleep(15000);
             } catch (InterruptedException e) {
-                TestUtilities.log("Sleep interrupted, emergency bail");
+            	TestBase.logError("Sleep interrupted, emergency bail");
                 Thread.currentThread().interrupt();
                 throw e;
             }
@@ -129,14 +119,10 @@ public class PartitionManagerTest {
 
         this.leaseManagers[0].deleteLeaseStore().get();
         this.checkpointManagers[0].deleteCheckpointStore().get();
-
-        TestUtilities.log("DONE");
     }
     
-    //@Test
+    @Test
     public void partitionRebalancingTest() throws Exception {
-        TestUtilities.log("partitionRebalancingTest");
-
         setup(3, 8, 0, 8); // three hosts, eight partitions, 250ms latency, default threadpool
 
         //
@@ -153,7 +139,7 @@ public class PartitionManagerTest {
             try {
                 Thread.sleep(15000);
             } catch (InterruptedException e) {
-                TestUtilities.log("Sleep interrupted, emergency bail");
+            	TestBase.logError("Sleep interrupted, emergency bail");
                 Thread.currentThread().interrupt();
                 throw e;
             }
@@ -174,7 +160,7 @@ public class PartitionManagerTest {
             try {
                 Thread.sleep(15000);
             } catch (InterruptedException e) {
-                TestUtilities.log("Sleep interrupted, emergency bail");
+            	TestBase.logError("Sleep interrupted, emergency bail");
                 Thread.currentThread().interrupt();
                 throw e;
             }
@@ -195,7 +181,7 @@ public class PartitionManagerTest {
             try {
                 Thread.sleep(15000);
             } catch (InterruptedException e) {
-                TestUtilities.log("Sleep interrupted, emergency bail");
+            	TestBase.logError("Sleep interrupted, emergency bail");
                 Thread.currentThread().interrupt();
                 throw e;
             }
@@ -206,14 +192,10 @@ public class PartitionManagerTest {
 
         this.leaseManagers[1].deleteLeaseStore().get();
         this.checkpointManagers[1].deleteCheckpointStore().get();
-
-        TestUtilities.log("DONE");
     }
 
     @Test
     public void partitionBalancingTooManyHostsTest() throws Exception {
-        TestUtilities.log("partitionBalancingTooManyHostsTest");
-
         setup(10, 4, 0, 8); // ten hosts, four partitions
         this.countOfChecks = 0;
         this.desiredDistributionDetected = 0;
@@ -227,7 +209,7 @@ public class PartitionManagerTest {
             try {
                 Thread.sleep(15000);
             } catch (InterruptedException e) {
-                TestUtilities.log("Sleep interrupted, emergency bail");
+            	TestBase.logError("Sleep interrupted, emergency bail");
                 Thread.currentThread().interrupt();
                 throw e;
             }
@@ -239,8 +221,6 @@ public class PartitionManagerTest {
 
         this.leaseManagers[0].deleteLeaseStore().get();
         this.checkpointManagers[0].deleteCheckpointStore().get();
-
-        TestUtilities.log("DONE");
     }
 
     synchronized void checkPartitionDistribution() {
@@ -248,7 +228,7 @@ public class PartitionManagerTest {
             return;
         }
 
-        TestUtilities.log("Checking partition distribution");
+        TestBase.logInfo("Checking partition distribution");
         int[] countsPerHost = new int[this.partitionManagers.length];
         int totalCounts = 0;
         int runningCount = 0;
@@ -264,23 +244,23 @@ public class PartitionManagerTest {
                 countsPerHost[i]++;
                 totalCounts++;
             }
-            TestUtilities.log(blah.toString());
+            TestBase.logInfo(blah.toString());
             if (this.running[i]) {
             	runningCount++;
             }
         }
 
         if (totalCounts != this.partitionCount) {
-            TestUtilities.log("Unowned leases, " + totalCounts + " owned versus " + this.partitionCount + " partitions, skipping checks");
+        	TestBase.logInfo("Unowned leases, " + totalCounts + " owned versus " + this.partitionCount + " partitions, skipping checks");
             return;
         }
         if (this.overrideHostCount > 0) {
         	if (runningCount != this.overrideHostCount) {
-        		TestUtilities.log("Hosts not running, " + this.overrideHostCount + " expected versus " + runningCount + " found, skipping checks");
+        		TestBase.logInfo("Hosts not running, " + this.overrideHostCount + " expected versus " + runningCount + " found, skipping checks");
         		return;
         	}
         } else if (runningCount != this.partitionManagers.length) {
-    		TestUtilities.log("Hosts not running, " + this.partitionManagers.length + " expected versus " + runningCount + " found, skipping checks");
+        	TestBase.logInfo("Hosts not running, " + this.partitionManagers.length + " expected versus " + runningCount + " found, skipping checks");
     		return;
         }
 
@@ -295,7 +275,7 @@ public class PartitionManagerTest {
                 lowest = Integer.min(lowest, countsPerHost[i]);
             }
         }
-        TestUtilities.log("Check " + this.countOfChecks + "  Highest " + highest + "  Lowest " + lowest + "  Descnt " + this.desiredDistributionDetected);
+        TestBase.logInfo("Check " + this.countOfChecks + "  Highest " + highest + "  Lowest " + lowest + "  Descnt " + this.desiredDistributionDetected);
         if (this.expectEqualDistribution) {
             // All hosts should have exactly equal counts, so highest == lowest
             desired = (highest == lowest);
@@ -305,20 +285,20 @@ public class PartitionManagerTest {
             desired = ((highest - lowest) == 1);
         }
         if (desired) {
-            TestUtilities.log("Evenest distribution detected");
+        	TestBase.logInfo("Evenest distribution detected");
             this.desiredDistributionDetected++;
             if (this.desiredDistributionDetected > this.partitionManagers.length) {
                 // Every partition manager has looked at the current distribution and
                 // it has not changed. The algorithm is stable once it reaches the desired state.
                 // No need to keep iterating.
-                TestUtilities.log("Desired distribution is stable");
+            	TestBase.logInfo("Desired distribution is stable");
                 this.keepGoing = false;
             }
         } else {
             if ((this.desiredDistributionDetected > 0) && !this.shuttingDown) {
                 // If we have detected the desired distribution on previous iterations
                 // but not on this one, then the algorithm is unstable. Bail and fail.
-                TestUtilities.log("Desired distribution was not stable");
+            	TestBase.logInfo("Desired distribution was not stable");
                 this.keepGoing = false;
             }
         }
@@ -331,6 +311,9 @@ public class PartitionManagerTest {
     }
 
     private void setup(int hostCount, int partitionCount, long latency, int threads) {
+    	// PartitionManager tests are all long. Skip if running automated (maven, appveyor, etc.)
+    	skipIfAutomated();
+    	
         this.leaseManagers = new ILeaseManager[hostCount];
         this.checkpointManagers = new ICheckpointManager[hostCount];
         this.hosts = new EventProcessorHost[hostCount];
@@ -349,7 +332,7 @@ public class PartitionManagerTest {
             	threadpool = Executors.newScheduledThreadPool(threads);
             }
             this.hosts[i] = new EventProcessorHost("dummyHost" + String.valueOf(i), "NOTREAL", EventHubClient.DEFAULT_CONSUMER_GROUP_NAME,
-                    TestUtilities.syntacticallyCorrectDummyConnectionString, cm, lm, threadpool, null);
+                    RealEventHubUtilities.syntacticallyCorrectDummyConnectionString, cm, lm, threadpool, null);
 
             lm.initialize(this.hosts[i].getHostContext());
             lm.setLatency(latency);
@@ -387,18 +370,18 @@ public class PartitionManagerTest {
             this.partitionManagers[index].initialize().get();
             this.running[index] = true;
         } catch (Exception e) {
-            TestUtilities.log("TASK START FAILED " + e.toString() + " " + e.getMessage());
+        	TestBase.logError("TASK START FAILED " + e.toString() + " " + e.getMessage());
             throw e;
         }
     }
 
     private void stopManagers() throws InterruptedException, ExecutionException {
-        TestUtilities.log("SHUTTING DOWN");
+    	TestBase.logInfo("SHUTTING DOWN");
         this.shuttingDown = true;
         for (int i = 0; i < this.partitionManagers.length; i++) {
             if (this.running[i]) {
                 this.partitionManagers[i].stopPartitions().get();
-                TestUtilities.log("Host " + i + " stopped");
+                TestBase.logInfo("Host " + i + " stopped");
             }
         }
     }
@@ -406,7 +389,7 @@ public class PartitionManagerTest {
     private void stopSingleManager(int index) throws InterruptedException, ExecutionException {
         if (this.running[index]) {
             this.partitionManagers[index].stopPartitions().get();
-            TestUtilities.log("Host " + index + " stopped");
+            TestBase.logInfo("Host " + index + " stopped");
             this.running[index] = false;
         }
     }
@@ -421,8 +404,8 @@ public class PartitionManagerTest {
 
         Iterable<String> getOwnedPartitions() {
             Iterable<String> retval = null;
-            if (this.pump != null) {
-                retval = ((DummyPump) this.pump).getPumpsList();
+            if (this.pumpManager != null) {
+                retval = ((DummyPump) this.pumpManager).getPumpsList();
             } else {
                 // If the manager isn't started, return an empty list.
                 retval = new ArrayList<String>();
@@ -440,13 +423,13 @@ public class PartitionManagerTest {
         }
 
         @Override
-        Pump createPumpTestHook() {
+        PumpManager createPumpTestHook() {
             return new DummyPump(this.hostContext, this);
         }
 
         @Override
         void onInitializeCompleteTestHook() {
-            TestUtilities.log("PartitionManager for host " + this.hostContext.getHostName() + " initialized stores OK");
+        	TestBase.logInfo("PartitionManager for host " + this.hostContext.getHostName() + " initialized stores OK");
         }
 
         @Override

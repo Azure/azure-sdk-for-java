@@ -22,7 +22,7 @@ class PartitionManager extends Closable {
     protected final HostContext hostContext;
     final private Object scanFutureSynchronizer = new Object();
     private final int retryMax = 5;
-    protected Pump pump = null;
+    protected PumpManager pumpManager = null;
     protected volatile String partitionIds[] = null;
     private ScheduledFuture<?> scanFuture = null;
 
@@ -91,8 +91,8 @@ class PartitionManager extends Closable {
     }
 
     // Testability hook: allows a test subclass to insert dummy pump.
-    Pump createPumpTestHook() {
-        return new Pump(this.hostContext, this);
+    PumpManager createPumpTestHook() {
+        return new PumpManager(this.hostContext, this);
     }
 
     // Testability hook: called after stores are initialized.
@@ -116,9 +116,9 @@ class PartitionManager extends Closable {
         // Stop any partition pumps that are running.
         CompletableFuture<Void> stopping = CompletableFuture.completedFuture(null);
 
-        if (this.pump != null) {
+        if (this.pumpManager != null) {
             TRACE_LOGGER.info(this.hostContext.withHost("Shutting down all pumps"));
-            stopping = this.pump.removeAllPumps(CloseReason.Shutdown)
+            stopping = this.pumpManager.removeAllPumps(CloseReason.Shutdown)
             .whenCompleteAsync((empty, e) -> {
                 if (e != null) {
                     Throwable notifyWith = LoggingUtils.unwrapException(e, null);
@@ -142,7 +142,7 @@ class PartitionManager extends Closable {
     }
 
     public CompletableFuture<Void> initialize() {
-        this.pump = createPumpTestHook();
+        this.pumpManager = createPumpTestHook();
 
         // Stage 0: get partition ids and cache
         return cachePartitionIds()
@@ -290,7 +290,7 @@ class PartitionManager extends Closable {
         TRACE_LOGGER.debug(this.hostContext.withHost("Starting lease scan"));
         long start = System.currentTimeMillis();
 
-        (new PartitionScanner(this.hostContext, (lease) -> this.pump.addPump(lease), this)).scan(isFirst)
+        (new PartitionScanner(this.hostContext, (lease) -> this.pumpManager.addPump(lease), this)).scan(isFirst)
                 .whenCompleteAsync((didSteal, e) ->
                 {
                     TRACE_LOGGER.debug(this.hostContext.withHost("Scanning took " + (System.currentTimeMillis() - start)));

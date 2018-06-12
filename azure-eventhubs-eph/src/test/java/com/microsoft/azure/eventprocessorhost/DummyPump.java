@@ -11,7 +11,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
 
 
-class DummyPump extends Pump {
+class DummyPump extends PumpManager {
     public DummyPump(HostContext hostContext, Closable parent) {
         super(hostContext, parent);
     }
@@ -27,7 +27,7 @@ class DummyPump extends Pump {
 
     @Override
     protected void removingPumpTestHook(String partitionId, Throwable e) {
-    	TestUtilities.log("Steal detected, host " + this.hostContext.getHostName() + " removing " + partitionId);
+    	TestBase.logInfo("Steal detected, host " + this.hostContext.getHostName() + " removing " + partitionId);
     }
 
 

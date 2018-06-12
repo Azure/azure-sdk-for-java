@@ -12,12 +12,12 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
 
-class Pump extends Closable {
-    private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(Pump.class);
+class PumpManager extends Closable {
+    private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(PumpManager.class);
     protected final HostContext hostContext;
     protected ConcurrentHashMap<String, PartitionPump> pumpStates; // protected for testability
 
-    public Pump(HostContext hostContext, Closable parent) {
+    public PumpManager(HostContext hostContext, Closable parent) {
     	super(parent);
     	
         this.hostContext = hostContext;

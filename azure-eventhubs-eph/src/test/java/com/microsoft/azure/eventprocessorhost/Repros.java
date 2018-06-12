@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
 public class Repros extends TestBase {
@@ -23,10 +24,8 @@ public class Repros extends TestBase {
      */
     //@Test
     public void conflictingHosts() throws Exception {
-        System.out.println("conflictingHosts starting");
-
         RealEventHubUtilities utils = new RealEventHubUtilities();
-        utils.setup(RealEventHubUtilities.QUERY_ENTITY_FOR_PARTITIONS);
+        utils.setup(true, RealEventHubUtilities.QUERY_ENTITY_FOR_PARTITIONS);
 
         String telltale = "conflictingHosts-telltale-" + EventProcessorHost.safeCreateUUID();
         String conflictingName = "conflictingHosts-NOTSAFE";
@@ -36,16 +35,16 @@ public class Repros extends TestBase {
 
         PrefabGeneralErrorHandler general1 = new PrefabGeneralErrorHandler();
         PrefabProcessorFactory factory1 = new PrefabProcessorFactory(telltale, doCheckpointing, doMarker);
-        EventProcessorHost host1 = new EventProcessorHost(conflictingName, utils.getConnectionString().getEventHubName(),
-                utils.getConsumerGroup(), utils.getConnectionString().toString(),
+        EventProcessorHost host1 = new EventProcessorHost(conflictingName, utils.getConnectionString(true).getEventHubName(),
+                utils.getConsumerGroup(), utils.getConnectionString(true).toString(),
                 TestUtilities.getStorageConnectionString(), storageName);
         EventProcessorOptions options1 = EventProcessorOptions.getDefaultOptions();
         options1.setExceptionNotification(general1);
 
         PrefabGeneralErrorHandler general2 = new PrefabGeneralErrorHandler();
         PrefabProcessorFactory factory2 = new PrefabProcessorFactory(telltale, doCheckpointing, doMarker);
-        EventProcessorHost host2 = new EventProcessorHost(conflictingName, utils.getConnectionString().getEventHubName(),
-                utils.getConsumerGroup(), utils.getConnectionString().toString(),
+        EventProcessorHost host2 = new EventProcessorHost(conflictingName, utils.getConnectionString(true).getEventHubName(),
+                utils.getConsumerGroup(), utils.getConnectionString(true).toString(),
                 TestUtilities.getStorageConnectionString(), storageName);
         EventProcessorOptions options2 = EventProcessorOptions.getDefaultOptions();
         options2.setExceptionNotification(general2);
@@ -66,18 +65,16 @@ public class Repros extends TestBase {
 
     @Test
     public void infiniteReceive() throws Exception {
-        System.out.println("infiniteReceive starting");
-
         RealEventHubUtilities utils = new RealEventHubUtilities();
-        utils.setupWithoutSenders(RealEventHubUtilities.QUERY_ENTITY_FOR_PARTITIONS);
+        utils.setupWithoutSenders(true, RealEventHubUtilities.QUERY_ENTITY_FOR_PARTITIONS);
 
         PrefabGeneralErrorHandler genErr = new PrefabGeneralErrorHandler();
-        PrefabProcessorFactory factory = new PrefabProcessorFactory("never match", PrefabEventProcessor.CheckpointChoices.CKP_NONE, false, false);
+        PrefabProcessorFactory factory = new PrefabProcessorFactory("never match", PrefabEventProcessor.CheckpointChoices.CKP_NONE, true, false);
         InMemoryCheckpointManager checkpointer = new InMemoryCheckpointManager();
         InMemoryLeaseManager leaser = new InMemoryLeaseManager();
-        EventProcessorHost host = new EventProcessorHost("infiniteReceive-1", utils.getConnectionString().getEventHubName(),
-                utils.getConsumerGroup(), utils.getConnectionString().toString(),
-                checkpointer, leaser);
+        EventProcessorHost host = new EventProcessorHost("infiniteReceive-1", utils.getConnectionString(true).getEventHubName(),
+                utils.getConsumerGroup(), utils.getConnectionString(true).toString(),
+                checkpointer, leaser, Executors.newScheduledThreadPool(16), null);
         checkpointer.initialize(host.getHostContext());
         leaser.initialize(host.getHostContext());
 
@@ -100,27 +97,25 @@ public class Repros extends TestBase {
         host.unregisterEventProcessor();
     }
 
-    @Test
+    //@Test
     public void infiniteReceive2Hosts() throws Exception {
-        System.out.println("infiniteReceive2Hosts starting");
-
         RealEventHubUtilities utils = new RealEventHubUtilities();
-        utils.setup(RealEventHubUtilities.QUERY_ENTITY_FOR_PARTITIONS);
+        utils.setup(true, RealEventHubUtilities.QUERY_ENTITY_FOR_PARTITIONS);
 
         String storageName = "ir2hosts" + EventProcessorHost.safeCreateUUID();
 
         PrefabGeneralErrorHandler general1 = new PrefabGeneralErrorHandler();
         PrefabProcessorFactory factory1 = new PrefabProcessorFactory("never match", PrefabEventProcessor.CheckpointChoices.CKP_NONE, true, false);
-        EventProcessorHost host1 = new EventProcessorHost("infiniteReceive2Hosts-1", utils.getConnectionString().getEventHubName(),
-                utils.getConsumerGroup(), utils.getConnectionString().toString(),
+        EventProcessorHost host1 = new EventProcessorHost("infiniteReceive2Hosts-1", utils.getConnectionString(true).getEventHubName(),
+                utils.getConsumerGroup(), utils.getConnectionString(true).toString(),
                 TestUtilities.getStorageConnectionString(), storageName);
         EventProcessorOptions options1 = EventProcessorOptions.getDefaultOptions();
         options1.setExceptionNotification(general1);
 
         PrefabGeneralErrorHandler general2 = new PrefabGeneralErrorHandler();
         PrefabProcessorFactory factory2 = new PrefabProcessorFactory("never match", PrefabEventProcessor.CheckpointChoices.CKP_NONE, true, false);
-        EventProcessorHost host2 = new EventProcessorHost("infiniteReceive2Hosts-2", utils.getConnectionString().getEventHubName(),
-                utils.getConsumerGroup(), utils.getConnectionString().toString(),
+        EventProcessorHost host2 = new EventProcessorHost("infiniteReceive2Hosts-2", utils.getConnectionString(true).getEventHubName(),
+                utils.getConsumerGroup(), utils.getConnectionString(true).toString(),
                 TestUtilities.getStorageConnectionString(), storageName);
         EventProcessorOptions options2 = EventProcessorOptions.getDefaultOptions();
         options2.setExceptionNotification(general2);
@@ -146,10 +141,10 @@ public class Repros extends TestBase {
      * receivers. Then we finally determined that a thread was leaked every time a receiver was closed, with no special
      * sauce required.
      */
-    @Test
+    //@Test
     public void rawEpochStealing() throws Exception {
         RealEventHubUtilities utils = new RealEventHubUtilities();
-        utils.setup(RealEventHubUtilities.QUERY_ENTITY_FOR_PARTITIONS);
+        utils.setup(true, RealEventHubUtilities.QUERY_ENTITY_FOR_PARTITIONS);
 
         int clientSerialNumber = 0;
         while (true) {
@@ -182,7 +177,7 @@ public class Repros extends TestBase {
             System.out.println("\nParked: " + parkedCount + "  SELECTING: " + selectingList);
 
             System.out.println("Client " + clientSerialNumber + " starting");
-            EventHubClient client = EventHubClient.createSync(utils.getConnectionString().toString(), TestUtilities.EXECUTOR_SERVICE);
+            EventHubClient client = EventHubClient.createSync(utils.getConnectionString(true).toString(), TestUtilities.EXECUTOR_SERVICE);
             PartitionReceiver receiver = client.createReceiver(utils.getConsumerGroup(), "0", EventPosition.fromStartOfStream()).get();
             //client.createEpochReceiver(utils.getConsumerGroup(), "0", PartitionReceiver.START_OF_STREAM, 1).get();
 

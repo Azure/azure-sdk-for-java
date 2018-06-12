@@ -12,8 +12,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
+import org.junit.Assume;
+
 final class RealEventHubUtilities {
-    static int QUERY_ENTITY_FOR_PARTITIONS = -1;
+    static final int QUERY_ENTITY_FOR_PARTITIONS = -1;
+    static final String syntacticallyCorrectDummyEventHubPath = "doesnotexist";
+    static final String syntacticallyCorrectDummyConnectionString =
+            "Endpoint=sb://doesnotexist.servicebus.windows.net/;SharedAccessKeyName=doesnotexist;SharedAccessKey=dGhpcyBpcyBub3QgYSB2YWxpZCBrZXkgLi4uLi4uLi4=;EntityPath=" +
+            RealEventHubUtilities.syntacticallyCorrectDummyEventHubPath;
+    
     private ConnectionStringBuilder hubConnectionString = null;
     private String hubName = null;
     private String consumerGroup = EventHubClient.DEFAULT_CONSUMER_GROUP_NAME;
@@ -24,8 +31,8 @@ final class RealEventHubUtilities {
     RealEventHubUtilities() {
     }
 
-    ArrayList<String> setup(int fakePartitions) throws EventHubException, IOException {
-        ArrayList<String> partitionIds = setupWithoutSenders(fakePartitions);
+    ArrayList<String> setup(boolean skipIfFakeEH, int fakePartitions) throws EventHubException, IOException {
+        ArrayList<String> partitionIds = setupWithoutSenders(skipIfFakeEH, fakePartitions);
 
         // EventHubClient is source of all senders
         this.client = EventHubClient.createSync(this.hubConnectionString.toString(), TestUtilities.EXECUTOR_SERVICE);
@@ -33,9 +40,9 @@ final class RealEventHubUtilities {
         return partitionIds;
     }
 
-    ArrayList<String> setupWithoutSenders(int fakePartitions) throws EventHubException, IOException {
+    ArrayList<String> setupWithoutSenders(boolean skipIfFakeEH, int fakePartitions) throws EventHubException, IOException {
         // Get the connection string from the environment
-        ehCacheCheck();
+        ehCacheCheck(skipIfFakeEH);
 
         // Get the consumer group from the environment, if present.
         String tempConsumerGroup = System.getenv("EVENT_HUB_CONSUMER_GROUP");
@@ -66,19 +73,24 @@ final class RealEventHubUtilities {
         }
     }
 
-    ConnectionStringBuilder getConnectionString() {
-        ehCacheCheck();
+    ConnectionStringBuilder getConnectionString(boolean skipIfFakeEH) {
+        ehCacheCheck(skipIfFakeEH);
         return this.hubConnectionString;
     }
 
-    String getHubName() {
-        ehCacheCheck();
-        return this.hubName;
-    }
-
-    private void ehCacheCheck() {
+    private void ehCacheCheck(boolean skipIfFakeEH) {
         if (this.hubName == null) {
-            this.hubConnectionString = new ConnectionStringBuilder(System.getenv("EVENT_HUB_CONNECTION_STRING"));
+        	String rawConnectionString = System.getenv("EVENT_HUB_CONNECTION_STRING");
+            if (rawConnectionString == null) {
+            	if (skipIfFakeEH) {
+                   	TestBase.logInfo("SKIPPING - REQUIRES REAL EVENT HUB");
+                    Assume.assumeTrue(rawConnectionString != null);
+            	}
+            	TestBase.logInfo("Using dummy event hub connection string");
+            	rawConnectionString = RealEventHubUtilities.syntacticallyCorrectDummyConnectionString;
+            }
+        	
+            this.hubConnectionString = new ConnectionStringBuilder(rawConnectionString);
             this.hubName = this.hubConnectionString.getEventHubName();
         }
     }
@@ -113,7 +125,7 @@ final class RealEventHubUtilities {
     ArrayList<String> getPartitionIdsForTest() throws EventHubException, IOException {
         if (this.cachedPartitionIds == null) {
             this.cachedPartitionIds = new ArrayList<String>();
-            ehCacheCheck();
+            ehCacheCheck(true);
 
             EventHubClient idClient = EventHubClient.createSync(this.hubConnectionString.toString(), TestUtilities.EXECUTOR_SERVICE);
             try {
