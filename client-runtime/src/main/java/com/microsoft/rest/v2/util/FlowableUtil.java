@@ -13,9 +13,11 @@ import io.netty.buffer.Unpooled;
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.FlowableSubscriber;
+import io.reactivex.FlowableTransformer;
 import io.reactivex.Single;
 import io.reactivex.internal.subscriptions.SubscriptionHelper;
 import io.reactivex.internal.util.BackpressureHelper;
+import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
@@ -25,6 +27,7 @@ import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.CompletionHandler;
+import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -68,6 +71,35 @@ public final class FlowableUtil {
                 out.release();
             }
 
+        });
+    }
+
+    /**
+     * Ensures the given Flowable emits the expected number of bytes.
+     *
+     * @param bytesExpected the number of bytes expected to be emitted
+     * @return a Function which can be applied using {@link Flowable#compose}
+     */
+    public static FlowableTransformer<ByteBuffer, ByteBuffer> ensureLength(long bytesExpected) {
+        return source -> Flowable.defer(new Callable<Publisher<? extends ByteBuffer>>() {
+            long bytesRead = 0;
+
+            @Override
+            public Publisher<? extends ByteBuffer> call() throws Exception {
+                return source.doOnNext(bb -> {
+                    bytesRead += bb.remaining();
+                    if (bytesRead > bytesExpected) {
+                        throw new IllegalArgumentException("Flowable<ByteBuffer> emitted more bytes than the expected " + bytesExpected);
+                    }
+                }).doOnComplete(() -> {
+                    if (bytesRead != bytesExpected) {
+                        throw new IllegalArgumentException(
+                                String.format("Flowable<ByteBuffer> emitted %d bytes instead of the expected %d bytes.",
+                                        bytesRead,
+                                        bytesExpected));
+                    }
+                });
+            }
         });
     }
 

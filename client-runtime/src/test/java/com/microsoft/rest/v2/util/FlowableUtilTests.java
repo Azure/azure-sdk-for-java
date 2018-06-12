@@ -1,5 +1,6 @@
 package com.microsoft.rest.v2.util;
 
+import static com.microsoft.rest.v2.util.FlowableUtil.ensureLength;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -18,6 +19,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Flowable;
 import org.junit.Test;
 
 import com.google.common.io.Files;
@@ -25,6 +27,40 @@ import com.google.common.io.Files;
 import io.reactivex.schedulers.Schedulers;
 
 public class FlowableUtilTests {
+    @Test
+    public void testCountingNotEnoughBytesEmitsError() {
+        Flowable<ByteBuffer> content = Flowable.just(ByteBuffer.allocate(4));
+        content.compose(ensureLength(8))
+                .test()
+                .assertError(IllegalArgumentException.class);
+    }
+
+    @Test
+    public void testCountingTooManyBytesEmitsError() {
+        Flowable<ByteBuffer> content = Flowable.just(ByteBuffer.allocate(4));
+        content.compose(ensureLength(1))
+                .test()
+                .assertError(IllegalArgumentException.class);
+    }
+
+
+    @Test
+    public void testCountingTooManyBytesCancelsSubscription() {
+        Flowable<ByteBuffer> content = Flowable.just(ByteBuffer.allocate(4)).concatWith(Flowable.never());
+        content.compose(ensureLength(1))
+                .test()
+                .awaitDone(1, TimeUnit.SECONDS)
+                .assertError(IllegalArgumentException.class);
+    }
+
+    @Test
+    public void testCountingExpectedNumberOfBytesSucceeds() {
+        Flowable<ByteBuffer> content = Flowable.just(ByteBuffer.allocate(4));
+        content.compose(ensureLength(4))
+                .test()
+                .assertComplete();
+    }
+
     @Test
     public void testCanReadSlice() throws IOException {
         File file = new File("target/test1");

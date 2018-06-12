@@ -138,6 +138,7 @@ public class NettyClientTests {
     public void testRequestBodyIsErrorShouldPropagateToResponse() {
         HttpClient client = HttpClient.createDefault();
         HttpRequest request = new HttpRequest("", HttpMethod.POST, url(server, "/shortPost"), null) //
+                .withHeader("Content-Length", "123") //
                 .withBody(Flowable.error(new RuntimeException("boo")));
         client.sendRequestAsync(request)
                 .test() //
@@ -149,9 +150,12 @@ public class NettyClientTests {
     @Test
     public void testRequestBodyEndsInErrorShouldPropagateToResponse() {
         HttpClient client = HttpClient.createDefault();
+        String contentChunk = "abcdefgh";
+        int repetitions = 1000;
         HttpRequest request = new HttpRequest("", HttpMethod.POST, url(server, "/shortPost"), null) //
-                .withBody(Flowable.just("abcdefgh") //
-                        .repeat(1000) //
+                .withHeader("Content-Length", String.valueOf(contentChunk.length() * repetitions)) //
+                .withBody(Flowable.just(contentChunk) //
+                        .repeat(repetitions) //
                         .map(NettyClientTests::toByteBuffer) //
                         .concatWith(Flowable.error(new RuntimeException("boo"))));
         client.sendRequestAsync(request)

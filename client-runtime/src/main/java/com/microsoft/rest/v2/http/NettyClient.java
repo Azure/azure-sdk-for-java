@@ -60,6 +60,8 @@ import io.reactivex.internal.subscriptions.SubscriptionHelper;
 import io.reactivex.internal.util.BackpressureHelper;
 import io.reactivex.plugins.RxJavaPlugins;
 
+import static com.microsoft.rest.v2.util.FlowableUtil.ensureLength;
+
 /**
  * An HttpClient that is implemented using Netty.
  */
@@ -297,7 +299,15 @@ public final class NettyClient extends HttpClient {
                     writeBodyEnd();
                 } else {
                     requestSubscriber = new RequestSubscriber(inboundHandler);
-                    request.body().subscribe(requestSubscriber);
+                    String contentLengthHeader = request.headers().value("content-length");
+                    try {
+                        long contentLength = Long.parseLong(contentLengthHeader);
+                        request.body().compose(ensureLength(contentLength)).subscribe(requestSubscriber);
+                    } catch (NumberFormatException e) {
+                        String message = String.format(
+                                "Content-Length was expected to be a valid long but was \"%s\"", contentLengthHeader);
+                        throw new IllegalArgumentException(message, e);
+                    }
                 }
             } catch (Exception e) {
                 emitError(e);
