@@ -26,16 +26,15 @@ package com.microsoft.azure.cosmosdb;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.apache.commons.lang3.text.WordUtils;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import com.microsoft.azure.cosmosdb.internal.Constants;
 
 /**
  * Represents an included path of the IndexingPolicy in the Azure Cosmos DB database service.
  */
-@SuppressWarnings("serial")
 public class IncludedPath extends JsonSerializable {
 
     private Collection<Index> indexes;
@@ -54,15 +53,6 @@ public class IncludedPath extends JsonSerializable {
      */
     public IncludedPath(String jsonString) {
         super(jsonString);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param jsonObject the json object that represents the included path.
-     */
-    public IncludedPath(JSONObject jsonObject) {
-        super(jsonObject);
     }
 
     /**
@@ -106,14 +96,14 @@ public class IncludedPath extends JsonSerializable {
 
     private Collection<Index> getIndexCollection() {
         if (this.propertyBag != null && this.propertyBag.has(Constants.Properties.INDEXES)) {
-            JSONArray jsonArray = this.propertyBag.getJSONArray(Constants.Properties.INDEXES);
+            ArrayNode jsonArray = (ArrayNode) this.propertyBag.get(Constants.Properties.INDEXES);
             Collection<Index> result = new ArrayList<Index>();
 
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
+            for (int i = 0; i < jsonArray.size(); i++) {
+                JsonNode jsonObject = jsonArray.get(i);
 
                 IndexKind indexKind = IndexKind.valueOf(WordUtils.capitalize(
-                        jsonObject.getString(Constants.Properties.INDEX_KIND)));
+                        jsonObject.get(Constants.Properties.INDEX_KIND).asText()));
                 switch (indexKind) {
                 case Hash:
                     result.add(new HashIndex(jsonObject.toString()));

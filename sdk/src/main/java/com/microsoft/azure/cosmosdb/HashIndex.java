@@ -24,14 +24,12 @@
 package com.microsoft.azure.cosmosdb;
 
 import org.apache.commons.lang3.text.WordUtils;
-import org.json.JSONObject;
 
 import com.microsoft.azure.cosmosdb.internal.Constants;
 
 /**
  * Represents a hash index in the Azure Cosmos DB database service.
  */
-@SuppressWarnings("serial")
 public final class HashIndex extends Index {
 
     /**
@@ -83,18 +81,6 @@ public final class HashIndex extends Index {
         super(jsonString, IndexKind.Hash);
         if (this.getDataType() == null) {
             throw new IllegalArgumentException("The jsonString doesn't contain a valid 'dataType'.");
-        }
-    }
-
-    /**
-     * Initializes a new instance of the HashIndex class with json object.
-     *
-     * @param jsonObject the json object that represents the index.
-     */
-    public HashIndex(JSONObject jsonObject) {
-        super(jsonObject, IndexKind.Hash);
-        if (this.getDataType() == null) {
-            throw new IllegalArgumentException("The jsonObject doesn't contain a valid 'dataType'.");
         }
     }
 

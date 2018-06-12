@@ -23,10 +23,12 @@
 
 package com.microsoft.azure.cosmosdb;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
-import org.json.JSONArray;
-
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.microsoft.azure.cosmosdb.internal.Utils;
 import com.microsoft.azure.cosmosdb.internal.routing.PartitionKeyInternal;
 
 /**
@@ -47,8 +49,7 @@ public class PartitionKey {
     @SuppressWarnings("serial")
     public PartitionKey(final Object key) {
         this.key = new Object[] {key};
-        JSONArray array = new JSONArray(this.key);
-        this.keyString = array.toString();
+        this.keyString = toJson(Utils.getSimpleObjectMapper().valueToTree(this.key));
         this.internalPartitionKey = PartitionKeyInternal.fromObjectArray(new ArrayList<Object>() {{ add(key); }}, true);
     }
 
@@ -59,8 +60,8 @@ public class PartitionKey {
      * @return the PartitionKey instance.
      */
     public static PartitionKey FromJsonString(String jsonString) {
-        JSONArray array = new JSONArray(jsonString);
-        PartitionKey key = new PartitionKey(array.get(0));
+        JsonNode node = fromJson(jsonString);
+        PartitionKey key = new PartitionKey(node.get(0));
 
         return key;
     }
@@ -85,5 +86,22 @@ public class PartitionKey {
 
     public PartitionKeyInternal getInternalPartitionKey() {
         return internalPartitionKey;
+    }
+
+    private static JsonNode fromJson(String json){
+        try {
+            return Utils.getSimpleObjectMapper().readTree(json);
+        } catch (IOException e) {
+            //Should not happen while reading from String
+            throw new IllegalArgumentException(String.format("Unable to parse PartitionKey JSON %s", json), e);
+        }
+    }
+
+    private static String toJson(Object object){
+        try {
+            return Utils.getSimpleObjectMapper().writeValueAsString(object);
+        } catch (JsonProcessingException e) {
+            throw new IllegalArgumentException("Unable to convert Partitionkey to String", e);
+        }
     }
 }

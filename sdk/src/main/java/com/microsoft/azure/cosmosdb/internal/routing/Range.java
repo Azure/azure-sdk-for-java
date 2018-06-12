@@ -25,14 +25,11 @@ package com.microsoft.azure.cosmosdb.internal.routing;
 
 import java.util.Comparator;
 
-import org.json.JSONObject;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.azure.cosmosdb.JsonSerializable;
 
 @JsonIgnoreProperties({"empty", "singleValue", "hashMap"})
-@SuppressWarnings("serial")
 public final class Range<T extends Comparable<T>> extends JsonSerializable {
     private static final String MIN_PROPERTY = "min";
     private static final String MAX_PROPERTY = "max";
@@ -48,10 +45,6 @@ public final class Range<T extends Comparable<T>> extends JsonSerializable {
 
     public Range(String jsonString) {
         super(jsonString);
-    }
-
-    public Range(JSONObject jsonObject) {
-        super(jsonObject);
     }
 
     public Range(T min, T max, boolean isMinInclusive, boolean isMaxInclusive) {

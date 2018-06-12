@@ -23,8 +23,6 @@
 
 package com.microsoft.azure.cosmosdb;
 
-import org.json.JSONObject;
-
 import com.microsoft.azure.cosmosdb.internal.Constants;
 
 /**
@@ -34,7 +32,6 @@ import com.microsoft.azure.cosmosdb.internal.Constants;
  * These are stored externally in Azure Blob storage. Attachments are automatically deleted when the parent document
  * is deleted.
  */
-@SuppressWarnings("serial")
 public class Attachment extends Resource {
     /**
      * Initialize an attachment object.
@@ -50,15 +47,6 @@ public class Attachment extends Resource {
      */
     public Attachment(String source) {
         super(source);
-    }
-
-    /**
-     * Initialize an attachment object from json object.
-     *
-     * @param jsonObject the json object representation of the Attachment.
-     */
-    public Attachment(JSONObject jsonObject) {
-        super(jsonObject);
     }
 
     /**

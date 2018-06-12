@@ -25,15 +25,12 @@ package com.microsoft.azure.cosmosdb;
 
 import java.util.Collection;
 
-import org.json.JSONObject;
-
 import com.microsoft.azure.cosmosdb.internal.Constants;
 import com.microsoft.azure.cosmosdb.internal.routing.Range;
 
 /**
  * Represent a partition key range in the Azure Cosmos DB database service.
  */
-@SuppressWarnings("serial")
 public class PartitionKeyRange extends Resource {
     public static final String MINIMUM_INCLUSIVE_EFFECTIVE_PARTITION_KEY = "";
     public static final String MAXIMUM_EXCLUSIVE_EFFECTIVE_PARTITION_KEY = "FF";
@@ -55,17 +52,6 @@ public class PartitionKeyRange extends Resource {
      */
     public PartitionKeyRange(String jsonString) {
         super(jsonString);
-    }
-
-    /**
-     * Initialize a partition key range object from json object.
-     * 
-     * @param jsonObject
-     *            the json object that represents the partition key range
-     *            object.
-     */
-    public PartitionKeyRange(JSONObject jsonObject) {
-        super(jsonObject);
     }
 
     public PartitionKeyRange(String id, String minInclusive, String maxExclusive) {

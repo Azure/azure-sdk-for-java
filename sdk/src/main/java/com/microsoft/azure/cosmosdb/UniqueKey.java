@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.microsoft.azure.cosmosdb.internal.Constants;
-import org.json.JSONObject;
 
 /**
  * Represents a unique key on that enforces uniqueness constraint on documents in the collection in the Azure Cosmos DB service.
@@ -36,7 +35,6 @@ import org.json.JSONObject;
  * For instance, if unique key policy defines a unique key with single property path, there could be only one document that has missing value for this property.
  * @see UniqueKeyPolicy
  */
-@SuppressWarnings("serial")
 public class UniqueKey extends JsonSerializable {
     private Collection<String> paths;
 
@@ -46,10 +44,6 @@ public class UniqueKey extends JsonSerializable {
 
     public UniqueKey(String jsonString) {
         super(jsonString);
-    }
-
-    public UniqueKey(JSONObject jsonObject) {
-        super(jsonObject);
     }
 
     /**

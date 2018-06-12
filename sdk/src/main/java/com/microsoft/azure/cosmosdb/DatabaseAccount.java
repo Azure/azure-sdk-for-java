@@ -23,14 +23,11 @@
 
 package com.microsoft.azure.cosmosdb;
 
-import org.json.JSONObject;
-
 import com.microsoft.azure.cosmosdb.internal.Constants;
 
 /**
  * Represents a database account in the Azure Cosmos DB database service.
  */
-@SuppressWarnings("serial")
 public class DatabaseAccount extends Resource {
     private ConsistencyPolicy consistencyPolicy;
 
@@ -52,15 +49,6 @@ public class DatabaseAccount extends Resource {
      */
     public DatabaseAccount(String jsonString) {
         super(jsonString);
-    }
-
-    /**
-     * Initialize a database account object from json object.
-     *
-     * @param jsonObject the json object that represents the database account.
-     */
-    public DatabaseAccount(JSONObject jsonObject) {
-        super(jsonObject);
     }
 
     /**

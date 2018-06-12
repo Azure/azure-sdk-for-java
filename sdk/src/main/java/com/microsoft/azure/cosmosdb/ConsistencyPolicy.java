@@ -25,14 +25,12 @@ package com.microsoft.azure.cosmosdb;
 
 
 import org.apache.commons.lang3.text.WordUtils;
-import org.json.JSONObject;
 
 import com.microsoft.azure.cosmosdb.internal.Constants;
 
 /**
  * Encapsulates the settings for consistency policy in the Azure Cosmos DB database service.
  */
-@SuppressWarnings("serial")
 public final class ConsistencyPolicy extends JsonSerializable {
     private static final ConsistencyLevel DEFAULT_DEFAULT_CONSISTENCY_LEVEL =
             ConsistencyLevel.Session;
@@ -54,15 +52,6 @@ public final class ConsistencyPolicy extends JsonSerializable {
      */
     public ConsistencyPolicy(String jsonString) {
         super(jsonString);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param jsonObject the json object that represents the consistency policy.
-     */
-    public ConsistencyPolicy(JSONObject jsonObject) {
-        super(jsonObject);
     }
 
     /**

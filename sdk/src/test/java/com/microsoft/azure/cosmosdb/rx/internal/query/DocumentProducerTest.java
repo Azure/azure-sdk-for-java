@@ -22,6 +22,7 @@
  */
 package com.microsoft.azure.cosmosdb.rx.internal.query;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
@@ -46,7 +47,6 @@ import com.microsoft.azure.cosmosdb.rx.internal.RetryPolicy;
 import com.microsoft.azure.cosmosdb.rx.internal.RxDocumentServiceRequest;
 import com.microsoft.azure.cosmosdb.rx.internal.caches.RxPartitionKeyRangeCache;
 import org.apache.commons.lang3.RandomUtils;
-import org.json.JSONObject;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -737,17 +737,17 @@ public class DocumentProducerTest extends TestSuiteBase {
             Comparator<? super Document> comparator = new Comparator<Document>() {
                 @Override
                 public int compare(Document o1, Document o2) {
-                    JSONObject obj1 = (JSONObject) o1.get(OrderByPayloadFieldName);
-                    JSONObject obj2 = (JSONObject) o1.get(OrderByPayloadFieldName);
+                    ObjectNode obj1 = (ObjectNode) o1.get(OrderByPayloadFieldName);
+                    ObjectNode obj2 = (ObjectNode) o1.get(OrderByPayloadFieldName);
 
-                    int cmp = (obj1).getInt(OrderByIntFieldName)
-                            - (obj2).getInt(OrderByIntFieldName);
+                    int cmp = (obj1).get(OrderByIntFieldName).asInt()
+                            - (obj2).get(OrderByIntFieldName).asInt();
                     if (cmp != 0) {
                         return cmp;
                     }
 
-                    return obj1.getString(DocumentPartitionKeyRangeMinInclusiveFieldName)
-                            .compareTo(obj2.getString(DocumentPartitionKeyRangeMinInclusiveFieldName));
+                    return obj1.get(DocumentPartitionKeyRangeMinInclusiveFieldName).asText()
+                            .compareTo(obj2.get(DocumentPartitionKeyRangeMinInclusiveFieldName).asText());
                 }
             };
 

@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.apache.commons.lang3.text.WordUtils;
-import org.json.JSONObject;
 
 import com.microsoft.azure.cosmosdb.internal.Constants;
 
@@ -35,7 +34,6 @@ import com.microsoft.azure.cosmosdb.internal.Constants;
  * Represents a partition key definition in the Azure Cosmos DB database service. A partition key definition specifies which
  * document property is used as the partition key in a collection that has multiple partitions.
  */
-@SuppressWarnings("serial")
 public final class PartitionKeyDefinition extends JsonSerializable {
 
     /**
@@ -53,16 +51,6 @@ public final class PartitionKeyDefinition extends JsonSerializable {
      */
     public PartitionKeyDefinition(String jsonString) {
         super(jsonString);
-    }
-
-    /**
-     * Constructor. Creates a new instance of the PartitionKeyDefinition object from a
-     * JSON object.
-     *
-     * @param jsonObject the JSON object that represents the partition key definition.
-     */
-    public PartitionKeyDefinition(JSONObject jsonObject) {
-        super(jsonObject);
     }
 
     /**

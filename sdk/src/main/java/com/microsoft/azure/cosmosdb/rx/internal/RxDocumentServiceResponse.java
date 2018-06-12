@@ -23,6 +23,7 @@
 
 package com.microsoft.azure.cosmosdb.rx.internal;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -30,9 +31,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.microsoft.azure.cosmosdb.internal.Utils;
 import org.apache.commons.lang3.StringUtils;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import com.microsoft.azure.cosmosdb.Attachment;
 import com.microsoft.azure.cosmosdb.Conflict;
@@ -146,26 +149,26 @@ public class RxDocumentServiceResponse {
             return new ArrayList<T>();
         }
 
-        JSONObject jobject = new JSONObject(responseBody);
+        JsonNode jobject = fromJson(responseBody);
         String resourceKey = RxDocumentServiceResponse.getResourceKey(c);
-        JSONArray jTokenArray = jobject.getJSONArray(resourceKey);
+        ArrayNode jTokenArray = (ArrayNode) jobject.get(resourceKey);
 
         // Aggregate queries may return a nested array
-        JSONArray innerArray;
-        while (jTokenArray != null && jTokenArray.length() == 1 && (innerArray = jTokenArray.optJSONArray(0)) != null) {
+        ArrayNode innerArray;
+        while (jTokenArray != null && jTokenArray.size() == 1 && (innerArray = toArrayNode(jTokenArray.get(0))) != null) {
             jTokenArray = innerArray;
         }
 
         List<T> queryResults = new ArrayList<T>();
 
         if (jTokenArray != null) {
-            for (int i = 0; i < jTokenArray.length(); ++i) {
-                Object jToken = jTokenArray.get(i);
+            for (int i = 0; i < jTokenArray.size(); ++i) {
+                JsonNode jToken = jTokenArray.get(i);
                 // Aggregate on single partition collection may return the aggregated value only
                 // In that case it needs to encapsulated in a special document
-                String resourceJson = jToken instanceof Number || jToken instanceof Boolean
-                        ? String.format("{\"%s\": %s}", Constants.Properties.AGGREGATE, jToken.toString())
-                                : jToken.toString();
+                String resourceJson = jToken.isNumber() || jToken.isBoolean()
+                        ? String.format("{\"%s\": %s}", Constants.Properties.AGGREGATE, jToken.asText())
+                                : toJson(jToken);
                         T resource = null;
                         try {
                             resource = c.getConstructor(String.class).newInstance(resourceJson);
@@ -179,6 +182,30 @@ public class RxDocumentServiceResponse {
         }
 
         return queryResults;
+    }
+
+    private ArrayNode toArrayNode(JsonNode n) {
+        if (n.isArray()) {
+            return (ArrayNode) n;
+        } else {
+            return null;
+        }
+    }
+
+    private static JsonNode fromJson(String json){
+        try {
+            return Utils.getSimpleObjectMapper().readTree(json);
+        } catch (IOException e) {
+            throw new IllegalStateException(String.format("Unable to parse JSON %s", json), e);
+        }
+    }
+
+    private static String toJson(Object object){
+        try {
+            return Utils.getSimpleObjectMapper().writeValueAsString(object);
+        } catch (JsonProcessingException e) {
+            throw new IllegalStateException("Can't serialize the object into the json string", e);
+        }
     }
 
     public InputStream getContentStream() {

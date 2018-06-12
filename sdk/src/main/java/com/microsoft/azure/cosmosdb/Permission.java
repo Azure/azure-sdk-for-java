@@ -23,16 +23,14 @@
 
 package com.microsoft.azure.cosmosdb;
 
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.apache.commons.lang3.text.WordUtils;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import com.microsoft.azure.cosmosdb.internal.Constants;
 
 /**
  * Represents a per-User Permission to access a specific resource e.g. Document or Collection in the Azure Cosmos DB database service.
  */
-@SuppressWarnings("serial")
 public class Permission extends Resource {
     /**
      * Initialize a permission object.
@@ -48,15 +46,6 @@ public class Permission extends Resource {
      */
     public Permission(String jsonString) {
         super(jsonString);
-    }
-
-    /**
-     * Initialize a permission object from json object.
-     *
-     * @param jsonObject the json object that represents the permission.
-     */
-    public Permission(JSONObject jsonObject) {
-        super(jsonObject);
     }
 
     /**
@@ -115,8 +104,8 @@ public class Permission extends Resource {
         PartitionKey key = null;
         Object value = super.get(Constants.Properties.RESOURCE_PARTITION_KEY);
         if (value != null) {
-            JSONArray arrayValue = (JSONArray) value;
-            key = new PartitionKey(arrayValue.get(0));
+            ArrayNode arrayValue = (ArrayNode) value;
+            key = new PartitionKey(getValue(arrayValue.get(0)));
         }
 
         return key;

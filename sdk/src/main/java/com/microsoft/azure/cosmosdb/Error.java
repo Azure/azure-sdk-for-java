@@ -28,7 +28,6 @@ import com.microsoft.azure.cosmosdb.internal.Constants;
 /**
  * Encapsulates error related details in the Azure Cosmos DB database service.
  */
-@SuppressWarnings("serial")
 public class Error extends Resource {
     /**
      * Initialize a new instance of the Error object.

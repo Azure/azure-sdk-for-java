@@ -24,14 +24,12 @@
 package com.microsoft.azure.cosmosdb;
 
 import org.apache.commons.lang3.text.WordUtils;
-import org.json.JSONObject;
 
 import com.microsoft.azure.cosmosdb.internal.Constants;
 
 /**
  * Represents a range index in the Azure Cosmos DB database service.
  */
-@SuppressWarnings("serial")
 public final class RangeIndex extends Index {
 
     /**
@@ -82,19 +80,6 @@ public final class RangeIndex extends Index {
             throw new IllegalArgumentException("The jsonString doesn't contain a valid 'dataType'.");
         }
     }
-
-    /**
-     * Initializes a new instance of the RangeIndex class with json object.
-     *
-     * @param jsonObject the json object that represents the index.
-     */
-    public RangeIndex(JSONObject jsonObject) {
-        super(jsonObject, IndexKind.Range);
-        if (this.getDataType() == null) {
-            throw new IllegalArgumentException("The jsonObject doesn't contain a valid 'dataType'.");
-        }
-    }
-
 
     /**
      * Gets data type.

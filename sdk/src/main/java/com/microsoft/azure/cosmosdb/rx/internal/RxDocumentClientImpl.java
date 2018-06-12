@@ -33,7 +33,6 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -45,7 +44,7 @@ import javax.net.ssl.SSLEngine;
 import javax.net.ssl.SSLException;
 
 import org.apache.commons.lang3.StringUtils;
-import org.json.JSONObject;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -152,7 +151,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final CompositeHttpClient<ByteBuf, ByteBuf> rxClient;
     private final EndpointManager globalEndpointManager;
     private final RetryPolicy retryPolicy;
-    private static final ObjectMapper mapper = new ObjectMapper();
+    private static final ObjectMapper mapper = Utils.getSimpleObjectMapper();
 
     private Configs config = new Configs();
 
@@ -642,11 +641,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Object object = objectArray[i];
             if (object instanceof JsonSerializable) {
                 stringArray[i] = ((JsonSerializable) object).toJson();
-            } else if (object instanceof JSONObject) {
-                stringArray[i] = object.toString();
             } else {
 
-                // POJO, number, String or Boolean
+                // POJO, ObjectNode, number, String or Boolean
                 try {
                     stringArray[i] = mapper.writeValueAsString(object);
                 } catch (IOException e) {
@@ -813,7 +810,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Collection<String> parts = PathParser.getPathParts(path);
             if (parts.size() >= 1) {
                 Object value = document.getObjectByPath(parts);
-                if (value == null || value.getClass() == JSONObject.class) {
+                if (value == null || value.getClass() == ObjectNode.class) {
                     value = Undefined.Value();
                 }
 

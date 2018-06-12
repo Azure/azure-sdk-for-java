@@ -23,14 +23,11 @@
 
 package com.microsoft.azure.cosmosdb;
 
-import org.json.JSONObject;
-
 import com.microsoft.azure.cosmosdb.internal.Constants;
 
 /**
  * Represents a database user in the Azure Cosmos DB database service.
  */
-@SuppressWarnings("serial")
 public class User extends Resource {
 
     /**
@@ -47,15 +44,6 @@ public class User extends Resource {
      */
     public User(String jsonString) {
         super(jsonString);
-    }
-
-    /**
-     * Initialize a user object from json object.
-     *
-     * @param jsonObject the json object that represents the database user.
-     */
-    public User(JSONObject jsonObject) {
-        super(jsonObject);
     }
 
     /**

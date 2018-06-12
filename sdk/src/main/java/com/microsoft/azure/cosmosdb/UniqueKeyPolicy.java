@@ -26,13 +26,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.microsoft.azure.cosmosdb.internal.Constants;
-import org.json.JSONObject;
 
 /**
  * Represents the unique key policy configuration for specifying uniqueness constraints on documents in the
  * collection in the Azure Cosmos DB service.
  */
-@SuppressWarnings("serial")
 public class UniqueKeyPolicy extends JsonSerializable {
     private Collection<UniqueKey> uniqueKeys;
 
@@ -47,15 +45,6 @@ public class UniqueKeyPolicy extends JsonSerializable {
      */
     public UniqueKeyPolicy(String jsonString) {
         super(jsonString);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param jsonObject the json object that represents the Unique Ke policy.
-     */
-    public UniqueKeyPolicy(JSONObject jsonObject) {
-        super(jsonObject);
     }
 
     /**

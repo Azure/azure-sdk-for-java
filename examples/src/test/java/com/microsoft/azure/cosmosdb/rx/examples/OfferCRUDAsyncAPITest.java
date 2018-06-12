@@ -124,19 +124,19 @@ public class OfferCRUDAsyncAPITest {
 
                     // This offer must correspond to the collection we created
                     Offer offer = offerList.get(0);
-                    int curentThroughput = offer.getContent().getInt("offerThroughput");
+                    int curentThroughput = offer.getThroughput();
                     assertThat(offer.getString("offerResourceId"), equalTo(createdCollection.getResourceId()));
                     assertThat(curentThroughput, equalTo(initialThroughput));
                     System.out.println("initial throughput: " + curentThroughput);
 
                     // Update the offer's throughput
-                    offer.getContent().put("offerThroughput", newThroughput);
+                    offer.setThroughput(newThroughput);
 
                     // Replace the offer
                     return asyncClient.replaceOffer(offer);
                 }).subscribe(offerResourceResponse -> {
                     Offer offer = offerResourceResponse.getResource();
-                    int curentThroughput = offer.getContent().getInt("offerThroughput");
+                    int curentThroughput = offer.getThroughput();
 
                     // The current throughput of the offer must be equal to the new throughput value
                     assertThat(offer.getString("offerResourceId"), equalTo(createdCollection.getResourceId()));

@@ -24,7 +24,8 @@ package com.microsoft.azure.cosmosdb.rx;
 
 import java.util.List;
 
-import org.json.JSONObject;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.microsoft.azure.cosmosdb.internal.Utils;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -67,7 +68,7 @@ public class OfferReadReplaceTest extends TestSuiteBase {
                 }
 
                 Offer rOffer = client.readOffer(offers.get(i).getSelfLink()).toBlocking().single().getResource();
-                int oldThroughput = rOffer.getContent().getInt("offerThroughput");
+                int oldThroughput = rOffer.getThroughput();
                 
                 Observable<ResourceResponse<Offer>> readObservable = client.readOffer(offers.get(i).getSelfLink());
 
@@ -81,10 +82,7 @@ public class OfferReadReplaceTest extends TestSuiteBase {
 
                 // update offer
                 int newThroughput = oldThroughput + 100;
-                
-                JSONObject modifiedContent = new JSONObject(
-                        "{\"offerThroughput\":" +  Integer.toString(newThroughput) + "}");
-                offers.get(i).setContent(modifiedContent);
+                offers.get(i).setThroughput(newThroughput);
                 Observable<ResourceResponse<Offer>> replaceObservable = client.replaceOffer(offers.get(i));
 
                 // validate offer replace

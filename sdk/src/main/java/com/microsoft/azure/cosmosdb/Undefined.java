@@ -26,7 +26,6 @@ package com.microsoft.azure.cosmosdb;
 /**
  * Represents the 'Undefined' partition key in the Azure Cosmos DB database service.
  */
-@SuppressWarnings("serial")
 public class Undefined extends JsonSerializable {
     
     private final static Undefined value = new Undefined();

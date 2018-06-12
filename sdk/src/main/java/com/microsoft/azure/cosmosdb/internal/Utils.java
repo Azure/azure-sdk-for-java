@@ -33,6 +33,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 import java.util.UUID;
 
+import com.fasterxml.jackson.core.JsonParser;
 import org.apache.commons.lang3.StringUtils;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -64,6 +65,9 @@ public final class Utils {
 
     static {
         Utils.simpleObjectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        Utils.simpleObjectMapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
+        Utils.simpleObjectMapper.configure(JsonParser.Feature.ALLOW_TRAILING_COMMA, true);
+        Utils.simpleObjectMapper.configure(JsonParser.Feature.STRICT_DUPLICATE_DETECTION, true);
     }
 
     public static String encodeBase64String(byte[] binaryData) {

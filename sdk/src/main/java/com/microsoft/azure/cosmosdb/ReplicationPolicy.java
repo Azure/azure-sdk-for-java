@@ -23,14 +23,11 @@
 
 package com.microsoft.azure.cosmosdb;
 
-import org.json.JSONObject;
-
 import com.microsoft.azure.cosmosdb.internal.Constants;
 
 /**
  * Encapsulates the replication policy in the Azure Cosmos DB database service.
  */
-@SuppressWarnings("serial")
 public class ReplicationPolicy extends JsonSerializable {
     private static final int DEFAULT_MAX_REPLICA_SET_SIZE = 4;
     private static final int DEFAULT_MIN_REPLICA_SET_SIZE = 3;
@@ -46,16 +43,6 @@ public class ReplicationPolicy extends JsonSerializable {
     public ReplicationPolicy(String jsonString) {
         super(jsonString);
     }
-
-    /**
-     * Constructor.
-     *
-     * @param jsonObject the json object that represents the replication policy.
-     */
-    public ReplicationPolicy(JSONObject jsonObject) {
-        super(jsonObject);
-    }
-
 
     public int getMaxReplicaSetSize() {
         Integer maxReplicaSetSize = super.getInt(Constants.Properties.MAX_REPLICA_SET_SIZE);

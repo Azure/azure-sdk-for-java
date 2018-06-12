@@ -26,7 +26,6 @@ package com.microsoft.azure.cosmosdb;
 /**
  * Represents a SQL parameter in the SqlQuerySpec used for queries in the Azure Cosmos DB database service.
  */
-@SuppressWarnings("serial")
 public final class SqlParameter extends JsonSerializable {
 
 
