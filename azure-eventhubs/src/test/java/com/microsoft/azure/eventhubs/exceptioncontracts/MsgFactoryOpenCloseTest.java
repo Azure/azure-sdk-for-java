@@ -280,4 +280,21 @@ public class MsgFactoryOpenCloseTest extends ApiTestBase {
 
         temp.closeSync();
     }
+
+    @Test(expected = RejectedExecutionException.class)
+    public void testEventHubClientSendAfterClose() throws Exception {
+        final ConnectionStringBuilder connectionString = TestContext.getConnectionString();
+        final EventHubClient eventHubClient = EventHubClient.createSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
+        eventHubClient.closeSync();
+        eventHubClient.sendSync(EventData.create("test message".getBytes()));
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testEventHubClientSendCloseAfterSomeSends() throws Exception {
+        final ConnectionStringBuilder connectionString = TestContext.getConnectionString();
+        final EventHubClient eventHubClient = EventHubClient.createSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
+        eventHubClient.sendSync(EventData.create("test message".getBytes()));
+        eventHubClient.closeSync();
+        eventHubClient.sendSync(EventData.create("test message".getBytes()));
+    }
 }

@@ -68,10 +68,17 @@ public final class ReactorDispatcher {
     }
 
     private void throwIfSchedulerError() {
+        // throw when the scheduler on which Reactor is running is already closed
         final RejectedExecutionException rejectedException = this.reactor.attachments()
                 .get(RejectedExecutionException.class, RejectedExecutionException.class);
         if (rejectedException != null) {
             throw new RejectedExecutionException(rejectedException.getMessage(), rejectedException);
+        }
+
+        // throw when the pipe is in closed state - in which case,
+        // signalling the new event-dispatch will fail
+        if (!this.ioSignal.source().isOpen() || !this.ioSignal.sink().isOpen()) {
+            throw new RejectedExecutionException("ReactorDispatcher instance is closed.");
         }
     }
 
