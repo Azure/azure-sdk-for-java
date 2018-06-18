@@ -1,407 +1,122 @@
 {
-  "analysisservices": {
-    "dir": "archive/azure-mgmt-analysisservices",
-    "source": "specification/analysisservices/resource-manager/readme.md",
-    "package": "com.microsoft.azure.management.analysisservices",
-    "args": "--payload-flattening-threshold=1 --tag=package-2016-05"
-  },
-  "appservice": {
-    "dir": "archive/azure-mgmt-appservice",
+  "appservice/resource-manager": {
     "source": "specification/web/resource-manager/readme.md",
-    "package": "com.microsoft.azure.management.appservice",
-    "args": "--payload-flattening-threshold=1 --tag=package-2016-09"
+    "args": "--multiapi --fluent",
+    "fconfig": {
+      "\"moduleName\"": "\"AppService\""
+    }
   },
-  "arm-keyvault": {
-    "dir": "archive/azure-mgmt-keyvault",
-    "source": "specification/keyvault/resource-manager/readme.md",
-    "package": "com.microsoft.azure.management.keyvault",
-    "args": "--payload-flattening-threshold=1 --tag=package-2015-06"
+  "authorization/resource-manager": {
+    "source": "specification/authorization/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
   },
-  "automation": {
-    "dir": "archive/azure-mgmt-automation",
-    "source": "specification/automation/resource-manager/readme.md",
-    "package": "com.microsoft.azure.management.automation",
-    "args": "--payload-flattening-threshold=1 --tag=package-2015-10"
+  "batchai/resource-manager": {
+    "source": "specification/batchai/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
   },
-  "batch": {
-    "dir": "archive/azure-mgmt-batch",
-    "source": "specification/batch/resource-manager/readme.md",
-    "package": "com.microsoft.azure.management.batch",
-    "args": "--payload-flattening-threshold=1 --tag=package-2017-05"
-  },
-  "batchService": {
-    "dir": "archive/azure-batch",
-    "source": "specification/batch/data-plane/readme.md",
-    "package": "com.microsoft.azure.batch.protocol",
-    "args": "--payload-flattening-threshold=1 --tag=package-2016-07.3.1",
-    "fluent": false
-  },
-  "billing": {
-    "dir": "archive/azure-mgmt-billing",
-    "source": "specification/billing/resource-manager/readme.md",
-    "package": "com.microsoft.azure.management.billing",
-    "args": "--payload-flattening-threshold=1 --tag=package-2017-04-preview"
-  },
-  "cdn": {
-    "dir": "archive/azure-mgmt-cdn",
-    "source": "specification/cdn/resource-manager/readme.md",
-    "package": "com.microsoft.azure.management.cdn",
-    "args": "--payload-flattening-threshold=2 --tag=package-2016-10"
-  },
-  "cognitiveservices": {
-    "dir": "archive/azure-mgmt-cognitiveservices",
+  "cognitiveservices/resource-manager": {
     "source": "specification/cognitiveservices/resource-manager/readme.md",
-    "package": "com.microsoft.azure.management.cognitiveservices",
-    "args": "--payload-flattening-threshold=1 --tag=package-2017-04"
+    "args": "--multiapi --fluent"
   },
-  "cognitiveservicesnewssearch": {
-    "dir": "azure-cognitiveservices/search/bingnewssearch",
-    "source": "cognitiveservices/data-plane/NewsSearch/readme.md",
-    "package": "com.microsoft.azure.cognitiveservices.search.newssearch",
-    "args": "--license-header=MICROSOFT_MIT_NO_CODEGEN --java.fluent=false --payload-flattening-threshold=1 --tag=release_1_0 --java.with-optional-parameters --java.prefix-model-type=Bing --java.with-single-async-method --java.with-expanded-parameters"
-  },
-  "cognitiveserviceswebsearch": {
-    "dir": "azure-cognitiveservices/search/bingwebsearch",
-    "source": "cognitiveservices/data-plane/WebSearch/readme.md",
-    "package": "com.microsoft.azure.cognitiveservices.search.websearch",
-    "args": "--license-header=MICROSOFT_MIT_NO_CODEGEN --java.fluent=false --payload-flattening-threshold=1 --tag=release_1_0 --java.with-optional-parameters --java.prefix-model-type=Bing --java.with-single-async-method --java.with-expanded-parameters"
-  },
-  "cognitiveservicescustomsearch": {
-    "dir": "azure-cognitiveservices/search/bingcustomsearch",
-    "source": "cognitiveservices/data-plane/CustomWebSearch/readme.md",
-    "package": "com.microsoft.azure.cognitiveservices.search.customsearch",
-    "args": "--license-header=MICROSOFT_MIT_NO_CODEGEN --java.fluent=false --payload-flattening-threshold=1 --tag=release_1_0 --java.with-optional-parameters --java.prefix-model-type=Bing --java.with-single-async-method --java.with-expanded-parameters"
-  },
-  "cognitiveservicescustomimagesearch": {
-    "dir": "azure-cognitiveservices/search/bingcustomimagesearch",
-    "source": "cognitiveservices/data-plane/CustomImageSearch/readme.md",
-    "package": "com.microsoft.azure.cognitiveservices.search.customimagesearch",
-    "args": "--license-header=MICROSOFT_MIT_NO_CODEGEN --java.fluent=false --payload-flattening-threshold=1 --tag=release_1_0 --java.with-optional-parameters --java.prefix-model-type=Bing --java.with-single-async-method --java.with-expanded-parameters"
-  },
-  "cognitiveservicesentitysearch": {
-    "dir": "azure-cognitiveservices/search/bingentitysearch",
-    "source": "cognitiveservices/data-plane/EntitySearch/readme.md",
-    "package": "com.microsoft.azure.cognitiveservices.search.entitysearch",
-    "args": "--license-header=MICROSOFT_MIT_NO_CODEGEN --java.fluent=false --payload-flattening-threshold=1 --tag=release_1_0 --java.with-optional-parameters --java.prefix-model-type=Bing --java.with-single-async-method --java.with-expanded-parameters"
-  },
-  "cognitiveservicesimagesearch": {
-    "dir": "azure-cognitiveservices/search/bingimagesearch",
-    "source": "cognitiveservices/data-plane/ImageSearch/readme.md",
-    "package": "com.microsoft.azure.cognitiveservices.search.imagesearch",
-    "args": "--license-header=MICROSOFT_MIT_NO_CODEGEN --java.fluent=false --payload-flattening-threshold=1 --tag=release_1_0 --java.with-optional-parameters --java.prefix-model-type=Bing --java.with-single-async-method --java.with-expanded-parameters"
-  },
-  "cognitiveservicesvideosearch": {
-    "dir": "azure-cognitiveservices/search/bingvideosearch",
-    "source": "cognitiveservices/data-plane/VideoSearch/readme.md",
-    "package": "com.microsoft.azure.cognitiveservices.search.videosearch",
-    "args": "--license-header=MICROSOFT_MIT_NO_CODEGEN --java.fluent=false --payload-flattening-threshold=1 --tag=release_1_0 --java.with-optional-parameters --java.prefix-model-type=Bing --java.with-single-async-method --java.with-expanded-parameters"
-  },
-  "cognitiveservicesvisualsearch": {
-    "dir": "azure-cognitiveservices/search/bingvisualsearch",
-    "source": "cognitiveservices/data-plane/VisualSearch/readme.md",
-    "package": "com.microsoft.azure.cognitiveservices.search.visualsearch",
-    "args": "--license-header=MICROSOFT_MIT_NO_CODEGEN --java.fluent=false --payload-flattening-threshold=1 --tag=release_1_0 --java.with-optional-parameters --java.prefix-model-type=Bing --java.with-single-async-method --java.with-expanded-parameters"
-  },
-  "cognitiveservicesspellcheck": {
-    "dir": "azure-cognitiveservices/language/bingspellcheck",
-    "source": "cognitiveservices/data-plane/SpellCheck/readme.md",
-    "package": "com.microsoft.azure.cognitiveservices.language.spellcheck",
-    "args": "--license-header=MICROSOFT_MIT_NO_CODEGEN --java.fluent=false --payload-flattening-threshold=1 --tag=release_1_0 --java.with-optional-parameters --java.prefix-model-type=Bing --java.with-single-async-method --java.with-default-group-name=BingSpellCheckOperations --java.with-expanded-parameters"
-  },
-  "cognitiveservicestextanalytics": {
-    "dir": "azure-cognitiveservices/language/textanalytics",
-    "source": "cognitiveservices/data-plane/TextAnalytics/readme.md",
-    "package": "com.microsoft.azure.cognitiveservices.language.textanalytics",
-    "args": "--license-header=MICROSOFT_MIT_NO_CODEGEN --java.fluent=false --payload-flattening-threshold=1 --tag=release_2_0 --java.with-optional-parameters --java.with-single-async-method --java.with-default-group-name=TextAnalytics --java.with-expanded-parameters"
-  },
-  "cognitiveservicesluisauthoring": {
-    "dir": "azure-cognitiveservices/language/luis/authoring",
-    "source": "cognitiveservices/data-plane/LUIS/Authoring/readme.md",
-    "package": "com.microsoft.azure.cognitiveservices.language.luis.authoring",
-    "args": "--license-header=MICROSOFT_MIT_NO_CODEGEN --java.fluent=false --payload-flattening-threshold=1 --tag=authoring_2_0 --java.with-optional-parameters --java.with-single-async-method --java.with-expanded-parameters"
-  },
-  "cognitiveservicesluisruntime": {
-    "dir": "azure-cognitiveservices/language/luis/runtime",
-    "source": "cognitiveservices/data-plane/LUIS/Runtime/readme.md",
-    "package": "com.microsoft.azure.cognitiveservices.language.luis.runtime",
-    "args": "--license-header=MICROSOFT_MIT_NO_CODEGEN --java.fluent=false --payload-flattening-threshold=1 --tag=runtime_2_0 --java.with-optional-parameters --java.with-single-async-method --java.with-expanded-parameters"
-  },
-  "cognitiveservicescomputervision": {
-    "dir": "azure-cognitiveservices/vision/computervision",
-    "source": "cognitiveservices/data-plane/ComputerVision/readme.md",
-    "package": "com.microsoft.azure.cognitiveservices.vision.computervision",
-    "args": "--license-header=MICROSOFT_MIT_NO_CODEGEN --java.fluent=false --payload-flattening-threshold=1 --tag=release_2_0 --java.with-optional-parameters --java.with-single-async-method --java.with-default-group-name=ComputerVision --java.with-expanded-parameters"
-  },
-  "cognitiveservicescontentmoderator": {
-    "dir": "azure-cognitiveservices/vision/contentmoderator",
-    "source": "cognitiveservices/data-plane/ContentModerator/readme.md",
-    "package": "com.microsoft.azure.cognitiveservices.vision.contentmoderator",
-    "args": "--license-header=MICROSOFT_MIT_NO_CODEGEN --java.fluent=false --payload-flattening-threshold=1 --tag=release_2_0 --java.with-optional-parameters --java.with-single-async-method --java.with-expanded-parameters"
-  },
-  "cognitiveservicesfaceapi": {
-    "dir": "azure-cognitiveservices/vision/faceapi",
-    "source": "cognitiveservices/data-plane/Face/readme.md",
-    "package": "com.microsoft.azure.cognitiveservices.vision.faceapi",
-    "args": "--license-header=MICROSOFT_MIT_NO_CODEGEN --java.fluent=false --payload-flattening-threshold=1 --tag=release_2_0 --java.with-optional-parameters --java.with-single-async-method --java.with-expanded-parameters"
-  },
-  "compute": {
-    "dir": "archive/azure-mgmt-compute",
+  "compute/resource-manager": {
     "source": "specification/compute/resource-manager/readme.md",
-    "package": "com.microsoft.azure.management.compute",
-    "args": "--payload-flattening-threshold=1 --tag=package-2017-03"
+    "args": "--multiapi --fluent"
   },
-  "consumption": {
-    "dir": "archive/azure-mgmt-consumption",
-    "source": "specification/consumption/resource-manager/readme.md",
-    "package": "com.microsoft.azure.management.consumption",
-    "args": "--payload-flattening-threshold=1 --tag=package-2017-04-preview"
+  "containerservice/resource-manager": {
+    "source": "specification/containerservices/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
   },
-  "containerinstance": {
-      "dir": "archive/azure-mgmt-containerinstance",
-      "source": "specification/containerinstance/resource-manager/readme.md",
-      "package": "com.microsoft.azure.management.containerinstance",
-      "args": "--payload-flattening-threshold=1 --tag=package-2017-08-preview"
-  },
-  "containerregistry": {
-    "dir": "archive/azure-mgmt-containerregistry",
-    "source": "specification/containerregistry/resource-manager/readme.md",
-    "package": "com.microsoft.azure.management.containerregistry",
-    "args": "--payload-flattening-threshold=1 --tag=package-2017-10"
-  },
-  "cosmosdb": {
-    "dir": "archive/azure-mgmt-cosmosdb",
-    "source": "specification/cosmos-db/resource-manager/readme.md",
-    "package": "com.microsoft.azure.management.cosmosdb",
-    "args": "--payload-flattening-threshold=1 --tag=package-2015-04"
-  },
-  "customerinsights": {
-    "dir": "archive/azure-mgmt-customerinsights",
-    "source": "specification/customer-insights/resource-manager/readme.md",
-    "package": "com.microsoft.azure.management.customerinsights",
-    "args": "--payload-flattening-threshold=1 --tag=package-2017-04"
-  },
-  "datalake.analytics.account": {
-    "dir": "archive/azure-mgmt-datalake-analytics",
-    "source": "specification/datalake-analytics/resource-manager/readme.md",
-    "package": "com.microsoft.azure.management.datalake.analytics",
-    "args": "--tag=package-2016-11",
-    "fluent": false
-  },
-  "datalake.analytics.catalog": {
-    "dir": "archive/azure-mgmt-datalake-analytics",
-    "source": "specification/datalake-analytics/data-plane/readme.md",
-    "package": "com.microsoft.azure.management.datalake.analytics",
-    "args": "--tag=package-catalog-2016-11",
-    "fluent": false
-  },
-  "datalake.analytics.job": {
-    "dir": "archive/azure-mgmt-datalake-analytics",
-    "source": "specification/datalake-analytics/data-plane/readme.md",
-    "package": "com.microsoft.azure.management.datalake.analytics",
-    "args": "--tag=package-job-2016-11",
-    "fluent": false
-  },
-  "datalake.store.account": {
-    "dir": "archive/azure-mgmt-datalake-store",
-    "source": "specification/datalake-store/resource-manager/readme.md",
-    "package": "com.microsoft.azure.management.datalake.store",
-    "args": "--tag=package-2016-11",
-    "fluent": false
-  },
-  "devtestlab": {
-    "dir": "archive/azure-mgmt-devtestlab",
-    "source": "specification/devtestlabs/resource-manager/readme.md",
-    "package": "com.microsoft.azure.management.devtestlab",
-    "args": "--payload-flattening-threshold=1 --tag=package-2016-05"
-  },
-  "dns": {
-    "dir": "archive/azure-mgmt-dns",
+  "dns/resource-manager": {
     "source": "specification/dns/resource-manager/readme.md",
-    "package": "com.microsoft.azure.management.dns",
-    "args": "--payload-flattening-threshold=1 --tag=package-2016-04"
+    "args": "--multiapi --fluent"
   },
-  "eventhub": {
-    "dir": "archive/azure-mgmt-eventhub",
-    "source": "specification/eventhub/resource-manager/readme.md",
-    "package": "com.microsoft.azure.management.eventhub",
-    "args": "--payload-flattening-threshold=1 --tag=package-2017-04"
+  "eventgrid/resource-manager": {
+    "source": "specification/eventgrid/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
   },
-  "features": {
-    "dir": "archive/azure-mgmt-resources",
-    "source": "specification/resources/resource-manager/readme.md",
-    "package": "com.microsoft.azure.management.resources --tag=package-features-2015-12"
+  "eventgrid/data-plane": {
+    "source": "specification/eventgrid/data-plane/readme.md",
+    "args": "--multiapi"
   },
-  "graphrbac": {
-    "dir": "archive/azure-mgmt-graph-rbac",
-    "source": "specification/graphrbac/data-plane/readme.md",
-    "package": "com.microsoft.azure.management.graphrbac",
-    "args": "--payload-flattening-threshold=1 --tag=1.6"
+  "iotcentral/resource-manager": {
+    "source": "specification/iotcentral/resource-manager/readme.md",
+    "args": "--multiapi --fluent",
+    "fconfig": {
+      "\"moduleName\"": "\"IoTCentral\""
+    }
   },
-  "iothub": {
-    "dir": "archive/azure-mgmt-devices",
+  "iothub/resource-manager": {
     "source": "specification/iothub/resource-manager/readme.md",
-    "package": "com.microsoft.azure.management.devices",
-    "args": "--payload-flattening-threshold=1 --tag=package-2017-01"
+    "args": "--multiapi --fluent --remove-inner=ErrorDetails",
+    "fconfig": {
+      "\"moduleName\"": "\"IoTHub\""
+    }
   },
-  "keyvault": {
-    "dir": "archive/azure-keyvault",
+  "keyvault/resource-manager": {
     "source": "specification/keyvault/resource-manager/readme.md",
-    "package": "com.microsoft.azure.keyvault",
-    "args": "--payload-flattening-threshold=1 --tag=package-2015-06",
-    "fluent": false
+    "args": "--multiapi --fluent"
   },
-  "locks": {
-    "dir": "archive/azure-mgmt-locks",
-    "source": "specification/resources/resource-manager/readme.md",
-    "package": "com.microsoft.azure.management.locks",
-    "args": "--payload-flattening-threshold=1 --tag=package-locks-2016-09"
-  },
-  "logic": {
-    "dir": "archive/azure-mgmt-logic",
+  "logic/resource-manager": {
     "source": "specification/logic/resource-manager/readme.md",
-    "package": "com.microsoft.azure.management.logic",
-    "args": "--payload-flattening-threshold=1 --tag=package-2016-06"
+    "args": "--multiapi --fluent"
   },
-  "machinelearning": {
-    "dir": "archive/azure-mgmt-machinelearning",
-    "source": "specification/machinelearning/resource-manager/readme.md",
-    "package": "com.microsoft.azure.management.machinelearning",
-    "args": "--payload-flattening-threshold=1 --tag=package-webservices-2017-01"
+  "mediaservices/resource-manager": {
+    "source": "specification/mediaservices/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
   },
-  "monitor": {
-    "dir": "archive/azure-mgmt-monitor",
-    "source": "specification/monitor/resource-manager/readme.md",
-    "package": "com.microsoft.azure.management.monitor",
-    "args": "--payload-flattening-threshold=1 --tag=package-2017-08"
+  "mysql/resource-manager": {
+    "source": "specification/mysql/resource-manager/readme.md",
+    "args": "--multiapi --fluent",
+    "fconfig": {
+      "\"moduleName\"": "\"MySQL\""
+    }
   },
-  "monitor-dataplane": {
-    "dir": "archive/azure-mgmt-monitor",
-    "source": "specification/monitor/data-plane/readme.md",
-    "package": "com.microsoft.azure.management.monitor",
-    "args": "--payload-flattening-threshold=1 --service-name=Monitor --tag=package-2016-09"
-  },
-  "network": {
-    "dir": "archive/azure-mgmt-network",
+  "network/resource-manager": {
     "source": "specification/network/resource-manager/readme.md",
-    "package": "com.microsoft.azure.management.network",
-    "args": "--payload-flattening-threshold=1 --tag=package-2017-08"
+    "args": "--multiapi --fluent"
   },
-  "notificationhubs": {
-    "dir": "archive/azure-mgmt-notificationhubs",
-    "source": "specification/notificationhubs/resource-manager/readme.md",
-    "package": "com.microsoft.azure.management.notificationhubs",
-    "args": "--payload-flattening-threshold=1 --tag=package-2017-04"
+  "policyinsights/resource-manager": {
+    "source": "specification/policyinsights/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
   },
-  "policy": {
-    "dir": "archive/azure-mgmt-resources",
-    "source": "specification/resources/resource-manager/readme.md",
-    "package": "com.microsoft.azure.management.resources --tag=package-policy-2016-04"
+  "postgresql/resource-manager": {
+    "source": "specification/postgresql/resource-manager/readme.md",
+    "args": "--multiapi --fluent",
+    "fconfig": {
+      "\"moduleName\"": "\"PostgreSQL\""
+    }
   },
-  "powerbi": {
-    "dir": "archive/azure-mgmt-powerbi",
-    "source": "specification/powerbiembedded/resource-manager/readme.md",
-    "package": "com.microsoft.azure.management.powerbi",
-    "args": "--payload-flattening-threshold=1 --tag=package-2016-01"
-  },
-  "recoveryservices": {
-    "dir": "archive/azure-mgmt-recoveryservices",
-    "source": "specification/recoveryservices/resource-manager/readme.md",
-    "package": "com.microsoft.azure.management.recoveryservices",
-    "args": "--payload-flattening-threshold=1 --tag=package-2016-12"
-  },
-  "recoveryservicesbackup": {
-    "dir": "archive/azure-mgmt-recoveryservicesbackup",
-    "source": "specification/recoveryservicesbackup/resource-manager/readme.md",
-    "package": "com.microsoft.azure.management.recoveryservicesbackup",
-    "args": "--payload-flattening-threshold=1 --tag=package-2016-06"
-  },
-  "recoveryservicessiterecovery": {
-    "dir": "archive/azure-mgmt-recoveryservicessiterecovery",
-    "source": "specification/recoveryservicessiterecovery/resource-manager/readme.md",
-    "package": "com.microsoft.azure.management.recoveryservicessiterecovery",
-    "args": "--payload-flattening-threshold=1 --tag=package-2016-08"
-  },
-  "redis": {
-    "dir": "archive/azure-mgmt-redis",
+  "redis/resource-manager": {
     "source": "specification/redis/resource-manager/readme.md",
-    "package": "com.microsoft.azure.management.redis",
-    "args": "--payload-flattening-threshold=1 --tag=package-2016-04"
+    "args": "--multiapi --fluent",
+    "fconfig": {
+      "\"moduleName\"": "\"Redis\"",
+      "\"knownPlurals\"": ["\"redis\""],
+      "\"knownSingulars\"": ["\"redis\""]
+    }
   },
-  "relay": {
-    "dir": "archive/azure-mgmt-relay",
-    "source": "specification/relay/resource-manager/readme.md",
-    "package": "com.microsoft.azure.management.relay",
-    "args": "--payload-flattening-threshold=1 --tag=package-2017-04"
-  },
-  "resources": {
-    "dir": "archive/azure-mgmt-resources",
+  "resources/resource-manager": {
     "source": "specification/resources/resource-manager/readme.md",
-    "package": "com.microsoft.azure.management.resources --tag=package-resources-2016-09"
+    "args": "--multiapi --fluent"
   },
-  "scheduler": {
-    "dir": "archive/azure-mgmt-scheduler",
-    "source": "specification/scheduler/resource-manager/readme.md",
-    "package": "com.microsoft.azure.management.scheduler",
-    "args": "--payload-flattening-threshold=1 --tag=package-2016-03"
+  "signalr/resource-manager": {
+    "source": "specification/signalr/resource-manager/readme.md",
+    "args": "--multiapi --fluent",
+    "fconfig": {
+      "\"moduleName\"": "\"SignalR\"",
+      "\"knownPlurals\"": ["\"signalr\""],
+      "\"knownSingulars\"": ["\"signalr\""]
+    }
   },
-  "search": {
-    "dir": "archive/azure-mgmt-search",
-    "source": "specification/search/resource-manager/readme.md",
-    "package": "com.microsoft.azure.management.search",
-    "args": "--payload-flattening-threshold=1 --tag=package-2015-08"
-  },
-  "servermanagement": {
-    "dir": "archive/azure-mgmt-servermanagement",
-    "source": "specification/servermanagement/resource-manager/readme.md",
-    "package": "com.microsoft.azure.management.servermanagement",
-    "args": "--payload-flattening-threshold=1 --tag=package-2016-07-preview"
-  },
-  "servicebus": {
-    "dir": "archive/azure-mgmt-servicebus",
-    "source": "specification/servicebus/resource-manager/readme.md",
-    "package": "com.microsoft.azure.management.servicebus",
-    "args": "--payload-flattening-threshold=1 --tag=package-2015-08"
-  },
-  "servicefabric": {
-    "dir": "archive/azure-mgmt-servicefabric",
-    "source": "specification/servicefabric/resource-manager/readme.md",
-    "package": "com.microsoft.azure.management.servicefabric",
-    "args": "--payload-flattening-threshold=1 --tag=package-2016-09"
-  },
-  "sql": {
-    "dir": "archive/azure-mgmt-sql",
-    "source": "specification/sql/resource-manager/readme.md",
-    "package": "com.microsoft.azure.management.sql",
-    "args": "--payload-flattening-threshold=1 --tag=package-2015-05-preview"
-  },
-  "storage": {
-    "dir": "archive/azure-mgmt-storage",
+  "storage/resource-manager": {
     "source": "specification/storage/resource-manager/readme.md",
-    "package": "com.microsoft.azure.management.storage",
-    "args": "--payload-flattening-threshold=2 --tag=package-2016-01"
+    "args": "--multiapi --fluent"
   },
-  "storsimple8000series": {
-    "dir": "archive/azure-mgmt-storsimple8000series",
-    "source": "specification/storsimple8000series/resource-manager/readme.md",
-    "package": "com.microsoft.azure.management.storsimple8000series",
-    "args": "--payload-flattening-threshold=1 --tag=package-2017-06"
-  },
-  "streamanalytics": {
-    "dir": "archive/azure-mgmt-streamanalytics",
+  "streamanalytics/resource-manager": {
     "source": "specification/streamanalytics/resource-manager/readme.md",
-    "package": "com.microsoft.azure.management.streamanalytics",
-    "args": "--payload-flattening-threshold=1 --tag=package-2016-03"
-  },
-  "subscriptions": {
-    "dir": "archive/azure-mgmt-resources",
-    "source": "specification/resources/resource-manager/readme.md",
-    "package": "com.microsoft.azure.management.resources",
-    "args": "--tag=package-subscriptions-2016-06"
-  },
-  "trafficmanager": {
-    "dir": "archive/azure-mgmt-trafficmanager",
-    "source": "specification/trafficmanager/resource-manager/readme.md",
-    "package": "com.microsoft.azure.management.trafficmanager",
-    "args": "--payload-flattening-threshold=1 --tag=package-2017-05"
+    "args": "--multiapi --fluent",
+    "fconfig": {
+      "\"moduleName\"": "\"StreamAnalytics\""
+    }
   }
 }
