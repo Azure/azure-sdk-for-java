@@ -21,7 +21,7 @@ public class DeploymentExportResultInner {
     private Object template;
 
     /**
-     * Get the template value.
+     * Get the template content.
      *
      * @return the template value
      */
@@ -30,7 +30,7 @@ public class DeploymentExportResultInner {
     }
 
     /**
-     * Set the template value.
+     * Set the template content.
      *
      * @param template the template value to set
      * @return the DeploymentExportResultInner object itself.

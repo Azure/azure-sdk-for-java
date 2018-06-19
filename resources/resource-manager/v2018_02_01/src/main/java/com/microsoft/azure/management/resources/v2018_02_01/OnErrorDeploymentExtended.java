@@ -35,7 +35,7 @@ public class OnErrorDeploymentExtended {
     private String deploymentName;
 
     /**
-     * Get the provisioningState value.
+     * Get the state of the provisioning for the on error deployment.
      *
      * @return the provisioningState value
      */
@@ -44,7 +44,7 @@ public class OnErrorDeploymentExtended {
     }
 
     /**
-     * Get the type value.
+     * Get the deployment on error behavior type. Possible values are LastSuccessful and SpecificDeployment. Possible values include: 'LastSuccessful', 'SpecificDeployment'.
      *
      * @return the type value
      */
@@ -53,7 +53,7 @@ public class OnErrorDeploymentExtended {
     }
 
     /**
-     * Set the type value.
+     * Set the deployment on error behavior type. Possible values are LastSuccessful and SpecificDeployment. Possible values include: 'LastSuccessful', 'SpecificDeployment'.
      *
      * @param type the type value to set
      * @return the OnErrorDeploymentExtended object itself.
@@ -64,7 +64,7 @@ public class OnErrorDeploymentExtended {
     }
 
     /**
-     * Get the deploymentName value.
+     * Get the deployment to be used on error case.
      *
      * @return the deploymentName value
      */
@@ -73,7 +73,7 @@ public class OnErrorDeploymentExtended {
     }
 
     /**
-     * Set the deploymentName value.
+     * Set the deployment to be used on error case.
      *
      * @param deploymentName the deploymentName value to set
      * @return the OnErrorDeploymentExtended object itself.

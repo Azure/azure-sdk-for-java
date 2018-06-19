@@ -11,8 +11,8 @@ package com.microsoft.azure.management.policy.v2018_03_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Error reponse indicates ARM is not able to process the incoming request. The
- * reason is provided in the error message.
+ * Error reponse indicates Azure Resource Manager is not able to process the
+ * incoming request. The reason is provided in the error message.
  */
 public class ErrorResponse {
     /**
@@ -34,7 +34,7 @@ public class ErrorResponse {
     private String errorMessage;
 
     /**
-     * Get the httpStatus value.
+     * Get http status code.
      *
      * @return the httpStatus value
      */
@@ -43,7 +43,7 @@ public class ErrorResponse {
     }
 
     /**
-     * Set the httpStatus value.
+     * Set http status code.
      *
      * @param httpStatus the httpStatus value to set
      * @return the ErrorResponse object itself.
@@ -54,7 +54,7 @@ public class ErrorResponse {
     }
 
     /**
-     * Get the errorCode value.
+     * Get error code.
      *
      * @return the errorCode value
      */
@@ -63,7 +63,7 @@ public class ErrorResponse {
     }
 
     /**
-     * Set the errorCode value.
+     * Set error code.
      *
      * @param errorCode the errorCode value to set
      * @return the ErrorResponse object itself.
@@ -74,7 +74,7 @@ public class ErrorResponse {
     }
 
     /**
-     * Get the errorMessage value.
+     * Get error message indicating why the operation failed.
      *
      * @return the errorMessage value
      */
@@ -83,7 +83,7 @@ public class ErrorResponse {
     }
 
     /**
-     * Set the errorMessage value.
+     * Set error message indicating why the operation failed.
      *
      * @param errorMessage the errorMessage value to set
      * @return the ErrorResponse object itself.

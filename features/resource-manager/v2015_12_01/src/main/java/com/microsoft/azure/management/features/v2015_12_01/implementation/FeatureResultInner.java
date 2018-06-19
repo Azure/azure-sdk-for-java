@@ -40,7 +40,7 @@ public class FeatureResultInner {
     private String type;
 
     /**
-     * Get the name value.
+     * Get the name of the feature.
      *
      * @return the name value
      */
@@ -49,7 +49,7 @@ public class FeatureResultInner {
     }
 
     /**
-     * Set the name value.
+     * Set the name of the feature.
      *
      * @param name the name value to set
      * @return the FeatureResultInner object itself.
@@ -60,7 +60,7 @@ public class FeatureResultInner {
     }
 
     /**
-     * Get the properties value.
+     * Get properties of the previewed feature.
      *
      * @return the properties value
      */
@@ -69,7 +69,7 @@ public class FeatureResultInner {
     }
 
     /**
-     * Set the properties value.
+     * Set properties of the previewed feature.
      *
      * @param properties the properties value to set
      * @return the FeatureResultInner object itself.
@@ -80,7 +80,7 @@ public class FeatureResultInner {
     }
 
     /**
-     * Get the id value.
+     * Get the resource ID of the feature.
      *
      * @return the id value
      */
@@ -89,7 +89,7 @@ public class FeatureResultInner {
     }
 
     /**
-     * Set the id value.
+     * Set the resource ID of the feature.
      *
      * @param id the id value to set
      * @return the FeatureResultInner object itself.
@@ -100,7 +100,7 @@ public class FeatureResultInner {
     }
 
     /**
-     * Get the type value.
+     * Get the resource type of the feature.
      *
      * @return the type value
      */
@@ -109,7 +109,7 @@ public class FeatureResultInner {
     }
 
     /**
-     * Set the type value.
+     * Set the resource type of the feature.
      *
      * @param type the type value to set
      * @return the FeatureResultInner object itself.

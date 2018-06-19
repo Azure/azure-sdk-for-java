@@ -65,7 +65,7 @@ public class PolicyDefinitionInner extends ProxyResource {
     private Object parameters;
 
     /**
-     * Get the policyType value.
+     * Get the type of policy definition. Possible values are NotSpecified, BuiltIn, and Custom. Possible values include: 'NotSpecified', 'BuiltIn', 'Custom'.
      *
      * @return the policyType value
      */
@@ -74,7 +74,7 @@ public class PolicyDefinitionInner extends ProxyResource {
     }
 
     /**
-     * Set the policyType value.
+     * Set the type of policy definition. Possible values are NotSpecified, BuiltIn, and Custom. Possible values include: 'NotSpecified', 'BuiltIn', 'Custom'.
      *
      * @param policyType the policyType value to set
      * @return the PolicyDefinitionInner object itself.
@@ -85,7 +85,7 @@ public class PolicyDefinitionInner extends ProxyResource {
     }
 
     /**
-     * Get the mode value.
+     * Get the policy definition mode. Possible values are NotSpecified, Indexed, and All. Possible values include: 'NotSpecified', 'Indexed', 'All'.
      *
      * @return the mode value
      */
@@ -94,7 +94,7 @@ public class PolicyDefinitionInner extends ProxyResource {
     }
 
     /**
-     * Set the mode value.
+     * Set the policy definition mode. Possible values are NotSpecified, Indexed, and All. Possible values include: 'NotSpecified', 'Indexed', 'All'.
      *
      * @param mode the mode value to set
      * @return the PolicyDefinitionInner object itself.
@@ -105,7 +105,7 @@ public class PolicyDefinitionInner extends ProxyResource {
     }
 
     /**
-     * Get the displayName value.
+     * Get the display name of the policy definition.
      *
      * @return the displayName value
      */
@@ -114,7 +114,7 @@ public class PolicyDefinitionInner extends ProxyResource {
     }
 
     /**
-     * Set the displayName value.
+     * Set the display name of the policy definition.
      *
      * @param displayName the displayName value to set
      * @return the PolicyDefinitionInner object itself.
@@ -125,7 +125,7 @@ public class PolicyDefinitionInner extends ProxyResource {
     }
 
     /**
-     * Get the description value.
+     * Get the policy definition description.
      *
      * @return the description value
      */
@@ -134,7 +134,7 @@ public class PolicyDefinitionInner extends ProxyResource {
     }
 
     /**
-     * Set the description value.
+     * Set the policy definition description.
      *
      * @param description the description value to set
      * @return the PolicyDefinitionInner object itself.
@@ -145,7 +145,7 @@ public class PolicyDefinitionInner extends ProxyResource {
     }
 
     /**
-     * Get the policyRule value.
+     * Get the policy rule.
      *
      * @return the policyRule value
      */
@@ -154,7 +154,7 @@ public class PolicyDefinitionInner extends ProxyResource {
     }
 
     /**
-     * Set the policyRule value.
+     * Set the policy rule.
      *
      * @param policyRule the policyRule value to set
      * @return the PolicyDefinitionInner object itself.
@@ -165,7 +165,7 @@ public class PolicyDefinitionInner extends ProxyResource {
     }
 
     /**
-     * Get the metadata value.
+     * Get the policy definition metadata.
      *
      * @return the metadata value
      */
@@ -174,7 +174,7 @@ public class PolicyDefinitionInner extends ProxyResource {
     }
 
     /**
-     * Set the metadata value.
+     * Set the policy definition metadata.
      *
      * @param metadata the metadata value to set
      * @return the PolicyDefinitionInner object itself.
@@ -185,7 +185,7 @@ public class PolicyDefinitionInner extends ProxyResource {
     }
 
     /**
-     * Get the parameters value.
+     * Get required if a parameter is used in policy rule.
      *
      * @return the parameters value
      */
@@ -194,7 +194,7 @@ public class PolicyDefinitionInner extends ProxyResource {
     }
 
     /**
-     * Set the parameters value.
+     * Set required if a parameter is used in policy rule.
      *
      * @param parameters the parameters value to set
      * @return the PolicyDefinitionInner object itself.

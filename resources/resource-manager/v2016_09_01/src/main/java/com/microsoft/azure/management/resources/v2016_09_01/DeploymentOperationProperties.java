@@ -64,7 +64,7 @@ public class DeploymentOperationProperties {
     private HttpMessage response;
 
     /**
-     * Get the provisioningState value.
+     * Get the state of the provisioning.
      *
      * @return the provisioningState value
      */
@@ -73,7 +73,7 @@ public class DeploymentOperationProperties {
     }
 
     /**
-     * Get the timestamp value.
+     * Get the date and time of the operation.
      *
      * @return the timestamp value
      */
@@ -82,7 +82,7 @@ public class DeploymentOperationProperties {
     }
 
     /**
-     * Get the serviceRequestId value.
+     * Get deployment operation service request id.
      *
      * @return the serviceRequestId value
      */
@@ -91,7 +91,7 @@ public class DeploymentOperationProperties {
     }
 
     /**
-     * Get the statusCode value.
+     * Get operation status code.
      *
      * @return the statusCode value
      */
@@ -100,7 +100,7 @@ public class DeploymentOperationProperties {
     }
 
     /**
-     * Get the statusMessage value.
+     * Get operation status message.
      *
      * @return the statusMessage value
      */
@@ -109,7 +109,7 @@ public class DeploymentOperationProperties {
     }
 
     /**
-     * Get the targetResource value.
+     * Get the target resource.
      *
      * @return the targetResource value
      */
@@ -118,7 +118,7 @@ public class DeploymentOperationProperties {
     }
 
     /**
-     * Get the request value.
+     * Get the HTTP request message.
      *
      * @return the request value
      */
@@ -127,7 +127,7 @@ public class DeploymentOperationProperties {
     }
 
     /**
-     * Get the response value.
+     * Get the HTTP response message.
      *
      * @return the response value
      */

@@ -27,7 +27,7 @@ public class TagCount {
     private Integer value;
 
     /**
-     * Get the type value.
+     * Get type of count.
      *
      * @return the type value
      */
@@ -36,7 +36,7 @@ public class TagCount {
     }
 
     /**
-     * Set the type value.
+     * Set type of count.
      *
      * @param type the type value to set
      * @return the TagCount object itself.
@@ -47,7 +47,7 @@ public class TagCount {
     }
 
     /**
-     * Get the value value.
+     * Get value of count.
      *
      * @return the value value
      */
@@ -56,7 +56,7 @@ public class TagCount {
     }
 
     /**
-     * Set the value value.
+     * Set value of count.
      *
      * @param value the value value to set
      * @return the TagCount object itself.

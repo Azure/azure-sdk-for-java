@@ -33,7 +33,7 @@ public class Identity {
     private ResourceIdentityType type;
 
     /**
-     * Get the principalId value.
+     * Get the principal ID of resource identity.
      *
      * @return the principalId value
      */
@@ -42,7 +42,7 @@ public class Identity {
     }
 
     /**
-     * Get the tenantId value.
+     * Get the tenant ID of resource.
      *
      * @return the tenantId value
      */
@@ -51,7 +51,7 @@ public class Identity {
     }
 
     /**
-     * Get the type value.
+     * Get the identity type. Possible values include: 'SystemAssigned'.
      *
      * @return the type value
      */
@@ -60,7 +60,7 @@ public class Identity {
     }
 
     /**
-     * Set the type value.
+     * Set the identity type. Possible values include: 'SystemAssigned'.
      *
      * @param type the type value to set
      * @return the Identity object itself.
