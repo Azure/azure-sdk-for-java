@@ -31,6 +31,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
+import java.util.Locale;
 import java.util.UUID;
 
 import com.fasterxml.jackson.core.JsonParser;
@@ -61,7 +62,7 @@ public final class Utils {
     // so Thu, 04 Jan 2018 00:30:37 GMT is accepted by the cosmos db service,
     // but Thu, 4 Jan 2018 00:30:37 GMT is not.
     // Therefore, we need a custom date time formatter.
-    private static final DateTimeFormatter RFC_1123_DATE_TIME = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss zzz");
+    private static final DateTimeFormatter RFC_1123_DATE_TIME = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss zzz",Locale.US);
 
     static {
         Utils.simpleObjectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
