@@ -952,7 +952,7 @@ public class Samples {
     4.75TB (100MB X 50,000 blocks).
      */
     @Test
-    public void exmapleAppendBlobURL() throws MalformedURLException, InvalidKeyException {
+    public void exampleAppendBlobURL() throws MalformedURLException, InvalidKeyException {
         // From the Azure portal, get your Storage account's name and account key.
         String accountName = getAccountName();
         String accountKey = getAccountKey();
@@ -968,7 +968,9 @@ public class Samples {
         containerURL.create(null, null)
                 .flatMap(response ->
                         // Create the append blob. This creates a zero-length blob that we can now append to.
+                        // <ab_create>
                         blobURL.create(null, null, null))
+                        // </ab_create>
                 .toObservable()
                 .flatMap(response ->
                         // This range will act as our for loop to create 5 blocks
