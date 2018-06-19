@@ -23,7 +23,7 @@ public class SecurityGroupViewResultInner {
     private List<SecurityGroupNetworkInterface> networkInterfaces;
 
     /**
-     * Get the networkInterfaces value.
+     * Get list of network interfaces on the specified VM.
      *
      * @return the networkInterfaces value
      */
@@ -32,7 +32,7 @@ public class SecurityGroupViewResultInner {
     }
 
     /**
-     * Set the networkInterfaces value.
+     * Set list of network interfaces on the specified VM.
      *
      * @param networkInterfaces the networkInterfaces value to set
      * @return the SecurityGroupViewResultInner object itself.

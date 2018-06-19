@@ -61,7 +61,7 @@ public class RouteInner extends SubResource {
     private String etag;
 
     /**
-     * Get the addressPrefix value.
+     * Get the destination CIDR to which the route applies.
      *
      * @return the addressPrefix value
      */
@@ -70,7 +70,7 @@ public class RouteInner extends SubResource {
     }
 
     /**
-     * Set the addressPrefix value.
+     * Set the destination CIDR to which the route applies.
      *
      * @param addressPrefix the addressPrefix value to set
      * @return the RouteInner object itself.
@@ -81,7 +81,7 @@ public class RouteInner extends SubResource {
     }
 
     /**
-     * Get the nextHopType value.
+     * Get the type of Azure hop the packet should be sent to. Possible values are: 'VirtualNetworkGateway', 'VnetLocal', 'Internet', 'VirtualAppliance', and 'None'. Possible values include: 'VirtualNetworkGateway', 'VnetLocal', 'Internet', 'VirtualAppliance', 'None'.
      *
      * @return the nextHopType value
      */
@@ -90,7 +90,7 @@ public class RouteInner extends SubResource {
     }
 
     /**
-     * Set the nextHopType value.
+     * Set the type of Azure hop the packet should be sent to. Possible values are: 'VirtualNetworkGateway', 'VnetLocal', 'Internet', 'VirtualAppliance', and 'None'. Possible values include: 'VirtualNetworkGateway', 'VnetLocal', 'Internet', 'VirtualAppliance', 'None'.
      *
      * @param nextHopType the nextHopType value to set
      * @return the RouteInner object itself.
@@ -101,7 +101,7 @@ public class RouteInner extends SubResource {
     }
 
     /**
-     * Get the nextHopIpAddress value.
+     * Get the IP address packets should be forwarded to. Next hop values are only allowed in routes where the next hop type is VirtualAppliance.
      *
      * @return the nextHopIpAddress value
      */
@@ -110,7 +110,7 @@ public class RouteInner extends SubResource {
     }
 
     /**
-     * Set the nextHopIpAddress value.
+     * Set the IP address packets should be forwarded to. Next hop values are only allowed in routes where the next hop type is VirtualAppliance.
      *
      * @param nextHopIpAddress the nextHopIpAddress value to set
      * @return the RouteInner object itself.
@@ -121,7 +121,7 @@ public class RouteInner extends SubResource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get the provisioning state of the resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value
      */
@@ -130,7 +130,7 @@ public class RouteInner extends SubResource {
     }
 
     /**
-     * Set the provisioningState value.
+     * Set the provisioning state of the resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
      *
      * @param provisioningState the provisioningState value to set
      * @return the RouteInner object itself.
@@ -141,7 +141,7 @@ public class RouteInner extends SubResource {
     }
 
     /**
-     * Get the name value.
+     * Get the name of the resource that is unique within a resource group. This name can be used to access the resource.
      *
      * @return the name value
      */
@@ -150,7 +150,7 @@ public class RouteInner extends SubResource {
     }
 
     /**
-     * Set the name value.
+     * Set the name of the resource that is unique within a resource group. This name can be used to access the resource.
      *
      * @param name the name value to set
      * @return the RouteInner object itself.
@@ -161,7 +161,7 @@ public class RouteInner extends SubResource {
     }
 
     /**
-     * Get the etag value.
+     * Get a unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value
      */
@@ -170,7 +170,7 @@ public class RouteInner extends SubResource {
     }
 
     /**
-     * Set the etag value.
+     * Set a unique read-only string that changes whenever the resource is updated.
      *
      * @param etag the etag value to set
      * @return the RouteInner object itself.

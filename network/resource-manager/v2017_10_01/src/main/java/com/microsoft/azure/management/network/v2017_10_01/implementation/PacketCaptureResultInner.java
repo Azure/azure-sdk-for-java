@@ -82,7 +82,7 @@ public class PacketCaptureResultInner {
     private ProvisioningState provisioningState;
 
     /**
-     * Get the name value.
+     * Get name of the packet capture session.
      *
      * @return the name value
      */
@@ -91,7 +91,7 @@ public class PacketCaptureResultInner {
     }
 
     /**
-     * Get the id value.
+     * Get iD of the packet capture operation.
      *
      * @return the id value
      */
@@ -120,7 +120,7 @@ public class PacketCaptureResultInner {
     }
 
     /**
-     * Get the target value.
+     * Get the ID of the targeted resource, only VM is currently supported.
      *
      * @return the target value
      */
@@ -129,7 +129,7 @@ public class PacketCaptureResultInner {
     }
 
     /**
-     * Set the target value.
+     * Set the ID of the targeted resource, only VM is currently supported.
      *
      * @param target the target value to set
      * @return the PacketCaptureResultInner object itself.
@@ -140,7 +140,7 @@ public class PacketCaptureResultInner {
     }
 
     /**
-     * Get the bytesToCapturePerPacket value.
+     * Get number of bytes captured per packet, the remaining bytes are truncated.
      *
      * @return the bytesToCapturePerPacket value
      */
@@ -149,7 +149,7 @@ public class PacketCaptureResultInner {
     }
 
     /**
-     * Set the bytesToCapturePerPacket value.
+     * Set number of bytes captured per packet, the remaining bytes are truncated.
      *
      * @param bytesToCapturePerPacket the bytesToCapturePerPacket value to set
      * @return the PacketCaptureResultInner object itself.
@@ -160,7 +160,7 @@ public class PacketCaptureResultInner {
     }
 
     /**
-     * Get the totalBytesPerSession value.
+     * Get maximum size of the capture output.
      *
      * @return the totalBytesPerSession value
      */
@@ -169,7 +169,7 @@ public class PacketCaptureResultInner {
     }
 
     /**
-     * Set the totalBytesPerSession value.
+     * Set maximum size of the capture output.
      *
      * @param totalBytesPerSession the totalBytesPerSession value to set
      * @return the PacketCaptureResultInner object itself.
@@ -180,7 +180,7 @@ public class PacketCaptureResultInner {
     }
 
     /**
-     * Get the timeLimitInSeconds value.
+     * Get maximum duration of the capture session in seconds.
      *
      * @return the timeLimitInSeconds value
      */
@@ -189,7 +189,7 @@ public class PacketCaptureResultInner {
     }
 
     /**
-     * Set the timeLimitInSeconds value.
+     * Set maximum duration of the capture session in seconds.
      *
      * @param timeLimitInSeconds the timeLimitInSeconds value to set
      * @return the PacketCaptureResultInner object itself.
@@ -240,7 +240,7 @@ public class PacketCaptureResultInner {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get the provisioning state of the packet capture session. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'.
      *
      * @return the provisioningState value
      */
@@ -249,7 +249,7 @@ public class PacketCaptureResultInner {
     }
 
     /**
-     * Set the provisioningState value.
+     * Set the provisioning state of the packet capture session. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'.
      *
      * @param provisioningState the provisioningState value to set
      * @return the PacketCaptureResultInner object itself.

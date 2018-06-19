@@ -23,7 +23,7 @@ public class BgpPeerStatusListResultInner {
     private List<BgpPeerStatus> value;
 
     /**
-     * Get the value value.
+     * Get list of BGP peers.
      *
      * @return the value value
      */
@@ -32,7 +32,7 @@ public class BgpPeerStatusListResultInner {
     }
 
     /**
-     * Set the value value.
+     * Set list of BGP peers.
      *
      * @param value the value value to set
      * @return the BgpPeerStatusListResultInner object itself.

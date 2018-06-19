@@ -149,7 +149,8 @@ class NetworkInterfacesImpl extends WrapperImpl<NetworkInterfacesInner> implemen
             public Iterable<NetworkInterfaceInner> call(Page<NetworkInterfaceInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<NetworkInterfaceInner, LoadBalancerNetworkInterface>() {
+        })
+        .map(new Func1<NetworkInterfaceInner, LoadBalancerNetworkInterface>() {
             @Override
             public LoadBalancerNetworkInterface call(NetworkInterfaceInner inner) {
                 return new LoadBalancerNetworkInterfaceImpl(inner, manager());
@@ -166,7 +167,8 @@ class NetworkInterfacesImpl extends WrapperImpl<NetworkInterfacesInner> implemen
             public Iterable<NetworkInterfaceInner> call(Page<NetworkInterfaceInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<NetworkInterfaceInner, LoadBalancerNetworkInterface>() {
+        })
+        .map(new Func1<NetworkInterfaceInner, LoadBalancerNetworkInterface>() {
             @Override
             public LoadBalancerNetworkInterface call(NetworkInterfaceInner inner) {
                 return new LoadBalancerNetworkInterfaceImpl(inner, manager());

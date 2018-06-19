@@ -24,7 +24,7 @@ public class AddressSpace {
     private List<String> addressPrefixes;
 
     /**
-     * Get the addressPrefixes value.
+     * Get a list of address blocks reserved for this virtual network in CIDR notation.
      *
      * @return the addressPrefixes value
      */
@@ -33,7 +33,7 @@ public class AddressSpace {
     }
 
     /**
-     * Set the addressPrefixes value.
+     * Set a list of address blocks reserved for this virtual network in CIDR notation.
      *
      * @param addressPrefixes the addressPrefixes value to set
      * @return the AddressSpace object itself.

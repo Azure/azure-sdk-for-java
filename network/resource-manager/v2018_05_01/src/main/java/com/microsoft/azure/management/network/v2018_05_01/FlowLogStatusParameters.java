@@ -23,7 +23,7 @@ public class FlowLogStatusParameters {
     private String targetResourceId;
 
     /**
-     * Get the targetResourceId value.
+     * Get the target resource where getting the flow log and traffic analytics (optional) status.
      *
      * @return the targetResourceId value
      */
@@ -32,7 +32,7 @@ public class FlowLogStatusParameters {
     }
 
     /**
-     * Set the targetResourceId value.
+     * Set the target resource where getting the flow log and traffic analytics (optional) status.
      *
      * @param targetResourceId the targetResourceId value to set
      * @return the FlowLogStatusParameters object itself.

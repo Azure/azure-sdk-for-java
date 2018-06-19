@@ -48,7 +48,7 @@ public class DdosProtectionPlanInner extends Resource {
     private String etag;
 
     /**
-     * Get the resourceGuid value.
+     * Get the resource GUID property of the DDoS protection plan resource. It uniquely identifies the resource, even if the user changes its name or migrate the resource across subscriptions or resource groups.
      *
      * @return the resourceGuid value
      */
@@ -57,7 +57,7 @@ public class DdosProtectionPlanInner extends Resource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get the provisioning state of the DDoS protection plan resource. Possible values are: 'Succeeded', 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value
      */
@@ -66,7 +66,7 @@ public class DdosProtectionPlanInner extends Resource {
     }
 
     /**
-     * Get the virtualNetworks value.
+     * Get the list of virtual networks associated with the DDoS protection plan resource. This list is read-only.
      *
      * @return the virtualNetworks value
      */
@@ -75,7 +75,7 @@ public class DdosProtectionPlanInner extends Resource {
     }
 
     /**
-     * Get the etag value.
+     * Get a unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value
      */

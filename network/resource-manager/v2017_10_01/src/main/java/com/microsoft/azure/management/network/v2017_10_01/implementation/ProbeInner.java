@@ -90,7 +90,7 @@ public class ProbeInner extends SubResource {
     private String etag;
 
     /**
-     * Get the loadBalancingRules value.
+     * Get the load balancer rules that use this probe.
      *
      * @return the loadBalancingRules value
      */
@@ -99,7 +99,7 @@ public class ProbeInner extends SubResource {
     }
 
     /**
-     * Get the protocol value.
+     * Get the protocol of the end point. Possible values are: 'Http' or 'Tcp'. If 'Tcp' is specified, a received ACK is required for the probe to be successful. If 'Http' is specified, a 200 OK response from the specifies URI is required for the probe to be successful. Possible values include: 'Http', 'Tcp'.
      *
      * @return the protocol value
      */
@@ -108,7 +108,7 @@ public class ProbeInner extends SubResource {
     }
 
     /**
-     * Set the protocol value.
+     * Set the protocol of the end point. Possible values are: 'Http' or 'Tcp'. If 'Tcp' is specified, a received ACK is required for the probe to be successful. If 'Http' is specified, a 200 OK response from the specifies URI is required for the probe to be successful. Possible values include: 'Http', 'Tcp'.
      *
      * @param protocol the protocol value to set
      * @return the ProbeInner object itself.
@@ -119,7 +119,7 @@ public class ProbeInner extends SubResource {
     }
 
     /**
-     * Get the port value.
+     * Get the port for communicating the probe. Possible values range from 1 to 65535, inclusive.
      *
      * @return the port value
      */
@@ -128,7 +128,7 @@ public class ProbeInner extends SubResource {
     }
 
     /**
-     * Set the port value.
+     * Set the port for communicating the probe. Possible values range from 1 to 65535, inclusive.
      *
      * @param port the port value to set
      * @return the ProbeInner object itself.
@@ -139,7 +139,7 @@ public class ProbeInner extends SubResource {
     }
 
     /**
-     * Get the intervalInSeconds value.
+     * Get the interval, in seconds, for how frequently to probe the endpoint for health status. Typically, the interval is slightly less than half the allocated timeout period (in seconds) which allows two full probes before taking the instance out of rotation. The default value is 15, the minimum value is 5.
      *
      * @return the intervalInSeconds value
      */
@@ -148,7 +148,7 @@ public class ProbeInner extends SubResource {
     }
 
     /**
-     * Set the intervalInSeconds value.
+     * Set the interval, in seconds, for how frequently to probe the endpoint for health status. Typically, the interval is slightly less than half the allocated timeout period (in seconds) which allows two full probes before taking the instance out of rotation. The default value is 15, the minimum value is 5.
      *
      * @param intervalInSeconds the intervalInSeconds value to set
      * @return the ProbeInner object itself.
@@ -159,7 +159,7 @@ public class ProbeInner extends SubResource {
     }
 
     /**
-     * Get the numberOfProbes value.
+     * Get the number of probes where if no response, will result in stopping further traffic from being delivered to the endpoint. This values allows endpoints to be taken out of rotation faster or slower than the typical times used in Azure.
      *
      * @return the numberOfProbes value
      */
@@ -168,7 +168,7 @@ public class ProbeInner extends SubResource {
     }
 
     /**
-     * Set the numberOfProbes value.
+     * Set the number of probes where if no response, will result in stopping further traffic from being delivered to the endpoint. This values allows endpoints to be taken out of rotation faster or slower than the typical times used in Azure.
      *
      * @param numberOfProbes the numberOfProbes value to set
      * @return the ProbeInner object itself.
@@ -179,7 +179,7 @@ public class ProbeInner extends SubResource {
     }
 
     /**
-     * Get the requestPath value.
+     * Get the URI used for requesting health status from the VM. Path is required if a protocol is set to http. Otherwise, it is not allowed. There is no default value.
      *
      * @return the requestPath value
      */
@@ -188,7 +188,7 @@ public class ProbeInner extends SubResource {
     }
 
     /**
-     * Set the requestPath value.
+     * Set the URI used for requesting health status from the VM. Path is required if a protocol is set to http. Otherwise, it is not allowed. There is no default value.
      *
      * @param requestPath the requestPath value to set
      * @return the ProbeInner object itself.
@@ -199,7 +199,7 @@ public class ProbeInner extends SubResource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get gets the provisioning state of the public IP resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value
      */
@@ -208,7 +208,7 @@ public class ProbeInner extends SubResource {
     }
 
     /**
-     * Set the provisioningState value.
+     * Set gets the provisioning state of the public IP resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
      *
      * @param provisioningState the provisioningState value to set
      * @return the ProbeInner object itself.
@@ -219,7 +219,7 @@ public class ProbeInner extends SubResource {
     }
 
     /**
-     * Get the name value.
+     * Get gets name of the resource that is unique within a resource group. This name can be used to access the resource.
      *
      * @return the name value
      */
@@ -228,7 +228,7 @@ public class ProbeInner extends SubResource {
     }
 
     /**
-     * Set the name value.
+     * Set gets name of the resource that is unique within a resource group. This name can be used to access the resource.
      *
      * @param name the name value to set
      * @return the ProbeInner object itself.
@@ -239,7 +239,7 @@ public class ProbeInner extends SubResource {
     }
 
     /**
-     * Get the etag value.
+     * Get a unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value
      */
@@ -248,7 +248,7 @@ public class ProbeInner extends SubResource {
     }
 
     /**
-     * Set the etag value.
+     * Set a unique read-only string that changes whenever the resource is updated.
      *
      * @param etag the etag value to set
      * @return the ProbeInner object itself.

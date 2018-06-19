@@ -28,7 +28,7 @@ public class OperationPropertiesFormatServiceSpecification {
     private List<LogSpecification> logSpecifications;
 
     /**
-     * Get the metricSpecifications value.
+     * Get operation service specification.
      *
      * @return the metricSpecifications value
      */
@@ -37,7 +37,7 @@ public class OperationPropertiesFormatServiceSpecification {
     }
 
     /**
-     * Set the metricSpecifications value.
+     * Set operation service specification.
      *
      * @param metricSpecifications the metricSpecifications value to set
      * @return the OperationPropertiesFormatServiceSpecification object itself.
@@ -48,7 +48,7 @@ public class OperationPropertiesFormatServiceSpecification {
     }
 
     /**
-     * Get the logSpecifications value.
+     * Get operation log specification.
      *
      * @return the logSpecifications value
      */
@@ -57,7 +57,7 @@ public class OperationPropertiesFormatServiceSpecification {
     }
 
     /**
-     * Set the logSpecifications value.
+     * Set operation log specification.
      *
      * @param logSpecifications the logSpecifications value to set
      * @return the OperationPropertiesFormatServiceSpecification object itself.

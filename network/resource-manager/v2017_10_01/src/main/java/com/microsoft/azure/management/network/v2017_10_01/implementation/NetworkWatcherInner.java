@@ -40,7 +40,7 @@ public class NetworkWatcherInner extends Resource {
     private String id;
 
     /**
-     * Get the etag value.
+     * Get a unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value
      */
@@ -49,7 +49,7 @@ public class NetworkWatcherInner extends Resource {
     }
 
     /**
-     * Set the etag value.
+     * Set a unique read-only string that changes whenever the resource is updated.
      *
      * @param etag the etag value to set
      * @return the NetworkWatcherInner object itself.
@@ -60,7 +60,7 @@ public class NetworkWatcherInner extends Resource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get the provisioning state of the resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'.
      *
      * @return the provisioningState value
      */
@@ -69,7 +69,7 @@ public class NetworkWatcherInner extends Resource {
     }
 
     /**
-     * Get the id value.
+     * Get resource ID.
      *
      * @return the id value
      */
@@ -78,7 +78,7 @@ public class NetworkWatcherInner extends Resource {
     }
 
     /**
-     * Set the id value.
+     * Set resource ID.
      *
      * @param id the id value to set
      * @return the NetworkWatcherInner object itself.

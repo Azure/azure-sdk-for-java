@@ -39,7 +39,7 @@ public class ExpressRouteCircuitArpTable {
     private String macAddress;
 
     /**
-     * Get the age value.
+     * Get entry age in minutes.
      *
      * @return the age value
      */
@@ -48,7 +48,7 @@ public class ExpressRouteCircuitArpTable {
     }
 
     /**
-     * Set the age value.
+     * Set entry age in minutes.
      *
      * @param age the age value to set
      * @return the ExpressRouteCircuitArpTable object itself.
@@ -59,7 +59,7 @@ public class ExpressRouteCircuitArpTable {
     }
 
     /**
-     * Get the interfaceProperty value.
+     * Get interface address.
      *
      * @return the interfaceProperty value
      */
@@ -68,7 +68,7 @@ public class ExpressRouteCircuitArpTable {
     }
 
     /**
-     * Set the interfaceProperty value.
+     * Set interface address.
      *
      * @param interfaceProperty the interfaceProperty value to set
      * @return the ExpressRouteCircuitArpTable object itself.
@@ -79,7 +79,7 @@ public class ExpressRouteCircuitArpTable {
     }
 
     /**
-     * Get the ipAddress value.
+     * Get the IP address.
      *
      * @return the ipAddress value
      */
@@ -88,7 +88,7 @@ public class ExpressRouteCircuitArpTable {
     }
 
     /**
-     * Set the ipAddress value.
+     * Set the IP address.
      *
      * @param ipAddress the ipAddress value to set
      * @return the ExpressRouteCircuitArpTable object itself.
@@ -99,7 +99,7 @@ public class ExpressRouteCircuitArpTable {
     }
 
     /**
-     * Get the macAddress value.
+     * Get the MAC address.
      *
      * @return the macAddress value
      */
@@ -108,7 +108,7 @@ public class ExpressRouteCircuitArpTable {
     }
 
     /**
-     * Set the macAddress value.
+     * Set the MAC address.
      *
      * @param macAddress the macAddress value to set
      * @return the ExpressRouteCircuitArpTable object itself.

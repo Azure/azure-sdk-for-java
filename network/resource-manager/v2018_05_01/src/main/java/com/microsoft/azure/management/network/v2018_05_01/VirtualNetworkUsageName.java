@@ -27,7 +27,7 @@ public class VirtualNetworkUsageName {
     private String value;
 
     /**
-     * Get the localizedValue value.
+     * Get localized subnet size and usage string.
      *
      * @return the localizedValue value
      */
@@ -36,7 +36,7 @@ public class VirtualNetworkUsageName {
     }
 
     /**
-     * Get the value value.
+     * Get subnet size and usage string.
      *
      * @return the value value
      */

@@ -41,7 +41,7 @@ public class TopologyResource {
     private List<TopologyAssociation> associations;
 
     /**
-     * Get the name value.
+     * Get name of the resource.
      *
      * @return the name value
      */
@@ -50,7 +50,7 @@ public class TopologyResource {
     }
 
     /**
-     * Set the name value.
+     * Set name of the resource.
      *
      * @param name the name value to set
      * @return the TopologyResource object itself.
@@ -61,7 +61,7 @@ public class TopologyResource {
     }
 
     /**
-     * Get the id value.
+     * Get iD of the resource.
      *
      * @return the id value
      */
@@ -70,7 +70,7 @@ public class TopologyResource {
     }
 
     /**
-     * Set the id value.
+     * Set iD of the resource.
      *
      * @param id the id value to set
      * @return the TopologyResource object itself.
@@ -81,7 +81,7 @@ public class TopologyResource {
     }
 
     /**
-     * Get the location value.
+     * Get resource location.
      *
      * @return the location value
      */
@@ -90,7 +90,7 @@ public class TopologyResource {
     }
 
     /**
-     * Set the location value.
+     * Set resource location.
      *
      * @param location the location value to set
      * @return the TopologyResource object itself.
@@ -101,7 +101,7 @@ public class TopologyResource {
     }
 
     /**
-     * Get the associations value.
+     * Get holds the associations the resource has with other resources in the resource group.
      *
      * @return the associations value
      */
@@ -110,7 +110,7 @@ public class TopologyResource {
     }
 
     /**
-     * Set the associations value.
+     * Set holds the associations the resource has with other resources in the resource group.
      *
      * @param associations the associations value to set
      * @return the TopologyResource object itself.

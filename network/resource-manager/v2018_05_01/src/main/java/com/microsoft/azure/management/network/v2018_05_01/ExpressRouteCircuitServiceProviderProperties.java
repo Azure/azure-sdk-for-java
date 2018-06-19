@@ -33,7 +33,7 @@ public class ExpressRouteCircuitServiceProviderProperties {
     private Integer bandwidthInMbps;
 
     /**
-     * Get the serviceProviderName value.
+     * Get the serviceProviderName.
      *
      * @return the serviceProviderName value
      */
@@ -42,7 +42,7 @@ public class ExpressRouteCircuitServiceProviderProperties {
     }
 
     /**
-     * Set the serviceProviderName value.
+     * Set the serviceProviderName.
      *
      * @param serviceProviderName the serviceProviderName value to set
      * @return the ExpressRouteCircuitServiceProviderProperties object itself.
@@ -53,7 +53,7 @@ public class ExpressRouteCircuitServiceProviderProperties {
     }
 
     /**
-     * Get the peeringLocation value.
+     * Get the peering location.
      *
      * @return the peeringLocation value
      */
@@ -62,7 +62,7 @@ public class ExpressRouteCircuitServiceProviderProperties {
     }
 
     /**
-     * Set the peeringLocation value.
+     * Set the peering location.
      *
      * @param peeringLocation the peeringLocation value to set
      * @return the ExpressRouteCircuitServiceProviderProperties object itself.
@@ -73,7 +73,7 @@ public class ExpressRouteCircuitServiceProviderProperties {
     }
 
     /**
-     * Get the bandwidthInMbps value.
+     * Get the BandwidthInMbps.
      *
      * @return the bandwidthInMbps value
      */
@@ -82,7 +82,7 @@ public class ExpressRouteCircuitServiceProviderProperties {
     }
 
     /**
-     * Set the bandwidthInMbps value.
+     * Set the BandwidthInMbps.
      *
      * @param bandwidthInMbps the bandwidthInMbps value to set
      * @return the ExpressRouteCircuitServiceProviderProperties object itself.

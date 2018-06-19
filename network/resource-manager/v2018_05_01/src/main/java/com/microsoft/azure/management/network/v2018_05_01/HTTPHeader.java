@@ -27,7 +27,7 @@ public class HTTPHeader {
     private String value;
 
     /**
-     * Get the name value.
+     * Get the name in HTTP header.
      *
      * @return the name value
      */
@@ -36,7 +36,7 @@ public class HTTPHeader {
     }
 
     /**
-     * Set the name value.
+     * Set the name in HTTP header.
      *
      * @param name the name value to set
      * @return the HTTPHeader object itself.
@@ -47,7 +47,7 @@ public class HTTPHeader {
     }
 
     /**
-     * Get the value value.
+     * Get the value in HTTP header.
      *
      * @return the value value
      */
@@ -56,7 +56,7 @@ public class HTTPHeader {
     }
 
     /**
-     * Set the value value.
+     * Set the value in HTTP header.
      *
      * @param value the value value to set
      * @return the HTTPHeader object itself.

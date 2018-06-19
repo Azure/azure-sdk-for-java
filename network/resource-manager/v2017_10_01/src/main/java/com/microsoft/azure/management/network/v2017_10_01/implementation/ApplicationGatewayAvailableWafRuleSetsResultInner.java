@@ -23,7 +23,7 @@ public class ApplicationGatewayAvailableWafRuleSetsResultInner {
     private List<ApplicationGatewayFirewallRuleSet> value;
 
     /**
-     * Get the value value.
+     * Get the list of application gateway rule sets.
      *
      * @return the value value
      */
@@ -32,7 +32,7 @@ public class ApplicationGatewayAvailableWafRuleSetsResultInner {
     }
 
     /**
-     * Set the value value.
+     * Set the list of application gateway rule sets.
      *
      * @param value the value value to set
      * @return the ApplicationGatewayAvailableWafRuleSetsResultInner object itself.

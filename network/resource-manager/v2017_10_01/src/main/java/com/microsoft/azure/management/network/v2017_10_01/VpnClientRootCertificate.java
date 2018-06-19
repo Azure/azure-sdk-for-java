@@ -44,7 +44,7 @@ public class VpnClientRootCertificate extends SubResource {
     private String etag;
 
     /**
-     * Get the publicCertData value.
+     * Get the certificate public data.
      *
      * @return the publicCertData value
      */
@@ -53,7 +53,7 @@ public class VpnClientRootCertificate extends SubResource {
     }
 
     /**
-     * Set the publicCertData value.
+     * Set the certificate public data.
      *
      * @param publicCertData the publicCertData value to set
      * @return the VpnClientRootCertificate object itself.
@@ -64,7 +64,7 @@ public class VpnClientRootCertificate extends SubResource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get the provisioning state of the VPN client root certificate resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value
      */
@@ -73,7 +73,7 @@ public class VpnClientRootCertificate extends SubResource {
     }
 
     /**
-     * Get the name value.
+     * Get the name of the resource that is unique within a resource group. This name can be used to access the resource.
      *
      * @return the name value
      */
@@ -82,7 +82,7 @@ public class VpnClientRootCertificate extends SubResource {
     }
 
     /**
-     * Set the name value.
+     * Set the name of the resource that is unique within a resource group. This name can be used to access the resource.
      *
      * @param name the name value to set
      * @return the VpnClientRootCertificate object itself.
@@ -93,7 +93,7 @@ public class VpnClientRootCertificate extends SubResource {
     }
 
     /**
-     * Get the etag value.
+     * Get a unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value
      */
@@ -102,7 +102,7 @@ public class VpnClientRootCertificate extends SubResource {
     }
 
     /**
-     * Set the etag value.
+     * Set a unique read-only string that changes whenever the resource is updated.
      *
      * @param etag the etag value to set
      * @return the VpnClientRootCertificate object itself.

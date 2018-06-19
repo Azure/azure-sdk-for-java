@@ -28,7 +28,7 @@ public class AvailableProvidersListCity {
     private List<String> providers;
 
     /**
-     * Get the cityName value.
+     * Get the city or town name.
      *
      * @return the cityName value
      */
@@ -37,7 +37,7 @@ public class AvailableProvidersListCity {
     }
 
     /**
-     * Set the cityName value.
+     * Set the city or town name.
      *
      * @param cityName the cityName value to set
      * @return the AvailableProvidersListCity object itself.
@@ -48,7 +48,7 @@ public class AvailableProvidersListCity {
     }
 
     /**
-     * Get the providers value.
+     * Get a list of Internet service providers.
      *
      * @return the providers value
      */
@@ -57,7 +57,7 @@ public class AvailableProvidersListCity {
     }
 
     /**
-     * Set the providers value.
+     * Set a list of Internet service providers.
      *
      * @param providers the providers value to set
      * @return the AvailableProvidersListCity object itself.
