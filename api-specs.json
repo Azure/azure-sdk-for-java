@@ -80,6 +80,10 @@
     "source": "specification/notificationhubs/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "loganalytics/data-plane": {
+    "source": "specification/operationalinsights/data-plane/readme.md",
+    "args": "--payload-flattening-threshold=1 --override-client-name=LogAnalyticsDataClient"
+  },
   "mediaservices/resource-manager": {
     "source": "specification/mediaservices/resource-manager/readme.md",
     "args": "--multiapi --fluent"
