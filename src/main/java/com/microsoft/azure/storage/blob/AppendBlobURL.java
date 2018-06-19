@@ -95,7 +95,7 @@ public final class AppendBlobURL extends BlobURL {
      * the <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
      *
      * @apiNote
-     * [!code-java[Sample_Code](~/azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=ab_create "Sample code for AppendBlobURL.create")]
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=ab_create "Sample code for AppendBlobURL.create")]
      *
      * @param headers
      *      {@link BlobHTTPHeaders}
