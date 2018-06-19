@@ -27,7 +27,7 @@ public class ErrorResponse {
     private String message;
 
     /**
-     * Get the code value.
+     * Get error code associated with the error that occurred.
      *
      * @return the code value
      */
@@ -36,7 +36,7 @@ public class ErrorResponse {
     }
 
     /**
-     * Get the message value.
+     * Get describes the error in detail.
      *
      * @return the message value
      */

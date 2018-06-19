@@ -47,7 +47,7 @@ public class InputProperties {
     private String etag;
 
     /**
-     * Get the serialization value.
+     * Get describes how data from an input is serialized or how data is serialized when written to an output. Required on PUT (CreateOrReplace) requests.
      *
      * @return the serialization value
      */
@@ -56,7 +56,7 @@ public class InputProperties {
     }
 
     /**
-     * Set the serialization value.
+     * Set describes how data from an input is serialized or how data is serialized when written to an output. Required on PUT (CreateOrReplace) requests.
      *
      * @param serialization the serialization value to set
      * @return the InputProperties object itself.
@@ -67,7 +67,7 @@ public class InputProperties {
     }
 
     /**
-     * Get the diagnostics value.
+     * Get describes conditions applicable to the Input, Output, or the job overall, that warrant customer attention.
      *
      * @return the diagnostics value
      */
@@ -76,7 +76,7 @@ public class InputProperties {
     }
 
     /**
-     * Get the etag value.
+     * Get the current entity tag for the input. This is an opaque string. You can use it to detect whether the resource has changed between requests. You can also use it in the If-Match or If-None-Match headers for write operations for optimistic concurrency.
      *
      * @return the etag value
      */

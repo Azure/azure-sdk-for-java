@@ -64,7 +64,7 @@ public class OutputInner extends SubResource {
     private String type;
 
     /**
-     * Get the datasource value.
+     * Get describes the data source that output will be written to. Required on PUT (CreateOrReplace) requests.
      *
      * @return the datasource value
      */
@@ -73,7 +73,7 @@ public class OutputInner extends SubResource {
     }
 
     /**
-     * Set the datasource value.
+     * Set describes the data source that output will be written to. Required on PUT (CreateOrReplace) requests.
      *
      * @param datasource the datasource value to set
      * @return the OutputInner object itself.
@@ -84,7 +84,7 @@ public class OutputInner extends SubResource {
     }
 
     /**
-     * Get the serialization value.
+     * Get describes how data from an input is serialized or how data is serialized when written to an output. Required on PUT (CreateOrReplace) requests.
      *
      * @return the serialization value
      */
@@ -93,7 +93,7 @@ public class OutputInner extends SubResource {
     }
 
     /**
-     * Set the serialization value.
+     * Set describes how data from an input is serialized or how data is serialized when written to an output. Required on PUT (CreateOrReplace) requests.
      *
      * @param serialization the serialization value to set
      * @return the OutputInner object itself.
@@ -104,7 +104,7 @@ public class OutputInner extends SubResource {
     }
 
     /**
-     * Get the diagnostics value.
+     * Get describes conditions applicable to the Input, Output, or the job overall, that warrant customer attention.
      *
      * @return the diagnostics value
      */
@@ -113,7 +113,7 @@ public class OutputInner extends SubResource {
     }
 
     /**
-     * Get the etag value.
+     * Get the current entity tag for the output. This is an opaque string. You can use it to detect whether the resource has changed between requests. You can also use it in the If-Match or If-None-Match headers for write operations for optimistic concurrency.
      *
      * @return the etag value
      */
@@ -122,7 +122,7 @@ public class OutputInner extends SubResource {
     }
 
     /**
-     * Get the name value.
+     * Get resource name.
      *
      * @return the name value
      */
@@ -131,7 +131,7 @@ public class OutputInner extends SubResource {
     }
 
     /**
-     * Set the name value.
+     * Set resource name.
      *
      * @param name the name value to set
      * @return the OutputInner object itself.
@@ -142,7 +142,7 @@ public class OutputInner extends SubResource {
     }
 
     /**
-     * Get the type value.
+     * Get resource type.
      *
      * @return the type value
      */

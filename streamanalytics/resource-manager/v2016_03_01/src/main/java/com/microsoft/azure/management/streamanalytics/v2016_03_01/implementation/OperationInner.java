@@ -29,7 +29,7 @@ public class OperationInner {
     private OperationDisplay display;
 
     /**
-     * Get the name value.
+     * Get the name of the operation being performed on this particular object.
      *
      * @return the name value
      */
@@ -38,7 +38,7 @@ public class OperationInner {
     }
 
     /**
-     * Get the display value.
+     * Get contains the localized display information for this particular operation / action.
      *
      * @return the display value
      */

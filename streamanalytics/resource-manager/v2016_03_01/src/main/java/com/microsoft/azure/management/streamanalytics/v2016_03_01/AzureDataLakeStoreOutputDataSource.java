@@ -84,7 +84,7 @@ public class AzureDataLakeStoreOutputDataSource extends OutputDataSource {
     private String timeFormat;
 
     /**
-     * Get the refreshToken value.
+     * Get a refresh token that can be used to obtain a valid access token that can then be used to authenticate with the data source. A valid refresh token is currently only obtainable via the Azure Portal. It is recommended to put a dummy string value here when creating the data source and then going to the Azure Portal to authenticate the data source which will update this property with a valid refresh token. Required on PUT (CreateOrReplace) requests.
      *
      * @return the refreshToken value
      */
@@ -93,7 +93,7 @@ public class AzureDataLakeStoreOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Set the refreshToken value.
+     * Set a refresh token that can be used to obtain a valid access token that can then be used to authenticate with the data source. A valid refresh token is currently only obtainable via the Azure Portal. It is recommended to put a dummy string value here when creating the data source and then going to the Azure Portal to authenticate the data source which will update this property with a valid refresh token. Required on PUT (CreateOrReplace) requests.
      *
      * @param refreshToken the refreshToken value to set
      * @return the AzureDataLakeStoreOutputDataSource object itself.
@@ -104,7 +104,7 @@ public class AzureDataLakeStoreOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Get the tokenUserPrincipalName value.
+     * Get the user principal name (UPN) of the user that was used to obtain the refresh token. Use this property to help remember which user was used to obtain the refresh token.
      *
      * @return the tokenUserPrincipalName value
      */
@@ -113,7 +113,7 @@ public class AzureDataLakeStoreOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Set the tokenUserPrincipalName value.
+     * Set the user principal name (UPN) of the user that was used to obtain the refresh token. Use this property to help remember which user was used to obtain the refresh token.
      *
      * @param tokenUserPrincipalName the tokenUserPrincipalName value to set
      * @return the AzureDataLakeStoreOutputDataSource object itself.
@@ -124,7 +124,7 @@ public class AzureDataLakeStoreOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Get the tokenUserDisplayName value.
+     * Get the user display name of the user that was used to obtain the refresh token. Use this property to help remember which user was used to obtain the refresh token.
      *
      * @return the tokenUserDisplayName value
      */
@@ -133,7 +133,7 @@ public class AzureDataLakeStoreOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Set the tokenUserDisplayName value.
+     * Set the user display name of the user that was used to obtain the refresh token. Use this property to help remember which user was used to obtain the refresh token.
      *
      * @param tokenUserDisplayName the tokenUserDisplayName value to set
      * @return the AzureDataLakeStoreOutputDataSource object itself.
@@ -144,7 +144,7 @@ public class AzureDataLakeStoreOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Get the accountName value.
+     * Get the name of the Azure Data Lake Store account. Required on PUT (CreateOrReplace) requests.
      *
      * @return the accountName value
      */
@@ -153,7 +153,7 @@ public class AzureDataLakeStoreOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Set the accountName value.
+     * Set the name of the Azure Data Lake Store account. Required on PUT (CreateOrReplace) requests.
      *
      * @param accountName the accountName value to set
      * @return the AzureDataLakeStoreOutputDataSource object itself.
@@ -164,7 +164,7 @@ public class AzureDataLakeStoreOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Get the tenantId value.
+     * Get the tenant id of the user used to obtain the refresh token. Required on PUT (CreateOrReplace) requests.
      *
      * @return the tenantId value
      */
@@ -173,7 +173,7 @@ public class AzureDataLakeStoreOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Set the tenantId value.
+     * Set the tenant id of the user used to obtain the refresh token. Required on PUT (CreateOrReplace) requests.
      *
      * @param tenantId the tenantId value to set
      * @return the AzureDataLakeStoreOutputDataSource object itself.
@@ -184,7 +184,7 @@ public class AzureDataLakeStoreOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Get the filePathPrefix value.
+     * Get the location of the file to which the output should be written to. Required on PUT (CreateOrReplace) requests.
      *
      * @return the filePathPrefix value
      */
@@ -193,7 +193,7 @@ public class AzureDataLakeStoreOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Set the filePathPrefix value.
+     * Set the location of the file to which the output should be written to. Required on PUT (CreateOrReplace) requests.
      *
      * @param filePathPrefix the filePathPrefix value to set
      * @return the AzureDataLakeStoreOutputDataSource object itself.
@@ -204,7 +204,7 @@ public class AzureDataLakeStoreOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Get the dateFormat value.
+     * Get the date format. Wherever {date} appears in filePathPrefix, the value of this property is used as the date format instead.
      *
      * @return the dateFormat value
      */
@@ -213,7 +213,7 @@ public class AzureDataLakeStoreOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Set the dateFormat value.
+     * Set the date format. Wherever {date} appears in filePathPrefix, the value of this property is used as the date format instead.
      *
      * @param dateFormat the dateFormat value to set
      * @return the AzureDataLakeStoreOutputDataSource object itself.
@@ -224,7 +224,7 @@ public class AzureDataLakeStoreOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Get the timeFormat value.
+     * Get the time format. Wherever {time} appears in filePathPrefix, the value of this property is used as the time format instead.
      *
      * @return the timeFormat value
      */
@@ -233,7 +233,7 @@ public class AzureDataLakeStoreOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Set the timeFormat value.
+     * Set the time format. Wherever {time} appears in filePathPrefix, the value of this property is used as the time format instead.
      *
      * @param timeFormat the timeFormat value to set
      * @return the AzureDataLakeStoreOutputDataSource object itself.

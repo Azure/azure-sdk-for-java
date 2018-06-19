@@ -68,7 +68,7 @@ public class DocumentDbOutputDataSource extends OutputDataSource {
     private String documentId;
 
     /**
-     * Get the accountId value.
+     * Get the DocumentDB account name or ID. Required on PUT (CreateOrReplace) requests.
      *
      * @return the accountId value
      */
@@ -77,7 +77,7 @@ public class DocumentDbOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Set the accountId value.
+     * Set the DocumentDB account name or ID. Required on PUT (CreateOrReplace) requests.
      *
      * @param accountId the accountId value to set
      * @return the DocumentDbOutputDataSource object itself.
@@ -88,7 +88,7 @@ public class DocumentDbOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Get the accountKey value.
+     * Get the account key for the DocumentDB account. Required on PUT (CreateOrReplace) requests.
      *
      * @return the accountKey value
      */
@@ -97,7 +97,7 @@ public class DocumentDbOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Set the accountKey value.
+     * Set the account key for the DocumentDB account. Required on PUT (CreateOrReplace) requests.
      *
      * @param accountKey the accountKey value to set
      * @return the DocumentDbOutputDataSource object itself.
@@ -108,7 +108,7 @@ public class DocumentDbOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Get the database value.
+     * Get the name of the DocumentDB database. Required on PUT (CreateOrReplace) requests.
      *
      * @return the database value
      */
@@ -117,7 +117,7 @@ public class DocumentDbOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Set the database value.
+     * Set the name of the DocumentDB database. Required on PUT (CreateOrReplace) requests.
      *
      * @param database the database value to set
      * @return the DocumentDbOutputDataSource object itself.
@@ -128,7 +128,7 @@ public class DocumentDbOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Get the collectionNamePattern value.
+     * Get the collection name pattern for the collections to be used. The collection name format can be constructed using the optional {partition} token, where partitions start from 0. See the DocumentDB section of https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for more information. Required on PUT (CreateOrReplace) requests.
      *
      * @return the collectionNamePattern value
      */
@@ -137,7 +137,7 @@ public class DocumentDbOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Set the collectionNamePattern value.
+     * Set the collection name pattern for the collections to be used. The collection name format can be constructed using the optional {partition} token, where partitions start from 0. See the DocumentDB section of https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for more information. Required on PUT (CreateOrReplace) requests.
      *
      * @param collectionNamePattern the collectionNamePattern value to set
      * @return the DocumentDbOutputDataSource object itself.
@@ -148,7 +148,7 @@ public class DocumentDbOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Get the partitionKey value.
+     * Get the name of the field in output events used to specify the key for partitioning output across collections. If 'collectionNamePattern' contains the {partition} token, this property is required to be specified.
      *
      * @return the partitionKey value
      */
@@ -157,7 +157,7 @@ public class DocumentDbOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Set the partitionKey value.
+     * Set the name of the field in output events used to specify the key for partitioning output across collections. If 'collectionNamePattern' contains the {partition} token, this property is required to be specified.
      *
      * @param partitionKey the partitionKey value to set
      * @return the DocumentDbOutputDataSource object itself.
@@ -168,7 +168,7 @@ public class DocumentDbOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Get the documentId value.
+     * Get the name of the field in output events used to specify the primary key which insert or update operations are based on.
      *
      * @return the documentId value
      */
@@ -177,7 +177,7 @@ public class DocumentDbOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Set the documentId value.
+     * Set the name of the field in output events used to specify the primary key which insert or update operations are based on.
      *
      * @param documentId the documentId value to set
      * @return the DocumentDbOutputDataSource object itself.

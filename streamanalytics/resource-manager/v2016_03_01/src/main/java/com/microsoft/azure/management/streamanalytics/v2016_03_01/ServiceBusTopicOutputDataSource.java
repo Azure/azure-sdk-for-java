@@ -58,7 +58,7 @@ public class ServiceBusTopicOutputDataSource extends OutputDataSource {
     private List<String> propertyColumns;
 
     /**
-     * Get the serviceBusNamespace value.
+     * Get the namespace that is associated with the desired Event Hub, Service Bus Queue, Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests.
      *
      * @return the serviceBusNamespace value
      */
@@ -67,7 +67,7 @@ public class ServiceBusTopicOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Set the serviceBusNamespace value.
+     * Set the namespace that is associated with the desired Event Hub, Service Bus Queue, Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests.
      *
      * @param serviceBusNamespace the serviceBusNamespace value to set
      * @return the ServiceBusTopicOutputDataSource object itself.
@@ -78,7 +78,7 @@ public class ServiceBusTopicOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Get the sharedAccessPolicyName value.
+     * Get the shared access policy name for the Event Hub, Service Bus Queue, Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests.
      *
      * @return the sharedAccessPolicyName value
      */
@@ -87,7 +87,7 @@ public class ServiceBusTopicOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Set the sharedAccessPolicyName value.
+     * Set the shared access policy name for the Event Hub, Service Bus Queue, Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests.
      *
      * @param sharedAccessPolicyName the sharedAccessPolicyName value to set
      * @return the ServiceBusTopicOutputDataSource object itself.
@@ -98,7 +98,7 @@ public class ServiceBusTopicOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Get the sharedAccessPolicyKey value.
+     * Get the shared access policy key for the specified shared access policy. Required on PUT (CreateOrReplace) requests.
      *
      * @return the sharedAccessPolicyKey value
      */
@@ -107,7 +107,7 @@ public class ServiceBusTopicOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Set the sharedAccessPolicyKey value.
+     * Set the shared access policy key for the specified shared access policy. Required on PUT (CreateOrReplace) requests.
      *
      * @param sharedAccessPolicyKey the sharedAccessPolicyKey value to set
      * @return the ServiceBusTopicOutputDataSource object itself.
@@ -118,7 +118,7 @@ public class ServiceBusTopicOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Get the topicName value.
+     * Get the name of the Service Bus Topic. Required on PUT (CreateOrReplace) requests.
      *
      * @return the topicName value
      */
@@ -127,7 +127,7 @@ public class ServiceBusTopicOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Set the topicName value.
+     * Set the name of the Service Bus Topic. Required on PUT (CreateOrReplace) requests.
      *
      * @param topicName the topicName value to set
      * @return the ServiceBusTopicOutputDataSource object itself.
@@ -138,7 +138,7 @@ public class ServiceBusTopicOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Get the propertyColumns value.
+     * Get a string array of the names of output columns to be attached to Service Bus messages as custom properties.
      *
      * @return the propertyColumns value
      */
@@ -147,7 +147,7 @@ public class ServiceBusTopicOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Set the propertyColumns value.
+     * Set a string array of the names of output columns to be attached to Service Bus messages as custom properties.
      *
      * @param propertyColumns the propertyColumns value to set
      * @return the ServiceBusTopicOutputDataSource object itself.

@@ -26,7 +26,7 @@ public class ReferenceInputProperties extends InputProperties {
     private ReferenceInputDataSource datasource;
 
     /**
-     * Get the datasource value.
+     * Get describes an input data source that contains reference data. Required on PUT (CreateOrReplace) requests.
      *
      * @return the datasource value
      */
@@ -35,7 +35,7 @@ public class ReferenceInputProperties extends InputProperties {
     }
 
     /**
-     * Set the datasource value.
+     * Set describes an input data source that contains reference data. Required on PUT (CreateOrReplace) requests.
      *
      * @param datasource the datasource value to set
      * @return the ReferenceInputProperties object itself.

@@ -41,7 +41,7 @@ public class ScalarFunctionProperties extends FunctionProperties {
     private FunctionBinding binding;
 
     /**
-     * Get the inputs value.
+     * Get a list of inputs describing the parameters of the function.
      *
      * @return the inputs value
      */
@@ -50,7 +50,7 @@ public class ScalarFunctionProperties extends FunctionProperties {
     }
 
     /**
-     * Set the inputs value.
+     * Set a list of inputs describing the parameters of the function.
      *
      * @param inputs the inputs value to set
      * @return the ScalarFunctionProperties object itself.
@@ -61,7 +61,7 @@ public class ScalarFunctionProperties extends FunctionProperties {
     }
 
     /**
-     * Get the output value.
+     * Get the output of the function.
      *
      * @return the output value
      */
@@ -70,7 +70,7 @@ public class ScalarFunctionProperties extends FunctionProperties {
     }
 
     /**
-     * Set the output value.
+     * Set the output of the function.
      *
      * @param output the output value to set
      * @return the ScalarFunctionProperties object itself.
@@ -81,7 +81,7 @@ public class ScalarFunctionProperties extends FunctionProperties {
     }
 
     /**
-     * Get the binding value.
+     * Get the physical binding of the function. For example, in the Azure Machine Learning web service’s case, this describes the endpoint.
      *
      * @return the binding value
      */
@@ -90,7 +90,7 @@ public class ScalarFunctionProperties extends FunctionProperties {
     }
 
     /**
-     * Set the binding value.
+     * Set the physical binding of the function. For example, in the Azure Machine Learning web service’s case, this describes the endpoint.
      *
      * @param binding the binding value to set
      * @return the ScalarFunctionProperties object itself.
