@@ -1,0 +1,12 @@
+{
+  "meta": {
+    "autorest_options": {
+      "java": "",
+      "verbose": "",
+      "sdkrel:azure-libraries-for-java-folder": ".",
+      "multiapi": "",
+      "use": "@microsoft.azure/autorest.java@2.1.71"
+    },
+    "version": "0.2.0"
+  }
+}
