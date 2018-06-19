@@ -33,7 +33,7 @@ public class Availability {
     private String blobDuration;
 
     /**
-     * Get the timeGrain value.
+     * Get the time grain of the availability.
      *
      * @return the timeGrain value
      */
@@ -42,7 +42,7 @@ public class Availability {
     }
 
     /**
-     * Set the timeGrain value.
+     * Set the time grain of the availability.
      *
      * @param timeGrain the timeGrain value to set
      * @return the Availability object itself.
@@ -53,7 +53,7 @@ public class Availability {
     }
 
     /**
-     * Get the retention value.
+     * Get the retention of the availability.
      *
      * @return the retention value
      */
@@ -62,7 +62,7 @@ public class Availability {
     }
 
     /**
-     * Set the retention value.
+     * Set the retention of the availability.
      *
      * @param retention the retention value to set
      * @return the Availability object itself.
@@ -73,7 +73,7 @@ public class Availability {
     }
 
     /**
-     * Get the blobDuration value.
+     * Get duration of the availability blob.
      *
      * @return the blobDuration value
      */
@@ -82,7 +82,7 @@ public class Availability {
     }
 
     /**
-     * Set the blobDuration value.
+     * Set duration of the availability blob.
      *
      * @param blobDuration the blobDuration value to set
      * @return the Availability object itself.

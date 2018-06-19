@@ -58,7 +58,7 @@ public class ApplicationGatewayBackendAddressPool extends SubResource {
     private String type;
 
     /**
-     * Get the backendIPConfigurations value.
+     * Get collection of references to IPs defined in network interfaces.
      *
      * @return the backendIPConfigurations value
      */
@@ -67,7 +67,7 @@ public class ApplicationGatewayBackendAddressPool extends SubResource {
     }
 
     /**
-     * Set the backendIPConfigurations value.
+     * Set collection of references to IPs defined in network interfaces.
      *
      * @param backendIPConfigurations the backendIPConfigurations value to set
      * @return the ApplicationGatewayBackendAddressPool object itself.
@@ -78,7 +78,7 @@ public class ApplicationGatewayBackendAddressPool extends SubResource {
     }
 
     /**
-     * Get the backendAddresses value.
+     * Get backend addresses.
      *
      * @return the backendAddresses value
      */
@@ -87,7 +87,7 @@ public class ApplicationGatewayBackendAddressPool extends SubResource {
     }
 
     /**
-     * Set the backendAddresses value.
+     * Set backend addresses.
      *
      * @param backendAddresses the backendAddresses value to set
      * @return the ApplicationGatewayBackendAddressPool object itself.
@@ -98,7 +98,7 @@ public class ApplicationGatewayBackendAddressPool extends SubResource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get provisioning state of the backend address pool resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value
      */
@@ -107,7 +107,7 @@ public class ApplicationGatewayBackendAddressPool extends SubResource {
     }
 
     /**
-     * Set the provisioningState value.
+     * Set provisioning state of the backend address pool resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
      *
      * @param provisioningState the provisioningState value to set
      * @return the ApplicationGatewayBackendAddressPool object itself.
@@ -118,7 +118,7 @@ public class ApplicationGatewayBackendAddressPool extends SubResource {
     }
 
     /**
-     * Get the name value.
+     * Get name of the backend address pool that is unique within an Application Gateway.
      *
      * @return the name value
      */
@@ -127,7 +127,7 @@ public class ApplicationGatewayBackendAddressPool extends SubResource {
     }
 
     /**
-     * Set the name value.
+     * Set name of the backend address pool that is unique within an Application Gateway.
      *
      * @param name the name value to set
      * @return the ApplicationGatewayBackendAddressPool object itself.
@@ -138,7 +138,7 @@ public class ApplicationGatewayBackendAddressPool extends SubResource {
     }
 
     /**
-     * Get the etag value.
+     * Get a unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value
      */
@@ -147,7 +147,7 @@ public class ApplicationGatewayBackendAddressPool extends SubResource {
     }
 
     /**
-     * Set the etag value.
+     * Set a unique read-only string that changes whenever the resource is updated.
      *
      * @param etag the etag value to set
      * @return the ApplicationGatewayBackendAddressPool object itself.
@@ -158,7 +158,7 @@ public class ApplicationGatewayBackendAddressPool extends SubResource {
     }
 
     /**
-     * Get the type value.
+     * Get type of the resource.
      *
      * @return the type value
      */
@@ -167,7 +167,7 @@ public class ApplicationGatewayBackendAddressPool extends SubResource {
     }
 
     /**
-     * Set the type value.
+     * Set type of the resource.
      *
      * @param type the type value to set
      * @return the ApplicationGatewayBackendAddressPool object itself.

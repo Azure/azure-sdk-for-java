@@ -29,7 +29,7 @@ public class AzureReachabilityReportLatencyInfo {
     private Integer score;
 
     /**
-     * Get the timeStamp value.
+     * Get the time stamp.
      *
      * @return the timeStamp value
      */
@@ -38,7 +38,7 @@ public class AzureReachabilityReportLatencyInfo {
     }
 
     /**
-     * Set the timeStamp value.
+     * Set the time stamp.
      *
      * @param timeStamp the timeStamp value to set
      * @return the AzureReachabilityReportLatencyInfo object itself.
@@ -49,7 +49,7 @@ public class AzureReachabilityReportLatencyInfo {
     }
 
     /**
-     * Get the score value.
+     * Get the relative latency score between 1 and 100, higher values indicating a faster connection.
      *
      * @return the score value
      */
@@ -58,7 +58,7 @@ public class AzureReachabilityReportLatencyInfo {
     }
 
     /**
-     * Set the score value.
+     * Set the relative latency score between 1 and 100, higher values indicating a faster connection.
      *
      * @param score the score value to set
      * @return the AzureReachabilityReportLatencyInfo object itself.

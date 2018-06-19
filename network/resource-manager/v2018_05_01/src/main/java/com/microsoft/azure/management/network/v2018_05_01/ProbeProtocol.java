@@ -22,6 +22,9 @@ public final class ProbeProtocol extends ExpandableStringEnum<ProbeProtocol> {
     /** Static value Tcp for ProbeProtocol. */
     public static final ProbeProtocol TCP = fromString("Tcp");
 
+    /** Static value Https for ProbeProtocol. */
+    public static final ProbeProtocol HTTPS = fromString("Https");
+
     /**
      * Creates or finds a ProbeProtocol from its string representation.
      * @param name a name to look for

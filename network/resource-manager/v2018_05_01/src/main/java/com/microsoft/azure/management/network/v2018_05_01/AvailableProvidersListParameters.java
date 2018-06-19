@@ -40,7 +40,7 @@ public class AvailableProvidersListParameters {
     private String city;
 
     /**
-     * Get the azureLocations value.
+     * Get a list of Azure regions.
      *
      * @return the azureLocations value
      */
@@ -49,7 +49,7 @@ public class AvailableProvidersListParameters {
     }
 
     /**
-     * Set the azureLocations value.
+     * Set a list of Azure regions.
      *
      * @param azureLocations the azureLocations value to set
      * @return the AvailableProvidersListParameters object itself.
@@ -60,7 +60,7 @@ public class AvailableProvidersListParameters {
     }
 
     /**
-     * Get the country value.
+     * Get the country for available providers list.
      *
      * @return the country value
      */
@@ -69,7 +69,7 @@ public class AvailableProvidersListParameters {
     }
 
     /**
-     * Set the country value.
+     * Set the country for available providers list.
      *
      * @param country the country value to set
      * @return the AvailableProvidersListParameters object itself.
@@ -80,7 +80,7 @@ public class AvailableProvidersListParameters {
     }
 
     /**
-     * Get the state value.
+     * Get the state for available providers list.
      *
      * @return the state value
      */
@@ -89,7 +89,7 @@ public class AvailableProvidersListParameters {
     }
 
     /**
-     * Set the state value.
+     * Set the state for available providers list.
      *
      * @param state the state value to set
      * @return the AvailableProvidersListParameters object itself.
@@ -100,7 +100,7 @@ public class AvailableProvidersListParameters {
     }
 
     /**
-     * Get the city value.
+     * Get the city or town for available providers list.
      *
      * @return the city value
      */
@@ -109,7 +109,7 @@ public class AvailableProvidersListParameters {
     }
 
     /**
-     * Set the city value.
+     * Set the city or town for available providers list.
      *
      * @param city the city value to set
      * @return the AvailableProvidersListParameters object itself.

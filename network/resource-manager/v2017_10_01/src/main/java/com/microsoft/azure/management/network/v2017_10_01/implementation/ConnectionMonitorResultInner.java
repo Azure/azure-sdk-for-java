@@ -132,7 +132,7 @@ public class ConnectionMonitorResultInner extends Resource {
     }
 
     /**
-     * Get the autoStart value.
+     * Get determines if the connection monitor will start automatically once created.
      *
      * @return the autoStart value
      */
@@ -141,7 +141,7 @@ public class ConnectionMonitorResultInner extends Resource {
     }
 
     /**
-     * Set the autoStart value.
+     * Set determines if the connection monitor will start automatically once created.
      *
      * @param autoStart the autoStart value to set
      * @return the ConnectionMonitorResultInner object itself.
@@ -152,7 +152,7 @@ public class ConnectionMonitorResultInner extends Resource {
     }
 
     /**
-     * Get the monitoringIntervalInSeconds value.
+     * Get monitoring interval in seconds.
      *
      * @return the monitoringIntervalInSeconds value
      */
@@ -161,7 +161,7 @@ public class ConnectionMonitorResultInner extends Resource {
     }
 
     /**
-     * Set the monitoringIntervalInSeconds value.
+     * Set monitoring interval in seconds.
      *
      * @param monitoringIntervalInSeconds the monitoringIntervalInSeconds value to set
      * @return the ConnectionMonitorResultInner object itself.
@@ -172,7 +172,7 @@ public class ConnectionMonitorResultInner extends Resource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get the provisioning state of the connection monitor. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'.
      *
      * @return the provisioningState value
      */
@@ -181,7 +181,7 @@ public class ConnectionMonitorResultInner extends Resource {
     }
 
     /**
-     * Set the provisioningState value.
+     * Set the provisioning state of the connection monitor. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'.
      *
      * @param provisioningState the provisioningState value to set
      * @return the ConnectionMonitorResultInner object itself.
@@ -192,7 +192,7 @@ public class ConnectionMonitorResultInner extends Resource {
     }
 
     /**
-     * Get the startTime value.
+     * Get the date and time when the connection monitor was started.
      *
      * @return the startTime value
      */
@@ -201,7 +201,7 @@ public class ConnectionMonitorResultInner extends Resource {
     }
 
     /**
-     * Set the startTime value.
+     * Set the date and time when the connection monitor was started.
      *
      * @param startTime the startTime value to set
      * @return the ConnectionMonitorResultInner object itself.
@@ -212,7 +212,7 @@ public class ConnectionMonitorResultInner extends Resource {
     }
 
     /**
-     * Get the monitoringStatus value.
+     * Get the monitoring status of the connection monitor.
      *
      * @return the monitoringStatus value
      */
@@ -221,7 +221,7 @@ public class ConnectionMonitorResultInner extends Resource {
     }
 
     /**
-     * Set the monitoringStatus value.
+     * Set the monitoring status of the connection monitor.
      *
      * @param monitoringStatus the monitoringStatus value to set
      * @return the ConnectionMonitorResultInner object itself.

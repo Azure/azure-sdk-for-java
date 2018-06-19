@@ -46,7 +46,7 @@ public class ExpressRouteCircuitRoutesTable {
     private String path;
 
     /**
-     * Get the network value.
+     * Get iP address of a network entity.
      *
      * @return the network value
      */
@@ -55,7 +55,7 @@ public class ExpressRouteCircuitRoutesTable {
     }
 
     /**
-     * Set the network value.
+     * Set iP address of a network entity.
      *
      * @param network the network value to set
      * @return the ExpressRouteCircuitRoutesTable object itself.
@@ -66,7 +66,7 @@ public class ExpressRouteCircuitRoutesTable {
     }
 
     /**
-     * Get the nextHop value.
+     * Get nextHop address.
      *
      * @return the nextHop value
      */
@@ -75,7 +75,7 @@ public class ExpressRouteCircuitRoutesTable {
     }
 
     /**
-     * Set the nextHop value.
+     * Set nextHop address.
      *
      * @param nextHop the nextHop value to set
      * @return the ExpressRouteCircuitRoutesTable object itself.
@@ -86,7 +86,7 @@ public class ExpressRouteCircuitRoutesTable {
     }
 
     /**
-     * Get the locPrf value.
+     * Get local preference value as set with the set local-preference route-map configuration command.
      *
      * @return the locPrf value
      */
@@ -95,7 +95,7 @@ public class ExpressRouteCircuitRoutesTable {
     }
 
     /**
-     * Set the locPrf value.
+     * Set local preference value as set with the set local-preference route-map configuration command.
      *
      * @param locPrf the locPrf value to set
      * @return the ExpressRouteCircuitRoutesTable object itself.
@@ -106,7 +106,7 @@ public class ExpressRouteCircuitRoutesTable {
     }
 
     /**
-     * Get the weight value.
+     * Get route Weight.
      *
      * @return the weight value
      */
@@ -115,7 +115,7 @@ public class ExpressRouteCircuitRoutesTable {
     }
 
     /**
-     * Set the weight value.
+     * Set route Weight.
      *
      * @param weight the weight value to set
      * @return the ExpressRouteCircuitRoutesTable object itself.
@@ -126,7 +126,7 @@ public class ExpressRouteCircuitRoutesTable {
     }
 
     /**
-     * Get the path value.
+     * Get autonomous system paths to the destination network.
      *
      * @return the path value
      */
@@ -135,7 +135,7 @@ public class ExpressRouteCircuitRoutesTable {
     }
 
     /**
-     * Set the path value.
+     * Set autonomous system paths to the destination network.
      *
      * @param path the path value to set
      * @return the ExpressRouteCircuitRoutesTable object itself.

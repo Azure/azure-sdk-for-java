@@ -34,7 +34,7 @@ public class ServiceEndpointPropertiesFormat {
     private String provisioningState;
 
     /**
-     * Get the service value.
+     * Get the type of the endpoint service.
      *
      * @return the service value
      */
@@ -43,7 +43,7 @@ public class ServiceEndpointPropertiesFormat {
     }
 
     /**
-     * Set the service value.
+     * Set the type of the endpoint service.
      *
      * @param service the service value to set
      * @return the ServiceEndpointPropertiesFormat object itself.
@@ -54,7 +54,7 @@ public class ServiceEndpointPropertiesFormat {
     }
 
     /**
-     * Get the locations value.
+     * Get a list of locations.
      *
      * @return the locations value
      */
@@ -63,7 +63,7 @@ public class ServiceEndpointPropertiesFormat {
     }
 
     /**
-     * Set the locations value.
+     * Set a list of locations.
      *
      * @param locations the locations value to set
      * @return the ServiceEndpointPropertiesFormat object itself.
@@ -74,7 +74,7 @@ public class ServiceEndpointPropertiesFormat {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get the provisioning state of the resource.
      *
      * @return the provisioningState value
      */
@@ -83,7 +83,7 @@ public class ServiceEndpointPropertiesFormat {
     }
 
     /**
-     * Set the provisioningState value.
+     * Set the provisioning state of the resource.
      *
      * @param provisioningState the provisioningState value to set
      * @return the ServiceEndpointPropertiesFormat object itself.

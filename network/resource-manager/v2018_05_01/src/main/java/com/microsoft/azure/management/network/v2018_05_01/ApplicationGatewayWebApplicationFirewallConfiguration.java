@@ -60,7 +60,7 @@ public class ApplicationGatewayWebApplicationFirewallConfiguration {
     private Integer maxRequestBodySize;
 
     /**
-     * Get the enabled value.
+     * Get whether the web application firewall is enabled or not.
      *
      * @return the enabled value
      */
@@ -69,7 +69,7 @@ public class ApplicationGatewayWebApplicationFirewallConfiguration {
     }
 
     /**
-     * Set the enabled value.
+     * Set whether the web application firewall is enabled or not.
      *
      * @param enabled the enabled value to set
      * @return the ApplicationGatewayWebApplicationFirewallConfiguration object itself.
@@ -80,7 +80,7 @@ public class ApplicationGatewayWebApplicationFirewallConfiguration {
     }
 
     /**
-     * Get the firewallMode value.
+     * Get web application firewall mode. Possible values include: 'Detection', 'Prevention'.
      *
      * @return the firewallMode value
      */
@@ -89,7 +89,7 @@ public class ApplicationGatewayWebApplicationFirewallConfiguration {
     }
 
     /**
-     * Set the firewallMode value.
+     * Set web application firewall mode. Possible values include: 'Detection', 'Prevention'.
      *
      * @param firewallMode the firewallMode value to set
      * @return the ApplicationGatewayWebApplicationFirewallConfiguration object itself.
@@ -100,7 +100,7 @@ public class ApplicationGatewayWebApplicationFirewallConfiguration {
     }
 
     /**
-     * Get the ruleSetType value.
+     * Get the type of the web application firewall rule set. Possible values are: 'OWASP'.
      *
      * @return the ruleSetType value
      */
@@ -109,7 +109,7 @@ public class ApplicationGatewayWebApplicationFirewallConfiguration {
     }
 
     /**
-     * Set the ruleSetType value.
+     * Set the type of the web application firewall rule set. Possible values are: 'OWASP'.
      *
      * @param ruleSetType the ruleSetType value to set
      * @return the ApplicationGatewayWebApplicationFirewallConfiguration object itself.
@@ -120,7 +120,7 @@ public class ApplicationGatewayWebApplicationFirewallConfiguration {
     }
 
     /**
-     * Get the ruleSetVersion value.
+     * Get the version of the rule set type.
      *
      * @return the ruleSetVersion value
      */
@@ -129,7 +129,7 @@ public class ApplicationGatewayWebApplicationFirewallConfiguration {
     }
 
     /**
-     * Set the ruleSetVersion value.
+     * Set the version of the rule set type.
      *
      * @param ruleSetVersion the ruleSetVersion value to set
      * @return the ApplicationGatewayWebApplicationFirewallConfiguration object itself.
@@ -140,7 +140,7 @@ public class ApplicationGatewayWebApplicationFirewallConfiguration {
     }
 
     /**
-     * Get the disabledRuleGroups value.
+     * Get the disabled rule groups.
      *
      * @return the disabledRuleGroups value
      */
@@ -149,7 +149,7 @@ public class ApplicationGatewayWebApplicationFirewallConfiguration {
     }
 
     /**
-     * Set the disabledRuleGroups value.
+     * Set the disabled rule groups.
      *
      * @param disabledRuleGroups the disabledRuleGroups value to set
      * @return the ApplicationGatewayWebApplicationFirewallConfiguration object itself.
@@ -160,7 +160,7 @@ public class ApplicationGatewayWebApplicationFirewallConfiguration {
     }
 
     /**
-     * Get the requestBodyCheck value.
+     * Get whether allow WAF to check request Body.
      *
      * @return the requestBodyCheck value
      */
@@ -169,7 +169,7 @@ public class ApplicationGatewayWebApplicationFirewallConfiguration {
     }
 
     /**
-     * Set the requestBodyCheck value.
+     * Set whether allow WAF to check request Body.
      *
      * @param requestBodyCheck the requestBodyCheck value to set
      * @return the ApplicationGatewayWebApplicationFirewallConfiguration object itself.
@@ -180,7 +180,7 @@ public class ApplicationGatewayWebApplicationFirewallConfiguration {
     }
 
     /**
-     * Get the maxRequestBodySize value.
+     * Get maxium request body size for WAF.
      *
      * @return the maxRequestBodySize value
      */
@@ -189,7 +189,7 @@ public class ApplicationGatewayWebApplicationFirewallConfiguration {
     }
 
     /**
-     * Set the maxRequestBodySize value.
+     * Set maxium request body size for WAF.
      *
      * @param maxRequestBodySize the maxRequestBodySize value to set
      * @return the ApplicationGatewayWebApplicationFirewallConfiguration object itself.

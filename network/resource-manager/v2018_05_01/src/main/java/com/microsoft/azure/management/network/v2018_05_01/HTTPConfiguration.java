@@ -34,7 +34,7 @@ public class HTTPConfiguration {
     private List<Integer> validStatusCodes;
 
     /**
-     * Get the method value.
+     * Get hTTP method. Possible values include: 'Get'.
      *
      * @return the method value
      */
@@ -43,7 +43,7 @@ public class HTTPConfiguration {
     }
 
     /**
-     * Set the method value.
+     * Set hTTP method. Possible values include: 'Get'.
      *
      * @param method the method value to set
      * @return the HTTPConfiguration object itself.
@@ -54,7 +54,7 @@ public class HTTPConfiguration {
     }
 
     /**
-     * Get the headers value.
+     * Get list of HTTP headers.
      *
      * @return the headers value
      */
@@ -63,7 +63,7 @@ public class HTTPConfiguration {
     }
 
     /**
-     * Set the headers value.
+     * Set list of HTTP headers.
      *
      * @param headers the headers value to set
      * @return the HTTPConfiguration object itself.
@@ -74,7 +74,7 @@ public class HTTPConfiguration {
     }
 
     /**
-     * Get the validStatusCodes value.
+     * Get valid status codes.
      *
      * @return the validStatusCodes value
      */
@@ -83,7 +83,7 @@ public class HTTPConfiguration {
     }
 
     /**
-     * Set the validStatusCodes value.
+     * Set valid status codes.
      *
      * @param validStatusCodes the validStatusCodes value to set
      * @return the HTTPConfiguration object itself.

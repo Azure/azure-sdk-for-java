@@ -27,7 +27,7 @@ public class ApplicationGatewayBackendAddress {
     private String ipAddress;
 
     /**
-     * Get the fqdn value.
+     * Get fully qualified domain name (FQDN).
      *
      * @return the fqdn value
      */
@@ -36,7 +36,7 @@ public class ApplicationGatewayBackendAddress {
     }
 
     /**
-     * Set the fqdn value.
+     * Set fully qualified domain name (FQDN).
      *
      * @param fqdn the fqdn value to set
      * @return the ApplicationGatewayBackendAddress object itself.
@@ -47,7 +47,7 @@ public class ApplicationGatewayBackendAddress {
     }
 
     /**
-     * Get the ipAddress value.
+     * Get iP address.
      *
      * @return the ipAddress value
      */
@@ -56,7 +56,7 @@ public class ApplicationGatewayBackendAddress {
     }
 
     /**
-     * Set the ipAddress value.
+     * Set iP address.
      *
      * @param ipAddress the ipAddress value to set
      * @return the ApplicationGatewayBackendAddress object itself.

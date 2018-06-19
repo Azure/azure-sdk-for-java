@@ -21,7 +21,7 @@ public class QueryTroubleshootingParameters {
     private String targetResourceId;
 
     /**
-     * Get the targetResourceId value.
+     * Get the target resource ID to query the troubleshooting result.
      *
      * @return the targetResourceId value
      */
@@ -30,7 +30,7 @@ public class QueryTroubleshootingParameters {
     }
 
     /**
-     * Set the targetResourceId value.
+     * Set the target resource ID to query the troubleshooting result.
      *
      * @param targetResourceId the targetResourceId value to set
      * @return the QueryTroubleshootingParameters object itself.

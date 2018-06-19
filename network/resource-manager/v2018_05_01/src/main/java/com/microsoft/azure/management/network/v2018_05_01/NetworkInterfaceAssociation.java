@@ -29,7 +29,7 @@ public class NetworkInterfaceAssociation {
     private List<SecurityRuleInner> securityRules;
 
     /**
-     * Get the id value.
+     * Get network interface ID.
      *
      * @return the id value
      */
@@ -38,7 +38,7 @@ public class NetworkInterfaceAssociation {
     }
 
     /**
-     * Get the securityRules value.
+     * Get collection of custom security rules.
      *
      * @return the securityRules value
      */
@@ -47,7 +47,7 @@ public class NetworkInterfaceAssociation {
     }
 
     /**
-     * Set the securityRules value.
+     * Set collection of custom security rules.
      *
      * @param securityRules the securityRules value to set
      * @return the NetworkInterfaceAssociation object itself.

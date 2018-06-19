@@ -21,7 +21,7 @@ public class ExpressRouteCircuitReference {
     private String id;
 
     /**
-     * Get the id value.
+     * Get corresponding Express Route Circuit Id.
      *
      * @return the id value
      */
@@ -30,7 +30,7 @@ public class ExpressRouteCircuitReference {
     }
 
     /**
-     * Set the id value.
+     * Set corresponding Express Route Circuit Id.
      *
      * @param id the id value to set
      * @return the ExpressRouteCircuitReference object itself.

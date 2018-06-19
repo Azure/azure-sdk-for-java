@@ -34,7 +34,7 @@ public class TopologyAssociation {
     private AssociationType associationType;
 
     /**
-     * Get the name value.
+     * Get the name of the resource that is associated with the parent resource.
      *
      * @return the name value
      */
@@ -43,7 +43,7 @@ public class TopologyAssociation {
     }
 
     /**
-     * Set the name value.
+     * Set the name of the resource that is associated with the parent resource.
      *
      * @param name the name value to set
      * @return the TopologyAssociation object itself.
@@ -54,7 +54,7 @@ public class TopologyAssociation {
     }
 
     /**
-     * Get the resourceId value.
+     * Get the ID of the resource that is associated with the parent resource.
      *
      * @return the resourceId value
      */
@@ -63,7 +63,7 @@ public class TopologyAssociation {
     }
 
     /**
-     * Set the resourceId value.
+     * Set the ID of the resource that is associated with the parent resource.
      *
      * @param resourceId the resourceId value to set
      * @return the TopologyAssociation object itself.
@@ -74,7 +74,7 @@ public class TopologyAssociation {
     }
 
     /**
-     * Get the associationType value.
+     * Get the association type of the child resource to the parent resource. Possible values include: 'Associated', 'Contains'.
      *
      * @return the associationType value
      */
@@ -83,7 +83,7 @@ public class TopologyAssociation {
     }
 
     /**
-     * Set the associationType value.
+     * Set the association type of the child resource to the parent resource. Possible values include: 'Associated', 'Contains'.
      *
      * @param associationType the associationType value to set
      * @return the TopologyAssociation object itself.

@@ -51,7 +51,7 @@ public class FlowLogInformationInner {
     private TrafficAnalyticsProperties flowAnalyticsConfiguration;
 
     /**
-     * Get the targetResourceId value.
+     * Get the ID of the resource to configure for flow log and traffic analytics (optional) .
      *
      * @return the targetResourceId value
      */
@@ -60,7 +60,7 @@ public class FlowLogInformationInner {
     }
 
     /**
-     * Set the targetResourceId value.
+     * Set the ID of the resource to configure for flow log and traffic analytics (optional) .
      *
      * @param targetResourceId the targetResourceId value to set
      * @return the FlowLogInformationInner object itself.
@@ -71,7 +71,7 @@ public class FlowLogInformationInner {
     }
 
     /**
-     * Get the storageId value.
+     * Get iD of the storage account which is used to store the flow log.
      *
      * @return the storageId value
      */
@@ -80,7 +80,7 @@ public class FlowLogInformationInner {
     }
 
     /**
-     * Set the storageId value.
+     * Set iD of the storage account which is used to store the flow log.
      *
      * @param storageId the storageId value to set
      * @return the FlowLogInformationInner object itself.
@@ -91,7 +91,7 @@ public class FlowLogInformationInner {
     }
 
     /**
-     * Get the enabled value.
+     * Get flag to enable/disable flow logging.
      *
      * @return the enabled value
      */
@@ -100,7 +100,7 @@ public class FlowLogInformationInner {
     }
 
     /**
-     * Set the enabled value.
+     * Set flag to enable/disable flow logging.
      *
      * @param enabled the enabled value to set
      * @return the FlowLogInformationInner object itself.

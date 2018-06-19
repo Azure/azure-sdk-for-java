@@ -35,7 +35,7 @@ public class TroubleshootingParameters {
     private String storagePath;
 
     /**
-     * Get the targetResourceId value.
+     * Get the target resource to troubleshoot.
      *
      * @return the targetResourceId value
      */
@@ -44,7 +44,7 @@ public class TroubleshootingParameters {
     }
 
     /**
-     * Set the targetResourceId value.
+     * Set the target resource to troubleshoot.
      *
      * @param targetResourceId the targetResourceId value to set
      * @return the TroubleshootingParameters object itself.
@@ -55,7 +55,7 @@ public class TroubleshootingParameters {
     }
 
     /**
-     * Get the storageId value.
+     * Get the ID for the storage account to save the troubleshoot result.
      *
      * @return the storageId value
      */
@@ -64,7 +64,7 @@ public class TroubleshootingParameters {
     }
 
     /**
-     * Set the storageId value.
+     * Set the ID for the storage account to save the troubleshoot result.
      *
      * @param storageId the storageId value to set
      * @return the TroubleshootingParameters object itself.
@@ -75,7 +75,7 @@ public class TroubleshootingParameters {
     }
 
     /**
-     * Get the storagePath value.
+     * Get the path to the blob to save the troubleshoot result in.
      *
      * @return the storagePath value
      */
@@ -84,7 +84,7 @@ public class TroubleshootingParameters {
     }
 
     /**
-     * Set the storagePath value.
+     * Set the path to the blob to save the troubleshoot result in.
      *
      * @param storagePath the storagePath value to set
      * @return the TroubleshootingParameters object itself.

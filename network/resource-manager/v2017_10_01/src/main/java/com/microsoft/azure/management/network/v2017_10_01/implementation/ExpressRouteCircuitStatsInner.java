@@ -39,7 +39,7 @@ public class ExpressRouteCircuitStatsInner {
     private Long secondarybytesOut;
 
     /**
-     * Get the primarybytesIn value.
+     * Get gets BytesIn of the peering.
      *
      * @return the primarybytesIn value
      */
@@ -48,7 +48,7 @@ public class ExpressRouteCircuitStatsInner {
     }
 
     /**
-     * Set the primarybytesIn value.
+     * Set gets BytesIn of the peering.
      *
      * @param primarybytesIn the primarybytesIn value to set
      * @return the ExpressRouteCircuitStatsInner object itself.
@@ -59,7 +59,7 @@ public class ExpressRouteCircuitStatsInner {
     }
 
     /**
-     * Get the primarybytesOut value.
+     * Get gets BytesOut of the peering.
      *
      * @return the primarybytesOut value
      */
@@ -68,7 +68,7 @@ public class ExpressRouteCircuitStatsInner {
     }
 
     /**
-     * Set the primarybytesOut value.
+     * Set gets BytesOut of the peering.
      *
      * @param primarybytesOut the primarybytesOut value to set
      * @return the ExpressRouteCircuitStatsInner object itself.
@@ -79,7 +79,7 @@ public class ExpressRouteCircuitStatsInner {
     }
 
     /**
-     * Get the secondarybytesIn value.
+     * Get gets BytesIn of the peering.
      *
      * @return the secondarybytesIn value
      */
@@ -88,7 +88,7 @@ public class ExpressRouteCircuitStatsInner {
     }
 
     /**
-     * Set the secondarybytesIn value.
+     * Set gets BytesIn of the peering.
      *
      * @param secondarybytesIn the secondarybytesIn value to set
      * @return the ExpressRouteCircuitStatsInner object itself.
@@ -99,7 +99,7 @@ public class ExpressRouteCircuitStatsInner {
     }
 
     /**
-     * Get the secondarybytesOut value.
+     * Get gets BytesOut of the peering.
      *
      * @return the secondarybytesOut value
      */
@@ -108,7 +108,7 @@ public class ExpressRouteCircuitStatsInner {
     }
 
     /**
-     * Set the secondarybytesOut value.
+     * Set gets BytesOut of the peering.
      *
      * @param secondarybytesOut the secondarybytesOut value to set
      * @return the ExpressRouteCircuitStatsInner object itself.

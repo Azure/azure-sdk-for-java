@@ -21,7 +21,7 @@ public class DnsNameAvailabilityResultInner {
     private Boolean available;
 
     /**
-     * Get the available value.
+     * Get domain availability (True/False).
      *
      * @return the available value
      */
@@ -30,7 +30,7 @@ public class DnsNameAvailabilityResultInner {
     }
 
     /**
-     * Set the available value.
+     * Set domain availability (True/False).
      *
      * @param available the available value to set
      * @return the DnsNameAvailabilityResultInner object itself.

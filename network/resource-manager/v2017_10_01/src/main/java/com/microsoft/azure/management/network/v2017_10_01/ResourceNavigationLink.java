@@ -49,7 +49,7 @@ public class ResourceNavigationLink extends SubResource {
     private String etag;
 
     /**
-     * Get the linkedResourceType value.
+     * Get resource type of the linked resource.
      *
      * @return the linkedResourceType value
      */
@@ -58,7 +58,7 @@ public class ResourceNavigationLink extends SubResource {
     }
 
     /**
-     * Set the linkedResourceType value.
+     * Set resource type of the linked resource.
      *
      * @param linkedResourceType the linkedResourceType value to set
      * @return the ResourceNavigationLink object itself.
@@ -69,7 +69,7 @@ public class ResourceNavigationLink extends SubResource {
     }
 
     /**
-     * Get the link value.
+     * Get link to the external resource.
      *
      * @return the link value
      */
@@ -78,7 +78,7 @@ public class ResourceNavigationLink extends SubResource {
     }
 
     /**
-     * Set the link value.
+     * Set link to the external resource.
      *
      * @param link the link value to set
      * @return the ResourceNavigationLink object itself.
@@ -89,7 +89,7 @@ public class ResourceNavigationLink extends SubResource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get provisioning state of the ResourceNavigationLink resource.
      *
      * @return the provisioningState value
      */
@@ -98,7 +98,7 @@ public class ResourceNavigationLink extends SubResource {
     }
 
     /**
-     * Get the name value.
+     * Get name of the resource that is unique within a resource group. This name can be used to access the resource.
      *
      * @return the name value
      */
@@ -107,7 +107,7 @@ public class ResourceNavigationLink extends SubResource {
     }
 
     /**
-     * Set the name value.
+     * Set name of the resource that is unique within a resource group. This name can be used to access the resource.
      *
      * @param name the name value to set
      * @return the ResourceNavigationLink object itself.
@@ -118,7 +118,7 @@ public class ResourceNavigationLink extends SubResource {
     }
 
     /**
-     * Get the etag value.
+     * Get a unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value
      */

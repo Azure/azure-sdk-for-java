@@ -28,7 +28,7 @@ public class IpTag {
     private String tag;
 
     /**
-     * Get the ipTagType value.
+     * Get gets or sets the ipTag type: Example FirstPartyUsage.
      *
      * @return the ipTagType value
      */
@@ -37,7 +37,7 @@ public class IpTag {
     }
 
     /**
-     * Set the ipTagType value.
+     * Set gets or sets the ipTag type: Example FirstPartyUsage.
      *
      * @param ipTagType the ipTagType value to set
      * @return the IpTag object itself.
@@ -48,7 +48,7 @@ public class IpTag {
     }
 
     /**
-     * Get the tag value.
+     * Get gets or sets value of the IpTag associated with the public IP. Example SQL, Storage etc.
      *
      * @return the tag value
      */
@@ -57,7 +57,7 @@ public class IpTag {
     }
 
     /**
-     * Set the tag value.
+     * Set gets or sets value of the IpTag associated with the public IP. Example SQL, Storage etc.
      *
      * @param tag the tag value to set
      * @return the IpTag object itself.

@@ -29,7 +29,7 @@ public class ExpressRouteCircuitsRoutesTableListResultInner {
     private String nextLink;
 
     /**
-     * Get the value value.
+     * Get the list of routes table.
      *
      * @return the value value
      */
@@ -38,7 +38,7 @@ public class ExpressRouteCircuitsRoutesTableListResultInner {
     }
 
     /**
-     * Set the value value.
+     * Set the list of routes table.
      *
      * @param value the value value to set
      * @return the ExpressRouteCircuitsRoutesTableListResultInner object itself.
@@ -49,7 +49,7 @@ public class ExpressRouteCircuitsRoutesTableListResultInner {
     }
 
     /**
-     * Get the nextLink value.
+     * Get the URL to get the next set of results.
      *
      * @return the nextLink value
      */
@@ -58,7 +58,7 @@ public class ExpressRouteCircuitsRoutesTableListResultInner {
     }
 
     /**
-     * Set the nextLink value.
+     * Set the URL to get the next set of results.
      *
      * @param nextLink the nextLink value to set
      * @return the ExpressRouteCircuitsRoutesTableListResultInner object itself.

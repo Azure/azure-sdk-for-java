@@ -22,7 +22,7 @@ public class LoadBalancerSku {
     private LoadBalancerSkuName name;
 
     /**
-     * Get the name value.
+     * Get name of a load balancer SKU. Possible values include: 'Basic', 'Standard'.
      *
      * @return the name value
      */
@@ -31,7 +31,7 @@ public class LoadBalancerSku {
     }
 
     /**
-     * Set the name value.
+     * Set name of a load balancer SKU. Possible values include: 'Basic', 'Standard'.
      *
      * @param name the name value to set
      * @return the LoadBalancerSku object itself.

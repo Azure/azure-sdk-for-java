@@ -80,7 +80,7 @@ public class ApplicationGatewayHttpListener extends SubResource {
     private String type;
 
     /**
-     * Get the frontendIPConfiguration value.
+     * Get frontend IP configuration resource of an application gateway.
      *
      * @return the frontendIPConfiguration value
      */
@@ -89,7 +89,7 @@ public class ApplicationGatewayHttpListener extends SubResource {
     }
 
     /**
-     * Set the frontendIPConfiguration value.
+     * Set frontend IP configuration resource of an application gateway.
      *
      * @param frontendIPConfiguration the frontendIPConfiguration value to set
      * @return the ApplicationGatewayHttpListener object itself.
@@ -100,7 +100,7 @@ public class ApplicationGatewayHttpListener extends SubResource {
     }
 
     /**
-     * Get the frontendPort value.
+     * Get frontend port resource of an application gateway.
      *
      * @return the frontendPort value
      */
@@ -109,7 +109,7 @@ public class ApplicationGatewayHttpListener extends SubResource {
     }
 
     /**
-     * Set the frontendPort value.
+     * Set frontend port resource of an application gateway.
      *
      * @param frontendPort the frontendPort value to set
      * @return the ApplicationGatewayHttpListener object itself.
@@ -120,7 +120,7 @@ public class ApplicationGatewayHttpListener extends SubResource {
     }
 
     /**
-     * Get the protocol value.
+     * Get protocol. Possible values include: 'Http', 'Https'.
      *
      * @return the protocol value
      */
@@ -129,7 +129,7 @@ public class ApplicationGatewayHttpListener extends SubResource {
     }
 
     /**
-     * Set the protocol value.
+     * Set protocol. Possible values include: 'Http', 'Https'.
      *
      * @param protocol the protocol value to set
      * @return the ApplicationGatewayHttpListener object itself.
@@ -140,7 +140,7 @@ public class ApplicationGatewayHttpListener extends SubResource {
     }
 
     /**
-     * Get the hostName value.
+     * Get host name of HTTP listener.
      *
      * @return the hostName value
      */
@@ -149,7 +149,7 @@ public class ApplicationGatewayHttpListener extends SubResource {
     }
 
     /**
-     * Set the hostName value.
+     * Set host name of HTTP listener.
      *
      * @param hostName the hostName value to set
      * @return the ApplicationGatewayHttpListener object itself.
@@ -160,7 +160,7 @@ public class ApplicationGatewayHttpListener extends SubResource {
     }
 
     /**
-     * Get the sslCertificate value.
+     * Get sSL certificate resource of an application gateway.
      *
      * @return the sslCertificate value
      */
@@ -169,7 +169,7 @@ public class ApplicationGatewayHttpListener extends SubResource {
     }
 
     /**
-     * Set the sslCertificate value.
+     * Set sSL certificate resource of an application gateway.
      *
      * @param sslCertificate the sslCertificate value to set
      * @return the ApplicationGatewayHttpListener object itself.
@@ -180,7 +180,7 @@ public class ApplicationGatewayHttpListener extends SubResource {
     }
 
     /**
-     * Get the requireServerNameIndication value.
+     * Get applicable only if protocol is https. Enables SNI for multi-hosting.
      *
      * @return the requireServerNameIndication value
      */
@@ -189,7 +189,7 @@ public class ApplicationGatewayHttpListener extends SubResource {
     }
 
     /**
-     * Set the requireServerNameIndication value.
+     * Set applicable only if protocol is https. Enables SNI for multi-hosting.
      *
      * @param requireServerNameIndication the requireServerNameIndication value to set
      * @return the ApplicationGatewayHttpListener object itself.
@@ -200,7 +200,7 @@ public class ApplicationGatewayHttpListener extends SubResource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get provisioning state of the HTTP listener resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value
      */
@@ -209,7 +209,7 @@ public class ApplicationGatewayHttpListener extends SubResource {
     }
 
     /**
-     * Set the provisioningState value.
+     * Set provisioning state of the HTTP listener resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
      *
      * @param provisioningState the provisioningState value to set
      * @return the ApplicationGatewayHttpListener object itself.
@@ -220,7 +220,7 @@ public class ApplicationGatewayHttpListener extends SubResource {
     }
 
     /**
-     * Get the name value.
+     * Get name of the resource that is unique within a resource group. This name can be used to access the resource.
      *
      * @return the name value
      */
@@ -229,7 +229,7 @@ public class ApplicationGatewayHttpListener extends SubResource {
     }
 
     /**
-     * Set the name value.
+     * Set name of the resource that is unique within a resource group. This name can be used to access the resource.
      *
      * @param name the name value to set
      * @return the ApplicationGatewayHttpListener object itself.
@@ -240,7 +240,7 @@ public class ApplicationGatewayHttpListener extends SubResource {
     }
 
     /**
-     * Get the etag value.
+     * Get a unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value
      */
@@ -249,7 +249,7 @@ public class ApplicationGatewayHttpListener extends SubResource {
     }
 
     /**
-     * Set the etag value.
+     * Set a unique read-only string that changes whenever the resource is updated.
      *
      * @param etag the etag value to set
      * @return the ApplicationGatewayHttpListener object itself.
@@ -260,7 +260,7 @@ public class ApplicationGatewayHttpListener extends SubResource {
     }
 
     /**
-     * Get the type value.
+     * Get type of the resource.
      *
      * @return the type value
      */
@@ -269,7 +269,7 @@ public class ApplicationGatewayHttpListener extends SubResource {
     }
 
     /**
-     * Set the type value.
+     * Set type of the resource.
      *
      * @param type the type value to set
      * @return the ApplicationGatewayHttpListener object itself.
