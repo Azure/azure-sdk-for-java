@@ -37,7 +37,7 @@ public class AzureBlobStorageHttpLogsConfig {
     private Boolean enabled;
 
     /**
-     * Get the sasUrl value.
+     * Get sAS url to a azure blob container with read/write/list/delete permissions.
      *
      * @return the sasUrl value
      */
@@ -46,7 +46,7 @@ public class AzureBlobStorageHttpLogsConfig {
     }
 
     /**
-     * Set the sasUrl value.
+     * Set sAS url to a azure blob container with read/write/list/delete permissions.
      *
      * @param sasUrl the sasUrl value to set
      * @return the AzureBlobStorageHttpLogsConfig object itself.
@@ -57,7 +57,9 @@ public class AzureBlobStorageHttpLogsConfig {
     }
 
     /**
-     * Get the retentionInDays value.
+     * Get retention in days.
+     Remove blobs older than X days.
+     0 or lower means no retention.
      *
      * @return the retentionInDays value
      */
@@ -66,7 +68,9 @@ public class AzureBlobStorageHttpLogsConfig {
     }
 
     /**
-     * Set the retentionInDays value.
+     * Set retention in days.
+     Remove blobs older than X days.
+     0 or lower means no retention.
      *
      * @param retentionInDays the retentionInDays value to set
      * @return the AzureBlobStorageHttpLogsConfig object itself.
@@ -77,7 +81,7 @@ public class AzureBlobStorageHttpLogsConfig {
     }
 
     /**
-     * Get the enabled value.
+     * Get true if configuration is enabled, false if it is disabled and null if configuration is not set.
      *
      * @return the enabled value
      */
@@ -86,7 +90,7 @@ public class AzureBlobStorageHttpLogsConfig {
     }
 
     /**
-     * Set the enabled value.
+     * Set true if configuration is enabled, false if it is disabled and null if configuration is not set.
      *
      * @param enabled the enabled value to set
      * @return the AzureBlobStorageHttpLogsConfig object itself.

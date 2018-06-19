@@ -56,7 +56,7 @@ public class HostName {
     private HostNameType hostNameType;
 
     /**
-     * Get the name value.
+     * Get name of the hostname.
      *
      * @return the name value
      */
@@ -65,7 +65,7 @@ public class HostName {
     }
 
     /**
-     * Set the name value.
+     * Set name of the hostname.
      *
      * @param name the name value to set
      * @return the HostName object itself.
@@ -76,7 +76,7 @@ public class HostName {
     }
 
     /**
-     * Get the siteNames value.
+     * Get list of apps the hostname is assigned to. This list will have more than one app only if the hostname is pointing to a Traffic Manager.
      *
      * @return the siteNames value
      */
@@ -85,7 +85,7 @@ public class HostName {
     }
 
     /**
-     * Set the siteNames value.
+     * Set list of apps the hostname is assigned to. This list will have more than one app only if the hostname is pointing to a Traffic Manager.
      *
      * @param siteNames the siteNames value to set
      * @return the HostName object itself.
@@ -96,7 +96,7 @@ public class HostName {
     }
 
     /**
-     * Get the azureResourceName value.
+     * Get name of the Azure resource the hostname is assigned to. If it is assigned to a Traffic Manager then it will be the Traffic Manager name otherwise it will be the app name.
      *
      * @return the azureResourceName value
      */
@@ -105,7 +105,7 @@ public class HostName {
     }
 
     /**
-     * Set the azureResourceName value.
+     * Set name of the Azure resource the hostname is assigned to. If it is assigned to a Traffic Manager then it will be the Traffic Manager name otherwise it will be the app name.
      *
      * @param azureResourceName the azureResourceName value to set
      * @return the HostName object itself.
@@ -116,7 +116,7 @@ public class HostName {
     }
 
     /**
-     * Get the azureResourceType value.
+     * Get type of the Azure resource the hostname is assigned to. Possible values include: 'Website', 'TrafficManager'.
      *
      * @return the azureResourceType value
      */
@@ -125,7 +125,7 @@ public class HostName {
     }
 
     /**
-     * Set the azureResourceType value.
+     * Set type of the Azure resource the hostname is assigned to. Possible values include: 'Website', 'TrafficManager'.
      *
      * @param azureResourceType the azureResourceType value to set
      * @return the HostName object itself.
@@ -136,7 +136,7 @@ public class HostName {
     }
 
     /**
-     * Get the customHostNameDnsRecordType value.
+     * Get type of the DNS record. Possible values include: 'CName', 'A'.
      *
      * @return the customHostNameDnsRecordType value
      */
@@ -145,7 +145,7 @@ public class HostName {
     }
 
     /**
-     * Set the customHostNameDnsRecordType value.
+     * Set type of the DNS record. Possible values include: 'CName', 'A'.
      *
      * @param customHostNameDnsRecordType the customHostNameDnsRecordType value to set
      * @return the HostName object itself.
@@ -156,7 +156,7 @@ public class HostName {
     }
 
     /**
-     * Get the hostNameType value.
+     * Get type of the hostname. Possible values include: 'Verified', 'Managed'.
      *
      * @return the hostNameType value
      */
@@ -165,7 +165,7 @@ public class HostName {
     }
 
     /**
-     * Set the hostNameType value.
+     * Set type of the hostname. Possible values include: 'Verified', 'Managed'.
      *
      * @param hostNameType the hostNameType value to set
      * @return the HostName object itself.

@@ -44,7 +44,7 @@ public class NetworkFeaturesInner extends ProxyOnlyResource {
     private List<HybridConnectionInner> hybridConnectionsV2;
 
     /**
-     * Get the virtualNetworkName value.
+     * Get the Virtual Network name.
      *
      * @return the virtualNetworkName value
      */
@@ -53,7 +53,7 @@ public class NetworkFeaturesInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the virtualNetworkConnection value.
+     * Get the Virtual Network summary view.
      *
      * @return the virtualNetworkConnection value
      */
@@ -62,7 +62,7 @@ public class NetworkFeaturesInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the hybridConnections value.
+     * Get the Hybrid Connections summary view.
      *
      * @return the hybridConnections value
      */
@@ -71,7 +71,7 @@ public class NetworkFeaturesInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the hybridConnectionsV2 value.
+     * Get the Hybrid Connection V2 (Service Bus) view.
      *
      * @return the hybridConnectionsV2 value
      */

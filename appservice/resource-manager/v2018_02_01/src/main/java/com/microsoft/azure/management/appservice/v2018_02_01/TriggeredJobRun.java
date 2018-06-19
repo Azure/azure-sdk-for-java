@@ -84,7 +84,7 @@ public class TriggeredJobRun extends ProxyOnlyResource {
     private String trigger;
 
     /**
-     * Get the webJobId value.
+     * Get job ID.
      *
      * @return the webJobId value
      */
@@ -93,7 +93,7 @@ public class TriggeredJobRun extends ProxyOnlyResource {
     }
 
     /**
-     * Set the webJobId value.
+     * Set job ID.
      *
      * @param webJobId the webJobId value to set
      * @return the TriggeredJobRun object itself.
@@ -104,7 +104,7 @@ public class TriggeredJobRun extends ProxyOnlyResource {
     }
 
     /**
-     * Get the webJobName value.
+     * Get job name.
      *
      * @return the webJobName value
      */
@@ -113,7 +113,7 @@ public class TriggeredJobRun extends ProxyOnlyResource {
     }
 
     /**
-     * Set the webJobName value.
+     * Set job name.
      *
      * @param webJobName the webJobName value to set
      * @return the TriggeredJobRun object itself.
@@ -124,7 +124,7 @@ public class TriggeredJobRun extends ProxyOnlyResource {
     }
 
     /**
-     * Get the status value.
+     * Get job status. Possible values include: 'Success', 'Failed', 'Error'.
      *
      * @return the status value
      */
@@ -133,7 +133,7 @@ public class TriggeredJobRun extends ProxyOnlyResource {
     }
 
     /**
-     * Set the status value.
+     * Set job status. Possible values include: 'Success', 'Failed', 'Error'.
      *
      * @param status the status value to set
      * @return the TriggeredJobRun object itself.
@@ -144,7 +144,7 @@ public class TriggeredJobRun extends ProxyOnlyResource {
     }
 
     /**
-     * Get the startTime value.
+     * Get start time.
      *
      * @return the startTime value
      */
@@ -153,7 +153,7 @@ public class TriggeredJobRun extends ProxyOnlyResource {
     }
 
     /**
-     * Set the startTime value.
+     * Set start time.
      *
      * @param startTime the startTime value to set
      * @return the TriggeredJobRun object itself.
@@ -164,7 +164,7 @@ public class TriggeredJobRun extends ProxyOnlyResource {
     }
 
     /**
-     * Get the endTime value.
+     * Get end time.
      *
      * @return the endTime value
      */
@@ -173,7 +173,7 @@ public class TriggeredJobRun extends ProxyOnlyResource {
     }
 
     /**
-     * Set the endTime value.
+     * Set end time.
      *
      * @param endTime the endTime value to set
      * @return the TriggeredJobRun object itself.
@@ -184,7 +184,7 @@ public class TriggeredJobRun extends ProxyOnlyResource {
     }
 
     /**
-     * Get the duration value.
+     * Get job duration.
      *
      * @return the duration value
      */
@@ -193,7 +193,7 @@ public class TriggeredJobRun extends ProxyOnlyResource {
     }
 
     /**
-     * Set the duration value.
+     * Set job duration.
      *
      * @param duration the duration value to set
      * @return the TriggeredJobRun object itself.
@@ -204,7 +204,7 @@ public class TriggeredJobRun extends ProxyOnlyResource {
     }
 
     /**
-     * Get the outputUrl value.
+     * Get output URL.
      *
      * @return the outputUrl value
      */
@@ -213,7 +213,7 @@ public class TriggeredJobRun extends ProxyOnlyResource {
     }
 
     /**
-     * Set the outputUrl value.
+     * Set output URL.
      *
      * @param outputUrl the outputUrl value to set
      * @return the TriggeredJobRun object itself.
@@ -224,7 +224,7 @@ public class TriggeredJobRun extends ProxyOnlyResource {
     }
 
     /**
-     * Get the errorUrl value.
+     * Get error URL.
      *
      * @return the errorUrl value
      */
@@ -233,7 +233,7 @@ public class TriggeredJobRun extends ProxyOnlyResource {
     }
 
     /**
-     * Set the errorUrl value.
+     * Set error URL.
      *
      * @param errorUrl the errorUrl value to set
      * @return the TriggeredJobRun object itself.
@@ -244,7 +244,7 @@ public class TriggeredJobRun extends ProxyOnlyResource {
     }
 
     /**
-     * Get the url value.
+     * Get job URL.
      *
      * @return the url value
      */
@@ -253,7 +253,7 @@ public class TriggeredJobRun extends ProxyOnlyResource {
     }
 
     /**
-     * Set the url value.
+     * Set job URL.
      *
      * @param url the url value to set
      * @return the TriggeredJobRun object itself.
@@ -264,7 +264,7 @@ public class TriggeredJobRun extends ProxyOnlyResource {
     }
 
     /**
-     * Get the jobName value.
+     * Get job name.
      *
      * @return the jobName value
      */
@@ -273,7 +273,7 @@ public class TriggeredJobRun extends ProxyOnlyResource {
     }
 
     /**
-     * Set the jobName value.
+     * Set job name.
      *
      * @param jobName the jobName value to set
      * @return the TriggeredJobRun object itself.
@@ -284,7 +284,7 @@ public class TriggeredJobRun extends ProxyOnlyResource {
     }
 
     /**
-     * Get the trigger value.
+     * Get job trigger.
      *
      * @return the trigger value
      */
@@ -293,7 +293,7 @@ public class TriggeredJobRun extends ProxyOnlyResource {
     }
 
     /**
-     * Set the trigger value.
+     * Set job trigger.
      *
      * @param trigger the trigger value to set
      * @return the TriggeredJobRun object itself.

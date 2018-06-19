@@ -98,7 +98,7 @@ public class RestoreRequestInner extends ProxyOnlyResource {
     private String hostingEnvironment;
 
     /**
-     * Get the storageAccountUrl value.
+     * Get sAS URL to the container.
      *
      * @return the storageAccountUrl value
      */
@@ -107,7 +107,7 @@ public class RestoreRequestInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the storageAccountUrl value.
+     * Set sAS URL to the container.
      *
      * @param storageAccountUrl the storageAccountUrl value to set
      * @return the RestoreRequestInner object itself.
@@ -118,7 +118,7 @@ public class RestoreRequestInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the blobName value.
+     * Get name of a blob which contains the backup.
      *
      * @return the blobName value
      */
@@ -127,7 +127,7 @@ public class RestoreRequestInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the blobName value.
+     * Set name of a blob which contains the backup.
      *
      * @param blobName the blobName value to set
      * @return the RestoreRequestInner object itself.
@@ -138,7 +138,7 @@ public class RestoreRequestInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the overwrite value.
+     * Get &lt;code&gt;true&lt;/code&gt; if the restore operation can overwrite target app; otherwise, &lt;code&gt;false&lt;/code&gt;. &lt;code&gt;true&lt;/code&gt; is needed if trying to restore over an existing app.
      *
      * @return the overwrite value
      */
@@ -147,7 +147,7 @@ public class RestoreRequestInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the overwrite value.
+     * Set &lt;code&gt;true&lt;/code&gt; if the restore operation can overwrite target app; otherwise, &lt;code&gt;false&lt;/code&gt;. &lt;code&gt;true&lt;/code&gt; is needed if trying to restore over an existing app.
      *
      * @param overwrite the overwrite value to set
      * @return the RestoreRequestInner object itself.
@@ -158,7 +158,7 @@ public class RestoreRequestInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the siteName value.
+     * Get name of an app.
      *
      * @return the siteName value
      */
@@ -167,7 +167,7 @@ public class RestoreRequestInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the siteName value.
+     * Set name of an app.
      *
      * @param siteName the siteName value to set
      * @return the RestoreRequestInner object itself.
@@ -178,7 +178,7 @@ public class RestoreRequestInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the databases value.
+     * Get collection of databases which should be restored. This list has to match the list of databases included in the backup.
      *
      * @return the databases value
      */
@@ -187,7 +187,7 @@ public class RestoreRequestInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the databases value.
+     * Set collection of databases which should be restored. This list has to match the list of databases included in the backup.
      *
      * @param databases the databases value to set
      * @return the RestoreRequestInner object itself.
@@ -198,7 +198,8 @@ public class RestoreRequestInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the ignoreConflictingHostNames value.
+     * Get changes a logic when restoring an app with custom domains. &lt;code&gt;true&lt;/code&gt; to remove custom domains automatically. If &lt;code&gt;false&lt;/code&gt;, custom domains are added to
+     the app's object when it is being restored, but that might fail due to conflicts during the operation.
      *
      * @return the ignoreConflictingHostNames value
      */
@@ -207,7 +208,8 @@ public class RestoreRequestInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the ignoreConflictingHostNames value.
+     * Set changes a logic when restoring an app with custom domains. &lt;code&gt;true&lt;/code&gt; to remove custom domains automatically. If &lt;code&gt;false&lt;/code&gt;, custom domains are added to
+     the app's object when it is being restored, but that might fail due to conflicts during the operation.
      *
      * @param ignoreConflictingHostNames the ignoreConflictingHostNames value to set
      * @return the RestoreRequestInner object itself.
@@ -218,7 +220,7 @@ public class RestoreRequestInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the ignoreDatabases value.
+     * Get ignore the databases and only restore the site content.
      *
      * @return the ignoreDatabases value
      */
@@ -227,7 +229,7 @@ public class RestoreRequestInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the ignoreDatabases value.
+     * Set ignore the databases and only restore the site content.
      *
      * @param ignoreDatabases the ignoreDatabases value to set
      * @return the RestoreRequestInner object itself.
@@ -238,7 +240,7 @@ public class RestoreRequestInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the appServicePlan value.
+     * Get specify app service plan that will own restored site.
      *
      * @return the appServicePlan value
      */
@@ -247,7 +249,7 @@ public class RestoreRequestInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the appServicePlan value.
+     * Set specify app service plan that will own restored site.
      *
      * @param appServicePlan the appServicePlan value to set
      * @return the RestoreRequestInner object itself.
@@ -258,7 +260,7 @@ public class RestoreRequestInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the operationType value.
+     * Get operation type. Possible values include: 'Default', 'Clone', 'Relocation', 'Snapshot'.
      *
      * @return the operationType value
      */
@@ -267,7 +269,7 @@ public class RestoreRequestInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the operationType value.
+     * Set operation type. Possible values include: 'Default', 'Clone', 'Relocation', 'Snapshot'.
      *
      * @param operationType the operationType value to set
      * @return the RestoreRequestInner object itself.
@@ -278,7 +280,7 @@ public class RestoreRequestInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the adjustConnectionStrings value.
+     * Get &lt;code&gt;true&lt;/code&gt; if SiteConfig.ConnectionStrings should be set in new app; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @return the adjustConnectionStrings value
      */
@@ -287,7 +289,7 @@ public class RestoreRequestInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the adjustConnectionStrings value.
+     * Set &lt;code&gt;true&lt;/code&gt; if SiteConfig.ConnectionStrings should be set in new app; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @param adjustConnectionStrings the adjustConnectionStrings value to set
      * @return the RestoreRequestInner object itself.
@@ -298,7 +300,7 @@ public class RestoreRequestInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the hostingEnvironment value.
+     * Get app Service Environment name, if needed (only when restoring an app to an App Service Environment).
      *
      * @return the hostingEnvironment value
      */
@@ -307,7 +309,7 @@ public class RestoreRequestInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the hostingEnvironment value.
+     * Set app Service Environment name, if needed (only when restoring an app to an App Service Environment).
      *
      * @param hostingEnvironment the hostingEnvironment value to set
      * @return the RestoreRequestInner object itself.

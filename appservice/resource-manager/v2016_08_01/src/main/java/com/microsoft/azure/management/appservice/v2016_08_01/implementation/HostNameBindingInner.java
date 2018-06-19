@@ -78,7 +78,7 @@ public class HostNameBindingInner extends ProxyOnlyResource {
     private String virtualIP;
 
     /**
-     * Get the siteName value.
+     * Get app Service app name.
      *
      * @return the siteName value
      */
@@ -87,7 +87,7 @@ public class HostNameBindingInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the siteName value.
+     * Set app Service app name.
      *
      * @param siteName the siteName value to set
      * @return the HostNameBindingInner object itself.
@@ -98,7 +98,7 @@ public class HostNameBindingInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the domainId value.
+     * Get fully qualified ARM domain resource URI.
      *
      * @return the domainId value
      */
@@ -107,7 +107,7 @@ public class HostNameBindingInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the domainId value.
+     * Set fully qualified ARM domain resource URI.
      *
      * @param domainId the domainId value to set
      * @return the HostNameBindingInner object itself.
@@ -118,7 +118,7 @@ public class HostNameBindingInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the azureResourceName value.
+     * Get azure resource name.
      *
      * @return the azureResourceName value
      */
@@ -127,7 +127,7 @@ public class HostNameBindingInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the azureResourceName value.
+     * Set azure resource name.
      *
      * @param azureResourceName the azureResourceName value to set
      * @return the HostNameBindingInner object itself.
@@ -138,7 +138,7 @@ public class HostNameBindingInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the azureResourceType value.
+     * Get azure resource type. Possible values include: 'Website', 'TrafficManager'.
      *
      * @return the azureResourceType value
      */
@@ -147,7 +147,7 @@ public class HostNameBindingInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the azureResourceType value.
+     * Set azure resource type. Possible values include: 'Website', 'TrafficManager'.
      *
      * @param azureResourceType the azureResourceType value to set
      * @return the HostNameBindingInner object itself.
@@ -158,7 +158,7 @@ public class HostNameBindingInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the customHostNameDnsRecordType value.
+     * Get custom DNS record type. Possible values include: 'CName', 'A'.
      *
      * @return the customHostNameDnsRecordType value
      */
@@ -167,7 +167,7 @@ public class HostNameBindingInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the customHostNameDnsRecordType value.
+     * Set custom DNS record type. Possible values include: 'CName', 'A'.
      *
      * @param customHostNameDnsRecordType the customHostNameDnsRecordType value to set
      * @return the HostNameBindingInner object itself.
@@ -178,7 +178,7 @@ public class HostNameBindingInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the hostNameType value.
+     * Get hostname type. Possible values include: 'Verified', 'Managed'.
      *
      * @return the hostNameType value
      */
@@ -187,7 +187,7 @@ public class HostNameBindingInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the hostNameType value.
+     * Set hostname type. Possible values include: 'Verified', 'Managed'.
      *
      * @param hostNameType the hostNameType value to set
      * @return the HostNameBindingInner object itself.
@@ -198,7 +198,7 @@ public class HostNameBindingInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the sslState value.
+     * Get sSL type. Possible values include: 'Disabled', 'SniEnabled', 'IpBasedEnabled'.
      *
      * @return the sslState value
      */
@@ -207,7 +207,7 @@ public class HostNameBindingInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the sslState value.
+     * Set sSL type. Possible values include: 'Disabled', 'SniEnabled', 'IpBasedEnabled'.
      *
      * @param sslState the sslState value to set
      * @return the HostNameBindingInner object itself.
@@ -218,7 +218,7 @@ public class HostNameBindingInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the thumbprint value.
+     * Get sSL certificate thumbprint.
      *
      * @return the thumbprint value
      */
@@ -227,7 +227,7 @@ public class HostNameBindingInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the thumbprint value.
+     * Set sSL certificate thumbprint.
      *
      * @param thumbprint the thumbprint value to set
      * @return the HostNameBindingInner object itself.
@@ -238,7 +238,7 @@ public class HostNameBindingInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the virtualIP value.
+     * Get virtual IP address assigned to the hostname if IP based SSL is enabled.
      *
      * @return the virtualIP value
      */

@@ -22,7 +22,7 @@ public class Experiments {
     private List<RampUpRule> rampUpRules;
 
     /**
-     * Get the rampUpRules value.
+     * Get list of ramp-up rules.
      *
      * @return the rampUpRules value
      */
@@ -31,7 +31,7 @@ public class Experiments {
     }
 
     /**
-     * Set the rampUpRules value.
+     * Set list of ramp-up rules.
      *
      * @param rampUpRules the rampUpRules value to set
      * @return the Experiments object itself.

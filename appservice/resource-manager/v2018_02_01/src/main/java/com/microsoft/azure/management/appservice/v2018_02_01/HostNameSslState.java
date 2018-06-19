@@ -53,7 +53,7 @@ public class HostNameSslState {
     private HostType hostType;
 
     /**
-     * Get the name value.
+     * Get hostname.
      *
      * @return the name value
      */
@@ -62,7 +62,7 @@ public class HostNameSslState {
     }
 
     /**
-     * Set the name value.
+     * Set hostname.
      *
      * @param name the name value to set
      * @return the HostNameSslState object itself.
@@ -73,7 +73,7 @@ public class HostNameSslState {
     }
 
     /**
-     * Get the sslState value.
+     * Get sSL type. Possible values include: 'Disabled', 'SniEnabled', 'IpBasedEnabled'.
      *
      * @return the sslState value
      */
@@ -82,7 +82,7 @@ public class HostNameSslState {
     }
 
     /**
-     * Set the sslState value.
+     * Set sSL type. Possible values include: 'Disabled', 'SniEnabled', 'IpBasedEnabled'.
      *
      * @param sslState the sslState value to set
      * @return the HostNameSslState object itself.
@@ -93,7 +93,7 @@ public class HostNameSslState {
     }
 
     /**
-     * Get the virtualIP value.
+     * Get virtual IP address assigned to the hostname if IP based SSL is enabled.
      *
      * @return the virtualIP value
      */
@@ -102,7 +102,7 @@ public class HostNameSslState {
     }
 
     /**
-     * Set the virtualIP value.
+     * Set virtual IP address assigned to the hostname if IP based SSL is enabled.
      *
      * @param virtualIP the virtualIP value to set
      * @return the HostNameSslState object itself.
@@ -113,7 +113,7 @@ public class HostNameSslState {
     }
 
     /**
-     * Get the thumbprint value.
+     * Get sSL certificate thumbprint.
      *
      * @return the thumbprint value
      */
@@ -122,7 +122,7 @@ public class HostNameSslState {
     }
 
     /**
-     * Set the thumbprint value.
+     * Set sSL certificate thumbprint.
      *
      * @param thumbprint the thumbprint value to set
      * @return the HostNameSslState object itself.
@@ -133,7 +133,7 @@ public class HostNameSslState {
     }
 
     /**
-     * Get the toUpdate value.
+     * Get set to &lt;code&gt;true&lt;/code&gt; to update existing hostname.
      *
      * @return the toUpdate value
      */
@@ -142,7 +142,7 @@ public class HostNameSslState {
     }
 
     /**
-     * Set the toUpdate value.
+     * Set set to &lt;code&gt;true&lt;/code&gt; to update existing hostname.
      *
      * @param toUpdate the toUpdate value to set
      * @return the HostNameSslState object itself.
@@ -153,7 +153,7 @@ public class HostNameSslState {
     }
 
     /**
-     * Get the hostType value.
+     * Get indicates whether the hostname is a standard or repository hostname. Possible values include: 'Standard', 'Repository'.
      *
      * @return the hostType value
      */
@@ -162,7 +162,7 @@ public class HostNameSslState {
     }
 
     /**
-     * Set the hostType value.
+     * Set indicates whether the hostname is a standard or repository hostname. Possible values include: 'Standard', 'Repository'.
      *
      * @param hostType the hostType value to set
      * @return the HostNameSslState object itself.

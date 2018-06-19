@@ -46,7 +46,8 @@ class DiagnosticsImpl extends WrapperImpl<DiagnosticsInner> implements Diagnosti
             public Iterable<DiagnosticCategoryInner> call(Page<DiagnosticCategoryInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<DiagnosticCategoryInner, DiagnosticCategory>() {
+        })
+        .map(new Func1<DiagnosticCategoryInner, DiagnosticCategory>() {
             @Override
             public DiagnosticCategory call(DiagnosticCategoryInner inner) {
                 return new DiagnosticCategoryImpl(inner, manager());
@@ -160,7 +161,8 @@ class DiagnosticsImpl extends WrapperImpl<DiagnosticsInner> implements Diagnosti
             public Iterable<DetectorResponseInner> call(Page<DetectorResponseInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<DetectorResponseInner, DetectorResponse>() {
+        })
+        .map(new Func1<DetectorResponseInner, DetectorResponse>() {
             @Override
             public DetectorResponse call(DetectorResponseInner inner) {
                 return new DetectorResponseImpl(inner, manager());
@@ -189,7 +191,8 @@ class DiagnosticsImpl extends WrapperImpl<DiagnosticsInner> implements Diagnosti
             public Iterable<DetectorDefinitionInner> call(Page<DetectorDefinitionInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<DetectorDefinitionInner, DetectorDefinition>() {
+        })
+        .map(new Func1<DetectorDefinitionInner, DetectorDefinition>() {
             @Override
             public DetectorDefinition call(DetectorDefinitionInner inner) {
                 return new DetectorDefinitionImpl(inner, manager());
@@ -206,7 +209,8 @@ class DiagnosticsImpl extends WrapperImpl<DiagnosticsInner> implements Diagnosti
             public Iterable<DetectorDefinitionInner> call(Page<DetectorDefinitionInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<DetectorDefinitionInner, DetectorDefinition>() {
+        })
+        .map(new Func1<DetectorDefinitionInner, DetectorDefinition>() {
             @Override
             public DetectorDefinition call(DetectorDefinitionInner inner) {
                 return new DetectorDefinitionImpl(inner, manager());
@@ -235,7 +239,8 @@ class DiagnosticsImpl extends WrapperImpl<DiagnosticsInner> implements Diagnosti
             public Iterable<DetectorResponseInner> call(Page<DetectorResponseInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<DetectorResponseInner, DetectorResponse>() {
+        })
+        .map(new Func1<DetectorResponseInner, DetectorResponse>() {
             @Override
             public DetectorResponse call(DetectorResponseInner inner) {
                 return new DetectorResponseImpl(inner, manager());
@@ -264,7 +269,8 @@ class DiagnosticsImpl extends WrapperImpl<DiagnosticsInner> implements Diagnosti
             public Iterable<DetectorDefinitionInner> call(Page<DetectorDefinitionInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<DetectorDefinitionInner, DetectorDefinition>() {
+        })
+        .map(new Func1<DetectorDefinitionInner, DetectorDefinition>() {
             @Override
             public DetectorDefinition call(DetectorDefinitionInner inner) {
                 return new DetectorDefinitionImpl(inner, manager());
@@ -281,7 +287,8 @@ class DiagnosticsImpl extends WrapperImpl<DiagnosticsInner> implements Diagnosti
             public Iterable<DetectorDefinitionInner> call(Page<DetectorDefinitionInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<DetectorDefinitionInner, DetectorDefinition>() {
+        })
+        .map(new Func1<DetectorDefinitionInner, DetectorDefinition>() {
             @Override
             public DetectorDefinition call(DetectorDefinitionInner inner) {
                 return new DetectorDefinitionImpl(inner, manager());
@@ -358,7 +365,8 @@ class DiagnosticsImpl extends WrapperImpl<DiagnosticsInner> implements Diagnosti
             public Iterable<AnalysisDefinitionInner> call(Page<AnalysisDefinitionInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<AnalysisDefinitionInner, AnalysisDefinition>() {
+        })
+        .map(new Func1<AnalysisDefinitionInner, AnalysisDefinition>() {
             @Override
             public AnalysisDefinition call(AnalysisDefinitionInner inner) {
                 return new AnalysisDefinitionImpl(inner, manager());

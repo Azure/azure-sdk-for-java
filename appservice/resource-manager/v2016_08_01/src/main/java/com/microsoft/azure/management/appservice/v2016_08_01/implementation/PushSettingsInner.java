@@ -48,7 +48,7 @@ public class PushSettingsInner extends ProxyOnlyResource {
     private String dynamicTagsJson;
 
     /**
-     * Get the isPushEnabled value.
+     * Get gets or sets a flag indicating whether the Push endpoint is enabled.
      *
      * @return the isPushEnabled value
      */
@@ -57,7 +57,7 @@ public class PushSettingsInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the isPushEnabled value.
+     * Set gets or sets a flag indicating whether the Push endpoint is enabled.
      *
      * @param isPushEnabled the isPushEnabled value to set
      * @return the PushSettingsInner object itself.
@@ -68,7 +68,7 @@ public class PushSettingsInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the tagWhitelistJson value.
+     * Get gets or sets a JSON string containing a list of tags that are whitelisted for use by the push registration endpoint.
      *
      * @return the tagWhitelistJson value
      */
@@ -77,7 +77,7 @@ public class PushSettingsInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the tagWhitelistJson value.
+     * Set gets or sets a JSON string containing a list of tags that are whitelisted for use by the push registration endpoint.
      *
      * @param tagWhitelistJson the tagWhitelistJson value to set
      * @return the PushSettingsInner object itself.
@@ -88,7 +88,10 @@ public class PushSettingsInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the tagsRequiringAuth value.
+     * Get gets or sets a JSON string containing a list of tags that require user authentication to be used in the push registration endpoint.
+     Tags can consist of alphanumeric characters and the following:
+     '_', '@', '#', '.', ':', '-'.
+     Validation should be performed at the PushRequestHandler.
      *
      * @return the tagsRequiringAuth value
      */
@@ -97,7 +100,10 @@ public class PushSettingsInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the tagsRequiringAuth value.
+     * Set gets or sets a JSON string containing a list of tags that require user authentication to be used in the push registration endpoint.
+     Tags can consist of alphanumeric characters and the following:
+     '_', '@', '#', '.', ':', '-'.
+     Validation should be performed at the PushRequestHandler.
      *
      * @param tagsRequiringAuth the tagsRequiringAuth value to set
      * @return the PushSettingsInner object itself.
@@ -108,7 +114,7 @@ public class PushSettingsInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the dynamicTagsJson value.
+     * Get gets or sets a JSON string containing a list of dynamic tags that will be evaluated from user claims in the push registration endpoint.
      *
      * @return the dynamicTagsJson value
      */
@@ -117,7 +123,7 @@ public class PushSettingsInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the dynamicTagsJson value.
+     * Set gets or sets a JSON string containing a list of dynamic tags that will be evaluated from user claims in the push registration endpoint.
      *
      * @param dynamicTagsJson the dynamicTagsJson value to set
      * @return the PushSettingsInner object itself.

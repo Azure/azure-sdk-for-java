@@ -30,7 +30,7 @@ public class ResourceHealthMetadataInner extends ProxyOnlyResource {
     private Boolean signalAvailability;
 
     /**
-     * Get the category value.
+     * Get the category that the resource matches in the RHC Policy File.
      *
      * @return the category value
      */
@@ -39,7 +39,7 @@ public class ResourceHealthMetadataInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the category value.
+     * Set the category that the resource matches in the RHC Policy File.
      *
      * @param category the category value to set
      * @return the ResourceHealthMetadataInner object itself.
@@ -50,7 +50,7 @@ public class ResourceHealthMetadataInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the signalAvailability value.
+     * Get is there a health signal for the resource.
      *
      * @return the signalAvailability value
      */
@@ -59,7 +59,7 @@ public class ResourceHealthMetadataInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the signalAvailability value.
+     * Set is there a health signal for the resource.
      *
      * @param signalAvailability the signalAvailability value to set
      * @return the ResourceHealthMetadataInner object itself.

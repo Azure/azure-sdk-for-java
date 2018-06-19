@@ -65,7 +65,7 @@ public class SkuDescription {
     private List<CapabilityInner> capabilities;
 
     /**
-     * Get the name value.
+     * Get name of the resource SKU.
      *
      * @return the name value
      */
@@ -74,7 +74,7 @@ public class SkuDescription {
     }
 
     /**
-     * Set the name value.
+     * Set name of the resource SKU.
      *
      * @param name the name value to set
      * @return the SkuDescription object itself.
@@ -85,7 +85,7 @@ public class SkuDescription {
     }
 
     /**
-     * Get the tier value.
+     * Get service tier of the resource SKU.
      *
      * @return the tier value
      */
@@ -94,7 +94,7 @@ public class SkuDescription {
     }
 
     /**
-     * Set the tier value.
+     * Set service tier of the resource SKU.
      *
      * @param tier the tier value to set
      * @return the SkuDescription object itself.
@@ -105,7 +105,7 @@ public class SkuDescription {
     }
 
     /**
-     * Get the size value.
+     * Get size specifier of the resource SKU.
      *
      * @return the size value
      */
@@ -114,7 +114,7 @@ public class SkuDescription {
     }
 
     /**
-     * Set the size value.
+     * Set size specifier of the resource SKU.
      *
      * @param size the size value to set
      * @return the SkuDescription object itself.
@@ -125,7 +125,7 @@ public class SkuDescription {
     }
 
     /**
-     * Get the family value.
+     * Get family code of the resource SKU.
      *
      * @return the family value
      */
@@ -134,7 +134,7 @@ public class SkuDescription {
     }
 
     /**
-     * Set the family value.
+     * Set family code of the resource SKU.
      *
      * @param family the family value to set
      * @return the SkuDescription object itself.
@@ -145,7 +145,7 @@ public class SkuDescription {
     }
 
     /**
-     * Get the capacity value.
+     * Get current number of instances assigned to the resource.
      *
      * @return the capacity value
      */
@@ -154,7 +154,7 @@ public class SkuDescription {
     }
 
     /**
-     * Set the capacity value.
+     * Set current number of instances assigned to the resource.
      *
      * @param capacity the capacity value to set
      * @return the SkuDescription object itself.
@@ -165,7 +165,7 @@ public class SkuDescription {
     }
 
     /**
-     * Get the skuCapacity value.
+     * Get min, max, and default scale values of the SKU.
      *
      * @return the skuCapacity value
      */
@@ -174,7 +174,7 @@ public class SkuDescription {
     }
 
     /**
-     * Set the skuCapacity value.
+     * Set min, max, and default scale values of the SKU.
      *
      * @param skuCapacity the skuCapacity value to set
      * @return the SkuDescription object itself.
@@ -185,7 +185,7 @@ public class SkuDescription {
     }
 
     /**
-     * Get the locations value.
+     * Get locations of the SKU.
      *
      * @return the locations value
      */
@@ -194,7 +194,7 @@ public class SkuDescription {
     }
 
     /**
-     * Set the locations value.
+     * Set locations of the SKU.
      *
      * @param locations the locations value to set
      * @return the SkuDescription object itself.
@@ -205,7 +205,7 @@ public class SkuDescription {
     }
 
     /**
-     * Get the capabilities value.
+     * Get capabilities of the SKU, e.g., is traffic manager enabled?.
      *
      * @return the capabilities value
      */
@@ -214,7 +214,7 @@ public class SkuDescription {
     }
 
     /**
-     * Set the capabilities value.
+     * Set capabilities of the SKU, e.g., is traffic manager enabled?.
      *
      * @param capabilities the capabilities value to set
      * @return the SkuDescription object itself.

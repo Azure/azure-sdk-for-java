@@ -23,7 +23,7 @@ public class ProxyOnlyResource extends ProxyResource {
     private String kind;
 
     /**
-     * Get the kind value.
+     * Get kind of resource.
      *
      * @return the kind value
      */
@@ -32,7 +32,7 @@ public class ProxyOnlyResource extends ProxyResource {
     }
 
     /**
-     * Set the kind value.
+     * Set kind of resource.
      *
      * @param kind the kind value to set
      * @return the ProxyOnlyResource object itself.

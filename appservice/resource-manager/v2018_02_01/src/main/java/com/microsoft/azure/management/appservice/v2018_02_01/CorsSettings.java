@@ -24,7 +24,8 @@ public class CorsSettings {
     private List<String> allowedOrigins;
 
     /**
-     * Get the allowedOrigins value.
+     * Get gets or sets the list of origins that should be allowed to make cross-origin
+     calls (for example: http://example.com:12345). Use "*" to allow all.
      *
      * @return the allowedOrigins value
      */
@@ -33,7 +34,8 @@ public class CorsSettings {
     }
 
     /**
-     * Set the allowedOrigins value.
+     * Set gets or sets the list of origins that should be allowed to make cross-origin
+     calls (for example: http://example.com:12345). Use "*" to allow all.
      *
      * @param allowedOrigins the allowedOrigins value to set
      * @return the CorsSettings object itself.

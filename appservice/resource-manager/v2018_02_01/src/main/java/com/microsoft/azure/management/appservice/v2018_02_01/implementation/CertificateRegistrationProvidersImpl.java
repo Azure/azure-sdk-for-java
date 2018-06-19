@@ -37,7 +37,8 @@ class CertificateRegistrationProvidersImpl extends WrapperImpl<CertificateRegist
             public Iterable<CsmOperationDescriptionInner> call(Page<CsmOperationDescriptionInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<CsmOperationDescriptionInner, CsmOperationDescription>() {
+        })
+        .map(new Func1<CsmOperationDescriptionInner, CsmOperationDescription>() {
             @Override
             public CsmOperationDescription call(CsmOperationDescriptionInner inner) {
                 return new CsmOperationDescriptionImpl(inner, manager());
