@@ -106,7 +106,7 @@ public class EdifactEnvelopeOverride {
     private String applicationPassword;
 
     /**
-     * Get the messageId value.
+     * Get the message id on which this envelope settings has to be applied.
      *
      * @return the messageId value
      */
@@ -115,7 +115,7 @@ public class EdifactEnvelopeOverride {
     }
 
     /**
-     * Set the messageId value.
+     * Set the message id on which this envelope settings has to be applied.
      *
      * @param messageId the messageId value to set
      * @return the EdifactEnvelopeOverride object itself.
@@ -126,7 +126,7 @@ public class EdifactEnvelopeOverride {
     }
 
     /**
-     * Get the messageVersion value.
+     * Get the message version on which this envelope settings has to be applied.
      *
      * @return the messageVersion value
      */
@@ -135,7 +135,7 @@ public class EdifactEnvelopeOverride {
     }
 
     /**
-     * Set the messageVersion value.
+     * Set the message version on which this envelope settings has to be applied.
      *
      * @param messageVersion the messageVersion value to set
      * @return the EdifactEnvelopeOverride object itself.
@@ -146,7 +146,7 @@ public class EdifactEnvelopeOverride {
     }
 
     /**
-     * Get the messageRelease value.
+     * Get the message release version on which this envelope settings has to be applied.
      *
      * @return the messageRelease value
      */
@@ -155,7 +155,7 @@ public class EdifactEnvelopeOverride {
     }
 
     /**
-     * Set the messageRelease value.
+     * Set the message release version on which this envelope settings has to be applied.
      *
      * @param messageRelease the messageRelease value to set
      * @return the EdifactEnvelopeOverride object itself.
@@ -166,7 +166,7 @@ public class EdifactEnvelopeOverride {
     }
 
     /**
-     * Get the messageAssociationAssignedCode value.
+     * Get the message association assigned code.
      *
      * @return the messageAssociationAssignedCode value
      */
@@ -175,7 +175,7 @@ public class EdifactEnvelopeOverride {
     }
 
     /**
-     * Set the messageAssociationAssignedCode value.
+     * Set the message association assigned code.
      *
      * @param messageAssociationAssignedCode the messageAssociationAssignedCode value to set
      * @return the EdifactEnvelopeOverride object itself.
@@ -186,7 +186,7 @@ public class EdifactEnvelopeOverride {
     }
 
     /**
-     * Get the targetNamespace value.
+     * Get the target namespace on which this envelope settings has to be applied.
      *
      * @return the targetNamespace value
      */
@@ -195,7 +195,7 @@ public class EdifactEnvelopeOverride {
     }
 
     /**
-     * Set the targetNamespace value.
+     * Set the target namespace on which this envelope settings has to be applied.
      *
      * @param targetNamespace the targetNamespace value to set
      * @return the EdifactEnvelopeOverride object itself.
@@ -206,7 +206,7 @@ public class EdifactEnvelopeOverride {
     }
 
     /**
-     * Get the functionalGroupId value.
+     * Get the functional group id.
      *
      * @return the functionalGroupId value
      */
@@ -215,7 +215,7 @@ public class EdifactEnvelopeOverride {
     }
 
     /**
-     * Set the functionalGroupId value.
+     * Set the functional group id.
      *
      * @param functionalGroupId the functionalGroupId value to set
      * @return the EdifactEnvelopeOverride object itself.
@@ -226,7 +226,7 @@ public class EdifactEnvelopeOverride {
     }
 
     /**
-     * Get the senderApplicationQualifier value.
+     * Get the sender application qualifier.
      *
      * @return the senderApplicationQualifier value
      */
@@ -235,7 +235,7 @@ public class EdifactEnvelopeOverride {
     }
 
     /**
-     * Set the senderApplicationQualifier value.
+     * Set the sender application qualifier.
      *
      * @param senderApplicationQualifier the senderApplicationQualifier value to set
      * @return the EdifactEnvelopeOverride object itself.
@@ -246,7 +246,7 @@ public class EdifactEnvelopeOverride {
     }
 
     /**
-     * Get the senderApplicationId value.
+     * Get the sender application id.
      *
      * @return the senderApplicationId value
      */
@@ -255,7 +255,7 @@ public class EdifactEnvelopeOverride {
     }
 
     /**
-     * Set the senderApplicationId value.
+     * Set the sender application id.
      *
      * @param senderApplicationId the senderApplicationId value to set
      * @return the EdifactEnvelopeOverride object itself.
@@ -266,7 +266,7 @@ public class EdifactEnvelopeOverride {
     }
 
     /**
-     * Get the receiverApplicationQualifier value.
+     * Get the receiver application qualifier.
      *
      * @return the receiverApplicationQualifier value
      */
@@ -275,7 +275,7 @@ public class EdifactEnvelopeOverride {
     }
 
     /**
-     * Set the receiverApplicationQualifier value.
+     * Set the receiver application qualifier.
      *
      * @param receiverApplicationQualifier the receiverApplicationQualifier value to set
      * @return the EdifactEnvelopeOverride object itself.
@@ -286,7 +286,7 @@ public class EdifactEnvelopeOverride {
     }
 
     /**
-     * Get the receiverApplicationId value.
+     * Get the receiver application id.
      *
      * @return the receiverApplicationId value
      */
@@ -295,7 +295,7 @@ public class EdifactEnvelopeOverride {
     }
 
     /**
-     * Set the receiverApplicationId value.
+     * Set the receiver application id.
      *
      * @param receiverApplicationId the receiverApplicationId value to set
      * @return the EdifactEnvelopeOverride object itself.
@@ -306,7 +306,7 @@ public class EdifactEnvelopeOverride {
     }
 
     /**
-     * Get the controllingAgencyCode value.
+     * Get the controlling agency code.
      *
      * @return the controllingAgencyCode value
      */
@@ -315,7 +315,7 @@ public class EdifactEnvelopeOverride {
     }
 
     /**
-     * Set the controllingAgencyCode value.
+     * Set the controlling agency code.
      *
      * @param controllingAgencyCode the controllingAgencyCode value to set
      * @return the EdifactEnvelopeOverride object itself.
@@ -326,7 +326,7 @@ public class EdifactEnvelopeOverride {
     }
 
     /**
-     * Get the groupHeaderMessageVersion value.
+     * Get the group header message version.
      *
      * @return the groupHeaderMessageVersion value
      */
@@ -335,7 +335,7 @@ public class EdifactEnvelopeOverride {
     }
 
     /**
-     * Set the groupHeaderMessageVersion value.
+     * Set the group header message version.
      *
      * @param groupHeaderMessageVersion the groupHeaderMessageVersion value to set
      * @return the EdifactEnvelopeOverride object itself.
@@ -346,7 +346,7 @@ public class EdifactEnvelopeOverride {
     }
 
     /**
-     * Get the groupHeaderMessageRelease value.
+     * Get the group header message release.
      *
      * @return the groupHeaderMessageRelease value
      */
@@ -355,7 +355,7 @@ public class EdifactEnvelopeOverride {
     }
 
     /**
-     * Set the groupHeaderMessageRelease value.
+     * Set the group header message release.
      *
      * @param groupHeaderMessageRelease the groupHeaderMessageRelease value to set
      * @return the EdifactEnvelopeOverride object itself.
@@ -366,7 +366,7 @@ public class EdifactEnvelopeOverride {
     }
 
     /**
-     * Get the associationAssignedCode value.
+     * Get the association assigned code.
      *
      * @return the associationAssignedCode value
      */
@@ -375,7 +375,7 @@ public class EdifactEnvelopeOverride {
     }
 
     /**
-     * Set the associationAssignedCode value.
+     * Set the association assigned code.
      *
      * @param associationAssignedCode the associationAssignedCode value to set
      * @return the EdifactEnvelopeOverride object itself.
@@ -386,7 +386,7 @@ public class EdifactEnvelopeOverride {
     }
 
     /**
-     * Get the applicationPassword value.
+     * Get the application password.
      *
      * @return the applicationPassword value
      */
@@ -395,7 +395,7 @@ public class EdifactEnvelopeOverride {
     }
 
     /**
-     * Set the applicationPassword value.
+     * Set the application password.
      *
      * @param applicationPassword the applicationPassword value to set
      * @return the EdifactEnvelopeOverride object itself.

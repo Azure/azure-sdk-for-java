@@ -14,6 +14,7 @@ import rx.Observable;
 import com.microsoft.azure.management.logic.v2016_06_01.Correlation;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.logic.v2016_06_01.ContentLink;
+import com.microsoft.azure.management.logic.v2016_06_01.ResourceReference;
 import com.microsoft.azure.management.logic.v2016_06_01.WorkflowStatus;
 
 class WorkflowTriggerHistoryImpl extends IndexableRefreshableWrapperImpl<WorkflowTriggerHistory, WorkflowTriggerHistoryInner> implements WorkflowTriggerHistory {
@@ -91,7 +92,7 @@ class WorkflowTriggerHistoryImpl extends IndexableRefreshableWrapperImpl<Workflo
     }
 
     @Override
-    public ResourceReferenceInner run() {
+    public ResourceReference run() {
         return this.inner().run();
     }
 

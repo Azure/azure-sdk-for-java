@@ -27,7 +27,7 @@ public class ContentHash {
     private String value;
 
     /**
-     * Get the algorithm value.
+     * Get the algorithm of the content hash.
      *
      * @return the algorithm value
      */
@@ -36,7 +36,7 @@ public class ContentHash {
     }
 
     /**
-     * Set the algorithm value.
+     * Set the algorithm of the content hash.
      *
      * @param algorithm the algorithm value to set
      * @return the ContentHash object itself.
@@ -47,7 +47,7 @@ public class ContentHash {
     }
 
     /**
-     * Get the value value.
+     * Get the value of the content hash.
      *
      * @return the value value
      */
@@ -56,7 +56,7 @@ public class ContentHash {
     }
 
     /**
-     * Set the value value.
+     * Set the value of the content hash.
      *
      * @param value the value value to set
      * @return the ContentHash object itself.

@@ -21,7 +21,7 @@ public class ErrorInfo {
     private String code;
 
     /**
-     * Get the code value.
+     * Get the error code.
      *
      * @return the code value
      */
@@ -30,7 +30,7 @@ public class ErrorInfo {
     }
 
     /**
-     * Set the code value.
+     * Set the error code.
      *
      * @param code the code value to set
      * @return the ErrorInfo object itself.

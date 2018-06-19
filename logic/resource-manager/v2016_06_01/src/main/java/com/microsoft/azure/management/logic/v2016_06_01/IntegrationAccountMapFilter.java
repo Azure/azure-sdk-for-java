@@ -22,7 +22,7 @@ public class IntegrationAccountMapFilter {
     private MapType mapType;
 
     /**
-     * Get the mapType value.
+     * Get the map type of integration account map. Possible values include: 'NotSpecified', 'Xslt'.
      *
      * @return the mapType value
      */
@@ -31,7 +31,7 @@ public class IntegrationAccountMapFilter {
     }
 
     /**
-     * Set the mapType value.
+     * Set the map type of integration account map. Possible values include: 'NotSpecified', 'Xslt'.
      *
      * @param mapType the mapType value to set
      * @return the IntegrationAccountMapFilter object itself.

@@ -33,7 +33,7 @@ public class KeyVaultKeyAttributes {
     private Long updated;
 
     /**
-     * Get the enabled value.
+     * Get whether the key is enabled or not.
      *
      * @return the enabled value
      */
@@ -42,7 +42,7 @@ public class KeyVaultKeyAttributes {
     }
 
     /**
-     * Set the enabled value.
+     * Set whether the key is enabled or not.
      *
      * @param enabled the enabled value to set
      * @return the KeyVaultKeyAttributes object itself.
@@ -53,7 +53,7 @@ public class KeyVaultKeyAttributes {
     }
 
     /**
-     * Get the created value.
+     * Get when the key was created.
      *
      * @return the created value
      */
@@ -62,7 +62,7 @@ public class KeyVaultKeyAttributes {
     }
 
     /**
-     * Set the created value.
+     * Set when the key was created.
      *
      * @param created the created value to set
      * @return the KeyVaultKeyAttributes object itself.
@@ -73,7 +73,7 @@ public class KeyVaultKeyAttributes {
     }
 
     /**
-     * Get the updated value.
+     * Get when the key was updated.
      *
      * @return the updated value
      */
@@ -82,7 +82,7 @@ public class KeyVaultKeyAttributes {
     }
 
     /**
-     * Set the updated value.
+     * Set when the key was updated.
      *
      * @param updated the updated value to set
      * @return the KeyVaultKeyAttributes object itself.

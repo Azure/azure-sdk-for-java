@@ -21,7 +21,7 @@ public class WorkflowOutputParameter extends WorkflowParameter {
     private Object error;
 
     /**
-     * Get the error value.
+     * Get gets the error.
      *
      * @return the error value
      */

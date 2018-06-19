@@ -164,7 +164,7 @@ public class X12EnvelopeSettings {
     private UsageIndicator usageIndicator;
 
     /**
-     * Get the controlStandardsId value.
+     * Get the controls standards id.
      *
      * @return the controlStandardsId value
      */
@@ -173,7 +173,7 @@ public class X12EnvelopeSettings {
     }
 
     /**
-     * Set the controlStandardsId value.
+     * Set the controls standards id.
      *
      * @param controlStandardsId the controlStandardsId value to set
      * @return the X12EnvelopeSettings object itself.
@@ -184,7 +184,7 @@ public class X12EnvelopeSettings {
     }
 
     /**
-     * Get the useControlStandardsIdAsRepetitionCharacter value.
+     * Get the value indicating whether to use control standards id as repetition character.
      *
      * @return the useControlStandardsIdAsRepetitionCharacter value
      */
@@ -193,7 +193,7 @@ public class X12EnvelopeSettings {
     }
 
     /**
-     * Set the useControlStandardsIdAsRepetitionCharacter value.
+     * Set the value indicating whether to use control standards id as repetition character.
      *
      * @param useControlStandardsIdAsRepetitionCharacter the useControlStandardsIdAsRepetitionCharacter value to set
      * @return the X12EnvelopeSettings object itself.
@@ -204,7 +204,7 @@ public class X12EnvelopeSettings {
     }
 
     /**
-     * Get the senderApplicationId value.
+     * Get the sender application id.
      *
      * @return the senderApplicationId value
      */
@@ -213,7 +213,7 @@ public class X12EnvelopeSettings {
     }
 
     /**
-     * Set the senderApplicationId value.
+     * Set the sender application id.
      *
      * @param senderApplicationId the senderApplicationId value to set
      * @return the X12EnvelopeSettings object itself.
@@ -224,7 +224,7 @@ public class X12EnvelopeSettings {
     }
 
     /**
-     * Get the receiverApplicationId value.
+     * Get the receiver application id.
      *
      * @return the receiverApplicationId value
      */
@@ -233,7 +233,7 @@ public class X12EnvelopeSettings {
     }
 
     /**
-     * Set the receiverApplicationId value.
+     * Set the receiver application id.
      *
      * @param receiverApplicationId the receiverApplicationId value to set
      * @return the X12EnvelopeSettings object itself.
@@ -244,7 +244,7 @@ public class X12EnvelopeSettings {
     }
 
     /**
-     * Get the controlVersionNumber value.
+     * Get the control version number.
      *
      * @return the controlVersionNumber value
      */
@@ -253,7 +253,7 @@ public class X12EnvelopeSettings {
     }
 
     /**
-     * Set the controlVersionNumber value.
+     * Set the control version number.
      *
      * @param controlVersionNumber the controlVersionNumber value to set
      * @return the X12EnvelopeSettings object itself.
@@ -264,7 +264,7 @@ public class X12EnvelopeSettings {
     }
 
     /**
-     * Get the interchangeControlNumberLowerBound value.
+     * Get the interchange  control number lower bound.
      *
      * @return the interchangeControlNumberLowerBound value
      */
@@ -273,7 +273,7 @@ public class X12EnvelopeSettings {
     }
 
     /**
-     * Set the interchangeControlNumberLowerBound value.
+     * Set the interchange  control number lower bound.
      *
      * @param interchangeControlNumberLowerBound the interchangeControlNumberLowerBound value to set
      * @return the X12EnvelopeSettings object itself.
@@ -284,7 +284,7 @@ public class X12EnvelopeSettings {
     }
 
     /**
-     * Get the interchangeControlNumberUpperBound value.
+     * Get the interchange  control number upper bound.
      *
      * @return the interchangeControlNumberUpperBound value
      */
@@ -293,7 +293,7 @@ public class X12EnvelopeSettings {
     }
 
     /**
-     * Set the interchangeControlNumberUpperBound value.
+     * Set the interchange  control number upper bound.
      *
      * @param interchangeControlNumberUpperBound the interchangeControlNumberUpperBound value to set
      * @return the X12EnvelopeSettings object itself.
@@ -304,7 +304,7 @@ public class X12EnvelopeSettings {
     }
 
     /**
-     * Get the rolloverInterchangeControlNumber value.
+     * Get the value indicating whether to rollover interchange control number.
      *
      * @return the rolloverInterchangeControlNumber value
      */
@@ -313,7 +313,7 @@ public class X12EnvelopeSettings {
     }
 
     /**
-     * Set the rolloverInterchangeControlNumber value.
+     * Set the value indicating whether to rollover interchange control number.
      *
      * @param rolloverInterchangeControlNumber the rolloverInterchangeControlNumber value to set
      * @return the X12EnvelopeSettings object itself.
@@ -324,7 +324,7 @@ public class X12EnvelopeSettings {
     }
 
     /**
-     * Get the enableDefaultGroupHeaders value.
+     * Get the value indicating whether to enable default group headers.
      *
      * @return the enableDefaultGroupHeaders value
      */
@@ -333,7 +333,7 @@ public class X12EnvelopeSettings {
     }
 
     /**
-     * Set the enableDefaultGroupHeaders value.
+     * Set the value indicating whether to enable default group headers.
      *
      * @param enableDefaultGroupHeaders the enableDefaultGroupHeaders value to set
      * @return the X12EnvelopeSettings object itself.
@@ -344,7 +344,7 @@ public class X12EnvelopeSettings {
     }
 
     /**
-     * Get the functionalGroupId value.
+     * Get the functional group id.
      *
      * @return the functionalGroupId value
      */
@@ -353,7 +353,7 @@ public class X12EnvelopeSettings {
     }
 
     /**
-     * Set the functionalGroupId value.
+     * Set the functional group id.
      *
      * @param functionalGroupId the functionalGroupId value to set
      * @return the X12EnvelopeSettings object itself.
@@ -364,7 +364,7 @@ public class X12EnvelopeSettings {
     }
 
     /**
-     * Get the groupControlNumberLowerBound value.
+     * Get the group control number lower bound.
      *
      * @return the groupControlNumberLowerBound value
      */
@@ -373,7 +373,7 @@ public class X12EnvelopeSettings {
     }
 
     /**
-     * Set the groupControlNumberLowerBound value.
+     * Set the group control number lower bound.
      *
      * @param groupControlNumberLowerBound the groupControlNumberLowerBound value to set
      * @return the X12EnvelopeSettings object itself.
@@ -384,7 +384,7 @@ public class X12EnvelopeSettings {
     }
 
     /**
-     * Get the groupControlNumberUpperBound value.
+     * Get the group control number upper bound.
      *
      * @return the groupControlNumberUpperBound value
      */
@@ -393,7 +393,7 @@ public class X12EnvelopeSettings {
     }
 
     /**
-     * Set the groupControlNumberUpperBound value.
+     * Set the group control number upper bound.
      *
      * @param groupControlNumberUpperBound the groupControlNumberUpperBound value to set
      * @return the X12EnvelopeSettings object itself.
@@ -404,7 +404,7 @@ public class X12EnvelopeSettings {
     }
 
     /**
-     * Get the rolloverGroupControlNumber value.
+     * Get the value indicating whether to rollover group control number.
      *
      * @return the rolloverGroupControlNumber value
      */
@@ -413,7 +413,7 @@ public class X12EnvelopeSettings {
     }
 
     /**
-     * Set the rolloverGroupControlNumber value.
+     * Set the value indicating whether to rollover group control number.
      *
      * @param rolloverGroupControlNumber the rolloverGroupControlNumber value to set
      * @return the X12EnvelopeSettings object itself.
@@ -424,7 +424,7 @@ public class X12EnvelopeSettings {
     }
 
     /**
-     * Get the groupHeaderAgencyCode value.
+     * Get the group header agency code.
      *
      * @return the groupHeaderAgencyCode value
      */
@@ -433,7 +433,7 @@ public class X12EnvelopeSettings {
     }
 
     /**
-     * Set the groupHeaderAgencyCode value.
+     * Set the group header agency code.
      *
      * @param groupHeaderAgencyCode the groupHeaderAgencyCode value to set
      * @return the X12EnvelopeSettings object itself.
@@ -444,7 +444,7 @@ public class X12EnvelopeSettings {
     }
 
     /**
-     * Get the groupHeaderVersion value.
+     * Get the group header version.
      *
      * @return the groupHeaderVersion value
      */
@@ -453,7 +453,7 @@ public class X12EnvelopeSettings {
     }
 
     /**
-     * Set the groupHeaderVersion value.
+     * Set the group header version.
      *
      * @param groupHeaderVersion the groupHeaderVersion value to set
      * @return the X12EnvelopeSettings object itself.
@@ -464,7 +464,7 @@ public class X12EnvelopeSettings {
     }
 
     /**
-     * Get the transactionSetControlNumberLowerBound value.
+     * Get the transaction set control number lower bound.
      *
      * @return the transactionSetControlNumberLowerBound value
      */
@@ -473,7 +473,7 @@ public class X12EnvelopeSettings {
     }
 
     /**
-     * Set the transactionSetControlNumberLowerBound value.
+     * Set the transaction set control number lower bound.
      *
      * @param transactionSetControlNumberLowerBound the transactionSetControlNumberLowerBound value to set
      * @return the X12EnvelopeSettings object itself.
@@ -484,7 +484,7 @@ public class X12EnvelopeSettings {
     }
 
     /**
-     * Get the transactionSetControlNumberUpperBound value.
+     * Get the transaction set control number upper bound.
      *
      * @return the transactionSetControlNumberUpperBound value
      */
@@ -493,7 +493,7 @@ public class X12EnvelopeSettings {
     }
 
     /**
-     * Set the transactionSetControlNumberUpperBound value.
+     * Set the transaction set control number upper bound.
      *
      * @param transactionSetControlNumberUpperBound the transactionSetControlNumberUpperBound value to set
      * @return the X12EnvelopeSettings object itself.
@@ -504,7 +504,7 @@ public class X12EnvelopeSettings {
     }
 
     /**
-     * Get the rolloverTransactionSetControlNumber value.
+     * Get the value indicating whether to rollover transaction set control number.
      *
      * @return the rolloverTransactionSetControlNumber value
      */
@@ -513,7 +513,7 @@ public class X12EnvelopeSettings {
     }
 
     /**
-     * Set the rolloverTransactionSetControlNumber value.
+     * Set the value indicating whether to rollover transaction set control number.
      *
      * @param rolloverTransactionSetControlNumber the rolloverTransactionSetControlNumber value to set
      * @return the X12EnvelopeSettings object itself.
@@ -524,7 +524,7 @@ public class X12EnvelopeSettings {
     }
 
     /**
-     * Get the transactionSetControlNumberPrefix value.
+     * Get the transaction set control number prefix.
      *
      * @return the transactionSetControlNumberPrefix value
      */
@@ -533,7 +533,7 @@ public class X12EnvelopeSettings {
     }
 
     /**
-     * Set the transactionSetControlNumberPrefix value.
+     * Set the transaction set control number prefix.
      *
      * @param transactionSetControlNumberPrefix the transactionSetControlNumberPrefix value to set
      * @return the X12EnvelopeSettings object itself.
@@ -544,7 +544,7 @@ public class X12EnvelopeSettings {
     }
 
     /**
-     * Get the transactionSetControlNumberSuffix value.
+     * Get the transaction set control number suffix.
      *
      * @return the transactionSetControlNumberSuffix value
      */
@@ -553,7 +553,7 @@ public class X12EnvelopeSettings {
     }
 
     /**
-     * Set the transactionSetControlNumberSuffix value.
+     * Set the transaction set control number suffix.
      *
      * @param transactionSetControlNumberSuffix the transactionSetControlNumberSuffix value to set
      * @return the X12EnvelopeSettings object itself.
@@ -564,7 +564,7 @@ public class X12EnvelopeSettings {
     }
 
     /**
-     * Get the overwriteExistingTransactionSetControlNumber value.
+     * Get the value indicating whether to overwrite existing transaction set control number.
      *
      * @return the overwriteExistingTransactionSetControlNumber value
      */
@@ -573,7 +573,7 @@ public class X12EnvelopeSettings {
     }
 
     /**
-     * Set the overwriteExistingTransactionSetControlNumber value.
+     * Set the value indicating whether to overwrite existing transaction set control number.
      *
      * @param overwriteExistingTransactionSetControlNumber the overwriteExistingTransactionSetControlNumber value to set
      * @return the X12EnvelopeSettings object itself.
@@ -584,7 +584,7 @@ public class X12EnvelopeSettings {
     }
 
     /**
-     * Get the groupHeaderDateFormat value.
+     * Get the group header date format. Possible values include: 'NotSpecified', 'CCYYMMDD', 'YYMMDD'.
      *
      * @return the groupHeaderDateFormat value
      */
@@ -593,7 +593,7 @@ public class X12EnvelopeSettings {
     }
 
     /**
-     * Set the groupHeaderDateFormat value.
+     * Set the group header date format. Possible values include: 'NotSpecified', 'CCYYMMDD', 'YYMMDD'.
      *
      * @param groupHeaderDateFormat the groupHeaderDateFormat value to set
      * @return the X12EnvelopeSettings object itself.
@@ -604,7 +604,7 @@ public class X12EnvelopeSettings {
     }
 
     /**
-     * Get the groupHeaderTimeFormat value.
+     * Get the group header time format. Possible values include: 'NotSpecified', 'HHMM', 'HHMMSS', 'HHMMSSdd', 'HHMMSSd'.
      *
      * @return the groupHeaderTimeFormat value
      */
@@ -613,7 +613,7 @@ public class X12EnvelopeSettings {
     }
 
     /**
-     * Set the groupHeaderTimeFormat value.
+     * Set the group header time format. Possible values include: 'NotSpecified', 'HHMM', 'HHMMSS', 'HHMMSSdd', 'HHMMSSd'.
      *
      * @param groupHeaderTimeFormat the groupHeaderTimeFormat value to set
      * @return the X12EnvelopeSettings object itself.
@@ -624,7 +624,7 @@ public class X12EnvelopeSettings {
     }
 
     /**
-     * Get the usageIndicator value.
+     * Get the usage indicator. Possible values include: 'NotSpecified', 'Test', 'Information', 'Production'.
      *
      * @return the usageIndicator value
      */
@@ -633,7 +633,7 @@ public class X12EnvelopeSettings {
     }
 
     /**
-     * Set the usageIndicator value.
+     * Set the usage indicator. Possible values include: 'NotSpecified', 'Test', 'Information', 'Production'.
      *
      * @param usageIndicator the usageIndicator value to set
      * @return the X12EnvelopeSettings object itself.

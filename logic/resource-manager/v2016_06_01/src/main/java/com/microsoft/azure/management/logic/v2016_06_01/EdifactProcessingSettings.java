@@ -46,7 +46,7 @@ public class EdifactProcessingSettings {
     private boolean useDotAsDecimalSeparator;
 
     /**
-     * Get the maskSecurityInfo value.
+     * Get the value indicating whether to mask security information.
      *
      * @return the maskSecurityInfo value
      */
@@ -55,7 +55,7 @@ public class EdifactProcessingSettings {
     }
 
     /**
-     * Set the maskSecurityInfo value.
+     * Set the value indicating whether to mask security information.
      *
      * @param maskSecurityInfo the maskSecurityInfo value to set
      * @return the EdifactProcessingSettings object itself.
@@ -66,7 +66,7 @@ public class EdifactProcessingSettings {
     }
 
     /**
-     * Get the preserveInterchange value.
+     * Get the value indicating whether to preserve interchange.
      *
      * @return the preserveInterchange value
      */
@@ -75,7 +75,7 @@ public class EdifactProcessingSettings {
     }
 
     /**
-     * Set the preserveInterchange value.
+     * Set the value indicating whether to preserve interchange.
      *
      * @param preserveInterchange the preserveInterchange value to set
      * @return the EdifactProcessingSettings object itself.
@@ -86,7 +86,7 @@ public class EdifactProcessingSettings {
     }
 
     /**
-     * Get the suspendInterchangeOnError value.
+     * Get the value indicating whether to suspend interchange on error.
      *
      * @return the suspendInterchangeOnError value
      */
@@ -95,7 +95,7 @@ public class EdifactProcessingSettings {
     }
 
     /**
-     * Set the suspendInterchangeOnError value.
+     * Set the value indicating whether to suspend interchange on error.
      *
      * @param suspendInterchangeOnError the suspendInterchangeOnError value to set
      * @return the EdifactProcessingSettings object itself.
@@ -106,7 +106,7 @@ public class EdifactProcessingSettings {
     }
 
     /**
-     * Get the createEmptyXmlTagsForTrailingSeparators value.
+     * Get the value indicating whether to create empty xml tags for trailing separators.
      *
      * @return the createEmptyXmlTagsForTrailingSeparators value
      */
@@ -115,7 +115,7 @@ public class EdifactProcessingSettings {
     }
 
     /**
-     * Set the createEmptyXmlTagsForTrailingSeparators value.
+     * Set the value indicating whether to create empty xml tags for trailing separators.
      *
      * @param createEmptyXmlTagsForTrailingSeparators the createEmptyXmlTagsForTrailingSeparators value to set
      * @return the EdifactProcessingSettings object itself.
@@ -126,7 +126,7 @@ public class EdifactProcessingSettings {
     }
 
     /**
-     * Get the useDotAsDecimalSeparator value.
+     * Get the value indicating whether to use dot as decimal separator.
      *
      * @return the useDotAsDecimalSeparator value
      */
@@ -135,7 +135,7 @@ public class EdifactProcessingSettings {
     }
 
     /**
-     * Set the useDotAsDecimalSeparator value.
+     * Set the value indicating whether to use dot as decimal separator.
      *
      * @param useDotAsDecimalSeparator the useDotAsDecimalSeparator value to set
      * @return the EdifactProcessingSettings object itself.

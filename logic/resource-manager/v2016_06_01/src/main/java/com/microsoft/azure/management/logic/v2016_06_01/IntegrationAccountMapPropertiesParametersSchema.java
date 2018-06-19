@@ -21,7 +21,7 @@ public class IntegrationAccountMapPropertiesParametersSchema {
     private String ref;
 
     /**
-     * Get the ref value.
+     * Get the reference name.
      *
      * @return the ref value
      */
@@ -30,7 +30,7 @@ public class IntegrationAccountMapPropertiesParametersSchema {
     }
 
     /**
-     * Set the ref value.
+     * Set the reference name.
      *
      * @param ref the ref value to set
      * @return the IntegrationAccountMapPropertiesParametersSchema object itself.

@@ -39,7 +39,7 @@ public class IntegrationAccountSessionInner extends Resource {
     private Object content;
 
     /**
-     * Get the createdTime value.
+     * Get the created time.
      *
      * @return the createdTime value
      */
@@ -48,7 +48,7 @@ public class IntegrationAccountSessionInner extends Resource {
     }
 
     /**
-     * Get the changedTime value.
+     * Get the changed time.
      *
      * @return the changedTime value
      */
@@ -57,7 +57,7 @@ public class IntegrationAccountSessionInner extends Resource {
     }
 
     /**
-     * Get the content value.
+     * Get the session content.
      *
      * @return the content value
      */
@@ -66,7 +66,7 @@ public class IntegrationAccountSessionInner extends Resource {
     }
 
     /**
-     * Set the content value.
+     * Set the session content.
      *
      * @param content the content value to set
      * @return the IntegrationAccountSessionInner object itself.

@@ -80,7 +80,7 @@ public class AS2ValidationSettings {
     private SigningAlgorithm signingAlgorithm;
 
     /**
-     * Get the overrideMessageProperties value.
+     * Get the value indicating whether to override incoming message properties with those in agreement.
      *
      * @return the overrideMessageProperties value
      */
@@ -89,7 +89,7 @@ public class AS2ValidationSettings {
     }
 
     /**
-     * Set the overrideMessageProperties value.
+     * Set the value indicating whether to override incoming message properties with those in agreement.
      *
      * @param overrideMessageProperties the overrideMessageProperties value to set
      * @return the AS2ValidationSettings object itself.
@@ -100,7 +100,7 @@ public class AS2ValidationSettings {
     }
 
     /**
-     * Get the encryptMessage value.
+     * Get the value indicating whether the message has to be encrypted.
      *
      * @return the encryptMessage value
      */
@@ -109,7 +109,7 @@ public class AS2ValidationSettings {
     }
 
     /**
-     * Set the encryptMessage value.
+     * Set the value indicating whether the message has to be encrypted.
      *
      * @param encryptMessage the encryptMessage value to set
      * @return the AS2ValidationSettings object itself.
@@ -120,7 +120,7 @@ public class AS2ValidationSettings {
     }
 
     /**
-     * Get the signMessage value.
+     * Get the value indicating whether the message has to be signed.
      *
      * @return the signMessage value
      */
@@ -129,7 +129,7 @@ public class AS2ValidationSettings {
     }
 
     /**
-     * Set the signMessage value.
+     * Set the value indicating whether the message has to be signed.
      *
      * @param signMessage the signMessage value to set
      * @return the AS2ValidationSettings object itself.
@@ -140,7 +140,7 @@ public class AS2ValidationSettings {
     }
 
     /**
-     * Get the compressMessage value.
+     * Get the value indicating whether the message has to be compressed.
      *
      * @return the compressMessage value
      */
@@ -149,7 +149,7 @@ public class AS2ValidationSettings {
     }
 
     /**
-     * Set the compressMessage value.
+     * Set the value indicating whether the message has to be compressed.
      *
      * @param compressMessage the compressMessage value to set
      * @return the AS2ValidationSettings object itself.
@@ -160,7 +160,7 @@ public class AS2ValidationSettings {
     }
 
     /**
-     * Get the checkDuplicateMessage value.
+     * Get the value indicating whether to check for duplicate message.
      *
      * @return the checkDuplicateMessage value
      */
@@ -169,7 +169,7 @@ public class AS2ValidationSettings {
     }
 
     /**
-     * Set the checkDuplicateMessage value.
+     * Set the value indicating whether to check for duplicate message.
      *
      * @param checkDuplicateMessage the checkDuplicateMessage value to set
      * @return the AS2ValidationSettings object itself.
@@ -180,7 +180,7 @@ public class AS2ValidationSettings {
     }
 
     /**
-     * Get the interchangeDuplicatesValidityDays value.
+     * Get the number of days to look back for duplicate interchange.
      *
      * @return the interchangeDuplicatesValidityDays value
      */
@@ -189,7 +189,7 @@ public class AS2ValidationSettings {
     }
 
     /**
-     * Set the interchangeDuplicatesValidityDays value.
+     * Set the number of days to look back for duplicate interchange.
      *
      * @param interchangeDuplicatesValidityDays the interchangeDuplicatesValidityDays value to set
      * @return the AS2ValidationSettings object itself.
@@ -200,7 +200,7 @@ public class AS2ValidationSettings {
     }
 
     /**
-     * Get the checkCertificateRevocationListOnSend value.
+     * Get the value indicating whether to check for certificate revocation list on send.
      *
      * @return the checkCertificateRevocationListOnSend value
      */
@@ -209,7 +209,7 @@ public class AS2ValidationSettings {
     }
 
     /**
-     * Set the checkCertificateRevocationListOnSend value.
+     * Set the value indicating whether to check for certificate revocation list on send.
      *
      * @param checkCertificateRevocationListOnSend the checkCertificateRevocationListOnSend value to set
      * @return the AS2ValidationSettings object itself.
@@ -220,7 +220,7 @@ public class AS2ValidationSettings {
     }
 
     /**
-     * Get the checkCertificateRevocationListOnReceive value.
+     * Get the value indicating whether to check for certificate revocation list on receive.
      *
      * @return the checkCertificateRevocationListOnReceive value
      */
@@ -229,7 +229,7 @@ public class AS2ValidationSettings {
     }
 
     /**
-     * Set the checkCertificateRevocationListOnReceive value.
+     * Set the value indicating whether to check for certificate revocation list on receive.
      *
      * @param checkCertificateRevocationListOnReceive the checkCertificateRevocationListOnReceive value to set
      * @return the AS2ValidationSettings object itself.
@@ -240,7 +240,7 @@ public class AS2ValidationSettings {
     }
 
     /**
-     * Get the encryptionAlgorithm value.
+     * Get the encryption algorithm. Possible values include: 'NotSpecified', 'None', 'DES3', 'RC2', 'AES128', 'AES192', 'AES256'.
      *
      * @return the encryptionAlgorithm value
      */
@@ -249,7 +249,7 @@ public class AS2ValidationSettings {
     }
 
     /**
-     * Set the encryptionAlgorithm value.
+     * Set the encryption algorithm. Possible values include: 'NotSpecified', 'None', 'DES3', 'RC2', 'AES128', 'AES192', 'AES256'.
      *
      * @param encryptionAlgorithm the encryptionAlgorithm value to set
      * @return the AS2ValidationSettings object itself.
@@ -260,7 +260,7 @@ public class AS2ValidationSettings {
     }
 
     /**
-     * Get the signingAlgorithm value.
+     * Get the signing algorithm. Possible values include: 'NotSpecified', 'Default', 'SHA1', 'SHA2256', 'SHA2384', 'SHA2512'.
      *
      * @return the signingAlgorithm value
      */
@@ -269,7 +269,7 @@ public class AS2ValidationSettings {
     }
 
     /**
-     * Set the signingAlgorithm value.
+     * Set the signing algorithm. Possible values include: 'NotSpecified', 'Default', 'SHA1', 'SHA2256', 'SHA2384', 'SHA2512'.
      *
      * @param signingAlgorithm the signingAlgorithm value to set
      * @return the AS2ValidationSettings object itself.

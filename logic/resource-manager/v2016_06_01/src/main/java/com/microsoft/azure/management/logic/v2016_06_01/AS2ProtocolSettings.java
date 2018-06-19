@@ -57,7 +57,7 @@ public class AS2ProtocolSettings {
     private AS2ErrorSettings errorSettings;
 
     /**
-     * Get the messageConnectionSettings value.
+     * Get the message connection settings.
      *
      * @return the messageConnectionSettings value
      */
@@ -66,7 +66,7 @@ public class AS2ProtocolSettings {
     }
 
     /**
-     * Set the messageConnectionSettings value.
+     * Set the message connection settings.
      *
      * @param messageConnectionSettings the messageConnectionSettings value to set
      * @return the AS2ProtocolSettings object itself.
@@ -77,7 +77,7 @@ public class AS2ProtocolSettings {
     }
 
     /**
-     * Get the acknowledgementConnectionSettings value.
+     * Get the acknowledgement connection settings.
      *
      * @return the acknowledgementConnectionSettings value
      */
@@ -86,7 +86,7 @@ public class AS2ProtocolSettings {
     }
 
     /**
-     * Set the acknowledgementConnectionSettings value.
+     * Set the acknowledgement connection settings.
      *
      * @param acknowledgementConnectionSettings the acknowledgementConnectionSettings value to set
      * @return the AS2ProtocolSettings object itself.
@@ -97,7 +97,7 @@ public class AS2ProtocolSettings {
     }
 
     /**
-     * Get the mdnSettings value.
+     * Get the MDN settings.
      *
      * @return the mdnSettings value
      */
@@ -106,7 +106,7 @@ public class AS2ProtocolSettings {
     }
 
     /**
-     * Set the mdnSettings value.
+     * Set the MDN settings.
      *
      * @param mdnSettings the mdnSettings value to set
      * @return the AS2ProtocolSettings object itself.
@@ -117,7 +117,7 @@ public class AS2ProtocolSettings {
     }
 
     /**
-     * Get the securitySettings value.
+     * Get the security settings.
      *
      * @return the securitySettings value
      */
@@ -126,7 +126,7 @@ public class AS2ProtocolSettings {
     }
 
     /**
-     * Set the securitySettings value.
+     * Set the security settings.
      *
      * @param securitySettings the securitySettings value to set
      * @return the AS2ProtocolSettings object itself.
@@ -137,7 +137,7 @@ public class AS2ProtocolSettings {
     }
 
     /**
-     * Get the validationSettings value.
+     * Get the validation settings.
      *
      * @return the validationSettings value
      */
@@ -146,7 +146,7 @@ public class AS2ProtocolSettings {
     }
 
     /**
-     * Set the validationSettings value.
+     * Set the validation settings.
      *
      * @param validationSettings the validationSettings value to set
      * @return the AS2ProtocolSettings object itself.
@@ -157,7 +157,7 @@ public class AS2ProtocolSettings {
     }
 
     /**
-     * Get the envelopeSettings value.
+     * Get the envelope settings.
      *
      * @return the envelopeSettings value
      */
@@ -166,7 +166,7 @@ public class AS2ProtocolSettings {
     }
 
     /**
-     * Set the envelopeSettings value.
+     * Set the envelope settings.
      *
      * @param envelopeSettings the envelopeSettings value to set
      * @return the AS2ProtocolSettings object itself.
@@ -177,7 +177,7 @@ public class AS2ProtocolSettings {
     }
 
     /**
-     * Get the errorSettings value.
+     * Get the error settings.
      *
      * @return the errorSettings value
      */
@@ -186,7 +186,7 @@ public class AS2ProtocolSettings {
     }
 
     /**
-     * Set the errorSettings value.
+     * Set the error settings.
      *
      * @param errorSettings the errorSettings value to set
      * @return the AS2ProtocolSettings object itself.

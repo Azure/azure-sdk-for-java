@@ -104,7 +104,7 @@ public class WorkflowRunActionInner extends SubResource {
     private String type;
 
     /**
-     * Get the startTime value.
+     * Get gets the start time.
      *
      * @return the startTime value
      */
@@ -113,7 +113,7 @@ public class WorkflowRunActionInner extends SubResource {
     }
 
     /**
-     * Get the endTime value.
+     * Get gets the end time.
      *
      * @return the endTime value
      */
@@ -122,7 +122,7 @@ public class WorkflowRunActionInner extends SubResource {
     }
 
     /**
-     * Get the status value.
+     * Get gets the status. Possible values include: 'NotSpecified', 'Paused', 'Running', 'Waiting', 'Succeeded', 'Skipped', 'Suspended', 'Cancelled', 'Failed', 'Faulted', 'TimedOut', 'Aborted', 'Ignored'.
      *
      * @return the status value
      */
@@ -131,7 +131,7 @@ public class WorkflowRunActionInner extends SubResource {
     }
 
     /**
-     * Get the code value.
+     * Get gets the code.
      *
      * @return the code value
      */
@@ -140,7 +140,7 @@ public class WorkflowRunActionInner extends SubResource {
     }
 
     /**
-     * Get the error value.
+     * Get gets the error.
      *
      * @return the error value
      */
@@ -149,7 +149,7 @@ public class WorkflowRunActionInner extends SubResource {
     }
 
     /**
-     * Get the trackingId value.
+     * Get gets the tracking id.
      *
      * @return the trackingId value
      */
@@ -158,7 +158,7 @@ public class WorkflowRunActionInner extends SubResource {
     }
 
     /**
-     * Get the correlation value.
+     * Get the correlation properties.
      *
      * @return the correlation value
      */
@@ -167,7 +167,7 @@ public class WorkflowRunActionInner extends SubResource {
     }
 
     /**
-     * Set the correlation value.
+     * Set the correlation properties.
      *
      * @param correlation the correlation value to set
      * @return the WorkflowRunActionInner object itself.
@@ -178,7 +178,7 @@ public class WorkflowRunActionInner extends SubResource {
     }
 
     /**
-     * Get the inputsLink value.
+     * Get gets the link to inputs.
      *
      * @return the inputsLink value
      */
@@ -187,7 +187,7 @@ public class WorkflowRunActionInner extends SubResource {
     }
 
     /**
-     * Get the outputsLink value.
+     * Get gets the link to outputs.
      *
      * @return the outputsLink value
      */
@@ -196,7 +196,7 @@ public class WorkflowRunActionInner extends SubResource {
     }
 
     /**
-     * Get the trackedProperties value.
+     * Get gets the tracked properties.
      *
      * @return the trackedProperties value
      */
@@ -205,7 +205,7 @@ public class WorkflowRunActionInner extends SubResource {
     }
 
     /**
-     * Get the retryHistory value.
+     * Get gets the retry histories.
      *
      * @return the retryHistory value
      */
@@ -214,7 +214,7 @@ public class WorkflowRunActionInner extends SubResource {
     }
 
     /**
-     * Set the retryHistory value.
+     * Set gets the retry histories.
      *
      * @param retryHistory the retryHistory value to set
      * @return the WorkflowRunActionInner object itself.
@@ -225,7 +225,7 @@ public class WorkflowRunActionInner extends SubResource {
     }
 
     /**
-     * Get the name value.
+     * Get gets the workflow run action name.
      *
      * @return the name value
      */
@@ -234,7 +234,7 @@ public class WorkflowRunActionInner extends SubResource {
     }
 
     /**
-     * Get the type value.
+     * Get gets the workflow run action type.
      *
      * @return the type value
      */

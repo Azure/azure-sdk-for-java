@@ -52,41 +52,22 @@ class WorkflowRunActionsImpl extends WrapperImpl<WorkflowRunActionsInner> implem
         });
     }
 
-    private Observable<Page<WorkflowRunActionInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        WorkflowRunActionsInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<WorkflowRunActionInner>, Observable<Page<WorkflowRunActionInner>>>() {
-            @Override
-            public Observable<Page<WorkflowRunActionInner>> call(Page<WorkflowRunActionInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<WorkflowRunAction> listAsync(final String resourceGroupName, final String workflowName, final String runName) {
         WorkflowRunActionsInner client = this.inner();
         return client.listAsync(resourceGroupName, workflowName, runName)
-        .flatMap(new Func1<Page<WorkflowRunActionInner>, Observable<Page<WorkflowRunActionInner>>>() {
-            @Override
-            public Observable<Page<WorkflowRunActionInner>> call(Page<WorkflowRunActionInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<WorkflowRunActionInner>, Iterable<WorkflowRunActionInner>>() {
             @Override
             public Iterable<WorkflowRunActionInner> call(Page<WorkflowRunActionInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<WorkflowRunActionInner, WorkflowRunAction>() {
             @Override
             public WorkflowRunAction call(WorkflowRunActionInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override

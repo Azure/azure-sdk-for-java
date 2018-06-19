@@ -28,7 +28,7 @@ public class RunCorrelation {
     private List<String> clientKeywords;
 
     /**
-     * Get the clientTrackingId value.
+     * Get the client tracking identifier.
      *
      * @return the clientTrackingId value
      */
@@ -37,7 +37,7 @@ public class RunCorrelation {
     }
 
     /**
-     * Set the clientTrackingId value.
+     * Set the client tracking identifier.
      *
      * @param clientTrackingId the clientTrackingId value to set
      * @return the RunCorrelation object itself.
@@ -48,7 +48,7 @@ public class RunCorrelation {
     }
 
     /**
-     * Get the clientKeywords value.
+     * Get the client keywords.
      *
      * @return the clientKeywords value
      */
@@ -57,7 +57,7 @@ public class RunCorrelation {
     }
 
     /**
-     * Set the clientKeywords value.
+     * Set the client keywords.
      *
      * @param clientKeywords the clientKeywords value to set
      * @return the RunCorrelation object itself.

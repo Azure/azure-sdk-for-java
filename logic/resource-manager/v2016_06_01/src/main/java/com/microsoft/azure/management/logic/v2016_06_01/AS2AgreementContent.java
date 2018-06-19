@@ -27,7 +27,7 @@ public class AS2AgreementContent {
     private AS2OneWayAgreement sendAgreement;
 
     /**
-     * Get the receiveAgreement value.
+     * Get the AS2 one-way receive agreement.
      *
      * @return the receiveAgreement value
      */
@@ -36,7 +36,7 @@ public class AS2AgreementContent {
     }
 
     /**
-     * Set the receiveAgreement value.
+     * Set the AS2 one-way receive agreement.
      *
      * @param receiveAgreement the receiveAgreement value to set
      * @return the AS2AgreementContent object itself.
@@ -47,7 +47,7 @@ public class AS2AgreementContent {
     }
 
     /**
-     * Get the sendAgreement value.
+     * Get the AS2 one-way send agreement.
      *
      * @return the sendAgreement value
      */
@@ -56,7 +56,7 @@ public class AS2AgreementContent {
     }
 
     /**
-     * Set the sendAgreement value.
+     * Set the AS2 one-way send agreement.
      *
      * @param sendAgreement the sendAgreement value to set
      * @return the AS2AgreementContent object itself.

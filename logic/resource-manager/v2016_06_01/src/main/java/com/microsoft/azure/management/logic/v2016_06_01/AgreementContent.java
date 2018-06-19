@@ -33,7 +33,7 @@ public class AgreementContent {
     private EdifactAgreementContent edifact;
 
     /**
-     * Get the aS2 value.
+     * Get the AS2 agreement content.
      *
      * @return the aS2 value
      */
@@ -42,7 +42,7 @@ public class AgreementContent {
     }
 
     /**
-     * Set the aS2 value.
+     * Set the AS2 agreement content.
      *
      * @param aS2 the aS2 value to set
      * @return the AgreementContent object itself.
@@ -53,7 +53,7 @@ public class AgreementContent {
     }
 
     /**
-     * Get the x12 value.
+     * Get the X12 agreement content.
      *
      * @return the x12 value
      */
@@ -62,7 +62,7 @@ public class AgreementContent {
     }
 
     /**
-     * Set the x12 value.
+     * Set the X12 agreement content.
      *
      * @param x12 the x12 value to set
      * @return the AgreementContent object itself.
@@ -73,7 +73,7 @@ public class AgreementContent {
     }
 
     /**
-     * Get the edifact value.
+     * Get the EDIFACT agreement content.
      *
      * @return the edifact value
      */
@@ -82,7 +82,7 @@ public class AgreementContent {
     }
 
     /**
-     * Set the edifact value.
+     * Set the EDIFACT agreement content.
      *
      * @param edifact the edifact value to set
      * @return the AgreementContent object itself.

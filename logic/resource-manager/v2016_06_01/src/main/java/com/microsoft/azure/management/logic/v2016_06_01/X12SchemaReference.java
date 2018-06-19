@@ -39,7 +39,7 @@ public class X12SchemaReference {
     private String schemaName;
 
     /**
-     * Get the messageId value.
+     * Get the message id.
      *
      * @return the messageId value
      */
@@ -48,7 +48,7 @@ public class X12SchemaReference {
     }
 
     /**
-     * Set the messageId value.
+     * Set the message id.
      *
      * @param messageId the messageId value to set
      * @return the X12SchemaReference object itself.
@@ -59,7 +59,7 @@ public class X12SchemaReference {
     }
 
     /**
-     * Get the senderApplicationId value.
+     * Get the sender application id.
      *
      * @return the senderApplicationId value
      */
@@ -68,7 +68,7 @@ public class X12SchemaReference {
     }
 
     /**
-     * Set the senderApplicationId value.
+     * Set the sender application id.
      *
      * @param senderApplicationId the senderApplicationId value to set
      * @return the X12SchemaReference object itself.
@@ -79,7 +79,7 @@ public class X12SchemaReference {
     }
 
     /**
-     * Get the schemaVersion value.
+     * Get the schema version.
      *
      * @return the schemaVersion value
      */
@@ -88,7 +88,7 @@ public class X12SchemaReference {
     }
 
     /**
-     * Set the schemaVersion value.
+     * Set the schema version.
      *
      * @param schemaVersion the schemaVersion value to set
      * @return the X12SchemaReference object itself.
@@ -99,7 +99,7 @@ public class X12SchemaReference {
     }
 
     /**
-     * Get the schemaName value.
+     * Get the schema name.
      *
      * @return the schemaName value
      */
@@ -108,7 +108,7 @@ public class X12SchemaReference {
     }
 
     /**
-     * Set the schemaName value.
+     * Set the schema name.
      *
      * @param schemaName the schemaName value to set
      * @return the X12SchemaReference object itself.

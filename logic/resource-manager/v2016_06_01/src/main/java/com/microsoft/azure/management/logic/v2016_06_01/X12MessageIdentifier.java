@@ -21,7 +21,7 @@ public class X12MessageIdentifier {
     private String messageId;
 
     /**
-     * Get the messageId value.
+     * Get the message id.
      *
      * @return the messageId value
      */
@@ -30,7 +30,7 @@ public class X12MessageIdentifier {
     }
 
     /**
-     * Set the messageId value.
+     * Set the message id.
      *
      * @param messageId the messageId value to set
      * @return the X12MessageIdentifier object itself.

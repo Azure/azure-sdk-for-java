@@ -78,7 +78,7 @@ public class AS2SecuritySettings {
     private String sha2AlgorithmFormat;
 
     /**
-     * Get the overrideGroupSigningCertificate value.
+     * Get the value indicating whether to send or request a MDN.
      *
      * @return the overrideGroupSigningCertificate value
      */
@@ -87,7 +87,7 @@ public class AS2SecuritySettings {
     }
 
     /**
-     * Set the overrideGroupSigningCertificate value.
+     * Set the value indicating whether to send or request a MDN.
      *
      * @param overrideGroupSigningCertificate the overrideGroupSigningCertificate value to set
      * @return the AS2SecuritySettings object itself.
@@ -98,7 +98,7 @@ public class AS2SecuritySettings {
     }
 
     /**
-     * Get the signingCertificateName value.
+     * Get the name of the signing certificate.
      *
      * @return the signingCertificateName value
      */
@@ -107,7 +107,7 @@ public class AS2SecuritySettings {
     }
 
     /**
-     * Set the signingCertificateName value.
+     * Set the name of the signing certificate.
      *
      * @param signingCertificateName the signingCertificateName value to set
      * @return the AS2SecuritySettings object itself.
@@ -118,7 +118,7 @@ public class AS2SecuritySettings {
     }
 
     /**
-     * Get the encryptionCertificateName value.
+     * Get the name of the encryption certificate.
      *
      * @return the encryptionCertificateName value
      */
@@ -127,7 +127,7 @@ public class AS2SecuritySettings {
     }
 
     /**
-     * Set the encryptionCertificateName value.
+     * Set the name of the encryption certificate.
      *
      * @param encryptionCertificateName the encryptionCertificateName value to set
      * @return the AS2SecuritySettings object itself.
@@ -138,7 +138,7 @@ public class AS2SecuritySettings {
     }
 
     /**
-     * Get the enableNrrForInboundEncodedMessages value.
+     * Get the value indicating whether to enable NRR for inbound encoded messages.
      *
      * @return the enableNrrForInboundEncodedMessages value
      */
@@ -147,7 +147,7 @@ public class AS2SecuritySettings {
     }
 
     /**
-     * Set the enableNrrForInboundEncodedMessages value.
+     * Set the value indicating whether to enable NRR for inbound encoded messages.
      *
      * @param enableNrrForInboundEncodedMessages the enableNrrForInboundEncodedMessages value to set
      * @return the AS2SecuritySettings object itself.
@@ -158,7 +158,7 @@ public class AS2SecuritySettings {
     }
 
     /**
-     * Get the enableNrrForInboundDecodedMessages value.
+     * Get the value indicating whether to enable NRR for inbound decoded messages.
      *
      * @return the enableNrrForInboundDecodedMessages value
      */
@@ -167,7 +167,7 @@ public class AS2SecuritySettings {
     }
 
     /**
-     * Set the enableNrrForInboundDecodedMessages value.
+     * Set the value indicating whether to enable NRR for inbound decoded messages.
      *
      * @param enableNrrForInboundDecodedMessages the enableNrrForInboundDecodedMessages value to set
      * @return the AS2SecuritySettings object itself.
@@ -178,7 +178,7 @@ public class AS2SecuritySettings {
     }
 
     /**
-     * Get the enableNrrForOutboundMdn value.
+     * Get the value indicating whether to enable NRR for outbound MDN.
      *
      * @return the enableNrrForOutboundMdn value
      */
@@ -187,7 +187,7 @@ public class AS2SecuritySettings {
     }
 
     /**
-     * Set the enableNrrForOutboundMdn value.
+     * Set the value indicating whether to enable NRR for outbound MDN.
      *
      * @param enableNrrForOutboundMdn the enableNrrForOutboundMdn value to set
      * @return the AS2SecuritySettings object itself.
@@ -198,7 +198,7 @@ public class AS2SecuritySettings {
     }
 
     /**
-     * Get the enableNrrForOutboundEncodedMessages value.
+     * Get the value indicating whether to enable NRR for outbound encoded messages.
      *
      * @return the enableNrrForOutboundEncodedMessages value
      */
@@ -207,7 +207,7 @@ public class AS2SecuritySettings {
     }
 
     /**
-     * Set the enableNrrForOutboundEncodedMessages value.
+     * Set the value indicating whether to enable NRR for outbound encoded messages.
      *
      * @param enableNrrForOutboundEncodedMessages the enableNrrForOutboundEncodedMessages value to set
      * @return the AS2SecuritySettings object itself.
@@ -218,7 +218,7 @@ public class AS2SecuritySettings {
     }
 
     /**
-     * Get the enableNrrForOutboundDecodedMessages value.
+     * Get the value indicating whether to enable NRR for outbound decoded messages.
      *
      * @return the enableNrrForOutboundDecodedMessages value
      */
@@ -227,7 +227,7 @@ public class AS2SecuritySettings {
     }
 
     /**
-     * Set the enableNrrForOutboundDecodedMessages value.
+     * Set the value indicating whether to enable NRR for outbound decoded messages.
      *
      * @param enableNrrForOutboundDecodedMessages the enableNrrForOutboundDecodedMessages value to set
      * @return the AS2SecuritySettings object itself.
@@ -238,7 +238,7 @@ public class AS2SecuritySettings {
     }
 
     /**
-     * Get the enableNrrForInboundMdn value.
+     * Get the value indicating whether to enable NRR for inbound MDN.
      *
      * @return the enableNrrForInboundMdn value
      */
@@ -247,7 +247,7 @@ public class AS2SecuritySettings {
     }
 
     /**
-     * Set the enableNrrForInboundMdn value.
+     * Set the value indicating whether to enable NRR for inbound MDN.
      *
      * @param enableNrrForInboundMdn the enableNrrForInboundMdn value to set
      * @return the AS2SecuritySettings object itself.
@@ -258,7 +258,7 @@ public class AS2SecuritySettings {
     }
 
     /**
-     * Get the sha2AlgorithmFormat value.
+     * Get the Sha2 algorithm format. Valid values are Sha2, ShaHashSize, ShaHyphenHashSize, Sha2UnderscoreHashSize.
      *
      * @return the sha2AlgorithmFormat value
      */
@@ -267,7 +267,7 @@ public class AS2SecuritySettings {
     }
 
     /**
-     * Set the sha2AlgorithmFormat value.
+     * Set the Sha2 algorithm format. Valid values are Sha2, ShaHashSize, ShaHyphenHashSize, Sha2UnderscoreHashSize.
      *
      * @param sha2AlgorithmFormat the sha2AlgorithmFormat value to set
      * @return the AS2SecuritySettings object itself.

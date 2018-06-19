@@ -42,41 +42,22 @@ class SessionsImpl extends WrapperImpl<SessionsInner> implements Sessions {
         return new IntegrationAccountSessionImpl(name, this.manager());
     }
 
-    private Observable<Page<IntegrationAccountSessionInner>> listByIntegrationAccountsNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        SessionsInner client = this.inner();
-        return client.listByIntegrationAccountsNextAsync(nextLink)
-        .flatMap(new Func1<Page<IntegrationAccountSessionInner>, Observable<Page<IntegrationAccountSessionInner>>>() {
-            @Override
-            public Observable<Page<IntegrationAccountSessionInner>> call(Page<IntegrationAccountSessionInner> page) {
-                return Observable.just(page).concatWith(listByIntegrationAccountsNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<IntegrationAccountSession> listByIntegrationAccountsAsync(final String resourceGroupName, final String integrationAccountName) {
         SessionsInner client = this.inner();
         return client.listByIntegrationAccountsAsync(resourceGroupName, integrationAccountName)
-        .flatMap(new Func1<Page<IntegrationAccountSessionInner>, Observable<Page<IntegrationAccountSessionInner>>>() {
-            @Override
-            public Observable<Page<IntegrationAccountSessionInner>> call(Page<IntegrationAccountSessionInner> page) {
-                return listByIntegrationAccountsNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<IntegrationAccountSessionInner>, Iterable<IntegrationAccountSessionInner>>() {
             @Override
             public Iterable<IntegrationAccountSessionInner> call(Page<IntegrationAccountSessionInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<IntegrationAccountSessionInner, IntegrationAccountSession>() {
             @Override
             public IntegrationAccountSession call(IntegrationAccountSessionInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override

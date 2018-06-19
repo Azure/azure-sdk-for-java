@@ -22,7 +22,7 @@ public class IntegrationAccountSku {
     private IntegrationAccountSkuName name;
 
     /**
-     * Get the name value.
+     * Get the sku name. Possible values include: 'NotSpecified', 'Free', 'Standard'.
      *
      * @return the name value
      */
@@ -31,7 +31,7 @@ public class IntegrationAccountSku {
     }
 
     /**
-     * Set the name value.
+     * Set the sku name. Possible values include: 'NotSpecified', 'Free', 'Standard'.
      *
      * @param name the name value to set
      * @return the IntegrationAccountSku object itself.

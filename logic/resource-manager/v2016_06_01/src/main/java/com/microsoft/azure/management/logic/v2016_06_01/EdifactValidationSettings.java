@@ -81,7 +81,7 @@ public class EdifactValidationSettings {
     private TrailingSeparatorPolicy trailingSeparatorPolicy;
 
     /**
-     * Get the validateCharacterSet value.
+     * Get the value indicating whether to validate character set in the message.
      *
      * @return the validateCharacterSet value
      */
@@ -90,7 +90,7 @@ public class EdifactValidationSettings {
     }
 
     /**
-     * Set the validateCharacterSet value.
+     * Set the value indicating whether to validate character set in the message.
      *
      * @param validateCharacterSet the validateCharacterSet value to set
      * @return the EdifactValidationSettings object itself.
@@ -101,7 +101,7 @@ public class EdifactValidationSettings {
     }
 
     /**
-     * Get the checkDuplicateInterchangeControlNumber value.
+     * Get the value indicating whether to check for duplicate interchange control number.
      *
      * @return the checkDuplicateInterchangeControlNumber value
      */
@@ -110,7 +110,7 @@ public class EdifactValidationSettings {
     }
 
     /**
-     * Set the checkDuplicateInterchangeControlNumber value.
+     * Set the value indicating whether to check for duplicate interchange control number.
      *
      * @param checkDuplicateInterchangeControlNumber the checkDuplicateInterchangeControlNumber value to set
      * @return the EdifactValidationSettings object itself.
@@ -121,7 +121,7 @@ public class EdifactValidationSettings {
     }
 
     /**
-     * Get the interchangeControlNumberValidityDays value.
+     * Get the validity period of interchange control number.
      *
      * @return the interchangeControlNumberValidityDays value
      */
@@ -130,7 +130,7 @@ public class EdifactValidationSettings {
     }
 
     /**
-     * Set the interchangeControlNumberValidityDays value.
+     * Set the validity period of interchange control number.
      *
      * @param interchangeControlNumberValidityDays the interchangeControlNumberValidityDays value to set
      * @return the EdifactValidationSettings object itself.
@@ -141,7 +141,7 @@ public class EdifactValidationSettings {
     }
 
     /**
-     * Get the checkDuplicateGroupControlNumber value.
+     * Get the value indicating whether to check for duplicate group control number.
      *
      * @return the checkDuplicateGroupControlNumber value
      */
@@ -150,7 +150,7 @@ public class EdifactValidationSettings {
     }
 
     /**
-     * Set the checkDuplicateGroupControlNumber value.
+     * Set the value indicating whether to check for duplicate group control number.
      *
      * @param checkDuplicateGroupControlNumber the checkDuplicateGroupControlNumber value to set
      * @return the EdifactValidationSettings object itself.
@@ -161,7 +161,7 @@ public class EdifactValidationSettings {
     }
 
     /**
-     * Get the checkDuplicateTransactionSetControlNumber value.
+     * Get the value indicating whether to check for duplicate transaction set control number.
      *
      * @return the checkDuplicateTransactionSetControlNumber value
      */
@@ -170,7 +170,7 @@ public class EdifactValidationSettings {
     }
 
     /**
-     * Set the checkDuplicateTransactionSetControlNumber value.
+     * Set the value indicating whether to check for duplicate transaction set control number.
      *
      * @param checkDuplicateTransactionSetControlNumber the checkDuplicateTransactionSetControlNumber value to set
      * @return the EdifactValidationSettings object itself.
@@ -181,7 +181,7 @@ public class EdifactValidationSettings {
     }
 
     /**
-     * Get the validateEdiTypes value.
+     * Get the value indicating whether to Whether to validate EDI types.
      *
      * @return the validateEdiTypes value
      */
@@ -190,7 +190,7 @@ public class EdifactValidationSettings {
     }
 
     /**
-     * Set the validateEdiTypes value.
+     * Set the value indicating whether to Whether to validate EDI types.
      *
      * @param validateEdiTypes the validateEdiTypes value to set
      * @return the EdifactValidationSettings object itself.
@@ -201,7 +201,7 @@ public class EdifactValidationSettings {
     }
 
     /**
-     * Get the validateXsdTypes value.
+     * Get the value indicating whether to Whether to validate XSD types.
      *
      * @return the validateXsdTypes value
      */
@@ -210,7 +210,7 @@ public class EdifactValidationSettings {
     }
 
     /**
-     * Set the validateXsdTypes value.
+     * Set the value indicating whether to Whether to validate XSD types.
      *
      * @param validateXsdTypes the validateXsdTypes value to set
      * @return the EdifactValidationSettings object itself.
@@ -221,7 +221,7 @@ public class EdifactValidationSettings {
     }
 
     /**
-     * Get the allowLeadingAndTrailingSpacesAndZeroes value.
+     * Get the value indicating whether to allow leading and trailing spaces and zeroes.
      *
      * @return the allowLeadingAndTrailingSpacesAndZeroes value
      */
@@ -230,7 +230,7 @@ public class EdifactValidationSettings {
     }
 
     /**
-     * Set the allowLeadingAndTrailingSpacesAndZeroes value.
+     * Set the value indicating whether to allow leading and trailing spaces and zeroes.
      *
      * @param allowLeadingAndTrailingSpacesAndZeroes the allowLeadingAndTrailingSpacesAndZeroes value to set
      * @return the EdifactValidationSettings object itself.
@@ -241,7 +241,7 @@ public class EdifactValidationSettings {
     }
 
     /**
-     * Get the trimLeadingAndTrailingSpacesAndZeroes value.
+     * Get the value indicating whether to trim leading and trailing spaces and zeroes.
      *
      * @return the trimLeadingAndTrailingSpacesAndZeroes value
      */
@@ -250,7 +250,7 @@ public class EdifactValidationSettings {
     }
 
     /**
-     * Set the trimLeadingAndTrailingSpacesAndZeroes value.
+     * Set the value indicating whether to trim leading and trailing spaces and zeroes.
      *
      * @param trimLeadingAndTrailingSpacesAndZeroes the trimLeadingAndTrailingSpacesAndZeroes value to set
      * @return the EdifactValidationSettings object itself.
@@ -261,7 +261,7 @@ public class EdifactValidationSettings {
     }
 
     /**
-     * Get the trailingSeparatorPolicy value.
+     * Get the trailing separator policy. Possible values include: 'NotSpecified', 'NotAllowed', 'Optional', 'Mandatory'.
      *
      * @return the trailingSeparatorPolicy value
      */
@@ -270,7 +270,7 @@ public class EdifactValidationSettings {
     }
 
     /**
-     * Set the trailingSeparatorPolicy value.
+     * Set the trailing separator policy. Possible values include: 'NotSpecified', 'NotAllowed', 'Optional', 'Mandatory'.
      *
      * @param trailingSeparatorPolicy the trailingSeparatorPolicy value to set
      * @return the EdifactValidationSettings object itself.

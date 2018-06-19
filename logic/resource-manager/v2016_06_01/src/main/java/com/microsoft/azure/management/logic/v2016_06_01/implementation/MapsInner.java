@@ -213,7 +213,7 @@ public class MapsInner {
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param top The number of items to be included in the result.
-     * @param filter The filter to apply on the operation.
+     * @param filter The filter to apply on the operation. Options for filters include: MapType.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -235,7 +235,7 @@ public class MapsInner {
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param top The number of items to be included in the result.
-     * @param filter The filter to apply on the operation.
+     * @param filter The filter to apply on the operation. Options for filters include: MapType.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -258,7 +258,7 @@ public class MapsInner {
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param top The number of items to be included in the result.
-     * @param filter The filter to apply on the operation.
+     * @param filter The filter to apply on the operation. Options for filters include: MapType.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;IntegrationAccountMapInner&gt; object
      */
@@ -278,7 +278,7 @@ public class MapsInner {
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param top The number of items to be included in the result.
-     * @param filter The filter to apply on the operation.
+     * @param filter The filter to apply on the operation. Options for filters include: MapType.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;IntegrationAccountMapInner&gt; object
      */
@@ -302,7 +302,7 @@ public class MapsInner {
     ServiceResponse<PageImpl<IntegrationAccountMapInner>> * @param resourceGroupName The resource group name.
     ServiceResponse<PageImpl<IntegrationAccountMapInner>> * @param integrationAccountName The integration account name.
     ServiceResponse<PageImpl<IntegrationAccountMapInner>> * @param top The number of items to be included in the result.
-    ServiceResponse<PageImpl<IntegrationAccountMapInner>> * @param filter The filter to apply on the operation.
+    ServiceResponse<PageImpl<IntegrationAccountMapInner>> * @param filter The filter to apply on the operation. Options for filters include: MapType.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;IntegrationAccountMapInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */

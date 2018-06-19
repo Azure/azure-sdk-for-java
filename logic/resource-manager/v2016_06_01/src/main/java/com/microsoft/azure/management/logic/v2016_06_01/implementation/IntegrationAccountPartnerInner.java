@@ -53,7 +53,7 @@ public class IntegrationAccountPartnerInner extends Resource {
     private PartnerContent content;
 
     /**
-     * Get the partnerType value.
+     * Get the partner type. Possible values include: 'NotSpecified', 'B2B'.
      *
      * @return the partnerType value
      */
@@ -62,7 +62,7 @@ public class IntegrationAccountPartnerInner extends Resource {
     }
 
     /**
-     * Set the partnerType value.
+     * Set the partner type. Possible values include: 'NotSpecified', 'B2B'.
      *
      * @param partnerType the partnerType value to set
      * @return the IntegrationAccountPartnerInner object itself.
@@ -73,7 +73,7 @@ public class IntegrationAccountPartnerInner extends Resource {
     }
 
     /**
-     * Get the createdTime value.
+     * Get the created time.
      *
      * @return the createdTime value
      */
@@ -82,7 +82,7 @@ public class IntegrationAccountPartnerInner extends Resource {
     }
 
     /**
-     * Get the changedTime value.
+     * Get the changed time.
      *
      * @return the changedTime value
      */
@@ -91,7 +91,7 @@ public class IntegrationAccountPartnerInner extends Resource {
     }
 
     /**
-     * Get the metadata value.
+     * Get the metadata.
      *
      * @return the metadata value
      */
@@ -100,7 +100,7 @@ public class IntegrationAccountPartnerInner extends Resource {
     }
 
     /**
-     * Set the metadata value.
+     * Set the metadata.
      *
      * @param metadata the metadata value to set
      * @return the IntegrationAccountPartnerInner object itself.
@@ -111,7 +111,7 @@ public class IntegrationAccountPartnerInner extends Resource {
     }
 
     /**
-     * Get the content value.
+     * Get the partner content.
      *
      * @return the content value
      */
@@ -120,7 +120,7 @@ public class IntegrationAccountPartnerInner extends Resource {
     }
 
     /**
-     * Set the content value.
+     * Set the partner content.
      *
      * @param content the content value to set
      * @return the IntegrationAccountPartnerInner object itself.

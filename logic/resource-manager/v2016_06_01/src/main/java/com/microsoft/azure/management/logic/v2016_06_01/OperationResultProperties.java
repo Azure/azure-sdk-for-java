@@ -55,7 +55,7 @@ public class OperationResultProperties {
     private Object error;
 
     /**
-     * Get the startTime value.
+     * Get the start time of the workflow scope repetition.
      *
      * @return the startTime value
      */
@@ -64,7 +64,7 @@ public class OperationResultProperties {
     }
 
     /**
-     * Set the startTime value.
+     * Set the start time of the workflow scope repetition.
      *
      * @param startTime the startTime value to set
      * @return the OperationResultProperties object itself.
@@ -75,7 +75,7 @@ public class OperationResultProperties {
     }
 
     /**
-     * Get the endTime value.
+     * Get the end time of the workflow scope repetition.
      *
      * @return the endTime value
      */
@@ -84,7 +84,7 @@ public class OperationResultProperties {
     }
 
     /**
-     * Set the endTime value.
+     * Set the end time of the workflow scope repetition.
      *
      * @param endTime the endTime value to set
      * @return the OperationResultProperties object itself.
@@ -95,7 +95,7 @@ public class OperationResultProperties {
     }
 
     /**
-     * Get the correlation value.
+     * Get the correlation properties.
      *
      * @return the correlation value
      */
@@ -104,7 +104,7 @@ public class OperationResultProperties {
     }
 
     /**
-     * Set the correlation value.
+     * Set the correlation properties.
      *
      * @param correlation the correlation value to set
      * @return the OperationResultProperties object itself.
@@ -115,7 +115,7 @@ public class OperationResultProperties {
     }
 
     /**
-     * Get the status value.
+     * Get the status of the workflow scope repetition. Possible values include: 'NotSpecified', 'Paused', 'Running', 'Waiting', 'Succeeded', 'Skipped', 'Suspended', 'Cancelled', 'Failed', 'Faulted', 'TimedOut', 'Aborted', 'Ignored'.
      *
      * @return the status value
      */
@@ -124,7 +124,7 @@ public class OperationResultProperties {
     }
 
     /**
-     * Set the status value.
+     * Set the status of the workflow scope repetition. Possible values include: 'NotSpecified', 'Paused', 'Running', 'Waiting', 'Succeeded', 'Skipped', 'Suspended', 'Cancelled', 'Failed', 'Faulted', 'TimedOut', 'Aborted', 'Ignored'.
      *
      * @param status the status value to set
      * @return the OperationResultProperties object itself.
@@ -135,7 +135,7 @@ public class OperationResultProperties {
     }
 
     /**
-     * Get the code value.
+     * Get the workflow scope repetition code.
      *
      * @return the code value
      */
@@ -144,7 +144,7 @@ public class OperationResultProperties {
     }
 
     /**
-     * Set the code value.
+     * Set the workflow scope repetition code.
      *
      * @param code the code value to set
      * @return the OperationResultProperties object itself.

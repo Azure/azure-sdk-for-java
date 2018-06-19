@@ -22,7 +22,7 @@ public class IntegrationAccountSessionFilter {
     private DateTime changedTime;
 
     /**
-     * Get the changedTime value.
+     * Get the changed time of integration account sessions.
      *
      * @return the changedTime value
      */
@@ -31,7 +31,7 @@ public class IntegrationAccountSessionFilter {
     }
 
     /**
-     * Set the changedTime value.
+     * Set the changed time of integration account sessions.
      *
      * @param changedTime the changedTime value to set
      * @return the IntegrationAccountSessionFilter object itself.

@@ -21,7 +21,7 @@ public class AccessKeyRegenerateActionDefinition {
     private AccessKeyType keyType;
 
     /**
-     * Get the keyType value.
+     * Get possible values include: 'NotSpecified', 'Primary', 'Secondary'.
      *
      * @return the keyType value
      */
@@ -30,7 +30,7 @@ public class AccessKeyRegenerateActionDefinition {
     }
 
     /**
-     * Set the keyType value.
+     * Set possible values include: 'NotSpecified', 'Primary', 'Secondary'.
      *
      * @param keyType the keyType value to set
      * @return the AccessKeyRegenerateActionDefinition object itself.
