@@ -94,6 +94,7 @@ public final class AppendBlobURL extends BlobURL {
      * Creates a 0-length append blob. Call AppendBlock to append data to an append blob. For more information, see
      * the <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
      *
+     * @apiNote
      * [!code-java[Sample_Code](~/azure-storage-java/src/test/java/com/microsoft/azure/storage/blob/Samples.java?name={ab_create} "Sample code for AppendBlobURL.create")]
      *
      * @param headers
