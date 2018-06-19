@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.management.logic.v2016_06_01;
 
-import com.microsoft.azure.management.logic.v2016_06_01.implementation.KeyVaultKeyReferenceKeyVaultInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -19,7 +18,7 @@ public class KeyVaultKeyReference {
      * The key vault reference.
      */
     @JsonProperty(value = "keyVault", required = true)
-    private KeyVaultKeyReferenceKeyVaultInner keyVault;
+    private KeyVaultKeyReferenceKeyVault keyVault;
 
     /**
      * The private key name in key vault.
@@ -34,27 +33,27 @@ public class KeyVaultKeyReference {
     private String keyVersion;
 
     /**
-     * Get the keyVault value.
+     * Get the key vault reference.
      *
      * @return the keyVault value
      */
-    public KeyVaultKeyReferenceKeyVaultInner keyVault() {
+    public KeyVaultKeyReferenceKeyVault keyVault() {
         return this.keyVault;
     }
 
     /**
-     * Set the keyVault value.
+     * Set the key vault reference.
      *
      * @param keyVault the keyVault value to set
      * @return the KeyVaultKeyReference object itself.
      */
-    public KeyVaultKeyReference withKeyVault(KeyVaultKeyReferenceKeyVaultInner keyVault) {
+    public KeyVaultKeyReference withKeyVault(KeyVaultKeyReferenceKeyVault keyVault) {
         this.keyVault = keyVault;
         return this;
     }
 
     /**
-     * Get the keyName value.
+     * Get the private key name in key vault.
      *
      * @return the keyName value
      */
@@ -63,7 +62,7 @@ public class KeyVaultKeyReference {
     }
 
     /**
-     * Set the keyName value.
+     * Set the private key name in key vault.
      *
      * @param keyName the keyName value to set
      * @return the KeyVaultKeyReference object itself.
@@ -74,7 +73,7 @@ public class KeyVaultKeyReference {
     }
 
     /**
-     * Get the keyVersion value.
+     * Get the private key version in key vault.
      *
      * @return the keyVersion value
      */
@@ -83,7 +82,7 @@ public class KeyVaultKeyReference {
     }
 
     /**
-     * Set the keyVersion value.
+     * Set the private key version in key vault.
      *
      * @param keyVersion the keyVersion value to set
      * @return the KeyVaultKeyReference object itself.

@@ -33,7 +33,7 @@ public class EdifactOneWayAgreement {
     private EdifactProtocolSettings protocolSettings;
 
     /**
-     * Get the senderBusinessIdentity value.
+     * Get the sender business identity.
      *
      * @return the senderBusinessIdentity value
      */
@@ -42,7 +42,7 @@ public class EdifactOneWayAgreement {
     }
 
     /**
-     * Set the senderBusinessIdentity value.
+     * Set the sender business identity.
      *
      * @param senderBusinessIdentity the senderBusinessIdentity value to set
      * @return the EdifactOneWayAgreement object itself.
@@ -53,7 +53,7 @@ public class EdifactOneWayAgreement {
     }
 
     /**
-     * Get the receiverBusinessIdentity value.
+     * Get the receiver business identity.
      *
      * @return the receiverBusinessIdentity value
      */
@@ -62,7 +62,7 @@ public class EdifactOneWayAgreement {
     }
 
     /**
-     * Set the receiverBusinessIdentity value.
+     * Set the receiver business identity.
      *
      * @param receiverBusinessIdentity the receiverBusinessIdentity value to set
      * @return the EdifactOneWayAgreement object itself.
@@ -73,7 +73,7 @@ public class EdifactOneWayAgreement {
     }
 
     /**
-     * Get the protocolSettings value.
+     * Get the EDIFACT protocol settings.
      *
      * @return the protocolSettings value
      */
@@ -82,7 +82,7 @@ public class EdifactOneWayAgreement {
     }
 
     /**
-     * Set the protocolSettings value.
+     * Set the EDIFACT protocol settings.
      *
      * @param protocolSettings the protocolSettings value to set
      * @return the EdifactOneWayAgreement object itself.

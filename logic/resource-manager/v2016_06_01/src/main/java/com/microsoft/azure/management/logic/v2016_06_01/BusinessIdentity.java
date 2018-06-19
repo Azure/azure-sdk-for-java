@@ -27,7 +27,7 @@ public class BusinessIdentity {
     private String value;
 
     /**
-     * Get the qualifier value.
+     * Get the business identity qualifier e.g. as2identity, ZZ, ZZZ, 31, 32.
      *
      * @return the qualifier value
      */
@@ -36,7 +36,7 @@ public class BusinessIdentity {
     }
 
     /**
-     * Set the qualifier value.
+     * Set the business identity qualifier e.g. as2identity, ZZ, ZZZ, 31, 32.
      *
      * @param qualifier the qualifier value to set
      * @return the BusinessIdentity object itself.
@@ -47,7 +47,7 @@ public class BusinessIdentity {
     }
 
     /**
-     * Get the value value.
+     * Get the user defined business identity value.
      *
      * @return the value value
      */
@@ -56,7 +56,7 @@ public class BusinessIdentity {
     }
 
     /**
-     * Set the value value.
+     * Set the user defined business identity value.
      *
      * @param value the value value to set
      * @return the BusinessIdentity object itself.

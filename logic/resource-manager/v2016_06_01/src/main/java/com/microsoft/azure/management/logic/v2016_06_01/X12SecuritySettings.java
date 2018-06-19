@@ -39,7 +39,7 @@ public class X12SecuritySettings {
     private String passwordValue;
 
     /**
-     * Get the authorizationQualifier value.
+     * Get the authorization qualifier.
      *
      * @return the authorizationQualifier value
      */
@@ -48,7 +48,7 @@ public class X12SecuritySettings {
     }
 
     /**
-     * Set the authorizationQualifier value.
+     * Set the authorization qualifier.
      *
      * @param authorizationQualifier the authorizationQualifier value to set
      * @return the X12SecuritySettings object itself.
@@ -59,7 +59,7 @@ public class X12SecuritySettings {
     }
 
     /**
-     * Get the authorizationValue value.
+     * Get the authorization value.
      *
      * @return the authorizationValue value
      */
@@ -68,7 +68,7 @@ public class X12SecuritySettings {
     }
 
     /**
-     * Set the authorizationValue value.
+     * Set the authorization value.
      *
      * @param authorizationValue the authorizationValue value to set
      * @return the X12SecuritySettings object itself.
@@ -79,7 +79,7 @@ public class X12SecuritySettings {
     }
 
     /**
-     * Get the securityQualifier value.
+     * Get the security qualifier.
      *
      * @return the securityQualifier value
      */
@@ -88,7 +88,7 @@ public class X12SecuritySettings {
     }
 
     /**
-     * Set the securityQualifier value.
+     * Set the security qualifier.
      *
      * @param securityQualifier the securityQualifier value to set
      * @return the X12SecuritySettings object itself.
@@ -99,7 +99,7 @@ public class X12SecuritySettings {
     }
 
     /**
-     * Get the passwordValue value.
+     * Get the password value.
      *
      * @return the passwordValue value
      */
@@ -108,7 +108,7 @@ public class X12SecuritySettings {
     }
 
     /**
-     * Set the passwordValue value.
+     * Set the password value.
      *
      * @param passwordValue the passwordValue value to set
      * @return the X12SecuritySettings object itself.

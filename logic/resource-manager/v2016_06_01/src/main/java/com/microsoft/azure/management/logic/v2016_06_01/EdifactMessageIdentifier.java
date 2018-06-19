@@ -21,7 +21,7 @@ public class EdifactMessageIdentifier {
     private String messageId;
 
     /**
-     * Get the messageId value.
+     * Get the message id on which this envelope settings has to be applied.
      *
      * @return the messageId value
      */
@@ -30,7 +30,7 @@ public class EdifactMessageIdentifier {
     }
 
     /**
-     * Set the messageId value.
+     * Set the message id on which this envelope settings has to be applied.
      *
      * @param messageId the messageId value to set
      * @return the EdifactMessageIdentifier object itself.

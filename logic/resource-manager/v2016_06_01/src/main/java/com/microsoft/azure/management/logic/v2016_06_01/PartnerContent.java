@@ -21,7 +21,7 @@ public class PartnerContent {
     private B2BPartnerContent b2b;
 
     /**
-     * Get the b2b value.
+     * Get the B2B partner content.
      *
      * @return the b2b value
      */
@@ -30,7 +30,7 @@ public class PartnerContent {
     }
 
     /**
-     * Set the b2b value.
+     * Set the B2B partner content.
      *
      * @param b2b the b2b value to set
      * @return the PartnerContent object itself.

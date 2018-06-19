@@ -52,7 +52,7 @@ public class WorkflowTriggerRecurrence {
     private RecurrenceSchedule schedule;
 
     /**
-     * Get the frequency value.
+     * Get the frequency. Possible values include: 'NotSpecified', 'Second', 'Minute', 'Hour', 'Day', 'Week', 'Month', 'Year'.
      *
      * @return the frequency value
      */
@@ -61,7 +61,7 @@ public class WorkflowTriggerRecurrence {
     }
 
     /**
-     * Set the frequency value.
+     * Set the frequency. Possible values include: 'NotSpecified', 'Second', 'Minute', 'Hour', 'Day', 'Week', 'Month', 'Year'.
      *
      * @param frequency the frequency value to set
      * @return the WorkflowTriggerRecurrence object itself.
@@ -72,7 +72,7 @@ public class WorkflowTriggerRecurrence {
     }
 
     /**
-     * Get the interval value.
+     * Get the interval.
      *
      * @return the interval value
      */
@@ -81,7 +81,7 @@ public class WorkflowTriggerRecurrence {
     }
 
     /**
-     * Set the interval value.
+     * Set the interval.
      *
      * @param interval the interval value to set
      * @return the WorkflowTriggerRecurrence object itself.
@@ -92,7 +92,7 @@ public class WorkflowTriggerRecurrence {
     }
 
     /**
-     * Get the startTime value.
+     * Get the start time.
      *
      * @return the startTime value
      */
@@ -101,7 +101,7 @@ public class WorkflowTriggerRecurrence {
     }
 
     /**
-     * Set the startTime value.
+     * Set the start time.
      *
      * @param startTime the startTime value to set
      * @return the WorkflowTriggerRecurrence object itself.
@@ -112,7 +112,7 @@ public class WorkflowTriggerRecurrence {
     }
 
     /**
-     * Get the endTime value.
+     * Get the end time.
      *
      * @return the endTime value
      */
@@ -121,7 +121,7 @@ public class WorkflowTriggerRecurrence {
     }
 
     /**
-     * Set the endTime value.
+     * Set the end time.
      *
      * @param endTime the endTime value to set
      * @return the WorkflowTriggerRecurrence object itself.
@@ -132,7 +132,7 @@ public class WorkflowTriggerRecurrence {
     }
 
     /**
-     * Get the timeZone value.
+     * Get the time zone.
      *
      * @return the timeZone value
      */
@@ -141,7 +141,7 @@ public class WorkflowTriggerRecurrence {
     }
 
     /**
-     * Set the timeZone value.
+     * Set the time zone.
      *
      * @param timeZone the timeZone value to set
      * @return the WorkflowTriggerRecurrence object itself.
@@ -152,7 +152,7 @@ public class WorkflowTriggerRecurrence {
     }
 
     /**
-     * Get the schedule value.
+     * Get the recurrence schedule.
      *
      * @return the schedule value
      */
@@ -161,7 +161,7 @@ public class WorkflowTriggerRecurrence {
     }
 
     /**
-     * Set the schedule value.
+     * Set the recurrence schedule.
      *
      * @param schedule the schedule value to set
      * @return the WorkflowTriggerRecurrence object itself.

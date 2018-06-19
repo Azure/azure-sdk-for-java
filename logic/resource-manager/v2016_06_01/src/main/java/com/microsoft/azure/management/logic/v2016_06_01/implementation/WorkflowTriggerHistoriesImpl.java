@@ -39,41 +39,22 @@ class WorkflowTriggerHistoriesImpl extends WrapperImpl<WorkflowTriggerHistoriesI
         return client.resubmitAsync(resourceGroupName, workflowName, triggerName, historyName).toCompletable();
     }
 
-    private Observable<Page<WorkflowTriggerHistoryInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        WorkflowTriggerHistoriesInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<WorkflowTriggerHistoryInner>, Observable<Page<WorkflowTriggerHistoryInner>>>() {
-            @Override
-            public Observable<Page<WorkflowTriggerHistoryInner>> call(Page<WorkflowTriggerHistoryInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<WorkflowTriggerHistory> listAsync(final String resourceGroupName, final String workflowName, final String triggerName) {
         WorkflowTriggerHistoriesInner client = this.inner();
         return client.listAsync(resourceGroupName, workflowName, triggerName)
-        .flatMap(new Func1<Page<WorkflowTriggerHistoryInner>, Observable<Page<WorkflowTriggerHistoryInner>>>() {
-            @Override
-            public Observable<Page<WorkflowTriggerHistoryInner>> call(Page<WorkflowTriggerHistoryInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<WorkflowTriggerHistoryInner>, Iterable<WorkflowTriggerHistoryInner>>() {
             @Override
             public Iterable<WorkflowTriggerHistoryInner> call(Page<WorkflowTriggerHistoryInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<WorkflowTriggerHistoryInner, WorkflowTriggerHistory>() {
             @Override
             public WorkflowTriggerHistory call(WorkflowTriggerHistoryInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override

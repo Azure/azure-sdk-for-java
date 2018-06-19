@@ -102,7 +102,7 @@ public class WorkflowRunTrigger {
     private Object trackedProperties;
 
     /**
-     * Get the name value.
+     * Get gets the name.
      *
      * @return the name value
      */
@@ -111,7 +111,7 @@ public class WorkflowRunTrigger {
     }
 
     /**
-     * Get the inputs value.
+     * Get gets the inputs.
      *
      * @return the inputs value
      */
@@ -120,7 +120,7 @@ public class WorkflowRunTrigger {
     }
 
     /**
-     * Get the inputsLink value.
+     * Get gets the link to inputs.
      *
      * @return the inputsLink value
      */
@@ -129,7 +129,7 @@ public class WorkflowRunTrigger {
     }
 
     /**
-     * Get the outputs value.
+     * Get gets the outputs.
      *
      * @return the outputs value
      */
@@ -138,7 +138,7 @@ public class WorkflowRunTrigger {
     }
 
     /**
-     * Get the outputsLink value.
+     * Get gets the link to outputs.
      *
      * @return the outputsLink value
      */
@@ -147,7 +147,7 @@ public class WorkflowRunTrigger {
     }
 
     /**
-     * Get the scheduledTime value.
+     * Get gets the scheduled time.
      *
      * @return the scheduledTime value
      */
@@ -156,7 +156,7 @@ public class WorkflowRunTrigger {
     }
 
     /**
-     * Get the startTime value.
+     * Get gets the start time.
      *
      * @return the startTime value
      */
@@ -165,7 +165,7 @@ public class WorkflowRunTrigger {
     }
 
     /**
-     * Get the endTime value.
+     * Get gets the end time.
      *
      * @return the endTime value
      */
@@ -174,7 +174,7 @@ public class WorkflowRunTrigger {
     }
 
     /**
-     * Get the trackingId value.
+     * Get gets the tracking id.
      *
      * @return the trackingId value
      */
@@ -183,7 +183,7 @@ public class WorkflowRunTrigger {
     }
 
     /**
-     * Get the correlation value.
+     * Get the run correlation.
      *
      * @return the correlation value
      */
@@ -192,7 +192,7 @@ public class WorkflowRunTrigger {
     }
 
     /**
-     * Set the correlation value.
+     * Set the run correlation.
      *
      * @param correlation the correlation value to set
      * @return the WorkflowRunTrigger object itself.
@@ -203,7 +203,7 @@ public class WorkflowRunTrigger {
     }
 
     /**
-     * Get the code value.
+     * Get gets the code.
      *
      * @return the code value
      */
@@ -212,7 +212,7 @@ public class WorkflowRunTrigger {
     }
 
     /**
-     * Get the status value.
+     * Get gets the status. Possible values include: 'NotSpecified', 'Paused', 'Running', 'Waiting', 'Succeeded', 'Skipped', 'Suspended', 'Cancelled', 'Failed', 'Faulted', 'TimedOut', 'Aborted', 'Ignored'.
      *
      * @return the status value
      */
@@ -221,7 +221,7 @@ public class WorkflowRunTrigger {
     }
 
     /**
-     * Get the error value.
+     * Get gets the error.
      *
      * @return the error value
      */
@@ -230,7 +230,7 @@ public class WorkflowRunTrigger {
     }
 
     /**
-     * Get the trackedProperties value.
+     * Get gets the tracked properties.
      *
      * @return the trackedProperties value
      */

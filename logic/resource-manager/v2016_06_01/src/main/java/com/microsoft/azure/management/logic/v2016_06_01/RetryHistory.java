@@ -52,7 +52,7 @@ public class RetryHistory {
     private ErrorResponse error;
 
     /**
-     * Get the startTime value.
+     * Get gets the start time.
      *
      * @return the startTime value
      */
@@ -61,7 +61,7 @@ public class RetryHistory {
     }
 
     /**
-     * Set the startTime value.
+     * Set gets the start time.
      *
      * @param startTime the startTime value to set
      * @return the RetryHistory object itself.
@@ -72,7 +72,7 @@ public class RetryHistory {
     }
 
     /**
-     * Get the endTime value.
+     * Get gets the end time.
      *
      * @return the endTime value
      */
@@ -81,7 +81,7 @@ public class RetryHistory {
     }
 
     /**
-     * Set the endTime value.
+     * Set gets the end time.
      *
      * @param endTime the endTime value to set
      * @return the RetryHistory object itself.
@@ -92,7 +92,7 @@ public class RetryHistory {
     }
 
     /**
-     * Get the code value.
+     * Get gets the status code.
      *
      * @return the code value
      */
@@ -101,7 +101,7 @@ public class RetryHistory {
     }
 
     /**
-     * Set the code value.
+     * Set gets the status code.
      *
      * @param code the code value to set
      * @return the RetryHistory object itself.
@@ -112,7 +112,7 @@ public class RetryHistory {
     }
 
     /**
-     * Get the clientRequestId value.
+     * Get gets the client request Id.
      *
      * @return the clientRequestId value
      */
@@ -121,7 +121,7 @@ public class RetryHistory {
     }
 
     /**
-     * Set the clientRequestId value.
+     * Set gets the client request Id.
      *
      * @param clientRequestId the clientRequestId value to set
      * @return the RetryHistory object itself.
@@ -132,7 +132,7 @@ public class RetryHistory {
     }
 
     /**
-     * Get the serviceRequestId value.
+     * Get gets the service request Id.
      *
      * @return the serviceRequestId value
      */
@@ -141,7 +141,7 @@ public class RetryHistory {
     }
 
     /**
-     * Set the serviceRequestId value.
+     * Set gets the service request Id.
      *
      * @param serviceRequestId the serviceRequestId value to set
      * @return the RetryHistory object itself.
@@ -152,7 +152,7 @@ public class RetryHistory {
     }
 
     /**
-     * Get the error value.
+     * Get gets the error response.
      *
      * @return the error value
      */
@@ -161,7 +161,7 @@ public class RetryHistory {
     }
 
     /**
-     * Set the error value.
+     * Set gets the error response.
      *
      * @param error the error value to set
      * @return the RetryHistory object itself.

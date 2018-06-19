@@ -28,7 +28,7 @@ public class KeyVaultKeyInner {
     private KeyVaultKeyAttributes attributes;
 
     /**
-     * Get the kid value.
+     * Get the key id.
      *
      * @return the kid value
      */
@@ -37,7 +37,7 @@ public class KeyVaultKeyInner {
     }
 
     /**
-     * Set the kid value.
+     * Set the key id.
      *
      * @param kid the kid value to set
      * @return the KeyVaultKeyInner object itself.
@@ -48,7 +48,7 @@ public class KeyVaultKeyInner {
     }
 
     /**
-     * Get the attributes value.
+     * Get the key attributes.
      *
      * @return the attributes value
      */
@@ -57,7 +57,7 @@ public class KeyVaultKeyInner {
     }
 
     /**
-     * Set the attributes value.
+     * Set the key attributes.
      *
      * @param attributes the attributes value to set
      * @return the KeyVaultKeyInner object itself.

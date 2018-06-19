@@ -80,41 +80,22 @@ class WorkflowsImpl extends GroupableResourcesCoreImpl<Workflow, WorkflowImpl, W
         return this.wrapList(client.listByResourceGroup(resourceGroupName));
     }
 
-    private Observable<Page<WorkflowInner>> listByResourceGroupNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        WorkflowsInner client = this.inner();
-        return client.listByResourceGroupNextAsync(nextLink)
-        .flatMap(new Func1<Page<WorkflowInner>, Observable<Page<WorkflowInner>>>() {
-            @Override
-            public Observable<Page<WorkflowInner>> call(Page<WorkflowInner> page) {
-                return Observable.just(page).concatWith(listByResourceGroupNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<Workflow> listByResourceGroupAsync(String resourceGroupName) {
         WorkflowsInner client = this.inner();
         return client.listByResourceGroupAsync(resourceGroupName)
-        .flatMap(new Func1<Page<WorkflowInner>, Observable<Page<WorkflowInner>>>() {
-            @Override
-            public Observable<Page<WorkflowInner>> call(Page<WorkflowInner> page) {
-                return listByResourceGroupNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<WorkflowInner>, Iterable<WorkflowInner>>() {
             @Override
             public Iterable<WorkflowInner> call(Page<WorkflowInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<WorkflowInner, Workflow>() {
             @Override
             public Workflow call(WorkflowInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override
@@ -123,41 +104,22 @@ class WorkflowsImpl extends GroupableResourcesCoreImpl<Workflow, WorkflowImpl, W
         return this.wrapList(client.list());
     }
 
-    private Observable<Page<WorkflowInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        WorkflowsInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<WorkflowInner>, Observable<Page<WorkflowInner>>>() {
-            @Override
-            public Observable<Page<WorkflowInner>> call(Page<WorkflowInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<Workflow> listAsync() {
         WorkflowsInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<WorkflowInner>, Observable<Page<WorkflowInner>>>() {
-            @Override
-            public Observable<Page<WorkflowInner>> call(Page<WorkflowInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<WorkflowInner>, Iterable<WorkflowInner>>() {
             @Override
             public Iterable<WorkflowInner> call(Page<WorkflowInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<WorkflowInner, Workflow>() {
             @Override
             public Workflow call(WorkflowInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override

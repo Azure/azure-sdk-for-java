@@ -207,7 +207,7 @@ public class SessionsInner {
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param top The number of items to be included in the result.
-     * @param filter The filter to apply on the operation.
+     * @param filter The filter to apply on the operation. Options for filters include: ChangedTime.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -229,7 +229,7 @@ public class SessionsInner {
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param top The number of items to be included in the result.
-     * @param filter The filter to apply on the operation.
+     * @param filter The filter to apply on the operation. Options for filters include: ChangedTime.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -252,7 +252,7 @@ public class SessionsInner {
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param top The number of items to be included in the result.
-     * @param filter The filter to apply on the operation.
+     * @param filter The filter to apply on the operation. Options for filters include: ChangedTime.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;IntegrationAccountSessionInner&gt; object
      */
@@ -272,7 +272,7 @@ public class SessionsInner {
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param top The number of items to be included in the result.
-     * @param filter The filter to apply on the operation.
+     * @param filter The filter to apply on the operation. Options for filters include: ChangedTime.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;IntegrationAccountSessionInner&gt; object
      */
@@ -296,7 +296,7 @@ public class SessionsInner {
     ServiceResponse<PageImpl<IntegrationAccountSessionInner>> * @param resourceGroupName The resource group name.
     ServiceResponse<PageImpl<IntegrationAccountSessionInner>> * @param integrationAccountName The integration account name.
     ServiceResponse<PageImpl<IntegrationAccountSessionInner>> * @param top The number of items to be included in the result.
-    ServiceResponse<PageImpl<IntegrationAccountSessionInner>> * @param filter The filter to apply on the operation.
+    ServiceResponse<PageImpl<IntegrationAccountSessionInner>> * @param filter The filter to apply on the operation. Options for filters include: ChangedTime.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;IntegrationAccountSessionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */

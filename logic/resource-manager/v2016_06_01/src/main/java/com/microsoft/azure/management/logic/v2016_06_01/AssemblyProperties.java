@@ -39,7 +39,7 @@ public class AssemblyProperties extends ArtifactContentPropertiesDefinition {
     private String assemblyPublicKeyToken;
 
     /**
-     * Get the assemblyName value.
+     * Get the assembly name.
      *
      * @return the assemblyName value
      */
@@ -48,7 +48,7 @@ public class AssemblyProperties extends ArtifactContentPropertiesDefinition {
     }
 
     /**
-     * Set the assemblyName value.
+     * Set the assembly name.
      *
      * @param assemblyName the assemblyName value to set
      * @return the AssemblyProperties object itself.
@@ -59,7 +59,7 @@ public class AssemblyProperties extends ArtifactContentPropertiesDefinition {
     }
 
     /**
-     * Get the assemblyVersion value.
+     * Get the assembly version.
      *
      * @return the assemblyVersion value
      */
@@ -68,7 +68,7 @@ public class AssemblyProperties extends ArtifactContentPropertiesDefinition {
     }
 
     /**
-     * Set the assemblyVersion value.
+     * Set the assembly version.
      *
      * @param assemblyVersion the assemblyVersion value to set
      * @return the AssemblyProperties object itself.
@@ -79,7 +79,7 @@ public class AssemblyProperties extends ArtifactContentPropertiesDefinition {
     }
 
     /**
-     * Get the assemblyCulture value.
+     * Get the assembly culture.
      *
      * @return the assemblyCulture value
      */
@@ -88,7 +88,7 @@ public class AssemblyProperties extends ArtifactContentPropertiesDefinition {
     }
 
     /**
-     * Set the assemblyCulture value.
+     * Set the assembly culture.
      *
      * @param assemblyCulture the assemblyCulture value to set
      * @return the AssemblyProperties object itself.
@@ -99,7 +99,7 @@ public class AssemblyProperties extends ArtifactContentPropertiesDefinition {
     }
 
     /**
-     * Get the assemblyPublicKeyToken value.
+     * Get the assembly public key token.
      *
      * @return the assemblyPublicKeyToken value
      */
@@ -108,7 +108,7 @@ public class AssemblyProperties extends ArtifactContentPropertiesDefinition {
     }
 
     /**
-     * Set the assemblyPublicKeyToken value.
+     * Set the assembly public key token.
      *
      * @param assemblyPublicKeyToken the assemblyPublicKeyToken value to set
      * @return the AssemblyProperties object itself.

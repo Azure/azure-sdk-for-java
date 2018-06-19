@@ -54,7 +54,7 @@ public class TrackingEventsDefinition {
     }
 
     /**
-     * Get the trackEventsOptions value.
+     * Get possible values include: 'None', 'DisableSourceInfoEnrich'.
      *
      * @return the trackEventsOptions value
      */
@@ -63,7 +63,7 @@ public class TrackingEventsDefinition {
     }
 
     /**
-     * Set the trackEventsOptions value.
+     * Set possible values include: 'None', 'DisableSourceInfoEnrich'.
      *
      * @param trackEventsOptions the trackEventsOptions value to set
      * @return the TrackingEventsDefinition object itself.

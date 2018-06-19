@@ -22,7 +22,7 @@ public class WorkflowFilter {
     private WorkflowState state;
 
     /**
-     * Get the state value.
+     * Get the state of workflows. Possible values include: 'NotSpecified', 'Completed', 'Enabled', 'Disabled', 'Deleted', 'Suspended'.
      *
      * @return the state value
      */
@@ -31,7 +31,7 @@ public class WorkflowFilter {
     }
 
     /**
-     * Set the state value.
+     * Set the state of workflows. Possible values include: 'NotSpecified', 'Completed', 'Enabled', 'Disabled', 'Deleted', 'Suspended'.
      *
      * @param state the state value to set
      * @return the WorkflowFilter object itself.

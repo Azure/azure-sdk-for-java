@@ -24,7 +24,7 @@ public class WorkflowTriggerHistoryFilter {
     private WorkflowStatus status;
 
     /**
-     * Get the status value.
+     * Get the status of workflow trigger history. Possible values include: 'NotSpecified', 'Paused', 'Running', 'Waiting', 'Succeeded', 'Skipped', 'Suspended', 'Cancelled', 'Failed', 'Faulted', 'TimedOut', 'Aborted', 'Ignored'.
      *
      * @return the status value
      */
@@ -33,7 +33,7 @@ public class WorkflowTriggerHistoryFilter {
     }
 
     /**
-     * Set the status value.
+     * Set the status of workflow trigger history. Possible values include: 'NotSpecified', 'Paused', 'Running', 'Waiting', 'Succeeded', 'Skipped', 'Suspended', 'Cancelled', 'Failed', 'Faulted', 'TimedOut', 'Aborted', 'Ignored'.
      *
      * @param status the status value to set
      * @return the WorkflowTriggerHistoryFilter object itself.

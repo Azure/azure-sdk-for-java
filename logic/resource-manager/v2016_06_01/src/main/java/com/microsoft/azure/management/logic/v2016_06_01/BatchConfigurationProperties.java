@@ -27,7 +27,7 @@ public class BatchConfigurationProperties extends ArtifactProperties {
     private BatchReleaseCriteria releaseCriteria;
 
     /**
-     * Get the batchGroupName value.
+     * Get the name of the batch group.
      *
      * @return the batchGroupName value
      */
@@ -36,7 +36,7 @@ public class BatchConfigurationProperties extends ArtifactProperties {
     }
 
     /**
-     * Set the batchGroupName value.
+     * Set the name of the batch group.
      *
      * @param batchGroupName the batchGroupName value to set
      * @return the BatchConfigurationProperties object itself.
@@ -47,7 +47,7 @@ public class BatchConfigurationProperties extends ArtifactProperties {
     }
 
     /**
-     * Get the releaseCriteria value.
+     * Get the batch release criteria.
      *
      * @return the releaseCriteria value
      */
@@ -56,7 +56,7 @@ public class BatchConfigurationProperties extends ArtifactProperties {
     }
 
     /**
-     * Set the releaseCriteria value.
+     * Set the batch release criteria.
      *
      * @param releaseCriteria the releaseCriteria value to set
      * @return the BatchConfigurationProperties object itself.

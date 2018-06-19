@@ -25,7 +25,7 @@ public class BatchConfigurationInner extends Resource {
     private BatchConfigurationProperties properties;
 
     /**
-     * Get the properties value.
+     * Get the batch configuration properties.
      *
      * @return the properties value
      */
@@ -34,7 +34,7 @@ public class BatchConfigurationInner extends Resource {
     }
 
     /**
-     * Set the properties value.
+     * Set the batch configuration properties.
      *
      * @param properties the properties value to set
      * @return the BatchConfigurationInner object itself.

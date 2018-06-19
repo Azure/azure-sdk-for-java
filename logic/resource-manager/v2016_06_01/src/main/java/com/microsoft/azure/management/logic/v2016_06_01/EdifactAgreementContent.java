@@ -27,7 +27,7 @@ public class EdifactAgreementContent {
     private EdifactOneWayAgreement sendAgreement;
 
     /**
-     * Get the receiveAgreement value.
+     * Get the EDIFACT one-way receive agreement.
      *
      * @return the receiveAgreement value
      */
@@ -36,7 +36,7 @@ public class EdifactAgreementContent {
     }
 
     /**
-     * Set the receiveAgreement value.
+     * Set the EDIFACT one-way receive agreement.
      *
      * @param receiveAgreement the receiveAgreement value to set
      * @return the EdifactAgreementContent object itself.
@@ -47,7 +47,7 @@ public class EdifactAgreementContent {
     }
 
     /**
-     * Get the sendAgreement value.
+     * Get the EDIFACT one-way send agreement.
      *
      * @return the sendAgreement value
      */
@@ -56,7 +56,7 @@ public class EdifactAgreementContent {
     }
 
     /**
-     * Set the sendAgreement value.
+     * Set the EDIFACT one-way send agreement.
      *
      * @param sendAgreement the sendAgreement value to set
      * @return the EdifactAgreementContent object itself.

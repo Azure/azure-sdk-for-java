@@ -105,7 +105,7 @@ public class X12AcknowledgementSettings {
     private boolean rolloverAcknowledgementControlNumber;
 
     /**
-     * Get the needTechnicalAcknowledgement value.
+     * Get the value indicating whether technical acknowledgement is needed.
      *
      * @return the needTechnicalAcknowledgement value
      */
@@ -114,7 +114,7 @@ public class X12AcknowledgementSettings {
     }
 
     /**
-     * Set the needTechnicalAcknowledgement value.
+     * Set the value indicating whether technical acknowledgement is needed.
      *
      * @param needTechnicalAcknowledgement the needTechnicalAcknowledgement value to set
      * @return the X12AcknowledgementSettings object itself.
@@ -125,7 +125,7 @@ public class X12AcknowledgementSettings {
     }
 
     /**
-     * Get the batchTechnicalAcknowledgements value.
+     * Get the value indicating whether to batch the technical acknowledgements.
      *
      * @return the batchTechnicalAcknowledgements value
      */
@@ -134,7 +134,7 @@ public class X12AcknowledgementSettings {
     }
 
     /**
-     * Set the batchTechnicalAcknowledgements value.
+     * Set the value indicating whether to batch the technical acknowledgements.
      *
      * @param batchTechnicalAcknowledgements the batchTechnicalAcknowledgements value to set
      * @return the X12AcknowledgementSettings object itself.
@@ -145,7 +145,7 @@ public class X12AcknowledgementSettings {
     }
 
     /**
-     * Get the needFunctionalAcknowledgement value.
+     * Get the value indicating whether functional acknowledgement is needed.
      *
      * @return the needFunctionalAcknowledgement value
      */
@@ -154,7 +154,7 @@ public class X12AcknowledgementSettings {
     }
 
     /**
-     * Set the needFunctionalAcknowledgement value.
+     * Set the value indicating whether functional acknowledgement is needed.
      *
      * @param needFunctionalAcknowledgement the needFunctionalAcknowledgement value to set
      * @return the X12AcknowledgementSettings object itself.
@@ -165,7 +165,7 @@ public class X12AcknowledgementSettings {
     }
 
     /**
-     * Get the functionalAcknowledgementVersion value.
+     * Get the functional acknowledgement version.
      *
      * @return the functionalAcknowledgementVersion value
      */
@@ -174,7 +174,7 @@ public class X12AcknowledgementSettings {
     }
 
     /**
-     * Set the functionalAcknowledgementVersion value.
+     * Set the functional acknowledgement version.
      *
      * @param functionalAcknowledgementVersion the functionalAcknowledgementVersion value to set
      * @return the X12AcknowledgementSettings object itself.
@@ -185,7 +185,7 @@ public class X12AcknowledgementSettings {
     }
 
     /**
-     * Get the batchFunctionalAcknowledgements value.
+     * Get the value indicating whether to batch functional acknowledgements.
      *
      * @return the batchFunctionalAcknowledgements value
      */
@@ -194,7 +194,7 @@ public class X12AcknowledgementSettings {
     }
 
     /**
-     * Set the batchFunctionalAcknowledgements value.
+     * Set the value indicating whether to batch functional acknowledgements.
      *
      * @param batchFunctionalAcknowledgements the batchFunctionalAcknowledgements value to set
      * @return the X12AcknowledgementSettings object itself.
@@ -205,7 +205,7 @@ public class X12AcknowledgementSettings {
     }
 
     /**
-     * Get the needImplementationAcknowledgement value.
+     * Get the value indicating whether implementation acknowledgement is needed.
      *
      * @return the needImplementationAcknowledgement value
      */
@@ -214,7 +214,7 @@ public class X12AcknowledgementSettings {
     }
 
     /**
-     * Set the needImplementationAcknowledgement value.
+     * Set the value indicating whether implementation acknowledgement is needed.
      *
      * @param needImplementationAcknowledgement the needImplementationAcknowledgement value to set
      * @return the X12AcknowledgementSettings object itself.
@@ -225,7 +225,7 @@ public class X12AcknowledgementSettings {
     }
 
     /**
-     * Get the implementationAcknowledgementVersion value.
+     * Get the implementation acknowledgement version.
      *
      * @return the implementationAcknowledgementVersion value
      */
@@ -234,7 +234,7 @@ public class X12AcknowledgementSettings {
     }
 
     /**
-     * Set the implementationAcknowledgementVersion value.
+     * Set the implementation acknowledgement version.
      *
      * @param implementationAcknowledgementVersion the implementationAcknowledgementVersion value to set
      * @return the X12AcknowledgementSettings object itself.
@@ -245,7 +245,7 @@ public class X12AcknowledgementSettings {
     }
 
     /**
-     * Get the batchImplementationAcknowledgements value.
+     * Get the value indicating whether to batch implementation acknowledgements.
      *
      * @return the batchImplementationAcknowledgements value
      */
@@ -254,7 +254,7 @@ public class X12AcknowledgementSettings {
     }
 
     /**
-     * Set the batchImplementationAcknowledgements value.
+     * Set the value indicating whether to batch implementation acknowledgements.
      *
      * @param batchImplementationAcknowledgements the batchImplementationAcknowledgements value to set
      * @return the X12AcknowledgementSettings object itself.
@@ -265,7 +265,7 @@ public class X12AcknowledgementSettings {
     }
 
     /**
-     * Get the needLoopForValidMessages value.
+     * Get the value indicating whether a loop is needed for valid messages.
      *
      * @return the needLoopForValidMessages value
      */
@@ -274,7 +274,7 @@ public class X12AcknowledgementSettings {
     }
 
     /**
-     * Set the needLoopForValidMessages value.
+     * Set the value indicating whether a loop is needed for valid messages.
      *
      * @param needLoopForValidMessages the needLoopForValidMessages value to set
      * @return the X12AcknowledgementSettings object itself.
@@ -285,7 +285,7 @@ public class X12AcknowledgementSettings {
     }
 
     /**
-     * Get the sendSynchronousAcknowledgement value.
+     * Get the value indicating whether to send synchronous acknowledgement.
      *
      * @return the sendSynchronousAcknowledgement value
      */
@@ -294,7 +294,7 @@ public class X12AcknowledgementSettings {
     }
 
     /**
-     * Set the sendSynchronousAcknowledgement value.
+     * Set the value indicating whether to send synchronous acknowledgement.
      *
      * @param sendSynchronousAcknowledgement the sendSynchronousAcknowledgement value to set
      * @return the X12AcknowledgementSettings object itself.
@@ -305,7 +305,7 @@ public class X12AcknowledgementSettings {
     }
 
     /**
-     * Get the acknowledgementControlNumberPrefix value.
+     * Get the acknowledgement control number prefix.
      *
      * @return the acknowledgementControlNumberPrefix value
      */
@@ -314,7 +314,7 @@ public class X12AcknowledgementSettings {
     }
 
     /**
-     * Set the acknowledgementControlNumberPrefix value.
+     * Set the acknowledgement control number prefix.
      *
      * @param acknowledgementControlNumberPrefix the acknowledgementControlNumberPrefix value to set
      * @return the X12AcknowledgementSettings object itself.
@@ -325,7 +325,7 @@ public class X12AcknowledgementSettings {
     }
 
     /**
-     * Get the acknowledgementControlNumberSuffix value.
+     * Get the acknowledgement control number suffix.
      *
      * @return the acknowledgementControlNumberSuffix value
      */
@@ -334,7 +334,7 @@ public class X12AcknowledgementSettings {
     }
 
     /**
-     * Set the acknowledgementControlNumberSuffix value.
+     * Set the acknowledgement control number suffix.
      *
      * @param acknowledgementControlNumberSuffix the acknowledgementControlNumberSuffix value to set
      * @return the X12AcknowledgementSettings object itself.
@@ -345,7 +345,7 @@ public class X12AcknowledgementSettings {
     }
 
     /**
-     * Get the acknowledgementControlNumberLowerBound value.
+     * Get the acknowledgement control number lower bound.
      *
      * @return the acknowledgementControlNumberLowerBound value
      */
@@ -354,7 +354,7 @@ public class X12AcknowledgementSettings {
     }
 
     /**
-     * Set the acknowledgementControlNumberLowerBound value.
+     * Set the acknowledgement control number lower bound.
      *
      * @param acknowledgementControlNumberLowerBound the acknowledgementControlNumberLowerBound value to set
      * @return the X12AcknowledgementSettings object itself.
@@ -365,7 +365,7 @@ public class X12AcknowledgementSettings {
     }
 
     /**
-     * Get the acknowledgementControlNumberUpperBound value.
+     * Get the acknowledgement control number upper bound.
      *
      * @return the acknowledgementControlNumberUpperBound value
      */
@@ -374,7 +374,7 @@ public class X12AcknowledgementSettings {
     }
 
     /**
-     * Set the acknowledgementControlNumberUpperBound value.
+     * Set the acknowledgement control number upper bound.
      *
      * @param acknowledgementControlNumberUpperBound the acknowledgementControlNumberUpperBound value to set
      * @return the X12AcknowledgementSettings object itself.
@@ -385,7 +385,7 @@ public class X12AcknowledgementSettings {
     }
 
     /**
-     * Get the rolloverAcknowledgementControlNumber value.
+     * Get the value indicating whether to rollover acknowledgement control number.
      *
      * @return the rolloverAcknowledgementControlNumber value
      */
@@ -394,7 +394,7 @@ public class X12AcknowledgementSettings {
     }
 
     /**
-     * Set the rolloverAcknowledgementControlNumber value.
+     * Set the value indicating whether to rollover acknowledgement control number.
      *
      * @param rolloverAcknowledgementControlNumber the rolloverAcknowledgementControlNumber value to set
      * @return the X12AcknowledgementSettings object itself.

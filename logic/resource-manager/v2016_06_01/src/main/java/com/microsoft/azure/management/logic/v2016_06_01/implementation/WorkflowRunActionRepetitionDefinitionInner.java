@@ -120,7 +120,7 @@ public class WorkflowRunActionRepetitionDefinitionInner extends Resource {
     private List<RepetitionIndex> repetitionIndexes;
 
     /**
-     * Get the startTime value.
+     * Get the start time of the workflow scope repetition.
      *
      * @return the startTime value
      */
@@ -129,7 +129,7 @@ public class WorkflowRunActionRepetitionDefinitionInner extends Resource {
     }
 
     /**
-     * Set the startTime value.
+     * Set the start time of the workflow scope repetition.
      *
      * @param startTime the startTime value to set
      * @return the WorkflowRunActionRepetitionDefinitionInner object itself.
@@ -140,7 +140,7 @@ public class WorkflowRunActionRepetitionDefinitionInner extends Resource {
     }
 
     /**
-     * Get the endTime value.
+     * Get the end time of the workflow scope repetition.
      *
      * @return the endTime value
      */
@@ -149,7 +149,7 @@ public class WorkflowRunActionRepetitionDefinitionInner extends Resource {
     }
 
     /**
-     * Set the endTime value.
+     * Set the end time of the workflow scope repetition.
      *
      * @param endTime the endTime value to set
      * @return the WorkflowRunActionRepetitionDefinitionInner object itself.
@@ -160,7 +160,7 @@ public class WorkflowRunActionRepetitionDefinitionInner extends Resource {
     }
 
     /**
-     * Get the correlation value.
+     * Get the correlation properties.
      *
      * @return the correlation value
      */
@@ -169,7 +169,7 @@ public class WorkflowRunActionRepetitionDefinitionInner extends Resource {
     }
 
     /**
-     * Set the correlation value.
+     * Set the correlation properties.
      *
      * @param correlation the correlation value to set
      * @return the WorkflowRunActionRepetitionDefinitionInner object itself.
@@ -180,7 +180,7 @@ public class WorkflowRunActionRepetitionDefinitionInner extends Resource {
     }
 
     /**
-     * Get the status value.
+     * Get the status of the workflow scope repetition. Possible values include: 'NotSpecified', 'Paused', 'Running', 'Waiting', 'Succeeded', 'Skipped', 'Suspended', 'Cancelled', 'Failed', 'Faulted', 'TimedOut', 'Aborted', 'Ignored'.
      *
      * @return the status value
      */
@@ -189,7 +189,7 @@ public class WorkflowRunActionRepetitionDefinitionInner extends Resource {
     }
 
     /**
-     * Set the status value.
+     * Set the status of the workflow scope repetition. Possible values include: 'NotSpecified', 'Paused', 'Running', 'Waiting', 'Succeeded', 'Skipped', 'Suspended', 'Cancelled', 'Failed', 'Faulted', 'TimedOut', 'Aborted', 'Ignored'.
      *
      * @param status the status value to set
      * @return the WorkflowRunActionRepetitionDefinitionInner object itself.
@@ -200,7 +200,7 @@ public class WorkflowRunActionRepetitionDefinitionInner extends Resource {
     }
 
     /**
-     * Get the code value.
+     * Get the workflow scope repetition code.
      *
      * @return the code value
      */
@@ -209,7 +209,7 @@ public class WorkflowRunActionRepetitionDefinitionInner extends Resource {
     }
 
     /**
-     * Set the code value.
+     * Set the workflow scope repetition code.
      *
      * @param code the code value to set
      * @return the WorkflowRunActionRepetitionDefinitionInner object itself.
@@ -240,7 +240,7 @@ public class WorkflowRunActionRepetitionDefinitionInner extends Resource {
     }
 
     /**
-     * Get the trackingId value.
+     * Get gets the tracking id.
      *
      * @return the trackingId value
      */
@@ -249,7 +249,7 @@ public class WorkflowRunActionRepetitionDefinitionInner extends Resource {
     }
 
     /**
-     * Get the inputs value.
+     * Get gets the inputs.
      *
      * @return the inputs value
      */
@@ -258,7 +258,7 @@ public class WorkflowRunActionRepetitionDefinitionInner extends Resource {
     }
 
     /**
-     * Get the inputsLink value.
+     * Get gets the link to inputs.
      *
      * @return the inputsLink value
      */
@@ -267,7 +267,7 @@ public class WorkflowRunActionRepetitionDefinitionInner extends Resource {
     }
 
     /**
-     * Get the outputs value.
+     * Get gets the outputs.
      *
      * @return the outputs value
      */
@@ -276,7 +276,7 @@ public class WorkflowRunActionRepetitionDefinitionInner extends Resource {
     }
 
     /**
-     * Get the outputsLink value.
+     * Get gets the link to outputs.
      *
      * @return the outputsLink value
      */
@@ -285,7 +285,7 @@ public class WorkflowRunActionRepetitionDefinitionInner extends Resource {
     }
 
     /**
-     * Get the trackedProperties value.
+     * Get gets the tracked properties.
      *
      * @return the trackedProperties value
      */
@@ -294,7 +294,7 @@ public class WorkflowRunActionRepetitionDefinitionInner extends Resource {
     }
 
     /**
-     * Get the retryHistory value.
+     * Get gets the retry histories.
      *
      * @return the retryHistory value
      */
@@ -303,7 +303,7 @@ public class WorkflowRunActionRepetitionDefinitionInner extends Resource {
     }
 
     /**
-     * Set the retryHistory value.
+     * Set gets the retry histories.
      *
      * @param retryHistory the retryHistory value to set
      * @return the WorkflowRunActionRepetitionDefinitionInner object itself.
@@ -334,7 +334,7 @@ public class WorkflowRunActionRepetitionDefinitionInner extends Resource {
     }
 
     /**
-     * Get the repetitionIndexes value.
+     * Get the repetition indexes.
      *
      * @return the repetitionIndexes value
      */
@@ -343,7 +343,7 @@ public class WorkflowRunActionRepetitionDefinitionInner extends Resource {
     }
 
     /**
-     * Set the repetitionIndexes value.
+     * Set the repetition indexes.
      *
      * @param repetitionIndexes the repetitionIndexes value to set
      * @return the WorkflowRunActionRepetitionDefinitionInner object itself.

@@ -25,7 +25,7 @@ public class AssemblyDefinitionInner extends Resource {
     private AssemblyProperties properties;
 
     /**
-     * Get the properties value.
+     * Get the assembly properties.
      *
      * @return the properties value
      */
@@ -34,7 +34,7 @@ public class AssemblyDefinitionInner extends Resource {
     }
 
     /**
-     * Set the properties value.
+     * Set the assembly properties.
      *
      * @param properties the properties value to set
      * @return the AssemblyDefinitionInner object itself.
