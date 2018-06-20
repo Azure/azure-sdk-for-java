@@ -85,7 +85,7 @@ public class EdifactFramingSettings {
     private SegmentTerminatorSuffix segmentTerminatorSuffix;
 
     /**
-     * Get the serviceCodeListDirectoryVersion value.
+     * Get the service code list directory version.
      *
      * @return the serviceCodeListDirectoryVersion value
      */
@@ -94,7 +94,7 @@ public class EdifactFramingSettings {
     }
 
     /**
-     * Set the serviceCodeListDirectoryVersion value.
+     * Set the service code list directory version.
      *
      * @param serviceCodeListDirectoryVersion the serviceCodeListDirectoryVersion value to set
      * @return the EdifactFramingSettings object itself.
@@ -105,7 +105,7 @@ public class EdifactFramingSettings {
     }
 
     /**
-     * Get the characterEncoding value.
+     * Get the character encoding.
      *
      * @return the characterEncoding value
      */
@@ -114,7 +114,7 @@ public class EdifactFramingSettings {
     }
 
     /**
-     * Set the characterEncoding value.
+     * Set the character encoding.
      *
      * @param characterEncoding the characterEncoding value to set
      * @return the EdifactFramingSettings object itself.
@@ -125,7 +125,7 @@ public class EdifactFramingSettings {
     }
 
     /**
-     * Get the protocolVersion value.
+     * Get the protocol version.
      *
      * @return the protocolVersion value
      */
@@ -134,7 +134,7 @@ public class EdifactFramingSettings {
     }
 
     /**
-     * Set the protocolVersion value.
+     * Set the protocol version.
      *
      * @param protocolVersion the protocolVersion value to set
      * @return the EdifactFramingSettings object itself.
@@ -145,7 +145,7 @@ public class EdifactFramingSettings {
     }
 
     /**
-     * Get the dataElementSeparator value.
+     * Get the data element separator.
      *
      * @return the dataElementSeparator value
      */
@@ -154,7 +154,7 @@ public class EdifactFramingSettings {
     }
 
     /**
-     * Set the dataElementSeparator value.
+     * Set the data element separator.
      *
      * @param dataElementSeparator the dataElementSeparator value to set
      * @return the EdifactFramingSettings object itself.
@@ -165,7 +165,7 @@ public class EdifactFramingSettings {
     }
 
     /**
-     * Get the componentSeparator value.
+     * Get the component separator.
      *
      * @return the componentSeparator value
      */
@@ -174,7 +174,7 @@ public class EdifactFramingSettings {
     }
 
     /**
-     * Set the componentSeparator value.
+     * Set the component separator.
      *
      * @param componentSeparator the componentSeparator value to set
      * @return the EdifactFramingSettings object itself.
@@ -185,7 +185,7 @@ public class EdifactFramingSettings {
     }
 
     /**
-     * Get the segmentTerminator value.
+     * Get the segment terminator.
      *
      * @return the segmentTerminator value
      */
@@ -194,7 +194,7 @@ public class EdifactFramingSettings {
     }
 
     /**
-     * Set the segmentTerminator value.
+     * Set the segment terminator.
      *
      * @param segmentTerminator the segmentTerminator value to set
      * @return the EdifactFramingSettings object itself.
@@ -205,7 +205,7 @@ public class EdifactFramingSettings {
     }
 
     /**
-     * Get the releaseIndicator value.
+     * Get the release indicator.
      *
      * @return the releaseIndicator value
      */
@@ -214,7 +214,7 @@ public class EdifactFramingSettings {
     }
 
     /**
-     * Set the releaseIndicator value.
+     * Set the release indicator.
      *
      * @param releaseIndicator the releaseIndicator value to set
      * @return the EdifactFramingSettings object itself.
@@ -225,7 +225,7 @@ public class EdifactFramingSettings {
     }
 
     /**
-     * Get the repetitionSeparator value.
+     * Get the repetition separator.
      *
      * @return the repetitionSeparator value
      */
@@ -234,7 +234,7 @@ public class EdifactFramingSettings {
     }
 
     /**
-     * Set the repetitionSeparator value.
+     * Set the repetition separator.
      *
      * @param repetitionSeparator the repetitionSeparator value to set
      * @return the EdifactFramingSettings object itself.
@@ -245,7 +245,7 @@ public class EdifactFramingSettings {
     }
 
     /**
-     * Get the characterSet value.
+     * Get the EDIFACT frame setting characterSet. Possible values include: 'NotSpecified', 'UNOB', 'UNOA', 'UNOC', 'UNOD', 'UNOE', 'UNOF', 'UNOG', 'UNOH', 'UNOI', 'UNOJ', 'UNOK', 'UNOX', 'UNOY', 'KECA'.
      *
      * @return the characterSet value
      */
@@ -254,7 +254,7 @@ public class EdifactFramingSettings {
     }
 
     /**
-     * Set the characterSet value.
+     * Set the EDIFACT frame setting characterSet. Possible values include: 'NotSpecified', 'UNOB', 'UNOA', 'UNOC', 'UNOD', 'UNOE', 'UNOF', 'UNOG', 'UNOH', 'UNOI', 'UNOJ', 'UNOK', 'UNOX', 'UNOY', 'KECA'.
      *
      * @param characterSet the characterSet value to set
      * @return the EdifactFramingSettings object itself.
@@ -265,7 +265,7 @@ public class EdifactFramingSettings {
     }
 
     /**
-     * Get the decimalPointIndicator value.
+     * Get the EDIFACT frame setting decimal indicator. Possible values include: 'NotSpecified', 'Comma', 'Decimal'.
      *
      * @return the decimalPointIndicator value
      */
@@ -274,7 +274,7 @@ public class EdifactFramingSettings {
     }
 
     /**
-     * Set the decimalPointIndicator value.
+     * Set the EDIFACT frame setting decimal indicator. Possible values include: 'NotSpecified', 'Comma', 'Decimal'.
      *
      * @param decimalPointIndicator the decimalPointIndicator value to set
      * @return the EdifactFramingSettings object itself.
@@ -285,7 +285,7 @@ public class EdifactFramingSettings {
     }
 
     /**
-     * Get the segmentTerminatorSuffix value.
+     * Get the EDIFACT frame setting segment terminator suffix. Possible values include: 'NotSpecified', 'None', 'CR', 'LF', 'CRLF'.
      *
      * @return the segmentTerminatorSuffix value
      */
@@ -294,7 +294,7 @@ public class EdifactFramingSettings {
     }
 
     /**
-     * Set the segmentTerminatorSuffix value.
+     * Set the EDIFACT frame setting segment terminator suffix. Possible values include: 'NotSpecified', 'None', 'CR', 'LF', 'CRLF'.
      *
      * @param segmentTerminatorSuffix the segmentTerminatorSuffix value to set
      * @return the EdifactFramingSettings object itself.

@@ -31,7 +31,7 @@ public class IntegrationAccountInner extends Resource {
     private IntegrationAccountSku sku;
 
     /**
-     * Get the properties value.
+     * Get the integration account properties.
      *
      * @return the properties value
      */
@@ -40,7 +40,7 @@ public class IntegrationAccountInner extends Resource {
     }
 
     /**
-     * Set the properties value.
+     * Set the integration account properties.
      *
      * @param properties the properties value to set
      * @return the IntegrationAccountInner object itself.
@@ -51,7 +51,7 @@ public class IntegrationAccountInner extends Resource {
     }
 
     /**
-     * Get the sku value.
+     * Get the sku.
      *
      * @return the sku value
      */
@@ -60,7 +60,7 @@ public class IntegrationAccountInner extends Resource {
     }
 
     /**
-     * Set the sku value.
+     * Set the sku.
      *
      * @param sku the sku value to set
      * @return the IntegrationAccountInner object itself.

@@ -262,7 +262,7 @@ public class EdifactEnvelopeSettings {
     private String receiverInternalSubIdentification;
 
     /**
-     * Get the groupAssociationAssignedCode value.
+     * Get the group association assigned code.
      *
      * @return the groupAssociationAssignedCode value
      */
@@ -271,7 +271,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Set the groupAssociationAssignedCode value.
+     * Set the group association assigned code.
      *
      * @param groupAssociationAssignedCode the groupAssociationAssignedCode value to set
      * @return the EdifactEnvelopeSettings object itself.
@@ -282,7 +282,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Get the communicationAgreementId value.
+     * Get the communication agreement id.
      *
      * @return the communicationAgreementId value
      */
@@ -291,7 +291,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Set the communicationAgreementId value.
+     * Set the communication agreement id.
      *
      * @param communicationAgreementId the communicationAgreementId value to set
      * @return the EdifactEnvelopeSettings object itself.
@@ -302,7 +302,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Get the applyDelimiterStringAdvice value.
+     * Get the value indicating whether to apply delimiter string advice.
      *
      * @return the applyDelimiterStringAdvice value
      */
@@ -311,7 +311,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Set the applyDelimiterStringAdvice value.
+     * Set the value indicating whether to apply delimiter string advice.
      *
      * @param applyDelimiterStringAdvice the applyDelimiterStringAdvice value to set
      * @return the EdifactEnvelopeSettings object itself.
@@ -322,7 +322,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Get the createGroupingSegments value.
+     * Get the value indicating whether to create grouping segments.
      *
      * @return the createGroupingSegments value
      */
@@ -331,7 +331,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Set the createGroupingSegments value.
+     * Set the value indicating whether to create grouping segments.
      *
      * @param createGroupingSegments the createGroupingSegments value to set
      * @return the EdifactEnvelopeSettings object itself.
@@ -342,7 +342,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Get the enableDefaultGroupHeaders value.
+     * Get the value indicating whether to enable default group headers.
      *
      * @return the enableDefaultGroupHeaders value
      */
@@ -351,7 +351,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Set the enableDefaultGroupHeaders value.
+     * Set the value indicating whether to enable default group headers.
      *
      * @param enableDefaultGroupHeaders the enableDefaultGroupHeaders value to set
      * @return the EdifactEnvelopeSettings object itself.
@@ -362,7 +362,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Get the recipientReferencePasswordValue value.
+     * Get the recipient reference password value.
      *
      * @return the recipientReferencePasswordValue value
      */
@@ -371,7 +371,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Set the recipientReferencePasswordValue value.
+     * Set the recipient reference password value.
      *
      * @param recipientReferencePasswordValue the recipientReferencePasswordValue value to set
      * @return the EdifactEnvelopeSettings object itself.
@@ -382,7 +382,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Get the recipientReferencePasswordQualifier value.
+     * Get the recipient reference password qualifier.
      *
      * @return the recipientReferencePasswordQualifier value
      */
@@ -391,7 +391,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Set the recipientReferencePasswordQualifier value.
+     * Set the recipient reference password qualifier.
      *
      * @param recipientReferencePasswordQualifier the recipientReferencePasswordQualifier value to set
      * @return the EdifactEnvelopeSettings object itself.
@@ -402,7 +402,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Get the applicationReferenceId value.
+     * Get the application reference id.
      *
      * @return the applicationReferenceId value
      */
@@ -411,7 +411,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Set the applicationReferenceId value.
+     * Set the application reference id.
      *
      * @param applicationReferenceId the applicationReferenceId value to set
      * @return the EdifactEnvelopeSettings object itself.
@@ -422,7 +422,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Get the processingPriorityCode value.
+     * Get the processing priority code.
      *
      * @return the processingPriorityCode value
      */
@@ -431,7 +431,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Set the processingPriorityCode value.
+     * Set the processing priority code.
      *
      * @param processingPriorityCode the processingPriorityCode value to set
      * @return the EdifactEnvelopeSettings object itself.
@@ -442,7 +442,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Get the interchangeControlNumberLowerBound value.
+     * Get the interchange control number lower bound.
      *
      * @return the interchangeControlNumberLowerBound value
      */
@@ -451,7 +451,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Set the interchangeControlNumberLowerBound value.
+     * Set the interchange control number lower bound.
      *
      * @param interchangeControlNumberLowerBound the interchangeControlNumberLowerBound value to set
      * @return the EdifactEnvelopeSettings object itself.
@@ -462,7 +462,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Get the interchangeControlNumberUpperBound value.
+     * Get the interchange control number upper bound.
      *
      * @return the interchangeControlNumberUpperBound value
      */
@@ -471,7 +471,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Set the interchangeControlNumberUpperBound value.
+     * Set the interchange control number upper bound.
      *
      * @param interchangeControlNumberUpperBound the interchangeControlNumberUpperBound value to set
      * @return the EdifactEnvelopeSettings object itself.
@@ -482,7 +482,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Get the rolloverInterchangeControlNumber value.
+     * Get the value indicating whether to rollover interchange control number.
      *
      * @return the rolloverInterchangeControlNumber value
      */
@@ -491,7 +491,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Set the rolloverInterchangeControlNumber value.
+     * Set the value indicating whether to rollover interchange control number.
      *
      * @param rolloverInterchangeControlNumber the rolloverInterchangeControlNumber value to set
      * @return the EdifactEnvelopeSettings object itself.
@@ -502,7 +502,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Get the interchangeControlNumberPrefix value.
+     * Get the interchange control number prefix.
      *
      * @return the interchangeControlNumberPrefix value
      */
@@ -511,7 +511,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Set the interchangeControlNumberPrefix value.
+     * Set the interchange control number prefix.
      *
      * @param interchangeControlNumberPrefix the interchangeControlNumberPrefix value to set
      * @return the EdifactEnvelopeSettings object itself.
@@ -522,7 +522,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Get the interchangeControlNumberSuffix value.
+     * Get the interchange control number suffix.
      *
      * @return the interchangeControlNumberSuffix value
      */
@@ -531,7 +531,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Set the interchangeControlNumberSuffix value.
+     * Set the interchange control number suffix.
      *
      * @param interchangeControlNumberSuffix the interchangeControlNumberSuffix value to set
      * @return the EdifactEnvelopeSettings object itself.
@@ -542,7 +542,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Get the senderReverseRoutingAddress value.
+     * Get the sender reverse routing address.
      *
      * @return the senderReverseRoutingAddress value
      */
@@ -551,7 +551,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Set the senderReverseRoutingAddress value.
+     * Set the sender reverse routing address.
      *
      * @param senderReverseRoutingAddress the senderReverseRoutingAddress value to set
      * @return the EdifactEnvelopeSettings object itself.
@@ -562,7 +562,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Get the receiverReverseRoutingAddress value.
+     * Get the receiver reverse routing address.
      *
      * @return the receiverReverseRoutingAddress value
      */
@@ -571,7 +571,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Set the receiverReverseRoutingAddress value.
+     * Set the receiver reverse routing address.
      *
      * @param receiverReverseRoutingAddress the receiverReverseRoutingAddress value to set
      * @return the EdifactEnvelopeSettings object itself.
@@ -582,7 +582,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Get the functionalGroupId value.
+     * Get the functional group id.
      *
      * @return the functionalGroupId value
      */
@@ -591,7 +591,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Set the functionalGroupId value.
+     * Set the functional group id.
      *
      * @param functionalGroupId the functionalGroupId value to set
      * @return the EdifactEnvelopeSettings object itself.
@@ -602,7 +602,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Get the groupControllingAgencyCode value.
+     * Get the group controlling agency code.
      *
      * @return the groupControllingAgencyCode value
      */
@@ -611,7 +611,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Set the groupControllingAgencyCode value.
+     * Set the group controlling agency code.
      *
      * @param groupControllingAgencyCode the groupControllingAgencyCode value to set
      * @return the EdifactEnvelopeSettings object itself.
@@ -622,7 +622,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Get the groupMessageVersion value.
+     * Get the group message version.
      *
      * @return the groupMessageVersion value
      */
@@ -631,7 +631,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Set the groupMessageVersion value.
+     * Set the group message version.
      *
      * @param groupMessageVersion the groupMessageVersion value to set
      * @return the EdifactEnvelopeSettings object itself.
@@ -642,7 +642,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Get the groupMessageRelease value.
+     * Get the group message release.
      *
      * @return the groupMessageRelease value
      */
@@ -651,7 +651,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Set the groupMessageRelease value.
+     * Set the group message release.
      *
      * @param groupMessageRelease the groupMessageRelease value to set
      * @return the EdifactEnvelopeSettings object itself.
@@ -662,7 +662,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Get the groupControlNumberLowerBound value.
+     * Get the group control number lower bound.
      *
      * @return the groupControlNumberLowerBound value
      */
@@ -671,7 +671,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Set the groupControlNumberLowerBound value.
+     * Set the group control number lower bound.
      *
      * @param groupControlNumberLowerBound the groupControlNumberLowerBound value to set
      * @return the EdifactEnvelopeSettings object itself.
@@ -682,7 +682,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Get the groupControlNumberUpperBound value.
+     * Get the group control number upper bound.
      *
      * @return the groupControlNumberUpperBound value
      */
@@ -691,7 +691,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Set the groupControlNumberUpperBound value.
+     * Set the group control number upper bound.
      *
      * @param groupControlNumberUpperBound the groupControlNumberUpperBound value to set
      * @return the EdifactEnvelopeSettings object itself.
@@ -702,7 +702,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Get the rolloverGroupControlNumber value.
+     * Get the value indicating whether to rollover group control number.
      *
      * @return the rolloverGroupControlNumber value
      */
@@ -711,7 +711,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Set the rolloverGroupControlNumber value.
+     * Set the value indicating whether to rollover group control number.
      *
      * @param rolloverGroupControlNumber the rolloverGroupControlNumber value to set
      * @return the EdifactEnvelopeSettings object itself.
@@ -722,7 +722,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Get the groupControlNumberPrefix value.
+     * Get the group control number prefix.
      *
      * @return the groupControlNumberPrefix value
      */
@@ -731,7 +731,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Set the groupControlNumberPrefix value.
+     * Set the group control number prefix.
      *
      * @param groupControlNumberPrefix the groupControlNumberPrefix value to set
      * @return the EdifactEnvelopeSettings object itself.
@@ -742,7 +742,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Get the groupControlNumberSuffix value.
+     * Get the group control number suffix.
      *
      * @return the groupControlNumberSuffix value
      */
@@ -751,7 +751,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Set the groupControlNumberSuffix value.
+     * Set the group control number suffix.
      *
      * @param groupControlNumberSuffix the groupControlNumberSuffix value to set
      * @return the EdifactEnvelopeSettings object itself.
@@ -762,7 +762,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Get the groupApplicationReceiverQualifier value.
+     * Get the group application receiver qualifier.
      *
      * @return the groupApplicationReceiverQualifier value
      */
@@ -771,7 +771,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Set the groupApplicationReceiverQualifier value.
+     * Set the group application receiver qualifier.
      *
      * @param groupApplicationReceiverQualifier the groupApplicationReceiverQualifier value to set
      * @return the EdifactEnvelopeSettings object itself.
@@ -782,7 +782,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Get the groupApplicationReceiverId value.
+     * Get the group application receiver id.
      *
      * @return the groupApplicationReceiverId value
      */
@@ -791,7 +791,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Set the groupApplicationReceiverId value.
+     * Set the group application receiver id.
      *
      * @param groupApplicationReceiverId the groupApplicationReceiverId value to set
      * @return the EdifactEnvelopeSettings object itself.
@@ -802,7 +802,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Get the groupApplicationSenderQualifier value.
+     * Get the group application sender qualifier.
      *
      * @return the groupApplicationSenderQualifier value
      */
@@ -811,7 +811,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Set the groupApplicationSenderQualifier value.
+     * Set the group application sender qualifier.
      *
      * @param groupApplicationSenderQualifier the groupApplicationSenderQualifier value to set
      * @return the EdifactEnvelopeSettings object itself.
@@ -822,7 +822,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Get the groupApplicationSenderId value.
+     * Get the group application sender id.
      *
      * @return the groupApplicationSenderId value
      */
@@ -831,7 +831,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Set the groupApplicationSenderId value.
+     * Set the group application sender id.
      *
      * @param groupApplicationSenderId the groupApplicationSenderId value to set
      * @return the EdifactEnvelopeSettings object itself.
@@ -842,7 +842,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Get the groupApplicationPassword value.
+     * Get the group application password.
      *
      * @return the groupApplicationPassword value
      */
@@ -851,7 +851,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Set the groupApplicationPassword value.
+     * Set the group application password.
      *
      * @param groupApplicationPassword the groupApplicationPassword value to set
      * @return the EdifactEnvelopeSettings object itself.
@@ -862,7 +862,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Get the overwriteExistingTransactionSetControlNumber value.
+     * Get the value indicating whether to overwrite existing transaction set control number.
      *
      * @return the overwriteExistingTransactionSetControlNumber value
      */
@@ -871,7 +871,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Set the overwriteExistingTransactionSetControlNumber value.
+     * Set the value indicating whether to overwrite existing transaction set control number.
      *
      * @param overwriteExistingTransactionSetControlNumber the overwriteExistingTransactionSetControlNumber value to set
      * @return the EdifactEnvelopeSettings object itself.
@@ -882,7 +882,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Get the transactionSetControlNumberPrefix value.
+     * Get the transaction set control number prefix.
      *
      * @return the transactionSetControlNumberPrefix value
      */
@@ -891,7 +891,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Set the transactionSetControlNumberPrefix value.
+     * Set the transaction set control number prefix.
      *
      * @param transactionSetControlNumberPrefix the transactionSetControlNumberPrefix value to set
      * @return the EdifactEnvelopeSettings object itself.
@@ -902,7 +902,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Get the transactionSetControlNumberSuffix value.
+     * Get the transaction set control number suffix.
      *
      * @return the transactionSetControlNumberSuffix value
      */
@@ -911,7 +911,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Set the transactionSetControlNumberSuffix value.
+     * Set the transaction set control number suffix.
      *
      * @param transactionSetControlNumberSuffix the transactionSetControlNumberSuffix value to set
      * @return the EdifactEnvelopeSettings object itself.
@@ -922,7 +922,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Get the transactionSetControlNumberLowerBound value.
+     * Get the transaction set control number lower bound.
      *
      * @return the transactionSetControlNumberLowerBound value
      */
@@ -931,7 +931,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Set the transactionSetControlNumberLowerBound value.
+     * Set the transaction set control number lower bound.
      *
      * @param transactionSetControlNumberLowerBound the transactionSetControlNumberLowerBound value to set
      * @return the EdifactEnvelopeSettings object itself.
@@ -942,7 +942,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Get the transactionSetControlNumberUpperBound value.
+     * Get the transaction set control number upper bound.
      *
      * @return the transactionSetControlNumberUpperBound value
      */
@@ -951,7 +951,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Set the transactionSetControlNumberUpperBound value.
+     * Set the transaction set control number upper bound.
      *
      * @param transactionSetControlNumberUpperBound the transactionSetControlNumberUpperBound value to set
      * @return the EdifactEnvelopeSettings object itself.
@@ -962,7 +962,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Get the rolloverTransactionSetControlNumber value.
+     * Get the value indicating whether to rollover transaction set control number.
      *
      * @return the rolloverTransactionSetControlNumber value
      */
@@ -971,7 +971,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Set the rolloverTransactionSetControlNumber value.
+     * Set the value indicating whether to rollover transaction set control number.
      *
      * @param rolloverTransactionSetControlNumber the rolloverTransactionSetControlNumber value to set
      * @return the EdifactEnvelopeSettings object itself.
@@ -982,7 +982,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Get the isTestInterchange value.
+     * Get the value indicating whether the message is a test interchange.
      *
      * @return the isTestInterchange value
      */
@@ -991,7 +991,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Set the isTestInterchange value.
+     * Set the value indicating whether the message is a test interchange.
      *
      * @param isTestInterchange the isTestInterchange value to set
      * @return the EdifactEnvelopeSettings object itself.
@@ -1002,7 +1002,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Get the senderInternalIdentification value.
+     * Get the sender internal identification.
      *
      * @return the senderInternalIdentification value
      */
@@ -1011,7 +1011,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Set the senderInternalIdentification value.
+     * Set the sender internal identification.
      *
      * @param senderInternalIdentification the senderInternalIdentification value to set
      * @return the EdifactEnvelopeSettings object itself.
@@ -1022,7 +1022,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Get the senderInternalSubIdentification value.
+     * Get the sender internal sub identification.
      *
      * @return the senderInternalSubIdentification value
      */
@@ -1031,7 +1031,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Set the senderInternalSubIdentification value.
+     * Set the sender internal sub identification.
      *
      * @param senderInternalSubIdentification the senderInternalSubIdentification value to set
      * @return the EdifactEnvelopeSettings object itself.
@@ -1042,7 +1042,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Get the receiverInternalIdentification value.
+     * Get the receiver internal identification.
      *
      * @return the receiverInternalIdentification value
      */
@@ -1051,7 +1051,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Set the receiverInternalIdentification value.
+     * Set the receiver internal identification.
      *
      * @param receiverInternalIdentification the receiverInternalIdentification value to set
      * @return the EdifactEnvelopeSettings object itself.
@@ -1062,7 +1062,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Get the receiverInternalSubIdentification value.
+     * Get the receiver internal sub identification.
      *
      * @return the receiverInternalSubIdentification value
      */
@@ -1071,7 +1071,7 @@ public class EdifactEnvelopeSettings {
     }
 
     /**
-     * Set the receiverInternalSubIdentification value.
+     * Set the receiver internal sub identification.
      *
      * @param receiverInternalSubIdentification the receiverInternalSubIdentification value to set
      * @return the EdifactEnvelopeSettings object itself.

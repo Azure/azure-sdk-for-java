@@ -27,7 +27,7 @@ public class X12AgreementContent {
     private X12OneWayAgreement sendAgreement;
 
     /**
-     * Get the receiveAgreement value.
+     * Get the X12 one-way receive agreement.
      *
      * @return the receiveAgreement value
      */
@@ -36,7 +36,7 @@ public class X12AgreementContent {
     }
 
     /**
-     * Set the receiveAgreement value.
+     * Set the X12 one-way receive agreement.
      *
      * @param receiveAgreement the receiveAgreement value to set
      * @return the X12AgreementContent object itself.
@@ -47,7 +47,7 @@ public class X12AgreementContent {
     }
 
     /**
-     * Get the sendAgreement value.
+     * Get the X12 one-way send agreement.
      *
      * @return the sendAgreement value
      */
@@ -56,7 +56,7 @@ public class X12AgreementContent {
     }
 
     /**
-     * Set the sendAgreement value.
+     * Set the X12 one-way send agreement.
      *
      * @param sendAgreement the sendAgreement value to set
      * @return the X12AgreementContent object itself.

@@ -42,41 +42,22 @@ class CertificatesImpl extends WrapperImpl<CertificatesInner> implements Certifi
         return new IntegrationAccountCertificateImpl(name, this.manager());
     }
 
-    private Observable<Page<IntegrationAccountCertificateInner>> listByIntegrationAccountsNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        CertificatesInner client = this.inner();
-        return client.listByIntegrationAccountsNextAsync(nextLink)
-        .flatMap(new Func1<Page<IntegrationAccountCertificateInner>, Observable<Page<IntegrationAccountCertificateInner>>>() {
-            @Override
-            public Observable<Page<IntegrationAccountCertificateInner>> call(Page<IntegrationAccountCertificateInner> page) {
-                return Observable.just(page).concatWith(listByIntegrationAccountsNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<IntegrationAccountCertificate> listByIntegrationAccountsAsync(final String resourceGroupName, final String integrationAccountName) {
         CertificatesInner client = this.inner();
         return client.listByIntegrationAccountsAsync(resourceGroupName, integrationAccountName)
-        .flatMap(new Func1<Page<IntegrationAccountCertificateInner>, Observable<Page<IntegrationAccountCertificateInner>>>() {
-            @Override
-            public Observable<Page<IntegrationAccountCertificateInner>> call(Page<IntegrationAccountCertificateInner> page) {
-                return listByIntegrationAccountsNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<IntegrationAccountCertificateInner>, Iterable<IntegrationAccountCertificateInner>>() {
             @Override
             public Iterable<IntegrationAccountCertificateInner> call(Page<IntegrationAccountCertificateInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<IntegrationAccountCertificateInner, IntegrationAccountCertificate>() {
             @Override
             public IntegrationAccountCertificate call(IntegrationAccountCertificateInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override

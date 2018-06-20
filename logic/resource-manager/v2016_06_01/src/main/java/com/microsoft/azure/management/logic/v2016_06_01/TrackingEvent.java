@@ -48,7 +48,7 @@ public class TrackingEvent {
     private TrackingEventErrorInfo error;
 
     /**
-     * Get the eventLevel value.
+     * Get possible values include: 'LogAlways', 'Critical', 'Error', 'Warning', 'Informational', 'Verbose'.
      *
      * @return the eventLevel value
      */
@@ -57,7 +57,7 @@ public class TrackingEvent {
     }
 
     /**
-     * Set the eventLevel value.
+     * Set possible values include: 'LogAlways', 'Critical', 'Error', 'Warning', 'Informational', 'Verbose'.
      *
      * @param eventLevel the eventLevel value to set
      * @return the TrackingEvent object itself.
@@ -88,7 +88,7 @@ public class TrackingEvent {
     }
 
     /**
-     * Get the recordType value.
+     * Get possible values include: 'NotSpecified', 'Custom', 'AS2Message', 'AS2MDN', 'X12Interchange', 'X12FunctionalGroup', 'X12TransactionSet', 'X12InterchangeAcknowledgment', 'X12FunctionalGroupAcknowledgment', 'X12TransactionSetAcknowledgment', 'EdifactInterchange', 'EdifactFunctionalGroup', 'EdifactTransactionSet', 'EdifactInterchangeAcknowledgment', 'EdifactFunctionalGroupAcknowledgment', 'EdifactTransactionSetAcknowledgment'.
      *
      * @return the recordType value
      */
@@ -97,7 +97,7 @@ public class TrackingEvent {
     }
 
     /**
-     * Set the recordType value.
+     * Set possible values include: 'NotSpecified', 'Custom', 'AS2Message', 'AS2MDN', 'X12Interchange', 'X12FunctionalGroup', 'X12TransactionSet', 'X12InterchangeAcknowledgment', 'X12FunctionalGroupAcknowledgment', 'X12TransactionSetAcknowledgment', 'EdifactInterchange', 'EdifactFunctionalGroup', 'EdifactTransactionSet', 'EdifactInterchangeAcknowledgment', 'EdifactFunctionalGroupAcknowledgment', 'EdifactTransactionSetAcknowledgment'.
      *
      * @param recordType the recordType value to set
      * @return the TrackingEvent object itself.

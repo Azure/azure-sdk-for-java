@@ -21,7 +21,7 @@ public class Correlation {
     private String clientTrackingId;
 
     /**
-     * Get the clientTrackingId value.
+     * Get the client tracking id.
      *
      * @return the clientTrackingId value
      */
@@ -30,7 +30,7 @@ public class Correlation {
     }
 
     /**
-     * Set the clientTrackingId value.
+     * Set the client tracking id.
      *
      * @param clientTrackingId the clientTrackingId value to set
      * @return the Correlation object itself.

@@ -57,7 +57,7 @@ public class EdifactSchemaReference {
     private String schemaName;
 
     /**
-     * Get the messageId value.
+     * Get the message id.
      *
      * @return the messageId value
      */
@@ -66,7 +66,7 @@ public class EdifactSchemaReference {
     }
 
     /**
-     * Set the messageId value.
+     * Set the message id.
      *
      * @param messageId the messageId value to set
      * @return the EdifactSchemaReference object itself.
@@ -77,7 +77,7 @@ public class EdifactSchemaReference {
     }
 
     /**
-     * Get the messageVersion value.
+     * Get the message version.
      *
      * @return the messageVersion value
      */
@@ -86,7 +86,7 @@ public class EdifactSchemaReference {
     }
 
     /**
-     * Set the messageVersion value.
+     * Set the message version.
      *
      * @param messageVersion the messageVersion value to set
      * @return the EdifactSchemaReference object itself.
@@ -97,7 +97,7 @@ public class EdifactSchemaReference {
     }
 
     /**
-     * Get the messageRelease value.
+     * Get the message release version.
      *
      * @return the messageRelease value
      */
@@ -106,7 +106,7 @@ public class EdifactSchemaReference {
     }
 
     /**
-     * Set the messageRelease value.
+     * Set the message release version.
      *
      * @param messageRelease the messageRelease value to set
      * @return the EdifactSchemaReference object itself.
@@ -117,7 +117,7 @@ public class EdifactSchemaReference {
     }
 
     /**
-     * Get the senderApplicationId value.
+     * Get the sender application id.
      *
      * @return the senderApplicationId value
      */
@@ -126,7 +126,7 @@ public class EdifactSchemaReference {
     }
 
     /**
-     * Set the senderApplicationId value.
+     * Set the sender application id.
      *
      * @param senderApplicationId the senderApplicationId value to set
      * @return the EdifactSchemaReference object itself.
@@ -137,7 +137,7 @@ public class EdifactSchemaReference {
     }
 
     /**
-     * Get the senderApplicationQualifier value.
+     * Get the sender application qualifier.
      *
      * @return the senderApplicationQualifier value
      */
@@ -146,7 +146,7 @@ public class EdifactSchemaReference {
     }
 
     /**
-     * Set the senderApplicationQualifier value.
+     * Set the sender application qualifier.
      *
      * @param senderApplicationQualifier the senderApplicationQualifier value to set
      * @return the EdifactSchemaReference object itself.
@@ -157,7 +157,7 @@ public class EdifactSchemaReference {
     }
 
     /**
-     * Get the associationAssignedCode value.
+     * Get the association assigned code.
      *
      * @return the associationAssignedCode value
      */
@@ -166,7 +166,7 @@ public class EdifactSchemaReference {
     }
 
     /**
-     * Set the associationAssignedCode value.
+     * Set the association assigned code.
      *
      * @param associationAssignedCode the associationAssignedCode value to set
      * @return the EdifactSchemaReference object itself.
@@ -177,7 +177,7 @@ public class EdifactSchemaReference {
     }
 
     /**
-     * Get the schemaName value.
+     * Get the schema name.
      *
      * @return the schemaName value
      */
@@ -186,7 +186,7 @@ public class EdifactSchemaReference {
     }
 
     /**
-     * Set the schemaName value.
+     * Set the schema name.
      *
      * @param schemaName the schemaName value to set
      * @return the EdifactSchemaReference object itself.

@@ -27,7 +27,7 @@ public class ListKeyVaultKeysDefinition {
     private String skipToken;
 
     /**
-     * Get the keyVault value.
+     * Get the key vault reference.
      *
      * @return the keyVault value
      */
@@ -36,7 +36,7 @@ public class ListKeyVaultKeysDefinition {
     }
 
     /**
-     * Set the keyVault value.
+     * Set the key vault reference.
      *
      * @param keyVault the keyVault value to set
      * @return the ListKeyVaultKeysDefinition object itself.
@@ -47,7 +47,7 @@ public class ListKeyVaultKeysDefinition {
     }
 
     /**
-     * Get the skipToken value.
+     * Get the skip token.
      *
      * @return the skipToken value
      */
@@ -56,7 +56,7 @@ public class ListKeyVaultKeysDefinition {
     }
 
     /**
-     * Set the skipToken value.
+     * Set the skip token.
      *
      * @param skipToken the skipToken value to set
      * @return the ListKeyVaultKeysDefinition object itself.

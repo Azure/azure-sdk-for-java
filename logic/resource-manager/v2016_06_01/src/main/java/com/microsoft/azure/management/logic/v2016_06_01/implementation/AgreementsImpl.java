@@ -56,41 +56,22 @@ class AgreementsImpl extends WrapperImpl<AgreementsInner> implements Agreements 
         });
     }
 
-    private Observable<Page<IntegrationAccountAgreementInner>> listByIntegrationAccountsNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        AgreementsInner client = this.inner();
-        return client.listByIntegrationAccountsNextAsync(nextLink)
-        .flatMap(new Func1<Page<IntegrationAccountAgreementInner>, Observable<Page<IntegrationAccountAgreementInner>>>() {
-            @Override
-            public Observable<Page<IntegrationAccountAgreementInner>> call(Page<IntegrationAccountAgreementInner> page) {
-                return Observable.just(page).concatWith(listByIntegrationAccountsNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<IntegrationAccountAgreement> listByIntegrationAccountsAsync(final String resourceGroupName, final String integrationAccountName) {
         AgreementsInner client = this.inner();
         return client.listByIntegrationAccountsAsync(resourceGroupName, integrationAccountName)
-        .flatMap(new Func1<Page<IntegrationAccountAgreementInner>, Observable<Page<IntegrationAccountAgreementInner>>>() {
-            @Override
-            public Observable<Page<IntegrationAccountAgreementInner>> call(Page<IntegrationAccountAgreementInner> page) {
-                return listByIntegrationAccountsNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<IntegrationAccountAgreementInner>, Iterable<IntegrationAccountAgreementInner>>() {
             @Override
             public Iterable<IntegrationAccountAgreementInner> call(Page<IntegrationAccountAgreementInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<IntegrationAccountAgreementInner, IntegrationAccountAgreement>() {
             @Override
             public IntegrationAccountAgreement call(IntegrationAccountAgreementInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override

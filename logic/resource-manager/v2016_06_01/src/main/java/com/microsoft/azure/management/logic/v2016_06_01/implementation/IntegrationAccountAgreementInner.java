@@ -81,7 +81,7 @@ public class IntegrationAccountAgreementInner extends Resource {
     private AgreementContent content;
 
     /**
-     * Get the createdTime value.
+     * Get the created time.
      *
      * @return the createdTime value
      */
@@ -90,7 +90,7 @@ public class IntegrationAccountAgreementInner extends Resource {
     }
 
     /**
-     * Get the changedTime value.
+     * Get the changed time.
      *
      * @return the changedTime value
      */
@@ -99,7 +99,7 @@ public class IntegrationAccountAgreementInner extends Resource {
     }
 
     /**
-     * Get the metadata value.
+     * Get the metadata.
      *
      * @return the metadata value
      */
@@ -108,7 +108,7 @@ public class IntegrationAccountAgreementInner extends Resource {
     }
 
     /**
-     * Set the metadata value.
+     * Set the metadata.
      *
      * @param metadata the metadata value to set
      * @return the IntegrationAccountAgreementInner object itself.
@@ -119,7 +119,7 @@ public class IntegrationAccountAgreementInner extends Resource {
     }
 
     /**
-     * Get the agreementType value.
+     * Get the agreement type. Possible values include: 'NotSpecified', 'AS2', 'X12', 'Edifact'.
      *
      * @return the agreementType value
      */
@@ -128,7 +128,7 @@ public class IntegrationAccountAgreementInner extends Resource {
     }
 
     /**
-     * Set the agreementType value.
+     * Set the agreement type. Possible values include: 'NotSpecified', 'AS2', 'X12', 'Edifact'.
      *
      * @param agreementType the agreementType value to set
      * @return the IntegrationAccountAgreementInner object itself.
@@ -139,7 +139,7 @@ public class IntegrationAccountAgreementInner extends Resource {
     }
 
     /**
-     * Get the hostPartner value.
+     * Get the integration account partner that is set as host partner for this agreement.
      *
      * @return the hostPartner value
      */
@@ -148,7 +148,7 @@ public class IntegrationAccountAgreementInner extends Resource {
     }
 
     /**
-     * Set the hostPartner value.
+     * Set the integration account partner that is set as host partner for this agreement.
      *
      * @param hostPartner the hostPartner value to set
      * @return the IntegrationAccountAgreementInner object itself.
@@ -159,7 +159,7 @@ public class IntegrationAccountAgreementInner extends Resource {
     }
 
     /**
-     * Get the guestPartner value.
+     * Get the integration account partner that is set as guest partner for this agreement.
      *
      * @return the guestPartner value
      */
@@ -168,7 +168,7 @@ public class IntegrationAccountAgreementInner extends Resource {
     }
 
     /**
-     * Set the guestPartner value.
+     * Set the integration account partner that is set as guest partner for this agreement.
      *
      * @param guestPartner the guestPartner value to set
      * @return the IntegrationAccountAgreementInner object itself.
@@ -179,7 +179,7 @@ public class IntegrationAccountAgreementInner extends Resource {
     }
 
     /**
-     * Get the hostIdentity value.
+     * Get the business identity of the host partner.
      *
      * @return the hostIdentity value
      */
@@ -188,7 +188,7 @@ public class IntegrationAccountAgreementInner extends Resource {
     }
 
     /**
-     * Set the hostIdentity value.
+     * Set the business identity of the host partner.
      *
      * @param hostIdentity the hostIdentity value to set
      * @return the IntegrationAccountAgreementInner object itself.
@@ -199,7 +199,7 @@ public class IntegrationAccountAgreementInner extends Resource {
     }
 
     /**
-     * Get the guestIdentity value.
+     * Get the business identity of the guest partner.
      *
      * @return the guestIdentity value
      */
@@ -208,7 +208,7 @@ public class IntegrationAccountAgreementInner extends Resource {
     }
 
     /**
-     * Set the guestIdentity value.
+     * Set the business identity of the guest partner.
      *
      * @param guestIdentity the guestIdentity value to set
      * @return the IntegrationAccountAgreementInner object itself.
@@ -219,7 +219,7 @@ public class IntegrationAccountAgreementInner extends Resource {
     }
 
     /**
-     * Get the content value.
+     * Get the agreement content.
      *
      * @return the content value
      */
@@ -228,7 +228,7 @@ public class IntegrationAccountAgreementInner extends Resource {
     }
 
     /**
-     * Set the content value.
+     * Set the agreement content.
      *
      * @param content the content value to set
      * @return the IntegrationAccountAgreementInner object itself.

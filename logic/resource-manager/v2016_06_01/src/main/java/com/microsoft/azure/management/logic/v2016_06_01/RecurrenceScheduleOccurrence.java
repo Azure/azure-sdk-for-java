@@ -28,7 +28,7 @@ public class RecurrenceScheduleOccurrence {
     private Integer occurrence;
 
     /**
-     * Get the day value.
+     * Get the day of the week. Possible values include: 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'.
      *
      * @return the day value
      */
@@ -37,7 +37,7 @@ public class RecurrenceScheduleOccurrence {
     }
 
     /**
-     * Set the day value.
+     * Set the day of the week. Possible values include: 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'.
      *
      * @param day the day value to set
      * @return the RecurrenceScheduleOccurrence object itself.
@@ -48,7 +48,7 @@ public class RecurrenceScheduleOccurrence {
     }
 
     /**
-     * Get the occurrence value.
+     * Get the occurrence.
      *
      * @return the occurrence value
      */
@@ -57,7 +57,7 @@ public class RecurrenceScheduleOccurrence {
     }
 
     /**
-     * Set the occurrence value.
+     * Set the occurrence.
      *
      * @param occurrence the occurrence value to set
      * @return the RecurrenceScheduleOccurrence object itself.

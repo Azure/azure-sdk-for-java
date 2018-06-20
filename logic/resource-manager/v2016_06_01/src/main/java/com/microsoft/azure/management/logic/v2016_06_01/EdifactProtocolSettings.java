@@ -82,7 +82,7 @@ public class EdifactProtocolSettings {
     private List<EdifactDelimiterOverride> edifactDelimiterOverrides;
 
     /**
-     * Get the validationSettings value.
+     * Get the EDIFACT validation settings.
      *
      * @return the validationSettings value
      */
@@ -91,7 +91,7 @@ public class EdifactProtocolSettings {
     }
 
     /**
-     * Set the validationSettings value.
+     * Set the EDIFACT validation settings.
      *
      * @param validationSettings the validationSettings value to set
      * @return the EdifactProtocolSettings object itself.
@@ -102,7 +102,7 @@ public class EdifactProtocolSettings {
     }
 
     /**
-     * Get the framingSettings value.
+     * Get the EDIFACT framing settings.
      *
      * @return the framingSettings value
      */
@@ -111,7 +111,7 @@ public class EdifactProtocolSettings {
     }
 
     /**
-     * Set the framingSettings value.
+     * Set the EDIFACT framing settings.
      *
      * @param framingSettings the framingSettings value to set
      * @return the EdifactProtocolSettings object itself.
@@ -122,7 +122,7 @@ public class EdifactProtocolSettings {
     }
 
     /**
-     * Get the envelopeSettings value.
+     * Get the EDIFACT envelope settings.
      *
      * @return the envelopeSettings value
      */
@@ -131,7 +131,7 @@ public class EdifactProtocolSettings {
     }
 
     /**
-     * Set the envelopeSettings value.
+     * Set the EDIFACT envelope settings.
      *
      * @param envelopeSettings the envelopeSettings value to set
      * @return the EdifactProtocolSettings object itself.
@@ -142,7 +142,7 @@ public class EdifactProtocolSettings {
     }
 
     /**
-     * Get the acknowledgementSettings value.
+     * Get the EDIFACT acknowledgement settings.
      *
      * @return the acknowledgementSettings value
      */
@@ -151,7 +151,7 @@ public class EdifactProtocolSettings {
     }
 
     /**
-     * Set the acknowledgementSettings value.
+     * Set the EDIFACT acknowledgement settings.
      *
      * @param acknowledgementSettings the acknowledgementSettings value to set
      * @return the EdifactProtocolSettings object itself.
@@ -162,7 +162,7 @@ public class EdifactProtocolSettings {
     }
 
     /**
-     * Get the messageFilter value.
+     * Get the EDIFACT message filter.
      *
      * @return the messageFilter value
      */
@@ -171,7 +171,7 @@ public class EdifactProtocolSettings {
     }
 
     /**
-     * Set the messageFilter value.
+     * Set the EDIFACT message filter.
      *
      * @param messageFilter the messageFilter value to set
      * @return the EdifactProtocolSettings object itself.
@@ -182,7 +182,7 @@ public class EdifactProtocolSettings {
     }
 
     /**
-     * Get the processingSettings value.
+     * Get the EDIFACT processing Settings.
      *
      * @return the processingSettings value
      */
@@ -191,7 +191,7 @@ public class EdifactProtocolSettings {
     }
 
     /**
-     * Set the processingSettings value.
+     * Set the EDIFACT processing Settings.
      *
      * @param processingSettings the processingSettings value to set
      * @return the EdifactProtocolSettings object itself.
@@ -202,7 +202,7 @@ public class EdifactProtocolSettings {
     }
 
     /**
-     * Get the envelopeOverrides value.
+     * Get the EDIFACT envelope override settings.
      *
      * @return the envelopeOverrides value
      */
@@ -211,7 +211,7 @@ public class EdifactProtocolSettings {
     }
 
     /**
-     * Set the envelopeOverrides value.
+     * Set the EDIFACT envelope override settings.
      *
      * @param envelopeOverrides the envelopeOverrides value to set
      * @return the EdifactProtocolSettings object itself.
@@ -222,7 +222,7 @@ public class EdifactProtocolSettings {
     }
 
     /**
-     * Get the messageFilterList value.
+     * Get the EDIFACT message filter list.
      *
      * @return the messageFilterList value
      */
@@ -231,7 +231,7 @@ public class EdifactProtocolSettings {
     }
 
     /**
-     * Set the messageFilterList value.
+     * Set the EDIFACT message filter list.
      *
      * @param messageFilterList the messageFilterList value to set
      * @return the EdifactProtocolSettings object itself.
@@ -242,7 +242,7 @@ public class EdifactProtocolSettings {
     }
 
     /**
-     * Get the schemaReferences value.
+     * Get the EDIFACT schema references.
      *
      * @return the schemaReferences value
      */
@@ -251,7 +251,7 @@ public class EdifactProtocolSettings {
     }
 
     /**
-     * Set the schemaReferences value.
+     * Set the EDIFACT schema references.
      *
      * @param schemaReferences the schemaReferences value to set
      * @return the EdifactProtocolSettings object itself.
@@ -262,7 +262,7 @@ public class EdifactProtocolSettings {
     }
 
     /**
-     * Get the validationOverrides value.
+     * Get the EDIFACT validation override settings.
      *
      * @return the validationOverrides value
      */
@@ -271,7 +271,7 @@ public class EdifactProtocolSettings {
     }
 
     /**
-     * Set the validationOverrides value.
+     * Set the EDIFACT validation override settings.
      *
      * @param validationOverrides the validationOverrides value to set
      * @return the EdifactProtocolSettings object itself.
@@ -282,7 +282,7 @@ public class EdifactProtocolSettings {
     }
 
     /**
-     * Get the edifactDelimiterOverrides value.
+     * Get the EDIFACT delimiter override settings.
      *
      * @return the edifactDelimiterOverrides value
      */
@@ -291,7 +291,7 @@ public class EdifactProtocolSettings {
     }
 
     /**
-     * Set the edifactDelimiterOverrides value.
+     * Set the EDIFACT delimiter override settings.
      *
      * @param edifactDelimiterOverrides the edifactDelimiterOverrides value to set
      * @return the EdifactProtocolSettings object itself.

@@ -31,8 +31,16 @@ class WorkflowTriggersImpl extends WrapperImpl<WorkflowTriggersInner> implements
         return this.manager;
     }
 
-    private WorkflowTriggerImpl wrapModel(WorkflowTriggerInner inner) {
+    private WorkflowTriggerImpl wrapWorkflowTriggerModel(WorkflowTriggerInner inner) {
         return  new WorkflowTriggerImpl(inner, manager());
+    }
+
+    private Observable<WorkflowTriggerInner> getWorkflowTriggerInnerUsingWorkflowTriggersInnerAsync(String id) {
+        String resourceGroupName = IdParsingUtils.getValueFromIdByName(id, "resourceGroups");
+        String workflowName = IdParsingUtils.getValueFromIdByName(id, "workflows");
+        String triggerName = IdParsingUtils.getValueFromIdByName(id, "triggers");
+        WorkflowTriggersInner client = this.inner();
+        return client.getAsync(resourceGroupName, workflowName, triggerName);
     }
 
     @Override
@@ -42,46 +50,27 @@ class WorkflowTriggersImpl extends WrapperImpl<WorkflowTriggersInner> implements
         .map(new Func1<WorkflowTriggerInner, WorkflowTrigger>() {
             @Override
             public WorkflowTrigger call(WorkflowTriggerInner inner) {
-                return wrapModel(inner);
+                return wrapWorkflowTriggerModel(inner);
             }
        });
     }
 
-    private Observable<Page<WorkflowTriggerInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        WorkflowTriggersInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<WorkflowTriggerInner>, Observable<Page<WorkflowTriggerInner>>>() {
-            @Override
-            public Observable<Page<WorkflowTriggerInner>> call(Page<WorkflowTriggerInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<WorkflowTrigger> listAsync(final String resourceGroupName, final String workflowName) {
         WorkflowTriggersInner client = this.inner();
         return client.listAsync(resourceGroupName, workflowName)
-        .flatMap(new Func1<Page<WorkflowTriggerInner>, Observable<Page<WorkflowTriggerInner>>>() {
-            @Override
-            public Observable<Page<WorkflowTriggerInner>> call(Page<WorkflowTriggerInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<WorkflowTriggerInner>, Iterable<WorkflowTriggerInner>>() {
             @Override
             public Iterable<WorkflowTriggerInner> call(Page<WorkflowTriggerInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<WorkflowTriggerInner, WorkflowTrigger>() {
             @Override
             public WorkflowTrigger call(WorkflowTriggerInner inner) {
-                return wrapModel(inner);
+                return wrapWorkflowTriggerModel(inner);
             }
-       });
+        });
     }
 
     @Override

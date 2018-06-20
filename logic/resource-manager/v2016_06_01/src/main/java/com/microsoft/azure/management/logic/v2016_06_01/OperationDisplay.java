@@ -33,7 +33,7 @@ public class OperationDisplay {
     private String operation;
 
     /**
-     * Get the provider value.
+     * Get service provider: Microsoft.Logic.
      *
      * @return the provider value
      */
@@ -42,7 +42,7 @@ public class OperationDisplay {
     }
 
     /**
-     * Set the provider value.
+     * Set service provider: Microsoft.Logic.
      *
      * @param provider the provider value to set
      * @return the OperationDisplay object itself.
@@ -53,7 +53,7 @@ public class OperationDisplay {
     }
 
     /**
-     * Get the resource value.
+     * Get resource on which the operation is performed: Profile, endpoint, etc.
      *
      * @return the resource value
      */
@@ -62,7 +62,7 @@ public class OperationDisplay {
     }
 
     /**
-     * Set the resource value.
+     * Set resource on which the operation is performed: Profile, endpoint, etc.
      *
      * @param resource the resource value to set
      * @return the OperationDisplay object itself.
@@ -73,7 +73,7 @@ public class OperationDisplay {
     }
 
     /**
-     * Get the operation value.
+     * Get operation type: Read, write, delete, etc.
      *
      * @return the operation value
      */
@@ -82,7 +82,7 @@ public class OperationDisplay {
     }
 
     /**
-     * Set the operation value.
+     * Set operation type: Read, write, delete, etc.
      *
      * @param operation the operation value to set
      * @return the OperationDisplay object itself.

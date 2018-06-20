@@ -46,7 +46,7 @@ public class RecurrenceSchedule {
     private List<RecurrenceScheduleOccurrence> monthlyOccurrences;
 
     /**
-     * Get the minutes value.
+     * Get the minutes.
      *
      * @return the minutes value
      */
@@ -55,7 +55,7 @@ public class RecurrenceSchedule {
     }
 
     /**
-     * Set the minutes value.
+     * Set the minutes.
      *
      * @param minutes the minutes value to set
      * @return the RecurrenceSchedule object itself.
@@ -66,7 +66,7 @@ public class RecurrenceSchedule {
     }
 
     /**
-     * Get the hours value.
+     * Get the hours.
      *
      * @return the hours value
      */
@@ -75,7 +75,7 @@ public class RecurrenceSchedule {
     }
 
     /**
-     * Set the hours value.
+     * Set the hours.
      *
      * @param hours the hours value to set
      * @return the RecurrenceSchedule object itself.
@@ -86,7 +86,7 @@ public class RecurrenceSchedule {
     }
 
     /**
-     * Get the weekDays value.
+     * Get the days of the week.
      *
      * @return the weekDays value
      */
@@ -95,7 +95,7 @@ public class RecurrenceSchedule {
     }
 
     /**
-     * Set the weekDays value.
+     * Set the days of the week.
      *
      * @param weekDays the weekDays value to set
      * @return the RecurrenceSchedule object itself.
@@ -106,7 +106,7 @@ public class RecurrenceSchedule {
     }
 
     /**
-     * Get the monthDays value.
+     * Get the month days.
      *
      * @return the monthDays value
      */
@@ -115,7 +115,7 @@ public class RecurrenceSchedule {
     }
 
     /**
-     * Set the monthDays value.
+     * Set the month days.
      *
      * @param monthDays the monthDays value to set
      * @return the RecurrenceSchedule object itself.
@@ -126,7 +126,7 @@ public class RecurrenceSchedule {
     }
 
     /**
-     * Get the monthlyOccurrences value.
+     * Get the monthly occurrences.
      *
      * @return the monthlyOccurrences value
      */
@@ -135,7 +135,7 @@ public class RecurrenceSchedule {
     }
 
     /**
-     * Set the monthlyOccurrences value.
+     * Set the monthly occurrences.
      *
      * @param monthlyOccurrences the monthlyOccurrences value to set
      * @return the RecurrenceSchedule object itself.

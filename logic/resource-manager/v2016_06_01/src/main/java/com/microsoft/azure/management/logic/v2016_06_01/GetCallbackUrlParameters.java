@@ -29,7 +29,7 @@ public class GetCallbackUrlParameters {
     private KeyType keyType;
 
     /**
-     * Get the notAfter value.
+     * Get the expiry time.
      *
      * @return the notAfter value
      */
@@ -38,7 +38,7 @@ public class GetCallbackUrlParameters {
     }
 
     /**
-     * Set the notAfter value.
+     * Set the expiry time.
      *
      * @param notAfter the notAfter value to set
      * @return the GetCallbackUrlParameters object itself.
@@ -49,7 +49,7 @@ public class GetCallbackUrlParameters {
     }
 
     /**
-     * Get the keyType value.
+     * Get the key type. Possible values include: 'NotSpecified', 'Primary', 'Secondary'.
      *
      * @return the keyType value
      */
@@ -58,7 +58,7 @@ public class GetCallbackUrlParameters {
     }
 
     /**
-     * Set the keyType value.
+     * Set the key type. Possible values include: 'NotSpecified', 'Primary', 'Secondary'.
      *
      * @param keyType the keyType value to set
      * @return the GetCallbackUrlParameters object itself.

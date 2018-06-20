@@ -34,7 +34,7 @@ public class ArtifactProperties {
     private Object metadata;
 
     /**
-     * Get the createdTime value.
+     * Get the artifact creation time.
      *
      * @return the createdTime value
      */
@@ -43,7 +43,7 @@ public class ArtifactProperties {
     }
 
     /**
-     * Set the createdTime value.
+     * Set the artifact creation time.
      *
      * @param createdTime the createdTime value to set
      * @return the ArtifactProperties object itself.
@@ -54,7 +54,7 @@ public class ArtifactProperties {
     }
 
     /**
-     * Get the changedTime value.
+     * Get the artifact changed time.
      *
      * @return the changedTime value
      */
@@ -63,7 +63,7 @@ public class ArtifactProperties {
     }
 
     /**
-     * Set the changedTime value.
+     * Set the artifact changed time.
      *
      * @param changedTime the changedTime value to set
      * @return the ArtifactProperties object itself.

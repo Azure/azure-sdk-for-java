@@ -59,7 +59,7 @@ public class X12FramingSettings {
     private SegmentTerminatorSuffix segmentTerminatorSuffix;
 
     /**
-     * Get the dataElementSeparator value.
+     * Get the data element separator.
      *
      * @return the dataElementSeparator value
      */
@@ -68,7 +68,7 @@ public class X12FramingSettings {
     }
 
     /**
-     * Set the dataElementSeparator value.
+     * Set the data element separator.
      *
      * @param dataElementSeparator the dataElementSeparator value to set
      * @return the X12FramingSettings object itself.
@@ -79,7 +79,7 @@ public class X12FramingSettings {
     }
 
     /**
-     * Get the componentSeparator value.
+     * Get the component separator.
      *
      * @return the componentSeparator value
      */
@@ -88,7 +88,7 @@ public class X12FramingSettings {
     }
 
     /**
-     * Set the componentSeparator value.
+     * Set the component separator.
      *
      * @param componentSeparator the componentSeparator value to set
      * @return the X12FramingSettings object itself.
@@ -99,7 +99,7 @@ public class X12FramingSettings {
     }
 
     /**
-     * Get the replaceSeparatorsInPayload value.
+     * Get the value indicating whether to replace separators in payload.
      *
      * @return the replaceSeparatorsInPayload value
      */
@@ -108,7 +108,7 @@ public class X12FramingSettings {
     }
 
     /**
-     * Set the replaceSeparatorsInPayload value.
+     * Set the value indicating whether to replace separators in payload.
      *
      * @param replaceSeparatorsInPayload the replaceSeparatorsInPayload value to set
      * @return the X12FramingSettings object itself.
@@ -119,7 +119,7 @@ public class X12FramingSettings {
     }
 
     /**
-     * Get the replaceCharacter value.
+     * Get the replacement character.
      *
      * @return the replaceCharacter value
      */
@@ -128,7 +128,7 @@ public class X12FramingSettings {
     }
 
     /**
-     * Set the replaceCharacter value.
+     * Set the replacement character.
      *
      * @param replaceCharacter the replaceCharacter value to set
      * @return the X12FramingSettings object itself.
@@ -139,7 +139,7 @@ public class X12FramingSettings {
     }
 
     /**
-     * Get the segmentTerminator value.
+     * Get the segment terminator.
      *
      * @return the segmentTerminator value
      */
@@ -148,7 +148,7 @@ public class X12FramingSettings {
     }
 
     /**
-     * Set the segmentTerminator value.
+     * Set the segment terminator.
      *
      * @param segmentTerminator the segmentTerminator value to set
      * @return the X12FramingSettings object itself.
@@ -159,7 +159,7 @@ public class X12FramingSettings {
     }
 
     /**
-     * Get the characterSet value.
+     * Get the X12 character set. Possible values include: 'NotSpecified', 'Basic', 'Extended', 'UTF8'.
      *
      * @return the characterSet value
      */
@@ -168,7 +168,7 @@ public class X12FramingSettings {
     }
 
     /**
-     * Set the characterSet value.
+     * Set the X12 character set. Possible values include: 'NotSpecified', 'Basic', 'Extended', 'UTF8'.
      *
      * @param characterSet the characterSet value to set
      * @return the X12FramingSettings object itself.
@@ -179,7 +179,7 @@ public class X12FramingSettings {
     }
 
     /**
-     * Get the segmentTerminatorSuffix value.
+     * Get the segment terminator suffix. Possible values include: 'NotSpecified', 'None', 'CR', 'LF', 'CRLF'.
      *
      * @return the segmentTerminatorSuffix value
      */
@@ -188,7 +188,7 @@ public class X12FramingSettings {
     }
 
     /**
-     * Set the segmentTerminatorSuffix value.
+     * Set the segment terminator suffix. Possible values include: 'NotSpecified', 'None', 'CR', 'LF', 'CRLF'.
      *
      * @param segmentTerminatorSuffix the segmentTerminatorSuffix value to set
      * @return the X12FramingSettings object itself.

@@ -77,7 +77,7 @@ public class X12EnvelopeOverride {
     private X12TimeFormat timeFormat;
 
     /**
-     * Get the targetNamespace value.
+     * Get the target namespace on which this envelope settings has to be applied.
      *
      * @return the targetNamespace value
      */
@@ -86,7 +86,7 @@ public class X12EnvelopeOverride {
     }
 
     /**
-     * Set the targetNamespace value.
+     * Set the target namespace on which this envelope settings has to be applied.
      *
      * @param targetNamespace the targetNamespace value to set
      * @return the X12EnvelopeOverride object itself.
@@ -97,7 +97,7 @@ public class X12EnvelopeOverride {
     }
 
     /**
-     * Get the protocolVersion value.
+     * Get the protocol version on which this envelope settings has to be applied.
      *
      * @return the protocolVersion value
      */
@@ -106,7 +106,7 @@ public class X12EnvelopeOverride {
     }
 
     /**
-     * Set the protocolVersion value.
+     * Set the protocol version on which this envelope settings has to be applied.
      *
      * @param protocolVersion the protocolVersion value to set
      * @return the X12EnvelopeOverride object itself.
@@ -117,7 +117,7 @@ public class X12EnvelopeOverride {
     }
 
     /**
-     * Get the messageId value.
+     * Get the message id on which this envelope settings has to be applied.
      *
      * @return the messageId value
      */
@@ -126,7 +126,7 @@ public class X12EnvelopeOverride {
     }
 
     /**
-     * Set the messageId value.
+     * Set the message id on which this envelope settings has to be applied.
      *
      * @param messageId the messageId value to set
      * @return the X12EnvelopeOverride object itself.
@@ -137,7 +137,7 @@ public class X12EnvelopeOverride {
     }
 
     /**
-     * Get the responsibleAgencyCode value.
+     * Get the responsible agency code.
      *
      * @return the responsibleAgencyCode value
      */
@@ -146,7 +146,7 @@ public class X12EnvelopeOverride {
     }
 
     /**
-     * Set the responsibleAgencyCode value.
+     * Set the responsible agency code.
      *
      * @param responsibleAgencyCode the responsibleAgencyCode value to set
      * @return the X12EnvelopeOverride object itself.
@@ -157,7 +157,7 @@ public class X12EnvelopeOverride {
     }
 
     /**
-     * Get the headerVersion value.
+     * Get the header version.
      *
      * @return the headerVersion value
      */
@@ -166,7 +166,7 @@ public class X12EnvelopeOverride {
     }
 
     /**
-     * Set the headerVersion value.
+     * Set the header version.
      *
      * @param headerVersion the headerVersion value to set
      * @return the X12EnvelopeOverride object itself.
@@ -177,7 +177,7 @@ public class X12EnvelopeOverride {
     }
 
     /**
-     * Get the senderApplicationId value.
+     * Get the sender application id.
      *
      * @return the senderApplicationId value
      */
@@ -186,7 +186,7 @@ public class X12EnvelopeOverride {
     }
 
     /**
-     * Set the senderApplicationId value.
+     * Set the sender application id.
      *
      * @param senderApplicationId the senderApplicationId value to set
      * @return the X12EnvelopeOverride object itself.
@@ -197,7 +197,7 @@ public class X12EnvelopeOverride {
     }
 
     /**
-     * Get the receiverApplicationId value.
+     * Get the receiver application id.
      *
      * @return the receiverApplicationId value
      */
@@ -206,7 +206,7 @@ public class X12EnvelopeOverride {
     }
 
     /**
-     * Set the receiverApplicationId value.
+     * Set the receiver application id.
      *
      * @param receiverApplicationId the receiverApplicationId value to set
      * @return the X12EnvelopeOverride object itself.
@@ -217,7 +217,7 @@ public class X12EnvelopeOverride {
     }
 
     /**
-     * Get the functionalIdentifierCode value.
+     * Get the functional identifier code.
      *
      * @return the functionalIdentifierCode value
      */
@@ -226,7 +226,7 @@ public class X12EnvelopeOverride {
     }
 
     /**
-     * Set the functionalIdentifierCode value.
+     * Set the functional identifier code.
      *
      * @param functionalIdentifierCode the functionalIdentifierCode value to set
      * @return the X12EnvelopeOverride object itself.
@@ -237,7 +237,7 @@ public class X12EnvelopeOverride {
     }
 
     /**
-     * Get the dateFormat value.
+     * Get the date format. Possible values include: 'NotSpecified', 'CCYYMMDD', 'YYMMDD'.
      *
      * @return the dateFormat value
      */
@@ -246,7 +246,7 @@ public class X12EnvelopeOverride {
     }
 
     /**
-     * Set the dateFormat value.
+     * Set the date format. Possible values include: 'NotSpecified', 'CCYYMMDD', 'YYMMDD'.
      *
      * @param dateFormat the dateFormat value to set
      * @return the X12EnvelopeOverride object itself.
@@ -257,7 +257,7 @@ public class X12EnvelopeOverride {
     }
 
     /**
-     * Get the timeFormat value.
+     * Get the time format. Possible values include: 'NotSpecified', 'HHMM', 'HHMMSS', 'HHMMSSdd', 'HHMMSSd'.
      *
      * @return the timeFormat value
      */
@@ -266,7 +266,7 @@ public class X12EnvelopeOverride {
     }
 
     /**
-     * Set the timeFormat value.
+     * Set the time format. Possible values include: 'NotSpecified', 'HHMM', 'HHMMSS', 'HHMMSSdd', 'HHMMSSd'.
      *
      * @param timeFormat the timeFormat value to set
      * @return the X12EnvelopeOverride object itself.

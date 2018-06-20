@@ -33,7 +33,7 @@ public class BatchReleaseCriteria {
     private WorkflowTriggerRecurrence recurrence;
 
     /**
-     * Get the messageCount value.
+     * Get the message count.
      *
      * @return the messageCount value
      */
@@ -42,7 +42,7 @@ public class BatchReleaseCriteria {
     }
 
     /**
-     * Set the messageCount value.
+     * Set the message count.
      *
      * @param messageCount the messageCount value to set
      * @return the BatchReleaseCriteria object itself.
@@ -53,7 +53,7 @@ public class BatchReleaseCriteria {
     }
 
     /**
-     * Get the batchSize value.
+     * Get the batch size in bytes.
      *
      * @return the batchSize value
      */
@@ -62,7 +62,7 @@ public class BatchReleaseCriteria {
     }
 
     /**
-     * Set the batchSize value.
+     * Set the batch size in bytes.
      *
      * @param batchSize the batchSize value to set
      * @return the BatchReleaseCriteria object itself.
@@ -73,7 +73,7 @@ public class BatchReleaseCriteria {
     }
 
     /**
-     * Get the recurrence value.
+     * Get the recurrence.
      *
      * @return the recurrence value
      */
@@ -82,7 +82,7 @@ public class BatchReleaseCriteria {
     }
 
     /**
-     * Set the recurrence value.
+     * Set the recurrence.
      *
      * @param recurrence the recurrence value to set
      * @return the BatchReleaseCriteria object itself.

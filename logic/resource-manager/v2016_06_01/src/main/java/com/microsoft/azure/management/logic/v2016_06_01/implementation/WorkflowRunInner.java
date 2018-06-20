@@ -11,6 +11,7 @@ package com.microsoft.azure.management.logic.v2016_06_01.implementation;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.logic.v2016_06_01.WorkflowStatus;
 import com.microsoft.azure.management.logic.v2016_06_01.Correlation;
+import com.microsoft.azure.management.logic.v2016_06_01.ResourceReference;
 import com.microsoft.azure.management.logic.v2016_06_01.WorkflowRunTrigger;
 import java.util.Map;
 import com.microsoft.azure.management.logic.v2016_06_01.WorkflowOutputParameter;
@@ -77,7 +78,7 @@ public class WorkflowRunInner extends SubResource {
      * Gets the reference to workflow version.
      */
     @JsonProperty(value = "properties.workflow", access = JsonProperty.Access.WRITE_ONLY)
-    private ResourceReferenceInner workflow;
+    private ResourceReference workflow;
 
     /**
      * Gets the fired trigger.
@@ -110,7 +111,7 @@ public class WorkflowRunInner extends SubResource {
     private String type;
 
     /**
-     * Get the waitEndTime value.
+     * Get gets the wait end time.
      *
      * @return the waitEndTime value
      */
@@ -119,7 +120,7 @@ public class WorkflowRunInner extends SubResource {
     }
 
     /**
-     * Get the startTime value.
+     * Get gets the start time.
      *
      * @return the startTime value
      */
@@ -128,7 +129,7 @@ public class WorkflowRunInner extends SubResource {
     }
 
     /**
-     * Get the endTime value.
+     * Get gets the end time.
      *
      * @return the endTime value
      */
@@ -137,7 +138,7 @@ public class WorkflowRunInner extends SubResource {
     }
 
     /**
-     * Get the status value.
+     * Get gets the status. Possible values include: 'NotSpecified', 'Paused', 'Running', 'Waiting', 'Succeeded', 'Skipped', 'Suspended', 'Cancelled', 'Failed', 'Faulted', 'TimedOut', 'Aborted', 'Ignored'.
      *
      * @return the status value
      */
@@ -146,7 +147,7 @@ public class WorkflowRunInner extends SubResource {
     }
 
     /**
-     * Get the code value.
+     * Get gets the code.
      *
      * @return the code value
      */
@@ -155,7 +156,7 @@ public class WorkflowRunInner extends SubResource {
     }
 
     /**
-     * Get the error value.
+     * Get gets the error.
      *
      * @return the error value
      */
@@ -164,7 +165,7 @@ public class WorkflowRunInner extends SubResource {
     }
 
     /**
-     * Get the correlationId value.
+     * Get gets the correlation id.
      *
      * @return the correlationId value
      */
@@ -173,7 +174,7 @@ public class WorkflowRunInner extends SubResource {
     }
 
     /**
-     * Get the correlation value.
+     * Get the run correlation.
      *
      * @return the correlation value
      */
@@ -182,7 +183,7 @@ public class WorkflowRunInner extends SubResource {
     }
 
     /**
-     * Set the correlation value.
+     * Set the run correlation.
      *
      * @param correlation the correlation value to set
      * @return the WorkflowRunInner object itself.
@@ -193,16 +194,16 @@ public class WorkflowRunInner extends SubResource {
     }
 
     /**
-     * Get the workflow value.
+     * Get gets the reference to workflow version.
      *
      * @return the workflow value
      */
-    public ResourceReferenceInner workflow() {
+    public ResourceReference workflow() {
         return this.workflow;
     }
 
     /**
-     * Get the trigger value.
+     * Get gets the fired trigger.
      *
      * @return the trigger value
      */
@@ -211,7 +212,7 @@ public class WorkflowRunInner extends SubResource {
     }
 
     /**
-     * Get the outputs value.
+     * Get gets the outputs.
      *
      * @return the outputs value
      */
@@ -220,7 +221,7 @@ public class WorkflowRunInner extends SubResource {
     }
 
     /**
-     * Get the response value.
+     * Get gets the response of the flow run.
      *
      * @return the response value
      */
@@ -229,7 +230,7 @@ public class WorkflowRunInner extends SubResource {
     }
 
     /**
-     * Get the name value.
+     * Get gets the workflow run name.
      *
      * @return the name value
      */
@@ -238,7 +239,7 @@ public class WorkflowRunInner extends SubResource {
     }
 
     /**
-     * Get the type value.
+     * Get gets the workflow run type.
      *
      * @return the type value
      */

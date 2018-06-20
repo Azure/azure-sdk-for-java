@@ -16,6 +16,7 @@ import com.microsoft.azure.management.logic.v2016_06_01.WorkflowTriggerProvision
 import com.microsoft.azure.management.logic.v2016_06_01.WorkflowTriggerRecurrence;
 import com.microsoft.azure.management.logic.v2016_06_01.WorkflowState;
 import com.microsoft.azure.management.logic.v2016_06_01.WorkflowStatus;
+import com.microsoft.azure.management.logic.v2016_06_01.ResourceReference;
 
 class WorkflowTriggerImpl extends IndexableRefreshableWrapperImpl<WorkflowTrigger, WorkflowTriggerInner> implements WorkflowTrigger {
     private final LogicManager manager;
@@ -100,7 +101,7 @@ class WorkflowTriggerImpl extends IndexableRefreshableWrapperImpl<WorkflowTrigge
     }
 
     @Override
-    public ResourceReferenceInner workflow() {
+    public ResourceReference workflow() {
         return this.inner().workflow();
     }
 

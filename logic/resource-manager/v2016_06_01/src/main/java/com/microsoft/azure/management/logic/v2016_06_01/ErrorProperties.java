@@ -28,7 +28,7 @@ public class ErrorProperties {
     private String message;
 
     /**
-     * Get the code value.
+     * Get error code.
      *
      * @return the code value
      */
@@ -37,7 +37,7 @@ public class ErrorProperties {
     }
 
     /**
-     * Set the code value.
+     * Set error code.
      *
      * @param code the code value to set
      * @return the ErrorProperties object itself.
@@ -48,7 +48,7 @@ public class ErrorProperties {
     }
 
     /**
-     * Get the message value.
+     * Get error message indicating why the operation failed.
      *
      * @return the message value
      */
@@ -57,7 +57,7 @@ public class ErrorProperties {
     }
 
     /**
-     * Set the message value.
+     * Set error message indicating why the operation failed.
      *
      * @param message the message value to set
      * @return the ErrorProperties object itself.

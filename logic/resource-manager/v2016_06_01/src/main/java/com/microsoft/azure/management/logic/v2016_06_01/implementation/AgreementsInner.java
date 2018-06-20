@@ -213,7 +213,7 @@ public class AgreementsInner {
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param top The number of items to be included in the result.
-     * @param filter The filter to apply on the operation.
+     * @param filter The filter to apply on the operation. Options for filters include: AgreementType.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -235,7 +235,7 @@ public class AgreementsInner {
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param top The number of items to be included in the result.
-     * @param filter The filter to apply on the operation.
+     * @param filter The filter to apply on the operation. Options for filters include: AgreementType.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -258,7 +258,7 @@ public class AgreementsInner {
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param top The number of items to be included in the result.
-     * @param filter The filter to apply on the operation.
+     * @param filter The filter to apply on the operation. Options for filters include: AgreementType.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;IntegrationAccountAgreementInner&gt; object
      */
@@ -278,7 +278,7 @@ public class AgreementsInner {
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param top The number of items to be included in the result.
-     * @param filter The filter to apply on the operation.
+     * @param filter The filter to apply on the operation. Options for filters include: AgreementType.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;IntegrationAccountAgreementInner&gt; object
      */
@@ -302,7 +302,7 @@ public class AgreementsInner {
     ServiceResponse<PageImpl<IntegrationAccountAgreementInner>> * @param resourceGroupName The resource group name.
     ServiceResponse<PageImpl<IntegrationAccountAgreementInner>> * @param integrationAccountName The integration account name.
     ServiceResponse<PageImpl<IntegrationAccountAgreementInner>> * @param top The number of items to be included in the result.
-    ServiceResponse<PageImpl<IntegrationAccountAgreementInner>> * @param filter The filter to apply on the operation.
+    ServiceResponse<PageImpl<IntegrationAccountAgreementInner>> * @param filter The filter to apply on the operation. Options for filters include: AgreementType.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;IntegrationAccountAgreementInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */

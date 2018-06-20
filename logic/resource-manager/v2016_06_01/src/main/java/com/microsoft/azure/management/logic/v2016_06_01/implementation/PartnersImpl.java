@@ -56,41 +56,22 @@ class PartnersImpl extends WrapperImpl<PartnersInner> implements Partners {
         });
     }
 
-    private Observable<Page<IntegrationAccountPartnerInner>> listByIntegrationAccountsNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        PartnersInner client = this.inner();
-        return client.listByIntegrationAccountsNextAsync(nextLink)
-        .flatMap(new Func1<Page<IntegrationAccountPartnerInner>, Observable<Page<IntegrationAccountPartnerInner>>>() {
-            @Override
-            public Observable<Page<IntegrationAccountPartnerInner>> call(Page<IntegrationAccountPartnerInner> page) {
-                return Observable.just(page).concatWith(listByIntegrationAccountsNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<IntegrationAccountPartner> listByIntegrationAccountsAsync(final String resourceGroupName, final String integrationAccountName) {
         PartnersInner client = this.inner();
         return client.listByIntegrationAccountsAsync(resourceGroupName, integrationAccountName)
-        .flatMap(new Func1<Page<IntegrationAccountPartnerInner>, Observable<Page<IntegrationAccountPartnerInner>>>() {
-            @Override
-            public Observable<Page<IntegrationAccountPartnerInner>> call(Page<IntegrationAccountPartnerInner> page) {
-                return listByIntegrationAccountsNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<IntegrationAccountPartnerInner>, Iterable<IntegrationAccountPartnerInner>>() {
             @Override
             public Iterable<IntegrationAccountPartnerInner> call(Page<IntegrationAccountPartnerInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<IntegrationAccountPartnerInner, IntegrationAccountPartner>() {
             @Override
             public IntegrationAccountPartner call(IntegrationAccountPartnerInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override

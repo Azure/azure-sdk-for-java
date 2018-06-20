@@ -27,7 +27,7 @@ public class AS2ErrorSettings {
     private boolean resendIfMdnNotReceived;
 
     /**
-     * Get the suspendDuplicateMessage value.
+     * Get the value indicating whether to suspend duplicate message.
      *
      * @return the suspendDuplicateMessage value
      */
@@ -36,7 +36,7 @@ public class AS2ErrorSettings {
     }
 
     /**
-     * Set the suspendDuplicateMessage value.
+     * Set the value indicating whether to suspend duplicate message.
      *
      * @param suspendDuplicateMessage the suspendDuplicateMessage value to set
      * @return the AS2ErrorSettings object itself.
@@ -47,7 +47,7 @@ public class AS2ErrorSettings {
     }
 
     /**
-     * Get the resendIfMdnNotReceived value.
+     * Get the value indicating whether to resend message If MDN is not received.
      *
      * @return the resendIfMdnNotReceived value
      */
@@ -56,7 +56,7 @@ public class AS2ErrorSettings {
     }
 
     /**
-     * Set the resendIfMdnNotReceived value.
+     * Set the value indicating whether to resend message If MDN is not received.
      *
      * @param resendIfMdnNotReceived the resendIfMdnNotReceived value to set
      * @return the AS2ErrorSettings object itself.

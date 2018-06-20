@@ -22,7 +22,7 @@ public class IntegrationAccountAgreementFilter {
     private AgreementType agreementType;
 
     /**
-     * Get the agreementType value.
+     * Get the agreement type of integration account agreement. Possible values include: 'NotSpecified', 'AS2', 'X12', 'Edifact'.
      *
      * @return the agreementType value
      */
@@ -31,7 +31,7 @@ public class IntegrationAccountAgreementFilter {
     }
 
     /**
-     * Set the agreementType value.
+     * Set the agreement type of integration account agreement. Possible values include: 'NotSpecified', 'AS2', 'X12', 'Edifact'.
      *
      * @param agreementType the agreementType value to set
      * @return the IntegrationAccountAgreementFilter object itself.

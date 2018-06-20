@@ -70,7 +70,7 @@ public class X12DelimiterOverrides {
     private String targetNamespace;
 
     /**
-     * Get the protocolVersion value.
+     * Get the protocol version.
      *
      * @return the protocolVersion value
      */
@@ -79,7 +79,7 @@ public class X12DelimiterOverrides {
     }
 
     /**
-     * Set the protocolVersion value.
+     * Set the protocol version.
      *
      * @param protocolVersion the protocolVersion value to set
      * @return the X12DelimiterOverrides object itself.
@@ -90,7 +90,7 @@ public class X12DelimiterOverrides {
     }
 
     /**
-     * Get the messageId value.
+     * Get the message id.
      *
      * @return the messageId value
      */
@@ -99,7 +99,7 @@ public class X12DelimiterOverrides {
     }
 
     /**
-     * Set the messageId value.
+     * Set the message id.
      *
      * @param messageId the messageId value to set
      * @return the X12DelimiterOverrides object itself.
@@ -110,7 +110,7 @@ public class X12DelimiterOverrides {
     }
 
     /**
-     * Get the dataElementSeparator value.
+     * Get the data element separator.
      *
      * @return the dataElementSeparator value
      */
@@ -119,7 +119,7 @@ public class X12DelimiterOverrides {
     }
 
     /**
-     * Set the dataElementSeparator value.
+     * Set the data element separator.
      *
      * @param dataElementSeparator the dataElementSeparator value to set
      * @return the X12DelimiterOverrides object itself.
@@ -130,7 +130,7 @@ public class X12DelimiterOverrides {
     }
 
     /**
-     * Get the componentSeparator value.
+     * Get the component separator.
      *
      * @return the componentSeparator value
      */
@@ -139,7 +139,7 @@ public class X12DelimiterOverrides {
     }
 
     /**
-     * Set the componentSeparator value.
+     * Set the component separator.
      *
      * @param componentSeparator the componentSeparator value to set
      * @return the X12DelimiterOverrides object itself.
@@ -150,7 +150,7 @@ public class X12DelimiterOverrides {
     }
 
     /**
-     * Get the segmentTerminator value.
+     * Get the segment terminator.
      *
      * @return the segmentTerminator value
      */
@@ -159,7 +159,7 @@ public class X12DelimiterOverrides {
     }
 
     /**
-     * Set the segmentTerminator value.
+     * Set the segment terminator.
      *
      * @param segmentTerminator the segmentTerminator value to set
      * @return the X12DelimiterOverrides object itself.
@@ -170,7 +170,7 @@ public class X12DelimiterOverrides {
     }
 
     /**
-     * Get the segmentTerminatorSuffix value.
+     * Get the segment terminator suffix. Possible values include: 'NotSpecified', 'None', 'CR', 'LF', 'CRLF'.
      *
      * @return the segmentTerminatorSuffix value
      */
@@ -179,7 +179,7 @@ public class X12DelimiterOverrides {
     }
 
     /**
-     * Set the segmentTerminatorSuffix value.
+     * Set the segment terminator suffix. Possible values include: 'NotSpecified', 'None', 'CR', 'LF', 'CRLF'.
      *
      * @param segmentTerminatorSuffix the segmentTerminatorSuffix value to set
      * @return the X12DelimiterOverrides object itself.
@@ -190,7 +190,7 @@ public class X12DelimiterOverrides {
     }
 
     /**
-     * Get the replaceCharacter value.
+     * Get the replacement character.
      *
      * @return the replaceCharacter value
      */
@@ -199,7 +199,7 @@ public class X12DelimiterOverrides {
     }
 
     /**
-     * Set the replaceCharacter value.
+     * Set the replacement character.
      *
      * @param replaceCharacter the replaceCharacter value to set
      * @return the X12DelimiterOverrides object itself.
@@ -210,7 +210,7 @@ public class X12DelimiterOverrides {
     }
 
     /**
-     * Get the replaceSeparatorsInPayload value.
+     * Get the value indicating whether to replace separators in payload.
      *
      * @return the replaceSeparatorsInPayload value
      */
@@ -219,7 +219,7 @@ public class X12DelimiterOverrides {
     }
 
     /**
-     * Set the replaceSeparatorsInPayload value.
+     * Set the value indicating whether to replace separators in payload.
      *
      * @param replaceSeparatorsInPayload the replaceSeparatorsInPayload value to set
      * @return the X12DelimiterOverrides object itself.
@@ -230,7 +230,7 @@ public class X12DelimiterOverrides {
     }
 
     /**
-     * Get the targetNamespace value.
+     * Get the target namespace on which this delimiter settings has to be applied.
      *
      * @return the targetNamespace value
      */
@@ -239,7 +239,7 @@ public class X12DelimiterOverrides {
     }
 
     /**
-     * Set the targetNamespace value.
+     * Set the target namespace on which this delimiter settings has to be applied.
      *
      * @param targetNamespace the targetNamespace value to set
      * @return the X12DelimiterOverrides object itself.

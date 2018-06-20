@@ -29,8 +29,16 @@ class WorkflowVersionsImpl extends WrapperImpl<WorkflowVersionsInner> implements
         return this.manager;
     }
 
-    private WorkflowVersionImpl wrapModel(WorkflowVersionInner inner) {
+    private WorkflowVersionImpl wrapWorkflowVersionModel(WorkflowVersionInner inner) {
         return  new WorkflowVersionImpl(inner, manager());
+    }
+
+    private Observable<WorkflowVersionInner> getWorkflowVersionInnerUsingWorkflowVersionsInnerAsync(String id) {
+        String resourceGroupName = IdParsingUtils.getValueFromIdByName(id, "resourceGroups");
+        String workflowName = IdParsingUtils.getValueFromIdByName(id, "workflows");
+        String versionId = IdParsingUtils.getValueFromIdByName(id, "versions");
+        WorkflowVersionsInner client = this.inner();
+        return client.getAsync(resourceGroupName, workflowName, versionId);
     }
 
     @Override
@@ -40,46 +48,27 @@ class WorkflowVersionsImpl extends WrapperImpl<WorkflowVersionsInner> implements
         .map(new Func1<WorkflowVersionInner, WorkflowVersion>() {
             @Override
             public WorkflowVersion call(WorkflowVersionInner inner) {
-                return wrapModel(inner);
+                return wrapWorkflowVersionModel(inner);
             }
        });
     }
 
-    private Observable<Page<WorkflowVersionInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        WorkflowVersionsInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<WorkflowVersionInner>, Observable<Page<WorkflowVersionInner>>>() {
-            @Override
-            public Observable<Page<WorkflowVersionInner>> call(Page<WorkflowVersionInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<WorkflowVersion> listAsync(final String resourceGroupName, final String workflowName) {
         WorkflowVersionsInner client = this.inner();
         return client.listAsync(resourceGroupName, workflowName)
-        .flatMap(new Func1<Page<WorkflowVersionInner>, Observable<Page<WorkflowVersionInner>>>() {
-            @Override
-            public Observable<Page<WorkflowVersionInner>> call(Page<WorkflowVersionInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<WorkflowVersionInner>, Iterable<WorkflowVersionInner>>() {
             @Override
             public Iterable<WorkflowVersionInner> call(Page<WorkflowVersionInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<WorkflowVersionInner, WorkflowVersion>() {
             @Override
             public WorkflowVersion call(WorkflowVersionInner inner) {
-                return wrapModel(inner);
+                return wrapWorkflowVersionModel(inner);
             }
-       });
+        });
     }
 
     @Override

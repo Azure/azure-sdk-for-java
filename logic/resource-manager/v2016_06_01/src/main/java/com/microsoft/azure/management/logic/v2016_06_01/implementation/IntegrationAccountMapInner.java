@@ -72,7 +72,7 @@ public class IntegrationAccountMapInner extends Resource {
     private Object metadata;
 
     /**
-     * Get the mapType value.
+     * Get the map type. Possible values include: 'NotSpecified', 'Xslt'.
      *
      * @return the mapType value
      */
@@ -81,7 +81,7 @@ public class IntegrationAccountMapInner extends Resource {
     }
 
     /**
-     * Set the mapType value.
+     * Set the map type. Possible values include: 'NotSpecified', 'Xslt'.
      *
      * @param mapType the mapType value to set
      * @return the IntegrationAccountMapInner object itself.
@@ -92,7 +92,7 @@ public class IntegrationAccountMapInner extends Resource {
     }
 
     /**
-     * Get the parametersSchema value.
+     * Get the parameters schema of integration account map.
      *
      * @return the parametersSchema value
      */
@@ -101,7 +101,7 @@ public class IntegrationAccountMapInner extends Resource {
     }
 
     /**
-     * Set the parametersSchema value.
+     * Set the parameters schema of integration account map.
      *
      * @param parametersSchema the parametersSchema value to set
      * @return the IntegrationAccountMapInner object itself.
@@ -112,7 +112,7 @@ public class IntegrationAccountMapInner extends Resource {
     }
 
     /**
-     * Get the createdTime value.
+     * Get the created time.
      *
      * @return the createdTime value
      */
@@ -121,7 +121,7 @@ public class IntegrationAccountMapInner extends Resource {
     }
 
     /**
-     * Get the changedTime value.
+     * Get the changed time.
      *
      * @return the changedTime value
      */
@@ -130,7 +130,7 @@ public class IntegrationAccountMapInner extends Resource {
     }
 
     /**
-     * Get the content value.
+     * Get the content.
      *
      * @return the content value
      */
@@ -139,7 +139,7 @@ public class IntegrationAccountMapInner extends Resource {
     }
 
     /**
-     * Set the content value.
+     * Set the content.
      *
      * @param content the content value to set
      * @return the IntegrationAccountMapInner object itself.
@@ -150,7 +150,7 @@ public class IntegrationAccountMapInner extends Resource {
     }
 
     /**
-     * Get the contentType value.
+     * Get the content type.
      *
      * @return the contentType value
      */
@@ -159,7 +159,7 @@ public class IntegrationAccountMapInner extends Resource {
     }
 
     /**
-     * Set the contentType value.
+     * Set the content type.
      *
      * @param contentType the contentType value to set
      * @return the IntegrationAccountMapInner object itself.
@@ -170,7 +170,7 @@ public class IntegrationAccountMapInner extends Resource {
     }
 
     /**
-     * Get the contentLink value.
+     * Get the content link.
      *
      * @return the contentLink value
      */
@@ -179,7 +179,7 @@ public class IntegrationAccountMapInner extends Resource {
     }
 
     /**
-     * Get the metadata value.
+     * Get the metadata.
      *
      * @return the metadata value
      */
@@ -188,7 +188,7 @@ public class IntegrationAccountMapInner extends Resource {
     }
 
     /**
-     * Set the metadata value.
+     * Set the metadata.
      *
      * @param metadata the metadata value to set
      * @return the IntegrationAccountMapInner object itself.

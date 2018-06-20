@@ -39,7 +39,7 @@ public class AS2MessageConnectionSettings {
     private boolean unfoldHttpHeaders;
 
     /**
-     * Get the ignoreCertificateNameMismatch value.
+     * Get the value indicating whether to ignore mismatch in certificate name.
      *
      * @return the ignoreCertificateNameMismatch value
      */
@@ -48,7 +48,7 @@ public class AS2MessageConnectionSettings {
     }
 
     /**
-     * Set the ignoreCertificateNameMismatch value.
+     * Set the value indicating whether to ignore mismatch in certificate name.
      *
      * @param ignoreCertificateNameMismatch the ignoreCertificateNameMismatch value to set
      * @return the AS2MessageConnectionSettings object itself.
@@ -59,7 +59,7 @@ public class AS2MessageConnectionSettings {
     }
 
     /**
-     * Get the supportHttpStatusCodeContinue value.
+     * Get the value indicating whether to support HTTP status code 'CONTINUE'.
      *
      * @return the supportHttpStatusCodeContinue value
      */
@@ -68,7 +68,7 @@ public class AS2MessageConnectionSettings {
     }
 
     /**
-     * Set the supportHttpStatusCodeContinue value.
+     * Set the value indicating whether to support HTTP status code 'CONTINUE'.
      *
      * @param supportHttpStatusCodeContinue the supportHttpStatusCodeContinue value to set
      * @return the AS2MessageConnectionSettings object itself.
@@ -79,7 +79,7 @@ public class AS2MessageConnectionSettings {
     }
 
     /**
-     * Get the keepHttpConnectionAlive value.
+     * Get the value indicating whether to keep the connection alive.
      *
      * @return the keepHttpConnectionAlive value
      */
@@ -88,7 +88,7 @@ public class AS2MessageConnectionSettings {
     }
 
     /**
-     * Set the keepHttpConnectionAlive value.
+     * Set the value indicating whether to keep the connection alive.
      *
      * @param keepHttpConnectionAlive the keepHttpConnectionAlive value to set
      * @return the AS2MessageConnectionSettings object itself.
@@ -99,7 +99,7 @@ public class AS2MessageConnectionSettings {
     }
 
     /**
-     * Get the unfoldHttpHeaders value.
+     * Get the value indicating whether to unfold the HTTP headers.
      *
      * @return the unfoldHttpHeaders value
      */
@@ -108,7 +108,7 @@ public class AS2MessageConnectionSettings {
     }
 
     /**
-     * Set the unfoldHttpHeaders value.
+     * Set the value indicating whether to unfold the HTTP headers.
      *
      * @param unfoldHttpHeaders the unfoldHttpHeaders value to set
      * @return the AS2MessageConnectionSettings object itself.

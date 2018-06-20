@@ -45,7 +45,7 @@ public class ContentLink {
     private Object metadata;
 
     /**
-     * Get the uri value.
+     * Get the content link URI.
      *
      * @return the uri value
      */
@@ -54,7 +54,7 @@ public class ContentLink {
     }
 
     /**
-     * Set the uri value.
+     * Set the content link URI.
      *
      * @param uri the uri value to set
      * @return the ContentLink object itself.
@@ -65,7 +65,7 @@ public class ContentLink {
     }
 
     /**
-     * Get the contentVersion value.
+     * Get the content version.
      *
      * @return the contentVersion value
      */
@@ -74,7 +74,7 @@ public class ContentLink {
     }
 
     /**
-     * Set the contentVersion value.
+     * Set the content version.
      *
      * @param contentVersion the contentVersion value to set
      * @return the ContentLink object itself.
@@ -85,7 +85,7 @@ public class ContentLink {
     }
 
     /**
-     * Get the contentSize value.
+     * Get the content size.
      *
      * @return the contentSize value
      */
@@ -94,7 +94,7 @@ public class ContentLink {
     }
 
     /**
-     * Set the contentSize value.
+     * Set the content size.
      *
      * @param contentSize the contentSize value to set
      * @return the ContentLink object itself.
@@ -105,7 +105,7 @@ public class ContentLink {
     }
 
     /**
-     * Get the contentHash value.
+     * Get the content hash.
      *
      * @return the contentHash value
      */
@@ -114,7 +114,7 @@ public class ContentLink {
     }
 
     /**
-     * Set the contentHash value.
+     * Set the content hash.
      *
      * @param contentHash the contentHash value to set
      * @return the ContentLink object itself.
@@ -125,7 +125,7 @@ public class ContentLink {
     }
 
     /**
-     * Get the metadata value.
+     * Get the metadata.
      *
      * @return the metadata value
      */
@@ -134,7 +134,7 @@ public class ContentLink {
     }
 
     /**
-     * Set the metadata value.
+     * Set the metadata.
      *
      * @param metadata the metadata value to set
      * @return the ContentLink object itself.

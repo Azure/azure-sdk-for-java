@@ -21,7 +21,7 @@ public class RunActionCorrelation extends RunCorrelation {
     private String actionTrackingId;
 
     /**
-     * Get the actionTrackingId value.
+     * Get the action tracking identifier.
      *
      * @return the actionTrackingId value
      */
@@ -30,7 +30,7 @@ public class RunActionCorrelation extends RunCorrelation {
     }
 
     /**
-     * Set the actionTrackingId value.
+     * Set the action tracking identifier.
      *
      * @param actionTrackingId the actionTrackingId value to set
      * @return the RunActionCorrelation object itself.
