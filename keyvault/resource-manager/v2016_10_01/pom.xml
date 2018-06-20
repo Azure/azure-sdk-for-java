@@ -15,7 +15,7 @@
         <relativePath>../../../pom.xml</relativePath>
     </parent>
     <artifactId>azure-mgmt-keyvault</artifactId>
-    <version>1.0.0-beta</version>
+    <version>1.0.0-beta-1</version>
     <packaging>jar</packaging>
     <name>Microsoft Azure SDK for KeyVault Management</name>
     <description>This package contains Microsoft KeyVault Management SDK.</description>
