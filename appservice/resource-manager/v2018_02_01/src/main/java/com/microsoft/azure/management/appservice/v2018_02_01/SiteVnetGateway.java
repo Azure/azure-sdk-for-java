@@ -16,12 +16,12 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
 
 /**
  * Type representing SiteVnetGateway.
  */
-public interface SiteVnetGateway extends HasInner<VnetGatewayInner>, Indexable, Refreshable<SiteVnetGateway>, Updatable<SiteVnetGateway.Update>, HasManager<AppServiceManager> {
+public interface SiteVnetGateway extends HasInner<VnetGatewayInner>, Indexable, Refreshable<SiteVnetGateway>, Updatable<SiteVnetGateway.Update>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the id value.
      */

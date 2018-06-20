@@ -33,14 +33,14 @@ import com.microsoft.azure.management.appservice.v2016_09_01.HostingEnvironmentA
 import com.microsoft.azure.management.appservice.v2016_09_01.WorkerPools;
 
 class AppServiceEnvironmentsImpl extends WrapperImpl<AppServiceEnvironmentsInner> implements AppServiceEnvironments {
-    private final AppServiceManager manager;
+    private final WebManager manager;
 
-    AppServiceEnvironmentsImpl(AppServiceManager manager) {
+    AppServiceEnvironmentsImpl(WebManager manager) {
         super(manager.inner().appServiceEnvironments());
         this.manager = manager;
     }
 
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 
@@ -181,7 +181,8 @@ class AppServiceEnvironmentsImpl extends WrapperImpl<AppServiceEnvironmentsInner
             public Iterable<SiteInner> call(Page<SiteInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<SiteInner, HostingEnvironmentSite>() {
+        })
+        .map(new Func1<SiteInner, HostingEnvironmentSite>() {
             @Override
             public HostingEnvironmentSite call(SiteInner inner) {
                 return new HostingEnvironmentSiteImpl(inner, manager());
@@ -198,7 +199,8 @@ class AppServiceEnvironmentsImpl extends WrapperImpl<AppServiceEnvironmentsInner
             public Iterable<SiteInner> call(Page<SiteInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<SiteInner, HostingEnvironmentSite>() {
+        })
+        .map(new Func1<SiteInner, HostingEnvironmentSite>() {
             @Override
             public HostingEnvironmentSite call(SiteInner inner) {
                 return new HostingEnvironmentSiteImpl(inner, manager());
@@ -215,7 +217,8 @@ class AppServiceEnvironmentsImpl extends WrapperImpl<AppServiceEnvironmentsInner
             public Iterable<StampCapacityInner> call(Page<StampCapacityInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<StampCapacityInner, StampCapacity>() {
+        })
+        .map(new Func1<StampCapacityInner, StampCapacity>() {
             @Override
             public StampCapacity call(StampCapacityInner inner) {
                 return new StampCapacityImpl(inner, manager());
@@ -286,7 +289,8 @@ class AppServiceEnvironmentsImpl extends WrapperImpl<AppServiceEnvironmentsInner
             public Iterable<ResourceMetricDefinitionInner> call(Page<ResourceMetricDefinitionInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<ResourceMetricDefinitionInner, ResourceMetricDefinition>() {
+        })
+        .map(new Func1<ResourceMetricDefinitionInner, ResourceMetricDefinition>() {
             @Override
             public ResourceMetricDefinition call(ResourceMetricDefinitionInner inner) {
                 return new ResourceMetricDefinitionImpl(inner, manager());
@@ -303,7 +307,8 @@ class AppServiceEnvironmentsImpl extends WrapperImpl<AppServiceEnvironmentsInner
             public Iterable<ResourceMetricDefinitionInner> call(Page<ResourceMetricDefinitionInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<ResourceMetricDefinitionInner, ResourceMetricDefinition>() {
+        })
+        .map(new Func1<ResourceMetricDefinitionInner, ResourceMetricDefinition>() {
             @Override
             public ResourceMetricDefinition call(ResourceMetricDefinitionInner inner) {
                 return new ResourceMetricDefinitionImpl(inner, manager());
@@ -320,7 +325,8 @@ class AppServiceEnvironmentsImpl extends WrapperImpl<AppServiceEnvironmentsInner
             public Iterable<ResourceMetricDefinitionInner> call(Page<ResourceMetricDefinitionInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<ResourceMetricDefinitionInner, ResourceMetricDefinition>() {
+        })
+        .map(new Func1<ResourceMetricDefinitionInner, ResourceMetricDefinition>() {
             @Override
             public ResourceMetricDefinition call(ResourceMetricDefinitionInner inner) {
                 return new ResourceMetricDefinitionImpl(inner, manager());
@@ -337,7 +343,8 @@ class AppServiceEnvironmentsImpl extends WrapperImpl<AppServiceEnvironmentsInner
             public Iterable<ResourceMetricDefinitionInner> call(Page<ResourceMetricDefinitionInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<ResourceMetricDefinitionInner, ResourceMetricDefinition>() {
+        })
+        .map(new Func1<ResourceMetricDefinitionInner, ResourceMetricDefinition>() {
             @Override
             public ResourceMetricDefinition call(ResourceMetricDefinitionInner inner) {
                 return new ResourceMetricDefinitionImpl(inner, manager());
@@ -372,7 +379,8 @@ class AppServiceEnvironmentsImpl extends WrapperImpl<AppServiceEnvironmentsInner
             public Iterable<ResourceMetricInner> call(Page<ResourceMetricInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<ResourceMetricInner, HostingEnvironmentResourceMetric>() {
+        })
+        .map(new Func1<ResourceMetricInner, HostingEnvironmentResourceMetric>() {
             @Override
             public HostingEnvironmentResourceMetric call(ResourceMetricInner inner) {
                 return new HostingEnvironmentResourceMetricImpl(inner, manager());
@@ -389,7 +397,8 @@ class AppServiceEnvironmentsImpl extends WrapperImpl<AppServiceEnvironmentsInner
             public Iterable<ResourceMetricInner> call(Page<ResourceMetricInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<ResourceMetricInner, HostingEnvironmentResourceMetric>() {
+        })
+        .map(new Func1<ResourceMetricInner, HostingEnvironmentResourceMetric>() {
             @Override
             public HostingEnvironmentResourceMetric call(ResourceMetricInner inner) {
                 return new HostingEnvironmentResourceMetricImpl(inner, manager());
@@ -406,7 +415,8 @@ class AppServiceEnvironmentsImpl extends WrapperImpl<AppServiceEnvironmentsInner
             public Iterable<ResourceMetricInner> call(Page<ResourceMetricInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<ResourceMetricInner, HostingEnvironmentResourceMetric>() {
+        })
+        .map(new Func1<ResourceMetricInner, HostingEnvironmentResourceMetric>() {
             @Override
             public HostingEnvironmentResourceMetric call(ResourceMetricInner inner) {
                 return new HostingEnvironmentResourceMetricImpl(inner, manager());
@@ -423,7 +433,8 @@ class AppServiceEnvironmentsImpl extends WrapperImpl<AppServiceEnvironmentsInner
             public Iterable<ResourceMetricInner> call(Page<ResourceMetricInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<ResourceMetricInner, HostingEnvironmentResourceMetric>() {
+        })
+        .map(new Func1<ResourceMetricInner, HostingEnvironmentResourceMetric>() {
             @Override
             public HostingEnvironmentResourceMetric call(ResourceMetricInner inner) {
                 return new HostingEnvironmentResourceMetricImpl(inner, manager());
@@ -494,7 +505,8 @@ class AppServiceEnvironmentsImpl extends WrapperImpl<AppServiceEnvironmentsInner
             public Iterable<SkuInfoInner> call(Page<SkuInfoInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<SkuInfoInner, SkuInfo>() {
+        })
+        .map(new Func1<SkuInfoInner, SkuInfo>() {
             @Override
             public SkuInfo call(SkuInfoInner inner) {
                 return new SkuInfoImpl(inner, manager());
@@ -511,7 +523,8 @@ class AppServiceEnvironmentsImpl extends WrapperImpl<AppServiceEnvironmentsInner
             public Iterable<SkuInfoInner> call(Page<SkuInfoInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<SkuInfoInner, SkuInfo>() {
+        })
+        .map(new Func1<SkuInfoInner, SkuInfo>() {
             @Override
             public SkuInfo call(SkuInfoInner inner) {
                 return new SkuInfoImpl(inner, manager());
@@ -528,7 +541,8 @@ class AppServiceEnvironmentsImpl extends WrapperImpl<AppServiceEnvironmentsInner
             public Iterable<UsageInner> call(Page<UsageInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<UsageInner, Usage>() {
+        })
+        .map(new Func1<UsageInner, Usage>() {
             @Override
             public Usage call(UsageInner inner) {
                 return new UsageImpl(inner, manager());
@@ -545,7 +559,8 @@ class AppServiceEnvironmentsImpl extends WrapperImpl<AppServiceEnvironmentsInner
             public Iterable<CsmUsageQuotaInner> call(Page<CsmUsageQuotaInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<CsmUsageQuotaInner, CsmUsageQuota>() {
+        })
+        .map(new Func1<CsmUsageQuotaInner, CsmUsageQuota>() {
             @Override
             public CsmUsageQuota call(CsmUsageQuotaInner inner) {
                 return new CsmUsageQuotaImpl(inner, manager());
@@ -562,7 +577,8 @@ class AppServiceEnvironmentsImpl extends WrapperImpl<AppServiceEnvironmentsInner
             public Iterable<UsageInner> call(Page<UsageInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<UsageInner, Usage>() {
+        })
+        .map(new Func1<UsageInner, Usage>() {
             @Override
             public Usage call(UsageInner inner) {
                 return new UsageImpl(inner, manager());

@@ -34,7 +34,7 @@ public class MSDeployLogEntry {
     private String message;
 
     /**
-     * Get the time value.
+     * Get timestamp of log entry.
      *
      * @return the time value
      */
@@ -43,7 +43,7 @@ public class MSDeployLogEntry {
     }
 
     /**
-     * Get the type value.
+     * Get log entry type. Possible values include: 'Message', 'Warning', 'Error'.
      *
      * @return the type value
      */
@@ -52,7 +52,7 @@ public class MSDeployLogEntry {
     }
 
     /**
-     * Get the message value.
+     * Get log entry message.
      *
      * @return the message value
      */

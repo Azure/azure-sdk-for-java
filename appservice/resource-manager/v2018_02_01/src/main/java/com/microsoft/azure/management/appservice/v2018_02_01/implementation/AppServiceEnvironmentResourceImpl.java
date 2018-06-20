@@ -25,9 +25,9 @@ import java.util.ArrayList;
 import com.microsoft.azure.management.appservice.v2018_02_01.StampCapacity;
 import rx.functions.Func1;
 
-class AppServiceEnvironmentResourceImpl extends GroupableResourceCoreImpl<AppServiceEnvironmentResource, AppServiceEnvironmentResourceInner, AppServiceEnvironmentResourceImpl, AppServiceManager> implements AppServiceEnvironmentResource, AppServiceEnvironmentResource.Definition, AppServiceEnvironmentResource.Update {
+class AppServiceEnvironmentResourceImpl extends GroupableResourceCoreImpl<AppServiceEnvironmentResource, AppServiceEnvironmentResourceInner, AppServiceEnvironmentResourceImpl, CertificateRegistrationManager> implements AppServiceEnvironmentResource, AppServiceEnvironmentResource.Definition, AppServiceEnvironmentResource.Update {
     private AppServiceEnvironmentPatchResource updateParameter;
-    AppServiceEnvironmentResourceImpl(String name, AppServiceEnvironmentResourceInner inner, AppServiceManager manager) {
+    AppServiceEnvironmentResourceImpl(String name, AppServiceEnvironmentResourceInner inner, CertificateRegistrationManager manager) {
         super(name, inner, manager);
         this.updateParameter = new AppServiceEnvironmentPatchResource();
     }
@@ -214,6 +214,16 @@ class AppServiceEnvironmentResourceImpl extends GroupableResourceCoreImpl<AppSer
     @Override
     public String resourceGroup() {
         return this.inner().resourceGroup();
+    }
+
+    @Override
+    public String sslCertKeyVaultId() {
+        return this.inner().sslCertKeyVaultId();
+    }
+
+    @Override
+    public String sslCertKeyVaultSecretName() {
+        return this.inner().sslCertKeyVaultSecretName();
     }
 
     @Override
@@ -411,6 +421,26 @@ class AppServiceEnvironmentResourceImpl extends GroupableResourceCoreImpl<AppSer
             this.inner().withNetworkAccessControlList(networkAccessControlList);
         } else {
             this.updateParameter.withNetworkAccessControlList(networkAccessControlList);
+        }
+        return this;
+    }
+
+    @Override
+    public AppServiceEnvironmentResourceImpl withSslCertKeyVaultId(String sslCertKeyVaultId) {
+        if (isInCreateMode()) {
+            this.inner().withSslCertKeyVaultId(sslCertKeyVaultId);
+        } else {
+            this.updateParameter.withSslCertKeyVaultId(sslCertKeyVaultId);
+        }
+        return this;
+    }
+
+    @Override
+    public AppServiceEnvironmentResourceImpl withSslCertKeyVaultSecretName(String sslCertKeyVaultSecretName) {
+        if (isInCreateMode()) {
+            this.inner().withSslCertKeyVaultSecretName(sslCertKeyVaultSecretName);
+        } else {
+            this.updateParameter.withSslCertKeyVaultSecretName(sslCertKeyVaultSecretName);
         }
         return this;
     }

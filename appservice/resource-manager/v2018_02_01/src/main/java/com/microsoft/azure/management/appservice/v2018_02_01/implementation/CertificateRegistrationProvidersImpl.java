@@ -17,14 +17,14 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.management.appservice.v2018_02_01.CsmOperationDescription;
 
 class CertificateRegistrationProvidersImpl extends WrapperImpl<CertificateRegistrationProvidersInner> implements CertificateRegistrationProviders {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
 
-    CertificateRegistrationProvidersImpl(AppServiceManager manager) {
+    CertificateRegistrationProvidersImpl(CertificateRegistrationManager manager) {
         super(manager.inner().certificateRegistrationProviders());
         this.manager = manager;
     }
 
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 
@@ -37,7 +37,8 @@ class CertificateRegistrationProvidersImpl extends WrapperImpl<CertificateRegist
             public Iterable<CsmOperationDescriptionInner> call(Page<CsmOperationDescriptionInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<CsmOperationDescriptionInner, CsmOperationDescription>() {
+        })
+        .map(new Func1<CsmOperationDescriptionInner, CsmOperationDescription>() {
             @Override
             public CsmOperationDescription call(CsmOperationDescriptionInner inner) {
                 return new CsmOperationDescriptionImpl(inner, manager());

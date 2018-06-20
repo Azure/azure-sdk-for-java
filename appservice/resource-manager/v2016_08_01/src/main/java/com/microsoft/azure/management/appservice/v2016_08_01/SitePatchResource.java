@@ -240,7 +240,7 @@ public class SitePatchResource extends ProxyOnlyResource {
     private Boolean httpsOnly;
 
     /**
-     * Get the state value.
+     * Get current state of the app.
      *
      * @return the state value
      */
@@ -249,7 +249,7 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the hostNames value.
+     * Get hostnames associated with the app.
      *
      * @return the hostNames value
      */
@@ -258,7 +258,7 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the repositorySiteName value.
+     * Get name of the repository site.
      *
      * @return the repositorySiteName value
      */
@@ -267,7 +267,7 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the usageState value.
+     * Get state indicating whether the app has exceeded its quota usage. Read-only. Possible values include: 'Normal', 'Exceeded'.
      *
      * @return the usageState value
      */
@@ -276,7 +276,7 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the enabled value.
+     * Get &lt;code&gt;true&lt;/code&gt; if the app is enabled; otherwise, &lt;code&gt;false&lt;/code&gt;. Setting this value to false disables the app (takes the app offline).
      *
      * @return the enabled value
      */
@@ -285,7 +285,7 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the enabled value.
+     * Set &lt;code&gt;true&lt;/code&gt; if the app is enabled; otherwise, &lt;code&gt;false&lt;/code&gt;. Setting this value to false disables the app (takes the app offline).
      *
      * @param enabled the enabled value to set
      * @return the SitePatchResource object itself.
@@ -296,7 +296,8 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the enabledHostNames value.
+     * Get enabled hostnames for the app.Hostnames need to be assigned (see HostNames) AND enabled. Otherwise,
+     the app is not served on those hostnames.
      *
      * @return the enabledHostNames value
      */
@@ -305,7 +306,7 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the availabilityState value.
+     * Get management information availability state for the app. Possible values include: 'Normal', 'Limited', 'DisasterRecoveryMode'.
      *
      * @return the availabilityState value
      */
@@ -314,7 +315,7 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the hostNameSslStates value.
+     * Get hostname SSL states are used to manage the SSL bindings for app's hostnames.
      *
      * @return the hostNameSslStates value
      */
@@ -323,7 +324,7 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the hostNameSslStates value.
+     * Set hostname SSL states are used to manage the SSL bindings for app's hostnames.
      *
      * @param hostNameSslStates the hostNameSslStates value to set
      * @return the SitePatchResource object itself.
@@ -334,7 +335,7 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the serverFarmId value.
+     * Get resource ID of the associated App Service plan, formatted as: "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms/{appServicePlanName}".
      *
      * @return the serverFarmId value
      */
@@ -343,7 +344,7 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the serverFarmId value.
+     * Set resource ID of the associated App Service plan, formatted as: "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms/{appServicePlanName}".
      *
      * @param serverFarmId the serverFarmId value to set
      * @return the SitePatchResource object itself.
@@ -354,7 +355,7 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the reserved value.
+     * Get &lt;code&gt;true&lt;/code&gt; if reserved; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @return the reserved value
      */
@@ -363,7 +364,7 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the reserved value.
+     * Set &lt;code&gt;true&lt;/code&gt; if reserved; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @param reserved the reserved value to set
      * @return the SitePatchResource object itself.
@@ -374,7 +375,7 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the lastModifiedTimeUtc value.
+     * Get last time the app was modified, in UTC. Read-only.
      *
      * @return the lastModifiedTimeUtc value
      */
@@ -383,7 +384,7 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the siteConfig value.
+     * Get configuration of the app.
      *
      * @return the siteConfig value
      */
@@ -392,7 +393,7 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the siteConfig value.
+     * Set configuration of the app.
      *
      * @param siteConfig the siteConfig value to set
      * @return the SitePatchResource object itself.
@@ -403,7 +404,7 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the trafficManagerHostNames value.
+     * Get azure Traffic Manager hostnames associated with the app. Read-only.
      *
      * @return the trafficManagerHostNames value
      */
@@ -412,7 +413,7 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the scmSiteAlsoStopped value.
+     * Get &lt;code&gt;true&lt;/code&gt; to stop SCM (KUDU) site when the app is stopped; otherwise, &lt;code&gt;false&lt;/code&gt;. The default is &lt;code&gt;false&lt;/code&gt;.
      *
      * @return the scmSiteAlsoStopped value
      */
@@ -421,7 +422,7 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the scmSiteAlsoStopped value.
+     * Set &lt;code&gt;true&lt;/code&gt; to stop SCM (KUDU) site when the app is stopped; otherwise, &lt;code&gt;false&lt;/code&gt;. The default is &lt;code&gt;false&lt;/code&gt;.
      *
      * @param scmSiteAlsoStopped the scmSiteAlsoStopped value to set
      * @return the SitePatchResource object itself.
@@ -432,7 +433,7 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the targetSwapSlot value.
+     * Get specifies which deployment slot this app will swap into. Read-only.
      *
      * @return the targetSwapSlot value
      */
@@ -441,7 +442,7 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the hostingEnvironmentProfile value.
+     * Get app Service Environment to use for the app.
      *
      * @return the hostingEnvironmentProfile value
      */
@@ -450,7 +451,7 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the hostingEnvironmentProfile value.
+     * Set app Service Environment to use for the app.
      *
      * @param hostingEnvironmentProfile the hostingEnvironmentProfile value to set
      * @return the SitePatchResource object itself.
@@ -461,7 +462,7 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the clientAffinityEnabled value.
+     * Get &lt;code&gt;true&lt;/code&gt; to enable client affinity; &lt;code&gt;false&lt;/code&gt; to stop sending session affinity cookies, which route client requests in the same session to the same instance. Default is &lt;code&gt;true&lt;/code&gt;.
      *
      * @return the clientAffinityEnabled value
      */
@@ -470,7 +471,7 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the clientAffinityEnabled value.
+     * Set &lt;code&gt;true&lt;/code&gt; to enable client affinity; &lt;code&gt;false&lt;/code&gt; to stop sending session affinity cookies, which route client requests in the same session to the same instance. Default is &lt;code&gt;true&lt;/code&gt;.
      *
      * @param clientAffinityEnabled the clientAffinityEnabled value to set
      * @return the SitePatchResource object itself.
@@ -481,7 +482,7 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the clientCertEnabled value.
+     * Get &lt;code&gt;true&lt;/code&gt; to enable client certificate authentication (TLS mutual authentication); otherwise, &lt;code&gt;false&lt;/code&gt;. Default is &lt;code&gt;false&lt;/code&gt;.
      *
      * @return the clientCertEnabled value
      */
@@ -490,7 +491,7 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the clientCertEnabled value.
+     * Set &lt;code&gt;true&lt;/code&gt; to enable client certificate authentication (TLS mutual authentication); otherwise, &lt;code&gt;false&lt;/code&gt;. Default is &lt;code&gt;false&lt;/code&gt;.
      *
      * @param clientCertEnabled the clientCertEnabled value to set
      * @return the SitePatchResource object itself.
@@ -501,7 +502,8 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the hostNamesDisabled value.
+     * Get &lt;code&gt;true&lt;/code&gt; to disable the public hostnames of the app; otherwise, &lt;code&gt;false&lt;/code&gt;.
+      If &lt;code&gt;true&lt;/code&gt;, the app is only accessible via API management process.
      *
      * @return the hostNamesDisabled value
      */
@@ -510,7 +512,8 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the hostNamesDisabled value.
+     * Set &lt;code&gt;true&lt;/code&gt; to disable the public hostnames of the app; otherwise, &lt;code&gt;false&lt;/code&gt;.
+      If &lt;code&gt;true&lt;/code&gt;, the app is only accessible via API management process.
      *
      * @param hostNamesDisabled the hostNamesDisabled value to set
      * @return the SitePatchResource object itself.
@@ -521,7 +524,7 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the outboundIpAddresses value.
+     * Get list of IP addresses that the app uses for outbound connections (e.g. database access). Includes VIPs from tenants that site can be hosted with current settings. Read-only.
      *
      * @return the outboundIpAddresses value
      */
@@ -530,7 +533,7 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the possibleOutboundIpAddresses value.
+     * Get list of IP addresses that the app uses for outbound connections (e.g. database access). Includes VIPs from all tenants. Read-only.
      *
      * @return the possibleOutboundIpAddresses value
      */
@@ -539,7 +542,7 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the containerSize value.
+     * Get size of the function container.
      *
      * @return the containerSize value
      */
@@ -548,7 +551,7 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the containerSize value.
+     * Set size of the function container.
      *
      * @param containerSize the containerSize value to set
      * @return the SitePatchResource object itself.
@@ -559,7 +562,7 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the dailyMemoryTimeQuota value.
+     * Get maximum allowed daily memory-time quota (applicable on dynamic apps only).
      *
      * @return the dailyMemoryTimeQuota value
      */
@@ -568,7 +571,7 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the dailyMemoryTimeQuota value.
+     * Set maximum allowed daily memory-time quota (applicable on dynamic apps only).
      *
      * @param dailyMemoryTimeQuota the dailyMemoryTimeQuota value to set
      * @return the SitePatchResource object itself.
@@ -579,7 +582,7 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the suspendedTill value.
+     * Get app suspended till in case memory-time quota is exceeded.
      *
      * @return the suspendedTill value
      */
@@ -588,7 +591,8 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the maxNumberOfWorkers value.
+     * Get maximum number of workers.
+     This only applies to Functions container.
      *
      * @return the maxNumberOfWorkers value
      */
@@ -597,7 +601,7 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the cloningInfo value.
+     * Get if specified during app creation, the app is cloned from a source app.
      *
      * @return the cloningInfo value
      */
@@ -606,7 +610,7 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the cloningInfo value.
+     * Set if specified during app creation, the app is cloned from a source app.
      *
      * @param cloningInfo the cloningInfo value to set
      * @return the SitePatchResource object itself.
@@ -617,7 +621,7 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the snapshotInfo value.
+     * Get if specified during app creation, the app is created from a previous snapshot.
      *
      * @return the snapshotInfo value
      */
@@ -626,7 +630,7 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the snapshotInfo value.
+     * Set if specified during app creation, the app is created from a previous snapshot.
      *
      * @param snapshotInfo the snapshotInfo value to set
      * @return the SitePatchResource object itself.
@@ -637,7 +641,7 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the resourceGroup value.
+     * Get name of the resource group the app belongs to. Read-only.
      *
      * @return the resourceGroup value
      */
@@ -646,7 +650,7 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the isDefaultContainer value.
+     * Get &lt;code&gt;true&lt;/code&gt; if the app is a default container; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @return the isDefaultContainer value
      */
@@ -655,7 +659,7 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the defaultHostName value.
+     * Get default hostname of the app. Read-only.
      *
      * @return the defaultHostName value
      */
@@ -664,7 +668,7 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the slotSwapStatus value.
+     * Get status of the last deployment slot swap operation.
      *
      * @return the slotSwapStatus value
      */
@@ -673,7 +677,8 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the httpsOnly value.
+     * Get httpsOnly: configures a web site to accept only https requests. Issues redirect for
+     http requests.
      *
      * @return the httpsOnly value
      */
@@ -682,7 +687,8 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the httpsOnly value.
+     * Set httpsOnly: configures a web site to accept only https requests. Issues redirect for
+     http requests.
      *
      * @param httpsOnly the httpsOnly value to set
      * @return the SitePatchResource object itself.

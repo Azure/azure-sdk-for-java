@@ -92,7 +92,7 @@ public class CustomHostnameAnalysisResultInner extends ProxyOnlyResource {
     private List<String> alternateTxtRecords;
 
     /**
-     * Get the isHostnameAlreadyVerified value.
+     * Get &lt;code&gt;true&lt;/code&gt; if hostname is already verified; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @return the isHostnameAlreadyVerified value
      */
@@ -101,7 +101,7 @@ public class CustomHostnameAnalysisResultInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the customDomainVerificationTest value.
+     * Get dNS verification test result. Possible values include: 'Passed', 'Failed', 'Skipped'.
      *
      * @return the customDomainVerificationTest value
      */
@@ -110,7 +110,7 @@ public class CustomHostnameAnalysisResultInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the customDomainVerificationFailureInfo value.
+     * Get raw failure information if DNS verification fails.
      *
      * @return the customDomainVerificationFailureInfo value
      */
@@ -119,7 +119,7 @@ public class CustomHostnameAnalysisResultInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the hasConflictOnScaleUnit value.
+     * Get &lt;code&gt;true&lt;/code&gt; if there is a conflict on a scale unit; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @return the hasConflictOnScaleUnit value
      */
@@ -128,7 +128,7 @@ public class CustomHostnameAnalysisResultInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the hasConflictAcrossSubscription value.
+     * Get &lt;code&gt;true&lt;/code&gt; if htere is a conflict across subscriptions; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @return the hasConflictAcrossSubscription value
      */
@@ -137,7 +137,7 @@ public class CustomHostnameAnalysisResultInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the conflictingAppResourceId value.
+     * Get name of the conflicting app on scale unit if it's within the same subscription.
      *
      * @return the conflictingAppResourceId value
      */
@@ -146,7 +146,7 @@ public class CustomHostnameAnalysisResultInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the cNameRecords value.
+     * Get cName records controller can see for this hostname.
      *
      * @return the cNameRecords value
      */
@@ -155,7 +155,7 @@ public class CustomHostnameAnalysisResultInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the cNameRecords value.
+     * Set cName records controller can see for this hostname.
      *
      * @param cNameRecords the cNameRecords value to set
      * @return the CustomHostnameAnalysisResultInner object itself.
@@ -166,7 +166,7 @@ public class CustomHostnameAnalysisResultInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the txtRecords value.
+     * Get tXT records controller can see for this hostname.
      *
      * @return the txtRecords value
      */
@@ -175,7 +175,7 @@ public class CustomHostnameAnalysisResultInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the txtRecords value.
+     * Set tXT records controller can see for this hostname.
      *
      * @param txtRecords the txtRecords value to set
      * @return the CustomHostnameAnalysisResultInner object itself.
@@ -186,7 +186,7 @@ public class CustomHostnameAnalysisResultInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the aRecords value.
+     * Get a records controller can see for this hostname.
      *
      * @return the aRecords value
      */
@@ -195,7 +195,7 @@ public class CustomHostnameAnalysisResultInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the aRecords value.
+     * Set a records controller can see for this hostname.
      *
      * @param aRecords the aRecords value to set
      * @return the CustomHostnameAnalysisResultInner object itself.
@@ -206,7 +206,7 @@ public class CustomHostnameAnalysisResultInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the alternateCNameRecords value.
+     * Get alternate CName records controller can see for this hostname.
      *
      * @return the alternateCNameRecords value
      */
@@ -215,7 +215,7 @@ public class CustomHostnameAnalysisResultInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the alternateCNameRecords value.
+     * Set alternate CName records controller can see for this hostname.
      *
      * @param alternateCNameRecords the alternateCNameRecords value to set
      * @return the CustomHostnameAnalysisResultInner object itself.
@@ -226,7 +226,7 @@ public class CustomHostnameAnalysisResultInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the alternateTxtRecords value.
+     * Get alternate TXT records controller can see for this hostname.
      *
      * @return the alternateTxtRecords value
      */
@@ -235,7 +235,7 @@ public class CustomHostnameAnalysisResultInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the alternateTxtRecords value.
+     * Set alternate TXT records controller can see for this hostname.
      *
      * @param alternateTxtRecords the alternateTxtRecords value to set
      * @return the CustomHostnameAnalysisResultInner object itself.

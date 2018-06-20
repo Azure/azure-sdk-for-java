@@ -30,14 +30,14 @@ import com.microsoft.azure.management.appservice.v2018_02_01.ScmType;
 import com.microsoft.azure.management.appservice.v2018_02_01.VirtualApplication;
 
 class SiteConfigResourceImpl extends WrapperImpl<SiteConfigResourceInner> implements SiteConfigResource {
-    private final AppServiceManager manager;
-    SiteConfigResourceImpl(SiteConfigResourceInner inner, AppServiceManager manager) {
+    private final CertificateRegistrationManager manager;
+    SiteConfigResourceImpl(SiteConfigResourceInner inner, CertificateRegistrationManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 
@@ -262,6 +262,11 @@ class SiteConfigResourceImpl extends WrapperImpl<SiteConfigResourceInner> implem
     }
 
     @Override
+    public Integer reservedInstanceCount() {
+        return this.inner().reservedInstanceCount();
+    }
+
+    @Override
     public ScmType scmType() {
         return this.inner().scmType();
     }
@@ -297,8 +302,8 @@ class SiteConfigResourceImpl extends WrapperImpl<SiteConfigResourceInner> implem
     }
 
     @Override
-    public String xenonFxVersion() {
-        return this.inner().xenonFxVersion();
+    public String windowsFxVersion() {
+        return this.inner().windowsFxVersion();
     }
 
     @Override

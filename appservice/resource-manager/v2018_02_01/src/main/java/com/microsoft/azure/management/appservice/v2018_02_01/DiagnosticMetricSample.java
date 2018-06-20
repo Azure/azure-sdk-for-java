@@ -58,7 +58,7 @@ public class DiagnosticMetricSample {
     private Boolean isAggregated;
 
     /**
-     * Get the timestamp value.
+     * Get time at which metric is measured.
      *
      * @return the timestamp value
      */
@@ -67,7 +67,7 @@ public class DiagnosticMetricSample {
     }
 
     /**
-     * Set the timestamp value.
+     * Set time at which metric is measured.
      *
      * @param timestamp the timestamp value to set
      * @return the DiagnosticMetricSample object itself.
@@ -78,7 +78,10 @@ public class DiagnosticMetricSample {
     }
 
     /**
-     * Get the roleInstance value.
+     * Get role Instance. Null if this counter is not per instance
+     This is returned and should be whichever instance name we desire to be returned
+     i.e. CPU and Memory return RDWORKERNAME (LargeDed..._IN_0)
+     where RDWORKERNAME is Machine name below and RoleInstance name in parenthesis.
      *
      * @return the roleInstance value
      */
@@ -87,7 +90,10 @@ public class DiagnosticMetricSample {
     }
 
     /**
-     * Set the roleInstance value.
+     * Set role Instance. Null if this counter is not per instance
+     This is returned and should be whichever instance name we desire to be returned
+     i.e. CPU and Memory return RDWORKERNAME (LargeDed..._IN_0)
+     where RDWORKERNAME is Machine name below and RoleInstance name in parenthesis.
      *
      * @param roleInstance the roleInstance value to set
      * @return the DiagnosticMetricSample object itself.
@@ -98,7 +104,7 @@ public class DiagnosticMetricSample {
     }
 
     /**
-     * Get the total value.
+     * Get total value of the metric. If multiple measurements are made this will have sum of all.
      *
      * @return the total value
      */
@@ -107,7 +113,7 @@ public class DiagnosticMetricSample {
     }
 
     /**
-     * Set the total value.
+     * Set total value of the metric. If multiple measurements are made this will have sum of all.
      *
      * @param total the total value to set
      * @return the DiagnosticMetricSample object itself.
@@ -118,7 +124,7 @@ public class DiagnosticMetricSample {
     }
 
     /**
-     * Get the maximum value.
+     * Get maximum of the metric sampled during the time period.
      *
      * @return the maximum value
      */
@@ -127,7 +133,7 @@ public class DiagnosticMetricSample {
     }
 
     /**
-     * Set the maximum value.
+     * Set maximum of the metric sampled during the time period.
      *
      * @param maximum the maximum value to set
      * @return the DiagnosticMetricSample object itself.
@@ -138,7 +144,7 @@ public class DiagnosticMetricSample {
     }
 
     /**
-     * Get the minimum value.
+     * Get minimum of the metric sampled during the time period.
      *
      * @return the minimum value
      */
@@ -147,7 +153,7 @@ public class DiagnosticMetricSample {
     }
 
     /**
-     * Set the minimum value.
+     * Set minimum of the metric sampled during the time period.
      *
      * @param minimum the minimum value to set
      * @return the DiagnosticMetricSample object itself.
@@ -158,7 +164,7 @@ public class DiagnosticMetricSample {
     }
 
     /**
-     * Get the isAggregated value.
+     * Get whether the values are aggregates across all workers or not.
      *
      * @return the isAggregated value
      */
@@ -167,7 +173,7 @@ public class DiagnosticMetricSample {
     }
 
     /**
-     * Set the isAggregated value.
+     * Set whether the values are aggregates across all workers or not.
      *
      * @param isAggregated the isAggregated value to set
      * @return the DiagnosticMetricSample object itself.

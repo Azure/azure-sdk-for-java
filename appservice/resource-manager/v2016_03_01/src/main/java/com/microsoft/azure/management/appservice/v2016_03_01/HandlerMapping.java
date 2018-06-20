@@ -37,7 +37,7 @@ public class HandlerMapping {
     private String arguments;
 
     /**
-     * Get the extension value.
+     * Get requests with this extension will be handled using the specified FastCGI application.
      *
      * @return the extension value
      */
@@ -46,7 +46,7 @@ public class HandlerMapping {
     }
 
     /**
-     * Set the extension value.
+     * Set requests with this extension will be handled using the specified FastCGI application.
      *
      * @param extension the extension value to set
      * @return the HandlerMapping object itself.
@@ -57,7 +57,7 @@ public class HandlerMapping {
     }
 
     /**
-     * Get the scriptProcessor value.
+     * Get the absolute path to the FastCGI application.
      *
      * @return the scriptProcessor value
      */
@@ -66,7 +66,7 @@ public class HandlerMapping {
     }
 
     /**
-     * Set the scriptProcessor value.
+     * Set the absolute path to the FastCGI application.
      *
      * @param scriptProcessor the scriptProcessor value to set
      * @return the HandlerMapping object itself.
@@ -77,7 +77,7 @@ public class HandlerMapping {
     }
 
     /**
-     * Get the arguments value.
+     * Get command-line arguments to be passed to the script processor.
      *
      * @return the arguments value
      */
@@ -86,7 +86,7 @@ public class HandlerMapping {
     }
 
     /**
-     * Set the arguments value.
+     * Set command-line arguments to be passed to the script processor.
      *
      * @param arguments the arguments value to set
      * @return the HandlerMapping object itself.

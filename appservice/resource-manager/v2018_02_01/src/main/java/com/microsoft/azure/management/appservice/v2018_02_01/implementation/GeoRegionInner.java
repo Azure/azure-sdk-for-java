@@ -30,7 +30,7 @@ public class GeoRegionInner extends ProxyOnlyResource {
     private String displayName;
 
     /**
-     * Get the description value.
+     * Get region description.
      *
      * @return the description value
      */
@@ -39,7 +39,7 @@ public class GeoRegionInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the displayName value.
+     * Get display name for region.
      *
      * @return the displayName value
      */

@@ -44,7 +44,7 @@ public class ResourceNameAvailabilityInner {
     private String message;
 
     /**
-     * Get the nameAvailable value.
+     * Get &lt;code&gt;true&lt;/code&gt; indicates name is valid and available. &lt;code&gt;false&lt;/code&gt; indicates the name is invalid, unavailable, or both.
      *
      * @return the nameAvailable value
      */
@@ -53,7 +53,7 @@ public class ResourceNameAvailabilityInner {
     }
 
     /**
-     * Set the nameAvailable value.
+     * Set &lt;code&gt;true&lt;/code&gt; indicates name is valid and available. &lt;code&gt;false&lt;/code&gt; indicates the name is invalid, unavailable, or both.
      *
      * @param nameAvailable the nameAvailable value to set
      * @return the ResourceNameAvailabilityInner object itself.
@@ -64,7 +64,7 @@ public class ResourceNameAvailabilityInner {
     }
 
     /**
-     * Get the reason value.
+     * Get &lt;code&gt;Invalid&lt;/code&gt; indicates the name provided does not match Azure App Service naming requirements. &lt;code&gt;AlreadyExists&lt;/code&gt; indicates that the name is already in use and is therefore unavailable. Possible values include: 'Invalid', 'AlreadyExists'.
      *
      * @return the reason value
      */
@@ -73,7 +73,7 @@ public class ResourceNameAvailabilityInner {
     }
 
     /**
-     * Set the reason value.
+     * Set &lt;code&gt;Invalid&lt;/code&gt; indicates the name provided does not match Azure App Service naming requirements. &lt;code&gt;AlreadyExists&lt;/code&gt; indicates that the name is already in use and is therefore unavailable. Possible values include: 'Invalid', 'AlreadyExists'.
      *
      * @param reason the reason value to set
      * @return the ResourceNameAvailabilityInner object itself.
@@ -84,7 +84,7 @@ public class ResourceNameAvailabilityInner {
     }
 
     /**
-     * Get the message value.
+     * Get if reason == invalid, provide the user with the reason why the given name is invalid, and provide the resource naming requirements so that the user can select a valid name. If reason == AlreadyExists, explain that resource name is already in use, and direct them to select a different name.
      *
      * @return the message value
      */
@@ -93,7 +93,7 @@ public class ResourceNameAvailabilityInner {
     }
 
     /**
-     * Set the message value.
+     * Set if reason == invalid, provide the user with the reason why the given name is invalid, and provide the resource naming requirements so that the user can select a valid name. If reason == AlreadyExists, explain that resource name is already in use, and direct them to select a different name.
      *
      * @param message the message value to set
      * @return the ResourceNameAvailabilityInner object itself.

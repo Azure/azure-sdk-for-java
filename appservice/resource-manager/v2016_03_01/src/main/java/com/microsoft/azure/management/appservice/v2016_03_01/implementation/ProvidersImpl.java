@@ -18,14 +18,14 @@ import com.microsoft.azure.management.appservice.v2016_03_01.ApplicationStack;
 import com.microsoft.azure.management.appservice.v2016_03_01.CsmOperationDescription;
 
 class ProvidersImpl extends WrapperImpl<ProvidersInner> implements Providers {
-    private final AppServiceManager manager;
+    private final WebManager manager;
 
-    ProvidersImpl(AppServiceManager manager) {
+    ProvidersImpl(WebManager manager) {
         super(manager.inner().providers());
         this.manager = manager;
     }
 
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 
@@ -38,7 +38,8 @@ class ProvidersImpl extends WrapperImpl<ProvidersInner> implements Providers {
             public Iterable<ApplicationStackInner> call(Page<ApplicationStackInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<ApplicationStackInner, ApplicationStack>() {
+        })
+        .map(new Func1<ApplicationStackInner, ApplicationStack>() {
             @Override
             public ApplicationStack call(ApplicationStackInner inner) {
                 return new ApplicationStackImpl(inner, manager());
@@ -55,7 +56,8 @@ class ProvidersImpl extends WrapperImpl<ProvidersInner> implements Providers {
             public Iterable<ApplicationStackInner> call(Page<ApplicationStackInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<ApplicationStackInner, ApplicationStack>() {
+        })
+        .map(new Func1<ApplicationStackInner, ApplicationStack>() {
             @Override
             public ApplicationStack call(ApplicationStackInner inner) {
                 return new ApplicationStackImpl(inner, manager());
@@ -72,7 +74,8 @@ class ProvidersImpl extends WrapperImpl<ProvidersInner> implements Providers {
             public Iterable<CsmOperationDescriptionInner> call(Page<CsmOperationDescriptionInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<CsmOperationDescriptionInner, CsmOperationDescription>() {
+        })
+        .map(new Func1<CsmOperationDescriptionInner, CsmOperationDescription>() {
             @Override
             public CsmOperationDescription call(CsmOperationDescriptionInner inner) {
                 return new CsmOperationDescriptionImpl(inner, manager());

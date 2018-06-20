@@ -24,8 +24,18 @@ import com.microsoft.azure.management.appservice.v2018_02_01.WorkerPools;
  * Type representing AppServiceEnvironments.
  */
 public interface AppServiceEnvironments {
+    /**
+     * Begins definition for a new HostingEnvironment resource.
+     * @param name resource name.
+     * @return the first stage of the new HostingEnvironment definition.
+     */
     AppServiceEnvironmentResource.DefinitionStages.Blank defineHostingEnvironment(String name);
 
+    /**
+     * Begins definition for a new WorkerPool resource.
+     * @param name resource name.
+     * @return the first stage of the new WorkerPool definition.
+     */
     WorkerPools.DefinitionStages.Blank defineWorkerPool(String name);
 
     /**
@@ -113,17 +123,6 @@ public interface AppServiceEnvironments {
      * @return the observable for the request
      */
     Observable<Sites> suspendAsync(final String resourceGroupName, final String name);
-
-    /**
-     * Resume an App Service Environment.
-     * Resume an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Completable syncVirtualNetworkInfoAsync(String resourceGroupName, String name);
 
     /**
      * Get the used, available, and total worker capacity an App Service Environment.

@@ -11,7 +11,7 @@ package com.microsoft.azure.management.appservice.v2018_02_01;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.SiteInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
 import java.util.List;
 import org.joda.time.DateTime;
 import java.util.Map;
@@ -19,7 +19,7 @@ import java.util.Map;
 /**
  * Type representing ServerfarmSite.
  */
-public interface ServerfarmSite extends HasInner<SiteInner>, HasManager<AppServiceManager> {
+public interface ServerfarmSite extends HasInner<SiteInner>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the availabilityState value.
      */
@@ -179,11 +179,6 @@ public interface ServerfarmSite extends HasInner<SiteInner>, HasManager<AppServi
      * @return the slotSwapStatus value.
      */
     SlotSwapStatus slotSwapStatus();
-
-    /**
-     * @return the snapshotInfo value.
-     */
-    SnapshotRecoveryRequest snapshotInfo();
 
     /**
      * @return the state value.

@@ -49,7 +49,13 @@ public class BillingMeterInner extends ProxyOnlyResource {
     private String resourceType;
 
     /**
-     * Get the meterId value.
+     * App Service OS type meter used for.
+     */
+    @JsonProperty(value = "properties.osType")
+    private String osType;
+
+    /**
+     * Get meter GUID onboarded in Commerce.
      *
      * @return the meterId value
      */
@@ -58,7 +64,7 @@ public class BillingMeterInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the meterId value.
+     * Set meter GUID onboarded in Commerce.
      *
      * @param meterId the meterId value to set
      * @return the BillingMeterInner object itself.
@@ -69,7 +75,7 @@ public class BillingMeterInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the billingLocation value.
+     * Get azure Location of billable resource.
      *
      * @return the billingLocation value
      */
@@ -78,7 +84,7 @@ public class BillingMeterInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the billingLocation value.
+     * Set azure Location of billable resource.
      *
      * @param billingLocation the billingLocation value to set
      * @return the BillingMeterInner object itself.
@@ -89,7 +95,7 @@ public class BillingMeterInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the shortName value.
+     * Get short Name from App Service Azure pricing Page.
      *
      * @return the shortName value
      */
@@ -98,7 +104,7 @@ public class BillingMeterInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the shortName value.
+     * Set short Name from App Service Azure pricing Page.
      *
      * @param shortName the shortName value to set
      * @return the BillingMeterInner object itself.
@@ -109,7 +115,7 @@ public class BillingMeterInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the friendlyName value.
+     * Get friendly name of the meter.
      *
      * @return the friendlyName value
      */
@@ -118,7 +124,7 @@ public class BillingMeterInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the friendlyName value.
+     * Set friendly name of the meter.
      *
      * @param friendlyName the friendlyName value to set
      * @return the BillingMeterInner object itself.
@@ -129,7 +135,7 @@ public class BillingMeterInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the resourceType value.
+     * Get app Service ResourceType meter used for.
      *
      * @return the resourceType value
      */
@@ -138,13 +144,33 @@ public class BillingMeterInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the resourceType value.
+     * Set app Service ResourceType meter used for.
      *
      * @param resourceType the resourceType value to set
      * @return the BillingMeterInner object itself.
      */
     public BillingMeterInner withResourceType(String resourceType) {
         this.resourceType = resourceType;
+        return this;
+    }
+
+    /**
+     * Get app Service OS type meter used for.
+     *
+     * @return the osType value
+     */
+    public String osType() {
+        return this.osType;
+    }
+
+    /**
+     * Set app Service OS type meter used for.
+     *
+     * @param osType the osType value to set
+     * @return the BillingMeterInner object itself.
+     */
+    public BillingMeterInner withOsType(String osType) {
+        this.osType = osType;
         return this;
     }
 

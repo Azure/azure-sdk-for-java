@@ -41,7 +41,7 @@ public class VirtualApplication {
     private List<VirtualDirectory> virtualDirectories;
 
     /**
-     * Get the virtualPath value.
+     * Get virtual path.
      *
      * @return the virtualPath value
      */
@@ -50,7 +50,7 @@ public class VirtualApplication {
     }
 
     /**
-     * Set the virtualPath value.
+     * Set virtual path.
      *
      * @param virtualPath the virtualPath value to set
      * @return the VirtualApplication object itself.
@@ -61,7 +61,7 @@ public class VirtualApplication {
     }
 
     /**
-     * Get the physicalPath value.
+     * Get physical path.
      *
      * @return the physicalPath value
      */
@@ -70,7 +70,7 @@ public class VirtualApplication {
     }
 
     /**
-     * Set the physicalPath value.
+     * Set physical path.
      *
      * @param physicalPath the physicalPath value to set
      * @return the VirtualApplication object itself.
@@ -81,7 +81,7 @@ public class VirtualApplication {
     }
 
     /**
-     * Get the preloadEnabled value.
+     * Get &lt;code&gt;true&lt;/code&gt; if preloading is enabled; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @return the preloadEnabled value
      */
@@ -90,7 +90,7 @@ public class VirtualApplication {
     }
 
     /**
-     * Set the preloadEnabled value.
+     * Set &lt;code&gt;true&lt;/code&gt; if preloading is enabled; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @param preloadEnabled the preloadEnabled value to set
      * @return the VirtualApplication object itself.
@@ -101,7 +101,7 @@ public class VirtualApplication {
     }
 
     /**
-     * Get the virtualDirectories value.
+     * Get virtual directories for virtual application.
      *
      * @return the virtualDirectories value
      */
@@ -110,7 +110,7 @@ public class VirtualApplication {
     }
 
     /**
-     * Set the virtualDirectories value.
+     * Set virtual directories for virtual application.
      *
      * @param virtualDirectories the virtualDirectories value to set
      * @return the VirtualApplication object itself.

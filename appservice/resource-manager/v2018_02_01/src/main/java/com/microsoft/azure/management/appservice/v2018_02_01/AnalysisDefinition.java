@@ -10,13 +10,13 @@ package com.microsoft.azure.management.appservice.v2018_02_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AnalysisDefinitionInner;
 
 /**
  * Type representing AnalysisDefinition.
  */
-public interface AnalysisDefinition extends HasInner<AnalysisDefinitionInner>, HasManager<AppServiceManager> {
+public interface AnalysisDefinition extends HasInner<AnalysisDefinitionInner>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the description value.
      */

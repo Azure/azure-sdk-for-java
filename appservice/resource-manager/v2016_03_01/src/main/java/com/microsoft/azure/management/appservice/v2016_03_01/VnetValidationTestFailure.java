@@ -30,7 +30,7 @@ public class VnetValidationTestFailure extends ProxyOnlyResource {
     private String details;
 
     /**
-     * Get the testName value.
+     * Get the name of the test that failed.
      *
      * @return the testName value
      */
@@ -39,7 +39,7 @@ public class VnetValidationTestFailure extends ProxyOnlyResource {
     }
 
     /**
-     * Set the testName value.
+     * Set the name of the test that failed.
      *
      * @param testName the testName value to set
      * @return the VnetValidationTestFailure object itself.
@@ -50,7 +50,7 @@ public class VnetValidationTestFailure extends ProxyOnlyResource {
     }
 
     /**
-     * Get the details value.
+     * Get the details of what caused the failure, e.g. the blocking rule name, etc.
      *
      * @return the details value
      */
@@ -59,7 +59,7 @@ public class VnetValidationTestFailure extends ProxyOnlyResource {
     }
 
     /**
-     * Set the details value.
+     * Set the details of what caused the failure, e.g. the blocking rule name, etc.
      *
      * @param details the details value to set
      * @return the VnetValidationTestFailure object itself.
