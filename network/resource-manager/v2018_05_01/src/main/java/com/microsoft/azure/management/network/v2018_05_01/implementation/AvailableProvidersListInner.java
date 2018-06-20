@@ -23,7 +23,7 @@ public class AvailableProvidersListInner {
     private List<AvailableProvidersListCountry> countries;
 
     /**
-     * Get the countries value.
+     * Get list of available countries.
      *
      * @return the countries value
      */
@@ -32,7 +32,7 @@ public class AvailableProvidersListInner {
     }
 
     /**
-     * Set the countries value.
+     * Set list of available countries.
      *
      * @param countries the countries value to set
      * @return the AvailableProvidersListInner object itself.

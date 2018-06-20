@@ -39,7 +39,7 @@ public class TrafficAnalyticsConfigurationProperties {
     private String workspaceResourceId;
 
     /**
-     * Get the enabled value.
+     * Get flag to enable/disable traffic analytics.
      *
      * @return the enabled value
      */
@@ -48,7 +48,7 @@ public class TrafficAnalyticsConfigurationProperties {
     }
 
     /**
-     * Set the enabled value.
+     * Set flag to enable/disable traffic analytics.
      *
      * @param enabled the enabled value to set
      * @return the TrafficAnalyticsConfigurationProperties object itself.
@@ -59,7 +59,7 @@ public class TrafficAnalyticsConfigurationProperties {
     }
 
     /**
-     * Get the workspaceId value.
+     * Get the resource guid of the attached workspace.
      *
      * @return the workspaceId value
      */
@@ -68,7 +68,7 @@ public class TrafficAnalyticsConfigurationProperties {
     }
 
     /**
-     * Set the workspaceId value.
+     * Set the resource guid of the attached workspace.
      *
      * @param workspaceId the workspaceId value to set
      * @return the TrafficAnalyticsConfigurationProperties object itself.
@@ -79,7 +79,7 @@ public class TrafficAnalyticsConfigurationProperties {
     }
 
     /**
-     * Get the workspaceRegion value.
+     * Get the location of the attached workspace.
      *
      * @return the workspaceRegion value
      */
@@ -88,7 +88,7 @@ public class TrafficAnalyticsConfigurationProperties {
     }
 
     /**
-     * Set the workspaceRegion value.
+     * Set the location of the attached workspace.
      *
      * @param workspaceRegion the workspaceRegion value to set
      * @return the TrafficAnalyticsConfigurationProperties object itself.
@@ -99,7 +99,7 @@ public class TrafficAnalyticsConfigurationProperties {
     }
 
     /**
-     * Get the workspaceResourceId value.
+     * Get resource Id of the attached workspace.
      *
      * @return the workspaceResourceId value
      */
@@ -108,7 +108,7 @@ public class TrafficAnalyticsConfigurationProperties {
     }
 
     /**
-     * Set the workspaceResourceId value.
+     * Set resource Id of the attached workspace.
      *
      * @param workspaceResourceId the workspaceResourceId value to set
      * @return the TrafficAnalyticsConfigurationProperties object itself.

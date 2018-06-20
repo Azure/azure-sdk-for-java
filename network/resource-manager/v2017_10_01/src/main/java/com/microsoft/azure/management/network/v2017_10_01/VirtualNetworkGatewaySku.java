@@ -35,7 +35,7 @@ public class VirtualNetworkGatewaySku {
     private Integer capacity;
 
     /**
-     * Get the name value.
+     * Get gateway SKU name. Possible values include: 'Basic', 'HighPerformance', 'Standard', 'UltraPerformance', 'VpnGw1', 'VpnGw2', 'VpnGw3'.
      *
      * @return the name value
      */
@@ -44,7 +44,7 @@ public class VirtualNetworkGatewaySku {
     }
 
     /**
-     * Set the name value.
+     * Set gateway SKU name. Possible values include: 'Basic', 'HighPerformance', 'Standard', 'UltraPerformance', 'VpnGw1', 'VpnGw2', 'VpnGw3'.
      *
      * @param name the name value to set
      * @return the VirtualNetworkGatewaySku object itself.
@@ -55,7 +55,7 @@ public class VirtualNetworkGatewaySku {
     }
 
     /**
-     * Get the tier value.
+     * Get gateway SKU tier. Possible values include: 'Basic', 'HighPerformance', 'Standard', 'UltraPerformance', 'VpnGw1', 'VpnGw2', 'VpnGw3'.
      *
      * @return the tier value
      */
@@ -64,7 +64,7 @@ public class VirtualNetworkGatewaySku {
     }
 
     /**
-     * Set the tier value.
+     * Set gateway SKU tier. Possible values include: 'Basic', 'HighPerformance', 'Standard', 'UltraPerformance', 'VpnGw1', 'VpnGw2', 'VpnGw3'.
      *
      * @param tier the tier value to set
      * @return the VirtualNetworkGatewaySku object itself.
@@ -75,7 +75,7 @@ public class VirtualNetworkGatewaySku {
     }
 
     /**
-     * Get the capacity value.
+     * Get the capacity.
      *
      * @return the capacity value
      */
@@ -84,7 +84,7 @@ public class VirtualNetworkGatewaySku {
     }
 
     /**
-     * Set the capacity value.
+     * Set the capacity.
      *
      * @param capacity the capacity value to set
      * @return the VirtualNetworkGatewaySku object itself.

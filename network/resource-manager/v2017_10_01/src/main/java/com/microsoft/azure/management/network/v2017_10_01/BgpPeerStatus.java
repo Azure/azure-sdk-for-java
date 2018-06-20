@@ -64,7 +64,7 @@ public class BgpPeerStatus {
     private Long messagesReceived;
 
     /**
-     * Get the localAddress value.
+     * Get the virtual network gateway's local address.
      *
      * @return the localAddress value
      */
@@ -73,7 +73,7 @@ public class BgpPeerStatus {
     }
 
     /**
-     * Get the neighbor value.
+     * Get the remote BGP peer.
      *
      * @return the neighbor value
      */
@@ -82,7 +82,7 @@ public class BgpPeerStatus {
     }
 
     /**
-     * Get the asn value.
+     * Get the autonomous system number of the remote BGP peer.
      *
      * @return the asn value
      */
@@ -91,7 +91,7 @@ public class BgpPeerStatus {
     }
 
     /**
-     * Get the state value.
+     * Get the BGP peer state. Possible values include: 'Unknown', 'Stopped', 'Idle', 'Connecting', 'Connected'.
      *
      * @return the state value
      */
@@ -100,7 +100,7 @@ public class BgpPeerStatus {
     }
 
     /**
-     * Get the connectedDuration value.
+     * Get for how long the peering has been up.
      *
      * @return the connectedDuration value
      */
@@ -109,7 +109,7 @@ public class BgpPeerStatus {
     }
 
     /**
-     * Get the routesReceived value.
+     * Get the number of routes learned from this peer.
      *
      * @return the routesReceived value
      */
@@ -118,7 +118,7 @@ public class BgpPeerStatus {
     }
 
     /**
-     * Get the messagesSent value.
+     * Get the number of BGP messages sent.
      *
      * @return the messagesSent value
      */
@@ -127,7 +127,7 @@ public class BgpPeerStatus {
     }
 
     /**
-     * Get the messagesReceived value.
+     * Get the number of BGP messages received.
      *
      * @return the messagesReceived value
      */

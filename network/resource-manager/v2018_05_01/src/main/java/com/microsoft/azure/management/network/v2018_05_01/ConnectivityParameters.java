@@ -80,7 +80,7 @@ public class ConnectivityParameters {
     }
 
     /**
-     * Get the protocol value.
+     * Get network protocol. Possible values include: 'Tcp', 'Http', 'Https', 'Icmp'.
      *
      * @return the protocol value
      */
@@ -89,7 +89,7 @@ public class ConnectivityParameters {
     }
 
     /**
-     * Set the protocol value.
+     * Set network protocol. Possible values include: 'Tcp', 'Http', 'Https', 'Icmp'.
      *
      * @param protocol the protocol value to set
      * @return the ConnectivityParameters object itself.

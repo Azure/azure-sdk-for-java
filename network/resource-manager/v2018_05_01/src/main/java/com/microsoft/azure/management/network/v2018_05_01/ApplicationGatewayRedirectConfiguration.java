@@ -88,7 +88,7 @@ public class ApplicationGatewayRedirectConfiguration extends SubResource {
     private String type;
 
     /**
-     * Get the redirectType value.
+     * Get supported http redirection types - Permanent, Temporary, Found, SeeOther. Possible values include: 'Permanent', 'Found', 'SeeOther', 'Temporary'.
      *
      * @return the redirectType value
      */
@@ -97,7 +97,7 @@ public class ApplicationGatewayRedirectConfiguration extends SubResource {
     }
 
     /**
-     * Set the redirectType value.
+     * Set supported http redirection types - Permanent, Temporary, Found, SeeOther. Possible values include: 'Permanent', 'Found', 'SeeOther', 'Temporary'.
      *
      * @param redirectType the redirectType value to set
      * @return the ApplicationGatewayRedirectConfiguration object itself.
@@ -108,7 +108,7 @@ public class ApplicationGatewayRedirectConfiguration extends SubResource {
     }
 
     /**
-     * Get the targetListener value.
+     * Get reference to a listener to redirect the request to.
      *
      * @return the targetListener value
      */
@@ -117,7 +117,7 @@ public class ApplicationGatewayRedirectConfiguration extends SubResource {
     }
 
     /**
-     * Set the targetListener value.
+     * Set reference to a listener to redirect the request to.
      *
      * @param targetListener the targetListener value to set
      * @return the ApplicationGatewayRedirectConfiguration object itself.
@@ -128,7 +128,7 @@ public class ApplicationGatewayRedirectConfiguration extends SubResource {
     }
 
     /**
-     * Get the targetUrl value.
+     * Get url to redirect the request to.
      *
      * @return the targetUrl value
      */
@@ -137,7 +137,7 @@ public class ApplicationGatewayRedirectConfiguration extends SubResource {
     }
 
     /**
-     * Set the targetUrl value.
+     * Set url to redirect the request to.
      *
      * @param targetUrl the targetUrl value to set
      * @return the ApplicationGatewayRedirectConfiguration object itself.
@@ -148,7 +148,7 @@ public class ApplicationGatewayRedirectConfiguration extends SubResource {
     }
 
     /**
-     * Get the includePath value.
+     * Get include path in the redirected url.
      *
      * @return the includePath value
      */
@@ -157,7 +157,7 @@ public class ApplicationGatewayRedirectConfiguration extends SubResource {
     }
 
     /**
-     * Set the includePath value.
+     * Set include path in the redirected url.
      *
      * @param includePath the includePath value to set
      * @return the ApplicationGatewayRedirectConfiguration object itself.
@@ -168,7 +168,7 @@ public class ApplicationGatewayRedirectConfiguration extends SubResource {
     }
 
     /**
-     * Get the includeQueryString value.
+     * Get include query string in the redirected url.
      *
      * @return the includeQueryString value
      */
@@ -177,7 +177,7 @@ public class ApplicationGatewayRedirectConfiguration extends SubResource {
     }
 
     /**
-     * Set the includeQueryString value.
+     * Set include query string in the redirected url.
      *
      * @param includeQueryString the includeQueryString value to set
      * @return the ApplicationGatewayRedirectConfiguration object itself.
@@ -188,7 +188,7 @@ public class ApplicationGatewayRedirectConfiguration extends SubResource {
     }
 
     /**
-     * Get the requestRoutingRules value.
+     * Get request routing specifying redirect configuration.
      *
      * @return the requestRoutingRules value
      */
@@ -197,7 +197,7 @@ public class ApplicationGatewayRedirectConfiguration extends SubResource {
     }
 
     /**
-     * Set the requestRoutingRules value.
+     * Set request routing specifying redirect configuration.
      *
      * @param requestRoutingRules the requestRoutingRules value to set
      * @return the ApplicationGatewayRedirectConfiguration object itself.
@@ -208,7 +208,7 @@ public class ApplicationGatewayRedirectConfiguration extends SubResource {
     }
 
     /**
-     * Get the urlPathMaps value.
+     * Get url path maps specifying default redirect configuration.
      *
      * @return the urlPathMaps value
      */
@@ -217,7 +217,7 @@ public class ApplicationGatewayRedirectConfiguration extends SubResource {
     }
 
     /**
-     * Set the urlPathMaps value.
+     * Set url path maps specifying default redirect configuration.
      *
      * @param urlPathMaps the urlPathMaps value to set
      * @return the ApplicationGatewayRedirectConfiguration object itself.
@@ -228,7 +228,7 @@ public class ApplicationGatewayRedirectConfiguration extends SubResource {
     }
 
     /**
-     * Get the pathRules value.
+     * Get path rules specifying redirect configuration.
      *
      * @return the pathRules value
      */
@@ -237,7 +237,7 @@ public class ApplicationGatewayRedirectConfiguration extends SubResource {
     }
 
     /**
-     * Set the pathRules value.
+     * Set path rules specifying redirect configuration.
      *
      * @param pathRules the pathRules value to set
      * @return the ApplicationGatewayRedirectConfiguration object itself.
@@ -248,7 +248,7 @@ public class ApplicationGatewayRedirectConfiguration extends SubResource {
     }
 
     /**
-     * Get the name value.
+     * Get name of the redirect configuration that is unique within an Application Gateway.
      *
      * @return the name value
      */
@@ -257,7 +257,7 @@ public class ApplicationGatewayRedirectConfiguration extends SubResource {
     }
 
     /**
-     * Set the name value.
+     * Set name of the redirect configuration that is unique within an Application Gateway.
      *
      * @param name the name value to set
      * @return the ApplicationGatewayRedirectConfiguration object itself.
@@ -268,7 +268,7 @@ public class ApplicationGatewayRedirectConfiguration extends SubResource {
     }
 
     /**
-     * Get the etag value.
+     * Get a unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value
      */
@@ -277,7 +277,7 @@ public class ApplicationGatewayRedirectConfiguration extends SubResource {
     }
 
     /**
-     * Set the etag value.
+     * Set a unique read-only string that changes whenever the resource is updated.
      *
      * @param etag the etag value to set
      * @return the ApplicationGatewayRedirectConfiguration object itself.
@@ -288,7 +288,7 @@ public class ApplicationGatewayRedirectConfiguration extends SubResource {
     }
 
     /**
-     * Get the type value.
+     * Get type of the resource.
      *
      * @return the type value
      */
@@ -297,7 +297,7 @@ public class ApplicationGatewayRedirectConfiguration extends SubResource {
     }
 
     /**
-     * Set the type value.
+     * Set type of the resource.
      *
      * @param type the type value to set
      * @return the ApplicationGatewayRedirectConfiguration object itself.

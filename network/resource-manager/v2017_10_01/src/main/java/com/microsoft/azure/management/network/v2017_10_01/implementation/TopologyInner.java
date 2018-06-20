@@ -43,7 +43,7 @@ public class TopologyInner {
     private List<TopologyResource> resources;
 
     /**
-     * Get the id value.
+     * Get gUID representing the operation id.
      *
      * @return the id value
      */
@@ -52,7 +52,7 @@ public class TopologyInner {
     }
 
     /**
-     * Get the createdDateTime value.
+     * Get the datetime when the topology was initially created for the resource group.
      *
      * @return the createdDateTime value
      */
@@ -61,7 +61,7 @@ public class TopologyInner {
     }
 
     /**
-     * Get the lastModified value.
+     * Get the datetime when the topology was last modified.
      *
      * @return the lastModified value
      */

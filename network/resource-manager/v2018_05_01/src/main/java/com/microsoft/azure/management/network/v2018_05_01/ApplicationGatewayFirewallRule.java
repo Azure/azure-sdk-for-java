@@ -27,7 +27,7 @@ public class ApplicationGatewayFirewallRule {
     private String description;
 
     /**
-     * Get the ruleId value.
+     * Get the identifier of the web application firewall rule.
      *
      * @return the ruleId value
      */
@@ -36,7 +36,7 @@ public class ApplicationGatewayFirewallRule {
     }
 
     /**
-     * Set the ruleId value.
+     * Set the identifier of the web application firewall rule.
      *
      * @param ruleId the ruleId value to set
      * @return the ApplicationGatewayFirewallRule object itself.
@@ -47,7 +47,7 @@ public class ApplicationGatewayFirewallRule {
     }
 
     /**
-     * Get the description value.
+     * Get the description of the web application firewall rule.
      *
      * @return the description value
      */
@@ -56,7 +56,7 @@ public class ApplicationGatewayFirewallRule {
     }
 
     /**
-     * Set the description value.
+     * Set the description of the web application firewall rule.
      *
      * @param description the description value to set
      * @return the ApplicationGatewayFirewallRule object itself.

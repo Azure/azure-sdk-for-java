@@ -22,7 +22,7 @@ public class TagsObject {
     private Map<String, String> tags;
 
     /**
-     * Get the tags value.
+     * Get resource tags.
      *
      * @return the tags value
      */
@@ -31,7 +31,7 @@ public class TagsObject {
     }
 
     /**
-     * Set the tags value.
+     * Set resource tags.
      *
      * @param tags the tags value to set
      * @return the TagsObject object itself.

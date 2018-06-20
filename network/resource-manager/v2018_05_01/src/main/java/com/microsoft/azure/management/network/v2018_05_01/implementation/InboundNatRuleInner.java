@@ -91,7 +91,7 @@ public class InboundNatRuleInner extends SubResource {
     private String etag;
 
     /**
-     * Get the frontendIPConfiguration value.
+     * Get a reference to frontend IP addresses.
      *
      * @return the frontendIPConfiguration value
      */
@@ -100,7 +100,7 @@ public class InboundNatRuleInner extends SubResource {
     }
 
     /**
-     * Set the frontendIPConfiguration value.
+     * Set a reference to frontend IP addresses.
      *
      * @param frontendIPConfiguration the frontendIPConfiguration value to set
      * @return the InboundNatRuleInner object itself.
@@ -111,7 +111,7 @@ public class InboundNatRuleInner extends SubResource {
     }
 
     /**
-     * Get the backendIPConfiguration value.
+     * Get a reference to a private IP address defined on a network interface of a VM. Traffic sent to the frontend port of each of the frontend IP configurations is forwarded to the backend IP.
      *
      * @return the backendIPConfiguration value
      */
@@ -120,7 +120,7 @@ public class InboundNatRuleInner extends SubResource {
     }
 
     /**
-     * Get the protocol value.
+     * Get possible values include: 'Udp', 'Tcp', 'All'.
      *
      * @return the protocol value
      */
@@ -129,7 +129,7 @@ public class InboundNatRuleInner extends SubResource {
     }
 
     /**
-     * Set the protocol value.
+     * Set possible values include: 'Udp', 'Tcp', 'All'.
      *
      * @param protocol the protocol value to set
      * @return the InboundNatRuleInner object itself.
@@ -140,7 +140,7 @@ public class InboundNatRuleInner extends SubResource {
     }
 
     /**
-     * Get the frontendPort value.
+     * Get the port for the external endpoint. Port numbers for each rule must be unique within the Load Balancer. Acceptable values range from 1 to 65534.
      *
      * @return the frontendPort value
      */
@@ -149,7 +149,7 @@ public class InboundNatRuleInner extends SubResource {
     }
 
     /**
-     * Set the frontendPort value.
+     * Set the port for the external endpoint. Port numbers for each rule must be unique within the Load Balancer. Acceptable values range from 1 to 65534.
      *
      * @param frontendPort the frontendPort value to set
      * @return the InboundNatRuleInner object itself.
@@ -160,7 +160,7 @@ public class InboundNatRuleInner extends SubResource {
     }
 
     /**
-     * Get the backendPort value.
+     * Get the port used for the internal endpoint. Acceptable values range from 1 to 65535.
      *
      * @return the backendPort value
      */
@@ -169,7 +169,7 @@ public class InboundNatRuleInner extends SubResource {
     }
 
     /**
-     * Set the backendPort value.
+     * Set the port used for the internal endpoint. Acceptable values range from 1 to 65535.
      *
      * @param backendPort the backendPort value to set
      * @return the InboundNatRuleInner object itself.
@@ -180,7 +180,7 @@ public class InboundNatRuleInner extends SubResource {
     }
 
     /**
-     * Get the idleTimeoutInMinutes value.
+     * Get the timeout for the TCP idle connection. The value can be set between 4 and 30 minutes. The default value is 4 minutes. This element is only used when the protocol is set to TCP.
      *
      * @return the idleTimeoutInMinutes value
      */
@@ -189,7 +189,7 @@ public class InboundNatRuleInner extends SubResource {
     }
 
     /**
-     * Set the idleTimeoutInMinutes value.
+     * Set the timeout for the TCP idle connection. The value can be set between 4 and 30 minutes. The default value is 4 minutes. This element is only used when the protocol is set to TCP.
      *
      * @param idleTimeoutInMinutes the idleTimeoutInMinutes value to set
      * @return the InboundNatRuleInner object itself.
@@ -200,7 +200,7 @@ public class InboundNatRuleInner extends SubResource {
     }
 
     /**
-     * Get the enableFloatingIP value.
+     * Get configures a virtual machine's endpoint for the floating IP capability required to configure a SQL AlwaysOn Availability Group. This setting is required when using the SQL AlwaysOn Availability Groups in SQL server. This setting can't be changed after you create the endpoint.
      *
      * @return the enableFloatingIP value
      */
@@ -209,7 +209,7 @@ public class InboundNatRuleInner extends SubResource {
     }
 
     /**
-     * Set the enableFloatingIP value.
+     * Set configures a virtual machine's endpoint for the floating IP capability required to configure a SQL AlwaysOn Availability Group. This setting is required when using the SQL AlwaysOn Availability Groups in SQL server. This setting can't be changed after you create the endpoint.
      *
      * @param enableFloatingIP the enableFloatingIP value to set
      * @return the InboundNatRuleInner object itself.
@@ -220,7 +220,7 @@ public class InboundNatRuleInner extends SubResource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get gets the provisioning state of the public IP resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value
      */
@@ -229,7 +229,7 @@ public class InboundNatRuleInner extends SubResource {
     }
 
     /**
-     * Set the provisioningState value.
+     * Set gets the provisioning state of the public IP resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
      *
      * @param provisioningState the provisioningState value to set
      * @return the InboundNatRuleInner object itself.
@@ -240,7 +240,7 @@ public class InboundNatRuleInner extends SubResource {
     }
 
     /**
-     * Get the name value.
+     * Get gets name of the resource that is unique within a resource group. This name can be used to access the resource.
      *
      * @return the name value
      */
@@ -249,7 +249,7 @@ public class InboundNatRuleInner extends SubResource {
     }
 
     /**
-     * Set the name value.
+     * Set gets name of the resource that is unique within a resource group. This name can be used to access the resource.
      *
      * @param name the name value to set
      * @return the InboundNatRuleInner object itself.
@@ -260,7 +260,7 @@ public class InboundNatRuleInner extends SubResource {
     }
 
     /**
-     * Get the etag value.
+     * Get a unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value
      */
@@ -269,7 +269,7 @@ public class InboundNatRuleInner extends SubResource {
     }
 
     /**
-     * Set the etag value.
+     * Set a unique read-only string that changes whenever the resource is updated.
      *
      * @param etag the etag value to set
      * @return the InboundNatRuleInner object itself.

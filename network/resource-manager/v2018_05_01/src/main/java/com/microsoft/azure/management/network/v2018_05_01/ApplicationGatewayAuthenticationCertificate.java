@@ -50,7 +50,7 @@ public class ApplicationGatewayAuthenticationCertificate extends SubResource {
     private String type;
 
     /**
-     * Get the data value.
+     * Get certificate public data.
      *
      * @return the data value
      */
@@ -59,7 +59,7 @@ public class ApplicationGatewayAuthenticationCertificate extends SubResource {
     }
 
     /**
-     * Set the data value.
+     * Set certificate public data.
      *
      * @param data the data value to set
      * @return the ApplicationGatewayAuthenticationCertificate object itself.
@@ -70,7 +70,7 @@ public class ApplicationGatewayAuthenticationCertificate extends SubResource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get provisioning state of the authentication certificate resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value
      */
@@ -79,7 +79,7 @@ public class ApplicationGatewayAuthenticationCertificate extends SubResource {
     }
 
     /**
-     * Set the provisioningState value.
+     * Set provisioning state of the authentication certificate resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
      *
      * @param provisioningState the provisioningState value to set
      * @return the ApplicationGatewayAuthenticationCertificate object itself.
@@ -90,7 +90,7 @@ public class ApplicationGatewayAuthenticationCertificate extends SubResource {
     }
 
     /**
-     * Get the name value.
+     * Get name of the authentication certificate that is unique within an Application Gateway.
      *
      * @return the name value
      */
@@ -99,7 +99,7 @@ public class ApplicationGatewayAuthenticationCertificate extends SubResource {
     }
 
     /**
-     * Set the name value.
+     * Set name of the authentication certificate that is unique within an Application Gateway.
      *
      * @param name the name value to set
      * @return the ApplicationGatewayAuthenticationCertificate object itself.
@@ -110,7 +110,7 @@ public class ApplicationGatewayAuthenticationCertificate extends SubResource {
     }
 
     /**
-     * Get the etag value.
+     * Get a unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value
      */
@@ -119,7 +119,7 @@ public class ApplicationGatewayAuthenticationCertificate extends SubResource {
     }
 
     /**
-     * Set the etag value.
+     * Set a unique read-only string that changes whenever the resource is updated.
      *
      * @param etag the etag value to set
      * @return the ApplicationGatewayAuthenticationCertificate object itself.
@@ -130,7 +130,7 @@ public class ApplicationGatewayAuthenticationCertificate extends SubResource {
     }
 
     /**
-     * Get the type value.
+     * Get type of the resource.
      *
      * @return the type value
      */
@@ -139,7 +139,7 @@ public class ApplicationGatewayAuthenticationCertificate extends SubResource {
     }
 
     /**
-     * Set the type value.
+     * Set type of the resource.
      *
      * @param type the type value to set
      * @return the ApplicationGatewayAuthenticationCertificate object itself.

@@ -46,7 +46,7 @@ public class ExpressRouteServiceProviderInner extends Resource {
     private String id;
 
     /**
-     * Get the peeringLocations value.
+     * Get get a list of peering locations.
      *
      * @return the peeringLocations value
      */
@@ -55,7 +55,7 @@ public class ExpressRouteServiceProviderInner extends Resource {
     }
 
     /**
-     * Set the peeringLocations value.
+     * Set get a list of peering locations.
      *
      * @param peeringLocations the peeringLocations value to set
      * @return the ExpressRouteServiceProviderInner object itself.
@@ -66,7 +66,7 @@ public class ExpressRouteServiceProviderInner extends Resource {
     }
 
     /**
-     * Get the bandwidthsOffered value.
+     * Get gets bandwidths offered.
      *
      * @return the bandwidthsOffered value
      */
@@ -75,7 +75,7 @@ public class ExpressRouteServiceProviderInner extends Resource {
     }
 
     /**
-     * Set the bandwidthsOffered value.
+     * Set gets bandwidths offered.
      *
      * @param bandwidthsOffered the bandwidthsOffered value to set
      * @return the ExpressRouteServiceProviderInner object itself.
@@ -86,7 +86,7 @@ public class ExpressRouteServiceProviderInner extends Resource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get gets the provisioning state of the resource.
      *
      * @return the provisioningState value
      */
@@ -95,7 +95,7 @@ public class ExpressRouteServiceProviderInner extends Resource {
     }
 
     /**
-     * Set the provisioningState value.
+     * Set gets the provisioning state of the resource.
      *
      * @param provisioningState the provisioningState value to set
      * @return the ExpressRouteServiceProviderInner object itself.
@@ -106,7 +106,7 @@ public class ExpressRouteServiceProviderInner extends Resource {
     }
 
     /**
-     * Get the id value.
+     * Get resource ID.
      *
      * @return the id value
      */
@@ -115,7 +115,7 @@ public class ExpressRouteServiceProviderInner extends Resource {
     }
 
     /**
-     * Set the id value.
+     * Set resource ID.
      *
      * @param id the id value to set
      * @return the ExpressRouteServiceProviderInner object itself.

@@ -22,7 +22,7 @@ public class ConnectionResetSharedKeyInner {
     private int keyLength;
 
     /**
-     * Get the keyLength value.
+     * Get the virtual network connection reset shared key length, should between 1 and 128.
      *
      * @return the keyLength value
      */
@@ -31,7 +31,7 @@ public class ConnectionResetSharedKeyInner {
     }
 
     /**
-     * Set the keyLength value.
+     * Set the virtual network connection reset shared key length, should between 1 and 128.
      *
      * @param keyLength the keyLength value to set
      * @return the ConnectionResetSharedKeyInner object itself.

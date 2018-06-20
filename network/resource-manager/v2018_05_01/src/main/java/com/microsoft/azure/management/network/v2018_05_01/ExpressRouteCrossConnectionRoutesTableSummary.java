@@ -41,7 +41,7 @@ public class ExpressRouteCrossConnectionRoutesTableSummary {
     private String stateOrPrefixesReceived;
 
     /**
-     * Get the neighbor value.
+     * Get iP address of Neighbor router.
      *
      * @return the neighbor value
      */
@@ -50,7 +50,7 @@ public class ExpressRouteCrossConnectionRoutesTableSummary {
     }
 
     /**
-     * Set the neighbor value.
+     * Set iP address of Neighbor router.
      *
      * @param neighbor the neighbor value to set
      * @return the ExpressRouteCrossConnectionRoutesTableSummary object itself.
@@ -61,7 +61,7 @@ public class ExpressRouteCrossConnectionRoutesTableSummary {
     }
 
     /**
-     * Get the asn value.
+     * Get autonomous system number.
      *
      * @return the asn value
      */
@@ -70,7 +70,7 @@ public class ExpressRouteCrossConnectionRoutesTableSummary {
     }
 
     /**
-     * Set the asn value.
+     * Set autonomous system number.
      *
      * @param asn the asn value to set
      * @return the ExpressRouteCrossConnectionRoutesTableSummary object itself.
@@ -81,7 +81,7 @@ public class ExpressRouteCrossConnectionRoutesTableSummary {
     }
 
     /**
-     * Get the upDown value.
+     * Get the length of time that the BGP session has been in the Established state, or the current status if not in the Established state.
      *
      * @return the upDown value
      */
@@ -90,7 +90,7 @@ public class ExpressRouteCrossConnectionRoutesTableSummary {
     }
 
     /**
-     * Set the upDown value.
+     * Set the length of time that the BGP session has been in the Established state, or the current status if not in the Established state.
      *
      * @param upDown the upDown value to set
      * @return the ExpressRouteCrossConnectionRoutesTableSummary object itself.
@@ -101,7 +101,7 @@ public class ExpressRouteCrossConnectionRoutesTableSummary {
     }
 
     /**
-     * Get the stateOrPrefixesReceived value.
+     * Get current state of the BGP session, and the number of prefixes that have been received from a neighbor or peer group.
      *
      * @return the stateOrPrefixesReceived value
      */
@@ -110,7 +110,7 @@ public class ExpressRouteCrossConnectionRoutesTableSummary {
     }
 
     /**
-     * Set the stateOrPrefixesReceived value.
+     * Set current state of the BGP session, and the number of prefixes that have been received from a neighbor or peer group.
      *
      * @param stateOrPrefixesReceived the stateOrPrefixesReceived value to set
      * @return the ExpressRouteCrossConnectionRoutesTableSummary object itself.

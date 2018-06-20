@@ -30,7 +30,7 @@ public class ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner {
     private String nextLink;
 
     /**
-     * Get the value value.
+     * Get a list of the routes table.
      *
      * @return the value value
      */
@@ -39,7 +39,7 @@ public class ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner {
     }
 
     /**
-     * Set the value value.
+     * Set a list of the routes table.
      *
      * @param value the value value to set
      * @return the ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner object itself.
@@ -50,7 +50,7 @@ public class ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner {
     }
 
     /**
-     * Get the nextLink value.
+     * Get the URL to get the next set of results.
      *
      * @return the nextLink value
      */

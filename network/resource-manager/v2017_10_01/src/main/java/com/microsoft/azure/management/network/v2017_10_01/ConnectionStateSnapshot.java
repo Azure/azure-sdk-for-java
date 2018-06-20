@@ -49,7 +49,7 @@ public class ConnectionStateSnapshot {
     private List<ConnectivityHop> hops;
 
     /**
-     * Get the connectionState value.
+     * Get the connection state. Possible values include: 'Reachable', 'Unreachable', 'Unknown'.
      *
      * @return the connectionState value
      */
@@ -58,7 +58,7 @@ public class ConnectionStateSnapshot {
     }
 
     /**
-     * Set the connectionState value.
+     * Set the connection state. Possible values include: 'Reachable', 'Unreachable', 'Unknown'.
      *
      * @param connectionState the connectionState value to set
      * @return the ConnectionStateSnapshot object itself.
@@ -69,7 +69,7 @@ public class ConnectionStateSnapshot {
     }
 
     /**
-     * Get the startTime value.
+     * Get the start time of the connection snapshot.
      *
      * @return the startTime value
      */
@@ -78,7 +78,7 @@ public class ConnectionStateSnapshot {
     }
 
     /**
-     * Set the startTime value.
+     * Set the start time of the connection snapshot.
      *
      * @param startTime the startTime value to set
      * @return the ConnectionStateSnapshot object itself.
@@ -89,7 +89,7 @@ public class ConnectionStateSnapshot {
     }
 
     /**
-     * Get the endTime value.
+     * Get the end time of the connection snapshot.
      *
      * @return the endTime value
      */
@@ -98,7 +98,7 @@ public class ConnectionStateSnapshot {
     }
 
     /**
-     * Set the endTime value.
+     * Set the end time of the connection snapshot.
      *
      * @param endTime the endTime value to set
      * @return the ConnectionStateSnapshot object itself.
@@ -109,7 +109,7 @@ public class ConnectionStateSnapshot {
     }
 
     /**
-     * Get the evaluationState value.
+     * Get connectivity analysis evaluation state. Possible values include: 'NotStarted', 'InProgress', 'Completed'.
      *
      * @return the evaluationState value
      */
@@ -118,7 +118,7 @@ public class ConnectionStateSnapshot {
     }
 
     /**
-     * Set the evaluationState value.
+     * Set connectivity analysis evaluation state. Possible values include: 'NotStarted', 'InProgress', 'Completed'.
      *
      * @param evaluationState the evaluationState value to set
      * @return the ConnectionStateSnapshot object itself.
@@ -129,7 +129,7 @@ public class ConnectionStateSnapshot {
     }
 
     /**
-     * Get the hops value.
+     * Get list of hops between the source and the destination.
      *
      * @return the hops value
      */

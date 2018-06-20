@@ -58,7 +58,7 @@ public class OutboundNatRule extends SubResource {
     private String etag;
 
     /**
-     * Get the allocatedOutboundPorts value.
+     * Get the number of outbound ports to be used for NAT.
      *
      * @return the allocatedOutboundPorts value
      */
@@ -67,7 +67,7 @@ public class OutboundNatRule extends SubResource {
     }
 
     /**
-     * Set the allocatedOutboundPorts value.
+     * Set the number of outbound ports to be used for NAT.
      *
      * @param allocatedOutboundPorts the allocatedOutboundPorts value to set
      * @return the OutboundNatRule object itself.
@@ -78,7 +78,7 @@ public class OutboundNatRule extends SubResource {
     }
 
     /**
-     * Get the frontendIPConfigurations value.
+     * Get the Frontend IP addresses of the load balancer.
      *
      * @return the frontendIPConfigurations value
      */
@@ -87,7 +87,7 @@ public class OutboundNatRule extends SubResource {
     }
 
     /**
-     * Set the frontendIPConfigurations value.
+     * Set the Frontend IP addresses of the load balancer.
      *
      * @param frontendIPConfigurations the frontendIPConfigurations value to set
      * @return the OutboundNatRule object itself.
@@ -98,7 +98,7 @@ public class OutboundNatRule extends SubResource {
     }
 
     /**
-     * Get the backendAddressPool value.
+     * Get a reference to a pool of DIPs. Outbound traffic is randomly load balanced across IPs in the backend IPs.
      *
      * @return the backendAddressPool value
      */
@@ -107,7 +107,7 @@ public class OutboundNatRule extends SubResource {
     }
 
     /**
-     * Set the backendAddressPool value.
+     * Set a reference to a pool of DIPs. Outbound traffic is randomly load balanced across IPs in the backend IPs.
      *
      * @param backendAddressPool the backendAddressPool value to set
      * @return the OutboundNatRule object itself.
@@ -118,7 +118,7 @@ public class OutboundNatRule extends SubResource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get gets the provisioning state of the PublicIP resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value
      */
@@ -127,7 +127,7 @@ public class OutboundNatRule extends SubResource {
     }
 
     /**
-     * Set the provisioningState value.
+     * Set gets the provisioning state of the PublicIP resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
      *
      * @param provisioningState the provisioningState value to set
      * @return the OutboundNatRule object itself.
@@ -138,7 +138,7 @@ public class OutboundNatRule extends SubResource {
     }
 
     /**
-     * Get the name value.
+     * Get the name of the resource that is unique within a resource group. This name can be used to access the resource.
      *
      * @return the name value
      */
@@ -147,7 +147,7 @@ public class OutboundNatRule extends SubResource {
     }
 
     /**
-     * Set the name value.
+     * Set the name of the resource that is unique within a resource group. This name can be used to access the resource.
      *
      * @param name the name value to set
      * @return the OutboundNatRule object itself.
@@ -158,7 +158,7 @@ public class OutboundNatRule extends SubResource {
     }
 
     /**
-     * Get the etag value.
+     * Get a unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value
      */
@@ -167,7 +167,7 @@ public class OutboundNatRule extends SubResource {
     }
 
     /**
-     * Set the etag value.
+     * Set a unique read-only string that changes whenever the resource is updated.
      *
      * @param etag the etag value to set
      * @return the OutboundNatRule object itself.

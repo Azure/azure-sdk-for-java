@@ -46,7 +46,7 @@ public class VirtualNetworkUsageInner {
     private String unit;
 
     /**
-     * Get the currentValue value.
+     * Get indicates number of IPs used from the Subnet.
      *
      * @return the currentValue value
      */
@@ -55,7 +55,7 @@ public class VirtualNetworkUsageInner {
     }
 
     /**
-     * Get the id value.
+     * Get subnet identifier.
      *
      * @return the id value
      */
@@ -64,7 +64,7 @@ public class VirtualNetworkUsageInner {
     }
 
     /**
-     * Get the limit value.
+     * Get indicates the size of the subnet.
      *
      * @return the limit value
      */
@@ -73,7 +73,7 @@ public class VirtualNetworkUsageInner {
     }
 
     /**
-     * Get the name value.
+     * Get the name containing common and localized value for usage.
      *
      * @return the name value
      */
@@ -82,7 +82,7 @@ public class VirtualNetworkUsageInner {
     }
 
     /**
-     * Get the unit value.
+     * Get usage units. Returns 'Count'.
      *
      * @return the unit value
      */

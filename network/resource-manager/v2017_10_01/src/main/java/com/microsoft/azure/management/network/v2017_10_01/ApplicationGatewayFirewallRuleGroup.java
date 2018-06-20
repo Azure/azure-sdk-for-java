@@ -34,7 +34,7 @@ public class ApplicationGatewayFirewallRuleGroup {
     private List<ApplicationGatewayFirewallRule> rules;
 
     /**
-     * Get the ruleGroupName value.
+     * Get the name of the web application firewall rule group.
      *
      * @return the ruleGroupName value
      */
@@ -43,7 +43,7 @@ public class ApplicationGatewayFirewallRuleGroup {
     }
 
     /**
-     * Set the ruleGroupName value.
+     * Set the name of the web application firewall rule group.
      *
      * @param ruleGroupName the ruleGroupName value to set
      * @return the ApplicationGatewayFirewallRuleGroup object itself.
@@ -54,7 +54,7 @@ public class ApplicationGatewayFirewallRuleGroup {
     }
 
     /**
-     * Get the description value.
+     * Get the description of the web application firewall rule group.
      *
      * @return the description value
      */
@@ -63,7 +63,7 @@ public class ApplicationGatewayFirewallRuleGroup {
     }
 
     /**
-     * Set the description value.
+     * Set the description of the web application firewall rule group.
      *
      * @param description the description value to set
      * @return the ApplicationGatewayFirewallRuleGroup object itself.
@@ -74,7 +74,7 @@ public class ApplicationGatewayFirewallRuleGroup {
     }
 
     /**
-     * Get the rules value.
+     * Get the rules of the web application firewall rule group.
      *
      * @return the rules value
      */
@@ -83,7 +83,7 @@ public class ApplicationGatewayFirewallRuleGroup {
     }
 
     /**
-     * Set the rules value.
+     * Set the rules of the web application firewall rule group.
      *
      * @param rules the rules value to set
      * @return the ApplicationGatewayFirewallRuleGroup object itself.

@@ -44,7 +44,7 @@ public class VpnClientRevokedCertificate extends SubResource {
     private String etag;
 
     /**
-     * Get the thumbprint value.
+     * Get the revoked VPN client certificate thumbprint.
      *
      * @return the thumbprint value
      */
@@ -53,7 +53,7 @@ public class VpnClientRevokedCertificate extends SubResource {
     }
 
     /**
-     * Set the thumbprint value.
+     * Set the revoked VPN client certificate thumbprint.
      *
      * @param thumbprint the thumbprint value to set
      * @return the VpnClientRevokedCertificate object itself.
@@ -64,7 +64,7 @@ public class VpnClientRevokedCertificate extends SubResource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get the provisioning state of the VPN client revoked certificate resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value
      */
@@ -73,7 +73,7 @@ public class VpnClientRevokedCertificate extends SubResource {
     }
 
     /**
-     * Get the name value.
+     * Get the name of the resource that is unique within a resource group. This name can be used to access the resource.
      *
      * @return the name value
      */
@@ -82,7 +82,7 @@ public class VpnClientRevokedCertificate extends SubResource {
     }
 
     /**
-     * Set the name value.
+     * Set the name of the resource that is unique within a resource group. This name can be used to access the resource.
      *
      * @param name the name value to set
      * @return the VpnClientRevokedCertificate object itself.
@@ -93,7 +93,7 @@ public class VpnClientRevokedCertificate extends SubResource {
     }
 
     /**
-     * Get the etag value.
+     * Get a unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value
      */
@@ -102,7 +102,7 @@ public class VpnClientRevokedCertificate extends SubResource {
     }
 
     /**
-     * Set the etag value.
+     * Set a unique read-only string that changes whenever the resource is updated.
      *
      * @param etag the etag value to set
      * @return the VpnClientRevokedCertificate object itself.

@@ -34,7 +34,7 @@ public class ConnectivityDestination {
     private Integer port;
 
     /**
-     * Get the resourceId value.
+     * Get the ID of the resource to which a connection attempt will be made.
      *
      * @return the resourceId value
      */
@@ -43,7 +43,7 @@ public class ConnectivityDestination {
     }
 
     /**
-     * Set the resourceId value.
+     * Set the ID of the resource to which a connection attempt will be made.
      *
      * @param resourceId the resourceId value to set
      * @return the ConnectivityDestination object itself.
@@ -54,7 +54,7 @@ public class ConnectivityDestination {
     }
 
     /**
-     * Get the address value.
+     * Get the IP address or URI the resource to which a connection attempt will be made.
      *
      * @return the address value
      */
@@ -63,7 +63,7 @@ public class ConnectivityDestination {
     }
 
     /**
-     * Set the address value.
+     * Set the IP address or URI the resource to which a connection attempt will be made.
      *
      * @param address the address value to set
      * @return the ConnectivityDestination object itself.
@@ -74,7 +74,7 @@ public class ConnectivityDestination {
     }
 
     /**
-     * Get the port value.
+     * Get port on which check connectivity will be performed.
      *
      * @return the port value
      */
@@ -83,7 +83,7 @@ public class ConnectivityDestination {
     }
 
     /**
-     * Set the port value.
+     * Set port on which check connectivity will be performed.
      *
      * @param port the port value to set
      * @return the ConnectivityDestination object itself.

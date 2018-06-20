@@ -100,7 +100,7 @@ public class MetricSpecification {
     private String resourceIdDimensionNameOverride;
 
     /**
-     * Get the name value.
+     * Get the name of the metric.
      *
      * @return the name value
      */
@@ -109,7 +109,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Set the name value.
+     * Set the name of the metric.
      *
      * @param name the name value to set
      * @return the MetricSpecification object itself.
@@ -120,7 +120,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Get the displayName value.
+     * Get the display name of the metric.
      *
      * @return the displayName value
      */
@@ -129,7 +129,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Set the displayName value.
+     * Set the display name of the metric.
      *
      * @param displayName the displayName value to set
      * @return the MetricSpecification object itself.
@@ -140,7 +140,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Get the displayDescription value.
+     * Get the description of the metric.
      *
      * @return the displayDescription value
      */
@@ -149,7 +149,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Set the displayDescription value.
+     * Set the description of the metric.
      *
      * @param displayDescription the displayDescription value to set
      * @return the MetricSpecification object itself.
@@ -160,7 +160,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Get the unit value.
+     * Get units the metric to be displayed in.
      *
      * @return the unit value
      */
@@ -169,7 +169,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Set the unit value.
+     * Set units the metric to be displayed in.
      *
      * @param unit the unit value to set
      * @return the MetricSpecification object itself.
@@ -180,7 +180,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Get the aggregationType value.
+     * Get the aggregation type.
      *
      * @return the aggregationType value
      */
@@ -189,7 +189,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Set the aggregationType value.
+     * Set the aggregation type.
      *
      * @param aggregationType the aggregationType value to set
      * @return the MetricSpecification object itself.
@@ -200,7 +200,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Get the availabilities value.
+     * Get list of availability.
      *
      * @return the availabilities value
      */
@@ -209,7 +209,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Set the availabilities value.
+     * Set list of availability.
      *
      * @param availabilities the availabilities value to set
      * @return the MetricSpecification object itself.
@@ -220,7 +220,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Get the enableRegionalMdmAccount value.
+     * Get whether regional MDM account enabled.
      *
      * @return the enableRegionalMdmAccount value
      */
@@ -229,7 +229,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Set the enableRegionalMdmAccount value.
+     * Set whether regional MDM account enabled.
      *
      * @param enableRegionalMdmAccount the enableRegionalMdmAccount value to set
      * @return the MetricSpecification object itself.
@@ -240,7 +240,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Get the fillGapWithZero value.
+     * Get whether gaps would be filled with zeros.
      *
      * @return the fillGapWithZero value
      */
@@ -249,7 +249,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Set the fillGapWithZero value.
+     * Set whether gaps would be filled with zeros.
      *
      * @param fillGapWithZero the fillGapWithZero value to set
      * @return the MetricSpecification object itself.
@@ -260,7 +260,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Get the metricFilterPattern value.
+     * Get pattern for the filter of the metric.
      *
      * @return the metricFilterPattern value
      */
@@ -269,7 +269,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Set the metricFilterPattern value.
+     * Set pattern for the filter of the metric.
      *
      * @param metricFilterPattern the metricFilterPattern value to set
      * @return the MetricSpecification object itself.
@@ -280,7 +280,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Get the dimensions value.
+     * Get list of dimensions.
      *
      * @return the dimensions value
      */
@@ -289,7 +289,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Set the dimensions value.
+     * Set list of dimensions.
      *
      * @param dimensions the dimensions value to set
      * @return the MetricSpecification object itself.
@@ -300,7 +300,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Get the isInternal value.
+     * Get whether the metric is internal.
      *
      * @return the isInternal value
      */
@@ -309,7 +309,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Set the isInternal value.
+     * Set whether the metric is internal.
      *
      * @param isInternal the isInternal value to set
      * @return the MetricSpecification object itself.
@@ -320,7 +320,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Get the sourceMdmAccount value.
+     * Get the source MDM account.
      *
      * @return the sourceMdmAccount value
      */
@@ -329,7 +329,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Set the sourceMdmAccount value.
+     * Set the source MDM account.
      *
      * @param sourceMdmAccount the sourceMdmAccount value to set
      * @return the MetricSpecification object itself.
@@ -340,7 +340,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Get the sourceMdmNamespace value.
+     * Get the source MDM namespace.
      *
      * @return the sourceMdmNamespace value
      */
@@ -349,7 +349,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Set the sourceMdmNamespace value.
+     * Set the source MDM namespace.
      *
      * @param sourceMdmNamespace the sourceMdmNamespace value to set
      * @return the MetricSpecification object itself.
@@ -360,7 +360,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Get the resourceIdDimensionNameOverride value.
+     * Get the resource Id dimension name override.
      *
      * @return the resourceIdDimensionNameOverride value
      */
@@ -369,7 +369,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Set the resourceIdDimensionNameOverride value.
+     * Set the resource Id dimension name override.
      *
      * @param resourceIdDimensionNameOverride the resourceIdDimensionNameOverride value to set
      * @return the MetricSpecification object itself.
