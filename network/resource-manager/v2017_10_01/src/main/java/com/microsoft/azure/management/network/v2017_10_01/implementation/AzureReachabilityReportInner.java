@@ -37,7 +37,7 @@ public class AzureReachabilityReportInner {
     private List<AzureReachabilityReportItem> reachabilityReport;
 
     /**
-     * Get the aggregationLevel value.
+     * Get the aggregation level of Azure reachability report. Can be Country, State or City.
      *
      * @return the aggregationLevel value
      */
@@ -46,7 +46,7 @@ public class AzureReachabilityReportInner {
     }
 
     /**
-     * Set the aggregationLevel value.
+     * Set the aggregation level of Azure reachability report. Can be Country, State or City.
      *
      * @param aggregationLevel the aggregationLevel value to set
      * @return the AzureReachabilityReportInner object itself.
@@ -77,7 +77,7 @@ public class AzureReachabilityReportInner {
     }
 
     /**
-     * Get the reachabilityReport value.
+     * Get list of Azure reachability report items.
      *
      * @return the reachabilityReport value
      */
@@ -86,7 +86,7 @@ public class AzureReachabilityReportInner {
     }
 
     /**
-     * Set the reachabilityReport value.
+     * Set list of Azure reachability report items.
      *
      * @param reachabilityReport the reachabilityReport value to set
      * @return the AzureReachabilityReportInner object itself.

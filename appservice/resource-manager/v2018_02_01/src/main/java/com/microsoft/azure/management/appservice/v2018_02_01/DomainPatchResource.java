@@ -152,7 +152,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
     private String authCode;
 
     /**
-     * Get the contactAdmin value.
+     * Get administrative contact.
      *
      * @return the contactAdmin value
      */
@@ -161,7 +161,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the contactAdmin value.
+     * Set administrative contact.
      *
      * @param contactAdmin the contactAdmin value to set
      * @return the DomainPatchResource object itself.
@@ -172,7 +172,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the contactBilling value.
+     * Get billing contact.
      *
      * @return the contactBilling value
      */
@@ -181,7 +181,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the contactBilling value.
+     * Set billing contact.
      *
      * @param contactBilling the contactBilling value to set
      * @return the DomainPatchResource object itself.
@@ -192,7 +192,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the contactRegistrant value.
+     * Get registrant contact.
      *
      * @return the contactRegistrant value
      */
@@ -201,7 +201,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the contactRegistrant value.
+     * Set registrant contact.
      *
      * @param contactRegistrant the contactRegistrant value to set
      * @return the DomainPatchResource object itself.
@@ -212,7 +212,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the contactTech value.
+     * Get technical contact.
      *
      * @return the contactTech value
      */
@@ -221,7 +221,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the contactTech value.
+     * Set technical contact.
      *
      * @param contactTech the contactTech value to set
      * @return the DomainPatchResource object itself.
@@ -232,7 +232,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the registrationStatus value.
+     * Get domain registration status. Possible values include: 'Active', 'Awaiting', 'Cancelled', 'Confiscated', 'Disabled', 'Excluded', 'Expired', 'Failed', 'Held', 'Locked', 'Parked', 'Pending', 'Reserved', 'Reverted', 'Suspended', 'Transferred', 'Unknown', 'Unlocked', 'Unparked', 'Updated', 'JsonConverterFailed'.
      *
      * @return the registrationStatus value
      */
@@ -241,7 +241,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get domain provisioning state. Possible values include: 'Succeeded', 'Failed', 'Canceled', 'InProgress', 'Deleting'.
      *
      * @return the provisioningState value
      */
@@ -250,7 +250,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the nameServers value.
+     * Get name servers.
      *
      * @return the nameServers value
      */
@@ -259,7 +259,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the privacy value.
+     * Get &lt;code&gt;true&lt;/code&gt; if domain privacy is enabled for this domain; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @return the privacy value
      */
@@ -268,7 +268,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the privacy value.
+     * Set &lt;code&gt;true&lt;/code&gt; if domain privacy is enabled for this domain; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @param privacy the privacy value to set
      * @return the DomainPatchResource object itself.
@@ -279,7 +279,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the createdTime value.
+     * Get domain creation timestamp.
      *
      * @return the createdTime value
      */
@@ -288,7 +288,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the expirationTime value.
+     * Get domain expiration timestamp.
      *
      * @return the expirationTime value
      */
@@ -297,7 +297,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the lastRenewedTime value.
+     * Get timestamp when the domain was renewed last time.
      *
      * @return the lastRenewedTime value
      */
@@ -306,7 +306,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the autoRenew value.
+     * Get &lt;code&gt;true&lt;/code&gt; if the domain should be automatically renewed; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @return the autoRenew value
      */
@@ -315,7 +315,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the autoRenew value.
+     * Set &lt;code&gt;true&lt;/code&gt; if the domain should be automatically renewed; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @param autoRenew the autoRenew value to set
      * @return the DomainPatchResource object itself.
@@ -326,7 +326,8 @@ public class DomainPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the readyForDnsRecordManagement value.
+     * Get &lt;code&gt;true&lt;/code&gt; if Azure can assign this domain to App Service apps; otherwise, &lt;code&gt;false&lt;/code&gt;. This value will be &lt;code&gt;true&lt;/code&gt; if domain registration status is active and
+      it is hosted on name servers Azure has programmatic access to.
      *
      * @return the readyForDnsRecordManagement value
      */
@@ -335,7 +336,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the managedHostNames value.
+     * Get all hostnames derived from the domain and assigned to Azure resources.
      *
      * @return the managedHostNames value
      */
@@ -344,7 +345,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the consent value.
+     * Get legal agreement consent.
      *
      * @return the consent value
      */
@@ -353,7 +354,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the consent value.
+     * Set legal agreement consent.
      *
      * @param consent the consent value to set
      * @return the DomainPatchResource object itself.
@@ -364,7 +365,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the domainNotRenewableReasons value.
+     * Get reasons why domain is not renewable.
      *
      * @return the domainNotRenewableReasons value
      */
@@ -373,7 +374,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the dnsType value.
+     * Get current DNS type. Possible values include: 'AzureDns', 'DefaultDomainRegistrarDns'.
      *
      * @return the dnsType value
      */
@@ -382,7 +383,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the dnsType value.
+     * Set current DNS type. Possible values include: 'AzureDns', 'DefaultDomainRegistrarDns'.
      *
      * @param dnsType the dnsType value to set
      * @return the DomainPatchResource object itself.
@@ -393,7 +394,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the dnsZoneId value.
+     * Get azure DNS Zone to use.
      *
      * @return the dnsZoneId value
      */
@@ -402,7 +403,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the dnsZoneId value.
+     * Set azure DNS Zone to use.
      *
      * @param dnsZoneId the dnsZoneId value to set
      * @return the DomainPatchResource object itself.
@@ -413,7 +414,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the targetDnsType value.
+     * Get target DNS type (would be used for migration). Possible values include: 'AzureDns', 'DefaultDomainRegistrarDns'.
      *
      * @return the targetDnsType value
      */
@@ -422,7 +423,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the targetDnsType value.
+     * Set target DNS type (would be used for migration). Possible values include: 'AzureDns', 'DefaultDomainRegistrarDns'.
      *
      * @param targetDnsType the targetDnsType value to set
      * @return the DomainPatchResource object itself.

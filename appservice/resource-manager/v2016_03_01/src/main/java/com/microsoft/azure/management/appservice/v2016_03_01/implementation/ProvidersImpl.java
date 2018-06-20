@@ -38,7 +38,8 @@ class ProvidersImpl extends WrapperImpl<ProvidersInner> implements Providers {
             public Iterable<ApplicationStackInner> call(Page<ApplicationStackInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<ApplicationStackInner, ApplicationStack>() {
+        })
+        .map(new Func1<ApplicationStackInner, ApplicationStack>() {
             @Override
             public ApplicationStack call(ApplicationStackInner inner) {
                 return new ApplicationStackImpl(inner, manager());
@@ -55,7 +56,8 @@ class ProvidersImpl extends WrapperImpl<ProvidersInner> implements Providers {
             public Iterable<ApplicationStackInner> call(Page<ApplicationStackInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<ApplicationStackInner, ApplicationStack>() {
+        })
+        .map(new Func1<ApplicationStackInner, ApplicationStack>() {
             @Override
             public ApplicationStack call(ApplicationStackInner inner) {
                 return new ApplicationStackImpl(inner, manager());
@@ -72,7 +74,8 @@ class ProvidersImpl extends WrapperImpl<ProvidersInner> implements Providers {
             public Iterable<CsmOperationDescriptionInner> call(Page<CsmOperationDescriptionInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<CsmOperationDescriptionInner, CsmOperationDescription>() {
+        })
+        .map(new Func1<CsmOperationDescriptionInner, CsmOperationDescription>() {
             @Override
             public CsmOperationDescription call(CsmOperationDescriptionInner inner) {
                 return new CsmOperationDescriptionImpl(inner, manager());

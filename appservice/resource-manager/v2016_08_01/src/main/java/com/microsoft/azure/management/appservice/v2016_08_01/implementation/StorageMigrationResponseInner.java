@@ -25,7 +25,7 @@ public class StorageMigrationResponseInner extends ProxyOnlyResource {
     private String operationId;
 
     /**
-     * Get the operationId value.
+     * Get when server starts the migration process, it will return an operation ID identifying that particular migration operation.
      *
      * @return the operationId value
      */

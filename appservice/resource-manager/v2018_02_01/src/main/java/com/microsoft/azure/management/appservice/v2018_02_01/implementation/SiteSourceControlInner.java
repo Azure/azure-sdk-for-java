@@ -52,7 +52,7 @@ public class SiteSourceControlInner extends ProxyOnlyResource {
     private Boolean isMercurial;
 
     /**
-     * Get the repoUrl value.
+     * Get repository or source control URL.
      *
      * @return the repoUrl value
      */
@@ -61,7 +61,7 @@ public class SiteSourceControlInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the repoUrl value.
+     * Set repository or source control URL.
      *
      * @param repoUrl the repoUrl value to set
      * @return the SiteSourceControlInner object itself.
@@ -72,7 +72,7 @@ public class SiteSourceControlInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the branch value.
+     * Get name of branch to use for deployment.
      *
      * @return the branch value
      */
@@ -81,7 +81,7 @@ public class SiteSourceControlInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the branch value.
+     * Set name of branch to use for deployment.
      *
      * @param branch the branch value to set
      * @return the SiteSourceControlInner object itself.
@@ -92,7 +92,7 @@ public class SiteSourceControlInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the isManualIntegration value.
+     * Get &lt;code&gt;true&lt;/code&gt; to limit to manual integration; &lt;code&gt;false&lt;/code&gt; to enable continuous integration (which configures webhooks into online repos like GitHub).
      *
      * @return the isManualIntegration value
      */
@@ -101,7 +101,7 @@ public class SiteSourceControlInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the isManualIntegration value.
+     * Set &lt;code&gt;true&lt;/code&gt; to limit to manual integration; &lt;code&gt;false&lt;/code&gt; to enable continuous integration (which configures webhooks into online repos like GitHub).
      *
      * @param isManualIntegration the isManualIntegration value to set
      * @return the SiteSourceControlInner object itself.
@@ -112,7 +112,7 @@ public class SiteSourceControlInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the deploymentRollbackEnabled value.
+     * Get &lt;code&gt;true&lt;/code&gt; to enable deployment rollback; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @return the deploymentRollbackEnabled value
      */
@@ -121,7 +121,7 @@ public class SiteSourceControlInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the deploymentRollbackEnabled value.
+     * Set &lt;code&gt;true&lt;/code&gt; to enable deployment rollback; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @param deploymentRollbackEnabled the deploymentRollbackEnabled value to set
      * @return the SiteSourceControlInner object itself.
@@ -132,7 +132,7 @@ public class SiteSourceControlInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the isMercurial value.
+     * Get &lt;code&gt;true&lt;/code&gt; for a Mercurial repository; &lt;code&gt;false&lt;/code&gt; for a Git repository.
      *
      * @return the isMercurial value
      */
@@ -141,7 +141,7 @@ public class SiteSourceControlInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the isMercurial value.
+     * Set &lt;code&gt;true&lt;/code&gt; for a Mercurial repository; &lt;code&gt;false&lt;/code&gt; for a Git repository.
      *
      * @param isMercurial the isMercurial value to set
      * @return the SiteSourceControlInner object itself.

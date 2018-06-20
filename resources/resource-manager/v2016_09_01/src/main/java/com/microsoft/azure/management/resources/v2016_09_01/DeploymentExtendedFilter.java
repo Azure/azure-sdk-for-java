@@ -21,7 +21,7 @@ public class DeploymentExtendedFilter {
     private String provisioningState;
 
     /**
-     * Get the provisioningState value.
+     * Get the provisioning state.
      *
      * @return the provisioningState value
      */
@@ -30,7 +30,7 @@ public class DeploymentExtendedFilter {
     }
 
     /**
-     * Set the provisioningState value.
+     * Set the provisioning state.
      *
      * @param provisioningState the provisioningState value to set
      * @return the DeploymentExtendedFilter object itself.

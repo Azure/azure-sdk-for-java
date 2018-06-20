@@ -42,7 +42,7 @@ public class SitePhpErrorLogFlagInner extends ProxyOnlyResource {
     private String masterLogErrorsMaxLength;
 
     /**
-     * Get the localLogErrors value.
+     * Get local log_errors setting.
      *
      * @return the localLogErrors value
      */
@@ -51,7 +51,7 @@ public class SitePhpErrorLogFlagInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the localLogErrors value.
+     * Set local log_errors setting.
      *
      * @param localLogErrors the localLogErrors value to set
      * @return the SitePhpErrorLogFlagInner object itself.
@@ -62,7 +62,7 @@ public class SitePhpErrorLogFlagInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the masterLogErrors value.
+     * Get master log_errors setting.
      *
      * @return the masterLogErrors value
      */
@@ -71,7 +71,7 @@ public class SitePhpErrorLogFlagInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the masterLogErrors value.
+     * Set master log_errors setting.
      *
      * @param masterLogErrors the masterLogErrors value to set
      * @return the SitePhpErrorLogFlagInner object itself.
@@ -82,7 +82,7 @@ public class SitePhpErrorLogFlagInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the localLogErrorsMaxLength value.
+     * Get local log_errors_max_len setting.
      *
      * @return the localLogErrorsMaxLength value
      */
@@ -91,7 +91,7 @@ public class SitePhpErrorLogFlagInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the localLogErrorsMaxLength value.
+     * Set local log_errors_max_len setting.
      *
      * @param localLogErrorsMaxLength the localLogErrorsMaxLength value to set
      * @return the SitePhpErrorLogFlagInner object itself.
@@ -102,7 +102,7 @@ public class SitePhpErrorLogFlagInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the masterLogErrorsMaxLength value.
+     * Get master log_errors_max_len setting.
      *
      * @return the masterLogErrorsMaxLength value
      */
@@ -111,7 +111,7 @@ public class SitePhpErrorLogFlagInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the masterLogErrorsMaxLength value.
+     * Set master log_errors_max_len setting.
      *
      * @param masterLogErrorsMaxLength the masterLogErrorsMaxLength value to set
      * @return the SitePhpErrorLogFlagInner object itself.

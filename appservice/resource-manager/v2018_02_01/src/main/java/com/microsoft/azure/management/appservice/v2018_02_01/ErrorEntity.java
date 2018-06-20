@@ -52,7 +52,7 @@ public class ErrorEntity {
     private String message;
 
     /**
-     * Get the extendedCode value.
+     * Get type of error.
      *
      * @return the extendedCode value
      */
@@ -61,7 +61,7 @@ public class ErrorEntity {
     }
 
     /**
-     * Set the extendedCode value.
+     * Set type of error.
      *
      * @param extendedCode the extendedCode value to set
      * @return the ErrorEntity object itself.
@@ -72,7 +72,7 @@ public class ErrorEntity {
     }
 
     /**
-     * Get the messageTemplate value.
+     * Get message template.
      *
      * @return the messageTemplate value
      */
@@ -81,7 +81,7 @@ public class ErrorEntity {
     }
 
     /**
-     * Set the messageTemplate value.
+     * Set message template.
      *
      * @param messageTemplate the messageTemplate value to set
      * @return the ErrorEntity object itself.
@@ -92,7 +92,7 @@ public class ErrorEntity {
     }
 
     /**
-     * Get the parameters value.
+     * Get parameters for the template.
      *
      * @return the parameters value
      */
@@ -101,7 +101,7 @@ public class ErrorEntity {
     }
 
     /**
-     * Set the parameters value.
+     * Set parameters for the template.
      *
      * @param parameters the parameters value to set
      * @return the ErrorEntity object itself.
@@ -112,7 +112,7 @@ public class ErrorEntity {
     }
 
     /**
-     * Get the innerErrors value.
+     * Get inner errors.
      *
      * @return the innerErrors value
      */
@@ -121,7 +121,7 @@ public class ErrorEntity {
     }
 
     /**
-     * Set the innerErrors value.
+     * Set inner errors.
      *
      * @param innerErrors the innerErrors value to set
      * @return the ErrorEntity object itself.
@@ -132,7 +132,7 @@ public class ErrorEntity {
     }
 
     /**
-     * Get the code value.
+     * Get basic error code.
      *
      * @return the code value
      */
@@ -141,7 +141,7 @@ public class ErrorEntity {
     }
 
     /**
-     * Set the code value.
+     * Set basic error code.
      *
      * @param code the code value to set
      * @return the ErrorEntity object itself.
@@ -152,7 +152,7 @@ public class ErrorEntity {
     }
 
     /**
-     * Get the message value.
+     * Get any details of the error.
      *
      * @return the message value
      */
@@ -161,7 +161,7 @@ public class ErrorEntity {
     }
 
     /**
-     * Set the message value.
+     * Set any details of the error.
      *
      * @param message the message value to set
      * @return the ErrorEntity object itself.

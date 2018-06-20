@@ -36,7 +36,7 @@ public class FunctionInner extends SubResource {
     private String type;
 
     /**
-     * Get the properties value.
+     * Get the properties that are associated with a function.
      *
      * @return the properties value
      */
@@ -45,7 +45,7 @@ public class FunctionInner extends SubResource {
     }
 
     /**
-     * Set the properties value.
+     * Set the properties that are associated with a function.
      *
      * @param properties the properties value to set
      * @return the FunctionInner object itself.
@@ -56,7 +56,7 @@ public class FunctionInner extends SubResource {
     }
 
     /**
-     * Get the name value.
+     * Get resource name.
      *
      * @return the name value
      */
@@ -65,7 +65,7 @@ public class FunctionInner extends SubResource {
     }
 
     /**
-     * Set the name value.
+     * Set resource name.
      *
      * @param name the name value to set
      * @return the FunctionInner object itself.
@@ -76,7 +76,7 @@ public class FunctionInner extends SubResource {
     }
 
     /**
-     * Get the type value.
+     * Get resource type.
      *
      * @return the type value
      */

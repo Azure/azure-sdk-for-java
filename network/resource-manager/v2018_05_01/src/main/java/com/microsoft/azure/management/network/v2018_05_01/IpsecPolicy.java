@@ -74,7 +74,7 @@ public class IpsecPolicy {
     private PfsGroup pfsGroup;
 
     /**
-     * Get the saLifeTimeSeconds value.
+     * Get the IPSec Security Association (also called Quick Mode or Phase 2 SA) lifetime in seconds for a site to site VPN tunnel.
      *
      * @return the saLifeTimeSeconds value
      */
@@ -83,7 +83,7 @@ public class IpsecPolicy {
     }
 
     /**
-     * Set the saLifeTimeSeconds value.
+     * Set the IPSec Security Association (also called Quick Mode or Phase 2 SA) lifetime in seconds for a site to site VPN tunnel.
      *
      * @param saLifeTimeSeconds the saLifeTimeSeconds value to set
      * @return the IpsecPolicy object itself.
@@ -94,7 +94,7 @@ public class IpsecPolicy {
     }
 
     /**
-     * Get the saDataSizeKilobytes value.
+     * Get the IPSec Security Association (also called Quick Mode or Phase 2 SA) payload size in KB for a site to site VPN tunnel.
      *
      * @return the saDataSizeKilobytes value
      */
@@ -103,7 +103,7 @@ public class IpsecPolicy {
     }
 
     /**
-     * Set the saDataSizeKilobytes value.
+     * Set the IPSec Security Association (also called Quick Mode or Phase 2 SA) payload size in KB for a site to site VPN tunnel.
      *
      * @param saDataSizeKilobytes the saDataSizeKilobytes value to set
      * @return the IpsecPolicy object itself.
@@ -114,7 +114,7 @@ public class IpsecPolicy {
     }
 
     /**
-     * Get the ipsecEncryption value.
+     * Get the IPSec encryption algorithm (IKE phase 1). Possible values include: 'None', 'DES', 'DES3', 'AES128', 'AES192', 'AES256', 'GCMAES128', 'GCMAES192', 'GCMAES256'.
      *
      * @return the ipsecEncryption value
      */
@@ -123,7 +123,7 @@ public class IpsecPolicy {
     }
 
     /**
-     * Set the ipsecEncryption value.
+     * Set the IPSec encryption algorithm (IKE phase 1). Possible values include: 'None', 'DES', 'DES3', 'AES128', 'AES192', 'AES256', 'GCMAES128', 'GCMAES192', 'GCMAES256'.
      *
      * @param ipsecEncryption the ipsecEncryption value to set
      * @return the IpsecPolicy object itself.
@@ -134,7 +134,7 @@ public class IpsecPolicy {
     }
 
     /**
-     * Get the ipsecIntegrity value.
+     * Get the IPSec integrity algorithm (IKE phase 1). Possible values include: 'MD5', 'SHA1', 'SHA256', 'GCMAES128', 'GCMAES192', 'GCMAES256'.
      *
      * @return the ipsecIntegrity value
      */
@@ -143,7 +143,7 @@ public class IpsecPolicy {
     }
 
     /**
-     * Set the ipsecIntegrity value.
+     * Set the IPSec integrity algorithm (IKE phase 1). Possible values include: 'MD5', 'SHA1', 'SHA256', 'GCMAES128', 'GCMAES192', 'GCMAES256'.
      *
      * @param ipsecIntegrity the ipsecIntegrity value to set
      * @return the IpsecPolicy object itself.
@@ -154,7 +154,7 @@ public class IpsecPolicy {
     }
 
     /**
-     * Get the ikeEncryption value.
+     * Get the IKE encryption algorithm (IKE phase 2). Possible values include: 'DES', 'DES3', 'AES128', 'AES192', 'AES256', 'GCMAES256', 'GCMAES128'.
      *
      * @return the ikeEncryption value
      */
@@ -163,7 +163,7 @@ public class IpsecPolicy {
     }
 
     /**
-     * Set the ikeEncryption value.
+     * Set the IKE encryption algorithm (IKE phase 2). Possible values include: 'DES', 'DES3', 'AES128', 'AES192', 'AES256', 'GCMAES256', 'GCMAES128'.
      *
      * @param ikeEncryption the ikeEncryption value to set
      * @return the IpsecPolicy object itself.
@@ -174,7 +174,7 @@ public class IpsecPolicy {
     }
 
     /**
-     * Get the ikeIntegrity value.
+     * Get the IKE integrity algorithm (IKE phase 2). Possible values include: 'MD5', 'SHA1', 'SHA256', 'SHA384', 'GCMAES256', 'GCMAES128'.
      *
      * @return the ikeIntegrity value
      */
@@ -183,7 +183,7 @@ public class IpsecPolicy {
     }
 
     /**
-     * Set the ikeIntegrity value.
+     * Set the IKE integrity algorithm (IKE phase 2). Possible values include: 'MD5', 'SHA1', 'SHA256', 'SHA384', 'GCMAES256', 'GCMAES128'.
      *
      * @param ikeIntegrity the ikeIntegrity value to set
      * @return the IpsecPolicy object itself.
@@ -194,7 +194,7 @@ public class IpsecPolicy {
     }
 
     /**
-     * Get the dhGroup value.
+     * Get the DH Groups used in IKE Phase 1 for initial SA. Possible values include: 'None', 'DHGroup1', 'DHGroup2', 'DHGroup14', 'DHGroup2048', 'ECP256', 'ECP384', 'DHGroup24'.
      *
      * @return the dhGroup value
      */
@@ -203,7 +203,7 @@ public class IpsecPolicy {
     }
 
     /**
-     * Set the dhGroup value.
+     * Set the DH Groups used in IKE Phase 1 for initial SA. Possible values include: 'None', 'DHGroup1', 'DHGroup2', 'DHGroup14', 'DHGroup2048', 'ECP256', 'ECP384', 'DHGroup24'.
      *
      * @param dhGroup the dhGroup value to set
      * @return the IpsecPolicy object itself.
@@ -214,7 +214,7 @@ public class IpsecPolicy {
     }
 
     /**
-     * Get the pfsGroup value.
+     * Get the Pfs Groups used in IKE Phase 2 for new child SA. Possible values include: 'None', 'PFS1', 'PFS2', 'PFS2048', 'ECP256', 'ECP384', 'PFS24', 'PFS14', 'PFSMM'.
      *
      * @return the pfsGroup value
      */
@@ -223,7 +223,7 @@ public class IpsecPolicy {
     }
 
     /**
-     * Set the pfsGroup value.
+     * Set the Pfs Groups used in IKE Phase 2 for new child SA. Possible values include: 'None', 'PFS1', 'PFS2', 'PFS2048', 'ECP256', 'ECP384', 'PFS24', 'PFS14', 'PFSMM'.
      *
      * @param pfsGroup the pfsGroup value to set
      * @return the IpsecPolicy object itself.

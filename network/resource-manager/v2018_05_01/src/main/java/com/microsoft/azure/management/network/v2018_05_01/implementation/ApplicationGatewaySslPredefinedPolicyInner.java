@@ -41,7 +41,7 @@ public class ApplicationGatewaySslPredefinedPolicyInner extends SubResource {
     private ApplicationGatewaySslProtocol minProtocolVersion;
 
     /**
-     * Get the name value.
+     * Get name of the Ssl predefined policy.
      *
      * @return the name value
      */
@@ -50,7 +50,7 @@ public class ApplicationGatewaySslPredefinedPolicyInner extends SubResource {
     }
 
     /**
-     * Set the name value.
+     * Set name of the Ssl predefined policy.
      *
      * @param name the name value to set
      * @return the ApplicationGatewaySslPredefinedPolicyInner object itself.
@@ -61,7 +61,7 @@ public class ApplicationGatewaySslPredefinedPolicyInner extends SubResource {
     }
 
     /**
-     * Get the cipherSuites value.
+     * Get ssl cipher suites to be enabled in the specified order for application gateway.
      *
      * @return the cipherSuites value
      */
@@ -70,7 +70,7 @@ public class ApplicationGatewaySslPredefinedPolicyInner extends SubResource {
     }
 
     /**
-     * Set the cipherSuites value.
+     * Set ssl cipher suites to be enabled in the specified order for application gateway.
      *
      * @param cipherSuites the cipherSuites value to set
      * @return the ApplicationGatewaySslPredefinedPolicyInner object itself.
@@ -81,7 +81,7 @@ public class ApplicationGatewaySslPredefinedPolicyInner extends SubResource {
     }
 
     /**
-     * Get the minProtocolVersion value.
+     * Get minimum version of Ssl protocol to be supported on application gateway. Possible values include: 'TLSv1_0', 'TLSv1_1', 'TLSv1_2'.
      *
      * @return the minProtocolVersion value
      */
@@ -90,7 +90,7 @@ public class ApplicationGatewaySslPredefinedPolicyInner extends SubResource {
     }
 
     /**
-     * Set the minProtocolVersion value.
+     * Set minimum version of Ssl protocol to be supported on application gateway. Possible values include: 'TLSv1_0', 'TLSv1_1', 'TLSv1_2'.
      *
      * @param minProtocolVersion the minProtocolVersion value to set
      * @return the ApplicationGatewaySslPredefinedPolicyInner object itself.

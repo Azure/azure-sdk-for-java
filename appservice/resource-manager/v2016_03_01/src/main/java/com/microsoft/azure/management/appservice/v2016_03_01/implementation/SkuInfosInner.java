@@ -29,7 +29,7 @@ public class SkuInfosInner {
     private List<GlobalCsmSkuDescription> skus;
 
     /**
-     * Get the resourceType value.
+     * Get resource type that this SKU applies to.
      *
      * @return the resourceType value
      */
@@ -38,7 +38,7 @@ public class SkuInfosInner {
     }
 
     /**
-     * Set the resourceType value.
+     * Set resource type that this SKU applies to.
      *
      * @param resourceType the resourceType value to set
      * @return the SkuInfosInner object itself.
@@ -49,7 +49,7 @@ public class SkuInfosInner {
     }
 
     /**
-     * Get the skus value.
+     * Get list of SKUs the subscription is able to use.
      *
      * @return the skus value
      */
@@ -58,7 +58,7 @@ public class SkuInfosInner {
     }
 
     /**
-     * Set the skus value.
+     * Set list of SKUs the subscription is able to use.
      *
      * @param skus the skus value to set
      * @return the SkuInfosInner object itself.

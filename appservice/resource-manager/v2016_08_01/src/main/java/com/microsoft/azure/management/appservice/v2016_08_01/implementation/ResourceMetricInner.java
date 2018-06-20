@@ -74,7 +74,7 @@ public class ResourceMetricInner {
     private List<ResourceMetricProperty> properties;
 
     /**
-     * Get the name value.
+     * Get name of metric.
      *
      * @return the name value
      */
@@ -83,7 +83,7 @@ public class ResourceMetricInner {
     }
 
     /**
-     * Get the unit value.
+     * Get metric unit.
      *
      * @return the unit value
      */
@@ -92,7 +92,7 @@ public class ResourceMetricInner {
     }
 
     /**
-     * Get the timeGrain value.
+     * Get metric granularity. E.g PT1H, PT5M, P1D.
      *
      * @return the timeGrain value
      */
@@ -101,7 +101,7 @@ public class ResourceMetricInner {
     }
 
     /**
-     * Get the startTime value.
+     * Get metric start time.
      *
      * @return the startTime value
      */
@@ -110,7 +110,7 @@ public class ResourceMetricInner {
     }
 
     /**
-     * Get the endTime value.
+     * Get metric end time.
      *
      * @return the endTime value
      */
@@ -119,7 +119,7 @@ public class ResourceMetricInner {
     }
 
     /**
-     * Get the resourceId value.
+     * Get metric resource Id.
      *
      * @return the resourceId value
      */
@@ -128,7 +128,7 @@ public class ResourceMetricInner {
     }
 
     /**
-     * Get the id value.
+     * Get resource Id.
      *
      * @return the id value
      */
@@ -137,7 +137,7 @@ public class ResourceMetricInner {
     }
 
     /**
-     * Get the metricValues value.
+     * Get metric values.
      *
      * @return the metricValues value
      */
@@ -146,7 +146,7 @@ public class ResourceMetricInner {
     }
 
     /**
-     * Get the properties value.
+     * Get resource metric properties collection.
      *
      * @return the properties value
      */

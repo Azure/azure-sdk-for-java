@@ -28,7 +28,7 @@ public class ConnectivitySource {
     private Integer port;
 
     /**
-     * Get the resourceId value.
+     * Get the ID of the resource from which a connectivity check will be initiated.
      *
      * @return the resourceId value
      */
@@ -37,7 +37,7 @@ public class ConnectivitySource {
     }
 
     /**
-     * Set the resourceId value.
+     * Set the ID of the resource from which a connectivity check will be initiated.
      *
      * @param resourceId the resourceId value to set
      * @return the ConnectivitySource object itself.
@@ -48,7 +48,7 @@ public class ConnectivitySource {
     }
 
     /**
-     * Get the port value.
+     * Get the source port from which a connectivity check will be performed.
      *
      * @return the port value
      */
@@ -57,7 +57,7 @@ public class ConnectivitySource {
     }
 
     /**
-     * Set the port value.
+     * Set the source port from which a connectivity check will be performed.
      *
      * @param port the port value to set
      * @return the ConnectivitySource object itself.

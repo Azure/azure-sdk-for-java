@@ -29,7 +29,7 @@ public class ApplicationGatewayFirewallDisabledRuleGroup {
     private List<Integer> rules;
 
     /**
-     * Get the ruleGroupName value.
+     * Get the name of the rule group that will be disabled.
      *
      * @return the ruleGroupName value
      */
@@ -38,7 +38,7 @@ public class ApplicationGatewayFirewallDisabledRuleGroup {
     }
 
     /**
-     * Set the ruleGroupName value.
+     * Set the name of the rule group that will be disabled.
      *
      * @param ruleGroupName the ruleGroupName value to set
      * @return the ApplicationGatewayFirewallDisabledRuleGroup object itself.
@@ -49,7 +49,7 @@ public class ApplicationGatewayFirewallDisabledRuleGroup {
     }
 
     /**
-     * Get the rules value.
+     * Get the list of rules that will be disabled. If null, all rules of the rule group will be disabled.
      *
      * @return the rules value
      */
@@ -58,7 +58,7 @@ public class ApplicationGatewayFirewallDisabledRuleGroup {
     }
 
     /**
-     * Set the rules value.
+     * Set the list of rules that will be disabled. If null, all rules of the rule group will be disabled.
      *
      * @param rules the rules value to set
      * @return the ApplicationGatewayFirewallDisabledRuleGroup object itself.

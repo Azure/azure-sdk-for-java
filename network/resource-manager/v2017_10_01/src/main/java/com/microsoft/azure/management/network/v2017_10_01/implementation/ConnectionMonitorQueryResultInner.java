@@ -23,7 +23,7 @@ public class ConnectionMonitorQueryResultInner {
     private List<ConnectionStateSnapshot> states;
 
     /**
-     * Get the states value.
+     * Get information about connection states.
      *
      * @return the states value
      */
@@ -32,7 +32,7 @@ public class ConnectionMonitorQueryResultInner {
     }
 
     /**
-     * Set the states value.
+     * Set information about connection states.
      *
      * @param states the states value to set
      * @return the ConnectionMonitorQueryResultInner object itself.

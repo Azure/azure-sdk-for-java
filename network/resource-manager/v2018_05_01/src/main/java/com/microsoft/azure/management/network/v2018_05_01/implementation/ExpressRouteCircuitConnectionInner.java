@@ -73,7 +73,7 @@ public class ExpressRouteCircuitConnectionInner extends SubResource {
     private String etag;
 
     /**
-     * Get the expressRouteCircuitPeering value.
+     * Get reference to Express Route Circuit Private Peering Resource of the circuit initiating connection.
      *
      * @return the expressRouteCircuitPeering value
      */
@@ -82,7 +82,7 @@ public class ExpressRouteCircuitConnectionInner extends SubResource {
     }
 
     /**
-     * Set the expressRouteCircuitPeering value.
+     * Set reference to Express Route Circuit Private Peering Resource of the circuit initiating connection.
      *
      * @param expressRouteCircuitPeering the expressRouteCircuitPeering value to set
      * @return the ExpressRouteCircuitConnectionInner object itself.
@@ -93,7 +93,7 @@ public class ExpressRouteCircuitConnectionInner extends SubResource {
     }
 
     /**
-     * Get the peerExpressRouteCircuitPeering value.
+     * Get reference to Express Route Circuit Private Peering Resource of the peered circuit.
      *
      * @return the peerExpressRouteCircuitPeering value
      */
@@ -102,7 +102,7 @@ public class ExpressRouteCircuitConnectionInner extends SubResource {
     }
 
     /**
-     * Set the peerExpressRouteCircuitPeering value.
+     * Set reference to Express Route Circuit Private Peering Resource of the peered circuit.
      *
      * @param peerExpressRouteCircuitPeering the peerExpressRouteCircuitPeering value to set
      * @return the ExpressRouteCircuitConnectionInner object itself.
@@ -113,7 +113,7 @@ public class ExpressRouteCircuitConnectionInner extends SubResource {
     }
 
     /**
-     * Get the addressPrefix value.
+     * Get /29 IP address space to carve out Customer addresses for tunnels.
      *
      * @return the addressPrefix value
      */
@@ -122,7 +122,7 @@ public class ExpressRouteCircuitConnectionInner extends SubResource {
     }
 
     /**
-     * Set the addressPrefix value.
+     * Set /29 IP address space to carve out Customer addresses for tunnels.
      *
      * @param addressPrefix the addressPrefix value to set
      * @return the ExpressRouteCircuitConnectionInner object itself.
@@ -133,7 +133,7 @@ public class ExpressRouteCircuitConnectionInner extends SubResource {
     }
 
     /**
-     * Get the authorizationKey value.
+     * Get the authorization key.
      *
      * @return the authorizationKey value
      */
@@ -142,7 +142,7 @@ public class ExpressRouteCircuitConnectionInner extends SubResource {
     }
 
     /**
-     * Set the authorizationKey value.
+     * Set the authorization key.
      *
      * @param authorizationKey the authorizationKey value to set
      * @return the ExpressRouteCircuitConnectionInner object itself.
@@ -153,7 +153,7 @@ public class ExpressRouteCircuitConnectionInner extends SubResource {
     }
 
     /**
-     * Get the circuitConnectionStatus value.
+     * Get express Route Circuit Connection State. Possible values are: 'Connected' and 'Disconnected'. Possible values include: 'Connected', 'Connecting', 'Disconnected'.
      *
      * @return the circuitConnectionStatus value
      */
@@ -162,7 +162,7 @@ public class ExpressRouteCircuitConnectionInner extends SubResource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get provisioning state of the circuit connection resource. Possible values are: 'Succeded', 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value
      */
@@ -171,7 +171,7 @@ public class ExpressRouteCircuitConnectionInner extends SubResource {
     }
 
     /**
-     * Get the name value.
+     * Get gets name of the resource that is unique within a resource group. This name can be used to access the resource.
      *
      * @return the name value
      */
@@ -180,7 +180,7 @@ public class ExpressRouteCircuitConnectionInner extends SubResource {
     }
 
     /**
-     * Set the name value.
+     * Set gets name of the resource that is unique within a resource group. This name can be used to access the resource.
      *
      * @param name the name value to set
      * @return the ExpressRouteCircuitConnectionInner object itself.
@@ -191,7 +191,7 @@ public class ExpressRouteCircuitConnectionInner extends SubResource {
     }
 
     /**
-     * Get the etag value.
+     * Get a unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value
      */

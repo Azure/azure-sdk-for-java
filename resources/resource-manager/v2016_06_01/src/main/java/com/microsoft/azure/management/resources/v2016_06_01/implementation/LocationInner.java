@@ -52,7 +52,7 @@ public class LocationInner {
     private String longitude;
 
     /**
-     * Get the id value.
+     * Get the fully qualified ID of the location. For example, /subscriptions/00000000-0000-0000-0000-000000000000/locations/westus.
      *
      * @return the id value
      */
@@ -61,7 +61,7 @@ public class LocationInner {
     }
 
     /**
-     * Get the subscriptionId value.
+     * Get the subscription ID.
      *
      * @return the subscriptionId value
      */
@@ -70,7 +70,7 @@ public class LocationInner {
     }
 
     /**
-     * Get the name value.
+     * Get the location name.
      *
      * @return the name value
      */
@@ -79,7 +79,7 @@ public class LocationInner {
     }
 
     /**
-     * Get the displayName value.
+     * Get the display name of the location.
      *
      * @return the displayName value
      */
@@ -88,7 +88,7 @@ public class LocationInner {
     }
 
     /**
-     * Get the latitude value.
+     * Get the latitude of the location.
      *
      * @return the latitude value
      */
@@ -97,7 +97,7 @@ public class LocationInner {
     }
 
     /**
-     * Get the longitude value.
+     * Get the longitude of the location.
      *
      * @return the longitude value
      */

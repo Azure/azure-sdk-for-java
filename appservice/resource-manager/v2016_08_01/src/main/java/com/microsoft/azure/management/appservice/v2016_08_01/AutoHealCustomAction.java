@@ -28,7 +28,7 @@ public class AutoHealCustomAction {
     private String parameters;
 
     /**
-     * Get the exe value.
+     * Get executable to be run.
      *
      * @return the exe value
      */
@@ -37,7 +37,7 @@ public class AutoHealCustomAction {
     }
 
     /**
-     * Set the exe value.
+     * Set executable to be run.
      *
      * @param exe the exe value to set
      * @return the AutoHealCustomAction object itself.
@@ -48,7 +48,7 @@ public class AutoHealCustomAction {
     }
 
     /**
-     * Get the parameters value.
+     * Get parameters for the executable.
      *
      * @return the parameters value
      */
@@ -57,7 +57,7 @@ public class AutoHealCustomAction {
     }
 
     /**
-     * Set the parameters value.
+     * Set parameters for the executable.
      *
      * @param parameters the parameters value to set
      * @return the AutoHealCustomAction object itself.

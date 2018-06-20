@@ -34,7 +34,7 @@ public class DataTableResponseObject {
     private List<List<String>> rows;
 
     /**
-     * Get the tableName value.
+     * Get name of the table.
      *
      * @return the tableName value
      */
@@ -43,7 +43,7 @@ public class DataTableResponseObject {
     }
 
     /**
-     * Set the tableName value.
+     * Set name of the table.
      *
      * @param tableName the tableName value to set
      * @return the DataTableResponseObject object itself.
@@ -54,7 +54,7 @@ public class DataTableResponseObject {
     }
 
     /**
-     * Get the columns value.
+     * Get list of columns with data types.
      *
      * @return the columns value
      */
@@ -63,7 +63,7 @@ public class DataTableResponseObject {
     }
 
     /**
-     * Set the columns value.
+     * Set list of columns with data types.
      *
      * @param columns the columns value to set
      * @return the DataTableResponseObject object itself.
@@ -74,7 +74,7 @@ public class DataTableResponseObject {
     }
 
     /**
-     * Get the rows value.
+     * Get raw row values.
      *
      * @return the rows value
      */
@@ -83,7 +83,7 @@ public class DataTableResponseObject {
     }
 
     /**
-     * Set the rows value.
+     * Set raw row values.
      *
      * @param rows the rows value to set
      * @return the DataTableResponseObject object itself.

@@ -48,7 +48,7 @@ public class PolicyAssignmentInner extends ProxyResource {
     private String description;
 
     /**
-     * Get the displayName value.
+     * Get the display name of the policy assignment.
      *
      * @return the displayName value
      */
@@ -57,7 +57,7 @@ public class PolicyAssignmentInner extends ProxyResource {
     }
 
     /**
-     * Set the displayName value.
+     * Set the display name of the policy assignment.
      *
      * @param displayName the displayName value to set
      * @return the PolicyAssignmentInner object itself.
@@ -68,7 +68,7 @@ public class PolicyAssignmentInner extends ProxyResource {
     }
 
     /**
-     * Get the policyDefinitionId value.
+     * Get the ID of the policy definition.
      *
      * @return the policyDefinitionId value
      */
@@ -77,7 +77,7 @@ public class PolicyAssignmentInner extends ProxyResource {
     }
 
     /**
-     * Set the policyDefinitionId value.
+     * Set the ID of the policy definition.
      *
      * @param policyDefinitionId the policyDefinitionId value to set
      * @return the PolicyAssignmentInner object itself.
@@ -88,7 +88,7 @@ public class PolicyAssignmentInner extends ProxyResource {
     }
 
     /**
-     * Get the scopeProperty value.
+     * Get the scope for the policy assignment.
      *
      * @return the scopeProperty value
      */
@@ -97,7 +97,7 @@ public class PolicyAssignmentInner extends ProxyResource {
     }
 
     /**
-     * Set the scopeProperty value.
+     * Set the scope for the policy assignment.
      *
      * @param scopeProperty the scopeProperty value to set
      * @return the PolicyAssignmentInner object itself.
@@ -108,7 +108,7 @@ public class PolicyAssignmentInner extends ProxyResource {
     }
 
     /**
-     * Get the parameters value.
+     * Get required if a parameter is used in policy rule.
      *
      * @return the parameters value
      */
@@ -117,7 +117,7 @@ public class PolicyAssignmentInner extends ProxyResource {
     }
 
     /**
-     * Set the parameters value.
+     * Set required if a parameter is used in policy rule.
      *
      * @param parameters the parameters value to set
      * @return the PolicyAssignmentInner object itself.
@@ -128,7 +128,7 @@ public class PolicyAssignmentInner extends ProxyResource {
     }
 
     /**
-     * Get the description value.
+     * Get this message will be part of response in case of policy violation.
      *
      * @return the description value
      */
@@ -137,7 +137,7 @@ public class PolicyAssignmentInner extends ProxyResource {
     }
 
     /**
-     * Set the description value.
+     * Set this message will be part of response in case of policy violation.
      *
      * @param description the description value to set
      * @return the PolicyAssignmentInner object itself.

@@ -29,7 +29,7 @@ public class StorageAccount {
     private String accountKey;
 
     /**
-     * Get the accountName value.
+     * Get the name of the Azure Storage account. Required on PUT (CreateOrReplace) requests.
      *
      * @return the accountName value
      */
@@ -38,7 +38,7 @@ public class StorageAccount {
     }
 
     /**
-     * Set the accountName value.
+     * Set the name of the Azure Storage account. Required on PUT (CreateOrReplace) requests.
      *
      * @param accountName the accountName value to set
      * @return the StorageAccount object itself.
@@ -49,7 +49,7 @@ public class StorageAccount {
     }
 
     /**
-     * Get the accountKey value.
+     * Get the account key for the Azure Storage account. Required on PUT (CreateOrReplace) requests.
      *
      * @return the accountKey value
      */
@@ -58,7 +58,7 @@ public class StorageAccount {
     }
 
     /**
-     * Set the accountKey value.
+     * Set the account key for the Azure Storage account. Required on PUT (CreateOrReplace) requests.
      *
      * @param accountKey the accountKey value to set
      * @return the StorageAccount object itself.

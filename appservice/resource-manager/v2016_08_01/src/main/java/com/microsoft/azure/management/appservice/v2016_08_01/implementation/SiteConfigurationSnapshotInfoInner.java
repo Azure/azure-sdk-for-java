@@ -31,7 +31,7 @@ public class SiteConfigurationSnapshotInfoInner extends ProxyOnlyResource {
     private Integer siteConfigurationSnapshotInfoId;
 
     /**
-     * Get the time value.
+     * Get the time the snapshot was taken.
      *
      * @return the time value
      */
@@ -40,7 +40,7 @@ public class SiteConfigurationSnapshotInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the siteConfigurationSnapshotInfoId value.
+     * Get the id of the snapshot.
      *
      * @return the siteConfigurationSnapshotInfoId value
      */

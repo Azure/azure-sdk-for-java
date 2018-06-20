@@ -56,7 +56,7 @@ public class PacketCaptureQueryStatusResultInner {
     private List<PcError> packetCaptureError;
 
     /**
-     * Get the name value.
+     * Get the name of the packet capture resource.
      *
      * @return the name value
      */
@@ -65,7 +65,7 @@ public class PacketCaptureQueryStatusResultInner {
     }
 
     /**
-     * Set the name value.
+     * Set the name of the packet capture resource.
      *
      * @param name the name value to set
      * @return the PacketCaptureQueryStatusResultInner object itself.
@@ -76,7 +76,7 @@ public class PacketCaptureQueryStatusResultInner {
     }
 
     /**
-     * Get the id value.
+     * Get the ID of the packet capture resource.
      *
      * @return the id value
      */
@@ -85,7 +85,7 @@ public class PacketCaptureQueryStatusResultInner {
     }
 
     /**
-     * Set the id value.
+     * Set the ID of the packet capture resource.
      *
      * @param id the id value to set
      * @return the PacketCaptureQueryStatusResultInner object itself.
@@ -96,7 +96,7 @@ public class PacketCaptureQueryStatusResultInner {
     }
 
     /**
-     * Get the captureStartTime value.
+     * Get the start time of the packet capture session.
      *
      * @return the captureStartTime value
      */
@@ -105,7 +105,7 @@ public class PacketCaptureQueryStatusResultInner {
     }
 
     /**
-     * Set the captureStartTime value.
+     * Set the start time of the packet capture session.
      *
      * @param captureStartTime the captureStartTime value to set
      * @return the PacketCaptureQueryStatusResultInner object itself.
@@ -116,7 +116,7 @@ public class PacketCaptureQueryStatusResultInner {
     }
 
     /**
-     * Get the packetCaptureStatus value.
+     * Get the status of the packet capture session. Possible values include: 'NotStarted', 'Running', 'Stopped', 'Error', 'Unknown'.
      *
      * @return the packetCaptureStatus value
      */
@@ -125,7 +125,7 @@ public class PacketCaptureQueryStatusResultInner {
     }
 
     /**
-     * Set the packetCaptureStatus value.
+     * Set the status of the packet capture session. Possible values include: 'NotStarted', 'Running', 'Stopped', 'Error', 'Unknown'.
      *
      * @param packetCaptureStatus the packetCaptureStatus value to set
      * @return the PacketCaptureQueryStatusResultInner object itself.
@@ -136,7 +136,7 @@ public class PacketCaptureQueryStatusResultInner {
     }
 
     /**
-     * Get the stopReason value.
+     * Get the reason the current packet capture session was stopped.
      *
      * @return the stopReason value
      */
@@ -145,7 +145,7 @@ public class PacketCaptureQueryStatusResultInner {
     }
 
     /**
-     * Set the stopReason value.
+     * Set the reason the current packet capture session was stopped.
      *
      * @param stopReason the stopReason value to set
      * @return the PacketCaptureQueryStatusResultInner object itself.
@@ -156,7 +156,7 @@ public class PacketCaptureQueryStatusResultInner {
     }
 
     /**
-     * Get the packetCaptureError value.
+     * Get list of errors of packet capture session.
      *
      * @return the packetCaptureError value
      */
@@ -165,7 +165,7 @@ public class PacketCaptureQueryStatusResultInner {
     }
 
     /**
-     * Set the packetCaptureError value.
+     * Set list of errors of packet capture session.
      *
      * @param packetCaptureError the packetCaptureError value to set
      * @return the PacketCaptureQueryStatusResultInner object itself.

@@ -52,7 +52,7 @@ public class ConnectivityHop {
     private List<ConnectivityIssue> issues;
 
     /**
-     * Get the type value.
+     * Get the type of the hop.
      *
      * @return the type value
      */
@@ -61,7 +61,7 @@ public class ConnectivityHop {
     }
 
     /**
-     * Get the id value.
+     * Get the ID of the hop.
      *
      * @return the id value
      */
@@ -70,7 +70,7 @@ public class ConnectivityHop {
     }
 
     /**
-     * Get the address value.
+     * Get the IP address of the hop.
      *
      * @return the address value
      */
@@ -79,7 +79,7 @@ public class ConnectivityHop {
     }
 
     /**
-     * Get the resourceId value.
+     * Get the ID of the resource corresponding to this hop.
      *
      * @return the resourceId value
      */
@@ -88,7 +88,7 @@ public class ConnectivityHop {
     }
 
     /**
-     * Get the nextHopIds value.
+     * Get list of next hop identifiers.
      *
      * @return the nextHopIds value
      */
@@ -97,7 +97,7 @@ public class ConnectivityHop {
     }
 
     /**
-     * Get the issues value.
+     * Get list of issues.
      *
      * @return the issues value
      */

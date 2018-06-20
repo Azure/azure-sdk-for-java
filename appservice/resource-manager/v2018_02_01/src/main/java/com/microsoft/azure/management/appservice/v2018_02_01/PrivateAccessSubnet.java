@@ -28,7 +28,7 @@ public class PrivateAccessSubnet {
     private Integer key;
 
     /**
-     * Get the name value.
+     * Get the name of the subnet.
      *
      * @return the name value
      */
@@ -37,7 +37,7 @@ public class PrivateAccessSubnet {
     }
 
     /**
-     * Set the name value.
+     * Set the name of the subnet.
      *
      * @param name the name value to set
      * @return the PrivateAccessSubnet object itself.
@@ -48,7 +48,7 @@ public class PrivateAccessSubnet {
     }
 
     /**
-     * Get the key value.
+     * Get the key (ID) of the subnet.
      *
      * @return the key value
      */
@@ -57,7 +57,7 @@ public class PrivateAccessSubnet {
     }
 
     /**
-     * Set the key value.
+     * Set the key (ID) of the subnet.
      *
      * @param key the key value to set
      * @return the PrivateAccessSubnet object itself.

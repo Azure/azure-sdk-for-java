@@ -29,7 +29,7 @@ public interface PolicyAssignments extends SupportsCreating<PolicyAssignment.Def
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable deleteAsync(String scope, String policyAssignmentName);
+    Observable<PolicyAssignment> deleteAsync(String scope, String policyAssignmentName);
 
     /**
      * Gets a policy assignment.
@@ -62,7 +62,7 @@ public interface PolicyAssignments extends SupportsCreating<PolicyAssignment.Def
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable deleteByIdAsync(String policyAssignmentId);
+    Observable<PolicyAssignment> deleteByIdAsync(String policyAssignmentId);
 
     /**
      * Creates a policy assignment by ID.

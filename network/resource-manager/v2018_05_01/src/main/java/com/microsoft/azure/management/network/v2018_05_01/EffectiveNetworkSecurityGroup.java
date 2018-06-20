@@ -42,7 +42,7 @@ public class EffectiveNetworkSecurityGroup {
     private Map<String, List<String>> tagMap;
 
     /**
-     * Get the networkSecurityGroup value.
+     * Get the ID of network security group that is applied.
      *
      * @return the networkSecurityGroup value
      */
@@ -51,7 +51,7 @@ public class EffectiveNetworkSecurityGroup {
     }
 
     /**
-     * Set the networkSecurityGroup value.
+     * Set the ID of network security group that is applied.
      *
      * @param networkSecurityGroup the networkSecurityGroup value to set
      * @return the EffectiveNetworkSecurityGroup object itself.
@@ -62,7 +62,7 @@ public class EffectiveNetworkSecurityGroup {
     }
 
     /**
-     * Get the association value.
+     * Get associated resources.
      *
      * @return the association value
      */
@@ -71,7 +71,7 @@ public class EffectiveNetworkSecurityGroup {
     }
 
     /**
-     * Set the association value.
+     * Set associated resources.
      *
      * @param association the association value to set
      * @return the EffectiveNetworkSecurityGroup object itself.
@@ -82,7 +82,7 @@ public class EffectiveNetworkSecurityGroup {
     }
 
     /**
-     * Get the effectiveSecurityRules value.
+     * Get a collection of effective security rules.
      *
      * @return the effectiveSecurityRules value
      */
@@ -91,7 +91,7 @@ public class EffectiveNetworkSecurityGroup {
     }
 
     /**
-     * Set the effectiveSecurityRules value.
+     * Set a collection of effective security rules.
      *
      * @param effectiveSecurityRules the effectiveSecurityRules value to set
      * @return the EffectiveNetworkSecurityGroup object itself.
@@ -102,7 +102,7 @@ public class EffectiveNetworkSecurityGroup {
     }
 
     /**
-     * Get the tagMap value.
+     * Get mapping of tags to list of IP Addresses included within the tag.
      *
      * @return the tagMap value
      */
@@ -111,7 +111,7 @@ public class EffectiveNetworkSecurityGroup {
     }
 
     /**
-     * Set the tagMap value.
+     * Set mapping of tags to list of IP Addresses included within the tag.
      *
      * @param tagMap the tagMap value to set
      * @return the EffectiveNetworkSecurityGroup object itself.

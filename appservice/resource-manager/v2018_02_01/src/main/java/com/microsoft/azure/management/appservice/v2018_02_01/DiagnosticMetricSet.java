@@ -55,7 +55,7 @@ public class DiagnosticMetricSet {
     private List<DiagnosticMetricSample> values;
 
     /**
-     * Get the name value.
+     * Get name of the metric.
      *
      * @return the name value
      */
@@ -64,7 +64,7 @@ public class DiagnosticMetricSet {
     }
 
     /**
-     * Set the name value.
+     * Set name of the metric.
      *
      * @param name the name value to set
      * @return the DiagnosticMetricSet object itself.
@@ -75,7 +75,7 @@ public class DiagnosticMetricSet {
     }
 
     /**
-     * Get the unit value.
+     * Get metric's unit.
      *
      * @return the unit value
      */
@@ -84,7 +84,7 @@ public class DiagnosticMetricSet {
     }
 
     /**
-     * Set the unit value.
+     * Set metric's unit.
      *
      * @param unit the unit value to set
      * @return the DiagnosticMetricSet object itself.
@@ -95,7 +95,7 @@ public class DiagnosticMetricSet {
     }
 
     /**
-     * Get the startTime value.
+     * Get start time of the period.
      *
      * @return the startTime value
      */
@@ -104,7 +104,7 @@ public class DiagnosticMetricSet {
     }
 
     /**
-     * Set the startTime value.
+     * Set start time of the period.
      *
      * @param startTime the startTime value to set
      * @return the DiagnosticMetricSet object itself.
@@ -115,7 +115,7 @@ public class DiagnosticMetricSet {
     }
 
     /**
-     * Get the endTime value.
+     * Get end time of the period.
      *
      * @return the endTime value
      */
@@ -124,7 +124,7 @@ public class DiagnosticMetricSet {
     }
 
     /**
-     * Set the endTime value.
+     * Set end time of the period.
      *
      * @param endTime the endTime value to set
      * @return the DiagnosticMetricSet object itself.
@@ -135,7 +135,7 @@ public class DiagnosticMetricSet {
     }
 
     /**
-     * Get the timeGrain value.
+     * Get presented time grain. Supported grains at the moment are PT1M, PT1H, P1D.
      *
      * @return the timeGrain value
      */
@@ -144,7 +144,7 @@ public class DiagnosticMetricSet {
     }
 
     /**
-     * Set the timeGrain value.
+     * Set presented time grain. Supported grains at the moment are PT1M, PT1H, P1D.
      *
      * @param timeGrain the timeGrain value to set
      * @return the DiagnosticMetricSet object itself.
@@ -155,7 +155,7 @@ public class DiagnosticMetricSet {
     }
 
     /**
-     * Get the values value.
+     * Get collection of metric values for the selected period based on the {Microsoft.Web.Hosting.Administration.DiagnosticMetricSet.TimeGrain}.
      *
      * @return the values value
      */
@@ -164,7 +164,7 @@ public class DiagnosticMetricSet {
     }
 
     /**
-     * Set the values value.
+     * Set collection of metric values for the selected period based on the {Microsoft.Web.Hosting.Administration.DiagnosticMetricSet.TimeGrain}.
      *
      * @param values the values value to set
      * @return the DiagnosticMetricSet object itself.

@@ -47,7 +47,7 @@ public class ExpressRouteCircuitRoutesTableSummary {
     private String statePfxRcd;
 
     /**
-     * Get the neighbor value.
+     * Get iP address of the neighbor.
      *
      * @return the neighbor value
      */
@@ -56,7 +56,7 @@ public class ExpressRouteCircuitRoutesTableSummary {
     }
 
     /**
-     * Set the neighbor value.
+     * Set iP address of the neighbor.
      *
      * @param neighbor the neighbor value to set
      * @return the ExpressRouteCircuitRoutesTableSummary object itself.
@@ -67,7 +67,7 @@ public class ExpressRouteCircuitRoutesTableSummary {
     }
 
     /**
-     * Get the v value.
+     * Get bGP version number spoken to the neighbor.
      *
      * @return the v value
      */
@@ -76,7 +76,7 @@ public class ExpressRouteCircuitRoutesTableSummary {
     }
 
     /**
-     * Set the v value.
+     * Set bGP version number spoken to the neighbor.
      *
      * @param v the v value to set
      * @return the ExpressRouteCircuitRoutesTableSummary object itself.
@@ -87,7 +87,7 @@ public class ExpressRouteCircuitRoutesTableSummary {
     }
 
     /**
-     * Get the as value.
+     * Get autonomous system number.
      *
      * @return the as value
      */
@@ -96,7 +96,7 @@ public class ExpressRouteCircuitRoutesTableSummary {
     }
 
     /**
-     * Set the as value.
+     * Set autonomous system number.
      *
      * @param as the as value to set
      * @return the ExpressRouteCircuitRoutesTableSummary object itself.
@@ -107,7 +107,7 @@ public class ExpressRouteCircuitRoutesTableSummary {
     }
 
     /**
-     * Get the upDown value.
+     * Get the length of time that the BGP session has been in the Established state, or the current status if not in the Established state.
      *
      * @return the upDown value
      */
@@ -116,7 +116,7 @@ public class ExpressRouteCircuitRoutesTableSummary {
     }
 
     /**
-     * Set the upDown value.
+     * Set the length of time that the BGP session has been in the Established state, or the current status if not in the Established state.
      *
      * @param upDown the upDown value to set
      * @return the ExpressRouteCircuitRoutesTableSummary object itself.
@@ -127,7 +127,7 @@ public class ExpressRouteCircuitRoutesTableSummary {
     }
 
     /**
-     * Get the statePfxRcd value.
+     * Get current state of the BGP session, and the number of prefixes that have been received from a neighbor or peer group.
      *
      * @return the statePfxRcd value
      */
@@ -136,7 +136,7 @@ public class ExpressRouteCircuitRoutesTableSummary {
     }
 
     /**
-     * Set the statePfxRcd value.
+     * Set current state of the BGP session, and the number of prefixes that have been received from a neighbor or peer group.
      *
      * @param statePfxRcd the statePfxRcd value to set
      * @return the ExpressRouteCircuitRoutesTableSummary object itself.

@@ -11,6 +11,7 @@ package com.microsoft.azure.management.streamanalytics.v2016_03_01.implementatio
 import com.microsoft.azure.management.streamanalytics.v2016_03_01.SubscriptionQuotasListResult;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import java.util.List;
+import com.microsoft.azure.management.streamanalytics.v2016_03_01.SubscriptionQuota;
 
 class SubscriptionQuotasListResultImpl extends WrapperImpl<SubscriptionQuotasListResultInner> implements SubscriptionQuotasListResult {
     private final StreamAnalyticsManager manager;
@@ -25,7 +26,7 @@ class SubscriptionQuotasListResultImpl extends WrapperImpl<SubscriptionQuotasLis
     }
 
     @Override
-    public List<SubscriptionQuotaInner> value() {
+    public List<SubscriptionQuota> value() {
         return this.inner().value();
     }
 

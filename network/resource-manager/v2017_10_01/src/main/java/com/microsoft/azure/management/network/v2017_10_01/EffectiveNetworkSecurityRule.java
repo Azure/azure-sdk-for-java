@@ -118,7 +118,7 @@ public class EffectiveNetworkSecurityRule {
     private SecurityRuleDirection direction;
 
     /**
-     * Get the name value.
+     * Get the name of the security rule specified by the user (if created by the user).
      *
      * @return the name value
      */
@@ -127,7 +127,7 @@ public class EffectiveNetworkSecurityRule {
     }
 
     /**
-     * Set the name value.
+     * Set the name of the security rule specified by the user (if created by the user).
      *
      * @param name the name value to set
      * @return the EffectiveNetworkSecurityRule object itself.
@@ -138,7 +138,7 @@ public class EffectiveNetworkSecurityRule {
     }
 
     /**
-     * Get the protocol value.
+     * Get the network protocol this rule applies to. Possible values are: 'Tcp', 'Udp', and 'All'. Possible values include: 'Tcp', 'Udp', 'All'.
      *
      * @return the protocol value
      */
@@ -147,7 +147,7 @@ public class EffectiveNetworkSecurityRule {
     }
 
     /**
-     * Set the protocol value.
+     * Set the network protocol this rule applies to. Possible values are: 'Tcp', 'Udp', and 'All'. Possible values include: 'Tcp', 'Udp', 'All'.
      *
      * @param protocol the protocol value to set
      * @return the EffectiveNetworkSecurityRule object itself.
@@ -158,7 +158,7 @@ public class EffectiveNetworkSecurityRule {
     }
 
     /**
-     * Get the sourcePortRange value.
+     * Get the source port or range.
      *
      * @return the sourcePortRange value
      */
@@ -167,7 +167,7 @@ public class EffectiveNetworkSecurityRule {
     }
 
     /**
-     * Set the sourcePortRange value.
+     * Set the source port or range.
      *
      * @param sourcePortRange the sourcePortRange value to set
      * @return the EffectiveNetworkSecurityRule object itself.
@@ -178,7 +178,7 @@ public class EffectiveNetworkSecurityRule {
     }
 
     /**
-     * Get the destinationPortRange value.
+     * Get the destination port or range.
      *
      * @return the destinationPortRange value
      */
@@ -187,7 +187,7 @@ public class EffectiveNetworkSecurityRule {
     }
 
     /**
-     * Set the destinationPortRange value.
+     * Set the destination port or range.
      *
      * @param destinationPortRange the destinationPortRange value to set
      * @return the EffectiveNetworkSecurityRule object itself.
@@ -198,7 +198,7 @@ public class EffectiveNetworkSecurityRule {
     }
 
     /**
-     * Get the sourcePortRanges value.
+     * Get the source port ranges. Expected values include a single integer between 0 and 65535, a range using '-' as seperator (e.g. 100-400), or an asterix (*).
      *
      * @return the sourcePortRanges value
      */
@@ -207,7 +207,7 @@ public class EffectiveNetworkSecurityRule {
     }
 
     /**
-     * Set the sourcePortRanges value.
+     * Set the source port ranges. Expected values include a single integer between 0 and 65535, a range using '-' as seperator (e.g. 100-400), or an asterix (*).
      *
      * @param sourcePortRanges the sourcePortRanges value to set
      * @return the EffectiveNetworkSecurityRule object itself.
@@ -218,7 +218,7 @@ public class EffectiveNetworkSecurityRule {
     }
 
     /**
-     * Get the destinationPortRanges value.
+     * Get the destination port ranges. Expected values include a single integer between 0 and 65535, a range using '-' as seperator (e.g. 100-400), or an asterix (*).
      *
      * @return the destinationPortRanges value
      */
@@ -227,7 +227,7 @@ public class EffectiveNetworkSecurityRule {
     }
 
     /**
-     * Set the destinationPortRanges value.
+     * Set the destination port ranges. Expected values include a single integer between 0 and 65535, a range using '-' as seperator (e.g. 100-400), or an asterix (*).
      *
      * @param destinationPortRanges the destinationPortRanges value to set
      * @return the EffectiveNetworkSecurityRule object itself.
@@ -238,7 +238,7 @@ public class EffectiveNetworkSecurityRule {
     }
 
     /**
-     * Get the sourceAddressPrefix value.
+     * Get the source address prefix.
      *
      * @return the sourceAddressPrefix value
      */
@@ -247,7 +247,7 @@ public class EffectiveNetworkSecurityRule {
     }
 
     /**
-     * Set the sourceAddressPrefix value.
+     * Set the source address prefix.
      *
      * @param sourceAddressPrefix the sourceAddressPrefix value to set
      * @return the EffectiveNetworkSecurityRule object itself.
@@ -258,7 +258,7 @@ public class EffectiveNetworkSecurityRule {
     }
 
     /**
-     * Get the destinationAddressPrefix value.
+     * Get the destination address prefix.
      *
      * @return the destinationAddressPrefix value
      */
@@ -267,7 +267,7 @@ public class EffectiveNetworkSecurityRule {
     }
 
     /**
-     * Set the destinationAddressPrefix value.
+     * Set the destination address prefix.
      *
      * @param destinationAddressPrefix the destinationAddressPrefix value to set
      * @return the EffectiveNetworkSecurityRule object itself.
@@ -278,7 +278,7 @@ public class EffectiveNetworkSecurityRule {
     }
 
     /**
-     * Get the sourceAddressPrefixes value.
+     * Get the source address prefixes. Expected values include CIDR IP ranges, Default Tags (VirtualNetwork, AureLoadBalancer, Internet), System Tags, and the asterix (*).
      *
      * @return the sourceAddressPrefixes value
      */
@@ -287,7 +287,7 @@ public class EffectiveNetworkSecurityRule {
     }
 
     /**
-     * Set the sourceAddressPrefixes value.
+     * Set the source address prefixes. Expected values include CIDR IP ranges, Default Tags (VirtualNetwork, AureLoadBalancer, Internet), System Tags, and the asterix (*).
      *
      * @param sourceAddressPrefixes the sourceAddressPrefixes value to set
      * @return the EffectiveNetworkSecurityRule object itself.
@@ -298,7 +298,7 @@ public class EffectiveNetworkSecurityRule {
     }
 
     /**
-     * Get the destinationAddressPrefixes value.
+     * Get the destination address prefixes. Expected values include CIDR IP ranges, Default Tags (VirtualNetwork, AureLoadBalancer, Internet), System Tags, and the asterix (*).
      *
      * @return the destinationAddressPrefixes value
      */
@@ -307,7 +307,7 @@ public class EffectiveNetworkSecurityRule {
     }
 
     /**
-     * Set the destinationAddressPrefixes value.
+     * Set the destination address prefixes. Expected values include CIDR IP ranges, Default Tags (VirtualNetwork, AureLoadBalancer, Internet), System Tags, and the asterix (*).
      *
      * @param destinationAddressPrefixes the destinationAddressPrefixes value to set
      * @return the EffectiveNetworkSecurityRule object itself.
@@ -318,7 +318,7 @@ public class EffectiveNetworkSecurityRule {
     }
 
     /**
-     * Get the expandedSourceAddressPrefix value.
+     * Get the expanded source address prefix.
      *
      * @return the expandedSourceAddressPrefix value
      */
@@ -327,7 +327,7 @@ public class EffectiveNetworkSecurityRule {
     }
 
     /**
-     * Set the expandedSourceAddressPrefix value.
+     * Set the expanded source address prefix.
      *
      * @param expandedSourceAddressPrefix the expandedSourceAddressPrefix value to set
      * @return the EffectiveNetworkSecurityRule object itself.
@@ -338,7 +338,7 @@ public class EffectiveNetworkSecurityRule {
     }
 
     /**
-     * Get the expandedDestinationAddressPrefix value.
+     * Get expanded destination address prefix.
      *
      * @return the expandedDestinationAddressPrefix value
      */
@@ -347,7 +347,7 @@ public class EffectiveNetworkSecurityRule {
     }
 
     /**
-     * Set the expandedDestinationAddressPrefix value.
+     * Set expanded destination address prefix.
      *
      * @param expandedDestinationAddressPrefix the expandedDestinationAddressPrefix value to set
      * @return the EffectiveNetworkSecurityRule object itself.
@@ -358,7 +358,7 @@ public class EffectiveNetworkSecurityRule {
     }
 
     /**
-     * Get the access value.
+     * Get whether network traffic is allowed or denied. Possible values are: 'Allow' and 'Deny'. Possible values include: 'Allow', 'Deny'.
      *
      * @return the access value
      */
@@ -367,7 +367,7 @@ public class EffectiveNetworkSecurityRule {
     }
 
     /**
-     * Set the access value.
+     * Set whether network traffic is allowed or denied. Possible values are: 'Allow' and 'Deny'. Possible values include: 'Allow', 'Deny'.
      *
      * @param access the access value to set
      * @return the EffectiveNetworkSecurityRule object itself.
@@ -378,7 +378,7 @@ public class EffectiveNetworkSecurityRule {
     }
 
     /**
-     * Get the priority value.
+     * Get the priority of the rule.
      *
      * @return the priority value
      */
@@ -387,7 +387,7 @@ public class EffectiveNetworkSecurityRule {
     }
 
     /**
-     * Set the priority value.
+     * Set the priority of the rule.
      *
      * @param priority the priority value to set
      * @return the EffectiveNetworkSecurityRule object itself.
@@ -398,7 +398,7 @@ public class EffectiveNetworkSecurityRule {
     }
 
     /**
-     * Get the direction value.
+     * Get the direction of the rule. Possible values are: 'Inbound and Outbound'. Possible values include: 'Inbound', 'Outbound'.
      *
      * @return the direction value
      */
@@ -407,7 +407,7 @@ public class EffectiveNetworkSecurityRule {
     }
 
     /**
-     * Set the direction value.
+     * Set the direction of the rule. Possible values are: 'Inbound and Outbound'. Possible values include: 'Inbound', 'Outbound'.
      *
      * @param direction the direction value to set
      * @return the EffectiveNetworkSecurityRule object itself.

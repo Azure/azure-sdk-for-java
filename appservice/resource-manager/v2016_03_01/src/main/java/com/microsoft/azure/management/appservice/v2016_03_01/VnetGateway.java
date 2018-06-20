@@ -30,7 +30,7 @@ public class VnetGateway extends ProxyOnlyResource {
     private String vpnPackageUri;
 
     /**
-     * Get the vnetName value.
+     * Get the Virtual Network name.
      *
      * @return the vnetName value
      */
@@ -39,7 +39,7 @@ public class VnetGateway extends ProxyOnlyResource {
     }
 
     /**
-     * Set the vnetName value.
+     * Set the Virtual Network name.
      *
      * @param vnetName the vnetName value to set
      * @return the VnetGateway object itself.
@@ -50,7 +50,7 @@ public class VnetGateway extends ProxyOnlyResource {
     }
 
     /**
-     * Get the vpnPackageUri value.
+     * Get the URI where the VPN package can be downloaded.
      *
      * @return the vpnPackageUri value
      */
@@ -59,7 +59,7 @@ public class VnetGateway extends ProxyOnlyResource {
     }
 
     /**
-     * Set the vpnPackageUri value.
+     * Set the URI where the VPN package can be downloaded.
      *
      * @param vpnPackageUri the vpnPackageUri value to set
      * @return the VnetGateway object itself.

@@ -26,7 +26,7 @@ public class PolicyAssignmentInner extends ProxyResource {
     private String displayName;
 
     /**
-     * The ID of the policy definition.
+     * The ID of the policy definition or policy set definition being assigned.
      */
     @JsonProperty(value = "properties.policyDefinitionId")
     private String policyDefinitionId;
@@ -62,13 +62,14 @@ public class PolicyAssignmentInner extends ProxyResource {
     private Object metadata;
 
     /**
-     * The policy sku.
+     * The policy sku. This property is optional, obsolete, and will be
+     * ignored.
      */
     @JsonProperty(value = "sku")
     private PolicySku sku;
 
     /**
-     * Get the displayName value.
+     * Get the display name of the policy assignment.
      *
      * @return the displayName value
      */
@@ -77,7 +78,7 @@ public class PolicyAssignmentInner extends ProxyResource {
     }
 
     /**
-     * Set the displayName value.
+     * Set the display name of the policy assignment.
      *
      * @param displayName the displayName value to set
      * @return the PolicyAssignmentInner object itself.
@@ -88,7 +89,7 @@ public class PolicyAssignmentInner extends ProxyResource {
     }
 
     /**
-     * Get the policyDefinitionId value.
+     * Get the ID of the policy definition or policy set definition being assigned.
      *
      * @return the policyDefinitionId value
      */
@@ -97,7 +98,7 @@ public class PolicyAssignmentInner extends ProxyResource {
     }
 
     /**
-     * Set the policyDefinitionId value.
+     * Set the ID of the policy definition or policy set definition being assigned.
      *
      * @param policyDefinitionId the policyDefinitionId value to set
      * @return the PolicyAssignmentInner object itself.
@@ -108,7 +109,7 @@ public class PolicyAssignmentInner extends ProxyResource {
     }
 
     /**
-     * Get the scopeProperty value.
+     * Get the scope for the policy assignment.
      *
      * @return the scopeProperty value
      */
@@ -117,7 +118,7 @@ public class PolicyAssignmentInner extends ProxyResource {
     }
 
     /**
-     * Set the scopeProperty value.
+     * Set the scope for the policy assignment.
      *
      * @param scopeProperty the scopeProperty value to set
      * @return the PolicyAssignmentInner object itself.
@@ -128,7 +129,7 @@ public class PolicyAssignmentInner extends ProxyResource {
     }
 
     /**
-     * Get the notScopes value.
+     * Get the policy's excluded scopes.
      *
      * @return the notScopes value
      */
@@ -137,7 +138,7 @@ public class PolicyAssignmentInner extends ProxyResource {
     }
 
     /**
-     * Set the notScopes value.
+     * Set the policy's excluded scopes.
      *
      * @param notScopes the notScopes value to set
      * @return the PolicyAssignmentInner object itself.
@@ -148,7 +149,7 @@ public class PolicyAssignmentInner extends ProxyResource {
     }
 
     /**
-     * Get the parameters value.
+     * Get required if a parameter is used in policy rule.
      *
      * @return the parameters value
      */
@@ -157,7 +158,7 @@ public class PolicyAssignmentInner extends ProxyResource {
     }
 
     /**
-     * Set the parameters value.
+     * Set required if a parameter is used in policy rule.
      *
      * @param parameters the parameters value to set
      * @return the PolicyAssignmentInner object itself.
@@ -168,7 +169,7 @@ public class PolicyAssignmentInner extends ProxyResource {
     }
 
     /**
-     * Get the description value.
+     * Get this message will be part of response in case of policy violation.
      *
      * @return the description value
      */
@@ -177,7 +178,7 @@ public class PolicyAssignmentInner extends ProxyResource {
     }
 
     /**
-     * Set the description value.
+     * Set this message will be part of response in case of policy violation.
      *
      * @param description the description value to set
      * @return the PolicyAssignmentInner object itself.
@@ -188,7 +189,7 @@ public class PolicyAssignmentInner extends ProxyResource {
     }
 
     /**
-     * Get the metadata value.
+     * Get the policy assignment metadata.
      *
      * @return the metadata value
      */
@@ -197,7 +198,7 @@ public class PolicyAssignmentInner extends ProxyResource {
     }
 
     /**
-     * Set the metadata value.
+     * Set the policy assignment metadata.
      *
      * @param metadata the metadata value to set
      * @return the PolicyAssignmentInner object itself.
@@ -208,7 +209,7 @@ public class PolicyAssignmentInner extends ProxyResource {
     }
 
     /**
-     * Get the sku value.
+     * Get the policy sku. This property is optional, obsolete, and will be ignored.
      *
      * @return the sku value
      */
@@ -217,7 +218,7 @@ public class PolicyAssignmentInner extends ProxyResource {
     }
 
     /**
-     * Set the sku value.
+     * Set the policy sku. This property is optional, obsolete, and will be ignored.
      *
      * @param sku the sku value to set
      * @return the PolicyAssignmentInner object itself.

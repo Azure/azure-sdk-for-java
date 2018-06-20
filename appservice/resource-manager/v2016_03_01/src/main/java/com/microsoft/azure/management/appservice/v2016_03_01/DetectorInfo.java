@@ -39,7 +39,7 @@ public class DetectorInfo {
     private String supportTopicId;
 
     /**
-     * Get the description value.
+     * Get short description of the detector and its purpose.
      *
      * @return the description value
      */
@@ -48,7 +48,7 @@ public class DetectorInfo {
     }
 
     /**
-     * Get the category value.
+     * Get support Category.
      *
      * @return the category value
      */
@@ -57,7 +57,7 @@ public class DetectorInfo {
     }
 
     /**
-     * Get the subCategory value.
+     * Get support Sub Category.
      *
      * @return the subCategory value
      */
@@ -66,7 +66,7 @@ public class DetectorInfo {
     }
 
     /**
-     * Get the supportTopicId value.
+     * Get support Topic Id.
      *
      * @return the supportTopicId value
      */

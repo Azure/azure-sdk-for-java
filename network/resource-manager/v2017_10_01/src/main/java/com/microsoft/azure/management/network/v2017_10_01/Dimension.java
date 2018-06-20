@@ -33,7 +33,7 @@ public class Dimension {
     private String internalName;
 
     /**
-     * Get the name value.
+     * Get the name of the dimension.
      *
      * @return the name value
      */
@@ -42,7 +42,7 @@ public class Dimension {
     }
 
     /**
-     * Set the name value.
+     * Set the name of the dimension.
      *
      * @param name the name value to set
      * @return the Dimension object itself.
@@ -53,7 +53,7 @@ public class Dimension {
     }
 
     /**
-     * Get the displayName value.
+     * Get the display name of the dimension.
      *
      * @return the displayName value
      */
@@ -62,7 +62,7 @@ public class Dimension {
     }
 
     /**
-     * Set the displayName value.
+     * Set the display name of the dimension.
      *
      * @param displayName the displayName value to set
      * @return the Dimension object itself.
@@ -73,7 +73,7 @@ public class Dimension {
     }
 
     /**
-     * Get the internalName value.
+     * Get the internal name of the dimension.
      *
      * @return the internalName value
      */
@@ -82,7 +82,7 @@ public class Dimension {
     }
 
     /**
-     * Set the internalName value.
+     * Set the internal name of the dimension.
      *
      * @param internalName the internalName value to set
      * @return the Dimension object itself.

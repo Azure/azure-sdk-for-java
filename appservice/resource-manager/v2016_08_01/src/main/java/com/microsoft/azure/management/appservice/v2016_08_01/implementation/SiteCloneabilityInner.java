@@ -45,7 +45,7 @@ public class SiteCloneabilityInner {
     private List<SiteCloneabilityCriterion> blockingCharacteristics;
 
     /**
-     * Get the result value.
+     * Get name of app. Possible values include: 'Cloneable', 'PartiallyCloneable', 'NotCloneable'.
      *
      * @return the result value
      */
@@ -54,7 +54,7 @@ public class SiteCloneabilityInner {
     }
 
     /**
-     * Set the result value.
+     * Set name of app. Possible values include: 'Cloneable', 'PartiallyCloneable', 'NotCloneable'.
      *
      * @param result the result value to set
      * @return the SiteCloneabilityInner object itself.
@@ -65,7 +65,7 @@ public class SiteCloneabilityInner {
     }
 
     /**
-     * Get the blockingFeatures value.
+     * Get list of features enabled on app that prevent cloning.
      *
      * @return the blockingFeatures value
      */
@@ -74,7 +74,7 @@ public class SiteCloneabilityInner {
     }
 
     /**
-     * Set the blockingFeatures value.
+     * Set list of features enabled on app that prevent cloning.
      *
      * @param blockingFeatures the blockingFeatures value to set
      * @return the SiteCloneabilityInner object itself.
@@ -85,7 +85,8 @@ public class SiteCloneabilityInner {
     }
 
     /**
-     * Get the unsupportedFeatures value.
+     * Get list of features enabled on app that are non-blocking but cannot be cloned. The app can still be cloned
+     but the features in this list will not be set up on cloned app.
      *
      * @return the unsupportedFeatures value
      */
@@ -94,7 +95,8 @@ public class SiteCloneabilityInner {
     }
 
     /**
-     * Set the unsupportedFeatures value.
+     * Set list of features enabled on app that are non-blocking but cannot be cloned. The app can still be cloned
+     but the features in this list will not be set up on cloned app.
      *
      * @param unsupportedFeatures the unsupportedFeatures value to set
      * @return the SiteCloneabilityInner object itself.
@@ -105,7 +107,7 @@ public class SiteCloneabilityInner {
     }
 
     /**
-     * Get the blockingCharacteristics value.
+     * Get list of blocking application characteristics.
      *
      * @return the blockingCharacteristics value
      */
@@ -114,7 +116,7 @@ public class SiteCloneabilityInner {
     }
 
     /**
-     * Set the blockingCharacteristics value.
+     * Set list of blocking application characteristics.
      *
      * @param blockingCharacteristics the blockingCharacteristics value to set
      * @return the SiteCloneabilityInner object itself.

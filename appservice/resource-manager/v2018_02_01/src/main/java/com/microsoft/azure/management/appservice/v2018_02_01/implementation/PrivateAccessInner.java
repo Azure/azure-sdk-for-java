@@ -32,7 +32,7 @@ public class PrivateAccessInner extends ProxyOnlyResource {
     private List<PrivateAccessVirtualNetwork> virtualNetworks;
 
     /**
-     * Get the enabled value.
+     * Get whether private access is enabled or not.
      *
      * @return the enabled value
      */
@@ -41,7 +41,7 @@ public class PrivateAccessInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the enabled value.
+     * Set whether private access is enabled or not.
      *
      * @param enabled the enabled value to set
      * @return the PrivateAccessInner object itself.
@@ -52,7 +52,7 @@ public class PrivateAccessInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the virtualNetworks value.
+     * Get the Virtual Networks (and subnets) allowed to access the site privately.
      *
      * @return the virtualNetworks value
      */
@@ -61,7 +61,7 @@ public class PrivateAccessInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the virtualNetworks value.
+     * Set the Virtual Networks (and subnets) allowed to access the site privately.
      *
      * @param virtualNetworks the virtualNetworks value to set
      * @return the PrivateAccessInner object itself.

@@ -46,7 +46,7 @@ public class DefaultErrorResponseError {
     private String innererror;
 
     /**
-     * Get the code value.
+     * Get standardized string to programmatically identify the error.
      *
      * @return the code value
      */
@@ -55,7 +55,7 @@ public class DefaultErrorResponseError {
     }
 
     /**
-     * Get the message value.
+     * Get detailed error description and debugging information.
      *
      * @return the message value
      */
@@ -64,7 +64,7 @@ public class DefaultErrorResponseError {
     }
 
     /**
-     * Get the target value.
+     * Get detailed error description and debugging information.
      *
      * @return the target value
      */
@@ -93,7 +93,7 @@ public class DefaultErrorResponseError {
     }
 
     /**
-     * Get the innererror value.
+     * Get more information to debug error.
      *
      * @return the innererror value
      */

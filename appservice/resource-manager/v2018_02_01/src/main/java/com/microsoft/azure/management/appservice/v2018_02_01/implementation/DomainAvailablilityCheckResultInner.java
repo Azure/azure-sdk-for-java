@@ -38,7 +38,7 @@ public class DomainAvailablilityCheckResultInner {
     private DomainType domainType;
 
     /**
-     * Get the name value.
+     * Get name of the domain.
      *
      * @return the name value
      */
@@ -47,7 +47,7 @@ public class DomainAvailablilityCheckResultInner {
     }
 
     /**
-     * Set the name value.
+     * Set name of the domain.
      *
      * @param name the name value to set
      * @return the DomainAvailablilityCheckResultInner object itself.
@@ -58,7 +58,7 @@ public class DomainAvailablilityCheckResultInner {
     }
 
     /**
-     * Get the available value.
+     * Get &lt;code&gt;true&lt;/code&gt; if domain can be purchased using CreateDomain API; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @return the available value
      */
@@ -67,7 +67,7 @@ public class DomainAvailablilityCheckResultInner {
     }
 
     /**
-     * Set the available value.
+     * Set &lt;code&gt;true&lt;/code&gt; if domain can be purchased using CreateDomain API; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @param available the available value to set
      * @return the DomainAvailablilityCheckResultInner object itself.
@@ -78,7 +78,7 @@ public class DomainAvailablilityCheckResultInner {
     }
 
     /**
-     * Get the domainType value.
+     * Get valid values are Regular domain: Azure will charge the full price of domain registration, SoftDeleted: Purchasing this domain will simply restore it and this operation will not cost anything. Possible values include: 'Regular', 'SoftDeleted'.
      *
      * @return the domainType value
      */
@@ -87,7 +87,7 @@ public class DomainAvailablilityCheckResultInner {
     }
 
     /**
-     * Set the domainType value.
+     * Set valid values are Regular domain: Azure will charge the full price of domain registration, SoftDeleted: Purchasing this domain will simply restore it and this operation will not cost anything. Possible values include: 'Regular', 'SoftDeleted'.
      *
      * @param domainType the domainType value to set
      * @return the DomainAvailablilityCheckResultInner object itself.

@@ -33,7 +33,7 @@ public class AzureReachabilityReportLocation {
     private String city;
 
     /**
-     * Get the country value.
+     * Get the name of the country.
      *
      * @return the country value
      */
@@ -42,7 +42,7 @@ public class AzureReachabilityReportLocation {
     }
 
     /**
-     * Set the country value.
+     * Set the name of the country.
      *
      * @param country the country value to set
      * @return the AzureReachabilityReportLocation object itself.
@@ -53,7 +53,7 @@ public class AzureReachabilityReportLocation {
     }
 
     /**
-     * Get the state value.
+     * Get the name of the state.
      *
      * @return the state value
      */
@@ -62,7 +62,7 @@ public class AzureReachabilityReportLocation {
     }
 
     /**
-     * Set the state value.
+     * Set the name of the state.
      *
      * @param state the state value to set
      * @return the AzureReachabilityReportLocation object itself.
@@ -73,7 +73,7 @@ public class AzureReachabilityReportLocation {
     }
 
     /**
-     * Get the city value.
+     * Get the name of the city or town.
      *
      * @return the city value
      */
@@ -82,7 +82,7 @@ public class AzureReachabilityReportLocation {
     }
 
     /**
-     * Set the city value.
+     * Set the name of the city or town.
      *
      * @param city the city value to set
      * @return the AzureReachabilityReportLocation object itself.

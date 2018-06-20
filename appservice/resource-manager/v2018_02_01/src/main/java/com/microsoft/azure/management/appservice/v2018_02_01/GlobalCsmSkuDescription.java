@@ -59,7 +59,7 @@ public class GlobalCsmSkuDescription {
     private List<CapabilityInner> capabilities;
 
     /**
-     * Get the name value.
+     * Get name of the resource SKU.
      *
      * @return the name value
      */
@@ -68,7 +68,7 @@ public class GlobalCsmSkuDescription {
     }
 
     /**
-     * Set the name value.
+     * Set name of the resource SKU.
      *
      * @param name the name value to set
      * @return the GlobalCsmSkuDescription object itself.
@@ -79,7 +79,7 @@ public class GlobalCsmSkuDescription {
     }
 
     /**
-     * Get the tier value.
+     * Get service Tier of the resource SKU.
      *
      * @return the tier value
      */
@@ -88,7 +88,7 @@ public class GlobalCsmSkuDescription {
     }
 
     /**
-     * Set the tier value.
+     * Set service Tier of the resource SKU.
      *
      * @param tier the tier value to set
      * @return the GlobalCsmSkuDescription object itself.
@@ -99,7 +99,7 @@ public class GlobalCsmSkuDescription {
     }
 
     /**
-     * Get the size value.
+     * Get size specifier of the resource SKU.
      *
      * @return the size value
      */
@@ -108,7 +108,7 @@ public class GlobalCsmSkuDescription {
     }
 
     /**
-     * Set the size value.
+     * Set size specifier of the resource SKU.
      *
      * @param size the size value to set
      * @return the GlobalCsmSkuDescription object itself.
@@ -119,7 +119,7 @@ public class GlobalCsmSkuDescription {
     }
 
     /**
-     * Get the family value.
+     * Get family code of the resource SKU.
      *
      * @return the family value
      */
@@ -128,7 +128,7 @@ public class GlobalCsmSkuDescription {
     }
 
     /**
-     * Set the family value.
+     * Set family code of the resource SKU.
      *
      * @param family the family value to set
      * @return the GlobalCsmSkuDescription object itself.
@@ -139,7 +139,7 @@ public class GlobalCsmSkuDescription {
     }
 
     /**
-     * Get the capacity value.
+     * Get min, max, and default scale values of the SKU.
      *
      * @return the capacity value
      */
@@ -148,7 +148,7 @@ public class GlobalCsmSkuDescription {
     }
 
     /**
-     * Set the capacity value.
+     * Set min, max, and default scale values of the SKU.
      *
      * @param capacity the capacity value to set
      * @return the GlobalCsmSkuDescription object itself.
@@ -159,7 +159,7 @@ public class GlobalCsmSkuDescription {
     }
 
     /**
-     * Get the locations value.
+     * Get locations of the SKU.
      *
      * @return the locations value
      */
@@ -168,7 +168,7 @@ public class GlobalCsmSkuDescription {
     }
 
     /**
-     * Set the locations value.
+     * Set locations of the SKU.
      *
      * @param locations the locations value to set
      * @return the GlobalCsmSkuDescription object itself.
@@ -179,7 +179,7 @@ public class GlobalCsmSkuDescription {
     }
 
     /**
-     * Get the capabilities value.
+     * Get capabilities of the SKU, e.g., is traffic manager enabled?.
      *
      * @return the capabilities value
      */
@@ -188,7 +188,7 @@ public class GlobalCsmSkuDescription {
     }
 
     /**
-     * Set the capabilities value.
+     * Set capabilities of the SKU, e.g., is traffic manager enabled?.
      *
      * @param capabilities the capabilities value to set
      * @return the GlobalCsmSkuDescription object itself.

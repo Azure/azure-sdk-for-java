@@ -34,7 +34,7 @@ public class TopologyParameters {
     private SubResource targetSubnet;
 
     /**
-     * Get the targetResourceGroupName value.
+     * Get the name of the target resource group to perform topology on.
      *
      * @return the targetResourceGroupName value
      */
@@ -43,7 +43,7 @@ public class TopologyParameters {
     }
 
     /**
-     * Set the targetResourceGroupName value.
+     * Set the name of the target resource group to perform topology on.
      *
      * @param targetResourceGroupName the targetResourceGroupName value to set
      * @return the TopologyParameters object itself.
@@ -54,7 +54,7 @@ public class TopologyParameters {
     }
 
     /**
-     * Get the targetVirtualNetwork value.
+     * Get the reference of the Virtual Network resource.
      *
      * @return the targetVirtualNetwork value
      */
@@ -63,7 +63,7 @@ public class TopologyParameters {
     }
 
     /**
-     * Set the targetVirtualNetwork value.
+     * Set the reference of the Virtual Network resource.
      *
      * @param targetVirtualNetwork the targetVirtualNetwork value to set
      * @return the TopologyParameters object itself.
@@ -74,7 +74,7 @@ public class TopologyParameters {
     }
 
     /**
-     * Get the targetSubnet value.
+     * Get the reference of the Subnet resource.
      *
      * @return the targetSubnet value
      */
@@ -83,7 +83,7 @@ public class TopologyParameters {
     }
 
     /**
-     * Set the targetSubnet value.
+     * Set the reference of the Subnet resource.
      *
      * @param targetSubnet the targetSubnet value to set
      * @return the TopologyParameters object itself.

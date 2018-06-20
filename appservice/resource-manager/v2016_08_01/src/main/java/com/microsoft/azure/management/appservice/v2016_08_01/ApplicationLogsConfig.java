@@ -33,7 +33,7 @@ public class ApplicationLogsConfig {
     private AzureBlobStorageApplicationLogsConfig azureBlobStorage;
 
     /**
-     * Get the fileSystem value.
+     * Get application logs to file system configuration.
      *
      * @return the fileSystem value
      */
@@ -42,7 +42,7 @@ public class ApplicationLogsConfig {
     }
 
     /**
-     * Set the fileSystem value.
+     * Set application logs to file system configuration.
      *
      * @param fileSystem the fileSystem value to set
      * @return the ApplicationLogsConfig object itself.
@@ -53,7 +53,7 @@ public class ApplicationLogsConfig {
     }
 
     /**
-     * Get the azureTableStorage value.
+     * Get application logs to azure table storage configuration.
      *
      * @return the azureTableStorage value
      */
@@ -62,7 +62,7 @@ public class ApplicationLogsConfig {
     }
 
     /**
-     * Set the azureTableStorage value.
+     * Set application logs to azure table storage configuration.
      *
      * @param azureTableStorage the azureTableStorage value to set
      * @return the ApplicationLogsConfig object itself.
@@ -73,7 +73,7 @@ public class ApplicationLogsConfig {
     }
 
     /**
-     * Get the azureBlobStorage value.
+     * Get application logs to blob storage configuration.
      *
      * @return the azureBlobStorage value
      */
@@ -82,7 +82,7 @@ public class ApplicationLogsConfig {
     }
 
     /**
-     * Set the azureBlobStorage value.
+     * Set application logs to blob storage configuration.
      *
      * @param azureBlobStorage the azureBlobStorage value to set
      * @return the ApplicationLogsConfig object itself.

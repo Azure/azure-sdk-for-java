@@ -41,7 +41,7 @@ public class StackMajorVersion {
     private List<StackMinorVersion> minorVersions;
 
     /**
-     * Get the displayVersion value.
+     * Get application stack major version (display only).
      *
      * @return the displayVersion value
      */
@@ -50,7 +50,7 @@ public class StackMajorVersion {
     }
 
     /**
-     * Set the displayVersion value.
+     * Set application stack major version (display only).
      *
      * @param displayVersion the displayVersion value to set
      * @return the StackMajorVersion object itself.
@@ -61,7 +61,7 @@ public class StackMajorVersion {
     }
 
     /**
-     * Get the runtimeVersion value.
+     * Get application stack major version (runtime only).
      *
      * @return the runtimeVersion value
      */
@@ -70,7 +70,7 @@ public class StackMajorVersion {
     }
 
     /**
-     * Set the runtimeVersion value.
+     * Set application stack major version (runtime only).
      *
      * @param runtimeVersion the runtimeVersion value to set
      * @return the StackMajorVersion object itself.
@@ -81,7 +81,7 @@ public class StackMajorVersion {
     }
 
     /**
-     * Get the isDefault value.
+     * Get &lt;code&gt;true&lt;/code&gt; if this is the default major version; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @return the isDefault value
      */
@@ -90,7 +90,7 @@ public class StackMajorVersion {
     }
 
     /**
-     * Set the isDefault value.
+     * Set &lt;code&gt;true&lt;/code&gt; if this is the default major version; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @param isDefault the isDefault value to set
      * @return the StackMajorVersion object itself.
@@ -101,7 +101,7 @@ public class StackMajorVersion {
     }
 
     /**
-     * Get the minorVersions value.
+     * Get minor versions associated with the major version.
      *
      * @return the minorVersions value
      */
@@ -110,7 +110,7 @@ public class StackMajorVersion {
     }
 
     /**
-     * Set the minorVersions value.
+     * Set minor versions associated with the major version.
      *
      * @param minorVersions the minorVersions value to set
      * @return the StackMajorVersion object itself.

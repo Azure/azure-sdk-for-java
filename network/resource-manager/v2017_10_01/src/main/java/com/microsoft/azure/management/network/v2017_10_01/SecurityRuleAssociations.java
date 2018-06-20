@@ -81,7 +81,7 @@ public class SecurityRuleAssociations {
     }
 
     /**
-     * Get the defaultSecurityRules value.
+     * Get collection of default security rules of the network security group.
      *
      * @return the defaultSecurityRules value
      */
@@ -90,7 +90,7 @@ public class SecurityRuleAssociations {
     }
 
     /**
-     * Set the defaultSecurityRules value.
+     * Set collection of default security rules of the network security group.
      *
      * @param defaultSecurityRules the defaultSecurityRules value to set
      * @return the SecurityRuleAssociations object itself.
@@ -101,7 +101,7 @@ public class SecurityRuleAssociations {
     }
 
     /**
-     * Get the effectiveSecurityRules value.
+     * Get collection of effective security rules.
      *
      * @return the effectiveSecurityRules value
      */
@@ -110,7 +110,7 @@ public class SecurityRuleAssociations {
     }
 
     /**
-     * Set the effectiveSecurityRules value.
+     * Set collection of effective security rules.
      *
      * @param effectiveSecurityRules the effectiveSecurityRules value to set
      * @return the SecurityRuleAssociations object itself.
