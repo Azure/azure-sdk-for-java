@@ -21,7 +21,7 @@ public class Hls {
     private Integer fragmentsPerTsSegment;
 
     /**
-     * Get the fragmentsPerTsSegment value.
+     * Get the amount of fragments per HTTP Live Streaming (HLS) segment.
      *
      * @return the fragmentsPerTsSegment value
      */
@@ -30,7 +30,7 @@ public class Hls {
     }
 
     /**
-     * Set the fragmentsPerTsSegment value.
+     * Set the amount of fragments per HTTP Live Streaming (HLS) segment.
      *
      * @param fragmentsPerTsSegment the fragmentsPerTsSegment value to set
      * @return the Hls object itself.

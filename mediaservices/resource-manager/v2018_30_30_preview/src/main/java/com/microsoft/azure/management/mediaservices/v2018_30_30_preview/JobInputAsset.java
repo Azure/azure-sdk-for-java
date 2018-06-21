@@ -25,7 +25,7 @@ public class JobInputAsset extends JobInputClip {
     private String assetName;
 
     /**
-     * Get the assetName value.
+     * Get the name of the input Asset.
      *
      * @return the assetName value
      */
@@ -34,7 +34,7 @@ public class JobInputAsset extends JobInputClip {
     }
 
     /**
-     * Set the assetName value.
+     * Set the name of the input Asset.
      *
      * @param assetName the assetName value to set
      * @return the JobInputAsset object itself.

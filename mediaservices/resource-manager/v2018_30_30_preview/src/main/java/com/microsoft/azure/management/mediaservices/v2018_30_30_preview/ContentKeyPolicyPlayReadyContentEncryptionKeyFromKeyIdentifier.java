@@ -27,7 +27,7 @@ public class ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier exte
     private UUID keyId;
 
     /**
-     * Get the keyId value.
+     * Get the content key ID.
      *
      * @return the keyId value
      */
@@ -36,7 +36,7 @@ public class ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier exte
     }
 
     /**
-     * Set the keyId value.
+     * Set the content key ID.
      *
      * @param keyId the keyId value to set
      * @return the ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier object itself.

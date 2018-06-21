@@ -42,7 +42,7 @@ public class Video extends Codec {
     private StretchMode stretchMode;
 
     /**
-     * Get the keyFrameInterval value.
+     * Get the distance between two key frames, thereby defining a group of pictures (GOP). The value should be a non-zero integer in the range [1, 30] seconds, specified in ISO 8601 format. The default is 2 seconds (PT2S).
      *
      * @return the keyFrameInterval value
      */
@@ -51,7 +51,7 @@ public class Video extends Codec {
     }
 
     /**
-     * Set the keyFrameInterval value.
+     * Set the distance between two key frames, thereby defining a group of pictures (GOP). The value should be a non-zero integer in the range [1, 30] seconds, specified in ISO 8601 format. The default is 2 seconds (PT2S).
      *
      * @param keyFrameInterval the keyFrameInterval value to set
      * @return the Video object itself.
@@ -62,7 +62,7 @@ public class Video extends Codec {
     }
 
     /**
-     * Get the stretchMode value.
+     * Get the resizing mode - how the input video will be resized to fit the desired output resolution(s). Default is AutoSize. Possible values include: 'None', 'AutoSize', 'AutoFit'.
      *
      * @return the stretchMode value
      */
@@ -71,7 +71,7 @@ public class Video extends Codec {
     }
 
     /**
-     * Set the stretchMode value.
+     * Set the resizing mode - how the input video will be resized to fit the desired output resolution(s). Default is AutoSize. Possible values include: 'None', 'AutoSize', 'AutoFit'.
      *
      * @param stretchMode the stretchMode value to set
      * @return the Video object itself.

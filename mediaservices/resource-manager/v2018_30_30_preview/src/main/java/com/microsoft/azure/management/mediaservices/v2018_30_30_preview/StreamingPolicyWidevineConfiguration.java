@@ -22,7 +22,7 @@ public class StreamingPolicyWidevineConfiguration {
     private String customLicenseAcquisitionUrlTemplate;
 
     /**
-     * Get the customLicenseAcquisitionUrlTemplate value.
+     * Get the template for a customer service to deliver keys to end users.  Not needed when using Azure Media Services for issuing keys.
      *
      * @return the customLicenseAcquisitionUrlTemplate value
      */
@@ -31,7 +31,7 @@ public class StreamingPolicyWidevineConfiguration {
     }
 
     /**
-     * Set the customLicenseAcquisitionUrlTemplate value.
+     * Set the template for a customer service to deliver keys to end users.  Not needed when using Azure Media Services for issuing keys.
      *
      * @param customLicenseAcquisitionUrlTemplate the customLicenseAcquisitionUrlTemplate value to set
      * @return the StreamingPolicyWidevineConfiguration object itself.

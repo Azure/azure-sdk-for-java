@@ -25,7 +25,7 @@ public class JobOutputAsset extends JobOutput {
     private String assetName;
 
     /**
-     * Get the assetName value.
+     * Get the name of the output Asset.
      *
      * @return the assetName value
      */
@@ -34,7 +34,7 @@ public class JobOutputAsset extends JobOutput {
     }
 
     /**
-     * Set the assetName value.
+     * Set the name of the output Asset.
      *
      * @param assetName the assetName value to set
      * @return the JobOutputAsset object itself.

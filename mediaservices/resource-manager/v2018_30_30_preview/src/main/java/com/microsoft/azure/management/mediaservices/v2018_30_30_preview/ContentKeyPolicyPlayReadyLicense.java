@@ -79,7 +79,7 @@ public class ContentKeyPolicyPlayReadyLicense {
     private ContentKeyPolicyPlayReadyContentType contentType;
 
     /**
-     * Get the allowTestDevices value.
+     * Get a flag indicating whether test devices can use the license.
      *
      * @return the allowTestDevices value
      */
@@ -88,7 +88,7 @@ public class ContentKeyPolicyPlayReadyLicense {
     }
 
     /**
-     * Set the allowTestDevices value.
+     * Set a flag indicating whether test devices can use the license.
      *
      * @param allowTestDevices the allowTestDevices value to set
      * @return the ContentKeyPolicyPlayReadyLicense object itself.
@@ -99,7 +99,7 @@ public class ContentKeyPolicyPlayReadyLicense {
     }
 
     /**
-     * Get the beginDate value.
+     * Get the begin date of license.
      *
      * @return the beginDate value
      */
@@ -108,7 +108,7 @@ public class ContentKeyPolicyPlayReadyLicense {
     }
 
     /**
-     * Set the beginDate value.
+     * Set the begin date of license.
      *
      * @param beginDate the beginDate value to set
      * @return the ContentKeyPolicyPlayReadyLicense object itself.
@@ -119,7 +119,7 @@ public class ContentKeyPolicyPlayReadyLicense {
     }
 
     /**
-     * Get the expirationDate value.
+     * Get the expiration date of license.
      *
      * @return the expirationDate value
      */
@@ -128,7 +128,7 @@ public class ContentKeyPolicyPlayReadyLicense {
     }
 
     /**
-     * Set the expirationDate value.
+     * Set the expiration date of license.
      *
      * @param expirationDate the expirationDate value to set
      * @return the ContentKeyPolicyPlayReadyLicense object itself.
@@ -139,7 +139,7 @@ public class ContentKeyPolicyPlayReadyLicense {
     }
 
     /**
-     * Get the relativeBeginDate value.
+     * Get the relative begin date of license.
      *
      * @return the relativeBeginDate value
      */
@@ -148,7 +148,7 @@ public class ContentKeyPolicyPlayReadyLicense {
     }
 
     /**
-     * Set the relativeBeginDate value.
+     * Set the relative begin date of license.
      *
      * @param relativeBeginDate the relativeBeginDate value to set
      * @return the ContentKeyPolicyPlayReadyLicense object itself.
@@ -159,7 +159,7 @@ public class ContentKeyPolicyPlayReadyLicense {
     }
 
     /**
-     * Get the relativeExpirationDate value.
+     * Get the relative expiration date of license.
      *
      * @return the relativeExpirationDate value
      */
@@ -168,7 +168,7 @@ public class ContentKeyPolicyPlayReadyLicense {
     }
 
     /**
-     * Set the relativeExpirationDate value.
+     * Set the relative expiration date of license.
      *
      * @param relativeExpirationDate the relativeExpirationDate value to set
      * @return the ContentKeyPolicyPlayReadyLicense object itself.
@@ -179,7 +179,7 @@ public class ContentKeyPolicyPlayReadyLicense {
     }
 
     /**
-     * Get the gracePeriod value.
+     * Get the grace period of license.
      *
      * @return the gracePeriod value
      */
@@ -188,7 +188,7 @@ public class ContentKeyPolicyPlayReadyLicense {
     }
 
     /**
-     * Set the gracePeriod value.
+     * Set the grace period of license.
      *
      * @param gracePeriod the gracePeriod value to set
      * @return the ContentKeyPolicyPlayReadyLicense object itself.
@@ -199,7 +199,7 @@ public class ContentKeyPolicyPlayReadyLicense {
     }
 
     /**
-     * Get the playRight value.
+     * Get the license PlayRight.
      *
      * @return the playRight value
      */
@@ -208,7 +208,7 @@ public class ContentKeyPolicyPlayReadyLicense {
     }
 
     /**
-     * Set the playRight value.
+     * Set the license PlayRight.
      *
      * @param playRight the playRight value to set
      * @return the ContentKeyPolicyPlayReadyLicense object itself.
@@ -219,7 +219,7 @@ public class ContentKeyPolicyPlayReadyLicense {
     }
 
     /**
-     * Get the licenseType value.
+     * Get the license type. Possible values include: 'Unknown', 'NonPersistent', 'Persistent'.
      *
      * @return the licenseType value
      */
@@ -228,7 +228,7 @@ public class ContentKeyPolicyPlayReadyLicense {
     }
 
     /**
-     * Set the licenseType value.
+     * Set the license type. Possible values include: 'Unknown', 'NonPersistent', 'Persistent'.
      *
      * @param licenseType the licenseType value to set
      * @return the ContentKeyPolicyPlayReadyLicense object itself.
@@ -239,7 +239,7 @@ public class ContentKeyPolicyPlayReadyLicense {
     }
 
     /**
-     * Get the contentKeyLocation value.
+     * Get the content key location.
      *
      * @return the contentKeyLocation value
      */
@@ -248,7 +248,7 @@ public class ContentKeyPolicyPlayReadyLicense {
     }
 
     /**
-     * Set the contentKeyLocation value.
+     * Set the content key location.
      *
      * @param contentKeyLocation the contentKeyLocation value to set
      * @return the ContentKeyPolicyPlayReadyLicense object itself.
@@ -259,7 +259,7 @@ public class ContentKeyPolicyPlayReadyLicense {
     }
 
     /**
-     * Get the contentType value.
+     * Get the PlayReady content type. Possible values include: 'Unknown', 'Unspecified', 'UltraVioletDownload', 'UltraVioletStreaming'.
      *
      * @return the contentType value
      */
@@ -268,7 +268,7 @@ public class ContentKeyPolicyPlayReadyLicense {
     }
 
     /**
-     * Set the contentType value.
+     * Set the PlayReady content type. Possible values include: 'Unknown', 'Unspecified', 'UltraVioletDownload', 'UltraVioletStreaming'.
      *
      * @param contentType the contentType value to set
      * @return the ContentKeyPolicyPlayReadyLicense object itself.

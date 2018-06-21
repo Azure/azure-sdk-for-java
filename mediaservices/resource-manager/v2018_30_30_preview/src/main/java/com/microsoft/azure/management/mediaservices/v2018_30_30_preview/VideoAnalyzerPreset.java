@@ -26,7 +26,7 @@ public class VideoAnalyzerPreset extends AudioAnalyzerPreset {
     private Boolean audioInsightsOnly;
 
     /**
-     * Get the audioInsightsOnly value.
+     * Get whether to only extract audio insights when processing a video file.
      *
      * @return the audioInsightsOnly value
      */
@@ -35,7 +35,7 @@ public class VideoAnalyzerPreset extends AudioAnalyzerPreset {
     }
 
     /**
-     * Set the audioInsightsOnly value.
+     * Set whether to only extract audio insights when processing a video file.
      *
      * @param audioInsightsOnly the audioInsightsOnly value to set
      * @return the VideoAnalyzerPreset object itself.

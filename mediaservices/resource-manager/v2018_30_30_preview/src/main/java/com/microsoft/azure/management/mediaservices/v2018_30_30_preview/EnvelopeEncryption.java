@@ -42,7 +42,7 @@ public class EnvelopeEncryption {
     private String customLicenseAcquisitionUrlTemplate;
 
     /**
-     * Get the enabledProtocols value.
+     * Get representing supported protocols.
      *
      * @return the enabledProtocols value
      */
@@ -51,7 +51,7 @@ public class EnvelopeEncryption {
     }
 
     /**
-     * Set the enabledProtocols value.
+     * Set representing supported protocols.
      *
      * @param enabledProtocols the enabledProtocols value to set
      * @return the EnvelopeEncryption object itself.
@@ -62,7 +62,7 @@ public class EnvelopeEncryption {
     }
 
     /**
-     * Get the clearTracks value.
+     * Get representing which tracks should not be encrypted.
      *
      * @return the clearTracks value
      */
@@ -71,7 +71,7 @@ public class EnvelopeEncryption {
     }
 
     /**
-     * Set the clearTracks value.
+     * Set representing which tracks should not be encrypted.
      *
      * @param clearTracks the clearTracks value to set
      * @return the EnvelopeEncryption object itself.
@@ -82,7 +82,7 @@ public class EnvelopeEncryption {
     }
 
     /**
-     * Get the contentKeys value.
+     * Get representing default content key for each encryption scheme and separate content keys for specific tracks.
      *
      * @return the contentKeys value
      */
@@ -91,7 +91,7 @@ public class EnvelopeEncryption {
     }
 
     /**
-     * Set the contentKeys value.
+     * Set representing default content key for each encryption scheme and separate content keys for specific tracks.
      *
      * @param contentKeys the contentKeys value to set
      * @return the EnvelopeEncryption object itself.
@@ -102,7 +102,7 @@ public class EnvelopeEncryption {
     }
 
     /**
-     * Get the customLicenseAcquisitionUrlTemplate value.
+     * Get licenseAcquistionUrlTemplate is used to point to user speicified service to delivery content keys.
      *
      * @return the customLicenseAcquisitionUrlTemplate value
      */
@@ -111,7 +111,7 @@ public class EnvelopeEncryption {
     }
 
     /**
-     * Set the customLicenseAcquisitionUrlTemplate value.
+     * Set licenseAcquistionUrlTemplate is used to point to user speicified service to delivery content keys.
      *
      * @param customLicenseAcquisitionUrlTemplate the customLicenseAcquisitionUrlTemplate value to set
      * @return the EnvelopeEncryption object itself.

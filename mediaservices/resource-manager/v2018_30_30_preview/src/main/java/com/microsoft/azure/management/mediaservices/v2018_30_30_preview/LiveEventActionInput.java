@@ -21,7 +21,7 @@ public class LiveEventActionInput {
     private Boolean removeOutputsOnStop;
 
     /**
-     * Get the removeOutputsOnStop value.
+     * Get the flag indicates if remove LiveOutputs on Stop.
      *
      * @return the removeOutputsOnStop value
      */
@@ -30,7 +30,7 @@ public class LiveEventActionInput {
     }
 
     /**
-     * Set the removeOutputsOnStop value.
+     * Set the flag indicates if remove LiveOutputs on Stop.
      *
      * @param removeOutputsOnStop the removeOutputsOnStop value to set
      * @return the LiveEventActionInput object itself.

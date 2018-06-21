@@ -32,7 +32,7 @@ public class StorageAccount {
     private boolean isPrimary;
 
     /**
-     * Get the id value.
+     * Get the id of the storage account resource. Media Services relies on tables and queues as well as blobs, so the primary storage account must be a Standard Storage account (either Microsoft.ClassicStorage or Microsoft.Storage). Blob only storage accounts can be added as secondary storage accounts (isPrimary false).
      *
      * @return the id value
      */
@@ -41,7 +41,7 @@ public class StorageAccount {
     }
 
     /**
-     * Set the id value.
+     * Set the id of the storage account resource. Media Services relies on tables and queues as well as blobs, so the primary storage account must be a Standard Storage account (either Microsoft.ClassicStorage or Microsoft.Storage). Blob only storage accounts can be added as secondary storage accounts (isPrimary false).
      *
      * @param id the id value to set
      * @return the StorageAccount object itself.
@@ -52,7 +52,7 @@ public class StorageAccount {
     }
 
     /**
-     * Get the isPrimary value.
+     * Get is this storage account resource the primary storage account for the Media Service resource. Blob only storage must set this to false.
      *
      * @return the isPrimary value
      */
@@ -61,7 +61,7 @@ public class StorageAccount {
     }
 
     /**
-     * Set the isPrimary value.
+     * Set is this storage account resource the primary storage account for the Media Service resource. Blob only storage must set this to false.
      *
      * @param isPrimary the isPrimary value to set
      * @return the StorageAccount object itself.

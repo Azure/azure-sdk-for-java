@@ -31,7 +31,7 @@ public class JobInputClip extends JobInput {
     private List<String> files;
 
     /**
-     * Get the files value.
+     * Get list of files. Required for JobInputHttp.
      *
      * @return the files value
      */
@@ -40,7 +40,7 @@ public class JobInputClip extends JobInput {
     }
 
     /**
-     * Set the files value.
+     * Set list of files. Required for JobInputHttp.
      *
      * @param files the files value to set
      * @return the JobInputClip object itself.

@@ -45,7 +45,7 @@ public class Filters {
     private List<Overlay> overlays;
 
     /**
-     * Get the deinterlace value.
+     * Get the de-interlacing settings.
      *
      * @return the deinterlace value
      */
@@ -54,7 +54,7 @@ public class Filters {
     }
 
     /**
-     * Set the deinterlace value.
+     * Set the de-interlacing settings.
      *
      * @param deinterlace the deinterlace value to set
      * @return the Filters object itself.
@@ -65,7 +65,7 @@ public class Filters {
     }
 
     /**
-     * Get the rotation value.
+     * Get the rotation, if any, to be applied to the input video, before it is encoded. Default is Auto. Possible values include: 'Auto', 'None', 'Rotate0', 'Rotate90', 'Rotate180', 'Rotate270'.
      *
      * @return the rotation value
      */
@@ -74,7 +74,7 @@ public class Filters {
     }
 
     /**
-     * Set the rotation value.
+     * Set the rotation, if any, to be applied to the input video, before it is encoded. Default is Auto. Possible values include: 'Auto', 'None', 'Rotate0', 'Rotate90', 'Rotate180', 'Rotate270'.
      *
      * @param rotation the rotation value to set
      * @return the Filters object itself.
@@ -85,7 +85,7 @@ public class Filters {
     }
 
     /**
-     * Get the crop value.
+     * Get the parameters for the rectangular window with which to crop the input video.
      *
      * @return the crop value
      */
@@ -94,7 +94,7 @@ public class Filters {
     }
 
     /**
-     * Set the crop value.
+     * Set the parameters for the rectangular window with which to crop the input video.
      *
      * @param crop the crop value to set
      * @return the Filters object itself.
@@ -105,7 +105,7 @@ public class Filters {
     }
 
     /**
-     * Get the overlays value.
+     * Get the properties of overlays to be applied to the input video. These could be audio, image or video overlays.
      *
      * @return the overlays value
      */
@@ -114,7 +114,7 @@ public class Filters {
     }
 
     /**
-     * Set the overlays value.
+     * Set the properties of overlays to be applied to the input video. These could be audio, image or video overlays.
      *
      * @param overlays the overlays value to set
      * @return the Filters object itself.

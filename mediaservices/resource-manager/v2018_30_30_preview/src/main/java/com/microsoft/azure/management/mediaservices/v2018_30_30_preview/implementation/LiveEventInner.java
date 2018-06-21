@@ -95,7 +95,7 @@ public class LiveEventInner extends Resource {
     private DateTime lastModified;
 
     /**
-     * Get the description value.
+     * Get the Live Event description.
      *
      * @return the description value
      */
@@ -104,7 +104,7 @@ public class LiveEventInner extends Resource {
     }
 
     /**
-     * Set the description value.
+     * Set the Live Event description.
      *
      * @param description the description value to set
      * @return the LiveEventInner object itself.
@@ -115,7 +115,7 @@ public class LiveEventInner extends Resource {
     }
 
     /**
-     * Get the input value.
+     * Get the Live Event input.
      *
      * @return the input value
      */
@@ -124,7 +124,7 @@ public class LiveEventInner extends Resource {
     }
 
     /**
-     * Set the input value.
+     * Set the Live Event input.
      *
      * @param input the input value to set
      * @return the LiveEventInner object itself.
@@ -135,7 +135,7 @@ public class LiveEventInner extends Resource {
     }
 
     /**
-     * Get the preview value.
+     * Get the Live Event preview.
      *
      * @return the preview value
      */
@@ -144,7 +144,7 @@ public class LiveEventInner extends Resource {
     }
 
     /**
-     * Set the preview value.
+     * Set the Live Event preview.
      *
      * @param preview the preview value to set
      * @return the LiveEventInner object itself.
@@ -155,7 +155,7 @@ public class LiveEventInner extends Resource {
     }
 
     /**
-     * Get the encoding value.
+     * Get the Live Event encoding.
      *
      * @return the encoding value
      */
@@ -164,7 +164,7 @@ public class LiveEventInner extends Resource {
     }
 
     /**
-     * Set the encoding value.
+     * Set the Live Event encoding.
      *
      * @param encoding the encoding value to set
      * @return the LiveEventInner object itself.
@@ -175,7 +175,7 @@ public class LiveEventInner extends Resource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get the provisioning state of the Live Event.
      *
      * @return the provisioningState value
      */
@@ -184,7 +184,7 @@ public class LiveEventInner extends Resource {
     }
 
     /**
-     * Get the resourceState value.
+     * Get the resource state of the Live Event. Possible values include: 'Stopped', 'Starting', 'Running', 'Stopping', 'Deleting'.
      *
      * @return the resourceState value
      */
@@ -193,7 +193,7 @@ public class LiveEventInner extends Resource {
     }
 
     /**
-     * Get the crossSiteAccessPolicies value.
+     * Get the Live Event access policies.
      *
      * @return the crossSiteAccessPolicies value
      */
@@ -202,7 +202,7 @@ public class LiveEventInner extends Resource {
     }
 
     /**
-     * Set the crossSiteAccessPolicies value.
+     * Set the Live Event access policies.
      *
      * @param crossSiteAccessPolicies the crossSiteAccessPolicies value to set
      * @return the LiveEventInner object itself.
@@ -213,7 +213,7 @@ public class LiveEventInner extends Resource {
     }
 
     /**
-     * Get the vanityUrl value.
+     * Get the Live Event vanity URL flag.
      *
      * @return the vanityUrl value
      */
@@ -222,7 +222,7 @@ public class LiveEventInner extends Resource {
     }
 
     /**
-     * Set the vanityUrl value.
+     * Set the Live Event vanity URL flag.
      *
      * @param vanityUrl the vanityUrl value to set
      * @return the LiveEventInner object itself.
@@ -233,7 +233,7 @@ public class LiveEventInner extends Resource {
     }
 
     /**
-     * Get the streamOptions value.
+     * Get the stream options.
      *
      * @return the streamOptions value
      */
@@ -242,7 +242,7 @@ public class LiveEventInner extends Resource {
     }
 
     /**
-     * Set the streamOptions value.
+     * Set the stream options.
      *
      * @param streamOptions the streamOptions value to set
      * @return the LiveEventInner object itself.
@@ -253,7 +253,7 @@ public class LiveEventInner extends Resource {
     }
 
     /**
-     * Get the created value.
+     * Get the exact time the Live Event was created.
      *
      * @return the created value
      */
@@ -262,7 +262,7 @@ public class LiveEventInner extends Resource {
     }
 
     /**
-     * Get the lastModified value.
+     * Get the exact time the Live Event was last modified.
      *
      * @return the lastModified value
      */

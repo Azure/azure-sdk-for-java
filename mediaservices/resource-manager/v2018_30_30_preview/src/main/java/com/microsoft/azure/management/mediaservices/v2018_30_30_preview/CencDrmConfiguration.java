@@ -28,7 +28,7 @@ public class CencDrmConfiguration {
     private StreamingPolicyWidevineConfiguration widevine;
 
     /**
-     * Get the playReady value.
+     * Get playReady configurations.
      *
      * @return the playReady value
      */
@@ -37,7 +37,7 @@ public class CencDrmConfiguration {
     }
 
     /**
-     * Set the playReady value.
+     * Set playReady configurations.
      *
      * @param playReady the playReady value to set
      * @return the CencDrmConfiguration object itself.
@@ -48,7 +48,7 @@ public class CencDrmConfiguration {
     }
 
     /**
-     * Get the widevine value.
+     * Get widevine configurations.
      *
      * @return the widevine value
      */
@@ -57,7 +57,7 @@ public class CencDrmConfiguration {
     }
 
     /**
-     * Set the widevine value.
+     * Set widevine configurations.
      *
      * @param widevine the widevine value to set
      * @return the CencDrmConfiguration object itself.

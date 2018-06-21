@@ -23,7 +23,7 @@ public class ListContentKeysResponseInner {
     private List<StreamingLocatorContentKey> contentKeys;
 
     /**
-     * Get the contentKeys value.
+     * Get contentKeys used by current Streaming Locator.
      *
      * @return the contentKeys value
      */
@@ -32,7 +32,7 @@ public class ListContentKeysResponseInner {
     }
 
     /**
-     * Set the contentKeys value.
+     * Set contentKeys used by current Streaming Locator.
      *
      * @param contentKeys the contentKeys value to set
      * @return the ListContentKeysResponseInner object itself.
