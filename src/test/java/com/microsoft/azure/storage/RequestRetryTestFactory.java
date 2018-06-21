@@ -20,6 +20,8 @@ import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.http.UrlBuilder;
 import com.microsoft.rest.v2.policy.RequestPolicy;
+import com.microsoft.rest.v2.policy.RequestPolicyFactory;
+import com.microsoft.rest.v2.policy.RequestPolicyOptions;
 import com.microsoft.rest.v2.util.FlowableUtil;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
@@ -28,7 +30,7 @@ import java.net.MalformedURLException;
 import java.nio.ByteBuffer;
 import java.util.concurrent.TimeoutException;
 
-public class RequestRetryTestFactory {
+public class RequestRetryTestFactory implements RequestPolicyFactory{
     public static final int  RETRY_TEST_SCENARIO_RETRY_UNTIL_SUCCESS = 1;
 
     public static final int  RETRY_TEST_SCENARIO_RETRY_UNTIL_OPERATION_CANCEL = 2;
@@ -40,6 +42,8 @@ public class RequestRetryTestFactory {
     // Scenario non retryable
 
     // Scenario timeout the whole operation
+
+    // Scenario for retry delay and maxRetry delay
 
     // 400 against secondary should not retry
 
@@ -53,7 +57,7 @@ public class RequestRetryTestFactory {
 
     private static final String RETRY_TEST_QUERY_PARAM = "TestQueryParam";
 
-    private static final ByteBuffer RETRY_TEST_DEFAULT_DATA = ByteBuffer.wrap("Default data".getBytes());
+    public static final ByteBuffer RETRY_TEST_DEFAULT_DATA = ByteBuffer.wrap("Default data".getBytes());
 
     private int retryTestScenario;
 
@@ -61,9 +65,22 @@ public class RequestRetryTestFactory {
 
     private int tryNumber;
 
+    public RequestRetryTestFactory(int scenario, int maxRetries) {
+        this.retryTestScenario = scenario;
+        this.maxRetries = maxRetries;
+    }
+
+    @Override
+    public RequestPolicy create(RequestPolicy next, RequestPolicyOptions options) {
+        return new RetryTestPolicy(this);
+    }
+
     private final class RetryTestPolicy implements RequestPolicy{
-        private RequestPolicy nextPolicy;
         private RequestRetryTestFactory factory;
+
+        public RetryTestPolicy(RequestRetryTestFactory parent) {
+            this.factory = parent;
+        }
 
         @Override
         public Single<HttpResponse> sendAsync(HttpRequest request) {
@@ -84,7 +101,7 @@ public class RequestRetryTestFactory {
                     expectedHost = RETRY_TEST_SECONDARY_HOST;
                 }
             }
-            if (!request.url().getPath().equals(expectedHost)) {
+            if (!request.url().getHost().equals(expectedHost)) {
                 throw new IllegalArgumentException("The host does not match the expected host");
             }
 
@@ -92,10 +109,20 @@ public class RequestRetryTestFactory {
              This policy will add test headers and query parameters. Ensure they are removed/reset for each retry.
              The retry policy should be starting with a fresh copy of the request for every try.
              */
-            if (request.headers().value(RETRY_TEST_HEADER) != null ||
-                    request.url().getQuery().contains(RETRY_TEST_QUERY_PARAM) ||
-                    FlowableUtil.collectBytesInBuffer(request.body()).blockingGet() != RETRY_TEST_DEFAULT_DATA) {
+            /*if (request.headers().value(RETRY_TEST_HEADER) != null ||
+                    (request.url().getQuery() != null && request.url().getQuery().contains(RETRY_TEST_QUERY_PARAM)) ||
+                    FlowableUtil.collectBytesInBuffer(request.body()).blockingGet()
+                            .compareTo(RETRY_TEST_DEFAULT_DATA) != 0) {
                 throw new IllegalArgumentException("The request was not reset from the previous retry");
+            }*/
+            if (request.headers().value(RETRY_TEST_HEADER) != null) {
+                throw new IllegalArgumentException("Headers not reset");
+            }
+            if ((request.url().getQuery() != null && request.url().getQuery().contains(RETRY_TEST_QUERY_PARAM))) {
+                throw new IllegalArgumentException ("Query params");
+            }
+            if (FlowableUtil.collectBytesInBuffer(request.body()).blockingGet().compareTo(RETRY_TEST_DEFAULT_DATA) != 0) {
+                throw new IllegalArgumentException(("body"));
             }
 
             /*
@@ -106,7 +133,7 @@ public class RequestRetryTestFactory {
             UrlBuilder builder = UrlBuilder.parse(request.url());
             builder.setQueryParameter(RETRY_TEST_QUERY_PARAM, "testquery");
             try {
-                request = request.withUrl(builder.toURL());
+                request.withUrl(builder.toURL());
             } catch (MalformedURLException e) {
                 throw new IllegalArgumentException("The URL has been mangled");
             }
@@ -141,17 +168,12 @@ public class RequestRetryTestFactory {
                         default:
                             throw new IllegalArgumentException("Continued trying after success");
                     }
-                    break;
-                case RETRY_TEST_SCENARIO_RETRY_UNTIL_OPERATION_CANCEL:
-
-                    break;
                 case RETRY_TEST_SCENARIO_RETRY_UNTIL_MAX_RETRIES:
-
-                    break;
+                    return Single.just(new RetryTestResponse(500)); // Keep retrying until max retries hit.
             }
+            return Single.error(new IllegalArgumentException("Invalid scenario"));
         }
     }
-
 
     // The retry factory only really cares about the status code.
     private final class RetryTestResponse extends HttpResponse {
@@ -192,6 +214,4 @@ public class RequestRetryTestFactory {
             return null;
         }
     }
-
-
 }

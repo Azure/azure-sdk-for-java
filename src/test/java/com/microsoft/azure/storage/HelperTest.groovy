@@ -20,11 +20,21 @@ import com.microsoft.azure.storage.blob.BlockBlobURL
 import com.microsoft.azure.storage.blob.ContainerURL
 import com.microsoft.azure.storage.blob.Metadata
 import com.microsoft.azure.storage.blob.PipelineOptions
+import com.microsoft.azure.storage.blob.RequestRetryFactory
+import com.microsoft.azure.storage.blob.RequestRetryOptions
+import com.microsoft.azure.storage.blob.RetryPolicyType
 import com.microsoft.azure.storage.blob.ServiceSASSignatureValues
 import com.microsoft.azure.storage.blob.StorageException
 import com.microsoft.azure.storage.blob.StorageURL
 import com.microsoft.azure.storage.blob.models.SignedIdentifier
 import com.microsoft.azure.storage.blob.models.StorageErrorCode
+import com.microsoft.rest.v2.http.HttpHeaders
+import com.microsoft.rest.v2.http.HttpMethod
+import com.microsoft.rest.v2.http.HttpPipeline
+import com.microsoft.rest.v2.http.HttpRequest
+import com.microsoft.rest.v2.http.HttpResponse
+import com.microsoft.rest.v2.policy.RequestPolicyFactory
+import io.reactivex.Flowable
 
 import java.time.OffsetDateTime
 
@@ -41,5 +51,4 @@ class HelperTest extends APISpec {
         e.message().contains("Value for one of the query parameters specified in the request URI is invalid.")
         e.getMessage().contains("<?xml") // Ensure that the details in the payload are printable
     }
-
 }

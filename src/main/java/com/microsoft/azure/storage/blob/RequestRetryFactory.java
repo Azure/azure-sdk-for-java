@@ -18,11 +18,14 @@ import com.microsoft.rest.v2.http.*;
 import com.microsoft.rest.v2.policy.RequestPolicy;
 import com.microsoft.rest.v2.policy.RequestPolicyFactory;
 import com.microsoft.rest.v2.policy.RequestPolicyOptions;
+import com.microsoft.rest.v2.util.FlowableUtil;
 import io.reactivex.Completable;
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.ByteBuffer;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -122,9 +125,19 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
                 logf("Secondary try=%d, Delay=%d\n", attempt-primaryTry, delayMs);
             }
 
-            // Clone the original request to ensure that each try starts with the original (unmutated) request.
-            // buffer() will also reset to the beginning of the stream.
-            final HttpRequest requestCopy = httpRequest.buffer();
+            /*
+             Clone the original request to ensure that each try starts with the original (unmutated) request. We cannot
+             simply call httpRequest.buffer() because although the body will start emitting from the beginning of the
+             stream, the buffers that were emitted will have already been consumed (their position set to their limit),
+             so it is not a true reset. By adding the map function, we ensure that anything which consumes the
+             ByteBuffers downstream will only actually consume a duplicate so the orignal is preserved. This only
+             duplicates the ByteBuffer object, not the underlying data.
+             */
+            HttpHeaders bufferedHeaders = new HttpHeaders(httpRequest.headers());
+            Flowable<ByteBuffer> bufferedBody = httpRequest.body() == null ?
+                    null : httpRequest.body().map(ByteBuffer::duplicate);
+            final HttpRequest requestCopy = new HttpRequest(httpRequest.callerMethod(),httpRequest.httpMethod(),
+                    httpRequest.url(), bufferedHeaders, bufferedBody, httpRequest.responseDecoder());
             if(!tryingPrimary) {
                 UrlBuilder builder = UrlBuilder.parse(requestCopy.url());
                 builder.withHost(this.requestRetryOptions.getSecondaryHost());
