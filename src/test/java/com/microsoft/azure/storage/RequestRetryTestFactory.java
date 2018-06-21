@@ -15,6 +15,7 @@
 
 package com.microsoft.azure.storage;
 
+import com.microsoft.azure.storage.blob.models.StorageErrorException;
 import com.microsoft.rest.v2.http.HttpHeaders;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
@@ -33,9 +34,7 @@ import java.util.concurrent.TimeoutException;
 public class RequestRetryTestFactory implements RequestPolicyFactory{
     public static final int  RETRY_TEST_SCENARIO_RETRY_UNTIL_SUCCESS = 1;
 
-    public static final int  RETRY_TEST_SCENARIO_RETRY_UNTIL_OPERATION_CANCEL = 2;
-
-    public static final int RETRY_TEST_SCENARIO_RETRY_UNTIL_MAX_RETRIES = 3;
+    public static final int RETRY_TEST_SCENARIO_RETRY_UNTIL_MAX_RETRIES = 2;
 
     // Scenario to actually validate the waiting time and other parameters
 
@@ -49,9 +48,9 @@ public class RequestRetryTestFactory implements RequestPolicyFactory{
 
     // return an IOException to represent a network error
 
-    private static final String RETRY_TEST_PRIMARY_HOST = "PrimaryDC";
+    public static final String RETRY_TEST_PRIMARY_HOST = "PrimaryDC";
 
-    private static final String RETRY_TEST_SECONDARY_HOST = "SecondaryDC";
+    public static final String RETRY_TEST_SECONDARY_HOST = "SecondaryDC";
 
     private static final String RETRY_TEST_HEADER = "TestHeader";
 
@@ -68,6 +67,10 @@ public class RequestRetryTestFactory implements RequestPolicyFactory{
     public RequestRetryTestFactory(int scenario, int maxRetries) {
         this.retryTestScenario = scenario;
         this.maxRetries = maxRetries;
+    }
+
+    public int getTryNumber() {
+        return this.tryNumber;
     }
 
     @Override
@@ -116,13 +119,13 @@ public class RequestRetryTestFactory implements RequestPolicyFactory{
                 throw new IllegalArgumentException("The request was not reset from the previous retry");
             }*/
             if (request.headers().value(RETRY_TEST_HEADER) != null) {
-                throw new IllegalArgumentException("Headers not reset");
+                throw new IllegalArgumentException("Headers not reset.");
             }
             if ((request.url().getQuery() != null && request.url().getQuery().contains(RETRY_TEST_QUERY_PARAM))) {
-                throw new IllegalArgumentException ("Query params");
+                throw new IllegalArgumentException ("Query params not reset.");
             }
             if (FlowableUtil.collectBytesInBuffer(request.body()).blockingGet().compareTo(RETRY_TEST_DEFAULT_DATA) != 0) {
-                throw new IllegalArgumentException(("body"));
+                throw new IllegalArgumentException(("Body not reset."));
             }
 
             /*
@@ -150,26 +153,35 @@ public class RequestRetryTestFactory implements RequestPolicyFactory{
                              */
                             return Single.error(new TimeoutException());
                         case 2:
-                            return Single.just(new RetryTestResponse(500));
+                            /*
+                            We wrap it in a StorageErrorException to mock the HttpClient. Any responses that the
+                            HttpClient receives that is not an expected response is wrapped in a StorageErrorException.
+                             */
+                            return Single.error(new StorageErrorException("Temporary",
+                                    new RetryTestResponse(500)));
                         case 3:
-                            return Single.just(new RetryTestResponse(503));
+                            return Single.error(new StorageErrorException("Timeout",
+                                    new RetryTestResponse(503)));
                         case 4:
                             /*
                             By returning 404 when we should be testing against the secondary, we exercise the logic
                             that should prevent further tries to secondary when the secondary evidently doesn't have the
                             data.
                              */
-                            return Single.just(new RetryTestResponse(404));
+                            return Single.error(new StorageErrorException("Not found",
+                                    new RetryTestResponse(404)));
                         case 5:
                             // Just to get to a sixth try where we ensure we should not be trying the secondary again.
-                            return Single.just(new RetryTestResponse(500));
+                            return Single.error(new StorageErrorException("Temporary",
+                                    new RetryTestResponse(500)));
                         case 6:
                             return Single.just(new RetryTestResponse(200));
                         default:
                             throw new IllegalArgumentException("Continued trying after success");
                     }
                 case RETRY_TEST_SCENARIO_RETRY_UNTIL_MAX_RETRIES:
-                    return Single.just(new RetryTestResponse(500)); // Keep retrying until max retries hit.
+                    return Single.error(new StorageErrorException("Retryable error",
+                            new RetryTestResponse(500)));
             }
             return Single.error(new IllegalArgumentException("Invalid scenario"));
         }

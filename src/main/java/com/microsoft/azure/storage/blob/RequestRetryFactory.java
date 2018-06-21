@@ -14,6 +14,7 @@
  */
 package com.microsoft.azure.storage.blob;
 
+import com.microsoft.azure.storage.blob.models.StorageErrorException;
 import com.microsoft.rest.v2.http.*;
 import com.microsoft.rest.v2.policy.RequestPolicy;
 import com.microsoft.rest.v2.policy.RequestPolicyFactory;
@@ -32,11 +33,11 @@ import java.util.concurrent.TimeoutException;
 
 /**
  * This is a factory which creates policies in an {@link HttpPipeline} for retrying a given HTTP request. The request
- * that is retried will be identical each time it is reissued. In most cases, it is sufficient to configure a
- * {@link RequestRetryOptions} object and set those as a field on a {@link PipelineOptions} object to configure a
- * default pipeline. Retries will try against a secondary if one is specified and the type of operation/error indicates
- * that the secondary can handle the request. Exponential and fixed backoff are supported. The factory and policy must
- * only be used directly when creating a custom pipeline.
+ * that is retried will be identical each time it is reissued. In most cases, it is sufficient to configure a {@link
+ * RequestRetryOptions} object and set those as a field on a {@link PipelineOptions} object to configure a default
+ * pipeline. Retries will try against a secondary if one is specified and the type of operation/error indicates that the
+ * secondary can handle the request. Exponential and fixed backoff are supported. The factory and policy must only be
+ * used directly when creating a custom pipeline.
  */
 //TODO: This was retrying when I got the xml bom issue. Investigate that
 public final class RequestRetryFactory implements RequestPolicyFactory {
@@ -47,7 +48,7 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
      * Creates a factory capable of generating RequestRetry policies for the {@link HttpPipeline}.
      *
      * @param requestRetryOptions
-     *      {@link RequestRetryOptions}
+     *         {@link RequestRetryOptions}
      */
     public RequestRetryFactory(RequestRetryOptions requestRetryOptions) {
         this.requestRetryOptions = requestRetryOptions == null ? RequestRetryOptions.DEFAULT : requestRetryOptions;
@@ -83,46 +84,42 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
         /**
          * This method actually attempts to send the request and determines if we should attempt again and, if so, how
          * long to wait before sending out the next request.
-         *
-         * Exponential retry algorithm: ((2 ^ attempt) - 1) * delay * random(0.8, 1.2)
-         * When to retry: connection failure or an HTTP status code of 500 or greater, except 501 and 505
-         * If using a secondary:
-         *    Odd tries go against primary; even tries go against the secondary
-         *    For a primary wait ((2 ^ primaryTries - 1) * delay * random(0.8, 1.2)
-         *    If secondary gets a 404, don't fail, retry but future retries are only against the primary
-         *    When retrying against a secondary, ignore the retry count and wait (.1 second * random(0.8, 1.2))
+         * <p>
+         * Exponential retry algorithm: ((2 ^ attempt) - 1) * delay * random(0.8, 1.2) When to retry: connection failure
+         * or an HTTP status code of 500 or greater, except 501 and 505 If using a secondary: Odd tries go against
+         * primary; even tries go against the secondary For a primary wait ((2 ^ primaryTries - 1) * delay * random(0.8,
+         * 1.2) If secondary gets a 404, don't fail, retry but future retries are only against the primary When retrying
+         * against a secondary, ignore the retry count and wait (.1 second * random(0.8, 1.2))
          *
          * @param httpRequest
-         *      The request to try.
+         *         The request to try.
          * @param primaryTry
-         *      This indicates how man tries we've attempted against the primary DC.
+         *         This indicates how man tries we've attempted against the primary DC.
          * @param considerSecondary
-         *      Before each try, we'll select either the primary or secondary URL if appropriate.
+         *         Before each try, we'll select either the primary or secondary URL if appropriate.
          * @param attempt
-         *      This indicates the total number of attempts to send the request.
-         * @return
-         *      A single containing either the successful response or an error that was not retryable because either
-         *      the maxTries was exceeded or retries will not mitigate the issue.
+         *         This indicates the total number of attempts to send the request.
+         * @return A single containing either the successful response or an error that was not retryable because either
+         * the maxTries was exceeded or retries will not mitigate the issue.
          */
         private Single<HttpResponse> attemptAsync(final HttpRequest httpRequest, final int primaryTry,
-                                                  final boolean considerSecondary,
-                                                  final int attempt) {
+                final boolean considerSecondary,
+                final int attempt) {
             logf("\n=====> Try=%d\n", attempt);
 
             // Determine which endpoint to try. It's primary if there is no secondary or if it is an odd number attempt.
-            final boolean tryingPrimary = !considerSecondary || (attempt%2 == 1);
+            final boolean tryingPrimary = !considerSecondary || (attempt % 2 == 1);
 
             // Select the correct host and delay.
             long delayMs;
-            if(tryingPrimary) {
+            if (tryingPrimary) {
                 // The first attempt returns 0 delay.
                 delayMs = this.requestRetryOptions.calculatedDelayInMs(primaryTry);
                 logf("Primary try=%d, Delay=%d\n", primaryTry, delayMs);
-            }
-            else {
+            } else {
                 // Delay with some jitter before trying the secondary.
-                delayMs = (long)((ThreadLocalRandom.current().nextFloat()/2+0.8) * 1000); // Add jitter
-                logf("Secondary try=%d, Delay=%d\n", attempt-primaryTry, delayMs);
+                delayMs = (long) ((ThreadLocalRandom.current().nextFloat() / 2 + 0.8) * 1000); // Add jitter
+                logf("Secondary try=%d, Delay=%d\n", attempt - primaryTry, delayMs);
             }
 
             /*
@@ -136,9 +133,9 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
             HttpHeaders bufferedHeaders = new HttpHeaders(httpRequest.headers());
             Flowable<ByteBuffer> bufferedBody = httpRequest.body() == null ?
                     null : httpRequest.body().map(ByteBuffer::duplicate);
-            final HttpRequest requestCopy = new HttpRequest(httpRequest.callerMethod(),httpRequest.httpMethod(),
+            final HttpRequest requestCopy = new HttpRequest(httpRequest.callerMethod(), httpRequest.httpMethod(),
                     httpRequest.url(), bufferedHeaders, bufferedBody, httpRequest.responseDecoder());
-            if(!tryingPrimary) {
+            if (!tryingPrimary) {
                 UrlBuilder builder = UrlBuilder.parse(requestCopy.url());
                 builder.withHost(this.requestRetryOptions.getSecondaryHost());
                 try {
@@ -154,49 +151,58 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
             // the specified timeout.
             return Completable.complete().delay(delayMs, TimeUnit.MILLISECONDS)
                     .andThen(this.nextPolicy.sendAsync(requestCopy)
-                    .timeout(this.requestRetryOptions.getTryTimeout(), TimeUnit.SECONDS)
-                    .flatMap(httpResponse -> {
-                        boolean newConsiderSecondary = considerSecondary;
-                        String action;
+                            .timeout(this.requestRetryOptions.getTryTimeout(), TimeUnit.SECONDS)
+                            /*
+                            We must only consider errors here. All successful responses with expected status codes can
+                            pass freely back to the higher layers. Any errors or responses with unexpected status codes
+                            are returned as exceptions and will be considered below.
+                             */
+                            .onErrorResumeNext(throwable -> {
+                                boolean newConsiderSecondary = considerSecondary;
+                                String action;
+                                /*
+                                An IOException is a network error. A Timeout Exception is a client-side timeout coming
+                                from Rx. A StorageErrorException is returned by the HttpClient when a response is
+                                completed but the status code does not indicate success.
+                                 */
+                                if (throwable instanceof IOException) {
+                                    action = "Retry: Network error";
+                                } else if (throwable instanceof TimeoutException) {
+                                    action = "Retry: Client timeout";
+                                } else if (throwable instanceof StorageErrorException) {
+                                    int statusCode = ((StorageErrorException) throwable).response().statusCode();
+                                    /*
+                                    If attempt was against the secondary & it returned a StatusNotFound (404), then the
+                                    resource was not found. This may be due to replication delay. So, in this case,
+                                    we'll never try the secondary again for this operation.
+                                     */
+                                    if (!tryingPrimary && statusCode == 404) {
+                                        newConsiderSecondary = false;
+                                        action = "Retry: Secondary URL returned 404";
+                                    } else if (statusCode == 503 || statusCode == 500) {
+                                        action = "Retry: Temporary error or server timeout";
+                                    } else {
+                                        action = "NoRetry: Successful HTTP request";
+                                    }
+                                } else {
+                                    action = "NoRetry: Unknown error";
+                                }
 
-                        // If attempt was against the secondary & it returned a StatusNotFound (404), then
-                        // the resource was not found. This may be due to replication delay. So, in this
-                        // case, we'll never try the secondary again for this operation.
-                        if(!tryingPrimary && httpResponse.statusCode() == 404) {
-                            newConsiderSecondary = false;
-                            action = "Retry: Secondary URL returned 404";
-                        }
-                        else if(httpResponse.statusCode() == 503 || httpResponse.statusCode() == 500) {
-                            action = "Retry: Temporary error or timeout";
-                        }
-                        else {
-                            action = "NoRetry: Successful HTTP request";
-                        }
-
-                        logf("Action=%s\n", action);
-
-                        if(action.charAt(0)=='R' && attempt < requestRetryOptions.getMaxTries()) {
-                            // We increment primaryTry if we are about to try the primary again (which is when we consider
-                            // the secondary and tried the secondary this time (tryingPrimary==false) or we do not consider
-                            // the secondary at all (considerSecondary==false)). This will ensure primaryTry is correct when
-                            // passed to calculate the delay.
-                            int newPrimaryTry = !tryingPrimary || !considerSecondary ? primaryTry+1 : primaryTry;
-                            return attemptAsync(httpRequest, newPrimaryTry, newConsiderSecondary, attempt+1);
-                        }
-                        return Single.just(httpResponse);
-                    }).onErrorResumeNext(throwable -> {
-                        // An IOException is a network error. A Timeout Exception is a client-side timeout coming from Rx.
-                        if ((throwable instanceof IOException || throwable instanceof TimeoutException)
-                                && attempt < requestRetryOptions.getMaxTries()) {
-                            // We increment primaryTry if we are about to try the primary again (which is when we consider
-                            // the secondary and tried the secondary this time (tryingPrimary==false) or we do not consider
-                            // the secondary at all (considerSecondary==false)). This will ensure primaryTry is correct when
-                            // passed to calculate the delay.
-                            int newPrimaryTry = !tryingPrimary || !considerSecondary ? primaryTry+1 : primaryTry;
-                            return attemptAsync(httpRequest, newPrimaryTry, considerSecondary, attempt+1);
-                        }
-                        return Single.error(throwable);
-                    }));
+                                logf("Action=%s\n", action);
+                                if (action.charAt(0) == 'R' && attempt < requestRetryOptions.getMaxTries()) {
+                                    /*
+                                    We increment primaryTry if we are about to try the primary again (which is when we
+                                    consider the secondary and tried the secondary this time (tryingPrimary==false) or
+                                    we do not consider the secondary at all (considerSecondary==false)). This will
+                                    ensure primaryTry is correct when passed to calculate the delay.
+                                     */
+                                    int newPrimaryTry = !tryingPrimary || !considerSecondary ?
+                                            primaryTry + 1 : primaryTry;
+                                    return attemptAsync(httpRequest, newPrimaryTry, newConsiderSecondary,
+                                            attempt + 1);
+                                }
+                                return Single.error(throwable);
+                            }));
         }
     }
 
