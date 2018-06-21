@@ -28,7 +28,7 @@
 This project provides a SDK library in Java for interacting with [SQL API](https://docs.microsoft.com/en-us/azure/cosmos-db/sql-api-sql-query) of [Azure Cosmos DB
 Database Service](https://azure.microsoft.com/en-us/services/cosmos-db/). This project also includes samples, tools, and utilities.
 
-Jar dependency binary information for maven and gradle can be found here at [maven]( https://mvnrepository.com/artifact/com.microsoft.azure/azure-cosmosdb/1.0.2).
+Jar dependency binary information for maven and gradle can be found here at [maven]( https://mvnrepository.com/artifact/com.microsoft.azure/azure-cosmosdb/2.0.0).
 
 For example, using maven, you can add the following dependency to your maven pom file:
 
@@ -36,7 +36,7 @@ For example, using maven, you can add the following dependency to your maven pom
 <dependency>
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-cosmosdb</artifactId>
-  <version>1.0.2</version>
+  <version>2.0.0</version>
 </dependency>
 ```
 
@@ -46,7 +46,7 @@ Useful links:
 - [Sample Get Started APP](https://github.com/Azure-Samples/azure-cosmos-db-sql-api-async-java-getting-started)
 - [Introduction to Resource Model of Azure Cosmos DB Service]( https://docs.microsoft.com/en-us/azure/cosmos-db/sql-api-resources)
 - [Introduction to SQL API of Azure Cosmos DB Service](https://docs.microsoft.com/en-us/azure/cosmos-db/sql-api-sql-query)
-- [SDK JavaDoc API](https://azure.github.io/azure-cosmosdb-java/1.0.2/com/microsoft/azure/cosmosdb/rx/AsyncDocumentClient.html)
+- [SDK JavaDoc API](https://azure.github.io/azure-cosmosdb-java/2.0.0/com/microsoft/azure/cosmosdb/rx/AsyncDocumentClient.html)
 - [RxJava Observable JavaDoc API](http://reactivex.io/RxJava/1.x/javadoc/rx/Observable.html)
 - [SDK FAQ](faq/)
 
@@ -61,7 +61,7 @@ SLF4J is only needed if you plan to use logging, please also download an SLF4J b
 
 
 ## API Documentation
-Javadoc is available [here](https://azure.github.io/azure-cosmosdb-java/1.0.2/com/microsoft/azure/cosmosdb/rx/AsyncDocumentClient.html).
+Javadoc is available [here](https://azure.github.io/azure-cosmosdb-java/2.0.0/com/microsoft/azure/cosmosdb/rx/AsyncDocumentClient.html).
 
 The SDK provide Reactive Extension Observable based async API. You can read more about RxJava and [Observable APIs here](http://reactivex.io/RxJava/1.x/javadoc/rx/Observable.html).
 
