@@ -254,7 +254,7 @@ public class TestBase {
         }
 
         @Override
-        public CompletableFuture<Void> updateCheckpoint(Lease lease, Checkpoint checkpoint) {
+        public CompletableFuture<Void> updateCheckpoint(CompleteLease lease, Checkpoint checkpoint) {
             return CompletableFuture.completedFuture(null);
         }
 
@@ -286,12 +286,12 @@ public class TestBase {
         }
 
         @Override
-        public CompletableFuture<Lease> getLease(String partitionId) {
+        public CompletableFuture<CompleteLease> getLease(String partitionId) {
             return CompletableFuture.completedFuture(null);
         }
 
         @Override
-        public CompletableFuture<List<LeaseStateInfo>> getAllLeasesStateInfo() {
+        public CompletableFuture<List<BaseLease>> getAllLeases() {
             return CompletableFuture.completedFuture(null);
         }
 
@@ -301,27 +301,27 @@ public class TestBase {
         }
 
         @Override
-        public CompletableFuture<Void> deleteLease(Lease lease) {
+        public CompletableFuture<Void> deleteLease(CompleteLease lease) {
             return CompletableFuture.completedFuture(null);
         }
 
         @Override
-        public CompletableFuture<Boolean> acquireLease(Lease lease) {
+        public CompletableFuture<Boolean> acquireLease(CompleteLease lease) {
             return CompletableFuture.completedFuture(true);
         }
 
         @Override
-        public CompletableFuture<Boolean> renewLease(Lease lease) {
+        public CompletableFuture<Boolean> renewLease(CompleteLease lease) {
             return CompletableFuture.completedFuture(true);
         }
 
         @Override
-        public CompletableFuture<Void> releaseLease(Lease lease) {
+        public CompletableFuture<Void> releaseLease(CompleteLease lease) {
             return CompletableFuture.completedFuture(null);
         }
 
         @Override
-        public CompletableFuture<Boolean> updateLease(Lease lease) {
+        public CompletableFuture<Boolean> updateLease(CompleteLease lease) {
             return CompletableFuture.completedFuture(true);
         }
     }

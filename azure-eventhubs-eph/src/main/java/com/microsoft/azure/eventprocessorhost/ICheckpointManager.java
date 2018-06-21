@@ -83,7 +83,7 @@ public interface ICheckpointManager {
      * @param checkpoint  offset/sequenceNumber and partition id to update the store with.
      * @return CompletableFuture {@literal ->} null on success. Completes exceptionally on error.
      */
-    public CompletableFuture<Void> updateCheckpoint(Lease lease, Checkpoint checkpoint);
+    public CompletableFuture<Void> updateCheckpoint(CompleteLease lease, Checkpoint checkpoint);
 
     /***
      * Delete the stored checkpoint data for the given partition. If there is no stored checkpoint for the

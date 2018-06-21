@@ -167,7 +167,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     }
 
     @Override
-    public CompletableFuture<Void> updateCheckpoint(Lease lease, Checkpoint checkpoint) {
+    public CompletableFuture<Void> updateCheckpoint(CompleteLease lease, Checkpoint checkpoint) {
         AzureBlobLease updatedLease = new AzureBlobLease((AzureBlobLease) lease);
         TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(checkpoint.getPartitionId(),
                 "Checkpointing at " + checkpoint.getOffset() + " // " + checkpoint.getSequenceNumber()));
@@ -285,10 +285,10 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     }
 
     @Override
-    public CompletableFuture<Lease> getLease(String partitionId) {
+    public CompletableFuture<CompleteLease> getLease(String partitionId) {
         return CompletableFuture.supplyAsync(() ->
         {
-            Lease result = null;
+            CompleteLease result = null;
 
             try {
                 result = getLeaseInternal(partitionId, this.leaseOperationOptions);
@@ -313,9 +313,9 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     }
     
     @Override
-    public CompletableFuture<List<LeaseStateInfo>> getAllLeasesStateInfo() {
+    public CompletableFuture<List<BaseLease>> getAllLeases() {
     	return CompletableFuture.supplyAsync(() -> {
-	    	ArrayList<LeaseStateInfo> infos = new ArrayList<LeaseStateInfo>();
+	    	ArrayList<BaseLease> infos = new ArrayList<BaseLease>();
 	    	
 	    	try {
 		    	EnumSet<BlobListingDetails> details = EnumSet.of(BlobListingDetails.METADATA);
@@ -325,7 +325,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
 					BlobProperties bp = blob.getProperties();
 					HashMap<String, String> metadata = blob.getMetadata();
 					Path p = Paths.get(lbi.getUri().getPath());
-					infos.add(new LeaseStateInfo(p.getFileName().toString(), metadata.get(AzureStorageCheckpointLeaseManager.METADATA_OWNER_NAME),
+					infos.add(new BaseLease(p.getFileName().toString(), metadata.get(AzureStorageCheckpointLeaseManager.METADATA_OWNER_NAME),
 							(bp.getLeaseState() == LeaseState.LEASED)));
 				});
 			} catch (URISyntaxException | StorageException e) {
@@ -360,11 +360,11 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     	.thenComposeAsync((exists) -> {
     			CompletableFuture<Void> createAllFuture = CompletableFuture.completedFuture(null);
     			if (!exists) {
-			    	ArrayList<CompletableFuture<Lease>> createFutures = new ArrayList<CompletableFuture<Lease>>();
+			    	ArrayList<CompletableFuture<CompleteLease>> createFutures = new ArrayList<CompletableFuture<CompleteLease>>();
 			    	
 			    	for (String id : partitionIds) {
-			            CompletableFuture<Lease> oneCreate = CompletableFuture.supplyAsync(() -> {
-				                Lease returnLease = null;
+			            CompletableFuture<CompleteLease> oneCreate = CompletableFuture.supplyAsync(() -> {
+				                CompleteLease returnLease = null;
 				                try {
 				                    returnLease = createLeaseIfNotExistsInternal(id, this.leaseOperationOptions);
 				                } catch (URISyntaxException | IOException | StorageException e) {
@@ -413,7 +413,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     }
 
     @Override
-    public CompletableFuture<Void> deleteLease(Lease lease) {
+    public CompletableFuture<Void> deleteLease(CompleteLease lease) {
         return CompletableFuture.runAsync(() ->
         {
             TRACE_LOGGER.info(this.hostContext.withHostAndPartition(lease, "Deleting lease"));
@@ -427,7 +427,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     }
 
     @Override
-    public CompletableFuture<Boolean> acquireLease(Lease lease) {
+    public CompletableFuture<Boolean> acquireLease(CompleteLease lease) {
         return CompletableFuture.supplyAsync(() ->
         {
             boolean result = false;
@@ -489,18 +489,19 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     }
 
     @Override
-    public CompletableFuture<Boolean> renewLease(Lease lease) {
+    public CompletableFuture<Boolean> renewLease(CompleteLease lease) {
         return CompletableFuture.supplyAsync(() ->
         {
             TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(lease, "Renewing lease"));
 
-            CloudBlockBlob leaseBlob = ((AzureBlobLease) lease).getBlob();
+            AzureBlobLease azLease = (AzureBlobLease)lease;
+            CloudBlockBlob leaseBlob = azLease.getBlob();
             boolean retval = true;
 
             try {
-                leaseBlob.renewLease(AccessCondition.generateLeaseCondition(lease.getToken()), this.renewRequestOptions, null);
+                leaseBlob.renewLease(AccessCondition.generateLeaseCondition(azLease.getToken()), this.renewRequestOptions, null);
             } catch (StorageException se) {
-                if (wasLeaseLost(se, lease.getPartitionId())) {
+                if (wasLeaseLost(se, azLease.getPartitionId())) {
                     retval = false;
                 } else {
                     throw LoggingUtils.wrapException(se, EventProcessorHostActionStrings.RENEWING_LEASE);
@@ -512,7 +513,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     }
 
     @Override
-    public CompletableFuture<Void> releaseLease(Lease lease) {
+    public CompletableFuture<Void> releaseLease(CompleteLease lease) {
         return CompletableFuture.runAsync(() ->
         {
             TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(lease, "Releasing lease"));
@@ -520,7 +521,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
             AzureBlobLease inLease = (AzureBlobLease) lease;
             CloudBlockBlob leaseBlob = inLease.getBlob();
             try {
-                String leaseId = lease.getToken();
+                String leaseId = inLease.getToken();
                 AzureBlobLease releasedCopy = new AzureBlobLease(inLease);
                 releasedCopy.setToken("");
                 releasedCopy.setOwner("");
@@ -539,7 +540,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     }
 
     @Override
-    public CompletableFuture<Boolean> updateLease(Lease lease) {
+    public CompletableFuture<Boolean> updateLease(CompleteLease lease) {
         return updateLeaseInternal((AzureBlobLease) lease, this.leaseOperationOptions, EventProcessorHostActionStrings.UPDATING_LEASE)
                 .whenCompleteAsync((result, e) ->
                 {

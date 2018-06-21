@@ -25,7 +25,7 @@ class PumpManager extends Closable {
         this.pumpStates = new ConcurrentHashMap<String, PartitionPump>();
     }
 
-    public void addPump(Lease lease) {
+    public void addPump(CompleteLease lease) {
     	if (getIsClosingOrClosed()) {
     		TRACE_LOGGER.info(this.hostContext.withHostAndPartition(lease, "Shutting down, not creating new pump"));
     		return;
@@ -51,7 +51,7 @@ class PumpManager extends Closable {
     }
 
     // Separated out so that tests can override and substitute their own pump class.
-    protected PartitionPump createNewPump(Lease lease) {
+    protected PartitionPump createNewPump(CompleteLease lease) {
         return new PartitionPump(this.hostContext, lease, this);
     }
 

@@ -59,15 +59,17 @@ public interface ILeaseManager {
      * @param partitionId  Get the lease info for this partition.
      * @return CompletableFuture {@literal ->} Lease, completes exceptionally on error.
      */
-    public CompletableFuture<Lease> getLease(String partitionId);
+    public CompletableFuture<CompleteLease> getLease(String partitionId);
 
     /**
-     * Returns LeaseStateInfo for all leases, which includes name of owning host and whether lease
-     * is expired.
+     * Returns lightweight BaseLease for all leases, which includes name of owning host and whether lease
+     * is expired. An implementation is free to return CompleteLease or its own class derived from CompleteLease,
+     * but it is important that getAllLeases run as fast as possible. If it is faster to obtain only the
+     * information required for a BaseLease, we heavily recommend doing that.
      * 
-     * @return CompletableFuture {@literal ->} list of LeaseStateInfo, completes exceptionally on error.
+     * @return CompletableFuture {@literal ->} list of BaseLease, completes exceptionally on error.
      */
-    public CompletableFuture<List<LeaseStateInfo>> getAllLeasesStateInfo();
+    public CompletableFuture<List<BaseLease>> getAllLeases();
     
 
     /**
@@ -86,7 +88,7 @@ public interface ILeaseManager {
      * @param lease the currently existing lease info for the partition
      * @return CompletableFuture {@literal ->} null on success, completes exceptionally on error.
      */
-    public CompletableFuture<Void> deleteLease(Lease lease);
+    public CompletableFuture<Void> deleteLease(CompleteLease lease);
 
     /**
      * Acquire the lease on the desired partition for this EventProcessorHost.
@@ -103,7 +105,7 @@ public interface ILeaseManager {
      * @param lease Lease info for the desired partition
      * @return CompletableFuture {@literal ->} true if the lease was acquired, false if not, completes exceptionally on error.
      */
-    public CompletableFuture<Boolean> acquireLease(Lease lease);
+    public CompletableFuture<Boolean> acquireLease(CompleteLease lease);
 
     /**
      * Renew a lease currently held by this host instance.
@@ -116,7 +118,7 @@ public interface ILeaseManager {
      * @param lease Lease to be renewed
      * @return true if the lease was renewed, false as described above, completes exceptionally on error.
      */
-    public CompletableFuture<Boolean> renewLease(Lease lease);
+    public CompletableFuture<Boolean> renewLease(CompleteLease lease);
 
     /**
      * Give up a lease currently held by this host.
@@ -127,7 +129,7 @@ public interface ILeaseManager {
      * @param lease Lease to be given up
      * @return CompletableFuture {@literal ->} null on success, completes exceptionally on error.
      */
-    public CompletableFuture<Void> releaseLease(Lease lease);
+    public CompletableFuture<Void> releaseLease(CompleteLease lease);
 
     /**
      * Update the store with the information in the provided lease.
@@ -139,5 +141,5 @@ public interface ILeaseManager {
      * @param lease New lease info to be stored
      * @return true if the update was successful, false if lease was lost and could not be updated, completes exceptionally on error.
      */
-    public CompletableFuture<Boolean> updateLease(Lease lease);
+    public CompletableFuture<Boolean> updateLease(CompleteLease lease);
 }

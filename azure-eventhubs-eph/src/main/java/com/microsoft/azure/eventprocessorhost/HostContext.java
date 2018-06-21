@@ -124,7 +124,7 @@ final class HostContext {
         return withHostAndPartition(context.getPartitionId(), logMessage);
     }
 
-    String withHostAndPartition(Lease lease, String logMessage) {
+    String withHostAndPartition(BaseLease lease, String logMessage) {
         return withHostAndPartition(lease.getPartitionId(), logMessage);
     }
 }

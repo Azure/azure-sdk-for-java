@@ -25,7 +25,7 @@ public class PartitionContext {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(PartitionContext.class);
     private final HostContext hostContext;
     private final String partitionId;
-    private Lease lease;
+    private CompleteLease lease;
     private String offset = null;
     private long sequenceNumber = 0;
     private ReceiverRuntimeInformation runtimeInformation;
@@ -78,12 +78,12 @@ public class PartitionContext {
         this.runtimeInformation = value;
     }
 
-    Lease getLease() {
+    CompleteLease getLease() {
         return this.lease;
     }
 
     // Unlike other properties which are immutable after creation, the lease is updated dynamically and needs a setter.
-    void setLease(Lease lease) {
+    void setLease(CompleteLease lease) {
         this.lease = lease;
     }
 

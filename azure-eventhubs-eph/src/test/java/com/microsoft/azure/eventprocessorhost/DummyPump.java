@@ -21,7 +21,7 @@ class DummyPump extends PumpManager {
     }
 
     @Override
-    protected PartitionPump createNewPump(Lease lease) {
+    protected PartitionPump createNewPump(CompleteLease lease) {
         return new DummyPartitionPump(this.hostContext, lease, this);
     }
 
@@ -34,7 +34,7 @@ class DummyPump extends PumpManager {
     private class DummyPartitionPump extends PartitionPump implements Callable<Void> {
         CompletableFuture<Void> blah = null;
 
-        DummyPartitionPump(HostContext hostContext, Lease lease, Closable parent) {
+        DummyPartitionPump(HostContext hostContext, CompleteLease lease, Closable parent) {
             super(hostContext, lease, parent);
         }
 

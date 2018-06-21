@@ -92,7 +92,7 @@ public class InMemoryLeaseManager implements ILeaseManager {
     }
     
     @Override
-    public CompletableFuture<Lease> getLease(String partitionId) {
+    public CompletableFuture<CompleteLease> getLease(String partitionId) {
     	TRACE_LOGGER.debug(this.hostContext.withHost("getLease()"));
     	latency("getLease");
     	InMemoryLease leaseInStore = InMemoryLeaseStore.singleton.getLease(partitionId);
@@ -100,11 +100,11 @@ public class InMemoryLeaseManager implements ILeaseManager {
     }
 
     @Override
-    public CompletableFuture<List<LeaseStateInfo>> getAllLeasesStateInfo() {
-    	ArrayList<LeaseStateInfo> infos = new ArrayList<LeaseStateInfo>();
+    public CompletableFuture<List<BaseLease>> getAllLeases() {
+    	ArrayList<BaseLease> infos = new ArrayList<BaseLease>();
     	for (String id : InMemoryLeaseStore.singleton.getPartitionIds()) {
     		InMemoryLease leaseInStore = InMemoryLeaseStore.singleton.getLease(id);
-    		infos.add(new LeaseStateInfo(id, leaseInStore.getOwner(), !leaseInStore.isExpiredSync()));
+    		infos.add(new BaseLease(id, leaseInStore.getOwner(), !leaseInStore.isExpiredSync()));
     	}
     	latency("getAllLeasesStateInfo");
     	return CompletableFuture.completedFuture(infos);
@@ -112,12 +112,12 @@ public class InMemoryLeaseManager implements ILeaseManager {
     
     @Override
     public CompletableFuture<Void> createAllLeasesIfNotExists(List<String> partitionIds) {
-    	ArrayList<CompletableFuture<Lease>> createFutures = new ArrayList<CompletableFuture<Lease>>();
+    	ArrayList<CompletableFuture<BaseLease>> createFutures = new ArrayList<CompletableFuture<BaseLease>>();
     	
     	// Implemented like this to provide an experience more similar to lease creation in the Storage-based manager.
     	for (String id : partitionIds) {
     		final String workingId = id;
-    		CompletableFuture<Lease> oneCreate = CompletableFuture.supplyAsync(() -> {
+    		CompletableFuture<BaseLease> oneCreate = CompletableFuture.supplyAsync(() -> {
 			        InMemoryLease leaseInStore = InMemoryLeaseStore.singleton.getLease(workingId);
 			        InMemoryLease returnLease = null;
 			        if (leaseInStore != null) {
@@ -128,8 +128,6 @@ public class InMemoryLeaseManager implements ILeaseManager {
 			            TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(workingId,
 			                    "createLeaseIfNotExists() creating new lease"));
 			            InMemoryLease newStoreLease = new InMemoryLease(workingId);
-			            newStoreLease.setEpoch(0L);
-			            newStoreLease.setOwner("");
 			            InMemoryLeaseStore.singleton.setOrReplaceLease(newStoreLease);
 			            returnLease = new InMemoryLease(newStoreLease);
 			        }
@@ -144,7 +142,7 @@ public class InMemoryLeaseManager implements ILeaseManager {
     }
 
     @Override
-    public CompletableFuture<Void> deleteLease(Lease lease) {
+    public CompletableFuture<Void> deleteLease(CompleteLease lease) {
         TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(lease, "deleteLease()"));
         InMemoryLeaseStore.singleton.removeLease((InMemoryLease) lease);
         latency("deleteLease " + lease.getPartitionId());
@@ -152,7 +150,7 @@ public class InMemoryLeaseManager implements ILeaseManager {
     }
 
     @Override
-    public CompletableFuture<Boolean> acquireLease(Lease lease) {
+    public CompletableFuture<Boolean> acquireLease(CompleteLease lease) {
         InMemoryLease leaseToAcquire = (InMemoryLease) lease;
 
         TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(leaseToAcquire, "acquireLease()"));
@@ -206,7 +204,7 @@ public class InMemoryLeaseManager implements ILeaseManager {
     }
 
     @Override
-    public CompletableFuture<Boolean> renewLease(Lease lease) {
+    public CompletableFuture<Boolean> renewLease(CompleteLease lease) {
         InMemoryLease leaseToRenew = (InMemoryLease) lease;
 
         TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(leaseToRenew, "renewLease()"));
@@ -238,7 +236,7 @@ public class InMemoryLeaseManager implements ILeaseManager {
     }
 
     @Override
-    public CompletableFuture<Void> releaseLease(Lease lease) {
+    public CompletableFuture<Void> releaseLease(CompleteLease lease) {
         InMemoryLease leaseToRelease = (InMemoryLease) lease;
 
         CompletableFuture<Void> retval = CompletableFuture.completedFuture(null);
@@ -267,7 +265,7 @@ public class InMemoryLeaseManager implements ILeaseManager {
     }
 
     @Override
-    public CompletableFuture<Boolean> updateLease(Lease lease) {
+    public CompletableFuture<Boolean> updateLease(CompleteLease lease) {
         InMemoryLease leaseToUpdate = (InMemoryLease) lease;
 
         TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(leaseToUpdate, "updateLease()"));
@@ -281,7 +279,6 @@ public class InMemoryLeaseManager implements ILeaseManager {
                     if (!leaseInStore.isExpiredSync() && leaseInStore.isOwnedBy(this.hostContext.getHostName())) {
                         // We are updating with values already in the live lease, so only need to set on the persisted lease.
                         leaseInStore.setEpoch(leaseToUpdate.getEpoch());
-                        leaseInStore.setToken(leaseToUpdate.getToken());
                         // Don't copy expiration time, that is managed directly by Acquire/Renew/Release
                     } else {
                         TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(leaseToUpdate,
@@ -381,17 +378,19 @@ public class InMemoryLeaseManager implements ILeaseManager {
     }
 
 
-    private static class InMemoryLease extends Lease {
+    private static class InMemoryLease extends CompleteLease {
         private final static Logger TRACE_LOGGER = LoggerFactory.getLogger(InMemoryLease.class);
         private long expirationTimeMillis = 0;
 
         InMemoryLease(String partitionId) {
             super(partitionId);
+            this.epoch = 0;
         }
 
         InMemoryLease(InMemoryLease source) {
             super(source);
             this.expirationTimeMillis = source.expirationTimeMillis;
+            this.epoch = source.epoch;
         }
 
         long getExpirationTime() {

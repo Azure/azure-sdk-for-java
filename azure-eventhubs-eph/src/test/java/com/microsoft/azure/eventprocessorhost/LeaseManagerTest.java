@@ -62,7 +62,7 @@ public class LeaseManagerTest extends TestBase {
         TestBase.logInfo("Creating leases for all partitions");
         this.leaseManagers[0].createAllLeasesIfNotExists(partitionIds).get(); // throws on failure
 
-        Lease[] leases = new Lease[partitionCount];
+        CompleteLease[] leases = new CompleteLease[partitionCount];
         TestBase.logInfo("Getting leases for all partitions");
         for (int i = 0; i < partitionIds.size(); i++) {
         	leases[i] = this.leaseManagers[0].getLease(partitionIds.get(i)).get();
@@ -84,9 +84,9 @@ public class LeaseManagerTest extends TestBase {
         Thread.sleep(5000);
         
         TestBase.logInfo("Getting state for all leases");
-        List<LeaseStateInfo> states = this.leaseManagers[0].getAllLeasesStateInfo().get(); // throws on failure
-        for (LeaseStateInfo s : states) {
-        	TestBase.logInfo("Partition " + s.getPartitionId() + " owned by " + s.getOwner() + " isowned: " + s.isOwned());
+        List<BaseLease> states = this.leaseManagers[0].getAllLeases().get(); // throws on failure
+        for (BaseLease s : states) {
+        	TestBase.logInfo("Partition " + s.getPartitionId() + " owned by " + s.getOwner() + " isowned: " + s.getIsOwned());
         }
 
         TestBase.logInfo("Renewing leases for all partitions");
@@ -102,7 +102,7 @@ public class LeaseManagerTest extends TestBase {
         }
 
         int x = 1;
-        while (getOneState(leases[0].getPartitionId(), this.leaseManagers[0]).isOwned()) {
+        while (getOneState(leases[0].getPartitionId(), this.leaseManagers[0]).getIsOwned()) {
             Thread.sleep(5000);
             TestBase.logInfo("Still waiting for lease on 0 to expire: " + (5 * x));
             assertFalse("lease 0 expiration is overdue", (5000 * x) > (this.leaseManagers[0].getLeaseDurationInMilliseconds() + 10000));
@@ -115,18 +115,11 @@ public class LeaseManagerTest extends TestBase {
 
         TestBase.logInfo("Updating lease 1");
         leases[1].setEpoch(5);
-        if (!useAzureStorage) {
-            // AzureStorageCheckpointLeaseManager uses the token to manage Storage leases, only test when using InMemory
-            leases[1].setToken("it's a cloudy day");
-        }
         boolret = this.leaseManagers[0].updateLease(leases[1]).get();
         assertTrue("failed to update lease for 1", boolret);
-        Lease retrievedLease = this.leaseManagers[0].getLease("1").get();
+        CompleteLease retrievedLease = this.leaseManagers[0].getLease("1").get();
         assertNotNull("failed to get lease for 1", retrievedLease);
         assertEquals("epoch was not persisted, expected " + leases[1].getEpoch() + " got " + retrievedLease.getEpoch(), leases[1].getEpoch(), retrievedLease.getEpoch());
-        if (!useAzureStorage) {
-            assertEquals("token was not persisted, expected [" + leases[1].getToken() + "] got [" + retrievedLease.getToken() + "]", leases[1].getToken(), retrievedLease.getToken());
-        }
 
         // Release for 0 should not throw even though lease has expired -- it just won't do anything
         TestBase.logInfo("Trying to release expired lease 0");
@@ -189,22 +182,22 @@ public class LeaseManagerTest extends TestBase {
         this.leaseManagers[0].createAllLeasesIfNotExists(partitionIds).get();
 
         TestBase.logInfo("Checking whether second manager can see lease 0");
-        Lease mgr2Lease = this.leaseManagers[1].getLease("0").get();
+        CompleteLease mgr2Lease = this.leaseManagers[1].getLease("0").get();
         assertNotNull("second manager cannot see lease for 0", mgr2Lease);
 
         TestBase.logInfo("Checking whether first manager can see lease 0");
-        Lease mgr1Lease = this.leaseManagers[0].getLease("0").get();
+        CompleteLease mgr1Lease = this.leaseManagers[0].getLease("0").get();
         assertNotNull("second manager cannot see lease for 0", mgr1Lease);
 
         TestBase.logInfo("First manager acquiring lease 0");
         boolret = this.leaseManagers[0].acquireLease(mgr1Lease).get();
         assertTrue("first manager failed acquiring lease for 0", boolret);
         if (useAzureStorage) {
-        	TestBase.logInfo("Lease token is " + mgr1Lease.getToken());
+        	TestBase.logInfo("Lease token is " + ((AzureBlobLease)mgr1Lease).getToken());
         }
 
         int x = 0;
-        while (getOneState("0", this.leaseManagers[0]).isOwned()) {
+        while (getOneState("0", this.leaseManagers[0]).getIsOwned()) {
             assertFalse("lease 0 expiration is overdue", (5000 * x) > (this.leaseManagers[0].getLeaseDurationInMilliseconds() + 10000));
             Thread.sleep(5000);
             TestBase.logInfo("Still waiting for lease on 0 to expire: " + (5 * ++x));
@@ -214,7 +207,7 @@ public class LeaseManagerTest extends TestBase {
         boolret = this.leaseManagers[1].acquireLease(mgr2Lease).get();
         assertTrue("second manager failed acquiring expired lease for 0", boolret);
         if (useAzureStorage) {
-        	TestBase.logInfo("Lease token is " + mgr2Lease.getToken());
+        	TestBase.logInfo("Lease token is " + ((AzureBlobLease)mgr2Lease).getToken());
         }
 
         TestBase.logInfo("First manager trying to renew lease 0");
@@ -229,7 +222,7 @@ public class LeaseManagerTest extends TestBase {
         boolret = this.leaseManagers[0].acquireLease(mgr1Lease).get();
         assertTrue("first manager failed stealing lease 0", boolret);
         if (useAzureStorage) {
-        	TestBase.logInfo("Lease token is " + mgr1Lease.getToken());
+        	TestBase.logInfo("Lease token is " + ((AzureBlobLease)mgr1Lease).getToken());
         }
 
         TestBase.logInfo("Second mananger getting lease 0");
@@ -240,7 +233,7 @@ public class LeaseManagerTest extends TestBase {
         boolret = this.leaseManagers[1].acquireLease(mgr2Lease).get();
         assertTrue("second manager failed stealing lease 0", boolret);
         if (useAzureStorage) {
-        	TestBase.logInfo("Lease token is " + mgr2Lease.getToken());
+        	TestBase.logInfo("Lease token is " + ((AzureBlobLease)mgr2Lease).getToken());
         }
 
         TestBase.logInfo("Second mananger releasing lease 0");
@@ -265,10 +258,10 @@ public class LeaseManagerTest extends TestBase {
         return containerName.toString();
     }
     
-    private LeaseStateInfo getOneState(String partitionId, ILeaseManager leaseMgr) throws InterruptedException, ExecutionException {
-    	List<LeaseStateInfo> states = leaseMgr.getAllLeasesStateInfo().get();
-    	LeaseStateInfo returnState = null;
-    	for (LeaseStateInfo s : states) {
+    private BaseLease getOneState(String partitionId, ILeaseManager leaseMgr) throws InterruptedException, ExecutionException {
+    	List<BaseLease> states = leaseMgr.getAllLeases().get();
+    	BaseLease returnState = null;
+    	for (BaseLease s : states) {
     		if (s.getPartitionId().compareTo(partitionId) == 0) {
     			returnState = s;
     			break;

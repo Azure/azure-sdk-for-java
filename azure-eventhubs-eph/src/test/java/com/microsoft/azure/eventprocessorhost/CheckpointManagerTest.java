@@ -83,10 +83,10 @@ public class CheckpointManagerTest extends TestBase {
         // AzureStorageCheckpointLeaseManager tries to pretend that checkpoints and leases are separate, but they really aren't.
         // Because the checkpoint data is stored in the lease, updating the checkpoint means updating the lease, and it is
         // necessary to hold the lease in order to update it.
-        HashMap<String, Lease> leases = new HashMap<String, Lease>();
+        HashMap<String, CompleteLease> leases = new HashMap<String, CompleteLease>();
         if (useAzureStorage) {
         	for (int i = 0; i < partitionCount; i++) {
-        		Lease l = this.leaseManagers[0].getLease(partitionIds.get(i)).get();
+        		CompleteLease l = this.leaseManagers[0].getLease(partitionIds.get(i)).get();
         		assertTrue("null lease for " + partitionIds.get(i), l != null);
                 leases.put(l.getPartitionId(), l);
                 boolret = this.leaseManagers[0].acquireLease(l).get();
@@ -114,7 +114,7 @@ public class CheckpointManagerTest extends TestBase {
 
         // Have to release the leases before we can delete the store.
         if (useAzureStorage) {
-            for (Lease l : leases.values()) {
+            for (CompleteLease l : leases.values()) {
                 this.leaseManagers[0].releaseLease(l).get();
             }
         }
@@ -169,10 +169,10 @@ public class CheckpointManagerTest extends TestBase {
         // AzureStorageCheckpointLeaseManager tries to pretend that checkpoints and leases are separate, but they really aren't.
         // Because the checkpoint data is stored in the lease, updating the checkpoint means updating the lease, and it is
         // necessary to hold the lease in order to update it.
-        HashMap<String, Lease> leases = new HashMap<String, Lease>();
+        HashMap<String, CompleteLease> leases = new HashMap<String, CompleteLease>();
         if (useAzureStorage) {
         	for (int i = 0; i < partitionCount; i++) {
-        		Lease l = this.leaseManagers[1].getLease(partitionIds.get(i)).get();
+        		CompleteLease l = this.leaseManagers[1].getLease(partitionIds.get(i)).get();
                 leases.put(l.getPartitionId(), l);
                 boolret = this.leaseManagers[1].acquireLease(l).get();
                 assertTrue("failed to acquire lease for " + l.getPartitionId(), boolret);
@@ -199,7 +199,7 @@ public class CheckpointManagerTest extends TestBase {
 
         // Have to release the leases before we can delete the store.
         if (useAzureStorage) {
-            for (Lease l : leases.values()) {
+            for (CompleteLease l : leases.values()) {
                 assertNotNull("failed to retrieve lease", l);
                 this.leaseManagers[1].releaseLease(l).get();
             }

@@ -108,7 +108,7 @@ public class InMemoryCheckpointManager implements ICheckpointManager {
     }
 
     @Override
-    public CompletableFuture<Void> updateCheckpoint(Lease lease, Checkpoint checkpoint) {
+    public CompletableFuture<Void> updateCheckpoint(CompleteLease lease, Checkpoint checkpoint) {
         TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(checkpoint.getPartitionId(),
                 "updateCheckpoint() " + checkpoint.getOffset() + "//" + checkpoint.getSequenceNumber()));
         Checkpoint checkpointInStore = InMemoryCheckpointStore.singleton.getCheckpoint(checkpoint.getPartitionId());

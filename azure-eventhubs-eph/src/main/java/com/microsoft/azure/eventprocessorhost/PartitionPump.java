@@ -23,7 +23,7 @@ class PartitionPump extends Closable implements PartitionReceiveHandler {
     final private CompletableFuture<Void> shutdownTriggerFuture;
     final private CompletableFuture<Void> shutdownFinishedFuture;
     private final Object processingSynchronizer;
-    protected Lease lease = null; // protected for testability
+    protected CompleteLease lease = null; // protected for testability
     private EventHubClient eventHubClient = null;
     private PartitionReceiver partitionReceiver = null;
     private CloseReason shutdownReason;
@@ -32,7 +32,7 @@ class PartitionPump extends Closable implements PartitionReceiveHandler {
     private PartitionContext partitionContext = null;
     private ScheduledFuture<?> leaseRenewerFuture = null;
 
-    PartitionPump(HostContext hostContext, Lease lease, Closable parent) {
+    PartitionPump(HostContext hostContext, CompleteLease lease, Closable parent) {
     	super(parent);
     	
         this.hostContext = hostContext;
@@ -47,7 +47,7 @@ class PartitionPump extends Closable implements PartitionReceiveHandler {
                 .whenCompleteAsync((empty, e) -> { setClosed(); }, this.hostContext.getExecutor());
     }
 
-    void setLease(Lease newLease) {
+    void setLease(CompleteLease newLease) {
         this.lease = newLease;
         if (this.partitionContext != null) {
             this.partitionContext.setLease(newLease);
@@ -374,7 +374,7 @@ class PartitionPump extends Closable implements PartitionReceiveHandler {
         if (this.shutdownReason != CloseReason.LeaseLost) {
             // Since this pump is dead, release the lease. Don't care about any errors that may occur. Worst case is
             // that the lease eventually expires, since the lease renewer has been cancelled.
-            result = PartitionPump.this.hostContext.getLeaseManager().releaseLease(this.partitionContext.getLease())
+            result = PartitionPump.this.hostContext.getLeaseManager().releaseLease(this.lease)
                     .handleAsync((empty, e) ->
                     {
                         if (e != null) {

@@ -10,11 +10,12 @@ import com.microsoft.azure.storage.blob.BlobProperties;
 import com.microsoft.azure.storage.blob.BlobRequestOptions;
 import com.microsoft.azure.storage.blob.CloudBlockBlob;
 
-final class AzureBlobLease extends Lease {
+final class AzureBlobLease extends CompleteLease {
     private final transient CloudBlockBlob blob; // do not serialize
     private final transient BlobRequestOptions options; // do not serialize
     private String offset = null; // null means checkpoint is uninitialized
     private long sequenceNumber = 0;
+    private String token = null;
 
     // not intended to be used; built for GSon
     @SuppressWarnings("unused")
@@ -36,6 +37,7 @@ final class AzureBlobLease extends Lease {
         this.sequenceNumber = source.sequenceNumber;
         this.blob = source.blob;
         this.options = source.options;
+        this.token = source.token;
     }
 
     AzureBlobLease(AzureBlobLease source, CloudBlockBlob blob, BlobRequestOptions options) {
@@ -44,9 +46,10 @@ final class AzureBlobLease extends Lease {
         this.sequenceNumber = source.sequenceNumber;
         this.blob = blob;
         this.options = options;
+        this.token = source.token;
     }
 
-    AzureBlobLease(Lease source, CloudBlockBlob blob, BlobRequestOptions options) {
+    AzureBlobLease(CompleteLease source, CloudBlockBlob blob, BlobRequestOptions options) {
         super(source);
         this.blob = blob;
         this.options = options;
@@ -70,6 +73,14 @@ final class AzureBlobLease extends Lease {
 
     void setSequenceNumber(long sequenceNumber) {
         this.sequenceNumber = sequenceNumber;
+    }
+    
+    String getToken() {
+        return this.token;
+    }
+    
+    void setToken(String token) {
+        this.token = token;
     }
 
     Checkpoint getCheckpoint() {
