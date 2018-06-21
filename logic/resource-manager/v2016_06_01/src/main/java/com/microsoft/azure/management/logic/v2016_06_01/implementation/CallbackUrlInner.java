@@ -21,7 +21,7 @@ public class CallbackUrlInner {
     private String value;
 
     /**
-     * Get the value value.
+     * Get the URL value.
      *
      * @return the value value
      */
@@ -30,7 +30,7 @@ public class CallbackUrlInner {
     }
 
     /**
-     * Set the value value.
+     * Set the URL value.
      *
      * @param value the value value to set
      * @return the CallbackUrlInner object itself.

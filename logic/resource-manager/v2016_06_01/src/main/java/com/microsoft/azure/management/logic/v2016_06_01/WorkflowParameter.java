@@ -41,7 +41,7 @@ public class WorkflowParameter {
     private String description;
 
     /**
-     * Get the type value.
+     * Get the type. Possible values include: 'NotSpecified', 'String', 'SecureString', 'Int', 'Float', 'Bool', 'Array', 'Object', 'SecureObject'.
      *
      * @return the type value
      */
@@ -50,7 +50,7 @@ public class WorkflowParameter {
     }
 
     /**
-     * Set the type value.
+     * Set the type. Possible values include: 'NotSpecified', 'String', 'SecureString', 'Int', 'Float', 'Bool', 'Array', 'Object', 'SecureObject'.
      *
      * @param type the type value to set
      * @return the WorkflowParameter object itself.
@@ -61,7 +61,7 @@ public class WorkflowParameter {
     }
 
     /**
-     * Get the value value.
+     * Get the value.
      *
      * @return the value value
      */
@@ -70,7 +70,7 @@ public class WorkflowParameter {
     }
 
     /**
-     * Set the value value.
+     * Set the value.
      *
      * @param value the value value to set
      * @return the WorkflowParameter object itself.
@@ -81,7 +81,7 @@ public class WorkflowParameter {
     }
 
     /**
-     * Get the metadata value.
+     * Get the metadata.
      *
      * @return the metadata value
      */
@@ -90,7 +90,7 @@ public class WorkflowParameter {
     }
 
     /**
-     * Set the metadata value.
+     * Set the metadata.
      *
      * @param metadata the metadata value to set
      * @return the WorkflowParameter object itself.
@@ -101,7 +101,7 @@ public class WorkflowParameter {
     }
 
     /**
-     * Get the description value.
+     * Get the description.
      *
      * @return the description value
      */
@@ -110,7 +110,7 @@ public class WorkflowParameter {
     }
 
     /**
-     * Set the description value.
+     * Set the description.
      *
      * @param description the description value to set
      * @return the WorkflowParameter object itself.

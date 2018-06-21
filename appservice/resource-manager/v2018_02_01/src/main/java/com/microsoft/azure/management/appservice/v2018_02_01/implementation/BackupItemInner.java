@@ -109,7 +109,7 @@ public class BackupItemInner extends ProxyOnlyResource {
     private Long websiteSizeInBytes;
 
     /**
-     * Get the backupId value.
+     * Get id of the backup.
      *
      * @return the backupId value
      */
@@ -118,7 +118,7 @@ public class BackupItemInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the storageAccountUrl value.
+     * Get sAS URL for the storage account container which contains this backup.
      *
      * @return the storageAccountUrl value
      */
@@ -127,7 +127,7 @@ public class BackupItemInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the blobName value.
+     * Get name of the blob which contains data for this backup.
      *
      * @return the blobName value
      */
@@ -136,7 +136,7 @@ public class BackupItemInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the backupItemName value.
+     * Get name of this backup.
      *
      * @return the backupItemName value
      */
@@ -145,7 +145,7 @@ public class BackupItemInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the status value.
+     * Get backup status. Possible values include: 'InProgress', 'Failed', 'Succeeded', 'TimedOut', 'Created', 'Skipped', 'PartiallySucceeded', 'DeleteInProgress', 'DeleteFailed', 'Deleted'.
      *
      * @return the status value
      */
@@ -154,7 +154,7 @@ public class BackupItemInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the sizeInBytes value.
+     * Get size of the backup in bytes.
      *
      * @return the sizeInBytes value
      */
@@ -163,7 +163,7 @@ public class BackupItemInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the created value.
+     * Get timestamp of the backup creation.
      *
      * @return the created value
      */
@@ -172,7 +172,7 @@ public class BackupItemInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the log value.
+     * Get details regarding this backup. Might contain an error message.
      *
      * @return the log value
      */
@@ -181,7 +181,7 @@ public class BackupItemInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the databases value.
+     * Get list of databases included in the backup.
      *
      * @return the databases value
      */
@@ -190,7 +190,7 @@ public class BackupItemInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the scheduled value.
+     * Get true if this backup has been created due to a schedule being triggered.
      *
      * @return the scheduled value
      */
@@ -199,7 +199,7 @@ public class BackupItemInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the lastRestoreTimeStamp value.
+     * Get timestamp of a last restore operation which used this backup.
      *
      * @return the lastRestoreTimeStamp value
      */
@@ -208,7 +208,7 @@ public class BackupItemInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the finishedTimeStamp value.
+     * Get timestamp when this backup finished.
      *
      * @return the finishedTimeStamp value
      */
@@ -217,7 +217,7 @@ public class BackupItemInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the correlationId value.
+     * Get unique correlation identifier. Please use this along with the timestamp while communicating with Azure support.
      *
      * @return the correlationId value
      */
@@ -226,7 +226,7 @@ public class BackupItemInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the websiteSizeInBytes value.
+     * Get size of the original web app which has been backed up.
      *
      * @return the websiteSizeInBytes value
      */

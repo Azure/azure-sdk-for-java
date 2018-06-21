@@ -78,7 +78,7 @@ public class Overlay {
     private Double audioGainLevel;
 
     /**
-     * Get the inputLabel value.
+     * Get the label of the job input which is to be used as an overlay. The Input must specify exactly one file. You can specify an image file in JPG or PNG formats, or an audio file (such as a WAV, MP3, WMA or M4A file), or a video file. See https://aka.ms/mesformats for the complete list of supported audio and video file formats.
      *
      * @return the inputLabel value
      */
@@ -87,7 +87,7 @@ public class Overlay {
     }
 
     /**
-     * Set the inputLabel value.
+     * Set the label of the job input which is to be used as an overlay. The Input must specify exactly one file. You can specify an image file in JPG or PNG formats, or an audio file (such as a WAV, MP3, WMA or M4A file), or a video file. See https://aka.ms/mesformats for the complete list of supported audio and video file formats.
      *
      * @param inputLabel the inputLabel value to set
      * @return the Overlay object itself.
@@ -98,7 +98,7 @@ public class Overlay {
     }
 
     /**
-     * Get the start value.
+     * Get the start position, with reference to the input video, at which the overlay starts. The value should be in ISO 8601 format. For example, PT05S to start the overlay at 5 seconds in to the input video. If not specified the overlay starts from the beginning of the input video.
      *
      * @return the start value
      */
@@ -107,7 +107,7 @@ public class Overlay {
     }
 
     /**
-     * Set the start value.
+     * Set the start position, with reference to the input video, at which the overlay starts. The value should be in ISO 8601 format. For example, PT05S to start the overlay at 5 seconds in to the input video. If not specified the overlay starts from the beginning of the input video.
      *
      * @param start the start value to set
      * @return the Overlay object itself.
@@ -118,7 +118,7 @@ public class Overlay {
     }
 
     /**
-     * Get the end value.
+     * Get the position in the input video at which the overlay ends. The value should be in ISO 8601 duration format. For example, PT30S to end the overlay at 30 seconds in to the input video. If not specified the overlay will be applied until the end of the input video if inputLoop is true. Else, if inputLoop is false, then overlay will last as long as the duration of the overlay media.
      *
      * @return the end value
      */
@@ -127,7 +127,7 @@ public class Overlay {
     }
 
     /**
-     * Set the end value.
+     * Set the position in the input video at which the overlay ends. The value should be in ISO 8601 duration format. For example, PT30S to end the overlay at 30 seconds in to the input video. If not specified the overlay will be applied until the end of the input video if inputLoop is true. Else, if inputLoop is false, then overlay will last as long as the duration of the overlay media.
      *
      * @param end the end value to set
      * @return the Overlay object itself.
@@ -138,7 +138,7 @@ public class Overlay {
     }
 
     /**
-     * Get the fadeInDuration value.
+     * Get the duration over which the overlay fades in onto the input video. The value should be in ISO 8601 duration format. If not specified the default behavior is to have no fade in (same as PT0S).
      *
      * @return the fadeInDuration value
      */
@@ -147,7 +147,7 @@ public class Overlay {
     }
 
     /**
-     * Set the fadeInDuration value.
+     * Set the duration over which the overlay fades in onto the input video. The value should be in ISO 8601 duration format. If not specified the default behavior is to have no fade in (same as PT0S).
      *
      * @param fadeInDuration the fadeInDuration value to set
      * @return the Overlay object itself.
@@ -158,7 +158,7 @@ public class Overlay {
     }
 
     /**
-     * Get the fadeOutDuration value.
+     * Get the duration over which the overlay fades out of the input video. The value should be in ISO 8601 duration format. If not specified the default behavior is to have no fade out (same as PT0S).
      *
      * @return the fadeOutDuration value
      */
@@ -167,7 +167,7 @@ public class Overlay {
     }
 
     /**
-     * Set the fadeOutDuration value.
+     * Set the duration over which the overlay fades out of the input video. The value should be in ISO 8601 duration format. If not specified the default behavior is to have no fade out (same as PT0S).
      *
      * @param fadeOutDuration the fadeOutDuration value to set
      * @return the Overlay object itself.
@@ -178,7 +178,7 @@ public class Overlay {
     }
 
     /**
-     * Get the audioGainLevel value.
+     * Get the gain level of audio in the overlay. The value should be in the range [0, 1.0]. The default is 1.0.
      *
      * @return the audioGainLevel value
      */
@@ -187,7 +187,7 @@ public class Overlay {
     }
 
     /**
-     * Set the audioGainLevel value.
+     * Set the gain level of audio in the overlay. The value should be in the range [0, 1.0]. The default is 1.0.
      *
      * @param audioGainLevel the audioGainLevel value to set
      * @return the Overlay object itself.

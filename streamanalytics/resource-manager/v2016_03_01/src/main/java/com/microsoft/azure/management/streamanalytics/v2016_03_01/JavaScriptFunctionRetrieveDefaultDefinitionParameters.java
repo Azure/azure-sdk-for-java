@@ -35,7 +35,7 @@ public class JavaScriptFunctionRetrieveDefaultDefinitionParameters extends Funct
     private UdfType udfType;
 
     /**
-     * Get the script value.
+     * Get the JavaScript code containing a single function definition. For example: 'function (x, y) { return x + y; }'.
      *
      * @return the script value
      */
@@ -44,7 +44,7 @@ public class JavaScriptFunctionRetrieveDefaultDefinitionParameters extends Funct
     }
 
     /**
-     * Set the script value.
+     * Set the JavaScript code containing a single function definition. For example: 'function (x, y) { return x + y; }'.
      *
      * @param script the script value to set
      * @return the JavaScriptFunctionRetrieveDefaultDefinitionParameters object itself.
@@ -55,7 +55,7 @@ public class JavaScriptFunctionRetrieveDefaultDefinitionParameters extends Funct
     }
 
     /**
-     * Get the udfType value.
+     * Get the function type. Possible values include: 'Scalar'.
      *
      * @return the udfType value
      */
@@ -64,7 +64,7 @@ public class JavaScriptFunctionRetrieveDefaultDefinitionParameters extends Funct
     }
 
     /**
-     * Set the udfType value.
+     * Set the function type. Possible values include: 'Scalar'.
      *
      * @param udfType the udfType value to set
      * @return the JavaScriptFunctionRetrieveDefaultDefinitionParameters object itself.

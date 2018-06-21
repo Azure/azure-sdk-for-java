@@ -22,7 +22,7 @@ public class B2BPartnerContent {
     private List<BusinessIdentity> businessIdentities;
 
     /**
-     * Get the businessIdentities value.
+     * Get the list of partner business identities.
      *
      * @return the businessIdentities value
      */
@@ -31,7 +31,7 @@ public class B2BPartnerContent {
     }
 
     /**
-     * Set the businessIdentities value.
+     * Set the list of partner business identities.
      *
      * @param businessIdentities the businessIdentities value to set
      * @return the B2BPartnerContent object itself.

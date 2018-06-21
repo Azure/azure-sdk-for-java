@@ -26,7 +26,7 @@ public class AacAudio extends Audio {
     private AacAudioProfile profile;
 
     /**
-     * Get the profile value.
+     * Get the encoding profile to be used when encoding audio with AAC. Possible values include: 'AacLc', 'HeAacV1', 'HeAacV2'.
      *
      * @return the profile value
      */
@@ -35,7 +35,7 @@ public class AacAudio extends Audio {
     }
 
     /**
-     * Set the profile value.
+     * Set the encoding profile to be used when encoding audio with AAC. Possible values include: 'AacLc', 'HeAacV1', 'HeAacV2'.
      *
      * @param profile the profile value to set
      * @return the AacAudio object itself.

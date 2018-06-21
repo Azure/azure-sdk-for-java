@@ -27,7 +27,7 @@ public class AvroSerialization extends Serialization {
     private Object properties;
 
     /**
-     * Get the properties value.
+     * Get the properties that are associated with the Avro serialization type. Required on PUT (CreateOrReplace) requests.
      *
      * @return the properties value
      */
@@ -36,7 +36,7 @@ public class AvroSerialization extends Serialization {
     }
 
     /**
-     * Set the properties value.
+     * Set the properties that are associated with the Avro serialization type. Required on PUT (CreateOrReplace) requests.
      *
      * @param properties the properties value to set
      * @return the AvroSerialization object itself.

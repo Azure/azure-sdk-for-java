@@ -88,7 +88,7 @@ public class X12ProtocolSettings {
     private List<X12DelimiterOverrides> x12DelimiterOverrides;
 
     /**
-     * Get the validationSettings value.
+     * Get the X12 validation settings.
      *
      * @return the validationSettings value
      */
@@ -97,7 +97,7 @@ public class X12ProtocolSettings {
     }
 
     /**
-     * Set the validationSettings value.
+     * Set the X12 validation settings.
      *
      * @param validationSettings the validationSettings value to set
      * @return the X12ProtocolSettings object itself.
@@ -108,7 +108,7 @@ public class X12ProtocolSettings {
     }
 
     /**
-     * Get the framingSettings value.
+     * Get the X12 framing settings.
      *
      * @return the framingSettings value
      */
@@ -117,7 +117,7 @@ public class X12ProtocolSettings {
     }
 
     /**
-     * Set the framingSettings value.
+     * Set the X12 framing settings.
      *
      * @param framingSettings the framingSettings value to set
      * @return the X12ProtocolSettings object itself.
@@ -128,7 +128,7 @@ public class X12ProtocolSettings {
     }
 
     /**
-     * Get the envelopeSettings value.
+     * Get the X12 envelope settings.
      *
      * @return the envelopeSettings value
      */
@@ -137,7 +137,7 @@ public class X12ProtocolSettings {
     }
 
     /**
-     * Set the envelopeSettings value.
+     * Set the X12 envelope settings.
      *
      * @param envelopeSettings the envelopeSettings value to set
      * @return the X12ProtocolSettings object itself.
@@ -148,7 +148,7 @@ public class X12ProtocolSettings {
     }
 
     /**
-     * Get the acknowledgementSettings value.
+     * Get the X12 acknowledgment settings.
      *
      * @return the acknowledgementSettings value
      */
@@ -157,7 +157,7 @@ public class X12ProtocolSettings {
     }
 
     /**
-     * Set the acknowledgementSettings value.
+     * Set the X12 acknowledgment settings.
      *
      * @param acknowledgementSettings the acknowledgementSettings value to set
      * @return the X12ProtocolSettings object itself.
@@ -168,7 +168,7 @@ public class X12ProtocolSettings {
     }
 
     /**
-     * Get the messageFilter value.
+     * Get the X12 message filter.
      *
      * @return the messageFilter value
      */
@@ -177,7 +177,7 @@ public class X12ProtocolSettings {
     }
 
     /**
-     * Set the messageFilter value.
+     * Set the X12 message filter.
      *
      * @param messageFilter the messageFilter value to set
      * @return the X12ProtocolSettings object itself.
@@ -188,7 +188,7 @@ public class X12ProtocolSettings {
     }
 
     /**
-     * Get the securitySettings value.
+     * Get the X12 security settings.
      *
      * @return the securitySettings value
      */
@@ -197,7 +197,7 @@ public class X12ProtocolSettings {
     }
 
     /**
-     * Set the securitySettings value.
+     * Set the X12 security settings.
      *
      * @param securitySettings the securitySettings value to set
      * @return the X12ProtocolSettings object itself.
@@ -208,7 +208,7 @@ public class X12ProtocolSettings {
     }
 
     /**
-     * Get the processingSettings value.
+     * Get the X12 processing settings.
      *
      * @return the processingSettings value
      */
@@ -217,7 +217,7 @@ public class X12ProtocolSettings {
     }
 
     /**
-     * Set the processingSettings value.
+     * Set the X12 processing settings.
      *
      * @param processingSettings the processingSettings value to set
      * @return the X12ProtocolSettings object itself.
@@ -228,7 +228,7 @@ public class X12ProtocolSettings {
     }
 
     /**
-     * Get the envelopeOverrides value.
+     * Get the X12 envelope override settings.
      *
      * @return the envelopeOverrides value
      */
@@ -237,7 +237,7 @@ public class X12ProtocolSettings {
     }
 
     /**
-     * Set the envelopeOverrides value.
+     * Set the X12 envelope override settings.
      *
      * @param envelopeOverrides the envelopeOverrides value to set
      * @return the X12ProtocolSettings object itself.
@@ -248,7 +248,7 @@ public class X12ProtocolSettings {
     }
 
     /**
-     * Get the validationOverrides value.
+     * Get the X12 validation override settings.
      *
      * @return the validationOverrides value
      */
@@ -257,7 +257,7 @@ public class X12ProtocolSettings {
     }
 
     /**
-     * Set the validationOverrides value.
+     * Set the X12 validation override settings.
      *
      * @param validationOverrides the validationOverrides value to set
      * @return the X12ProtocolSettings object itself.
@@ -268,7 +268,7 @@ public class X12ProtocolSettings {
     }
 
     /**
-     * Get the messageFilterList value.
+     * Get the X12 message filter list.
      *
      * @return the messageFilterList value
      */
@@ -277,7 +277,7 @@ public class X12ProtocolSettings {
     }
 
     /**
-     * Set the messageFilterList value.
+     * Set the X12 message filter list.
      *
      * @param messageFilterList the messageFilterList value to set
      * @return the X12ProtocolSettings object itself.
@@ -288,7 +288,7 @@ public class X12ProtocolSettings {
     }
 
     /**
-     * Get the schemaReferences value.
+     * Get the X12 schema references.
      *
      * @return the schemaReferences value
      */
@@ -297,7 +297,7 @@ public class X12ProtocolSettings {
     }
 
     /**
-     * Set the schemaReferences value.
+     * Set the X12 schema references.
      *
      * @param schemaReferences the schemaReferences value to set
      * @return the X12ProtocolSettings object itself.
@@ -308,7 +308,7 @@ public class X12ProtocolSettings {
     }
 
     /**
-     * Get the x12DelimiterOverrides value.
+     * Get the X12 delimiter override settings.
      *
      * @return the x12DelimiterOverrides value
      */
@@ -317,7 +317,7 @@ public class X12ProtocolSettings {
     }
 
     /**
-     * Set the x12DelimiterOverrides value.
+     * Set the X12 delimiter override settings.
      *
      * @param x12DelimiterOverrides the x12DelimiterOverrides value to set
      * @return the X12ProtocolSettings object itself.

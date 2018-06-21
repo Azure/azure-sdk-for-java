@@ -34,7 +34,7 @@ public class TagValueInner {
     private TagCount count;
 
     /**
-     * Get the id value.
+     * Get the tag ID.
      *
      * @return the id value
      */
@@ -43,7 +43,7 @@ public class TagValueInner {
     }
 
     /**
-     * Get the tagValue value.
+     * Get the tag value.
      *
      * @return the tagValue value
      */
@@ -52,7 +52,7 @@ public class TagValueInner {
     }
 
     /**
-     * Set the tagValue value.
+     * Set the tag value.
      *
      * @param tagValue the tagValue value to set
      * @return the TagValueInner object itself.
@@ -63,7 +63,7 @@ public class TagValueInner {
     }
 
     /**
-     * Get the count value.
+     * Get the tag value count.
      *
      * @return the count value
      */
@@ -72,7 +72,7 @@ public class TagValueInner {
     }
 
     /**
-     * Set the count value.
+     * Set the tag value count.
      *
      * @param count the count value to set
      * @return the TagValueInner object itself.

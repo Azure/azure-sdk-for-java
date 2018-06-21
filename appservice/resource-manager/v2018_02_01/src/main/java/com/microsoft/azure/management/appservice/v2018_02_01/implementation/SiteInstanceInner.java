@@ -24,7 +24,7 @@ public class SiteInstanceInner extends ProxyOnlyResource {
     private String siteInstanceName;
 
     /**
-     * Get the siteInstanceName value.
+     * Get name of instance.
      *
      * @return the siteInstanceName value
      */

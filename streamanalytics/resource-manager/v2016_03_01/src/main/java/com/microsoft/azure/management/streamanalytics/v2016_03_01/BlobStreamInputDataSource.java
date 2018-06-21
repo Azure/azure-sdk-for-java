@@ -69,7 +69,7 @@ public class BlobStreamInputDataSource extends StreamInputDataSource {
     private Integer sourcePartitionCount;
 
     /**
-     * Get the storageAccounts value.
+     * Get a list of one or more Azure Storage accounts. Required on PUT (CreateOrReplace) requests.
      *
      * @return the storageAccounts value
      */
@@ -78,7 +78,7 @@ public class BlobStreamInputDataSource extends StreamInputDataSource {
     }
 
     /**
-     * Set the storageAccounts value.
+     * Set a list of one or more Azure Storage accounts. Required on PUT (CreateOrReplace) requests.
      *
      * @param storageAccounts the storageAccounts value to set
      * @return the BlobStreamInputDataSource object itself.
@@ -89,7 +89,7 @@ public class BlobStreamInputDataSource extends StreamInputDataSource {
     }
 
     /**
-     * Get the container value.
+     * Get the name of a container within the associated Storage account. This container contains either the blob(s) to be read from or written to. Required on PUT (CreateOrReplace) requests.
      *
      * @return the container value
      */
@@ -98,7 +98,7 @@ public class BlobStreamInputDataSource extends StreamInputDataSource {
     }
 
     /**
-     * Set the container value.
+     * Set the name of a container within the associated Storage account. This container contains either the blob(s) to be read from or written to. Required on PUT (CreateOrReplace) requests.
      *
      * @param container the container value to set
      * @return the BlobStreamInputDataSource object itself.
@@ -109,7 +109,7 @@ public class BlobStreamInputDataSource extends StreamInputDataSource {
     }
 
     /**
-     * Get the pathPattern value.
+     * Get the blob path pattern. Not a regular expression. It represents a pattern against which blob names will be matched to determine whether or not they should be included as input or output to the job. See https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-input or https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for a more detailed explanation and example.
      *
      * @return the pathPattern value
      */
@@ -118,7 +118,7 @@ public class BlobStreamInputDataSource extends StreamInputDataSource {
     }
 
     /**
-     * Set the pathPattern value.
+     * Set the blob path pattern. Not a regular expression. It represents a pattern against which blob names will be matched to determine whether or not they should be included as input or output to the job. See https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-input or https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for a more detailed explanation and example.
      *
      * @param pathPattern the pathPattern value to set
      * @return the BlobStreamInputDataSource object itself.
@@ -129,7 +129,7 @@ public class BlobStreamInputDataSource extends StreamInputDataSource {
     }
 
     /**
-     * Get the dateFormat value.
+     * Get the date format. Wherever {date} appears in pathPattern, the value of this property is used as the date format instead.
      *
      * @return the dateFormat value
      */
@@ -138,7 +138,7 @@ public class BlobStreamInputDataSource extends StreamInputDataSource {
     }
 
     /**
-     * Set the dateFormat value.
+     * Set the date format. Wherever {date} appears in pathPattern, the value of this property is used as the date format instead.
      *
      * @param dateFormat the dateFormat value to set
      * @return the BlobStreamInputDataSource object itself.
@@ -149,7 +149,7 @@ public class BlobStreamInputDataSource extends StreamInputDataSource {
     }
 
     /**
-     * Get the timeFormat value.
+     * Get the time format. Wherever {time} appears in pathPattern, the value of this property is used as the time format instead.
      *
      * @return the timeFormat value
      */
@@ -158,7 +158,7 @@ public class BlobStreamInputDataSource extends StreamInputDataSource {
     }
 
     /**
-     * Set the timeFormat value.
+     * Set the time format. Wherever {time} appears in pathPattern, the value of this property is used as the time format instead.
      *
      * @param timeFormat the timeFormat value to set
      * @return the BlobStreamInputDataSource object itself.
@@ -169,7 +169,7 @@ public class BlobStreamInputDataSource extends StreamInputDataSource {
     }
 
     /**
-     * Get the sourcePartitionCount value.
+     * Get the partition count of the blob input data source. Range 1 - 256.
      *
      * @return the sourcePartitionCount value
      */
@@ -178,7 +178,7 @@ public class BlobStreamInputDataSource extends StreamInputDataSource {
     }
 
     /**
-     * Set the sourcePartitionCount value.
+     * Set the partition count of the blob input data source. Range 1 - 256.
      *
      * @param sourcePartitionCount the sourcePartitionCount value to set
      * @return the BlobStreamInputDataSource object itself.

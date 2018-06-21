@@ -53,7 +53,7 @@ public class WorkflowTriggerCallbackUrlInner {
     private WorkflowTriggerListCallbackUrlQueries queries;
 
     /**
-     * Get the value value.
+     * Get gets the workflow trigger callback URL.
      *
      * @return the value value
      */
@@ -62,7 +62,7 @@ public class WorkflowTriggerCallbackUrlInner {
     }
 
     /**
-     * Get the method value.
+     * Get gets the workflow trigger callback URL HTTP method.
      *
      * @return the method value
      */
@@ -71,7 +71,7 @@ public class WorkflowTriggerCallbackUrlInner {
     }
 
     /**
-     * Get the basePath value.
+     * Get gets the workflow trigger callback URL base path.
      *
      * @return the basePath value
      */
@@ -80,7 +80,7 @@ public class WorkflowTriggerCallbackUrlInner {
     }
 
     /**
-     * Get the relativePath value.
+     * Get gets the workflow trigger callback URL relative path.
      *
      * @return the relativePath value
      */
@@ -89,7 +89,7 @@ public class WorkflowTriggerCallbackUrlInner {
     }
 
     /**
-     * Get the relativePathParameters value.
+     * Get gets the workflow trigger callback URL relative path parameters.
      *
      * @return the relativePathParameters value
      */
@@ -98,7 +98,7 @@ public class WorkflowTriggerCallbackUrlInner {
     }
 
     /**
-     * Set the relativePathParameters value.
+     * Set gets the workflow trigger callback URL relative path parameters.
      *
      * @param relativePathParameters the relativePathParameters value to set
      * @return the WorkflowTriggerCallbackUrlInner object itself.
@@ -109,7 +109,7 @@ public class WorkflowTriggerCallbackUrlInner {
     }
 
     /**
-     * Get the queries value.
+     * Get gets the workflow trigger callback URL query parameters.
      *
      * @return the queries value
      */
@@ -118,7 +118,7 @@ public class WorkflowTriggerCallbackUrlInner {
     }
 
     /**
-     * Set the queries value.
+     * Set gets the workflow trigger callback URL query parameters.
      *
      * @param queries the queries value to set
      * @return the WorkflowTriggerCallbackUrlInner object itself.

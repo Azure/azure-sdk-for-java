@@ -27,7 +27,7 @@ public class MetricAvailabilily {
     private String retention;
 
     /**
-     * Get the timeGrain value.
+     * Get time grain.
      *
      * @return the timeGrain value
      */
@@ -36,7 +36,7 @@ public class MetricAvailabilily {
     }
 
     /**
-     * Set the timeGrain value.
+     * Set time grain.
      *
      * @param timeGrain the timeGrain value to set
      * @return the MetricAvailabilily object itself.
@@ -47,7 +47,7 @@ public class MetricAvailabilily {
     }
 
     /**
-     * Get the retention value.
+     * Get retention period for the current time grain.
      *
      * @return the retention value
      */
@@ -56,7 +56,7 @@ public class MetricAvailabilily {
     }
 
     /**
-     * Set the retention value.
+     * Set retention period for the current time grain.
      *
      * @param retention the retention value to set
      * @return the MetricAvailabilily object itself.

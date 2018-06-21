@@ -21,7 +21,7 @@ public class FeatureProperties {
     private String state;
 
     /**
-     * Get the state value.
+     * Get the registration state of the feature for the subscription.
      *
      * @return the state value
      */
@@ -30,7 +30,7 @@ public class FeatureProperties {
     }
 
     /**
-     * Set the state value.
+     * Set the registration state of the feature for the subscription.
      *
      * @param state the state value to set
      * @return the FeatureProperties object itself.

@@ -59,7 +59,7 @@ public class EventHubStreamInputDataSource extends StreamInputDataSource {
     private String consumerGroupName;
 
     /**
-     * Get the serviceBusNamespace value.
+     * Get the namespace that is associated with the desired Event Hub, Service Bus Queue, Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests.
      *
      * @return the serviceBusNamespace value
      */
@@ -68,7 +68,7 @@ public class EventHubStreamInputDataSource extends StreamInputDataSource {
     }
 
     /**
-     * Set the serviceBusNamespace value.
+     * Set the namespace that is associated with the desired Event Hub, Service Bus Queue, Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests.
      *
      * @param serviceBusNamespace the serviceBusNamespace value to set
      * @return the EventHubStreamInputDataSource object itself.
@@ -79,7 +79,7 @@ public class EventHubStreamInputDataSource extends StreamInputDataSource {
     }
 
     /**
-     * Get the sharedAccessPolicyName value.
+     * Get the shared access policy name for the Event Hub, Service Bus Queue, Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests.
      *
      * @return the sharedAccessPolicyName value
      */
@@ -88,7 +88,7 @@ public class EventHubStreamInputDataSource extends StreamInputDataSource {
     }
 
     /**
-     * Set the sharedAccessPolicyName value.
+     * Set the shared access policy name for the Event Hub, Service Bus Queue, Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests.
      *
      * @param sharedAccessPolicyName the sharedAccessPolicyName value to set
      * @return the EventHubStreamInputDataSource object itself.
@@ -99,7 +99,7 @@ public class EventHubStreamInputDataSource extends StreamInputDataSource {
     }
 
     /**
-     * Get the sharedAccessPolicyKey value.
+     * Get the shared access policy key for the specified shared access policy. Required on PUT (CreateOrReplace) requests.
      *
      * @return the sharedAccessPolicyKey value
      */
@@ -108,7 +108,7 @@ public class EventHubStreamInputDataSource extends StreamInputDataSource {
     }
 
     /**
-     * Set the sharedAccessPolicyKey value.
+     * Set the shared access policy key for the specified shared access policy. Required on PUT (CreateOrReplace) requests.
      *
      * @param sharedAccessPolicyKey the sharedAccessPolicyKey value to set
      * @return the EventHubStreamInputDataSource object itself.
@@ -119,7 +119,7 @@ public class EventHubStreamInputDataSource extends StreamInputDataSource {
     }
 
     /**
-     * Get the eventHubName value.
+     * Get the name of the Event Hub. Required on PUT (CreateOrReplace) requests.
      *
      * @return the eventHubName value
      */
@@ -128,7 +128,7 @@ public class EventHubStreamInputDataSource extends StreamInputDataSource {
     }
 
     /**
-     * Set the eventHubName value.
+     * Set the name of the Event Hub. Required on PUT (CreateOrReplace) requests.
      *
      * @param eventHubName the eventHubName value to set
      * @return the EventHubStreamInputDataSource object itself.
@@ -139,7 +139,7 @@ public class EventHubStreamInputDataSource extends StreamInputDataSource {
     }
 
     /**
-     * Get the consumerGroupName value.
+     * Get the name of an Event Hub Consumer Group that should be used to read events from the Event Hub. Specifying distinct consumer group names for multiple inputs allows each of those inputs to receive the same events from the Event Hub. If not specified, the input uses the Event Hub’s default consumer group.
      *
      * @return the consumerGroupName value
      */
@@ -148,7 +148,7 @@ public class EventHubStreamInputDataSource extends StreamInputDataSource {
     }
 
     /**
-     * Set the consumerGroupName value.
+     * Set the name of an Event Hub Consumer Group that should be used to read events from the Event Hub. Specifying distinct consumer group names for multiple inputs allows each of those inputs to receive the same events from the Event Hub. If not specified, the input uses the Event Hub’s default consumer group.
      *
      * @param consumerGroupName the consumerGroupName value to set
      * @return the EventHubStreamInputDataSource object itself.

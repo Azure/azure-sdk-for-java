@@ -46,7 +46,7 @@ public class AS2EnvelopeSettings {
     private boolean autogenerateFileName;
 
     /**
-     * Get the messageContentType value.
+     * Get the message content type.
      *
      * @return the messageContentType value
      */
@@ -55,7 +55,7 @@ public class AS2EnvelopeSettings {
     }
 
     /**
-     * Set the messageContentType value.
+     * Set the message content type.
      *
      * @param messageContentType the messageContentType value to set
      * @return the AS2EnvelopeSettings object itself.
@@ -66,7 +66,7 @@ public class AS2EnvelopeSettings {
     }
 
     /**
-     * Get the transmitFileNameInMimeHeader value.
+     * Get the value indicating whether to transmit file name in mime header.
      *
      * @return the transmitFileNameInMimeHeader value
      */
@@ -75,7 +75,7 @@ public class AS2EnvelopeSettings {
     }
 
     /**
-     * Set the transmitFileNameInMimeHeader value.
+     * Set the value indicating whether to transmit file name in mime header.
      *
      * @param transmitFileNameInMimeHeader the transmitFileNameInMimeHeader value to set
      * @return the AS2EnvelopeSettings object itself.
@@ -86,7 +86,7 @@ public class AS2EnvelopeSettings {
     }
 
     /**
-     * Get the fileNameTemplate value.
+     * Get the template for file name.
      *
      * @return the fileNameTemplate value
      */
@@ -95,7 +95,7 @@ public class AS2EnvelopeSettings {
     }
 
     /**
-     * Set the fileNameTemplate value.
+     * Set the template for file name.
      *
      * @param fileNameTemplate the fileNameTemplate value to set
      * @return the AS2EnvelopeSettings object itself.
@@ -106,7 +106,7 @@ public class AS2EnvelopeSettings {
     }
 
     /**
-     * Get the suspendMessageOnFileNameGenerationError value.
+     * Get the value indicating whether to suspend message on file name generation error.
      *
      * @return the suspendMessageOnFileNameGenerationError value
      */
@@ -115,7 +115,7 @@ public class AS2EnvelopeSettings {
     }
 
     /**
-     * Set the suspendMessageOnFileNameGenerationError value.
+     * Set the value indicating whether to suspend message on file name generation error.
      *
      * @param suspendMessageOnFileNameGenerationError the suspendMessageOnFileNameGenerationError value to set
      * @return the AS2EnvelopeSettings object itself.
@@ -126,7 +126,7 @@ public class AS2EnvelopeSettings {
     }
 
     /**
-     * Get the autogenerateFileName value.
+     * Get the value indicating whether to auto generate file name.
      *
      * @return the autogenerateFileName value
      */
@@ -135,7 +135,7 @@ public class AS2EnvelopeSettings {
     }
 
     /**
-     * Set the autogenerateFileName value.
+     * Set the value indicating whether to auto generate file name.
      *
      * @param autogenerateFileName the autogenerateFileName value to set
      * @return the AS2EnvelopeSettings object itself.

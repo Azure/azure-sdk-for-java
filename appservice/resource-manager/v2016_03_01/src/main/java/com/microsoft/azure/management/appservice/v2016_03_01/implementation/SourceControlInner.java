@@ -49,7 +49,7 @@ public class SourceControlInner extends ProxyOnlyResource {
     private DateTime expirationTime;
 
     /**
-     * Get the sourceControlName value.
+     * Get name or source control type.
      *
      * @return the sourceControlName value
      */
@@ -58,7 +58,7 @@ public class SourceControlInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the sourceControlName value.
+     * Set name or source control type.
      *
      * @param sourceControlName the sourceControlName value to set
      * @return the SourceControlInner object itself.
@@ -69,7 +69,7 @@ public class SourceControlInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the token value.
+     * Get oAuth access token.
      *
      * @return the token value
      */
@@ -78,7 +78,7 @@ public class SourceControlInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the token value.
+     * Set oAuth access token.
      *
      * @param token the token value to set
      * @return the SourceControlInner object itself.
@@ -89,7 +89,7 @@ public class SourceControlInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the tokenSecret value.
+     * Get oAuth access token secret.
      *
      * @return the tokenSecret value
      */
@@ -98,7 +98,7 @@ public class SourceControlInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the tokenSecret value.
+     * Set oAuth access token secret.
      *
      * @param tokenSecret the tokenSecret value to set
      * @return the SourceControlInner object itself.
@@ -109,7 +109,7 @@ public class SourceControlInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the refreshToken value.
+     * Get oAuth refresh token.
      *
      * @return the refreshToken value
      */
@@ -118,7 +118,7 @@ public class SourceControlInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the refreshToken value.
+     * Set oAuth refresh token.
      *
      * @param refreshToken the refreshToken value to set
      * @return the SourceControlInner object itself.
@@ -129,7 +129,7 @@ public class SourceControlInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the expirationTime value.
+     * Get oAuth token expiration.
      *
      * @return the expirationTime value
      */
@@ -138,7 +138,7 @@ public class SourceControlInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the expirationTime value.
+     * Set oAuth token expiration.
      *
      * @param expirationTime the expirationTime value to set
      * @return the SourceControlInner object itself.

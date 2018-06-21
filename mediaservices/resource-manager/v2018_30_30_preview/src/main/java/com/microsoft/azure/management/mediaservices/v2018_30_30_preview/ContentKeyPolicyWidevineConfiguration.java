@@ -25,7 +25,7 @@ public class ContentKeyPolicyWidevineConfiguration extends ContentKeyPolicyConfi
     private String widevineTemplate;
 
     /**
-     * Get the widevineTemplate value.
+     * Get the Widevine template.
      *
      * @return the widevineTemplate value
      */
@@ -34,7 +34,7 @@ public class ContentKeyPolicyWidevineConfiguration extends ContentKeyPolicyConfi
     }
 
     /**
-     * Set the widevineTemplate value.
+     * Set the Widevine template.
      *
      * @param widevineTemplate the widevineTemplate value to set
      * @return the ContentKeyPolicyWidevineConfiguration object itself.

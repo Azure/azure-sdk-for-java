@@ -56,41 +56,22 @@ class SchemasImpl extends WrapperImpl<SchemasInner> implements Schemas {
         });
     }
 
-    private Observable<Page<IntegrationAccountSchemaInner>> listByIntegrationAccountsNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        SchemasInner client = this.inner();
-        return client.listByIntegrationAccountsNextAsync(nextLink)
-        .flatMap(new Func1<Page<IntegrationAccountSchemaInner>, Observable<Page<IntegrationAccountSchemaInner>>>() {
-            @Override
-            public Observable<Page<IntegrationAccountSchemaInner>> call(Page<IntegrationAccountSchemaInner> page) {
-                return Observable.just(page).concatWith(listByIntegrationAccountsNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<IntegrationAccountSchema> listByIntegrationAccountsAsync(final String resourceGroupName, final String integrationAccountName) {
         SchemasInner client = this.inner();
         return client.listByIntegrationAccountsAsync(resourceGroupName, integrationAccountName)
-        .flatMap(new Func1<Page<IntegrationAccountSchemaInner>, Observable<Page<IntegrationAccountSchemaInner>>>() {
-            @Override
-            public Observable<Page<IntegrationAccountSchemaInner>> call(Page<IntegrationAccountSchemaInner> page) {
-                return listByIntegrationAccountsNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<IntegrationAccountSchemaInner>, Iterable<IntegrationAccountSchemaInner>>() {
             @Override
             public Iterable<IntegrationAccountSchemaInner> call(Page<IntegrationAccountSchemaInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<IntegrationAccountSchemaInner, IntegrationAccountSchema>() {
             @Override
             public IntegrationAccountSchema call(IntegrationAccountSchemaInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override

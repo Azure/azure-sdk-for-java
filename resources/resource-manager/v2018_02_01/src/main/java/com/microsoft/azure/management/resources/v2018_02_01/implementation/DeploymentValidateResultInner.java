@@ -29,7 +29,7 @@ public class DeploymentValidateResultInner {
     private DeploymentPropertiesExtended properties;
 
     /**
-     * Get the error value.
+     * Get validation error.
      *
      * @return the error value
      */
@@ -38,7 +38,7 @@ public class DeploymentValidateResultInner {
     }
 
     /**
-     * Set the error value.
+     * Set validation error.
      *
      * @param error the error value to set
      * @return the DeploymentValidateResultInner object itself.
@@ -49,7 +49,7 @@ public class DeploymentValidateResultInner {
     }
 
     /**
-     * Get the properties value.
+     * Get the template deployment properties.
      *
      * @return the properties value
      */
@@ -58,7 +58,7 @@ public class DeploymentValidateResultInner {
     }
 
     /**
-     * Set the properties value.
+     * Set the template deployment properties.
      *
      * @param properties the properties value to set
      * @return the DeploymentValidateResultInner object itself.

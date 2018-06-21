@@ -75,7 +75,7 @@ public class ValidateRequest {
     private String hostingEnvironment;
 
     /**
-     * Get the name value.
+     * Get resource name to verify.
      *
      * @return the name value
      */
@@ -84,7 +84,7 @@ public class ValidateRequest {
     }
 
     /**
-     * Set the name value.
+     * Set resource name to verify.
      *
      * @param name the name value to set
      * @return the ValidateRequest object itself.
@@ -95,7 +95,7 @@ public class ValidateRequest {
     }
 
     /**
-     * Get the type value.
+     * Get resource type used for verification. Possible values include: 'ServerFarm', 'Site'.
      *
      * @return the type value
      */
@@ -104,7 +104,7 @@ public class ValidateRequest {
     }
 
     /**
-     * Set the type value.
+     * Set resource type used for verification. Possible values include: 'ServerFarm', 'Site'.
      *
      * @param type the type value to set
      * @return the ValidateRequest object itself.
@@ -115,7 +115,7 @@ public class ValidateRequest {
     }
 
     /**
-     * Get the location value.
+     * Get expected location of the resource.
      *
      * @return the location value
      */
@@ -124,7 +124,7 @@ public class ValidateRequest {
     }
 
     /**
-     * Set the location value.
+     * Set expected location of the resource.
      *
      * @param location the location value to set
      * @return the ValidateRequest object itself.
@@ -135,7 +135,7 @@ public class ValidateRequest {
     }
 
     /**
-     * Get the serverFarmId value.
+     * Get aRM resource ID of an App Service plan that would host the app.
      *
      * @return the serverFarmId value
      */
@@ -144,7 +144,7 @@ public class ValidateRequest {
     }
 
     /**
-     * Set the serverFarmId value.
+     * Set aRM resource ID of an App Service plan that would host the app.
      *
      * @param serverFarmId the serverFarmId value to set
      * @return the ValidateRequest object itself.
@@ -155,7 +155,7 @@ public class ValidateRequest {
     }
 
     /**
-     * Get the skuName value.
+     * Get name of the target SKU for the App Service plan.
      *
      * @return the skuName value
      */
@@ -164,7 +164,7 @@ public class ValidateRequest {
     }
 
     /**
-     * Set the skuName value.
+     * Set name of the target SKU for the App Service plan.
      *
      * @param skuName the skuName value to set
      * @return the ValidateRequest object itself.
@@ -175,7 +175,7 @@ public class ValidateRequest {
     }
 
     /**
-     * Get the needLinuxWorkers value.
+     * Get &lt;code&gt;true&lt;/code&gt; if App Service plan is for Linux workers; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @return the needLinuxWorkers value
      */
@@ -184,7 +184,7 @@ public class ValidateRequest {
     }
 
     /**
-     * Set the needLinuxWorkers value.
+     * Set &lt;code&gt;true&lt;/code&gt; if App Service plan is for Linux workers; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @param needLinuxWorkers the needLinuxWorkers value to set
      * @return the ValidateRequest object itself.
@@ -195,7 +195,7 @@ public class ValidateRequest {
     }
 
     /**
-     * Get the isSpot value.
+     * Get &lt;code&gt;true&lt;/code&gt; if App Service plan is for Spot instances; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @return the isSpot value
      */
@@ -204,7 +204,7 @@ public class ValidateRequest {
     }
 
     /**
-     * Set the isSpot value.
+     * Set &lt;code&gt;true&lt;/code&gt; if App Service plan is for Spot instances; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @param isSpot the isSpot value to set
      * @return the ValidateRequest object itself.
@@ -215,7 +215,7 @@ public class ValidateRequest {
     }
 
     /**
-     * Get the capacity value.
+     * Get target capacity of the App Service plan (number of VM's).
      *
      * @return the capacity value
      */
@@ -224,7 +224,7 @@ public class ValidateRequest {
     }
 
     /**
-     * Set the capacity value.
+     * Set target capacity of the App Service plan (number of VM's).
      *
      * @param capacity the capacity value to set
      * @return the ValidateRequest object itself.
@@ -235,7 +235,7 @@ public class ValidateRequest {
     }
 
     /**
-     * Get the hostingEnvironment value.
+     * Get name of App Service Environment where app or App Service plan should be created.
      *
      * @return the hostingEnvironment value
      */
@@ -244,7 +244,7 @@ public class ValidateRequest {
     }
 
     /**
-     * Set the hostingEnvironment value.
+     * Set name of App Service Environment where app or App Service plan should be created.
      *
      * @param hostingEnvironment the hostingEnvironment value to set
      * @return the ValidateRequest object itself.

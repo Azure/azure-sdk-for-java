@@ -34,7 +34,7 @@ public class AkamaiSignatureHeaderAuthenticationKey {
     private DateTime expiration;
 
     /**
-     * Get the identifier value.
+     * Get identifier of the key.
      *
      * @return the identifier value
      */
@@ -43,7 +43,7 @@ public class AkamaiSignatureHeaderAuthenticationKey {
     }
 
     /**
-     * Set the identifier value.
+     * Set identifier of the key.
      *
      * @param identifier the identifier value to set
      * @return the AkamaiSignatureHeaderAuthenticationKey object itself.
@@ -54,7 +54,7 @@ public class AkamaiSignatureHeaderAuthenticationKey {
     }
 
     /**
-     * Get the base64Key value.
+     * Get authentication key.
      *
      * @return the base64Key value
      */
@@ -63,7 +63,7 @@ public class AkamaiSignatureHeaderAuthenticationKey {
     }
 
     /**
-     * Set the base64Key value.
+     * Set authentication key.
      *
      * @param base64Key the base64Key value to set
      * @return the AkamaiSignatureHeaderAuthenticationKey object itself.
@@ -74,7 +74,7 @@ public class AkamaiSignatureHeaderAuthenticationKey {
     }
 
     /**
-     * Get the expiration value.
+     * Get the exact time the authentication key.
      *
      * @return the expiration value
      */
@@ -83,7 +83,7 @@ public class AkamaiSignatureHeaderAuthenticationKey {
     }
 
     /**
-     * Set the expiration value.
+     * Set the exact time the authentication key.
      *
      * @param expiration the expiration value to set
      * @return the AkamaiSignatureHeaderAuthenticationKey object itself.

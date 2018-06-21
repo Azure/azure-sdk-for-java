@@ -52,7 +52,7 @@ public class DiagnosticAnalysisInner extends ProxyOnlyResource {
     private List<DetectorDefinitionInner> nonCorrelatedDetectors;
 
     /**
-     * Get the startTime value.
+     * Get start time of the period.
      *
      * @return the startTime value
      */
@@ -61,7 +61,7 @@ public class DiagnosticAnalysisInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the startTime value.
+     * Set start time of the period.
      *
      * @param startTime the startTime value to set
      * @return the DiagnosticAnalysisInner object itself.
@@ -72,7 +72,7 @@ public class DiagnosticAnalysisInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the endTime value.
+     * Get end time of the period.
      *
      * @return the endTime value
      */
@@ -81,7 +81,7 @@ public class DiagnosticAnalysisInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the endTime value.
+     * Set end time of the period.
      *
      * @param endTime the endTime value to set
      * @return the DiagnosticAnalysisInner object itself.
@@ -92,7 +92,7 @@ public class DiagnosticAnalysisInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the abnormalTimePeriods value.
+     * Get list of time periods.
      *
      * @return the abnormalTimePeriods value
      */
@@ -101,7 +101,7 @@ public class DiagnosticAnalysisInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the abnormalTimePeriods value.
+     * Set list of time periods.
      *
      * @param abnormalTimePeriods the abnormalTimePeriods value to set
      * @return the DiagnosticAnalysisInner object itself.
@@ -112,7 +112,7 @@ public class DiagnosticAnalysisInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the payload value.
+     * Get data by each detector.
      *
      * @return the payload value
      */
@@ -121,7 +121,7 @@ public class DiagnosticAnalysisInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the payload value.
+     * Set data by each detector.
      *
      * @param payload the payload value to set
      * @return the DiagnosticAnalysisInner object itself.
@@ -132,7 +132,7 @@ public class DiagnosticAnalysisInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the nonCorrelatedDetectors value.
+     * Get data by each detector for detectors that did not corelate.
      *
      * @return the nonCorrelatedDetectors value
      */
@@ -141,7 +141,7 @@ public class DiagnosticAnalysisInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the nonCorrelatedDetectors value.
+     * Set data by each detector for detectors that did not corelate.
      *
      * @param nonCorrelatedDetectors the nonCorrelatedDetectors value to set
      * @return the DiagnosticAnalysisInner object itself.

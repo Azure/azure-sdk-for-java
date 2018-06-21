@@ -29,7 +29,7 @@ public class OnErrorDeployment {
     private String deploymentName;
 
     /**
-     * Get the type value.
+     * Get the deployment on error behavior type. Possible values are LastSuccessful and SpecificDeployment. Possible values include: 'LastSuccessful', 'SpecificDeployment'.
      *
      * @return the type value
      */
@@ -38,7 +38,7 @@ public class OnErrorDeployment {
     }
 
     /**
-     * Set the type value.
+     * Set the deployment on error behavior type. Possible values are LastSuccessful and SpecificDeployment. Possible values include: 'LastSuccessful', 'SpecificDeployment'.
      *
      * @param type the type value to set
      * @return the OnErrorDeployment object itself.
@@ -49,7 +49,7 @@ public class OnErrorDeployment {
     }
 
     /**
-     * Get the deploymentName value.
+     * Get the deployment to be used on error case.
      *
      * @return the deploymentName value
      */
@@ -58,7 +58,7 @@ public class OnErrorDeployment {
     }
 
     /**
-     * Set the deploymentName value.
+     * Set the deployment to be used on error case.
      *
      * @param deploymentName the deploymentName value to set
      * @return the OnErrorDeployment object itself.

@@ -28,7 +28,7 @@ public class ValidateResponseInner {
     private ValidateResponseError error;
 
     /**
-     * Get the status value.
+     * Get result of validation.
      *
      * @return the status value
      */
@@ -37,7 +37,7 @@ public class ValidateResponseInner {
     }
 
     /**
-     * Set the status value.
+     * Set result of validation.
      *
      * @param status the status value to set
      * @return the ValidateResponseInner object itself.
@@ -48,7 +48,7 @@ public class ValidateResponseInner {
     }
 
     /**
-     * Get the error value.
+     * Get error details for the case when validation fails.
      *
      * @return the error value
      */
@@ -57,7 +57,7 @@ public class ValidateResponseInner {
     }
 
     /**
-     * Set the error value.
+     * Set error details for the case when validation fails.
      *
      * @param error the error value to set
      * @return the ValidateResponseInner object itself.

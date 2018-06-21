@@ -157,7 +157,8 @@ class ManagementLocksImpl extends WrapperImpl<ManagementLocksInner> implements M
             public Iterable<ManagementLockObjectInner> call(Page<ManagementLockObjectInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<ManagementLockObjectInner, ManagementLockObject>() {
+        })
+        .map(new Func1<ManagementLockObjectInner, ManagementLockObject>() {
             @Override
             public ManagementLockObject call(ManagementLockObjectInner inner) {
                 return new ManagementLockObjectImpl(inner, manager());

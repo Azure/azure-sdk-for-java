@@ -42,7 +42,7 @@ public class TransformOutput {
     private Preset preset;
 
     /**
-     * Get the onError value.
+     * Get a Transform can define more than one outputs. This property defines what the service should do when one output fails - either continue to produce other outputs, or, stop the other outputs. The default is stop. Possible values include: 'StopProcessingJob', 'ContinueJob'.
      *
      * @return the onError value
      */
@@ -51,7 +51,7 @@ public class TransformOutput {
     }
 
     /**
-     * Set the onError value.
+     * Set a Transform can define more than one outputs. This property defines what the service should do when one output fails - either continue to produce other outputs, or, stop the other outputs. The default is stop. Possible values include: 'StopProcessingJob', 'ContinueJob'.
      *
      * @param onError the onError value to set
      * @return the TransformOutput object itself.
@@ -62,7 +62,7 @@ public class TransformOutput {
     }
 
     /**
-     * Get the relativePriority value.
+     * Get sets the relative priority of the TransformOutputs within a Transform. This sets the priority that the service uses for processing TransformOutputs. The default priority is Normal. Possible values include: 'Low', 'Normal', 'High'.
      *
      * @return the relativePriority value
      */
@@ -71,7 +71,7 @@ public class TransformOutput {
     }
 
     /**
-     * Set the relativePriority value.
+     * Set sets the relative priority of the TransformOutputs within a Transform. This sets the priority that the service uses for processing TransformOutputs. The default priority is Normal. Possible values include: 'Low', 'Normal', 'High'.
      *
      * @param relativePriority the relativePriority value to set
      * @return the TransformOutput object itself.
@@ -82,7 +82,7 @@ public class TransformOutput {
     }
 
     /**
-     * Get the preset value.
+     * Get preset that describes the operations that will be used to modify, transcode, or extract insights from the source file to generate the output.
      *
      * @return the preset value
      */
@@ -91,7 +91,7 @@ public class TransformOutput {
     }
 
     /**
-     * Set the preset value.
+     * Set preset that describes the operations that will be used to modify, transcode, or extract insights from the source file to generate the output.
      *
      * @param preset the preset value to set
      * @return the TransformOutput object itself.

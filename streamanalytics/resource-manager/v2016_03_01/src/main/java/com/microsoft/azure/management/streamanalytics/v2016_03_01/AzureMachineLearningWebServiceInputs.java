@@ -30,7 +30,7 @@ public class AzureMachineLearningWebServiceInputs {
     private List<AzureMachineLearningWebServiceInputColumn> columnNames;
 
     /**
-     * Get the name value.
+     * Get the name of the input. This is the name provided while authoring the endpoint.
      *
      * @return the name value
      */
@@ -39,7 +39,7 @@ public class AzureMachineLearningWebServiceInputs {
     }
 
     /**
-     * Set the name value.
+     * Set the name of the input. This is the name provided while authoring the endpoint.
      *
      * @param name the name value to set
      * @return the AzureMachineLearningWebServiceInputs object itself.
@@ -50,7 +50,7 @@ public class AzureMachineLearningWebServiceInputs {
     }
 
     /**
-     * Get the columnNames value.
+     * Get a list of input columns for the Azure Machine Learning web service endpoint.
      *
      * @return the columnNames value
      */
@@ -59,7 +59,7 @@ public class AzureMachineLearningWebServiceInputs {
     }
 
     /**
-     * Set the columnNames value.
+     * Set a list of input columns for the Azure Machine Learning web service endpoint.
      *
      * @param columnNames the columnNames value to set
      * @return the AzureMachineLearningWebServiceInputs object itself.

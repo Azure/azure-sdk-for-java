@@ -45,7 +45,7 @@ public class Plan {
     private String version;
 
     /**
-     * Get the name value.
+     * Get the plan ID.
      *
      * @return the name value
      */
@@ -54,7 +54,7 @@ public class Plan {
     }
 
     /**
-     * Set the name value.
+     * Set the plan ID.
      *
      * @param name the name value to set
      * @return the Plan object itself.
@@ -65,7 +65,7 @@ public class Plan {
     }
 
     /**
-     * Get the publisher value.
+     * Get the publisher ID.
      *
      * @return the publisher value
      */
@@ -74,7 +74,7 @@ public class Plan {
     }
 
     /**
-     * Set the publisher value.
+     * Set the publisher ID.
      *
      * @param publisher the publisher value to set
      * @return the Plan object itself.
@@ -85,7 +85,7 @@ public class Plan {
     }
 
     /**
-     * Get the product value.
+     * Get the offer ID.
      *
      * @return the product value
      */
@@ -94,7 +94,7 @@ public class Plan {
     }
 
     /**
-     * Set the product value.
+     * Set the offer ID.
      *
      * @param product the product value to set
      * @return the Plan object itself.
@@ -105,7 +105,7 @@ public class Plan {
     }
 
     /**
-     * Get the promotionCode value.
+     * Get the promotion code.
      *
      * @return the promotionCode value
      */
@@ -114,7 +114,7 @@ public class Plan {
     }
 
     /**
-     * Set the promotionCode value.
+     * Set the promotion code.
      *
      * @param promotionCode the promotionCode value to set
      * @return the Plan object itself.
@@ -125,7 +125,7 @@ public class Plan {
     }
 
     /**
-     * Get the version value.
+     * Get the plan's version.
      *
      * @return the version value
      */
@@ -134,7 +134,7 @@ public class Plan {
     }
 
     /**
-     * Set the version value.
+     * Set the plan's version.
      *
      * @param version the version value to set
      * @return the Plan object itself.

@@ -36,7 +36,7 @@ public class RenewCertificateOrderRequest extends ProxyOnlyResource {
     private Boolean isPrivateKeyExternal;
 
     /**
-     * Get the keySize value.
+     * Get certificate Key Size.
      *
      * @return the keySize value
      */
@@ -45,7 +45,7 @@ public class RenewCertificateOrderRequest extends ProxyOnlyResource {
     }
 
     /**
-     * Set the keySize value.
+     * Set certificate Key Size.
      *
      * @param keySize the keySize value to set
      * @return the RenewCertificateOrderRequest object itself.
@@ -56,7 +56,7 @@ public class RenewCertificateOrderRequest extends ProxyOnlyResource {
     }
 
     /**
-     * Get the csr value.
+     * Get csr to be used for re-key operation.
      *
      * @return the csr value
      */
@@ -65,7 +65,7 @@ public class RenewCertificateOrderRequest extends ProxyOnlyResource {
     }
 
     /**
-     * Set the csr value.
+     * Set csr to be used for re-key operation.
      *
      * @param csr the csr value to set
      * @return the RenewCertificateOrderRequest object itself.
@@ -76,7 +76,7 @@ public class RenewCertificateOrderRequest extends ProxyOnlyResource {
     }
 
     /**
-     * Get the isPrivateKeyExternal value.
+     * Get should we change the ASC type (from managed private key to external private key and vice versa).
      *
      * @return the isPrivateKeyExternal value
      */
@@ -85,7 +85,7 @@ public class RenewCertificateOrderRequest extends ProxyOnlyResource {
     }
 
     /**
-     * Set the isPrivateKeyExternal value.
+     * Set should we change the ASC type (from managed private key to external private key and vice versa).
      *
      * @param isPrivateKeyExternal the isPrivateKeyExternal value to set
      * @return the RenewCertificateOrderRequest object itself.

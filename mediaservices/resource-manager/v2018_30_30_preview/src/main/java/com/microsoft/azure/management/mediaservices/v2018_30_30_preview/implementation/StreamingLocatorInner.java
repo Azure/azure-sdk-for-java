@@ -76,7 +76,7 @@ public class StreamingLocatorInner extends ProxyResource {
     private List<StreamingLocatorUserDefinedContentKey> contentKeys;
 
     /**
-     * Get the assetName value.
+     * Get asset Name.
      *
      * @return the assetName value
      */
@@ -85,7 +85,7 @@ public class StreamingLocatorInner extends ProxyResource {
     }
 
     /**
-     * Set the assetName value.
+     * Set asset Name.
      *
      * @param assetName the assetName value to set
      * @return the StreamingLocatorInner object itself.
@@ -96,7 +96,7 @@ public class StreamingLocatorInner extends ProxyResource {
     }
 
     /**
-     * Get the created value.
+     * Get creation time of Streaming Locator.
      *
      * @return the created value
      */
@@ -105,7 +105,7 @@ public class StreamingLocatorInner extends ProxyResource {
     }
 
     /**
-     * Get the startTime value.
+     * Get startTime of Streaming Locator.
      *
      * @return the startTime value
      */
@@ -114,7 +114,7 @@ public class StreamingLocatorInner extends ProxyResource {
     }
 
     /**
-     * Set the startTime value.
+     * Set startTime of Streaming Locator.
      *
      * @param startTime the startTime value to set
      * @return the StreamingLocatorInner object itself.
@@ -125,7 +125,7 @@ public class StreamingLocatorInner extends ProxyResource {
     }
 
     /**
-     * Get the endTime value.
+     * Get endTime of Streaming Locator.
      *
      * @return the endTime value
      */
@@ -134,7 +134,7 @@ public class StreamingLocatorInner extends ProxyResource {
     }
 
     /**
-     * Set the endTime value.
+     * Set endTime of Streaming Locator.
      *
      * @param endTime the endTime value to set
      * @return the StreamingLocatorInner object itself.
@@ -145,7 +145,7 @@ public class StreamingLocatorInner extends ProxyResource {
     }
 
     /**
-     * Get the streamingLocatorId value.
+     * Get streamingLocatorId of Streaming Locator.
      *
      * @return the streamingLocatorId value
      */
@@ -154,7 +154,7 @@ public class StreamingLocatorInner extends ProxyResource {
     }
 
     /**
-     * Set the streamingLocatorId value.
+     * Set streamingLocatorId of Streaming Locator.
      *
      * @param streamingLocatorId the streamingLocatorId value to set
      * @return the StreamingLocatorInner object itself.
@@ -165,7 +165,7 @@ public class StreamingLocatorInner extends ProxyResource {
     }
 
     /**
-     * Get the streamingPolicyName value.
+     * Get streaming policy name used by this streaming locator. Either specify the name of streaming policy you created or use one of the predefined streaming polices. The predefined streaming policies available are: 'Predefined_DownloadOnly', 'Predefined_ClearStreamingOnly', 'Predefined_DownloadAndClearStreaming', 'Predefined_ClearKey', 'Predefined_SecureStreaming' and 'Predefined_SecureStreamingWithFairPlay'.
      *
      * @return the streamingPolicyName value
      */
@@ -174,7 +174,7 @@ public class StreamingLocatorInner extends ProxyResource {
     }
 
     /**
-     * Set the streamingPolicyName value.
+     * Set streaming policy name used by this streaming locator. Either specify the name of streaming policy you created or use one of the predefined streaming polices. The predefined streaming policies available are: 'Predefined_DownloadOnly', 'Predefined_ClearStreamingOnly', 'Predefined_DownloadAndClearStreaming', 'Predefined_ClearKey', 'Predefined_SecureStreaming' and 'Predefined_SecureStreamingWithFairPlay'.
      *
      * @param streamingPolicyName the streamingPolicyName value to set
      * @return the StreamingLocatorInner object itself.
@@ -185,7 +185,7 @@ public class StreamingLocatorInner extends ProxyResource {
     }
 
     /**
-     * Get the defaultContentKeyPolicyName value.
+     * Get default ContentKeyPolicy used by this Streaming Locator.
      *
      * @return the defaultContentKeyPolicyName value
      */
@@ -194,7 +194,7 @@ public class StreamingLocatorInner extends ProxyResource {
     }
 
     /**
-     * Set the defaultContentKeyPolicyName value.
+     * Set default ContentKeyPolicy used by this Streaming Locator.
      *
      * @param defaultContentKeyPolicyName the defaultContentKeyPolicyName value to set
      * @return the StreamingLocatorInner object itself.
@@ -205,7 +205,7 @@ public class StreamingLocatorInner extends ProxyResource {
     }
 
     /**
-     * Get the contentKeys value.
+     * Get contentKeys used by this Streaming Locator.
      *
      * @return the contentKeys value
      */
@@ -214,7 +214,7 @@ public class StreamingLocatorInner extends ProxyResource {
     }
 
     /**
-     * Set the contentKeys value.
+     * Set contentKeys used by this Streaming Locator.
      *
      * @param contentKeys the contentKeys value to set
      * @return the StreamingLocatorInner object itself.

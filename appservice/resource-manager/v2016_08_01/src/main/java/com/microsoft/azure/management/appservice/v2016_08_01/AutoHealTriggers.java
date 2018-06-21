@@ -40,7 +40,7 @@ public class AutoHealTriggers {
     private SlowRequestsBasedTrigger slowRequests;
 
     /**
-     * Get the requests value.
+     * Get a rule based on total requests.
      *
      * @return the requests value
      */
@@ -49,7 +49,7 @@ public class AutoHealTriggers {
     }
 
     /**
-     * Set the requests value.
+     * Set a rule based on total requests.
      *
      * @param requests the requests value to set
      * @return the AutoHealTriggers object itself.
@@ -60,7 +60,7 @@ public class AutoHealTriggers {
     }
 
     /**
-     * Get the privateBytesInKB value.
+     * Get a rule based on private bytes.
      *
      * @return the privateBytesInKB value
      */
@@ -69,7 +69,7 @@ public class AutoHealTriggers {
     }
 
     /**
-     * Set the privateBytesInKB value.
+     * Set a rule based on private bytes.
      *
      * @param privateBytesInKB the privateBytesInKB value to set
      * @return the AutoHealTriggers object itself.
@@ -80,7 +80,7 @@ public class AutoHealTriggers {
     }
 
     /**
-     * Get the statusCodes value.
+     * Get a rule based on status codes.
      *
      * @return the statusCodes value
      */
@@ -89,7 +89,7 @@ public class AutoHealTriggers {
     }
 
     /**
-     * Set the statusCodes value.
+     * Set a rule based on status codes.
      *
      * @param statusCodes the statusCodes value to set
      * @return the AutoHealTriggers object itself.
@@ -100,7 +100,7 @@ public class AutoHealTriggers {
     }
 
     /**
-     * Get the slowRequests value.
+     * Get a rule based on request execution time.
      *
      * @return the slowRequests value
      */
@@ -109,7 +109,7 @@ public class AutoHealTriggers {
     }
 
     /**
-     * Set the slowRequests value.
+     * Set a rule based on request execution time.
      *
      * @param slowRequests the slowRequests value to set
      * @return the AutoHealTriggers object itself.

@@ -53,7 +53,7 @@ public class ArtifactContentPropertiesDefinition extends ArtifactProperties {
     }
 
     /**
-     * Get the contentType value.
+     * Get the content type.
      *
      * @return the contentType value
      */
@@ -62,7 +62,7 @@ public class ArtifactContentPropertiesDefinition extends ArtifactProperties {
     }
 
     /**
-     * Set the contentType value.
+     * Set the content type.
      *
      * @param contentType the contentType value to set
      * @return the ArtifactContentPropertiesDefinition object itself.
@@ -73,7 +73,7 @@ public class ArtifactContentPropertiesDefinition extends ArtifactProperties {
     }
 
     /**
-     * Get the contentLink value.
+     * Get the content link.
      *
      * @return the contentLink value
      */
@@ -82,7 +82,7 @@ public class ArtifactContentPropertiesDefinition extends ArtifactProperties {
     }
 
     /**
-     * Set the contentLink value.
+     * Set the content link.
      *
      * @param contentLink the contentLink value to set
      * @return the ArtifactContentPropertiesDefinition object itself.

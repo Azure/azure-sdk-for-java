@@ -27,7 +27,7 @@ public class JsonSchemaInner {
     private String content;
 
     /**
-     * Get the title value.
+     * Get the JSON title.
      *
      * @return the title value
      */
@@ -36,7 +36,7 @@ public class JsonSchemaInner {
     }
 
     /**
-     * Set the title value.
+     * Set the JSON title.
      *
      * @param title the title value to set
      * @return the JsonSchemaInner object itself.
@@ -47,7 +47,7 @@ public class JsonSchemaInner {
     }
 
     /**
-     * Get the content value.
+     * Get the JSON content.
      *
      * @return the content value
      */
@@ -56,7 +56,7 @@ public class JsonSchemaInner {
     }
 
     /**
-     * Set the content value.
+     * Set the JSON content.
      *
      * @param content the content value to set
      * @return the JsonSchemaInner object itself.

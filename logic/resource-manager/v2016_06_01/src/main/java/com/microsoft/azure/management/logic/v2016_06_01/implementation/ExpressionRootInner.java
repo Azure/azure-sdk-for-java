@@ -22,7 +22,7 @@ public class ExpressionRootInner extends Expression {
     private String path;
 
     /**
-     * Get the path value.
+     * Get the path.
      *
      * @return the path value
      */
@@ -31,7 +31,7 @@ public class ExpressionRootInner extends Expression {
     }
 
     /**
-     * Set the path value.
+     * Set the path.
      *
      * @param path the path value to set
      * @return the ExpressionRootInner object itself.

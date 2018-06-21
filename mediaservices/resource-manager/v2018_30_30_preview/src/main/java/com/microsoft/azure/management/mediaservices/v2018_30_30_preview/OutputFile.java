@@ -27,7 +27,7 @@ public class OutputFile {
     private List<String> labels;
 
     /**
-     * Get the labels value.
+     * Get the list of labels that describe how the encoder should multiplex video and audio into an output file. For example, if the encoder is producing two video layers with labels v1 and v2, and one audio layer with label a1, then an array like '[v1, a1]' tells the encoder to produce an output file with the video track represented by v1 and the audio track represented by a1.
      *
      * @return the labels value
      */
@@ -36,7 +36,7 @@ public class OutputFile {
     }
 
     /**
-     * Set the labels value.
+     * Set the list of labels that describe how the encoder should multiplex video and audio into an output file. For example, if the encoder is producing two video layers with labels v1 and v2, and one audio layer with label a1, then an array like '[v1, a1]' tells the encoder to produce an output file with the video track represented by v1 and the audio track represented by a1.
      *
      * @param labels the labels value to set
      * @return the OutputFile object itself.

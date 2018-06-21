@@ -60,7 +60,7 @@ public class EdifactValidationOverride {
     private boolean trimLeadingAndTrailingSpacesAndZeroes;
 
     /**
-     * Get the messageId value.
+     * Get the message id on which the validation settings has to be applied.
      *
      * @return the messageId value
      */
@@ -69,7 +69,7 @@ public class EdifactValidationOverride {
     }
 
     /**
-     * Set the messageId value.
+     * Set the message id on which the validation settings has to be applied.
      *
      * @param messageId the messageId value to set
      * @return the EdifactValidationOverride object itself.
@@ -80,7 +80,7 @@ public class EdifactValidationOverride {
     }
 
     /**
-     * Get the enforceCharacterSet value.
+     * Get the value indicating whether to validate character Set.
      *
      * @return the enforceCharacterSet value
      */
@@ -89,7 +89,7 @@ public class EdifactValidationOverride {
     }
 
     /**
-     * Set the enforceCharacterSet value.
+     * Set the value indicating whether to validate character Set.
      *
      * @param enforceCharacterSet the enforceCharacterSet value to set
      * @return the EdifactValidationOverride object itself.
@@ -100,7 +100,7 @@ public class EdifactValidationOverride {
     }
 
     /**
-     * Get the validateEdiTypes value.
+     * Get the value indicating whether to validate EDI types.
      *
      * @return the validateEdiTypes value
      */
@@ -109,7 +109,7 @@ public class EdifactValidationOverride {
     }
 
     /**
-     * Set the validateEdiTypes value.
+     * Set the value indicating whether to validate EDI types.
      *
      * @param validateEdiTypes the validateEdiTypes value to set
      * @return the EdifactValidationOverride object itself.
@@ -120,7 +120,7 @@ public class EdifactValidationOverride {
     }
 
     /**
-     * Get the validateXsdTypes value.
+     * Get the value indicating whether to validate XSD types.
      *
      * @return the validateXsdTypes value
      */
@@ -129,7 +129,7 @@ public class EdifactValidationOverride {
     }
 
     /**
-     * Set the validateXsdTypes value.
+     * Set the value indicating whether to validate XSD types.
      *
      * @param validateXsdTypes the validateXsdTypes value to set
      * @return the EdifactValidationOverride object itself.
@@ -140,7 +140,7 @@ public class EdifactValidationOverride {
     }
 
     /**
-     * Get the allowLeadingAndTrailingSpacesAndZeroes value.
+     * Get the value indicating whether to allow leading and trailing spaces and zeroes.
      *
      * @return the allowLeadingAndTrailingSpacesAndZeroes value
      */
@@ -149,7 +149,7 @@ public class EdifactValidationOverride {
     }
 
     /**
-     * Set the allowLeadingAndTrailingSpacesAndZeroes value.
+     * Set the value indicating whether to allow leading and trailing spaces and zeroes.
      *
      * @param allowLeadingAndTrailingSpacesAndZeroes the allowLeadingAndTrailingSpacesAndZeroes value to set
      * @return the EdifactValidationOverride object itself.
@@ -160,7 +160,7 @@ public class EdifactValidationOverride {
     }
 
     /**
-     * Get the trailingSeparatorPolicy value.
+     * Get the trailing separator policy. Possible values include: 'NotSpecified', 'NotAllowed', 'Optional', 'Mandatory'.
      *
      * @return the trailingSeparatorPolicy value
      */
@@ -169,7 +169,7 @@ public class EdifactValidationOverride {
     }
 
     /**
-     * Set the trailingSeparatorPolicy value.
+     * Set the trailing separator policy. Possible values include: 'NotSpecified', 'NotAllowed', 'Optional', 'Mandatory'.
      *
      * @param trailingSeparatorPolicy the trailingSeparatorPolicy value to set
      * @return the EdifactValidationOverride object itself.
@@ -180,7 +180,7 @@ public class EdifactValidationOverride {
     }
 
     /**
-     * Get the trimLeadingAndTrailingSpacesAndZeroes value.
+     * Get the value indicating whether to trim leading and trailing spaces and zeroes.
      *
      * @return the trimLeadingAndTrailingSpacesAndZeroes value
      */
@@ -189,7 +189,7 @@ public class EdifactValidationOverride {
     }
 
     /**
-     * Set the trimLeadingAndTrailingSpacesAndZeroes value.
+     * Set the value indicating whether to trim leading and trailing spaces and zeroes.
      *
      * @param trimLeadingAndTrailingSpacesAndZeroes the trimLeadingAndTrailingSpacesAndZeroes value to set
      * @return the EdifactValidationOverride object itself.

@@ -27,7 +27,7 @@ public class RepetitionIndex {
     private int itemIndex;
 
     /**
-     * Get the scopeName value.
+     * Get the scope.
      *
      * @return the scopeName value
      */
@@ -36,7 +36,7 @@ public class RepetitionIndex {
     }
 
     /**
-     * Set the scopeName value.
+     * Set the scope.
      *
      * @param scopeName the scopeName value to set
      * @return the RepetitionIndex object itself.
@@ -47,7 +47,7 @@ public class RepetitionIndex {
     }
 
     /**
-     * Get the itemIndex value.
+     * Get the index.
      *
      * @return the itemIndex value
      */
@@ -56,7 +56,7 @@ public class RepetitionIndex {
     }
 
     /**
-     * Set the itemIndex value.
+     * Set the index.
      *
      * @param itemIndex the itemIndex value to set
      * @return the RepetitionIndex object itself.

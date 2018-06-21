@@ -22,7 +22,7 @@ public class RegenerateActionParameter {
     private KeyType keyType;
 
     /**
-     * Get the keyType value.
+     * Get the key type. Possible values include: 'NotSpecified', 'Primary', 'Secondary'.
      *
      * @return the keyType value
      */
@@ -31,7 +31,7 @@ public class RegenerateActionParameter {
     }
 
     /**
-     * Set the keyType value.
+     * Set the key type. Possible values include: 'NotSpecified', 'Primary', 'Secondary'.
      *
      * @param keyType the keyType value to set
      * @return the RegenerateActionParameter object itself.

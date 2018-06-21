@@ -75,7 +75,7 @@ public class UsageInner extends ProxyOnlyResource {
     private String siteMode;
 
     /**
-     * Get the displayName value.
+     * Get friendly name shown in the UI.
      *
      * @return the displayName value
      */
@@ -84,7 +84,7 @@ public class UsageInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the usageName value.
+     * Get name of the quota.
      *
      * @return the usageName value
      */
@@ -93,7 +93,7 @@ public class UsageInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the resourceName value.
+     * Get name of the quota resource.
      *
      * @return the resourceName value
      */
@@ -102,7 +102,7 @@ public class UsageInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the unit value.
+     * Get units of measurement for the quota resource.
      *
      * @return the unit value
      */
@@ -111,7 +111,7 @@ public class UsageInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the currentValue value.
+     * Get the current value of the resource counter.
      *
      * @return the currentValue value
      */
@@ -120,7 +120,7 @@ public class UsageInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the limit value.
+     * Get the resource limit.
      *
      * @return the limit value
      */
@@ -129,7 +129,7 @@ public class UsageInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the nextResetTime value.
+     * Get next reset time for the resource counter.
      *
      * @return the nextResetTime value
      */
@@ -138,7 +138,7 @@ public class UsageInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the computeMode value.
+     * Get compute mode used for this usage. Possible values include: 'Shared', 'Dedicated', 'Dynamic'.
      *
      * @return the computeMode value
      */
@@ -147,7 +147,7 @@ public class UsageInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the siteMode value.
+     * Get site mode used for this usage.
      *
      * @return the siteMode value
      */

@@ -45,7 +45,7 @@ public class WorkflowTriggerListCallbackUrlQueries {
     private String se;
 
     /**
-     * Get the apiVersion value.
+     * Get the api version.
      *
      * @return the apiVersion value
      */
@@ -54,7 +54,7 @@ public class WorkflowTriggerListCallbackUrlQueries {
     }
 
     /**
-     * Set the apiVersion value.
+     * Set the api version.
      *
      * @param apiVersion the apiVersion value to set
      * @return the WorkflowTriggerListCallbackUrlQueries object itself.
@@ -65,7 +65,7 @@ public class WorkflowTriggerListCallbackUrlQueries {
     }
 
     /**
-     * Get the sp value.
+     * Get the SAS permissions.
      *
      * @return the sp value
      */
@@ -74,7 +74,7 @@ public class WorkflowTriggerListCallbackUrlQueries {
     }
 
     /**
-     * Set the sp value.
+     * Set the SAS permissions.
      *
      * @param sp the sp value to set
      * @return the WorkflowTriggerListCallbackUrlQueries object itself.
@@ -85,7 +85,7 @@ public class WorkflowTriggerListCallbackUrlQueries {
     }
 
     /**
-     * Get the sv value.
+     * Get the SAS version.
      *
      * @return the sv value
      */
@@ -94,7 +94,7 @@ public class WorkflowTriggerListCallbackUrlQueries {
     }
 
     /**
-     * Set the sv value.
+     * Set the SAS version.
      *
      * @param sv the sv value to set
      * @return the WorkflowTriggerListCallbackUrlQueries object itself.
@@ -105,7 +105,7 @@ public class WorkflowTriggerListCallbackUrlQueries {
     }
 
     /**
-     * Get the sig value.
+     * Get the SAS signature.
      *
      * @return the sig value
      */
@@ -114,7 +114,7 @@ public class WorkflowTriggerListCallbackUrlQueries {
     }
 
     /**
-     * Set the sig value.
+     * Set the SAS signature.
      *
      * @param sig the sig value to set
      * @return the WorkflowTriggerListCallbackUrlQueries object itself.
@@ -125,7 +125,7 @@ public class WorkflowTriggerListCallbackUrlQueries {
     }
 
     /**
-     * Get the se value.
+     * Get the SAS timestamp.
      *
      * @return the se value
      */
@@ -134,7 +134,7 @@ public class WorkflowTriggerListCallbackUrlQueries {
     }
 
     /**
-     * Set the se value.
+     * Set the SAS timestamp.
      *
      * @param se the se value to set
      * @return the WorkflowTriggerListCallbackUrlQueries object itself.

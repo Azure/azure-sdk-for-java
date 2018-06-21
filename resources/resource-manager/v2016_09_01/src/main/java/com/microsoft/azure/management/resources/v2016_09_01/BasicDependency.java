@@ -33,7 +33,7 @@ public class BasicDependency {
     private String resourceName;
 
     /**
-     * Get the id value.
+     * Get the ID of the dependency.
      *
      * @return the id value
      */
@@ -42,7 +42,7 @@ public class BasicDependency {
     }
 
     /**
-     * Set the id value.
+     * Set the ID of the dependency.
      *
      * @param id the id value to set
      * @return the BasicDependency object itself.
@@ -53,7 +53,7 @@ public class BasicDependency {
     }
 
     /**
-     * Get the resourceType value.
+     * Get the dependency resource type.
      *
      * @return the resourceType value
      */
@@ -62,7 +62,7 @@ public class BasicDependency {
     }
 
     /**
-     * Set the resourceType value.
+     * Set the dependency resource type.
      *
      * @param resourceType the resourceType value to set
      * @return the BasicDependency object itself.
@@ -73,7 +73,7 @@ public class BasicDependency {
     }
 
     /**
-     * Get the resourceName value.
+     * Get the dependency resource name.
      *
      * @return the resourceName value
      */
@@ -82,7 +82,7 @@ public class BasicDependency {
     }
 
     /**
-     * Set the resourceName value.
+     * Set the dependency resource name.
      *
      * @param resourceName the resourceName value to set
      * @return the BasicDependency object itself.

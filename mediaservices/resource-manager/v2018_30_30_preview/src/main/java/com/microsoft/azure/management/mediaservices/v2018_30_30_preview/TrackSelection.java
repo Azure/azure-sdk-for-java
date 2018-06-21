@@ -23,7 +23,7 @@ public class TrackSelection {
     private List<TrackPropertyCondition> trackSelections;
 
     /**
-     * Get the trackSelections value.
+     * Get trackSelections is a track property condition list which can specify track(s).
      *
      * @return the trackSelections value
      */
@@ -32,7 +32,7 @@ public class TrackSelection {
     }
 
     /**
-     * Set the trackSelections value.
+     * Set trackSelections is a track property condition list which can specify track(s).
      *
      * @param trackSelections the trackSelections value to set
      * @return the TrackSelection object itself.

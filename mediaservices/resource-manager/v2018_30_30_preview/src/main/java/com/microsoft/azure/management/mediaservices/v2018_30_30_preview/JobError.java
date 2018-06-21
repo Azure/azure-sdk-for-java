@@ -53,7 +53,7 @@ public class JobError {
     private List<JobErrorDetail> details;
 
     /**
-     * Get the code value.
+     * Get error code describing the error. Possible values include: 'ServiceError', 'ServiceTransientError', 'DownloadNotAccessible', 'DownloadTransientError', 'UploadNotAccessible', 'UploadTransientError', 'ConfigurationUnsupported', 'ContentMalformed', 'ContentUnsupported'.
      *
      * @return the code value
      */
@@ -62,7 +62,7 @@ public class JobError {
     }
 
     /**
-     * Get the message value.
+     * Get a human-readable language-dependent representation of the error.
      *
      * @return the message value
      */
@@ -71,7 +71,7 @@ public class JobError {
     }
 
     /**
-     * Get the category value.
+     * Get helps with categorization of errors. Possible values include: 'Service', 'Download', 'Upload', 'Configuration', 'Content'.
      *
      * @return the category value
      */
@@ -80,7 +80,7 @@ public class JobError {
     }
 
     /**
-     * Get the retry value.
+     * Get indicates that it may be possible to retry the Job. If retry is unsuccessful, please contact Azure support via Azure Portal. Possible values include: 'DoNotRetry', 'MayRetry'.
      *
      * @return the retry value
      */
@@ -89,7 +89,7 @@ public class JobError {
     }
 
     /**
-     * Get the details value.
+     * Get an array of details about specific errors that led to this reported error.
      *
      * @return the details value
      */

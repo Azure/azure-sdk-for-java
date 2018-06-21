@@ -13,6 +13,7 @@ import org.joda.time.DateTime;
 import com.microsoft.azure.management.logic.v2016_06_01.WorkflowState;
 import com.microsoft.azure.management.logic.v2016_06_01.WorkflowStatus;
 import com.microsoft.azure.management.logic.v2016_06_01.WorkflowTriggerRecurrence;
+import com.microsoft.azure.management.logic.v2016_06_01.ResourceReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.SubResource;
@@ -81,7 +82,7 @@ public class WorkflowTriggerInner extends SubResource {
      * Gets the reference to workflow.
      */
     @JsonProperty(value = "properties.workflow", access = JsonProperty.Access.WRITE_ONLY)
-    private ResourceReferenceInner workflow;
+    private ResourceReference workflow;
 
     /**
      * Gets the workflow trigger name.
@@ -96,7 +97,7 @@ public class WorkflowTriggerInner extends SubResource {
     private String type;
 
     /**
-     * Get the provisioningState value.
+     * Get gets the provisioning state. Possible values include: 'NotSpecified', 'Accepted', 'Running', 'Ready', 'Creating', 'Created', 'Deleting', 'Deleted', 'Canceled', 'Failed', 'Succeeded', 'Moving', 'Updating', 'Registering', 'Registered', 'Unregistering', 'Unregistered', 'Completed'.
      *
      * @return the provisioningState value
      */
@@ -105,7 +106,7 @@ public class WorkflowTriggerInner extends SubResource {
     }
 
     /**
-     * Get the createdTime value.
+     * Get gets the created time.
      *
      * @return the createdTime value
      */
@@ -114,7 +115,7 @@ public class WorkflowTriggerInner extends SubResource {
     }
 
     /**
-     * Get the changedTime value.
+     * Get gets the changed time.
      *
      * @return the changedTime value
      */
@@ -123,7 +124,7 @@ public class WorkflowTriggerInner extends SubResource {
     }
 
     /**
-     * Get the state value.
+     * Get gets the state. Possible values include: 'NotSpecified', 'Completed', 'Enabled', 'Disabled', 'Deleted', 'Suspended'.
      *
      * @return the state value
      */
@@ -132,7 +133,7 @@ public class WorkflowTriggerInner extends SubResource {
     }
 
     /**
-     * Get the status value.
+     * Get gets the status. Possible values include: 'NotSpecified', 'Paused', 'Running', 'Waiting', 'Succeeded', 'Skipped', 'Suspended', 'Cancelled', 'Failed', 'Faulted', 'TimedOut', 'Aborted', 'Ignored'.
      *
      * @return the status value
      */
@@ -141,7 +142,7 @@ public class WorkflowTriggerInner extends SubResource {
     }
 
     /**
-     * Get the lastExecutionTime value.
+     * Get gets the last execution time.
      *
      * @return the lastExecutionTime value
      */
@@ -150,7 +151,7 @@ public class WorkflowTriggerInner extends SubResource {
     }
 
     /**
-     * Get the nextExecutionTime value.
+     * Get gets the next execution time.
      *
      * @return the nextExecutionTime value
      */
@@ -159,7 +160,7 @@ public class WorkflowTriggerInner extends SubResource {
     }
 
     /**
-     * Get the recurrence value.
+     * Get gets the workflow trigger recurrence.
      *
      * @return the recurrence value
      */
@@ -168,16 +169,16 @@ public class WorkflowTriggerInner extends SubResource {
     }
 
     /**
-     * Get the workflow value.
+     * Get gets the reference to workflow.
      *
      * @return the workflow value
      */
-    public ResourceReferenceInner workflow() {
+    public ResourceReference workflow() {
         return this.workflow;
     }
 
     /**
-     * Get the name value.
+     * Get gets the workflow trigger name.
      *
      * @return the name value
      */
@@ -186,7 +187,7 @@ public class WorkflowTriggerInner extends SubResource {
     }
 
     /**
-     * Get the type value.
+     * Get gets the workflow trigger type.
      *
      * @return the type value
      */

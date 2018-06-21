@@ -37,7 +37,7 @@ public class AzureBlobStorageApplicationLogsConfig {
     private Integer retentionInDays;
 
     /**
-     * Get the level value.
+     * Get log level. Possible values include: 'Off', 'Verbose', 'Information', 'Warning', 'Error'.
      *
      * @return the level value
      */
@@ -46,7 +46,7 @@ public class AzureBlobStorageApplicationLogsConfig {
     }
 
     /**
-     * Set the level value.
+     * Set log level. Possible values include: 'Off', 'Verbose', 'Information', 'Warning', 'Error'.
      *
      * @param level the level value to set
      * @return the AzureBlobStorageApplicationLogsConfig object itself.
@@ -57,7 +57,7 @@ public class AzureBlobStorageApplicationLogsConfig {
     }
 
     /**
-     * Get the sasUrl value.
+     * Get sAS url to a azure blob container with read/write/list/delete permissions.
      *
      * @return the sasUrl value
      */
@@ -66,7 +66,7 @@ public class AzureBlobStorageApplicationLogsConfig {
     }
 
     /**
-     * Set the sasUrl value.
+     * Set sAS url to a azure blob container with read/write/list/delete permissions.
      *
      * @param sasUrl the sasUrl value to set
      * @return the AzureBlobStorageApplicationLogsConfig object itself.
@@ -77,7 +77,9 @@ public class AzureBlobStorageApplicationLogsConfig {
     }
 
     /**
-     * Get the retentionInDays value.
+     * Get retention in days.
+     Remove blobs older than X days.
+     0 or lower means no retention.
      *
      * @return the retentionInDays value
      */
@@ -86,7 +88,9 @@ public class AzureBlobStorageApplicationLogsConfig {
     }
 
     /**
-     * Set the retentionInDays value.
+     * Set retention in days.
+     Remove blobs older than X days.
+     0 or lower means no retention.
      *
      * @param retentionInDays the retentionInDays value to set
      * @return the AzureBlobStorageApplicationLogsConfig object itself.

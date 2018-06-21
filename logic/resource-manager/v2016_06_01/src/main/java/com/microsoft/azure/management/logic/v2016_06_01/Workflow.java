@@ -10,17 +10,16 @@ package com.microsoft.azure.management.logic.v2016_06_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.Resource;
+import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
 import com.microsoft.azure.arm.resources.models.HasResourceGroup;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
-import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.logic.v2016_06_01.implementation.LogicManager;
 import org.joda.time.DateTime;
 import java.util.Map;
-import com.microsoft.azure.management.logic.v2016_06_01.implementation.ResourceReferenceInner;
 import com.microsoft.azure.management.logic.v2016_06_01.implementation.WorkflowInner;
 
 /**
@@ -50,7 +49,7 @@ public interface Workflow extends HasInner<WorkflowInner>, Resource, GroupableRe
     /**
      * @return the integrationAccount value.
      */
-    ResourceReferenceInner integrationAccount();
+    ResourceReference integrationAccount();
 
     /**
      * @return the parameters value.
@@ -116,7 +115,7 @@ public interface Workflow extends HasInner<WorkflowInner>, Resource, GroupableRe
             /**
              * Specifies integrationAccount.
              */
-            WithCreate withIntegrationAccount(ResourceReferenceInner integrationAccount);
+            WithCreate withIntegrationAccount(ResourceReference integrationAccount);
         }
 
         /**
@@ -184,7 +183,7 @@ public interface Workflow extends HasInner<WorkflowInner>, Resource, GroupableRe
             /**
              * Specifies integrationAccount.
              */
-            Update withIntegrationAccount(ResourceReferenceInner integrationAccount);
+            Update withIntegrationAccount(ResourceReference integrationAccount);
         }
 
         /**

@@ -24,8 +24,18 @@ import com.microsoft.azure.management.appservice.v2018_02_01.VnetRoute;
  * Type representing AppServicePlans.
  */
 public interface AppServicePlans {
+    /**
+     * Begins definition for a new Serverfarm resource.
+     * @param name resource name.
+     * @return the first stage of the new Serverfarm definition.
+     */
     AppServicePlan.DefinitionStages.Blank defineServerfarm(String name);
 
+    /**
+     * Begins definition for a new Route resource.
+     * @param name resource name.
+     * @return the first stage of the new Route definition.
+     */
     VnetRoute.DefinitionStages.Blank defineRoute(String name);
 
     /**

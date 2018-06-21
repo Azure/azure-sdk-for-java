@@ -22,7 +22,7 @@ public class IntegrationAccountSchemaFilter {
     private SchemaType schemaType;
 
     /**
-     * Get the schemaType value.
+     * Get the schema type of integration account schema. Possible values include: 'NotSpecified', 'Xml'.
      *
      * @return the schemaType value
      */
@@ -31,7 +31,7 @@ public class IntegrationAccountSchemaFilter {
     }
 
     /**
-     * Set the schemaType value.
+     * Set the schema type of integration account schema. Possible values include: 'NotSpecified', 'Xml'.
      *
      * @param schemaType the schemaType value to set
      * @return the IntegrationAccountSchemaFilter object itself.

@@ -42,7 +42,7 @@ public class H264Video extends Video {
     private List<H264Layer> layers;
 
     /**
-     * Get the sceneChangeDetection value.
+     * Get whether or not the encoder should insert key frames at scene changes. If not specified, the default is false. This flag should be set to true only when the encoder is being configured to produce a single output video.
      *
      * @return the sceneChangeDetection value
      */
@@ -51,7 +51,7 @@ public class H264Video extends Video {
     }
 
     /**
-     * Set the sceneChangeDetection value.
+     * Set whether or not the encoder should insert key frames at scene changes. If not specified, the default is false. This flag should be set to true only when the encoder is being configured to produce a single output video.
      *
      * @param sceneChangeDetection the sceneChangeDetection value to set
      * @return the H264Video object itself.
@@ -62,7 +62,7 @@ public class H264Video extends Video {
     }
 
     /**
-     * Get the complexity value.
+     * Get tells the encoder how to choose its encoding settings. The default value is Balanced. Possible values include: 'Speed', 'Balanced', 'Quality'.
      *
      * @return the complexity value
      */
@@ -71,7 +71,7 @@ public class H264Video extends Video {
     }
 
     /**
-     * Set the complexity value.
+     * Set tells the encoder how to choose its encoding settings. The default value is Balanced. Possible values include: 'Speed', 'Balanced', 'Quality'.
      *
      * @param complexity the complexity value to set
      * @return the H264Video object itself.
@@ -82,7 +82,7 @@ public class H264Video extends Video {
     }
 
     /**
-     * Get the layers value.
+     * Get the collection of output H.264 layers to be produced by the encoder.
      *
      * @return the layers value
      */
@@ -91,7 +91,7 @@ public class H264Video extends Video {
     }
 
     /**
-     * Set the layers value.
+     * Set the collection of output H.264 layers to be produced by the encoder.
      *
      * @param layers the layers value to set
      * @return the H264Video object itself.

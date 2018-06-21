@@ -56,41 +56,22 @@ class MapsImpl extends WrapperImpl<MapsInner> implements Maps {
         });
     }
 
-    private Observable<Page<IntegrationAccountMapInner>> listByIntegrationAccountsNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        MapsInner client = this.inner();
-        return client.listByIntegrationAccountsNextAsync(nextLink)
-        .flatMap(new Func1<Page<IntegrationAccountMapInner>, Observable<Page<IntegrationAccountMapInner>>>() {
-            @Override
-            public Observable<Page<IntegrationAccountMapInner>> call(Page<IntegrationAccountMapInner> page) {
-                return Observable.just(page).concatWith(listByIntegrationAccountsNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<IntegrationAccountMap> listByIntegrationAccountsAsync(final String resourceGroupName, final String integrationAccountName) {
         MapsInner client = this.inner();
         return client.listByIntegrationAccountsAsync(resourceGroupName, integrationAccountName)
-        .flatMap(new Func1<Page<IntegrationAccountMapInner>, Observable<Page<IntegrationAccountMapInner>>>() {
-            @Override
-            public Observable<Page<IntegrationAccountMapInner>> call(Page<IntegrationAccountMapInner> page) {
-                return listByIntegrationAccountsNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<IntegrationAccountMapInner>, Iterable<IntegrationAccountMapInner>>() {
             @Override
             public Iterable<IntegrationAccountMapInner> call(Page<IntegrationAccountMapInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<IntegrationAccountMapInner, IntegrationAccountMap>() {
             @Override
             public IntegrationAccountMap call(IntegrationAccountMapInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override

@@ -28,7 +28,7 @@ public class AzureResourceErrorInfo extends ErrorInfo {
     private List<AzureResourceErrorInfo> details;
 
     /**
-     * Get the message value.
+     * Get the error message.
      *
      * @return the message value
      */
@@ -37,7 +37,7 @@ public class AzureResourceErrorInfo extends ErrorInfo {
     }
 
     /**
-     * Set the message value.
+     * Set the error message.
      *
      * @param message the message value to set
      * @return the AzureResourceErrorInfo object itself.
@@ -48,7 +48,7 @@ public class AzureResourceErrorInfo extends ErrorInfo {
     }
 
     /**
-     * Get the details value.
+     * Get the error details.
      *
      * @return the details value
      */
@@ -57,7 +57,7 @@ public class AzureResourceErrorInfo extends ErrorInfo {
     }
 
     /**
-     * Set the details value.
+     * Set the error details.
      *
      * @param details the details value to set
      * @return the AzureResourceErrorInfo object itself.

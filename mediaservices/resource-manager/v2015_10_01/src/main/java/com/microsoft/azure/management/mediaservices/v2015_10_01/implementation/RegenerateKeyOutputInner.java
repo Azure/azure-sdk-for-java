@@ -21,7 +21,7 @@ public class RegenerateKeyOutputInner {
     private String key;
 
     /**
-     * Get the key value.
+     * Get the new value of either the primary or secondary key.
      *
      * @return the key value
      */
@@ -30,7 +30,7 @@ public class RegenerateKeyOutputInner {
     }
 
     /**
-     * Set the key value.
+     * Set the new value of either the primary or secondary key.
      *
      * @param key the key value to set
      * @return the RegenerateKeyOutputInner object itself.

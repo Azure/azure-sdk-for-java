@@ -44,7 +44,7 @@ public class OAuthBasedDataSourceProperties {
     private String tokenUserDisplayName;
 
     /**
-     * Get the refreshToken value.
+     * Get a refresh token that can be used to obtain a valid access token that can then be used to authenticate with the data source. A valid refresh token is currently only obtainable via the Azure Portal. It is recommended to put a dummy string value here when creating the data source and then going to the Azure Portal to authenticate the data source which will update this property with a valid refresh token. Required on PUT (CreateOrReplace) requests.
      *
      * @return the refreshToken value
      */
@@ -53,7 +53,7 @@ public class OAuthBasedDataSourceProperties {
     }
 
     /**
-     * Set the refreshToken value.
+     * Set a refresh token that can be used to obtain a valid access token that can then be used to authenticate with the data source. A valid refresh token is currently only obtainable via the Azure Portal. It is recommended to put a dummy string value here when creating the data source and then going to the Azure Portal to authenticate the data source which will update this property with a valid refresh token. Required on PUT (CreateOrReplace) requests.
      *
      * @param refreshToken the refreshToken value to set
      * @return the OAuthBasedDataSourceProperties object itself.
@@ -64,7 +64,7 @@ public class OAuthBasedDataSourceProperties {
     }
 
     /**
-     * Get the tokenUserPrincipalName value.
+     * Get the user principal name (UPN) of the user that was used to obtain the refresh token. Use this property to help remember which user was used to obtain the refresh token.
      *
      * @return the tokenUserPrincipalName value
      */
@@ -73,7 +73,7 @@ public class OAuthBasedDataSourceProperties {
     }
 
     /**
-     * Set the tokenUserPrincipalName value.
+     * Set the user principal name (UPN) of the user that was used to obtain the refresh token. Use this property to help remember which user was used to obtain the refresh token.
      *
      * @param tokenUserPrincipalName the tokenUserPrincipalName value to set
      * @return the OAuthBasedDataSourceProperties object itself.
@@ -84,7 +84,7 @@ public class OAuthBasedDataSourceProperties {
     }
 
     /**
-     * Get the tokenUserDisplayName value.
+     * Get the user display name of the user that was used to obtain the refresh token. Use this property to help remember which user was used to obtain the refresh token.
      *
      * @return the tokenUserDisplayName value
      */
@@ -93,7 +93,7 @@ public class OAuthBasedDataSourceProperties {
     }
 
     /**
-     * Set the tokenUserDisplayName value.
+     * Set the user display name of the user that was used to obtain the refresh token. Use this property to help remember which user was used to obtain the refresh token.
      *
      * @param tokenUserDisplayName the tokenUserDisplayName value to set
      * @return the OAuthBasedDataSourceProperties object itself.

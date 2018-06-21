@@ -30,7 +30,7 @@ public class AzureMachineLearningWebServiceOutputColumn {
     private String dataType;
 
     /**
-     * Get the name value.
+     * Get the name of the output column.
      *
      * @return the name value
      */
@@ -39,7 +39,7 @@ public class AzureMachineLearningWebServiceOutputColumn {
     }
 
     /**
-     * Set the name value.
+     * Set the name of the output column.
      *
      * @param name the name value to set
      * @return the AzureMachineLearningWebServiceOutputColumn object itself.
@@ -50,7 +50,7 @@ public class AzureMachineLearningWebServiceOutputColumn {
     }
 
     /**
-     * Get the dataType value.
+     * Get the (Azure Machine Learning supported) data type of the output column. A list of valid  Azure Machine Learning data types are described at https://msdn.microsoft.com/en-us/library/azure/dn905923.aspx .
      *
      * @return the dataType value
      */
@@ -59,7 +59,7 @@ public class AzureMachineLearningWebServiceOutputColumn {
     }
 
     /**
-     * Set the dataType value.
+     * Set the (Azure Machine Learning supported) data type of the output column. A list of valid  Azure Machine Learning data types are described at https://msdn.microsoft.com/en-us/library/azure/dn905923.aspx .
      *
      * @param dataType the dataType value to set
      * @return the AzureMachineLearningWebServiceOutputColumn object itself.

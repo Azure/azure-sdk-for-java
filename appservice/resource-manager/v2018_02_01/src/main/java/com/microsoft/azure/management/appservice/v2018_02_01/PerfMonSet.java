@@ -47,7 +47,7 @@ public class PerfMonSet {
     private List<PerfMonSample> values;
 
     /**
-     * Get the name value.
+     * Get unique key name of the counter.
      *
      * @return the name value
      */
@@ -56,7 +56,7 @@ public class PerfMonSet {
     }
 
     /**
-     * Set the name value.
+     * Set unique key name of the counter.
      *
      * @param name the name value to set
      * @return the PerfMonSet object itself.
@@ -67,7 +67,7 @@ public class PerfMonSet {
     }
 
     /**
-     * Get the startTime value.
+     * Get start time of the period.
      *
      * @return the startTime value
      */
@@ -76,7 +76,7 @@ public class PerfMonSet {
     }
 
     /**
-     * Set the startTime value.
+     * Set start time of the period.
      *
      * @param startTime the startTime value to set
      * @return the PerfMonSet object itself.
@@ -87,7 +87,7 @@ public class PerfMonSet {
     }
 
     /**
-     * Get the endTime value.
+     * Get end time of the period.
      *
      * @return the endTime value
      */
@@ -96,7 +96,7 @@ public class PerfMonSet {
     }
 
     /**
-     * Set the endTime value.
+     * Set end time of the period.
      *
      * @param endTime the endTime value to set
      * @return the PerfMonSet object itself.
@@ -107,7 +107,7 @@ public class PerfMonSet {
     }
 
     /**
-     * Get the timeGrain value.
+     * Get presented time grain.
      *
      * @return the timeGrain value
      */
@@ -116,7 +116,7 @@ public class PerfMonSet {
     }
 
     /**
-     * Set the timeGrain value.
+     * Set presented time grain.
      *
      * @param timeGrain the timeGrain value to set
      * @return the PerfMonSet object itself.
@@ -127,7 +127,7 @@ public class PerfMonSet {
     }
 
     /**
-     * Get the values value.
+     * Get collection of workers that are active during this time.
      *
      * @return the values value
      */
@@ -136,7 +136,7 @@ public class PerfMonSet {
     }
 
     /**
-     * Set the values value.
+     * Set collection of workers that are active during this time.
      *
      * @param values the values value to set
      * @return the PerfMonSet object itself.

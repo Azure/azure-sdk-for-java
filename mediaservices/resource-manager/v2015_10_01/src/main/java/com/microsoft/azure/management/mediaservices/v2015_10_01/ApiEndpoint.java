@@ -27,7 +27,7 @@ public class ApiEndpoint {
     private String majorVersion;
 
     /**
-     * Get the endpoint value.
+     * Get the Media Services REST endpoint.
      *
      * @return the endpoint value
      */
@@ -36,7 +36,7 @@ public class ApiEndpoint {
     }
 
     /**
-     * Set the endpoint value.
+     * Set the Media Services REST endpoint.
      *
      * @param endpoint the endpoint value to set
      * @return the ApiEndpoint object itself.
@@ -47,7 +47,7 @@ public class ApiEndpoint {
     }
 
     /**
-     * Get the majorVersion value.
+     * Get the version of Media Services REST API.
      *
      * @return the majorVersion value
      */
@@ -56,7 +56,7 @@ public class ApiEndpoint {
     }
 
     /**
-     * Set the majorVersion value.
+     * Set the version of Media Services REST API.
      *
      * @param majorVersion the majorVersion value to set
      * @return the ApiEndpoint object itself.

@@ -84,41 +84,22 @@ class IntegrationAccountsImpl extends GroupableResourcesCoreImpl<IntegrationAcco
         return this.wrapList(client.listByResourceGroup(resourceGroupName));
     }
 
-    private Observable<Page<IntegrationAccountInner>> listByResourceGroupNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        IntegrationAccountsInner client = this.inner();
-        return client.listByResourceGroupNextAsync(nextLink)
-        .flatMap(new Func1<Page<IntegrationAccountInner>, Observable<Page<IntegrationAccountInner>>>() {
-            @Override
-            public Observable<Page<IntegrationAccountInner>> call(Page<IntegrationAccountInner> page) {
-                return Observable.just(page).concatWith(listByResourceGroupNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<IntegrationAccount> listByResourceGroupAsync(String resourceGroupName) {
         IntegrationAccountsInner client = this.inner();
         return client.listByResourceGroupAsync(resourceGroupName)
-        .flatMap(new Func1<Page<IntegrationAccountInner>, Observable<Page<IntegrationAccountInner>>>() {
-            @Override
-            public Observable<Page<IntegrationAccountInner>> call(Page<IntegrationAccountInner> page) {
-                return listByResourceGroupNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<IntegrationAccountInner>, Iterable<IntegrationAccountInner>>() {
             @Override
             public Iterable<IntegrationAccountInner> call(Page<IntegrationAccountInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<IntegrationAccountInner, IntegrationAccount>() {
             @Override
             public IntegrationAccount call(IntegrationAccountInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override
@@ -127,41 +108,22 @@ class IntegrationAccountsImpl extends GroupableResourcesCoreImpl<IntegrationAcco
         return this.wrapList(client.list());
     }
 
-    private Observable<Page<IntegrationAccountInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        IntegrationAccountsInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<IntegrationAccountInner>, Observable<Page<IntegrationAccountInner>>>() {
-            @Override
-            public Observable<Page<IntegrationAccountInner>> call(Page<IntegrationAccountInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<IntegrationAccount> listAsync() {
         IntegrationAccountsInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<IntegrationAccountInner>, Observable<Page<IntegrationAccountInner>>>() {
-            @Override
-            public Observable<Page<IntegrationAccountInner>> call(Page<IntegrationAccountInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<IntegrationAccountInner>, Iterable<IntegrationAccountInner>>() {
             @Override
             public Iterable<IntegrationAccountInner> call(Page<IntegrationAccountInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<IntegrationAccountInner, IntegrationAccount>() {
             @Override
             public IntegrationAccount call(IntegrationAccountInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override

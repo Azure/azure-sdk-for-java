@@ -21,7 +21,7 @@ public class AssetStorageEncryptionKeyInner {
     private String storageEncryptionKey;
 
     /**
-     * Get the storageEncryptionKey value.
+     * Get the Asset storage encryption key.
      *
      * @return the storageEncryptionKey value
      */
@@ -30,7 +30,7 @@ public class AssetStorageEncryptionKeyInner {
     }
 
     /**
-     * Set the storageEncryptionKey value.
+     * Set the Asset storage encryption key.
      *
      * @param storageEncryptionKey the storageEncryptionKey value to set
      * @return the AssetStorageEncryptionKeyInner object itself.

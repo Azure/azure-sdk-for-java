@@ -209,7 +209,7 @@ public class WorkflowTriggerHistoriesInner {
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
      * @param top The number of items to be included in the result.
-     * @param filter The filter to apply on the operation.
+     * @param filter The filter to apply on the operation. Options for filters include: Status, StartTime, and ClientTrackingId.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -232,7 +232,7 @@ public class WorkflowTriggerHistoriesInner {
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
      * @param top The number of items to be included in the result.
-     * @param filter The filter to apply on the operation.
+     * @param filter The filter to apply on the operation. Options for filters include: Status, StartTime, and ClientTrackingId.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -256,7 +256,7 @@ public class WorkflowTriggerHistoriesInner {
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
      * @param top The number of items to be included in the result.
-     * @param filter The filter to apply on the operation.
+     * @param filter The filter to apply on the operation. Options for filters include: Status, StartTime, and ClientTrackingId.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;WorkflowTriggerHistoryInner&gt; object
      */
@@ -277,7 +277,7 @@ public class WorkflowTriggerHistoriesInner {
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
      * @param top The number of items to be included in the result.
-     * @param filter The filter to apply on the operation.
+     * @param filter The filter to apply on the operation. Options for filters include: Status, StartTime, and ClientTrackingId.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;WorkflowTriggerHistoryInner&gt; object
      */
@@ -302,7 +302,7 @@ public class WorkflowTriggerHistoriesInner {
     ServiceResponse<PageImpl<WorkflowTriggerHistoryInner>> * @param workflowName The workflow name.
     ServiceResponse<PageImpl<WorkflowTriggerHistoryInner>> * @param triggerName The workflow trigger name.
     ServiceResponse<PageImpl<WorkflowTriggerHistoryInner>> * @param top The number of items to be included in the result.
-    ServiceResponse<PageImpl<WorkflowTriggerHistoryInner>> * @param filter The filter to apply on the operation.
+    ServiceResponse<PageImpl<WorkflowTriggerHistoryInner>> * @param filter The filter to apply on the operation. Options for filters include: Status, StartTime, and ClientTrackingId.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;WorkflowTriggerHistoryInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */

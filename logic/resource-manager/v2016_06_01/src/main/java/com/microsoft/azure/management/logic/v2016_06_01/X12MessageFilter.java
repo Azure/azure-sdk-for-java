@@ -22,7 +22,7 @@ public class X12MessageFilter {
     private MessageFilterType messageFilterType;
 
     /**
-     * Get the messageFilterType value.
+     * Get the message filter type. Possible values include: 'NotSpecified', 'Include', 'Exclude'.
      *
      * @return the messageFilterType value
      */
@@ -31,7 +31,7 @@ public class X12MessageFilter {
     }
 
     /**
-     * Set the messageFilterType value.
+     * Set the message filter type. Possible values include: 'NotSpecified', 'Include', 'Exclude'.
      *
      * @param messageFilterType the messageFilterType value to set
      * @return the X12MessageFilter object itself.

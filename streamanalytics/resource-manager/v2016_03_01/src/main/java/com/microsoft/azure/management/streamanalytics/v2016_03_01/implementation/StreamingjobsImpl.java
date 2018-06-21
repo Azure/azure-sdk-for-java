@@ -78,41 +78,22 @@ class StreamingJobsImpl extends GroupableResourcesCoreImpl<StreamingJob, Streami
         return this.wrapList(client.listByResourceGroup(resourceGroupName));
     }
 
-    private Observable<Page<StreamingJobInner>> listByResourceGroupNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        StreamingJobsInner client = this.inner();
-        return client.listByResourceGroupNextAsync(nextLink)
-        .flatMap(new Func1<Page<StreamingJobInner>, Observable<Page<StreamingJobInner>>>() {
-            @Override
-            public Observable<Page<StreamingJobInner>> call(Page<StreamingJobInner> page) {
-                return Observable.just(page).concatWith(listByResourceGroupNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<StreamingJob> listByResourceGroupAsync(String resourceGroupName) {
         StreamingJobsInner client = this.inner();
         return client.listByResourceGroupAsync(resourceGroupName)
-        .flatMap(new Func1<Page<StreamingJobInner>, Observable<Page<StreamingJobInner>>>() {
-            @Override
-            public Observable<Page<StreamingJobInner>> call(Page<StreamingJobInner> page) {
-                return listByResourceGroupNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<StreamingJobInner>, Iterable<StreamingJobInner>>() {
             @Override
             public Iterable<StreamingJobInner> call(Page<StreamingJobInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<StreamingJobInner, StreamingJob>() {
             @Override
             public StreamingJob call(StreamingJobInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override
@@ -121,41 +102,22 @@ class StreamingJobsImpl extends GroupableResourcesCoreImpl<StreamingJob, Streami
         return this.wrapList(client.list());
     }
 
-    private Observable<Page<StreamingJobInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        StreamingJobsInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<StreamingJobInner>, Observable<Page<StreamingJobInner>>>() {
-            @Override
-            public Observable<Page<StreamingJobInner>> call(Page<StreamingJobInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<StreamingJob> listAsync() {
         StreamingJobsInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<StreamingJobInner>, Observable<Page<StreamingJobInner>>>() {
-            @Override
-            public Observable<Page<StreamingJobInner>> call(Page<StreamingJobInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<StreamingJobInner>, Iterable<StreamingJobInner>>() {
             @Override
             public Iterable<StreamingJobInner> call(Page<StreamingJobInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<StreamingJobInner, StreamingJob>() {
             @Override
             public StreamingJob call(StreamingJobInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override

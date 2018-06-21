@@ -36,7 +36,7 @@ public class StartStreamingJobParameters {
     private DateTime outputStartTime;
 
     /**
-     * Get the outputStartMode value.
+     * Get value may be JobStartTime, CustomTime, or LastOutputEventTime to indicate whether the starting point of the output event stream should start whenever the job is started, start at a custom user time stamp specified via the outputStartTime property, or start from the last event output time. Possible values include: 'JobStartTime', 'CustomTime', 'LastOutputEventTime'.
      *
      * @return the outputStartMode value
      */
@@ -45,7 +45,7 @@ public class StartStreamingJobParameters {
     }
 
     /**
-     * Set the outputStartMode value.
+     * Set value may be JobStartTime, CustomTime, or LastOutputEventTime to indicate whether the starting point of the output event stream should start whenever the job is started, start at a custom user time stamp specified via the outputStartTime property, or start from the last event output time. Possible values include: 'JobStartTime', 'CustomTime', 'LastOutputEventTime'.
      *
      * @param outputStartMode the outputStartMode value to set
      * @return the StartStreamingJobParameters object itself.
@@ -56,7 +56,7 @@ public class StartStreamingJobParameters {
     }
 
     /**
-     * Get the outputStartTime value.
+     * Get value is either an ISO-8601 formatted time stamp that indicates the starting point of the output event stream, or null to indicate that the output event stream will start whenever the streaming job is started. This property must have a value if outputStartMode is set to CustomTime.
      *
      * @return the outputStartTime value
      */
@@ -65,7 +65,7 @@ public class StartStreamingJobParameters {
     }
 
     /**
-     * Set the outputStartTime value.
+     * Set value is either an ISO-8601 formatted time stamp that indicates the starting point of the output event stream, or null to indicate that the output event stream will start whenever the streaming job is started. This property must have a value if outputStartMode is set to CustomTime.
      *
      * @param outputStartTime the outputStartTime value to set
      * @return the StartStreamingJobParameters object itself.

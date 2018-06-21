@@ -41,7 +41,7 @@ public class Audio extends Codec {
     private Integer bitrate;
 
     /**
-     * Get the channels value.
+     * Get the number of channels in the audio.
      *
      * @return the channels value
      */
@@ -50,7 +50,7 @@ public class Audio extends Codec {
     }
 
     /**
-     * Set the channels value.
+     * Set the number of channels in the audio.
      *
      * @param channels the channels value to set
      * @return the Audio object itself.
@@ -61,7 +61,7 @@ public class Audio extends Codec {
     }
 
     /**
-     * Get the samplingRate value.
+     * Get the sampling rate to use for encoding in hertz.
      *
      * @return the samplingRate value
      */
@@ -70,7 +70,7 @@ public class Audio extends Codec {
     }
 
     /**
-     * Set the samplingRate value.
+     * Set the sampling rate to use for encoding in hertz.
      *
      * @param samplingRate the samplingRate value to set
      * @return the Audio object itself.
@@ -81,7 +81,7 @@ public class Audio extends Codec {
     }
 
     /**
-     * Get the bitrate value.
+     * Get the bitrate, in bits per second, of the output encoded audio.
      *
      * @return the bitrate value
      */
@@ -90,7 +90,7 @@ public class Audio extends Codec {
     }
 
     /**
-     * Set the bitrate value.
+     * Set the bitrate, in bits per second, of the output encoded audio.
      *
      * @param bitrate the bitrate value to set
      * @return the Audio object itself.

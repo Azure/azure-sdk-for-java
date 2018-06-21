@@ -21,7 +21,7 @@ public class GenerateUpgradedDefinitionParameters {
     private String targetSchemaVersion;
 
     /**
-     * Get the targetSchemaVersion value.
+     * Get the target schema version.
      *
      * @return the targetSchemaVersion value
      */
@@ -30,7 +30,7 @@ public class GenerateUpgradedDefinitionParameters {
     }
 
     /**
-     * Set the targetSchemaVersion value.
+     * Set the target schema version.
      *
      * @param targetSchemaVersion the targetSchemaVersion value to set
      * @return the GenerateUpgradedDefinitionParameters object itself.

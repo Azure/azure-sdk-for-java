@@ -23,7 +23,7 @@ public class WorkflowRunFilter {
     private WorkflowStatus status;
 
     /**
-     * Get the status value.
+     * Get the status of workflow run. Possible values include: 'NotSpecified', 'Paused', 'Running', 'Waiting', 'Succeeded', 'Skipped', 'Suspended', 'Cancelled', 'Failed', 'Faulted', 'TimedOut', 'Aborted', 'Ignored'.
      *
      * @return the status value
      */
@@ -32,7 +32,7 @@ public class WorkflowRunFilter {
     }
 
     /**
-     * Set the status value.
+     * Set the status of workflow run. Possible values include: 'NotSpecified', 'Paused', 'Running', 'Waiting', 'Succeeded', 'Skipped', 'Suspended', 'Cancelled', 'Failed', 'Faulted', 'TimedOut', 'Aborted', 'Ignored'.
      *
      * @param status the status value to set
      * @return the WorkflowRunFilter object itself.

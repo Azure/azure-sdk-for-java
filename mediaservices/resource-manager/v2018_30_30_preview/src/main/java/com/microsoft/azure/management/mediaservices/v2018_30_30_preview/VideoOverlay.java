@@ -38,7 +38,7 @@ public class VideoOverlay extends Overlay {
     private Rectangle cropRectangle;
 
     /**
-     * Get the position value.
+     * Get the location in the input video where the overlay is applied.
      *
      * @return the position value
      */
@@ -47,7 +47,7 @@ public class VideoOverlay extends Overlay {
     }
 
     /**
-     * Set the position value.
+     * Set the location in the input video where the overlay is applied.
      *
      * @param position the position value to set
      * @return the VideoOverlay object itself.
@@ -58,7 +58,7 @@ public class VideoOverlay extends Overlay {
     }
 
     /**
-     * Get the opacity value.
+     * Get the opacity of the overlay. This is a value in the range [0 - 1.0]. Default is 1.0 which mean the overlay is opaque.
      *
      * @return the opacity value
      */
@@ -67,7 +67,7 @@ public class VideoOverlay extends Overlay {
     }
 
     /**
-     * Set the opacity value.
+     * Set the opacity of the overlay. This is a value in the range [0 - 1.0]. Default is 1.0 which mean the overlay is opaque.
      *
      * @param opacity the opacity value to set
      * @return the VideoOverlay object itself.
@@ -78,7 +78,7 @@ public class VideoOverlay extends Overlay {
     }
 
     /**
-     * Get the cropRectangle value.
+     * Get an optional rectangular window used to crop the overlay image or video.
      *
      * @return the cropRectangle value
      */
@@ -87,7 +87,7 @@ public class VideoOverlay extends Overlay {
     }
 
     /**
-     * Set the cropRectangle value.
+     * Set an optional rectangular window used to crop the overlay image or video.
      *
      * @param cropRectangle the cropRectangle value to set
      * @return the VideoOverlay object itself.

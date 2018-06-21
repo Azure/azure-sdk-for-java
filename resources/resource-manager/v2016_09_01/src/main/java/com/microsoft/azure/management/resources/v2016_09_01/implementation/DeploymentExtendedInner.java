@@ -34,7 +34,7 @@ public class DeploymentExtendedInner {
     private DeploymentPropertiesExtended properties;
 
     /**
-     * Get the id value.
+     * Get the ID of the deployment.
      *
      * @return the id value
      */
@@ -43,7 +43,7 @@ public class DeploymentExtendedInner {
     }
 
     /**
-     * Get the name value.
+     * Get the name of the deployment.
      *
      * @return the name value
      */
@@ -52,7 +52,7 @@ public class DeploymentExtendedInner {
     }
 
     /**
-     * Set the name value.
+     * Set the name of the deployment.
      *
      * @param name the name value to set
      * @return the DeploymentExtendedInner object itself.
@@ -63,7 +63,7 @@ public class DeploymentExtendedInner {
     }
 
     /**
-     * Get the properties value.
+     * Get deployment properties.
      *
      * @return the properties value
      */
@@ -72,7 +72,7 @@ public class DeploymentExtendedInner {
     }
 
     /**
-     * Set the properties value.
+     * Set deployment properties.
      *
      * @param properties the properties value to set
      * @return the DeploymentExtendedInner object itself.

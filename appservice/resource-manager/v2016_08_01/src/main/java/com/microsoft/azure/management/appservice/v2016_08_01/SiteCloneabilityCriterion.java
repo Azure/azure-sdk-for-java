@@ -27,7 +27,7 @@ public class SiteCloneabilityCriterion {
     private String description;
 
     /**
-     * Get the name value.
+     * Get name of criterion.
      *
      * @return the name value
      */
@@ -36,7 +36,7 @@ public class SiteCloneabilityCriterion {
     }
 
     /**
-     * Set the name value.
+     * Set name of criterion.
      *
      * @param name the name value to set
      * @return the SiteCloneabilityCriterion object itself.
@@ -47,7 +47,7 @@ public class SiteCloneabilityCriterion {
     }
 
     /**
-     * Get the description value.
+     * Get description of criterion.
      *
      * @return the description value
      */
@@ -56,7 +56,7 @@ public class SiteCloneabilityCriterion {
     }
 
     /**
-     * Set the description value.
+     * Set description of criterion.
      *
      * @param description the description value to set
      * @return the SiteCloneabilityCriterion object itself.

@@ -36,7 +36,7 @@ public class ResourceNameAvailabilityRequest {
     private Boolean isFqdn;
 
     /**
-     * Get the name value.
+     * Get resource name to verify.
      *
      * @return the name value
      */
@@ -45,7 +45,7 @@ public class ResourceNameAvailabilityRequest {
     }
 
     /**
-     * Set the name value.
+     * Set resource name to verify.
      *
      * @param name the name value to set
      * @return the ResourceNameAvailabilityRequest object itself.
@@ -56,7 +56,7 @@ public class ResourceNameAvailabilityRequest {
     }
 
     /**
-     * Get the type value.
+     * Get resource type used for verification. Possible values include: 'Site', 'Slot', 'HostingEnvironment', 'PublishingUser', 'Microsoft.Web/sites', 'Microsoft.Web/sites/slots', 'Microsoft.Web/hostingEnvironments', 'Microsoft.Web/publishingUsers'.
      *
      * @return the type value
      */
@@ -65,7 +65,7 @@ public class ResourceNameAvailabilityRequest {
     }
 
     /**
-     * Set the type value.
+     * Set resource type used for verification. Possible values include: 'Site', 'Slot', 'HostingEnvironment', 'PublishingUser', 'Microsoft.Web/sites', 'Microsoft.Web/sites/slots', 'Microsoft.Web/hostingEnvironments', 'Microsoft.Web/publishingUsers'.
      *
      * @param type the type value to set
      * @return the ResourceNameAvailabilityRequest object itself.
@@ -76,7 +76,7 @@ public class ResourceNameAvailabilityRequest {
     }
 
     /**
-     * Get the isFqdn value.
+     * Get is fully qualified domain name.
      *
      * @return the isFqdn value
      */
@@ -85,7 +85,7 @@ public class ResourceNameAvailabilityRequest {
     }
 
     /**
-     * Set the isFqdn value.
+     * Set is fully qualified domain name.
      *
      * @param isFqdn the isFqdn value to set
      * @return the ResourceNameAvailabilityRequest object itself.

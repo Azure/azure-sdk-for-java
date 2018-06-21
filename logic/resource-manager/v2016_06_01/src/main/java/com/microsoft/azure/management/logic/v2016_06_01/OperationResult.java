@@ -64,7 +64,7 @@ public class OperationResult extends OperationResultProperties {
     private Integer iterationCount;
 
     /**
-     * Get the trackingId value.
+     * Get gets the tracking id.
      *
      * @return the trackingId value
      */
@@ -73,7 +73,7 @@ public class OperationResult extends OperationResultProperties {
     }
 
     /**
-     * Get the inputs value.
+     * Get gets the inputs.
      *
      * @return the inputs value
      */
@@ -82,7 +82,7 @@ public class OperationResult extends OperationResultProperties {
     }
 
     /**
-     * Get the inputsLink value.
+     * Get gets the link to inputs.
      *
      * @return the inputsLink value
      */
@@ -91,7 +91,7 @@ public class OperationResult extends OperationResultProperties {
     }
 
     /**
-     * Get the outputs value.
+     * Get gets the outputs.
      *
      * @return the outputs value
      */
@@ -100,7 +100,7 @@ public class OperationResult extends OperationResultProperties {
     }
 
     /**
-     * Get the outputsLink value.
+     * Get gets the link to outputs.
      *
      * @return the outputsLink value
      */
@@ -109,7 +109,7 @@ public class OperationResult extends OperationResultProperties {
     }
 
     /**
-     * Get the trackedProperties value.
+     * Get gets the tracked properties.
      *
      * @return the trackedProperties value
      */
@@ -118,7 +118,7 @@ public class OperationResult extends OperationResultProperties {
     }
 
     /**
-     * Get the retryHistory value.
+     * Get gets the retry histories.
      *
      * @return the retryHistory value
      */
@@ -127,7 +127,7 @@ public class OperationResult extends OperationResultProperties {
     }
 
     /**
-     * Set the retryHistory value.
+     * Set gets the retry histories.
      *
      * @param retryHistory the retryHistory value to set
      * @return the OperationResult object itself.

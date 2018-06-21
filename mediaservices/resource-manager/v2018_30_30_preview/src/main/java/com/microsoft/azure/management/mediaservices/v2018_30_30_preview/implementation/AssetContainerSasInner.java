@@ -22,7 +22,7 @@ public class AssetContainerSasInner {
     private List<String> assetContainerSasUrls;
 
     /**
-     * Get the assetContainerSasUrls value.
+     * Get the list of Asset container SAS URLs.
      *
      * @return the assetContainerSasUrls value
      */
@@ -31,7 +31,7 @@ public class AssetContainerSasInner {
     }
 
     /**
-     * Set the assetContainerSasUrls value.
+     * Set the list of Asset container SAS URLs.
      *
      * @param assetContainerSasUrls the assetContainerSasUrls value to set
      * @return the AssetContainerSasInner object itself.

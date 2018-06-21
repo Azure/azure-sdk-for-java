@@ -70,7 +70,7 @@ public class CertificateDetails {
     private String rawData;
 
     /**
-     * Get the version value.
+     * Get certificate Version.
      *
      * @return the version value
      */
@@ -79,7 +79,7 @@ public class CertificateDetails {
     }
 
     /**
-     * Get the serialNumber value.
+     * Get certificate Serial Number.
      *
      * @return the serialNumber value
      */
@@ -88,7 +88,7 @@ public class CertificateDetails {
     }
 
     /**
-     * Get the thumbprint value.
+     * Get certificate Thumbprint.
      *
      * @return the thumbprint value
      */
@@ -97,7 +97,7 @@ public class CertificateDetails {
     }
 
     /**
-     * Get the subject value.
+     * Get certificate Subject.
      *
      * @return the subject value
      */
@@ -106,7 +106,7 @@ public class CertificateDetails {
     }
 
     /**
-     * Get the notBefore value.
+     * Get date Certificate is valid from.
      *
      * @return the notBefore value
      */
@@ -115,7 +115,7 @@ public class CertificateDetails {
     }
 
     /**
-     * Get the notAfter value.
+     * Get date Certificate is valid to.
      *
      * @return the notAfter value
      */
@@ -124,7 +124,7 @@ public class CertificateDetails {
     }
 
     /**
-     * Get the signatureAlgorithm value.
+     * Get certificate Signature algorithm.
      *
      * @return the signatureAlgorithm value
      */
@@ -133,7 +133,7 @@ public class CertificateDetails {
     }
 
     /**
-     * Get the issuer value.
+     * Get certificate Issuer.
      *
      * @return the issuer value
      */
@@ -142,7 +142,7 @@ public class CertificateDetails {
     }
 
     /**
-     * Get the rawData value.
+     * Get raw certificate data.
      *
      * @return the rawData value
      */

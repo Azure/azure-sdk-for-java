@@ -70,7 +70,7 @@ public class AS2MdnSettings {
     private HashingAlgorithm micHashingAlgorithm;
 
     /**
-     * Get the needMdn value.
+     * Get the value indicating whether to send or request a MDN.
      *
      * @return the needMdn value
      */
@@ -79,7 +79,7 @@ public class AS2MdnSettings {
     }
 
     /**
-     * Set the needMdn value.
+     * Set the value indicating whether to send or request a MDN.
      *
      * @param needMdn the needMdn value to set
      * @return the AS2MdnSettings object itself.
@@ -90,7 +90,7 @@ public class AS2MdnSettings {
     }
 
     /**
-     * Get the signMdn value.
+     * Get the value indicating whether the MDN needs to be signed or not.
      *
      * @return the signMdn value
      */
@@ -99,7 +99,7 @@ public class AS2MdnSettings {
     }
 
     /**
-     * Set the signMdn value.
+     * Set the value indicating whether the MDN needs to be signed or not.
      *
      * @param signMdn the signMdn value to set
      * @return the AS2MdnSettings object itself.
@@ -110,7 +110,7 @@ public class AS2MdnSettings {
     }
 
     /**
-     * Get the sendMdnAsynchronously value.
+     * Get the value indicating whether to send the asynchronous MDN.
      *
      * @return the sendMdnAsynchronously value
      */
@@ -119,7 +119,7 @@ public class AS2MdnSettings {
     }
 
     /**
-     * Set the sendMdnAsynchronously value.
+     * Set the value indicating whether to send the asynchronous MDN.
      *
      * @param sendMdnAsynchronously the sendMdnAsynchronously value to set
      * @return the AS2MdnSettings object itself.
@@ -130,7 +130,7 @@ public class AS2MdnSettings {
     }
 
     /**
-     * Get the receiptDeliveryUrl value.
+     * Get the receipt delivery URL.
      *
      * @return the receiptDeliveryUrl value
      */
@@ -139,7 +139,7 @@ public class AS2MdnSettings {
     }
 
     /**
-     * Set the receiptDeliveryUrl value.
+     * Set the receipt delivery URL.
      *
      * @param receiptDeliveryUrl the receiptDeliveryUrl value to set
      * @return the AS2MdnSettings object itself.
@@ -150,7 +150,7 @@ public class AS2MdnSettings {
     }
 
     /**
-     * Get the dispositionNotificationTo value.
+     * Get the disposition notification to header value.
      *
      * @return the dispositionNotificationTo value
      */
@@ -159,7 +159,7 @@ public class AS2MdnSettings {
     }
 
     /**
-     * Set the dispositionNotificationTo value.
+     * Set the disposition notification to header value.
      *
      * @param dispositionNotificationTo the dispositionNotificationTo value to set
      * @return the AS2MdnSettings object itself.
@@ -170,7 +170,7 @@ public class AS2MdnSettings {
     }
 
     /**
-     * Get the signOutboundMdnIfOptional value.
+     * Get the value indicating whether to sign the outbound MDN if optional.
      *
      * @return the signOutboundMdnIfOptional value
      */
@@ -179,7 +179,7 @@ public class AS2MdnSettings {
     }
 
     /**
-     * Set the signOutboundMdnIfOptional value.
+     * Set the value indicating whether to sign the outbound MDN if optional.
      *
      * @param signOutboundMdnIfOptional the signOutboundMdnIfOptional value to set
      * @return the AS2MdnSettings object itself.
@@ -190,7 +190,7 @@ public class AS2MdnSettings {
     }
 
     /**
-     * Get the mdnText value.
+     * Get the MDN text.
      *
      * @return the mdnText value
      */
@@ -199,7 +199,7 @@ public class AS2MdnSettings {
     }
 
     /**
-     * Set the mdnText value.
+     * Set the MDN text.
      *
      * @param mdnText the mdnText value to set
      * @return the AS2MdnSettings object itself.
@@ -210,7 +210,7 @@ public class AS2MdnSettings {
     }
 
     /**
-     * Get the sendInboundMdnToMessageBox value.
+     * Get the value indicating whether to send inbound MDN to message box.
      *
      * @return the sendInboundMdnToMessageBox value
      */
@@ -219,7 +219,7 @@ public class AS2MdnSettings {
     }
 
     /**
-     * Set the sendInboundMdnToMessageBox value.
+     * Set the value indicating whether to send inbound MDN to message box.
      *
      * @param sendInboundMdnToMessageBox the sendInboundMdnToMessageBox value to set
      * @return the AS2MdnSettings object itself.
@@ -230,7 +230,7 @@ public class AS2MdnSettings {
     }
 
     /**
-     * Get the micHashingAlgorithm value.
+     * Get the signing or hashing algorithm. Possible values include: 'NotSpecified', 'None', 'MD5', 'SHA1', 'SHA2256', 'SHA2384', 'SHA2512'.
      *
      * @return the micHashingAlgorithm value
      */
@@ -239,7 +239,7 @@ public class AS2MdnSettings {
     }
 
     /**
-     * Set the micHashingAlgorithm value.
+     * Set the signing or hashing algorithm. Possible values include: 'NotSpecified', 'None', 'MD5', 'SHA1', 'SHA2256', 'SHA2384', 'SHA2512'.
      *
      * @param micHashingAlgorithm the micHashingAlgorithm value to set
      * @return the AS2MdnSettings object itself.

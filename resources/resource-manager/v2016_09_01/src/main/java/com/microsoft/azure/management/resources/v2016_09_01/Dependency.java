@@ -40,7 +40,7 @@ public class Dependency {
     private String resourceName;
 
     /**
-     * Get the dependsOn value.
+     * Get the list of dependencies.
      *
      * @return the dependsOn value
      */
@@ -49,7 +49,7 @@ public class Dependency {
     }
 
     /**
-     * Set the dependsOn value.
+     * Set the list of dependencies.
      *
      * @param dependsOn the dependsOn value to set
      * @return the Dependency object itself.
@@ -60,7 +60,7 @@ public class Dependency {
     }
 
     /**
-     * Get the id value.
+     * Get the ID of the dependency.
      *
      * @return the id value
      */
@@ -69,7 +69,7 @@ public class Dependency {
     }
 
     /**
-     * Set the id value.
+     * Set the ID of the dependency.
      *
      * @param id the id value to set
      * @return the Dependency object itself.
@@ -80,7 +80,7 @@ public class Dependency {
     }
 
     /**
-     * Get the resourceType value.
+     * Get the dependency resource type.
      *
      * @return the resourceType value
      */
@@ -89,7 +89,7 @@ public class Dependency {
     }
 
     /**
-     * Set the resourceType value.
+     * Set the dependency resource type.
      *
      * @param resourceType the resourceType value to set
      * @return the Dependency object itself.
@@ -100,7 +100,7 @@ public class Dependency {
     }
 
     /**
-     * Get the resourceName value.
+     * Get the dependency resource name.
      *
      * @return the resourceName value
      */
@@ -109,7 +109,7 @@ public class Dependency {
     }
 
     /**
-     * Set the resourceName value.
+     * Set the dependency resource name.
      *
      * @param resourceName the resourceName value to set
      * @return the Dependency object itself.

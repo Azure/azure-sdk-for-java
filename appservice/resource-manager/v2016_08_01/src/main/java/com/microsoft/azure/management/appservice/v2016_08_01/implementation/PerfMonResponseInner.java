@@ -34,7 +34,7 @@ public class PerfMonResponseInner {
     private PerfMonSet data;
 
     /**
-     * Get the code value.
+     * Get the response code.
      *
      * @return the code value
      */
@@ -43,7 +43,7 @@ public class PerfMonResponseInner {
     }
 
     /**
-     * Set the code value.
+     * Set the response code.
      *
      * @param code the code value to set
      * @return the PerfMonResponseInner object itself.
@@ -54,7 +54,7 @@ public class PerfMonResponseInner {
     }
 
     /**
-     * Get the message value.
+     * Get the message.
      *
      * @return the message value
      */
@@ -63,7 +63,7 @@ public class PerfMonResponseInner {
     }
 
     /**
-     * Set the message value.
+     * Set the message.
      *
      * @param message the message value to set
      * @return the PerfMonResponseInner object itself.
@@ -74,7 +74,7 @@ public class PerfMonResponseInner {
     }
 
     /**
-     * Get the data value.
+     * Get the performance monitor counters.
      *
      * @return the data value
      */
@@ -83,7 +83,7 @@ public class PerfMonResponseInner {
     }
 
     /**
-     * Set the data value.
+     * Set the performance monitor counters.
      *
      * @param data the data value to set
      * @return the PerfMonResponseInner object itself.

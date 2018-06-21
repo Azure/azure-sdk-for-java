@@ -22,7 +22,7 @@ public class IntegrationAccountPartnerFilter {
     private PartnerType partnerType;
 
     /**
-     * Get the partnerType value.
+     * Get the partner type of integration account partner. Possible values include: 'NotSpecified', 'B2B'.
      *
      * @return the partnerType value
      */
@@ -31,7 +31,7 @@ public class IntegrationAccountPartnerFilter {
     }
 
     /**
-     * Set the partnerType value.
+     * Set the partner type of integration account partner. Possible values include: 'NotSpecified', 'B2B'.
      *
      * @param partnerType the partnerType value to set
      * @return the IntegrationAccountPartnerFilter object itself.
