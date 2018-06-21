@@ -10,17 +10,17 @@
 package com.microsoft.azure.management.mysql.v2017_12_01.implementation;
 
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
-import com.microsoft.azure.management.mysql.v2017_12_01.LogFiles;
+import com.microsoft.azure.management.mysql.v2017_12_01.Replicas;
 import rx.Observable;
 import rx.functions.Func1;
 import java.util.List;
-import com.microsoft.azure.management.mysql.v2017_12_01.LogFile;
+import com.microsoft.azure.management.mysql.v2017_12_01.ServerServer;
 
-class LogFilesImpl extends WrapperImpl<LogFilesInner> implements LogFiles {
+class ReplicasImpl extends WrapperImpl<ReplicasInner> implements Replicas {
     private final DBforMySQLManager manager;
 
-    LogFilesImpl(DBforMySQLManager manager) {
-        super(manager.inner().logFiles());
+    ReplicasImpl(DBforMySQLManager manager) {
+        super(manager.inner().replicas());
         this.manager = manager;
     }
 
@@ -28,23 +28,23 @@ class LogFilesImpl extends WrapperImpl<LogFilesInner> implements LogFiles {
         return this.manager;
     }
 
-    private LogFileImpl wrapModel(LogFileInner inner) {
-        return  new LogFileImpl(inner, manager());
+    private ServerServerImpl wrapModel(ServerInner inner) {
+        return  new ServerServerImpl(inner, manager());
     }
 
     @Override
-    public Observable<LogFile> listByServerAsync(String resourceGroupName, String serverName) {
-        LogFilesInner client = this.inner();
+    public Observable<ServerServer> listByServerAsync(String resourceGroupName, String serverName) {
+        ReplicasInner client = this.inner();
         return client.listByServerAsync(resourceGroupName, serverName)
-        .flatMap(new Func1<List<LogFileInner>, Observable<LogFileInner>>() {
+        .flatMap(new Func1<List<ServerInner>, Observable<ServerInner>>() {
             @Override
-            public Observable<LogFileInner> call(List<LogFileInner> innerList) {
+            public Observable<ServerInner> call(List<ServerInner> innerList) {
                 return Observable.from(innerList);
             }
         })
-        .map(new Func1<LogFileInner, LogFile>() {
+        .map(new Func1<ServerInner, ServerServer>() {
             @Override
-            public LogFile call(LogFileInner inner) {
+            public ServerServer call(ServerInner inner) {
                 return wrapModel(inner);
             }
         });

@@ -146,6 +146,19 @@ public class MySQLManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The ReplicasInner object to access its operations.
+     */
+    private ReplicasInner replicas;
+
+    /**
+     * Gets the ReplicasInner object to access its operations.
+     * @return the ReplicasInner object.
+     */
+    public ReplicasInner replicas() {
+        return this.replicas;
+    }
+
+    /**
      * The FirewallRulesInner object to access its operations.
      */
     private FirewallRulesInner firewallRules;
@@ -285,6 +298,7 @@ public class MySQLManagementClientImpl extends AzureServiceClient {
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
         this.servers = new ServersInner(restClient().retrofit(), this);
+        this.replicas = new ReplicasInner(restClient().retrofit(), this);
         this.firewallRules = new FirewallRulesInner(restClient().retrofit(), this);
         this.virtualNetworkRules = new VirtualNetworkRulesInner(restClient().retrofit(), this);
         this.databases = new DatabasesInner(restClient().retrofit(), this);

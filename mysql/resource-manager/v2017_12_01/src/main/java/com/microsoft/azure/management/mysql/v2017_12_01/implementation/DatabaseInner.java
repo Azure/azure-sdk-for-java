@@ -30,7 +30,7 @@ public class DatabaseInner extends ProxyResource {
     private String collation;
 
     /**
-     * Get the charset value.
+     * Get the charset of the database.
      *
      * @return the charset value
      */
@@ -39,7 +39,7 @@ public class DatabaseInner extends ProxyResource {
     }
 
     /**
-     * Set the charset value.
+     * Set the charset of the database.
      *
      * @param charset the charset value to set
      * @return the DatabaseInner object itself.
@@ -50,7 +50,7 @@ public class DatabaseInner extends ProxyResource {
     }
 
     /**
-     * Get the collation value.
+     * Get the collation of the database.
      *
      * @return the collation value
      */
@@ -59,7 +59,7 @@ public class DatabaseInner extends ProxyResource {
     }
 
     /**
-     * Set the collation value.
+     * Set the collation of the database.
      *
      * @param collation the collation value to set
      * @return the DatabaseInner object itself.
