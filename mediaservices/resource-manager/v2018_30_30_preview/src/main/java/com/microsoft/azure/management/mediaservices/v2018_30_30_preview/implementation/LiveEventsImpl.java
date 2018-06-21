@@ -60,41 +60,22 @@ class LiveEventsImpl extends WrapperImpl<LiveEventsInner> implements LiveEvents 
         return client.resetAsync(resourceGroupName, accountName, liveEventName).toCompletable();
     }
 
-    private Observable<Page<LiveEventInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        LiveEventsInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<LiveEventInner>, Observable<Page<LiveEventInner>>>() {
-            @Override
-            public Observable<Page<LiveEventInner>> call(Page<LiveEventInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<LiveEvent> listAsync(final String resourceGroupName, final String accountName) {
         LiveEventsInner client = this.inner();
         return client.listAsync(resourceGroupName, accountName)
-        .flatMap(new Func1<Page<LiveEventInner>, Observable<Page<LiveEventInner>>>() {
-            @Override
-            public Observable<Page<LiveEventInner>> call(Page<LiveEventInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<LiveEventInner>, Iterable<LiveEventInner>>() {
             @Override
             public Iterable<LiveEventInner> call(Page<LiveEventInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<LiveEventInner, LiveEvent>() {
             @Override
             public LiveEvent call(LiveEventInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override

@@ -30,7 +30,7 @@ public class ListContainerSasInput {
     private DateTime expiryTime;
 
     /**
-     * Get the permissions value.
+     * Get the permissions to set on the SAS URL. Possible values include: 'Read', 'ReadWrite', 'ReadWriteDelete'.
      *
      * @return the permissions value
      */
@@ -39,7 +39,7 @@ public class ListContainerSasInput {
     }
 
     /**
-     * Set the permissions value.
+     * Set the permissions to set on the SAS URL. Possible values include: 'Read', 'ReadWrite', 'ReadWriteDelete'.
      *
      * @param permissions the permissions value to set
      * @return the ListContainerSasInput object itself.
@@ -50,7 +50,7 @@ public class ListContainerSasInput {
     }
 
     /**
-     * Get the expiryTime value.
+     * Get the SAS URL expiration time.  This must be less than 24 hours from the current time.
      *
      * @return the expiryTime value
      */
@@ -59,7 +59,7 @@ public class ListContainerSasInput {
     }
 
     /**
-     * Set the expiryTime value.
+     * Set the SAS URL expiration time.  This must be less than 24 hours from the current time.
      *
      * @param expiryTime the expiryTime value to set
      * @return the ListContainerSasInput object itself.

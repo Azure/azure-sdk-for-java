@@ -26,7 +26,7 @@ public class JobInputs extends JobInput {
     private List<JobInput> inputs;
 
     /**
-     * Get the inputs value.
+     * Get list of inputs to a Job.
      *
      * @return the inputs value
      */
@@ -35,7 +35,7 @@ public class JobInputs extends JobInput {
     }
 
     /**
-     * Set the inputs value.
+     * Set list of inputs to a Job.
      *
      * @param inputs the inputs value to set
      * @return the JobInputs object itself.

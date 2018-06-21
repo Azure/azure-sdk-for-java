@@ -26,7 +26,7 @@ public class JpgLayer extends Layer {
     private Integer quality;
 
     /**
-     * Get the quality value.
+     * Get the compression quality of the JPEG output. Range is from 0-100 and the default is 70.
      *
      * @return the quality value
      */
@@ -35,7 +35,7 @@ public class JpgLayer extends Layer {
     }
 
     /**
-     * Set the quality value.
+     * Set the compression quality of the JPEG output. Range is from 0-100 and the default is 70.
      *
      * @param quality the quality value to set
      * @return the JpgLayer object itself.

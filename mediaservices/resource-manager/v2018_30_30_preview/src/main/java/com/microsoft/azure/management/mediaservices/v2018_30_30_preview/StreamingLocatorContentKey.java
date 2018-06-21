@@ -54,7 +54,7 @@ public class StreamingLocatorContentKey {
     private List<TrackSelection> tracks;
 
     /**
-     * Get the label value.
+     * Get label of Content Key.
      *
      * @return the label value
      */
@@ -63,7 +63,7 @@ public class StreamingLocatorContentKey {
     }
 
     /**
-     * Set the label value.
+     * Set label of Content Key.
      *
      * @param label the label value to set
      * @return the StreamingLocatorContentKey object itself.
@@ -74,7 +74,7 @@ public class StreamingLocatorContentKey {
     }
 
     /**
-     * Get the type value.
+     * Get encryption type of Content Key. Possible values include: 'CommonEncryptionCenc', 'CommonEncryptionCbcs', 'EnvelopeEncryption'.
      *
      * @return the type value
      */
@@ -83,7 +83,7 @@ public class StreamingLocatorContentKey {
     }
 
     /**
-     * Set the type value.
+     * Set encryption type of Content Key. Possible values include: 'CommonEncryptionCenc', 'CommonEncryptionCbcs', 'EnvelopeEncryption'.
      *
      * @param type the type value to set
      * @return the StreamingLocatorContentKey object itself.
@@ -94,7 +94,7 @@ public class StreamingLocatorContentKey {
     }
 
     /**
-     * Get the id value.
+     * Get iD of Content Key.
      *
      * @return the id value
      */
@@ -103,7 +103,7 @@ public class StreamingLocatorContentKey {
     }
 
     /**
-     * Set the id value.
+     * Set iD of Content Key.
      *
      * @param id the id value to set
      * @return the StreamingLocatorContentKey object itself.
@@ -114,7 +114,7 @@ public class StreamingLocatorContentKey {
     }
 
     /**
-     * Get the value value.
+     * Get value of  of Content Key.
      *
      * @return the value value
      */
@@ -123,7 +123,7 @@ public class StreamingLocatorContentKey {
     }
 
     /**
-     * Set the value value.
+     * Set value of  of Content Key.
      *
      * @param value the value value to set
      * @return the StreamingLocatorContentKey object itself.
@@ -134,7 +134,7 @@ public class StreamingLocatorContentKey {
     }
 
     /**
-     * Get the policyName value.
+     * Get contentKeyPolicy used by Content Key.
      *
      * @return the policyName value
      */
@@ -143,7 +143,7 @@ public class StreamingLocatorContentKey {
     }
 
     /**
-     * Set the policyName value.
+     * Set contentKeyPolicy used by Content Key.
      *
      * @param policyName the policyName value to set
      * @return the StreamingLocatorContentKey object itself.
@@ -154,7 +154,7 @@ public class StreamingLocatorContentKey {
     }
 
     /**
-     * Get the tracks value.
+     * Get tracks which use this Content Key.
      *
      * @return the tracks value
      */
@@ -163,7 +163,7 @@ public class StreamingLocatorContentKey {
     }
 
     /**
-     * Set the tracks value.
+     * Set tracks which use this Content Key.
      *
      * @param tracks the tracks value to set
      * @return the StreamingLocatorContentKey object itself.

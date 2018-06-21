@@ -29,7 +29,7 @@ public class ContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction {
     private int configurationData;
 
     /**
-     * Get the bestEffort value.
+     * Get indicates whether this restriction is enforced on a Best Effort basis.
      *
      * @return the bestEffort value
      */
@@ -38,7 +38,7 @@ public class ContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction {
     }
 
     /**
-     * Set the bestEffort value.
+     * Set indicates whether this restriction is enforced on a Best Effort basis.
      *
      * @param bestEffort the bestEffort value to set
      * @return the ContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction object itself.
@@ -49,7 +49,7 @@ public class ContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction {
     }
 
     /**
-     * Get the configurationData value.
+     * Get configures the restriction control bits. Must be between 0 and 3 inclusive.
      *
      * @return the configurationData value
      */
@@ -58,7 +58,7 @@ public class ContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction {
     }
 
     /**
-     * Set the configurationData value.
+     * Set configures the restriction control bits. Must be between 0 and 3 inclusive.
      *
      * @param configurationData the configurationData value to set
      * @return the ContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction object itself.

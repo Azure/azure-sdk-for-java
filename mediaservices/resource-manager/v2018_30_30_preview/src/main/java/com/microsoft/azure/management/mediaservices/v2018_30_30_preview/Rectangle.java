@@ -48,7 +48,7 @@ public class Rectangle {
     private String height;
 
     /**
-     * Get the left value.
+     * Get the number of pixels from the left-margin. This can be absolute pixel value (e.g 100), or relative to the size of the video (For example, 50%).
      *
      * @return the left value
      */
@@ -57,7 +57,7 @@ public class Rectangle {
     }
 
     /**
-     * Set the left value.
+     * Set the number of pixels from the left-margin. This can be absolute pixel value (e.g 100), or relative to the size of the video (For example, 50%).
      *
      * @param left the left value to set
      * @return the Rectangle object itself.
@@ -68,7 +68,7 @@ public class Rectangle {
     }
 
     /**
-     * Get the top value.
+     * Get the number of pixels from the top-margin. This can be absolute pixel value (e.g 100), or relative to the size of the video (For example, 50%).
      *
      * @return the top value
      */
@@ -77,7 +77,7 @@ public class Rectangle {
     }
 
     /**
-     * Set the top value.
+     * Set the number of pixels from the top-margin. This can be absolute pixel value (e.g 100), or relative to the size of the video (For example, 50%).
      *
      * @param top the top value to set
      * @return the Rectangle object itself.
@@ -88,7 +88,7 @@ public class Rectangle {
     }
 
     /**
-     * Get the width value.
+     * Get the width of the rectangular region in pixels. This can be absolute pixel value (e.g 100), or relative to the size of the video (For example, 50%).
      *
      * @return the width value
      */
@@ -97,7 +97,7 @@ public class Rectangle {
     }
 
     /**
-     * Set the width value.
+     * Set the width of the rectangular region in pixels. This can be absolute pixel value (e.g 100), or relative to the size of the video (For example, 50%).
      *
      * @param width the width value to set
      * @return the Rectangle object itself.
@@ -108,7 +108,7 @@ public class Rectangle {
     }
 
     /**
-     * Get the height value.
+     * Get the height of the rectangular region in pixels. This can be absolute pixel value (e.g 100), or relative to the size of the video (For example, 50%).
      *
      * @return the height value
      */
@@ -117,7 +117,7 @@ public class Rectangle {
     }
 
     /**
-     * Set the height value.
+     * Set the height of the rectangular region in pixels. This can be absolute pixel value (e.g 100), or relative to the size of the video (For example, 50%).
      *
      * @param height the height value to set
      * @return the Rectangle object itself.

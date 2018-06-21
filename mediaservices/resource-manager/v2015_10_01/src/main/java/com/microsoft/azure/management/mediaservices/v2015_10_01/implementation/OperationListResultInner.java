@@ -29,7 +29,7 @@ public class OperationListResultInner {
     private String nextLink;
 
     /**
-     * Get the value value.
+     * Get list of Media Services operations supported by the Microsoft.Media resource provider.
      *
      * @return the value value
      */
@@ -38,7 +38,7 @@ public class OperationListResultInner {
     }
 
     /**
-     * Get the nextLink value.
+     * Get uRL to get the next set of operation list results if there are any.
      *
      * @return the nextLink value
      */

@@ -47,7 +47,7 @@ public class JobOutput {
     private int progress;
 
     /**
-     * Get the error value.
+     * Get if the JobOutput is in the Error state, it contains the details of the error.
      *
      * @return the error value
      */
@@ -56,7 +56,7 @@ public class JobOutput {
     }
 
     /**
-     * Get the state value.
+     * Get describes the state of the JobOutput. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'.
      *
      * @return the state value
      */
@@ -65,7 +65,7 @@ public class JobOutput {
     }
 
     /**
-     * Get the progress value.
+     * Get if the JobOutput is in a Processing state, this contains the job completion percentage.  The value is an estimate and not intended to be used to predict job completion times. To determine if the JobOutput is complete, use the State property.
      *
      * @return the progress value
      */

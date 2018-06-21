@@ -41,7 +41,7 @@ public class ContentKeyPolicyOption {
     private ContentKeyPolicyRestriction restriction;
 
     /**
-     * Get the policyOptionId value.
+     * Get the legacy Policy Option ID.
      *
      * @return the policyOptionId value
      */
@@ -50,7 +50,7 @@ public class ContentKeyPolicyOption {
     }
 
     /**
-     * Get the name value.
+     * Get the Policy Option description.
      *
      * @return the name value
      */
@@ -59,7 +59,7 @@ public class ContentKeyPolicyOption {
     }
 
     /**
-     * Set the name value.
+     * Set the Policy Option description.
      *
      * @param name the name value to set
      * @return the ContentKeyPolicyOption object itself.
@@ -70,7 +70,7 @@ public class ContentKeyPolicyOption {
     }
 
     /**
-     * Get the configuration value.
+     * Get the key delivery configuration.
      *
      * @return the configuration value
      */
@@ -79,7 +79,7 @@ public class ContentKeyPolicyOption {
     }
 
     /**
-     * Set the configuration value.
+     * Set the key delivery configuration.
      *
      * @param configuration the configuration value to set
      * @return the ContentKeyPolicyOption object itself.
@@ -90,7 +90,7 @@ public class ContentKeyPolicyOption {
     }
 
     /**
-     * Get the restriction value.
+     * Get the requirements that must be met to deliver keys with this configuration.
      *
      * @return the restriction value
      */
@@ -99,7 +99,7 @@ public class ContentKeyPolicyOption {
     }
 
     /**
-     * Set the restriction value.
+     * Set the requirements that must be met to deliver keys with this configuration.
      *
      * @param restriction the restriction value to set
      * @return the ContentKeyPolicyOption object itself.

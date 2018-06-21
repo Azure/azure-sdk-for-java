@@ -39,7 +39,7 @@ public class EnabledProtocols {
     private boolean smoothStreaming;
 
     /**
-     * Get the download value.
+     * Get enable Download protocol or not.
      *
      * @return the download value
      */
@@ -48,7 +48,7 @@ public class EnabledProtocols {
     }
 
     /**
-     * Set the download value.
+     * Set enable Download protocol or not.
      *
      * @param download the download value to set
      * @return the EnabledProtocols object itself.
@@ -59,7 +59,7 @@ public class EnabledProtocols {
     }
 
     /**
-     * Get the dash value.
+     * Get enable Dash protocol or not.
      *
      * @return the dash value
      */
@@ -68,7 +68,7 @@ public class EnabledProtocols {
     }
 
     /**
-     * Set the dash value.
+     * Set enable Dash protocol or not.
      *
      * @param dash the dash value to set
      * @return the EnabledProtocols object itself.
@@ -79,7 +79,7 @@ public class EnabledProtocols {
     }
 
     /**
-     * Get the hls value.
+     * Get enable Hls protocol or not.
      *
      * @return the hls value
      */
@@ -88,7 +88,7 @@ public class EnabledProtocols {
     }
 
     /**
-     * Set the hls value.
+     * Set enable Hls protocol or not.
      *
      * @param hls the hls value to set
      * @return the EnabledProtocols object itself.
@@ -99,7 +99,7 @@ public class EnabledProtocols {
     }
 
     /**
-     * Get the smoothStreaming value.
+     * Get enable SmoothStreaming protocol or not.
      *
      * @return the smoothStreaming value
      */
@@ -108,7 +108,7 @@ public class EnabledProtocols {
     }
 
     /**
-     * Set the smoothStreaming value.
+     * Set enable SmoothStreaming protocol or not.
      *
      * @param smoothStreaming the smoothStreaming value to set
      * @return the EnabledProtocols object itself.

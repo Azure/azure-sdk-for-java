@@ -26,7 +26,7 @@ public class ContentKeyPolicyX509CertificateTokenKey extends ContentKeyPolicyRes
     private byte[] rawBody;
 
     /**
-     * Get the rawBody value.
+     * Get the raw data field of a certificate in PKCS 12 format (X509Certificate2 in .NET).
      *
      * @return the rawBody value
      */
@@ -35,7 +35,7 @@ public class ContentKeyPolicyX509CertificateTokenKey extends ContentKeyPolicyRes
     }
 
     /**
-     * Set the rawBody value.
+     * Set the raw data field of a certificate in PKCS 12 format (X509Certificate2 in .NET).
      *
      * @param rawBody the rawBody value to set
      * @return the ContentKeyPolicyX509CertificateTokenKey object itself.

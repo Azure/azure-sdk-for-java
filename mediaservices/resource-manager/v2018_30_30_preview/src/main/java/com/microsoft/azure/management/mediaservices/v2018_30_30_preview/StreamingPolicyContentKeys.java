@@ -28,7 +28,7 @@ public class StreamingPolicyContentKeys {
     private List<StreamingPolicyContentKey> keyToTrackMappings;
 
     /**
-     * Get the defaultKey value.
+     * Get default content key for an encryption scheme.
      *
      * @return the defaultKey value
      */
@@ -37,7 +37,7 @@ public class StreamingPolicyContentKeys {
     }
 
     /**
-     * Set the defaultKey value.
+     * Set default content key for an encryption scheme.
      *
      * @param defaultKey the defaultKey value to set
      * @return the StreamingPolicyContentKeys object itself.
@@ -48,7 +48,7 @@ public class StreamingPolicyContentKeys {
     }
 
     /**
-     * Get the keyToTrackMappings value.
+     * Get representing tracks needs sepearete content key.
      *
      * @return the keyToTrackMappings value
      */
@@ -57,7 +57,7 @@ public class StreamingPolicyContentKeys {
     }
 
     /**
-     * Set the keyToTrackMappings value.
+     * Set representing tracks needs sepearete content key.
      *
      * @param keyToTrackMappings the keyToTrackMappings value to set
      * @return the StreamingPolicyContentKeys object itself.

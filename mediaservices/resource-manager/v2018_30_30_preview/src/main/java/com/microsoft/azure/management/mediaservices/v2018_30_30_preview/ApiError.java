@@ -22,7 +22,7 @@ public class ApiError {
     private ODataError error;
 
     /**
-     * Get the error value.
+     * Get the error properties.
      *
      * @return the error value
      */
@@ -31,7 +31,7 @@ public class ApiError {
     }
 
     /**
-     * Set the error value.
+     * Set the error properties.
      *
      * @param error the error value to set
      * @return the ApiError object itself.
