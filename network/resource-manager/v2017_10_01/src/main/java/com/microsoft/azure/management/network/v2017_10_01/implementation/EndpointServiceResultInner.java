@@ -28,7 +28,7 @@ public class EndpointServiceResultInner extends SubResource {
     private String type;
 
     /**
-     * Get the name value.
+     * Get name of the endpoint service.
      *
      * @return the name value
      */
@@ -37,7 +37,7 @@ public class EndpointServiceResultInner extends SubResource {
     }
 
     /**
-     * Get the type value.
+     * Get type of the endpoint service.
      *
      * @return the type value
      */

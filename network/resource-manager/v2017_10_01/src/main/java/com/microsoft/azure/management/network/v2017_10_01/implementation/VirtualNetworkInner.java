@@ -89,7 +89,7 @@ public class VirtualNetworkInner extends Resource {
     private String id;
 
     /**
-     * Get the addressSpace value.
+     * Get the AddressSpace that contains an array of IP address ranges that can be used by subnets.
      *
      * @return the addressSpace value
      */
@@ -98,7 +98,7 @@ public class VirtualNetworkInner extends Resource {
     }
 
     /**
-     * Set the addressSpace value.
+     * Set the AddressSpace that contains an array of IP address ranges that can be used by subnets.
      *
      * @param addressSpace the addressSpace value to set
      * @return the VirtualNetworkInner object itself.
@@ -109,7 +109,7 @@ public class VirtualNetworkInner extends Resource {
     }
 
     /**
-     * Get the dhcpOptions value.
+     * Get the dhcpOptions that contains an array of DNS servers available to VMs deployed in the virtual network.
      *
      * @return the dhcpOptions value
      */
@@ -118,7 +118,7 @@ public class VirtualNetworkInner extends Resource {
     }
 
     /**
-     * Set the dhcpOptions value.
+     * Set the dhcpOptions that contains an array of DNS servers available to VMs deployed in the virtual network.
      *
      * @param dhcpOptions the dhcpOptions value to set
      * @return the VirtualNetworkInner object itself.
@@ -129,7 +129,7 @@ public class VirtualNetworkInner extends Resource {
     }
 
     /**
-     * Get the subnets value.
+     * Get a list of subnets in a Virtual Network.
      *
      * @return the subnets value
      */
@@ -138,7 +138,7 @@ public class VirtualNetworkInner extends Resource {
     }
 
     /**
-     * Set the subnets value.
+     * Set a list of subnets in a Virtual Network.
      *
      * @param subnets the subnets value to set
      * @return the VirtualNetworkInner object itself.
@@ -149,7 +149,7 @@ public class VirtualNetworkInner extends Resource {
     }
 
     /**
-     * Get the virtualNetworkPeerings value.
+     * Get a list of peerings in a Virtual Network.
      *
      * @return the virtualNetworkPeerings value
      */
@@ -158,7 +158,7 @@ public class VirtualNetworkInner extends Resource {
     }
 
     /**
-     * Set the virtualNetworkPeerings value.
+     * Set a list of peerings in a Virtual Network.
      *
      * @param virtualNetworkPeerings the virtualNetworkPeerings value to set
      * @return the VirtualNetworkInner object itself.
@@ -169,7 +169,7 @@ public class VirtualNetworkInner extends Resource {
     }
 
     /**
-     * Get the resourceGuid value.
+     * Get the resourceGuid property of the Virtual Network resource.
      *
      * @return the resourceGuid value
      */
@@ -178,7 +178,7 @@ public class VirtualNetworkInner extends Resource {
     }
 
     /**
-     * Set the resourceGuid value.
+     * Set the resourceGuid property of the Virtual Network resource.
      *
      * @param resourceGuid the resourceGuid value to set
      * @return the VirtualNetworkInner object itself.
@@ -189,7 +189,7 @@ public class VirtualNetworkInner extends Resource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get the provisioning state of the PublicIP resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value
      */
@@ -198,7 +198,7 @@ public class VirtualNetworkInner extends Resource {
     }
 
     /**
-     * Set the provisioningState value.
+     * Set the provisioning state of the PublicIP resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
      *
      * @param provisioningState the provisioningState value to set
      * @return the VirtualNetworkInner object itself.
@@ -209,7 +209,7 @@ public class VirtualNetworkInner extends Resource {
     }
 
     /**
-     * Get the enableDdosProtection value.
+     * Get indicates if DDoS protection is enabled for all the protected resources in a Virtual Network.
      *
      * @return the enableDdosProtection value
      */
@@ -218,7 +218,7 @@ public class VirtualNetworkInner extends Resource {
     }
 
     /**
-     * Set the enableDdosProtection value.
+     * Set indicates if DDoS protection is enabled for all the protected resources in a Virtual Network.
      *
      * @param enableDdosProtection the enableDdosProtection value to set
      * @return the VirtualNetworkInner object itself.
@@ -229,7 +229,7 @@ public class VirtualNetworkInner extends Resource {
     }
 
     /**
-     * Get the enableVmProtection value.
+     * Get indicates if Vm protection is enabled for all the subnets in a Virtual Network.
      *
      * @return the enableVmProtection value
      */
@@ -238,7 +238,7 @@ public class VirtualNetworkInner extends Resource {
     }
 
     /**
-     * Set the enableVmProtection value.
+     * Set indicates if Vm protection is enabled for all the subnets in a Virtual Network.
      *
      * @param enableVmProtection the enableVmProtection value to set
      * @return the VirtualNetworkInner object itself.
@@ -249,7 +249,7 @@ public class VirtualNetworkInner extends Resource {
     }
 
     /**
-     * Get the etag value.
+     * Get gets a unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value
      */
@@ -258,7 +258,7 @@ public class VirtualNetworkInner extends Resource {
     }
 
     /**
-     * Set the etag value.
+     * Set gets a unique read-only string that changes whenever the resource is updated.
      *
      * @param etag the etag value to set
      * @return the VirtualNetworkInner object itself.
@@ -269,7 +269,7 @@ public class VirtualNetworkInner extends Resource {
     }
 
     /**
-     * Get the id value.
+     * Get resource ID.
      *
      * @return the id value
      */
@@ -278,7 +278,7 @@ public class VirtualNetworkInner extends Resource {
     }
 
     /**
-     * Set the id value.
+     * Set resource ID.
      *
      * @param id the id value to set
      * @return the VirtualNetworkInner object itself.

@@ -47,7 +47,7 @@ public class ApplicationSecurityGroupInner extends Resource {
     private String id;
 
     /**
-     * Get the resourceGuid value.
+     * Get the resource GUID property of the application security group resource. It uniquely identifies a resource, even if the user changes its name or migrate the resource across subscriptions or resource groups.
      *
      * @return the resourceGuid value
      */
@@ -56,7 +56,7 @@ public class ApplicationSecurityGroupInner extends Resource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get the provisioning state of the application security group resource. Possible values are: 'Succeeded', 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value
      */
@@ -65,7 +65,7 @@ public class ApplicationSecurityGroupInner extends Resource {
     }
 
     /**
-     * Get the etag value.
+     * Get a unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value
      */
@@ -74,7 +74,7 @@ public class ApplicationSecurityGroupInner extends Resource {
     }
 
     /**
-     * Get the id value.
+     * Get resource ID.
      *
      * @return the id value
      */
@@ -83,7 +83,7 @@ public class ApplicationSecurityGroupInner extends Resource {
     }
 
     /**
-     * Set the id value.
+     * Set resource ID.
      *
      * @param id the id value to set
      * @return the ApplicationSecurityGroupInner object itself.

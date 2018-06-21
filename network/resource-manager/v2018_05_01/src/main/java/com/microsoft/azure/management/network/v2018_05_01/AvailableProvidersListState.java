@@ -34,7 +34,7 @@ public class AvailableProvidersListState {
     private List<AvailableProvidersListCity> cities;
 
     /**
-     * Get the stateName value.
+     * Get the state name.
      *
      * @return the stateName value
      */
@@ -43,7 +43,7 @@ public class AvailableProvidersListState {
     }
 
     /**
-     * Set the stateName value.
+     * Set the state name.
      *
      * @param stateName the stateName value to set
      * @return the AvailableProvidersListState object itself.
@@ -54,7 +54,7 @@ public class AvailableProvidersListState {
     }
 
     /**
-     * Get the providers value.
+     * Get a list of Internet service providers.
      *
      * @return the providers value
      */
@@ -63,7 +63,7 @@ public class AvailableProvidersListState {
     }
 
     /**
-     * Set the providers value.
+     * Set a list of Internet service providers.
      *
      * @param providers the providers value to set
      * @return the AvailableProvidersListState object itself.
@@ -74,7 +74,7 @@ public class AvailableProvidersListState {
     }
 
     /**
-     * Get the cities value.
+     * Get list of available cities or towns in the state.
      *
      * @return the cities value
      */
@@ -83,7 +83,7 @@ public class AvailableProvidersListState {
     }
 
     /**
-     * Set the cities value.
+     * Set list of available cities or towns in the state.
      *
      * @param cities the cities value to set
      * @return the AvailableProvidersListState object itself.

@@ -31,7 +31,7 @@ public class ConnectionMonitorQueryResultInner {
     private List<ConnectionStateSnapshot> states;
 
     /**
-     * Get the sourceStatus value.
+     * Get status of connection monitor source. Possible values include: 'Uknown', 'Active', 'Inactive'.
      *
      * @return the sourceStatus value
      */
@@ -40,7 +40,7 @@ public class ConnectionMonitorQueryResultInner {
     }
 
     /**
-     * Set the sourceStatus value.
+     * Set status of connection monitor source. Possible values include: 'Uknown', 'Active', 'Inactive'.
      *
      * @param sourceStatus the sourceStatus value to set
      * @return the ConnectionMonitorQueryResultInner object itself.
@@ -51,7 +51,7 @@ public class ConnectionMonitorQueryResultInner {
     }
 
     /**
-     * Get the states value.
+     * Get information about connection states.
      *
      * @return the states value
      */
@@ -60,7 +60,7 @@ public class ConnectionMonitorQueryResultInner {
     }
 
     /**
-     * Set the states value.
+     * Set information about connection states.
      *
      * @param states the states value to set
      * @return the ConnectionMonitorQueryResultInner object itself.

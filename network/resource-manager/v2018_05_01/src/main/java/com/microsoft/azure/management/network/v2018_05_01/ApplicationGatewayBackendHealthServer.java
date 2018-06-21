@@ -35,7 +35,7 @@ public class ApplicationGatewayBackendHealthServer {
     private ApplicationGatewayBackendHealthServerHealth health;
 
     /**
-     * Get the address value.
+     * Get iP address or FQDN of backend server.
      *
      * @return the address value
      */
@@ -44,7 +44,7 @@ public class ApplicationGatewayBackendHealthServer {
     }
 
     /**
-     * Set the address value.
+     * Set iP address or FQDN of backend server.
      *
      * @param address the address value to set
      * @return the ApplicationGatewayBackendHealthServer object itself.
@@ -55,7 +55,7 @@ public class ApplicationGatewayBackendHealthServer {
     }
 
     /**
-     * Get the ipConfiguration value.
+     * Get reference of IP configuration of backend server.
      *
      * @return the ipConfiguration value
      */
@@ -64,7 +64,7 @@ public class ApplicationGatewayBackendHealthServer {
     }
 
     /**
-     * Set the ipConfiguration value.
+     * Set reference of IP configuration of backend server.
      *
      * @param ipConfiguration the ipConfiguration value to set
      * @return the ApplicationGatewayBackendHealthServer object itself.
@@ -75,7 +75,7 @@ public class ApplicationGatewayBackendHealthServer {
     }
 
     /**
-     * Get the health value.
+     * Get health of backend server. Possible values include: 'Unknown', 'Up', 'Down', 'Partial', 'Draining'.
      *
      * @return the health value
      */
@@ -84,7 +84,7 @@ public class ApplicationGatewayBackendHealthServer {
     }
 
     /**
-     * Set the health value.
+     * Set health of backend server. Possible values include: 'Unknown', 'Up', 'Down', 'Partial', 'Draining'.
      *
      * @param health the health value to set
      * @return the ApplicationGatewayBackendHealthServer object itself.

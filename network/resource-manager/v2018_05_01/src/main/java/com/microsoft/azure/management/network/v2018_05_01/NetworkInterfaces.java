@@ -17,6 +17,11 @@ import com.microsoft.azure.management.network.v2018_05_01.VirtualMachineScaleSet
  * Type representing NetworkInterfaces.
  */
 public interface NetworkInterfaces {
+    /**
+     * Begins definition for a new NetworkInterface resource.
+     * @param name resource name.
+     * @return the first stage of the new NetworkInterface definition.
+     */
     NetworkInterface.DefinitionStages.Blank defineNetworkInterface(String name);
 
     /**

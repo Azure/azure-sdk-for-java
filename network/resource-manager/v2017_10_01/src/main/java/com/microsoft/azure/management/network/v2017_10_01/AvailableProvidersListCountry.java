@@ -34,7 +34,7 @@ public class AvailableProvidersListCountry {
     private List<AvailableProvidersListState> states;
 
     /**
-     * Get the countryName value.
+     * Get the country name.
      *
      * @return the countryName value
      */
@@ -43,7 +43,7 @@ public class AvailableProvidersListCountry {
     }
 
     /**
-     * Set the countryName value.
+     * Set the country name.
      *
      * @param countryName the countryName value to set
      * @return the AvailableProvidersListCountry object itself.
@@ -54,7 +54,7 @@ public class AvailableProvidersListCountry {
     }
 
     /**
-     * Get the providers value.
+     * Get a list of Internet service providers.
      *
      * @return the providers value
      */
@@ -63,7 +63,7 @@ public class AvailableProvidersListCountry {
     }
 
     /**
-     * Set the providers value.
+     * Set a list of Internet service providers.
      *
      * @param providers the providers value to set
      * @return the AvailableProvidersListCountry object itself.
@@ -74,7 +74,7 @@ public class AvailableProvidersListCountry {
     }
 
     /**
-     * Get the states value.
+     * Get list of available states in the country.
      *
      * @return the states value
      */
@@ -83,7 +83,7 @@ public class AvailableProvidersListCountry {
     }
 
     /**
-     * Set the states value.
+     * Set list of available states in the country.
      *
      * @param states the states value to set
      * @return the AvailableProvidersListCountry object itself.
