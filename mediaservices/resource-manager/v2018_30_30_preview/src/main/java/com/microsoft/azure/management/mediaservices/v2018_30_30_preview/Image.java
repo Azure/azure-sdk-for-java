@@ -54,7 +54,7 @@ public class Image extends Video {
     private String range;
 
     /**
-     * Get the start value.
+     * Get the position in the input video from where to start generating thumbnails. The value can be in absolute timestamp (ISO 8601, e.g: PT05S), or a frame count (For example, 10 for the 10th frame), or a relative value (For example, 1%). Also supports a macro {Best}, which tells the encoder to select the best thumbnail from the first few seconds of the video.
      *
      * @return the start value
      */
@@ -63,7 +63,7 @@ public class Image extends Video {
     }
 
     /**
-     * Set the start value.
+     * Set the position in the input video from where to start generating thumbnails. The value can be in absolute timestamp (ISO 8601, e.g: PT05S), or a frame count (For example, 10 for the 10th frame), or a relative value (For example, 1%). Also supports a macro {Best}, which tells the encoder to select the best thumbnail from the first few seconds of the video.
      *
      * @param start the start value to set
      * @return the Image object itself.
@@ -74,7 +74,7 @@ public class Image extends Video {
     }
 
     /**
-     * Get the step value.
+     * Get the intervals at which thumbnails are generated. The value can be in absolute timestamp (ISO 8601, e.g: PT05S for one image every 5 seconds), or a frame count (For example, 30 for every 30 frames), or a relative value (For example, 1%).
      *
      * @return the step value
      */
@@ -83,7 +83,7 @@ public class Image extends Video {
     }
 
     /**
-     * Set the step value.
+     * Set the intervals at which thumbnails are generated. The value can be in absolute timestamp (ISO 8601, e.g: PT05S for one image every 5 seconds), or a frame count (For example, 30 for every 30 frames), or a relative value (For example, 1%).
      *
      * @param step the step value to set
      * @return the Image object itself.
@@ -94,7 +94,7 @@ public class Image extends Video {
     }
 
     /**
-     * Get the range value.
+     * Get the position in the input video at which to stop generating thumbnails. The value can be in absolute timestamp (ISO 8601, e.g: PT5M30S to stop at 5 minutes and 30 seconds), or a frame count (For example, 300 to stop at the 300th frame), or a relative value (For example, 100%).
      *
      * @return the range value
      */
@@ -103,7 +103,7 @@ public class Image extends Video {
     }
 
     /**
-     * Set the range value.
+     * Set the position in the input video at which to stop generating thumbnails. The value can be in absolute timestamp (ISO 8601, e.g: PT5M30S to stop at 5 minutes and 30 seconds), or a frame count (For example, 300 to stop at the 300th frame), or a relative value (For example, 100%).
      *
      * @param range the range value to set
      * @return the Image object itself.

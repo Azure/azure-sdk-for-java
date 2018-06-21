@@ -21,7 +21,7 @@ public class NoEncryption {
     private EnabledProtocols enabledProtocols;
 
     /**
-     * Get the enabledProtocols value.
+     * Get representing supported protocols.
      *
      * @return the enabledProtocols value
      */
@@ -30,7 +30,7 @@ public class NoEncryption {
     }
 
     /**
-     * Set the enabledProtocols value.
+     * Set representing supported protocols.
      *
      * @param enabledProtocols the enabledProtocols value to set
      * @return the NoEncryption object itself.

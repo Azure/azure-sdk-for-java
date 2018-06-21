@@ -36,7 +36,7 @@ public class MediaServiceInner extends Resource {
     private List<StorageAccount> storageAccounts;
 
     /**
-     * Get the apiEndpoints value.
+     * Get read-only property that lists the Media Services REST API endpoints for this resource. If supplied on a PUT or PATCH, the value will be ignored.
      *
      * @return the apiEndpoints value
      */
@@ -45,7 +45,7 @@ public class MediaServiceInner extends Resource {
     }
 
     /**
-     * Get the storageAccounts value.
+     * Get the storage accounts for this resource.
      *
      * @return the storageAccounts value
      */
@@ -54,7 +54,7 @@ public class MediaServiceInner extends Resource {
     }
 
     /**
-     * Set the storageAccounts value.
+     * Set the storage accounts for this resource.
      *
      * @param storageAccounts the storageAccounts value to set
      * @return the MediaServiceInner object itself.

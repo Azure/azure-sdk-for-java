@@ -41,7 +41,7 @@ public class LiveEventInput {
     private List<LiveEventEndpoint> endpoints;
 
     /**
-     * Get the streamingProtocol value.
+     * Get the streaming protocol for the Live Event. Possible values include: 'FragmentedMP4', 'RTMP'.
      *
      * @return the streamingProtocol value
      */
@@ -50,7 +50,7 @@ public class LiveEventInput {
     }
 
     /**
-     * Set the streamingProtocol value.
+     * Set the streaming protocol for the Live Event. Possible values include: 'FragmentedMP4', 'RTMP'.
      *
      * @param streamingProtocol the streamingProtocol value to set
      * @return the LiveEventInput object itself.
@@ -61,7 +61,7 @@ public class LiveEventInput {
     }
 
     /**
-     * Get the keyFrameIntervalDuration value.
+     * Get iSO 8601 timespan duration of the key frame interval duration.
      *
      * @return the keyFrameIntervalDuration value
      */
@@ -70,7 +70,7 @@ public class LiveEventInput {
     }
 
     /**
-     * Set the keyFrameIntervalDuration value.
+     * Set iSO 8601 timespan duration of the key frame interval duration.
      *
      * @param keyFrameIntervalDuration the keyFrameIntervalDuration value to set
      * @return the LiveEventInput object itself.
@@ -81,7 +81,7 @@ public class LiveEventInput {
     }
 
     /**
-     * Get the accessToken value.
+     * Get the access token.
      *
      * @return the accessToken value
      */
@@ -90,7 +90,7 @@ public class LiveEventInput {
     }
 
     /**
-     * Set the accessToken value.
+     * Set the access token.
      *
      * @param accessToken the accessToken value to set
      * @return the LiveEventInput object itself.
@@ -101,7 +101,7 @@ public class LiveEventInput {
     }
 
     /**
-     * Get the endpoints value.
+     * Get the input endpoints for the Live Event.
      *
      * @return the endpoints value
      */
@@ -110,7 +110,7 @@ public class LiveEventInput {
     }
 
     /**
-     * Set the endpoints value.
+     * Set the input endpoints for the Live Event.
      *
      * @param endpoints the endpoints value to set
      * @return the LiveEventInput object itself.

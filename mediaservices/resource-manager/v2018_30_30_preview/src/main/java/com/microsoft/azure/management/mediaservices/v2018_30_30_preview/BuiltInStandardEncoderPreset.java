@@ -29,7 +29,7 @@ public class BuiltInStandardEncoderPreset extends Preset {
     private EncoderNamedPreset presetName;
 
     /**
-     * Get the presetName value.
+     * Get the built-in preset to be used for encoding videos. Possible values include: 'AdaptiveStreaming', 'AACGoodQualityAudio', 'H264MultipleBitrate1080p', 'H264MultipleBitrate720p', 'H264MultipleBitrateSD'.
      *
      * @return the presetName value
      */
@@ -38,7 +38,7 @@ public class BuiltInStandardEncoderPreset extends Preset {
     }
 
     /**
-     * Set the presetName value.
+     * Set the built-in preset to be used for encoding videos. Possible values include: 'AdaptiveStreaming', 'AACGoodQualityAudio', 'H264MultipleBitrate1080p', 'H264MultipleBitrate720p', 'H264MultipleBitrateSD'.
      *
      * @param presetName the presetName value to set
      * @return the BuiltInStandardEncoderPreset object itself.

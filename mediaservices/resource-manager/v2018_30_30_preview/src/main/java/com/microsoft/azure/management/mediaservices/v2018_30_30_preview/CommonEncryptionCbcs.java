@@ -41,7 +41,7 @@ public class CommonEncryptionCbcs {
     private CbcsDrmConfiguration drm;
 
     /**
-     * Get the enabledProtocols value.
+     * Get representing supported protocols.
      *
      * @return the enabledProtocols value
      */
@@ -50,7 +50,7 @@ public class CommonEncryptionCbcs {
     }
 
     /**
-     * Set the enabledProtocols value.
+     * Set representing supported protocols.
      *
      * @param enabledProtocols the enabledProtocols value to set
      * @return the CommonEncryptionCbcs object itself.
@@ -61,7 +61,7 @@ public class CommonEncryptionCbcs {
     }
 
     /**
-     * Get the clearTracks value.
+     * Get representing which tracks should not be encrypted.
      *
      * @return the clearTracks value
      */
@@ -70,7 +70,7 @@ public class CommonEncryptionCbcs {
     }
 
     /**
-     * Set the clearTracks value.
+     * Set representing which tracks should not be encrypted.
      *
      * @param clearTracks the clearTracks value to set
      * @return the CommonEncryptionCbcs object itself.
@@ -81,7 +81,7 @@ public class CommonEncryptionCbcs {
     }
 
     /**
-     * Get the contentKeys value.
+     * Get representing default content key for each encryption scheme and separate content keys for specific tracks.
      *
      * @return the contentKeys value
      */
@@ -90,7 +90,7 @@ public class CommonEncryptionCbcs {
     }
 
     /**
-     * Set the contentKeys value.
+     * Set representing default content key for each encryption scheme and separate content keys for specific tracks.
      *
      * @param contentKeys the contentKeys value to set
      * @return the CommonEncryptionCbcs object itself.
@@ -101,7 +101,7 @@ public class CommonEncryptionCbcs {
     }
 
     /**
-     * Get the drm value.
+     * Get configuration of DRMs for current encryption scheme.
      *
      * @return the drm value
      */
@@ -110,7 +110,7 @@ public class CommonEncryptionCbcs {
     }
 
     /**
-     * Set the drm value.
+     * Set configuration of DRMs for current encryption scheme.
      *
      * @param drm the drm value to set
      * @return the CommonEncryptionCbcs object itself.

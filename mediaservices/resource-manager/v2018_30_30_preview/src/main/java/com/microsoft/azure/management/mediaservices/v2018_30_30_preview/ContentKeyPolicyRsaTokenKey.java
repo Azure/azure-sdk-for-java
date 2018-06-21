@@ -31,7 +31,7 @@ public class ContentKeyPolicyRsaTokenKey extends ContentKeyPolicyRestrictionToke
     private byte[] modulus;
 
     /**
-     * Get the exponent value.
+     * Get the RSA Parameter exponent.
      *
      * @return the exponent value
      */
@@ -40,7 +40,7 @@ public class ContentKeyPolicyRsaTokenKey extends ContentKeyPolicyRestrictionToke
     }
 
     /**
-     * Set the exponent value.
+     * Set the RSA Parameter exponent.
      *
      * @param exponent the exponent value to set
      * @return the ContentKeyPolicyRsaTokenKey object itself.
@@ -51,7 +51,7 @@ public class ContentKeyPolicyRsaTokenKey extends ContentKeyPolicyRestrictionToke
     }
 
     /**
-     * Get the modulus value.
+     * Get the RSA Parameter modulus.
      *
      * @return the modulus value
      */
@@ -60,7 +60,7 @@ public class ContentKeyPolicyRsaTokenKey extends ContentKeyPolicyRestrictionToke
     }
 
     /**
-     * Set the modulus value.
+     * Set the RSA Parameter modulus.
      *
      * @param modulus the modulus value to set
      * @return the ContentKeyPolicyRsaTokenKey object itself.

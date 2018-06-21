@@ -35,7 +35,7 @@ public class CheckNameAvailabilityOutputInner {
     private String message;
 
     /**
-     * Get the nameAvailable value.
+     * Get specifies if the name is available.
      *
      * @return the nameAvailable value
      */
@@ -44,7 +44,7 @@ public class CheckNameAvailabilityOutputInner {
     }
 
     /**
-     * Set the nameAvailable value.
+     * Set specifies if the name is available.
      *
      * @param nameAvailable the nameAvailable value to set
      * @return the CheckNameAvailabilityOutputInner object itself.
@@ -55,7 +55,7 @@ public class CheckNameAvailabilityOutputInner {
     }
 
     /**
-     * Get the reason value.
+     * Get specifies the reason if the name is not available. Possible values include: 'None', 'Invalid', 'AlreadyExists'.
      *
      * @return the reason value
      */
@@ -64,7 +64,7 @@ public class CheckNameAvailabilityOutputInner {
     }
 
     /**
-     * Set the reason value.
+     * Set specifies the reason if the name is not available. Possible values include: 'None', 'Invalid', 'AlreadyExists'.
      *
      * @param reason the reason value to set
      * @return the CheckNameAvailabilityOutputInner object itself.
@@ -75,7 +75,7 @@ public class CheckNameAvailabilityOutputInner {
     }
 
     /**
-     * Get the message value.
+     * Get specifies the detailed reason if the name is not available.
      *
      * @return the message value
      */
@@ -84,7 +84,7 @@ public class CheckNameAvailabilityOutputInner {
     }
 
     /**
-     * Set the message value.
+     * Set specifies the detailed reason if the name is not available.
      *
      * @param message the message value to set
      * @return the CheckNameAvailabilityOutputInner object itself.

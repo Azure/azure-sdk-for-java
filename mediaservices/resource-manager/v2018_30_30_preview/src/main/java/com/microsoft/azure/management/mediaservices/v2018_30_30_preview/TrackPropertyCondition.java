@@ -34,7 +34,7 @@ public class TrackPropertyCondition {
     private String value;
 
     /**
-     * Get the property value.
+     * Get track property type. Possible values include: 'Unknown', 'FourCC'.
      *
      * @return the property value
      */
@@ -43,7 +43,7 @@ public class TrackPropertyCondition {
     }
 
     /**
-     * Set the property value.
+     * Set track property type. Possible values include: 'Unknown', 'FourCC'.
      *
      * @param property the property value to set
      * @return the TrackPropertyCondition object itself.
@@ -54,7 +54,7 @@ public class TrackPropertyCondition {
     }
 
     /**
-     * Get the operation value.
+     * Get track property condition operation. Possible values include: 'Unknown', 'Equal'.
      *
      * @return the operation value
      */
@@ -63,7 +63,7 @@ public class TrackPropertyCondition {
     }
 
     /**
-     * Set the operation value.
+     * Set track property condition operation. Possible values include: 'Unknown', 'Equal'.
      *
      * @param operation the operation value to set
      * @return the TrackPropertyCondition object itself.
@@ -74,7 +74,7 @@ public class TrackPropertyCondition {
     }
 
     /**
-     * Get the value value.
+     * Get track proprty value.
      *
      * @return the value value
      */
@@ -83,7 +83,7 @@ public class TrackPropertyCondition {
     }
 
     /**
-     * Set the value value.
+     * Set track proprty value.
      *
      * @param value the value value to set
      * @return the TrackPropertyCondition object itself.

@@ -27,7 +27,7 @@ public class LiveEventEndpoint {
     private String url;
 
     /**
-     * Get the protocol value.
+     * Get the endpoint protocol.
      *
      * @return the protocol value
      */
@@ -36,7 +36,7 @@ public class LiveEventEndpoint {
     }
 
     /**
-     * Set the protocol value.
+     * Set the endpoint protocol.
      *
      * @param protocol the protocol value to set
      * @return the LiveEventEndpoint object itself.
@@ -47,7 +47,7 @@ public class LiveEventEndpoint {
     }
 
     /**
-     * Get the url value.
+     * Get the endpoint URL.
      *
      * @return the url value
      */
@@ -56,7 +56,7 @@ public class LiveEventEndpoint {
     }
 
     /**
-     * Set the url value.
+     * Set the endpoint URL.
      *
      * @param url the url value to set
      * @return the LiveEventEndpoint object itself.

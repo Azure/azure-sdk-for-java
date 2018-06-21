@@ -22,7 +22,7 @@ public class IPAccessControl {
     private List<IPRange> allow;
 
     /**
-     * Get the allow value.
+     * Get the IP allow list.
      *
      * @return the allow value
      */
@@ -31,7 +31,7 @@ public class IPAccessControl {
     }
 
     /**
-     * Set the allow value.
+     * Set the IP allow list.
      *
      * @param allow the allow value to set
      * @return the IPAccessControl object itself.

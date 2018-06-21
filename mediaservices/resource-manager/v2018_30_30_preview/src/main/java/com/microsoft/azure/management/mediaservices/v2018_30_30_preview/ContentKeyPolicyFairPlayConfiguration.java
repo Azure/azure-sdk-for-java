@@ -51,7 +51,7 @@ public class ContentKeyPolicyFairPlayConfiguration extends ContentKeyPolicyConfi
     private long rentalDuration;
 
     /**
-     * Get the ask value.
+     * Get the key that must be used as FairPlay ASk.
      *
      * @return the ask value
      */
@@ -60,7 +60,7 @@ public class ContentKeyPolicyFairPlayConfiguration extends ContentKeyPolicyConfi
     }
 
     /**
-     * Set the ask value.
+     * Set the key that must be used as FairPlay ASk.
      *
      * @param ask the ask value to set
      * @return the ContentKeyPolicyFairPlayConfiguration object itself.
@@ -71,7 +71,7 @@ public class ContentKeyPolicyFairPlayConfiguration extends ContentKeyPolicyConfi
     }
 
     /**
-     * Get the fairPlayPfxPassword value.
+     * Get the password encrypting FairPlay certificate in PKCS 12 (pfx) format.
      *
      * @return the fairPlayPfxPassword value
      */
@@ -80,7 +80,7 @@ public class ContentKeyPolicyFairPlayConfiguration extends ContentKeyPolicyConfi
     }
 
     /**
-     * Set the fairPlayPfxPassword value.
+     * Set the password encrypting FairPlay certificate in PKCS 12 (pfx) format.
      *
      * @param fairPlayPfxPassword the fairPlayPfxPassword value to set
      * @return the ContentKeyPolicyFairPlayConfiguration object itself.
@@ -91,7 +91,7 @@ public class ContentKeyPolicyFairPlayConfiguration extends ContentKeyPolicyConfi
     }
 
     /**
-     * Get the fairPlayPfx value.
+     * Get the Base64 representation of FairPlay certificate in PKCS 12 (pfx) format (including private key).
      *
      * @return the fairPlayPfx value
      */
@@ -100,7 +100,7 @@ public class ContentKeyPolicyFairPlayConfiguration extends ContentKeyPolicyConfi
     }
 
     /**
-     * Set the fairPlayPfx value.
+     * Set the Base64 representation of FairPlay certificate in PKCS 12 (pfx) format (including private key).
      *
      * @param fairPlayPfx the fairPlayPfx value to set
      * @return the ContentKeyPolicyFairPlayConfiguration object itself.
@@ -111,7 +111,7 @@ public class ContentKeyPolicyFairPlayConfiguration extends ContentKeyPolicyConfi
     }
 
     /**
-     * Get the rentalAndLeaseKeyType value.
+     * Get the rental and lease key type. Possible values include: 'Unknown', 'Undefined', 'PersistentUnlimited', 'PersistentLimited'.
      *
      * @return the rentalAndLeaseKeyType value
      */
@@ -120,7 +120,7 @@ public class ContentKeyPolicyFairPlayConfiguration extends ContentKeyPolicyConfi
     }
 
     /**
-     * Set the rentalAndLeaseKeyType value.
+     * Set the rental and lease key type. Possible values include: 'Unknown', 'Undefined', 'PersistentUnlimited', 'PersistentLimited'.
      *
      * @param rentalAndLeaseKeyType the rentalAndLeaseKeyType value to set
      * @return the ContentKeyPolicyFairPlayConfiguration object itself.
@@ -131,7 +131,7 @@ public class ContentKeyPolicyFairPlayConfiguration extends ContentKeyPolicyConfi
     }
 
     /**
-     * Get the rentalDuration value.
+     * Get the rental duration. Must be greater than or equal to 0.
      *
      * @return the rentalDuration value
      */
@@ -140,7 +140,7 @@ public class ContentKeyPolicyFairPlayConfiguration extends ContentKeyPolicyConfi
     }
 
     /**
-     * Set the rentalDuration value.
+     * Set the rental duration. Must be greater than or equal to 0.
      *
      * @param rentalDuration the rentalDuration value to set
      * @return the ContentKeyPolicyFairPlayConfiguration object itself.

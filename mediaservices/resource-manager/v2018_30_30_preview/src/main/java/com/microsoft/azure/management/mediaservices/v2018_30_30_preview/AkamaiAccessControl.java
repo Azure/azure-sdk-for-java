@@ -22,7 +22,7 @@ public class AkamaiAccessControl {
     private List<AkamaiSignatureHeaderAuthenticationKey> akamaiSignatureHeaderAuthenticationKeyList;
 
     /**
-     * Get the akamaiSignatureHeaderAuthenticationKeyList value.
+     * Get authentication key list.
      *
      * @return the akamaiSignatureHeaderAuthenticationKeyList value
      */
@@ -31,7 +31,7 @@ public class AkamaiAccessControl {
     }
 
     /**
-     * Set the akamaiSignatureHeaderAuthenticationKeyList value.
+     * Set authentication key list.
      *
      * @param akamaiSignatureHeaderAuthenticationKeyList the akamaiSignatureHeaderAuthenticationKeyList value to set
      * @return the AkamaiAccessControl object itself.

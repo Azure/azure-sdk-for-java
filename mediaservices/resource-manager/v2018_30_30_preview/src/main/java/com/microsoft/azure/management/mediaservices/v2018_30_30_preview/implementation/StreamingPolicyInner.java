@@ -59,7 +59,7 @@ public class StreamingPolicyInner extends ProxyResource {
     private NoEncryption noEncryption;
 
     /**
-     * Get the created value.
+     * Get creation time of Streaming Policy.
      *
      * @return the created value
      */
@@ -68,7 +68,7 @@ public class StreamingPolicyInner extends ProxyResource {
     }
 
     /**
-     * Get the defaultContentKeyPolicyName value.
+     * Get default ContentKey used by current Streaming Policy.
      *
      * @return the defaultContentKeyPolicyName value
      */
@@ -77,7 +77,7 @@ public class StreamingPolicyInner extends ProxyResource {
     }
 
     /**
-     * Set the defaultContentKeyPolicyName value.
+     * Set default ContentKey used by current Streaming Policy.
      *
      * @param defaultContentKeyPolicyName the defaultContentKeyPolicyName value to set
      * @return the StreamingPolicyInner object itself.
@@ -88,7 +88,7 @@ public class StreamingPolicyInner extends ProxyResource {
     }
 
     /**
-     * Get the envelopeEncryption value.
+     * Get configuration of EnvelopeEncryption.
      *
      * @return the envelopeEncryption value
      */
@@ -97,7 +97,7 @@ public class StreamingPolicyInner extends ProxyResource {
     }
 
     /**
-     * Set the envelopeEncryption value.
+     * Set configuration of EnvelopeEncryption.
      *
      * @param envelopeEncryption the envelopeEncryption value to set
      * @return the StreamingPolicyInner object itself.
@@ -108,7 +108,7 @@ public class StreamingPolicyInner extends ProxyResource {
     }
 
     /**
-     * Get the commonEncryptionCenc value.
+     * Get configuration of CommonEncryptionCenc.
      *
      * @return the commonEncryptionCenc value
      */
@@ -117,7 +117,7 @@ public class StreamingPolicyInner extends ProxyResource {
     }
 
     /**
-     * Set the commonEncryptionCenc value.
+     * Set configuration of CommonEncryptionCenc.
      *
      * @param commonEncryptionCenc the commonEncryptionCenc value to set
      * @return the StreamingPolicyInner object itself.
@@ -128,7 +128,7 @@ public class StreamingPolicyInner extends ProxyResource {
     }
 
     /**
-     * Get the commonEncryptionCbcs value.
+     * Get configuration of CommonEncryptionCbcs.
      *
      * @return the commonEncryptionCbcs value
      */
@@ -137,7 +137,7 @@ public class StreamingPolicyInner extends ProxyResource {
     }
 
     /**
-     * Set the commonEncryptionCbcs value.
+     * Set configuration of CommonEncryptionCbcs.
      *
      * @param commonEncryptionCbcs the commonEncryptionCbcs value to set
      * @return the StreamingPolicyInner object itself.
@@ -148,7 +148,7 @@ public class StreamingPolicyInner extends ProxyResource {
     }
 
     /**
-     * Get the noEncryption value.
+     * Get configuations of NoEncryption.
      *
      * @return the noEncryption value
      */
@@ -157,7 +157,7 @@ public class StreamingPolicyInner extends ProxyResource {
     }
 
     /**
-     * Set the noEncryption value.
+     * Set configuations of NoEncryption.
      *
      * @param noEncryption the noEncryption value to set
      * @return the StreamingPolicyInner object itself.

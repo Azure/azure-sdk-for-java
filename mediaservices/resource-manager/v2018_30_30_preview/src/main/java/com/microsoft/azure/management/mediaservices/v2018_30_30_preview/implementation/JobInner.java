@@ -72,7 +72,7 @@ public class JobInner extends ProxyResource {
     private Priority priority;
 
     /**
-     * Get the created value.
+     * Get the UTC date and time when the Job was created, in 'YYYY-MM-DDThh:mm:ssZ' format.
      *
      * @return the created value
      */
@@ -81,7 +81,7 @@ public class JobInner extends ProxyResource {
     }
 
     /**
-     * Get the state value.
+     * Get the current state of the job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'.
      *
      * @return the state value
      */
@@ -90,7 +90,7 @@ public class JobInner extends ProxyResource {
     }
 
     /**
-     * Get the description value.
+     * Get optional customer supplied description of the Job.
      *
      * @return the description value
      */
@@ -99,7 +99,7 @@ public class JobInner extends ProxyResource {
     }
 
     /**
-     * Set the description value.
+     * Set optional customer supplied description of the Job.
      *
      * @param description the description value to set
      * @return the JobInner object itself.
@@ -110,7 +110,7 @@ public class JobInner extends ProxyResource {
     }
 
     /**
-     * Get the input value.
+     * Get the inputs for the Job.
      *
      * @return the input value
      */
@@ -119,7 +119,7 @@ public class JobInner extends ProxyResource {
     }
 
     /**
-     * Set the input value.
+     * Set the inputs for the Job.
      *
      * @param input the input value to set
      * @return the JobInner object itself.
@@ -130,7 +130,7 @@ public class JobInner extends ProxyResource {
     }
 
     /**
-     * Get the lastModified value.
+     * Get the UTC date and time when the Job was last updated, in 'YYYY-MM-DDThh:mm:ssZ' format.
      *
      * @return the lastModified value
      */
@@ -139,7 +139,7 @@ public class JobInner extends ProxyResource {
     }
 
     /**
-     * Get the outputs value.
+     * Get the outputs for the Job.
      *
      * @return the outputs value
      */
@@ -148,7 +148,7 @@ public class JobInner extends ProxyResource {
     }
 
     /**
-     * Set the outputs value.
+     * Set the outputs for the Job.
      *
      * @param outputs the outputs value to set
      * @return the JobInner object itself.
@@ -159,7 +159,7 @@ public class JobInner extends ProxyResource {
     }
 
     /**
-     * Get the priority value.
+     * Get priority with which the job should be processed. Higher priority jobs are processed before lower priority jobs. If not set, the default is normal. Possible values include: 'Low', 'Normal', 'High'.
      *
      * @return the priority value
      */
@@ -168,7 +168,7 @@ public class JobInner extends ProxyResource {
     }
 
     /**
-     * Set the priority value.
+     * Set priority with which the job should be processed. Higher priority jobs are processed before lower priority jobs. If not set, the default is normal. Possible values include: 'Low', 'Normal', 'High'.
      *
      * @param priority the priority value to set
      * @return the JobInner object itself.

@@ -33,7 +33,7 @@ public class IPRange {
     private Integer subnetPrefixLength;
 
     /**
-     * Get the name value.
+     * Get the friendly name for the IP address range.
      *
      * @return the name value
      */
@@ -42,7 +42,7 @@ public class IPRange {
     }
 
     /**
-     * Set the name value.
+     * Set the friendly name for the IP address range.
      *
      * @param name the name value to set
      * @return the IPRange object itself.
@@ -53,7 +53,7 @@ public class IPRange {
     }
 
     /**
-     * Get the address value.
+     * Get the IP address.
      *
      * @return the address value
      */
@@ -62,7 +62,7 @@ public class IPRange {
     }
 
     /**
-     * Set the address value.
+     * Set the IP address.
      *
      * @param address the address value to set
      * @return the IPRange object itself.
@@ -73,7 +73,7 @@ public class IPRange {
     }
 
     /**
-     * Get the subnetPrefixLength value.
+     * Get the subnet mask prefix length (see CIDR notation).
      *
      * @return the subnetPrefixLength value
      */
@@ -82,7 +82,7 @@ public class IPRange {
     }
 
     /**
-     * Set the subnetPrefixLength value.
+     * Set the subnet mask prefix length (see CIDR notation).
      *
      * @param subnetPrefixLength the subnetPrefixLength value to set
      * @return the IPRange object itself.

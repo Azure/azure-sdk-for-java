@@ -25,7 +25,7 @@ public class ContentKeyPolicySymmetricTokenKey extends ContentKeyPolicyRestricti
     private byte[] keyValue;
 
     /**
-     * Get the keyValue value.
+     * Get the key value of the key.
      *
      * @return the keyValue value
      */
@@ -34,7 +34,7 @@ public class ContentKeyPolicySymmetricTokenKey extends ContentKeyPolicyRestricti
     }
 
     /**
-     * Set the keyValue value.
+     * Set the key value of the key.
      *
      * @param keyValue the keyValue value to set
      * @return the ContentKeyPolicySymmetricTokenKey object itself.
