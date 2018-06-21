@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class EventDataInner {
     /**
-     * The authorization property.
+     * The sender authorization information.
      */
     @JsonProperty(value = "authorization", access = JsonProperty.Access.WRITE_ONLY)
     private SenderAuthorization authorization;
@@ -187,7 +187,7 @@ public class EventDataInner {
     private String tenantId;
 
     /**
-     * Get the authorization value.
+     * Get the sender authorization information.
      *
      * @return the authorization value
      */

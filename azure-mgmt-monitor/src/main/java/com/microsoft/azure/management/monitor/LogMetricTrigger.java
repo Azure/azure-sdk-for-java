@@ -11,7 +11,7 @@ package com.microsoft.azure.management.monitor;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The LogMetricTrigger model.
+ * A log metrics trigger descriptor.
  */
 public class LogMetricTrigger {
     /**
@@ -22,7 +22,7 @@ public class LogMetricTrigger {
     private ConditionalOperator thresholdOperator;
 
     /**
-     * The threshold property.
+     * The threshold of the metric trigger.
      */
     @JsonProperty(value = "threshold")
     private Double threshold;
@@ -61,7 +61,7 @@ public class LogMetricTrigger {
     }
 
     /**
-     * Get the threshold value.
+     * Get the threshold of the metric trigger.
      *
      * @return the threshold value
      */
@@ -70,7 +70,7 @@ public class LogMetricTrigger {
     }
 
     /**
-     * Set the threshold value.
+     * Set the threshold of the metric trigger.
      *
      * @param threshold the threshold value to set
      * @return the LogMetricTrigger object itself.
