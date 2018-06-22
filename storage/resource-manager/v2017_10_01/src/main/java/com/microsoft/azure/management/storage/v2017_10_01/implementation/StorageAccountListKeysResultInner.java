@@ -24,7 +24,7 @@ public class StorageAccountListKeysResultInner {
     private List<StorageAccountKey> keys;
 
     /**
-     * Get the keys value.
+     * Get gets the list of storage account keys and their properties for the specified storage account.
      *
      * @return the keys value
      */

@@ -72,7 +72,7 @@ public class SkuInner {
     private List<Restriction> restrictions;
 
     /**
-     * Get the name value.
+     * Get gets or sets the sku name. Required for account creation; optional for update. Note that in older versions, sku name was called accountType. Possible values include: 'Standard_LRS', 'Standard_GRS', 'Standard_RAGRS', 'Standard_ZRS', 'Premium_LRS'.
      *
      * @return the name value
      */
@@ -81,7 +81,7 @@ public class SkuInner {
     }
 
     /**
-     * Set the name value.
+     * Set gets or sets the sku name. Required for account creation; optional for update. Note that in older versions, sku name was called accountType. Possible values include: 'Standard_LRS', 'Standard_GRS', 'Standard_RAGRS', 'Standard_ZRS', 'Premium_LRS'.
      *
      * @param name the name value to set
      * @return the SkuInner object itself.
@@ -92,7 +92,7 @@ public class SkuInner {
     }
 
     /**
-     * Get the tier value.
+     * Get gets the sku tier. This is based on the SKU name. Possible values include: 'Standard', 'Premium'.
      *
      * @return the tier value
      */
@@ -101,7 +101,7 @@ public class SkuInner {
     }
 
     /**
-     * Get the resourceType value.
+     * Get the type of the resource, usually it is 'storageAccounts'.
      *
      * @return the resourceType value
      */
@@ -110,7 +110,7 @@ public class SkuInner {
     }
 
     /**
-     * Get the kind value.
+     * Get indicates the type of storage account. Possible values include: 'Storage', 'StorageV2', 'BlobStorage'.
      *
      * @return the kind value
      */
@@ -119,7 +119,7 @@ public class SkuInner {
     }
 
     /**
-     * Get the locations value.
+     * Get the set of locations that the SKU is available. This will be supported and registered Azure Geo Regions (e.g. West US, East US, Southeast Asia, etc.).
      *
      * @return the locations value
      */
@@ -128,7 +128,7 @@ public class SkuInner {
     }
 
     /**
-     * Get the capabilities value.
+     * Get the capability information in the specified sku, including file encryption, network acls, change notification, etc.
      *
      * @return the capabilities value
      */
@@ -137,7 +137,7 @@ public class SkuInner {
     }
 
     /**
-     * Get the restrictions value.
+     * Get the restrictions because of which SKU cannot be used. This is empty if there are no restrictions.
      *
      * @return the restrictions value
      */
@@ -146,7 +146,7 @@ public class SkuInner {
     }
 
     /**
-     * Set the restrictions value.
+     * Set the restrictions because of which SKU cannot be used. This is empty if there are no restrictions.
      *
      * @param restrictions the restrictions value to set
      * @return the SkuInner object itself.

@@ -16,8 +16,18 @@ import java.util.List;
  * Type representing BlobContainers.
  */
 public interface BlobContainers {
+    /**
+     * Begins definition for a new Container resource.
+     * @param name resource name.
+     * @return the first stage of the new Container definition.
+     */
     BlobContainer.DefinitionStages.Blank defineContainer(String name);
 
+    /**
+     * Begins definition for a new ImmutabilityPolicy resource.
+     * @param name resource name.
+     * @return the first stage of the new ImmutabilityPolicy definition.
+     */
     ImmutabilityPolicy.DefinitionStages.Blank defineImmutabilityPolicy(String name);
 
     /**

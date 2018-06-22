@@ -36,7 +36,7 @@ public class VirtualNetworkRule {
     private State state;
 
     /**
-     * Get the virtualNetworkResourceId value.
+     * Get resource ID of a subnet, for example: /subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.
      *
      * @return the virtualNetworkResourceId value
      */
@@ -45,7 +45,7 @@ public class VirtualNetworkRule {
     }
 
     /**
-     * Set the virtualNetworkResourceId value.
+     * Set resource ID of a subnet, for example: /subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.
      *
      * @param virtualNetworkResourceId the virtualNetworkResourceId value to set
      * @return the VirtualNetworkRule object itself.
@@ -56,7 +56,7 @@ public class VirtualNetworkRule {
     }
 
     /**
-     * Get the action value.
+     * Get the action of virtual network rule. Possible values include: 'Allow'.
      *
      * @return the action value
      */
@@ -65,7 +65,7 @@ public class VirtualNetworkRule {
     }
 
     /**
-     * Set the action value.
+     * Set the action of virtual network rule. Possible values include: 'Allow'.
      *
      * @param action the action value to set
      * @return the VirtualNetworkRule object itself.
@@ -76,7 +76,7 @@ public class VirtualNetworkRule {
     }
 
     /**
-     * Get the state value.
+     * Get gets the state of virtual network rule. Possible values include: 'provisioning', 'deprovisioning', 'succeeded', 'failed', 'networkSourceDeleted'.
      *
      * @return the state value
      */
@@ -85,7 +85,7 @@ public class VirtualNetworkRule {
     }
 
     /**
-     * Set the state value.
+     * Set gets the state of virtual network rule. Possible values include: 'provisioning', 'deprovisioning', 'succeeded', 'failed', 'networkSourceDeleted'.
      *
      * @param state the state value to set
      * @return the VirtualNetworkRule object itself.

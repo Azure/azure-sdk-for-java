@@ -30,7 +30,7 @@ public class CustomDomain {
     private Boolean useSubDomain;
 
     /**
-     * Get the name value.
+     * Get gets or sets the custom domain name assigned to the storage account. Name is the CNAME source.
      *
      * @return the name value
      */
@@ -39,7 +39,7 @@ public class CustomDomain {
     }
 
     /**
-     * Set the name value.
+     * Set gets or sets the custom domain name assigned to the storage account. Name is the CNAME source.
      *
      * @param name the name value to set
      * @return the CustomDomain object itself.
@@ -50,7 +50,7 @@ public class CustomDomain {
     }
 
     /**
-     * Get the useSubDomain value.
+     * Get indicates whether indirect CName validation is enabled. Default value is false. This should only be set on updates.
      *
      * @return the useSubDomain value
      */
@@ -59,7 +59,7 @@ public class CustomDomain {
     }
 
     /**
-     * Set the useSubDomain value.
+     * Set indicates whether indirect CName validation is enabled. Default value is false. This should only be set on updates.
      *
      * @param useSubDomain the useSubDomain value to set
      * @return the CustomDomain object itself.

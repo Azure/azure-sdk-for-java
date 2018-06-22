@@ -28,7 +28,7 @@ public class IPRule {
     private Action action;
 
     /**
-     * Get the iPAddressOrRange value.
+     * Get specifies the IP or IP range in CIDR format. Only IPV4 address is allowed.
      *
      * @return the iPAddressOrRange value
      */
@@ -37,7 +37,7 @@ public class IPRule {
     }
 
     /**
-     * Set the iPAddressOrRange value.
+     * Set specifies the IP or IP range in CIDR format. Only IPV4 address is allowed.
      *
      * @param iPAddressOrRange the iPAddressOrRange value to set
      * @return the IPRule object itself.
@@ -48,7 +48,7 @@ public class IPRule {
     }
 
     /**
-     * Get the action value.
+     * Get the action of IP ACL rule. Possible values include: 'Allow'.
      *
      * @return the action value
      */
@@ -57,7 +57,7 @@ public class IPRule {
     }
 
     /**
-     * Set the action value.
+     * Set the action of IP ACL rule. Possible values include: 'Allow'.
      *
      * @param action the action value to set
      * @return the IPRule object itself.

@@ -21,7 +21,7 @@ public class EncryptionServices {
     private EncryptionService blob;
 
     /**
-     * Get the blob value.
+     * Get the encryption function of the blob storage service.
      *
      * @return the blob value
      */
@@ -30,7 +30,7 @@ public class EncryptionServices {
     }
 
     /**
-     * Set the blob value.
+     * Set the encryption function of the blob storage service.
      *
      * @param blob the blob value to set
      * @return the EncryptionServices object itself.

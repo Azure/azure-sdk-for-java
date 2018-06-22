@@ -70,7 +70,7 @@ public class MetricSpecification {
     private String resourceIdDimensionNameOverride;
 
     /**
-     * Get the name value.
+     * Get name of metric specification.
      *
      * @return the name value
      */
@@ -79,7 +79,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Set the name value.
+     * Set name of metric specification.
      *
      * @param name the name value to set
      * @return the MetricSpecification object itself.
@@ -90,7 +90,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Get the displayName value.
+     * Get display name of metric specification.
      *
      * @return the displayName value
      */
@@ -99,7 +99,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Set the displayName value.
+     * Set display name of metric specification.
      *
      * @param displayName the displayName value to set
      * @return the MetricSpecification object itself.
@@ -110,7 +110,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Get the displayDescription value.
+     * Get display description of metric specification.
      *
      * @return the displayDescription value
      */
@@ -119,7 +119,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Set the displayDescription value.
+     * Set display description of metric specification.
      *
      * @param displayDescription the displayDescription value to set
      * @return the MetricSpecification object itself.
@@ -130,7 +130,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Get the unit value.
+     * Get unit could be Bytes or Count.
      *
      * @return the unit value
      */
@@ -139,7 +139,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Set the unit value.
+     * Set unit could be Bytes or Count.
      *
      * @param unit the unit value to set
      * @return the MetricSpecification object itself.
@@ -150,7 +150,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Get the dimensions value.
+     * Get dimensions of blobs, including blob type and access tier.
      *
      * @return the dimensions value
      */
@@ -159,7 +159,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Set the dimensions value.
+     * Set dimensions of blobs, including blob type and access tier.
      *
      * @param dimensions the dimensions value to set
      * @return the MetricSpecification object itself.
@@ -170,7 +170,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Get the aggregationType value.
+     * Get aggregation type could be Average.
      *
      * @return the aggregationType value
      */
@@ -179,7 +179,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Set the aggregationType value.
+     * Set aggregation type could be Average.
      *
      * @param aggregationType the aggregationType value to set
      * @return the MetricSpecification object itself.
@@ -190,7 +190,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Get the fillGapWithZero value.
+     * Get the property to decide fill gap with zero or not.
      *
      * @return the fillGapWithZero value
      */
@@ -199,7 +199,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Set the fillGapWithZero value.
+     * Set the property to decide fill gap with zero or not.
      *
      * @param fillGapWithZero the fillGapWithZero value to set
      * @return the MetricSpecification object itself.
@@ -210,7 +210,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Get the category value.
+     * Get the category this metric specification belong to, could be Capacity.
      *
      * @return the category value
      */
@@ -219,7 +219,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Set the category value.
+     * Set the category this metric specification belong to, could be Capacity.
      *
      * @param category the category value to set
      * @return the MetricSpecification object itself.
@@ -230,7 +230,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Get the resourceIdDimensionNameOverride value.
+     * Get account Resource Id.
      *
      * @return the resourceIdDimensionNameOverride value
      */
@@ -239,7 +239,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Set the resourceIdDimensionNameOverride value.
+     * Set account Resource Id.
      *
      * @param resourceIdDimensionNameOverride the resourceIdDimensionNameOverride value to set
      * @return the MetricSpecification object itself.

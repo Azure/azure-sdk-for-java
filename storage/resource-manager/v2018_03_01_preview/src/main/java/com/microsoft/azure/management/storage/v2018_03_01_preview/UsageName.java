@@ -27,7 +27,7 @@ public class UsageName {
     private String localizedValue;
 
     /**
-     * Get the value value.
+     * Get gets a string describing the resource name.
      *
      * @return the value value
      */
@@ -36,7 +36,7 @@ public class UsageName {
     }
 
     /**
-     * Get the localizedValue value.
+     * Get gets a localized string describing the resource name.
      *
      * @return the localizedValue value
      */

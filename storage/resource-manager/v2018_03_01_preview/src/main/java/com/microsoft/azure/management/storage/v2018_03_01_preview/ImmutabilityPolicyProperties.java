@@ -45,7 +45,7 @@ public class ImmutabilityPolicyProperties {
     private List<UpdateHistoryProperty> updateHistory;
 
     /**
-     * Get the immutabilityPeriodSinceCreationInDays value.
+     * Get the immutability period for the blobs in the container since the policy creation, in days.
      *
      * @return the immutabilityPeriodSinceCreationInDays value
      */
@@ -54,7 +54,7 @@ public class ImmutabilityPolicyProperties {
     }
 
     /**
-     * Set the immutabilityPeriodSinceCreationInDays value.
+     * Set the immutability period for the blobs in the container since the policy creation, in days.
      *
      * @param immutabilityPeriodSinceCreationInDays the immutabilityPeriodSinceCreationInDays value to set
      * @return the ImmutabilityPolicyProperties object itself.
@@ -65,7 +65,7 @@ public class ImmutabilityPolicyProperties {
     }
 
     /**
-     * Get the state value.
+     * Get the ImmutabilityPolicy state of a blob container, possible values include: Locked and Unlocked. Possible values include: 'Locked', 'Unlocked'.
      *
      * @return the state value
      */
@@ -74,7 +74,7 @@ public class ImmutabilityPolicyProperties {
     }
 
     /**
-     * Get the etag value.
+     * Get immutabilityPolicy Etag.
      *
      * @return the etag value
      */
@@ -83,7 +83,7 @@ public class ImmutabilityPolicyProperties {
     }
 
     /**
-     * Get the updateHistory value.
+     * Get the ImmutabilityPolicy update history of the blob container.
      *
      * @return the updateHistory value
      */

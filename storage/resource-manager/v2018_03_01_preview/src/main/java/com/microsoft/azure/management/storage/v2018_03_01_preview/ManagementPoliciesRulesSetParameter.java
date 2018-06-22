@@ -27,7 +27,7 @@ public class ManagementPoliciesRulesSetParameter {
     private Object policy;
 
     /**
-     * Get the policy value.
+     * Get the Storage Account ManagementPolicies Rules, in JSON format. See more details in: https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
      *
      * @return the policy value
      */
@@ -36,7 +36,7 @@ public class ManagementPoliciesRulesSetParameter {
     }
 
     /**
-     * Set the policy value.
+     * Set the Storage Account ManagementPolicies Rules, in JSON format. See more details in: https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
      *
      * @param policy the policy value to set
      * @return the ManagementPoliciesRulesSetParameter object itself.

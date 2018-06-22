@@ -40,7 +40,7 @@ public class Identity {
     }
 
     /**
-     * Get the principalId value.
+     * Get the principal ID of resource identity.
      *
      * @return the principalId value
      */
@@ -49,7 +49,7 @@ public class Identity {
     }
 
     /**
-     * Get the tenantId value.
+     * Get the tenant ID of resource.
      *
      * @return the tenantId value
      */
@@ -58,7 +58,7 @@ public class Identity {
     }
 
     /**
-     * Get the type value.
+     * Get the identity type.
      *
      * @return the type value
      */
@@ -67,7 +67,7 @@ public class Identity {
     }
 
     /**
-     * Set the type value.
+     * Set the identity type.
      *
      * @param type the type value to set
      * @return the Identity object itself.

@@ -24,7 +24,7 @@ public class BlobContainersGetImmutabilityPolicyHeaders {
     private String eTag;
 
     /**
-     * Get the eTag value.
+     * Get the ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the If-Match or If-None-Match headers.
      *
      * @return the eTag value
      */
@@ -33,7 +33,7 @@ public class BlobContainersGetImmutabilityPolicyHeaders {
     }
 
     /**
-     * Set the eTag value.
+     * Set the ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the If-Match or If-None-Match headers.
      *
      * @param eTag the eTag value to set
      * @return the BlobContainersGetImmutabilityPolicyHeaders object itself.

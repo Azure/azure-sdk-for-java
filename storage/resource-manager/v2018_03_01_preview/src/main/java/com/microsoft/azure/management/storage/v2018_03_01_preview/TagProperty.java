@@ -56,7 +56,7 @@ public class TagProperty {
     }
 
     /**
-     * Get the timestamp value.
+     * Get returns the date and time the tag was added.
      *
      * @return the timestamp value
      */
@@ -65,7 +65,7 @@ public class TagProperty {
     }
 
     /**
-     * Get the objectIdentifier value.
+     * Get returns the Object ID of the user who added the tag.
      *
      * @return the objectIdentifier value
      */
@@ -74,7 +74,7 @@ public class TagProperty {
     }
 
     /**
-     * Get the tenantId value.
+     * Get returns the Tenant ID that issued the token for the user who added the tag.
      *
      * @return the tenantId value
      */
@@ -83,7 +83,7 @@ public class TagProperty {
     }
 
     /**
-     * Get the upn value.
+     * Get returns the User Principal Name of the user who added the tag.
      *
      * @return the upn value
      */
