@@ -33,7 +33,7 @@ public class LegalHoldInner {
     private List<String> tags;
 
     /**
-     * Get the hasLegalHold value.
+     * Get the hasLegalHold public property is set to true by SRP if there are at least one existing tag. The hasLegalHold public property is set to false by SRP if all existing legal hold tags are cleared out. There can be a maximum of 1000 blob containers with hasLegalHold=true for a given account.
      *
      * @return the hasLegalHold value
      */
@@ -42,7 +42,7 @@ public class LegalHoldInner {
     }
 
     /**
-     * Get the tags value.
+     * Get each tag should be 3 to 23 alphanumeric characters and is normalized to lower case at SRP.
      *
      * @return the tags value
      */
@@ -51,7 +51,7 @@ public class LegalHoldInner {
     }
 
     /**
-     * Set the tags value.
+     * Set each tag should be 3 to 23 alphanumeric characters and is normalized to lower case at SRP.
      *
      * @param tags the tags value to set
      * @return the LegalHoldInner object itself.

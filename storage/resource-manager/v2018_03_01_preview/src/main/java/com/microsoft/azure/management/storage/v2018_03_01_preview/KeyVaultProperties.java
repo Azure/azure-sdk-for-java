@@ -33,7 +33,7 @@ public class KeyVaultProperties {
     private String keyVaultUri;
 
     /**
-     * Get the keyName value.
+     * Get the name of KeyVault key.
      *
      * @return the keyName value
      */
@@ -42,7 +42,7 @@ public class KeyVaultProperties {
     }
 
     /**
-     * Set the keyName value.
+     * Set the name of KeyVault key.
      *
      * @param keyName the keyName value to set
      * @return the KeyVaultProperties object itself.
@@ -53,7 +53,7 @@ public class KeyVaultProperties {
     }
 
     /**
-     * Get the keyVersion value.
+     * Get the version of KeyVault key.
      *
      * @return the keyVersion value
      */
@@ -62,7 +62,7 @@ public class KeyVaultProperties {
     }
 
     /**
-     * Set the keyVersion value.
+     * Set the version of KeyVault key.
      *
      * @param keyVersion the keyVersion value to set
      * @return the KeyVaultProperties object itself.
@@ -73,7 +73,7 @@ public class KeyVaultProperties {
     }
 
     /**
-     * Get the keyVaultUri value.
+     * Get the Uri of KeyVault.
      *
      * @return the keyVaultUri value
      */
@@ -82,7 +82,7 @@ public class KeyVaultProperties {
     }
 
     /**
-     * Set the keyVaultUri value.
+     * Set the Uri of KeyVault.
      *
      * @param keyVaultUri the keyVaultUri value to set
      * @return the KeyVaultProperties object itself.

@@ -32,7 +32,7 @@ public class EncryptionService {
     private DateTime lastEnabledTime;
 
     /**
-     * Get the enabled value.
+     * Get a boolean indicating whether or not the service encrypts the data as it is stored.
      *
      * @return the enabled value
      */
@@ -41,7 +41,7 @@ public class EncryptionService {
     }
 
     /**
-     * Set the enabled value.
+     * Set a boolean indicating whether or not the service encrypts the data as it is stored.
      *
      * @param enabled the enabled value to set
      * @return the EncryptionService object itself.
@@ -52,7 +52,7 @@ public class EncryptionService {
     }
 
     /**
-     * Get the lastEnabledTime value.
+     * Get gets a rough estimate of the date/time when the encryption was last enabled by the user. Only returned when encryption is enabled. There might be some unencrypted blobs which were written after this time, as it is just a rough estimate.
      *
      * @return the lastEnabledTime value
      */

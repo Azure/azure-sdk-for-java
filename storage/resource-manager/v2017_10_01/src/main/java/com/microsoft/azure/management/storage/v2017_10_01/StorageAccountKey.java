@@ -34,7 +34,7 @@ public class StorageAccountKey {
     private KeyPermission permissions;
 
     /**
-     * Get the keyName value.
+     * Get name of the key.
      *
      * @return the keyName value
      */
@@ -43,7 +43,7 @@ public class StorageAccountKey {
     }
 
     /**
-     * Get the value value.
+     * Get base 64-encoded value of the key.
      *
      * @return the value value
      */
@@ -52,7 +52,7 @@ public class StorageAccountKey {
     }
 
     /**
-     * Get the permissions value.
+     * Get permissions for the key -- read-only or full permissions. Possible values include: 'Read', 'Full'.
      *
      * @return the permissions value
      */

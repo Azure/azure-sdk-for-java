@@ -39,7 +39,7 @@ public class EncryptionServices {
     private EncryptionService queue;
 
     /**
-     * Get the blob value.
+     * Get the encryption function of the blob storage service.
      *
      * @return the blob value
      */
@@ -48,7 +48,7 @@ public class EncryptionServices {
     }
 
     /**
-     * Set the blob value.
+     * Set the encryption function of the blob storage service.
      *
      * @param blob the blob value to set
      * @return the EncryptionServices object itself.
@@ -59,7 +59,7 @@ public class EncryptionServices {
     }
 
     /**
-     * Get the file value.
+     * Get the encryption function of the file storage service.
      *
      * @return the file value
      */
@@ -68,7 +68,7 @@ public class EncryptionServices {
     }
 
     /**
-     * Set the file value.
+     * Set the encryption function of the file storage service.
      *
      * @param file the file value to set
      * @return the EncryptionServices object itself.
@@ -79,7 +79,7 @@ public class EncryptionServices {
     }
 
     /**
-     * Get the table value.
+     * Get the encryption function of the table storage service.
      *
      * @return the table value
      */
@@ -88,7 +88,7 @@ public class EncryptionServices {
     }
 
     /**
-     * Get the queue value.
+     * Get the encryption function of the queue storage service.
      *
      * @return the queue value
      */

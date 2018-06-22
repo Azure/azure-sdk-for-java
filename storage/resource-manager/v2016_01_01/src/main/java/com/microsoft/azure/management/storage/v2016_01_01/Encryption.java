@@ -35,7 +35,7 @@ public class Encryption {
     }
 
     /**
-     * Get the services value.
+     * Get list of services which support encryption.
      *
      * @return the services value
      */
@@ -44,7 +44,7 @@ public class Encryption {
     }
 
     /**
-     * Set the services value.
+     * Set list of services which support encryption.
      *
      * @param services the services value to set
      * @return the Encryption object itself.
@@ -55,7 +55,7 @@ public class Encryption {
     }
 
     /**
-     * Get the keySource value.
+     * Get the encryption keySource (provider). Possible values (case-insensitive):  Microsoft.Storage.
      *
      * @return the keySource value
      */
@@ -64,7 +64,7 @@ public class Encryption {
     }
 
     /**
-     * Set the keySource value.
+     * Set the encryption keySource (provider). Possible values (case-insensitive):  Microsoft.Storage.
      *
      * @param keySource the keySource value to set
      * @return the Encryption object itself.

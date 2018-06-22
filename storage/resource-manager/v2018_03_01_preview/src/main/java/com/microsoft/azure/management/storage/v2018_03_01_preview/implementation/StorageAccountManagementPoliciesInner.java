@@ -33,7 +33,7 @@ public class StorageAccountManagementPoliciesInner extends ProxyResource {
     private DateTime lastModifiedTime;
 
     /**
-     * Get the policy value.
+     * Get the Storage Account ManagementPolicies Rules, in JSON format. See more details in: https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
      *
      * @return the policy value
      */
@@ -42,7 +42,7 @@ public class StorageAccountManagementPoliciesInner extends ProxyResource {
     }
 
     /**
-     * Set the policy value.
+     * Set the Storage Account ManagementPolicies Rules, in JSON format. See more details in: https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
      *
      * @param policy the policy value to set
      * @return the StorageAccountManagementPoliciesInner object itself.
@@ -53,7 +53,7 @@ public class StorageAccountManagementPoliciesInner extends ProxyResource {
     }
 
     /**
-     * Get the lastModifiedTime value.
+     * Get returns the date and time the ManagementPolicies was last modified.
      *
      * @return the lastModifiedTime value
      */

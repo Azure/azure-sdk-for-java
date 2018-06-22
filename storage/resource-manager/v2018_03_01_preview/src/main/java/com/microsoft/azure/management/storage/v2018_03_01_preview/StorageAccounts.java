@@ -23,6 +23,11 @@ import rx.Completable;
  * Type representing StorageAccounts.
  */
 public interface StorageAccounts extends SupportsCreating<StorageAccount.DefinitionStages.Blank>, SupportsDeletingByResourceGroup, SupportsBatchDeletion, SupportsGettingByResourceGroup<StorageAccount>, SupportsListingByResourceGroup<StorageAccount>, SupportsListing<StorageAccount>, HasInner<StorageAccountsInner> {
+    /**
+     * Begins definition for a new ManagementPolicy resource.
+     * @param name resource name.
+     * @return the first stage of the new ManagementPolicy definition.
+     */
     StorageAccountManagementPolicies.DefinitionStages.Blank defineManagementPolicy(String name);
 
     /**

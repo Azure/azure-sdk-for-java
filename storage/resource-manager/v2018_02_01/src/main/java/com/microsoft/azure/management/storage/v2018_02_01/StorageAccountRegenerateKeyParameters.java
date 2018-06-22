@@ -22,7 +22,7 @@ public class StorageAccountRegenerateKeyParameters {
     private String keyName;
 
     /**
-     * Get the keyName value.
+     * Get the name of storage keys that want to be regenerated, possible vaules are key1, key2.
      *
      * @return the keyName value
      */
@@ -31,7 +31,7 @@ public class StorageAccountRegenerateKeyParameters {
     }
 
     /**
-     * Set the keyName value.
+     * Set the name of storage keys that want to be regenerated, possible vaules are key1, key2.
      *
      * @param keyName the keyName value to set
      * @return the StorageAccountRegenerateKeyParameters object itself.
