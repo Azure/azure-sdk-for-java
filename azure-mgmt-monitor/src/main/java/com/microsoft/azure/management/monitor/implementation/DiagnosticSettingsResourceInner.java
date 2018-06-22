@@ -28,6 +28,13 @@ public class DiagnosticSettingsResourceInner extends ProxyOnlyResource {
     private String storageAccountId;
 
     /**
+     * The service bus rule Id of the diagnostic setting. This is here to
+     * maintain backwards compatibility.
+     */
+    @JsonProperty(value = "properties.serviceBusRuleId")
+    private String serviceBusRuleId;
+
+    /**
      * The resource Id for the event hub authorization rule.
      */
     @JsonProperty(value = "properties.eventHubAuthorizationRuleId")
@@ -78,6 +85,26 @@ public class DiagnosticSettingsResourceInner extends ProxyOnlyResource {
      */
     public DiagnosticSettingsResourceInner withStorageAccountId(String storageAccountId) {
         this.storageAccountId = storageAccountId;
+        return this;
+    }
+
+    /**
+     * Get the service bus rule Id of the diagnostic setting. This is here to maintain backwards compatibility.
+     *
+     * @return the serviceBusRuleId value
+     */
+    public String serviceBusRuleId() {
+        return this.serviceBusRuleId;
+    }
+
+    /**
+     * Set the service bus rule Id of the diagnostic setting. This is here to maintain backwards compatibility.
+     *
+     * @param serviceBusRuleId the serviceBusRuleId value to set
+     * @return the DiagnosticSettingsResourceInner object itself.
+     */
+    public DiagnosticSettingsResourceInner withServiceBusRuleId(String serviceBusRuleId) {
+        this.serviceBusRuleId = serviceBusRuleId;
         return this;
     }
 
