@@ -237,6 +237,32 @@ public class SqlManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The TdeCertificatesInner object to access its operations.
+     */
+    private TdeCertificatesInner tdeCertificates;
+
+    /**
+     * Gets the TdeCertificatesInner object to access its operations.
+     * @return the TdeCertificatesInner object.
+     */
+    public TdeCertificatesInner tdeCertificates() {
+        return this.tdeCertificates;
+    }
+
+    /**
+     * The ManagedInstanceTdeCertificatesInner object to access its operations.
+     */
+    private ManagedInstanceTdeCertificatesInner managedInstanceTdeCertificates;
+
+    /**
+     * Gets the ManagedInstanceTdeCertificatesInner object to access its operations.
+     * @return the ManagedInstanceTdeCertificatesInner object.
+     */
+    public ManagedInstanceTdeCertificatesInner managedInstanceTdeCertificates() {
+        return this.managedInstanceTdeCertificates;
+    }
+
+    /**
      * Initializes an instance of SqlManagementClient client.
      *
      * @param credentials the management credentials for Azure
@@ -279,6 +305,8 @@ public class SqlManagementClientImpl extends AzureServiceClient {
         this.elasticPools = new ElasticPoolsInner(restClient().retrofit(), this);
         this.instanceFailoverGroups = new InstanceFailoverGroupsInner(restClient().retrofit(), this);
         this.backupShortTermRetentionPolicies = new BackupShortTermRetentionPoliciesInner(restClient().retrofit(), this);
+        this.tdeCertificates = new TdeCertificatesInner(restClient().retrofit(), this);
+        this.managedInstanceTdeCertificates = new ManagedInstanceTdeCertificatesInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 

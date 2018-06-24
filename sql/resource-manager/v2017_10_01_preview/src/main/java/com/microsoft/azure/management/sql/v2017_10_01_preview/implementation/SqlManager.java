@@ -24,6 +24,8 @@ import com.microsoft.azure.management.sql.v2017_10_01_preview.Databases;
 import com.microsoft.azure.management.sql.v2017_10_01_preview.ElasticPools;
 import com.microsoft.azure.management.sql.v2017_10_01_preview.InstanceFailoverGroups;
 import com.microsoft.azure.management.sql.v2017_10_01_preview.BackupShortTermRetentionPolicies;
+import com.microsoft.azure.management.sql.v2017_10_01_preview.TdeCertificates;
+import com.microsoft.azure.management.sql.v2017_10_01_preview.ManagedInstanceTdeCertificates;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -39,6 +41,8 @@ public final class SqlManager extends ManagerCore<SqlManager, SqlManagementClien
     private ElasticPools elasticPools;
     private InstanceFailoverGroups instanceFailoverGroups;
     private BackupShortTermRetentionPolicies backupShortTermRetentionPolicies;
+    private TdeCertificates tdeCertificates;
+    private ManagedInstanceTdeCertificates managedInstanceTdeCertificates;
     /**
     * Get a Configurable instance that can be used to create SqlManager with optional configuration.
     *
@@ -164,6 +168,26 @@ public final class SqlManager extends ManagerCore<SqlManager, SqlManagementClien
             this.backupShortTermRetentionPolicies = new BackupShortTermRetentionPoliciesImpl(this);
         }
         return this.backupShortTermRetentionPolicies;
+    }
+
+    /**
+     * @return Entry point to manage TdeCertificates.
+     */
+    public TdeCertificates tdeCertificates() {
+        if (this.tdeCertificates == null) {
+            this.tdeCertificates = new TdeCertificatesImpl(this);
+        }
+        return this.tdeCertificates;
+    }
+
+    /**
+     * @return Entry point to manage ManagedInstanceTdeCertificates.
+     */
+    public ManagedInstanceTdeCertificates managedInstanceTdeCertificates() {
+        if (this.managedInstanceTdeCertificates == null) {
+            this.managedInstanceTdeCertificates = new ManagedInstanceTdeCertificatesImpl(this);
+        }
+        return this.managedInstanceTdeCertificates;
     }
 
     /**
