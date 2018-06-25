@@ -79,6 +79,13 @@ public class EHNamespaceInner extends Resource {
     private Boolean kafkaEnabled;
 
     /**
+     * Enabling this property creates a Standard Event Hubs Namespace in
+     * regions supported availability zones.
+     */
+    @JsonProperty(value = "properties.zoneRedundant")
+    private Boolean zoneRedundant;
+
+    /**
      * Get properties of sku resource.
      *
      * @return the sku value
@@ -200,6 +207,26 @@ public class EHNamespaceInner extends Resource {
      */
     public EHNamespaceInner withKafkaEnabled(Boolean kafkaEnabled) {
         this.kafkaEnabled = kafkaEnabled;
+        return this;
+    }
+
+    /**
+     * Get enabling this property creates a Standard Event Hubs Namespace in regions supported availability zones.
+     *
+     * @return the zoneRedundant value
+     */
+    public Boolean zoneRedundant() {
+        return this.zoneRedundant;
+    }
+
+    /**
+     * Set enabling this property creates a Standard Event Hubs Namespace in regions supported availability zones.
+     *
+     * @param zoneRedundant the zoneRedundant value to set
+     * @return the EHNamespaceInner object itself.
+     */
+    public EHNamespaceInner withZoneRedundant(Boolean zoneRedundant) {
+        this.zoneRedundant = zoneRedundant;
         return this;
     }
 

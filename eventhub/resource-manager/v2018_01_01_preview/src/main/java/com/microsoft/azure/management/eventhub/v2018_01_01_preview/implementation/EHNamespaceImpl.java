@@ -91,6 +91,11 @@ class EHNamespaceImpl extends GroupableResourceCoreImpl<EHNamespace, EHNamespace
     }
 
     @Override
+    public Boolean zoneRedundant() {
+        return this.inner().zoneRedundant();
+    }
+
+    @Override
     public EHNamespaceImpl withIsAutoInflateEnabled(Boolean isAutoInflateEnabled) {
         this.inner().withIsAutoInflateEnabled(isAutoInflateEnabled);
         return this;
@@ -111,6 +116,12 @@ class EHNamespaceImpl extends GroupableResourceCoreImpl<EHNamespace, EHNamespace
     @Override
     public EHNamespaceImpl withSku(Sku sku) {
         this.inner().withSku(sku);
+        return this;
+    }
+
+    @Override
+    public EHNamespaceImpl withZoneRedundant(Boolean zoneRedundant) {
+        this.inner().withZoneRedundant(zoneRedundant);
         return this;
     }
 

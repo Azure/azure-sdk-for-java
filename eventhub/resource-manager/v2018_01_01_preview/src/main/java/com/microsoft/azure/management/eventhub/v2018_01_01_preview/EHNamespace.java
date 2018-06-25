@@ -71,6 +71,11 @@ public interface EHNamespace extends HasInner<EHNamespaceInner>, Resource, Group
     DateTime updatedAt();
 
     /**
+     * @return the zoneRedundant value.
+     */
+    Boolean zoneRedundant();
+
+    /**
      * The entirety of the EHNamespace definition.
      */
     interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithCreate {
@@ -133,17 +138,27 @@ public interface EHNamespace extends HasInner<EHNamespaceInner>, Resource, Group
         }
 
         /**
+         * The stage of the ehnamespace update allowing to specify ZoneRedundant.
+         */
+        interface WithZoneRedundant {
+            /**
+             * Specifies zoneRedundant.
+             */
+            WithCreate withZoneRedundant(Boolean zoneRedundant);
+        }
+
+        /**
          * The stage of the definition which contains all the minimum required inputs for
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<EHNamespace>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithIsAutoInflateEnabled, DefinitionStages.WithKafkaEnabled, DefinitionStages.WithMaximumThroughputUnits, DefinitionStages.WithSku {
+        interface WithCreate extends Creatable<EHNamespace>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithIsAutoInflateEnabled, DefinitionStages.WithKafkaEnabled, DefinitionStages.WithMaximumThroughputUnits, DefinitionStages.WithSku, DefinitionStages.WithZoneRedundant {
         }
     }
     /**
      * The template for a EHNamespace update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<EHNamespace>, Resource.UpdateWithTags<Update>, UpdateStages.WithIsAutoInflateEnabled, UpdateStages.WithKafkaEnabled, UpdateStages.WithMaximumThroughputUnits, UpdateStages.WithSku {
+    interface Update extends Appliable<EHNamespace>, Resource.UpdateWithTags<Update>, UpdateStages.WithIsAutoInflateEnabled, UpdateStages.WithKafkaEnabled, UpdateStages.WithMaximumThroughputUnits, UpdateStages.WithSku, UpdateStages.WithZoneRedundant {
     }
 
     /**
@@ -188,6 +203,16 @@ public interface EHNamespace extends HasInner<EHNamespaceInner>, Resource, Group
              * Specifies sku.
              */
             Update withSku(Sku sku);
+        }
+
+        /**
+         * The stage of the ehnamespace {0} allowing to specify ZoneRedundant.
+         */
+        interface WithZoneRedundant {
+            /**
+             * Specifies zoneRedundant.
+             */
+            Update withZoneRedundant(Boolean zoneRedundant);
         }
 
     }
