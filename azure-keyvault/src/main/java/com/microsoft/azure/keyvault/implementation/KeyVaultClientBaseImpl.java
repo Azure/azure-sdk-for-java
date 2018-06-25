@@ -243,7 +243,7 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
     }
 
     protected void initialize() {
-        this.apiVersion = "7.0-preview";
+        this.apiVersion = "7.0";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
@@ -258,7 +258,7 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
      */
     @Override
     public String userAgent() {
-        return String.format("%s (%s, %s)", super.userAgent(), "KeyVaultClientBase", "7.0-preview");
+        return String.format("%s (%s, %s)", super.userAgent(), "KeyVaultClientBase", "7.0");
     }
 
     private void initializeService() {
@@ -747,11 +747,11 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name for the new key. The system will generate the version name for the new key.
      * @param kty The type of key to create. For valid values, see JsonWebKeyType. Possible values include: 'EC', 'EC-HSM', 'RSA', 'RSA-HSM', 'oct'
-     * @param keySize The key size in bytes. For example, 1024 or 2048.
+     * @param keySize The key size in bits. For example: 2048, 3072, or 4096 for RSA.
      * @param keyOps the List&lt;JsonWebKeyOperation&gt; value
      * @param keyAttributes the KeyAttributes value
      * @param tags Application specific metadata in the form of key-value pairs.
-     * @param curve Elliptic curve name. For valid values, see JsonWebKeyCurveName. Possible values include: 'P-256', 'P-384', 'P-521', 'SECP256K1'
+     * @param curve Elliptic curve name. For valid values, see JsonWebKeyCurveName. Possible values include: 'P-256', 'P-384', 'P-521', 'P-256K'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws KeyVaultErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -768,11 +768,11 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name for the new key. The system will generate the version name for the new key.
      * @param kty The type of key to create. For valid values, see JsonWebKeyType. Possible values include: 'EC', 'EC-HSM', 'RSA', 'RSA-HSM', 'oct'
-     * @param keySize The key size in bytes. For example, 1024 or 2048.
+     * @param keySize The key size in bits. For example: 2048, 3072, or 4096 for RSA.
      * @param keyOps the List&lt;JsonWebKeyOperation&gt; value
      * @param keyAttributes the KeyAttributes value
      * @param tags Application specific metadata in the form of key-value pairs.
-     * @param curve Elliptic curve name. For valid values, see JsonWebKeyCurveName. Possible values include: 'P-256', 'P-384', 'P-521', 'SECP256K1'
+     * @param curve Elliptic curve name. For valid values, see JsonWebKeyCurveName. Possible values include: 'P-256', 'P-384', 'P-521', 'P-256K'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -788,11 +788,11 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name for the new key. The system will generate the version name for the new key.
      * @param kty The type of key to create. For valid values, see JsonWebKeyType. Possible values include: 'EC', 'EC-HSM', 'RSA', 'RSA-HSM', 'oct'
-     * @param keySize The key size in bytes. For example, 1024 or 2048.
+     * @param keySize The key size in bits. For example: 2048, 3072, or 4096 for RSA.
      * @param keyOps the List&lt;JsonWebKeyOperation&gt; value
      * @param keyAttributes the KeyAttributes value
      * @param tags Application specific metadata in the form of key-value pairs.
-     * @param curve Elliptic curve name. For valid values, see JsonWebKeyCurveName. Possible values include: 'P-256', 'P-384', 'P-521', 'SECP256K1'
+     * @param curve Elliptic curve name. For valid values, see JsonWebKeyCurveName. Possible values include: 'P-256', 'P-384', 'P-521', 'P-256K'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the KeyBundle object
      */
@@ -812,11 +812,11 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name for the new key. The system will generate the version name for the new key.
      * @param kty The type of key to create. For valid values, see JsonWebKeyType. Possible values include: 'EC', 'EC-HSM', 'RSA', 'RSA-HSM', 'oct'
-     * @param keySize The key size in bytes. For example, 1024 or 2048.
+     * @param keySize The key size in bits. For example: 2048, 3072, or 4096 for RSA.
      * @param keyOps the List&lt;JsonWebKeyOperation&gt; value
      * @param keyAttributes the KeyAttributes value
      * @param tags Application specific metadata in the form of key-value pairs.
-     * @param curve Elliptic curve name. For valid values, see JsonWebKeyCurveName. Possible values include: 'P-256', 'P-384', 'P-521', 'SECP256K1'
+     * @param curve Elliptic curve name. For valid values, see JsonWebKeyCurveName. Possible values include: 'P-256', 'P-384', 'P-521', 'P-256K'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the KeyBundle object
      */
@@ -2364,7 +2364,7 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
-     * @param algorithm The signing/verification algorithm identifier. For more information on possible algorithm types, see JsonWebKeySignatureAlgorithm. Possible values include: 'PS256', 'PS384', 'PS512', 'RS256', 'RS384', 'RS512', 'RSNULL', 'ES256', 'ES384', 'ES512', 'ECDSA256'
+     * @param algorithm The signing/verification algorithm identifier. For more information on possible algorithm types, see JsonWebKeySignatureAlgorithm. Possible values include: 'PS256', 'PS384', 'PS512', 'RS256', 'RS384', 'RS512', 'RSNULL', 'ES256', 'ES384', 'ES512', 'ES256K'
      * @param value the Base64Url value
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws KeyVaultErrorException thrown if the request is rejected by server
@@ -2382,7 +2382,7 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
-     * @param algorithm The signing/verification algorithm identifier. For more information on possible algorithm types, see JsonWebKeySignatureAlgorithm. Possible values include: 'PS256', 'PS384', 'PS512', 'RS256', 'RS384', 'RS512', 'RSNULL', 'ES256', 'ES384', 'ES512', 'ECDSA256'
+     * @param algorithm The signing/verification algorithm identifier. For more information on possible algorithm types, see JsonWebKeySignatureAlgorithm. Possible values include: 'PS256', 'PS384', 'PS512', 'RS256', 'RS384', 'RS512', 'RSNULL', 'ES256', 'ES384', 'ES512', 'ES256K'
      * @param value the Base64Url value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -2399,7 +2399,7 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
-     * @param algorithm The signing/verification algorithm identifier. For more information on possible algorithm types, see JsonWebKeySignatureAlgorithm. Possible values include: 'PS256', 'PS384', 'PS512', 'RS256', 'RS384', 'RS512', 'RSNULL', 'ES256', 'ES384', 'ES512', 'ECDSA256'
+     * @param algorithm The signing/verification algorithm identifier. For more information on possible algorithm types, see JsonWebKeySignatureAlgorithm. Possible values include: 'PS256', 'PS384', 'PS512', 'RS256', 'RS384', 'RS512', 'RSNULL', 'ES256', 'ES384', 'ES512', 'ES256K'
      * @param value the Base64Url value
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the KeyOperationResult object
@@ -2420,7 +2420,7 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
-     * @param algorithm The signing/verification algorithm identifier. For more information on possible algorithm types, see JsonWebKeySignatureAlgorithm. Possible values include: 'PS256', 'PS384', 'PS512', 'RS256', 'RS384', 'RS512', 'RSNULL', 'ES256', 'ES384', 'ES512', 'ECDSA256'
+     * @param algorithm The signing/verification algorithm identifier. For more information on possible algorithm types, see JsonWebKeySignatureAlgorithm. Possible values include: 'PS256', 'PS384', 'PS512', 'RS256', 'RS384', 'RS512', 'RSNULL', 'ES256', 'ES384', 'ES512', 'ES256K'
      * @param value the Base64Url value
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the KeyOperationResult object
@@ -2476,7 +2476,7 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
-     * @param algorithm The signing/verification algorithm. For more information on possible algorithm types, see JsonWebKeySignatureAlgorithm. Possible values include: 'PS256', 'PS384', 'PS512', 'RS256', 'RS384', 'RS512', 'RSNULL', 'ES256', 'ES384', 'ES512', 'ECDSA256'
+     * @param algorithm The signing/verification algorithm. For more information on possible algorithm types, see JsonWebKeySignatureAlgorithm. Possible values include: 'PS256', 'PS384', 'PS512', 'RS256', 'RS384', 'RS512', 'RSNULL', 'ES256', 'ES384', 'ES512', 'ES256K'
      * @param digest The digest used for signing.
      * @param signature The signature to be verified.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -2495,7 +2495,7 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
-     * @param algorithm The signing/verification algorithm. For more information on possible algorithm types, see JsonWebKeySignatureAlgorithm. Possible values include: 'PS256', 'PS384', 'PS512', 'RS256', 'RS384', 'RS512', 'RSNULL', 'ES256', 'ES384', 'ES512', 'ECDSA256'
+     * @param algorithm The signing/verification algorithm. For more information on possible algorithm types, see JsonWebKeySignatureAlgorithm. Possible values include: 'PS256', 'PS384', 'PS512', 'RS256', 'RS384', 'RS512', 'RSNULL', 'ES256', 'ES384', 'ES512', 'ES256K'
      * @param digest The digest used for signing.
      * @param signature The signature to be verified.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -2513,7 +2513,7 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
-     * @param algorithm The signing/verification algorithm. For more information on possible algorithm types, see JsonWebKeySignatureAlgorithm. Possible values include: 'PS256', 'PS384', 'PS512', 'RS256', 'RS384', 'RS512', 'RSNULL', 'ES256', 'ES384', 'ES512', 'ECDSA256'
+     * @param algorithm The signing/verification algorithm. For more information on possible algorithm types, see JsonWebKeySignatureAlgorithm. Possible values include: 'PS256', 'PS384', 'PS512', 'RS256', 'RS384', 'RS512', 'RSNULL', 'ES256', 'ES384', 'ES512', 'ES256K'
      * @param digest The digest used for signing.
      * @param signature The signature to be verified.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -2535,7 +2535,7 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
-     * @param algorithm The signing/verification algorithm. For more information on possible algorithm types, see JsonWebKeySignatureAlgorithm. Possible values include: 'PS256', 'PS384', 'PS512', 'RS256', 'RS384', 'RS512', 'RSNULL', 'ES256', 'ES384', 'ES512', 'ECDSA256'
+     * @param algorithm The signing/verification algorithm. For more information on possible algorithm types, see JsonWebKeySignatureAlgorithm. Possible values include: 'PS256', 'PS384', 'PS512', 'RS256', 'RS384', 'RS512', 'RSNULL', 'ES256', 'ES384', 'ES512', 'ES256K'
      * @param digest The digest used for signing.
      * @param signature The signature to be verified.
      * @throws IllegalArgumentException thrown if parameters fail the validation
