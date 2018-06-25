@@ -257,7 +257,6 @@ public class RequestRetryTestFactory implements RequestPolicyFactory {
                     switch (this.factory.tryNumber) {
                         case 1:
                             this.factory.time = OffsetDateTime.now();
-                            System.out.println("Setting current time: " + this.factory.time);
                             return RETRY_TEST_TEMPORARY_ERROR_RESPONSE;
                         case 2:
                             /*
@@ -341,10 +340,6 @@ public class RequestRetryTestFactory implements RequestPolicyFactory {
 
         private Single<HttpResponse> testDelayBounds(int primaryTryNumber, boolean tryingPrimary,
                 Single<HttpResponse> response) {
-            System.out.println("Start: " + this.factory.time);
-            System.out.println("now: " + OffsetDateTime.now());
-            System.out.println("Upperbound: " + calcUpperBound(this.factory.time, primaryTryNumber, tryingPrimary));
-            System.out.println("Lowerbound: " + calcLowerBound(this.factory.time, primaryTryNumber, tryingPrimary));
             /*
             We have to return a new Single so that the calculation for time is performed at the correct time, i.e. when
             the Single is actually subscribed to. This mocks an HttpClient because the requests are made only when
@@ -360,10 +355,7 @@ public class RequestRetryTestFactory implements RequestPolicyFactory {
                                         .isBefore(calcLowerBound(factory.time, primaryTryNumber, tryingPrimary))) {
                             throw new IllegalArgumentException("Delay was not within jitter bounds");
                         }
-                        System.out.println("Setting current time");
                         factory.time = OffsetDateTime.now();
-                        System.out.println("Factory time at end of try " + tryNumber + ": " + factory.time);
-                        System.out.println("Time in onSubscribe: " + OffsetDateTime.now());
                         /*
                         We can blocking get because it's not actually an IO call. Everything returned here returns
                         Single.just(response).
@@ -391,7 +383,6 @@ public class RequestRetryTestFactory implements RequestPolicyFactory {
                         }
 
                         factory.time = OffsetDateTime.now();
-                        System.out.println("About to try reporting a response: ");
                         HttpResponse unwrappedResponse = response.blockingGet();
                         observer.onSuccess(unwrappedResponse);
                     }

@@ -80,7 +80,7 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
 
         // This is to log for debugging purposes only. Comment/uncomment as necessary for releasing/debugging.
         private void logf(String s, Object... args) {
-            System.out.println(String.format(s, args));
+            //System.out.println(String.format(s, args));
         }
 
         /**
@@ -153,9 +153,6 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
              We want to send the request with a given timeout, but we don't want to kickoff that timeout-bound operation
              until after the retry backoff delay, so we call delaySubscription.
              */
-            System.out.println(requestCopy.url());
-            System.out.println("Time before delay: " + OffsetDateTime.now());
-            System.out.println("About to delay: " + delayMs);
             return this.nextPolicy.sendAsync(requestCopy)
                     .timeout(this.requestRetryOptions.getTryTimeout(), TimeUnit.SECONDS)
                     .delaySubscription(delayMs, TimeUnit.MILLISECONDS)
