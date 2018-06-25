@@ -23,7 +23,7 @@ public class RunCommandResultInner extends OperationStatusResponseInner {
     private Object output;
 
     /**
-     * Get the output value.
+     * Get operation output data (raw JSON).
      *
      * @return the output value
      */
@@ -32,7 +32,7 @@ public class RunCommandResultInner extends OperationStatusResponseInner {
     }
 
     /**
-     * Set the output value.
+     * Set operation output data (raw JSON).
      *
      * @param output the output value to set
      * @return the RunCommandResultInner object itself.

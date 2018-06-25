@@ -99,6 +99,30 @@ class AvailabilitySetsImpl extends GroupableResourcesCoreImpl<AvailabilitySet, A
     }
 
     @Override
+    public PagedList<AvailabilitySet> list() {
+        AvailabilitySetsInner client = this.inner();
+        return this.wrapList(client.list());
+    }
+
+    @Override
+    public Observable<AvailabilitySet> listAsync() {
+        AvailabilitySetsInner client = this.inner();
+        return client.listAsync()
+        .flatMapIterable(new Func1<Page<AvailabilitySetInner>, Iterable<AvailabilitySetInner>>() {
+            @Override
+            public Iterable<AvailabilitySetInner> call(Page<AvailabilitySetInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<AvailabilitySetInner, AvailabilitySet>() {
+            @Override
+            public AvailabilitySet call(AvailabilitySetInner inner) {
+                return wrapModel(inner);
+            }
+        });
+    }
+
+    @Override
     public AvailabilitySetImpl define(String name) {
         return wrapModel(name);
     }

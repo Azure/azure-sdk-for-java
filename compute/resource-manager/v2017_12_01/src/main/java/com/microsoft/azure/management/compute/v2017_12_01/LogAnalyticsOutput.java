@@ -21,7 +21,7 @@ public class LogAnalyticsOutput {
     private String output;
 
     /**
-     * Get the output value.
+     * Get output file Uri path to blob container.
      *
      * @return the output value
      */
