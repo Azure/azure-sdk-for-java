@@ -11,6 +11,7 @@
 * Added statusCode property to CommonRestResponse.
 * Change dateProperty to be date on all generated types.
 * Fixed a bug that prevented proper reset of body stream upon retry.
+* Updated the defaults for RequestRetryOptions.
 
 2018.04.27 Version 10.0.0-preview
 * Initial Release. Please see the README and wiki for information on the new design.

@@ -19,14 +19,16 @@ import com.microsoft.rest.v2.http.*;
 import com.microsoft.rest.v2.policy.RequestPolicy;
 import com.microsoft.rest.v2.policy.RequestPolicyFactory;
 import com.microsoft.rest.v2.policy.RequestPolicyOptions;
-import com.microsoft.rest.v2.util.FlowableUtil;
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
+import io.reactivex.Observable;
 import io.reactivex.Single;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.ByteBuffer;
+import java.time.OffsetDateTime;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -78,7 +80,7 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
 
         // This is to log for debugging purposes only. Comment/uncomment as necessary for releasing/debugging.
         private void logf(String s, Object... args) {
-            //System.out.println(String.format(s, args));
+            System.out.println(String.format(s, args));
         }
 
         /**
@@ -114,7 +116,7 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
             long delayMs;
             if (tryingPrimary) {
                 // The first attempt returns 0 delay.
-                delayMs = this.requestRetryOptions.calculatedDelayInMs(primaryTry);
+                delayMs = this.requestRetryOptions.calculateDelayInMs(primaryTry);
                 logf("Primary try=%d, Delay=%d\n", primaryTry, delayMs);
             } else {
                 // Delay with some jitter before trying the secondary.
@@ -147,11 +149,18 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
 
             // Deadline stuff
 
-            // Delay before the calculated time, then call the next policy to send out the request (again) with
-            // the specified timeout.
-            return Completable.complete().delay(delayMs, TimeUnit.MILLISECONDS)
-                    .andThen(this.nextPolicy.sendAsync(requestCopy)
+            /*
+             Delay for the calculated time, then call the next policy to send out the request (again) with the specified
+             timeout. The switching between Completable and Single is ugly, but we need essentially an empty Single
+             that we can delay the subscription of and then convert to a Completable.
+             */
+            System.out.println(requestCopy.url());
+            System.out.println("Time before delay: " + OffsetDateTime.now());
+            System.out.println("About to delay: " + delayMs);
+            return this.nextPolicy.sendAsync(requestCopy)
+                            .delaySubscription(delayMs, TimeUnit.MILLISECONDS)
                             .timeout(this.requestRetryOptions.getTryTimeout(), TimeUnit.SECONDS)
+                            //.delay(delayMs, TimeUnit.MILLISECONDS)
                             /*
                             We must only consider errors here. All successful responses with expected status codes can
                             pass freely back to the higher layers. Any errors or responses with unexpected status codes
@@ -198,11 +207,13 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
                                      */
                                     int newPrimaryTry = !tryingPrimary || !considerSecondary ?
                                             primaryTry + 1 : primaryTry;
-                                    return attemptAsync(httpRequest, newPrimaryTry, newConsiderSecondary,
-                                            attempt + 1);
+                                    return //Completable.timer(10, TimeUnit.SECONDS).andThen(
+                                            attemptAsync(httpRequest, newPrimaryTry, newConsiderSecondary,
+                                                    attempt + 1);
+
                                 }
                                 return Single.error(throwable);
-                            }));
+                            });
         }
     }
 

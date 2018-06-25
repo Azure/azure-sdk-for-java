@@ -17,12 +17,14 @@ package com.microsoft.azure.storage.blob;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Options for configuring the {@link RequestRetryFactory}. Please refer to the Factory for more information.
+ * Options for configuring the {@link RequestRetryFactory}. Please refer to the Factory for more information. Note
+ * that there is no option for overall operation timeout. This is because Rx object have a timeout field which provides
+ * this functionality.
  */
 public final class RequestRetryOptions {
 
     /**
-     * An object representing default retry values: Exponential backoff, maxTries=4, tryTimeout=30, retryDelayInMs=4,
+     * An object representing default retry values: Exponential backoff, maxTries=4, tryTimeout=30, retryDelayInMs=4000,
      * maxRetryDelayInMs=120000, secondaryHost=null.
      */
     public static final RequestRetryOptions DEFAULT = new RequestRetryOptions(RetryPolicyType.EXPONENTIAL, null,
@@ -64,7 +66,7 @@ public final class RequestRetryOptions {
      *      maximum specified by MaxRetryDelay. If you specify 0, then you must also specify 0 for MaxRetryDelay.
      * @param maxRetryDelayInMs
      *      Specifies the maximum delay allowed before retrying an operation. A value of {@code null} means you accept
-     *      the default value of 120s. If you specify {@code null}, then you must also specify {@code null}for
+     *      the default value of 120s. If you specify {@code null}, then you must also specify {@code null} for
      *      RetryDelay.
      * @param secondaryHost
      *      If a secondaryHost is specified, retries will be tried against this host. If secondaryHost is {@code null}
@@ -89,7 +91,12 @@ public final class RequestRetryOptions {
             this.tryTimeout = tryTimeout;
         }
         else {
-            this.tryTimeout = 30;
+            this.tryTimeout = 60;
+        }
+
+        if ((retryDelayInMs == null && maxRetryDelayInMs != null) ||
+                (retryDelayInMs != null && maxRetryDelayInMs == null)) {
+            throw new IllegalArgumentException("Both retryDelay and maxRetryDelay must be null or neither can be null");
         }
 
         if (retryDelayInMs != null && maxRetryDelayInMs != null) {
@@ -98,19 +105,18 @@ public final class RequestRetryOptions {
             this.maxRetryDelayInMs = maxRetryDelayInMs;
             this.retryDelayInMs = retryDelayInMs;
         }
-        else if (retryDelayInMs != null) {
-            Utility.assertInBounds("retryDelayInMs", retryDelayInMs, 1, Long.MAX_VALUE);
-            this.retryDelayInMs = retryDelayInMs;
-            if (retryDelayInMs > TimeUnit.SECONDS.toMillis(120)) {
-                this.maxRetryDelayInMs = retryDelayInMs;
-            }
-            else {
-                this.maxRetryDelayInMs = TimeUnit.SECONDS.toMillis(120);
-            }
-        }
         else {
+            switch (this.retryPolicyType) {
+                case EXPONENTIAL:
+                    this.retryDelayInMs = TimeUnit.SECONDS.toMillis(4);
+                    break;
+                case FIXED:
+                    this.retryDelayInMs = TimeUnit.SECONDS.toMillis(30);
+                    break;
+                default:
+                    throw new IllegalArgumentException("Unrecognize retry policy type.");
+            }
             this.maxRetryDelayInMs = TimeUnit.SECONDS.toMillis(120);
-            this.retryDelayInMs = Math.min(TimeUnit.SECONDS.toMillis(4), this.maxRetryDelayInMs);
         }
 
         this.secondaryHost = secondaryHost;
@@ -150,6 +156,26 @@ public final class RequestRetryOptions {
     }
 
     /**
+     * @return
+     *      Specifies the amount of delay to use before retrying an operation. A value of {@code null} means you accept
+     *      the default value of 4 seconds. The delay increases (exponentially or linearly) with each retry up to a
+     *      maximum specified by MaxRetryDelay. If you specify 0, then you must also specify 0 for MaxRetryDelay.
+     */
+    public long getRetryDelayInMs() {
+        return retryDelayInMs;
+    }
+
+    /**
+     * @return
+     *      Specifies the maximum delay allowed before retrying an operation. A value of {@code null} means you accept
+     *      the default value of 120s. If you specify {@code null}, then you must also specify {@code null} for
+     *      RetryDelay.
+     */
+    public long getMaxRetryDelayInMs() {
+        return maxRetryDelayInMs;
+    }
+
+    /**
      * Calculates how long to delay before sending the next request.
      *
      * @param tryCount
@@ -157,7 +183,7 @@ public final class RequestRetryOptions {
      * @return
      *      A {@code long} value of how many milliseconds to delay.
      */
-    long calculatedDelayInMs(int tryCount) {
+    long calculateDelayInMs(int tryCount) {
         long delay = 0;
         switch (this.retryPolicyType) {
             case EXPONENTIAL:
@@ -169,7 +195,7 @@ public final class RequestRetryOptions {
                 break;
         }
 
-        return delay;
+        return Math.min(delay, this.maxRetryDelayInMs);
     }
 
     private long pow(long number, int exponent) {
