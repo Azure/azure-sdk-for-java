@@ -27,7 +27,7 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.microsoft.azure.keyvault.core.IKey;
 import com.microsoft.azure.keyvault.cryptography.algorithms.Ecdsa;
-import com.microsoft.azure.keyvault.cryptography.algorithms.Ecdsa256;
+import com.microsoft.azure.keyvault.cryptography.algorithms.Es256k;
 import com.microsoft.azure.keyvault.cryptography.algorithms.Es256;
 import com.microsoft.azure.keyvault.cryptography.algorithms.Es384;
 import com.microsoft.azure.keyvault.cryptography.algorithms.Es512;
@@ -45,7 +45,7 @@ public class EcKey implements IKey {
 			.put(JsonWebKeyCurveName.P_256, Es256.ALGORITHM_NAME)
 			.put(JsonWebKeyCurveName.P_384, Es384.ALGORITHM_NAME)
 			.put(JsonWebKeyCurveName.P_521, Es512.ALGORITHM_NAME)
-			.put(JsonWebKeyCurveName.SECP256K1, Ecdsa256.ALGORITHM_NAME)
+			.put(JsonWebKeyCurveName.SECP256K1, Es256k.ALGORITHM_NAME)
 			.build();
 	public static final Map<JsonWebKeyCurveName, String> CURVE_TO_SPEC_NAME = ImmutableMap.<JsonWebKeyCurveName, String>builder()
 			.put(JsonWebKeyCurveName.P_256, P256)

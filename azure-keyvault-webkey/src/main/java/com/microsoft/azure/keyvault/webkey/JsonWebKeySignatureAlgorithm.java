@@ -44,7 +44,7 @@ public final class JsonWebKeySignatureAlgorithm {
     /** Static value ES512 for JsonWebKeySignatureAlgorithm. */
     public static final JsonWebKeySignatureAlgorithm ES512 = new JsonWebKeySignatureAlgorithm("ES512");
     /** Static value ECDSA256 for JsonWebKeySignatureAlgorithm. */
-    public static final JsonWebKeySignatureAlgorithm ECDSA256 = new JsonWebKeySignatureAlgorithm("ECDSA256");
+    public static final JsonWebKeySignatureAlgorithm ES256K = new JsonWebKeySignatureAlgorithm("ES256K");
 
     private String value;
 
@@ -87,5 +87,5 @@ public final class JsonWebKeySignatureAlgorithm {
      * All the JWK signature algorithms.
      */
     public static final List<JsonWebKeySignatureAlgorithm> ALL_ALGORITHMS =
-            Collections.unmodifiableList(Arrays.asList(RS256, RS384, RS512, RSNULL, PS256, PS384, PS512, ES256, ES384, ES512, ECDSA256));
+            Collections.unmodifiableList(Arrays.asList(RS256, RS384, RS512, RSNULL, PS256, PS384, PS512, ES256, ES384, ES512, ES256K));
 }
