@@ -150,70 +150,67 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
             // Deadline stuff
 
             /*
-             Delay for the calculated time, then call the next policy to send out the request (again) with the specified
-             timeout. The switching between Completable and Single is ugly, but we need essentially an empty Single
-             that we can delay the subscription of and then convert to a Completable.
+             We want to send the request with a given timeout, but we don't want to kickoff that timeout-bound operation
+             until after the retry backoff delay, so we call delaySubscription.
              */
             System.out.println(requestCopy.url());
             System.out.println("Time before delay: " + OffsetDateTime.now());
             System.out.println("About to delay: " + delayMs);
             return this.nextPolicy.sendAsync(requestCopy)
-                            .delaySubscription(delayMs, TimeUnit.MILLISECONDS)
-                            .timeout(this.requestRetryOptions.getTryTimeout(), TimeUnit.SECONDS)
-                            //.delay(delayMs, TimeUnit.MILLISECONDS)
+                    .timeout(this.requestRetryOptions.getTryTimeout(), TimeUnit.SECONDS)
+                    .delaySubscription(delayMs, TimeUnit.MILLISECONDS)
+                    /*
+                    We must only consider errors here. All successful responses with expected status codes can
+                    pass freely back to the higher layers. Any errors or responses with unexpected status codes
+                    are returned as exceptions and will be considered below.
+                     */
+                    .onErrorResumeNext(throwable -> {
+                        boolean newConsiderSecondary = considerSecondary;
+                        String action;
+                        /*
+                        An IOException is a network error. A Timeout Exception is a client-side timeout coming
+                        from Rx. A StorageErrorException is returned by the HttpClient when a response is
+                        completed but the status code does not indicate success.
+                         */
+                        if (throwable instanceof IOException) {
+                            action = "Retry: Network error";
+                        } else if (throwable instanceof TimeoutException) {
+                            action = "Retry: Client timeout";
+                        } else if (throwable instanceof StorageErrorException) {
+                            int statusCode = ((StorageErrorException) throwable).response().statusCode();
                             /*
-                            We must only consider errors here. All successful responses with expected status codes can
-                            pass freely back to the higher layers. Any errors or responses with unexpected status codes
-                            are returned as exceptions and will be considered below.
+                            If attempt was against the secondary & it returned a StatusNotFound (404), then the
+                            resource was not found. This may be due to replication delay. So, in this case,
+                            we'll never try the secondary again for this operation.
                              */
-                            .onErrorResumeNext(throwable -> {
-                                boolean newConsiderSecondary = considerSecondary;
-                                String action;
-                                /*
-                                An IOException is a network error. A Timeout Exception is a client-side timeout coming
-                                from Rx. A StorageErrorException is returned by the HttpClient when a response is
-                                completed but the status code does not indicate success.
-                                 */
-                                if (throwable instanceof IOException) {
-                                    action = "Retry: Network error";
-                                } else if (throwable instanceof TimeoutException) {
-                                    action = "Retry: Client timeout";
-                                } else if (throwable instanceof StorageErrorException) {
-                                    int statusCode = ((StorageErrorException) throwable).response().statusCode();
-                                    /*
-                                    If attempt was against the secondary & it returned a StatusNotFound (404), then the
-                                    resource was not found. This may be due to replication delay. So, in this case,
-                                    we'll never try the secondary again for this operation.
-                                     */
-                                    if (!tryingPrimary && statusCode == 404) {
-                                        newConsiderSecondary = false;
-                                        action = "Retry: Secondary URL returned 404";
-                                    } else if (statusCode == 503 || statusCode == 500) {
-                                        action = "Retry: Temporary error or server timeout";
-                                    } else {
-                                        action = "NoRetry: Successful HTTP request";
-                                    }
-                                } else {
-                                    action = "NoRetry: Unknown error";
-                                }
+                            if (!tryingPrimary && statusCode == 404) {
+                                newConsiderSecondary = false;
+                                action = "Retry: Secondary URL returned 404";
+                            } else if (statusCode == 503 || statusCode == 500) {
+                                action = "Retry: Temporary error or server timeout";
+                            } else {
+                                action = "NoRetry: Successful HTTP request";
+                            }
+                        } else {
+                            action = "NoRetry: Unknown error";
+                        }
 
-                                logf("Action=%s\n", action);
-                                if (action.charAt(0) == 'R' && attempt < requestRetryOptions.getMaxTries()) {
-                                    /*
-                                    We increment primaryTry if we are about to try the primary again (which is when we
-                                    consider the secondary and tried the secondary this time (tryingPrimary==false) or
-                                    we do not consider the secondary at all (considerSecondary==false)). This will
-                                    ensure primaryTry is correct when passed to calculate the delay.
-                                     */
-                                    int newPrimaryTry = !tryingPrimary || !considerSecondary ?
-                                            primaryTry + 1 : primaryTry;
-                                    return //Completable.timer(10, TimeUnit.SECONDS).andThen(
-                                            attemptAsync(httpRequest, newPrimaryTry, newConsiderSecondary,
-                                                    attempt + 1);
+                        logf("Action=%s\n", action);
+                        if (action.charAt(0) == 'R' && attempt < requestRetryOptions.getMaxTries()) {
+                            /*
+                            We increment primaryTry if we are about to try the primary again (which is when we
+                            consider the secondary and tried the secondary this time (tryingPrimary==false) or
+                            we do not consider the secondary at all (considerSecondary==false)). This will
+                            ensure primaryTry is correct when passed to calculate the delay.
+                             */
+                            int newPrimaryTry = !tryingPrimary || !considerSecondary ?
+                                    primaryTry + 1 : primaryTry;
+                            return attemptAsync(httpRequest, newPrimaryTry, newConsiderSecondary,
+                                            attempt + 1);
 
-                                }
-                                return Single.error(throwable);
-                            });
+                        }
+                        return Single.error(throwable);
+                    });
         }
     }
 

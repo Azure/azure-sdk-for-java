@@ -40,8 +40,8 @@ import java.util.concurrent.TimeoutException;
 
 import static java.lang.StrictMath.pow;
 
-public class RequestRetryTestFactory implements RequestPolicyFactory{
-    public static final int  RETRY_TEST_SCENARIO_RETRY_UNTIL_SUCCESS = 1;
+public class RequestRetryTestFactory implements RequestPolicyFactory {
+    public static final int RETRY_TEST_SCENARIO_RETRY_UNTIL_SUCCESS = 1;
 
     public static final int RETRY_TEST_SCENARIO_RETRY_UNTIL_MAX_RETRIES = 2;
 
@@ -77,13 +77,16 @@ public class RequestRetryTestFactory implements RequestPolicyFactory{
     that is not an expected response is wrapped in a StorageErrorException.
      */
     private static final Single<HttpResponse> RETRY_TEST_TEMPORARY_ERROR_RESPONSE =
-            Single.error(new StorageErrorException("Temporary", new RetryTestResponse(503)));;
+            Single.error(new StorageErrorException("Temporary", new RetryTestResponse(503)));
 
     private static final Single<HttpResponse> RETRY_TEST_TIMEOUT_ERROR_RESPONSE =
-            Single.error(new StorageErrorException("Timeout", new RetryTestResponse(500)));;
+            Single.error(new StorageErrorException("Timeout", new RetryTestResponse(500)));
 
     private static final Single<HttpResponse> RETRY_TEST_NON_RETRYABLE_ERROR =
-            Single.error(new StorageErrorException("Not found", new RetryTestResponse(400)));;
+            Single.error(new StorageErrorException("Bad request", new RetryTestResponse(400)));
+
+    private static final Single<HttpResponse> RETRY_TEST_NOT_FOUND_RESPONSE =
+            Single.error(new StorageErrorException("Not found", new RetryTestResponse(404)));
 
     private int retryTestScenario;
 
@@ -130,11 +133,17 @@ public class RequestRetryTestFactory implements RequestPolicyFactory{
             String expectedHost = RETRY_TEST_PRIMARY_HOST;
             if (this.factory.tryNumber % 2 == 0) {
                 /*
-                 The retry until success scenario fail's on the 4th try with a 404 on the secondary, so we never expect
-                 it to check the secondary after that. All other tests should continue to check the secondary.
+                 Special cases: retry until success scenario fail's on the 4th try with a 404 on the secondary, so we
+                 never expect it to check the secondary after that. All other tests should continue to check the
+                 secondary.
+                 Exponential timing only tests secondary backoff once but uses the rest of the retries to hit the max
+                 delay.
                  */
-                if (this.factory.retryTestScenario != RequestRetryTestFactory.RETRY_TEST_SCENARIO_RETRY_UNTIL_SUCCESS ||
-                        this.factory.tryNumber <= 4) {
+                if (!((this.factory.retryTestScenario == RequestRetryTestFactory.RETRY_TEST_SCENARIO_RETRY_UNTIL_SUCCESS
+                        && this.factory.tryNumber > 4) ||
+                        (this.factory.retryTestScenario ==
+                                RequestRetryTestFactory.RETRY_TEST_SCENARIO_EXPONENTIAL_TIMING
+                                && this.factory.tryNumber > 2))) {
                     expectedHost = RETRY_TEST_SECONDARY_HOST;
                 }
             }
@@ -191,8 +200,7 @@ public class RequestRetryTestFactory implements RequestPolicyFactory{
                             that should prevent further tries to secondary when the secondary evidently doesn't have the
                             data.
                              */
-                            return Single.error(new StorageErrorException("Not found",
-                                    new RetryTestResponse(404)));
+                            return RETRY_TEST_NOT_FOUND_RESPONSE;
                         case 5:
                             // Just to get to a sixth try where we ensure we should not be trying the secondary again.
                             return RETRY_TEST_TEMPORARY_ERROR_RESPONSE;
@@ -252,18 +260,26 @@ public class RequestRetryTestFactory implements RequestPolicyFactory{
                             System.out.println("Setting current time: " + this.factory.time);
                             return RETRY_TEST_TEMPORARY_ERROR_RESPONSE;
                         case 2:
-                            return testDelayBounds(1, false);
+                            /*
+                            Calculation for secondary is always the same, so we don't need to keep testing it. Not
+                            trying the secondary any more will also speed up the test.
+                             */
+                            return testDelayBounds(1, false,
+                                    RETRY_TEST_NOT_FOUND_RESPONSE).flatMap(x -> RETRY_TEST_NOT_FOUND_RESPONSE);
                         case 3:
-                            return testDelayBounds(2, true);
+                            return testDelayBounds(2, true,
+                                    RETRY_TEST_TEMPORARY_ERROR_RESPONSE);
                         case 4:
-                            testMaxDelayBounds();
-                            return RETRY_TEST_TEMPORARY_ERROR_RESPONSE;
+                            return testDelayBounds(3, true,
+                                    RETRY_TEST_TEMPORARY_ERROR_RESPONSE);
                         case 5:
-                            testMaxDelayBounds();
-                            return RETRY_TEST_TEMPORARY_ERROR_RESPONSE;
+                            /*
+                            With the current configuration in HelperTest, the maxRetryDelay should be reached upon the
+                            fourth try to the primary.
+                             */
+                            return testMaxDelayBounds(RETRY_TEST_TEMPORARY_ERROR_RESPONSE);
                         case 6:
-                            testMaxDelayBounds();
-                            return RETRY_TEST_OK_RESPONSE;
+                            return testMaxDelayBounds(RETRY_TEST_OK_RESPONSE);
                         default:
                             throw new IllegalArgumentException("Max retries exceeded/continued retrying after success");
                     }
@@ -274,14 +290,18 @@ public class RequestRetryTestFactory implements RequestPolicyFactory{
                             this.factory.time = OffsetDateTime.now();
                             return RETRY_TEST_TEMPORARY_ERROR_RESPONSE;
                         case 2:
-                            return testDelayBounds(1, false);
+                            return testDelayBounds(1, false,
+                                    RETRY_TEST_TEMPORARY_ERROR_RESPONSE);
                         case 3:
-                            return testDelayBounds(2, true);
+                            return testDelayBounds(2, true,
+                                    RETRY_TEST_TEMPORARY_ERROR_RESPONSE);
                         case 4:
-                            return testDelayBounds(2, false);
-                        case 5:
-                            testMaxDelayBounds();
+                            /*
+                            Fixed backoff means it's always the same and we never hit the max, no need to keep testing.
+                             */
                             return RETRY_TEST_OK_RESPONSE;
+                        default:
+                            throw new IllegalArgumentException("Retries continued after success.");
                     }
             }
             return Single.error(new IllegalArgumentException("Invalid scenario"));
@@ -319,7 +339,8 @@ public class RequestRetryTestFactory implements RequestPolicyFactory{
             }
         }
 
-        private Single<HttpResponse> testDelayBounds(int primaryTryNumber, boolean tryingPrimary) {
+        private Single<HttpResponse> testDelayBounds(int primaryTryNumber, boolean tryingPrimary,
+                Single<HttpResponse> response) {
             System.out.println("Start: " + this.factory.time);
             System.out.println("now: " + OffsetDateTime.now());
             System.out.println("Upperbound: " + calcUpperBound(this.factory.time, primaryTryNumber, tryingPrimary));
@@ -328,36 +349,57 @@ public class RequestRetryTestFactory implements RequestPolicyFactory{
             We have to return a new Single so that the calculation for time is performed at the correct time, i.e. when
             the Single is actually subscribed to. This mocks an HttpClient because the requests are made only when
             the Single is subscribed to, not when all the infrastructure around it is put in place, and we care about
-            the delay beore the request itself.
+            the delay before the request itself.
              */
             return new Single<HttpResponse>() {
                 @Override
                 protected void subscribeActual(SingleObserver<? super HttpResponse> observer) {
-                    if (OffsetDateTime.now().isAfter(calcUpperBound(factory.time, primaryTryNumber, tryingPrimary)) ||
-                            OffsetDateTime.now().isBefore(calcLowerBound(factory.time, primaryTryNumber, tryingPrimary))) {
-                        throw new IllegalArgumentException("Delay was not within jitter bounds");
+                    try {
+                        if (OffsetDateTime.now().isAfter(calcUpperBound(factory.time, primaryTryNumber, tryingPrimary)) ||
+                                OffsetDateTime.now()
+                                        .isBefore(calcLowerBound(factory.time, primaryTryNumber, tryingPrimary))) {
+                            throw new IllegalArgumentException("Delay was not within jitter bounds");
+                        }
+                        System.out.println("Setting current time");
+                        factory.time = OffsetDateTime.now();
+                        System.out.println("Factory time at end of try " + tryNumber + ": " + factory.time);
+                        System.out.println("Time in onSubscribe: " + OffsetDateTime.now());
+                        /*
+                        We can blocking get because it's not actually an IO call. Everything returned here returns
+                        Single.just(response).
+                        */
+                        HttpResponse unwrappedResponse = response.blockingGet();
+                        observer.onSuccess(unwrappedResponse);
+                    } catch (StorageErrorException | IllegalArgumentException e) {
+                        observer.onError(e);
                     }
-                    System.out.println("Setting current time");
-                    factory.time = OffsetDateTime.now();
-                    System.out.println("Factory time at end of try " + tryNumber + ": " + factory.time);
-                    System.out.println("Time in onSubscribe: " + OffsetDateTime.now());
-                    /*
-                    We can blocking get because it's not actually an IO call. Everything returned here returns
-                    Single.just(response).
-                    */
-                    observer.onSuccess(RETRY_TEST_TEMPORARY_ERROR_RESPONSE.blockingGet());
                 }
             };
         }
 
-        private void testMaxDelayBounds() {
-            if (OffsetDateTime.now().isAfter(this.factory.time.plusSeconds(
-                    (long) Math.ceil((this.factory.options.getMaxRetryDelayInMs() / 1000) + 1)))) {
-                throw new IllegalArgumentException("Max retry delay exceeded");
-            } else if (OffsetDateTime.now().isBefore(this.factory.time.plusSeconds(
-                    (long) Math.ceil((this.factory.options.getMaxRetryDelayInMs() / 1000) - 1)))) {
-                throw new IllegalArgumentException("Retry did not delay long enough");
-            }
+        private Single<HttpResponse> testMaxDelayBounds(Single<HttpResponse> response) {
+            return new Single<HttpResponse>() {
+                @Override
+                protected void subscribeActual(SingleObserver<? super HttpResponse> observer) {
+                    try {
+                        if (OffsetDateTime.now().isAfter(factory.time.plusSeconds(
+                                (long) Math.ceil((factory.options.getMaxRetryDelayInMs() / 1000) + 1)))) {
+                            throw new IllegalArgumentException("Max retry delay exceeded");
+                        } else if (OffsetDateTime.now().isBefore(factory.time.plusSeconds(
+                                (long) Math.ceil((factory.options.getMaxRetryDelayInMs() / 1000) - 1)))) {
+                            throw new IllegalArgumentException("Retry did not delay long enough");
+                        }
+
+                        factory.time = OffsetDateTime.now();
+                        System.out.println("About to try reporting a response: ");
+                        HttpResponse unwrappedResponse = response.blockingGet();
+                        observer.onSuccess(unwrappedResponse);
+                    }
+                    catch (StorageErrorException | IllegalArgumentException e) {
+                        observer.onError(e);
+                    }
+                }
+            };
         }
     }
 

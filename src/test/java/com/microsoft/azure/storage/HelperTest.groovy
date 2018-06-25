@@ -33,7 +33,7 @@ class HelperTest extends APISpec {
 
     static URL retryTestURL = new URL("http://" + RequestRetryTestFactory.RETRY_TEST_PRIMARY_HOST)
 
-    // tryTimeout must be greater than maxRetryDelayInMs.
+    // tryTimeout must be greater than maxRetryDelayInMs. 1 4 5
     static RequestRetryOptions retryTestOptions = new RequestRetryOptions(RetryPolicyType.EXPONENTIAL, 6,
             5, 1000, 4000, RequestRetryTestFactory.RETRY_TEST_SECONDARY_HOST)
 
@@ -179,7 +179,7 @@ class HelperTest extends APISpec {
 
         then:
         response.statusCode() == 200
-        retryTestFactory.tryNumber == 5
+        retryTestFactory.tryNumber == 4
     }
 
     @Unroll
