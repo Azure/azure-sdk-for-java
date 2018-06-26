@@ -123,11 +123,12 @@ class TransferManagerTest extends APISpec {
     def "Upload buffers illegal argument max blocks"() {
         setup:
         List<ByteBuffer> data = new ArrayList<>()
+        // We also have to make sure it's still larger than the max put blob size.
+        int blockSize = (int) ((BlockBlobURL.MAX_PUT_BLOB_BYTES / BlockBlobURL.MAX_BLOCKS) + 10)
         for (int i = 0; i <= BlockBlobURL.MAX_BLOCKS; i++) {
-            // We also have to make sure it's still larger than the max put blob size.
-            data.add(getRandomData((int) (BlockBlobURL.MAX_PUT_BLOB_BYTES / BlockBlobURL.MAX_BLOCKS + 10)))
+            data.add(getRandomData(blockSize))
         }
-        data.add(getRandomData((int) (BlockBlobURL.MAX_PUT_BLOB_BYTES / BlockBlobURL.MAX_BLOCKS + 10))) // Add one more.
+        data.add(getRandomData(blockSize)) // Add one more to exceed the limit.
 
         when:
         TransferManager.uploadByteBuffersToBlockBlob(data, bu,

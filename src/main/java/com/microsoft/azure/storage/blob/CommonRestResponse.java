@@ -96,11 +96,11 @@ public final class CommonRestResponse {
      * @return
      *      The date of the response.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime date() {
         if (uploadBlobResponse != null) {
-            return uploadBlobResponse.headers().dateProperty();
+            return uploadBlobResponse.headers().date();
         }
-        return commitBlockListResponse.headers().dateProperty();
+        return commitBlockListResponse.headers().date();
     }
 
     /**

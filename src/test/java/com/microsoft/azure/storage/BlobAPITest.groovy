@@ -109,7 +109,7 @@ class BlobAPITest extends APISpec {
         0      | 5     | defaultText.substring(0, 5)
         3      | 2     | defaultText.substring(3, 3 + 2)
     }
-    //TODO: offset negative. Count null or less than offset.
+    //TODO: offset negative. Count null or less than offset. offset greater than blob length, count + offset greater than blob length, count negative, count + offset > maxint
 
     @Unroll
     def "Blob download AC"() {
@@ -136,7 +136,8 @@ class BlobAPITest extends APISpec {
     def "Blob download md5"() {
         expect:
         bu.download(new BlobRange(0, 3), null, true).blockingGet()
-                .headers().contentMD5() != null
+                .headers().contentMD5() ==
+                MessageDigest.getInstance("MD5").digest(defaultText.substring(0,3).getBytes())
     }
 
     def "Blob download error"() {

@@ -323,7 +323,7 @@ class APISpec extends Specification {
                 headers.class.getMethod("lastModified").invoke(headers) != null &&
                 headers.class.getMethod("requestId").invoke(headers) != null &&
                 headers.class.getMethod("version").invoke(headers) != null &&
-                headers.class.getMethod("dateProperty").invoke(headers) != null
+                headers.class.getMethod("date").invoke(headers) != null
     }
 
     def validateBlobHeaders(Object headers, String cacheControl, String contentDisposition, String contentEncoding,
