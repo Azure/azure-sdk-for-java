@@ -133,6 +133,19 @@ public class EventHub2018PreviewManagementClientImpl extends AzureServiceClient 
     }
 
     /**
+     * The OperationsInner object to access its operations.
+     */
+    private OperationsInner operations;
+
+    /**
+     * Gets the OperationsInner object to access its operations.
+     * @return the OperationsInner object.
+     */
+    public OperationsInner operations() {
+        return this.operations;
+    }
+
+    /**
      * The ClustersInner object to access its operations.
      */
     private ClustersInner clusters;
@@ -206,6 +219,7 @@ public class EventHub2018PreviewManagementClientImpl extends AzureServiceClient 
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
+        this.operations = new OperationsInner(restClient().retrofit(), this);
         this.clusters = new ClustersInner(restClient().retrofit(), this);
         this.configurations = new ConfigurationsInner(restClient().retrofit(), this);
         this.namespaces = new NamespacesInner(restClient().retrofit(), this);
