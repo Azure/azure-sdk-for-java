@@ -264,7 +264,7 @@ public class RequestRetryTestFactory implements RequestPolicyFactory {
                             trying the secondary any more will also speed up the test.
                              */
                             return testDelayBounds(1, false,
-                                    RETRY_TEST_NOT_FOUND_RESPONSE).flatMap(x -> RETRY_TEST_NOT_FOUND_RESPONSE);
+                                    RETRY_TEST_NOT_FOUND_RESPONSE);
                         case 3:
                             return testDelayBounds(2, true,
                                     RETRY_TEST_TEMPORARY_ERROR_RESPONSE);

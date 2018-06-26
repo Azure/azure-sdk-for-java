@@ -64,7 +64,7 @@ class APISpec extends Specification {
     int defaultDataSize = defaultData.remaining()
 
     // If debugging is enabled, recordings cannot run as there can only be one proxy at a time.
-    static final boolean enableDebugging = true
+    static final boolean enableDebugging = false
 
     static final String containerPrefix = "jtc" // java test container
 

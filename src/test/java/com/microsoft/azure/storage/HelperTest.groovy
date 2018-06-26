@@ -32,10 +32,8 @@ import spock.lang.Unroll
 class HelperTest extends APISpec {
 
     static URL retryTestURL = new URL("http://" + RequestRetryTestFactory.RETRY_TEST_PRIMARY_HOST)
-
-    // tryTimeout must be greater than maxRetryDelayInMs. 1 4 5
     static RequestRetryOptions retryTestOptions = new RequestRetryOptions(RetryPolicyType.EXPONENTIAL, 6,
-            5, 1000, 4000, RequestRetryTestFactory.RETRY_TEST_SECONDARY_HOST)
+            2, 1000, 4000, RequestRetryTestFactory.RETRY_TEST_SECONDARY_HOST)
 
     def "responseError"() {
         when:
