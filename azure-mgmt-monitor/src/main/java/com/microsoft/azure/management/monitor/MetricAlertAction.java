@@ -22,7 +22,7 @@ public class MetricAlertAction {
     private String actionGroupId;
 
     /**
-     * The webhookProperties property.
+     * The properties of a webhook object.
      */
     @JsonProperty(value = "webhookProperties")
     private Map<String, String> webhookProperties;
@@ -48,7 +48,7 @@ public class MetricAlertAction {
     }
 
     /**
-     * Get the webhookProperties value.
+     * Get the properties of a webhook object.
      *
      * @return the webhookProperties value
      */
@@ -57,7 +57,7 @@ public class MetricAlertAction {
     }
 
     /**
-     * Set the webhookProperties value.
+     * Set the properties of a webhook object.
      *
      * @param webhookProperties the webhookProperties value to set
      * @return the MetricAlertAction object itself.

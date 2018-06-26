@@ -12,7 +12,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The MetricCriteria model.
+ * Criterion to filter metrics.
  */
 public class MetricCriteria {
     /**

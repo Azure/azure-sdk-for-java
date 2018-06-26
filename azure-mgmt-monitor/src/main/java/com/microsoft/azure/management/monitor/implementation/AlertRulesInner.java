@@ -10,6 +10,7 @@ package com.microsoft.azure.management.monitor.implementation;
 
 import com.microsoft.azure.arm.collection.InnerSupportsGet;
 import com.microsoft.azure.arm.collection.InnerSupportsDelete;
+import com.microsoft.azure.arm.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
@@ -41,7 +42,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in AlertRules.
  */
-public class AlertRulesInner implements InnerSupportsGet<AlertRuleResourceInner>, InnerSupportsDelete<Void> {
+public class AlertRulesInner implements InnerSupportsGet<AlertRuleResourceInner>, InnerSupportsDelete<Void>, InnerSupportsListing<AlertRuleResourceInner> {
     /** The Retrofit service to perform REST calls. */
     private AlertRulesService service;
     /** The service client containing this operation class. */
@@ -82,6 +83,10 @@ public class AlertRulesInner implements InnerSupportsGet<AlertRuleResourceInner>
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.monitor.AlertRules listByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights/alertrules")
         Observable<Response<ResponseBody>> listByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.monitor.AlertRules list" })
+        @GET("subscriptions/{subscriptionId}/providers/microsoft.insights/alertrules")
+        Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -519,6 +524,85 @@ public class AlertRulesInner implements InnerSupportsGet<AlertRuleResourceInner>
     }
 
     private ServiceResponse<PageImpl1<AlertRuleResourceInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<AlertRuleResourceInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl1<AlertRuleResourceInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * List the alert rules within a subscription.
+     *
+     * @return the PagedList<AlertRuleResourceInner> object if successful.
+     */
+    public PagedList<AlertRuleResourceInner> list() {
+        PageImpl1<AlertRuleResourceInner> page = new PageImpl1<>();
+        page.setItems(listWithServiceResponseAsync().toBlocking().single().body());
+        page.setNextPageLink(null);
+        return new PagedList<AlertRuleResourceInner>(page) {
+            @Override
+            public Page<AlertRuleResourceInner> nextPage(String nextPageLink) {
+                return null;
+            }
+        };
+    }
+
+    /**
+     * List the alert rules within a subscription.
+     *
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<AlertRuleResourceInner>> listAsync(final ServiceCallback<List<AlertRuleResourceInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listWithServiceResponseAsync(), serviceCallback);
+    }
+
+    /**
+     * List the alert rules within a subscription.
+     *
+     * @return the observable to the List&lt;AlertRuleResourceInner&gt; object
+     */
+    public Observable<Page<AlertRuleResourceInner>> listAsync() {
+        return listWithServiceResponseAsync().map(new Func1<ServiceResponse<List<AlertRuleResourceInner>>, Page<AlertRuleResourceInner>>() {
+            @Override
+            public Page<AlertRuleResourceInner> call(ServiceResponse<List<AlertRuleResourceInner>> response) {
+                PageImpl1<AlertRuleResourceInner> page = new PageImpl1<>();
+                page.setItems(response.body());
+                return page;
+            }
+        });
+    }
+
+    /**
+     * List the alert rules within a subscription.
+     *
+     * @return the observable to the List&lt;AlertRuleResourceInner&gt; object
+     */
+    public Observable<ServiceResponse<List<AlertRuleResourceInner>>> listWithServiceResponseAsync() {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-03-01";
+        return service.list(this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<AlertRuleResourceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<AlertRuleResourceInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl1<AlertRuleResourceInner>> result = listDelegate(response);
+                        List<AlertRuleResourceInner> items = null;
+                        if (result.body() != null) {
+                            items = result.body().items();
+                        }
+                        ServiceResponse<List<AlertRuleResourceInner>> clientResponse = new ServiceResponse<List<AlertRuleResourceInner>>(items, result.response());
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl1<AlertRuleResourceInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl1<AlertRuleResourceInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl1<AlertRuleResourceInner>>() { }.getType())
                 .registerError(CloudException.class)
