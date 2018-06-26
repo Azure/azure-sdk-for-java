@@ -202,7 +202,7 @@ class APISpec extends Specification {
     }
 
     static File getRandomFile(long size) {
-        File file = File.createTempFile("testUpload", ".txt");
+        File file = File.createTempFile(UUID.randomUUID().toString(), ".txt");
         file.deleteOnExit();
         FileOutputStream fos = new FileOutputStream(file);
         fos.write(getRandomData(size).array())

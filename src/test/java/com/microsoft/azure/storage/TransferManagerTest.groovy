@@ -470,33 +470,8 @@ class TransferManagerTest extends APISpec {
             }
         }
 
-        /*Iterator<ByteBuffer> received = data.blockingIterable().iterator()
-
-        ByteBuffer buffer = received.next();
-        for (int i = 0; i < file.length(); i++) {
-            int a = fis.read();
-            if (buffer.remaining() == 0) {
-                buffer = received.next();
-            }
-            byte b = buffer.get();
-            if (a != b) {
-                return false
-            }
-        }
-        if (received.hasNext() || buffer.remaining() != 0) {
-            return false
-        }*/
-
         fis.close();
         return true
-    }
-
-    def "Upload file single shot"() {
-
-    }
-
-    def "Upload file parallel"() {
-
     }
 
     def "Upload file illegal arguments null"() {
@@ -530,6 +505,7 @@ class TransferManagerTest extends APISpec {
     @Unroll
     def "Upload file headers"() {
         setup:
+        // We have to use the defaultData here so we can calculate the MD5. 
         File file = File.createTempFile("testUpload", ".txt");
         file.deleteOnExit();
         FileOutputStream fos = new FileOutputStream(file);
