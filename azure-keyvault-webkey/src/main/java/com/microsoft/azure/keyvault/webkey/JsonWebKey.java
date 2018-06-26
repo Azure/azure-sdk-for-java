@@ -804,7 +804,7 @@ public class JsonWebKey {
 			ECParameterSpec spec = key.getParams();
 			EllipticCurve crv = spec.getCurve();
 			
-			List<JsonWebKeyCurveName> curveList = Arrays.asList(JsonWebKeyCurveName.P_256, JsonWebKeyCurveName.P_384, JsonWebKeyCurveName.P_521, JsonWebKeyCurveName.SECP256K1);
+			List<JsonWebKeyCurveName> curveList = Arrays.asList(JsonWebKeyCurveName.P_256, JsonWebKeyCurveName.P_384, JsonWebKeyCurveName.P_521, JsonWebKeyCurveName.P_256K);
 			
 			for (JsonWebKeyCurveName curve : curveList) {
 				ECGenParameterSpec gps = new ECGenParameterSpec(CURVE_TO_SPEC_NAME.get(curve));
@@ -1143,6 +1143,6 @@ public class JsonWebKey {
 			.put(JsonWebKeyCurveName.P_256, "secp256r1")
 			.put(JsonWebKeyCurveName.P_384, "secp384r1")
 			.put(JsonWebKeyCurveName.P_521, "secp521r1")
-			.put(JsonWebKeyCurveName.SECP256K1, "secp256k1")
+			.put(JsonWebKeyCurveName.P_256K, "secp256k1")
 			.build();	
 }

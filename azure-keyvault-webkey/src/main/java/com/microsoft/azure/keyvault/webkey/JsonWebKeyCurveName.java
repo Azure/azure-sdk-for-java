@@ -24,7 +24,7 @@ public final class JsonWebKeyCurveName {
     public static final JsonWebKeyCurveName P_521 = new JsonWebKeyCurveName("P-521");
 
     /** Static value SECP256K1 for JsonWebKeyCurveName. */
-    public static final JsonWebKeyCurveName SECP256K1 = new JsonWebKeyCurveName("SECP256K1");
+    public static final JsonWebKeyCurveName P_256K = new JsonWebKeyCurveName("P-256K");
 
     private String value;
 

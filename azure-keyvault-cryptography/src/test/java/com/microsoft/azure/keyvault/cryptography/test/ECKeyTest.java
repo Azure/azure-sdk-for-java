@@ -92,10 +92,10 @@ public class ECKeyTest {
 			.put(JsonWebKeyCurveName.P_256, DIGEST_256)
 			.put(JsonWebKeyCurveName.P_384, DIGEST_384)
 			.put(JsonWebKeyCurveName.P_521, DIGEST_512)
-			.put(JsonWebKeyCurveName.SECP256K1, DIGEST_256)
+			.put(JsonWebKeyCurveName.P_256K, DIGEST_256)
 			.build();
     	//JsonWebKeyCurveName.SECP256K1)
-    	CURVE_LIST = Arrays.asList(JsonWebKeyCurveName.P_256, JsonWebKeyCurveName.P_384, JsonWebKeyCurveName.P_521, JsonWebKeyCurveName.SECP256K1);
+    	CURVE_LIST = Arrays.asList(JsonWebKeyCurveName.P_256, JsonWebKeyCurveName.P_384, JsonWebKeyCurveName.P_521, JsonWebKeyCurveName.P_256K);
     }
     
     @Test
@@ -233,7 +233,7 @@ public class ECKeyTest {
         final KeyPairGenerator generator = KeyPairGenerator.getInstance("EC");
 
         generator.initialize(gps);
-        EcKey key = new EcKey("akey", JsonWebKeyCurveName.SECP256K1);
+        EcKey key = new EcKey("akey", JsonWebKeyCurveName.P_256K);
     }
     
     @Test
