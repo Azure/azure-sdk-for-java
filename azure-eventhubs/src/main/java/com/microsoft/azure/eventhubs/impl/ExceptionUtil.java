@@ -143,6 +143,19 @@ public final class ExceptionUtil {
         return null;
     }
 
+   static Exception stripOuterException(final Exception exception) {
+        Throwable throwable = exception.getCause();
+        if (throwable instanceof EventHubException) {
+            return (EventHubException) throwable;
+        } else if (throwable instanceof RuntimeException) {
+            return (RuntimeException) throwable;
+        } else if (throwable != null) {
+            return new RuntimeException(throwable);
+        } else {
+            return new RuntimeException(exception);
+        }
+    }
+
     private static void handle(final Exception exception) throws EventHubException {
         if (exception instanceof InterruptedException) {
             // Re-assert the thread's interrupted status
