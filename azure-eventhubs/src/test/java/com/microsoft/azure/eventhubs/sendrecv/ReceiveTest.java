@@ -78,13 +78,13 @@ public class ReceiveTest extends ApiTestBase {
     @Test()
     public void testReceiverOffsetInclusiveFilter() throws EventHubException {
         datetimeReceiver = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromEnqueuedTime(Instant.EPOCH));
-        Iterable<EventData> events = datetimeReceiver.receiveSync(100);
+        final Iterable<EventData> events = datetimeReceiver.receiveSync(100);
 
         Assert.assertTrue(events != null && events.iterator().hasNext());
-        EventData event = events.iterator().next();
+        final EventData event = events.iterator().next();
 
         offsetReceiver = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromOffset(event.getSystemProperties().getOffset(), true));
-        EventData eventReturnedByOffsetReceiver = offsetReceiver.receiveSync(10).iterator().next();
+        final EventData eventReturnedByOffsetReceiver = offsetReceiver.receiveSync(10).iterator().next();
 
         Assert.assertTrue(eventReturnedByOffsetReceiver.getSystemProperties().getOffset().equals(event.getSystemProperties().getOffset()));
         Assert.assertTrue(eventReturnedByOffsetReceiver.getSystemProperties().getSequenceNumber() == event.getSystemProperties().getSequenceNumber());

@@ -9,16 +9,13 @@ import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.blob.BlobProperties;
 import com.microsoft.azure.storage.blob.BlobRequestOptions;
 import com.microsoft.azure.storage.blob.CloudBlockBlob;
-import com.microsoft.azure.storage.blob.LeaseState;
 
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionException;
-
-final class AzureBlobLease extends Lease {
+final class AzureBlobLease extends CompleteLease {
     private final transient CloudBlockBlob blob; // do not serialize
     private final transient BlobRequestOptions options; // do not serialize
     private String offset = null; // null means checkpoint is uninitialized
     private long sequenceNumber = 0;
+    private String token = null;
 
     // not intended to be used; built for GSon
     @SuppressWarnings("unused")
@@ -40,6 +37,7 @@ final class AzureBlobLease extends Lease {
         this.sequenceNumber = source.sequenceNumber;
         this.blob = source.blob;
         this.options = source.options;
+        this.token = source.token;
     }
 
     AzureBlobLease(AzureBlobLease source, CloudBlockBlob blob, BlobRequestOptions options) {
@@ -48,9 +46,10 @@ final class AzureBlobLease extends Lease {
         this.sequenceNumber = source.sequenceNumber;
         this.blob = blob;
         this.options = options;
+        this.token = source.token;
     }
 
-    AzureBlobLease(Lease source, CloudBlockBlob blob, BlobRequestOptions options) {
+    AzureBlobLease(CompleteLease source, CloudBlockBlob blob, BlobRequestOptions options) {
         super(source);
         this.blob = blob;
         this.options = options;
@@ -75,27 +74,17 @@ final class AzureBlobLease extends Lease {
     void setSequenceNumber(long sequenceNumber) {
         this.sequenceNumber = sequenceNumber;
     }
+    
+    String getToken() {
+        return this.token;
+    }
+    
+    void setToken(String token) {
+        this.token = token;
+    }
 
     Checkpoint getCheckpoint() {
         return new Checkpoint(this.getPartitionId(), this.offset, this.sequenceNumber);
-    }
-
-    @Override
-    public CompletableFuture<Boolean> isExpired() {
-        return CompletableFuture.supplyAsync(() ->
-        {
-            try {
-                this.blob.downloadAttributes(null, options, null); // Get the latest metadata
-            } catch (StorageException e) {
-                throw new CompletionException(e);
-            }
-            LeaseState currentState = this.blob.getProperties().getLeaseState();
-            // There are multiple lease states, but for our purposes anything but LEASED means that
-            // the blob is no longer definitely owned by the last known owner and is potentially available.
-            // It could be owned by another host, so just because the state is LEASED does not mean
-            // that operations on the blob will not fail with lease lost.
-            return (currentState != LeaseState.LEASED);
-        });
     }
 
     @Override

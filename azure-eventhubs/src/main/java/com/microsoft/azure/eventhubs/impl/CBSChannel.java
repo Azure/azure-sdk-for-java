@@ -20,8 +20,7 @@ final class CBSChannel {
 
     public CBSChannel(
             final SessionProvider sessionProvider,
-            final AmqpConnection connection,
-            final String linkName) {
+            final AmqpConnection connection) {
 
         this.sessionProvider = sessionProvider;
         this.connectionEventDispatcher = connection;

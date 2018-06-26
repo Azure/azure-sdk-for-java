@@ -5,6 +5,7 @@
 
 package com.microsoft.azure.eventprocessorhost;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 /***
@@ -55,8 +56,8 @@ public interface ICheckpointManager {
     public CompletableFuture<Checkpoint> getCheckpoint(String partitionId);
 
     /***
-     * If a checkpoint HOLDER for the given partition exists, return the checkpoint if there is one,
-     * or null if it has not been initialized. If the HOLDER doesn't exist, create it and return null.
+	 * Creates the checkpoint HOLDERs for the given partitions. Does nothing for any checkpoint HOLDERs
+	 * that already exist.
      *
      * The semantics of this are complicated because it is possible to use the same store for both
      * leases and checkpoints (the Azure Storage implementation does so) and it is required to
@@ -65,10 +66,10 @@ public interface ICheckpointManager {
      * distinguish between creating the structure(s) that will hold a checkpoint and actually creating
      * a checkpoint (storing an offset/sequence number pair in the structure).
      *
-     * @param partitionId  Id of partition to create the checkpoint HOLDER for.
-     * @return CompletableFuture {@literal ->} the checkpoint for the given partition, if one exists, or null. Completes exceptionally on error.
+     * @param partitionIds  List of partitions to create checkpoint HOLDERs for.
+     * @return CompletableFuture {@literal ->} null on success, completes exceptionally on error.
      */
-    public CompletableFuture<Checkpoint> createCheckpointIfNotExists(String partitionId);
+    public CompletableFuture<Void> createAllCheckpointsIfNotExists(List<String> partitionIds);
 
     /***
      * Update the checkpoint in the store with the offset/sequenceNumber in the provided checkpoint.
@@ -82,7 +83,7 @@ public interface ICheckpointManager {
      * @param checkpoint  offset/sequenceNumber and partition id to update the store with.
      * @return CompletableFuture {@literal ->} null on success. Completes exceptionally on error.
      */
-    public CompletableFuture<Void> updateCheckpoint(Lease lease, Checkpoint checkpoint);
+    public CompletableFuture<Void> updateCheckpoint(CompleteLease lease, Checkpoint checkpoint);
 
     /***
      * Delete the stored checkpoint data for the given partition. If there is no stored checkpoint for the

@@ -4,10 +4,17 @@
  */
 package com.microsoft.azure.eventhubs.impl;
 
-import com.microsoft.azure.eventhubs.*;
+
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
-import org.apache.qpid.proton.engine.*;
+import org.apache.qpid.proton.engine.BaseHandler;
+import org.apache.qpid.proton.engine.Connection;
+import org.apache.qpid.proton.engine.Event;
+import org.apache.qpid.proton.engine.EndpointState;
+import org.apache.qpid.proton.engine.Handler;
+import org.apache.qpid.proton.engine.HandlerException;
+import org.apache.qpid.proton.engine.Link;
 import org.apache.qpid.proton.reactor.Reactor;
+import org.apache.qpid.proton.engine.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,6 +30,13 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+
+import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
+import com.microsoft.azure.eventhubs.CommunicationException;
+import com.microsoft.azure.eventhubs.EventHubException;
+import com.microsoft.azure.eventhubs.OperationCancelledException;
+import com.microsoft.azure.eventhubs.RetryPolicy;
+import com.microsoft.azure.eventhubs.TimeoutException;
 
 /**
  * Abstracts all amqp related details and exposes AmqpConnection object
@@ -115,12 +129,14 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
                 messagingFactory.getOperationTimeout());
 
         // if scheduling messagingfactory openTimer fails - notify user and stop
-        messagingFactory.openTimer.whenCompleteAsync(
+        messagingFactory.openTimer.handleAsync(
                 (unUsed, exception) -> {
                     if (exception != null && !(exception instanceof CancellationException)) {
                         messagingFactory.open.completeExceptionally(exception);
                         messagingFactory.getReactor().stop();
                     }
+
+                    return null;
                 }, messagingFactory.executor);
 
         return messagingFactory.open;
@@ -173,7 +189,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
     public CBSChannel getCBSChannel() {
         synchronized (this.cbsChannelCreateLock) {
             if (this.cbsChannel == null) {
-                this.cbsChannel = new CBSChannel(this, this, "cbs-link");
+                this.cbsChannel = new CBSChannel(this, this);
             }
         }
 
@@ -183,7 +199,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
     public ManagementChannel getManagementChannel() {
         synchronized (this.mgmtChannelCreateLock) {
             if (this.mgmtChannel == null) {
-                this.mgmtChannel = new ManagementChannel(this, this, "mgmt-link");
+                this.mgmtChannel = new ManagementChannel(this, this);
             }
         }
 
@@ -293,11 +309,16 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
                 this.onReactorError(cause);
             }
 
+            // when the instance of the reactor itself faults - Connection and Links will not be cleaned up even after the
+            // below .close() calls (local closes).
+            // But, we still need to change the states of these to Closed - so that subsequent retries - will
+            // treat the links and connection as closed and re-establish them and continue running on new Reactor instance.
             if (currentConnection.getLocalState() != EndpointState.CLOSED && currentConnection.getRemoteState() != EndpointState.CLOSED) {
                 currentConnection.close();
             }
 
-            for (Link link : this.registeredLinks) {
+            final List<Link> registeredLinksCopy = new LinkedList<>(this.registeredLinks);
+            for (final Link link : registeredLinksCopy) {
                 if (link.getLocalState() != EndpointState.CLOSED && link.getRemoteState() != EndpointState.CLOSED) {
                     link.close();
                 }
@@ -486,7 +507,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
                 if (TRACE_LOGGER.isWarnEnabled()) {
                     TRACE_LOGGER.warn(String.format(Locale.US, "messagingFactory[%s], hostName[%s], error[%s]",
                             getClientId(), getHostName(), ExceptionUtil.toStackTraceString(handlerException,
-                                    "UnHandled exception while processing events in reactor:")));
+                                    "Unhandled exception while processing events in reactor, report this error.")));
                 }
 
                 final String message = !StringUtil.isNullOrEmpty(cause.getMessage()) ?
@@ -495,14 +516,17 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
                                 handlerException.getMessage() :
                                 "Reactor encountered unrecoverable error";
 
-                EventHubException sbException = new EventHubException(
-                        true,
-                        String.format(Locale.US, "%s, %s", message, ExceptionUtil.getTrackingIDAndTimeToLog()),
-                        cause);
+                final EventHubException sbException;
 
                 if (cause instanceof UnresolvedAddressException) {
                     sbException = new CommunicationException(
-                            String.format(Locale.US, "%s. This is usually caused by incorrect hostname or network configuration. Please check to see if namespace information is correct. %s", message, ExceptionUtil.getTrackingIDAndTimeToLog()),
+                            String.format(Locale.US, "%s. This is usually caused by incorrect hostname or network configuration. Check correctness of namespace information. %s",
+                                    message, ExceptionUtil.getTrackingIDAndTimeToLog()),
+                            cause);
+                } else {
+                    sbException = new EventHubException(
+                            true,
+                            String.format(Locale.US, "%s, %s", message, ExceptionUtil.getTrackingIDAndTimeToLog()),
                             cause);
                 }
 

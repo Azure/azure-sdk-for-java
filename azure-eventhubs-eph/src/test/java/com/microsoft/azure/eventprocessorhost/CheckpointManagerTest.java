@@ -8,15 +8,13 @@ package com.microsoft.azure.eventprocessorhost;
 import com.microsoft.azure.eventhubs.EventHubClient;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.UUID;
 
 import static org.junit.Assert.*;
 
-public class CheckpointManagerTest {
-    private String azureStorageConnectionString = TestUtilities.getStorageConnectionString();
-
+public class CheckpointManagerTest extends TestBase {
     private ILeaseManager[] leaseManagers;
     private ICheckpointManager[] checkpointManagers;
     private EventProcessorHost[] hosts;
@@ -33,14 +31,12 @@ public class CheckpointManagerTest {
 
     @Test
     public void singleManagerAzureCheckpointSmokeTest() throws Exception {
-        RealEventHubUtilities rUtils = new RealEventHubUtilities();
-        singleManagerCheckpointSmokeTest(true, rUtils.getPartitionIdsForTest().size());
+        singleManagerCheckpointSmokeTest(true, 8);
     }
 
     @Test
     public void twoManagerAzureCheckpointSmokeTest() throws Exception {
-        RealEventHubUtilities rUtils = new RealEventHubUtilities();
-        twoManagerCheckpointSmokeTest(true, rUtils.getPartitionIdsForTest().size());
+        twoManagerCheckpointSmokeTest(true, 8);
     }
 
     public void singleManagerCheckpointSmokeTest(boolean useAzureStorage, int partitionCount) throws Exception {
@@ -49,29 +45,36 @@ public class CheckpointManagerTest {
         this.hosts = new EventProcessorHost[1];
         setupOneManager(useAzureStorage, 0, "0", generateContainerName("0"));
 
-        TestUtilities.log("singleManagerCheckpointSmokeTest");
-        TestUtilities.log("USING " + (useAzureStorage ? "AzureStorageCheckpointLeaseManager" : "InMemoryCheckpointManager"));
-
-        TestUtilities.log("Check whether checkpoint store exists before create");
+        TestBase.logInfo("Check whether checkpoint store exists before create");
         boolean boolret = this.checkpointManagers[0].checkpointStoreExists().get();
         assertFalse("checkpoint store should not exist yet", boolret);
 
-        TestUtilities.log("Create checkpoint store");
-        this.checkpointManagers[0].createCheckpointStoreIfNotExists().get();
+        TestBase.logInfo("Create checkpoint store");
+        if (useAzureStorage) {
+        	// Storage implementation optimizes checkpoint store creation to a no-op. Have to call lease manager
+        	// to actually create.
+        	this.leaseManagers[0].createLeaseStoreIfNotExists().get();
+        } else {
+	        this.checkpointManagers[0].createCheckpointStoreIfNotExists().get();
+        }
 
-        TestUtilities.log("Check whether checkpoint store exists after create");
+        TestBase.logInfo("Check whether checkpoint store exists after create");
         boolret = this.checkpointManagers[0].checkpointStoreExists().get();
         assertTrue("checkpoint store should exist but does not", boolret);
 
-        TestUtilities.log("Create checkpoint holders for all partitions");
-        Checkpoint[] checkpoints = new Checkpoint[partitionCount];
+        ArrayList<String> partitionIds = new ArrayList<String>();
         for (int i = 0; i < partitionCount; i++) {
-            Checkpoint createdCheckpoint = this.checkpointManagers[0].createCheckpointIfNotExists(String.valueOf(i)).get();
-            checkpoints[i] = createdCheckpoint;
-            assertNull("unexpected already existing checkpoint for " + i, createdCheckpoint);
+        	partitionIds.add(String.valueOf(i));
+        }
+        TestBase.logInfo("Create checkpoint holders for all partitions");
+        if (useAzureStorage) {
+        	// Storage implementation optimizes checkpoint creation to a no-op. Have to create the leases instead.
+        	this.leaseManagers[0].createAllLeasesIfNotExists(partitionIds);
+        } else {
+        	this.checkpointManagers[0].createAllCheckpointsIfNotExists(partitionIds);
         }
 
-        TestUtilities.log("Trying to get checkpoints for all partitions");
+        TestBase.logInfo("Trying to get checkpoints for all partitions");
         for (int i = 0; i < partitionCount; i++) {
             Checkpoint blah = this.checkpointManagers[0].getCheckpoint(String.valueOf(i)).get();
             assertNull("unexpectedly successful retrieve checkpoint for " + i, blah);
@@ -80,18 +83,19 @@ public class CheckpointManagerTest {
         // AzureStorageCheckpointLeaseManager tries to pretend that checkpoints and leases are separate, but they really aren't.
         // Because the checkpoint data is stored in the lease, updating the checkpoint means updating the lease, and it is
         // necessary to hold the lease in order to update it.
-        HashMap<String, Lease> leases = new HashMap<String, Lease>();
+        HashMap<String, CompleteLease> leases = new HashMap<String, CompleteLease>();
         if (useAzureStorage) {
-            List<Lease> leaseList = this.leaseManagers[0].getAllLeases().get();
-            assertNotNull("failed to retrieve leases", leaseList);
-            for (Lease l : leaseList) {
+        	for (int i = 0; i < partitionCount; i++) {
+        		CompleteLease l = this.leaseManagers[0].getLease(partitionIds.get(i)).get();
+        		assertTrue("null lease for " + partitionIds.get(i), l != null);
                 leases.put(l.getPartitionId(), l);
                 boolret = this.leaseManagers[0].acquireLease(l).get();
                 assertTrue("failed to acquire lease for " + l.getPartitionId(), boolret);
             }
         }
 
-        TestUtilities.log("Creating checkpoints for all partitions");
+        Checkpoint[] checkpoints = new Checkpoint[partitionCount];
+        TestBase.logInfo("Creating checkpoints for all partitions");
         for (int i = 0; i < partitionCount; i++) {
             // Arbitrary values, just checking that they are persisted
             checkpoints[i] = new Checkpoint(String.valueOf(i));
@@ -100,7 +104,7 @@ public class CheckpointManagerTest {
             this.checkpointManagers[0].updateCheckpoint(leases.get(String.valueOf(i)), checkpoints[i]).get();
         }
 
-        TestUtilities.log("Getting checkpoints for all partitions and verifying");
+        TestBase.logInfo("Getting checkpoints for all partitions and verifying");
         for (int i = 0; i < partitionCount; i++) {
             Checkpoint blah = this.checkpointManagers[0].getCheckpoint(String.valueOf(i)).get();
             assertNotNull("failed to retrieve checkpoint for " + i, blah);
@@ -110,17 +114,13 @@ public class CheckpointManagerTest {
 
         // Have to release the leases before we can delete the store.
         if (useAzureStorage) {
-            List<Lease> leaseList = this.leaseManagers[0].getAllLeases().get();
-            assertNotNull("failed to retrieve leases", leaseList);
-            for (Lease l : leaseList) {
+            for (CompleteLease l : leases.values()) {
                 this.leaseManagers[0].releaseLease(l).get();
             }
         }
 
-        TestUtilities.log("Cleaning up checkpoint store");
+        TestBase.logInfo("Cleaning up checkpoint store");
         this.checkpointManagers[0].deleteCheckpointStore().get();
-
-        TestUtilities.log("singleManagerCheckpointSmokeTest DONE");
     }
 
     public void twoManagerCheckpointSmokeTest(boolean useAzureStorage, int partitionCount) throws Exception {
@@ -131,29 +131,36 @@ public class CheckpointManagerTest {
         setupOneManager(useAzureStorage, 0, "twoCheckpoint", containerName);
         setupOneManager(useAzureStorage, 1, "twoCheckpoint", containerName);
 
-        TestUtilities.log("twoManagerCheckpointSmokeTest");
-        TestUtilities.log("USING " + (useAzureStorage ? "AzureStorageCheckpointLeaseManager" : "InMemoryLeaseManager"));
-
-        TestUtilities.log("Check whether checkpoint store exists before create");
+        TestBase.logInfo("Check whether checkpoint store exists before create");
         boolean boolret = this.checkpointManagers[0].checkpointStoreExists().get();
         assertFalse("checkpoint store should not exist yet", boolret);
 
-        TestUtilities.log("Second manager create checkpoint store");
-        this.checkpointManagers[1].createCheckpointStoreIfNotExists().get();
+        TestBase.logInfo("Second manager create checkpoint store");
+        if (useAzureStorage) {
+        	// Storage implementation optimizes checkpoint store creation to a no-op. Have to call lease manager
+        	// to actually create.
+        	this.leaseManagers[1].createLeaseStoreIfNotExists().get();
+        } else {
+	        this.checkpointManagers[1].createCheckpointStoreIfNotExists().get();
+        }
 
-        TestUtilities.log("First mananger check whether checkpoint store exists after create");
+        TestBase.logInfo("First mananger check whether checkpoint store exists after create");
         boolret = this.checkpointManagers[0].checkpointStoreExists().get();
         assertTrue("checkpoint store should exist but does not", boolret);
 
-        TestUtilities.log("Alternately create checkpoint holders for all partitions");
-        Checkpoint[] checkpoints = new Checkpoint[partitionCount];
+        ArrayList<String> partitionIds = new ArrayList<String>();
         for (int i = 0; i < partitionCount; i++) {
-            Checkpoint createdCheckpoint = this.checkpointManagers[i % 2].createCheckpointIfNotExists(String.valueOf(i)).get();
-            checkpoints[i] = createdCheckpoint;
-            assertNull("unexpected already existing checkpoint for " + i, createdCheckpoint);
+        	partitionIds.add(String.valueOf(i));
+        }
+        TestBase.logInfo("Create checkpoint holders for all partitions");
+        if (useAzureStorage) {
+        	// Storage implementation optimizes checkpoint creation to a no-op. Have to create the leases instead.
+        	this.leaseManagers[0].createAllLeasesIfNotExists(partitionIds);
+        } else {
+        	this.checkpointManagers[0].createAllCheckpointsIfNotExists(partitionIds);
         }
 
-        TestUtilities.log("Try to get each others checkpoints for all partitions");
+        TestBase.logInfo("Try to get each others checkpoints for all partitions");
         for (int i = 0; i < partitionCount; i++) {
             Checkpoint blah = this.checkpointManagers[(i + 1) % 2].getCheckpoint(String.valueOf(i)).get();
             assertNull("unexpected successful retrieve checkpoint for " + i, blah);
@@ -162,18 +169,18 @@ public class CheckpointManagerTest {
         // AzureStorageCheckpointLeaseManager tries to pretend that checkpoints and leases are separate, but they really aren't.
         // Because the checkpoint data is stored in the lease, updating the checkpoint means updating the lease, and it is
         // necessary to hold the lease in order to update it.
-        HashMap<String, Lease> leases = new HashMap<String, Lease>();
+        HashMap<String, CompleteLease> leases = new HashMap<String, CompleteLease>();
         if (useAzureStorage) {
-            List<Lease> leaseList = this.leaseManagers[0].getAllLeases().get();
-            assertNotNull("failed to retrieve leases", leaseList);
-            for (Lease l : leaseList) {
+        	for (int i = 0; i < partitionCount; i++) {
+        		CompleteLease l = this.leaseManagers[1].getLease(partitionIds.get(i)).get();
                 leases.put(l.getPartitionId(), l);
-                boolret = this.leaseManagers[0].acquireLease(l).get();
+                boolret = this.leaseManagers[1].acquireLease(l).get();
                 assertTrue("failed to acquire lease for " + l.getPartitionId(), boolret);
             }
         }
 
-        TestUtilities.log("Second manager update checkpoints for all partitions");
+        Checkpoint[] checkpoints = new Checkpoint[partitionCount];
+        TestBase.logInfo("Second manager update checkpoints for all partitions");
         for (int i = 0; i < partitionCount; i++) {
             // Arbitrary values, just checking that they are persisted
             checkpoints[i] = new Checkpoint(String.valueOf(i));
@@ -182,7 +189,7 @@ public class CheckpointManagerTest {
             this.checkpointManagers[1].updateCheckpoint(leases.get(String.valueOf(i)), checkpoints[i]).get();
         }
 
-        TestUtilities.log("First manager get and verify checkpoints for all partitions");
+        TestBase.logInfo("First manager get and verify checkpoints for all partitions");
         for (int i = 0; i < partitionCount; i++) {
             Checkpoint blah = this.checkpointManagers[0].getCheckpoint(String.valueOf(i)).get();
             assertNotNull("failed to retrieve checkpoint for " + i, blah);
@@ -192,18 +199,14 @@ public class CheckpointManagerTest {
 
         // Have to release the leases before we can delete the store.
         if (useAzureStorage) {
-            List<Lease> leaseList = this.leaseManagers[0].getAllLeases().get();
-            assertNotNull("failed to retrieve leases", leaseList);
-            for (Lease l : leaseList) {
+            for (CompleteLease l : leases.values()) {
                 assertNotNull("failed to retrieve lease", l);
-                this.leaseManagers[0].releaseLease(l).get();
+                this.leaseManagers[1].releaseLease(l).get();
             }
         }
 
-        TestUtilities.log("Clean up checkpoint store");
+        TestBase.logInfo("Clean up checkpoint store");
         this.checkpointManagers[0].deleteCheckpointStore().get();
-
-        TestUtilities.log("twoManagerCheckpointSmokeTest DONE");
     }
 
     private String generateContainerName(String infix) {
@@ -225,15 +228,16 @@ public class CheckpointManagerTest {
             leaseMgr = new InMemoryLeaseManager();
             checkpointMgr = new InMemoryCheckpointManager();
         } else {
-            TestUtilities.log("Container name: " + containerName);
-            AzureStorageCheckpointLeaseManager azMgr = new AzureStorageCheckpointLeaseManager(this.azureStorageConnectionString, containerName);
+        	TestBase.logInfo("Container name: " + containerName);
+            String azureStorageConnectionString = TestUtilities.getStorageConnectionString();
+            AzureStorageCheckpointLeaseManager azMgr = new AzureStorageCheckpointLeaseManager(azureStorageConnectionString, containerName);
             leaseMgr = azMgr;
             checkpointMgr = azMgr;
         }
 
         // Host name needs to be unique per host so use index. Event hub should be the same for all hosts in a test, so use the supplied suffix.
-        EventProcessorHost host = new EventProcessorHost("dummyHost" + String.valueOf(index), "NOTREAL" + suffix,
-                EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, TestUtilities.syntacticallyCorrectDummyConnectionString + suffix, checkpointMgr, leaseMgr);
+        EventProcessorHost host = new EventProcessorHost("dummyHost" + String.valueOf(index), RealEventHubUtilities.syntacticallyCorrectDummyEventHubPath + suffix,
+                EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, RealEventHubUtilities.syntacticallyCorrectDummyConnectionString + suffix, checkpointMgr, leaseMgr);
 
 
         try {
@@ -244,7 +248,7 @@ public class CheckpointManagerTest {
                 ((AzureStorageCheckpointLeaseManager) checkpointMgr).initialize(host.getHostContext());
             }
         } catch (Exception e) {
-            TestUtilities.log("Manager initializion failed");
+            TestBase.logError("Manager initializion failed");
             throw e;
         }
 

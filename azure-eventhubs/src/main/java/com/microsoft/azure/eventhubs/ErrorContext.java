@@ -22,6 +22,8 @@ public abstract class ErrorContext implements Serializable {
 
     @Override
     public String toString() {
-        return StringUtil.isNullOrEmpty(this.namespaceName) ? null : String.format(Locale.US, "NS: %s", this.namespaceName);
+        return StringUtil.isNullOrEmpty(this.namespaceName)
+                ? null
+                : String.format(Locale.US, "NS: %s", this.namespaceName);
     }
 }

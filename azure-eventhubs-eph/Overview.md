@@ -230,6 +230,32 @@ event processor factory can implement any pattern, such as creating only one IEv
 by every partition. In that example, onEvents will not receive multiple calls for a given partition at the same time, but it can be called
 on multiple threads for different partitions.
 
+## Checkpointing, Partition Ownership, and Reprocessing Messages
+
+In a system using Event Processor Host, there are one or more hosts processing events from a particular event hub+consumer group combination, and
+ownership of the partitions of the event hub are split up between the hosts. When a host takes ownership of a partition, it starts a receiver on
+that partition, and when doing so it must specify the position in the stream of events at which the receiver will begin consuming. If there is a checkpoint
+for that event hub+consumer group+partition combination available via the checkpoint manager (by default, in Azure Storage), the receiver will begin
+consuming at the position indicated by the checkpoint.
+
+Any time a host takes ownership of a partition, reprocessing of events may occur. Exactly how many messages may be reprocessed depends on how
+often checkpoints are written. Writing a checkpoint with the default checkpoint manager is expensive, since it makes at least one HTTPS call to Azure Storage.
+The obvious strategy to minimize reprocessing of events is to checkpoint after processing each event, but we advise against this due to the performance hit.
+In a low-throughput scenario it may be OK, but as the event rate goes up, checkpointing too often could prevent a processor from being able to keep up with
+the flow. Also, event checkpointing after each event cannot completely prevent event reprocessing, since there will always be some time between finishing
+processing and writing the checkpoint, during which the processor could fail. Customer applications must be able to detect and handle some amount of
+reprocessing, and the customer needs to study their particular scenario and application to balance the cost of handling the reprocessing against the
+performance hit of checkpointing more frequently.
+
+What can cause ownership of a partition to change:
+1. Bringing a host online: it will steal ownership of partitions from already-running hosts until the distribution of partitions among hosts is as even as possible.
+2. A host crashing/losing power/losing network connection/going offline for any reason: the leases on the partitions that the downed host owned will expire and the
+remaining hosts will find the expired leases and take ownership. This may result in unbalanced distribution to start with which will cause additional ownership changes
+until the distribution is balanced.
+3. Azure Storage latency or failures which result in a partition lease expiring because it cannot be renewed in time: other hosts (or even the same host) will find the
+expired lease and take ownership. Again, this can result in unbalanced distribution and additional ownership changes. This scenario can occur even if there is only one host.
+4. Certain event hub client errors can cause the processor for a partition to shut down, with the same effects as case 3. This scenario can also occur even with only one host.
+
 ## Running Tests
 
 Event Processor Host comes with a suite of JUnit-based tests. To run these tests, you will need an event hub and an Azure Storage account.

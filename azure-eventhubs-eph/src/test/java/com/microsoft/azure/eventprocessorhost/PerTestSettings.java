@@ -6,11 +6,7 @@ import java.util.concurrent.ScheduledExecutorService;
 public class PerTestSettings {
     // In-out properties: may be set before test setup and then changed by setup.
     final EPHConstructorArgs inoutEPHConstructorArgs;
-    EventProcessorOptions inOptions; // can be null
-    PrefabEventProcessor.CheckpointChoices inDoCheckpoint;
-    boolean inEventHubDoesNotExist; // Prevents test code from doing certain checks that would fail on nonexistence before reaching product code.
-    boolean inTelltaleOnTimeout; // Generates an empty telltale string, which causes PrefabEventProcessor to trigger telltale on timeout.
-    boolean inHasSenders;
+
     // Output properties: any value set before test setup is ignored. The real value is
     // established during test setup.
     RealEventHubUtilities outUtils;
@@ -19,21 +15,30 @@ public class PerTestSettings {
     PrefabGeneralErrorHandler outGeneralErrorHandler;
     PrefabProcessorFactory outProcessorFactory;
     EventProcessorHost outHost;
-    // Properties which are inputs to test setup. Constructor sets up defaults, except for testName.
-    private String inTestName;
-    PerTestSettings(String testName) {
-        this.inTestName = testName;
+    
+    // Properties which are inputs to test setup. Constructor sets up defaults, except for hostName.
+    private String inDefaultHostName;
+    EventProcessorOptions inOptions; // can be null
+    PrefabEventProcessor.CheckpointChoices inDoCheckpoint;
+    boolean inEventHubDoesNotExist; // Prevents test code from doing certain checks that would fail on nonexistence before reaching product code.
+    boolean inSkipIfNoEventHubConnectionString; // Requires valid connection string even though event hub may not exist.
+    boolean inTelltaleOnTimeout; // Generates an empty telltale string, which causes PrefabEventProcessor to trigger telltale on timeout.
+    boolean inHasSenders;
+    
+    PerTestSettings(String defaultHostName) {
+        this.inDefaultHostName = defaultHostName;
         this.inOptions = EventProcessorOptions.getDefaultOptions();
         this.inDoCheckpoint = PrefabEventProcessor.CheckpointChoices.CKP_NONE;
         this.inEventHubDoesNotExist = false;
+        this.inSkipIfNoEventHubConnectionString = false;
         this.inTelltaleOnTimeout = false;
         this.inHasSenders = true;
 
         this.inoutEPHConstructorArgs = new EPHConstructorArgs();
     }
 
-    String getTestName() {
-        return this.inTestName;
+    String getDefaultHostName() {
+        return this.inDefaultHostName;
     }
 
     class EPHConstructorArgs {
@@ -136,6 +141,10 @@ public class PerTestSettings {
         void setStorageConnection(String storageConnection) {
             this.storageConnection = storageConnection;
             this.flags |= STORAGE_CONNECTION_OVERRIDE;
+        }
+        
+        void dummyStorageConnection() {
+        	setStorageConnection("DefaultEndpointsProtocol=https;AccountName=doesnotexist;AccountKey=dGhpcyBpcyBub3QgYSB2YWxpZCBrZXkgYnV0IGl0IGRvZXMgaGF2ZSA2MCBjaGFyYWN0ZXJzLjEyMzQ1Njc4OTAK;EndpointSuffix=core.windows.net");
         }
 
         void setDefaultStorageContainerName(String defaultStorageContainerName) {

@@ -3,7 +3,17 @@ package com.microsoft.azure.eventprocessorhost;
 import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
 import com.microsoft.azure.eventhubs.EventHubClient;
 import com.microsoft.azure.eventhubs.EventHubException;
+
+import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Assume;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Rule;
+import org.junit.rules.TestName;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -17,24 +27,83 @@ public class TestBase {
     final static int SKIP_COUNT_CHECK = -3; // expectedEvents could be anything, don't check it at all
     final static int NO_CHECKS = -2; // do no checks at all, used for tests which are expected fail in startup
     final static int ANY_NONZERO_COUNT = -1; // if expectedEvents is -1, just check for > 0
+    
+    static boolean logInfo = false;
+    static boolean logConsole = false;
+    static final Logger TRACE_LOGGER = LoggerFactory.getLogger("servicebus.test-eph.trace");
+    
+    @Rule
+    public final TestName name = new TestName();    
 
+    @BeforeClass
+    public static void allTestStart() {
+    	String env = System.getenv("VERBOSELOG");
+    	if (env != null) {
+    		TestBase.logInfo = true;
+    		if (env.compareTo("CONSOLE") == 0) {
+    			TestBase.logConsole = true;
+    		}
+    	}
+    }
+    
     @AfterClass
     public static void allTestFinish() {
     }
+    
+    static void logError(String message) {
+    	if (TestBase.logConsole) {
+    		System.err.println("TEST ERROR: " + message);
+    	} else {
+    		TestBase.TRACE_LOGGER.error(message);
+    	}
+    }
+    
+    static void logInfo(String message) {
+    	if (TestBase.logInfo) {
+	    	if (TestBase.logConsole) {
+	    		System.err.println("TEST INFO: " + message);
+	    	} else {
+	    		TestBase.TRACE_LOGGER.info(message);
+	    	}
+    	}
+    }
+    
+    void skipIfAutomated() {
+    	Assume.assumeTrue(System.getenv("VERBOSELOG") != null);
+    }
+    
+    @Before
+    public void logCaseStart() {
+    	String usemsg = "CASE START: " + this.name.getMethodName();
+    	if (TestBase.logConsole) {
+    		System.err.println(usemsg);
+    	} else {
+    		TestBase.TRACE_LOGGER.info(usemsg);
+    	}
+    }
+
+    @After
+    public void logCaseEnd() {
+    	String usemsg = "CASE END: " + this.name.getMethodName();
+    	if (TestBase.logConsole) {
+    		System.err.println(usemsg);
+    	} else {
+    		TestBase.TRACE_LOGGER.info(usemsg);
+    	}
+    }
 
     PerTestSettings testSetup(PerTestSettings settings) throws Exception {
-        TestUtilities.log(settings.getTestName() + " starting\n");
-
         String effectiveHostName = settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.HOST_OVERRIDE) ?
-                settings.inoutEPHConstructorArgs.getHostName() : settings.getTestName() + "-1";
+                settings.inoutEPHConstructorArgs.getHostName() : settings.getDefaultHostName() + "-1";
 
         settings.outUtils = new RealEventHubUtilities();
+        boolean skipIfNoEventHubConnectionString = !settings.inEventHubDoesNotExist || settings.inSkipIfNoEventHubConnectionString;
         if (settings.inHasSenders) {
-            settings.outPartitionIds = settings.outUtils.setup(settings.inEventHubDoesNotExist ? 8 : RealEventHubUtilities.QUERY_ENTITY_FOR_PARTITIONS);
+            settings.outPartitionIds = settings.outUtils.setup(skipIfNoEventHubConnectionString, settings.inEventHubDoesNotExist ? 8 : RealEventHubUtilities.QUERY_ENTITY_FOR_PARTITIONS);
         } else {
-            settings.outPartitionIds = settings.outUtils.setupWithoutSenders(settings.inEventHubDoesNotExist ? 8 : RealEventHubUtilities.QUERY_ENTITY_FOR_PARTITIONS);
+            settings.outPartitionIds = settings.outUtils.setupWithoutSenders(skipIfNoEventHubConnectionString, settings.inEventHubDoesNotExist ? 8 : RealEventHubUtilities.QUERY_ENTITY_FOR_PARTITIONS);
         }
-        ConnectionStringBuilder environmentCSB = settings.outUtils.getConnectionString();
+        ConnectionStringBuilder environmentCSB = settings.outUtils.getConnectionString(skipIfNoEventHubConnectionString);
 
         String effectiveEntityPath = settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.EH_PATH_OVERRIDE) ?
                 settings.inoutEPHConstructorArgs.getEHPath() : environmentCSB.getEventHubName();
@@ -67,7 +136,7 @@ public class TestBase {
         if (settings.inTelltaleOnTimeout) {
             settings.outTelltale = "";
         } else {
-            settings.outTelltale = settings.getTestName() + "-telltale-" + EventProcessorHost.safeCreateUUID();
+            settings.outTelltale = settings.getDefaultHostName() + "-telltale-" + EventProcessorHost.safeCreateUUID();
         }
         settings.outGeneralErrorHandler = new PrefabGeneralErrorHandler();
         settings.outProcessorFactory = new PrefabProcessorFactory(settings.outTelltale, settings.inDoCheckpoint, false, false);
@@ -86,7 +155,7 @@ public class TestBase {
             String effectiveStorageConnectionString = settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.STORAGE_CONNECTION_OVERRIDE) ?
                     settings.inoutEPHConstructorArgs.getStorageConnection() : TestUtilities.getStorageConnectionString();
 
-            String effectiveStorageContainerName = settings.getTestName().toLowerCase() + "-" + EventProcessorHost.safeCreateUUID();
+            String effectiveStorageContainerName = settings.getDefaultHostName().toLowerCase() + "-" + EventProcessorHost.safeCreateUUID();
             if (settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.STORAGE_CONTAINER_OVERRIDE)) {
                 effectiveStorageContainerName = settings.inoutEPHConstructorArgs.getStorageContainerName();
                 if (effectiveStorageContainerName != null) {
@@ -103,7 +172,9 @@ public class TestBase {
                     effectiveStorageConnectionString, effectiveStorageContainerName, effectiveBlobPrefix, effectiveExecutor);
         }
 
-        settings.outHost.registerEventProcessorFactory(settings.outProcessorFactory, settings.inOptions).get();
+        if (!settings.inEventHubDoesNotExist) {
+        	settings.outHost.registerEventProcessorFactory(settings.outProcessorFactory, settings.inOptions).get();
+        }
 
         return settings;
     }
@@ -111,7 +182,7 @@ public class TestBase {
     void waitForTelltale(PerTestSettings settings) throws InterruptedException {
         for (int i = 0; i < 100; i++) {
             if (settings.outProcessorFactory.getAnyTelltaleFound()) {
-                TestUtilities.log("Telltale found\n");
+                TestBase.logInfo("Telltale found\n");
                 break;
             }
             Thread.sleep(5000);
@@ -121,7 +192,7 @@ public class TestBase {
     void waitForTelltale(PerTestSettings settings, String partitionId) throws InterruptedException {
         for (int i = 0; i < 100; i++) {
             if (settings.outProcessorFactory.getTelltaleFound(partitionId)) {
-                TestUtilities.log("Telltale " + partitionId + " found\n");
+            	TestBase.logInfo("Telltale " + partitionId + " found\n");
                 break;
             }
             Thread.sleep(5000);
@@ -129,13 +200,13 @@ public class TestBase {
     }
 
     void testFinish(PerTestSettings settings, int expectedEvents) throws InterruptedException, ExecutionException, EventHubException {
-        if (settings.outHost != null) {
+        if ((settings.outHost != null) && !settings.inEventHubDoesNotExist) {
             settings.outHost.unregisterEventProcessor().get();
-            TestUtilities.log("Host unregistered");
+            TestBase.logInfo("Host unregistered");
         }
 
         if (expectedEvents != NO_CHECKS) {
-            TestUtilities.log("Events received: " + settings.outProcessorFactory.getEventsReceivedCount() + "\n");
+        	TestBase.logInfo("Events received: " + settings.outProcessorFactory.getEventsReceivedCount() + "\n");
             if (expectedEvents == ANY_NONZERO_COUNT) {
                 assertTrue("no events received", settings.outProcessorFactory.getEventsReceivedCount() > 0);
             } else if (expectedEvents != SKIP_COUNT_CHECK) {
@@ -146,16 +217,14 @@ public class TestBase {
             assertEquals("partition errors seen", 0, settings.outProcessorFactory.getErrors().size());
             assertEquals("general errors seen", 0, settings.outGeneralErrorHandler.getErrors().size());
             for (String err : settings.outProcessorFactory.getErrors()) {
-                TestUtilities.log(err);
+                logError(err);
             }
             for (String err : settings.outGeneralErrorHandler.getErrors()) {
-                TestUtilities.log(err);
+                logError(err);
             }
         }
 
         settings.outUtils.shutdown();
-
-        TestUtilities.log(settings.getTestName() + " ended");
     }
 
     class BogusCheckpointMananger implements ICheckpointManager {
@@ -180,12 +249,12 @@ public class TestBase {
         }
 
         @Override
-        public CompletableFuture<Checkpoint> createCheckpointIfNotExists(String partitionId) {
+        public CompletableFuture<Void> createAllCheckpointsIfNotExists(List<String> partitionIds) {
             return CompletableFuture.completedFuture(null);
         }
 
         @Override
-        public CompletableFuture<Void> updateCheckpoint(Lease lease, Checkpoint checkpoint) {
+        public CompletableFuture<Void> updateCheckpoint(CompleteLease lease, Checkpoint checkpoint) {
             return CompletableFuture.completedFuture(null);
         }
 
@@ -196,11 +265,6 @@ public class TestBase {
     }
 
     class BogusLeaseManager implements ILeaseManager {
-        @Override
-        public int getLeaseRenewIntervalInMilliseconds() {
-            return 0;
-        }
-
         @Override
         public int getLeaseDurationInMilliseconds() {
             return 0;
@@ -222,37 +286,42 @@ public class TestBase {
         }
 
         @Override
-        public CompletableFuture<List<Lease>> getAllLeases() {
+        public CompletableFuture<CompleteLease> getLease(String partitionId) {
             return CompletableFuture.completedFuture(null);
         }
 
         @Override
-        public CompletableFuture<Lease> createLeaseIfNotExists(String partitionId) {
+        public CompletableFuture<List<BaseLease>> getAllLeases() {
             return CompletableFuture.completedFuture(null);
         }
 
         @Override
-        public CompletableFuture<Void> deleteLease(Lease lease) {
+        public CompletableFuture<Void> createAllLeasesIfNotExists(List<String> partitionIds) {
             return CompletableFuture.completedFuture(null);
         }
 
         @Override
-        public CompletableFuture<Boolean> acquireLease(Lease lease) {
+        public CompletableFuture<Void> deleteLease(CompleteLease lease) {
+            return CompletableFuture.completedFuture(null);
+        }
+
+        @Override
+        public CompletableFuture<Boolean> acquireLease(CompleteLease lease) {
             return CompletableFuture.completedFuture(true);
         }
 
         @Override
-        public CompletableFuture<Boolean> renewLease(Lease lease) {
+        public CompletableFuture<Boolean> renewLease(CompleteLease lease) {
             return CompletableFuture.completedFuture(true);
         }
 
         @Override
-        public CompletableFuture<Void> releaseLease(Lease lease) {
+        public CompletableFuture<Void> releaseLease(CompleteLease lease) {
             return CompletableFuture.completedFuture(null);
         }
 
         @Override
-        public CompletableFuture<Boolean> updateLease(Lease lease) {
+        public CompletableFuture<Boolean> updateLease(CompleteLease lease) {
             return CompletableFuture.completedFuture(true);
         }
     }

@@ -6,8 +6,6 @@
 
  import com.microsoft.azure.eventhubs.EventPosition;
  import org.junit.Assert;
- import org.junit.Assume;
- import org.junit.BeforeClass;
  import org.junit.Test;
 
  import java.time.Instant;
@@ -15,11 +13,6 @@
 
 
  public class SmokeTest extends TestBase {
-     @BeforeClass
-     public static void skipIfNoEnvPresent() {
-         Assume.assumeTrue(System.getenv("EVENT_HUB_CONNECTION_STRING") != null);
-     }
-
      @Test
      public void SendRecv1MsgTest() throws Exception {
          PerTestSettings settings = new PerTestSettings("SendRecv1Msg");
@@ -166,11 +159,11 @@
              for (String id : settings.outPartitionIds) {
                  settings.outUtils.sendToPartition(id, "receiveAllPartitions-" + id + "-" + generation);
              }
-             TestUtilities.log("Generation " + generation + " sent\n");
+             TestBase.logInfo("Generation " + generation + " sent\n");
          }
          for (String id : settings.outPartitionIds) {
              settings.outUtils.sendToPartition(id, settings.outTelltale);
-             TestUtilities.log("Telltale " + id + " sent\n");
+             TestBase.logInfo("Telltale " + id + " sent\n");
          }
          for (String id : settings.outPartitionIds) {
              waitForTelltale(settings, id);
@@ -196,11 +189,11 @@
              for (String id : settings.outPartitionIds) {
                  settings.outUtils.sendToPartition(id, "receiveAllPartitionsWithUserExecutor-" + id + "-" + generation);
              }
-             TestUtilities.log("Generation " + generation + " sent\n");
+             TestBase.logInfo("Generation " + generation + " sent\n");
          }
          for (String id : settings.outPartitionIds) {
              settings.outUtils.sendToPartition(id, settings.outTelltale);
-             TestUtilities.log("Telltale " + id + " sent\n");
+             TestBase.logInfo("Telltale " + id + " sent\n");
          }
          for (String id : settings.outPartitionIds) {
              waitForTelltale(settings, id);
@@ -226,11 +219,11 @@
              for (String id : settings.outPartitionIds) {
                  settings.outUtils.sendToPartition(id, "receiveAllPartitionsWithSingleThreadExecutor-" + id + "-" + generation);
              }
-             TestUtilities.log("Generation " + generation + " sent\n");
+             TestBase.logInfo("Generation " + generation + " sent\n");
          }
          for (String id : settings.outPartitionIds) {
              settings.outUtils.sendToPartition(id, settings.outTelltale);
-             TestUtilities.log("Telltale " + id + " sent\n");
+             TestBase.logInfo("Telltale " + id + " sent\n");
          }
          for (String id : settings.outPartitionIds) {
              waitForTelltale(settings, id);

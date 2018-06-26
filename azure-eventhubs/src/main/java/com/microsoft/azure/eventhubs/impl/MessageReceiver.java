@@ -249,15 +249,19 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
     public CompletableFuture<Collection<Message>> receive(final int maxMessageCount) {
         this.throwIfClosed();
 
+        final CompletableFuture<Collection<Message>> onReceive = new CompletableFuture<>();
         if (maxMessageCount <= 0 || maxMessageCount > this.prefetchCount) {
-            throw new IllegalArgumentException(String.format(Locale.US, "parameter 'maxMessageCount' should be a positive number and should be less than prefetchCount(%s)", this.prefetchCount));
+            onReceive.completeExceptionally(new IllegalArgumentException(String.format(
+                    Locale.US,
+                    "parameter 'maxMessageCount' should be a positive number and should be less than prefetchCount(%s)",
+                    this.prefetchCount)));
+            return onReceive;
         }
 
         if (this.pendingReceives.isEmpty()) {
             timer.schedule(this.onOperationTimedout, this.receiveTimeout);
         }
 
-        final CompletableFuture<Collection<Message>> onReceive = new CompletableFuture<>();
         pendingReceives.offer(new ReceiveWorkItem(onReceive, receiveTimeout, maxMessageCount));
 
         try {
@@ -340,18 +344,7 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
             if (this.closeTimer != null)
                 this.closeTimer.cancel(false);
 
-            WorkItem<Collection<Message>> workItem = null;
-            final boolean isTransientException = exception == null ||
-                    (exception instanceof EventHubException && ((EventHubException) exception).getIsTransient());
-            while ((workItem = this.pendingReceives.poll()) != null) {
-                final CompletableFuture<Collection<Message>> future = workItem.getWork();
-                if (isTransientException) {
-                    future.complete(null);
-                } else {
-                    ExceptionUtil.completeExceptionally(future, exception, this);
-                }
-            }
-
+            this.drainPendingReceives(exception);
             this.linkClose.complete(null);
         } else {
             synchronized (this.errorConditionLock) {
@@ -359,7 +352,8 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
             }
 
             final Exception completionException = exception == null
-                    ? new EventHubException(true, "Client encountered transient error for unknown reasons, please retry the operation.") : exception;
+                    ? new EventHubException(true, "Client encountered transient error for unknown reasons, please retry the operation.")
+                    : exception;
 
             this.onOpenComplete(completionException);
 
@@ -369,7 +363,6 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                     : null;
 
             boolean recreateScheduled = true;
-
             if (nextRetryInterval != null) {
                 try {
                     this.underlyingFactory.scheduleOnReactorThread((int) nextRetryInterval.toMillis(), new DispatchHandler() {
@@ -384,14 +377,31 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                     });
                 } catch (IOException | RejectedExecutionException ignore) {
                     recreateScheduled = false;
+                    if (TRACE_LOGGER.isWarnEnabled()) {
+                        TRACE_LOGGER.warn(
+                                String.format(Locale.US, "receiverPath[%s], linkName[%s], scheduling createLink encountered error: %s",
+                                        MessageReceiver.this.receivePath,
+                                        this.receiveLink.getName(), ignore.getLocalizedMessage()));
+                    }
                 }
             }
 
-            if (nextRetryInterval == null || !recreateScheduled) {
-                WorkItem<Collection<Message>> pendingReceive = null;
-                while ((pendingReceive = this.pendingReceives.poll()) != null) {
-                    ExceptionUtil.completeExceptionally(pendingReceive.getWork(), completionException, this);
-                }
+            if (nextRetryInterval == null || !recreateScheduled){
+                this.drainPendingReceives(completionException);
+            }
+        }
+    }
+
+    private void drainPendingReceives(final Exception exception) {
+        WorkItem<Collection<Message>> workItem;
+        final boolean shouldReturnNull = (exception == null || exception instanceof TimeoutException);
+
+        while ((workItem = this.pendingReceives.poll()) != null) {
+            final CompletableFuture<Collection<Message>> future = workItem.getWork();
+            if (shouldReturnNull) {
+                future.complete(null);
+            } else {
+                ExceptionUtil.completeExceptionally(future, exception, this);
             }
         }
     }
@@ -558,13 +568,15 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                 }
                 , timeout.remaining());
 
-        this.openTimer.whenCompleteAsync(
+        this.openTimer.handleAsync(
                 (unUsed, exception) -> {
                     if (exception != null
                             && exception instanceof Exception
                             && !(exception instanceof CancellationException)) {
                         ExceptionUtil.completeExceptionally(linkOpen.getWork(), (Exception) exception, MessageReceiver.this);
                     }
+
+                    return null;
                 }, this.executor);
     }
 
@@ -593,11 +605,13 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                 }
                 , timeout.remaining());
 
-        this.closeTimer.whenCompleteAsync(
+        this.closeTimer.handleAsync(
                 (unUsed, exception) -> {
                     if (exception != null && exception instanceof Exception && !(exception instanceof CancellationException)) {
                         ExceptionUtil.completeExceptionally(linkClose, (Exception) exception, MessageReceiver.this);
                     }
+
+                    return null;
                 }, this.executor);
     }
 

@@ -70,6 +70,9 @@ public interface PartitionReceiver {
      * Gets the temporal {@link ReceiverRuntimeInformation} for this EventHub partition.
      * In general, this information is a representation of, where this {@link PartitionReceiver}'s end of stream is,
      * at the time {@link ReceiverRuntimeInformation#getRetrievalTime()}.
+     * <p> This value will not be populated, unless the knob {@link ReceiverOptions#setReceiverRuntimeMetricEnabled(boolean)} is set.
+     * This value will be refreshed every time an {@link EventData} is consumed from {@link PartitionReceiver}.
+     * For ex: if no events have been consumed, then this value is not populated.
      *
      * @return receiver runtime information
      */

@@ -67,6 +67,20 @@ public class ReceivePumpEventHubTest extends ApiTestBase {
     }
 
     @Test(expected = IllegalArgumentException.class)
+    public void testInvokeWithInvalidArgs() throws Throwable {
+        final CompletableFuture<Void> invokeSignal = new CompletableFuture<Void>();
+        final int prefetchCount = 1000;
+        receiver.setReceiveTimeout(Duration.ofSeconds(1));
+        receiver.setPrefetchCount(prefetchCount);
+        receiver.setReceiveHandler(new InvokeOnReceiveEventValidator(invokeSignal, prefetchCount + 1), true);
+        try {
+            invokeSignal.get(3, TimeUnit.SECONDS);
+        } catch (ExecutionException executionException) {
+            throw executionException.getCause();
+        }
+    }
+
+    @Test(expected = IllegalArgumentException.class)
     public void testSetReceiveHandlerMultipleTimes() throws EventHubException, InterruptedException, ExecutionException, TimeoutException {
         CompletableFuture<Void> invokeSignal = new CompletableFuture<Void>();
         receiver.setReceiveTimeout(Duration.ofSeconds(1));
@@ -96,14 +110,20 @@ public class ReceivePumpEventHubTest extends ApiTestBase {
 
     public static final class InvokeOnReceiveEventValidator implements PartitionReceiveHandler {
         final CompletableFuture<Void> signalInvoked;
+        final int maxEventCount;
 
         public InvokeOnReceiveEventValidator(final CompletableFuture<Void> signalInvoked) {
+            this(signalInvoked, 50);
+        }
+
+        public InvokeOnReceiveEventValidator(final CompletableFuture<Void> signalInvoked, final int maxEventCount) {
             this.signalInvoked = signalInvoked;
+            this.maxEventCount = maxEventCount;
         }
 
         @Override
         public int getMaxEventCount() {
-            return 50;
+            return this.maxEventCount;
         }
 
         @Override

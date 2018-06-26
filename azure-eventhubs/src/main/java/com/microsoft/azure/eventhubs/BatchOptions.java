@@ -9,23 +9,19 @@ import java.util.function.Consumer;
 
 /**
  * BatchOptions is used to create {@link EventDataBatch}es.
- * <p>
- * If you're creating {@link EventDataBatch}es with {@link EventHubClient}, then you can set a partitionKey and maxMessageSize
+ * <p>If you're creating {@link EventDataBatch}es with {@link EventHubClient}, then you can set a partitionKey and maxMessageSize
  * using the .with() method. Alternatively, if you'd like the default settings, simply construct BatchOptions with the void constructor.
  * Default settings:
  * - partitionKey is null
  * - maxMessageSize is the maximum allowed size
- * <p>
- * If you're creating {@link EventDataBatch}es with {@link PartitionSender}, then you can only set a maxMessageSize
+ * <p>If you're creating {@link EventDataBatch}es with {@link PartitionSender}, then you can only set a maxMessageSize
  * using the .with() method. Alternatively, if you'd like the default settings, simply construct BatchOptions with the void constructor.
  * Default settings:
  * - maxMessageSize is the maximum allowed size
  * - Note: if you set a partition key, an {@link IllegalArgumentException} will be thrown.
- * <p>
- * To construct either type of batch, create a {@link BatchOptions} object and pass it into the appropriate
+ * <p>To construct either type of batch, create a {@link BatchOptions} object and pass it into the appropriate
  * createBatch method. If using {@link PartitionSender}, then use ({@link PartitionSender#createBatch(BatchOptions)}.
  * If using {@link EventHubClient}, then use {@link EventHubClient#createBatch(BatchOptions)}.
- * <p>
  * <pre>
  *     {@code
  *     // Note: For all examples, 'client' is an instance of EventHubClient. The usage is the same for PartitionSender,

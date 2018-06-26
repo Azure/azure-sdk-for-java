@@ -57,6 +57,57 @@ public class MsgFactoryOpenCloseTest extends ApiTestBase {
     }
 
     @Test()
+    public void VerifyTaskQueueEmptyOnMsgFactoryWithPumpGracefulClose() throws Exception {
+
+        final LinkedBlockingQueue<Runnable> blockingQueue = new LinkedBlockingQueue<>();
+        final ThreadPoolExecutor executor = new ThreadPoolExecutor(
+                1, 1, 1, TimeUnit.MINUTES, blockingQueue);
+        try {
+            final EventHubClient ehClient = EventHubClient.createSync(
+                    TestContext.getConnectionString().toString(),
+                    executor);
+
+            final PartitionReceiver receiver = ehClient.createReceiverSync(
+                    TestContext.getConsumerGroupName(), PARTITION_ID, EventPosition.fromEnqueuedTime(Instant.now()));
+
+            final CompletableFuture<Iterable<EventData>> signalReceive = new CompletableFuture<>();
+            receiver.setReceiveHandler(new PartitionReceiveHandler() {
+                @Override
+                public int getMaxEventCount() {
+                    return 10;
+                }
+
+                @Override
+                public void onReceive(Iterable<EventData> events) {
+                    signalReceive.complete(events);
+                }
+
+                @Override
+                public void onError(Throwable error) {
+                }
+            }, false);
+
+            final PartitionSender sender = ehClient.createPartitionSenderSync(PARTITION_ID);
+            sender.sendSync(EventData.create("test data - string".getBytes()));
+
+            final Iterable<EventData> events = signalReceive.get();
+            Assert.assertTrue(events.iterator().hasNext());
+
+            receiver.setReceiveHandler(null).get();
+
+            sender.closeSync();
+            receiver.closeSync();
+
+            ehClient.closeSync();
+
+            Assert.assertEquals(blockingQueue.size(), 0);
+            Assert.assertEquals(executor.getTaskCount(), executor.getCompletedTaskCount());
+        } finally {
+            executor.shutdown();
+        }
+    }
+
+    @Test()
     public void VerifyThreadReleaseOnMsgFactoryOpenError() throws Exception {
 
         final FaultInjectingReactorFactory networkOutageSimulator = new FaultInjectingReactorFactory();
@@ -228,5 +279,22 @@ public class MsgFactoryOpenCloseTest extends ApiTestBase {
         testClosed.awaitTermination(60, TimeUnit.SECONDS);
 
         temp.closeSync();
+    }
+
+    @Test(expected = RejectedExecutionException.class)
+    public void testEventHubClientSendAfterClose() throws Exception {
+        final ConnectionStringBuilder connectionString = TestContext.getConnectionString();
+        final EventHubClient eventHubClient = EventHubClient.createSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
+        eventHubClient.closeSync();
+        eventHubClient.sendSync(EventData.create("test message".getBytes()));
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testEventHubClientSendCloseAfterSomeSends() throws Exception {
+        final ConnectionStringBuilder connectionString = TestContext.getConnectionString();
+        final EventHubClient eventHubClient = EventHubClient.createSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
+        eventHubClient.sendSync(EventData.create("test message".getBytes()));
+        eventHubClient.closeSync();
+        eventHubClient.sendSync(EventData.create("test message".getBytes()));
     }
 }

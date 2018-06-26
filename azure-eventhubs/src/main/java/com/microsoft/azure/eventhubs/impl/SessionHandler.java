@@ -5,6 +5,7 @@
 package com.microsoft.azure.eventhubs.impl;
 
 import com.microsoft.azure.eventhubs.EventHubException;
+import com.microsoft.azure.eventhubs.TimeoutException;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.*;
 import org.apache.qpid.proton.reactor.Reactor;
@@ -156,7 +157,7 @@ public class SessionHandler extends BaseHandler {
                 }
 
                 session.close();
-                onRemoteSessionOpenError.accept(null, new EventHubException(false, "session creation timedout."));
+                onRemoteSessionOpenError.accept(null, new TimeoutException("session creation timedout."));
             }
         }
     }

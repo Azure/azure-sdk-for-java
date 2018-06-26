@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project root for full license information.
+ */
+
 package com.microsoft.azure.eventprocessorhost;
 
 /***
@@ -10,11 +15,11 @@ public final class EventProcessorHostActionStrings {
     public final static String CHECKING_LEASES = "Checking Leases";
     public final static String CHECKING_LEASE_STORE = "Checking Lease Store Existence";
     public final static String CLOSING_EVENT_PROCESSOR = "Closing Event Processor";
-    public final static String CREATING_CHECKPOINT = "Creating Checkpoint";
+    public final static String CREATING_CHECKPOINTS = "Creating Checkpoint Holders";
     public final static String CREATING_CHECKPOINT_STORE = "Creating Checkpoint Store";
     public final static String CREATING_EVENT_HUB_CLIENT = "Creating Event Hub Client";
     public final static String CREATING_EVENT_PROCESSOR = "Creating Event Processor";
-    public final static String CREATING_LEASE = "Creating Lease";
+    public final static String CREATING_LEASES = "Creating Leases";
     public final static String CREATING_LEASE_STORE = "Creating Lease Store";
     public final static String DELETING_LEASE = "Deleting Lease";
     public final static String GETTING_CHECKPOINT = "Getting Checkpoint Details";
