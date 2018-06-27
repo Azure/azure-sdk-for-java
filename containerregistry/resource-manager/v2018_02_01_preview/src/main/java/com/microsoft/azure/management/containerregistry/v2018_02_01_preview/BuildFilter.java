@@ -9,7 +9,6 @@
 package com.microsoft.azure.management.containerregistry.v2018_02_01_preview;
 
 import org.joda.time.DateTime;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -49,10 +48,11 @@ public class BuildFilter {
     private DateTime finishTime;
 
     /**
-     * The list of all images that were generated from the build.
+     * The list of comma-separated image manifests that were generated from the
+     * build.
      */
-    @JsonProperty(value = "outputImageNames")
-    private List<String> outputImageNames;
+    @JsonProperty(value = "outputImageManifests")
+    private String outputImageManifests;
 
     /**
      * The value that indicates whether archiving is enabled or not.
@@ -167,22 +167,22 @@ public class BuildFilter {
     }
 
     /**
-     * Get the list of all images that were generated from the build.
+     * Get the list of comma-separated image manifests that were generated from the build.
      *
-     * @return the outputImageNames value
+     * @return the outputImageManifests value
      */
-    public List<String> outputImageNames() {
-        return this.outputImageNames;
+    public String outputImageManifests() {
+        return this.outputImageManifests;
     }
 
     /**
-     * Set the list of all images that were generated from the build.
+     * Set the list of comma-separated image manifests that were generated from the build.
      *
-     * @param outputImageNames the outputImageNames value to set
+     * @param outputImageManifests the outputImageManifests value to set
      * @return the BuildFilter object itself.
      */
-    public BuildFilter withOutputImageNames(List<String> outputImageNames) {
-        this.outputImageNames = outputImageNames;
+    public BuildFilter withOutputImageManifests(String outputImageManifests) {
+        this.outputImageManifests = outputImageManifests;
         return this;
     }
 
