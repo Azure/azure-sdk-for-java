@@ -13,9 +13,8 @@
  * limitations under the License.
  */
 
-package com.microsoft.azure.storage;
+package com.microsoft.azure.storage.blob;
 
-import com.microsoft.azure.storage.blob.RequestRetryOptions;
 import com.microsoft.azure.storage.blob.models.StorageErrorException;
 import com.microsoft.rest.v2.http.HttpHeaders;
 import com.microsoft.rest.v2.http.HttpRequest;
@@ -34,7 +33,6 @@ import java.net.MalformedURLException;
 import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
@@ -273,7 +271,7 @@ public class RequestRetryTestFactory implements RequestPolicyFactory {
                                     RETRY_TEST_TEMPORARY_ERROR_RESPONSE);
                         case 5:
                             /*
-                            With the current configuration in HelperTest, the maxRetryDelay should be reached upon the
+                            With the current configuration in RetryTest, the maxRetryDelay should be reached upon the
                             fourth try to the primary.
                              */
                             return testMaxDelayBounds(RETRY_TEST_TEMPORARY_ERROR_RESPONSE);
