@@ -350,7 +350,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 		session.open();
 		BaseHandler.setHandler(session, new SessionHandler(this.receivePath));
 
-		final String receiveLinkNamePrefix = StringUtil.getShortRandomString();
+		final String receiveLinkNamePrefix = "Receiver".concat(TrackingUtil.TRACKING_ID_TOKEN_SEPARATOR).concat(StringUtil.getShortRandomString());
 		final String receiveLinkName = !StringUtil.isNullOrEmpty(connection.getRemoteContainer()) ? 
 				receiveLinkNamePrefix.concat(TrackingUtil.TRACKING_ID_TOKEN_SEPARATOR).concat(connection.getRemoteContainer()) :
 				receiveLinkNamePrefix;

@@ -69,9 +69,9 @@ public final class ClientConstants
 	public static final String DEADLETTER_REASON_HEADER = "DeadLetterReason";
     public static final String DEADLETTER_ERROR_DESCRIPTION_HEADER = "DeadLetterErrorDescription";
 
-	public static final int MAX_MESSAGE_LENGTH_BYTES = 256 * 1024;
+	public static final int MAX_MESSAGE_LENGTH_BYTES = 1024 * 1024;
 	public static final int MAX_FRAME_SIZE_BYTES = 64 * 1024;
-	public static final int MAX_EVENTHUB_AMQP_HEADER_SIZE_BYTES = 512;
+	public static final int MAX_MESSAGING_AMQP_HEADER_SIZE_BYTES = 512;
 
 	public final static Duration TIMER_TOLERANCE = Duration.ofSeconds(1);
 

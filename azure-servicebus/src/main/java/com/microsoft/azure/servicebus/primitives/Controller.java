@@ -66,21 +66,10 @@ class Controller {
     public CompletableFuture<Binary> declareAsync() {
         Message message = Message.Factory.create();
         Declare declare = new Declare();
-        message.setBody(new AmqpValue(declare));
-        Pair<byte[], Integer> encodedPair = null;
-        try {
-            encodedPair = Util.encodeMessageToOptimalSizeArray(message);
-        } catch (PayloadSizeExceededException exception) {
-            TRACE_LOGGER.error("Payload size of message exceeded limit", exception);
-            final CompletableFuture<Binary> sendTask = new CompletableFuture<>();
-            sendTask.completeExceptionally(exception);
-            return sendTask;
-        }
+        message.setBody(new AmqpValue(declare));        
 
-        return this.internalSender.sendCoreAsync(
-                encodedPair.getFirstItem(),
-                encodedPair.getSecondItem(),
-                DeliveryImpl.DEFAULT_MESSAGE_FORMAT,
+        return this.internalSender.sendAndReturnDeliveryStateAsync(
+                message,
                 TransactionContext.NULL_TXN)
                 .thenApply( state -> {
                     Binary txnId = null;
@@ -102,22 +91,10 @@ class Controller {
         Discharge discharge = new Discharge();
         discharge.setFail(!isCommit);
         discharge.setTxnId(txnId);
-        message.setBody(new AmqpValue(discharge));
-        Pair<byte[], Integer> encodedPair = null;
+        message.setBody(new AmqpValue(discharge));        
 
-        try {
-            encodedPair = Util.encodeMessageToOptimalSizeArray(message);
-        } catch (PayloadSizeExceededException exception) {
-            TRACE_LOGGER.error("Payload size of message exceeded limit", exception);
-            final CompletableFuture<Void> sendTask = new CompletableFuture<>();
-            sendTask.completeExceptionally(exception);
-            return sendTask;
-        }
-
-        return this.internalSender.sendCoreAsync(
-                encodedPair.getFirstItem(),
-                encodedPair.getSecondItem(),
-                DeliveryImpl.DEFAULT_MESSAGE_FORMAT,
+        return this.internalSender.sendAndReturnDeliveryStateAsync(
+                message,
                 TransactionContext.NULL_TXN)
                 .thenCompose( state -> {
                     if (state instanceof Accepted) {

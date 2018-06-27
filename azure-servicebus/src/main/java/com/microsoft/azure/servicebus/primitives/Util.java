@@ -36,6 +36,7 @@ import org.apache.qpid.proton.amqp.messaging.Section;
 import org.apache.qpid.proton.amqp.transaction.Declare;
 import org.apache.qpid.proton.amqp.transaction.Discharge;
 import org.apache.qpid.proton.engine.Delivery;
+import org.apache.qpid.proton.engine.Link;
 import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.message.Message;
 
@@ -366,20 +367,20 @@ public class Util
 		return annotationsSize + applicationPropertiesSize + payloadSize;
 	}
 	
-	static Pair<byte[], Integer> encodeMessageToOptimalSizeArray(Message message) throws PayloadSizeExceededException
+	static Pair<byte[], Integer> encodeMessageToOptimalSizeArray(Message message, int maxMessageSize) throws PayloadSizeExceededException
 	{
 		int payloadSize = Util.getDataSerializedSize(message);
-		int allocationSize = Math.min(payloadSize + ClientConstants.MAX_EVENTHUB_AMQP_HEADER_SIZE_BYTES, ClientConstants.MAX_MESSAGE_LENGTH_BYTES);
+		int allocationSize = Math.min(payloadSize + ClientConstants.MAX_MESSAGING_AMQP_HEADER_SIZE_BYTES, maxMessageSize);
 		byte[] encodedBytes = new byte[allocationSize];
 		int encodedSize = encodeMessageToCustomArray(message, encodedBytes, 0, allocationSize);
 		return new Pair<byte[], Integer>(encodedBytes, encodedSize);
 	}
 	
-	static Pair<byte[], Integer> encodeMessageToMaxSizeArray(Message message) throws PayloadSizeExceededException
+	static Pair<byte[], Integer> encodeMessageToMaxSizeArray(Message message, int maxMessageSize) throws PayloadSizeExceededException
 	{
 		// May be we should reduce memory allocations. Use a pool of byte arrays or something
-		byte[] encodedBytes = new byte[ClientConstants.MAX_MESSAGE_LENGTH_BYTES];
-		int encodedSize = encodeMessageToCustomArray(message, encodedBytes, 0, ClientConstants.MAX_MESSAGE_LENGTH_BYTES);
+		byte[] encodedBytes = new byte[maxMessageSize];
+		int encodedSize = encodeMessageToCustomArray(message, encodedBytes, 0, maxMessageSize);
 		return new Pair<byte[], Integer>(encodedBytes, encodedSize);
 	}
 	
@@ -391,7 +392,7 @@ public class Util
 		}
 		catch(BufferOverflowException exception)
 		{
-			throw new PayloadSizeExceededException(String.format("Size of the payload exceeded Maximum message size: %s kb", ClientConstants.MAX_MESSAGE_LENGTH_BYTES / 1024), exception);		
+			throw new PayloadSizeExceededException(String.format("Size of the payload exceeded Maximum message size: %s kb", length / 1024), exception);		
 		}
 	}
 
@@ -458,5 +459,22 @@ public class Util
         {            
             return (tokenValidityInSeconds - 1) > 0 ? tokenValidityInSeconds - 1 : 0;
         }
+    }
+    
+    static int getMaxMessageSizeFromLink(Link link)
+    {
+    	UnsignedLong maxMessageSize = link.getRemoteMaxMessageSize();
+    	if(maxMessageSize != null)
+    	{
+    		int maxMessageSizeAsInt = maxMessageSize.intValue();
+    		// A value of 0 means no limit. Treating no limit as 1024 KB thus putting a cap on max message size
+    		if(maxMessageSizeAsInt > 0)
+    		{    			
+    			return maxMessageSizeAsInt;
+    		}    			
+    	}
+    	
+    	// Default if link doesn't have the value
+    	return ClientConstants.MAX_MESSAGE_LENGTH_BYTES;
     }
 }

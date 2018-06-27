@@ -86,6 +86,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 	private String transferDestinationPath;
 	private String transferSasTokenAudienceURI;
 	private boolean isSendVia;
+	private int maxMessageSize;
 
 	public static CompletableFuture<CoreMessageSender> create(
 			final MessagingFactory factory,
@@ -104,7 +105,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 	    TRACE_LOGGER.info("Creating core message sender to '{}'", linkSettings.linkPath);
 
 		final Connection connection = factory.getConnection();
-		final String sendLinkNamePrefix = StringUtil.getShortRandomString();
+		final String sendLinkNamePrefix = "Sender".concat(TrackingUtil.TRACKING_ID_TOKEN_SEPARATOR).concat(StringUtil.getShortRandomString());
 		linkSettings.linkName = !StringUtil.isNullOrEmpty(connection.getRemoteContainer()) ?
 				sendLinkNamePrefix.concat(TrackingUtil.TRACKING_ID_TOKEN_SEPARATOR).concat(connection.getRemoteContainer()) :
 				sendLinkNamePrefix;
@@ -352,17 +353,17 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 		int byteArrayOffset = 0;
 		try
 		{
-			Pair<byte[], Integer> encodedPair = Util.encodeMessageToMaxSizeArray(batchMessage);
+			Pair<byte[], Integer> encodedPair = Util.encodeMessageToMaxSizeArray(batchMessage, this.maxMessageSize);
 			bytes = encodedPair.getFirstItem();
 			byteArrayOffset = encodedPair.getSecondItem();
 			
 			for(Message amqpMessage: messages)
 			{
 				Message messageWrappedByData = Proton.message();	
-				encodedPair = Util.encodeMessageToOptimalSizeArray(amqpMessage);
+				encodedPair = Util.encodeMessageToOptimalSizeArray(amqpMessage, this.maxMessageSize);
 				messageWrappedByData.setBody(new Data(new Binary(encodedPair.getFirstItem(), 0, encodedPair.getSecondItem())));
 
-				int encodedSize = Util.encodeMessageToCustomArray(messageWrappedByData, bytes, byteArrayOffset, ClientConstants.MAX_MESSAGE_LENGTH_BYTES - byteArrayOffset - 1);
+				int encodedSize = Util.encodeMessageToCustomArray(messageWrappedByData, bytes, byteArrayOffset, this.maxMessageSize - byteArrayOffset - 1);
 				byteArrayOffset = byteArrayOffset + encodedSize;
 			}
 		}
@@ -376,18 +377,24 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 
 		return this.sendCoreAsync(bytes, byteArrayOffset, AmqpConstants.AMQP_BATCH_MESSAGE_FORMAT, transaction).thenAccept((x) -> { /*Do nothing*/ });
 	}
-
+	
 	public CompletableFuture<Void> sendAsync(Message msg, TransactionContext transaction)
+	{
+		return this.sendAndReturnDeliveryStateAsync(msg, transaction).thenAccept((x) -> { /*Do nothing*/ });
+	}
+
+	// To be used only by internal components like TransactionController
+	CompletableFuture<DeliveryState> sendAndReturnDeliveryStateAsync(Message msg, TransactionContext transaction)
 	{
 		try
 		{
-			Pair<byte[], Integer> encodedPair = Util.encodeMessageToOptimalSizeArray(msg);
-			return this.sendCoreAsync(encodedPair.getFirstItem(), encodedPair.getSecondItem(), DeliveryImpl.DEFAULT_MESSAGE_FORMAT, transaction).thenAccept((x) -> { /*Do nothing*/ });
+			Pair<byte[], Integer> encodedPair = Util.encodeMessageToOptimalSizeArray(msg, this.maxMessageSize);
+			return this.sendCoreAsync(encodedPair.getFirstItem(), encodedPair.getSecondItem(), DeliveryImpl.DEFAULT_MESSAGE_FORMAT, transaction);
 		}
 		catch(PayloadSizeExceededException exception)
 		{
 		    TRACE_LOGGER.error("Payload size of message exceeded limit", exception);
-			final CompletableFuture<Void> sendTask = new CompletableFuture<Void>();
+			final CompletableFuture<DeliveryState> sendTask = new CompletableFuture<DeliveryState>();
 			sendTask.completeExceptionally(exception);
 			return sendTask;
 		}
@@ -399,6 +406,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 		if (completionException == null)
 		{
 		    this.underlyingFactory.registerForConnectionError(this.sendLink);
+		    this.maxMessageSize = Util.getMaxMessageSizeFromLink(this.sendLink);
 			this.lastKnownLinkError = null;
 			this.retryPolicy.resetRetryCount(this.getClientId());
 
@@ -1069,10 +1077,11 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 				Pair<byte[], Integer> encodedPair = null;
 				try
 				{
-					encodedPair = Util.encodeMessageToOptimalSizeArray(message);
+					encodedPair = Util.encodeMessageToOptimalSizeArray(message, this.maxMessageSize);
 				}
 				catch(PayloadSizeExceededException exception)
 				{
+					TRACE_LOGGER.error("Payload size of message exceeded limit", exception);
 					final CompletableFuture<long[]> scheduleMessagesTask = new CompletableFuture<long[]>();
 					scheduleMessagesTask.completeExceptionally(exception);
 					return scheduleMessagesTask;
