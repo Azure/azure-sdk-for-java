@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft Corporation. All rights reserved.
  * Licensed under the MIT License. See License.txt in the project root for
  * license information.
- */
+ **/
 
 package com.microsoft.azure.keyvault.webkey;
 
@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 public final class JsonWebKeySignatureAlgorithm {
 
-	/** Static value PS256 for JsonWebKeySignatureAlgorithm. */
+    /** Static value PS256 for JsonWebKeySignatureAlgorithm. */
     public static final JsonWebKeySignatureAlgorithm PS256 = new JsonWebKeySignatureAlgorithm("PS256");
 
     /** Static value PS384 for JsonWebKeySignatureAlgorithm. */
@@ -50,7 +50,9 @@ public final class JsonWebKeySignatureAlgorithm {
 
     /**
      * Creates a custom value for JsonWebKeySignatureAlgorithm.
-     * @param value the custom value
+     * 
+     * @param value
+     *            the custom value
      */
     public JsonWebKeySignatureAlgorithm(String value) {
         this.value = value;
@@ -86,6 +88,6 @@ public final class JsonWebKeySignatureAlgorithm {
     /**
      * All the JWK signature algorithms.
      */
-    public static final List<JsonWebKeySignatureAlgorithm> ALL_ALGORITHMS =
-            Collections.unmodifiableList(Arrays.asList(RS256, RS384, RS512, RSNULL, PS256, PS384, PS512, ES256, ES384, ES512, ES256K));
+    public static final List<JsonWebKeySignatureAlgorithm> ALL_ALGORITHMS = Collections.unmodifiableList(
+            Arrays.asList(RS256, RS384, RS512, RSNULL, PS256, PS384, PS512, ES256, ES384, ES512, ES256K));
 }

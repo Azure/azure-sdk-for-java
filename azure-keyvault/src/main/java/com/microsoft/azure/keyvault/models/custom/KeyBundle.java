@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.keyvault.models.custom;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -9,6 +15,9 @@ import com.microsoft.azure.keyvault.webkey.JsonWebKey;
 
 import java.io.IOException;
 
+/**
+ * A KeyBundle consisting of a WebKey plus its attributes.
+ */
 public class KeyBundle {
 
     /**
@@ -38,6 +47,7 @@ public class KeyBundle {
         return new KeyIdentifier(key().kid());
     }
 
+    @Override
     public String toString() {
         ObjectMapper mapper = new ObjectMapper();
         try {

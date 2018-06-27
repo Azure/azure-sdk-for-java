@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.keyvault.requests;
 
 import java.util.ArrayList;
@@ -50,9 +56,9 @@ public final class CreateKeyRequest {
          * @param keyName
          *            The name of the key in the given vault
          * @param keyType
-         *            The type of key to create. Valid key types, see JsonWebKeyType. 
-         *            Supported JsonWebKey key types (kty) for Elliptic Curve, RSA, HSM, Octet. 
-         *            Possible values include: 'EC', 'RSA', 'RSA-HSM', 'oct'
+         *            The type of key to create. Valid key types, see JsonWebKeyType.
+         *            Supported JsonWebKey key types (kty) for Elliptic Curve, RSA, HSM,
+         *            Octet. Possible values include: 'EC', 'RSA', 'RSA-HSM', 'oct'
          */
         public Builder(String vaultBaseUrl, String keyName, JsonWebKeyType keyType) {
             this.vaultBaseUrl = vaultBaseUrl;
@@ -100,8 +106,7 @@ public final class CreateKeyRequest {
          * Set the tags value.
          * 
          * @param tags
-         *            Application-specific metadata in the form of key-value
-         *            pairs.
+         *            Application-specific metadata in the form of key-value pairs.
          * @return the Builder object itself.
          */
         public Builder withTags(Map<String, String> tags) {
@@ -112,7 +117,8 @@ public final class CreateKeyRequest {
         /**
          * Set the curve value.
          *
-         * @param curve Defines values for JsonWebKeyCurveName;
+         * @param curve
+         *            Defines values for JsonWebKeyCurveName;
          *
          * @return the Builder object itself.
          */
@@ -152,8 +158,7 @@ public final class CreateKeyRequest {
 
         if (builder.tags != null) {
             tags = Collections.unmodifiableMap(builder.tags);
-        }
-        else {
+        } else {
             tags = null;
         }
 
@@ -216,5 +221,7 @@ public final class CreateKeyRequest {
     /**
      * @return the curve
      */
-    public JsonWebKeyCurveName curve() {return curve; }
+    public JsonWebKeyCurveName curve() {
+        return curve;
+    }
 }

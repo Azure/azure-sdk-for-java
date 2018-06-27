@@ -11,6 +11,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Json Web Signature header class.
@@ -26,26 +27,27 @@ class JWSHeader {
 
     /**
      * Constructor.
-     */ 
-    public JWSHeader(){}
+     */
+    JWSHeader() {
+    }
 
     /**
      * Constructor.
      * 
      * @param alg
-     *      signing algorithm (RS256).
+     *            signing algorithm (RS256).
      * @param kid
-     *      signing key id.
+     *            signing key id.
      * @param at
-     *      authorization token.
+     *            authorization token.
      * @param ts
-     *      timestamp.
+     *            timestamp.
      * @param typ
-     *      authorization type (PoP).
+     *            authorization type (PoP).
      * @param p
-     *      p <not used now>
+     *            p <not used now>
      */
-    public JWSHeader(String alg, String kid, String at, long ts, String typ, String p){
+    JWSHeader(String alg, String kid, String at, long ts, String typ, String p) {
         this.alg = alg;
         this.kid = kid;
         this.at = at;
@@ -57,23 +59,26 @@ class JWSHeader {
     /**
      * Compare two JwsHeader.
      * 
-     * @return 
-     *      true if JWSHeaders are identical.
+     * @return true if JWSHeaders are identical.
      */
-    public boolean equals(JWSHeader other){
-        return this.alg.equals(other.alg) &&
-                this.kid.equals(other.kid) &&
-                this.at.equals(other.at) &&
-                this.ts == other.ts &&
-                this.p.equals(other.p) &&
-                this.typ.equals(other.typ);
+    public boolean equals(JWSHeader other) {
+        return this.alg.equals(other.alg) && this.kid.equals(other.kid) && this.at.equals(other.at)
+                && this.ts == other.ts && this.p.equals(other.p) && this.typ.equals(other.typ);
     }
     
     /**
+     * Hash code for objects.
+     * 
+     * @return hashcode
+     */
+    public int hashCode() {
+        return Objects.hash(this.alg, this.kid, this.at, this.ts, this.p, this.typ);
+    }
+
+    /**
      * Serialize JWSHeader to json string.
      * 
-     * @return 
-     *      Json string with serialized JWSHeader.
+     * @return Json string with serialized JWSHeader.
      */
     public String serialize() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
@@ -84,29 +89,27 @@ class JWSHeader {
      * Construct JWSHeader from json string.
      * 
      * @param json
-     *      json string.
+     *            json string.
      * 
-     * @return 
-     *      Constructed JWSHeader
+     * @return Constructed JWSHeader
      */
-    public static JWSHeader deserialize(String json) throws IOException{
+    public static JWSHeader deserialize(String json) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        return mapper.readValue(json,JWSHeader.class);
+        return mapper.readValue(json, JWSHeader.class);
     }
 
     /**
      * Construct JWSHeader from base64url string.
      * 
      * @param base64
-     *      base64 url string.
+     *            base64 url string.
      * 
-     * @return 
-     *      Constructed JWSHeader
+     * @return Constructed JWSHeader
      */
     public static JWSHeader fromBase64String(String base64) throws IOException {
         String json = MessageSecurityHelper.base64UrltoString(base64);
         ObjectMapper mapper = new ObjectMapper();
-        return mapper.readValue(json,JWSHeader.class);
+        return mapper.readValue(json, JWSHeader.class);
     }
 
     /**
@@ -150,7 +153,7 @@ class JWSHeader {
     }
 
     /**
-     * p <not used now>
+     * p <not used now>.
      */
     @JsonProperty("p")
     public String p() {
