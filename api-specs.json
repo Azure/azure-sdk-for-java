@@ -10,6 +10,10 @@
       "\"moduleName\"": "\"AppService\""
     }
   },
+  "automation/resource-manager": {
+    "source": "specification/automation/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "authorization/resource-manager": {
     "source": "specification/authorization/resource-manager/readme.md",
     "args": "--multiapi --fluent"
