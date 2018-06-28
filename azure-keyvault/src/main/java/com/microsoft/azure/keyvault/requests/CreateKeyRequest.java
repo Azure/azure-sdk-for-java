@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.keyvault.requests;
 
 import java.util.ArrayList;
@@ -6,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.microsoft.azure.keyvault.models.Attributes;
+import com.microsoft.azure.keyvault.models.JsonWebKeyCurveName;
 import com.microsoft.azure.keyvault.models.KeyAttributes;
 import com.microsoft.azure.keyvault.webkey.JsonWebKeyOperation;
 import com.microsoft.azure.keyvault.webkey.JsonWebKeyType;
@@ -22,6 +29,7 @@ public final class CreateKeyRequest {
     private final List<JsonWebKeyOperation> keyOperations;
     private final KeyAttributes keyAttributes;
     private final Map<String, String> tags;
+    private final JsonWebKeyCurveName curve;
 
     /**
      * The {@link CreateKeyRequest} builder.
@@ -38,6 +46,7 @@ public final class CreateKeyRequest {
         private List<JsonWebKeyOperation> keyOperations;
         private KeyAttributes attributes;
         private Map<String, String> tags;
+        private JsonWebKeyCurveName curve;
 
         /**
          * The builder for constructing {@link CreateKeyRequest} object.
@@ -47,9 +56,9 @@ public final class CreateKeyRequest {
          * @param keyName
          *            The name of the key in the given vault
          * @param keyType
-         *            The type of key to create. Valid key types, see JsonWebKeyType. 
-         *            Supported JsonWebKey key types (kty) for Elliptic Curve, RSA, HSM, Octet. 
-         *            Possible values include: 'EC', 'RSA', 'RSA-HSM', 'oct'
+         *            The type of key to create. Valid key types, see JsonWebKeyType.
+         *            Supported JsonWebKey key types (kty) for Elliptic Curve, RSA, HSM,
+         *            Octet. Possible values include: 'EC', 'RSA', 'RSA-HSM', 'oct'
          */
         public Builder(String vaultBaseUrl, String keyName, JsonWebKeyType keyType) {
             this.vaultBaseUrl = vaultBaseUrl;
@@ -97,12 +106,24 @@ public final class CreateKeyRequest {
          * Set the tags value.
          * 
          * @param tags
-         *            Application-specific metadata in the form of key-value
-         *            pairs.
+         *            Application-specific metadata in the form of key-value pairs.
          * @return the Builder object itself.
          */
         public Builder withTags(Map<String, String> tags) {
             this.tags = tags;
+            return this;
+        }
+
+        /**
+         * Set the curve value.
+         *
+         * @param curve
+         *            Defines values for JsonWebKeyCurveName;
+         *
+         * @return the Builder object itself.
+         */
+        public Builder withCurve(JsonWebKeyCurveName curve) {
+            this.curve = curve;
             return this;
         }
 
@@ -139,6 +160,12 @@ public final class CreateKeyRequest {
             tags = Collections.unmodifiableMap(builder.tags);
         } else {
             tags = null;
+        }
+
+        if (builder.curve != null) {
+            curve = builder.curve;
+        } else {
+            curve = null;
         }
     }
 
@@ -189,5 +216,12 @@ public final class CreateKeyRequest {
      */
     public Map<String, String> tags() {
         return tags;
+    }
+
+    /**
+     * @return the curve
+     */
+    public JsonWebKeyCurveName curve() {
+        return curve;
     }
 }

@@ -18,6 +18,10 @@ import com.microsoft.azure.keyvault.cryptography.algorithms.Aes256CbcHmacSha512;
 import com.microsoft.azure.keyvault.cryptography.algorithms.AesKw128;
 import com.microsoft.azure.keyvault.cryptography.algorithms.AesKw192;
 import com.microsoft.azure.keyvault.cryptography.algorithms.AesKw256;
+import com.microsoft.azure.keyvault.cryptography.algorithms.Es256k;
+import com.microsoft.azure.keyvault.cryptography.algorithms.Es256;
+import com.microsoft.azure.keyvault.cryptography.algorithms.Es384;
+import com.microsoft.azure.keyvault.cryptography.algorithms.Es512;
 import com.microsoft.azure.keyvault.cryptography.algorithms.Rs256;
 import com.microsoft.azure.keyvault.cryptography.algorithms.Rsa15;
 import com.microsoft.azure.keyvault.cryptography.algorithms.RsaOaep;
@@ -44,6 +48,11 @@ public class AlgorithmResolver {
 
         Default.put( Rs256.ALGORITHM_NAME, new Rs256() );
         // Default.put( RsNull.ALGORITHM_NAME, new RsNull() );
+        
+        Default.put(Es256k.ALGORITHM_NAME, new Es256k());
+        Default.put(Es256.ALGORITHM_NAME, new Es256());
+        Default.put(Es384.ALGORITHM_NAME, new Es384());
+        Default.put(Es512.ALGORITHM_NAME, new Es512());
     }
 
     private final ConcurrentMap<String, Algorithm> _algorithms = new ConcurrentHashMap<String, Algorithm>();

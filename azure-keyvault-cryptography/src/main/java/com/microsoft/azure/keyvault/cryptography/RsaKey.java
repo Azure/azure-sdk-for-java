@@ -12,6 +12,7 @@ import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
 import java.security.interfaces.RSAPublicKey;
+import java.util.UUID;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
@@ -21,12 +22,13 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.microsoft.azure.keyvault.core.IKey;
 import com.microsoft.azure.keyvault.cryptography.algorithms.Rs256;
 import com.microsoft.azure.keyvault.cryptography.algorithms.RsaOaep;
-import com.microsoft.azure.keyvault.cryptography.Strings;
+import com.microsoft.azure.keyvault.webkey.JsonWebKey;
 
 public class RsaKey implements IKey {
 
     public static int KeySize1024 = 1024;
     public static int KeySize2048 = 2048;
+    public static int KeySize4096 = 4096;
 
     public static int getDefaultKeySize() {
         return RsaKey.KeySize2048;
@@ -36,14 +38,48 @@ public class RsaKey implements IKey {
     private final KeyPair  _keyPair;
     private final Provider _provider;
 
+    /**
+     * Constructor.
+     * 
+     * Generates a new RsaKey with a 2048 size keypair and a randomly generated kid.
+     * @throws NoSuchAlgorithmException
+     */
+    public RsaKey() throws NoSuchAlgorithmException {
+		this(UUID.randomUUID().toString());
+    }
+    
+    /**
+     * Constructor.
+     * 
+     * Generates a new RsaKey with a 2048 size keypair and the kid given.
+     * @param kid 
+     * @throws NoSuchAlgorithmException
+     */
     public RsaKey(String kid) throws NoSuchAlgorithmException {
         this(kid, getDefaultKeySize());
     }
 
+    /**
+     * Constructor.
+     * 
+     * Generates a new RsaKey with size keySize and the kid given.
+     * @param kid
+     * @param keySize
+     * @throws NoSuchAlgorithmException
+     */
     public RsaKey(String kid, int keySize) throws NoSuchAlgorithmException {
     	this(kid, keySize, null);
     }
     
+    /**
+     * Constructor.
+     * 
+     * Generates a new RsaKey with size keySize and the kid given. The given provider is used for algorithm implementation.
+     * @param kid
+     * @param keySize
+     * @param provider Java security provider.
+     * @throws NoSuchAlgorithmException
+     */
     public RsaKey(String kid, int keySize, Provider provider) throws NoSuchAlgorithmException {
 
         if (Strings.isNullOrWhiteSpace(kid)) {
@@ -59,22 +95,39 @@ public class RsaKey implements IKey {
         _provider = provider;
     }
 
+    /**
+     * Constructor.
+     * 
+     * Generates a new RsaKey with the given KeyPair.
+     * The keyPair must be an RSAKey.
+     * @param kid
+     * @param keyPair
+     */
     public RsaKey(String kid, KeyPair keyPair) {
     	this(kid, keyPair, null);
     }
 
+    /**
+     * Constructor.
+     * 
+     * Generates a new RsaKey with given KeyPair. The given provider is used for algorithm implementation.
+     * The keyPair must be an RSAKey.
+     * @param kid
+     * @param keyPair
+     * @param provider Java security provider
+     */
     public RsaKey(String kid, KeyPair keyPair, Provider provider) {
 
-        if (Strings.isNullOrWhiteSpace(kid)) {
-            throw new IllegalArgumentException("kid");
-        }
-
+    	if (Strings.isNullOrWhiteSpace(kid)) {
+    		throw new IllegalArgumentException("Please provide a kid");
+    	}
+    	
         if (keyPair == null) {
-            throw new IllegalArgumentException("kid");
+            throw new IllegalArgumentException("Please provide a KeyPair");
         }
 
         if (keyPair.getPublic() == null || !(keyPair.getPublic() instanceof RSAPublicKey)) {
-            throw new IllegalArgumentException("keyPair");
+            throw new IllegalArgumentException("The KeyPair is not an RsaKey");
         }
         
         _kid      = kid;
@@ -82,6 +135,47 @@ public class RsaKey implements IKey {
         _provider = provider;
     }
 
+    /**
+     * Converts JSON web key to RsaKey.
+     * @param jwk
+     * @return RsaKey
+     */
+    public static RsaKey fromJsonWebKey(JsonWebKey jwk) {
+    	return fromJsonWebKey(jwk, false, null);
+    }
+    
+    /**
+	 * Converts JSON web key to RsaKey and include the private key if set to true.
+     * @param jwk
+     * @param includePrivateParameters true if the RSA key pair should include the private key. False otherwise.
+     * @return RsaKey
+     */
+	public static RsaKey fromJsonWebKey(JsonWebKey jwk, boolean includePrivateParameters) {
+		return fromJsonWebKey(jwk, includePrivateParameters, null);
+	}
+	
+    /**
+     * Converts JSON web key to RsaKey and include the private key if set to true.
+     * @param provider the Java security provider.
+     * @param includePrivateParameters true if the RSA key pair should include the private key. False otherwise.
+     * @return RsaKey
+     */
+	public static RsaKey fromJsonWebKey(JsonWebKey jwk, boolean includePrivateParameters, Provider provider) {
+		if (jwk.kid() != null) {
+			return new RsaKey(jwk.kid(), jwk.toRSA(includePrivateParameters, provider));
+		} else {
+			throw new IllegalArgumentException("Json Web Key must have a kid");
+		}
+	}
+	
+	/**
+	 * Converts RsaKey to JSON web key.
+	 * @return
+	 */
+	public JsonWebKey toJsonWebKey() {
+		return JsonWebKey.fromRSA(_keyPair);
+	}
+	
     @Override
     public String getDefaultEncryptionAlgorithm() {
         return RsaOaep.ALGORITHM_NAME;
@@ -102,6 +196,10 @@ public class RsaKey implements IKey {
         return _kid;
     }
 
+    public KeyPair getKeyPair() {
+    	return _keyPair;
+    }
+    
     @Override
     public ListenableFuture<byte[]> decryptAsync(final byte[] ciphertext, final byte[] iv, final byte[] authenticationData, final byte[] authenticationTag, final String algorithm) throws NoSuchAlgorithmException {
 

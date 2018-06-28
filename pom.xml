@@ -6,7 +6,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.microsoft.azure</groupId>
-  <version>1.0.1-SNAPSHOT</version>
+  <version>1.1</version>
   <artifactId>azure-keyvault-parent</artifactId>
   <packaging>pom</packaging>
 
@@ -33,7 +33,7 @@
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <testMode>playback</testMode>
     <playbackServerPort>11080</playbackServerPort>
-    
+    <alternativePlaybackServerPort>11081</alternativePlaybackServerPort>
   </properties>
 
   <developers>
@@ -81,6 +81,13 @@
 
   <dependencyManagement>
     <dependencies>
+	<!-- https://mvnrepository.com/artifact/com.microsoft.azure/azure-mgmt-keyvault -->
+	<dependency>
+    		<groupId>com.microsoft.azure</groupId>
+    		<artifactId>azure-mgmt-keyvault</artifactId>
+    		<version>1.11.1</version>
+	</dependency>
+
       <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-core</artifactId>
@@ -109,7 +116,7 @@
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-client-runtime</artifactId>
-        <version>1.0.0</version>
+		<version>1.3.0</version>
       </dependency>
       <dependency>
         <groupId>com.google.guava</groupId>
@@ -126,7 +133,7 @@
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>adal4j</artifactId>
-        <version>1.1.2</version>
+        <version>1.4.0</version>
         <scope>test</scope>
       </dependency>
 
@@ -191,27 +198,20 @@
         <artifactId>maven-release-plugin</artifactId>
         <version>2.5.3</version>
       </plugin>
-    
-    <plugin>
-  <groupId>org.eclipse.jetty</groupId>
-  <artifactId>jetty-maven-plugin</artifactId>
-  <version>9.2.22.v20170606</version>
-  <configuration>
-          <scanIntervalSeconds>0</scanIntervalSeconds>
-          <stopPort>11079</stopPort>
-          <stopKey>STOP</stopKey>
-          <httpConnector>
-            <port>${playbackServerPort}</port>
-          </httpConnector>
-       
+
+      <plugin>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-maven-plugin</artifactId>
+        <version>9.2.22.v20170606</version>
+        <configuration>
+          <jettyXml>jetty.xml</jettyXml>
         </configuration>
-        
-</plugin>
+      </plugin>
     </plugins>
 
     <pluginManagement>
       <plugins>
-      
+
       <plugin>
     <groupId>org.codehaus.mojo</groupId>
     <artifactId>properties-maven-plugin</artifactId>
@@ -227,7 +227,7 @@
 <name>keyvault.vaulturi</name>
        		<value>https://tifchen-keyvault-fancy.vault.azure.net</value>
                     </property>
-                    
+
                     <property>
                            		<name>keyvault.vaulturi.alt</name>
        		<value>https://tifchen-keyvault-fancier.vault.azure.net</value>
@@ -267,6 +267,26 @@
           <artifactId>maven-release-plugin</artifactId>
           <version>2.5.2</version>
         </plugin>
+  			<plugin>
+	  			<groupId>org.apache.maven.plugins</groupId>
+	  			<artifactId>maven-clean-plugin</artifactId>
+	  			<version>3.0.0</version>
+	  			<configuration>
+					<excludeDefaultDirectories>true</excludeDefaultDirectories>
+	  				<filesets>
+	  					<fileset>
+	  						<directory>target</directory>
+	  						<followSymlinks>false</followSymlinks>
+							<includes>
+								<include>**</include>
+							</includes>
+	  						<excludes>
+	  							<exclude>test-classes/session-records/</exclude>
+	  						</excludes>
+	  					</fileset>
+	  				</filesets>
+	  			</configuration>
+	  		</plugin>
         <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
         <plugin>
         	<groupId>org.eclipse.m2e</groupId>
@@ -345,8 +365,8 @@
   <modules>
     <module>./azure-keyvault</module>
     <module>./azure-keyvault-core</module>
+    <module>./azure-keyvault-webkey</module>
     <module>./azure-keyvault-cryptography</module>
     <module>./azure-keyvault-extensions</module>
-    <module>./azure-keyvault-webkey</module>
   </modules>
 </project>

@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft Corporation. All rights reserved.
  * Licensed under the MIT License. See License.txt in the project root for
  * license information.
- */
+ **/
 
 package com.microsoft.azure.keyvault.webkey;
 
@@ -16,6 +16,16 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for JsonWebKeySignatureAlgorithm.
  */
 public final class JsonWebKeySignatureAlgorithm {
+
+    /** Static value PS256 for JsonWebKeySignatureAlgorithm. */
+    public static final JsonWebKeySignatureAlgorithm PS256 = new JsonWebKeySignatureAlgorithm("PS256");
+
+    /** Static value PS384 for JsonWebKeySignatureAlgorithm. */
+    public static final JsonWebKeySignatureAlgorithm PS384 = new JsonWebKeySignatureAlgorithm("PS384");
+
+    /** Static value PS512 for JsonWebKeySignatureAlgorithm. */
+    public static final JsonWebKeySignatureAlgorithm PS512 = new JsonWebKeySignatureAlgorithm("PS512");
+
     /** Static value RS256 for JsonWebKeySignatureAlgorithm. */
     public static final JsonWebKeySignatureAlgorithm RS256 = new JsonWebKeySignatureAlgorithm("RS256");
 
@@ -27,12 +37,22 @@ public final class JsonWebKeySignatureAlgorithm {
 
     /** Static value RSNULL for JsonWebKeySignatureAlgorithm. */
     public static final JsonWebKeySignatureAlgorithm RSNULL = new JsonWebKeySignatureAlgorithm("RSNULL");
+    /** Static value ES256 for JsonWebKeySignatureAlgorithm. */
+    public static final JsonWebKeySignatureAlgorithm ES256 = new JsonWebKeySignatureAlgorithm("ES256");
+    /** Static value ES384 for JsonWebKeySignatureAlgorithm. */
+    public static final JsonWebKeySignatureAlgorithm ES384 = new JsonWebKeySignatureAlgorithm("ES384");
+    /** Static value ES512 for JsonWebKeySignatureAlgorithm. */
+    public static final JsonWebKeySignatureAlgorithm ES512 = new JsonWebKeySignatureAlgorithm("ES512");
+    /** Static value ECDSA256 for JsonWebKeySignatureAlgorithm. */
+    public static final JsonWebKeySignatureAlgorithm ES256K = new JsonWebKeySignatureAlgorithm("ES256K");
 
     private String value;
 
     /**
      * Creates a custom value for JsonWebKeySignatureAlgorithm.
-     * @param value the custom value
+     * 
+     * @param value
+     *            the custom value
      */
     public JsonWebKeySignatureAlgorithm(String value) {
         this.value = value;
@@ -64,10 +84,10 @@ public final class JsonWebKeySignatureAlgorithm {
             return value.equals(rhs.value);
         }
     }
-    
+
     /**
      * All the JWK signature algorithms.
      */
-    public static final List<JsonWebKeySignatureAlgorithm> ALL_ALGORITHMS =
-            Collections.unmodifiableList(Arrays.asList(RS256, RS384, RS512, RSNULL));
+    public static final List<JsonWebKeySignatureAlgorithm> ALL_ALGORITHMS = Collections.unmodifiableList(
+            Arrays.asList(RS256, RS384, RS512, RSNULL, PS256, PS384, PS512, ES256, ES384, ES512, ES256K));
 }

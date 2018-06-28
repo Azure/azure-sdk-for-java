@@ -1,9 +1,19 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.keyvault;
 
 import com.microsoft.azure.keyvault.implementation.KeyVaultClientCustomImpl;
 import com.microsoft.rest.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 
+/**
+ * Class for Key Vault Client.
+ * 
+ */
 public final class KeyVaultClient extends KeyVaultClientCustomImpl implements KeyVaultClientCustom {
 
     /**
