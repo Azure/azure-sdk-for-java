@@ -27,7 +27,7 @@ public class SignalRKeysInner {
     private String secondaryKey;
 
     /**
-     * Get the primaryKey value.
+     * Get the primary access key.
      *
      * @return the primaryKey value
      */
@@ -36,7 +36,7 @@ public class SignalRKeysInner {
     }
 
     /**
-     * Set the primaryKey value.
+     * Set the primary access key.
      *
      * @param primaryKey the primaryKey value to set
      * @return the SignalRKeysInner object itself.
@@ -47,7 +47,7 @@ public class SignalRKeysInner {
     }
 
     /**
-     * Get the secondaryKey value.
+     * Get the secondary access key.
      *
      * @return the secondaryKey value
      */
@@ -56,7 +56,7 @@ public class SignalRKeysInner {
     }
 
     /**
-     * Set the secondaryKey value.
+     * Set the secondary access key.
      *
      * @param secondaryKey the secondaryKey value to set
      * @return the SignalRKeysInner object itself.

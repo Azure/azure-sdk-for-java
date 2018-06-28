@@ -10,13 +10,13 @@ package com.microsoft.azure.management.signalr.v2018_03_01_preview;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.signalr.v2018_03_01_preview.implementation.SignalRManager;
+import com.microsoft.azure.management.signalr.v2018_03_01_preview.implementation.SignalRServiceManager;
 import com.microsoft.azure.management.signalr.v2018_03_01_preview.implementation.OperationInner;
 
 /**
  * Type representing Operation.
  */
-public interface Operation extends HasInner<OperationInner>, HasManager<SignalRManager> {
+public interface Operation extends HasInner<OperationInner>, HasManager<SignalRServiceManager> {
     /**
      * @return the display value.
      */
