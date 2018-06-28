@@ -22,7 +22,7 @@ public class ServiceSpecification {
     private List<MetricSpecification> metricSpecifications;
 
     /**
-     * Get the metricSpecifications value.
+     * Get specifications of the Metrics for Azure Monitoring.
      *
      * @return the metricSpecifications value
      */
@@ -31,7 +31,7 @@ public class ServiceSpecification {
     }
 
     /**
-     * Set the metricSpecifications value.
+     * Set specifications of the Metrics for Azure Monitoring.
      *
      * @param metricSpecifications the metricSpecifications value to set
      * @return the ServiceSpecification object itself.

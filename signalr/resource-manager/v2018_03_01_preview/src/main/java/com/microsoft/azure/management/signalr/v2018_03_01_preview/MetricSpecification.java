@@ -64,7 +64,7 @@ public class MetricSpecification {
     private String category;
 
     /**
-     * Get the name value.
+     * Get name of the metric.
      *
      * @return the name value
      */
@@ -73,7 +73,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Set the name value.
+     * Set name of the metric.
      *
      * @param name the name value to set
      * @return the MetricSpecification object itself.
@@ -84,7 +84,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Get the displayName value.
+     * Get localized friendly display name of the metric.
      *
      * @return the displayName value
      */
@@ -93,7 +93,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Set the displayName value.
+     * Set localized friendly display name of the metric.
      *
      * @param displayName the displayName value to set
      * @return the MetricSpecification object itself.
@@ -104,7 +104,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Get the displayDescription value.
+     * Get localized friendly description of the metric.
      *
      * @return the displayDescription value
      */
@@ -113,7 +113,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Set the displayDescription value.
+     * Set localized friendly description of the metric.
      *
      * @param displayDescription the displayDescription value to set
      * @return the MetricSpecification object itself.
@@ -124,7 +124,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Get the unit value.
+     * Get the unit that makes sense for the metric.
      *
      * @return the unit value
      */
@@ -133,7 +133,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Set the unit value.
+     * Set the unit that makes sense for the metric.
      *
      * @param unit the unit value to set
      * @return the MetricSpecification object itself.
@@ -144,7 +144,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Get the aggregationType value.
+     * Get only provide one value for this field. Valid values: Average, Minimum, Maximum, Total, Count.
      *
      * @return the aggregationType value
      */
@@ -153,7 +153,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Set the aggregationType value.
+     * Set only provide one value for this field. Valid values: Average, Minimum, Maximum, Total, Count.
      *
      * @param aggregationType the aggregationType value to set
      * @return the MetricSpecification object itself.
@@ -164,7 +164,9 @@ public class MetricSpecification {
     }
 
     /**
-     * Get the fillGapWithZero value.
+     * Get optional. If set to true, then zero will be returned for time duration where no metric is emitted/published.
+     Ex. a metric that returns the number of times a particular error code was emitted. The error code may not appear
+     often, instead of the RP publishing 0, Shoebox can auto fill in 0s for time periods where nothing was emitted.
      *
      * @return the fillGapWithZero value
      */
@@ -173,7 +175,9 @@ public class MetricSpecification {
     }
 
     /**
-     * Set the fillGapWithZero value.
+     * Set optional. If set to true, then zero will be returned for time duration where no metric is emitted/published.
+     Ex. a metric that returns the number of times a particular error code was emitted. The error code may not appear
+     often, instead of the RP publishing 0, Shoebox can auto fill in 0s for time periods where nothing was emitted.
      *
      * @param fillGapWithZero the fillGapWithZero value to set
      * @return the MetricSpecification object itself.
@@ -184,7 +188,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Get the category value.
+     * Get the name of the metric category that the metric belongs to. A metric can only belong to a single category.
      *
      * @return the category value
      */
@@ -193,7 +197,7 @@ public class MetricSpecification {
     }
 
     /**
-     * Set the category value.
+     * Set the name of the metric category that the metric belongs to. A metric can only belong to a single category.
      *
      * @param category the category value to set
      * @return the MetricSpecification object itself.
