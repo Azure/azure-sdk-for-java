@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>	
 	<groupId>com.microsoft.azure</groupId>
 	<artifactId>azure-servicebus-parent</artifactId>
-	<version>2.0.0-preview2</version>
+	<version>2.0.0</version><!-- Need not change for every release-->
 	<packaging>pom</packaging>
 	
 	<url>https://github.com/Azure/azure-service-bus-java</url>
@@ -13,7 +13,7 @@
 		<proton-j-version>0.22.0</proton-j-version>
 	  	<junit-version>4.12</junit-version>
 		<slf4j-version>1.7.0</slf4j-version>
-		<client-current-version>2.0.0-preview2</client-current-version>
+		<client-current-version>2.0.0-PREVIEW-3</client-current-version>
 	</properties>
 	
 	<modules>
