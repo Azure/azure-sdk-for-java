@@ -12,7 +12,6 @@ import com.microsoft.azure.management.batchai.v2018_05_01.FileServer;
 import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 import com.microsoft.azure.management.batchai.v2018_05_01.FileServerCreateParameters;
-import java.util.Map;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.batchai.v2018_05_01.DataDisks;
 import com.microsoft.azure.management.batchai.v2018_05_01.MountSettings;
@@ -114,11 +113,6 @@ class FileServerImpl extends CreatableUpdatableImpl<FileServer, FileServerInner,
     }
 
     @Override
-    public String location() {
-        return this.inner().location();
-    }
-
-    @Override
     public MountSettings mountSettings() {
         return this.inner().mountSettings();
     }
@@ -149,11 +143,6 @@ class FileServerImpl extends CreatableUpdatableImpl<FileServer, FileServerInner,
     }
 
     @Override
-    public Map<String, String> tags() {
-        return this.inner().getTags();
-    }
-
-    @Override
     public String type() {
         return this.inner().type();
     }
@@ -177,12 +166,6 @@ class FileServerImpl extends CreatableUpdatableImpl<FileServer, FileServerInner,
     }
 
     @Override
-    public FileServerImpl withLocation(String location) {
-        this.createOrUpdateParameter.withLocation(location);
-        return this;
-    }
-
-    @Override
     public FileServerImpl withSshConfiguration(SshConfiguration sshConfiguration) {
         this.createOrUpdateParameter.withSshConfiguration(sshConfiguration);
         return this;
@@ -197,12 +180,6 @@ class FileServerImpl extends CreatableUpdatableImpl<FileServer, FileServerInner,
     @Override
     public FileServerImpl withSubnet(ResourceId subnet) {
         this.createOrUpdateParameter.withSubnet(subnet);
-        return this;
-    }
-
-    @Override
-    public FileServerImpl withTags(Map<String, String> tags) {
-        this.createOrUpdateParameter.withTags(tags);
         return this;
     }
 

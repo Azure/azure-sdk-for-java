@@ -11,17 +11,27 @@ package com.microsoft.azure.management.batchai.v2018_05_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Settings for the container to be downloaded.
+ * Docker container settings.
  */
 public class ContainerSettings {
     /**
-     * Registry to download the container from.
+     * Image source registry.
+     * Information about docker image and docker registry to download the
+     * container from.
      */
     @JsonProperty(value = "imageSourceRegistry", required = true)
     private ImageSourceRegistry imageSourceRegistry;
 
     /**
-     * Get the imageSourceRegistry value.
+     * /dev/shm size.
+     * Size of /dev/shm. Please refer to docker documentation for supported
+     * argument formats.
+     */
+    @JsonProperty(value = "shmSize")
+    private String shmSize;
+
+    /**
+     * Get information about docker image and docker registry to download the container from.
      *
      * @return the imageSourceRegistry value
      */
@@ -30,13 +40,33 @@ public class ContainerSettings {
     }
 
     /**
-     * Set the imageSourceRegistry value.
+     * Set information about docker image and docker registry to download the container from.
      *
      * @param imageSourceRegistry the imageSourceRegistry value to set
      * @return the ContainerSettings object itself.
      */
     public ContainerSettings withImageSourceRegistry(ImageSourceRegistry imageSourceRegistry) {
         this.imageSourceRegistry = imageSourceRegistry;
+        return this;
+    }
+
+    /**
+     * Get size of /dev/shm. Please refer to docker documentation for supported argument formats.
+     *
+     * @return the shmSize value
+     */
+    public String shmSize() {
+        return this.shmSize;
+    }
+
+    /**
+     * Set size of /dev/shm. Please refer to docker documentation for supported argument formats.
+     *
+     * @param shmSize the shmSize value to set
+     * @return the ContainerSettings object itself.
+     */
+    public ContainerSettings withShmSize(String shmSize) {
+        this.shmSize = shmSize;
         return this;
     }
 

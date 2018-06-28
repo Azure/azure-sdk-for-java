@@ -213,7 +213,7 @@ public class JobInner extends Resource {
     private JobPropertiesExecutionInfo executionInfo;
 
     /**
-     * Get the experimentName value.
+     * Get describe the experiment information of the job.
      *
      * @return the experimentName value
      */
@@ -222,7 +222,7 @@ public class JobInner extends Resource {
     }
 
     /**
-     * Set the experimentName value.
+     * Set describe the experiment information of the job.
      *
      * @param experimentName the experimentName value to set
      * @return the JobInner object itself.
@@ -233,7 +233,7 @@ public class JobInner extends Resource {
     }
 
     /**
-     * Get the priority value.
+     * Get priority associated with the job. Priority values can range from -1000 to 1000, with -1000 being the lowest priority and 1000 being the highest priority. The default value is 0.
      *
      * @return the priority value
      */
@@ -242,7 +242,7 @@ public class JobInner extends Resource {
     }
 
     /**
-     * Set the priority value.
+     * Set priority associated with the job. Priority values can range from -1000 to 1000, with -1000 being the lowest priority and 1000 being the highest priority. The default value is 0.
      *
      * @param priority the priority value to set
      * @return the JobInner object itself.
@@ -273,7 +273,7 @@ public class JobInner extends Resource {
     }
 
     /**
-     * Get the nodeCount value.
+     * Get the job will be gang scheduled on that many compute nodes.
      *
      * @return the nodeCount value
      */
@@ -282,7 +282,7 @@ public class JobInner extends Resource {
     }
 
     /**
-     * Set the nodeCount value.
+     * Set the job will be gang scheduled on that many compute nodes.
      *
      * @param nodeCount the nodeCount value to set
      * @return the JobInner object itself.
@@ -293,7 +293,7 @@ public class JobInner extends Resource {
     }
 
     /**
-     * Get the containerSettings value.
+     * Get if the container was downloaded as part of cluster setup then the same container image will be used. If not provided, the job will run on the VM.
      *
      * @return the containerSettings value
      */
@@ -302,7 +302,7 @@ public class JobInner extends Resource {
     }
 
     /**
-     * Set the containerSettings value.
+     * Set if the container was downloaded as part of cluster setup then the same container image will be used. If not provided, the job will run on the VM.
      *
      * @param containerSettings the containerSettings value to set
      * @return the JobInner object itself.
@@ -313,7 +313,7 @@ public class JobInner extends Resource {
     }
 
     /**
-     * Get the toolType value.
+     * Get possible values are: cntk, tensorflow, caffe, caffe2, chainer, custom. Possible values include: 'cntk', 'tensorflow', 'caffe', 'caffe2', 'chainer', 'custom'.
      *
      * @return the toolType value
      */
@@ -322,7 +322,7 @@ public class JobInner extends Resource {
     }
 
     /**
-     * Set the toolType value.
+     * Set possible values are: cntk, tensorflow, caffe, caffe2, chainer, custom. Possible values include: 'cntk', 'tensorflow', 'caffe', 'caffe2', 'chainer', 'custom'.
      *
      * @param toolType the toolType value to set
      * @return the JobInner object itself.
@@ -433,7 +433,7 @@ public class JobInner extends Resource {
     }
 
     /**
-     * Get the jobPreparation value.
+     * Get the specified actions will run on all the nodes that are part of the job.
      *
      * @return the jobPreparation value
      */
@@ -442,7 +442,7 @@ public class JobInner extends Resource {
     }
 
     /**
-     * Set the jobPreparation value.
+     * Set the specified actions will run on all the nodes that are part of the job.
      *
      * @param jobPreparation the jobPreparation value to set
      * @return the JobInner object itself.
@@ -453,7 +453,7 @@ public class JobInner extends Resource {
     }
 
     /**
-     * Get the stdOutErrPathPrefix value.
+     * Get the path where the Batch AI service will upload stdout and stderror of the job.
      *
      * @return the stdOutErrPathPrefix value
      */
@@ -462,7 +462,7 @@ public class JobInner extends Resource {
     }
 
     /**
-     * Set the stdOutErrPathPrefix value.
+     * Set the path where the Batch AI service will upload stdout and stderror of the job.
      *
      * @param stdOutErrPathPrefix the stdOutErrPathPrefix value to set
      * @return the JobInner object itself.
@@ -513,7 +513,7 @@ public class JobInner extends Resource {
     }
 
     /**
-     * Get the environmentVariables value.
+     * Get batch AI services sets the following environment variables for all jobs: AZ_BATCHAI_INPUT_id, AZ_BATCHAI_OUTPUT_id, AZ_BATCHAI_NUM_GPUS_PER_NODE, For distributed TensorFlow jobs, following additional environment variables are set by the Batch AI Service: AZ_BATCHAI_PS_HOSTS, AZ_BATCHAI_WORKER_HOSTS.
      *
      * @return the environmentVariables value
      */
@@ -522,7 +522,7 @@ public class JobInner extends Resource {
     }
 
     /**
-     * Set the environmentVariables value.
+     * Set batch AI services sets the following environment variables for all jobs: AZ_BATCHAI_INPUT_id, AZ_BATCHAI_OUTPUT_id, AZ_BATCHAI_NUM_GPUS_PER_NODE, For distributed TensorFlow jobs, following additional environment variables are set by the Batch AI Service: AZ_BATCHAI_PS_HOSTS, AZ_BATCHAI_WORKER_HOSTS.
      *
      * @param environmentVariables the environmentVariables value to set
      * @return the JobInner object itself.
@@ -533,7 +533,7 @@ public class JobInner extends Resource {
     }
 
     /**
-     * Get the constraints value.
+     * Get constraints associated with the Job.
      *
      * @return the constraints value
      */
@@ -542,7 +542,7 @@ public class JobInner extends Resource {
     }
 
     /**
-     * Set the constraints value.
+     * Set constraints associated with the Job.
      *
      * @param constraints the constraints value to set
      * @return the JobInner object itself.
@@ -553,7 +553,7 @@ public class JobInner extends Resource {
     }
 
     /**
-     * Get the creationTime value.
+     * Get the creation time of the job.
      *
      * @return the creationTime value
      */
@@ -562,7 +562,7 @@ public class JobInner extends Resource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get the provisioned state of the Batch AI job. Possible values include: 'creating', 'succeeded', 'failed', 'deleting'.
      *
      * @return the provisioningState value
      */
@@ -571,7 +571,7 @@ public class JobInner extends Resource {
     }
 
     /**
-     * Get the provisioningStateTransitionTime value.
+     * Get the time at which the job entered its current provisioning state.
      *
      * @return the provisioningStateTransitionTime value
      */
@@ -580,7 +580,7 @@ public class JobInner extends Resource {
     }
 
     /**
-     * Get the executionState value.
+     * Get the current state of the job. Possible values are: queued - The job is queued and able to run. A job enters this state when it is created, or when it is awaiting a retry after a failed run. running - The job is running on a compute cluster. This includes job-level preparation such as downloading resource files or set up container specified on the job - it does not necessarily mean that the job command line has started executing. terminating - The job is terminated by the user, the terminate operation is in progress. succeeded - The job has completed running succesfully and exited with exit code 0. failed - The job has finished unsuccessfully (failed with a non-zero exit code) and has exhausted its retry limit. A job is also marked as failed if an error occurred launching the job. Possible values include: 'queued', 'running', 'terminating', 'succeeded', 'failed'.
      *
      * @return the executionState value
      */
@@ -589,7 +589,7 @@ public class JobInner extends Resource {
     }
 
     /**
-     * Set the executionState value.
+     * Set the current state of the job. Possible values are: queued - The job is queued and able to run. A job enters this state when it is created, or when it is awaiting a retry after a failed run. running - The job is running on a compute cluster. This includes job-level preparation such as downloading resource files or set up container specified on the job - it does not necessarily mean that the job command line has started executing. terminating - The job is terminated by the user, the terminate operation is in progress. succeeded - The job has completed running succesfully and exited with exit code 0. failed - The job has finished unsuccessfully (failed with a non-zero exit code) and has exhausted its retry limit. A job is also marked as failed if an error occurred launching the job. Possible values include: 'queued', 'running', 'terminating', 'succeeded', 'failed'.
      *
      * @param executionState the executionState value to set
      * @return the JobInner object itself.
@@ -600,7 +600,7 @@ public class JobInner extends Resource {
     }
 
     /**
-     * Get the executionStateTransitionTime value.
+     * Get the time at which the job entered its current execution state.
      *
      * @return the executionStateTransitionTime value
      */
@@ -609,7 +609,7 @@ public class JobInner extends Resource {
     }
 
     /**
-     * Get the executionInfo value.
+     * Get contains information about the execution of a job in the Azure Batch service.
      *
      * @return the executionInfo value
      */
@@ -618,7 +618,7 @@ public class JobInner extends Resource {
     }
 
     /**
-     * Set the executionInfo value.
+     * Set contains information about the execution of a job in the Azure Batch service.
      *
      * @param executionInfo the executionInfo value to set
      * @return the JobInner object itself.

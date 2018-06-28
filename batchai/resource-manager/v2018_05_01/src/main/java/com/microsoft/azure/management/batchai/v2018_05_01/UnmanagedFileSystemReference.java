@@ -11,27 +11,29 @@ package com.microsoft.azure.management.batchai.v2018_05_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Details of the file system to mount on the compute cluster nodes.
+ * Unmananged file system mounting configuration.
  */
 public class UnmanagedFileSystemReference {
     /**
-     * Command used to mount the unmanaged file system.
+     * Mount command.
+     * Mount command line. Note, Batch AI will append mount path to the command
+     * on its own.
      */
     @JsonProperty(value = "mountCommand", required = true)
     private String mountCommand;
 
     /**
-     * Specifies the relative path on the compute cluster node where the file
-     * system will be mounted.
-     * Note that all cluster level unmanaged file system will be mounted under
-     * $AZ_BATCHAI_MOUNT_ROOT location and job level unmanaged file system will
-     * be mounted under $AZ_BATCHAI_JOB_MOUNT_ROOT.
+     * Relative mount path.
+     * The relative path on the compute node where the unmanaged file system
+     * will be mounted. Note that all cluster level unmanaged file systems will
+     * be mounted under $AZ_BATCHAI_MOUNT_ROOT location and all job level
+     * unmanaged file systems will be mounted under $AZ_BATCHAI_JOB_MOUNT_ROOT.
      */
     @JsonProperty(value = "relativeMountPath", required = true)
     private String relativeMountPath;
 
     /**
-     * Get the mountCommand value.
+     * Get mount command line. Note, Batch AI will append mount path to the command on its own.
      *
      * @return the mountCommand value
      */
@@ -40,7 +42,7 @@ public class UnmanagedFileSystemReference {
     }
 
     /**
-     * Set the mountCommand value.
+     * Set mount command line. Note, Batch AI will append mount path to the command on its own.
      *
      * @param mountCommand the mountCommand value to set
      * @return the UnmanagedFileSystemReference object itself.
@@ -51,7 +53,7 @@ public class UnmanagedFileSystemReference {
     }
 
     /**
-     * Get the relativeMountPath value.
+     * Get the relative path on the compute node where the unmanaged file system will be mounted. Note that all cluster level unmanaged file systems will be mounted under $AZ_BATCHAI_MOUNT_ROOT location and all job level unmanaged file systems will be mounted under $AZ_BATCHAI_JOB_MOUNT_ROOT.
      *
      * @return the relativeMountPath value
      */
@@ -60,7 +62,7 @@ public class UnmanagedFileSystemReference {
     }
 
     /**
-     * Set the relativeMountPath value.
+     * Set the relative path on the compute node where the unmanaged file system will be mounted. Note that all cluster level unmanaged file systems will be mounted under $AZ_BATCHAI_MOUNT_ROOT location and all job level unmanaged file systems will be mounted under $AZ_BATCHAI_JOB_MOUNT_ROOT.
      *
      * @param relativeMountPath the relativeMountPath value to set
      * @return the UnmanagedFileSystemReference object itself.

@@ -35,7 +35,7 @@ public class JobsListOutputFilesOptions {
     private Integer maxResults;
 
     /**
-     * Get the outputdirectoryid value.
+     * Get id of the job output directory. This is the OutputDirectory--&gt;id parameter that is given by the user during Create Job.
      *
      * @return the outputdirectoryid value
      */
@@ -44,7 +44,7 @@ public class JobsListOutputFilesOptions {
     }
 
     /**
-     * Set the outputdirectoryid value.
+     * Set id of the job output directory. This is the OutputDirectory--&gt;id parameter that is given by the user during Create Job.
      *
      * @param outputdirectoryid the outputdirectoryid value to set
      * @return the JobsListOutputFilesOptions object itself.
@@ -55,7 +55,7 @@ public class JobsListOutputFilesOptions {
     }
 
     /**
-     * Get the linkexpiryinminutes value.
+     * Get the number of minutes after which the download link will expire.
      *
      * @return the linkexpiryinminutes value
      */
@@ -64,7 +64,7 @@ public class JobsListOutputFilesOptions {
     }
 
     /**
-     * Set the linkexpiryinminutes value.
+     * Set the number of minutes after which the download link will expire.
      *
      * @param linkexpiryinminutes the linkexpiryinminutes value to set
      * @return the JobsListOutputFilesOptions object itself.
@@ -75,7 +75,7 @@ public class JobsListOutputFilesOptions {
     }
 
     /**
-     * Get the maxResults value.
+     * Get the maximum number of items to return in the response. A maximum of 1000 files can be returned.
      *
      * @return the maxResults value
      */
@@ -84,7 +84,7 @@ public class JobsListOutputFilesOptions {
     }
 
     /**
-     * Set the maxResults value.
+     * Set the maximum number of items to return in the response. A maximum of 1000 files can be returned.
      *
      * @param maxResults the maxResults value to set
      * @return the JobsListOutputFilesOptions object itself.

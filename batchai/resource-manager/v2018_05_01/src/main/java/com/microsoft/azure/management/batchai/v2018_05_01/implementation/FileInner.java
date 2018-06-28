@@ -19,41 +19,44 @@ import com.microsoft.rest.serializer.JsonFlatten;
 @JsonFlatten
 public class FileInner {
     /**
+     * Name.
      * Name of the file.
      */
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /**
-     * Contains information about file type. Possible values include: 'file',
-     * 'directory'.
+     * File type.
+     * Type of the file. Possible values are file and directory. Possible
+     * values include: 'file', 'directory'.
      */
     @JsonProperty(value = "fileType", access = JsonProperty.Access.WRITE_ONLY)
     private FileType fileType;
 
     /**
-     * Will contain an URL to download the corresponding file. The downloadUrl
-     * is not returned for directories.
+     * Download URL.
+     * URL to download the corresponding file. The downloadUrl is not returned
+     * for directories.
      */
     @JsonProperty(value = "downloadUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String downloadUrl;
 
     /**
-     * The time at which the file was last modified.
+     * Last modified time.
      * The time at which the file was last modified.
      */
     @JsonProperty(value = "properties.lastModified", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime lastModified;
 
     /**
-     * The file size.
-     * The file size.
+     * Content length.
+     * The file of the size.
      */
     @JsonProperty(value = "properties.contentLength", access = JsonProperty.Access.WRITE_ONLY)
     private Long contentLength;
 
     /**
-     * Get the name value.
+     * Get name of the file.
      *
      * @return the name value
      */
@@ -62,7 +65,7 @@ public class FileInner {
     }
 
     /**
-     * Get the fileType value.
+     * Get type of the file. Possible values are file and directory. Possible values include: 'file', 'directory'.
      *
      * @return the fileType value
      */
@@ -71,7 +74,7 @@ public class FileInner {
     }
 
     /**
-     * Get the downloadUrl value.
+     * Get uRL to download the corresponding file. The downloadUrl is not returned for directories.
      *
      * @return the downloadUrl value
      */
@@ -80,7 +83,7 @@ public class FileInner {
     }
 
     /**
-     * Get the lastModified value.
+     * Get the time at which the file was last modified.
      *
      * @return the lastModified value
      */
@@ -89,7 +92,7 @@ public class FileInner {
     }
 
     /**
-     * Get the contentLength value.
+     * Get the file of the size.
      *
      * @return the contentLength value
      */

@@ -148,7 +148,7 @@ public class ClusterInner extends Resource {
     private NodeStateCounts nodeStateCounts;
 
     /**
-     * Get the vmSize value.
+     * Get all virtual machines in a cluster are the same size. For information about available VM sizes for clusters using images from the Virtual Machines Marketplace (see Sizes for Virtual Machines (Linux) or Sizes for Virtual Machines (Windows). Batch AI service supports all Azure VM sizes except STANDARD_A0 and those with premium storage (STANDARD_GS, STANDARD_DS, and STANDARD_DSV2 series).
      *
      * @return the vmSize value
      */
@@ -157,7 +157,7 @@ public class ClusterInner extends Resource {
     }
 
     /**
-     * Set the vmSize value.
+     * Set all virtual machines in a cluster are the same size. For information about available VM sizes for clusters using images from the Virtual Machines Marketplace (see Sizes for Virtual Machines (Linux) or Sizes for Virtual Machines (Windows). Batch AI service supports all Azure VM sizes except STANDARD_A0 and those with premium storage (STANDARD_GS, STANDARD_DS, and STANDARD_DSV2 series).
      *
      * @param vmSize the vmSize value to set
      * @return the ClusterInner object itself.
@@ -168,7 +168,7 @@ public class ClusterInner extends Resource {
     }
 
     /**
-     * Get the vmPriority value.
+     * Get the default value is dedicated. The node can get preempted while the task is running if lowpriority is choosen. This is best suited if the workload is checkpointing and can be restarted. Possible values include: 'dedicated', 'lowpriority'.
      *
      * @return the vmPriority value
      */
@@ -177,7 +177,7 @@ public class ClusterInner extends Resource {
     }
 
     /**
-     * Set the vmPriority value.
+     * Set the default value is dedicated. The node can get preempted while the task is running if lowpriority is choosen. This is best suited if the workload is checkpointing and can be restarted. Possible values include: 'dedicated', 'lowpriority'.
      *
      * @param vmPriority the vmPriority value to set
      * @return the ClusterInner object itself.
@@ -297,7 +297,7 @@ public class ClusterInner extends Resource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get possible value are: creating - Specifies that the cluster is being created. succeeded - Specifies that the cluster has been created successfully. failed - Specifies that the cluster creation has failed. deleting - Specifies that the cluster is being deleted. Possible values include: 'creating', 'succeeded', 'failed', 'deleting'.
      *
      * @return the provisioningState value
      */
@@ -315,7 +315,7 @@ public class ClusterInner extends Resource {
     }
 
     /**
-     * Get the allocationState value.
+     * Get possible values are: steady and resizing. steady state indicates that the cluster is not resizing. There are no changes to the number of compute nodes in the cluster in progress. A cluster enters this state when it is created and when no operations are being performed on the cluster to change the number of compute nodes. resizing state indicates that the cluster is resizing; that is, compute nodes are being added to or removed from the cluster. Possible values include: 'steady', 'resizing'.
      *
      * @return the allocationState value
      */
@@ -333,7 +333,7 @@ public class ClusterInner extends Resource {
     }
 
     /**
-     * Get the errors value.
+     * Get this element contains all the errors encountered by various compute nodes during node setup.
      *
      * @return the errors value
      */
@@ -342,7 +342,7 @@ public class ClusterInner extends Resource {
     }
 
     /**
-     * Set the errors value.
+     * Set this element contains all the errors encountered by various compute nodes during node setup.
      *
      * @param errors the errors value to set
      * @return the ClusterInner object itself.

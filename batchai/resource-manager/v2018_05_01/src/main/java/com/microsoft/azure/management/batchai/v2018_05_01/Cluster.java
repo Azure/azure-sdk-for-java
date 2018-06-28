@@ -17,7 +17,6 @@ import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.batchai.v2018_05_01.implementation.BatchAIManager;
-import java.util.Map;
 import org.joda.time.DateTime;
 import java.util.List;
 
@@ -56,11 +55,6 @@ public interface Cluster extends HasInner<ClusterInner>, Indexable, Refreshable<
     String id();
 
     /**
-     * @return the location value.
-     */
-    String location();
-
-    /**
      * @return the name value.
      */
     String name();
@@ -96,11 +90,6 @@ public interface Cluster extends HasInner<ClusterInner>, Indexable, Refreshable<
     ResourceId subnet();
 
     /**
-     * @return the tags value.
-     */
-    Map<String, String> tags();
-
-    /**
      * @return the type value.
      */
     String type();
@@ -128,7 +117,7 @@ public interface Cluster extends HasInner<ClusterInner>, Indexable, Refreshable<
     /**
      * The entirety of the Cluster definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithWorkspace, DefinitionStages.WithLocation, DefinitionStages.WithUserAccountSettings, DefinitionStages.WithVmSize, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithWorkspace, DefinitionStages.WithUserAccountSettings, DefinitionStages.WithVmSize, DefinitionStages.WithCreate {
     }
 
     /**
@@ -148,17 +137,7 @@ public interface Cluster extends HasInner<ClusterInner>, Indexable, Refreshable<
            /**
             * Specifies resourceGroupName, workspaceName.
             */
-            WithLocation withExistingWorkspace(String resourceGroupName, String workspaceName);
-        }
-
-        /**
-         * The stage of the cluster definition allowing to specify Location.
-         */
-        interface WithLocation {
-           /**
-            * Specifies location.
-            */
-            WithUserAccountSettings withLocation(String location);
+            WithUserAccountSettings withExistingWorkspace(String resourceGroupName, String workspaceName);
         }
 
         /**
@@ -212,16 +191,6 @@ public interface Cluster extends HasInner<ClusterInner>, Indexable, Refreshable<
         }
 
         /**
-         * The stage of the cluster definition allowing to specify Tags.
-         */
-        interface WithTags {
-            /**
-             * Specifies tags.
-             */
-            WithCreate withTags(Map<String, String> tags);
-        }
-
-        /**
          * The stage of the cluster definition allowing to specify VirtualMachineConfiguration.
          */
         interface WithVirtualMachineConfiguration {
@@ -246,38 +215,18 @@ public interface Cluster extends HasInner<ClusterInner>, Indexable, Refreshable<
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<Cluster>, DefinitionStages.WithNodeSetup, DefinitionStages.WithScaleSettings, DefinitionStages.WithSubnet, DefinitionStages.WithTags, DefinitionStages.WithVirtualMachineConfiguration, DefinitionStages.WithVmPriority {
+        interface WithCreate extends Creatable<Cluster>, DefinitionStages.WithNodeSetup, DefinitionStages.WithScaleSettings, DefinitionStages.WithSubnet, DefinitionStages.WithVirtualMachineConfiguration, DefinitionStages.WithVmPriority {
         }
     }
     /**
      * The template for a Cluster update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<Cluster>, UpdateStages.WithScaleSettings, UpdateStages.WithTags {
+    interface Update extends Appliable<Cluster> {
     }
 
     /**
      * Grouping of Cluster update stages.
      */
     interface UpdateStages {
-        /**
-         * The stage of the cluster update allowing to specify ScaleSettings.
-         */
-        interface WithScaleSettings {
-            /**
-             * Specifies scaleSettings.
-             */
-            Update withScaleSettings(ScaleSettings scaleSettings);
-        }
-
-        /**
-         * The stage of the cluster update allowing to specify Tags.
-         */
-        interface WithTags {
-            /**
-             * Specifies tags.
-             */
-            Update withTags(Map<String, String> tags);
-        }
-
     }
 }

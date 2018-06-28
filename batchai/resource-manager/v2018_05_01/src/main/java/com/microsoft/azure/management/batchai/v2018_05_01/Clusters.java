@@ -30,23 +30,6 @@ public interface Clusters extends SupportsCreating<Cluster.DefinitionStages.Blan
     Observable<RemoteLoginInformation> listRemoteLoginInformationAsync(final String resourceGroupName, final String workspaceName, final String clusterName);
 
     /**
-     * Gets a list of Clusters associated with the given subscription.
-     *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<Cluster> listAsync();
-
-    /**
-     * Gets a list of Clusters within the specified resource group.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<Cluster> listByResourceGroupAsync(final String resourceGroupName);
-
-    /**
      * Gets information about a Cluster.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.

@@ -11,46 +11,50 @@ package com.microsoft.azure.management.batchai.v2018_05_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Specifies the settings for Caffe job.
+ * Caffe job settings.
  */
 public class CaffeSettings {
     /**
-     * Specifies the path of the config file.
-     * This property cannot be specified if pythonScriptFilePath is specified.
+     * Config file path.
+     * Path of the config file for the job. This property cannot be specified
+     * if pythonScriptFilePath is specified.
      */
     @JsonProperty(value = "configFilePath")
     private String configFilePath;
 
     /**
-     * The path and file name of the python script to execute the job.
-     * This property cannot be specified if configFilePath is specified.
+     * Python script file path.
+     * Python script to execute. This property cannot be specified if
+     * configFilePath is specified.
      */
     @JsonProperty(value = "pythonScriptFilePath")
     private String pythonScriptFilePath;
 
     /**
-     * The path to python interpreter.
-     * This property can be specified only if the pythonScriptFilePath is
-     * specified.
+     * Python interpreter path.
+     * The path to the Python interpreter. The property can be specified only
+     * if the pythonScriptFilePath is specified.
      */
     @JsonProperty(value = "pythonInterpreterPath")
     private String pythonInterpreterPath;
 
     /**
-     * Command line arguments that needs to be passed to the Caffe job.
+     * Command line arguments.
+     * Command line arguments that need to be passed to the Caffe job.
      */
     @JsonProperty(value = "commandLineArgs")
     private String commandLineArgs;
 
     /**
-     * Number of processes parameter that is passed to MPI runtime.
-     * The default value for this property is equal to nodeCount property.
+     * Process count.
+     * Number of processes to launch for the job execution. The default value
+     * for this property is equal to nodeCount property.
      */
     @JsonProperty(value = "processCount")
     private Integer processCount;
 
     /**
-     * Get the configFilePath value.
+     * Get path of the config file for the job. This property cannot be specified if pythonScriptFilePath is specified.
      *
      * @return the configFilePath value
      */
@@ -59,7 +63,7 @@ public class CaffeSettings {
     }
 
     /**
-     * Set the configFilePath value.
+     * Set path of the config file for the job. This property cannot be specified if pythonScriptFilePath is specified.
      *
      * @param configFilePath the configFilePath value to set
      * @return the CaffeSettings object itself.
@@ -70,7 +74,7 @@ public class CaffeSettings {
     }
 
     /**
-     * Get the pythonScriptFilePath value.
+     * Get python script to execute. This property cannot be specified if configFilePath is specified.
      *
      * @return the pythonScriptFilePath value
      */
@@ -79,7 +83,7 @@ public class CaffeSettings {
     }
 
     /**
-     * Set the pythonScriptFilePath value.
+     * Set python script to execute. This property cannot be specified if configFilePath is specified.
      *
      * @param pythonScriptFilePath the pythonScriptFilePath value to set
      * @return the CaffeSettings object itself.
@@ -90,7 +94,7 @@ public class CaffeSettings {
     }
 
     /**
-     * Get the pythonInterpreterPath value.
+     * Get the path to the Python interpreter. The property can be specified only if the pythonScriptFilePath is specified.
      *
      * @return the pythonInterpreterPath value
      */
@@ -99,7 +103,7 @@ public class CaffeSettings {
     }
 
     /**
-     * Set the pythonInterpreterPath value.
+     * Set the path to the Python interpreter. The property can be specified only if the pythonScriptFilePath is specified.
      *
      * @param pythonInterpreterPath the pythonInterpreterPath value to set
      * @return the CaffeSettings object itself.
@@ -110,7 +114,7 @@ public class CaffeSettings {
     }
 
     /**
-     * Get the commandLineArgs value.
+     * Get command line arguments that need to be passed to the Caffe job.
      *
      * @return the commandLineArgs value
      */
@@ -119,7 +123,7 @@ public class CaffeSettings {
     }
 
     /**
-     * Set the commandLineArgs value.
+     * Set command line arguments that need to be passed to the Caffe job.
      *
      * @param commandLineArgs the commandLineArgs value to set
      * @return the CaffeSettings object itself.
@@ -130,7 +134,7 @@ public class CaffeSettings {
     }
 
     /**
-     * Get the processCount value.
+     * Get number of processes to launch for the job execution. The default value for this property is equal to nodeCount property.
      *
      * @return the processCount value
      */
@@ -139,7 +143,7 @@ public class CaffeSettings {
     }
 
     /**
-     * Set the processCount value.
+     * Set number of processes to launch for the job execution. The default value for this property is equal to nodeCount property.
      *
      * @param processCount the processCount value to set
      * @return the CaffeSettings object itself.

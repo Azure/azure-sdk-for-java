@@ -116,7 +116,7 @@ public class AzureFileShareReference {
     }
 
     /**
-     * Get the relativeMountPath value.
+     * Get note that all file shares will be mounted under $AZ_BATCHAI_MOUNT_ROOT location.
      *
      * @return the relativeMountPath value
      */
@@ -125,7 +125,7 @@ public class AzureFileShareReference {
     }
 
     /**
-     * Set the relativeMountPath value.
+     * Set note that all file shares will be mounted under $AZ_BATCHAI_MOUNT_ROOT location.
      *
      * @param relativeMountPath the relativeMountPath value to set
      * @return the AzureFileShareReference object itself.
@@ -136,7 +136,7 @@ public class AzureFileShareReference {
     }
 
     /**
-     * Get the fileMode value.
+     * Get default value is 0777. Valid only if OS is linux.
      *
      * @return the fileMode value
      */
@@ -145,7 +145,7 @@ public class AzureFileShareReference {
     }
 
     /**
-     * Set the fileMode value.
+     * Set default value is 0777. Valid only if OS is linux.
      *
      * @param fileMode the fileMode value to set
      * @return the AzureFileShareReference object itself.
@@ -156,7 +156,7 @@ public class AzureFileShareReference {
     }
 
     /**
-     * Get the directoryMode value.
+     * Get default value is 0777. Valid only if OS is linux.
      *
      * @return the directoryMode value
      */
@@ -165,7 +165,7 @@ public class AzureFileShareReference {
     }
 
     /**
-     * Set the directoryMode value.
+     * Set default value is 0777. Valid only if OS is linux.
      *
      * @param directoryMode the directoryMode value to set
      * @return the AzureFileShareReference object itself.

@@ -13,6 +13,7 @@ import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 import com.microsoft.azure.management.batchai.v2018_05_01.JobCreateParameters;
 import java.util.List;
+import com.microsoft.azure.management.batchai.v2018_05_01.Caffe2Settings;
 import com.microsoft.azure.management.batchai.v2018_05_01.CaffeSettings;
 import com.microsoft.azure.management.batchai.v2018_05_01.ChainerSettings;
 import com.microsoft.azure.management.batchai.v2018_05_01.ResourceId;
@@ -30,13 +31,12 @@ import com.microsoft.azure.management.batchai.v2018_05_01.InputDirectory;
 import com.microsoft.azure.management.batchai.v2018_05_01.JobPreparation;
 import com.microsoft.azure.management.batchai.v2018_05_01.MountVolumes;
 import com.microsoft.azure.management.batchai.v2018_05_01.OutputDirectory;
-import com.microsoft.azure.management.batchai.v2018_05_01.JobPriority;
 import com.microsoft.azure.management.batchai.v2018_05_01.ProvisioningState;
 import com.microsoft.azure.management.batchai.v2018_05_01.PyTorchSettings;
+import com.microsoft.azure.management.batchai.v2018_05_01.JobPriority;
 import com.microsoft.azure.management.batchai.v2018_05_01.EnvironmentVariableWithSecretValue;
 import com.microsoft.azure.management.batchai.v2018_05_01.TensorFlowSettings;
 import com.microsoft.azure.management.batchai.v2018_05_01.ToolType;
-import com.microsoft.azure.management.batchai.v2018_05_01.Caffe2Settings;
 import com.microsoft.azure.management.batchai.v2018_05_01.JobBasePropertiesConstraints;
 import rx.functions.Func1;
 
@@ -117,6 +117,11 @@ class JobImpl extends CreatableUpdatableImpl<Job, JobInner, JobImpl> implements 
 
     private void resetCreateUpdateParameters() {
         this.createOrUpdateParameter = new JobCreateParameters();
+    }
+
+    @Override
+    public Caffe2Settings caffe2Settings() {
+        return this.inner().caffe2Settings();
     }
 
     @Override
@@ -230,11 +235,6 @@ class JobImpl extends CreatableUpdatableImpl<Job, JobInner, JobImpl> implements 
     }
 
     @Override
-    public JobPriority priority() {
-        return this.inner().priority();
-    }
-
-    @Override
     public ProvisioningState provisioningState() {
         return this.inner().provisioningState();
     }
@@ -247,6 +247,11 @@ class JobImpl extends CreatableUpdatableImpl<Job, JobInner, JobImpl> implements 
     @Override
     public PyTorchSettings pyTorchSettings() {
         return this.inner().pyTorchSettings();
+    }
+
+    @Override
+    public JobPriority schedulingPriority() {
+        return this.inner().schedulingPriority();
     }
 
     @Override

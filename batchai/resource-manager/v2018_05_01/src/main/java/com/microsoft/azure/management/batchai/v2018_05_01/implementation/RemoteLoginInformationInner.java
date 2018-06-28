@@ -11,29 +11,32 @@ package com.microsoft.azure.management.batchai.v2018_05_01.implementation;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Contains remote login details to SSH/RDP to a compute node in cluster.
+ * Login details to SSH to a compute node in cluster.
  */
 public class RemoteLoginInformationInner {
     /**
-     * Id of the compute node.
+     * Node ID.
+     * ID of the compute node.
      */
     @JsonProperty(value = "nodeId", access = JsonProperty.Access.WRITE_ONLY)
     private String nodeId;
 
     /**
-     * ip address.
+     * IP address.
+     * Public IP address of the compute node.
      */
     @JsonProperty(value = "ipAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String ipAddress;
 
     /**
-     * port number.
+     * Port.
+     * SSH port number of the node.
      */
     @JsonProperty(value = "port", access = JsonProperty.Access.WRITE_ONLY)
     private Double port;
 
     /**
-     * Get the nodeId value.
+     * Get iD of the compute node.
      *
      * @return the nodeId value
      */
@@ -42,7 +45,7 @@ public class RemoteLoginInformationInner {
     }
 
     /**
-     * Get the ipAddress value.
+     * Get public IP address of the compute node.
      *
      * @return the ipAddress value
      */
@@ -51,7 +54,7 @@ public class RemoteLoginInformationInner {
     }
 
     /**
-     * Get the port value.
+     * Get sSH port number of the node.
      *
      * @return the port value
      */

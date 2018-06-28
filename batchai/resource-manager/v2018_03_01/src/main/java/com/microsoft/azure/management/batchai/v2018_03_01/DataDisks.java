@@ -65,7 +65,7 @@ public class DataDisks {
     }
 
     /**
-     * Get the cachingType value.
+     * Get possible values include: 'none', 'readonly', 'readwrite'.
      *
      * @return the cachingType value
      */
@@ -74,7 +74,7 @@ public class DataDisks {
     }
 
     /**
-     * Set the cachingType value.
+     * Set possible values include: 'none', 'readonly', 'readwrite'.
      *
      * @param cachingType the cachingType value to set
      * @return the DataDisks object itself.
@@ -105,7 +105,7 @@ public class DataDisks {
     }
 
     /**
-     * Get the storageAccountType value.
+     * Get possible values include: 'Standard_LRS', 'Premium_LRS'.
      *
      * @return the storageAccountType value
      */
@@ -114,7 +114,7 @@ public class DataDisks {
     }
 
     /**
-     * Set the storageAccountType value.
+     * Set possible values include: 'Standard_LRS', 'Premium_LRS'.
      *
      * @param storageAccountType the storageAccountType value to set
      * @return the DataDisks object itself.

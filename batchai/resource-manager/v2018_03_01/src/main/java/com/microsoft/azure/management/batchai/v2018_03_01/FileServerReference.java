@@ -66,7 +66,7 @@ public class FileServerReference {
     }
 
     /**
-     * Get the sourceDirectory value.
+     * Get if this property is not specified, the entire File Server will be mounted.
      *
      * @return the sourceDirectory value
      */
@@ -75,7 +75,7 @@ public class FileServerReference {
     }
 
     /**
-     * Set the sourceDirectory value.
+     * Set if this property is not specified, the entire File Server will be mounted.
      *
      * @param sourceDirectory the sourceDirectory value to set
      * @return the FileServerReference object itself.
@@ -86,7 +86,7 @@ public class FileServerReference {
     }
 
     /**
-     * Get the relativeMountPath value.
+     * Get note that all cluster level file servers will be mounted under $AZ_BATCHAI_MOUNT_ROOT location and job level file servers will be mouted under $AZ_BATCHAI_JOB_MOUNT_ROOT.
      *
      * @return the relativeMountPath value
      */
@@ -95,7 +95,7 @@ public class FileServerReference {
     }
 
     /**
-     * Set the relativeMountPath value.
+     * Set note that all cluster level file servers will be mounted under $AZ_BATCHAI_MOUNT_ROOT location and job level file servers will be mouted under $AZ_BATCHAI_JOB_MOUNT_ROOT.
      *
      * @param relativeMountPath the relativeMountPath value to set
      * @return the FileServerReference object itself.

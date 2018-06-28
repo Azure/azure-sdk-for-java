@@ -134,7 +134,7 @@ public class ImageReference {
     }
 
     /**
-     * Get the virtualMachineImageId value.
+     * Get the virtual machine image must be in the same region and subscription as the cluster. For information about the firewall settings for the Batch node agent to communicate with the Batch service see https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration. Note, you need to provide publisher, offer and sku of the base OS image of which the custom image has been derived from.
      *
      * @return the virtualMachineImageId value
      */
@@ -143,7 +143,7 @@ public class ImageReference {
     }
 
     /**
-     * Set the virtualMachineImageId value.
+     * Set the virtual machine image must be in the same region and subscription as the cluster. For information about the firewall settings for the Batch node agent to communicate with the Batch service see https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration. Note, you need to provide publisher, offer and sku of the base OS image of which the custom image has been derived from.
      *
      * @param virtualMachineImageId the virtualMachineImageId value to set
      * @return the ImageReference object itself.

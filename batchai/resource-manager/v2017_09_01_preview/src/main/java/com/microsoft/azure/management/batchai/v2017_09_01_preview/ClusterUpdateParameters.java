@@ -30,7 +30,7 @@ public class ClusterUpdateParameters {
     private ScaleSettings scaleSettings;
 
     /**
-     * Get the tags value.
+     * Get the user specified tags associated with the Cluster.
      *
      * @return the tags value
      */
@@ -39,7 +39,7 @@ public class ClusterUpdateParameters {
     }
 
     /**
-     * Set the tags value.
+     * Set the user specified tags associated with the Cluster.
      *
      * @param tags the tags value to set
      * @return the ClusterUpdateParameters object itself.
