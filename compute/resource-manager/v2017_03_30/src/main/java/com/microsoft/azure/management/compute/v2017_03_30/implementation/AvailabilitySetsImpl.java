@@ -84,10 +84,10 @@ class AvailabilitySetsImpl extends GroupableResourcesCoreImpl<AvailabilitySet, A
     public Observable<AvailabilitySet> listByResourceGroupAsync(String resourceGroupName) {
         AvailabilitySetsInner client = this.inner();
         return client.listByResourceGroupAsync(resourceGroupName)
-        .flatMap(new Func1<Page<AvailabilitySetInner>, Observable<AvailabilitySetInner>>() {
+        .flatMapIterable(new Func1<Page<AvailabilitySetInner>, Iterable<AvailabilitySetInner>>() {
             @Override
-            public Observable<AvailabilitySetInner> call(Page<AvailabilitySetInner> innerPage) {
-                return Observable.from(innerPage.items());
+            public Iterable<AvailabilitySetInner> call(Page<AvailabilitySetInner> page) {
+                return page.items();
             }
         })
         .map(new Func1<AvailabilitySetInner, AvailabilitySet>() {
