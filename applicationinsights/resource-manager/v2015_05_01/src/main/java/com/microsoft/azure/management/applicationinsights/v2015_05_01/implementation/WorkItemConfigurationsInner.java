@@ -146,7 +146,7 @@ public class WorkItemConfigurationsInner {
                 @Override
                 public Observable<ServiceResponse<List<WorkItemConfigurationInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<<WorkItemConfigurationInner>> result = listDelegate(response);
+                        ServiceResponse<PageImpl1<WorkItemConfigurationInner>> result = listDelegate(response);
                         List<WorkItemConfigurationInner> items = null;
                         if (result.body() != null) {
                             items = result.body().items();
@@ -160,9 +160,9 @@ public class WorkItemConfigurationsInner {
             });
     }
 
-    private ServiceResponse<<WorkItemConfigurationInner>> listDelegate(Response<ResponseBody> response) throws WorkItemConfigurationErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<<WorkItemConfigurationInner>, WorkItemConfigurationErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<<WorkItemConfigurationInner>>() { }.getType())
+    private ServiceResponse<PageImpl1<WorkItemConfigurationInner>> listDelegate(Response<ResponseBody> response) throws WorkItemConfigurationErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<WorkItemConfigurationInner>, WorkItemConfigurationErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl1<WorkItemConfigurationInner>>() { }.getType())
                 .registerError(WorkItemConfigurationErrorException.class)
                 .build(response);
     }

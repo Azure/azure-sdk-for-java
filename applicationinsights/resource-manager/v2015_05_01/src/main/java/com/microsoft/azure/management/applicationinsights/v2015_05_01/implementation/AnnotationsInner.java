@@ -159,7 +159,7 @@ public class AnnotationsInner {
                 @Override
                 public Observable<ServiceResponse<List<AnnotationInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<<AnnotationInner>> result = listDelegate(response);
+                        ServiceResponse<PageImpl1<AnnotationInner>> result = listDelegate(response);
                         List<AnnotationInner> items = null;
                         if (result.body() != null) {
                             items = result.body().items();
@@ -173,9 +173,9 @@ public class AnnotationsInner {
             });
     }
 
-    private ServiceResponse<<AnnotationInner>> listDelegate(Response<ResponseBody> response) throws AnnotationErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<<AnnotationInner>, AnnotationErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<<AnnotationInner>>() { }.getType())
+    private ServiceResponse<PageImpl1<AnnotationInner>> listDelegate(Response<ResponseBody> response) throws AnnotationErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<AnnotationInner>, AnnotationErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl1<AnnotationInner>>() { }.getType())
                 .registerError(AnnotationErrorException.class)
                 .build(response);
     }
