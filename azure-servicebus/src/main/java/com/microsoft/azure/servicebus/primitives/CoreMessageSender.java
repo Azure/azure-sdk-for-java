@@ -413,7 +413,6 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 			if(this.sendLinkReopenFuture != null && !this.sendLinkReopenFuture.isDone())
             {
                 AsyncUtil.completeFuture(this.sendLinkReopenFuture, null);
-                this.sendLinkReopenFuture = null;
             }
 			
 			if (!this.linkFirstOpen.isDone())
@@ -462,7 +461,6 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
             {
 			    TRACE_LOGGER.warn("Opening send link to '{}' failed", this.sendPath, completionException);
                 AsyncUtil.completeFutureExceptionally(this.sendLinkReopenFuture, completionException);
-                this.sendLinkReopenFuture = null;
             }
 		}
 	}
@@ -758,9 +756,9 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 	private synchronized CompletableFuture<Void> ensureLinkIsOpen()
     {
         // Send SAS token before opening a link as connection might have been closed and reopened
-        if (this.sendLink.getLocalState() == EndpointState.CLOSED || this.sendLink.getRemoteState() == EndpointState.CLOSED)
+        if (!(this.sendLink.getLocalState() == EndpointState.ACTIVE && this.sendLink.getRemoteState() == EndpointState.ACTIVE))
         {
-            if(this.sendLinkReopenFuture == null)
+            if(this.sendLinkReopenFuture == null || this.sendLinkReopenFuture.isDone())
             {
                 TRACE_LOGGER.info("Recreating send link to '{}'", this.sendPath);
                 this.retryPolicy.incrementRetryCount(CoreMessageSender.this.getClientId());
@@ -793,6 +791,8 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 				authenticationFuture.handleAsync((v, sendTokenEx) -> {
                     if(sendTokenEx != null)
                     {
+                    	Throwable cause = ExceptionUtil.extractAsyncCompletionCause(sendTokenEx);
+        				TRACE_LOGGER.error("Sending SAS Token to '{}' failed.", this.sendPath, cause);
                         this.sendLinkReopenFuture.completeExceptionally(sendTokenEx);
                     }
                     else
@@ -871,7 +871,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
                         sendData = this.pendingSendsData.get(deliveryTag.getDeliveryTag());
                         if(sendData == null)
                         {
-                            TRACE_LOGGER.warn("SendData not found for this delivery. path:{}, linkName:{}, deliveryTag:{}", this.sendPath, this.sendLink.getName(), deliveryTag);
+                            TRACE_LOGGER.debug("SendData not found for this delivery. path:{}, linkName:{}, deliveryTag:{}", this.sendPath, this.sendLink.getName(), deliveryTag);
                             continue;
                         }
                     }
