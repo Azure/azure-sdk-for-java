@@ -8,40 +8,58 @@
 
 package com.microsoft.azure.keyvault.models;
 
-import java.util.Collection;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.microsoft.rest.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
  * Defines values for JsonWebKeyCurveName.
  */
-public final class JsonWebKeyCurveName extends ExpandableStringEnum<JsonWebKeyCurveName> {
+public final class JsonWebKeyCurveName {
     /** Static value P-256 for JsonWebKeyCurveName. */
-    public static final JsonWebKeyCurveName P_256 = fromString("P-256");
+    public static final JsonWebKeyCurveName P_256 = new JsonWebKeyCurveName("P-256");
 
     /** Static value P-384 for JsonWebKeyCurveName. */
-    public static final JsonWebKeyCurveName P_384 = fromString("P-384");
+    public static final JsonWebKeyCurveName P_384 = new JsonWebKeyCurveName("P-384");
 
     /** Static value P-521 for JsonWebKeyCurveName. */
-    public static final JsonWebKeyCurveName P_521 = fromString("P-521");
+    public static final JsonWebKeyCurveName P_521 = new JsonWebKeyCurveName("P-521");
 
-    /** Static value SECP256K1 for JsonWebKeyCurveName. */
-    public static final JsonWebKeyCurveName SECP256K1 = fromString("SECP256K1");
+    /** Static value P-256K for JsonWebKeyCurveName. */
+    public static final JsonWebKeyCurveName P_256K = new JsonWebKeyCurveName("P-256K");
+
+    private String value;
 
     /**
-     * Creates or finds a JsonWebKeyCurveName from its string representation.
-     * @param name a name to look for
-     * @return the corresponding JsonWebKeyCurveName
+     * Creates a custom value for JsonWebKeyCurveName.
+     * @param value the custom value
      */
-    @JsonCreator
-    public static JsonWebKeyCurveName fromString(String name) {
-        return fromString(name, JsonWebKeyCurveName.class);
+    public JsonWebKeyCurveName(String value) {
+        this.value = value;
     }
 
-    /**
-     * @return known JsonWebKeyCurveName values
-     */
-    public static Collection<JsonWebKeyCurveName> values() {
-        return values(JsonWebKeyCurveName.class);
+    @JsonValue
+    @Override
+    public String toString() {
+        return value;
+    }
+
+    @Override
+    public int hashCode() {
+        return value.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof JsonWebKeyCurveName)) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        JsonWebKeyCurveName rhs = (JsonWebKeyCurveName) obj;
+        if (value == null) {
+            return rhs.value == null;
+        } else {
+            return value.equals(rhs.value);
+        }
     }
 }

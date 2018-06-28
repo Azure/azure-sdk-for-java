@@ -12,13 +12,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Json Web Encryption object class.
  */
 class JWEObject {
     private JWEHeader jweHeader;
-    private String original_protected;
+    private String originalProtected;
     private String encryptedKey;
     private String iv;
     private String cipherText;
@@ -28,17 +29,17 @@ class JWEObject {
      * Constructor.
      * 
      * @param jweHeader
-     *      Corresponding jweHeader object.
+     *            Corresponding jweHeader object.
      * @param encryptedKey
-     *      base64url encrypted key.
+     *            base64url encrypted key.
      * @param iv
-     *      base64url iv.
+     *            base64url iv.
      * @param cipherText
-     *      base64url encrypted data.
+     *            base64url encrypted data.
      * @param tag
-     *      base64url authorization tag.
+     *            base64url authorization tag.
      */
-    public JWEObject(JWEHeader jweHeader, String encryptedKey, String iv, String cipherText, String tag){
+    JWEObject(JWEHeader jweHeader, String encryptedKey, String iv, String cipherText, String tag) {
         this.jweHeader = jweHeader;
         this.encryptedKey = encryptedKey;
         this.iv = iv;
@@ -50,24 +51,22 @@ class JWEObject {
      * Constructor.
      * 
      * @param jweHeaderB64
-     *      base64url json with serialized jweHeader.
+     *            base64url json with serialized jweHeader.
      * @param encryptedKey
-     *      base64url encrypted key.
+     *            base64url encrypted key.
      * @param iv
-     *      base64url iv.
+     *            base64url iv.
      * @param cipherText
-     *      base64url encrypted data.
+     *            base64url encrypted data.
      * @param tag
-     *      base64url authorization tag.
+     *            base64url authorization tag.
      */
     @JsonCreator
-    public JWEObject(@JsonProperty("protected") String jweHeaderB64,
-                     @JsonProperty("encrypted_key") String encryptedKey,
-                     @JsonProperty("iv") String iv,
-                     @JsonProperty("ciphertext") String cipherText,
-                     @JsonProperty("tag") String tag) throws Exception{
+    JWEObject(@JsonProperty("protected") String jweHeaderB64, @JsonProperty("encrypted_key") String encryptedKey,
+            @JsonProperty("iv") String iv, @JsonProperty("ciphertext") String cipherText,
+            @JsonProperty("tag") String tag) throws Exception {
         this.jweHeader = JWEHeader.fromBase64String(jweHeaderB64);
-        this.original_protected = jweHeaderB64;
+        this.originalProtected = jweHeaderB64;
         this.encryptedKey = encryptedKey;
         this.iv = iv;
         this.cipherText = cipherText;
@@ -77,22 +76,26 @@ class JWEObject {
     /**
      * Compare two JweObject.
      * 
-     * @return 
-     *      true if JWEObject are identical.
+     * @return true if JWEObject are identical.
      */
-    public boolean equals(JWEObject other){
-        return jweHeader.equals(other.jweHeader) &&
-                encryptedKey.equals(other.encryptedKey) &&
-                iv.equals(other.iv) &&
-                cipherText.equals(other.cipherText) &&
-                tag.equals(other.tag);
+    public boolean equals(JWEObject other) {
+        return jweHeader.equals(other.jweHeader) && encryptedKey.equals(other.encryptedKey) && iv.equals(other.iv)
+                && cipherText.equals(other.cipherText) && tag.equals(other.tag);
+    }
+    
+    /**
+     * Hash code for objects.
+     * 
+     * @return hashcode
+     */
+    public int hashCode() {
+        return Objects.hash(this.jweHeader, this.encryptedKey, this.iv, this.cipherText, this.tag);
     }
 
     /**
      * Serialize JWEObject to json string.
      * 
-     * @return 
-     *      Json string with serialized JWEObject.
+     * @return Json string with serialized JWEObject.
      */
     public String serialize() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
@@ -103,20 +106,19 @@ class JWEObject {
      * Construct JWEObject from json string.
      * 
      * @param json
-     *      json string.
+     *            json string.
      * 
-     * @return 
-     *      Constructed JWEObject
+     * @return Constructed JWEObject
      */
     public static JWEObject deserialize(String json) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        return mapper.readValue(json,JWEObject.class);
+        return mapper.readValue(json, JWEObject.class);
     }
 
     /**
      * JWEHeader object.
      */
-    public JWEHeader jweHeader(){
+    public JWEHeader jweHeader() {
         return jweHeader;
     }
 
@@ -124,15 +126,16 @@ class JWEObject {
      * base64url json with serialized jweHeader.
      */
     @JsonProperty("protected")
-    public String protectedB64() throws Exception{
+    public String protectedB64() throws Exception {
         return MessageSecurityHelper.stringToBase64Url(jweHeader.serialize());
     }
 
     /**
-     * Original base64url with serialized jweHeader (when constructed from json string).
+     * Original base64url with serialized jweHeader (when constructed from json
+     * string).
      */
-    public String original_protected(){
-        return original_protected;
+    public String originalProtected() {
+        return originalProtected;
     }
 
     /**

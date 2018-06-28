@@ -8,8 +8,8 @@
 
 package com.microsoft.azure.keyvault.models;
 
-import com.microsoft.azure.keyvault.webkey.JsonWebKeyType;
 import com.microsoft.azure.keyvault.webkey.JsonWebKeyOperation;
+import com.microsoft.azure.keyvault.webkey.JsonWebKeyType;
 import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -26,7 +26,7 @@ public class KeyCreateParameters {
     private JsonWebKeyType kty;
 
     /**
-     * The key size in bytes. For example, 1024 or 2048.
+     * The key size in bits. For example: 2048, 3072, or 4096 for RSA.
      */
     @JsonProperty(value = "key_size")
     private Integer keySize;
@@ -51,7 +51,7 @@ public class KeyCreateParameters {
 
     /**
      * Elliptic curve name. For valid values, see JsonWebKeyCurveName. Possible
-     * values include: 'P-256', 'P-384', 'P-521', 'SECP256K1'.
+     * values include: 'P-256', 'P-384', 'P-521', 'P-256K'.
      */
     @JsonProperty(value = "crv")
     private JsonWebKeyCurveName curve;

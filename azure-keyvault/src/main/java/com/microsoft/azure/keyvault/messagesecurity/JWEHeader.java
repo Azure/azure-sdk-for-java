@@ -11,6 +11,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Json Web Encryption Header class.
@@ -24,7 +25,7 @@ class JWEHeader {
     /**
      * Constructor.
      */
-    public JWEHeader(){
+    JWEHeader() {
 
     }
 
@@ -32,13 +33,13 @@ class JWEHeader {
      * Constructor.
      * 
      * @param alg
-     *      Encryption algorithm (for key). (Supported: RSA-OAEP)
+     *            Encryption algorithm (for key). (Supported: RSA-OAEP)
      * @param kid
-     *      Key Id
+     *            Key Id
      * @param enc
-     *      Encryption algorithm (for data). (Supported: A128CBC-HS256) 
+     *            Encryption algorithm (for data). (Supported: A128CBC-HS256)
      */
-    public JWEHeader(String alg, String kid, String enc){
+    JWEHeader(String alg, String kid, String enc) {
         this.alg = alg;
         this.kid = kid;
         this.enc = enc;
@@ -47,20 +48,25 @@ class JWEHeader {
     /**
      * Compare two JWEHeaders.
      * 
-     * @return 
-     *      true if JWEHeaders are identical.
+     * @return true if JWEHeaders are identical.
      */
-    public boolean equals(JWEHeader other){
-        return this.alg.equals(other.alg) &&
-                this.kid.equals(other.kid) &&
-                this.enc.equals(other.enc);
+    public boolean equals(JWEHeader other) {
+        return this.alg.equals(other.alg) && this.kid.equals(other.kid) && this.enc.equals(other.enc);
+    }
+    
+    /**
+     * Hash code for objects.
+     * 
+     * @return hashcode
+     */
+    public int hashCode() {
+        return Objects.hash(this.alg, this.kid, this.enc);
     }
 
     /**
      * Serialize JWEHeader to json string.
      * 
-     * @return 
-     *      Json string with serialized JWEHeader.
+     * @return Json string with serialized JWEHeader.
      */
     public String serialize() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
@@ -71,26 +77,24 @@ class JWEHeader {
      * Construct JWEHeader from json string.
      * 
      * @param json
-     *      json string.
+     *            json string.
      * 
-     * @return 
-     *      Constructed JWEHeader
+     * @return Constructed JWEHeader
      */
-    public static JWEHeader deserialize(String json) throws IOException{
+    public static JWEHeader deserialize(String json) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        return mapper.readValue(json,JWEHeader.class);
+        return mapper.readValue(json, JWEHeader.class);
     }
 
     /**
      * Construct JWEHeader from base64url string.
      * 
      * @param base64
-     *      base64 url string.
+     *            base64 url string.
      * 
-     * @return 
-     *      Constructed JWEHeader
+     * @return Constructed JWEHeader
      */
-    public static JWEHeader fromBase64String(String base64) throws IOException{
+    public static JWEHeader fromBase64String(String base64) throws IOException {
         String json = MessageSecurityHelper.base64UrltoString(base64);
         return deserialize(json);
     }
@@ -104,7 +108,7 @@ class JWEHeader {
     }
 
     /**
-     * Key Id
+     * Key Id.
      */
     @JsonProperty("kid")
     public String kid() {
@@ -112,7 +116,7 @@ class JWEHeader {
     }
 
     /**
-     * Encryption algorithm (for data). (Supported: A128CBC-HS256) 
+     * Encryption algorithm (for data). (Supported: A128CBC-HS256)
      */
     @JsonProperty("enc")
     public String enc() {

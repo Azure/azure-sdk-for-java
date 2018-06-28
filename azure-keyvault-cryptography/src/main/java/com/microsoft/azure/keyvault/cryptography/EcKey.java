@@ -27,7 +27,7 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.microsoft.azure.keyvault.core.IKey;
 import com.microsoft.azure.keyvault.cryptography.algorithms.Ecdsa;
-import com.microsoft.azure.keyvault.cryptography.algorithms.Ecdsa256;
+import com.microsoft.azure.keyvault.cryptography.algorithms.Es256k;
 import com.microsoft.azure.keyvault.cryptography.algorithms.Es256;
 import com.microsoft.azure.keyvault.cryptography.algorithms.Es384;
 import com.microsoft.azure.keyvault.cryptography.algorithms.Es512;
@@ -40,18 +40,18 @@ public class EcKey implements IKey {
 	public static final String P256 = "secp256r1";
 	public static final String P384 = "secp384r1";
 	public static final String P521 = "secp521r1";
-	public static final String SECP265K1 = "secp256k1";
+	public static final String P256K = "secp256k1";
 	public static final Map<JsonWebKeyCurveName, String> CURVE_TO_SIGNATURE = ImmutableMap.<JsonWebKeyCurveName, String>builder()
 			.put(JsonWebKeyCurveName.P_256, Es256.ALGORITHM_NAME)
 			.put(JsonWebKeyCurveName.P_384, Es384.ALGORITHM_NAME)
 			.put(JsonWebKeyCurveName.P_521, Es512.ALGORITHM_NAME)
-			.put(JsonWebKeyCurveName.SECP256K1, Ecdsa256.ALGORITHM_NAME)
+			.put(JsonWebKeyCurveName.P_256K, Es256k.ALGORITHM_NAME)
 			.build();
 	public static final Map<JsonWebKeyCurveName, String> CURVE_TO_SPEC_NAME = ImmutableMap.<JsonWebKeyCurveName, String>builder()
 			.put(JsonWebKeyCurveName.P_256, P256)
 			.put(JsonWebKeyCurveName.P_384, P384)
 			.put(JsonWebKeyCurveName.P_521, P521)
-			.put(JsonWebKeyCurveName.SECP256K1, SECP265K1)
+			.put(JsonWebKeyCurveName.P_256K, P256K)
 			.build();			
 	
 
@@ -243,7 +243,7 @@ public class EcKey implements IKey {
 			ECParameterSpec spec = key.getParams();
 			EllipticCurve crv = spec.getCurve();
 			
-			List<JsonWebKeyCurveName> curveList = Arrays.asList(JsonWebKeyCurveName.P_256, JsonWebKeyCurveName.P_384, JsonWebKeyCurveName.P_521, JsonWebKeyCurveName.SECP256K1);
+			List<JsonWebKeyCurveName> curveList = Arrays.asList(JsonWebKeyCurveName.P_256, JsonWebKeyCurveName.P_384, JsonWebKeyCurveName.P_521, JsonWebKeyCurveName.P_256K);
 			
 			for (JsonWebKeyCurveName curve : curveList) {
 				ECGenParameterSpec gps = new ECGenParameterSpec(CURVE_TO_SPEC_NAME.get(curve));

@@ -6,21 +6,22 @@
 package com.microsoft.azure.keyvault.authentication;
 
 /**
- * Stores authentication token and client key used for proof of possession authentication.
+ * Stores authentication token and client key used for proof of possession
+ * authentication.
  */
-public class AuthenticationResult{
+public class AuthenticationResult {
     private String authToken;
     private String popKey;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param authToken
-     *      authentication token string.
+     *            authentication token string.
      * @param popKey
-     *      serialized json web key used for pop authentication.
+     *            serialized json web key used for pop authentication.
      */
-    public AuthenticationResult(String authToken, String popKey){
+    public AuthenticationResult(String authToken, String popKey) {
         this.authToken = authToken;
         this.popKey = popKey;
     }
@@ -30,7 +31,7 @@ public class AuthenticationResult{
      *
      * @return authentication token.
      */
-    public String getAuthToken(){
+    public String getAuthToken() {
         return authToken;
     }
 
@@ -39,7 +40,7 @@ public class AuthenticationResult{
      *
      * @return proof of possession key.
      */
-    public String getPopKey(){
+    public String getPopKey() {
         return popKey;
     }
 }

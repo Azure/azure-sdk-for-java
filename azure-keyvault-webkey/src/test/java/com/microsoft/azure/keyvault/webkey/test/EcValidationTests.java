@@ -96,20 +96,20 @@ public class EcValidationTests {
 			.put(JsonWebKeyCurveName.P_256, "SHA-256")
 			.put(JsonWebKeyCurveName.P_384, "SHA-384")
 			.put(JsonWebKeyCurveName.P_521, "SHA-512")
-			.put(JsonWebKeyCurveName.SECP256K1, "SHA-256")
+			.put(JsonWebKeyCurveName.P_256K, "SHA-256")
 			.build();
 	
     Map<Integer, String> keys = ImmutableMap.<Integer, String>builder()
     	.put(256, "{\"kid\":\"key_id\",\"kty\":\"EC\",\"key_ops\":null,\"n\":null,\"e\":null,\"d\":\"AM_iqldq9VSqlf9v3w7lren4pJvZTG81v6_V5ZBLP7ZI\",\"dp\":null,\"dq\":null,\"qi\":null,\"p\":null,\"q\":null,\"k\":null,\"key_hsm\":null,\"crv\":\"P-256\",\"x\":\"KyjF795jLyVIgswKSQInEGYHNBKSKyPgNojEgYlldMI\",\"y\":\"AIl_ca1ZIKbJ5YGdgGr_7HySldI2aWeBaOImZEYIMpVe\"}")
     	.put(384, "{\"kid\":\"key_id\",\"kty\":\"EC\",\"key_ops\":null,\"n\":null,\"e\":null,\"d\":\"AJEYT00mAfa-_uJ8S9ob0-9uZbPEr56CFebUQW9O-jZQBrtrMSPeqVbjJvTVlzOwbg\",\"dp\":null,\"dq\":null,\"qi\":null,\"p\":null,\"q\":null,\"k\":null,\"key_hsm\":null,\"crv\":\"P-384\",\"x\":\"AKOdkhxTtVkLtaslZIOPQGnsdKRT2xo3Ynk-bnAVvTCf3iGrTpRiMxUmyq_tvzBLEg\",\"y\":\"QoHux2O2XGMh8w7a5sWwskAyCR0g3Lj7kPGuvnDq_bQ_-_VoTvsGMAe9MFexv68I\"}")
     	.put(521, "{\"kid\":\"key_id\",\"kty\":\"EC\",\"key_ops\":null,\"n\":null,\"e\":null,\"d\":\"AVW7TFJVOJ8jY5PqK0nnKyVYQwhkBEGKt0nhSZTS5io7U32dR7xZle77Gq6SpjrdFVa32jvGWgchlSguV3WKy3sj\",\"dp\":null,\"dq\":null,\"qi\":null,\"p\":null,\"q\":null,\"k\":null,\"key_hsm\":null,\"crv\":\"P-521\",\"x\":\"AIDmImOrJNKOjOGp7wD8Dzi_uz-00E7cs8iN5SwBkzBXktyRrLDFS_SMwVdnIWpLcdJQn5sTGDS121DhjQA2i2dO\",\"y\":\"AWRoeIfIoRoEx8V9ijjwaco3V6vUPUYvKMKxtCPvm8iwhB7pZAI7-mODSfkb3rZo3gxuWoM3G7L66FttUlKSLK4w\"}")
-    	.put(265, "{\"kid\":\"key_id\",\"kty\":\"EC\",\"key_ops\":null,\"n\":null,\"e\":null,\"d\":\"YKv22AkpwBpKUcDodNhKhvI-bRpiWqoN8l0kNCo-Mds\",\"dp\":null,\"dq\":null,\"qi\":null,\"p\":null,\"q\":null,\"k\":null,\"key_hsm\":null,\"crv\":\"SECP256K1\",\"x\":\"Yw9Sln8gYf_oiFY1anQm0V_WwsRaCIcEccfbhu5hSJo\",\"y\":\"AJq3JT2YldszaohHaS7LkngPWS9y0yAn7HhHb5p0IUDS\"}")
+    	.put(265, "{\"kid\":\"key_id\",\"kty\":\"EC\",\"key_ops\":null,\"n\":null,\"e\":null,\"d\":\"YKv22AkpwBpKUcDodNhKhvI-bRpiWqoN8l0kNCo-Mds\",\"dp\":null,\"dq\":null,\"qi\":null,\"p\":null,\"q\":null,\"k\":null,\"key_hsm\":null,\"crv\":\"P-256K\",\"x\":\"Yw9Sln8gYf_oiFY1anQm0V_WwsRaCIcEccfbhu5hSJo\",\"y\":\"AJq3JT2YldszaohHaS7LkngPWS9y0yAn7HhHb5p0IUDS\"}")
     	.build();
     
 	public static final Map<JsonWebKeyCurveName, String> CURVE_TO_SIGNATURE = ImmutableMap.<JsonWebKeyCurveName, String>builder()
 			.put(JsonWebKeyCurveName.P_256, "SHA256withECDSA")
 			.put(JsonWebKeyCurveName.P_384, "SHA384withECDSA")
 			.put(JsonWebKeyCurveName.P_521, "SHA512withECDSA")
-			.put(JsonWebKeyCurveName.SECP256K1, "NONEwithECDSA")
+			.put(JsonWebKeyCurveName.P_256K, "NONEwithECDSA")
 			.build();
 }

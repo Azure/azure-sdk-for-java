@@ -18,7 +18,7 @@ import com.microsoft.azure.keyvault.cryptography.algorithms.Aes256CbcHmacSha512;
 import com.microsoft.azure.keyvault.cryptography.algorithms.AesKw128;
 import com.microsoft.azure.keyvault.cryptography.algorithms.AesKw192;
 import com.microsoft.azure.keyvault.cryptography.algorithms.AesKw256;
-import com.microsoft.azure.keyvault.cryptography.algorithms.Ecdsa256;
+import com.microsoft.azure.keyvault.cryptography.algorithms.Es256k;
 import com.microsoft.azure.keyvault.cryptography.algorithms.Es256;
 import com.microsoft.azure.keyvault.cryptography.algorithms.Es384;
 import com.microsoft.azure.keyvault.cryptography.algorithms.Es512;
@@ -49,7 +49,7 @@ public class AlgorithmResolver {
         Default.put( Rs256.ALGORITHM_NAME, new Rs256() );
         // Default.put( RsNull.ALGORITHM_NAME, new RsNull() );
         
-        Default.put(Ecdsa256.ALGORITHM_NAME, new Ecdsa256());
+        Default.put(Es256k.ALGORITHM_NAME, new Es256k());
         Default.put(Es256.ALGORITHM_NAME, new Es256());
         Default.put(Es384.ALGORITHM_NAME, new Es384());
         Default.put(Es512.ALGORITHM_NAME, new Es512());

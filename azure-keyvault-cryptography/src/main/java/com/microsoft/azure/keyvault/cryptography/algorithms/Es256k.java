@@ -1,6 +1,6 @@
 package com.microsoft.azure.keyvault.cryptography.algorithms;
 
-public class Ecdsa256 extends Ecdsa {
+public class Es256k extends Ecdsa {
     public final static String ALGORITHM_NAME = "NONEwithECDSA";
 	
     @Override

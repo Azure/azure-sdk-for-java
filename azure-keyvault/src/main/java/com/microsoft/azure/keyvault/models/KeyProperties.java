@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.keyvault.models;
 
+import com.microsoft.azure.keyvault.webkey.JsonWebKeyType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -21,13 +22,14 @@ public class KeyProperties {
     private Boolean exportable;
 
     /**
-     * The key type.
+     * The type of key pair to be used for the certificate. Possible values
+     * include: 'EC', 'EC-HSM', 'RSA', 'RSA-HSM', 'oct'.
      */
     @JsonProperty(value = "kty")
-    private String keyType;
+    private JsonWebKeyType keyType;
 
     /**
-     * The key size in bytes. For example;  1024 or 2048.
+     * The key size in bits. For example: 2048, 3072, or 4096 for RSA.
      */
     @JsonProperty(value = "key_size")
     private Integer keySize;
@@ -37,6 +39,13 @@ public class KeyProperties {
      */
     @JsonProperty(value = "reuse_key")
     private Boolean reuseKey;
+
+    /**
+     * Elliptic curve name. For valid values, see JsonWebKeyCurveName. Possible
+     * values include: 'P-256', 'P-384', 'P-521', 'P-256K'.
+     */
+    @JsonProperty(value = "crv")
+    private JsonWebKeyCurveName curve;
 
     /**
      * Get the exportable value.
@@ -63,7 +72,7 @@ public class KeyProperties {
      *
      * @return the keyType value
      */
-    public String keyType() {
+    public JsonWebKeyType keyType() {
         return this.keyType;
     }
 
@@ -73,7 +82,7 @@ public class KeyProperties {
      * @param keyType the keyType value to set
      * @return the KeyProperties object itself.
      */
-    public KeyProperties withKeyType(String keyType) {
+    public KeyProperties withKeyType(JsonWebKeyType keyType) {
         this.keyType = keyType;
         return this;
     }
@@ -115,6 +124,26 @@ public class KeyProperties {
      */
     public KeyProperties withReuseKey(Boolean reuseKey) {
         this.reuseKey = reuseKey;
+        return this;
+    }
+
+    /**
+     * Get the curve value.
+     *
+     * @return the curve value
+     */
+    public JsonWebKeyCurveName curve() {
+        return this.curve;
+    }
+
+    /**
+     * Set the curve value.
+     *
+     * @param curve the curve value to set
+     * @return the KeyProperties object itself.
+     */
+    public KeyProperties withCurve(JsonWebKeyCurveName curve) {
+        this.curve = curve;
         return this;
     }
 

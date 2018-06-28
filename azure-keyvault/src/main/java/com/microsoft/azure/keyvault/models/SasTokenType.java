@@ -8,34 +8,52 @@
 
 package com.microsoft.azure.keyvault.models;
 
-import java.util.Collection;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.microsoft.rest.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
  * Defines values for SasTokenType.
  */
-public final class SasTokenType extends ExpandableStringEnum<SasTokenType> {
+public final class SasTokenType {
     /** Static value account for SasTokenType. */
-    public static final SasTokenType ACCOUNT = fromString("account");
+    public static final SasTokenType ACCOUNT = new SasTokenType("account");
 
     /** Static value service for SasTokenType. */
-    public static final SasTokenType SERVICE = fromString("service");
+    public static final SasTokenType SERVICE = new SasTokenType("service");
+
+    private String value;
 
     /**
-     * Creates or finds a SasTokenType from its string representation.
-     * @param name a name to look for
-     * @return the corresponding SasTokenType
+     * Creates a custom value for SasTokenType.
+     * @param value the custom value
      */
-    @JsonCreator
-    public static SasTokenType fromString(String name) {
-        return fromString(name, SasTokenType.class);
+    public SasTokenType(String value) {
+        this.value = value;
     }
 
-    /**
-     * @return known SasTokenType values
-     */
-    public static Collection<SasTokenType> values() {
-        return values(SasTokenType.class);
+    @JsonValue
+    @Override
+    public String toString() {
+        return value;
+    }
+
+    @Override
+    public int hashCode() {
+        return value.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof SasTokenType)) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        SasTokenType rhs = (SasTokenType) obj;
+        if (value == null) {
+            return rhs.value == null;
+        } else {
+            return value.equals(rhs.value);
+        }
     }
 }
