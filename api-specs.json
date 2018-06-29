@@ -98,6 +98,10 @@
       "\"moduleName\"": "\"PostgreSQL\""
     }
   },
+  "recoveryservices/resource-manager": {
+    "source": "specification/recoveryservices/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "redis/resource-manager": {
     "source": "specification/redis/resource-manager/readme.md",
     "args": "--multiapi --fluent",
