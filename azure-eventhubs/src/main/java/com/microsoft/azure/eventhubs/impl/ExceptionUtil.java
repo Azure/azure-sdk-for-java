@@ -61,19 +61,19 @@ public final class ExceptionUtil {
     static Exception amqpResponseCodeToException(final int statusCode, final String statusDescription) {
         final AmqpResponseCode amqpResponseCode = AmqpResponseCode.valueOf(statusCode);
         if (amqpResponseCode == null)
-            return new EventHubException(true, String.format(ClientConstants.AMQP_PUT_TOKEN_FAILED_ERROR, statusCode, statusDescription));
+            return new EventHubException(true, String.format(ClientConstants.AMQP_REQUEST_FAILED_ERROR, statusCode, statusDescription));
 
         switch (amqpResponseCode) {
             case BAD_REQUEST:
-                return new IllegalArgumentException(String.format(ClientConstants.AMQP_PUT_TOKEN_FAILED_ERROR, statusCode, statusDescription));
+                return new IllegalArgumentException(String.format(ClientConstants.AMQP_REQUEST_FAILED_ERROR, statusCode, statusDescription));
             case NOT_FOUND:
                 return new IllegalEntityException(statusDescription);
             case FORBIDDEN:
-                return new QuotaExceededException(String.format(ClientConstants.AMQP_PUT_TOKEN_FAILED_ERROR, statusCode, statusDescription));
+                return new QuotaExceededException(String.format(ClientConstants.AMQP_REQUEST_FAILED_ERROR, statusCode, statusDescription));
             case UNAUTHORIZED:
-                return new AuthorizationFailedException(String.format(ClientConstants.AMQP_PUT_TOKEN_FAILED_ERROR, statusCode, statusDescription));
+                return new AuthorizationFailedException(String.format(ClientConstants.AMQP_REQUEST_FAILED_ERROR, statusCode, statusDescription));
             default:
-                return new EventHubException(true, String.format(ClientConstants.AMQP_PUT_TOKEN_FAILED_ERROR, statusCode, statusDescription));
+                return new EventHubException(true, String.format(ClientConstants.AMQP_REQUEST_FAILED_ERROR, statusCode, statusDescription));
         }
     }
 
