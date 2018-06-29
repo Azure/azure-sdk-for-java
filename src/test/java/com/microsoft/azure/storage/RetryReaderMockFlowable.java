@@ -46,6 +46,8 @@ public class RetryReaderMockFlowable extends Flowable<ByteBuffer> {
 
     public static final int RR_TEST_SCENARIO_ERROR_GETTER_MIDDLE = 6;
 
+    public static final int RR_TEST_SCENARIO_SUCCESSFUL_INITIAL_RESPONSE = 7;
+
     private int scenario;
 
     private int tryNumber;
@@ -69,11 +71,11 @@ public class RetryReaderMockFlowable extends Flowable<ByteBuffer> {
                 this.scenarioData = APISpec.getRandomData(512*1024);
                 break;
             case RR_TEST_SCENARIO_SUCCESSFUL_MULTI_CHUNK:
-                this.scenarioData = APISpec.getRandomData(1024);
-                break;
+                // Fall through
             case RR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES:
+                // Fall through
+            case RR_TEST_SCENARIO_SUCCESSFUL_INITIAL_RESPONSE:
                 this.scenarioData = APISpec.getRandomData(1024);
-                break;
         }
     }
 
@@ -132,6 +134,12 @@ public class RetryReaderMockFlowable extends Flowable<ByteBuffer> {
 
             case RR_TEST_SCENARIO_ERROR_GETTER_MIDDLE:
                 s.onError(new IOException());
+                break;
+
+            case RR_TEST_SCENARIO_SUCCESSFUL_INITIAL_RESPONSE:
+                s.onNext(this.scenarioData.duplicate());
+                s.onComplete();
+                break;
         }
     }
 

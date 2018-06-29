@@ -20,12 +20,11 @@ package com.microsoft.azure.storage.blob;
  */
 public class RetryReaderOptions {
     /**
-     * Specifies the maximum number of HTTP Get requests that will be made while reading from a RetryReader. A value
-     * of {@code 0} means that no additional HTTP requests will be made.
+     * Specifies the maximum number of additional HTTP Get requests that will be made while reading the data from a
+     * {@link RetryReader}. Note that if no initial response is provided, the {@code RetryReader} will call the getter
+     * to obtain an initial response to read from; this initial response does not count as a retry. A value of {@code 0}
+     *  is the default and means that no additional HTTP requests will be made once the initial request has been made or
+     *  provided.
      */
-    public int maxRetryRequests;
-
-    boolean doInjectError;
-
-    int doInjectErrorRound;
+    public int maxRetryRequests = 0;
 }

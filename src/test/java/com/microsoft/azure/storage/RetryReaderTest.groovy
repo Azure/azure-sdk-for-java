@@ -23,7 +23,6 @@ import com.microsoft.rest.v2.RestResponse
 import com.microsoft.rest.v2.util.FlowableUtil
 import io.reactivex.Flowable
 import io.reactivex.Single
-import io.reactivex.functions.Consumer
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -38,7 +37,12 @@ class RetryReaderTest extends APISpec {
                 null).blockingGet()
     }
 
-    def "RetryReader"() {
+    /*
+    This shouldn't really be different from anything else we're doing in the other tests. Just a sanity check against
+    a real use case.
+     */
+
+    def "Network call"() {
         setup:
         def info = new RetryReader.HTTPGetterInfo()
         info.offset = 0
@@ -60,9 +64,7 @@ class RetryReaderTest extends APISpec {
         // Test with the different kinds of errors that are retryable: Timeout, IOException, 500, 503--assert that the data at the end is still the same - Use the RetryTestFactory (or similar)
         // Another policy which returns a custom flowable that injects an error after a certain amount of data.
         // Different values of options. Valid and invalid. See Adam's comment on CR about count and offset.
-        // Null options and info parameters and null internal fields
-        // Getter returns an error
-        // Exceed max tryCount
+        // Null options and info parameters and null internal fields (null count)
     }
 
     @Unroll
@@ -76,8 +78,12 @@ class RetryReaderTest extends APISpec {
         def options = new RetryReaderOptions()
         options.maxRetryRequests = 5
 
+        def initialResponse = null
+        if (provideInitialResponse) {
+            initialResponse = flowable.getter(new RetryReader.HTTPGetterInfo())
+        }
         when:
-        RetryReader reader = new RetryReader(null, info, options,
+        RetryReader reader = new RetryReader(initialResponse, info, options,
                 new Function<RetryReader.HTTPGetterInfo, Single<? extends RestResponse<?, Flowable<ByteBuffer>>>>() {
                     @Override
                     Single<? extends RestResponse<?, Flowable<ByteBuffer>>> apply(RetryReader.HTTPGetterInfo i) {
@@ -90,10 +96,11 @@ class RetryReaderTest extends APISpec {
         flowable.getTryNumber() == tryNumber
 
         where:
-        scenario                                                            | tryNumber
-        RetryReaderMockFlowable.RR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK       | 1
-        RetryReaderMockFlowable.RR_TEST_SCENARIO_SUCCESSFUL_MULTI_CHUNK     | 1
-        RetryReaderMockFlowable.RR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES | 4
+        scenario                                                             | tryNumber | provideInitialResponse
+        RetryReaderMockFlowable.RR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK        | 1         | false
+        RetryReaderMockFlowable.RR_TEST_SCENARIO_SUCCESSFUL_MULTI_CHUNK      | 1         | false
+        RetryReaderMockFlowable.RR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES  | 4         | false
+        RetryReaderMockFlowable.RR_TEST_SCENARIO_SUCCESSFUL_INITIAL_RESPONSE | 1         | true
     }
 
     @Unroll
@@ -123,11 +130,15 @@ class RetryReaderTest extends APISpec {
         exceptionType.isInstance(e.getCause()) // The exception we throw is the cause of the RuntimeException
         flowable.getTryNumber() == tryNumber
 
+        /*
+        tryNumber is 7 because the initial request is the first try, then it will fail when retryCount>maxRetryCount,
+        which is when retryCount=6 and therefore tryNumber=6
+         */
         where:
-        scenario | exceptionType | tryNumber
-        RetryReaderMockFlowable.RR_TEST_SCENARIO_MAX_RETRIES_EXCEEDED | IOException | 6
-        RetryReaderMockFlowable.RR_TEST_SCENARIO_NON_RETRYABLE_ERROR | Exception | 1
-        RetryReaderMockFlowable.RR_TEST_SCENARIO_ERROR_GETTER_INITIAL | IOException | 1
-        RetryReaderMockFlowable.RR_TEST_SCENARIO_ERROR_GETTER_MIDDLE | RestException | 2
+        scenario                                                      | exceptionType | tryNumber
+        RetryReaderMockFlowable.RR_TEST_SCENARIO_MAX_RETRIES_EXCEEDED | IOException   | 7
+        RetryReaderMockFlowable.RR_TEST_SCENARIO_NON_RETRYABLE_ERROR  | Exception     | 1
+        RetryReaderMockFlowable.RR_TEST_SCENARIO_ERROR_GETTER_INITIAL | IOException   | 1
+        RetryReaderMockFlowable.RR_TEST_SCENARIO_ERROR_GETTER_MIDDLE  | RestException | 2
     }
 }

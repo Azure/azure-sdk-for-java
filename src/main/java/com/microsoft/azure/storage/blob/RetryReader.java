@@ -56,7 +56,9 @@ public class RetryReader extends Flowable<ByteBuffer> {
             RetryReaderOptions options,
             Function<HTTPGetterInfo, Single<? extends RestResponse<?, Flowable<ByteBuffer>>>> getter) {
         Utility.assertNotNull("getter", getter);
+        info = info == null ? new HTTPGetterInfo() : info;
         Utility.assertInBounds("info.count", info.count, 0, Integer.MAX_VALUE);
+        options = options == null ? new RetryReaderOptions() : options;
         Utility.assertInBounds("options.maxRetryRequests", options.maxRetryRequests, 0, Integer.MAX_VALUE);
 
         this.response = initialResponse;
@@ -72,9 +74,7 @@ public class RetryReader extends Flowable<ByteBuffer> {
         it returns a Single, so it is not eligible to be retried according to our maxTryCount. If the getter itself
         fails, we have no way of continuing, and so report an error.
          */
-        boolean initialRequestMade = false;
         if (this.response == null) {
-            initialRequestMade = true;
             try {
                 this.response = getter.apply(this.info);
             } catch (Throwable throwable) {
@@ -83,7 +83,7 @@ public class RetryReader extends Flowable<ByteBuffer> {
             }
         }
 
-        Flowable<ByteBuffer> stream = readActual(s, this.response, initialRequestMade ? 1 : 0);
+        Flowable<ByteBuffer> stream = readActual(s, this.response, 0);
 
         stream.subscribe();
     }
@@ -147,21 +147,21 @@ public class RetryReader extends Flowable<ByteBuffer> {
      */
     public static class HTTPGetterInfo {
         /**
-         * The start offset that should be used when creating the HTTP GET request's Range header.
+         * The start offset that should be used when creating the HTTP GET request's Range header. Defaults to 0.
          */
-        public long offset;
+        public long offset = 0;
 
         /**
          * The count of bytes that should be used to calculate the end offset when creating the HTTP GET request's Range
-         * header. {@code} null indicates that the entire rest of the blob should be retrieved.
+         * header. {@code} null is the default and indicates that the entire rest of the blob should be retrieved.
          */
-        public Long count;
+        public Long count = null;
 
         /**
          * The resource's etag that should be used when creating the HTTP GET request's If-Match header. Note that the
          * Etag is returned with any operation that modifies the resource and by a call to {@link
-         * BlobURL#getProperties(BlobAccessConditions)}.
+         * BlobURL#getProperties(BlobAccessConditions)}. Defaults to null.
          */
-        public ETag eTag;
+        public ETag eTag = null;
     }
 }
