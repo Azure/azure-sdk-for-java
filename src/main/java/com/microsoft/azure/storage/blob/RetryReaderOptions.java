@@ -12,15 +12,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.microsoft.azure.storage.blob;
 
-public interface IProgressReceiver {
-
+/**
+ * {@code RetryReaderOptions} contains properties which help a {@link RetryReader} determine when to retry.
+ */
+public class RetryReaderOptions {
     /**
-     * The callback function invoked as progress is reported.
-     *
-     * @param bytesTransferred
-     *      The total number of bytes transferred during this transaction.
+     * Specifies the maximum number of HTTP Get requests that will be made while reading from a RetryReader. A value
+     * of {@code 0} means that no additional HTTP requests will be made.
      */
-    public void reportProgress(long bytesTransferred);
+    public int maxRetryRequests;
+
+    boolean doInjectError;
+
+    int doInjectErrorRound;
 }

@@ -20,8 +20,6 @@ import com.microsoft.rest.v2.policy.RequestPolicyFactory;
 import com.microsoft.rest.v2.policy.RequestPolicyOptions;
 import io.reactivex.Completable;
 import io.reactivex.Single;
-import io.reactivex.SingleSource;
-import io.reactivex.functions.Function;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
