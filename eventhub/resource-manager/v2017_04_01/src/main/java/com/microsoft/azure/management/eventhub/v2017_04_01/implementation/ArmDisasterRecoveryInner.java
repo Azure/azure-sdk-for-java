@@ -51,7 +51,7 @@ public class ArmDisasterRecoveryInner extends ProxyResource {
     /**
      * Number of entities pending to be replicated.
      */
-    @JsonProperty(value = "properties.pendingReplicationOperationsCount ", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.pendingReplicationOperationsCount", access = JsonProperty.Access.WRITE_ONLY)
     private Long pendingReplicationOperationsCount;
 
     /**

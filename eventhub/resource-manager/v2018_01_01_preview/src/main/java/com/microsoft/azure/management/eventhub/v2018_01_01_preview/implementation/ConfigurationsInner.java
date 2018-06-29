@@ -37,7 +37,7 @@ public class ConfigurationsInner {
     /** The Retrofit service to perform REST calls. */
     private ConfigurationsService service;
     /** The service client containing this operation class. */
-    private EventHubClusterManagementClientImpl client;
+    private EventHub2018PreviewManagementClientImpl client;
 
     /**
      * Initializes an instance of ConfigurationsInner.
@@ -45,7 +45,7 @@ public class ConfigurationsInner {
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public ConfigurationsInner(Retrofit retrofit, EventHubClusterManagementClientImpl client) {
+    public ConfigurationsInner(Retrofit retrofit, EventHub2018PreviewManagementClientImpl client) {
         this.service = retrofit.create(ConfigurationsService.class);
         this.client = client;
     }

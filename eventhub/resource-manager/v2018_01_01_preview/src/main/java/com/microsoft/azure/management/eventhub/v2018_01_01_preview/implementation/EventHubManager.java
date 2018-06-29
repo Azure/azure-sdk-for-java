@@ -19,16 +19,18 @@ import com.microsoft.rest.RestClient;
 import com.microsoft.azure.management.eventhub.v2018_01_01_preview.Operations;
 import com.microsoft.azure.management.eventhub.v2018_01_01_preview.Clusters;
 import com.microsoft.azure.management.eventhub.v2018_01_01_preview.Configurations;
+import com.microsoft.azure.management.eventhub.v2018_01_01_preview.Namespaces;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
 /**
  * Entry point to Azure EventHub resource management.
  */
-public final class EventHubManager extends ManagerCore<EventHubManager, EventHubClusterManagementClientImpl> {
+public final class EventHubManager extends ManagerCore<EventHubManager, EventHub2018PreviewManagementClientImpl> {
     private Operations operations;
     private Clusters clusters;
     private Configurations configurations;
+    private Namespaces namespaces;
     /**
     * Get a Configurable instance that can be used to create EventHubManager with optional configuration.
     *
@@ -107,6 +109,16 @@ public final class EventHubManager extends ManagerCore<EventHubManager, EventHub
     }
 
     /**
+     * @return Entry point to manage Namespaces.
+     */
+    public Namespaces namespaces() {
+        if (this.namespaces == null) {
+            this.namespaces = new NamespacesImpl(this);
+        }
+        return this.namespaces;
+    }
+
+    /**
     * The implementation for Configurable interface.
     */
     private static final class ConfigurableImpl extends AzureConfigurableCoreImpl<Configurable> implements Configurable {
@@ -118,6 +130,6 @@ public final class EventHubManager extends ManagerCore<EventHubManager, EventHub
         super(
             restClient,
             subscriptionId,
-            new EventHubClusterManagementClientImpl(restClient).withSubscriptionId(subscriptionId));
+            new EventHub2018PreviewManagementClientImpl(restClient).withSubscriptionId(subscriptionId));
     }
 }
