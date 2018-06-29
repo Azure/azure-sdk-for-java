@@ -94,6 +94,8 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
     @JsonSubTypes.Type(name = "AzureSqlDatabase", value = AzureSqlDatabaseLinkedService.class),
     @JsonSubTypes.Type(name = "SqlServer", value = SqlServerLinkedService.class),
     @JsonSubTypes.Type(name = "AzureSqlDW", value = AzureSqlDWLinkedService.class),
+    @JsonSubTypes.Type(name = "AzureTableStorage", value = AzureTableStorageLinkedService.class),
+    @JsonSubTypes.Type(name = "AzureBlobStorage", value = AzureBlobStorageLinkedService.class),
     @JsonSubTypes.Type(name = "AzureStorage", value = AzureStorageLinkedService.class)
 })
 public class LinkedServiceInner {
