@@ -18,10 +18,12 @@ import com.microsoft.azure.storage.blob.BlobRange
 import com.microsoft.azure.storage.blob.BlockBlobURL
 import com.microsoft.azure.storage.blob.RetryReader
 import com.microsoft.azure.storage.blob.RetryReaderOptions
+import com.microsoft.rest.v2.RestException
 import com.microsoft.rest.v2.RestResponse
 import com.microsoft.rest.v2.util.FlowableUtil
 import io.reactivex.Flowable
 import io.reactivex.Single
+import io.reactivex.functions.Consumer
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -82,13 +84,50 @@ class RetryReaderTest extends APISpec {
                         flowable.getter(i)
                     }
                 })
-        
+
         then:
         FlowableUtil.collectBytesInBuffer(reader).blockingGet() == flowable.getScenarioData()
+        flowable.getTryNumber() == tryNumber
 
         where:
-        scenario                                                        | _
-        RetryReaderMockFlowable.RR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK   | _
-        RetryReaderMockFlowable.RR_TEST_SCENARIO_SUCCESSFUL_MULTI_CHUNK | _
+        scenario                                                            | tryNumber
+        RetryReaderMockFlowable.RR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK       | 1
+        RetryReaderMockFlowable.RR_TEST_SCENARIO_SUCCESSFUL_MULTI_CHUNK     | 1
+        RetryReaderMockFlowable.RR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES | 4
+    }
+
+    @Unroll
+    def "Failure"() {
+        setup:
+        def flowable = new RetryReaderMockFlowable(scenario)
+        def info = new RetryReader.HTTPGetterInfo()
+        info.offset = 0
+        info.count = 3 // ignored.
+
+
+        def options = new RetryReaderOptions()
+        options.maxRetryRequests = 5
+
+        when:
+        RetryReader reader = new RetryReader(null, info, options,
+                new Function<RetryReader.HTTPGetterInfo, Single<? extends RestResponse<?, Flowable<ByteBuffer>>>>() {
+                    @Override
+                    Single<? extends RestResponse<?, Flowable<ByteBuffer>>> apply(RetryReader.HTTPGetterInfo i) {
+                        flowable.getter(i)
+                    }
+                })
+        reader.blockingSubscribe()
+
+        then:
+        def e = thrown(Throwable) // Blocking subscribe will wrap the IOException in a RuntimeException.
+        exceptionType.isInstance(e.getCause()) // The exception we throw is the cause of the RuntimeException
+        flowable.getTryNumber() == tryNumber
+
+        where:
+        scenario | exceptionType | tryNumber
+        RetryReaderMockFlowable.RR_TEST_SCENARIO_MAX_RETRIES_EXCEEDED | IOException | 6
+        RetryReaderMockFlowable.RR_TEST_SCENARIO_NON_RETRYABLE_ERROR | Exception | 1
+        RetryReaderMockFlowable.RR_TEST_SCENARIO_ERROR_GETTER_INITIAL | IOException | 1
+        RetryReaderMockFlowable.RR_TEST_SCENARIO_ERROR_GETTER_MIDDLE | RestException | 2
     }
 }

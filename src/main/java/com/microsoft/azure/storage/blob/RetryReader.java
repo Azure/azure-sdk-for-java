@@ -19,6 +19,7 @@ import com.microsoft.rest.v2.RestResponse;
 import com.microsoft.rest.v2.http.HttpPipeline;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
+import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
 
 import java.io.IOException;
@@ -36,10 +37,11 @@ import java.util.function.Function;
  * A common use case would be to provide a getter function which internally calls download on a blobURL after applying
  * the parameters from the info.
  * <p>
- * Note that the retries performed as a part of this reader are composed with those of any retries in an
- * {@link HttpPipeline} used in conjunction with this reader. That is, if the reader issues a request to resume a
- * a download, an underlying pipeline may issue several retries as a part of that request. Therefore, the behavior of
- * this reader is entirely independent of and in no way coupled to an {@link HttpPipeline}'s retry mechanism.
+ * Note that the retries performed as a part of this reader are composed with those of any retries in an {@link
+ * HttpPipeline} used in conjunction with this reader. That is, if the reader issues a request to resume a a download,
+ * an underlying pipeline may issue several retries as a part of that request. Furthermore, this reader only retries on
+ * network errors; timeouts and unexpected status codes are not retired. Therefore, the behavior of this reader is
+ * entirely independent of and in no way coupled to an {@link HttpPipeline}'s retry mechanism.
  */
 public class RetryReader extends Flowable<ByteBuffer> {
     private Single<? extends RestResponse<?, Flowable<ByteBuffer>>> response;
@@ -77,6 +79,7 @@ public class RetryReader extends Flowable<ByteBuffer> {
                 this.response = getter.apply(this.info);
             } catch (Throwable throwable) {
                 s.onError(throwable);
+                return;
             }
         }
 
@@ -106,31 +109,34 @@ public class RetryReader extends Flowable<ByteBuffer> {
                 Note that this will capture errors from mapping the response to the body, which involves making a
                 GET request, and errors from trying to read the body.
                  */
-                .onErrorResumeNext(throwable -> {
-                    // If all the retries are exhausted, report it to the user and error out.
-                    if (tryCount >= options.maxRetryRequests) {
-                        s.onError(throwable);
-                        return Flowable.error(throwable);
-                    }
-                    /*
-                    We are unable to get more specific information as to the nature of the error from the protocol
-                    layer when reading the stream, so we optimistically assume that an IOException is retryable.
-                     */
-                    else if (throwable instanceof IOException) {
-                        // Get a new response to try reading from.
-                        Single<? extends RestResponse<?, Flowable<ByteBuffer>>> newResponse;
-                        try {
-                            newResponse = getter.apply(info);
-                        } catch (Throwable t) {
+                .onErrorResumeNext(new io.reactivex.functions.Function<Throwable, Publisher<? extends ByteBuffer>>() {
+                    @Override
+                    public Publisher<? extends ByteBuffer> apply(Throwable throwable) throws Exception {
+                        // If all the retries are exhausted, report it to the user and error out.
+                        if (tryCount > options.maxRetryRequests) {
                             s.onError(throwable);
-                            return Flowable.error(throwable);
+                            return Flowable.empty();
                         }
+                        /*
+                        We are unable to get more specific information as to the nature of the error from the protocol
+                        layer when reading the stream, so we optimistically assume that an IOException is retryable.
+                        */
+                        else if (throwable instanceof IOException) {
+                            // Get a new response to try reading from.
+                            Single<? extends RestResponse<?, Flowable<ByteBuffer>>> newResponse;
+                            try {
+                                newResponse = getter.apply(info);
+                            } catch (Throwable t) {
+                                s.onError(t);
+                                return Flowable.empty();
+                            }
 
-                        // Continue with the same process again and increment the tryCount.
-                        return readActual(s, newResponse, tryCount + 1);
-                    } else {
-                        s.onError(throwable);
-                        return Flowable.error(throwable);
+                            // Continue with the same process again and increment the tryCount.
+                            return readActual(s, newResponse, tryCount + 1);
+                        } else {
+                            s.onError(throwable);
+                            return Flowable.empty();
+                        }
                     }
                 });
     }
