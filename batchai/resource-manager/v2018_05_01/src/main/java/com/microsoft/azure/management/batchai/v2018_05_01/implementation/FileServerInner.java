@@ -16,75 +16,79 @@ import org.joda.time.DateTime;
 import com.microsoft.azure.management.batchai.v2018_05_01.FileServerProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.rest.SkipParentValidation;
-import com.microsoft.azure.Resource;
+import com.microsoft.azure.ProxyResource;
 
 /**
- * Contains information about the File Server.
+ * File Server information.
  */
 @JsonFlatten
-@SkipParentValidation
-public class FileServerInner extends Resource {
+public class FileServerInner extends ProxyResource {
     /**
-     * The size of the virtual machine of the File Server.
-     * For information about available VM sizes for File Server from the
-     * Virtual Machines Marketplace, see Sizes for Virtual Machines (Linux).
+     * VM size.
+     * VM size of the File Server.
      */
     @JsonProperty(value = "properties.vmSize")
     private String vmSize;
 
     /**
-     * SSH settings for the File Server.
+     * SSH configuration.
+     * SSH configuration for accessing the File Server node.
      */
     @JsonProperty(value = "properties.sshConfiguration")
     private SshConfiguration sshConfiguration;
 
     /**
-     * Settings for the data disk which would be created for the File Server.
+     * Data disks configuration.
+     * Information about disks attached to File Server VM.
      */
     @JsonProperty(value = "properties.dataDisks")
     private DataDisks dataDisks;
 
     /**
-     * Specifies the identifier of the subnet.
+     * Subnet.
+     * File Server virtual network subnet resource ID.
      */
     @JsonProperty(value = "properties.subnet")
     private ResourceId subnet;
 
     /**
-     * Details of the File Server.
+     * Mount settings.
+     * File Server mount settings.
      */
     @JsonProperty(value = "properties.mountSettings", access = JsonProperty.Access.WRITE_ONLY)
     private MountSettings mountSettings;
 
     /**
-     * Time when the status was changed.
+     * Provisioning State Transition time.
+     * Time when the provisioning state was changed.
      */
     @JsonProperty(value = "properties.provisioningStateTransitionTime", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime provisioningStateTransitionTime;
 
     /**
+     * Creation time.
      * Time when the FileServer was created.
      */
     @JsonProperty(value = "properties.creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime creationTime;
 
     /**
-     * Specifies the provisioning state of the File Server.
-     * Possible values: creating - The File Server is getting created. updating
-     * - The File Server creation has been accepted and it is getting updated.
-     * deleting - The user has requested that the File Server be deleted, and
-     * it is in the process of being deleted. failed - The File Server creation
-     * has failed with the specified errorCode. Details about the error code
-     * are specified in the message field. succeeded - The File Server creation
-     * has succeeded. Possible values include: 'creating', 'updating',
-     * 'deleting', 'succeeded', 'failed'.
+     * Provisioning state.
+     * Provisioning state of the File Server. Possible values: creating - The
+     * File Server is getting created; updating - The File Server creation has
+     * been accepted and it is getting updated; deleting - The user has
+     * requested that the File Server be deleted, and it is in the process of
+     * being deleted; failed - The File Server creation has failed with the
+     * specified error code. Details about the error code are specified in the
+     * message field; succeeded - The File Server creation has succeeded.
+     * Possible values include: 'creating', 'updating', 'deleting',
+     * 'succeeded', 'failed'.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private FileServerProvisioningState provisioningState;
 
     /**
-     * Get the vmSize value.
+     * Get vM size of the File Server.
      *
      * @return the vmSize value
      */
@@ -93,7 +97,7 @@ public class FileServerInner extends Resource {
     }
 
     /**
-     * Set the vmSize value.
+     * Set vM size of the File Server.
      *
      * @param vmSize the vmSize value to set
      * @return the FileServerInner object itself.
@@ -104,7 +108,7 @@ public class FileServerInner extends Resource {
     }
 
     /**
-     * Get the sshConfiguration value.
+     * Get sSH configuration for accessing the File Server node.
      *
      * @return the sshConfiguration value
      */
@@ -113,7 +117,7 @@ public class FileServerInner extends Resource {
     }
 
     /**
-     * Set the sshConfiguration value.
+     * Set sSH configuration for accessing the File Server node.
      *
      * @param sshConfiguration the sshConfiguration value to set
      * @return the FileServerInner object itself.
@@ -124,7 +128,7 @@ public class FileServerInner extends Resource {
     }
 
     /**
-     * Get the dataDisks value.
+     * Get information about disks attached to File Server VM.
      *
      * @return the dataDisks value
      */
@@ -133,7 +137,7 @@ public class FileServerInner extends Resource {
     }
 
     /**
-     * Set the dataDisks value.
+     * Set information about disks attached to File Server VM.
      *
      * @param dataDisks the dataDisks value to set
      * @return the FileServerInner object itself.
@@ -144,7 +148,7 @@ public class FileServerInner extends Resource {
     }
 
     /**
-     * Get the subnet value.
+     * Get file Server virtual network subnet resource ID.
      *
      * @return the subnet value
      */
@@ -153,7 +157,7 @@ public class FileServerInner extends Resource {
     }
 
     /**
-     * Set the subnet value.
+     * Set file Server virtual network subnet resource ID.
      *
      * @param subnet the subnet value to set
      * @return the FileServerInner object itself.
@@ -164,7 +168,7 @@ public class FileServerInner extends Resource {
     }
 
     /**
-     * Get the mountSettings value.
+     * Get file Server mount settings.
      *
      * @return the mountSettings value
      */
@@ -173,7 +177,7 @@ public class FileServerInner extends Resource {
     }
 
     /**
-     * Get the provisioningStateTransitionTime value.
+     * Get time when the provisioning state was changed.
      *
      * @return the provisioningStateTransitionTime value
      */
@@ -182,7 +186,7 @@ public class FileServerInner extends Resource {
     }
 
     /**
-     * Get the creationTime value.
+     * Get time when the FileServer was created.
      *
      * @return the creationTime value
      */
@@ -191,7 +195,7 @@ public class FileServerInner extends Resource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get provisioning state of the File Server. Possible values: creating - The File Server is getting created; updating - The File Server creation has been accepted and it is getting updated; deleting - The user has requested that the File Server be deleted, and it is in the process of being deleted; failed - The File Server creation has failed with the specified error code. Details about the error code are specified in the message field; succeeded - The File Server creation has succeeded. Possible values include: 'creating', 'updating', 'deleting', 'succeeded', 'failed'.
      *
      * @return the provisioningState value
      */

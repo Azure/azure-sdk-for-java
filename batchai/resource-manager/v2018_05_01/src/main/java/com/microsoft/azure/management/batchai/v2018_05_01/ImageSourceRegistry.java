@@ -11,29 +11,32 @@ package com.microsoft.azure.management.batchai.v2018_05_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Details of the container image such as name, URL and credentials.
+ * Information about docker image for the job.
  */
 public class ImageSourceRegistry {
     /**
+     * Server URL.
      * URL for image repository.
      */
     @JsonProperty(value = "serverUrl")
     private String serverUrl;
 
     /**
-     * The name of the image in image repository.
+     * Image.
+     * The name of the image in the image repository.
      */
     @JsonProperty(value = "image", required = true)
     private String image;
 
     /**
-     * Information to access the private Docker repository.
+     * Credentials.
+     * Credentials to access the private docker repository.
      */
     @JsonProperty(value = "credentials")
     private PrivateRegistryCredentials credentials;
 
     /**
-     * Get the serverUrl value.
+     * Get uRL for image repository.
      *
      * @return the serverUrl value
      */
@@ -42,7 +45,7 @@ public class ImageSourceRegistry {
     }
 
     /**
-     * Set the serverUrl value.
+     * Set uRL for image repository.
      *
      * @param serverUrl the serverUrl value to set
      * @return the ImageSourceRegistry object itself.
@@ -53,7 +56,7 @@ public class ImageSourceRegistry {
     }
 
     /**
-     * Get the image value.
+     * Get the name of the image in the image repository.
      *
      * @return the image value
      */
@@ -62,7 +65,7 @@ public class ImageSourceRegistry {
     }
 
     /**
-     * Set the image value.
+     * Set the name of the image in the image repository.
      *
      * @param image the image value to set
      * @return the ImageSourceRegistry object itself.
@@ -73,7 +76,7 @@ public class ImageSourceRegistry {
     }
 
     /**
-     * Get the credentials value.
+     * Get credentials to access the private docker repository.
      *
      * @return the credentials value
      */
@@ -82,7 +85,7 @@ public class ImageSourceRegistry {
     }
 
     /**
-     * Set the credentials value.
+     * Set credentials to access the private docker repository.
      *
      * @param credentials the credentials value to set
      * @return the ImageSourceRegistry object itself.

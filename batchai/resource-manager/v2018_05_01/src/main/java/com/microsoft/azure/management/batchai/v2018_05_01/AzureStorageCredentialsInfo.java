@@ -11,28 +11,27 @@ package com.microsoft.azure.management.batchai.v2018_05_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Credentials to access Azure File Share.
+ * Azure storage account credentials.
  */
 public class AzureStorageCredentialsInfo {
     /**
-     * Storage account key.
-     * One of accountKey or accountKeySecretReference must be specified.
+     * Account key.
+     * Storage account key. One of accountKey or accountKeySecretReference must
+     * be specified.
      */
     @JsonProperty(value = "accountKey")
     private String accountKey;
 
     /**
-     * Specifies the location of the storage account key, which is a Key Vault
-     * Secret.
-     * Users can store their secrets in Azure KeyVault and pass it to the Batch
-     * AI Service to integrate with KeyVault. One of accountKey or
-     * accountKeySecretReference must be specified.
+     * Account key secret reference.
+     * Information about KeyVault secret storing the storage account key. One
+     * of accountKey or accountKeySecretReference must be specified.
      */
     @JsonProperty(value = "accountKeySecretReference")
     private KeyVaultSecretReference accountKeySecretReference;
 
     /**
-     * Get the accountKey value.
+     * Get storage account key. One of accountKey or accountKeySecretReference must be specified.
      *
      * @return the accountKey value
      */
@@ -41,7 +40,7 @@ public class AzureStorageCredentialsInfo {
     }
 
     /**
-     * Set the accountKey value.
+     * Set storage account key. One of accountKey or accountKeySecretReference must be specified.
      *
      * @param accountKey the accountKey value to set
      * @return the AzureStorageCredentialsInfo object itself.
@@ -52,7 +51,7 @@ public class AzureStorageCredentialsInfo {
     }
 
     /**
-     * Get the accountKeySecretReference value.
+     * Get information about KeyVault secret storing the storage account key. One of accountKey or accountKeySecretReference must be specified.
      *
      * @return the accountKeySecretReference value
      */
@@ -61,7 +60,7 @@ public class AzureStorageCredentialsInfo {
     }
 
     /**
-     * Set the accountKeySecretReference value.
+     * Set information about KeyVault secret storing the storage account key. One of accountKey or accountKeySecretReference must be specified.
      *
      * @param accountKeySecretReference the accountKeySecretReference value to set
      * @return the AzureStorageCredentialsInfo object itself.

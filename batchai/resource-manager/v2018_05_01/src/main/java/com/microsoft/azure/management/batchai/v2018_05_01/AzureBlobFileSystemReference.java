@@ -11,47 +11,49 @@ package com.microsoft.azure.management.batchai.v2018_05_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Provides required information, for the service to be able to mount Azure
- * Blob Storage container on the cluster nodes.
+ * Azure Blob Storage Container mounting configuration.
  */
 public class AzureBlobFileSystemReference {
     /**
-     * Name of the Azure Blob Storage account.
+     * Account name.
+     * Name of the Azure storage account.
      */
     @JsonProperty(value = "accountName", required = true)
     private String accountName;
 
     /**
+     * Container name.
      * Name of the Azure Blob Storage container to mount on the cluster.
      */
     @JsonProperty(value = "containerName", required = true)
     private String containerName;
 
     /**
-     * Information of the Azure Blob Storage account credentials.
+     * Credentials.
+     * Information about the Azure storage credentials.
      */
     @JsonProperty(value = "credentials", required = true)
     private AzureStorageCredentialsInfo credentials;
 
     /**
-     * Specifies the relative path on the compute node where the Azure Blob
-     * file system will be mounted.
-     * Note that all cluster level blob file systems will be mounted under
-     * $AZ_BATCHAI_MOUNT_ROOT location and all job level blob file systems will
+     * Relative mount path.
+     * The relative path on the compute node where the Azure File container
+     * will be mounted. Note that all cluster level containers will be mounted
+     * under $AZ_BATCHAI_MOUNT_ROOT location and all job level containers will
      * be mounted under $AZ_BATCHAI_JOB_MOUNT_ROOT.
      */
     @JsonProperty(value = "relativeMountPath", required = true)
     private String relativeMountPath;
 
     /**
-     * Specifies the various mount options that can be used to configure Blob
-     * file system.
+     * Mount options.
+     * Mount options for mounting blobfuse file system.
      */
     @JsonProperty(value = "mountOptions")
     private String mountOptions;
 
     /**
-     * Get the accountName value.
+     * Get name of the Azure storage account.
      *
      * @return the accountName value
      */
@@ -60,7 +62,7 @@ public class AzureBlobFileSystemReference {
     }
 
     /**
-     * Set the accountName value.
+     * Set name of the Azure storage account.
      *
      * @param accountName the accountName value to set
      * @return the AzureBlobFileSystemReference object itself.
@@ -71,7 +73,7 @@ public class AzureBlobFileSystemReference {
     }
 
     /**
-     * Get the containerName value.
+     * Get name of the Azure Blob Storage container to mount on the cluster.
      *
      * @return the containerName value
      */
@@ -80,7 +82,7 @@ public class AzureBlobFileSystemReference {
     }
 
     /**
-     * Set the containerName value.
+     * Set name of the Azure Blob Storage container to mount on the cluster.
      *
      * @param containerName the containerName value to set
      * @return the AzureBlobFileSystemReference object itself.
@@ -91,7 +93,7 @@ public class AzureBlobFileSystemReference {
     }
 
     /**
-     * Get the credentials value.
+     * Get information about the Azure storage credentials.
      *
      * @return the credentials value
      */
@@ -100,7 +102,7 @@ public class AzureBlobFileSystemReference {
     }
 
     /**
-     * Set the credentials value.
+     * Set information about the Azure storage credentials.
      *
      * @param credentials the credentials value to set
      * @return the AzureBlobFileSystemReference object itself.
@@ -111,7 +113,7 @@ public class AzureBlobFileSystemReference {
     }
 
     /**
-     * Get the relativeMountPath value.
+     * Get the relative path on the compute node where the Azure File container will be mounted. Note that all cluster level containers will be mounted under $AZ_BATCHAI_MOUNT_ROOT location and all job level containers will be mounted under $AZ_BATCHAI_JOB_MOUNT_ROOT.
      *
      * @return the relativeMountPath value
      */
@@ -120,7 +122,7 @@ public class AzureBlobFileSystemReference {
     }
 
     /**
-     * Set the relativeMountPath value.
+     * Set the relative path on the compute node where the Azure File container will be mounted. Note that all cluster level containers will be mounted under $AZ_BATCHAI_MOUNT_ROOT location and all job level containers will be mounted under $AZ_BATCHAI_JOB_MOUNT_ROOT.
      *
      * @param relativeMountPath the relativeMountPath value to set
      * @return the AzureBlobFileSystemReference object itself.
@@ -131,7 +133,7 @@ public class AzureBlobFileSystemReference {
     }
 
     /**
-     * Get the mountOptions value.
+     * Get mount options for mounting blobfuse file system.
      *
      * @return the mountOptions value
      */
@@ -140,7 +142,7 @@ public class AzureBlobFileSystemReference {
     }
 
     /**
-     * Set the mountOptions value.
+     * Set mount options for mounting blobfuse file system.
      *
      * @param mountOptions the mountOptions value to set
      * @return the AzureBlobFileSystemReference object itself.

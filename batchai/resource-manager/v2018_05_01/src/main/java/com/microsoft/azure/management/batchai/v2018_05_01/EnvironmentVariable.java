@@ -11,23 +11,25 @@ package com.microsoft.azure.management.batchai.v2018_05_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * A collection of environment variables to set.
+ * An environment variable definition.
  */
 public class EnvironmentVariable {
     /**
+     * Name.
      * The name of the environment variable.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
 
     /**
+     * Value.
      * The value of the environment variable.
      */
     @JsonProperty(value = "value", required = true)
     private String value;
 
     /**
-     * Get the name value.
+     * Get the name of the environment variable.
      *
      * @return the name value
      */
@@ -36,7 +38,7 @@ public class EnvironmentVariable {
     }
 
     /**
-     * Set the name value.
+     * Set the name of the environment variable.
      *
      * @param name the name value to set
      * @return the EnvironmentVariable object itself.
@@ -47,7 +49,7 @@ public class EnvironmentVariable {
     }
 
     /**
-     * Get the value value.
+     * Get the value of the environment variable.
      *
      * @return the value value
      */
@@ -56,7 +58,7 @@ public class EnvironmentVariable {
     }
 
     /**
-     * Set the value value.
+     * Set the value of the environment variable.
      *
      * @param value the value value to set
      * @return the EnvironmentVariable object itself.

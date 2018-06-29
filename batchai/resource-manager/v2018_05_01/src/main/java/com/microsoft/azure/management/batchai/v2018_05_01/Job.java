@@ -25,6 +25,11 @@ import org.joda.time.DateTime;
  */
 public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Updatable<Job.Update>, HasManager<BatchAIManager> {
     /**
+     * @return the caffe2Settings value.
+     */
+    Caffe2Settings caffe2Settings();
+
+    /**
      * @return the caffeSettings value.
      */
     CaffeSettings caffeSettings();
@@ -135,11 +140,6 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
     List<OutputDirectory> outputDirectories();
 
     /**
-     * @return the priority value.
-     */
-    JobPriority priority();
-
-    /**
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
@@ -153,6 +153,11 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
      * @return the pyTorchSettings value.
      */
     PyTorchSettings pyTorchSettings();
+
+    /**
+     * @return the schedulingPriority value.
+     */
+    JobPriority schedulingPriority();
 
     /**
      * @return the secrets value.

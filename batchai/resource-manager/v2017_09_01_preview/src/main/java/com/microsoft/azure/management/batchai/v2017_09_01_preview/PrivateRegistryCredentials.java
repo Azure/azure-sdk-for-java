@@ -57,7 +57,7 @@ public class PrivateRegistryCredentials {
     }
 
     /**
-     * Get the password value.
+     * Get one of password or passwordSecretReference must be specified.
      *
      * @return the password value
      */
@@ -66,7 +66,7 @@ public class PrivateRegistryCredentials {
     }
 
     /**
-     * Set the password value.
+     * Set one of password or passwordSecretReference must be specified.
      *
      * @param password the password value to set
      * @return the PrivateRegistryCredentials object itself.
@@ -77,7 +77,7 @@ public class PrivateRegistryCredentials {
     }
 
     /**
-     * Get the passwordSecretReference value.
+     * Get users can store their secrets in Azure KeyVault and pass it to the Batch AI Service to integrate with KeyVault. One of password or passwordSecretReference must be specified.
      *
      * @return the passwordSecretReference value
      */
@@ -86,7 +86,7 @@ public class PrivateRegistryCredentials {
     }
 
     /**
-     * Set the passwordSecretReference value.
+     * Set users can store their secrets in Azure KeyVault and pass it to the Batch AI Service to integrate with KeyVault. One of password or passwordSecretReference must be specified.
      *
      * @param passwordSecretReference the passwordSecretReference value to set
      * @return the PrivateRegistryCredentials object itself.

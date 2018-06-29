@@ -101,7 +101,7 @@ public class MountSettings {
     }
 
     /**
-     * Get the fileServerType value.
+     * Get possible values include: 'nfs', 'glusterfs'.
      *
      * @return the fileServerType value
      */
@@ -110,7 +110,7 @@ public class MountSettings {
     }
 
     /**
-     * Set the fileServerType value.
+     * Set possible values include: 'nfs', 'glusterfs'.
      *
      * @param fileServerType the fileServerType value to set
      * @return the MountSettings object itself.

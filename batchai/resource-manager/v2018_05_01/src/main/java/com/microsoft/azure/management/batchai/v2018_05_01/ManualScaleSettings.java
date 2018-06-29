@@ -15,24 +15,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ManualScaleSettings {
     /**
-     * The desired number of compute nodes in the Cluster.
-     * Default is 0. If autoScaleSettings are not specified, then the Cluster
-     * starts with this target.
+     * Target node count.
+     * The desired number of compute nodes in the Cluster. Default is 0.
      */
     @JsonProperty(value = "targetNodeCount", required = true)
     private int targetNodeCount;
 
     /**
-     * Determines what to do with the job(s) running on compute node if the
-     * Cluster size is decreasing.
-     * The default value is requeue. Possible values include: 'requeue',
+     * Node deallocation options.
+     * An action to be performed when the cluster size is decreasing. The
+     * default value is requeue. Possible values include: 'requeue',
      * 'terminate', 'waitforjobcompletion'.
      */
     @JsonProperty(value = "nodeDeallocationOption")
     private DeallocationOption nodeDeallocationOption;
 
     /**
-     * Get the targetNodeCount value.
+     * Get the desired number of compute nodes in the Cluster. Default is 0.
      *
      * @return the targetNodeCount value
      */
@@ -41,7 +40,7 @@ public class ManualScaleSettings {
     }
 
     /**
-     * Set the targetNodeCount value.
+     * Set the desired number of compute nodes in the Cluster. Default is 0.
      *
      * @param targetNodeCount the targetNodeCount value to set
      * @return the ManualScaleSettings object itself.
@@ -52,7 +51,7 @@ public class ManualScaleSettings {
     }
 
     /**
-     * Get the nodeDeallocationOption value.
+     * Get an action to be performed when the cluster size is decreasing. The default value is requeue. Possible values include: 'requeue', 'terminate', 'waitforjobcompletion'.
      *
      * @return the nodeDeallocationOption value
      */
@@ -61,7 +60,7 @@ public class ManualScaleSettings {
     }
 
     /**
-     * Set the nodeDeallocationOption value.
+     * Set an action to be performed when the cluster size is decreasing. The default value is requeue. Possible values include: 'requeue', 'terminate', 'waitforjobcompletion'.
      *
      * @param nodeDeallocationOption the nodeDeallocationOption value to set
      * @return the ManualScaleSettings object itself.

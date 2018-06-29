@@ -11,25 +11,26 @@ package com.microsoft.azure.management.batchai.v2018_05_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Specifies the settings for a custom tool kit job.
+ * Custom MPI job settings.
  */
 public class CustomMpiSettings {
     /**
-     * The program and program command line parameters to be executed by mpi
-     * runtime.
+     * Command line.
+     * The command line to be executed by mpi runtime on each compute node.
      */
     @JsonProperty(value = "commandLine", required = true)
     private String commandLine;
 
     /**
-     * Number of processes parameter that is passed to MPI runtime.
-     * The default value for this property is equal to nodeCount property.
+     * Process count.
+     * Number of processes to launch for the job execution. The default value
+     * for this property is equal to nodeCount property.
      */
     @JsonProperty(value = "processCount")
     private Integer processCount;
 
     /**
-     * Get the commandLine value.
+     * Get the command line to be executed by mpi runtime on each compute node.
      *
      * @return the commandLine value
      */
@@ -38,7 +39,7 @@ public class CustomMpiSettings {
     }
 
     /**
-     * Set the commandLine value.
+     * Set the command line to be executed by mpi runtime on each compute node.
      *
      * @param commandLine the commandLine value to set
      * @return the CustomMpiSettings object itself.
@@ -49,7 +50,7 @@ public class CustomMpiSettings {
     }
 
     /**
-     * Get the processCount value.
+     * Get number of processes to launch for the job execution. The default value for this property is equal to nodeCount property.
      *
      * @return the processCount value
      */
@@ -58,7 +59,7 @@ public class CustomMpiSettings {
     }
 
     /**
-     * Set the processCount value.
+     * Set number of processes to launch for the job execution. The default value for this property is equal to nodeCount property.
      *
      * @param processCount the processCount value to set
      * @return the CustomMpiSettings object itself.

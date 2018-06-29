@@ -51,7 +51,7 @@ public class UnmanagedFileSystemReference {
     }
 
     /**
-     * Get the relativeMountPath value.
+     * Get note that all cluster level unmanaged file system will be mounted under $AZ_BATCHAI_MOUNT_ROOT location and job level unmanaged file system will be mounted under $AZ_BATCHAI_JOB_MOUNT_ROOT.
      *
      * @return the relativeMountPath value
      */
@@ -60,7 +60,7 @@ public class UnmanagedFileSystemReference {
     }
 
     /**
-     * Set the relativeMountPath value.
+     * Set note that all cluster level unmanaged file system will be mounted under $AZ_BATCHAI_MOUNT_ROOT location and job level unmanaged file system will be mounted under $AZ_BATCHAI_JOB_MOUNT_ROOT.
      *
      * @param relativeMountPath the relativeMountPath value to set
      * @return the UnmanagedFileSystemReference object itself.

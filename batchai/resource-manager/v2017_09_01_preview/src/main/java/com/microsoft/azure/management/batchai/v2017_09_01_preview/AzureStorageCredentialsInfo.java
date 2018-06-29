@@ -32,7 +32,7 @@ public class AzureStorageCredentialsInfo {
     private KeyVaultSecretReference accountKeySecretReference;
 
     /**
-     * Get the accountKey value.
+     * Get one of accountKey or accountKeySecretReference must be specified.
      *
      * @return the accountKey value
      */
@@ -41,7 +41,7 @@ public class AzureStorageCredentialsInfo {
     }
 
     /**
-     * Set the accountKey value.
+     * Set one of accountKey or accountKeySecretReference must be specified.
      *
      * @param accountKey the accountKey value to set
      * @return the AzureStorageCredentialsInfo object itself.
@@ -52,7 +52,7 @@ public class AzureStorageCredentialsInfo {
     }
 
     /**
-     * Get the accountKeySecretReference value.
+     * Get users can store their secrets in Azure KeyVault and pass it to the Batch AI Service to integrate with KeyVault. One of accountKey or accountKeySecretReference must be specified.
      *
      * @return the accountKeySecretReference value
      */
@@ -61,7 +61,7 @@ public class AzureStorageCredentialsInfo {
     }
 
     /**
-     * Set the accountKeySecretReference value.
+     * Set users can store their secrets in Azure KeyVault and pass it to the Batch AI Service to integrate with KeyVault. One of accountKey or accountKeySecretReference must be specified.
      *
      * @param accountKeySecretReference the accountKeySecretReference value to set
      * @return the AzureStorageCredentialsInfo object itself.

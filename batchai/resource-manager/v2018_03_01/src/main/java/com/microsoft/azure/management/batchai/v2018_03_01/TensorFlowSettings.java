@@ -127,7 +127,7 @@ public class TensorFlowSettings {
     }
 
     /**
-     * Get the workerCommandLineArgs value.
+     * Get this property is optional for single machine training.
      *
      * @return the workerCommandLineArgs value
      */
@@ -136,7 +136,7 @@ public class TensorFlowSettings {
     }
 
     /**
-     * Set the workerCommandLineArgs value.
+     * Set this property is optional for single machine training.
      *
      * @param workerCommandLineArgs the workerCommandLineArgs value to set
      * @return the TensorFlowSettings object itself.
@@ -147,7 +147,7 @@ public class TensorFlowSettings {
     }
 
     /**
-     * Get the parameterServerCommandLineArgs value.
+     * Get this property is optional for single machine training.
      *
      * @return the parameterServerCommandLineArgs value
      */
@@ -156,7 +156,7 @@ public class TensorFlowSettings {
     }
 
     /**
-     * Set the parameterServerCommandLineArgs value.
+     * Set this property is optional for single machine training.
      *
      * @param parameterServerCommandLineArgs the parameterServerCommandLineArgs value to set
      * @return the TensorFlowSettings object itself.
@@ -167,7 +167,7 @@ public class TensorFlowSettings {
     }
 
     /**
-     * Get the workerCount value.
+     * Get if specified, the value must be less than or equal to (nodeCount * numberOfGPUs per VM). If not specified, the default value is equal to nodeCount. This property can be specified only for distributed TensorFlow training.
      *
      * @return the workerCount value
      */
@@ -176,7 +176,7 @@ public class TensorFlowSettings {
     }
 
     /**
-     * Set the workerCount value.
+     * Set if specified, the value must be less than or equal to (nodeCount * numberOfGPUs per VM). If not specified, the default value is equal to nodeCount. This property can be specified only for distributed TensorFlow training.
      *
      * @param workerCount the workerCount value to set
      * @return the TensorFlowSettings object itself.
@@ -187,7 +187,7 @@ public class TensorFlowSettings {
     }
 
     /**
-     * Get the parameterServerCount value.
+     * Get if specified, the value must be less than or equal to nodeCount. If not specified, the default value is equal to 1 for distributed TensorFlow training (This property is not applicable for single machine training). This property can be specified only for distributed TensorFlow training.
      *
      * @return the parameterServerCount value
      */
@@ -196,7 +196,7 @@ public class TensorFlowSettings {
     }
 
     /**
-     * Set the parameterServerCount value.
+     * Set if specified, the value must be less than or equal to nodeCount. If not specified, the default value is equal to 1 for distributed TensorFlow training (This property is not applicable for single machine training). This property can be specified only for distributed TensorFlow training.
      *
      * @param parameterServerCount the parameterServerCount value to set
      * @return the TensorFlowSettings object itself.

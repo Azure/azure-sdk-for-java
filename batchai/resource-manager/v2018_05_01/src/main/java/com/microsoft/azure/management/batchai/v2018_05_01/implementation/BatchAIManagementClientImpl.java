@@ -159,32 +159,6 @@ public class BatchAIManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The ClustersInner object to access its operations.
-     */
-    private ClustersInner clusters;
-
-    /**
-     * Gets the ClustersInner object to access its operations.
-     * @return the ClustersInner object.
-     */
-    public ClustersInner clusters() {
-        return this.clusters;
-    }
-
-    /**
-     * The FileServersInner object to access its operations.
-     */
-    private FileServersInner fileServers;
-
-    /**
-     * Gets the FileServersInner object to access its operations.
-     * @return the FileServersInner object.
-     */
-    public FileServersInner fileServers() {
-        return this.fileServers;
-    }
-
-    /**
      * The WorkspacesInner object to access its operations.
      */
     private WorkspacesInner workspaces;
@@ -224,6 +198,32 @@ public class BatchAIManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The FileServersInner object to access its operations.
+     */
+    private FileServersInner fileServers;
+
+    /**
+     * Gets the FileServersInner object to access its operations.
+     * @return the FileServersInner object.
+     */
+    public FileServersInner fileServers() {
+        return this.fileServers;
+    }
+
+    /**
+     * The ClustersInner object to access its operations.
+     */
+    private ClustersInner clusters;
+
+    /**
+     * Gets the ClustersInner object to access its operations.
+     * @return the ClustersInner object.
+     */
+    public ClustersInner clusters() {
+        return this.clusters;
+    }
+
+    /**
      * Initializes an instance of BatchAIManagementClient client.
      *
      * @param credentials the management credentials for Azure
@@ -260,11 +260,11 @@ public class BatchAIManagementClientImpl extends AzureServiceClient {
         this.generateClientRequestId = true;
         this.operations = new OperationsInner(restClient().retrofit(), this);
         this.usages = new UsagesInner(restClient().retrofit(), this);
-        this.clusters = new ClustersInner(restClient().retrofit(), this);
-        this.fileServers = new FileServersInner(restClient().retrofit(), this);
         this.workspaces = new WorkspacesInner(restClient().retrofit(), this);
         this.experiments = new ExperimentsInner(restClient().retrofit(), this);
         this.jobs = new JobsInner(restClient().retrofit(), this);
+        this.fileServers = new FileServersInner(restClient().retrofit(), this);
+        this.clusters = new ClustersInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 

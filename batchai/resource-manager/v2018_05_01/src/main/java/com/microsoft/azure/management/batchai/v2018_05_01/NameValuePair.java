@@ -11,23 +11,25 @@ package com.microsoft.azure.management.batchai.v2018_05_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Represents a name-value pair.
+ * Name-value pair.
  */
 public class NameValuePair {
     /**
+     * Name.
      * The name in the name-value pair.
      */
     @JsonProperty(value = "name")
     private String name;
 
     /**
+     * Value.
      * The value in the name-value pair.
      */
     @JsonProperty(value = "value")
     private String value;
 
     /**
-     * Get the name value.
+     * Get the name in the name-value pair.
      *
      * @return the name value
      */
@@ -36,7 +38,7 @@ public class NameValuePair {
     }
 
     /**
-     * Set the name value.
+     * Set the name in the name-value pair.
      *
      * @param name the name value to set
      * @return the NameValuePair object itself.
@@ -47,7 +49,7 @@ public class NameValuePair {
     }
 
     /**
-     * Get the value value.
+     * Get the value in the name-value pair.
      *
      * @return the value value
      */
@@ -56,7 +58,7 @@ public class NameValuePair {
     }
 
     /**
-     * Set the value value.
+     * Set the value in the name-value pair.
      *
      * @param value the value value to set
      * @return the NameValuePair object itself.

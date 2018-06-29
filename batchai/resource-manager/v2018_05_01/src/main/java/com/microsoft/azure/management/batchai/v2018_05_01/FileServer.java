@@ -17,7 +17,6 @@ import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.batchai.v2018_05_01.implementation.BatchAIManager;
-import java.util.Map;
 import org.joda.time.DateTime;
 
 /**
@@ -38,11 +37,6 @@ public interface FileServer extends HasInner<FileServerInner>, Indexable, Refres
      * @return the id value.
      */
     String id();
-
-    /**
-     * @return the location value.
-     */
-    String location();
 
     /**
      * @return the mountSettings value.
@@ -75,11 +69,6 @@ public interface FileServer extends HasInner<FileServerInner>, Indexable, Refres
     ResourceId subnet();
 
     /**
-     * @return the tags value.
-     */
-    Map<String, String> tags();
-
-    /**
      * @return the type value.
      */
     String type();
@@ -92,7 +81,7 @@ public interface FileServer extends HasInner<FileServerInner>, Indexable, Refres
     /**
      * The entirety of the FileServer definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithWorkspace, DefinitionStages.WithDataDisks, DefinitionStages.WithLocation, DefinitionStages.WithSshConfiguration, DefinitionStages.WithVmSize, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithWorkspace, DefinitionStages.WithDataDisks, DefinitionStages.WithSshConfiguration, DefinitionStages.WithVmSize, DefinitionStages.WithCreate {
     }
 
     /**
@@ -122,17 +111,7 @@ public interface FileServer extends HasInner<FileServerInner>, Indexable, Refres
            /**
             * Specifies dataDisks.
             */
-            WithLocation withDataDisks(DataDisks dataDisks);
-        }
-
-        /**
-         * The stage of the fileserver definition allowing to specify Location.
-         */
-        interface WithLocation {
-           /**
-            * Specifies location.
-            */
-            WithSshConfiguration withLocation(String location);
+            WithSshConfiguration withDataDisks(DataDisks dataDisks);
         }
 
         /**
@@ -166,27 +145,17 @@ public interface FileServer extends HasInner<FileServerInner>, Indexable, Refres
         }
 
         /**
-         * The stage of the fileserver definition allowing to specify Tags.
-         */
-        interface WithTags {
-            /**
-             * Specifies tags.
-             */
-            WithCreate withTags(Map<String, String> tags);
-        }
-
-        /**
          * The stage of the definition which contains all the minimum required inputs for
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<FileServer>, DefinitionStages.WithSubnet, DefinitionStages.WithTags {
+        interface WithCreate extends Creatable<FileServer>, DefinitionStages.WithSubnet {
         }
     }
     /**
      * The template for a FileServer update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<FileServer>, UpdateStages.WithSubnet, UpdateStages.WithTags {
+    interface Update extends Appliable<FileServer>, UpdateStages.WithSubnet {
     }
 
     /**
@@ -201,16 +170,6 @@ public interface FileServer extends HasInner<FileServerInner>, Indexable, Refres
              * Specifies subnet.
              */
             Update withSubnet(ResourceId subnet);
-        }
-
-        /**
-         * The stage of the fileserver update allowing to specify Tags.
-         */
-        interface WithTags {
-            /**
-             * Specifies tags.
-             */
-            Update withTags(Map<String, String> tags);
         }
 
     }

@@ -12,42 +12,15 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Workspace creation parameters.
+ * Workspace update parameters.
  */
-public class WorkspaceCreateParameters {
-    /**
-     * Location.
-     * The region in which to create the Workspace.
-     */
-    @JsonProperty(value = "location", required = true)
-    private String location;
-
+public class WorkspaceUpdateParameters {
     /**
      * Tags.
      * The user specified tags associated with the Workspace.
      */
     @JsonProperty(value = "tags")
     private Map<String, String> tags;
-
-    /**
-     * Get the region in which to create the Workspace.
-     *
-     * @return the location value
-     */
-    public String location() {
-        return this.location;
-    }
-
-    /**
-     * Set the region in which to create the Workspace.
-     *
-     * @param location the location value to set
-     * @return the WorkspaceCreateParameters object itself.
-     */
-    public WorkspaceCreateParameters withLocation(String location) {
-        this.location = location;
-        return this;
-    }
 
     /**
      * Get the user specified tags associated with the Workspace.
@@ -62,9 +35,9 @@ public class WorkspaceCreateParameters {
      * Set the user specified tags associated with the Workspace.
      *
      * @param tags the tags value to set
-     * @return the WorkspaceCreateParameters object itself.
+     * @return the WorkspaceUpdateParameters object itself.
      */
-    public WorkspaceCreateParameters withTags(Map<String, String> tags) {
+    public WorkspaceUpdateParameters withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }

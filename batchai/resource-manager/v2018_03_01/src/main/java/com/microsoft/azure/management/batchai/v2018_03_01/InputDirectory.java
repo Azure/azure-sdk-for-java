@@ -30,7 +30,7 @@ public class InputDirectory {
     private String path;
 
     /**
-     * Get the id value.
+     * Get the path of the input directory will be available as a value of an environment variable with AZ_BATCHAI_INPUT_&lt;id&gt; name, where &lt;id&gt; is the value of id attribute.
      *
      * @return the id value
      */
@@ -39,7 +39,7 @@ public class InputDirectory {
     }
 
     /**
-     * Set the id value.
+     * Set the path of the input directory will be available as a value of an environment variable with AZ_BATCHAI_INPUT_&lt;id&gt; name, where &lt;id&gt; is the value of id attribute.
      *
      * @param id the id value to set
      * @return the InputDirectory object itself.

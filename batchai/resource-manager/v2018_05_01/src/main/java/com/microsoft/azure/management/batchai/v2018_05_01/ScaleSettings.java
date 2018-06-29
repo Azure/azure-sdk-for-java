@@ -18,19 +18,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ScaleSettings {
     /**
-     * The scale for the cluster by manual settings.
+     * Manual scale settings.
+     * Manual scale settings for the cluster.
      */
     @JsonProperty(value = "manual")
     private ManualScaleSettings manual;
 
     /**
-     * The scale for the cluster by autoscale settings.
+     * Auto-scale settings.
+     * Auto-scale settings for the cluster.
      */
     @JsonProperty(value = "autoScale")
     private AutoScaleSettings autoScale;
 
     /**
-     * Get the manual value.
+     * Get manual scale settings for the cluster.
      *
      * @return the manual value
      */
@@ -39,7 +41,7 @@ public class ScaleSettings {
     }
 
     /**
-     * Set the manual value.
+     * Set manual scale settings for the cluster.
      *
      * @param manual the manual value to set
      * @return the ScaleSettings object itself.
@@ -50,7 +52,7 @@ public class ScaleSettings {
     }
 
     /**
-     * Get the autoScale value.
+     * Get auto-scale settings for the cluster.
      *
      * @return the autoScale value
      */
@@ -59,7 +61,7 @@ public class ScaleSettings {
     }
 
     /**
-     * Set the autoScale value.
+     * Set auto-scale settings for the cluster.
      *
      * @param autoScale the autoScale value to set
      * @return the ScaleSettings object itself.

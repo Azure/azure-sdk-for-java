@@ -13,141 +13,157 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
- * Parameters supplied to the Create operation.
+ * Job creation parameters.
  */
 @JsonFlatten
 public class JobCreateParameters {
     /**
-     * Scheduling priority associated with the job.
-     * Scheduling priority associated with the job. Possible values include:
-     * 'low', 'normal', 'high'.
+     * Scheduling priority.
+     * Scheduling priority associated with the job. Possible values: low,
+     * normal, high. Possible values include: 'low', 'normal', 'high'.
      */
     @JsonProperty(value = "properties.schedulingPriority")
     private JobPriority schedulingPriority;
 
     /**
-     * Specifies the Id of the cluster on which this job will run.
+     * Cluster.
+     * Resource ID of the cluster on which this job will run.
      */
     @JsonProperty(value = "properties.cluster", required = true)
     private ResourceId cluster;
 
     /**
-     * Information on mount volumes to be used by the job.
-     * These volumes will be mounted before the job execution and will be
-     * unmouted after the job completion. The volumes will be mounted at
-     * location specified by $AZ_BATCHAI_JOB_MOUNT_ROOT environment variable.
+     * Mount volumes.
+     * Information on mount volumes to be used by the job. These volumes will
+     * be mounted before the job execution and will be unmouted after the job
+     * completion. The volumes will be mounted at location specified by
+     * $AZ_BATCHAI_JOB_MOUNT_ROOT environment variable.
      */
     @JsonProperty(value = "properties.mountVolumes")
     private MountVolumes mountVolumes;
 
     /**
-     * Number of compute nodes to run the job on.
-     * The job will be gang scheduled on that many compute nodes.
+     * Node count.
+     * Number of compute nodes to run the job on. The job will be gang
+     * scheduled on that many compute nodes.
      */
     @JsonProperty(value = "properties.nodeCount", required = true)
     private int nodeCount;
 
     /**
-     * If provided the job will run in the specified container.
-     * If the container was downloaded as part of cluster setup then the same
-     * container image will be used. If not provided, the job will run on the
-     * VM.
+     * Container settings.
+     * Docker container settings for the job. If not provided, the job will run
+     * directly on the node.
      */
     @JsonProperty(value = "properties.containerSettings")
     private ContainerSettings containerSettings;
 
     /**
-     * Specifies the settings for CNTK (aka Microsoft Cognitive Toolkit) job.
+     * CNTK settings.
+     * Settings for CNTK (aka Microsoft Cognitive Toolkit) job.
      */
     @JsonProperty(value = "properties.cntkSettings")
     private CNTKsettings cntkSettings;
 
     /**
-     * Specifies the settings for pyTorch job.
+     * pyTorch settings.
+     * Settings for pyTorch job.
      */
     @JsonProperty(value = "properties.pyTorchSettings")
     private PyTorchSettings pyTorchSettings;
 
     /**
-     * Specifies the settings for Tensor Flow job.
+     * TensorFlow settings.
+     * Settings for Tensor Flow job.
      */
     @JsonProperty(value = "properties.tensorFlowSettings")
     private TensorFlowSettings tensorFlowSettings;
 
     /**
-     * Specifies the settings for Caffe job.
+     * Caffe settings.
+     * Settings for Caffe job.
      */
     @JsonProperty(value = "properties.caffeSettings")
     private CaffeSettings caffeSettings;
 
     /**
-     * Specifies the settings for Caffe2 job.
+     * Caffe2 settings.
+     * Settings for Caffe2 job.
      */
     @JsonProperty(value = "properties.caffe2Settings")
     private Caffe2Settings caffe2Settings;
 
     /**
-     * Specifies the settings for Chainer job.
+     * Chainer settings.
+     * Settings for Chainer job.
      */
     @JsonProperty(value = "properties.chainerSettings")
     private ChainerSettings chainerSettings;
 
     /**
-     * Specifies the settings for custom tool kit job.
+     * Custom tool kit job.
+     * Settings for custom tool kit job.
      */
     @JsonProperty(value = "properties.customToolkitSettings")
     private CustomToolkitSettings customToolkitSettings;
 
     /**
-     * Specifies the settings for custom MPI job.
+     * Custom MPI settings.
+     * Settings for custom MPI job.
      */
     @JsonProperty(value = "properties.customMpiSettings")
     private CustomMpiSettings customMpiSettings;
 
     /**
-     * Specifies the settings for Horovod job.
+     * Horovod settings.
+     * Settings for Horovod job.
      */
     @JsonProperty(value = "properties.horovodSettings")
     private HorovodSettings horovodSettings;
 
     /**
-     * Specifies the command line to be executed before tool kit is launched.
-     * The specified actions will run on all the nodes that are part of the
-     * job.
+     * Job preparation.
+     * A command line to be executed on each node allocated for the job before
+     * tool kit is launched.
      */
     @JsonProperty(value = "properties.jobPreparation")
     private JobPreparation jobPreparation;
 
     /**
-     * The path where the Batch AI service will upload stdout and stderror of
-     * the job.
+     * Standard output path prefix.
+     * The path where the Batch AI service will store stdout, stderror and
+     * execution log of the job.
      */
     @JsonProperty(value = "properties.stdOutErrPathPrefix", required = true)
     private String stdOutErrPathPrefix;
 
     /**
-     * Specifies the list of input directories for the Job.
+     * Input directories.
+     * A list of input directories for the job.
      */
     @JsonProperty(value = "properties.inputDirectories")
     private List<InputDirectory> inputDirectories;
 
     /**
-     * Specifies the list of output directories.
+     * Output directories.
+     * A list of output directories for the job.
      */
     @JsonProperty(value = "properties.outputDirectories")
     private List<OutputDirectory> outputDirectories;
 
     /**
-     * Additional environment variables to set on the job.
-     * Batch AI will setup these additional environment variables for the job.
+     * Environment variables.
+     * A list of user defined environment variables which will be setup for the
+     * job.
      */
     @JsonProperty(value = "properties.environmentVariables")
     private List<EnvironmentVariable> environmentVariables;
 
     /**
-     * Additional environment variables with secret values to set on the job.
-     * Batch AI will setup these additional environment variables for the job.
-     * Server will never report values of these variables back.
+     * Secrets.
+     * A list of user defined environment variables with secret values which
+     * will be setup for the job. Server will never report values of these
+     * variables back.
      */
     @JsonProperty(value = "properties.secrets")
     private List<EnvironmentVariableWithSecretValue> secrets;
@@ -159,7 +175,7 @@ public class JobCreateParameters {
     private JobBasePropertiesConstraints constraints;
 
     /**
-     * Get the schedulingPriority value.
+     * Get scheduling priority associated with the job. Possible values: low, normal, high. Possible values include: 'low', 'normal', 'high'.
      *
      * @return the schedulingPriority value
      */
@@ -168,7 +184,7 @@ public class JobCreateParameters {
     }
 
     /**
-     * Set the schedulingPriority value.
+     * Set scheduling priority associated with the job. Possible values: low, normal, high. Possible values include: 'low', 'normal', 'high'.
      *
      * @param schedulingPriority the schedulingPriority value to set
      * @return the JobCreateParameters object itself.
@@ -179,7 +195,7 @@ public class JobCreateParameters {
     }
 
     /**
-     * Get the cluster value.
+     * Get resource ID of the cluster on which this job will run.
      *
      * @return the cluster value
      */
@@ -188,7 +204,7 @@ public class JobCreateParameters {
     }
 
     /**
-     * Set the cluster value.
+     * Set resource ID of the cluster on which this job will run.
      *
      * @param cluster the cluster value to set
      * @return the JobCreateParameters object itself.
@@ -199,7 +215,7 @@ public class JobCreateParameters {
     }
 
     /**
-     * Get the mountVolumes value.
+     * Get information on mount volumes to be used by the job. These volumes will be mounted before the job execution and will be unmouted after the job completion. The volumes will be mounted at location specified by $AZ_BATCHAI_JOB_MOUNT_ROOT environment variable.
      *
      * @return the mountVolumes value
      */
@@ -208,7 +224,7 @@ public class JobCreateParameters {
     }
 
     /**
-     * Set the mountVolumes value.
+     * Set information on mount volumes to be used by the job. These volumes will be mounted before the job execution and will be unmouted after the job completion. The volumes will be mounted at location specified by $AZ_BATCHAI_JOB_MOUNT_ROOT environment variable.
      *
      * @param mountVolumes the mountVolumes value to set
      * @return the JobCreateParameters object itself.
@@ -219,7 +235,7 @@ public class JobCreateParameters {
     }
 
     /**
-     * Get the nodeCount value.
+     * Get number of compute nodes to run the job on. The job will be gang scheduled on that many compute nodes.
      *
      * @return the nodeCount value
      */
@@ -228,7 +244,7 @@ public class JobCreateParameters {
     }
 
     /**
-     * Set the nodeCount value.
+     * Set number of compute nodes to run the job on. The job will be gang scheduled on that many compute nodes.
      *
      * @param nodeCount the nodeCount value to set
      * @return the JobCreateParameters object itself.
@@ -239,7 +255,7 @@ public class JobCreateParameters {
     }
 
     /**
-     * Get the containerSettings value.
+     * Get docker container settings for the job. If not provided, the job will run directly on the node.
      *
      * @return the containerSettings value
      */
@@ -248,7 +264,7 @@ public class JobCreateParameters {
     }
 
     /**
-     * Set the containerSettings value.
+     * Set docker container settings for the job. If not provided, the job will run directly on the node.
      *
      * @param containerSettings the containerSettings value to set
      * @return the JobCreateParameters object itself.
@@ -259,7 +275,7 @@ public class JobCreateParameters {
     }
 
     /**
-     * Get the cntkSettings value.
+     * Get settings for CNTK (aka Microsoft Cognitive Toolkit) job.
      *
      * @return the cntkSettings value
      */
@@ -268,7 +284,7 @@ public class JobCreateParameters {
     }
 
     /**
-     * Set the cntkSettings value.
+     * Set settings for CNTK (aka Microsoft Cognitive Toolkit) job.
      *
      * @param cntkSettings the cntkSettings value to set
      * @return the JobCreateParameters object itself.
@@ -279,7 +295,7 @@ public class JobCreateParameters {
     }
 
     /**
-     * Get the pyTorchSettings value.
+     * Get settings for pyTorch job.
      *
      * @return the pyTorchSettings value
      */
@@ -288,7 +304,7 @@ public class JobCreateParameters {
     }
 
     /**
-     * Set the pyTorchSettings value.
+     * Set settings for pyTorch job.
      *
      * @param pyTorchSettings the pyTorchSettings value to set
      * @return the JobCreateParameters object itself.
@@ -299,7 +315,7 @@ public class JobCreateParameters {
     }
 
     /**
-     * Get the tensorFlowSettings value.
+     * Get settings for Tensor Flow job.
      *
      * @return the tensorFlowSettings value
      */
@@ -308,7 +324,7 @@ public class JobCreateParameters {
     }
 
     /**
-     * Set the tensorFlowSettings value.
+     * Set settings for Tensor Flow job.
      *
      * @param tensorFlowSettings the tensorFlowSettings value to set
      * @return the JobCreateParameters object itself.
@@ -319,7 +335,7 @@ public class JobCreateParameters {
     }
 
     /**
-     * Get the caffeSettings value.
+     * Get settings for Caffe job.
      *
      * @return the caffeSettings value
      */
@@ -328,7 +344,7 @@ public class JobCreateParameters {
     }
 
     /**
-     * Set the caffeSettings value.
+     * Set settings for Caffe job.
      *
      * @param caffeSettings the caffeSettings value to set
      * @return the JobCreateParameters object itself.
@@ -339,7 +355,7 @@ public class JobCreateParameters {
     }
 
     /**
-     * Get the caffe2Settings value.
+     * Get settings for Caffe2 job.
      *
      * @return the caffe2Settings value
      */
@@ -348,7 +364,7 @@ public class JobCreateParameters {
     }
 
     /**
-     * Set the caffe2Settings value.
+     * Set settings for Caffe2 job.
      *
      * @param caffe2Settings the caffe2Settings value to set
      * @return the JobCreateParameters object itself.
@@ -359,7 +375,7 @@ public class JobCreateParameters {
     }
 
     /**
-     * Get the chainerSettings value.
+     * Get settings for Chainer job.
      *
      * @return the chainerSettings value
      */
@@ -368,7 +384,7 @@ public class JobCreateParameters {
     }
 
     /**
-     * Set the chainerSettings value.
+     * Set settings for Chainer job.
      *
      * @param chainerSettings the chainerSettings value to set
      * @return the JobCreateParameters object itself.
@@ -379,7 +395,7 @@ public class JobCreateParameters {
     }
 
     /**
-     * Get the customToolkitSettings value.
+     * Get settings for custom tool kit job.
      *
      * @return the customToolkitSettings value
      */
@@ -388,7 +404,7 @@ public class JobCreateParameters {
     }
 
     /**
-     * Set the customToolkitSettings value.
+     * Set settings for custom tool kit job.
      *
      * @param customToolkitSettings the customToolkitSettings value to set
      * @return the JobCreateParameters object itself.
@@ -399,7 +415,7 @@ public class JobCreateParameters {
     }
 
     /**
-     * Get the customMpiSettings value.
+     * Get settings for custom MPI job.
      *
      * @return the customMpiSettings value
      */
@@ -408,7 +424,7 @@ public class JobCreateParameters {
     }
 
     /**
-     * Set the customMpiSettings value.
+     * Set settings for custom MPI job.
      *
      * @param customMpiSettings the customMpiSettings value to set
      * @return the JobCreateParameters object itself.
@@ -419,7 +435,7 @@ public class JobCreateParameters {
     }
 
     /**
-     * Get the horovodSettings value.
+     * Get settings for Horovod job.
      *
      * @return the horovodSettings value
      */
@@ -428,7 +444,7 @@ public class JobCreateParameters {
     }
 
     /**
-     * Set the horovodSettings value.
+     * Set settings for Horovod job.
      *
      * @param horovodSettings the horovodSettings value to set
      * @return the JobCreateParameters object itself.
@@ -439,7 +455,7 @@ public class JobCreateParameters {
     }
 
     /**
-     * Get the jobPreparation value.
+     * Get a command line to be executed on each node allocated for the job before tool kit is launched.
      *
      * @return the jobPreparation value
      */
@@ -448,7 +464,7 @@ public class JobCreateParameters {
     }
 
     /**
-     * Set the jobPreparation value.
+     * Set a command line to be executed on each node allocated for the job before tool kit is launched.
      *
      * @param jobPreparation the jobPreparation value to set
      * @return the JobCreateParameters object itself.
@@ -459,7 +475,7 @@ public class JobCreateParameters {
     }
 
     /**
-     * Get the stdOutErrPathPrefix value.
+     * Get the path where the Batch AI service will store stdout, stderror and execution log of the job.
      *
      * @return the stdOutErrPathPrefix value
      */
@@ -468,7 +484,7 @@ public class JobCreateParameters {
     }
 
     /**
-     * Set the stdOutErrPathPrefix value.
+     * Set the path where the Batch AI service will store stdout, stderror and execution log of the job.
      *
      * @param stdOutErrPathPrefix the stdOutErrPathPrefix value to set
      * @return the JobCreateParameters object itself.
@@ -479,7 +495,7 @@ public class JobCreateParameters {
     }
 
     /**
-     * Get the inputDirectories value.
+     * Get a list of input directories for the job.
      *
      * @return the inputDirectories value
      */
@@ -488,7 +504,7 @@ public class JobCreateParameters {
     }
 
     /**
-     * Set the inputDirectories value.
+     * Set a list of input directories for the job.
      *
      * @param inputDirectories the inputDirectories value to set
      * @return the JobCreateParameters object itself.
@@ -499,7 +515,7 @@ public class JobCreateParameters {
     }
 
     /**
-     * Get the outputDirectories value.
+     * Get a list of output directories for the job.
      *
      * @return the outputDirectories value
      */
@@ -508,7 +524,7 @@ public class JobCreateParameters {
     }
 
     /**
-     * Set the outputDirectories value.
+     * Set a list of output directories for the job.
      *
      * @param outputDirectories the outputDirectories value to set
      * @return the JobCreateParameters object itself.
@@ -519,7 +535,7 @@ public class JobCreateParameters {
     }
 
     /**
-     * Get the environmentVariables value.
+     * Get a list of user defined environment variables which will be setup for the job.
      *
      * @return the environmentVariables value
      */
@@ -528,7 +544,7 @@ public class JobCreateParameters {
     }
 
     /**
-     * Set the environmentVariables value.
+     * Set a list of user defined environment variables which will be setup for the job.
      *
      * @param environmentVariables the environmentVariables value to set
      * @return the JobCreateParameters object itself.
@@ -539,7 +555,7 @@ public class JobCreateParameters {
     }
 
     /**
-     * Get the secrets value.
+     * Get a list of user defined environment variables with secret values which will be setup for the job. Server will never report values of these variables back.
      *
      * @return the secrets value
      */
@@ -548,7 +564,7 @@ public class JobCreateParameters {
     }
 
     /**
-     * Set the secrets value.
+     * Set a list of user defined environment variables with secret values which will be setup for the job. Server will never report values of these variables back.
      *
      * @param secrets the secrets value to set
      * @return the JobCreateParameters object itself.
@@ -559,7 +575,7 @@ public class JobCreateParameters {
     }
 
     /**
-     * Get the constraints value.
+     * Get constraints associated with the Job.
      *
      * @return the constraints value
      */
@@ -568,7 +584,7 @@ public class JobCreateParameters {
     }
 
     /**
-     * Set the constraints value.
+     * Set constraints associated with the Job.
      *
      * @param constraints the constraints value to set
      * @return the JobCreateParameters object itself.

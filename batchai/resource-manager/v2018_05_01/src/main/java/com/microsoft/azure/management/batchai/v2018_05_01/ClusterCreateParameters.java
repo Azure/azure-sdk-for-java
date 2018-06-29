@@ -8,33 +8,20 @@
 
 package com.microsoft.azure.management.batchai.v2018_05_01;
 
-import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
- * Parameters supplied to the Create operation.
+ * Cluster creation operation.
  */
 @JsonFlatten
 public class ClusterCreateParameters {
     /**
-     * The region in which to create the cluster.
-     */
-    @JsonProperty(value = "location", required = true)
-    private String location;
-
-    /**
-     * The user specified tags associated with the Cluster.
-     */
-    @JsonProperty(value = "tags")
-    private Map<String, String> tags;
-
-    /**
-     * The size of the virtual machines in the cluster.
-     * All virtual machines in a cluster are the same size. For information
-     * about available VM sizes for clusters using images from the Virtual
-     * Machines Marketplace (see Sizes for Virtual Machines (Linux) or Sizes
-     * for Virtual Machines (Windows). Batch AI service supports all Azure VM
+     * VM size.
+     * The size of the virtual machines in the cluster. All nodes in a cluster
+     * have the same VM size. For information about available VM sizes for
+     * clusters using images from the Virtual Machines Marketplace see Sizes
+     * for Virtual Machines (Linux). Batch AI service supports all Azure VM
      * sizes except STANDARD_A0 and those with premium storage (STANDARD_GS,
      * STANDARD_DS, and STANDARD_DSV2 series).
      */
@@ -42,86 +29,55 @@ public class ClusterCreateParameters {
     private String vmSize;
 
     /**
-     * dedicated or lowpriority.
-     * Default is dedicated. Possible values include: 'dedicated',
-     * 'lowpriority'.
+     * VM priority.
+     * VM priority. Allowed values are: dedicated (default) and lowpriority.
+     * Possible values include: 'dedicated', 'lowpriority'.
      */
     @JsonProperty(value = "properties.vmPriority")
     private VmPriority vmPriority;
 
     /**
-     * Desired scale for the cluster.
+     * Scale settings.
+     * Scale settings for the cluster. Batch AI service supports manual and
+     * auto scale clusters.
      */
     @JsonProperty(value = "properties.scaleSettings")
     private ScaleSettings scaleSettings;
 
     /**
-     * Settings for OS image and mounted data volumes.
+     * VM configuration.
+     * OS image configuration for cluster nodes. All nodes in a cluster have
+     * the same OS image.
      */
     @JsonProperty(value = "properties.virtualMachineConfiguration")
     private VirtualMachineConfiguration virtualMachineConfiguration;
 
     /**
-     * Setup to be done on all compute nodes in the cluster.
+     * Node setup.
+     * Setup to be performed on each compute node in the cluster.
      */
     @JsonProperty(value = "properties.nodeSetup")
     private NodeSetup nodeSetup;
 
     /**
-     * Settings for user account that will be created on all compute nodes of
-     * the cluster.
+     * User account settings.
+     * Settings for an administrator user account that will be created on each
+     * compute node in the cluster.
      */
     @JsonProperty(value = "properties.userAccountSettings", required = true)
     private UserAccountSettings userAccountSettings;
 
     /**
-     * Specifies the identifier of the subnet.
+     * Subnet.
+     * Existing virtual network subnet to put the cluster nodes in. Note, if a
+     * File Server mount configured in node setup, the File Server's subnet
+     * will be used automatically.
      */
     @JsonProperty(value = "properties.subnet")
     private ResourceId subnet;
 
     /**
-     * Get the location value.
-     *
-     * @return the location value
-     */
-    public String location() {
-        return this.location;
-    }
-
-    /**
-     * Set the location value.
-     *
-     * @param location the location value to set
-     * @return the ClusterCreateParameters object itself.
-     */
-    public ClusterCreateParameters withLocation(String location) {
-        this.location = location;
-        return this;
-    }
-
-    /**
-     * Get the tags value.
-     *
-     * @return the tags value
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags value.
-     *
-     * @param tags the tags value to set
-     * @return the ClusterCreateParameters object itself.
-     */
-    public ClusterCreateParameters withTags(Map<String, String> tags) {
-        this.tags = tags;
-        return this;
-    }
-
-    /**
-     * Get the vmSize value.
+     * Get the size of the virtual machines in the cluster. All nodes in a cluster have the same VM size. For information about available VM sizes for clusters using images from the Virtual Machines Marketplace see Sizes for Virtual Machines (Linux). Batch AI service supports all Azure VM sizes except STANDARD_A0 and those with premium storage (STANDARD_GS, STANDARD_DS, and STANDARD_DSV2 series).
      *
      * @return the vmSize value
      */
@@ -130,7 +86,7 @@ public class ClusterCreateParameters {
     }
 
     /**
-     * Set the vmSize value.
+     * Set the size of the virtual machines in the cluster. All nodes in a cluster have the same VM size. For information about available VM sizes for clusters using images from the Virtual Machines Marketplace see Sizes for Virtual Machines (Linux). Batch AI service supports all Azure VM sizes except STANDARD_A0 and those with premium storage (STANDARD_GS, STANDARD_DS, and STANDARD_DSV2 series).
      *
      * @param vmSize the vmSize value to set
      * @return the ClusterCreateParameters object itself.
@@ -141,7 +97,7 @@ public class ClusterCreateParameters {
     }
 
     /**
-     * Get the vmPriority value.
+     * Get vM priority. Allowed values are: dedicated (default) and lowpriority. Possible values include: 'dedicated', 'lowpriority'.
      *
      * @return the vmPriority value
      */
@@ -150,7 +106,7 @@ public class ClusterCreateParameters {
     }
 
     /**
-     * Set the vmPriority value.
+     * Set vM priority. Allowed values are: dedicated (default) and lowpriority. Possible values include: 'dedicated', 'lowpriority'.
      *
      * @param vmPriority the vmPriority value to set
      * @return the ClusterCreateParameters object itself.
@@ -161,7 +117,7 @@ public class ClusterCreateParameters {
     }
 
     /**
-     * Get the scaleSettings value.
+     * Get scale settings for the cluster. Batch AI service supports manual and auto scale clusters.
      *
      * @return the scaleSettings value
      */
@@ -170,7 +126,7 @@ public class ClusterCreateParameters {
     }
 
     /**
-     * Set the scaleSettings value.
+     * Set scale settings for the cluster. Batch AI service supports manual and auto scale clusters.
      *
      * @param scaleSettings the scaleSettings value to set
      * @return the ClusterCreateParameters object itself.
@@ -181,7 +137,7 @@ public class ClusterCreateParameters {
     }
 
     /**
-     * Get the virtualMachineConfiguration value.
+     * Get oS image configuration for cluster nodes. All nodes in a cluster have the same OS image.
      *
      * @return the virtualMachineConfiguration value
      */
@@ -190,7 +146,7 @@ public class ClusterCreateParameters {
     }
 
     /**
-     * Set the virtualMachineConfiguration value.
+     * Set oS image configuration for cluster nodes. All nodes in a cluster have the same OS image.
      *
      * @param virtualMachineConfiguration the virtualMachineConfiguration value to set
      * @return the ClusterCreateParameters object itself.
@@ -201,7 +157,7 @@ public class ClusterCreateParameters {
     }
 
     /**
-     * Get the nodeSetup value.
+     * Get setup to be performed on each compute node in the cluster.
      *
      * @return the nodeSetup value
      */
@@ -210,7 +166,7 @@ public class ClusterCreateParameters {
     }
 
     /**
-     * Set the nodeSetup value.
+     * Set setup to be performed on each compute node in the cluster.
      *
      * @param nodeSetup the nodeSetup value to set
      * @return the ClusterCreateParameters object itself.
@@ -221,7 +177,7 @@ public class ClusterCreateParameters {
     }
 
     /**
-     * Get the userAccountSettings value.
+     * Get settings for an administrator user account that will be created on each compute node in the cluster.
      *
      * @return the userAccountSettings value
      */
@@ -230,7 +186,7 @@ public class ClusterCreateParameters {
     }
 
     /**
-     * Set the userAccountSettings value.
+     * Set settings for an administrator user account that will be created on each compute node in the cluster.
      *
      * @param userAccountSettings the userAccountSettings value to set
      * @return the ClusterCreateParameters object itself.
@@ -241,7 +197,7 @@ public class ClusterCreateParameters {
     }
 
     /**
-     * Get the subnet value.
+     * Get existing virtual network subnet to put the cluster nodes in. Note, if a File Server mount configured in node setup, the File Server's subnet will be used automatically.
      *
      * @return the subnet value
      */
@@ -250,7 +206,7 @@ public class ClusterCreateParameters {
     }
 
     /**
-     * Set the subnet value.
+     * Set existing virtual network subnet to put the cluster nodes in. Note, if a File Server mount configured in node setup, the File Server's subnet will be used automatically.
      *
      * @param subnet the subnet value to set
      * @return the ClusterCreateParameters object itself.

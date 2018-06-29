@@ -79,41 +79,22 @@ class ClustersImpl extends GroupableResourcesCoreImpl<Cluster, ClusterImpl, Clus
         return this.wrapList(client.listByResourceGroup(resourceGroupName));
     }
 
-    private Observable<Page<ClusterInner>> listByResourceGroupNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        ClustersInner client = this.inner();
-        return client.listByResourceGroupNextAsync(nextLink)
-        .flatMap(new Func1<Page<ClusterInner>, Observable<Page<ClusterInner>>>() {
-            @Override
-            public Observable<Page<ClusterInner>> call(Page<ClusterInner> page) {
-                return Observable.just(page).concatWith(listByResourceGroupNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<Cluster> listByResourceGroupAsync(String resourceGroupName) {
         ClustersInner client = this.inner();
         return client.listByResourceGroupAsync(resourceGroupName)
-        .flatMap(new Func1<Page<ClusterInner>, Observable<Page<ClusterInner>>>() {
-            @Override
-            public Observable<Page<ClusterInner>> call(Page<ClusterInner> page) {
-                return listByResourceGroupNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<ClusterInner>, Iterable<ClusterInner>>() {
             @Override
             public Iterable<ClusterInner> call(Page<ClusterInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<ClusterInner, Cluster>() {
             @Override
             public Cluster call(ClusterInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override
@@ -122,41 +103,22 @@ class ClustersImpl extends GroupableResourcesCoreImpl<Cluster, ClusterImpl, Clus
         return this.wrapList(client.list());
     }
 
-    private Observable<Page<ClusterInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        ClustersInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<ClusterInner>, Observable<Page<ClusterInner>>>() {
-            @Override
-            public Observable<Page<ClusterInner>> call(Page<ClusterInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<Cluster> listAsync() {
         ClustersInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<ClusterInner>, Observable<Page<ClusterInner>>>() {
-            @Override
-            public Observable<Page<ClusterInner>> call(Page<ClusterInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<ClusterInner>, Iterable<ClusterInner>>() {
             @Override
             public Iterable<ClusterInner> call(Page<ClusterInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<ClusterInner, Cluster>() {
             @Override
             public Cluster call(ClusterInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override
@@ -164,41 +126,22 @@ class ClustersImpl extends GroupableResourcesCoreImpl<Cluster, ClusterImpl, Clus
         return wrapModel(name);
     }
 
-    private Observable<Page<RemoteLoginInformationInner>> listRemoteLoginInformationNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        ClustersInner client = this.inner();
-        return client.listRemoteLoginInformationNextAsync(nextLink)
-        .flatMap(new Func1<Page<RemoteLoginInformationInner>, Observable<Page<RemoteLoginInformationInner>>>() {
-            @Override
-            public Observable<Page<RemoteLoginInformationInner>> call(Page<RemoteLoginInformationInner> page) {
-                return Observable.just(page).concatWith(listRemoteLoginInformationNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<RemoteLoginInformation> listRemoteLoginInformationAsync(final String resourceGroupName, final String clusterName) {
         ClustersInner client = this.inner();
         return client.listRemoteLoginInformationAsync(resourceGroupName, clusterName)
-        .flatMap(new Func1<Page<RemoteLoginInformationInner>, Observable<Page<RemoteLoginInformationInner>>>() {
-            @Override
-            public Observable<Page<RemoteLoginInformationInner>> call(Page<RemoteLoginInformationInner> page) {
-                return listRemoteLoginInformationNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<RemoteLoginInformationInner>, Iterable<RemoteLoginInformationInner>>() {
             @Override
             public Iterable<RemoteLoginInformationInner> call(Page<RemoteLoginInformationInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<RemoteLoginInformationInner, RemoteLoginInformation>() {
             @Override
             public RemoteLoginInformation call(RemoteLoginInformationInner inner) {
                 return new RemoteLoginInformationImpl(inner, manager());
             }
-       });
+        });
     }
 
     @Override

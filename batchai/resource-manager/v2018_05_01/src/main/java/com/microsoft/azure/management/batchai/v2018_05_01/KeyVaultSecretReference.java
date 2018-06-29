@@ -11,23 +11,25 @@ package com.microsoft.azure.management.batchai.v2018_05_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Describes a reference to Key Vault Secret.
+ * Key Vault Secret reference.
  */
 public class KeyVaultSecretReference {
     /**
-     * Fully qualified resource Id for the Key Vault.
+     * Key Vault resource identifier.
+     * Fully qualified resource indentifier of the Key Vault.
      */
     @JsonProperty(value = "sourceVault", required = true)
     private ResourceId sourceVault;
 
     /**
-     * The URL referencing a secret in a Key Vault.
+     * Secret URL.
+     * The URL referencing a secret in the Key Vault.
      */
     @JsonProperty(value = "secretUrl", required = true)
     private String secretUrl;
 
     /**
-     * Get the sourceVault value.
+     * Get fully qualified resource indentifier of the Key Vault.
      *
      * @return the sourceVault value
      */
@@ -36,7 +38,7 @@ public class KeyVaultSecretReference {
     }
 
     /**
-     * Set the sourceVault value.
+     * Set fully qualified resource indentifier of the Key Vault.
      *
      * @param sourceVault the sourceVault value to set
      * @return the KeyVaultSecretReference object itself.
@@ -47,7 +49,7 @@ public class KeyVaultSecretReference {
     }
 
     /**
-     * Get the secretUrl value.
+     * Get the URL referencing a secret in the Key Vault.
      *
      * @return the secretUrl value
      */
@@ -56,7 +58,7 @@ public class KeyVaultSecretReference {
     }
 
     /**
-     * Set the secretUrl value.
+     * Set the URL referencing a secret in the Key Vault.
      *
      * @param secretUrl the secretUrl value to set
      * @return the KeyVaultSecretReference object itself.
