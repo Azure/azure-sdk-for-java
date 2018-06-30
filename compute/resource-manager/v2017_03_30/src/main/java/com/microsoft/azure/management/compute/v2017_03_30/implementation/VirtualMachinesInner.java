@@ -1599,7 +1599,7 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
     /**
      * Lists all of the virtual machines in the specified resource group. Use the nextLink property in the response to get the next page of virtual machines.
      *
-    ServiceResponse<PageImpl1<VirtualMachineInner>> * @param resourceGroupName The name of the resource group.
+    ServiceResponse<PageImpl<VirtualMachineInner>> * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;VirtualMachineInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -1618,7 +1618,7 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
                 @Override
                 public Observable<ServiceResponse<Page<VirtualMachineInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl1<VirtualMachineInner>> result = listByResourceGroupDelegate(response);
+                        ServiceResponse<PageImpl<VirtualMachineInner>> result = listByResourceGroupDelegate(response);
                         return Observable.just(new ServiceResponse<Page<VirtualMachineInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1627,9 +1627,9 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
             });
     }
 
-    private ServiceResponse<PageImpl1<VirtualMachineInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl1<VirtualMachineInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl1<VirtualMachineInner>>() { }.getType())
+    private ServiceResponse<PageImpl<VirtualMachineInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<VirtualMachineInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<VirtualMachineInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -1725,7 +1725,7 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
                 @Override
                 public Observable<ServiceResponse<Page<VirtualMachineInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl1<VirtualMachineInner>> result = listDelegate(response);
+                        ServiceResponse<PageImpl<VirtualMachineInner>> result = listDelegate(response);
                         return Observable.just(new ServiceResponse<Page<VirtualMachineInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1734,9 +1734,9 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
             });
     }
 
-    private ServiceResponse<PageImpl1<VirtualMachineInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl1<VirtualMachineInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl1<VirtualMachineInner>>() { }.getType())
+    private ServiceResponse<PageImpl<VirtualMachineInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<VirtualMachineInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<VirtualMachineInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -1811,7 +1811,7 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
                 @Override
                 public Observable<ServiceResponse<List<VirtualMachineSizeInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<VirtualMachineSizeInner>> result = listAvailableSizesDelegate(response);
+                        ServiceResponse<PageImpl1<VirtualMachineSizeInner>> result = listAvailableSizesDelegate(response);
                         List<VirtualMachineSizeInner> items = null;
                         if (result.body() != null) {
                             items = result.body().items();
@@ -1825,9 +1825,9 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
             });
     }
 
-    private ServiceResponse<PageImpl<VirtualMachineSizeInner>> listAvailableSizesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<VirtualMachineSizeInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<VirtualMachineSizeInner>>() { }.getType())
+    private ServiceResponse<PageImpl1<VirtualMachineSizeInner>> listAvailableSizesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<VirtualMachineSizeInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl1<VirtualMachineSizeInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -2865,7 +2865,7 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
     /**
      * Lists all of the virtual machines in the specified resource group. Use the nextLink property in the response to get the next page of virtual machines.
      *
-    ServiceResponse<PageImpl1<VirtualMachineInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<VirtualMachineInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;VirtualMachineInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -2879,7 +2879,7 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
                 @Override
                 public Observable<ServiceResponse<Page<VirtualMachineInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl1<VirtualMachineInner>> result = listByResourceGroupNextDelegate(response);
+                        ServiceResponse<PageImpl<VirtualMachineInner>> result = listByResourceGroupNextDelegate(response);
                         return Observable.just(new ServiceResponse<Page<VirtualMachineInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -2888,9 +2888,9 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
             });
     }
 
-    private ServiceResponse<PageImpl1<VirtualMachineInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl1<VirtualMachineInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl1<VirtualMachineInner>>() { }.getType())
+    private ServiceResponse<PageImpl<VirtualMachineInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<VirtualMachineInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<VirtualMachineInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -2976,7 +2976,7 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
     /**
      * Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get the next page of virtual machines.
      *
-    ServiceResponse<PageImpl1<VirtualMachineInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<VirtualMachineInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;VirtualMachineInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -2990,7 +2990,7 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
                 @Override
                 public Observable<ServiceResponse<Page<VirtualMachineInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl1<VirtualMachineInner>> result = listNextDelegate(response);
+                        ServiceResponse<PageImpl<VirtualMachineInner>> result = listNextDelegate(response);
                         return Observable.just(new ServiceResponse<Page<VirtualMachineInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -2999,9 +2999,9 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
             });
     }
 
-    private ServiceResponse<PageImpl1<VirtualMachineInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl1<VirtualMachineInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl1<VirtualMachineInner>>() { }.getType())
+    private ServiceResponse<PageImpl<VirtualMachineInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<VirtualMachineInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<VirtualMachineInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

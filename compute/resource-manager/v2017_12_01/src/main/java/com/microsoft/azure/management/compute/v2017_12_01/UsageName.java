@@ -27,7 +27,7 @@ public class UsageName {
     private String localizedValue;
 
     /**
-     * Get the value value.
+     * Get the name of the resource.
      *
      * @return the value value
      */
@@ -36,7 +36,7 @@ public class UsageName {
     }
 
     /**
-     * Set the value value.
+     * Set the name of the resource.
      *
      * @param value the value value to set
      * @return the UsageName object itself.
@@ -47,7 +47,7 @@ public class UsageName {
     }
 
     /**
-     * Get the localizedValue value.
+     * Get the localized name of the resource.
      *
      * @return the localizedValue value
      */
@@ -56,7 +56,7 @@ public class UsageName {
     }
 
     /**
-     * Set the localizedValue value.
+     * Set the localized name of the resource.
      *
      * @param localizedValue the localizedValue value to set
      * @return the UsageName object itself.
