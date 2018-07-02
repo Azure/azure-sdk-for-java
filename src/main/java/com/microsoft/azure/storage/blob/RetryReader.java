@@ -57,7 +57,9 @@ public class RetryReader extends Flowable<ByteBuffer> {
             Function<HTTPGetterInfo, Single<? extends RestResponse<?, Flowable<ByteBuffer>>>> getter) {
         Utility.assertNotNull("getter", getter);
         info = info == null ? new HTTPGetterInfo() : info;
-        Utility.assertInBounds("info.count", info.count, 0, Integer.MAX_VALUE);
+        if (info.count != null) {
+            Utility.assertInBounds("info.count", info.count, 0, Integer.MAX_VALUE);
+        }
         options = options == null ? new RetryReaderOptions() : options;
         Utility.assertInBounds("options.maxRetryRequests", options.maxRetryRequests, 0, Integer.MAX_VALUE);
 
@@ -97,7 +99,9 @@ public class RetryReader extends Flowable<ByteBuffer> {
                  */
                 .doOnNext(buffer -> {
                     this.info.offset += buffer.remaining();
-                    this.info.count -= buffer.remaining();
+                    if (info.count != null) {
+                        this.info.count -= buffer.remaining();
+                    }
                     s.onNext(buffer);
                 })
                 /*

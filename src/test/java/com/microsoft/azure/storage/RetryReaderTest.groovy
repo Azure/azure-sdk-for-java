@@ -16,6 +16,7 @@ package com.microsoft.azure.storage
 
 import com.microsoft.azure.storage.blob.BlobRange
 import com.microsoft.azure.storage.blob.BlockBlobURL
+import com.microsoft.azure.storage.blob.ETag
 import com.microsoft.azure.storage.blob.RetryReader
 import com.microsoft.azure.storage.blob.RetryReaderOptions
 import com.microsoft.rest.v2.RestException
@@ -107,16 +108,12 @@ class RetryReaderTest extends APISpec {
     def "Failure"() {
         setup:
         def flowable = new RetryReaderMockFlowable(scenario)
-        def info = new RetryReader.HTTPGetterInfo()
-        info.offset = 0
-        info.count = 3 // ignored.
-
 
         def options = new RetryReaderOptions()
         options.maxRetryRequests = 5
 
         when:
-        RetryReader reader = new RetryReader(null, info, options,
+        RetryReader reader = new RetryReader(null, null, options,
                 new Function<RetryReader.HTTPGetterInfo, Single<? extends RestResponse<?, Flowable<ByteBuffer>>>>() {
                     @Override
                     Single<? extends RestResponse<?, Flowable<ByteBuffer>>> apply(RetryReader.HTTPGetterInfo i) {
@@ -140,5 +137,105 @@ class RetryReaderTest extends APISpec {
         RetryReaderMockFlowable.RR_TEST_SCENARIO_NON_RETRYABLE_ERROR  | Exception     | 1
         RetryReaderMockFlowable.RR_TEST_SCENARIO_ERROR_GETTER_INITIAL | IOException   | 1
         RetryReaderMockFlowable.RR_TEST_SCENARIO_ERROR_GETTER_MIDDLE  | RestException | 2
+    }
+
+    @Unroll
+    def "Nulls"() {
+        setup:
+        def flowable = new RetryReaderMockFlowable(RetryReaderMockFlowable.RR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK)
+
+        when:
+        RetryReader reader = new RetryReader(null, null, options,
+                new Function<RetryReader.HTTPGetterInfo, Single<? extends RestResponse<?, Flowable<ByteBuffer>>>>() {
+                    @Override
+                    Single<? extends RestResponse<?, Flowable<ByteBuffer>>> apply(RetryReader.HTTPGetterInfo i) {
+                        flowable.getter(i)
+                    }
+                })
+        reader.blockingSubscribe()
+
+        then:
+        FlowableUtil.collectBytesInBuffer(reader).blockingGet() == flowable.getScenarioData()
+        flowable.getTryNumber() == tryNumber
+
+        where:
+        info                             | options                  | tryNumber
+        null                             | new RetryReaderOptions() | 1
+        new RetryReader.HTTPGetterInfo() | null                     | 1
+    }
+
+    def "Options fail"() {
+        setup:
+        def flowable = new RetryReaderMockFlowable(RetryReaderMockFlowable.RR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK)
+
+        def options = new RetryReaderOptions()
+        options.maxRetryRequests = -1
+
+        when:
+        RetryReader reader = new RetryReader(null, null, options,
+                new Function<RetryReader.HTTPGetterInfo, Single<? extends RestResponse<?, Flowable<ByteBuffer>>>>() {
+                    @Override
+                    Single<? extends RestResponse<?, Flowable<ByteBuffer>>> apply(RetryReader.HTTPGetterInfo i) {
+                        flowable.getter(i)
+                    }
+                })
+        reader.blockingSubscribe()
+
+        then:
+        thrown(IllegalArgumentException)
+    }
+
+    def "Getter fail"() {
+        setup:
+        def flowable = new RetryReaderMockFlowable(RetryReaderMockFlowable.RR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK)
+
+        when:
+        RetryReader reader = new RetryReader(null, null, null, null)
+        reader.blockingSubscribe()
+
+        then:
+        thrown(IllegalArgumentException)
+    }
+
+    def "Info"() {
+        setup:
+        def flowable = new RetryReaderMockFlowable(RetryReaderMockFlowable.RR_TEST_SCENARIO_INFO_TEST)
+        def info = new RetryReader.HTTPGetterInfo()
+        info.offset = 20
+        info.count = 10
+        info.eTag = new ETag("etag")
+        def options = new RetryReaderOptions()
+        options.maxRetryRequests = 5
+
+        when:
+        RetryReader reader = new RetryReader(null, info, options,
+                new Function<RetryReader.HTTPGetterInfo, Single<? extends RestResponse<?, Flowable<ByteBuffer>>>>() {
+                    @Override
+                    Single<? extends RestResponse<?, Flowable<ByteBuffer>>> apply(RetryReader.HTTPGetterInfo i) {
+                        flowable.getter(i)
+                    }
+                })
+        reader.blockingSubscribe()
+
+        then:
+        flowable.tryNumber == 3
+    }
+
+    def "Info fail"() {
+        setup:
+        def info = new RetryReader.HTTPGetterInfo()
+        info.count = -1
+
+        when:
+        new RetryReader(null, info, null,
+                new Function<RetryReader.HTTPGetterInfo, Single<? extends RestResponse<?, Flowable<ByteBuffer>>>>() {
+                    @Override
+                    Single<? extends RestResponse<?, Flowable<ByteBuffer>>> apply(RetryReader.HTTPGetterInfo i) {
+                        return null
+                    }
+                })
+
+        then:
+        thrown(IllegalArgumentException)
     }
 }

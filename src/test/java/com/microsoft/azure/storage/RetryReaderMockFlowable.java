@@ -15,11 +15,11 @@
 
 package com.microsoft.azure.storage;
 
+import com.microsoft.azure.storage.blob.ETag;
 import com.microsoft.azure.storage.blob.RetryReader;
 import com.microsoft.azure.storage.blob.models.BlobsDownloadHeaders;
 import com.microsoft.azure.storage.blob.models.StorageErrorException;
 import com.microsoft.rest.v2.RestResponse;
-import com.microsoft.rest.v2.http.BufferedHttpResponse;
 import com.microsoft.rest.v2.http.HttpHeaders;
 import com.microsoft.rest.v2.http.HttpResponse;
 import io.reactivex.Flowable;
@@ -47,6 +47,8 @@ public class RetryReaderMockFlowable extends Flowable<ByteBuffer> {
     public static final int RR_TEST_SCENARIO_ERROR_GETTER_MIDDLE = 6;
 
     public static final int RR_TEST_SCENARIO_SUCCESSFUL_INITIAL_RESPONSE = 7;
+
+    public static final int RR_TEST_SCENARIO_INFO_TEST = 8;
 
     private int scenario;
 
@@ -140,12 +142,34 @@ public class RetryReaderMockFlowable extends Flowable<ByteBuffer> {
                 s.onNext(this.scenarioData.duplicate());
                 s.onComplete();
                 break;
+
+            case RR_TEST_SCENARIO_INFO_TEST:
+                switch (this.tryNumber) {
+                    case 1:
+                        // Test the value of info when getting the initial response.
+                        s.onError(new IOException());
+                        break;
+                    case 2:
+                        // Test the value of info when getting an intermediate response.
+                        s.onError(new IOException());
+                        break;
+                    case 3:
+                        // All calls to getter checked. Exit. This test does not check for data.
+                        s.onComplete();
+                        break;
+                }
+                break;
+
+            default:
+                s.onError(new IllegalArgumentException("Invalid test case"));
         }
     }
 
     public Single<? extends RestResponse<?, Flowable<ByteBuffer>>> getter(RetryReader.HTTPGetterInfo info) {
         this.tryNumber++;
         this.info = info;
+        RestResponse<BlobsDownloadHeaders, Flowable<ByteBuffer>> response =
+                new RestResponse<>(200, new BlobsDownloadHeaders(), new HashMap<>(), this);
 
         switch(this.scenario) {
             case RR_TEST_SCENARIO_ERROR_GETTER_INITIAL:
@@ -153,12 +177,11 @@ public class RetryReaderMockFlowable extends Flowable<ByteBuffer> {
             case RR_TEST_SCENARIO_ERROR_GETTER_MIDDLE:
                 switch (this.tryNumber) {
                     case 1:
-                        RestResponse<BlobsDownloadHeaders, Flowable<ByteBuffer>> response =
-                                new RestResponse<>(200, new BlobsDownloadHeaders(), new HashMap<>(), this);
                         return Single.just(response);
                     case 2:
                         // This validates that we don't retry in the getter even if it's an error from the service.
-                        throw new Error("GetterError", new StorageErrorException("Message", new HttpResponse() {
+                        throw new Error("GetterError",
+                                new StorageErrorException("Message", new HttpResponse() {
                             @Override
                             public int statusCode() {
                                 return 0;
@@ -192,9 +215,13 @@ public class RetryReaderMockFlowable extends Flowable<ByteBuffer> {
                     default:
                         throw new IllegalArgumentException("Retried after error in getter");
                 }
+            case RR_TEST_SCENARIO_INFO_TEST:
+                // We also test that the info is updated in RR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES.
+                if (info.count != 10 || info.offset != 20 || !info.eTag.equals(new ETag("etag"))) {
+                    throw new IllegalArgumentException("Info values incorrect");
+                }
+                return Single.just(response);
             default:
-                RestResponse<BlobsDownloadHeaders, Flowable<ByteBuffer>> response =
-                        new RestResponse<>(200, new BlobsDownloadHeaders(), new HashMap<>(), this);
                 return Single.just(response);
         }
     }

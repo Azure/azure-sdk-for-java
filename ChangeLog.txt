@@ -1,4 +1,5 @@
 XXXX.XX.XX Version XX.X.X-Preview
+* Added the RetryReader class to allow for more reliable streaming on large downloads.
 * Fixed a bug that caused generation of signatures to fail at high levels of parallelism.
 * Created the StorageException type to give easy access to the ErrorCode, StatusCode, and Message as available for unsuccessful responses.
 * Added the StorageErrorCode type for checking against error codes returned by the service.

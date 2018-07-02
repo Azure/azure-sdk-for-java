@@ -192,6 +192,9 @@ public class BlobURL extends StorageURL {
      * information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a>.
      *
+     * Please consider using the {@link RetryReader} in conjunction with this method to achieve more reliable downloads
+     * that are resilient to transient network failures.
+     *
      * @param range
      *      {@link BlobRange}
      * @param accessConditions
