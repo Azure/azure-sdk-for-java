@@ -96,6 +96,14 @@ public class FactoriesInner implements InnerSupportsGet<FactoryInner>, InnerSupp
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("factoryName") String factoryName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datafactoryv2.v2017_09_01_preview.Factories listSharedFactories" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/listSharedFactories")
+        Observable<Response<ResponseBody>> listSharedFactories(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("factoryName") String factoryName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datafactoryv2.v2017_09_01_preview.Factories listSharedIntegrationRuntimes" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/listSharedIntegrationRuntimes")
+        Observable<Response<ResponseBody>> listSharedIntegrationRuntimes(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("factoryName") String factoryName, @Query("dataFactoryResourceId") String dataFactoryResourceId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datafactoryv2.v2017_09_01_preview.Factories cancelPipelineRun" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/cancelpipelinerun/{runId}")
         Observable<Response<ResponseBody>> cancelPipelineRun(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("factoryName") String factoryName, @Path("runId") String runId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -107,6 +115,14 @@ public class FactoriesInner implements InnerSupportsGet<FactoryInner>, InnerSupp
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datafactoryv2.v2017_09_01_preview.Factories listByResourceGroupNext" })
         @GET
         Observable<Response<ResponseBody>> listByResourceGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datafactoryv2.v2017_09_01_preview.Factories listSharedFactoriesNext" })
+        @GET
+        Observable<Response<ResponseBody>> listSharedFactoriesNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datafactoryv2.v2017_09_01_preview.Factories listSharedIntegrationRuntimesNext" })
+        @GET
+        Observable<Response<ResponseBody>> listSharedIntegrationRuntimesNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -780,6 +796,374 @@ public class FactoriesInner implements InnerSupportsGet<FactoryInner>, InnerSupp
     }
 
     /**
+     * List data factories which the given data factory has access.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;FactoryInner&gt; object if successful.
+     */
+    public PagedList<FactoryInner> listSharedFactories(final String resourceGroupName, final String factoryName) {
+        ServiceResponse<Page<FactoryInner>> response = listSharedFactoriesSinglePageAsync(resourceGroupName, factoryName).toBlocking().single();
+        return new PagedList<FactoryInner>(response.body()) {
+            @Override
+            public Page<FactoryInner> nextPage(String nextPageLink) {
+                return listSharedFactoriesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * List data factories which the given data factory has access.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<FactoryInner>> listSharedFactoriesAsync(final String resourceGroupName, final String factoryName, final ListOperationCallback<FactoryInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listSharedFactoriesSinglePageAsync(resourceGroupName, factoryName),
+            new Func1<String, Observable<ServiceResponse<Page<FactoryInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<FactoryInner>>> call(String nextPageLink) {
+                    return listSharedFactoriesNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * List data factories which the given data factory has access.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;FactoryInner&gt; object
+     */
+    public Observable<Page<FactoryInner>> listSharedFactoriesAsync(final String resourceGroupName, final String factoryName) {
+        return listSharedFactoriesWithServiceResponseAsync(resourceGroupName, factoryName)
+            .map(new Func1<ServiceResponse<Page<FactoryInner>>, Page<FactoryInner>>() {
+                @Override
+                public Page<FactoryInner> call(ServiceResponse<Page<FactoryInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * List data factories which the given data factory has access.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;FactoryInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<FactoryInner>>> listSharedFactoriesWithServiceResponseAsync(final String resourceGroupName, final String factoryName) {
+        return listSharedFactoriesSinglePageAsync(resourceGroupName, factoryName)
+            .concatMap(new Func1<ServiceResponse<Page<FactoryInner>>, Observable<ServiceResponse<Page<FactoryInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<FactoryInner>>> call(ServiceResponse<Page<FactoryInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listSharedFactoriesNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * List data factories which the given data factory has access.
+     *
+    ServiceResponse<PageImpl<FactoryInner>> * @param resourceGroupName The resource group name.
+    ServiceResponse<PageImpl<FactoryInner>> * @param factoryName The factory name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;FactoryInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<FactoryInner>>> listSharedFactoriesSinglePageAsync(final String resourceGroupName, final String factoryName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (factoryName == null) {
+            throw new IllegalArgumentException("Parameter factoryName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listSharedFactories(this.client.subscriptionId(), resourceGroupName, factoryName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<FactoryInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<FactoryInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<FactoryInner>> result = listSharedFactoriesDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<FactoryInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<FactoryInner>> listSharedFactoriesDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<FactoryInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<FactoryInner>>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * List integration runtimes which the given data factory has access.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;IntegrationRuntimeResourceInner&gt; object if successful.
+     */
+    public PagedList<IntegrationRuntimeResourceInner> listSharedIntegrationRuntimes(final String resourceGroupName, final String factoryName) {
+        ServiceResponse<Page<IntegrationRuntimeResourceInner>> response = listSharedIntegrationRuntimesSinglePageAsync(resourceGroupName, factoryName).toBlocking().single();
+        return new PagedList<IntegrationRuntimeResourceInner>(response.body()) {
+            @Override
+            public Page<IntegrationRuntimeResourceInner> nextPage(String nextPageLink) {
+                return listSharedIntegrationRuntimesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * List integration runtimes which the given data factory has access.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<IntegrationRuntimeResourceInner>> listSharedIntegrationRuntimesAsync(final String resourceGroupName, final String factoryName, final ListOperationCallback<IntegrationRuntimeResourceInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listSharedIntegrationRuntimesSinglePageAsync(resourceGroupName, factoryName),
+            new Func1<String, Observable<ServiceResponse<Page<IntegrationRuntimeResourceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<IntegrationRuntimeResourceInner>>> call(String nextPageLink) {
+                    return listSharedIntegrationRuntimesNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * List integration runtimes which the given data factory has access.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;IntegrationRuntimeResourceInner&gt; object
+     */
+    public Observable<Page<IntegrationRuntimeResourceInner>> listSharedIntegrationRuntimesAsync(final String resourceGroupName, final String factoryName) {
+        return listSharedIntegrationRuntimesWithServiceResponseAsync(resourceGroupName, factoryName)
+            .map(new Func1<ServiceResponse<Page<IntegrationRuntimeResourceInner>>, Page<IntegrationRuntimeResourceInner>>() {
+                @Override
+                public Page<IntegrationRuntimeResourceInner> call(ServiceResponse<Page<IntegrationRuntimeResourceInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * List integration runtimes which the given data factory has access.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;IntegrationRuntimeResourceInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<IntegrationRuntimeResourceInner>>> listSharedIntegrationRuntimesWithServiceResponseAsync(final String resourceGroupName, final String factoryName) {
+        return listSharedIntegrationRuntimesSinglePageAsync(resourceGroupName, factoryName)
+            .concatMap(new Func1<ServiceResponse<Page<IntegrationRuntimeResourceInner>>, Observable<ServiceResponse<Page<IntegrationRuntimeResourceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<IntegrationRuntimeResourceInner>>> call(ServiceResponse<Page<IntegrationRuntimeResourceInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listSharedIntegrationRuntimesNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * List integration runtimes which the given data factory has access.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;IntegrationRuntimeResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<IntegrationRuntimeResourceInner>>> listSharedIntegrationRuntimesSinglePageAsync(final String resourceGroupName, final String factoryName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (factoryName == null) {
+            throw new IllegalArgumentException("Parameter factoryName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final String dataFactoryResourceId = null;
+        return service.listSharedIntegrationRuntimes(this.client.subscriptionId(), resourceGroupName, factoryName, dataFactoryResourceId, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<IntegrationRuntimeResourceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<IntegrationRuntimeResourceInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<IntegrationRuntimeResourceInner>> result = listSharedIntegrationRuntimesDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<IntegrationRuntimeResourceInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * List integration runtimes which the given data factory has access.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param dataFactoryResourceId The factory resource identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;IntegrationRuntimeResourceInner&gt; object if successful.
+     */
+    public PagedList<IntegrationRuntimeResourceInner> listSharedIntegrationRuntimes(final String resourceGroupName, final String factoryName, final String dataFactoryResourceId) {
+        ServiceResponse<Page<IntegrationRuntimeResourceInner>> response = listSharedIntegrationRuntimesSinglePageAsync(resourceGroupName, factoryName, dataFactoryResourceId).toBlocking().single();
+        return new PagedList<IntegrationRuntimeResourceInner>(response.body()) {
+            @Override
+            public Page<IntegrationRuntimeResourceInner> nextPage(String nextPageLink) {
+                return listSharedIntegrationRuntimesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * List integration runtimes which the given data factory has access.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param dataFactoryResourceId The factory resource identifier.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<IntegrationRuntimeResourceInner>> listSharedIntegrationRuntimesAsync(final String resourceGroupName, final String factoryName, final String dataFactoryResourceId, final ListOperationCallback<IntegrationRuntimeResourceInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listSharedIntegrationRuntimesSinglePageAsync(resourceGroupName, factoryName, dataFactoryResourceId),
+            new Func1<String, Observable<ServiceResponse<Page<IntegrationRuntimeResourceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<IntegrationRuntimeResourceInner>>> call(String nextPageLink) {
+                    return listSharedIntegrationRuntimesNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * List integration runtimes which the given data factory has access.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param dataFactoryResourceId The factory resource identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;IntegrationRuntimeResourceInner&gt; object
+     */
+    public Observable<Page<IntegrationRuntimeResourceInner>> listSharedIntegrationRuntimesAsync(final String resourceGroupName, final String factoryName, final String dataFactoryResourceId) {
+        return listSharedIntegrationRuntimesWithServiceResponseAsync(resourceGroupName, factoryName, dataFactoryResourceId)
+            .map(new Func1<ServiceResponse<Page<IntegrationRuntimeResourceInner>>, Page<IntegrationRuntimeResourceInner>>() {
+                @Override
+                public Page<IntegrationRuntimeResourceInner> call(ServiceResponse<Page<IntegrationRuntimeResourceInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * List integration runtimes which the given data factory has access.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param dataFactoryResourceId The factory resource identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;IntegrationRuntimeResourceInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<IntegrationRuntimeResourceInner>>> listSharedIntegrationRuntimesWithServiceResponseAsync(final String resourceGroupName, final String factoryName, final String dataFactoryResourceId) {
+        return listSharedIntegrationRuntimesSinglePageAsync(resourceGroupName, factoryName, dataFactoryResourceId)
+            .concatMap(new Func1<ServiceResponse<Page<IntegrationRuntimeResourceInner>>, Observable<ServiceResponse<Page<IntegrationRuntimeResourceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<IntegrationRuntimeResourceInner>>> call(ServiceResponse<Page<IntegrationRuntimeResourceInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listSharedIntegrationRuntimesNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * List integration runtimes which the given data factory has access.
+     *
+    ServiceResponse<PageImpl<IntegrationRuntimeResourceInner>> * @param resourceGroupName The resource group name.
+    ServiceResponse<PageImpl<IntegrationRuntimeResourceInner>> * @param factoryName The factory name.
+    ServiceResponse<PageImpl<IntegrationRuntimeResourceInner>> * @param dataFactoryResourceId The factory resource identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;IntegrationRuntimeResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<IntegrationRuntimeResourceInner>>> listSharedIntegrationRuntimesSinglePageAsync(final String resourceGroupName, final String factoryName, final String dataFactoryResourceId) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (factoryName == null) {
+            throw new IllegalArgumentException("Parameter factoryName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listSharedIntegrationRuntimes(this.client.subscriptionId(), resourceGroupName, factoryName, dataFactoryResourceId, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<IntegrationRuntimeResourceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<IntegrationRuntimeResourceInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<IntegrationRuntimeResourceInner>> result = listSharedIntegrationRuntimesDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<IntegrationRuntimeResourceInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<IntegrationRuntimeResourceInner>> listSharedIntegrationRuntimesDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<IntegrationRuntimeResourceInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<IntegrationRuntimeResourceInner>>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
      * Cancel a pipeline run by its run ID.
      *
      * @param resourceGroupName The resource group name.
@@ -1089,6 +1473,228 @@ public class FactoriesInner implements InnerSupportsGet<FactoryInner>, InnerSupp
     private ServiceResponse<PageImpl<FactoryInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<FactoryInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<FactoryInner>>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * List data factories which the given data factory has access.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;FactoryInner&gt; object if successful.
+     */
+    public PagedList<FactoryInner> listSharedFactoriesNext(final String nextPageLink) {
+        ServiceResponse<Page<FactoryInner>> response = listSharedFactoriesNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<FactoryInner>(response.body()) {
+            @Override
+            public Page<FactoryInner> nextPage(String nextPageLink) {
+                return listSharedFactoriesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * List data factories which the given data factory has access.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<FactoryInner>> listSharedFactoriesNextAsync(final String nextPageLink, final ServiceFuture<List<FactoryInner>> serviceFuture, final ListOperationCallback<FactoryInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listSharedFactoriesNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<FactoryInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<FactoryInner>>> call(String nextPageLink) {
+                    return listSharedFactoriesNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * List data factories which the given data factory has access.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;FactoryInner&gt; object
+     */
+    public Observable<Page<FactoryInner>> listSharedFactoriesNextAsync(final String nextPageLink) {
+        return listSharedFactoriesNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<FactoryInner>>, Page<FactoryInner>>() {
+                @Override
+                public Page<FactoryInner> call(ServiceResponse<Page<FactoryInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * List data factories which the given data factory has access.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;FactoryInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<FactoryInner>>> listSharedFactoriesNextWithServiceResponseAsync(final String nextPageLink) {
+        return listSharedFactoriesNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<FactoryInner>>, Observable<ServiceResponse<Page<FactoryInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<FactoryInner>>> call(ServiceResponse<Page<FactoryInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listSharedFactoriesNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * List data factories which the given data factory has access.
+     *
+    ServiceResponse<PageImpl<FactoryInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;FactoryInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<FactoryInner>>> listSharedFactoriesNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listSharedFactoriesNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<FactoryInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<FactoryInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<FactoryInner>> result = listSharedFactoriesNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<FactoryInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<FactoryInner>> listSharedFactoriesNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<FactoryInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<FactoryInner>>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * List integration runtimes which the given data factory has access.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;IntegrationRuntimeResourceInner&gt; object if successful.
+     */
+    public PagedList<IntegrationRuntimeResourceInner> listSharedIntegrationRuntimesNext(final String nextPageLink) {
+        ServiceResponse<Page<IntegrationRuntimeResourceInner>> response = listSharedIntegrationRuntimesNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<IntegrationRuntimeResourceInner>(response.body()) {
+            @Override
+            public Page<IntegrationRuntimeResourceInner> nextPage(String nextPageLink) {
+                return listSharedIntegrationRuntimesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * List integration runtimes which the given data factory has access.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<IntegrationRuntimeResourceInner>> listSharedIntegrationRuntimesNextAsync(final String nextPageLink, final ServiceFuture<List<IntegrationRuntimeResourceInner>> serviceFuture, final ListOperationCallback<IntegrationRuntimeResourceInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listSharedIntegrationRuntimesNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<IntegrationRuntimeResourceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<IntegrationRuntimeResourceInner>>> call(String nextPageLink) {
+                    return listSharedIntegrationRuntimesNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * List integration runtimes which the given data factory has access.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;IntegrationRuntimeResourceInner&gt; object
+     */
+    public Observable<Page<IntegrationRuntimeResourceInner>> listSharedIntegrationRuntimesNextAsync(final String nextPageLink) {
+        return listSharedIntegrationRuntimesNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<IntegrationRuntimeResourceInner>>, Page<IntegrationRuntimeResourceInner>>() {
+                @Override
+                public Page<IntegrationRuntimeResourceInner> call(ServiceResponse<Page<IntegrationRuntimeResourceInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * List integration runtimes which the given data factory has access.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;IntegrationRuntimeResourceInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<IntegrationRuntimeResourceInner>>> listSharedIntegrationRuntimesNextWithServiceResponseAsync(final String nextPageLink) {
+        return listSharedIntegrationRuntimesNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<IntegrationRuntimeResourceInner>>, Observable<ServiceResponse<Page<IntegrationRuntimeResourceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<IntegrationRuntimeResourceInner>>> call(ServiceResponse<Page<IntegrationRuntimeResourceInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listSharedIntegrationRuntimesNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * List integration runtimes which the given data factory has access.
+     *
+    ServiceResponse<PageImpl<IntegrationRuntimeResourceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;IntegrationRuntimeResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<IntegrationRuntimeResourceInner>>> listSharedIntegrationRuntimesNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listSharedIntegrationRuntimesNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<IntegrationRuntimeResourceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<IntegrationRuntimeResourceInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<IntegrationRuntimeResourceInner>> result = listSharedIntegrationRuntimesNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<IntegrationRuntimeResourceInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<IntegrationRuntimeResourceInner>> listSharedIntegrationRuntimesNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<IntegrationRuntimeResourceInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<IntegrationRuntimeResourceInner>>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }

@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.datafactoryv2.v2017_09_01_preview;
 
+import java.util.Map;
 import org.joda.time.DateTime;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -22,6 +23,12 @@ import com.microsoft.rest.serializer.JsonFlatten;
 @JsonTypeName("Managed")
 @JsonFlatten
 public class ManagedIntegrationRuntimeStatus extends IntegrationRuntimeStatus {
+    /**
+     * Unmatched properties from the message are deserialized this collection.
+     */
+    @JsonProperty(value = "typeProperties.")
+    private Map<String, Object> additionalProperties;
+
     /**
      * The time at which the integration runtime was created, in ISO8601
      * format.
@@ -46,6 +53,26 @@ public class ManagedIntegrationRuntimeStatus extends IntegrationRuntimeStatus {
      */
     @JsonProperty(value = "typeProperties.lastOperation", access = JsonProperty.Access.WRITE_ONLY)
     private ManagedIntegrationRuntimeOperationResult lastOperation;
+
+    /**
+     * Get unmatched properties from the message are deserialized this collection.
+     *
+     * @return the additionalProperties value
+     */
+    public Map<String, Object> additionalProperties() {
+        return this.additionalProperties;
+    }
+
+    /**
+     * Set unmatched properties from the message are deserialized this collection.
+     *
+     * @param additionalProperties the additionalProperties value to set
+     * @return the ManagedIntegrationRuntimeStatus object itself.
+     */
+    public ManagedIntegrationRuntimeStatus withAdditionalProperties(Map<String, Object> additionalProperties) {
+        this.additionalProperties = additionalProperties;
+        return this;
+    }
 
     /**
      * Get the time at which the integration runtime was created, in ISO8601 format.
