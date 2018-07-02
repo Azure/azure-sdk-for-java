@@ -4,6 +4,8 @@
  */
 package com.microsoft.azure.eventhubs.impl;
 
+import com.microsoft.azure.eventhubs.*;
+
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
