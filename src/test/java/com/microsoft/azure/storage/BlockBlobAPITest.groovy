@@ -2,12 +2,10 @@ package com.microsoft.azure.storage
 
 import com.microsoft.azure.storage.blob.BlobAccessConditions
 import com.microsoft.azure.storage.blob.BlobHTTPHeaders
-import com.microsoft.azure.storage.blob.BlobRange
 import com.microsoft.azure.storage.blob.BlockBlobURL
 import com.microsoft.azure.storage.blob.HTTPAccessConditions
 import com.microsoft.azure.storage.blob.LeaseAccessConditions
 import com.microsoft.azure.storage.blob.Metadata
-import com.microsoft.azure.storage.blob.RetryReader
 import com.microsoft.azure.storage.blob.StorageException
 import com.microsoft.azure.storage.blob.models.BlobsGetPropertiesResponse
 import com.microsoft.azure.storage.blob.models.BlockBlobsCommitBlockListHeaders

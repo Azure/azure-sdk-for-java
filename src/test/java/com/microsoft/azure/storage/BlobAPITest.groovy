@@ -23,7 +23,6 @@ import com.microsoft.azure.storage.blob.models.BlobsCreateSnapshotResponse
 import com.microsoft.azure.storage.blob.models.BlobsDeleteHeaders
 import com.microsoft.azure.storage.blob.models.BlobsDeleteResponse
 import com.microsoft.azure.storage.blob.models.BlobsDownloadHeaders
-import com.microsoft.azure.storage.blob.models.BlobsDownloadResponse
 import com.microsoft.azure.storage.blob.models.BlobsGetPropertiesHeaders
 import com.microsoft.azure.storage.blob.models.BlobsReleaseLeaseHeaders
 import com.microsoft.azure.storage.blob.models.BlobsRenewLeaseHeaders

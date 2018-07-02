@@ -31,16 +31,16 @@ import java.util.function.Function;
  * {@code RetryReader} is used to wrap a download request and automatically retry failed reads as appropriate. If the
  * download is interrupted, the RetryReader will make a request to resume the download from where it left off, allowing
  * the user to consume the data as one continuous stream, for any interruptions are hidden. The retry behavior is
- * defined by the passed options, and the download will resume according to the provided getter function. Note that not
- * even the initial request will be made until the RetryReader is subscribed to
+ * defined by the passed options, and the download will resume according to the provided getter function.
  * <p>
- * A common use case would be to provide a getter function which internally calls download on a blobURL after applying
- * the parameters from the info.
+ * This type is closely integrated into the {@link BlobURL#download(BlobRange, BlobAccessConditions, boolean)} API. The
+ * {@link DownloadResponse} emitted by the returned Single if the call to
+ * {@link DownloadResponse#body(RetryReaderOptions)} is called by passing non null options.
  * <p>
  * Note that the retries performed as a part of this reader are composed with those of any retries in an {@link
- * HttpPipeline} used in conjunction with this reader. That is, if the reader issues a request to resume a a download,
+ * HttpPipeline} used in conjunction with this reader. That is, if the reader issues a request to resume a download,
  * an underlying pipeline may issue several retries as a part of that request. Furthermore, this reader only retries on
- * network errors; timeouts and unexpected status codes are not retired. Therefore, the behavior of this reader is
+ * network errors; timeouts and unexpected status codes are not retried. Therefore, the behavior of this reader is
  * entirely independent of and in no way coupled to an {@link HttpPipeline}'s retry mechanism.
  */
 public class RetryReader extends Flowable<ByteBuffer> {
@@ -74,7 +74,7 @@ public class RetryReader extends Flowable<ByteBuffer> {
         /*
         We we were not given a response stream to start with. Get one. We only care about retries on the download
         stream, so we do not count this call to get an initial response in our retry count. If the getter itself
-        fails, we have no way of continuing, and so report an error.
+        fails, we have no way of continuing and so report an error.
          */
         if (this.response == null) {
             try {
@@ -111,7 +111,7 @@ public class RetryReader extends Flowable<ByteBuffer> {
                 .doOnComplete(s::onComplete)
                 /*
                 Note that this will capture errors from mapping the response to the body, which involves making a
-                GET request, and errors from trying to read the body.
+                GET request, and errors from trying to read the body. We only care about errors from the body.
                  */
                 .onErrorResumeNext(throwable -> {
                     // If all the retries are exhausted, report it to the user and error out.
