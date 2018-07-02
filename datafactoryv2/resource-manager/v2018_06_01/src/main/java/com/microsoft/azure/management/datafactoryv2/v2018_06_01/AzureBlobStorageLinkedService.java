@@ -70,7 +70,7 @@ public class AzureBlobStorageLinkedService extends LinkedServiceInner {
      * (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
 
     /**
      * Get the connection string. It is mutually exclusive with sasUri, serviceEndpoint property. Type: string, SecureString or AzureKeyVaultSecretReference.
@@ -197,7 +197,7 @@ public class AzureBlobStorageLinkedService extends LinkedServiceInner {
      *
      * @return the encryptedCredential value
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
@@ -207,7 +207,7 @@ public class AzureBlobStorageLinkedService extends LinkedServiceInner {
      * @param encryptedCredential the encryptedCredential value to set
      * @return the AzureBlobStorageLinkedService object itself.
      */
-    public AzureBlobStorageLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public AzureBlobStorageLinkedService withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }
