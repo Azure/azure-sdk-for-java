@@ -24,6 +24,26 @@ import com.microsoft.azure.arm.model.HasInner;
  */
 public interface Factories extends SupportsCreating<Factory.DefinitionStages.Blank>, SupportsDeletingByResourceGroup, SupportsBatchDeletion, SupportsGettingByResourceGroup<Factory>, SupportsListingByResourceGroup<Factory>, SupportsListing<Factory>, HasInner<FactoriesInner> {
     /**
+     * List data factories which the given data factory has access.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<Factory> listSharedFactoriesAsync(final String resourceGroupName, final String factoryName);
+
+    /**
+     * List integration runtimes which the given data factory has access.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<IntegrationRuntimeResource> listSharedIntegrationRuntimesAsync(final String resourceGroupName, final String factoryName);
+
+    /**
      * Cancel a pipeline run by its run ID.
      *
      * @param resourceGroupName The resource group name.

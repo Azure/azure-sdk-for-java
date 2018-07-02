@@ -22,6 +22,7 @@ import com.microsoft.azure.arm.utils.RXMapper;
 import rx.functions.Func1;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
+import com.microsoft.azure.management.datafactoryv2.v2017_09_01_preview.IntegrationRuntimeResource;
 import com.microsoft.azure.management.datafactoryv2.v2017_09_01_preview.FactoryRepoUpdate;
 
 class FactoriesImpl extends GroupableResourcesCoreImpl<Factory, FactoryImpl, FactoryInner, FactoriesInner, DataFactoryManager>  implements Factories {
@@ -124,6 +125,42 @@ class FactoriesImpl extends GroupableResourcesCoreImpl<Factory, FactoryImpl, Fac
     @Override
     public FactoryImpl define(String name) {
         return wrapModel(name);
+    }
+
+    @Override
+    public Observable<Factory> listSharedFactoriesAsync(final String resourceGroupName, final String factoryName) {
+        FactoriesInner client = this.inner();
+        return client.listSharedFactoriesAsync(resourceGroupName, factoryName)
+        .flatMapIterable(new Func1<Page<FactoryInner>, Iterable<FactoryInner>>() {
+            @Override
+            public Iterable<FactoryInner> call(Page<FactoryInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<FactoryInner, Factory>() {
+            @Override
+            public Factory call(FactoryInner inner) {
+                return new FactoryImpl(inner.name(), inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<IntegrationRuntimeResource> listSharedIntegrationRuntimesAsync(final String resourceGroupName, final String factoryName) {
+        FactoriesInner client = this.inner();
+        return client.listSharedIntegrationRuntimesAsync(resourceGroupName, factoryName)
+        .flatMapIterable(new Func1<Page<IntegrationRuntimeResourceInner>, Iterable<IntegrationRuntimeResourceInner>>() {
+            @Override
+            public Iterable<IntegrationRuntimeResourceInner> call(Page<IntegrationRuntimeResourceInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<IntegrationRuntimeResourceInner, IntegrationRuntimeResource>() {
+            @Override
+            public IntegrationRuntimeResource call(IntegrationRuntimeResourceInner inner) {
+                return new IntegrationRuntimeResourceImpl(inner, manager());
+            }
+        });
     }
 
     @Override

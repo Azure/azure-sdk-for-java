@@ -130,6 +130,30 @@ public interface IntegrationRuntimes extends SupportsCreating<IntegrationRuntime
     Completable upgradeAsync(String resourceGroupName, String factoryName, String integrationRuntimeName);
 
     /**
+     * Grant integration runtime access to other data factory.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param integrationRuntimeName The integration runtime name.
+     * @param integrationRuntimePermissionRequest The data factory identity which will be granted the access to given integration runtime.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<IntegrationRuntimePermissionResponse> addIdentityAsync(String resourceGroupName, String factoryName, String integrationRuntimeName, IntegrationRuntimePermissionRequest integrationRuntimePermissionRequest);
+
+    /**
+     * Revoke the integration runtime access from other data factory.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param integrationRuntimeName The integration runtime name.
+     * @param integrationRuntimePermissionRequest The data factory identity which will be revoked the access to given integration runtime.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<IntegrationRuntimePermissionResponse> removeIdentityAsync(String resourceGroupName, String factoryName, String integrationRuntimeName, IntegrationRuntimePermissionRequest integrationRuntimePermissionRequest);
+
+    /**
      * Gets an integration runtime.
      *
      * @param resourceGroupName The resource group name.

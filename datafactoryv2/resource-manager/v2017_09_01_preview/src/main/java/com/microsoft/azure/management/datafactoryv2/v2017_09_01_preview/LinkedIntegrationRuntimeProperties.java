@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 
 /**
- * The base definition of a secret type.
+ * The base definition of a linked integration runtime properties.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "authorizationType")
 @JsonTypeName("LinkedIntegrationRuntimeProperties")

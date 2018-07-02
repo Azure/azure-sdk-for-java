@@ -13,19 +13,19 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * The base definition of a secret type.
+ * The role based access control (RBAC) authorization type.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "authorizationType")
 @JsonTypeName("RBAC")
 public class LinkedIntegrationRuntimeRbac extends LinkedIntegrationRuntimeProperties {
     /**
-     * The resource ID of the integration runtime to be shared.
+     * The resource identifier of the integration runtime to be shared.
      */
     @JsonProperty(value = "resourceId", required = true)
     private String resourceId;
 
     /**
-     * Get the resource ID of the integration runtime to be shared.
+     * Get the resource identifier of the integration runtime to be shared.
      *
      * @return the resourceId value
      */
@@ -34,7 +34,7 @@ public class LinkedIntegrationRuntimeRbac extends LinkedIntegrationRuntimeProper
     }
 
     /**
-     * Set the resource ID of the integration runtime to be shared.
+     * Set the resource identifier of the integration runtime to be shared.
      *
      * @param resourceId the resourceId value to set
      * @return the LinkedIntegrationRuntimeRbac object itself.

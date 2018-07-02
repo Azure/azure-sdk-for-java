@@ -19,7 +19,9 @@ import com.microsoft.azure.management.datafactoryv2.v2017_09_01_preview.Integrat
 import com.microsoft.azure.management.datafactoryv2.v2017_09_01_preview.IntegrationRuntimeConnectionInfo;
 import com.microsoft.azure.management.datafactoryv2.v2017_09_01_preview.IntegrationRuntimeAuthKeys;
 import com.microsoft.azure.management.datafactoryv2.v2017_09_01_preview.IntegrationRuntimeMonitoringData;
+import com.microsoft.azure.management.datafactoryv2.v2017_09_01_preview.IntegrationRuntimePermissionResponse;
 import com.microsoft.azure.management.datafactoryv2.v2017_09_01_preview.IntegrationRuntimeRemoveNodeRequest;
+import com.microsoft.azure.management.datafactoryv2.v2017_09_01_preview.IntegrationRuntimePermissionRequest;
 import com.microsoft.azure.management.datafactoryv2.v2017_09_01_preview.IntegrationRuntimeResource;
 
 class IntegrationRuntimesImpl extends WrapperImpl<IntegrationRuntimesInner> implements IntegrationRuntimes {
@@ -141,6 +143,30 @@ class IntegrationRuntimesImpl extends WrapperImpl<IntegrationRuntimesInner> impl
     public Completable upgradeAsync(String resourceGroupName, String factoryName, String integrationRuntimeName) {
         IntegrationRuntimesInner client = this.inner();
         return client.upgradeAsync(resourceGroupName, factoryName, integrationRuntimeName).toCompletable();
+    }
+
+    @Override
+    public Observable<IntegrationRuntimePermissionResponse> addIdentityAsync(String resourceGroupName, String factoryName, String integrationRuntimeName, IntegrationRuntimePermissionRequest integrationRuntimePermissionRequest) {
+        IntegrationRuntimesInner client = this.inner();
+        return client.addIdentityAsync(resourceGroupName, factoryName, integrationRuntimeName, integrationRuntimePermissionRequest)
+        .map(new Func1<IntegrationRuntimePermissionResponseInner, IntegrationRuntimePermissionResponse>() {
+            @Override
+            public IntegrationRuntimePermissionResponse call(IntegrationRuntimePermissionResponseInner inner) {
+                return new IntegrationRuntimePermissionResponseImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<IntegrationRuntimePermissionResponse> removeIdentityAsync(String resourceGroupName, String factoryName, String integrationRuntimeName, IntegrationRuntimePermissionRequest integrationRuntimePermissionRequest) {
+        IntegrationRuntimesInner client = this.inner();
+        return client.removeIdentityAsync(resourceGroupName, factoryName, integrationRuntimeName, integrationRuntimePermissionRequest)
+        .map(new Func1<IntegrationRuntimePermissionResponseInner, IntegrationRuntimePermissionResponse>() {
+            @Override
+            public IntegrationRuntimePermissionResponse call(IntegrationRuntimePermissionResponseInner inner) {
+                return new IntegrationRuntimePermissionResponseImpl(inner, manager());
+            }
+        });
     }
 
     @Override
