@@ -72,8 +72,8 @@ public class RetryReader extends Flowable<ByteBuffer> {
     @Override
     protected void subscribeActual(Subscriber<? super ByteBuffer> s) {
         /*
-        We we were not given a response stream to start with. Get one. The getter does not actually make a request,
-        it returns a Single, so it is not eligible to be retried according to our maxTryCount. If the getter itself
+        We we were not given a response stream to start with. Get one. We only care about retries on the download
+        stream, so we do not count this call to get an initial response in our retry count. If the getter itself
         fails, we have no way of continuing, and so report an error.
          */
         if (this.response == null) {
@@ -91,7 +91,7 @@ public class RetryReader extends Flowable<ByteBuffer> {
     }
 
     private Flowable<ByteBuffer> readActual(Subscriber<? super ByteBuffer> s,
-            Single<? extends RestResponse<?, Flowable<ByteBuffer>>> response, int tryCount) {
+            Single<? extends RestResponse<?, Flowable<ByteBuffer>>> response, int retryCount) {
         return response.flatMapPublisher(RestResponse::body)
                 /*
                 Update how much data we have received in case we need to retry and propagate to the user the data we
@@ -113,34 +113,31 @@ public class RetryReader extends Flowable<ByteBuffer> {
                 Note that this will capture errors from mapping the response to the body, which involves making a
                 GET request, and errors from trying to read the body.
                  */
-                .onErrorResumeNext(new io.reactivex.functions.Function<Throwable, Publisher<? extends ByteBuffer>>() {
-                    @Override
-                    public Publisher<? extends ByteBuffer> apply(Throwable throwable) throws Exception {
-                        // If all the retries are exhausted, report it to the user and error out.
-                        if (tryCount > options.maxRetryRequests) {
-                            s.onError(throwable);
+                .onErrorResumeNext(throwable -> {
+                    // If all the retries are exhausted, report it to the user and error out.
+                    if (retryCount > options.maxRetryRequests) {
+                        s.onError(throwable);
+                        return Flowable.empty();
+                    }
+                    /*
+                    We are unable to get more specific information as to the nature of the error from the protocol
+                    layer when reading the stream, so we optimistically assume that an IOException is retryable.
+                    */
+                    else if (throwable instanceof IOException) {
+                        // Get a new response to try reading from.
+                        Single<? extends RestResponse<?, Flowable<ByteBuffer>>> newResponse;
+                        try {
+                            newResponse = getter.apply(info);
+                        } catch (Throwable t) {
+                            s.onError(t);
                             return Flowable.empty();
                         }
-                        /*
-                        We are unable to get more specific information as to the nature of the error from the protocol
-                        layer when reading the stream, so we optimistically assume that an IOException is retryable.
-                        */
-                        else if (throwable instanceof IOException) {
-                            // Get a new response to try reading from.
-                            Single<? extends RestResponse<?, Flowable<ByteBuffer>>> newResponse;
-                            try {
-                                newResponse = getter.apply(info);
-                            } catch (Throwable t) {
-                                s.onError(t);
-                                return Flowable.empty();
-                            }
 
-                            // Continue with the same process again and increment the tryCount.
-                            return readActual(s, newResponse, tryCount + 1);
-                        } else {
-                            s.onError(throwable);
-                            return Flowable.empty();
-                        }
+                        // Continue with the same process again and increment the retryCount.
+                        return readActual(s, newResponse, retryCount + 1);
+                    } else {
+                        s.onError(throwable);
+                        return Flowable.empty();
                     }
                 });
     }

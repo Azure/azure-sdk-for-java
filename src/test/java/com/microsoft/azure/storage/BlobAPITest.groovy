@@ -6,6 +6,7 @@ import com.microsoft.azure.storage.blob.BlobRange
 import com.microsoft.azure.storage.blob.BlobURL
 import com.microsoft.azure.storage.blob.BlockBlobURL
 import com.microsoft.azure.storage.blob.ContainerURL
+import com.microsoft.azure.storage.blob.DownloadResponse
 import com.microsoft.azure.storage.blob.HTTPAccessConditions
 import com.microsoft.azure.storage.blob.LeaseAccessConditions
 import com.microsoft.azure.storage.blob.Metadata
@@ -55,7 +56,7 @@ class BlobAPITest extends APISpec {
 
     def "Blob download all null"() {
         when:
-        BlobsDownloadResponse response = bu.download(null, null, false)
+        DownloadResponse response = bu.download(null, null, false)
                 .blockingGet()
         ByteBuffer body = FlowableUtil.collectBytesInBuffer(response.body()).blockingGet()
         BlobsDownloadHeaders headers = response.headers()
