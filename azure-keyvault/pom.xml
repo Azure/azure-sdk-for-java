@@ -78,15 +78,11 @@ the MIT License. See License.txt in the project root for license information. --
 			<groupId>com.microsoft.azure</groupId>
 			<artifactId>azure-keyvault-cryptography</artifactId>
 			<version>1.1</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/../azure-keyvault-cryptography/target/azure-keyvault-cryptography-1.1.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>com.microsoft.azure</groupId>
 			<artifactId>azure-keyvault-core</artifactId>
 			<version>1.1</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/../azure-keyvault-core/target/azure-keyvault-core-1.1.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>com.microsoft.azure</groupId>
