@@ -15,6 +15,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -380,6 +382,8 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
                             lastException = (EventHubException) error;
                         } else if (error instanceof AmqpException) {
                             lastException = ExceptionUtil.toException(((AmqpException) error).getError());
+                        } else if (error instanceof CompletionException || error instanceof ExecutionException) {
+                            lastException = ExceptionUtil.stripOuterException((Exception) error);
                         } else {
                             lastException = (Exception) error;
                         }

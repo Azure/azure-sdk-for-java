@@ -37,7 +37,7 @@ public final class ClientConstants {
     public final static String NO_RETRY = "NoRetry";
     public final static String DEFAULT_RETRY = "Default";
     public final static String PRODUCT_NAME = "MSJavaClient";
-    public final static String CURRENT_JAVACLIENT_VERSION = "1.0.1";
+    public final static String CURRENT_JAVACLIENT_VERSION = "1.0.2";
     public static final String PLATFORM_INFO = getPlatformInfo();
     public static final String FRAMEWORK_INFO = getFrameworkInfo();
     public static final String CBS_ADDRESS = "$cbs";
@@ -71,7 +71,7 @@ public final class ClientConstants {
     public static final Symbol LAST_ENQUEUED_SEQUENCE_NUMBER = Symbol.valueOf(MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER);
     public static final Symbol LAST_ENQUEUED_OFFSET = Symbol.valueOf(MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET);
     public static final Symbol LAST_ENQUEUED_TIME_UTC = Symbol.valueOf(MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC);
-    public static final String AMQP_PUT_TOKEN_FAILED_ERROR = "Put token failed. status-code: %s, status-description: %s";
+    public static final String AMQP_REQUEST_FAILED_ERROR = "status-code: %s, status-description: %s";
     public static final String TOKEN_AUDIENCE_FORMAT = "amqp://%s/%s";
     public static final int MAX_RECEIVER_NAME_LENGTH = 64;
     /**
