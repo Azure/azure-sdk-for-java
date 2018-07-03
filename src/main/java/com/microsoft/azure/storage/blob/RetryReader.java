@@ -19,7 +19,6 @@ import com.microsoft.rest.v2.RestResponse;
 import com.microsoft.rest.v2.http.HttpPipeline;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
-import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
 
 import java.io.IOException;
@@ -43,14 +42,14 @@ import java.util.function.Function;
  * network errors; timeouts and unexpected status codes are not retried. Therefore, the behavior of this reader is
  * entirely independent of and in no way coupled to an {@link HttpPipeline}'s retry mechanism.
  */
-public class RetryReader extends Flowable<ByteBuffer> {
+public final class RetryReader extends Flowable<ByteBuffer> {
     private Single<? extends RestResponse<?, Flowable<ByteBuffer>>> response;
 
     private HTTPGetterInfo info;
 
     private RetryReaderOptions options;
 
-    private Function<HTTPGetterInfo, Single<? extends RestResponse<?, Flowable<ByteBuffer>>>> getter;
+    private final Function<HTTPGetterInfo, Single<? extends RestResponse<?, Flowable<ByteBuffer>>>> getter;
 
     public RetryReader(Single<? extends RestResponse<?, Flowable<ByteBuffer>>> initialResponse, HTTPGetterInfo info,
             RetryReaderOptions options,

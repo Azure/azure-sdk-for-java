@@ -18,7 +18,7 @@ package com.microsoft.azure.storage.blob;
 /**
  * {@code RetryReaderOptions} contains properties which help a {@link RetryReader} determine when to retry.
  */
-public class RetryReaderOptions {
+public final class RetryReaderOptions {
     /**
      * Specifies the maximum number of additional HTTP Get requests that will be made while reading the data from a
      * {@link RetryReader}. Note that if no initial response is provided, the {@code RetryReader} will call the getter
