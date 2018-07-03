@@ -1,3 +1,18 @@
+/*
+ * Copyright Microsoft Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.microsoft.azure.storage;
 
 import com.microsoft.azure.storage.blob.*;
@@ -9,9 +24,7 @@ import com.microsoft.rest.v2.http.HttpPipelineLogger;
 import com.microsoft.rest.v2.util.FlowableUtil;
 import io.reactivex.*;
 import io.reactivex.Observable;
-import io.reactivex.functions.Action;
 import io.reactivex.functions.BiConsumer;
-import io.reactivex.functions.Function;
 import org.junit.Test;
 
 import java.io.File;
@@ -22,13 +35,12 @@ import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.FileChannel;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.security.InvalidKeyException;
 import java.time.OffsetDateTime;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -1207,9 +1219,9 @@ public class Samples {
 
     }
 
-    // This example shows how to copy a large stream in blocks (chunks) to a block blob.
+    // This example shows how to copy a large file in blocks (chunks) to a block blob.
     @Test
-    public void exampleUploadStreamToBlockBlob() throws IOException, InvalidKeyException {
+    public void exampleUploadFileToBlockBlob() throws IOException, InvalidKeyException {
         // From the Azure portal, get your Storage account's name and account key.
         String accountName = getAccountName();
         String accountKey = getAccountKey();
@@ -1259,12 +1271,49 @@ public class Samples {
 
     /*
     This example shows how to download a large stream with intelligent retries. Specifically, if the connection fails
-    while reading, continuing to read form this stream initiates a new downloadBlob call passing a range that starts
-    from where the last byte successfully read before the failure.
+    while reading, the stream automatically initiates a new downloadBlob call passing a range that starts from the last
+    byte successfully read before the failure.
      */
     @Test
-    public void exampleDownloadStream() {
-        // TODO
+    public void exampleDownloadStream() throws MalformedURLException, InvalidKeyException {
+        // From the Azure portal, get your Storage account's name and account key.
+        String accountName = getAccountName();
+        String accountKey = getAccountKey();
+
+        // Create a BlockBlobURL object that wraps a blob's URL and a default pipeline.
+        URL u = new URL(String.format(Locale.ROOT, "https://%s.blob.core.windows.net/", accountName));
+        ServiceURL s = new ServiceURL(u,
+                StorageURL.createPipeline(new SharedKeyCredentials(accountName, accountKey), new PipelineOptions()));
+        ContainerURL containerURL = s.createContainerURL("myjavacontainerretrystream");
+        BlockBlobURL blobURL = containerURL.createBlockBlobURL("Data.txt");
+
+        RetryReaderOptions options = new RetryReaderOptions();
+        options.maxRetryRequests = 5;
+
+        /*
+        Passing RetryReaderOptions to a call to body() will ensure the download stream is intelligently retried in case
+        of failures. The returned body is still a Flowable<ByteBuffer> and may be used as a normal download stream.
+         */
+        containerURL.create(null, null)
+                .flatMap(response ->
+                        // Upload some data to a blob
+                        TransferManager.uploadByteBufferToBlockBlob(ByteBuffer.wrap("Data".getBytes()), blobURL,
+                                BlockBlobURL.MAX_PUT_BLOCK_BYTES, TransferManager.UploadToBlockBlobOptions.DEFAULT))
+                .flatMap(response ->
+                        blobURL.download(null, null, false))
+                .flatMapPublisher(response ->
+                        response.body(options))
+                .lastOrError() // Place holder for processing all the intermediary data.
+                // After the last piece of data, clean up by deleting the container and all its contents.
+                .flatMap(buffer ->
+                        containerURL.delete(null))
+                /*
+                This will synchronize all the above operations. This is strongly discouraged for use in production as
+                it eliminates the benefits of asynchronous IO. We use it here to enable the sample to complete and
+                demonstrate its effectiveness.
+                 */
+                .blockingGet();
+
     }
 
     // TODO: Lease? Root container?

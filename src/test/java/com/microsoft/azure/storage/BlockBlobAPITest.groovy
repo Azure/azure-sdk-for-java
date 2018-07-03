@@ -1,3 +1,18 @@
+/*
+ * Copyright Microsoft Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.microsoft.azure.storage
 
 import com.microsoft.azure.storage.blob.BlobAccessConditions
@@ -16,6 +31,7 @@ import com.microsoft.azure.storage.blob.models.BlockBlobsStageBlockResponse
 import com.microsoft.azure.storage.blob.models.BlockBlobsUploadHeaders
 import com.microsoft.azure.storage.blob.models.BlockBlobsUploadResponse
 import com.microsoft.azure.storage.blob.models.BlockListType
+import com.microsoft.azure.storage.blob.models.StorageErrorCode
 import com.microsoft.rest.v2.util.FlowableUtil
 import io.reactivex.Flowable
 import spock.lang.Unroll
@@ -28,15 +44,18 @@ class BlockBlobAPITest extends APISpec {
 
     def setup() {
         bu = cu.createBlockBlobURL(generateBlobName())
-        bu.upload(Flowable.just(defaultData), defaultText.length(), null, null,
+        bu.upload(defaultFlowable, defaultDataSize, null, null,
                 null).blockingGet()
     }
 
-    def "Block blob stage block"() {
+    def getBlockID() {
+        return new String(Base64.encoder.encode(UUID.randomUUID().toString().bytes))
+    }
+
+    def "Stage block"() {
         setup:
-        BlockBlobsStageBlockResponse response = bu.stageBlock(new String(Base64.encoder.encode("0000".bytes)),
-                Flowable.just(defaultData), defaultData.remaining(), null)
-                .blockingGet()
+        BlockBlobsStageBlockResponse response = bu.stageBlock(getBlockID(), defaultFlowable, defaultDataSize,
+                null).blockingGet()
         BlockBlobsStageBlockHeaders headers = response.headers()
 
         expect:
@@ -44,36 +63,81 @@ class BlockBlobAPITest extends APISpec {
         headers.contentMD5() != null
         headers.requestId() != null
         headers.version() != null
-        headers.dateProperty() != null
+        headers.date() != null
         headers.isServerEncrypted()
     }
 
-    def "Block blob stage block lease"() {
-        setup:
-        String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
+    @Unroll
+    def "Stage block illegal arguments"() {
+        when:
+        bu.stageBlock(blockID, data, dataSize, null).blockingGet()
 
-        expect:
-        BlockBlobsStageBlockResponse response = bu.stageBlock(new String(Base64.encoder.encode("0000".bytes)),
-                Flowable.just(defaultData), defaultData.remaining(),
-                new LeaseAccessConditions(leaseID)).blockingGet()
+        then:
+        thrown(IllegalArgumentException)
+
+        where:
+        blockID      | data            | dataSize
+        null         | defaultFlowable | defaultDataSize
+        getBlockID() | null            | defaultDataSize
+        getBlockID() | defaultFlowable | defaultDataSize + 1
+        getBlockID() | defaultFlowable | defaultDataSize - 1
     }
 
-    def "Block blob stage block error"() {
-        setup:
-        bu = cu.createBlockBlobURL(generateBlobName())
-
+    def "Stage block empty body"() {
         when:
-        bu.stageBlock("id", Flowable.just(defaultData), defaultData.remaining(), null)
+        bu.stageBlock(getBlockID(), Flowable.just(ByteBuffer.wrap(new byte[0])), 0, null)
                 .blockingGet()
 
         then:
         thrown(StorageException)
     }
 
-    def "Block blob commit block list"() {
+    def "Stage block null body"() {
+        when:
+        bu.stageBlock(getBlockID(), Flowable.just(null), 0, null).blockingGet()
+
+        then:
+        thrown(NullPointerException) // Thrown by Flowable.just().
+    }
+
+    def "Stage block lease"() {
         setup:
-        String blockID = new String(Base64.encoder.encode("0000".bytes))
-        bu.stageBlock(blockID, Flowable.just(defaultData), defaultData.remaining(),
+        String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
+
+        expect:
+        bu.stageBlock(getBlockID(), defaultFlowable, defaultDataSize, new LeaseAccessConditions(leaseID))
+                .blockingGet().statusCode() == 201
+    }
+
+    def "Stage block lease fail"() {
+        setup:
+        setupBlobLeaseCondition(bu, receivedLeaseID)
+
+        when:
+        bu.stageBlock(getBlockID(), defaultFlowable, defaultDataSize, new LeaseAccessConditions(garbageLeaseID))
+                .blockingGet()
+
+        then:
+        def e = thrown(StorageException)
+        e.errorCode() == StorageErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION
+    }
+
+    def "Stage block error"() {
+        setup:
+        bu = cu.createBlockBlobURL(generateBlobName())
+
+        when:
+        bu.stageBlock("id", defaultFlowable, defaultDataSize, null)
+                .blockingGet()
+
+        then:
+        thrown(StorageException)
+    }
+
+    def "Commit block list"() {
+        setup:
+        String blockID = getBlockID()
+        bu.stageBlock(blockID, defaultFlowable, defaultDataSize,
                 null).blockingGet()
         ArrayList<String> ids = new ArrayList<>()
         ids.add(blockID)
@@ -90,11 +154,17 @@ class BlockBlobAPITest extends APISpec {
         headers.isServerEncrypted()
     }
 
+    def "Commit block list null"() {
+        expect:
+        bu.commitBlockList(null, null, null, null)
+                .blockingGet().statusCode() == 201
+    }
+
     @Unroll
-    def "Block blob commit block list headers"() {
+    def "Commit block list headers"() {
         setup:
-        String blockID = new String(Base64.encoder.encode("0000".bytes))
-        bu.stageBlock(blockID, Flowable.just(defaultData), defaultData.remaining(),
+        String blockID = getBlockID()
+        bu.stageBlock(blockID, defaultFlowable, defaultDataSize,
                 null).blockingGet()
         ArrayList<String> ids = new ArrayList<>()
         ids.add(blockID)
@@ -107,13 +177,9 @@ class BlockBlobAPITest extends APISpec {
 
         then:
         response.statusCode() == 200
-        response.headers().cacheControl() == cacheControl
-        response.headers().contentDisposition() == contentDisposition
-        response.headers().contentEncoding() == contentEncoding
-        response.headers().contentMD5() == contentMD5
+        validateBlobHeaders(response.headers(), cacheControl, contentDisposition, contentEncoding, contentLanguage,
+                contentMD5, contentType == null ? "application/octet-stream" : contentType)
         // HTTP default content type is application/octet-stream
-        contentType == null ? response.headers().contentType() == "application/octet-stream" :
-                response.headers().contentType() == contentType
 
         where:
         cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                   | contentType
@@ -122,7 +188,7 @@ class BlockBlobAPITest extends APISpec {
     }
 
     @Unroll
-    def "Block blob commit block list metadata"() {
+    def "Commit block list metadata"() {
         setup:
         Metadata metadata = new Metadata()
         if (key1 != null) {
@@ -131,14 +197,9 @@ class BlockBlobAPITest extends APISpec {
         if (key2 != null) {
             metadata.put(key2, value2)
         }
-        String blockID = new String(Base64.encoder.encode("0000".bytes))
-        bu.stageBlock(blockID, Flowable.just(defaultData), defaultData.remaining(),
-                null).blockingGet()
-        ArrayList<String> ids = new ArrayList<>()
-        ids.add(blockID)
 
         when:
-        bu.commitBlockList(ids, null, metadata, null).blockingGet()
+        bu.commitBlockList(null, null, metadata, null).blockingGet()
         BlobsGetPropertiesResponse response = bu.getProperties(null).blockingGet()
 
         then:
@@ -151,14 +212,21 @@ class BlockBlobAPITest extends APISpec {
         "foo" | "bar"  | "fizz" | "buzz"
     }
 
-    @Unroll
-    def "Block blob commit block list AC"() {
+    def "Commit block list metadata fail"() {
         setup:
-        String blockID = new String(Base64.encoder.encode("0000".bytes))
-        bu.stageBlock(blockID, Flowable.just(defaultData), defaultData.remaining(),
-                null).blockingGet()
-        ArrayList<String> ids = new ArrayList<>()
-        ids.add(blockID)
+        Metadata metadata = new Metadata()
+        metadata.put("!nvalid", "value")
+
+        when:
+        bu.commitBlockList(null, null, metadata, null).blockingGet()
+
+        then:
+        thrown(IllegalArgumentException)
+    }
+
+    @Unroll
+    def "Commit block list AC"() {
+        setup:
         match = setupBlobMatchCondition(bu, match)
         leaseID = setupBlobLeaseCondition(bu, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions(
@@ -166,7 +234,7 @@ class BlockBlobAPITest extends APISpec {
                 null, null)
 
         expect:
-        bu.commitBlockList(ids, null, null, bac).blockingGet().statusCode() == 201
+        bu.commitBlockList(null, null, null, bac).blockingGet().statusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -178,7 +246,33 @@ class BlockBlobAPITest extends APISpec {
         null     | null       | null         | null        | receivedLeaseID
     }
 
-    def "block blob commit block list error"() {
+    @Unroll
+    def "Commit block list AC fail"() {
+        setup:
+        noneMatch = setupBlobMatchCondition(bu, noneMatch)
+        setupBlobLeaseCondition(bu, leaseID)
+        BlobAccessConditions bac = new BlobAccessConditions(
+                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
+                null, null)
+
+        when:
+        bu.commitBlockList(null, null, null, bac).blockingGet()
+
+        then:
+        def e = thrown(StorageException)
+        e.errorCode() == StorageErrorCode.CONDITION_NOT_MET ||
+                e.errorCode() == StorageErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
+    }
+
+    def "Commit block list error"() {
         setup:
         bu = cu.createBlockBlobURL(generateBlobName())
 
@@ -191,10 +285,10 @@ class BlockBlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    def "Block blob get block list"() {
+    def "Get block list"() {
         setup:
-        String blockID = new String(Base64.encoder.encode("0000".bytes))
-        bu.stageBlock(blockID, Flowable.just(defaultData), defaultData.remaining(),
+        String blockID = getBlockID()
+        bu.stageBlock(blockID, defaultFlowable, defaultDataSize,
                 null).blockingGet()
 
         when:
@@ -202,23 +296,23 @@ class BlockBlobAPITest extends APISpec {
                 .blockingGet()
 
         then:
-        response.body().uncommittedBlocks().get(0).name().equals(blockID)
+        response.body().uncommittedBlocks().get(0).name() == blockID
         validateBasicHeaders(response.headers())
         response.headers().contentType() != null
-        response.headers().blobContentLength() == (long) defaultText.length()
+        response.headers().blobContentLength() == (long) defaultDataSize
     }
 
     @Unroll
-    def "Block blob get block list type"() {
+    def "Get block list type"() {
         setup:
-        String blockID = new String(Base64.encoder.encode("0000".bytes))
-        bu.stageBlock(blockID, Flowable.just(defaultData), defaultData.remaining(),
+        String blockID = getBlockID()
+        bu.stageBlock(blockID, defaultFlowable, defaultDataSize,
                 null).blockingGet()
         ArrayList<String> ids = new ArrayList<>()
         ids.add(blockID)
         bu.commitBlockList(ids, null, null, null).blockingGet()
-        blockID = new String(Base64.encoder.encode("0001".bytes))
-        bu.stageBlock(blockID, Flowable.just(defaultData), defaultText.length(),
+        blockID = new String(getBlockID())
+        bu.stageBlock(blockID, defaultFlowable, defaultDataSize,
                 null).blockingGet()
 
         when:
@@ -235,18 +329,35 @@ class BlockBlobAPITest extends APISpec {
         BlockListType.UNCOMMITTED | 0              | 1
     }
 
-    def "Block blob get block list lease"() {
+    def "Get block list type null"() {
+        when:
+        bu.getBlockList(null, null).blockingGet()
+
+        then:
+        thrown(IllegalArgumentException)
+    }
+
+    def "Get block list lease"() {
         setup:
-        String blockID = new String(Base64.encoder.encode("0000".bytes))
-        bu.stageBlock(blockID, Flowable.just(defaultData), defaultData.remaining(),
-                null).blockingGet()
         String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
 
         expect:
         bu.getBlockList(BlockListType.ALL, new LeaseAccessConditions(leaseID)).blockingGet().statusCode() == 200
     }
 
-    def "Block blob get block list error"() {
+    def "Get block list lease fail"() {
+        setup:
+        setupBlobLeaseCondition(bu, garbageLeaseID)
+
+        when:
+        bu.getBlockList(BlockListType.ALL, new LeaseAccessConditions(garbageLeaseID)).blockingGet()
+
+        then:
+        def e = thrown(StorageException)
+        e.errorCode() == StorageErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION
+    }
+
+    def "Get block list error"() {
         setup:
         bu = cu.createBlockBlobURL(generateBlobName())
 
@@ -257,9 +368,9 @@ class BlockBlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    def "Block blob upload"() {
+    def "Upload"() {
         when:
-        BlockBlobsUploadResponse response = bu.upload(Flowable.just(defaultData), defaultData.remaining(),
+        BlockBlobsUploadResponse response = bu.upload(defaultFlowable, defaultDataSize,
                 null, null, null).blockingGet()
         BlockBlobsUploadHeaders headers = response.headers()
 
@@ -274,25 +385,51 @@ class BlockBlobAPITest extends APISpec {
     }
 
     @Unroll
-    def "Block blob upload headers"() {
+    def "Upload illegal argument"() {
+        when:
+        bu.upload(data, dataSize, null, null, null).blockingGet()
+
+        then:
+        thrown(IllegalArgumentException)
+
+        where:
+        data            | dataSize
+        null            | defaultDataSize
+        defaultFlowable | defaultDataSize + 1
+        defaultFlowable | defaultDataSize - 1
+    }
+
+    def "Upload empty body"() {
+        expect:
+        bu.upload(Flowable.just(ByteBuffer.wrap(new byte[0])), 0, null, null,
+                null).blockingGet().statusCode() == 201
+    }
+
+    def "Upload null body"() {
+        when:
+        bu.upload(Flowable.just(null), 0, null, null, null).blockingGet()
+
+        then:
+        thrown(NullPointerException) // Thrown by Flowable.just().
+    }
+
+    @Unroll
+    def "Upload headers"() {
         setup:
         BlobHTTPHeaders headers = new BlobHTTPHeaders(cacheControl, contentDisposition, contentEncoding,
                 contentLanguage, contentMD5, contentType)
 
         when:
-        bu.upload(Flowable.just(defaultData), defaultData.remaining(),
+        bu.upload(defaultFlowable, defaultDataSize,
                 headers, null, null).blockingGet()
         BlobsGetPropertiesResponse response = bu.getProperties(null).blockingGet()
 
         then:
-        response.headers().cacheControl() == cacheControl
-        response.headers().contentDisposition() == contentDisposition
-        response.headers().contentEncoding() == contentEncoding
+        validateBlobHeaders(response.headers(), cacheControl, contentDisposition, contentEncoding, contentLanguage,
+                MessageDigest.getInstance("MD5").digest(defaultData.array()),
+                contentType == null ? "application/octet-stream" : contentType)
         // For uploading a block blob, the service will auto calculate an MD5 hash if not present
-        response.headers().contentMD5() == MessageDigest.getInstance("MD5").digest(defaultData.array())
         // HTTP default content type is application/octet-stream
-        contentType == null ? response.headers().contentType() == "application/octet-stream" :
-                response.headers().contentType() == contentType
 
         where:
         cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                   | contentType
@@ -301,7 +438,7 @@ class BlockBlobAPITest extends APISpec {
     }
 
     @Unroll
-    def "Block blob upload metadata"() {
+    def "Upload metadata"() {
         setup:
         Metadata metadata = new Metadata()
         if (key1 != null) {
@@ -312,7 +449,7 @@ class BlockBlobAPITest extends APISpec {
         }
 
         when:
-        bu.upload(Flowable.just(defaultData), defaultData.remaining(),
+        bu.upload(defaultFlowable, defaultDataSize,
                 null, metadata, null).blockingGet()
         BlobsGetPropertiesResponse response = bu.getProperties(null).blockingGet()
 
@@ -326,8 +463,20 @@ class BlockBlobAPITest extends APISpec {
         "foo" | "bar"  | "fizz" | "buzz"
     }
 
+    def "Upload metadata fail"() {
+        setup:
+        Metadata metadata = new Metadata()
+        metadata.put("!nvalid", "value")
+
+        when:
+        bu.upload(defaultFlowable, defaultDataSize, null, metadata, null).blockingGet()
+
+        then:
+        thrown(IllegalArgumentException)
+    }
+
     @Unroll
-    def "Block blob upload AC"() {
+    def "Upload AC"() {
         setup:
         match = setupBlobMatchCondition(bu, match)
         leaseID = setupBlobLeaseCondition(bu, leaseID)
@@ -336,9 +485,8 @@ class BlockBlobAPITest extends APISpec {
                 null, null)
 
         expect:
-        bu.upload(Flowable.just(defaultData), defaultData.remaining(),
-                null, null, bac).blockingGet()
-
+        bu.upload(defaultFlowable, defaultDataSize,
+                null, null, bac).blockingGet().statusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -350,12 +498,38 @@ class BlockBlobAPITest extends APISpec {
         null     | null       | null         | null        | receivedLeaseID
     }
 
-    def "Block blob upload error"() {
+    @Unroll
+    def "Upload AC fail"() {
+        setup:
+        noneMatch = setupBlobMatchCondition(bu, noneMatch)
+        setupBlobLeaseCondition(bu, leaseID)
+        BlobAccessConditions bac = new BlobAccessConditions(
+                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
+                null, null)
+
+        when:
+        bu.upload(defaultFlowable, defaultDataSize, null, null, bac).blockingGet()
+
+        then:
+        def e = thrown(StorageException)
+        e.errorCode() == StorageErrorCode.CONDITION_NOT_MET ||
+                e.errorCode() == StorageErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
+    }
+
+    def "Upload error"() {
         setup:
         bu = cu.createBlockBlobURL(generateBlobName())
 
         when:
-        bu.upload(Flowable.just(defaultData), defaultData.remaining(), null, null,
+        bu.upload(defaultFlowable, defaultDataSize, null, null,
                 new BlobAccessConditions(null, new LeaseAccessConditions("id"),
                         null, null)).blockingGet()
 

@@ -17,6 +17,8 @@ package com.microsoft.azure.storage.blob;
 import com.microsoft.azure.storage.blob.models.*;
 import com.microsoft.rest.v2.http.HttpPipeline;
 import io.reactivex.Single;
+import io.reactivex.SingleSource;
+import io.reactivex.functions.Function;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -192,6 +194,9 @@ public class BlobURL extends StorageURL {
      * information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a>.
      *
+     * Please consider using the {@link RetryReader} in conjunction with this method to achieve more reliable downloads
+     * that are resilient to transient network failures.
+     *
      * @param range
      *      {@link BlobRange}
      * @param accessConditions
@@ -201,7 +206,7 @@ public class BlobURL extends StorageURL {
      * @return
      *      Emits the successful response.
      */
-    public Single<BlobsDownloadResponse> download(
+    public Single<DownloadResponse> download(
             BlobRange range, BlobAccessConditions accessConditions, boolean rangeGetContentMD5) {
 
         Boolean getMD5 = rangeGetContentMD5 ? rangeGetContentMD5 : null;
@@ -216,7 +221,11 @@ public class BlobURL extends StorageURL {
                 accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
                 accessConditions.getHttpAccessConditions().getIfMatch().toString(),
                 accessConditions.getHttpAccessConditions().getIfNoneMatch().toString(),
-                null));
+                null))
+                .map(response ->
+                        new DownloadResponse(response.statusCode(), response.headers(),
+                                response.rawHeaders(), response.body()));
+
     }
 
     /**

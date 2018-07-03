@@ -31,7 +31,7 @@ To get the binaries of this library as distributed by Microsoft, ready for use w
 <dependency>
 	<groupId>com.microsoft.azure</groupId>
 	<artifactId>azure-storage-blob</artifactId>
-	<version>10.0.0-Preview</version>
+	<version>10.0.1-Preview</version>
 </dependency>
 ```
 

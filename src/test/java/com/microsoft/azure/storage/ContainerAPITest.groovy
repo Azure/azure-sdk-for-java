@@ -1,3 +1,18 @@
+/*
+ * Copyright Microsoft Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.microsoft.azure.storage
 
 import com.microsoft.azure.storage.blob.AppendBlobURL
@@ -41,14 +56,13 @@ import com.microsoft.azure.storage.blob.models.LeaseStatusType
 import com.microsoft.azure.storage.blob.models.PublicAccessType
 import com.microsoft.azure.storage.blob.models.SignedIdentifier
 import com.microsoft.azure.storage.blob.models.StorageErrorCode
-import com.microsoft.rest.v2.http.HttpClient
 import com.microsoft.rest.v2.http.HttpPipeline
 import io.reactivex.Flowable
 import spock.lang.*
 
 import java.time.OffsetDateTime
 import java.time.ZoneId
-import java.time.temporal.ChronoUnit
+
 
 class ContainerAPITest extends APISpec {
 
@@ -334,7 +348,7 @@ class ContainerAPITest extends APISpec {
         response.statusCode() == 202
         response.headers().requestId() != null
         response.headers().version() != null
-        response.headers().dateProperty() != null
+        response.headers().date() != null
     }
 
     @Unroll
@@ -384,27 +398,19 @@ class ContainerAPITest extends APISpec {
         headers.contentType() != null
         headers.requestId() != null
         headers.version() != null
-        headers.dateProperty() != null
+        headers.date() != null
         blobs.size() == 1
         blobs.get(0).name() == name
     }
 
-    @Unroll
-    def "Container list blobs flat options"() {
-        setup:
-        ListBlobsOptions options = new ListBlobsOptions(new BlobListingDetails(copy, metadata, snapshots, uncommitted),
-                prefix, maxResults)
-
-        String normalName = "a" + generateBlobName()
+    def setupListBlobsTest(String normalName, String copyName, String metadataName, String uncommittedName) {
         PageBlobURL normal = cu.createPageBlobURL(normalName)
         normal.create(512, null, null, null, null).blockingGet()
 
-        String copyName = "c" + generateBlobName()
         PageBlobURL copyBlob = cu.createPageBlobURL(copyName)
         waitForCopy(copyBlob, copyBlob.startCopyFromURL(normal.toURL(),
                 null, null, null).blockingGet())
 
-        String metadataName = "m" + generateBlobName()
         PageBlobURL metadataBlob = cu.createPageBlobURL(metadataName)
         Metadata values = new Metadata()
         values.put("foo", "bar")
@@ -413,57 +419,136 @@ class ContainerAPITest extends APISpec {
         String snapshotTime = normal.createSnapshot(null, null)
                 .blockingGet().headers().snapshot()
 
-        String uncommittedName = "u" + generateBlobName()
         BlockBlobURL uncommittedBlob = cu.createBlockBlobURL(uncommittedName)
-        uncommittedBlob.stageBlock("0000", Flowable.just(defaultData), defaultData.remaining()
-                , null).blockingGet()
+
+        uncommittedBlob.stageBlock("0000", Flowable.just(defaultData), defaultData.remaining(),
+                null).blockingGet()
+
+        return snapshotTime
+    }
+
+    def "List blobs flat options copy"() {
+        setup:
+        ListBlobsOptions options = new ListBlobsOptions(new BlobListingDetails(
+                true, false, false, false),
+                null, null)
+        String normalName = "a" + generateBlobName()
+        String copyName = "c" + generateBlobName()
+        String metadataName = "m" + generateBlobName()
+        String uncommittedName = "u" + generateBlobName()
+        setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         when:
         List<Blob> blobs = cu.listBlobsFlatSegment(null, options).blockingGet().body().blobs().blob()
 
         then:
-        if (copy) {
-            blobs.get(0).name() == normalName
-            blobs.get(1).name() == copyName
-            blobs.get(1).properties().copyId() != null
-            blobs.get(1).properties().copySource() == normalName
-            blobs.get(1).properties().copyStatus() == CopyStatusType.SUCCESS // We waited for the copy to complete.
-            blobs.get(1).properties().copyProgress() != null
-            blobs.get(1).properties().copyCompletionTime() != null
-            blobs.size() == 3 // Normal, copy, metadata
-        } else if (metadata) {
-            blobs.get(0).name() == normalName
-            blobs.get(1).name() == copyName
-            blobs.get(1).properties().copyCompletionTime() == null
-            blobs.get(2).name() == metadataName
-            blobs.get(2).metadata().get("foo") == "bar"
-            blobs.size() == 3 // Normal, copy, metadata
-        } else if (snapshots) {
-            blobs.get(0).name() == normalName
-            blobs.get(1).name() == normalName
-            blobs.get(1).snapshot() == snapshotTime
-            blobs.size() == 4 // Normal, snapshot, copy, metadata
-        } else if (uncommitted) {
-            blobs.get(0).name() == normalName
-            blobs.get(2).name() == uncommittedName
-            blobs.size() == 4 // Normal, copy, metadata, uncommitted
-        } else if (prefix != null) {
-            blobs.get(0).name() == normalName
-            blobs.size() == 1 // Normal
-        }
+        blobs.get(0).name() == normalName
+        blobs.get(1).name() == copyName
+        blobs.get(1).properties().copyId() != null
+        // Comparing the urls isn't reliable because the service may use https.
+        blobs.get(1).properties().copySource().contains(normalName)
+        blobs.get(1).properties().copyStatus() == CopyStatusType.SUCCESS // We waited for the copy to complete.
+        blobs.get(1).properties().copyProgress() != null
+        blobs.get(1).properties().copyCompletionTime() != null
+        blobs.size() == 3 // Normal, copy, metadata
+    }
 
-        if (maxResults != null) {
-            blobs.size() == maxResults
-        }
+    def "List blobs flat options metadata"() {
+        setup:
+        ListBlobsOptions options = new ListBlobsOptions(new BlobListingDetails(
+                false, true, false, false),
+                null, null)
+        String normalName = "a" + generateBlobName()
+        String copyName = "c" + generateBlobName()
+        String metadataName = "m" + generateBlobName()
+        String uncommittedName = "u" + generateBlobName()
+        setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
-        where:
-        copy  | metadata | snapshots | uncommitted | prefix | maxResults
-        true  | false    | false     | false       | null   | null
-        false | true     | false     | false       | null   | null
-        false | false    | true      | false       | null   | null
-        false | false    | false     | true        | null   | null
-        false | false    | false     | false       | "a"    | null
-        true  | false    | true      | true        | null   | 2
+        when:
+        List<Blob> blobs = cu.listBlobsFlatSegment(null, options).blockingGet().body().blobs().blob()
+
+        then:
+        blobs.get(0).name() == normalName
+        blobs.get(1).name() == copyName
+        blobs.get(1).properties().copyCompletionTime() == null
+        blobs.get(2).name() == metadataName
+        blobs.get(2).metadata().get("foo") == "bar"
+        blobs.size() == 3 // Normal, copy, metadata
+    }
+
+    def "List blobs flat options snapshots"() {
+        setup:
+        ListBlobsOptions options = new ListBlobsOptions(new BlobListingDetails(
+                false, false, true, false),
+                null, null)
+        String normalName = "a" + generateBlobName()
+        String copyName = "c" + generateBlobName()
+        String metadataName = "m" + generateBlobName()
+        String uncommittedName = "u" + generateBlobName()
+        String snapshotTime = setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
+
+        when:
+        List<Blob> blobs = cu.listBlobsFlatSegment(null, options).blockingGet().body().blobs().blob()
+
+        then:
+        blobs.get(0).name() == normalName
+        blobs.get(0).snapshot() == snapshotTime
+        blobs.get(1).name() == normalName
+        blobs.size() == 4 // Normal, snapshot, copy, metadata
+    }
+
+    def "List blobs flat options uncommitted"() {
+        setup:
+        ListBlobsOptions options = new ListBlobsOptions(new BlobListingDetails(
+                false, false, false, true),
+                null, null)
+        String normalName = "a" + generateBlobName()
+        String copyName = "c" + generateBlobName()
+        String metadataName = "m" + generateBlobName()
+        String uncommittedName = "u" + generateBlobName()
+        setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
+
+        when:
+        List<Blob> blobs = cu.listBlobsFlatSegment(null, options).blockingGet().body().blobs().blob()
+
+        then:
+        blobs.get(0).name() == normalName
+        blobs.get(3).name() == uncommittedName
+        blobs.size() == 4 // Normal, copy, metadata, uncommitted
+    }
+
+    def "List blobs flat options prefix"() {
+        setup:
+        ListBlobsOptions options = new ListBlobsOptions(null, "a", null)
+        String normalName = "a" + generateBlobName()
+        String copyName = "c" + generateBlobName()
+        String metadataName = "m" + generateBlobName()
+        String uncommittedName = "u" + generateBlobName()
+        setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
+
+        when:
+        List<Blob> blobs = cu.listBlobsFlatSegment(null, options).blockingGet().body().blobs().blob()
+
+        then:
+        blobs.get(0).name() == normalName
+        blobs.size() == 1 // Normal
+    }
+
+    def "List blobs flat options maxResults"() {
+        setup:
+        ListBlobsOptions options = new ListBlobsOptions(new BlobListingDetails(
+                true, false, true, true), null, 2)
+        String normalName = "a" + generateBlobName()
+        String copyName = "c" + generateBlobName()
+        String metadataName = "m" + generateBlobName()
+        String uncommittedName = "u" + generateBlobName()
+        setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
+
+        when:
+        List<Blob> blobs = cu.listBlobsFlatSegment(null, options).blockingGet().body().blobs().blob()
+
+        then:
+        blobs.size() == 2
     }
 
     def "Container list blobs flat marker"() {
@@ -486,7 +571,7 @@ class ContainerAPITest extends APISpec {
         response.body().blobs().blob().size() == 4
     }
 
-    def "COntainer list blobs flat error"() {
+    def "Container list blobs flat error"() {
         setup:
         cu = primaryServiceURL.createContainerURL(generateContainerName())
 
@@ -515,84 +600,116 @@ class ContainerAPITest extends APISpec {
         headers.contentType() != null
         headers.requestId() != null
         headers.version() != null
-        headers.dateProperty() != null
+        headers.date() != null
         blobs.size() == 1
         blobs.get(0).name() == name
     }
 
-    @Unroll
-    def "Container list blobs hier options"() {
+    def "List blobs hier options copy"() {
         setup:
-        // Listing with a delimiter is mutually exclusive to including snapshots.
-        ListBlobsOptions options = new ListBlobsOptions(
-                new BlobListingDetails(copy, metadata, false, uncommitted),
-                prefix, maxResults)
-
+        ListBlobsOptions options = new ListBlobsOptions(new BlobListingDetails(
+                true, false, false, false),
+                null, null)
         String normalName = "a" + generateBlobName()
-        PageBlobURL normal = cu.createPageBlobURL(normalName)
-        normal.create(512, null, null, null, null).blockingGet()
-
         String copyName = "c" + generateBlobName()
-        PageBlobURL copyBlob = cu.createPageBlobURL(copyName)
-        waitForCopy(copyBlob, copyBlob.startCopyFromURL(normal.toURL(),
-                null, null, null).blockingGet())
-
         String metadataName = "m" + generateBlobName()
-        PageBlobURL metadataBlob = cu.createPageBlobURL(metadataName)
-        Metadata values = new Metadata()
-        values.put("foo", "bar")
-        metadataBlob.create(512, null, null, values, null).blockingGet()
-
-        String snapshotTime = normal.createSnapshot(null, null)
-                .blockingGet().headers().snapshot()
-
         String uncommittedName = "u" + generateBlobName()
-        BlockBlobURL uncommittedBlob = cu.createBlockBlobURL(uncommittedName)
-        uncommittedBlob.stageBlock("0000", Flowable.just(defaultData), defaultData.remaining()
-                , null).blockingGet()
+        setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         when:
-        List<Blob> blobs = cu.listBlobsHierarchySegment(null, "none", options).blockingGet()
-                .body().blobs().blob()
+        List<Blob> blobs = cu.listBlobsHierarchySegment(null, "", options).blockingGet().body().blobs().blob()
 
         then:
-        if (copy) {
-            blobs.get(0).name() == normalName
-            blobs.get(1).name() == copyName
-            blobs.get(1).properties().copyId() != null
-            blobs.get(1).properties().copySource() == normalName
-            blobs.get(1).properties().copyStatus() == CopyStatusType.SUCCESS // We waited for the copy to complete.
-            blobs.get(1).properties().copyProgress() != null
-            blobs.get(1).properties().copyCompletionTime() != null
-            blobs.size() == 3 // Normal, copy, metadata
-        } else if (metadata) {
-            blobs.get(0).name() == normalName
-            blobs.get(1).name() == copyName
-            blobs.get(1).properties().copyCompletionTime() == null
-            blobs.get(2).name() == metadataName
-            blobs.get(2).metadata().get("foo") == "bar"
-            blobs.size() == 3 // Normal, copy, metadata
-        } else if (uncommitted) {
-            blobs.get(0).name() == normalName
-            blobs.get(2).name() == uncommittedName
-            blobs.size() == 4 // Normal, copy, metadata, uncommitted
-        } else if (prefix != null) {
-            blobs.get(0).name() == normalName
-            blobs.size() == 1 // Normal
-        }
+        blobs.get(0).name() == normalName
+        blobs.get(1).name() == copyName
+        blobs.get(1).properties().copyId() != null
+        // Comparing the urls isn't reliable because the service may use https.
+        blobs.get(1).properties().copySource().contains(normalName)
+        blobs.get(1).properties().copyStatus() == CopyStatusType.SUCCESS // We waited for the copy to complete.
+        blobs.get(1).properties().copyProgress() != null
+        blobs.get(1).properties().copyCompletionTime() != null
+        blobs.size() == 3 // Normal, copy, metadata
+    }
 
-        if (maxResults != null) {
-            blobs.size() == maxResults
-        }
+    def "List blobs hier options metadata"() {
+        setup:
+        ListBlobsOptions options = new ListBlobsOptions(new BlobListingDetails(
+                false, true, false, false),
+                null, null)
+        String normalName = "a" + generateBlobName()
+        String copyName = "c" + generateBlobName()
+        String metadataName = "m" + generateBlobName()
+        String uncommittedName = "u" + generateBlobName()
+        setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
-        where:
-        copy  | metadata | uncommitted | prefix | maxResults
-        true  | false    | false       | null   | null
-        false | true     | false       | null   | null
-        false | false    | false       | null   | null
-        false | false    | true        | null   | null
-        false | false    | false       | "a"    | null
-        true  | false    | true        | null   | 2
+        when:
+        List<Blob> blobs = cu.listBlobsHierarchySegment(null, "", options)
+                .blockingGet().body().blobs().blob()
+
+        then:
+        blobs.get(0).name() == normalName
+        blobs.get(1).name() == copyName
+        blobs.get(1).properties().copyCompletionTime() == null
+        blobs.get(2).name() == metadataName
+        blobs.get(2).metadata().get("foo") == "bar"
+        blobs.size() == 3 // Normal, copy, metadata
+    }
+
+    def "List blobs hier options uncommitted"() {
+        setup:
+        ListBlobsOptions options = new ListBlobsOptions(new BlobListingDetails(
+                false, false, false, true),
+                null, null)
+        String normalName = "a" + generateBlobName()
+        String copyName = "c" + generateBlobName()
+        String metadataName = "m" + generateBlobName()
+        String uncommittedName = "u" + generateBlobName()
+        setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
+
+        when:
+        List<Blob> blobs = cu.listBlobsHierarchySegment(null, "", options)
+                .blockingGet().body().blobs().blob()
+
+        then:
+        blobs.get(0).name() == normalName
+        blobs.get(3).name() == uncommittedName
+        blobs.size() == 4 // Normal, copy, metadata, uncommitted
+    }
+
+    def "List blobs hier options prefix"() {
+        setup:
+        ListBlobsOptions options = new ListBlobsOptions(null, "a", null)
+        String normalName = "a" + generateBlobName()
+        String copyName = "c" + generateBlobName()
+        String metadataName = "m" + generateBlobName()
+        String uncommittedName = "u" + generateBlobName()
+        setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
+
+        when:
+        List<Blob> blobs = cu.listBlobsHierarchySegment(null, "", options)
+                .blockingGet().body().blobs().blob()
+
+        then:
+        blobs.get(0).name() == normalName
+        blobs.size() == 1 // Normal
+    }
+
+    def "List blobs hier options maxResults"() {
+        setup:
+        ListBlobsOptions options = new ListBlobsOptions(new BlobListingDetails(
+                true, false, false, true), null, 1)
+        String normalName = "a" + generateBlobName()
+        String copyName = "c" + generateBlobName()
+        String metadataName = "m" + generateBlobName()
+        String uncommittedName = "u" + generateBlobName()
+        setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
+
+        when:
+        List<Blob> blobs = cu.listBlobsHierarchySegment(null, "", options)
+                .blockingGet().body().blobs().blob()
+
+        then:
+        blobs.size() == 1
     }
 
     def "Container list blobs hier delim"() {
@@ -877,7 +994,7 @@ class ContainerAPITest extends APISpec {
         bu5.getProperties(null).blockingGet().statusCode() == 200
         bu3.create(512, null, null, null, null).blockingGet()
                 .statusCode() == 201
-        bu4.upload(Flowable.just(defaultData), defaultData.remaining(),
+        bu4.upload(defaultFlowable, defaultDataSize,
                 null, null, null).blockingGet().statusCode() == 201
 
         when:
@@ -910,7 +1027,7 @@ class ContainerAPITest extends APISpec {
     def "Container root implicit"() {
         setup:
         PipelineOptions po = new PipelineOptions()
-        po.client = HttpClient.createDefault()
+        po.client = getHttpClient()
         HttpPipeline pipeline = StorageURL.createPipeline(primaryCreds, po)
         AppendBlobURL bu = new AppendBlobURL(new URL("http://xclientdev3.blob.core.windows.net/rootblob"), pipeline)
 

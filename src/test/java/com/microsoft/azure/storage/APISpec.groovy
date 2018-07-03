@@ -1,5 +1,19 @@
-package com.microsoft.azure.storage
+/*
+ * Copyright Microsoft Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
+package com.microsoft.azure.storage
 
 import com.microsoft.azure.storage.blob.BlobURL
 import com.microsoft.azure.storage.blob.ContainerURL
@@ -20,6 +34,7 @@ import com.microsoft.azure.storage.blob.models.LeaseStateType
 import com.microsoft.rest.v2.http.HttpClient
 import com.microsoft.rest.v2.http.HttpClientConfiguration
 import com.microsoft.rest.v2.http.HttpPipeline
+import io.reactivex.Flowable
 import org.spockframework.lang.ISpecificationContext
 import spock.lang.Shared
 import spock.lang.Specification
@@ -33,6 +48,7 @@ class APISpec extends Specification {
 
     Integer entityNo = 0 // Used to generate stable container names for recording tests requiring multiple containers.
 
+    @Shared
     ContainerURL cu
 
     @Shared
@@ -41,10 +57,16 @@ class APISpec extends Specification {
     @Shared
     ByteBuffer defaultData = ByteBuffer.wrap(defaultText.bytes)
 
+    @Shared
+    Flowable<ByteBuffer> defaultFlowable = Flowable.just(defaultData)
+
+    @Shared
+    int defaultDataSize = defaultData.remaining()
+
     // If debugging is enabled, recordings cannot run as there can only be one proxy at a time.
     static final boolean enableDebugging = false
 
-    static final String containerPrefix = "javatestcontainer"
+    static final String containerPrefix = "jtc" // java test container
 
     static final String blobPrefix = "javablob"
 
@@ -148,19 +170,22 @@ class APISpec extends Specification {
                 System.getenv().get(accountType + "ACCOUNT_KEY"))
     }
 
-    static ServiceURL getGenericServiceURL(SharedKeyCredentials creds) {
-
-        PipelineOptions po = new PipelineOptions()
+    static HttpClient getHttpClient() {
         if (enableDebugging) {
             HttpClientConfiguration configuration = new HttpClientConfiguration(
                     new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)))
-            po.client = HttpClient.createDefault(configuration)
+            return HttpClient.createDefault(configuration)
         }
+        else return HttpClient.createDefault()
+    }
+
+    static ServiceURL getGenericServiceURL(SharedKeyCredentials creds) {
+        PipelineOptions po = new PipelineOptions()
+        po.client = getHttpClient()
 
         HttpPipeline pipeline = StorageURL.createPipeline(creds, po)
 
         return new ServiceURL(new URL("http://" + creds.getAccountName() + ".blob.core.windows.net"), pipeline)
-
     }
 
     static void cleanupContainers() throws MalformedURLException {
@@ -189,6 +214,15 @@ class APISpec extends Specification {
         return ByteBuffer.wrap(data)
     }
 
+    static File getRandomFile(long size) {
+        File file = File.createTempFile(UUID.randomUUID().toString(), ".txt");
+        file.deleteOnExit();
+        FileOutputStream fos = new FileOutputStream(file);
+        fos.write(getRandomData(size).array())
+        fos.close();
+        return file
+    }
+
     static long getRandomSeed() {
         return System.currentTimeMillis()
     }
@@ -210,6 +244,18 @@ class APISpec extends Specification {
         iterationNo = updateIterationNo(specificationContext, iterationNo)
     }
 
+    /**
+     * This will retrieve the etag to be used in testing match conditions. The result will typically be assigned to
+     * the ifMatch condition when testing success and the ifNoneMatch condition when testing failure.
+     *
+     * @param bu
+     *      The URL to the blob to get the etag on.
+     * @param match
+     *      The ETag value for this test. If {@code receivedEtag} is passed, that will signal that the test is expecting
+     *      the blob's actual etag for this test, so it is retrieved.
+     * @return
+     *      The appropriate etag value to run the current test.
+     */
     def setupBlobMatchCondition(BlobURL bu, ETag match) {
         if (match == receivedEtag) {
             BlobsGetPropertiesHeaders headers = bu.getProperties(null).blockingGet().headers()
@@ -219,10 +265,25 @@ class APISpec extends Specification {
         }
     }
 
+    /**
+     * This helper method will acquire a lease on a blob to prepare for testing leaseAccessConditions. We want to test
+     * against a valid lease in both the success and failure cases to guarantee that the results actually indicate
+     * proper setting of the header. If we pass null, though, we don't want to acquire a lease, as that will interfere
+     * with other AC tests.
+     *
+     * @param bu
+     *      The blob on which to acquire a lease.
+     * @param leaseID
+     *      The signalID. Values should only ever be {@code receivedLeaseID}, {@code garbageLeaseID}, or {@code null}.
+     * @return
+     *      The actual leaseID of the blob if recievedLeaseID is passed, otherwise whatever was passed will be returned.
+     */
     def setupBlobLeaseCondition(BlobURL bu, String leaseID) {
+        BlobsAcquireLeaseHeaders headers = null
+        if (leaseID == receivedLeaseID || leaseID == garbageLeaseID) {
+            headers = bu.acquireLease(null, -1, null).blockingGet().headers()
+        }
         if (leaseID == receivedLeaseID) {
-            BlobsAcquireLeaseHeaders headers =
-                    bu.acquireLease(null, -1, null).blockingGet().headers()
             return headers.leaseId()
         } else {
             return leaseID
@@ -262,13 +323,30 @@ class APISpec extends Specification {
         }
     }
 
+    /**
+     * Validates the presence of headers that are present on a large number of responses. These headers are generally
+     * random and can really only be checked as not null.
+     * @param headers
+     *      The object (may be headers object or response object) that has properties which expose these common headers.
+     * @return
+     *      Whether or not the header values are appropriate.
+     */
     def validateBasicHeaders(Object headers) {
         return headers.class.getMethod("eTag").invoke(headers) != null &&
                 headers.class.getMethod("lastModified").invoke(headers) != null &&
                 headers.class.getMethod("requestId").invoke(headers) != null &&
                 headers.class.getMethod("version").invoke(headers) != null &&
-                headers.class.getMethod("dateProperty").invoke(headers) != null
+                headers.class.getMethod("date").invoke(headers) != null
+    }
 
+    def validateBlobHeaders(Object headers, String cacheControl, String contentDisposition, String contentEncoding,
+                            String contentLangauge, byte[] contentMD5, String contentType) {
+        return headers.class.getMethod("cacheControl").invoke(headers) == cacheControl &&
+                headers.class.getMethod("contentDisposition").invoke(headers) == contentDisposition &&
+                headers.class.getMethod("contentEncoding").invoke(headers) == contentEncoding &&
+                headers.class.getMethod("contentLanguage").invoke(headers) == contentLangauge &&
+                headers.class.getMethod("contentMD5").invoke(headers) == contentMD5 &&
+                headers.class.getMethod("contentType").invoke(headers)  == contentType
 
     }
 }

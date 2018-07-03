@@ -1,3 +1,18 @@
+/*
+ * Copyright Microsoft Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.microsoft.azure.storage
 
 import com.microsoft.azure.storage.blob.AppendBlobAccessConditions
@@ -60,13 +75,9 @@ public class AppendBlobAPITest extends APISpec {
         BlobsGetPropertiesResponse response = bu.getProperties(null).blockingGet()
 
         then:
-        response.headers().cacheControl() == cacheControl
-        response.headers().contentDisposition() == contentDisposition
-        response.headers().contentEncoding() == contentEncoding
-        response.headers().contentMD5() == contentMD5
+        validateBlobHeaders(response.headers(), cacheControl, contentDisposition, contentEncoding, contentLanguage,
+                contentMD5, contentType == null ? "application/octet-stream" : contentType)
         // HTTP default content type is application/octet-stream
-        contentType == null ? response.headers().contentType() == "application/octet-stream" :
-                response.headers().contentType() == contentType
 
         where:
         cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                                               | contentType
@@ -124,7 +135,7 @@ public class AppendBlobAPITest extends APISpec {
     def "Append blob append block defaults"() {
         setup:
         AppendBlobsAppendBlockHeaders headers =
-                bu.appendBlock(Flowable.just(defaultData), defaultData.remaining(),
+                bu.appendBlock(defaultFlowable, defaultDataSize,
                         null).blockingGet().headers()
 
         expect:
@@ -138,7 +149,7 @@ public class AppendBlobAPITest extends APISpec {
 
     /*
     TODO: Negative cases where data size does not equal the passed value for length
-    defaultData | defaultData.remaining() + 1 | defaultData                                        || -1
+    defaultData | defaultDataSize + 1 | defaultData                                        || -1
     defaultData | 2                           | ByteBuffer.wrap(defaultText.substring(0, 3).bytes) || -1/*
     try{
         statusCode = bu.appendBlock(Flowable.just(inputData), dataSize, null)
@@ -160,7 +171,7 @@ public class AppendBlobAPITest extends APISpec {
                 new AppendBlobAccessConditions(appendPosE, maxSizeLTE), null)
 
         expect:
-        bu.appendBlock(Flowable.just(defaultData), defaultData.remaining(), bac)
+        bu.appendBlock(defaultFlowable, defaultDataSize, bac)
                 .blockingGet().statusCode() == 201
 
         where:
@@ -180,7 +191,7 @@ public class AppendBlobAPITest extends APISpec {
         bu = cu.createAppendBlobURL(generateBlobName())
 
         when:
-        bu.appendBlock(Flowable.just(defaultData), defaultData.remaining(), null).blockingGet()
+        bu.appendBlock(defaultFlowable, defaultDataSize, null).blockingGet()
 
         then:
         thrown(StorageException)

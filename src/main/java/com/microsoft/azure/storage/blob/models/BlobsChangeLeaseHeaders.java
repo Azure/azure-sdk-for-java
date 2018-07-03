@@ -63,7 +63,7 @@ public final class BlobsChangeLeaseHeaders {
      * which the response was initiated.
      */
     @JsonProperty(value = "Date")
-    private DateTimeRfc1123 dateProperty;
+    private DateTimeRfc1123 date;
 
     /**
      * Get the eTag value.
@@ -173,28 +173,28 @@ public final class BlobsChangeLeaseHeaders {
     }
 
     /**
-     * Get the dateProperty value.
+     * Get the date value.
      *
-     * @return the dateProperty value.
+     * @return the date value.
      */
-    public OffsetDateTime dateProperty() {
-        if (this.dateProperty == null) {
+    public OffsetDateTime date() {
+        if (this.date == null) {
             return null;
         }
-        return this.dateProperty.dateTime();
+        return this.date.dateTime();
     }
 
     /**
-     * Set the dateProperty value.
+     * Set the date value.
      *
-     * @param dateProperty the dateProperty value to set.
+     * @param date the date value to set.
      * @return the BlobsChangeLeaseHeaders object itself.
      */
-    public BlobsChangeLeaseHeaders withDateProperty(OffsetDateTime dateProperty) {
-        if (dateProperty == null) {
-            this.dateProperty = null;
+    public BlobsChangeLeaseHeaders withDate(OffsetDateTime date) {
+        if (date == null) {
+            this.date = null;
         } else {
-            this.dateProperty = new DateTimeRfc1123(dateProperty);
+            this.date = new DateTimeRfc1123(date);
         }
         return this;
     }

@@ -71,7 +71,7 @@ public final class PageBlobsUploadPagesHeaders {
      * which the response was initiated.
      */
     @JsonProperty(value = "Date")
-    private DateTimeRfc1123 dateProperty;
+    private DateTimeRfc1123 date;
 
     /**
      * The value of this header is set to true if the contents of the request
@@ -209,28 +209,28 @@ public final class PageBlobsUploadPagesHeaders {
     }
 
     /**
-     * Get the dateProperty value.
+     * Get the date value.
      *
-     * @return the dateProperty value.
+     * @return the date value.
      */
-    public OffsetDateTime dateProperty() {
-        if (this.dateProperty == null) {
+    public OffsetDateTime date() {
+        if (this.date == null) {
             return null;
         }
-        return this.dateProperty.dateTime();
+        return this.date.dateTime();
     }
 
     /**
-     * Set the dateProperty value.
+     * Set the date value.
      *
-     * @param dateProperty the dateProperty value to set.
+     * @param date the date value to set.
      * @return the PageBlobsUploadPagesHeaders object itself.
      */
-    public PageBlobsUploadPagesHeaders withDateProperty(OffsetDateTime dateProperty) {
-        if (dateProperty == null) {
-            this.dateProperty = null;
+    public PageBlobsUploadPagesHeaders withDate(OffsetDateTime date) {
+        if (date == null) {
+            this.date = null;
         } else {
-            this.dateProperty = new DateTimeRfc1123(dateProperty);
+            this.date = new DateTimeRfc1123(date);
         }
         return this;
     }

@@ -1,3 +1,18 @@
+/*
+ * Copyright Microsoft Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.microsoft.azure.storage
 
 import com.microsoft.azure.storage.blob.BlobAccessConditions
@@ -73,13 +88,9 @@ class PageBlobAPITest extends APISpec {
         BlobsGetPropertiesResponse response = bu.getProperties(null).blockingGet()
 
         then:
-        response.headers().cacheControl() == cacheControl
-        response.headers().contentDisposition() == contentDisposition
-        response.headers().contentEncoding() == contentEncoding
-        response.headers().contentMD5() == contentMD5
+        validateBlobHeaders(response.headers(), cacheControl, contentDisposition, contentEncoding, contentLanguage,
+                contentMD5, contentType == null ? "application/octet-stream" : contentType)
         // HTTP default content type is application/octet-stream
-        contentType == null ? response.headers().contentType() == "application/octet-stream" :
-                response.headers().contentType() == contentType
 
         where:
         cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                                               | contentType

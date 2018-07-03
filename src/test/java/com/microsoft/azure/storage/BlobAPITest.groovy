@@ -1,3 +1,19 @@
+
+/*
+ * Copyright Microsoft Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.microsoft.azure.storage
 
 import com.microsoft.azure.storage.blob.BlobAccessConditions
@@ -6,6 +22,7 @@ import com.microsoft.azure.storage.blob.BlobRange
 import com.microsoft.azure.storage.blob.BlobURL
 import com.microsoft.azure.storage.blob.BlockBlobURL
 import com.microsoft.azure.storage.blob.ContainerURL
+import com.microsoft.azure.storage.blob.DownloadResponse
 import com.microsoft.azure.storage.blob.HTTPAccessConditions
 import com.microsoft.azure.storage.blob.LeaseAccessConditions
 import com.microsoft.azure.storage.blob.Metadata
@@ -22,7 +39,6 @@ import com.microsoft.azure.storage.blob.models.BlobsCreateSnapshotResponse
 import com.microsoft.azure.storage.blob.models.BlobsDeleteHeaders
 import com.microsoft.azure.storage.blob.models.BlobsDeleteResponse
 import com.microsoft.azure.storage.blob.models.BlobsDownloadHeaders
-import com.microsoft.azure.storage.blob.models.BlobsDownloadResponse
 import com.microsoft.azure.storage.blob.models.BlobsGetPropertiesHeaders
 import com.microsoft.azure.storage.blob.models.BlobsReleaseLeaseHeaders
 import com.microsoft.azure.storage.blob.models.BlobsRenewLeaseHeaders
@@ -43,19 +59,18 @@ import spock.lang.Unroll
 import java.nio.ByteBuffer
 import java.security.MessageDigest
 
-
 class BlobAPITest extends APISpec {
     BlobURL bu
 
     def setup() {
         bu = cu.createBlockBlobURL(generateBlobName())
-        bu.upload(Flowable.just(defaultData), defaultText.length(), null, null,
+        bu.upload(defaultFlowable, defaultDataSize, null, null,
                 null).blockingGet()
     }
 
     def "Blob download all null"() {
         when:
-        BlobsDownloadResponse response = bu.download(null, null, false)
+        DownloadResponse response = bu.download(null, null, false)
                 .blockingGet()
         ByteBuffer body = FlowableUtil.collectBytesInBuffer(response.body()).blockingGet()
         BlobsDownloadHeaders headers = response.headers()
@@ -109,7 +124,7 @@ class BlobAPITest extends APISpec {
         0      | 5     | defaultText.substring(0, 5)
         3      | 2     | defaultText.substring(3, 3 + 2)
     }
-    //TODO: offset negative. Count null or less than offset.
+    //TODO: offset negative. Count null or less than offset. offset greater than blob length, count + offset greater than blob length, count negative, count + offset > maxint
 
     @Unroll
     def "Blob download AC"() {
@@ -136,7 +151,8 @@ class BlobAPITest extends APISpec {
     def "Blob download md5"() {
         expect:
         bu.download(new BlobRange(0, 3), null, true).blockingGet()
-                .headers().contentMD5() != null
+                .headers().contentMD5() ==
+                MessageDigest.getInstance("MD5").digest(defaultText.substring(0,3).getBytes())
     }
 
     def "Blob download error"() {
@@ -240,12 +256,8 @@ class BlobAPITest extends APISpec {
                 bu.getProperties(null).blockingGet().headers()
 
         expect:
-        receivedHeaders.cacheControl() == cacheControl
-        receivedHeaders.contentDisposition() == contentDisposition
-        receivedHeaders.contentEncoding() == contentEncoding
-        receivedHeaders.contentLanguage() == contentLanguage
-        receivedHeaders.contentMD5() == contentMD5
-        receivedHeaders.contentType() == contentType
+        validateBlobHeaders(receivedHeaders, cacheControl, contentDisposition, contentEncoding, contentLanguage,
+                contentMD5, contentType)
 
         where:
         cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                                               | contentType
@@ -724,7 +736,7 @@ class BlobAPITest extends APISpec {
     def "Blob copy dest AC"() {
         setup:
         BlobURL bu2 = cu.createBlockBlobURL(generateBlobName())
-        bu2.upload(Flowable.just(defaultData), defaultText.length(), null, null,
+        bu2.upload(defaultFlowable, defaultDataSize, null, null,
                 null).blockingGet()
         match = setupBlobMatchCondition(bu2, match)
         leaseID = setupBlobLeaseCondition(bu2, leaseID)
@@ -782,7 +794,7 @@ class BlobAPITest extends APISpec {
         response.statusCode() == 204
         headers.requestId() != null
         headers.version() != null
-        headers.dateProperty() != null
+        headers.date() != null
         // Normal test cleanup will not clean up containers in the alternate account.
         cu2.delete(null).blockingGet().statusCode() == 202
     }
@@ -800,7 +812,7 @@ class BlobAPITest extends APISpec {
         ContainerURL cu2 = alternateServiceURL.createContainerURL(generateBlobName())
         cu2.create(null, null).blockingGet()
         BlockBlobURL bu2 = cu2.createBlockBlobURL(generateBlobName())
-        bu2.upload(Flowable.just(defaultData), defaultText.length(), null, null, null)
+        bu2.upload(defaultFlowable, defaultDataSize, null, null, null)
                 .blockingGet()
         String leaseID = setupBlobLeaseCondition(bu2, receivedLeaseID)
 
@@ -837,7 +849,7 @@ class BlobAPITest extends APISpec {
         response.statusCode() == 202
         headers.requestId() != null
         headers.version() != null
-        headers.dateProperty() != null
+        headers.date() != null
     }
 
     @Unroll
@@ -846,7 +858,7 @@ class BlobAPITest extends APISpec {
         bu.createSnapshot(null, null).blockingGet()
         // Create an extra blob so the list isn't empty (null) when we delete base blob, too
         BlockBlobURL bu2 = cu.createBlockBlobURL(generateBlobName())
-        bu2.upload(Flowable.just(defaultData), defaultText.length(), null, null, null)
+        bu2.upload(defaultFlowable, defaultDataSize, null, null, null)
                 .blockingGet()
 
         when:
