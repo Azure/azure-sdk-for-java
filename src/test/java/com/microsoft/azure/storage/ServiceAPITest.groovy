@@ -187,7 +187,7 @@ class ServiceAPITest extends APISpec {
         expect:
         response.headers().version() != null
         response.headers().requestId() != null
-        response.headers().dateProperty() != null
+        response.headers().date() != null
         response.body().geoReplication().status() != null
         response.body().geoReplication().lastSyncTime() != null
     }

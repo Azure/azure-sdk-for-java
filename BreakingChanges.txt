@@ -1,4 +1,4 @@
-﻿﻿XXXX.XX.XX Version XX.X.X-Preview
+﻿2018.07.03 Version 10.0.1-Preview
 * Created the StorageException type, which deserializes the XML payload in an error response if present and gives access to the ErrorCode header as a property.
 * Changed the AppendBlobAccessConditions field types to be Long instead of Int.
 * Changed RequestRetryOptions maxTries and tryTimeout fields to be Integer instead of int. 0 is no longer allowed.

@@ -17,7 +17,6 @@ import com.microsoft.azure.storage.blob.models.ContainersAcquireLeaseHeaders
 import com.microsoft.azure.storage.blob.models.ContainersGetPropertiesHeaders
 import com.microsoft.azure.storage.blob.models.CopyStatusType
 import com.microsoft.azure.storage.blob.models.LeaseStateType
-import com.microsoft.rest.v2.RestResponse
 import com.microsoft.rest.v2.http.HttpClient
 import com.microsoft.rest.v2.http.HttpClientConfiguration
 import com.microsoft.rest.v2.http.HttpPipeline

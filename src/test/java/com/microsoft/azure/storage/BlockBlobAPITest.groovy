@@ -48,7 +48,7 @@ class BlockBlobAPITest extends APISpec {
         headers.contentMD5() != null
         headers.requestId() != null
         headers.version() != null
-        headers.dateProperty() != null
+        headers.date() != null
         headers.isServerEncrypted()
     }
 

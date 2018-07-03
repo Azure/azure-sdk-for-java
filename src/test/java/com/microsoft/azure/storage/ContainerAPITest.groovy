@@ -334,7 +334,7 @@ class ContainerAPITest extends APISpec {
         response.statusCode() == 202
         response.headers().requestId() != null
         response.headers().version() != null
-        response.headers().dateProperty() != null
+        response.headers().date() != null
     }
 
     @Unroll
@@ -384,7 +384,7 @@ class ContainerAPITest extends APISpec {
         headers.contentType() != null
         headers.requestId() != null
         headers.version() != null
-        headers.dateProperty() != null
+        headers.date() != null
         blobs.size() == 1
         blobs.get(0).name() == name
     }
@@ -515,7 +515,7 @@ class ContainerAPITest extends APISpec {
         headers.contentType() != null
         headers.requestId() != null
         headers.version() != null
-        headers.dateProperty() != null
+        headers.date() != null
         blobs.size() == 1
         blobs.get(0).name() == name
     }

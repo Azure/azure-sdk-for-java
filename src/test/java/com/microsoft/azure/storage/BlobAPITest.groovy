@@ -779,7 +779,7 @@ class BlobAPITest extends APISpec {
         response.statusCode() == 204
         headers.requestId() != null
         headers.version() != null
-        headers.dateProperty() != null
+        headers.date() != null
         // Normal test cleanup will not clean up containers in the alternate account.
         cu2.delete(null).blockingGet().statusCode() == 202
     }
@@ -834,7 +834,7 @@ class BlobAPITest extends APISpec {
         response.statusCode() == 202
         headers.requestId() != null
         headers.version() != null
-        headers.dateProperty() != null
+        headers.date() != null
     }
 
     @Unroll
