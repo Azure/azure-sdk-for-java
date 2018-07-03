@@ -26,7 +26,7 @@ public class ManagedIntegrationRuntime extends IntegrationRuntimeInner {
      * Integration runtime state, only valid for managed dedicated integration
      * runtime. Possible values include: 'Initial', 'Stopped', 'Started',
      * 'Starting', 'Stopping', 'NeedRegistration', 'Online', 'Limited',
-     * 'Offline'.
+     * 'Offline', 'AccessDenied'.
      */
     @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private IntegrationRuntimeState state;
@@ -44,7 +44,7 @@ public class ManagedIntegrationRuntime extends IntegrationRuntimeInner {
     private IntegrationRuntimeSsisProperties ssisProperties;
 
     /**
-     * Get integration runtime state, only valid for managed dedicated integration runtime. Possible values include: 'Initial', 'Stopped', 'Started', 'Starting', 'Stopping', 'NeedRegistration', 'Online', 'Limited', 'Offline'.
+     * Get integration runtime state, only valid for managed dedicated integration runtime. Possible values include: 'Initial', 'Stopped', 'Started', 'Starting', 'Stopping', 'NeedRegistration', 'Online', 'Limited', 'Offline', 'AccessDenied'.
      *
      * @return the state value
      */

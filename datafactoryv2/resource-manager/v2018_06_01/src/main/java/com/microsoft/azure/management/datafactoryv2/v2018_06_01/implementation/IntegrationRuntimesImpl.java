@@ -137,6 +137,12 @@ class IntegrationRuntimesImpl extends WrapperImpl<IntegrationRuntimesInner> impl
     }
 
     @Override
+    public Completable removeLinksAsync(String resourceGroupName, String factoryName, String integrationRuntimeName, String factoryName1) {
+        IntegrationRuntimesInner client = this.inner();
+        return client.removeLinksAsync(resourceGroupName, factoryName, integrationRuntimeName, factoryName1).toCompletable();
+    }
+
+    @Override
     public Observable<IntegrationRuntimeResource> listByFactoryAsync(final String resourceGroupName, final String factoryName) {
         IntegrationRuntimesInner client = this.inner();
         return client.listByFactoryAsync(resourceGroupName, factoryName)

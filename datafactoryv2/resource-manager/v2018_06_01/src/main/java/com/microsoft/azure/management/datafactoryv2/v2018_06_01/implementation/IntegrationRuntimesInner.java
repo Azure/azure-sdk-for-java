@@ -15,6 +15,7 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.IntegrationRuntimeAuthKeyName;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.IntegrationRuntimeRegenerateKeyParameters;
+import com.microsoft.azure.management.datafactoryv2.v2018_06_01.LinkedIntegrationRuntimeRequest;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.UpdateIntegrationRuntimeRequest;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
@@ -129,6 +130,10 @@ public class IntegrationRuntimesInner {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datafactoryv2.v2018_06_01.IntegrationRuntimes upgrade" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/upgrade")
         Observable<Response<ResponseBody>> upgrade(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("factoryName") String factoryName, @Path("integrationRuntimeName") String integrationRuntimeName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datafactoryv2.v2018_06_01.IntegrationRuntimes removeLinks" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/removeLinks")
+        Observable<Response<ResponseBody>> removeLinks(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("factoryName") String factoryName, @Path("integrationRuntimeName") String integrationRuntimeName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body LinkedIntegrationRuntimeRequest linkedIntegrationRuntimeRequest, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datafactoryv2.v2018_06_01.IntegrationRuntimes listByFactoryNext" })
         @GET
@@ -1918,6 +1923,107 @@ public class IntegrationRuntimesInner {
     }
 
     private ServiceResponse<Void> upgradeDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Remove all linked integration runtimes under specific data factory in a self-hosted integration runtime.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param integrationRuntimeName The integration runtime name.
+     * @param factoryName1 The data factory name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void removeLinks(String resourceGroupName, String factoryName, String integrationRuntimeName, String factoryName1) {
+        removeLinksWithServiceResponseAsync(resourceGroupName, factoryName, integrationRuntimeName, factoryName1).toBlocking().single().body();
+    }
+
+    /**
+     * Remove all linked integration runtimes under specific data factory in a self-hosted integration runtime.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param integrationRuntimeName The integration runtime name.
+     * @param factoryName1 The data factory name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> removeLinksAsync(String resourceGroupName, String factoryName, String integrationRuntimeName, String factoryName1, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(removeLinksWithServiceResponseAsync(resourceGroupName, factoryName, integrationRuntimeName, factoryName1), serviceCallback);
+    }
+
+    /**
+     * Remove all linked integration runtimes under specific data factory in a self-hosted integration runtime.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param integrationRuntimeName The integration runtime name.
+     * @param factoryName1 The data factory name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> removeLinksAsync(String resourceGroupName, String factoryName, String integrationRuntimeName, String factoryName1) {
+        return removeLinksWithServiceResponseAsync(resourceGroupName, factoryName, integrationRuntimeName, factoryName1).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Remove all linked integration runtimes under specific data factory in a self-hosted integration runtime.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param integrationRuntimeName The integration runtime name.
+     * @param factoryName1 The data factory name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> removeLinksWithServiceResponseAsync(String resourceGroupName, String factoryName, String integrationRuntimeName, String factoryName1) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (factoryName == null) {
+            throw new IllegalArgumentException("Parameter factoryName is required and cannot be null.");
+        }
+        if (integrationRuntimeName == null) {
+            throw new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (factoryName1 == null) {
+            throw new IllegalArgumentException("Parameter factoryName1 is required and cannot be null.");
+        }
+        LinkedIntegrationRuntimeRequest linkedIntegrationRuntimeRequest = new LinkedIntegrationRuntimeRequest();
+        linkedIntegrationRuntimeRequest.withFactoryName(factoryName1);
+        return service.removeLinks(this.client.subscriptionId(), resourceGroupName, factoryName, integrationRuntimeName, this.client.apiVersion(), this.client.acceptLanguage(), linkedIntegrationRuntimeRequest, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = removeLinksDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> removeLinksDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
