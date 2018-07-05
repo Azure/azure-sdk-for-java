@@ -16,12 +16,12 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.postgresql.v2017_12_01.implementation.PostgreSQLManager;
+import com.microsoft.azure.management.postgresql.v2017_12_01.implementation.DBforPostgreSQLManager;
 
 /**
  * Type representing FirewallRule.
  */
-public interface FirewallRule extends HasInner<FirewallRuleInner>, Indexable, Refreshable<FirewallRule>, Updatable<FirewallRule.Update>, HasManager<PostgreSQLManager> {
+public interface FirewallRule extends HasInner<FirewallRuleInner>, Indexable, Refreshable<FirewallRule>, Updatable<FirewallRule.Update>, HasManager<DBforPostgreSQLManager> {
     /**
      * @return the endIpAddress value.
      */

@@ -16,14 +16,14 @@ import rx.functions.Func1;
 import com.microsoft.azure.management.postgresql.v2017_12_01.ServerSecurityAlertPolicy;
 
 class ServerSecurityAlertPoliciesImpl extends WrapperImpl<ServerSecurityAlertPoliciesInner> implements ServerSecurityAlertPolicies {
-    private final PostgreSQLManager manager;
+    private final DBforPostgreSQLManager manager;
 
-    ServerSecurityAlertPoliciesImpl(PostgreSQLManager manager) {
+    ServerSecurityAlertPoliciesImpl(DBforPostgreSQLManager manager) {
         super(manager.inner().serverSecurityAlertPolicies());
         this.manager = manager;
     }
 
-    public PostgreSQLManager manager() {
+    public DBforPostgreSQLManager manager() {
         return this.manager;
     }
 
