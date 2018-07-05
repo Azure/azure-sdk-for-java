@@ -78,6 +78,13 @@ public class Iteration {
     private UUID domainId;
 
     /**
+     * Gets the classification type of the project. Possible values include:
+     * 'Multiclass', 'Multilabel'.
+     */
+    @JsonProperty(value = "classificationType", access = JsonProperty.Access.WRITE_ONLY)
+    private Classifier classificationType;
+
+    /**
      * Get gets the id of the iteration.
      *
      * @return the id value
@@ -187,6 +194,15 @@ public class Iteration {
      */
     public UUID domainId() {
         return this.domainId;
+    }
+
+    /**
+     * Get gets the classification type of the project. Possible values include: 'Multiclass', 'Multilabel'.
+     *
+     * @return the classificationType value
+     */
+    public Classifier classificationType() {
+        return this.classificationType;
     }
 
 }

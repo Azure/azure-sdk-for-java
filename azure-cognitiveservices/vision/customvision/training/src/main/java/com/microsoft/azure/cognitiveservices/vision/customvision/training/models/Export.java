@@ -39,6 +39,12 @@ public class Export {
     private ExportFlavor flavor;
 
     /**
+     * The newerVersionAvailable property.
+     */
+    @JsonProperty(value = "newerVersionAvailable", access = JsonProperty.Access.WRITE_ONLY)
+    private boolean newerVersionAvailable;
+
+    /**
      * Get possible values include: 'CoreML', 'TensorFlow', 'DockerFile', 'ONNX'.
      *
      * @return the platform value
@@ -72,6 +78,15 @@ public class Export {
      */
     public ExportFlavor flavor() {
         return this.flavor;
+    }
+
+    /**
+     * Get the newerVersionAvailable value.
+     *
+     * @return the newerVersionAvailable value
+     */
+    public boolean newerVersionAvailable() {
+        return this.newerVersionAvailable;
     }
 
 }

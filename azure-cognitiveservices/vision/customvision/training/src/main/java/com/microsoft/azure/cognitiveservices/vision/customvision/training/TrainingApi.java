@@ -1720,12 +1720,13 @@ public interface TrainingApi {
      * @param name Name of the project
      * @param description The description of the project
      * @param domainId The id of the domain to use for this project. Defaults to General
+     * @param classificationType The type of classifier to create for this project. Possible values include: 'Multiclass', 'Multilabel'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Project object if successful.
      */
-    Project createProject(String name, String description, UUID domainId);
+    Project createProject(String name, String description, UUID domainId, String classificationType);
 
     /**
      * Create a project.
@@ -1733,11 +1734,12 @@ public interface TrainingApi {
      * @param name Name of the project
      * @param description The description of the project
      * @param domainId The id of the domain to use for this project. Defaults to General
+     * @param classificationType The type of classifier to create for this project. Possible values include: 'Multiclass', 'Multilabel'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<Project> createProjectAsync(String name, String description, UUID domainId, final ServiceCallback<Project> serviceCallback);
+    ServiceFuture<Project> createProjectAsync(String name, String description, UUID domainId, String classificationType, final ServiceCallback<Project> serviceCallback);
 
     /**
      * Create a project.
@@ -1745,10 +1747,11 @@ public interface TrainingApi {
      * @param name Name of the project
      * @param description The description of the project
      * @param domainId The id of the domain to use for this project. Defaults to General
+     * @param classificationType The type of classifier to create for this project. Possible values include: 'Multiclass', 'Multilabel'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Project object
      */
-    Observable<Project> createProjectAsync(String name, String description, UUID domainId);
+    Observable<Project> createProjectAsync(String name, String description, UUID domainId, String classificationType);
 
     /**
      * Create a project.
@@ -1756,10 +1759,11 @@ public interface TrainingApi {
      * @param name Name of the project
      * @param description The description of the project
      * @param domainId The id of the domain to use for this project. Defaults to General
+     * @param classificationType The type of classifier to create for this project. Possible values include: 'Multiclass', 'Multilabel'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Project object
      */
-    Observable<ServiceResponse<Project>> createProjectWithServiceResponseAsync(String name, String description, UUID domainId);
+    Observable<ServiceResponse<Project>> createProjectWithServiceResponseAsync(String name, String description, UUID domainId, String classificationType);
 
     /**
      * Get a specific project.
@@ -2439,7 +2443,7 @@ public interface TrainingApi {
      *
      * @param projectId The project id
      * @param iterationId The iteration id
-     * @param platform The target platform (coreml or tensorflow)
+     * @param platform The target platform (coreml or tensorflow). Possible values include: 'CoreML', 'TensorFlow', 'DockerFile', 'ONNX'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -2452,7 +2456,7 @@ public interface TrainingApi {
      *
      * @param projectId The project id
      * @param iterationId The iteration id
-     * @param platform The target platform (coreml or tensorflow)
+     * @param platform The target platform (coreml or tensorflow). Possible values include: 'CoreML', 'TensorFlow', 'DockerFile', 'ONNX'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -2464,7 +2468,7 @@ public interface TrainingApi {
      *
      * @param projectId The project id
      * @param iterationId The iteration id
-     * @param platform The target platform (coreml or tensorflow)
+     * @param platform The target platform (coreml or tensorflow). Possible values include: 'CoreML', 'TensorFlow', 'DockerFile', 'ONNX'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Export object
      */
@@ -2475,7 +2479,7 @@ public interface TrainingApi {
      *
      * @param projectId The project id
      * @param iterationId The iteration id
-     * @param platform The target platform (coreml or tensorflow)
+     * @param platform The target platform (coreml or tensorflow). Possible values include: 'CoreML', 'TensorFlow', 'DockerFile', 'ONNX'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Export object
      */
@@ -2485,8 +2489,8 @@ public interface TrainingApi {
      *
      * @param projectId The project id
      * @param iterationId The iteration id
-     * @param platform The target platform (coreml or tensorflow)
-     * @param flavor The flavor of the target platform (Windows, Linux, ARM, or GPU)
+     * @param platform The target platform (coreml or tensorflow). Possible values include: 'CoreML', 'TensorFlow', 'DockerFile', 'ONNX'
+     * @param flavor The flavor of the target platform (Windows, Linux, ARM, or GPU). Possible values include: 'Linux', 'Windows'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -2499,8 +2503,8 @@ public interface TrainingApi {
      *
      * @param projectId The project id
      * @param iterationId The iteration id
-     * @param platform The target platform (coreml or tensorflow)
-     * @param flavor The flavor of the target platform (Windows, Linux, ARM, or GPU)
+     * @param platform The target platform (coreml or tensorflow). Possible values include: 'CoreML', 'TensorFlow', 'DockerFile', 'ONNX'
+     * @param flavor The flavor of the target platform (Windows, Linux, ARM, or GPU). Possible values include: 'Linux', 'Windows'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -2512,8 +2516,8 @@ public interface TrainingApi {
      *
      * @param projectId The project id
      * @param iterationId The iteration id
-     * @param platform The target platform (coreml or tensorflow)
-     * @param flavor The flavor of the target platform (Windows, Linux, ARM, or GPU)
+     * @param platform The target platform (coreml or tensorflow). Possible values include: 'CoreML', 'TensorFlow', 'DockerFile', 'ONNX'
+     * @param flavor The flavor of the target platform (Windows, Linux, ARM, or GPU). Possible values include: 'Linux', 'Windows'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Export object
      */
@@ -2524,8 +2528,8 @@ public interface TrainingApi {
      *
      * @param projectId The project id
      * @param iterationId The iteration id
-     * @param platform The target platform (coreml or tensorflow)
-     * @param flavor The flavor of the target platform (Windows, Linux, ARM, or GPU)
+     * @param platform The target platform (coreml or tensorflow). Possible values include: 'CoreML', 'TensorFlow', 'DockerFile', 'ONNX'
+     * @param flavor The flavor of the target platform (Windows, Linux, ARM, or GPU). Possible values include: 'Linux', 'Windows'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Export object
      */

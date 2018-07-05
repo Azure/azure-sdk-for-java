@@ -22,6 +22,13 @@ public class ProjectSettings {
     private UUID domainId;
 
     /**
+     * Gets or sets the classification type of the project. Possible values
+     * include: 'Multiclass', 'Multilabel'.
+     */
+    @JsonProperty(value = "classificationType")
+    private Classifier classificationType;
+
+    /**
      * Get gets or sets the id of the Domain to use with this project.
      *
      * @return the domainId value
@@ -38,6 +45,26 @@ public class ProjectSettings {
      */
     public ProjectSettings withDomainId(UUID domainId) {
         this.domainId = domainId;
+        return this;
+    }
+
+    /**
+     * Get gets or sets the classification type of the project. Possible values include: 'Multiclass', 'Multilabel'.
+     *
+     * @return the classificationType value
+     */
+    public Classifier classificationType() {
+        return this.classificationType;
+    }
+
+    /**
+     * Set gets or sets the classification type of the project. Possible values include: 'Multiclass', 'Multilabel'.
+     *
+     * @param classificationType the classificationType value to set
+     * @return the ProjectSettings object itself.
+     */
+    public ProjectSettings withClassificationType(Classifier classificationType) {
+        this.classificationType = classificationType;
         return this;
     }
 
