@@ -22,7 +22,7 @@ public class TxtRecord {
     private List<String> value;
 
     /**
-     * Get the value value.
+     * Get the text value of this TXT record.
      *
      * @return the value value
      */
@@ -31,7 +31,7 @@ public class TxtRecord {
     }
 
     /**
-     * Set the value value.
+     * Set the text value of this TXT record.
      *
      * @param value the value value to set
      * @return the TxtRecord object itself.

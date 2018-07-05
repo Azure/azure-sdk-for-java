@@ -39,7 +39,7 @@ public class SrvRecord {
     private String target;
 
     /**
-     * Get the priority value.
+     * Get the priority value for this SRV record.
      *
      * @return the priority value
      */
@@ -48,7 +48,7 @@ public class SrvRecord {
     }
 
     /**
-     * Set the priority value.
+     * Set the priority value for this SRV record.
      *
      * @param priority the priority value to set
      * @return the SrvRecord object itself.
@@ -59,7 +59,7 @@ public class SrvRecord {
     }
 
     /**
-     * Get the weight value.
+     * Get the weight value for this SRV record.
      *
      * @return the weight value
      */
@@ -68,7 +68,7 @@ public class SrvRecord {
     }
 
     /**
-     * Set the weight value.
+     * Set the weight value for this SRV record.
      *
      * @param weight the weight value to set
      * @return the SrvRecord object itself.
@@ -79,7 +79,7 @@ public class SrvRecord {
     }
 
     /**
-     * Get the port value.
+     * Get the port value for this SRV record.
      *
      * @return the port value
      */
@@ -88,7 +88,7 @@ public class SrvRecord {
     }
 
     /**
-     * Set the port value.
+     * Set the port value for this SRV record.
      *
      * @param port the port value to set
      * @return the SrvRecord object itself.
@@ -99,7 +99,7 @@ public class SrvRecord {
     }
 
     /**
-     * Get the target value.
+     * Get the target domain name for this SRV record.
      *
      * @return the target value
      */
@@ -108,7 +108,7 @@ public class SrvRecord {
     }
 
     /**
-     * Set the target value.
+     * Set the target domain name for this SRV record.
      *
      * @param target the target value to set
      * @return the SrvRecord object itself.
