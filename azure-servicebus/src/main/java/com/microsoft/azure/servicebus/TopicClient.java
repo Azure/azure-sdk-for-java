@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
+import com.microsoft.azure.servicebus.primitives.MessagingEntityType;
 import com.microsoft.azure.servicebus.primitives.MessagingFactory;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 import com.microsoft.azure.servicebus.primitives.StringUtil;
@@ -31,7 +32,7 @@ public final class TopicClient extends InitializableEntity implements ITopicClie
 
     public TopicClient(ConnectionStringBuilder amqpConnectionStringBuilder) throws InterruptedException, ServiceBusException {
         this();
-        this.sender = ClientFactory.createMessageSenderFromConnectionStringBuilder(amqpConnectionStringBuilder);
+        this.sender = ClientFactory.createMessageSenderFromConnectionStringBuilder(amqpConnectionStringBuilder, MessagingEntityType.TOPIC);
         this.browser = new MessageBrowser((MessageSender) sender);
         if (TRACE_LOGGER.isInfoEnabled()) {
             TRACE_LOGGER.info("Created topic client to connection string '{}'", amqpConnectionStringBuilder.toLoggableString());
@@ -46,7 +47,7 @@ public final class TopicClient extends InitializableEntity implements ITopicClie
     public TopicClient(URI namespaceEndpointURI, String topicPath, ClientSettings clientSettings) throws InterruptedException, ServiceBusException
     {
         this();
-        this.sender = ClientFactory.createMessageSenderFromEntityPath(namespaceEndpointURI, topicPath, clientSettings);
+        this.sender = ClientFactory.createMessageSenderFromEntityPath(namespaceEndpointURI, topicPath, MessagingEntityType.TOPIC, clientSettings);
         this.browser = new MessageBrowser((MessageSender) sender);
         if (TRACE_LOGGER.isInfoEnabled()) {
             TRACE_LOGGER.info("Created topic client to topic '{}/{}'", namespaceEndpointURI.toString(), topicPath);
@@ -55,7 +56,7 @@ public final class TopicClient extends InitializableEntity implements ITopicClie
 
     TopicClient(MessagingFactory factory, String topicPath) throws InterruptedException, ServiceBusException {
         this();
-        this.sender = ClientFactory.createMessageSenderFromEntityPath(factory, topicPath);
+        this.sender = ClientFactory.createMessageSenderFromEntityPath(factory, topicPath, MessagingEntityType.TOPIC);
         this.browser = new MessageBrowser((MessageSender) sender);
         TRACE_LOGGER.info("Created topic client to topic '{}'", topicPath);
     }

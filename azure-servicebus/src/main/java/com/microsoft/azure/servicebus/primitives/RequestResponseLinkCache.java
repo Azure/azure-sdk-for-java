@@ -23,7 +23,7 @@ class RequestResponseLinkCache
         this.pathToRRLinkMap = new HashMap<>();
     }
     
-    public CompletableFuture<RequestResponseLink> obtainRequestResponseLinkAsync(String entityPath, String transferEntityPath)
+    public CompletableFuture<RequestResponseLink> obtainRequestResponseLinkAsync(String entityPath, String transferEntityPath, MessagingEntityType entityType)
     {
         RequestResponseLinkWrapper wrapper;
         String mapKey;
@@ -41,7 +41,7 @@ class RequestResponseLinkCache
             wrapper = this.pathToRRLinkMap.get(mapKey);
             if(wrapper == null)
             {
-                wrapper = new RequestResponseLinkWrapper(this.underlyingFactory, entityPath, transferEntityPath);
+                wrapper = new RequestResponseLinkWrapper(this.underlyingFactory, entityPath, transferEntityPath, entityType);
                 this.pathToRRLinkMap.put(mapKey, wrapper);
             }
         }
@@ -98,15 +98,17 @@ class RequestResponseLinkCache
         private final MessagingFactory underlyingFactory;
         private final String entityPath;
         private final String transferEntityPath;
+        private final MessagingEntityType entityType;
         private RequestResponseLink requestResponseLink;
         private int referenceCount;
         private ArrayList<CompletableFuture<RequestResponseLink>> waiters;
         
-        public RequestResponseLinkWrapper(MessagingFactory underlyingFactory, String entityPath, String transferEntityPath)
+        public RequestResponseLinkWrapper(MessagingFactory underlyingFactory, String entityPath, String transferEntityPath, MessagingEntityType entityType)
         {
             this.underlyingFactory = underlyingFactory;
             this.entityPath = entityPath;
             this.transferEntityPath = transferEntityPath;
+            this.entityType = entityType;
             this.requestResponseLink = null;
             this.referenceCount = 0;
             this.waiters = new ArrayList<>();
@@ -133,8 +135,8 @@ class RequestResponseLinkCache
                     requestResponseLinkPath,
                     sasTokenAudienceURI,
                     transferDestinationSasTokenAudienceURI,
-                    additionalProperties)
-                    .handleAsync((rrlink, ex) ->
+                    additionalProperties,
+                    this.entityType).handleAsync((rrlink, ex) ->
             {
                 synchronized (this.lock)
                 {

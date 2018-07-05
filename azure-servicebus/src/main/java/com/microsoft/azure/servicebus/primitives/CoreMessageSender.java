@@ -71,6 +71,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 	private final ConcurrentHashMap<String, SendWorkItem<DeliveryState>> pendingSendsData;
 	private final PriorityQueue<WeightedDeliveryTag> pendingSends;
 	private final DispatchHandler sendWork;
+	private final MessagingEntityType entityType;
 	private boolean isSendLoopRunning;
 
 	private Sender sendLink;
@@ -88,18 +89,30 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 	private boolean isSendVia;
 	private int maxMessageSize;
 
+	@Deprecated
 	public static CompletableFuture<CoreMessageSender> create(
 			final MessagingFactory factory,
 			final String clientId,
 			final String senderPath,
 			final String transferDestinationPath)
 	{
-		return CoreMessageSender.create(factory, clientId, CoreMessageSender.getDefaultLinkProperties(senderPath, transferDestinationPath, factory));
+		return CoreMessageSender.create(factory, clientId, senderPath, transferDestinationPath, null);
+	}
+	
+	public static CompletableFuture<CoreMessageSender> create(
+			final MessagingFactory factory,
+			final String clientId,			
+			final String senderPath,
+			final String transferDestinationPath,
+			final MessagingEntityType entityType)
+	{
+		return CoreMessageSender.create(factory, clientId, entityType, CoreMessageSender.getDefaultLinkProperties(senderPath, transferDestinationPath, factory, entityType));
 	}
 
 	static CompletableFuture<CoreMessageSender> create(
 			final MessagingFactory factory,
 			final String clientId,
+			final MessagingEntityType entityType,
 			final SenderLinkSettings linkSettings)
 	{
 	    TRACE_LOGGER.info("Creating core message sender to '{}'", linkSettings.linkPath);
@@ -110,7 +123,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 				sendLinkNamePrefix.concat(TrackingUtil.TRACKING_ID_TOKEN_SEPARATOR).concat(connection.getRemoteContainer()) :
 				sendLinkNamePrefix;
 
-	    final CoreMessageSender msgSender = new CoreMessageSender(factory, clientId, linkSettings);
+	    final CoreMessageSender msgSender = new CoreMessageSender(factory, clientId, entityType, linkSettings);
 		TimeoutTracker openLinkTracker = TimeoutTracker.create(factory.getOperationTimeout());
 		msgSender.initializeLinkOpen(openLinkTracker);
 
@@ -152,7 +165,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
             if(this.requestResponseLinkCreationFuture == null)
             {
                 this.requestResponseLinkCreationFuture = new CompletableFuture<Void>();
-                this.underlyingFactory.obtainRequestResponseLinkAsync(this.sendPath, this.transferDestinationPath).handleAsync((rrlink, ex) ->
+                this.underlyingFactory.obtainRequestResponseLinkAsync(this.sendPath, this.transferDestinationPath, this.entityType).handleAsync((rrlink, ex) ->
                 {
                     if(ex == null)
                     {
@@ -192,11 +205,12 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
         }
     }
 
-	private CoreMessageSender(final MessagingFactory factory, final String sendLinkName, final SenderLinkSettings linkSettings)
+	private CoreMessageSender(final MessagingFactory factory, final String sendLinkName, final MessagingEntityType entityType, final SenderLinkSettings linkSettings)
 	{
 		super(sendLinkName);
 
 		this.sendPath = linkSettings.linkPath;
+		this.entityType = entityType;
 		if (linkSettings.linkProperties != null)
 		{
 			String transferPath = (String)linkSettings.linkProperties.getOrDefault(ClientConstants.LINK_TRANSFER_DESTINATION_PROPERTY, null);
@@ -616,7 +630,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 		ExceptionUtil.completeExceptionally(failedSend.getWork(), exception, this, true);
 	}
 
-	private static SenderLinkSettings getDefaultLinkProperties(String sendPath, String transferDestinationPath, MessagingFactory underlyingFactory)
+	private static SenderLinkSettings getDefaultLinkProperties(String sendPath, String transferDestinationPath, MessagingFactory underlyingFactory, MessagingEntityType entityType)
 	{
 		SenderLinkSettings linkSettings = new SenderLinkSettings();
 		linkSettings.linkPath = sendPath;
@@ -631,6 +645,10 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 		Map<Symbol, Object> linkProperties = new HashMap<>();
 		// ServiceBus expects timeout to be of type unsignedint
 		linkProperties.put(ClientConstants.LINK_TIMEOUT_PROPERTY, UnsignedInteger.valueOf(Util.adjustServerTimeout(underlyingFactory.getOperationTimeout()).toMillis()));
+		if(entityType != null)
+		{
+			linkProperties.put(ClientConstants.ENTITY_TYPE_PROPERTY, entityType.getIntValue());
+		}
 		if (transferDestinationPath != null && !transferDestinationPath.isEmpty())
 		{
 			linkProperties.put(ClientConstants.LINK_TRANSFER_DESTINATION_PROPERTY, transferDestinationPath);

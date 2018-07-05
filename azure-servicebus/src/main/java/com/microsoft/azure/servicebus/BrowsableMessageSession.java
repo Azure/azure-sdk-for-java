@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
+import com.microsoft.azure.servicebus.primitives.MessagingEntityType;
 import com.microsoft.azure.servicebus.primitives.MessagingFactory;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 
@@ -19,8 +20,8 @@ import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 final class BrowsableMessageSession extends MessageSession {
     private static final String INVALID_OPERATION_ERROR_MESSAGE = "Unsupported operation on a browse only session.";
 
-    BrowsableMessageSession(String sessionId, MessagingFactory messagingFactory, String entityPath) {
-        super(messagingFactory, entityPath, sessionId, ReceiveMode.PEEKLOCK);
+    BrowsableMessageSession(String sessionId, MessagingFactory messagingFactory, String entityPath, MessagingEntityType entityType) {
+        super(messagingFactory, entityPath, entityType, sessionId, ReceiveMode.PEEKLOCK);
 //		try {
 //			this.initializeAsync().get();
 //		} catch (InterruptedException | ExecutionException e) {

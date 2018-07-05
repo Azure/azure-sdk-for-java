@@ -7,6 +7,7 @@ import java.net.URI;
 import java.util.concurrent.CompletableFuture;
 
 import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
+import com.microsoft.azure.servicebus.primitives.MessagingEntityType;
 import com.microsoft.azure.servicebus.primitives.MessagingFactory;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 import com.microsoft.azure.servicebus.primitives.Util;
@@ -48,6 +49,10 @@ public final class ClientFactory {
         return Utils.completeFuture(createMessageSenderFromConnectionStringBuilderAsync(amqpConnectionStringBuilder));
     }
     
+    static IMessageSender createMessageSenderFromConnectionStringBuilder(ConnectionStringBuilder amqpConnectionStringBuilder, MessagingEntityType entityType) throws InterruptedException, ServiceBusException {
+        return Utils.completeFuture(createMessageSenderFromConnectionStringBuilderAsync(amqpConnectionStringBuilder, entityType));
+    }
+    
     /**
      * Creates a message sender to the entity using the client settings.
      * @param namespaceName namespace of entity
@@ -73,6 +78,10 @@ public final class ClientFactory {
     public static IMessageSender createMessageSenderFromEntityPath(URI namespaceEndpointURI, String entityPath, ClientSettings clientSettings) throws InterruptedException, ServiceBusException {
         return Utils.completeFuture(createMessageSenderFromEntityPathAsync(namespaceEndpointURI, entityPath, clientSettings));
     }
+    
+    static IMessageSender createMessageSenderFromEntityPath(URI namespaceEndpointURI, String entityPath, MessagingEntityType entityType, ClientSettings clientSettings) throws InterruptedException, ServiceBusException {
+        return Utils.completeFuture(createMessageSenderFromEntityPathAsync(namespaceEndpointURI, entityPath, entityType, clientSettings));
+    }
 
     /**
      * Creates a message sender to the entity.
@@ -84,6 +93,10 @@ public final class ClientFactory {
      */
     public static IMessageSender createMessageSenderFromEntityPath(MessagingFactory messagingFactory, String entityPath) throws InterruptedException, ServiceBusException {
         return Utils.completeFuture(createMessageSenderFromEntityPathAsync(messagingFactory, entityPath));
+    }
+    
+    static IMessageSender createMessageSenderFromEntityPath(MessagingFactory messagingFactory, String entityPath, MessagingEntityType entityType) throws InterruptedException, ServiceBusException {
+        return Utils.completeFuture(createMessageSenderFromEntityPathAsync(messagingFactory, entityPath, entityType));
     }
 
     /**
@@ -127,6 +140,11 @@ public final class ClientFactory {
         return createMessageSenderFromEntityPathAsync(amqpConnectionStringBuilder.getEndpoint(), amqpConnectionStringBuilder.getEntityPath(),  Util.getClientSettingsFromConnectionStringBuilder(amqpConnectionStringBuilder));
     }
     
+    static CompletableFuture<IMessageSender> createMessageSenderFromConnectionStringBuilderAsync(ConnectionStringBuilder amqpConnectionStringBuilder, MessagingEntityType entityType) {
+        Utils.assertNonNull("amqpConnectionStringBuilder", amqpConnectionStringBuilder);
+        return createMessageSenderFromEntityPathAsync(amqpConnectionStringBuilder.getEndpoint(), amqpConnectionStringBuilder.getEntityPath(), entityType, Util.getClientSettingsFromConnectionStringBuilder(amqpConnectionStringBuilder));
+    }
+    
     /**
      * Creates a message sender asynchronously to the entity using the client settings.
      * @param namespaceName namespace name of entity
@@ -150,8 +168,13 @@ public final class ClientFactory {
      */
     public static CompletableFuture<IMessageSender> createMessageSenderFromEntityPathAsync(URI namespaceEndpointURI, String entityPath, ClientSettings clientSettings)
     {
+        return createMessageSenderFromEntityPathAsync(namespaceEndpointURI, entityPath, null, clientSettings);
+    }
+    
+    static CompletableFuture<IMessageSender> createMessageSenderFromEntityPathAsync(URI namespaceEndpointURI, String entityPath, MessagingEntityType entityType, ClientSettings clientSettings)
+    {
         Utils.assertNonNull("namespaceEndpointURI", namespaceEndpointURI);
-        MessageSender sender = new MessageSender(namespaceEndpointURI, entityPath, null, clientSettings);
+        MessageSender sender = new MessageSender(namespaceEndpointURI, entityPath, null, entityType, clientSettings);
         return sender.initializeAsync().thenApply((v) -> sender);
     }
 
@@ -162,8 +185,12 @@ public final class ClientFactory {
      * @return a CompletableFuture representing the pending creating of IMessageSender instance
      */
     public static CompletableFuture<IMessageSender> createMessageSenderFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath) {
+        return createMessageSenderFromEntityPathAsync(messagingFactory, entityPath, null);
+    }
+    
+    static CompletableFuture<IMessageSender> createMessageSenderFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath, MessagingEntityType entityType) {
         Utils.assertNonNull("messagingFactory", messagingFactory);
-        MessageSender sender = new MessageSender(messagingFactory, entityPath);
+        MessageSender sender = new MessageSender(messagingFactory, entityPath, entityType);
         return sender.initializeAsync().thenApply((v) -> sender);
     }
 
@@ -182,7 +209,7 @@ public final class ClientFactory {
     public static CompletableFuture<IMessageSender> createTransferMessageSenderFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath, String viaEntityPath)
     {
         Utils.assertNonNull("messagingFactory", messagingFactory);
-        MessageSender sender = new MessageSender(messagingFactory, viaEntityPath, entityPath);
+        MessageSender sender = new MessageSender(messagingFactory, viaEntityPath, entityPath, null);
         return sender.initializeAsync().thenApply((v) -> sender);
     }
 
@@ -320,6 +347,10 @@ public final class ClientFactory {
     public static IMessageReceiver createMessageReceiverFromEntityPath(MessagingFactory messagingFactory, String entityPath, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException {
         return Utils.completeFuture(createMessageReceiverFromEntityPathAsync(messagingFactory, entityPath, receiveMode));
     }
+    
+    static IMessageReceiver createMessageReceiverFromEntityPath(MessagingFactory messagingFactory, String entityPath, MessagingEntityType entityType, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException {
+        return Utils.completeFuture(createMessageReceiverFromEntityPathAsync(messagingFactory, entityPath, entityType, receiveMode));
+    }
 
     /**
      * Create {@link IMessageReceiver} in default {@link ReceiveMode#PEEKLOCK} mode asynchronously from connection string with <a href="https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-sas">Shared Access Signatures</a>
@@ -411,7 +442,7 @@ public final class ClientFactory {
     public static CompletableFuture<IMessageReceiver> createMessageReceiverFromEntityPathAsync(URI namespaceEndpointURI, String entityPath, ClientSettings clientSettings, ReceiveMode receiveMode) {
         Utils.assertNonNull("namespaceEndpointURI", namespaceEndpointURI);
         Utils.assertNonNull("entityPath", entityPath);
-        MessageReceiver receiver = new MessageReceiver(namespaceEndpointURI, entityPath, clientSettings, receiveMode);
+        MessageReceiver receiver = new MessageReceiver(namespaceEndpointURI, entityPath, null, clientSettings, receiveMode);
         return receiver.initializeAsync().thenApply((v) -> receiver);
     }
 
@@ -433,8 +464,12 @@ public final class ClientFactory {
      * @return a CompletableFuture representing the pending creation of message receiver
      */
     public static CompletableFuture<IMessageReceiver> createMessageReceiverFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath, ReceiveMode receiveMode) {
+        return createMessageReceiverFromEntityPathAsync(messagingFactory, entityPath, null, receiveMode);
+    }
+    
+    static CompletableFuture<IMessageReceiver> createMessageReceiverFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath, MessagingEntityType entityType, ReceiveMode receiveMode) {
         Utils.assertNonNull("messagingFactory", messagingFactory);
-        MessageReceiver receiver = new MessageReceiver(messagingFactory, entityPath, receiveMode);
+        MessageReceiver receiver = new MessageReceiver(messagingFactory, entityPath, entityType, receiveMode);
         return receiver.initializeAsync().thenApply((v) -> receiver);
     }
 
@@ -675,7 +710,7 @@ public final class ClientFactory {
     public static CompletableFuture<IMessageSession> acceptSessionFromEntityPathAsync(URI namespaceEndpointURI, String entityPath, String sessionId, ClientSettings clientSettings, ReceiveMode receiveMode) {
         Utils.assertNonNull("namespaceEndpointURI", namespaceEndpointURI);
         Utils.assertNonNull("entityPath", entityPath);
-        MessageSession session = new MessageSession(namespaceEndpointURI, entityPath, sessionId, clientSettings, receiveMode);
+        MessageSession session = new MessageSession(namespaceEndpointURI, entityPath, null, sessionId, clientSettings, receiveMode);
         return session.initializeAsync().thenApply((v) -> session);
     }
 
@@ -699,8 +734,12 @@ public final class ClientFactory {
      * @return a CompletableFuture representing the pending session accepting
      */
     public static CompletableFuture<IMessageSession> acceptSessionFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath, String sessionId, ReceiveMode receiveMode) {
+        return acceptSessionFromEntityPathAsync(messagingFactory, entityPath, null, sessionId, receiveMode);
+    }
+    
+    static CompletableFuture<IMessageSession> acceptSessionFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath, MessagingEntityType entityType, String sessionId, ReceiveMode receiveMode) {
         Utils.assertNonNull("messagingFactory", messagingFactory);
-        MessageSession session = new MessageSession(messagingFactory, entityPath, sessionId, receiveMode);
+        MessageSession session = new MessageSession(messagingFactory, entityPath, entityType, sessionId, receiveMode);
         return session.initializeAsync().thenApply((v) -> session);
     }
 }

@@ -167,9 +167,8 @@ public class QueueSendReceiveTests extends SendReceiveTests
             boolean caught = false;
             try {
                 pSender.send(message2, transaction);
-            } catch (ServiceBusException ex) {
-                caught = true;
-                Assert.assertTrue(ex.getCause() instanceof UnsupportedOperationException);
+            } catch (UnsupportedOperationException ex) {
+                caught = true;                
             }
 
             Assert.assertTrue(caught);
@@ -188,9 +187,8 @@ public class QueueSendReceiveTests extends SendReceiveTests
             try {
                 caught = false;
                 pReceiver.complete(receivedMessage2.getLockToken(), transaction);
-            } catch (ServiceBusException ex) {
+            } catch (UnsupportedOperationException ex) {
                 caught = true;
-                Assert.assertTrue(ex.getCause() instanceof UnsupportedOperationException);
             }
 
             Assert.assertTrue(caught);

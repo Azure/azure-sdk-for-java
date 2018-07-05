@@ -17,21 +17,29 @@ public final class MiscRequestResponseOperationHandler extends ClientEntity
     
 	private final Object requestResonseLinkCreationLock = new Object();
 	private final String entityPath;
+	private final MessagingEntityType entityType;
 	private final MessagingFactory underlyingFactory;
 	private RequestResponseLink requestResponseLink;
 	private CompletableFuture<Void> requestResponseLinkCreationFuture;
 	
-	private MiscRequestResponseOperationHandler(MessagingFactory factory, String linkName, String entityPath)
+	private MiscRequestResponseOperationHandler(MessagingFactory factory, String linkName, String entityPath, MessagingEntityType entityType)
 	{
 		super(linkName);
 		
 		this.underlyingFactory = factory;
 		this.entityPath = entityPath;
+		this.entityType = entityType;
 	}	
 	
+	@Deprecated
 	public static CompletableFuture<MiscRequestResponseOperationHandler> create(MessagingFactory factory, String entityPath)
 	{
-	    MiscRequestResponseOperationHandler requestResponseOperationHandler = new MiscRequestResponseOperationHandler(factory, StringUtil.getShortRandomString(), entityPath);
+	   return create(factory, entityPath, null);
+	}
+	
+	public static CompletableFuture<MiscRequestResponseOperationHandler> create(MessagingFactory factory, String entityPath, MessagingEntityType entityType)
+	{
+	    MiscRequestResponseOperationHandler requestResponseOperationHandler = new MiscRequestResponseOperationHandler(factory, StringUtil.getShortRandomString(), entityPath, entityType);
 	    return CompletableFuture.completedFuture(requestResponseOperationHandler);		
 	}
 	
@@ -53,7 +61,7 @@ public final class MiscRequestResponseOperationHandler extends ClientEntity
             if(this.requestResponseLinkCreationFuture == null)
             {                
                 this.requestResponseLinkCreationFuture = new CompletableFuture<Void>();
-                this.underlyingFactory.obtainRequestResponseLinkAsync(this.entityPath).handleAsync((rrlink, ex) ->
+                this.underlyingFactory.obtainRequestResponseLinkAsync(this.entityPath, this.entityType).handleAsync((rrlink, ex) ->
                 {
                     if(ex == null)
                     {

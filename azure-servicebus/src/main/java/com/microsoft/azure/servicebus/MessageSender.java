@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import com.microsoft.azure.servicebus.primitives.CoreMessageSender;
 import com.microsoft.azure.servicebus.primitives.ExceptionUtil;
+import com.microsoft.azure.servicebus.primitives.MessagingEntityType;
 import com.microsoft.azure.servicebus.primitives.MessagingFactory;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 import com.microsoft.azure.servicebus.primitives.StringUtil;
@@ -22,18 +23,19 @@ final class MessageSender extends InitializableEntity implements IMessageSender 
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(MessageSender.class);
     private boolean ownsMessagingFactory;
     private String entityPath = null;
+    private MessagingEntityType entityType = null;
     private String transferDestinationPath = null;
     private MessagingFactory messagingFactory = null;
     private CoreMessageSender internalSender = null;
     private boolean isInitialized = false;
     private URI namespaceEndpointURI;
-    private ClientSettings clientSettings;
+    private ClientSettings clientSettings;    
 
     private MessageSender() {
         super(StringUtil.getShortRandomString());
     }
 
-    MessageSender(URI namespaceEndpointURI, String entityPath, String transferDestinationPath, ClientSettings clientSettings) {
+    MessageSender(URI namespaceEndpointURI, String entityPath, String transferDestinationPath, MessagingEntityType entityType, ClientSettings clientSettings) {
         this();
 
         this.namespaceEndpointURI = namespaceEndpointURI;
@@ -41,23 +43,25 @@ final class MessageSender extends InitializableEntity implements IMessageSender 
         this.entityPath = entityPath;
         this.clientSettings = clientSettings;
         this.ownsMessagingFactory = true;
+        this.entityType = entityType;
     }
 
-    MessageSender(MessagingFactory messagingFactory, String entityPath) {
-        this(messagingFactory, entityPath, null, false);
+    MessageSender(MessagingFactory messagingFactory, String entityPath, MessagingEntityType entityType) {
+        this(messagingFactory, entityPath, null, entityType, false);
     }
 
-    MessageSender(MessagingFactory messagingFactory, String entityPath, String transferDestinationPath) {
-        this(messagingFactory, entityPath, transferDestinationPath, false);
+    MessageSender(MessagingFactory messagingFactory, String entityPath, String transferDestinationPath, MessagingEntityType entityType) {
+        this(messagingFactory, entityPath, transferDestinationPath, entityType, false);
     }
 
-    private MessageSender(MessagingFactory messagingFactory, String entityPath, String transferDestinationPath, boolean ownsMessagingFactory) {
+    private MessageSender(MessagingFactory messagingFactory, String entityPath, String transferDestinationPath, MessagingEntityType entityType, boolean ownsMessagingFactory) {
         this();
 
         this.messagingFactory = messagingFactory;
         this.entityPath = entityPath;
         this.transferDestinationPath = transferDestinationPath;
         this.ownsMessagingFactory = ownsMessagingFactory;
+        this.entityType = entityType;
     }
 
     @Override
@@ -84,7 +88,7 @@ final class MessageSender extends InitializableEntity implements IMessageSender 
             return factoryFuture.thenComposeAsync((v) ->
             {
                 TRACE_LOGGER.info("Creating MessageSender to entity '{}'", this.entityPath);
-                CompletableFuture<CoreMessageSender> senderFuture = CoreMessageSender.create(this.messagingFactory, StringUtil.getShortRandomString(), this.entityPath, this.transferDestinationPath);
+                CompletableFuture<CoreMessageSender> senderFuture = CoreMessageSender.create(this.messagingFactory, StringUtil.getShortRandomString(), this.entityPath, this.transferDestinationPath, this.entityType);
                 CompletableFuture<Void> postSenderCreationFuture = new CompletableFuture<Void>();
                 senderFuture.handleAsync((s, coreSenderCreationEx) -> {
                     if (coreSenderCreationEx == null) {

@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
 import com.microsoft.azure.servicebus.primitives.ExceptionUtil;
+import com.microsoft.azure.servicebus.primitives.MessagingEntityType;
 import com.microsoft.azure.servicebus.primitives.MessagingFactory;
 import com.microsoft.azure.servicebus.primitives.MiscRequestResponseOperationHandler;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
@@ -77,12 +78,12 @@ public final class QueueClient extends InitializableEntity implements IQueueClie
     private CompletableFuture<Void> createInternals(MessagingFactory factory, String queuePath, ReceiveMode receiveMode) {
         this.factory = factory;
 
-        CompletableFuture<Void> postSessionBrowserFuture = MiscRequestResponseOperationHandler.create(factory, queuePath).thenAcceptAsync((msoh) -> {
+        CompletableFuture<Void> postSessionBrowserFuture = MiscRequestResponseOperationHandler.create(factory, queuePath, MessagingEntityType.QUEUE).thenAcceptAsync((msoh) -> {
             this.miscRequestResponseHandler = msoh;
-            this.sessionBrowser = new SessionBrowser(factory, queuePath, msoh);
+            this.sessionBrowser = new SessionBrowser(factory, queuePath, MessagingEntityType.QUEUE, msoh);
         });
 
-        this.messageAndSessionPump = new MessageAndSessionPump(factory, queuePath, receiveMode);
+        this.messageAndSessionPump = new MessageAndSessionPump(factory, queuePath, MessagingEntityType.QUEUE, receiveMode);
         CompletableFuture<Void> messagePumpInitFuture = this.messageAndSessionPump.initializeAsync();
 
         return CompletableFuture.allOf(postSessionBrowserFuture, messagePumpInitFuture);
@@ -94,7 +95,7 @@ public final class QueueClient extends InitializableEntity implements IQueueClie
             if(this.senderCreationFuture == null)
             {
                 this.senderCreationFuture = new CompletableFuture<Void>();
-                ClientFactory.createMessageSenderFromEntityPathAsync(this.factory, this.queuePath).handleAsync((sender, ex) ->
+                ClientFactory.createMessageSenderFromEntityPathAsync(this.factory, this.queuePath, MessagingEntityType.QUEUE).handleAsync((sender, ex) ->
                 {
                     if(ex == null)
                     {

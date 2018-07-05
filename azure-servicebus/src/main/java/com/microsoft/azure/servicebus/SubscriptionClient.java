@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
+import com.microsoft.azure.servicebus.primitives.MessagingEntityType;
 import com.microsoft.azure.servicebus.primitives.MessagingFactory;
 import com.microsoft.azure.servicebus.primitives.MiscRequestResponseOperationHandler;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
@@ -79,12 +80,12 @@ public final class SubscriptionClient extends InitializableEntity implements ISu
 	private CompletableFuture<Void> createPumpAndBrowserAsync(MessagingFactory factory)
 	{
 	    this.factory = factory;
-		CompletableFuture<Void> postSessionBrowserFuture = MiscRequestResponseOperationHandler.create(factory, this.subscriptionPath).thenAcceptAsync((msoh) -> {
+		CompletableFuture<Void> postSessionBrowserFuture = MiscRequestResponseOperationHandler.create(factory, this.subscriptionPath, MessagingEntityType.SUBSCRIPTION).thenAcceptAsync((msoh) -> {
 			this.miscRequestResponseHandler = msoh;
-			this.sessionBrowser = new SessionBrowser(factory, this.subscriptionPath, msoh);
+			this.sessionBrowser = new SessionBrowser(factory, this.subscriptionPath, MessagingEntityType.SUBSCRIPTION, msoh);
 		});		
 		
-		this.messageAndSessionPump = new MessageAndSessionPump(factory, this.subscriptionPath, receiveMode);
+		this.messageAndSessionPump = new MessageAndSessionPump(factory, this.subscriptionPath, MessagingEntityType.SUBSCRIPTION, receiveMode);
 		CompletableFuture<Void> messagePumpInitFuture = this.messageAndSessionPump.initializeAsync();
 		
 		return CompletableFuture.allOf(postSessionBrowserFuture, messagePumpInitFuture);

@@ -693,16 +693,16 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
         return Timer.schedule(validityRenewer, Duration.ofSeconds(renewInterval), TimerType.OneTimeRun);
 	}
 	
-	CompletableFuture<RequestResponseLink> obtainRequestResponseLinkAsync(String entityPath)
+	CompletableFuture<RequestResponseLink> obtainRequestResponseLinkAsync(String entityPath, MessagingEntityType entityType)
 	{
 	    this.throwIfClosed(null);
-	    return this.managementLinksCache.obtainRequestResponseLinkAsync(entityPath, null);
+	    return this.managementLinksCache.obtainRequestResponseLinkAsync(entityPath, null, entityType);
 	}
 
-    CompletableFuture<RequestResponseLink> obtainRequestResponseLinkAsync(String entityPath, String transferDestinationPath)
+    CompletableFuture<RequestResponseLink> obtainRequestResponseLinkAsync(String entityPath, String transferDestinationPath, MessagingEntityType entityType)
     {
         this.throwIfClosed(null);
-        return this.managementLinksCache.obtainRequestResponseLinkAsync(entityPath, transferDestinationPath);
+        return this.managementLinksCache.obtainRequestResponseLinkAsync(entityPath, transferDestinationPath, entityType);
     }
 	
 	void releaseRequestResponseLink(String entityPath)
@@ -734,7 +734,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
 	        String requestResponseLinkPath = RequestResponseLink.getCBSNodeLinkPath();
 	        TRACE_LOGGER.info("Creating CBS link to {}", requestResponseLinkPath);
 	        CompletableFuture<Void> crateAndAssignRequestResponseLink =
-	                        RequestResponseLink.createAsync(this, this.getClientId() + "-cbs", requestResponseLinkPath, null, null, null)
+	                        RequestResponseLink.createAsync(this, this.getClientId() + "-cbs", requestResponseLinkPath, null, null, null, null)
                                     .handleAsync((cbsLink, ex) ->
 	                        {
 	                            if(ex == null)

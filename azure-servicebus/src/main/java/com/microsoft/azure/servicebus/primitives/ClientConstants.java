@@ -65,6 +65,7 @@ public final class ClientConstants
     public static final Symbol ENTITY_ALREADY_EXISTS_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":entity-already-exists");
     public static final Symbol SESSION_FILTER = Symbol.getSymbol(AmqpConstants.VENDOR + ":session-filter");
     public static final Symbol LOCKED_UNTIL_UTC = Symbol.getSymbol(AmqpConstants.VENDOR + ":locked-until-utc");
+	public final static Symbol ENTITY_TYPE_PROPERTY = Symbol.getSymbol(AmqpConstants.VENDOR + ":entity-type");
 	
 	public static final String DEADLETTER_REASON_HEADER = "DeadLetterReason";
     public static final String DEADLETTER_ERROR_DESCRIPTION_HEADER = "DeadLetterErrorDescription";

@@ -59,6 +59,7 @@ class RequestResponseLink extends ClientEntity{
 	private InternalSender amqpSender;
 	private boolean isRecreateLinksInProgress;
 	private Map<Symbol, Object> additionalProperties;
+	private MessagingEntityType entityType;
 	
 	public static CompletableFuture<RequestResponseLink> createAsync(
 			MessagingFactory messagingFactory,
@@ -66,7 +67,8 @@ class RequestResponseLink extends ClientEntity{
 			String linkPath,
 			String sasTokenAudienceURI,
 			String additionalAudience,
-			Map<Symbol, Object> additionalProperties)
+			Map<Symbol, Object> additionalProperties,
+			MessagingEntityType entityType)
 	{
 		final RequestResponseLink requestReponseLink = new RequestResponseLink(
 				messagingFactory,
@@ -74,7 +76,8 @@ class RequestResponseLink extends ClientEntity{
 				linkPath,
 				sasTokenAudienceURI,
 				additionalAudience,
-				additionalProperties);
+				additionalProperties,
+				entityType);
 		
 		Timer.schedule(
 				new Runnable()
@@ -162,7 +165,8 @@ class RequestResponseLink extends ClientEntity{
 			String linkPath,
 			String sasTokenAudienceURI,
 			String additionalAudience,
-			Map<Symbol, Object> additionalProperties)
+			Map<Symbol, Object> additionalProperties,
+			MessagingEntityType entityType)
 	{
 		super(linkName);
 		
@@ -179,6 +183,7 @@ class RequestResponseLink extends ClientEntity{
 		this.requestCounter = new AtomicInteger();
 		this.replyTo = UUID.randomUUID().toString();
 		this.createFuture = new CompletableFuture<RequestResponseLink>();
+		this.entityType = entityType;
 	}
 	
 	public String getLinkPath()
@@ -220,6 +225,10 @@ class RequestResponseLink extends ClientEntity{
 		Map<Symbol, Object> commonLinkProperties = new HashMap<>();
 		// ServiceBus expects timeout to be of type unsignedint
 		commonLinkProperties.put(ClientConstants.LINK_TIMEOUT_PROPERTY, UnsignedInteger.valueOf(Util.adjustServerTimeout(this.underlyingFactory.getOperationTimeout()).toMillis()));
+		if(this.entityType != null)
+		{
+			commonLinkProperties.put(ClientConstants.ENTITY_TYPE_PROPERTY, this.entityType.getIntValue());
+		}
 		if (this.additionalProperties != null) {
 			commonLinkProperties.putAll(this.additionalProperties);
 		}

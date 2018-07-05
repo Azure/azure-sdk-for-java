@@ -18,9 +18,20 @@ public final class Utils {
             throw ie;
         } catch (ExecutionException ee) {
             Throwable cause = ee.getCause();
-            if (cause instanceof ServiceBusException) {
+            if(cause instanceof RuntimeException)
+            {
+            	throw (RuntimeException)cause;
+            }
+            else if (cause instanceof Error)
+            {
+            	throw (Error)cause;
+            }
+            else if (cause instanceof ServiceBusException)
+            {
                 throw (ServiceBusException) cause;
-            } else {
+            }
+            else
+            {
                 throw new ServiceBusException(true, cause);
             }
         }

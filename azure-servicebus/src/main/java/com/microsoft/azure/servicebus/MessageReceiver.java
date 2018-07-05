@@ -25,6 +25,7 @@ import com.microsoft.azure.servicebus.primitives.ClientConstants;
 import com.microsoft.azure.servicebus.primitives.CoreMessageReceiver;
 import com.microsoft.azure.servicebus.primitives.MessageWithDeliveryTag;
 import com.microsoft.azure.servicebus.primitives.MessageWithLockToken;
+import com.microsoft.azure.servicebus.primitives.MessagingEntityType;
 import com.microsoft.azure.servicebus.primitives.MessagingFactory;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 import com.microsoft.azure.servicebus.primitives.SettleModePair;
@@ -45,11 +46,12 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
     private URI namespaceEndpointURI;
     private ClientSettings clientSettings;
     private String entityPath = null;
+    private MessagingEntityType entityType = null;
     private MessagingFactory messagingFactory = null;
     private CoreMessageReceiver internalReceiver = null;
     private boolean isInitialized = false;
     private MessageBrowser browser = null;
-    private int messagePrefetchCount;
+    private int messagePrefetchCount;    
 
     private final ConcurrentHashMap<UUID, Instant> requestResponseLockTokensToLockTimesMap;
 
@@ -64,25 +66,27 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
         }
     }
 
-    private MessageReceiver(MessagingFactory messagingFactory, String entityPath, boolean ownsMessagingFactory, ReceiveMode receiveMode) {
+    private MessageReceiver(MessagingFactory messagingFactory, String entityPath, MessagingEntityType entityType, boolean ownsMessagingFactory, ReceiveMode receiveMode) {
         this(receiveMode);
 
         this.messagingFactory = messagingFactory;
         this.entityPath = entityPath;
+        this.entityType = entityType;
         this.ownsMessagingFactory = ownsMessagingFactory;
     }
     
-    MessageReceiver(URI namespaceEndpointURI, String entityPath, ClientSettings clientSettings, ReceiveMode receiveMode) {
+    MessageReceiver(URI namespaceEndpointURI, String entityPath, MessagingEntityType entityType, ClientSettings clientSettings, ReceiveMode receiveMode) {
         this(receiveMode);
 
         this.namespaceEndpointURI = namespaceEndpointURI;
         this.clientSettings = clientSettings;
         this.entityPath = entityPath;
+        this.entityType = entityType;
         this.ownsMessagingFactory = true;
     }
 
-    MessageReceiver(MessagingFactory messagingFactory, String entityPath, ReceiveMode receiveMode) {
-        this(messagingFactory, entityPath, false, receiveMode);
+    MessageReceiver(MessagingFactory messagingFactory, String entityPath, MessagingEntityType entityType, ReceiveMode receiveMode) {
+        this(messagingFactory, entityPath, entityType, false, receiveMode);
     }
 
     @Override
@@ -114,10 +118,10 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
                     CompletableFuture<CoreMessageReceiver> receiverFuture;
                     if (MessageReceiver.this.isSessionReceiver()) {
                         TRACE_LOGGER.info("Creating SessionReceiver to entity '{}', requestedSessionId '{}', browsable session '{}', ReceiveMode '{}'", this.entityPath, this.getRequestedSessionId(), this.isBrowsableSession(), this.receiveMode);
-                        receiverFuture = CoreMessageReceiver.create(this.messagingFactory, StringUtil.getShortRandomString(), this.entityPath, this.getRequestedSessionId(), this.isBrowsableSession(), this.messagePrefetchCount, getSettleModePairForRecevieMode(this.receiveMode));
+                        receiverFuture = CoreMessageReceiver.create(this.messagingFactory, StringUtil.getShortRandomString(), this.entityPath, this.getRequestedSessionId(), this.isBrowsableSession(), this.messagePrefetchCount, getSettleModePairForRecevieMode(this.receiveMode), this.entityType);
                     } else {
                         TRACE_LOGGER.info("Creating MessageReceiver to entity '{}', ReceiveMode '{}'", this.entityPath, this.receiveMode);
-                        receiverFuture = CoreMessageReceiver.create(this.messagingFactory, StringUtil.getShortRandomString(), this.entityPath, this.messagePrefetchCount, getSettleModePairForRecevieMode(this.receiveMode));
+                        receiverFuture = CoreMessageReceiver.create(this.messagingFactory, StringUtil.getShortRandomString(), this.entityPath, this.messagePrefetchCount, getSettleModePairForRecevieMode(this.receiveMode), this.entityType);
                     }
 
                     acceptReceiverFuture = receiverFuture.whenCompleteAsync((r, coreReceiverCreationEx) ->

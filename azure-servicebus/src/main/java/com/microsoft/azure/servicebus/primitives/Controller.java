@@ -43,6 +43,7 @@ class Controller {
             CompletableFuture<CoreMessageSender> senderFuture = CoreMessageSender.create(
                     this.messagingFactory,
                     StringUtil.getShortRandomString(),
+                    null,
                     Controller.getControllerLinkSettings(this.messagingFactory));
             CompletableFuture<Void> postSenderCreationFuture = new CompletableFuture<Void>();
             senderFuture.handleAsync((s, coreSenderCreationEx) -> {

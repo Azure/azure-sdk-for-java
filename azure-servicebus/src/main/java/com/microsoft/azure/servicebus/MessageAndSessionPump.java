@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import com.microsoft.azure.servicebus.primitives.ExceptionUtil;
 import com.microsoft.azure.servicebus.primitives.MessageLockLostException;
+import com.microsoft.azure.servicebus.primitives.MessagingEntityType;
 import com.microsoft.azure.servicebus.primitives.MessagingFactory;
 import com.microsoft.azure.servicebus.primitives.OperationCancelledException;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
@@ -36,6 +37,7 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
     private final MessagingFactory factory;
     private final String entityPath;
     private final ReceiveMode receiveMode;
+    private final MessagingEntityType entityType;
     private IMessageReceiver innerReceiver;
 
     private boolean handlerRegistered = false;
@@ -45,10 +47,11 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
     private SessionHandlerOptions sessionHandlerOptions;
     private int prefetchCount;
 
-    public MessageAndSessionPump(MessagingFactory factory, String entityPath, ReceiveMode receiveMode) {
+    public MessageAndSessionPump(MessagingFactory factory, String entityPath, MessagingEntityType entityType, ReceiveMode receiveMode) {
         super(StringUtil.getShortRandomString());
         this.factory = factory;
         this.entityPath = entityPath;
+        this.entityType = entityType;
         this.receiveMode = receiveMode;
         this.openSessions = new ConcurrentHashMap<>();
         this.prefetchCount = UNSET_PREFETCH_COUNT;
@@ -66,7 +69,7 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
         this.messageHandler = handler;
         this.messageHandlerOptions = handlerOptions;
 
-        this.innerReceiver = ClientFactory.createMessageReceiverFromEntityPath(this.factory, this.entityPath, this.receiveMode);
+        this.innerReceiver = ClientFactory.createMessageReceiverFromEntityPath(this.factory, this.entityPath, this.entityType, this.receiveMode);
         TRACE_LOGGER.info("Created MessageReceiver to entity '{}'", this.entityPath);
         if(this.prefetchCount != UNSET_PREFETCH_COUNT)
         {
@@ -210,7 +213,7 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
     private void acceptSessionAndPumpMessages() {
         if (!this.getIsClosingOrClosed()) {
             TRACE_LOGGER.debug("Accepting a session from entity '{}'", this.entityPath);
-            CompletableFuture<IMessageSession> acceptSessionFuture = ClientFactory.acceptSessionFromEntityPathAsync(this.factory, this.entityPath, null, this.receiveMode);
+            CompletableFuture<IMessageSession> acceptSessionFuture = ClientFactory.acceptSessionFromEntityPathAsync(this.factory, this.entityPath, this.entityType, null, this.receiveMode);
             acceptSessionFuture.handleAsync((session, acceptSessionEx) -> {
                 if (acceptSessionEx != null) {
                     acceptSessionEx = ExceptionUtil.extractAsyncCompletionCause(acceptSessionEx);

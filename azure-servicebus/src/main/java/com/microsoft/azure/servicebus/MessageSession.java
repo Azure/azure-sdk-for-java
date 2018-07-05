@@ -7,19 +7,20 @@ import java.net.URI;
 import java.time.Instant;
 import java.util.concurrent.CompletableFuture;
 
+import com.microsoft.azure.servicebus.primitives.MessagingEntityType;
 import com.microsoft.azure.servicebus.primitives.MessagingFactory;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 
 public class MessageSession extends MessageReceiver implements IMessageSession {
     private String requestedSessionId;
     
-    MessageSession(URI namespaceEndpointURI, String entityPath, String requestedSessionId, ClientSettings clientSettings, ReceiveMode receiveMode) {
-        super(namespaceEndpointURI, entityPath, clientSettings, receiveMode);
+    MessageSession(URI namespaceEndpointURI, String entityPath, MessagingEntityType entityType, String requestedSessionId, ClientSettings clientSettings, ReceiveMode receiveMode) {
+        super(namespaceEndpointURI, entityPath, entityType, clientSettings, receiveMode);
         this.requestedSessionId = requestedSessionId;
     }
 
-    MessageSession(MessagingFactory messagingFactory, String entityPath, String requestedSessionId, ReceiveMode receiveMode) {
-        super(messagingFactory, entityPath, receiveMode);
+    MessageSession(MessagingFactory messagingFactory, String entityPath, MessagingEntityType entityType, String requestedSessionId, ReceiveMode receiveMode) {
+        super(messagingFactory, entityPath, entityType, receiveMode);
         this.requestedSessionId = requestedSessionId;
     }
 
