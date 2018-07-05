@@ -27,6 +27,9 @@ import com.microsoft.rest.v2.RestException;
  * Note that even some expected "errors" will be thrown as a {@code StorageException}. For example, some users may
  * perform a getProperties request on an entity to determine whether it exists or not. If it does not exists, an
  * exception will be thrown even though this may be considered an expected indication of absence in this case.
+ *
+ * @apiNote
+ * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=exception "Sample code for StorageExceptions")]
  */
 public final class StorageException extends RestException{
 

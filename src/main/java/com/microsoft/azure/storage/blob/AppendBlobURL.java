@@ -95,7 +95,7 @@ public final class AppendBlobURL extends BlobURL {
      * the <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
      *
      * @apiNote
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=ab_create "Sample code for AppendBlobURL.create")]
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_blob "Sample code for AppendBlobURL.create")]
      *
      * @param headers
      *      {@link BlobHTTPHeaders}
@@ -132,6 +132,9 @@ public final class AppendBlobURL extends BlobURL {
     /**
      * Commits a new block of data to the end of the existing append blob. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/append-block">Azure Docs</a>.
+     *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_blob "Sample code for AppendBlobURL.appendBlock")]
      *
      * @param data
      *      The data to write to the blob.

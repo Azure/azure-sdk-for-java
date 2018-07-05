@@ -105,6 +105,9 @@ public final class BlockBlobURL extends BlobURL {
      *
      * For more efficient bulk-upload scenarios, please refer to the {@link TransferManager} for convenience methods.
      *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=upload_download "Sample code for BlockBlobURL.upload")]
+     *
      * @param data
      *      The data to write to the blob.
      * @param length
@@ -147,6 +150,9 @@ public final class BlockBlobURL extends BlobURL {
      * commitBlockList. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs</a>.
      *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blocks "Sample code for BlockBlobURL.stageBlock")]
+     *
      * @param base64BlockID
      *      A Base64 encoded {@code String} that specifies the ID for this block. Note that all block ids must be the
      *      same length.
@@ -173,6 +179,9 @@ public final class BlockBlobURL extends BlobURL {
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-block-list">Azure Docs</a>.
      *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blocks "Sample code for BlockBlobURL.getBlockList")]
+     *
      * @param listType
      *      Specifies which type of blocks to return.
      * @param leaseAccessConditions
@@ -198,6 +207,9 @@ public final class BlockBlobURL extends BlobURL {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure Docs</a>.
      *
      * For more efficient bulk-upload scenarios, please refer to the {@link TransferManager} for convenience methods.
+     *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blocks "Sample code for BlockBlobURL.commitBlockList")]
      *
      * @param base64BlockIDs
      *      A list of base64 encode {@code String}s that specifies the block IDs to be committed.

@@ -134,6 +134,8 @@ public class BlobURL extends StorageURL {
      * Copies the data at the source URL to a blob. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a>
      *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=start_copy "Sample code for BlobURL.startCopyFromURL")]
      *
      * @param sourceURL
      *      The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
@@ -173,6 +175,9 @@ public class BlobURL extends StorageURL {
      * more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/abort-copy-blob">Azure Docs</a>.
      *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=abort_copy "Sample code for BlobURL.abortCopyFromURL")]
+     *
      * @param copyId
      *      The id of the copy operation to abort. Returned as the {@code copyId} field on the
      *      {@link BlobStartCopyFromURLHeaders} object.
@@ -195,7 +200,12 @@ public class BlobURL extends StorageURL {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a>.
      *
      * Please consider using the {@link RetryReader} in conjunction with this method to achieve more reliable downloads
-     * that are resilient to transient network failures.
+     * that are resilient to transient network failures. A convenient way to do this is to simply pass non-null options
+     * to {@link DownloadResponse#body(RetryReaderOptions)}, and a RetryReader will be applied to the body
+     * automatically.
+     *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=upload_download "Sample code for BlobURL.download")]
      *
      * @param range
      *      {@link BlobRange}
@@ -341,6 +351,9 @@ public class BlobURL extends StorageURL {
     /**
      * Creates a read-only snapshot of a blob. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/snapshot-blob">Azure Docs</a>.
+     *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=snapshot "Sample code for BlobURL.createSnapshot")]
      *
      * @param metadata
      *      {@link Metadata}
