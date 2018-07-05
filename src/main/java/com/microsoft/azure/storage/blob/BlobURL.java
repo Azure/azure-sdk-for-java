@@ -17,10 +17,14 @@ package com.microsoft.azure.storage.blob;
 import com.microsoft.azure.storage.blob.models.*;
 import com.microsoft.rest.v2.http.HttpPipeline;
 import io.reactivex.Single;
+import io.reactivex.SingleSource;
+import io.reactivex.functions.Function;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
+
+import static com.microsoft.azure.storage.blob.Utility.*;
 
 /**
  * Represents a URL to a blob of any type: block, append, or page. It may be obtained by direct construction or via the
@@ -149,7 +153,7 @@ public class BlobURL extends StorageURL {
         sourceAccessConditions = sourceAccessConditions == null ? BlobAccessConditions.NONE : sourceAccessConditions;
         destAccessConditions = destAccessConditions == null ? BlobAccessConditions.NONE : destAccessConditions;
 
-        return this.storageClient.generatedBlobs().startCopyFromURLWithRestResponseAsync(
+        return addErrorWrappingToSingle(this.storageClient.generatedBlobs().startCopyFromURLWithRestResponseAsync(
                 sourceURL, null, metadata,
                 sourceAccessConditions.getHttpAccessConditions().getIfModifiedSince(),
                 sourceAccessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
@@ -161,7 +165,7 @@ public class BlobURL extends StorageURL {
                 destAccessConditions.getHttpAccessConditions().getIfNoneMatch().toString(),
                 destAccessConditions.getLeaseAccessConditions().getLeaseId(),
                 sourceAccessConditions.getLeaseAccessConditions().getLeaseId(),
-                null);
+                null));
     }
 
     /**
@@ -181,14 +185,17 @@ public class BlobURL extends StorageURL {
             String copyId, LeaseAccessConditions leaseAccessConditions) {
         leaseAccessConditions = leaseAccessConditions == null ? LeaseAccessConditions.NONE : leaseAccessConditions;
 
-        return this.storageClient.generatedBlobs().abortCopyFromURLWithRestResponseAsync(
-                copyId, null, leaseAccessConditions.getLeaseId(), null);
+        return addErrorWrappingToSingle(this.storageClient.generatedBlobs().abortCopyFromURLWithRestResponseAsync(
+                copyId, null, leaseAccessConditions.getLeaseId(), null));
     }
 
     /**
      * Reads a range of bytes from a blob. The response also includes the blob's properties and metadata. For more
      * information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a>.
+     *
+     * Please consider using the {@link RetryReader} in conjunction with this method to achieve more reliable downloads
+     * that are resilient to transient network failures.
      *
      * @param range
      *      {@link BlobRange}
@@ -199,14 +206,14 @@ public class BlobURL extends StorageURL {
      * @return
      *      Emits the successful response.
      */
-    public Single<BlobsDownloadResponse> download(
+    public Single<DownloadResponse> download(
             BlobRange range, BlobAccessConditions accessConditions, boolean rangeGetContentMD5) {
 
         Boolean getMD5 = rangeGetContentMD5 ? rangeGetContentMD5 : null;
         range = range == null ? BlobRange.DEFAULT : range;
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
 
-        return this.storageClient.generatedBlobs().downloadWithRestResponseAsync(
+        return addErrorWrappingToSingle(this.storageClient.generatedBlobs().downloadWithRestResponseAsync(
                 null, null, range.toString(),
                 accessConditions.getLeaseAccessConditions().getLeaseId(),
                 getMD5,
@@ -214,7 +221,11 @@ public class BlobURL extends StorageURL {
                 accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
                 accessConditions.getHttpAccessConditions().getIfMatch().toString(),
                 accessConditions.getHttpAccessConditions().getIfNoneMatch().toString(),
-                null);
+                null))
+                .map(response ->
+                        new DownloadResponse(response.statusCode(), response.headers(),
+                                response.rawHeaders(), response.body()));
+
     }
 
     /**
@@ -235,7 +246,7 @@ public class BlobURL extends StorageURL {
             DeleteSnapshotsOptionType deleteBlobSnapshotOptions, BlobAccessConditions accessConditions) {
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
 
-        return this.storageClient.generatedBlobs().deleteWithRestResponseAsync(
+        return addErrorWrappingToSingle(this.storageClient.generatedBlobs().deleteWithRestResponseAsync(
                 null, null,
                 accessConditions.getLeaseAccessConditions().getLeaseId(),
                 deleteBlobSnapshotOptions,
@@ -243,7 +254,7 @@ public class BlobURL extends StorageURL {
                 accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
                 accessConditions.getHttpAccessConditions().getIfMatch().toString(),
                 accessConditions.getHttpAccessConditions().getIfNoneMatch().toString(),
-                null);
+                null));
     }
 
     /**
@@ -259,14 +270,14 @@ public class BlobURL extends StorageURL {
             BlobAccessConditions accessConditions) {
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
 
-        return this.storageClient.generatedBlobs().getPropertiesWithRestResponseAsync(
+        return addErrorWrappingToSingle(this.storageClient.generatedBlobs().getPropertiesWithRestResponseAsync(
                 null, null,
                 accessConditions.getLeaseAccessConditions().getLeaseId(),
                 accessConditions.getHttpAccessConditions().getIfModifiedSince(),
                 accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
                 accessConditions.getHttpAccessConditions().getIfMatch().toString(),
                 accessConditions.getHttpAccessConditions().getIfNoneMatch().toString(),
-                null);
+                null));
     }
 
     /**
@@ -285,7 +296,7 @@ public class BlobURL extends StorageURL {
         headers = headers == null ? BlobHTTPHeaders.NONE : headers;
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
 
-        return this.storageClient.generatedBlobs().setHTTPHeadersWithRestResponseAsync(
+        return addErrorWrappingToSingle(this.storageClient.generatedBlobs().setHTTPHeadersWithRestResponseAsync(
                 null,
                 headers.getCacheControl(),
                 headers.getContentType(),
@@ -298,7 +309,7 @@ public class BlobURL extends StorageURL {
                 accessConditions.getHttpAccessConditions().getIfMatch().toString(),
                 accessConditions.getHttpAccessConditions().getIfNoneMatch().toString(),
                 headers.getContentDisposition(),
-                null);
+                null));
     }
 
     /**
@@ -317,14 +328,14 @@ public class BlobURL extends StorageURL {
         metadata = metadata == null ? Metadata.NONE : metadata;
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
 
-        return this.storageClient.generatedBlobs().setMetadataWithRestResponseAsync(
+        return addErrorWrappingToSingle(this.storageClient.generatedBlobs().setMetadataWithRestResponseAsync(
                 null, metadata,
                 accessConditions.getLeaseAccessConditions().getLeaseId(),
                 accessConditions.getHttpAccessConditions().getIfModifiedSince(),
                 accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
                 accessConditions.getHttpAccessConditions().getIfMatch().toString(),
                 accessConditions.getHttpAccessConditions().getIfNoneMatch().toString(),
-                null);
+                null));
     }
 
     /**
@@ -343,14 +354,14 @@ public class BlobURL extends StorageURL {
         metadata = metadata == null ? Metadata.NONE : metadata;
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
 
-        return this.storageClient.generatedBlobs().createSnapshotWithRestResponseAsync(
+        return addErrorWrappingToSingle(this.storageClient.generatedBlobs().createSnapshotWithRestResponseAsync(
                 null, metadata,
                 accessConditions.getHttpAccessConditions().getIfModifiedSince(),
                 accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
                 accessConditions.getHttpAccessConditions().getIfMatch().toString(),
                 accessConditions.getHttpAccessConditions().getIfNoneMatch().toString(),
                 accessConditions.getLeaseAccessConditions().getLeaseId(),
-                null);
+                null));
     }
 
     /**
@@ -377,13 +388,13 @@ public class BlobURL extends StorageURL {
             throw new IllegalArgumentException("Duration must be -1 or between 15 and 60.");
         }
 
-        return this.storageClient.generatedBlobs().acquireLeaseWithRestResponseAsync(
+        return addErrorWrappingToSingle(this.storageClient.generatedBlobs().acquireLeaseWithRestResponseAsync(
                 null, duration, proposedID,
                 httpAccessConditions.getIfModifiedSince(),
                 httpAccessConditions.getIfUnmodifiedSince(),
                 httpAccessConditions.getIfMatch().toString(),
                 httpAccessConditions.getIfNoneMatch().toString(),
-                null);
+                null));
     }
 
     /**
@@ -401,13 +412,13 @@ public class BlobURL extends StorageURL {
             String leaseID, HTTPAccessConditions httpAccessConditions) {
         httpAccessConditions = httpAccessConditions == null ? HTTPAccessConditions.NONE : httpAccessConditions;
 
-        return this.storageClient.generatedBlobs().renewLeaseWithRestResponseAsync(
+        return addErrorWrappingToSingle(this.storageClient.generatedBlobs().renewLeaseWithRestResponseAsync(
                 leaseID, null,
                 httpAccessConditions.getIfModifiedSince(),
                 httpAccessConditions.getIfUnmodifiedSince(),
                 httpAccessConditions.getIfMatch().toString(),
                 httpAccessConditions.getIfNoneMatch().toString(),
-                null);
+                null));
     }
 
     /**
@@ -425,13 +436,13 @@ public class BlobURL extends StorageURL {
             String leaseID, HTTPAccessConditions httpAccessConditions) {
         httpAccessConditions = httpAccessConditions == null ? HTTPAccessConditions.NONE : httpAccessConditions;
 
-        return this.storageClient.generatedBlobs().releaseLeaseWithRestResponseAsync(
+        return addErrorWrappingToSingle(this.storageClient.generatedBlobs().releaseLeaseWithRestResponseAsync(
                 leaseID, null,
                 httpAccessConditions.getIfModifiedSince(),
                 httpAccessConditions.getIfUnmodifiedSince(),
                 httpAccessConditions.getIfMatch().toString(),
                 httpAccessConditions.getIfNoneMatch().toString(),
-                null);
+                null));
     }
 
     /**
@@ -453,13 +464,13 @@ public class BlobURL extends StorageURL {
             Integer breakPeriodInSeconds, HTTPAccessConditions httpAccessConditions) {
         httpAccessConditions = httpAccessConditions == null ? HTTPAccessConditions.NONE : httpAccessConditions;
 
-        return this.storageClient.generatedBlobs().breakLeaseWithRestResponseAsync(
+        return addErrorWrappingToSingle(this.storageClient.generatedBlobs().breakLeaseWithRestResponseAsync(
                 null, breakPeriodInSeconds,
                 httpAccessConditions.getIfModifiedSince(),
                 httpAccessConditions.getIfUnmodifiedSince(),
                 httpAccessConditions.getIfMatch().toString(),
                 httpAccessConditions.getIfNoneMatch().toString(),
-                null);
+                null));
     }
 
     /**
@@ -479,12 +490,12 @@ public class BlobURL extends StorageURL {
             String leaseId, String proposedID, HTTPAccessConditions httpAccessConditions) {
         httpAccessConditions = httpAccessConditions == null ? HTTPAccessConditions.NONE : httpAccessConditions;
 
-        return this.storageClient.generatedBlobs().changeLeaseWithRestResponseAsync(
+        return addErrorWrappingToSingle(this.storageClient.generatedBlobs().changeLeaseWithRestResponseAsync(
                 leaseId, proposedID, null,
                 httpAccessConditions.getIfModifiedSince(),
                 httpAccessConditions.getIfUnmodifiedSince(),
                 httpAccessConditions.getIfMatch().toString(), httpAccessConditions.getIfNoneMatch().toString(),
-                null);
+                null));
     }
 
     //TODO: Set Tier

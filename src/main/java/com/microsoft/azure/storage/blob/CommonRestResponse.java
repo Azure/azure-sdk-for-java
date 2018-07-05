@@ -1,3 +1,17 @@
+/*
+ * Copyright Microsoft Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.microsoft.azure.storage.blob;
 
 import com.microsoft.azure.storage.blob.models.BlockBlobsCommitBlockListResponse;
@@ -36,6 +50,17 @@ public final class CommonRestResponse {
 
     /**
      * @return
+     *      The status code for the response
+     */
+    public int statusCode() {
+        if (uploadBlobResponse != null) {
+            return uploadBlobResponse.statusCode();
+        }
+        return commitBlockListResponse.statusCode();
+    }
+
+    /**
+     * @return
      *      An HTTP Etag for the blob at the time of the request.
      */
     public String eTag() {
@@ -49,7 +74,7 @@ public final class CommonRestResponse {
      * @return
      *      The time when the blob was last modified.
      */
-    public OffsetDateTime lastModifiedTime() {
+    public OffsetDateTime lastModified() {
         if (uploadBlobResponse != null) {
             return uploadBlobResponse.headers().lastModified();
         }
@@ -73,9 +98,9 @@ public final class CommonRestResponse {
      */
     public OffsetDateTime date() {
         if (uploadBlobResponse != null) {
-            return uploadBlobResponse.headers().dateProperty();
+            return uploadBlobResponse.headers().date();
         }
-        return commitBlockListResponse.headers().dateProperty();
+        return commitBlockListResponse.headers().date();
     }
 
     /**

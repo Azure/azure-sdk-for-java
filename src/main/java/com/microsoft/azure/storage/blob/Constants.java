@@ -69,6 +69,11 @@ final class Constants {
         static final String DATE = PREFIX_FOR_STORAGE_HEADER + "date";
 
         /**
+         * The header that specifies the error code on unsuccessful responses.
+         */
+        static final String ERROR_CODE = PREFIX_FOR_STORAGE_HEADER + "error-code";
+
+        /**
          * The IfMatch header.
          */
         static final String IF_MATCH = "If-Match";
@@ -116,7 +121,7 @@ final class Constants {
         /**
          * Specifies the value to use for UserAgent header.
          */
-        static final String USER_AGENT_VERSION = "0.0.0";
+        static final String USER_AGENT_VERSION = "10.0.1-Preview";
 
         private HeaderConstants() {
             // Private to prevent construction.
@@ -137,21 +142,6 @@ final class Constants {
      * Constant representing a megabyte (Non-SI version).
      */
     static final int MB = 1024 * KB;
-
-    /**
-     * Specifies the maximum number of bytes that can be sent in a call to PutBlock.
-     */
-    public static final int MAX_BLOCK_SIZE = 100 * MB;
-
-    /**
-     * Specifies the maximum number of blocks allowed in a block blob.
-     */
-    public static final int MAX_BLOCKS = 50000;
-
-    /**
-     * Specifies the maximum number of bytes that may be put in a single upload operation.
-     */
-    public static final int MAX_PUT_BLOB_BYTES = 256 * MB;
 
     /**
      * An empty {@code String} to use for comparison.

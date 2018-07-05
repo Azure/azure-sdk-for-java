@@ -1,2 +1,17 @@
+2018.07.03 Version 10.0.1-Preview
+* Added the RetryReader class to allow for more reliable streaming on large downloads. This is now the return type of blobURL.download
+* Fixed a bug that caused generation of signatures to fail at high levels of parallelism.
+* Created the StorageException type to give easy access to the ErrorCode, StatusCode, and Message as available for unsuccessful responses.
+* Added the StorageErrorCode type for checking against error codes returned by the service.
+* Changed the AppendBlobAccessConditions field types to be Long instead of Int.
+* Upgraded Netty dependency to allow uploading memory mapped files with https.
+* Upgraded the autorest runtime dependency to fix a dependency bug in their package.
+* Changed RequestRetryOptions maxTries and tryTimeout fields to be Integer instead of int. 0 is no longer allowed.
+* Changed CommonRestResponse.lastModifiedTime to be lastModified.
+* Added statusCode property to CommonRestResponse.
+* Change dateProperty to be date on all generated types.
+* Fixed a bug that prevented proper reset of body stream upon retry.
+* Updated the defaults for RequestRetryOptions.
+
 2018.04.27 Version 10.0.0-preview
 * Initial Release. Please see the README and wiki for information on the new design.
