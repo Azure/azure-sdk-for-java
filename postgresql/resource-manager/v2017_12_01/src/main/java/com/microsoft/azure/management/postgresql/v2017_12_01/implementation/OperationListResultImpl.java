@@ -13,14 +13,14 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import java.util.List;
 
 class OperationListResultImpl extends WrapperImpl<OperationListResultInner> implements OperationListResult {
-    private final PostgreSQLManager manager;
-    OperationListResultImpl(OperationListResultInner inner, PostgreSQLManager manager) {
+    private final DBforPostgreSQLManager manager;
+    OperationListResultImpl(OperationListResultInner inner, DBforPostgreSQLManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public PostgreSQLManager manager() {
+    public DBforPostgreSQLManager manager() {
         return this.manager;
     }
 

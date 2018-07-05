@@ -22,7 +22,7 @@ public class OperationListResultInner {
     private List<OperationInner> value;
 
     /**
-     * Get the value value.
+     * Get the list of resource provider operations.
      *
      * @return the value value
      */
@@ -31,7 +31,7 @@ public class OperationListResultInner {
     }
 
     /**
-     * Set the value value.
+     * Set the list of resource provider operations.
      *
      * @param value the value value to set
      * @return the OperationListResultInner object itself.
