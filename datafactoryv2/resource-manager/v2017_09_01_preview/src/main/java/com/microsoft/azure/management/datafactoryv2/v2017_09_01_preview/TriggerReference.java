@@ -11,11 +11,11 @@ package com.microsoft.azure.management.datafactoryv2.v2017_09_01_preview;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Tumbling window trigger reference type.
+ * Trigger reference type.
  */
 public class TriggerReference {
     /**
-     * Tumbling window trigger reference type.
+     * Trigger reference type.
      */
     @JsonProperty(value = "type", required = true)
     private String type;
@@ -35,7 +35,7 @@ public class TriggerReference {
     }
 
     /**
-     * Get tumbling window trigger reference type.
+     * Get trigger reference type.
      *
      * @return the type value
      */
@@ -44,7 +44,7 @@ public class TriggerReference {
     }
 
     /**
-     * Set tumbling window trigger reference type.
+     * Set trigger reference type.
      *
      * @param type the type value to set
      * @return the TriggerReference object itself.
