@@ -17,13 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("TumblingWindowTriggerDependencyReference")
-public class TumblingWindowTriggerDependencyReference extends DependencyReference {
-    /**
-     * Referenced trigger.
-     */
-    @JsonProperty(value = "referenceTrigger", required = true)
-    private TriggerReference referenceTrigger;
-
+public class TumblingWindowTriggerDependencyReference extends TriggerDependencyReference {
     /**
      * Timespan applied to the start time of a tumbling window when evaluating
      * dependency, pattern:
@@ -39,26 +33,6 @@ public class TumblingWindowTriggerDependencyReference extends DependencyReferenc
      */
     @JsonProperty(value = "size")
     private String size;
-
-    /**
-     * Get referenced trigger.
-     *
-     * @return the referenceTrigger value
-     */
-    public TriggerReference referenceTrigger() {
-        return this.referenceTrigger;
-    }
-
-    /**
-     * Set referenced trigger.
-     *
-     * @param referenceTrigger the referenceTrigger value to set
-     * @return the TumblingWindowTriggerDependencyReference object itself.
-     */
-    public TumblingWindowTriggerDependencyReference withReferenceTrigger(TriggerReference referenceTrigger) {
-        this.referenceTrigger = referenceTrigger;
-        return this;
-    }
 
     /**
      * Get timespan applied to the start time of a tumbling window when evaluating dependency, pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).

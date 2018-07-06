@@ -23,7 +23,7 @@ public class SelfDependencyTumblingWindowTriggerReference extends DependencyRefe
      * dependency, pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
-    @JsonProperty(value = "offset")
+    @JsonProperty(value = "offset", required = true)
     private String offset;
 
     /**

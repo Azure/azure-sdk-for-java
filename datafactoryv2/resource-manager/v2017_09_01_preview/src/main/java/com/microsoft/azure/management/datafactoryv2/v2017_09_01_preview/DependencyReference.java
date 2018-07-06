@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 @JsonTypeName("DependencyReference")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "SelfDependencyTumblingWindowTriggerReference", value = SelfDependencyTumblingWindowTriggerReference.class),
-    @JsonSubTypes.Type(name = "TumblingWindowTriggerDependencyReference", value = TumblingWindowTriggerDependencyReference.class)
+    @JsonSubTypes.Type(name = "TriggerDependencyReference", value = TriggerDependencyReference.class)
 })
 public class DependencyReference {
 }
