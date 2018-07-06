@@ -36,7 +36,7 @@ public class EventTypeInner extends ProxyResource {
     private String schemaUrl;
 
     /**
-     * Get the displayName value.
+     * Get display name of the event type.
      *
      * @return the displayName value
      */
@@ -45,7 +45,7 @@ public class EventTypeInner extends ProxyResource {
     }
 
     /**
-     * Set the displayName value.
+     * Set display name of the event type.
      *
      * @param displayName the displayName value to set
      * @return the EventTypeInner object itself.
@@ -56,7 +56,7 @@ public class EventTypeInner extends ProxyResource {
     }
 
     /**
-     * Get the description value.
+     * Get description of the event type.
      *
      * @return the description value
      */
@@ -65,7 +65,7 @@ public class EventTypeInner extends ProxyResource {
     }
 
     /**
-     * Set the description value.
+     * Set description of the event type.
      *
      * @param description the description value to set
      * @return the EventTypeInner object itself.
@@ -76,7 +76,7 @@ public class EventTypeInner extends ProxyResource {
     }
 
     /**
-     * Get the schemaUrl value.
+     * Get url of the schema for this event type.
      *
      * @return the schemaUrl value
      */
@@ -85,7 +85,7 @@ public class EventTypeInner extends ProxyResource {
     }
 
     /**
-     * Set the schemaUrl value.
+     * Set url of the schema for this event type.
      *
      * @param schemaUrl the schemaUrl value to set
      * @return the EventTypeInner object itself.

@@ -59,7 +59,7 @@ public class TopicTypeInfoInner extends ProxyResource {
     private List<String> supportedLocations;
 
     /**
-     * Get the provider value.
+     * Get namespace of the provider of the topic type.
      *
      * @return the provider value
      */
@@ -68,7 +68,7 @@ public class TopicTypeInfoInner extends ProxyResource {
     }
 
     /**
-     * Set the provider value.
+     * Set namespace of the provider of the topic type.
      *
      * @param provider the provider value to set
      * @return the TopicTypeInfoInner object itself.
@@ -79,7 +79,7 @@ public class TopicTypeInfoInner extends ProxyResource {
     }
 
     /**
-     * Get the displayName value.
+     * Get display Name for the topic type.
      *
      * @return the displayName value
      */
@@ -88,7 +88,7 @@ public class TopicTypeInfoInner extends ProxyResource {
     }
 
     /**
-     * Set the displayName value.
+     * Set display Name for the topic type.
      *
      * @param displayName the displayName value to set
      * @return the TopicTypeInfoInner object itself.
@@ -99,7 +99,7 @@ public class TopicTypeInfoInner extends ProxyResource {
     }
 
     /**
-     * Get the description value.
+     * Get description of the topic type.
      *
      * @return the description value
      */
@@ -108,7 +108,7 @@ public class TopicTypeInfoInner extends ProxyResource {
     }
 
     /**
-     * Set the description value.
+     * Set description of the topic type.
      *
      * @param description the description value to set
      * @return the TopicTypeInfoInner object itself.
@@ -119,7 +119,7 @@ public class TopicTypeInfoInner extends ProxyResource {
     }
 
     /**
-     * Get the resourceRegionType value.
+     * Get region type of the resource. Possible values include: 'RegionalResource', 'GlobalResource'.
      *
      * @return the resourceRegionType value
      */
@@ -128,7 +128,7 @@ public class TopicTypeInfoInner extends ProxyResource {
     }
 
     /**
-     * Set the resourceRegionType value.
+     * Set region type of the resource. Possible values include: 'RegionalResource', 'GlobalResource'.
      *
      * @param resourceRegionType the resourceRegionType value to set
      * @return the TopicTypeInfoInner object itself.
@@ -139,7 +139,7 @@ public class TopicTypeInfoInner extends ProxyResource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get provisioning state of the topic type. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Canceled', 'Failed'.
      *
      * @return the provisioningState value
      */
@@ -148,7 +148,7 @@ public class TopicTypeInfoInner extends ProxyResource {
     }
 
     /**
-     * Set the provisioningState value.
+     * Set provisioning state of the topic type. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Canceled', 'Failed'.
      *
      * @param provisioningState the provisioningState value to set
      * @return the TopicTypeInfoInner object itself.
@@ -159,7 +159,7 @@ public class TopicTypeInfoInner extends ProxyResource {
     }
 
     /**
-     * Get the supportedLocations value.
+     * Get list of locations supported by this topic type.
      *
      * @return the supportedLocations value
      */
@@ -168,7 +168,7 @@ public class TopicTypeInfoInner extends ProxyResource {
     }
 
     /**
-     * Set the supportedLocations value.
+     * Set list of locations supported by this topic type.
      *
      * @param supportedLocations the supportedLocations value to set
      * @return the TopicTypeInfoInner object itself.

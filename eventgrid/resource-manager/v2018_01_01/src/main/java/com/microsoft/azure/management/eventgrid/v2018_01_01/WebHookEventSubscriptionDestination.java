@@ -35,7 +35,7 @@ public class WebHookEventSubscriptionDestination extends EventSubscriptionDestin
     private String endpointBaseUrl;
 
     /**
-     * Get the endpointUrl value.
+     * Get the URL that represents the endpoint of the destination of an event subscription.
      *
      * @return the endpointUrl value
      */
@@ -44,7 +44,7 @@ public class WebHookEventSubscriptionDestination extends EventSubscriptionDestin
     }
 
     /**
-     * Set the endpointUrl value.
+     * Set the URL that represents the endpoint of the destination of an event subscription.
      *
      * @param endpointUrl the endpointUrl value to set
      * @return the WebHookEventSubscriptionDestination object itself.
@@ -55,7 +55,7 @@ public class WebHookEventSubscriptionDestination extends EventSubscriptionDestin
     }
 
     /**
-     * Get the endpointBaseUrl value.
+     * Get the base URL that represents the endpoint of the destination of an event subscription.
      *
      * @return the endpointBaseUrl value
      */

@@ -25,7 +25,7 @@ public class JsonField {
     private String sourceField;
 
     /**
-     * Get the sourceField value.
+     * Get name of a field in the input event schema that's to be used as the source of a mapping.
      *
      * @return the sourceField value
      */
@@ -34,7 +34,7 @@ public class JsonField {
     }
 
     /**
-     * Set the sourceField value.
+     * Set name of a field in the input event schema that's to be used as the source of a mapping.
      *
      * @param sourceField the sourceField value to set
      * @return the JsonField object itself.

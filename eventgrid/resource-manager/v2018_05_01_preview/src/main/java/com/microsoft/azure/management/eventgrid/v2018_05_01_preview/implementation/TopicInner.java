@@ -51,7 +51,7 @@ public class TopicInner extends Resource {
     private InputSchemaMapping inputSchemaMapping;
 
     /**
-     * Get the provisioningState value.
+     * Get provisioning state of the topic. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Canceled', 'Failed'.
      *
      * @return the provisioningState value
      */
@@ -60,7 +60,7 @@ public class TopicInner extends Resource {
     }
 
     /**
-     * Get the endpoint value.
+     * Get endpoint for the topic.
      *
      * @return the endpoint value
      */
@@ -69,7 +69,7 @@ public class TopicInner extends Resource {
     }
 
     /**
-     * Get the inputSchema value.
+     * Get this determines the format that Event Grid should expect for incoming events published to the topic. Possible values include: 'EventGridSchema', 'CustomEventSchema', 'CloudEventV01Schema'.
      *
      * @return the inputSchema value
      */
@@ -78,7 +78,7 @@ public class TopicInner extends Resource {
     }
 
     /**
-     * Set the inputSchema value.
+     * Set this determines the format that Event Grid should expect for incoming events published to the topic. Possible values include: 'EventGridSchema', 'CustomEventSchema', 'CloudEventV01Schema'.
      *
      * @param inputSchema the inputSchema value to set
      * @return the TopicInner object itself.
@@ -89,7 +89,7 @@ public class TopicInner extends Resource {
     }
 
     /**
-     * Get the inputSchemaMapping value.
+     * Get this enables publishing using custom event schemas. An InputSchemaMapping can be specified to map various properties of a source schema to various required properties of the EventGridEvent schema.
      *
      * @return the inputSchemaMapping value
      */
@@ -98,7 +98,7 @@ public class TopicInner extends Resource {
     }
 
     /**
-     * Set the inputSchemaMapping value.
+     * Set this enables publishing using custom event schemas. An InputSchemaMapping can be specified to map various properties of a source schema to various required properties of the EventGridEvent schema.
      *
      * @param inputSchemaMapping the inputSchemaMapping value to set
      * @return the TopicInner object itself.

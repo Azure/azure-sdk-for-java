@@ -72,7 +72,8 @@ class TopicTypesImpl extends WrapperImpl<TopicTypesInner> implements TopicTypes 
             public Observable<TopicTypeInfoInner> call(List<TopicTypeInfoInner> innerList) {
                 return Observable.from(innerList);
             }
-        })    .map(new Func1<TopicTypeInfoInner, TopicTypeInfo>() {
+        })
+        .map(new Func1<TopicTypeInfoInner, TopicTypeInfo>() {
             @Override
             public TopicTypeInfo call(TopicTypeInfoInner inner) {
                 return new TopicTypeInfoImpl(inner, manager());
