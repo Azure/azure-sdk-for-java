@@ -137,16 +137,41 @@ public interface IMessage {
      *
      * @return the instant at which the message will be enqueued in Azure Service Bus
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-sequencing">Message Sequencing and Timestamps</a> 
+     * @deprecated Replaced by {@link #getScheduledEnqueueTimeUtc()
      */
+    @Deprecated
     public Instant getScheduledEnqueuedTimeUtc();
 
     /**
      * Sets the scheduled enqueue time of this message.  
      * 
      * @param scheduledEnqueueTimeUtc the instant at which this message should be enqueued in Azure Service Bus
-     * @see #getScheduledEnqueuedTimeUtc()
+     * @see #getScheduledEnqueueTimeUtc()
+     * @deprecated Replaced by {@link #setScheduledEnqueueTimeUtc(Instant)()
      */
+    @Deprecated
     public void setScheduledEnqueuedTimeUtc(Instant scheduledEnqueueTimeUtc);
+    
+    /**
+     * Gets the scheduled enqueue time of this message. 
+     * 
+     * This value is used for delayed message availability. The message is safely added to 
+     * the queue, but is not considered active and therefore not retrievable until the 
+     * scheduled enqueue time. Mind that the message may not be activated (enqueued) at the exact given 
+     * instant; the actual activation time depends on the queue's workload and its state.
+     *
+     * @return the instant at which the message will be enqueued in Azure Service Bus
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-sequencing">Message Sequencing and Timestamps</a> 
+     */
+    public Instant getScheduledEnqueueTimeUtc();
+
+    /**
+     * Sets the scheduled enqueue time of this message.  
+     * 
+     * @param scheduledEnqueueTimeUtc the instant at which this message should be enqueued in Azure Service Bus
+     * @see #getScheduledEnqueueTimeUtc()
+     */
+    public void setScheduledEnqueueTimeUtc(Instant scheduledEnqueueTimeUtc);
 
     /**
      * Gets the unique number assigned to a message by Service Bus.

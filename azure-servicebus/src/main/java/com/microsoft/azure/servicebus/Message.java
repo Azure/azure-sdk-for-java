@@ -256,15 +256,27 @@ final public class Message implements Serializable, IMessage {
 		this.replyToSessionId = replyToSessionId;		
 	}
 
+	@Deprecated
 	@Override
 	public Instant getScheduledEnqueuedTimeUtc() {
+		return this.getScheduledEnqueueTimeUtc();
+	}
+
+	@Deprecated
+	@Override
+	public void setScheduledEnqueuedTimeUtc(Instant scheduledEnqueueTimeUtc) {
+		this.setScheduledEnqueueTimeUtc(scheduledEnqueueTimeUtc);
+	}
+	
+	@Override
+	public Instant getScheduledEnqueueTimeUtc() {
 		return this.scheduledEnqueueTimeUtc;
 	}
 
 	@Override
-	public void setScheduledEnqueuedTimeUtc(Instant scheduledEnqueueTimeUtc) {
+	public void setScheduledEnqueueTimeUtc(Instant scheduledEnqueueTimeUtc) {
 		this.scheduledEnqueueTimeUtc = scheduledEnqueueTimeUtc;		
-	}	
+	}
 
 	@Override
 	public String getPartitionKey() {
@@ -313,5 +325,4 @@ final public class Message implements Serializable, IMessage {
 	{
 		this.deliveryTag = deliveryTag;
 	}
-	
 }

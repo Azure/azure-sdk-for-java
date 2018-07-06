@@ -50,9 +50,9 @@ class MessageConverter
 		amqpMessage.setGroupId(brokeredMessage.getSessionId());
 		
 		Map<Symbol, Object> messageAnnotationsMap = new HashMap<Symbol, Object>();
-		if(brokeredMessage.getScheduledEnqueuedTimeUtc() != null)
+		if(brokeredMessage.getScheduledEnqueueTimeUtc() != null)
 		{
-			messageAnnotationsMap.put(Symbol.valueOf(ClientConstants.SCHEDULEDENQUEUETIMENAME), Date.from(brokeredMessage.getScheduledEnqueuedTimeUtc()));
+			messageAnnotationsMap.put(Symbol.valueOf(ClientConstants.SCHEDULEDENQUEUETIMENAME), Date.from(brokeredMessage.getScheduledEnqueueTimeUtc()));
 		}
 		
 		if(!StringUtil.isNullOrEmpty(brokeredMessage.getPartitionKey()))
@@ -163,7 +163,7 @@ class MessageConverter
 							brokeredMessage.setEnqueuedTimeUtc(((Date)entry.getValue()).toInstant());
 							break;
 						case ClientConstants.SCHEDULEDENQUEUETIMENAME:
-	                        brokeredMessage.setScheduledEnqueuedTimeUtc(((Date)entry.getValue()).toInstant());
+	                        brokeredMessage.setScheduledEnqueueTimeUtc(((Date)entry.getValue()).toInstant());
 	                        break;
 	                    case ClientConstants.SEQUENCENUBMERNAME:
 	                        brokeredMessage.setSequenceNumber((long)entry.getValue());
