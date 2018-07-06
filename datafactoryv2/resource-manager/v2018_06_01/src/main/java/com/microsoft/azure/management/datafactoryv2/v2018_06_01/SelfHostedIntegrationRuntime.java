@@ -25,14 +25,14 @@ public class SelfHostedIntegrationRuntime extends IntegrationRuntimeInner {
      * The linkedInfo property.
      */
     @JsonProperty(value = "typeProperties.linkedInfo")
-    private LinkedIntegrationRuntimeProperties linkedInfo;
+    private LinkedIntegrationRuntimeType linkedInfo;
 
     /**
      * Get the linkedInfo value.
      *
      * @return the linkedInfo value
      */
-    public LinkedIntegrationRuntimeProperties linkedInfo() {
+    public LinkedIntegrationRuntimeType linkedInfo() {
         return this.linkedInfo;
     }
 
@@ -42,7 +42,7 @@ public class SelfHostedIntegrationRuntime extends IntegrationRuntimeInner {
      * @param linkedInfo the linkedInfo value to set
      * @return the SelfHostedIntegrationRuntime object itself.
      */
-    public SelfHostedIntegrationRuntime withLinkedInfo(LinkedIntegrationRuntimeProperties linkedInfo) {
+    public SelfHostedIntegrationRuntime withLinkedInfo(LinkedIntegrationRuntimeType linkedInfo) {
         this.linkedInfo = linkedInfo;
         return this;
     }
