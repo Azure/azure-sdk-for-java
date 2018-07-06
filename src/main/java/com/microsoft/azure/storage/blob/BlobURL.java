@@ -410,6 +410,18 @@ public class BlobURL extends StorageURL {
 
 
     /**
+     * Undelete restores the contents and metadata of a soft-deleted blob and any associated soft-deleted snapshots.
+     *
+     * For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/undelete-blob">Azure Docs</a>.
+     * @return
+     */
+    public Single<BlobUndeleteResponse> undelete() {
+        return addErrorWrappingToSingle(this.storageClient.generatedBlobs().undeleteWithRestResponseAsync(null,
+                null));
+    }
+
+    /**
      * Acquires a lease on the blob for write and delete operations. The lease duration must be between
      * 15 to 60 seconds, or infinite (-1). For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-blob">Azure Docs</a>.
@@ -557,7 +569,11 @@ public class BlobURL extends StorageURL {
                 httpAccessConditions.getIfMatch().toString(), httpAccessConditions.getIfNoneMatch().toString(),
                 null));
     }
+<<<<<<< HEAD
 
     //TODO: Undelete
+=======
+    //TODO: Set Tier
+>>>>>>> soft delete support. no tests or samples yet
     // TODO: Update links
 }
