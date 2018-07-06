@@ -1935,13 +1935,13 @@ public class IntegrationRuntimesInner {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
-     * @param factoryName1 The data factory name.
+     * @param linkedFactoryName The data factory name for linked integration runtime.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void removeLinks(String resourceGroupName, String factoryName, String integrationRuntimeName, String factoryName1) {
-        removeLinksWithServiceResponseAsync(resourceGroupName, factoryName, integrationRuntimeName, factoryName1).toBlocking().single().body();
+    public void removeLinks(String resourceGroupName, String factoryName, String integrationRuntimeName, String linkedFactoryName) {
+        removeLinksWithServiceResponseAsync(resourceGroupName, factoryName, integrationRuntimeName, linkedFactoryName).toBlocking().single().body();
     }
 
     /**
@@ -1950,13 +1950,13 @@ public class IntegrationRuntimesInner {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
-     * @param factoryName1 The data factory name.
+     * @param linkedFactoryName The data factory name for linked integration runtime.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> removeLinksAsync(String resourceGroupName, String factoryName, String integrationRuntimeName, String factoryName1, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(removeLinksWithServiceResponseAsync(resourceGroupName, factoryName, integrationRuntimeName, factoryName1), serviceCallback);
+    public ServiceFuture<Void> removeLinksAsync(String resourceGroupName, String factoryName, String integrationRuntimeName, String linkedFactoryName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(removeLinksWithServiceResponseAsync(resourceGroupName, factoryName, integrationRuntimeName, linkedFactoryName), serviceCallback);
     }
 
     /**
@@ -1965,12 +1965,12 @@ public class IntegrationRuntimesInner {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
-     * @param factoryName1 The data factory name.
+     * @param linkedFactoryName The data factory name for linked integration runtime.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> removeLinksAsync(String resourceGroupName, String factoryName, String integrationRuntimeName, String factoryName1) {
-        return removeLinksWithServiceResponseAsync(resourceGroupName, factoryName, integrationRuntimeName, factoryName1).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Void> removeLinksAsync(String resourceGroupName, String factoryName, String integrationRuntimeName, String linkedFactoryName) {
+        return removeLinksWithServiceResponseAsync(resourceGroupName, factoryName, integrationRuntimeName, linkedFactoryName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
                 return response.body();
@@ -1984,11 +1984,11 @@ public class IntegrationRuntimesInner {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
-     * @param factoryName1 The data factory name.
+     * @param linkedFactoryName The data factory name for linked integration runtime.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> removeLinksWithServiceResponseAsync(String resourceGroupName, String factoryName, String integrationRuntimeName, String factoryName1) {
+    public Observable<ServiceResponse<Void>> removeLinksWithServiceResponseAsync(String resourceGroupName, String factoryName, String integrationRuntimeName, String linkedFactoryName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -2004,11 +2004,11 @@ public class IntegrationRuntimesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        if (factoryName1 == null) {
-            throw new IllegalArgumentException("Parameter factoryName1 is required and cannot be null.");
+        if (linkedFactoryName == null) {
+            throw new IllegalArgumentException("Parameter linkedFactoryName is required and cannot be null.");
         }
         LinkedIntegrationRuntimeRequest linkedIntegrationRuntimeRequest = new LinkedIntegrationRuntimeRequest();
-        linkedIntegrationRuntimeRequest.withFactoryName(factoryName1);
+        linkedIntegrationRuntimeRequest.withLinkedFactoryName(linkedFactoryName);
         return service.removeLinks(this.client.subscriptionId(), resourceGroupName, factoryName, integrationRuntimeName, this.client.apiVersion(), this.client.acceptLanguage(), linkedIntegrationRuntimeRequest, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override

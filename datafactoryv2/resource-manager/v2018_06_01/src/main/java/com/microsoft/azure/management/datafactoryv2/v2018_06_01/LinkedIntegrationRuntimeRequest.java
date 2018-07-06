@@ -15,28 +15,28 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class LinkedIntegrationRuntimeRequest {
     /**
-     * The data factory name.
+     * The data factory name for linked integration runtime.
      */
     @JsonProperty(value = "factoryName", required = true)
-    private String factoryName;
+    private String linkedFactoryName;
 
     /**
-     * Get the data factory name.
+     * Get the data factory name for linked integration runtime.
      *
-     * @return the factoryName value
+     * @return the linkedFactoryName value
      */
-    public String factoryName() {
-        return this.factoryName;
+    public String linkedFactoryName() {
+        return this.linkedFactoryName;
     }
 
     /**
-     * Set the data factory name.
+     * Set the data factory name for linked integration runtime.
      *
-     * @param factoryName the factoryName value to set
+     * @param linkedFactoryName the linkedFactoryName value to set
      * @return the LinkedIntegrationRuntimeRequest object itself.
      */
-    public LinkedIntegrationRuntimeRequest withFactoryName(String factoryName) {
-        this.factoryName = factoryName;
+    public LinkedIntegrationRuntimeRequest withLinkedFactoryName(String linkedFactoryName) {
+        this.linkedFactoryName = linkedFactoryName;
         return this;
     }
 

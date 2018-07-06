@@ -123,11 +123,11 @@ public interface IntegrationRuntimes extends SupportsCreating<IntegrationRuntime
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
-     * @param factoryName1 The data factory name.
+     * @param linkedFactoryName The data factory name for linked integration runtime.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable removeLinksAsync(String resourceGroupName, String factoryName, String integrationRuntimeName, String factoryName1);
+    Completable removeLinksAsync(String resourceGroupName, String factoryName, String integrationRuntimeName, String linkedFactoryName);
 
     /**
      * Gets an integration runtime.
