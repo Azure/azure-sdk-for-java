@@ -430,7 +430,7 @@ class ContainerAPITest extends APISpec {
     def "List blobs flat options copy"() {
         setup:
         ListBlobsOptions options = new ListBlobsOptions(new BlobListingDetails(
-                true, false, false, false),
+                true, false, false, false, false),
                 null, null)
         String normalName = "a" + generateBlobName()
         String copyName = "c" + generateBlobName()
@@ -456,7 +456,7 @@ class ContainerAPITest extends APISpec {
     def "List blobs flat options metadata"() {
         setup:
         ListBlobsOptions options = new ListBlobsOptions(new BlobListingDetails(
-                false, true, false, false),
+                false, true, false, false, false),
                 null, null)
         String normalName = "a" + generateBlobName()
         String copyName = "c" + generateBlobName()
@@ -479,7 +479,7 @@ class ContainerAPITest extends APISpec {
     def "List blobs flat options snapshots"() {
         setup:
         ListBlobsOptions options = new ListBlobsOptions(new BlobListingDetails(
-                false, false, true, false),
+                false, false, true, false, false),
                 null, null)
         String normalName = "a" + generateBlobName()
         String copyName = "c" + generateBlobName()
@@ -500,7 +500,7 @@ class ContainerAPITest extends APISpec {
     def "List blobs flat options uncommitted"() {
         setup:
         ListBlobsOptions options = new ListBlobsOptions(new BlobListingDetails(
-                false, false, false, true),
+                false, false, false, true, false),
                 null, null)
         String normalName = "a" + generateBlobName()
         String copyName = "c" + generateBlobName()
@@ -537,7 +537,8 @@ class ContainerAPITest extends APISpec {
     def "List blobs flat options maxResults"() {
         setup:
         ListBlobsOptions options = new ListBlobsOptions(new BlobListingDetails(
-                true, false, true, true), null, 2)
+                true, false, true, true, false),
+                null, 2)
         String normalName = "a" + generateBlobName()
         String copyName = "c" + generateBlobName()
         String metadataName = "m" + generateBlobName()
