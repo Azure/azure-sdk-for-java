@@ -1,4 +1,3 @@
-
 /*
  * Copyright Microsoft Corporation
  *
@@ -16,6 +15,7 @@
 
 package com.microsoft.azure.storage
 
+import com.google.common.escape.ArrayBasedCharEscaper
 import com.microsoft.azure.storage.blob.BlobAccessConditions
 import com.microsoft.azure.storage.blob.BlobHTTPHeaders
 import com.microsoft.azure.storage.blob.BlobRange
@@ -26,8 +26,11 @@ import com.microsoft.azure.storage.blob.DownloadResponse
 import com.microsoft.azure.storage.blob.HTTPAccessConditions
 import com.microsoft.azure.storage.blob.LeaseAccessConditions
 import com.microsoft.azure.storage.blob.Metadata
+import com.microsoft.azure.storage.blob.PageBlobURL
 import com.microsoft.azure.storage.blob.StorageException
 import com.microsoft.azure.storage.blob.models.AccessTier
+import com.microsoft.azure.storage.blob.models.ArchiveStatus
+import com.microsoft.azure.storage.blob.models.BlobSetTierResponse
 import com.microsoft.azure.storage.blob.models.BlobType
 import com.microsoft.azure.storage.blob.models.BlobAbortCopyFromURLHeaders
 import com.microsoft.azure.storage.blob.models.BlobAbortCopyFromURLResponse
@@ -52,6 +55,7 @@ import com.microsoft.azure.storage.blob.models.LeaseDurationType
 import com.microsoft.azure.storage.blob.models.LeaseStateType
 import com.microsoft.azure.storage.blob.models.LeaseStatusType
 import com.microsoft.azure.storage.blob.models.PublicAccessType
+import com.microsoft.azure.storage.blob.models.StorageErrorCode
 import com.microsoft.rest.v2.util.FlowableUtil
 import io.reactivex.Flowable
 import spock.lang.Unroll
@@ -152,7 +156,7 @@ class BlobAPITest extends APISpec {
         expect:
         bu.download(new BlobRange(0, 3), null, true).blockingGet()
                 .headers().contentMD5() ==
-                MessageDigest.getInstance("MD5").digest(defaultText.substring(0,3).getBytes())
+                MessageDigest.getInstance("MD5").digest(defaultText.substring(0, 3).getBytes())
     }
 
     def "Blob download error"() {
@@ -905,5 +909,131 @@ class BlobAPITest extends APISpec {
 
         then:
         thrown(StorageException)
+    }
+
+    @Unroll
+    def "Set tier block blob"() {
+        setup:
+        ContainerURL cu = blobStorageServiceURL.createContainerURL(generateContainerName())
+        BlockBlobURL bu = cu.createBlockBlobURL(generateBlobName())
+        cu.create(null, null).blockingGet()
+        bu.upload(defaultFlowable, defaultData.remaining(), null, null, null)
+                .blockingGet()
+
+        when:
+        BlobSetTierResponse initialResponse = bu.setTier(tier).blockingGet()
+
+        then:
+        initialResponse.statusCode() == 201
+        initialResponse.headers().version() != null
+        initialResponse.headers().requestId() != null
+        bu.getProperties(null).blockingGet().headers().accessTier() == tier.toString()
+        cu.listBlobsFlatSegment(null, null).blockingGet().body().blobs().blob().get(0)
+                .properties().accessTier() == tier
+
+        where:
+        tier               | _
+        AccessTier.HOT     | _
+        AccessTier.COOL    | _
+        AccessTier.ARCHIVE | _
+    }
+
+    @Unroll
+    def "Set tier page blob"() {
+        setup:
+        ContainerURL cu = premiumServiceURL.createContainerURL(generateContainerName())
+        PageBlobURL bu = cu.createPageBlobURL(generateBlobName())
+        cu.create(null, null).blockingGet()
+        bu.create(512, null, null, null, null).blockingGet()
+
+        when:
+        bu.setTier(tier).blockingGet()
+
+        then:
+        bu.getProperties(null).blockingGet().headers().accessTier() == tier.toString()
+        cu.listBlobsFlatSegment(null, null).blockingGet().body().blobs().blob().get(0)
+                .properties().accessTier() == tier
+
+        where:
+        tier           | _
+        AccessTier.P4  | _
+        AccessTier.P6  | _
+        AccessTier.P10 | _
+        AccessTier.P20 | _
+        AccessTier.P30 | _
+        AccessTier.P40 | _
+        AccessTier.P50 | _
+    }
+
+    def "Set tier inferred"() {
+        setup:
+        ContainerURL cu = blobStorageServiceURL.createContainerURL(generateBlobName())
+        BlockBlobURL bu = cu.createBlockBlobURL(generateBlobName())
+        cu.create(null, null).blockingGet()
+        bu.upload(defaultFlowable, defaultDataSize, null, null, null).blockingGet()
+
+        when:
+        boolean inferred1 = bu.getProperties(null).blockingGet().headers().accessTierInferred()
+        Boolean inferredList1 = cu.listBlobsFlatSegment(null, null).blockingGet().body().blobs().blob()
+                .get(0).properties().accessTierInferred()
+
+        bu.setTier(AccessTier.HOT).blockingGet()
+
+        BlobGetPropertiesHeaders headers = bu.getProperties(null).blockingGet().headers()
+        Boolean inferred2 = headers.accessTierInferred()
+        Boolean inferredList2 = cu.listBlobsFlatSegment(null, null).blockingGet().body().blobs().blob()
+                .get(0).properties().accessTierInferred()
+
+        then:
+        inferred1
+        inferredList1
+        inferred2 == null
+        inferredList2 == null
+    }
+
+    @Unroll
+    def "Set tier archive status"() {
+        setup:
+        ContainerURL cu = blobStorageServiceURL.createContainerURL(generateBlobName())
+        BlockBlobURL bu = cu.createBlockBlobURL(generateBlobName())
+        cu.create(null, null).blockingGet()
+        bu.upload(defaultFlowable, defaultDataSize, null, null, null).blockingGet()
+
+        when:
+        bu.setTier(sourceTier).blockingGet()
+        bu.setTier(destTier).blockingGet()
+
+        then:
+        bu.getProperties(null).blockingGet().headers().archiveStatus() == status.toString()
+        cu.listBlobsFlatSegment(null, null).blockingGet().body().blobs().blob()
+                .get(0).properties().archiveStatus()
+
+        where:
+        sourceTier         | destTier        | status
+        AccessTier.ARCHIVE | AccessTier.COOL | ArchiveStatus.REHYDRATE_PENDING_TO_COOL
+        AccessTier.ARCHIVE | AccessTier.HOT  | ArchiveStatus.REHYDRATE_PENDING_TO_HOT
+    }
+
+    def "Set tier error"() {
+        setup:
+        ContainerURL cu = blobStorageServiceURL.createContainerURL(generateBlobName())
+        BlockBlobURL bu = cu.createBlockBlobURL(generateBlobName())
+        cu.create(null, null).blockingGet()
+        bu.upload(defaultFlowable, defaultDataSize, null, null, null).blockingGet()
+
+        when:
+        bu.setTier(AccessTier.fromString("garbage")).blockingGet()
+
+        then:
+        def e = thrown(StorageException)
+        e.errorCode() == StorageErrorCode.INVALID_HEADER_VALUE
+    }
+
+    def "Set tier illegal argument"() {
+        when:
+        bu.setTier(null)
+
+        then:
+        thrown(IllegalArgumentException)
     }
 }

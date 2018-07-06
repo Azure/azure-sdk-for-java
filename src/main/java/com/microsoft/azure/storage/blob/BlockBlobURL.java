@@ -125,8 +125,6 @@ public final class BlockBlobURL extends BlobURL {
         headers = headers == null ? BlobHTTPHeaders.NONE : headers;
         metadata = metadata == null ? Metadata.NONE : metadata;
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
-
-        //TODO: runtime flowable wrapper that throws an error if the size doesn't match the data
         return addErrorWrappingToSingle(this.storageClient.generatedBlockBlobs().uploadWithRestResponseAsync(
                 data, length, null,
                 headers.getContentType(),
@@ -212,7 +210,6 @@ public final class BlockBlobURL extends BlobURL {
      * @return
      *      Emits the successful response.
      */
-    // TODO: Add Content-Length to swagger once the modeler knows to hide (or whatever solution).
     public Single<BlockBlobCommitBlockListResponse> commitBlockList(
             List<String> base64BlockIDs, BlobHTTPHeaders headers, Metadata metadata,
             BlobAccessConditions accessConditions) {

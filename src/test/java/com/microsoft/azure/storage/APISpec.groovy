@@ -102,6 +102,10 @@ class APISpec extends Specification {
 
     static ServiceURL alternateServiceURL = getGenericServiceURL(alternateCreds)
 
+    static ServiceURL blobStorageServiceURL = getGenericServiceURL(getGenericCreds("BLOB_STORAGE_"))
+
+    static ServiceURL premiumServiceURL = getGenericServiceURL(getGenericCreds("PREMIUM_"))
+
     static String getTestName(ISpecificationContext ctx) {
         return ctx.getCurrentFeature().name.replace(' ', '').toLowerCase()
     }
