@@ -364,6 +364,14 @@ public class BlobURL extends StorageURL {
                 null));
     }
 
+    public Single<BlobsSetTierResponse> setTier(AccessTier tier) {
+        Utility.assertNotNull("tier", tier);
+        
+        return addErrorWrappingToSingle(this.storageClient.generatedBlobs().setTierWithRestResponseAsync(tier,
+                null,null));
+    }
+
+
     /**
      * Acquires a lease on the blob for write and delete operations. The lease duration must be between
      * 15 to 60 seconds, or infinite (-1). For more information, see the
