@@ -46,21 +46,21 @@ public final class ListContainersResponse {
     @JsonProperty(value = "MaxResults", required = true)
     private int maxResults;
 
-    private static final class ContainersWrapper {
+    private static final class ContainerItemsWrapper {
         @JacksonXmlProperty(localName = "Container")
-        private final List<Container> items;
+        private final List<ContainerItem> items;
 
         @JsonCreator
-        private ContainersWrapper(@JacksonXmlProperty(localName = "Container") List<Container> items) {
+        private ContainerItemsWrapper(@JacksonXmlProperty(localName = "Container") List<ContainerItem> items) {
             this.items = items;
         }
     }
 
     /**
-     * The containers property.
+     * The containerItems property.
      */
-    @JsonProperty(value = "Containers")
-    private ContainersWrapper containers;
+    @JsonProperty(value = "ContainerItems")
+    private ContainerItemsWrapper containerItems;
 
     /**
      * The nextMarker property.
@@ -149,25 +149,25 @@ public final class ListContainersResponse {
     }
 
     /**
-     * Get the containers value.
+     * Get the containerItems value.
      *
-     * @return the containers value.
+     * @return the containerItems value.
      */
-    public List<Container> containers() {
-        if (this.containers == null) {
-            this.containers = new ContainersWrapper(new ArrayList<Container>());
+    public List<ContainerItem> containerItems() {
+        if (this.containerItems == null) {
+            this.containerItems = new ContainerItemsWrapper(new ArrayList<ContainerItem>());
         }
-        return this.containers.items;
+        return this.containerItems.items;
     }
 
     /**
-     * Set the containers value.
+     * Set the containerItems value.
      *
-     * @param containers the containers value to set.
+     * @param containerItems the containerItems value to set.
      * @return the ListContainersResponse object itself.
      */
-    public ListContainersResponse withContainers(List<Container> containers) {
-        this.containers = new ContainersWrapper(containers);
+    public ListContainersResponse withContainerItems(List<ContainerItem> containerItems) {
+        this.containerItems = new ContainerItemsWrapper(containerItems);
         return this;
     }
 

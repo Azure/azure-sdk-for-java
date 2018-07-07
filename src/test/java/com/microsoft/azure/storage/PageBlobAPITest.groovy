@@ -24,19 +24,18 @@ import com.microsoft.azure.storage.blob.Metadata
 import com.microsoft.azure.storage.blob.PageBlobAccessConditions
 import com.microsoft.azure.storage.blob.PageBlobURL
 import com.microsoft.azure.storage.blob.StorageException
-import com.microsoft.azure.storage.blob.models.Blob
-import com.microsoft.azure.storage.blob.models.BlobsGetPropertiesResponse
-import com.microsoft.azure.storage.blob.models.PageBlobsClearPagesHeaders
-import com.microsoft.azure.storage.blob.models.PageBlobsCopyIncrementalHeaders
-import com.microsoft.azure.storage.blob.models.PageBlobsCreateResponse
-import com.microsoft.azure.storage.blob.models.PageBlobsGetPageRangesDiffHeaders
-import com.microsoft.azure.storage.blob.models.PageBlobsGetPageRangesDiffResponse
-import com.microsoft.azure.storage.blob.models.PageBlobsGetPageRangesHeaders
-import com.microsoft.azure.storage.blob.models.PageBlobsGetPageRangesResponse
-import com.microsoft.azure.storage.blob.models.PageBlobsResizeHeaders
-import com.microsoft.azure.storage.blob.models.PageBlobsUpdateSequenceNumberHeaders
-import com.microsoft.azure.storage.blob.models.PageBlobsUploadPagesHeaders
-import com.microsoft.azure.storage.blob.models.PageBlobsUploadPagesResponse
+import com.microsoft.azure.storage.blob.models.BlobGetPropertiesResponse
+import com.microsoft.azure.storage.blob.models.PageBlobClearPagesHeaders
+import com.microsoft.azure.storage.blob.models.PageBlobCopyIncrementalHeaders
+import com.microsoft.azure.storage.blob.models.PageBlobCreateResponse
+import com.microsoft.azure.storage.blob.models.PageBlobGetPageRangesDiffHeaders
+import com.microsoft.azure.storage.blob.models.PageBlobGetPageRangesDiffResponse
+import com.microsoft.azure.storage.blob.models.PageBlobGetPageRangesHeaders
+import com.microsoft.azure.storage.blob.models.PageBlobGetPageRangesResponse
+import com.microsoft.azure.storage.blob.models.PageBlobResizeHeaders
+import com.microsoft.azure.storage.blob.models.PageBlobUpdateSequenceNumberHeaders
+import com.microsoft.azure.storage.blob.models.PageBlobUploadPagesHeaders
+import com.microsoft.azure.storage.blob.models.PageBlobUploadPagesResponse
 import com.microsoft.azure.storage.blob.models.PageRange
 import com.microsoft.azure.storage.blob.models.PublicAccessType
 import com.microsoft.azure.storage.blob.models.SequenceNumberActionType
@@ -59,7 +58,7 @@ class PageBlobAPITest extends APISpec {
         bu = cu.createPageBlobURL(generateBlobName())
 
         when:
-        PageBlobsCreateResponse response =
+        PageBlobCreateResponse response =
                 bu.create(512, null, null, null, null).blockingGet()
 
         then:
@@ -85,7 +84,7 @@ class PageBlobAPITest extends APISpec {
 
         when:
         bu.create(512, null, headers, null, null).blockingGet()
-        BlobsGetPropertiesResponse response = bu.getProperties(null).blockingGet()
+        BlobGetPropertiesResponse response = bu.getProperties(null).blockingGet()
 
         then:
         validateBlobHeaders(response.headers(), cacheControl, contentDisposition, contentEncoding, contentLanguage,
@@ -111,7 +110,7 @@ class PageBlobAPITest extends APISpec {
 
         when:
         bu.create(512, null, null, metadata, null).blockingGet()
-        BlobsGetPropertiesResponse response = bu.getProperties(null).blockingGet()
+        BlobGetPropertiesResponse response = bu.getProperties(null).blockingGet()
 
         then:
         response.statusCode() == 200
@@ -158,9 +157,9 @@ class PageBlobAPITest extends APISpec {
 
     def "Page blob upload page"() {
         when:
-        PageBlobsUploadPagesResponse response = bu.uploadPages(new PageRange().withStart(0).withEnd(511),
+        PageBlobUploadPagesResponse response = bu.uploadPages(new PageRange().withStart(0).withEnd(511),
                 Flowable.just(getRandomData(512)), null).blockingGet()
-        PageBlobsUploadPagesHeaders headers = response.headers()
+        PageBlobUploadPagesHeaders headers = response.headers()
 
         then:
         response.statusCode() == 201
@@ -217,7 +216,7 @@ class PageBlobAPITest extends APISpec {
                 Flowable.just(getRandomData(512)), null).blockingGet()
 
         when:
-        PageBlobsClearPagesHeaders headers =
+        PageBlobClearPagesHeaders headers =
                 bu.clearPages(new PageRange().withStart(0).withEnd(511), null)
                         .blockingGet().headers()
 
@@ -273,9 +272,9 @@ class PageBlobAPITest extends APISpec {
                 Flowable.just(getRandomData(512)), null).blockingGet()
 
         when:
-        PageBlobsGetPageRangesResponse response =
+        PageBlobGetPageRangesResponse response =
                 bu.getPageRanges(new BlobRange(0, 512), null).blockingGet()
-        PageBlobsGetPageRangesHeaders headers = response.headers()
+        PageBlobGetPageRangesHeaders headers = response.headers()
 
         then:
         response.statusCode() == 200
@@ -328,9 +327,9 @@ class PageBlobAPITest extends APISpec {
                 Flowable.just(getRandomData(512)), null).blockingGet()
 
         when:
-        PageBlobsGetPageRangesDiffResponse response =
+        PageBlobGetPageRangesDiffResponse response =
                 bu.getPageRangesDiff(new BlobRange(0, 512), snapshot, null).blockingGet()
-        PageBlobsGetPageRangesDiffHeaders headers = response.headers()
+        PageBlobGetPageRangesDiffHeaders headers = response.headers()
 
         then:
         response.body().pageRange().size() == 1
@@ -378,7 +377,7 @@ class PageBlobAPITest extends APISpec {
 
     def "Page blob resize"() {
         setup:
-        PageBlobsResizeHeaders headers = bu.resize(1024, null).blockingGet().headers()
+        PageBlobResizeHeaders headers = bu.resize(1024, null).blockingGet().headers()
 
         expect:
         bu.getProperties(null).blockingGet().headers().contentLength() == 1024
@@ -425,7 +424,7 @@ class PageBlobAPITest extends APISpec {
 
     def "Page blob sequence number"() {
         setup:
-        PageBlobsUpdateSequenceNumberHeaders headers =
+        PageBlobUpdateSequenceNumberHeaders headers =
                 bu.updateSequenceNumber(SequenceNumberActionType.UPDATE, 5, null)
                         .blockingGet().headers()
 
@@ -478,7 +477,7 @@ class PageBlobAPITest extends APISpec {
         cu.setAccessPolicy(PublicAccessType.BLOB, null, null).blockingGet()
         PageBlobURL bu2 = cu.createPageBlobURL(generateBlobName())
         String snapshot = bu.createSnapshot(null, null).blockingGet().headers().snapshot()
-        PageBlobsCopyIncrementalHeaders headers = bu2.copyIncremental(bu.toURL(), snapshot, null)
+        PageBlobCopyIncrementalHeaders headers = bu2.copyIncremental(bu.toURL(), snapshot, null)
                 .blockingGet().headers()
 
         expect:

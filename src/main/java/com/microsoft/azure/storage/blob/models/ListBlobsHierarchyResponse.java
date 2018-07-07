@@ -56,10 +56,10 @@ public final class ListBlobsHierarchyResponse {
     private String delimiter;
 
     /**
-     * The blobs property.
+     * The hierarchyListSegment property.
      */
-    @JsonProperty(value = "Blobs", required = true)
-    private BlobHierarchyList blobs;
+    @JsonProperty(value = "HierarchyListSegment")
+    private HierarchyListSegment hierarchyListSegment;
 
     /**
      * The nextMarker property.
@@ -188,22 +188,22 @@ public final class ListBlobsHierarchyResponse {
     }
 
     /**
-     * Get the blobs value.
+     * Get the hierarchyListSegment value.
      *
-     * @return the blobs value.
+     * @return the hierarchyListSegment value.
      */
-    public BlobHierarchyList blobs() {
-        return this.blobs;
+    public HierarchyListSegment hierarchyListSegment() {
+        return this.hierarchyListSegment;
     }
 
     /**
-     * Set the blobs value.
+     * Set the hierarchyListSegment value.
      *
-     * @param blobs the blobs value to set.
+     * @param hierarchyListSegment the hierarchyListSegment value to set.
      * @return the ListBlobsHierarchyResponse object itself.
      */
-    public ListBlobsHierarchyResponse withBlobs(BlobHierarchyList blobs) {
-        this.blobs = blobs;
+    public ListBlobsHierarchyResponse withHierarchyListSegment(HierarchyListSegment hierarchyListSegment) {
+        this.hierarchyListSegment = hierarchyListSegment;
         return this;
     }
 

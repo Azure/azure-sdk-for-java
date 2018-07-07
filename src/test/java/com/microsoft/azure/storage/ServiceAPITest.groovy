@@ -25,7 +25,7 @@ import com.microsoft.azure.storage.blob.ServiceURL
 import com.microsoft.azure.storage.blob.StorageException
 import com.microsoft.azure.storage.blob.StorageURL
 import com.microsoft.azure.storage.blob.URLParser
-import com.microsoft.azure.storage.blob.models.Container
+import com.microsoft.azure.storage.blob.models.ContainerItem
 import com.microsoft.azure.storage.blob.models.CorsRule
 import com.microsoft.azure.storage.blob.models.Logging
 import com.microsoft.azure.storage.blob.models.Metrics
@@ -50,7 +50,7 @@ class ServiceAPITest extends APISpec {
                 containerPrefix, null)).blockingGet()
 
         expect:
-        for (Container c : response.body().containers()) {
+        for (ContainerItem c : response.body().containerItems()) {
             c.name().startsWith(containerPrefix)
         }
         response.headers().requestId() != null

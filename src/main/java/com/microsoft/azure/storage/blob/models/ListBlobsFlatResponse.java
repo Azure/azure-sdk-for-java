@@ -56,10 +56,10 @@ public final class ListBlobsFlatResponse {
     private String delimiter;
 
     /**
-     * The blobs property.
+     * The flatListSegment property.
      */
-    @JsonProperty(value = "Blobs", required = true)
-    private BlobFlatList blobs;
+    @JsonProperty(value = "FlatListSegment")
+    private FlatListSegment flatListSegment;
 
     /**
      * The nextMarker property.
@@ -188,22 +188,22 @@ public final class ListBlobsFlatResponse {
     }
 
     /**
-     * Get the blobs value.
+     * Get the flatListSegment value.
      *
-     * @return the blobs value.
+     * @return the flatListSegment value.
      */
-    public BlobFlatList blobs() {
-        return this.blobs;
+    public FlatListSegment flatListSegment() {
+        return this.flatListSegment;
     }
 
     /**
-     * Set the blobs value.
+     * Set the flatListSegment value.
      *
-     * @param blobs the blobs value to set.
+     * @param flatListSegment the flatListSegment value to set.
      * @return the ListBlobsFlatResponse object itself.
      */
-    public ListBlobsFlatResponse withBlobs(BlobFlatList blobs) {
-        this.blobs = blobs;
+    public ListBlobsFlatResponse withFlatListSegment(FlatListSegment flatListSegment) {
+        this.flatListSegment = flatListSegment;
         return this;
     }
 

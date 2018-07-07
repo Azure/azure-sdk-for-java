@@ -157,7 +157,7 @@ public final class ContainerURL extends StorageURL {
      * @return
      *      Emits the successful response.
      */
-    public Single<ContainersCreateResponse> create(
+    public Single<ContainerCreateResponse> create(
             Metadata metadata, PublicAccessType accessType) {
         metadata = metadata == null ? Metadata.NONE : metadata;
             return addErrorWrappingToSingle(this.storageClient.generatedContainers().createWithRestResponseAsync(
@@ -175,7 +175,7 @@ public final class ContainerURL extends StorageURL {
      * @return
      *      Emits the successful response.
      */
-    public Single<ContainersDeleteResponse> delete(
+    public Single<ContainerDeleteResponse> delete(
             ContainerAccessConditions accessConditions) {
         accessConditions = accessConditions == null ? ContainerAccessConditions.NONE : accessConditions;
 
@@ -202,7 +202,7 @@ public final class ContainerURL extends StorageURL {
      * @return
      *      Emits the successful response.
      */
-    public Single<ContainersGetPropertiesResponse> getProperties(
+    public Single<ContainerGetPropertiesResponse> getProperties(
             LeaseAccessConditions leaseAccessConditions) {
         leaseAccessConditions = leaseAccessConditions == null ? LeaseAccessConditions.NONE : leaseAccessConditions;
 
@@ -221,7 +221,7 @@ public final class ContainerURL extends StorageURL {
      * @return
      *      Emits the successful response.
      */
-    public Single<ContainersSetMetadataResponse> setMetadata(
+    public Single<ContainerSetMetadataResponse> setMetadata(
             Metadata metadata, ContainerAccessConditions accessConditions) {
         metadata = metadata == null ? Metadata.NONE : metadata;
         accessConditions = accessConditions == null ? ContainerAccessConditions.NONE : accessConditions;
@@ -249,7 +249,7 @@ public final class ContainerURL extends StorageURL {
      * @return
      *      Emits the successful response.
      */
-    public Single<ContainersGetAccessPolicyResponse> getAccessPolicy(
+    public Single<ContainerGetAccessPolicyResponse> getAccessPolicy(
             LeaseAccessConditions leaseAccessConditions) {
         leaseAccessConditions = leaseAccessConditions == null ? LeaseAccessConditions.NONE : leaseAccessConditions;
 
@@ -275,7 +275,7 @@ public final class ContainerURL extends StorageURL {
      * @return
      *      Emits the successful response.
      */
-    public Single<ContainersSetAccessPolicyResponse> setAccessPolicy(
+    public Single<ContainerSetAccessPolicyResponse> setAccessPolicy(
             PublicAccessType accessType, List<SignedIdentifier> identifiers,
             ContainerAccessConditions accessConditions) {
         accessConditions = accessConditions == null ? ContainerAccessConditions.NONE : accessConditions;
@@ -327,7 +327,7 @@ public final class ContainerURL extends StorageURL {
      * @return
      *      Emits the successful response.
      */
-    public Single<ContainersAcquireLeaseResponse> acquireLease(
+    public Single<ContainerAcquireLeaseResponse> acquireLease(
             String proposedID, int duration, HTTPAccessConditions httpAccessConditions) {
         httpAccessConditions = httpAccessConditions == null ? HTTPAccessConditions.NONE : httpAccessConditions;
         if (!this.validateLeaseOperationAccessConditions(httpAccessConditions)){
@@ -355,7 +355,7 @@ public final class ContainerURL extends StorageURL {
      * @return
      *      Emits the successful response.
      */
-    public Single<ContainersRenewLeaseResponse> renewLease(
+    public Single<ContainerRenewLeaseResponse> renewLease(
             String leaseID, HTTPAccessConditions httpAccessConditions) {
         httpAccessConditions = httpAccessConditions == null ? HTTPAccessConditions.NONE : httpAccessConditions;
         if (!this.validateLeaseOperationAccessConditions(httpAccessConditions)) {
@@ -383,7 +383,7 @@ public final class ContainerURL extends StorageURL {
      * @return
      *      Emits the successful response.
      */
-    public Single<ContainersReleaseLeaseResponse> releaseLease(
+    public Single<ContainerReleaseLeaseResponse> releaseLease(
             String leaseID, HTTPAccessConditions httpAccessConditions) {
         httpAccessConditions = httpAccessConditions == null ? HTTPAccessConditions.NONE : httpAccessConditions;
         if (!this.validateLeaseOperationAccessConditions(httpAccessConditions)) {
@@ -414,7 +414,7 @@ public final class ContainerURL extends StorageURL {
      * @return
      *      Emits the successful response.
      */
-    public Single<ContainersBreakLeaseResponse> breakLease(
+    public Single<ContainerBreakLeaseResponse> breakLease(
             Integer breakPeriodInSeconds, HTTPAccessConditions httpAccessConditions) {
         httpAccessConditions = httpAccessConditions == null ? HTTPAccessConditions.NONE : httpAccessConditions;
         if (!this.validateLeaseOperationAccessConditions(httpAccessConditions)) {
@@ -444,7 +444,7 @@ public final class ContainerURL extends StorageURL {
      * @return
      *      Emits the successful response.
      */
-    public Single<ContainersChangeLeaseResponse> changeLease(
+    public Single<ContainerChangeLeaseResponse> changeLease(
             String leaseID, String proposedID, HTTPAccessConditions httpAccessConditions) {
         httpAccessConditions = httpAccessConditions == null ? HTTPAccessConditions.NONE : httpAccessConditions;
         if (!this.validateLeaseOperationAccessConditions(httpAccessConditions)) {
@@ -477,7 +477,7 @@ public final class ContainerURL extends StorageURL {
      * @return
      *      Emits the successful response.
      */
-    public Single<ContainersListBlobFlatSegmentResponse> listBlobsFlatSegment(
+    public Single<ContainerListBlobFlatSegmentResponse> listBlobsFlatSegment(
             String marker, ListBlobsOptions options) {
         options = options == null ? ListBlobsOptions.DEFAULT : options;
 
@@ -506,7 +506,7 @@ public final class ContainerURL extends StorageURL {
      * @return
      *      Emits the successful response.
      */
-    public Single<ContainersListBlobHierarchySegmentResponse> listBlobsHierarchySegment(
+    public Single<ContainerListBlobHierarchySegmentResponse> listBlobsHierarchySegment(
             String marker, String delimiter, ListBlobsOptions options) {
         options = options == null ? ListBlobsOptions.DEFAULT : options;
         if (options.getDetails().getSnapshots()) {

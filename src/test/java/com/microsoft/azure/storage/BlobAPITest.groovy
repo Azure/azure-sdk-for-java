@@ -29,23 +29,23 @@ import com.microsoft.azure.storage.blob.Metadata
 import com.microsoft.azure.storage.blob.StorageException
 import com.microsoft.azure.storage.blob.models.AccessTier
 import com.microsoft.azure.storage.blob.models.BlobType
-import com.microsoft.azure.storage.blob.models.BlobsAbortCopyFromURLHeaders
-import com.microsoft.azure.storage.blob.models.BlobsAbortCopyFromURLResponse
-import com.microsoft.azure.storage.blob.models.BlobsAcquireLeaseHeaders
-import com.microsoft.azure.storage.blob.models.BlobsBreakLeaseHeaders
-import com.microsoft.azure.storage.blob.models.BlobsChangeLeaseHeaders
-import com.microsoft.azure.storage.blob.models.BlobsCreateSnapshotHeaders
-import com.microsoft.azure.storage.blob.models.BlobsCreateSnapshotResponse
-import com.microsoft.azure.storage.blob.models.BlobsDeleteHeaders
-import com.microsoft.azure.storage.blob.models.BlobsDeleteResponse
-import com.microsoft.azure.storage.blob.models.BlobsDownloadHeaders
-import com.microsoft.azure.storage.blob.models.BlobsGetPropertiesHeaders
-import com.microsoft.azure.storage.blob.models.BlobsReleaseLeaseHeaders
-import com.microsoft.azure.storage.blob.models.BlobsRenewLeaseHeaders
-import com.microsoft.azure.storage.blob.models.BlobsSetHTTPHeadersResponse
-import com.microsoft.azure.storage.blob.models.BlobsSetMetadataResponse
-import com.microsoft.azure.storage.blob.models.BlobsStartCopyFromURLHeaders
-import com.microsoft.azure.storage.blob.models.BlobsStartCopyFromURLResponse
+import com.microsoft.azure.storage.blob.models.BlobAbortCopyFromURLHeaders
+import com.microsoft.azure.storage.blob.models.BlobAbortCopyFromURLResponse
+import com.microsoft.azure.storage.blob.models.BlobAcquireLeaseHeaders
+import com.microsoft.azure.storage.blob.models.BlobBreakLeaseHeaders
+import com.microsoft.azure.storage.blob.models.BlobChangeLeaseHeaders
+import com.microsoft.azure.storage.blob.models.BlobCreateSnapshotHeaders
+import com.microsoft.azure.storage.blob.models.BlobCreateSnapshotResponse
+import com.microsoft.azure.storage.blob.models.BlobDeleteHeaders
+import com.microsoft.azure.storage.blob.models.BlobDeleteResponse
+import com.microsoft.azure.storage.blob.models.BlobDownloadHeaders
+import com.microsoft.azure.storage.blob.models.BlobGetPropertiesHeaders
+import com.microsoft.azure.storage.blob.models.BlobReleaseLeaseHeaders
+import com.microsoft.azure.storage.blob.models.BlobRenewLeaseHeaders
+import com.microsoft.azure.storage.blob.models.BlobSetHTTPHeadersResponse
+import com.microsoft.azure.storage.blob.models.BlobSetMetadataResponse
+import com.microsoft.azure.storage.blob.models.BlobStartCopyFromURLHeaders
+import com.microsoft.azure.storage.blob.models.BlobStartCopyFromURLResponse
 import com.microsoft.azure.storage.blob.models.CopyStatusType
 import com.microsoft.azure.storage.blob.models.DeleteSnapshotsOptionType
 import com.microsoft.azure.storage.blob.models.LeaseDurationType
@@ -73,7 +73,7 @@ class BlobAPITest extends APISpec {
         DownloadResponse response = bu.download(null, null, false)
                 .blockingGet()
         ByteBuffer body = FlowableUtil.collectBytesInBuffer(response.body()).blockingGet()
-        BlobsDownloadHeaders headers = response.headers()
+        BlobDownloadHeaders headers = response.headers()
 
         then:
         validateBasicHeaders(headers)
@@ -168,7 +168,7 @@ class BlobAPITest extends APISpec {
 
     def "Blob get properties all null"() {
         when:
-        BlobsGetPropertiesHeaders headers = bu.getProperties(null).blockingGet().headers()
+        BlobGetPropertiesHeaders headers = bu.getProperties(null).blockingGet().headers()
 
         then:
         validateBasicHeaders(headers)
@@ -237,7 +237,7 @@ class BlobAPITest extends APISpec {
 
     def "Blob set HTTP headers null"() {
         setup:
-        BlobsSetHTTPHeadersResponse response = bu.setHTTPHeaders(null, null).blockingGet()
+        BlobSetHTTPHeadersResponse response = bu.setHTTPHeaders(null, null).blockingGet()
 
         expect:
         response.statusCode() == 200
@@ -252,7 +252,7 @@ class BlobAPITest extends APISpec {
         BlobHTTPHeaders putHeaders = new BlobHTTPHeaders(cacheControl, contentDisposition, contentEncoding,
                 contentLanguage, contentMD5, contentType)
         bu.setHTTPHeaders(putHeaders, null).blockingGet()
-        BlobsGetPropertiesHeaders receivedHeaders =
+        BlobGetPropertiesHeaders receivedHeaders =
                 bu.getProperties(null).blockingGet().headers()
 
         expect:
@@ -301,7 +301,7 @@ class BlobAPITest extends APISpec {
 
     def "Blob set metadata all null"() {
         setup:
-        BlobsSetMetadataResponse response = bu.setMetadata(null, null).blockingGet()
+        BlobSetMetadataResponse response = bu.setMetadata(null, null).blockingGet()
 
         expect:
         bu.getProperties(null).blockingGet().headers().metadata().size() == 0
@@ -368,12 +368,12 @@ class BlobAPITest extends APISpec {
     @Unroll
     def "Blob acquire lease"() {
         setup:
-        BlobsAcquireLeaseHeaders headers =
+        BlobAcquireLeaseHeaders headers =
                 bu.acquireLease(UUID.randomUUID().toString(), leaseTime, null)
                         .blockingGet().headers()
 
         when:
-        BlobsGetPropertiesHeaders properties = bu.getProperties(null).blockingGet()
+        BlobGetPropertiesHeaders properties = bu.getProperties(null).blockingGet()
                 .headers()
 
         then:
@@ -424,7 +424,7 @@ class BlobAPITest extends APISpec {
         String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
 
         Thread.sleep(16000) // Wait for the lease to expire to ensure we are actually renewing it
-        BlobsRenewLeaseHeaders headers = bu.renewLease(leaseID, null).blockingGet().headers()
+        BlobRenewLeaseHeaders headers = bu.renewLease(leaseID, null).blockingGet().headers()
 
         expect:
         bu.getProperties(null).blockingGet().headers().leaseState()
@@ -467,7 +467,7 @@ class BlobAPITest extends APISpec {
         setup:
         String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
 
-        BlobsReleaseLeaseHeaders headers = bu.releaseLease(leaseID, null).blockingGet().headers()
+        BlobReleaseLeaseHeaders headers = bu.releaseLease(leaseID, null).blockingGet().headers()
 
         expect:
         bu.getProperties(null).blockingGet().headers().leaseState() == LeaseStateType.AVAILABLE
@@ -509,7 +509,7 @@ class BlobAPITest extends APISpec {
         setup:
         bu.acquireLease(UUID.randomUUID().toString(), leaseTime, null).blockingGet()
 
-        BlobsBreakLeaseHeaders headers = bu.breakLease(breakPeriod, null).blockingGet().headers()
+        BlobBreakLeaseHeaders headers = bu.breakLease(breakPeriod, null).blockingGet().headers()
         LeaseStateType state = bu.getProperties(null).blockingGet().headers().leaseState()
 
         expect:
@@ -560,7 +560,7 @@ class BlobAPITest extends APISpec {
         String leaseID =
                 bu.acquireLease(UUID.randomUUID().toString(), 15, null).blockingGet()
                         .headers().leaseId()
-        BlobsChangeLeaseHeaders headers = bu.changeLease(leaseID, UUID.randomUUID().toString(), null)
+        BlobChangeLeaseHeaders headers = bu.changeLease(leaseID, UUID.randomUUID().toString(), null)
                 .blockingGet().headers()
         leaseID = headers.leaseId()
 
@@ -601,7 +601,7 @@ class BlobAPITest extends APISpec {
 
     def "Blob snapshot"() {
         when:
-        BlobsCreateSnapshotHeaders headers = bu.createSnapshot(null, null)
+        BlobCreateSnapshotHeaders headers = bu.createSnapshot(null, null)
                 .blockingGet().headers()
 
         then:
@@ -620,7 +620,7 @@ class BlobAPITest extends APISpec {
             metadata.put(key2, value2)
         }
 
-        BlobsCreateSnapshotResponse response = bu.createSnapshot(metadata, null).blockingGet()
+        BlobCreateSnapshotResponse response = bu.createSnapshot(metadata, null).blockingGet()
 
         expect:
         response.statusCode() == 201
@@ -670,7 +670,7 @@ class BlobAPITest extends APISpec {
     def "Blob copy"() {
         setup:
         BlobURL bu2 = cu.createBlockBlobURL(generateBlobName())
-        BlobsStartCopyFromURLHeaders headers =
+        BlobStartCopyFromURLHeaders headers =
                 bu2.startCopyFromURL(bu.toURL(), null, null, null)
                         .blockingGet().headers()
 
@@ -695,7 +695,7 @@ class BlobAPITest extends APISpec {
             metadata.put(key2, value2)
         }
 
-        BlobsStartCopyFromURLResponse response =
+        BlobStartCopyFromURLResponse response =
                 bu2.startCopyFromURL(bu.toURL(), metadata, null, null)
                         .blockingGet()
         waitForCopy(bu2, response)
@@ -787,8 +787,8 @@ class BlobAPITest extends APISpec {
         String copyID =
                 bu2.startCopyFromURL(bu.toURL(), null, null, null)
                         .blockingGet().headers().copyId()
-        BlobsAbortCopyFromURLResponse response = bu2.abortCopyFromURL(copyID, null).blockingGet()
-        BlobsAbortCopyFromURLHeaders headers = response.headers()
+        BlobAbortCopyFromURLResponse response = bu2.abortCopyFromURL(copyID, null).blockingGet()
+        BlobAbortCopyFromURLHeaders headers = response.headers()
 
         then:
         response.statusCode() == 204
@@ -842,8 +842,8 @@ class BlobAPITest extends APISpec {
 
     def "Blob delete"() {
         when:
-        BlobsDeleteResponse response = bu.delete(null, null).blockingGet()
-        BlobsDeleteHeaders headers = response.headers()
+        BlobDeleteResponse response = bu.delete(null, null).blockingGet()
+        BlobDeleteHeaders headers = response.headers()
 
         then:
         response.statusCode() == 202
@@ -865,7 +865,8 @@ class BlobAPITest extends APISpec {
         bu.delete(option, null).blockingGet()
 
         then:
-        cu.listBlobsFlatSegment(null, null).blockingGet().body().blobs().blob().size() == blobsRemaining
+        cu.listBlobsFlatSegment(null, null).blockingGet()
+                .body().flatListSegment().blobItems().size()== blobsRemaining
 
         where:
         option                            | blobsRemaining

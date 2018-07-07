@@ -29,26 +29,26 @@ import com.microsoft.azure.storage.blob.PipelineOptions
 import com.microsoft.azure.storage.blob.StorageException
 import com.microsoft.azure.storage.blob.StorageURL
 import com.microsoft.azure.storage.blob.models.AccessPolicy
-import com.microsoft.azure.storage.blob.models.AppendBlobsCreateResponse
-import com.microsoft.azure.storage.blob.models.Blob
+import com.microsoft.azure.storage.blob.models.AppendBlobCreateResponse
+import com.microsoft.azure.storage.blob.models.BlobGetPropertiesResponse
+import com.microsoft.azure.storage.blob.models.BlobItem
 import com.microsoft.azure.storage.blob.models.BlobType
-import com.microsoft.azure.storage.blob.models.BlobsGetPropertiesResponse
-import com.microsoft.azure.storage.blob.models.ContainersAcquireLeaseHeaders
-import com.microsoft.azure.storage.blob.models.ContainersBreakLeaseHeaders
-import com.microsoft.azure.storage.blob.models.ContainersChangeLeaseHeaders
-import com.microsoft.azure.storage.blob.models.ContainersCreateResponse
-import com.microsoft.azure.storage.blob.models.ContainersDeleteResponse
-import com.microsoft.azure.storage.blob.models.ContainersGetAccessPolicyResponse
-import com.microsoft.azure.storage.blob.models.ContainersGetPropertiesHeaders
-import com.microsoft.azure.storage.blob.models.ContainersGetPropertiesResponse
-import com.microsoft.azure.storage.blob.models.ContainersListBlobFlatSegmentHeaders
-import com.microsoft.azure.storage.blob.models.ContainersListBlobFlatSegmentResponse
-import com.microsoft.azure.storage.blob.models.ContainersListBlobHierarchySegmentHeaders
-import com.microsoft.azure.storage.blob.models.ContainersListBlobHierarchySegmentResponse
-import com.microsoft.azure.storage.blob.models.ContainersReleaseLeaseHeaders
-import com.microsoft.azure.storage.blob.models.ContainersRenewLeaseHeaders
-import com.microsoft.azure.storage.blob.models.ContainersSetAccessPolicyResponse
-import com.microsoft.azure.storage.blob.models.ContainersSetMetadataResponse
+import com.microsoft.azure.storage.blob.models.ContainerAcquireLeaseHeaders
+import com.microsoft.azure.storage.blob.models.ContainerBreakLeaseHeaders
+import com.microsoft.azure.storage.blob.models.ContainerChangeLeaseHeaders
+import com.microsoft.azure.storage.blob.models.ContainerCreateResponse
+import com.microsoft.azure.storage.blob.models.ContainerDeleteResponse
+import com.microsoft.azure.storage.blob.models.ContainerGetAccessPolicyResponse
+import com.microsoft.azure.storage.blob.models.ContainerGetPropertiesHeaders
+import com.microsoft.azure.storage.blob.models.ContainerGetPropertiesResponse
+import com.microsoft.azure.storage.blob.models.ContainerListBlobFlatSegmentHeaders
+import com.microsoft.azure.storage.blob.models.ContainerListBlobFlatSegmentResponse
+import com.microsoft.azure.storage.blob.models.ContainerListBlobHierarchySegmentHeaders
+import com.microsoft.azure.storage.blob.models.ContainerListBlobHierarchySegmentResponse
+import com.microsoft.azure.storage.blob.models.ContainerReleaseLeaseHeaders
+import com.microsoft.azure.storage.blob.models.ContainerRenewLeaseHeaders
+import com.microsoft.azure.storage.blob.models.ContainerSetAccessPolicyResponse
+import com.microsoft.azure.storage.blob.models.ContainerSetMetadataResponse
 import com.microsoft.azure.storage.blob.models.CopyStatusType
 import com.microsoft.azure.storage.blob.models.LeaseDurationType
 import com.microsoft.azure.storage.blob.models.LeaseStateType
@@ -72,7 +72,7 @@ class ContainerAPITest extends APISpec {
         cu = primaryServiceURL.createContainerURL(generateContainerName())
 
         when:
-        ContainersCreateResponse response = cu.create(null, null).blockingGet()
+        ContainerCreateResponse response = cu.create(null, null).blockingGet()
 
         then:
         response.statusCode() == 201
@@ -93,7 +93,7 @@ class ContainerAPITest extends APISpec {
 
         when:
         cu.create(metadata, null).blockingGet()
-        ContainersGetPropertiesResponse response = cu.getProperties(null).blockingGet()
+        ContainerGetPropertiesResponse response = cu.getProperties(null).blockingGet()
 
         then:
         response.headers().metadata() == metadata
@@ -137,7 +137,7 @@ class ContainerAPITest extends APISpec {
 
     def "Container get properties null"() {
         when:
-        ContainersGetPropertiesHeaders headers =
+        ContainerGetPropertiesHeaders headers =
                 cu.getProperties(null).blockingGet().headers()
 
         then:
@@ -169,7 +169,7 @@ class ContainerAPITest extends APISpec {
 
     def "Container set metadata"() {
         setup:
-        ContainersSetMetadataResponse response = cu.setMetadata(null, null).blockingGet()
+        ContainerSetMetadataResponse response = cu.setMetadata(null, null).blockingGet()
 
         expect:
         response.statusCode() == 200
@@ -256,7 +256,7 @@ class ContainerAPITest extends APISpec {
         ids.push(identifier)
 
         when:
-        ContainersSetAccessPolicyResponse response =
+        ContainerSetAccessPolicyResponse response =
                 cu.setAccessPolicy(null, ids, null).blockingGet()
         SignedIdentifier receivedIdentifier = cu.getAccessPolicy(null).blockingGet().body().get(0)
 
@@ -310,7 +310,7 @@ class ContainerAPITest extends APISpec {
         List<SignedIdentifier> ids = new ArrayList<>()
         ids.push(identifier)
         cu.setAccessPolicy(PublicAccessType.BLOB, ids, null).blockingGet()
-        ContainersGetAccessPolicyResponse response = cu.getAccessPolicy(null).blockingGet()
+        ContainerGetAccessPolicyResponse response = cu.getAccessPolicy(null).blockingGet()
 
         expect:
         response.statusCode() == 200
@@ -342,7 +342,7 @@ class ContainerAPITest extends APISpec {
 
     def "Container delete"() {
         when:
-        ContainersDeleteResponse response = cu.delete(null).blockingGet()
+        ContainerDeleteResponse response = cu.delete(null).blockingGet()
 
         then:
         response.statusCode() == 202
@@ -388,10 +388,10 @@ class ContainerAPITest extends APISpec {
         bu.create(512, null, null, null, null).blockingGet()
 
         when:
-        ContainersListBlobFlatSegmentResponse response = cu.listBlobsFlatSegment(null, null)
+        ContainerListBlobFlatSegmentResponse response = cu.listBlobsFlatSegment(null, null)
                 .blockingGet()
-        ContainersListBlobFlatSegmentHeaders headers = response.headers()
-        List<Blob> blobs = response.body().blobs().blob()
+        ContainerListBlobFlatSegmentHeaders headers = response.headers()
+        List<BlobItem> blobs = response.body().flatListSegment().blobItems()
 
         then:
         response.statusCode() == 200
@@ -439,7 +439,7 @@ class ContainerAPITest extends APISpec {
         setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         when:
-        List<Blob> blobs = cu.listBlobsFlatSegment(null, options).blockingGet().body().blobs().blob()
+        List<BlobItem> blobs = cu.listBlobsFlatSegment(null, options).blockingGet().flatSegment().blobItems()
 
         then:
         blobs.get(0).name() == normalName
@@ -465,7 +465,7 @@ class ContainerAPITest extends APISpec {
         setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         when:
-        List<Blob> blobs = cu.listBlobsFlatSegment(null, options).blockingGet().body().blobs().blob()
+        List<BlobItem> blobs = cu.listBlobsFlatSegment(null, options).blockingGet().body().blobs().blob()
 
         then:
         blobs.get(0).name() == normalName
@@ -488,7 +488,7 @@ class ContainerAPITest extends APISpec {
         String snapshotTime = setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         when:
-        List<Blob> blobs = cu.listBlobsFlatSegment(null, options).blockingGet().body().blobs().blob()
+        List<BlobItem> blobs = cu.listBlobsFlatSegment(null, options).blockingGet().body().blobs().blob()
 
         then:
         blobs.get(0).name() == normalName
@@ -509,7 +509,7 @@ class ContainerAPITest extends APISpec {
         setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         when:
-        List<Blob> blobs = cu.listBlobsFlatSegment(null, options).blockingGet().body().blobs().blob()
+        List<BlobItem> blobs = cu.listBlobsFlatSegment(null, options).blockingGet().body().blobs().blob()
 
         then:
         blobs.get(0).name() == normalName
@@ -527,7 +527,7 @@ class ContainerAPITest extends APISpec {
         setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         when:
-        List<Blob> blobs = cu.listBlobsFlatSegment(null, options).blockingGet().body().blobs().blob()
+        List<BlobItem> blobs = cu.listBlobsFlatSegment(null, options).blockingGet().body().blobs().blob()
 
         then:
         blobs.get(0).name() == normalName
@@ -545,7 +545,7 @@ class ContainerAPITest extends APISpec {
         setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         when:
-        List<Blob> blobs = cu.listBlobsFlatSegment(null, options).blockingGet().body().blobs().blob()
+        List<BlobItem> blobs = cu.listBlobsFlatSegment(null, options).blockingGet().body().blobs().blob()
 
         then:
         blobs.size() == 2
@@ -558,7 +558,7 @@ class ContainerAPITest extends APISpec {
             bu.create(512, null, null, null, null).blockingGet()
         }
 
-        ContainersListBlobFlatSegmentResponse response = cu.listBlobsFlatSegment(null,
+        ContainerListBlobFlatSegmentResponse response = cu.listBlobsFlatSegment(null,
                 new ListBlobsOptions(null, null, 6))
                 .blockingGet()
         String marker = response.body().nextMarker()
@@ -589,11 +589,11 @@ class ContainerAPITest extends APISpec {
         bu.create(512, null, null, null, null).blockingGet()
 
         when:
-        ContainersListBlobHierarchySegmentResponse response =
+        ContainerListBlobHierarchySegmentResponse response =
                 cu.listBlobsHierarchySegment(null, "/", null)
                         .blockingGet()
-        ContainersListBlobHierarchySegmentHeaders headers = response.headers()
-        List<Blob> blobs = response.body().blobs().blob()
+        ContainerListBlobHierarchySegmentHeaders headers = response.headers()
+        List<BlobItem> blobs = response.body().hierarchyListSegment().blobItems()
 
         then:
         response.statusCode() == 200
@@ -617,7 +617,7 @@ class ContainerAPITest extends APISpec {
         setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         when:
-        List<Blob> blobs = cu.listBlobsHierarchySegment(null, "", options).blockingGet().body().blobs().blob()
+        List<BlobItem> blobs = cu.listBlobsHierarchySegment(null, "", options).blockingGet().body().blobs().blob()
 
         then:
         blobs.get(0).name() == normalName
@@ -643,7 +643,7 @@ class ContainerAPITest extends APISpec {
         setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         when:
-        List<Blob> blobs = cu.listBlobsHierarchySegment(null, "", options)
+        List<BlobItem> blobs = cu.listBlobsHierarchySegment(null, "", options)
                 .blockingGet().body().blobs().blob()
 
         then:
@@ -667,7 +667,7 @@ class ContainerAPITest extends APISpec {
         setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         when:
-        List<Blob> blobs = cu.listBlobsHierarchySegment(null, "", options)
+        List<BlobItem> blobs = cu.listBlobsHierarchySegment(null, "", options)
                 .blockingGet().body().blobs().blob()
 
         then:
@@ -686,7 +686,7 @@ class ContainerAPITest extends APISpec {
         setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         when:
-        List<Blob> blobs = cu.listBlobsHierarchySegment(null, "", options)
+        List<BlobItem> blobs = cu.listBlobsHierarchySegment(null, "", options)
                 .blockingGet().body().blobs().blob()
 
         then:
@@ -705,7 +705,7 @@ class ContainerAPITest extends APISpec {
         setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         when:
-        List<Blob> blobs = cu.listBlobsHierarchySegment(null, "", options)
+        List<BlobItem> blobs = cu.listBlobsHierarchySegment(null, "", options)
                 .blockingGet().body().blobs().blob()
 
         then:
@@ -722,7 +722,7 @@ class ContainerAPITest extends APISpec {
         subBlob.create(null, null, null).blockingGet()
 
         when:
-        ContainersListBlobHierarchySegmentResponse response =
+        ContainerListBlobHierarchySegmentResponse response =
                 cu.listBlobsHierarchySegment(null, "/", null).blockingGet()
 
         then:
@@ -739,7 +739,7 @@ class ContainerAPITest extends APISpec {
             bu.create(512, null, null, null, null).blockingGet()
         }
 
-        ContainersListBlobHierarchySegmentResponse response = cu.listBlobsHierarchySegment(null, "/",
+        ContainerListBlobHierarchySegmentResponse response = cu.listBlobsHierarchySegment(null, "/",
                 new ListBlobsOptions(null, null, 6))
                 .blockingGet()
         String marker = response.body().nextMarker()
@@ -766,11 +766,11 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Container acquire lease"() {
         setup:
-        ContainersAcquireLeaseHeaders headers =
+        ContainerAcquireLeaseHeaders headers =
                 cu.acquireLease(UUID.randomUUID().toString(), leaseTime, null).blockingGet().headers()
 
         when:
-        ContainersGetPropertiesHeaders properties = cu.getProperties(null).blockingGet()
+        ContainerGetPropertiesHeaders properties = cu.getProperties(null).blockingGet()
                 .headers()
 
         then:
@@ -817,7 +817,7 @@ class ContainerAPITest extends APISpec {
         String leaseID = setupContainerLeaseCondition(cu, receivedLeaseID)
 
         Thread.sleep(16000) // Wait for the lease to expire to ensure we are actually renewing it
-        ContainersRenewLeaseHeaders headers = cu.renewLease(leaseID, null).blockingGet().headers()
+        ContainerRenewLeaseHeaders headers = cu.renewLease(leaseID, null).blockingGet().headers()
 
         expect:
         cu.getProperties(null).blockingGet().headers().leaseState() == LeaseStateType.LEASED
@@ -856,7 +856,7 @@ class ContainerAPITest extends APISpec {
         setup:
         String leaseID = setupContainerLeaseCondition(cu, receivedLeaseID)
 
-        ContainersReleaseLeaseHeaders headers = cu.releaseLease(leaseID, null).blockingGet().headers()
+        ContainerReleaseLeaseHeaders headers = cu.releaseLease(leaseID, null).blockingGet().headers()
 
         expect:
         cu.getProperties(null).blockingGet().headers().leaseState() == LeaseStateType.AVAILABLE
@@ -895,7 +895,7 @@ class ContainerAPITest extends APISpec {
         setup:
         cu.acquireLease(UUID.randomUUID().toString(), leaseTime, null).blockingGet()
 
-        ContainersBreakLeaseHeaders headers = cu.breakLease(breakPeriod, null).blockingGet().headers()
+        ContainerBreakLeaseHeaders headers = cu.breakLease(breakPeriod, null).blockingGet().headers()
         LeaseStateType state = cu.getProperties(null).blockingGet().headers().leaseState()
 
         expect:
@@ -944,7 +944,7 @@ class ContainerAPITest extends APISpec {
     def "Container change lease"() {
         setup:
         String leaseID = setupContainerLeaseCondition(cu, receivedLeaseID)
-        ContainersChangeLeaseHeaders headers =
+        ContainerChangeLeaseHeaders headers =
                 cu.changeLease(leaseID, UUID.randomUUID().toString(), null)
                         .blockingGet().headers()
         leaseID = headers.leaseId()
@@ -998,7 +998,7 @@ class ContainerAPITest extends APISpec {
                 null, null, null).blockingGet().statusCode() == 201
 
         when:
-        List<Blob> blobs = cu.listBlobsFlatSegment(null, null).blockingGet().body().blobs().blob()
+        List<BlobItem> blobs = cu.listBlobsFlatSegment(null, null).blockingGet().body().blobs().blob()
 
         then:
         blobs.get(0).name() == name
@@ -1032,9 +1032,9 @@ class ContainerAPITest extends APISpec {
         AppendBlobURL bu = new AppendBlobURL(new URL("http://xclientdev3.blob.core.windows.net/rootblob"), pipeline)
 
         when:
-        AppendBlobsCreateResponse createResponse = bu.create(null, null, null)
+        AppendBlobCreateResponse createResponse = bu.create(null, null, null)
                 .blockingGet()
-        BlobsGetPropertiesResponse propsResponse = bu.getProperties(null).blockingGet()
+        BlobGetPropertiesResponse propsResponse = bu.getProperties(null).blockingGet()
 
         then:
         createResponse.statusCode() == 201

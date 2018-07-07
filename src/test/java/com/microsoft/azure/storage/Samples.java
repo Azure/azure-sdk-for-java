@@ -145,12 +145,12 @@ public class Samples {
                 .blockingGet();
     }
 
-    public Single<ContainersListBlobFlatSegmentResponse> listBlobsHelper(
-            ContainerURL containerURL, ContainersListBlobFlatSegmentResponse response) {
+    public Single<ContainerListBlobFlatSegmentResponse> listBlobsHelper(
+            ContainerURL containerURL, ContainerListBlobFlatSegmentResponse response) {
 
         // Process the blobs returned in this result segment (if the segment is empty, blob() will be null.
-        if (response.body().blobs().blob() != null) {
-            for (Blob b : response.body().blobs().blob()) {
+        if (response.body().flatListSegment().blobItems() != null) {
+            for (BlobItem b : response.body().flatListSegment().blobItems()) {
                 String output = "Blob name: " + b.name();
                 if (b.snapshot() != null) {
                     output += ", Snapshot: " + b.snapshot();
@@ -1205,7 +1205,7 @@ public class Samples {
 
     }
 
-    public Single<BlobsGetPropertiesResponse> waitForCopyHelper(BlobURL blobURL, BlobsGetPropertiesResponse response)
+    public Single<BlobGetPropertiesResponse> waitForCopyHelper(BlobURL blobURL, BlobGetPropertiesResponse response)
             throws InterruptedException {
         System.out.println(response.headers().copyStatus());
         if (response.headers().copyStatus() == CopyStatusType.SUCCESS) {
@@ -1422,24 +1422,24 @@ public class Samples {
                 .blockingGet();
     }
 
-    public static Observable<Blob> listBlobsLazy(ContainerURL containerURL, ListBlobsOptions listBlobsOptions)
+    public static Observable<BlobItem> listBlobsLazy(ContainerURL containerURL, ListBlobsOptions listBlobsOptions)
     {
         return containerURL.listBlobsFlatSegment(null, listBlobsOptions)
                 .flatMapObservable((r) -> listContainersResultToContainerObservable(containerURL, listBlobsOptions, r));
     }
 
-    private static Observable<Blob> listContainersResultToContainerObservable(
+    private static Observable<BlobItem> listContainersResultToContainerObservable(
             ContainerURL containerURL, ListBlobsOptions listBlobsOptions,
-            ContainersListBlobFlatSegmentResponse response)
+            ContainerListBlobFlatSegmentResponse response)
     {
-        Observable<Blob> result = Observable.fromIterable(response.body().blobs().blob());
+        Observable<BlobItem> result = Observable.fromIterable(response.body().flatListSegment().blobItems());
 
-        System.out.println("!!! count: " + response.body().blobs().blob().size());
+        System.out.println("!!! count: " + response.body().flatListSegment().blobItems());
 
         if (response.body().nextMarker() != null)
         {
-            System.out.println("Hit continuation in listing at " + response.body().blobs().blob().get(
-                    response.body().blobs().blob().size()-1).name());
+            System.out.println("Hit continuation in listing at " + response.body().flatListSegment().blobItems().get(
+                    response.body().flatListSegment().blobItems().size()-1).name());
             // Recursively add the continuation items to the observable.
             result = result.concatWith(containerURL.listBlobsFlatSegment(response.body().nextMarker(), listBlobsOptions)
                     .flatMapObservable((r) ->
