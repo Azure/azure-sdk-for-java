@@ -30,7 +30,7 @@ public interface BillingAccount extends HasInner<BillingAccountInner>, HasManage
     /**
      * @return the address value.
      */
-    String address();
+    Address address();
 
     /**
      * @return the agreements value.

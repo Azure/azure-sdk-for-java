@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.billing.v2018_05_31_preview.implementation;
 
+import com.microsoft.azure.management.billing.v2018_05_31_preview.Address;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.ProxyResource;
@@ -32,8 +33,8 @@ public class BillingProfileInner extends ProxyResource {
     /**
      * Billing address.
      */
-    @JsonProperty(value = "properties.billingAddress", access = JsonProperty.Access.WRITE_ONLY)
-    private String billingAddress;
+    @JsonProperty(value = "properties.billingAddress")
+    private Address billingAddress;
 
     /**
      * Billing contact.
@@ -104,8 +105,19 @@ public class BillingProfileInner extends ProxyResource {
      *
      * @return the billingAddress value
      */
-    public String billingAddress() {
+    public Address billingAddress() {
         return this.billingAddress;
+    }
+
+    /**
+     * Set billing address.
+     *
+     * @param billingAddress the billingAddress value to set
+     * @return the BillingProfileInner object itself.
+     */
+    public BillingProfileInner withBillingAddress(Address billingAddress) {
+        this.billingAddress = billingAddress;
+        return this;
     }
 
     /**

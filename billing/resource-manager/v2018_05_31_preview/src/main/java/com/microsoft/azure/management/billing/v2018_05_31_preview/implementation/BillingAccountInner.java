@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.billing.v2018_05_31_preview.implementation;
 
+import com.microsoft.azure.management.billing.v2018_05_31_preview.Address;
 import java.util.List;
 import com.microsoft.azure.management.billing.v2018_05_31_preview.Enrollment;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -20,7 +21,7 @@ import com.microsoft.azure.ProxyResource;
 @JsonFlatten
 public class BillingAccountInner extends ProxyResource {
     /**
-     * Name of the billing account.
+     * The Company this billing account belongs to.
      */
     @JsonProperty(value = "properties.company", access = JsonProperty.Access.WRITE_ONLY)
     private String company;
@@ -35,8 +36,8 @@ public class BillingAccountInner extends ProxyResource {
     /**
      * The address associated with billing account.
      */
-    @JsonProperty(value = "properties.address", access = JsonProperty.Access.WRITE_ONLY)
-    private String address;
+    @JsonProperty(value = "properties.address")
+    private Address address;
 
     /**
      * The ISO currency, for example, USD.
@@ -88,7 +89,7 @@ public class BillingAccountInner extends ProxyResource {
     private List<EnrollmentAccountInner> enrollmentAccounts;
 
     /**
-     * Get name of the billing account.
+     * Get the Company this billing account belongs to.
      *
      * @return the company value
      */
@@ -110,8 +111,19 @@ public class BillingAccountInner extends ProxyResource {
      *
      * @return the address value
      */
-    public String address() {
+    public Address address() {
         return this.address;
+    }
+
+    /**
+     * Set the address associated with billing account.
+     *
+     * @param address the address value to set
+     * @return the BillingAccountInner object itself.
+     */
+    public BillingAccountInner withAddress(Address address) {
+        this.address = address;
+        return this;
     }
 
     /**

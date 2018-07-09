@@ -10,6 +10,7 @@ package com.microsoft.azure.management.billing.v2018_05_31_preview.implementatio
 
 import com.microsoft.azure.management.billing.v2018_05_31_preview.BillingAccount;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
+import com.microsoft.azure.management.billing.v2018_05_31_preview.Address;
 import java.util.List;
 import com.microsoft.azure.management.billing.v2018_05_31_preview.Enrollment;
 
@@ -31,7 +32,7 @@ class BillingAccountImpl extends WrapperImpl<BillingAccountInner> implements Bil
     }
 
     @Override
-    public String address() {
+    public Address address() {
         return this.inner().address();
     }
 

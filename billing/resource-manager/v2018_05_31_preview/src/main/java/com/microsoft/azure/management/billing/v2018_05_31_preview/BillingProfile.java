@@ -24,7 +24,7 @@ public interface BillingProfile extends HasInner<BillingProfileInner>, Indexable
     /**
      * @return the billingAddress value.
      */
-    String billingAddress();
+    Address billingAddress();
 
     /**
      * @return the billingContact value.
@@ -74,13 +74,23 @@ public interface BillingProfile extends HasInner<BillingProfileInner>, Indexable
     /**
      * The template for a BillingProfile update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<BillingProfile>, UpdateStages.WithDisplayName, UpdateStages.WithPoNumber {
+    interface Update extends Appliable<BillingProfile>, UpdateStages.WithBillingAddress, UpdateStages.WithDisplayName, UpdateStages.WithPoNumber {
     }
 
     /**
      * Grouping of BillingProfile update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the billingprofile update allowing to specify BillingAddress.
+         */
+        interface WithBillingAddress {
+            /**
+             * Specifies billingAddress.
+             */
+            Update withBillingAddress(Address billingAddress);
+        }
+
         /**
          * The stage of the billingprofile update allowing to specify DisplayName.
          */

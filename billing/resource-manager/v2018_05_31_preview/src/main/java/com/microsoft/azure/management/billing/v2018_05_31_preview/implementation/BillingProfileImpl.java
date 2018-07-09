@@ -11,6 +11,7 @@ package com.microsoft.azure.management.billing.v2018_05_31_preview.implementatio
 import com.microsoft.azure.management.billing.v2018_05_31_preview.BillingProfile;
 import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
+import com.microsoft.azure.management.billing.v2018_05_31_preview.Address;
 
 class BillingProfileImpl extends CreatableUpdatableImpl<BillingProfile, BillingProfileInner, BillingProfileImpl> implements BillingProfile, BillingProfile.Update {
     private final BillingManager manager;
@@ -67,7 +68,7 @@ class BillingProfileImpl extends CreatableUpdatableImpl<BillingProfile, BillingP
 
 
     @Override
-    public String billingAddress() {
+    public Address billingAddress() {
         return this.inner().billingAddress();
     }
 
@@ -114,6 +115,12 @@ class BillingProfileImpl extends CreatableUpdatableImpl<BillingProfile, BillingP
     @Override
     public String type() {
         return this.inner().type();
+    }
+
+    @Override
+    public BillingProfileImpl withBillingAddress(Address billingAddress) {
+        this.inner().withBillingAddress(billingAddress);
+        return this;
     }
 
     @Override
