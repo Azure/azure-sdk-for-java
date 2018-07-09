@@ -67,13 +67,38 @@ class BillingProfileImpl extends CreatableUpdatableImpl<BillingProfile, BillingP
 
 
     @Override
+    public String billingAddress() {
+        return this.inner().billingAddress();
+    }
+
+    @Override
+    public String billingContact() {
+        return this.inner().billingContact();
+    }
+
+    @Override
+    public String currency() {
+        return this.inner().currency();
+    }
+
+    @Override
     public String displayName() {
         return this.inner().displayName();
     }
 
     @Override
+    public Boolean emailInvoice() {
+        return this.inner().emailInvoice();
+    }
+
+    @Override
     public String id() {
         return this.inner().id();
+    }
+
+    @Override
+    public String invoiceDay() {
+        return this.inner().invoiceDay();
     }
 
     @Override

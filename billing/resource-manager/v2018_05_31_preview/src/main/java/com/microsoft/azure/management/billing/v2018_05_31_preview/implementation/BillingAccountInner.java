@@ -22,8 +22,8 @@ public class BillingAccountInner extends ProxyResource {
     /**
      * Name of the billing account.
      */
-    @JsonProperty(value = "properties.displayName", access = JsonProperty.Access.WRITE_ONLY)
-    private String displayName;
+    @JsonProperty(value = "properties.company", access = JsonProperty.Access.WRITE_ONLY)
+    private String company;
 
     /**
      * The billing account Type. Possible values include: 'CommerceRoot',
@@ -41,14 +41,20 @@ public class BillingAccountInner extends ProxyResource {
     /**
      * The ISO currency, for example, USD.
      */
-    @JsonProperty(value = "properties.currency", access = JsonProperty.Access.WRITE_ONLY)
-    private String currency;
+    @JsonProperty(value = "properties.defaultCurrency", access = JsonProperty.Access.WRITE_ONLY)
+    private String defaultCurrency;
 
     /**
      * The country associated with billing account..
      */
     @JsonProperty(value = "properties.country", access = JsonProperty.Access.WRITE_ONLY)
     private String country;
+
+    /**
+     * Agreements.
+     */
+    @JsonProperty(value = "properties.agreements", access = JsonProperty.Access.WRITE_ONLY)
+    private String agreements;
 
     /**
      * The projects associated to the billing account.
@@ -84,10 +90,10 @@ public class BillingAccountInner extends ProxyResource {
     /**
      * Get name of the billing account.
      *
-     * @return the displayName value
+     * @return the company value
      */
-    public String displayName() {
-        return this.displayName;
+    public String company() {
+        return this.company;
     }
 
     /**
@@ -111,10 +117,10 @@ public class BillingAccountInner extends ProxyResource {
     /**
      * Get the ISO currency, for example, USD.
      *
-     * @return the currency value
+     * @return the defaultCurrency value
      */
-    public String currency() {
-        return this.currency;
+    public String defaultCurrency() {
+        return this.defaultCurrency;
     }
 
     /**
@@ -124,6 +130,15 @@ public class BillingAccountInner extends ProxyResource {
      */
     public String country() {
         return this.country;
+    }
+
+    /**
+     * Get agreements.
+     *
+     * @return the agreements value
+     */
+    public String agreements() {
+        return this.agreements;
     }
 
     /**

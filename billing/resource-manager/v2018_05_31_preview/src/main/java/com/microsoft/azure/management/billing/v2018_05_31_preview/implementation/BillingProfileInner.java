@@ -30,6 +30,36 @@ public class BillingProfileInner extends ProxyResource {
     private String poNumber;
 
     /**
+     * Billing address.
+     */
+    @JsonProperty(value = "properties.billingAddress", access = JsonProperty.Access.WRITE_ONLY)
+    private String billingAddress;
+
+    /**
+     * Billing contact.
+     */
+    @JsonProperty(value = "properties.billingContact", access = JsonProperty.Access.WRITE_ONLY)
+    private String billingContact;
+
+    /**
+     * Email invoice.
+     */
+    @JsonProperty(value = "properties.emailInvoice", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean emailInvoice;
+
+    /**
+     * Invoice day.
+     */
+    @JsonProperty(value = "properties.invoiceDay", access = JsonProperty.Access.WRITE_ONLY)
+    private String invoiceDay;
+
+    /**
+     * Currency.
+     */
+    @JsonProperty(value = "properties.currency", access = JsonProperty.Access.WRITE_ONLY)
+    private String currency;
+
+    /**
      * Get the billing profile name.
      *
      * @return the displayName value
@@ -67,6 +97,51 @@ public class BillingProfileInner extends ProxyResource {
     public BillingProfileInner withPoNumber(String poNumber) {
         this.poNumber = poNumber;
         return this;
+    }
+
+    /**
+     * Get billing address.
+     *
+     * @return the billingAddress value
+     */
+    public String billingAddress() {
+        return this.billingAddress;
+    }
+
+    /**
+     * Get billing contact.
+     *
+     * @return the billingContact value
+     */
+    public String billingContact() {
+        return this.billingContact;
+    }
+
+    /**
+     * Get email invoice.
+     *
+     * @return the emailInvoice value
+     */
+    public Boolean emailInvoice() {
+        return this.emailInvoice;
+    }
+
+    /**
+     * Get invoice day.
+     *
+     * @return the invoiceDay value
+     */
+    public String invoiceDay() {
+        return this.invoiceDay;
+    }
+
+    /**
+     * Get currency.
+     *
+     * @return the currency value
+     */
+    public String currency() {
+        return this.currency;
     }
 
 }

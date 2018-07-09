@@ -36,8 +36,18 @@ class BillingAccountImpl extends WrapperImpl<BillingAccountInner> implements Bil
     }
 
     @Override
+    public String agreements() {
+        return this.inner().agreements();
+    }
+
+    @Override
     public List<BillingProfileInner> billingProfiles() {
         return this.inner().billingProfiles();
+    }
+
+    @Override
+    public String company() {
+        return this.inner().company();
     }
 
     @Override
@@ -46,18 +56,13 @@ class BillingAccountImpl extends WrapperImpl<BillingAccountInner> implements Bil
     }
 
     @Override
-    public String currency() {
-        return this.inner().currency();
+    public String defaultCurrency() {
+        return this.inner().defaultCurrency();
     }
 
     @Override
     public List<DepartmentInner> departments() {
         return this.inner().departments();
-    }
-
-    @Override
-    public String displayName() {
-        return this.inner().displayName();
     }
 
     @Override

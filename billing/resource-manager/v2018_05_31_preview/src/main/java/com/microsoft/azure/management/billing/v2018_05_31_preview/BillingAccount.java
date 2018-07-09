@@ -33,9 +33,19 @@ public interface BillingAccount extends HasInner<BillingAccountInner>, HasManage
     String address();
 
     /**
+     * @return the agreements value.
+     */
+    String agreements();
+
+    /**
      * @return the billingProfiles value.
      */
     List<BillingProfileInner> billingProfiles();
+
+    /**
+     * @return the company value.
+     */
+    String company();
 
     /**
      * @return the country value.
@@ -43,19 +53,14 @@ public interface BillingAccount extends HasInner<BillingAccountInner>, HasManage
     String country();
 
     /**
-     * @return the currency value.
+     * @return the defaultCurrency value.
      */
-    String currency();
+    String defaultCurrency();
 
     /**
      * @return the departments value.
      */
     List<DepartmentInner> departments();
-
-    /**
-     * @return the displayName value.
-     */
-    String displayName();
 
     /**
      * @return the enrollmentAccounts value.

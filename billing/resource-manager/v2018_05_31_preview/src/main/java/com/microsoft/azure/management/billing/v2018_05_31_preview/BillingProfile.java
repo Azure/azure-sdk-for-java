@@ -22,14 +22,39 @@ import com.microsoft.azure.management.billing.v2018_05_31_preview.implementation
  */
 public interface BillingProfile extends HasInner<BillingProfileInner>, Indexable, Refreshable<BillingProfile>, Updatable<BillingProfile.Update>, HasManager<BillingManager> {
     /**
+     * @return the billingAddress value.
+     */
+    String billingAddress();
+
+    /**
+     * @return the billingContact value.
+     */
+    String billingContact();
+
+    /**
+     * @return the currency value.
+     */
+    String currency();
+
+    /**
      * @return the displayName value.
      */
     String displayName();
 
     /**
+     * @return the emailInvoice value.
+     */
+    Boolean emailInvoice();
+
+    /**
      * @return the id value.
      */
     String id();
+
+    /**
+     * @return the invoiceDay value.
+     */
+    String invoiceDay();
 
     /**
      * @return the name value.
