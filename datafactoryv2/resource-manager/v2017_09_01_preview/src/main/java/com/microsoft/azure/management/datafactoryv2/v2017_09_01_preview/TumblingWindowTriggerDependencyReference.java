@@ -20,22 +20,20 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 public class TumblingWindowTriggerDependencyReference extends TriggerDependencyReference {
     /**
      * Timespan applied to the start time of a tumbling window when evaluating
-     * dependency, pattern:
-     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * dependency, .Net timespan format.
      */
     @JsonProperty(value = "offset")
     private String offset;
 
     /**
      * The size of the window when evaluating the dependency. If undefined the
-     * frequency of the tumbling window will be used, pattern:
-     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * frequency of the tumbling window will be used, .Net timespan format.
      */
     @JsonProperty(value = "size")
     private String size;
 
     /**
-     * Get timespan applied to the start time of a tumbling window when evaluating dependency, pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * Get timespan applied to the start time of a tumbling window when evaluating dependency, .Net timespan format.
      *
      * @return the offset value
      */
@@ -44,7 +42,7 @@ public class TumblingWindowTriggerDependencyReference extends TriggerDependencyR
     }
 
     /**
-     * Set timespan applied to the start time of a tumbling window when evaluating dependency, pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * Set timespan applied to the start time of a tumbling window when evaluating dependency, .Net timespan format.
      *
      * @param offset the offset value to set
      * @return the TumblingWindowTriggerDependencyReference object itself.
@@ -55,7 +53,7 @@ public class TumblingWindowTriggerDependencyReference extends TriggerDependencyR
     }
 
     /**
-     * Get the size of the window when evaluating the dependency. If undefined the frequency of the tumbling window will be used, pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * Get the size of the window when evaluating the dependency. If undefined the frequency of the tumbling window will be used, .Net timespan format.
      *
      * @return the size value
      */
@@ -64,7 +62,7 @@ public class TumblingWindowTriggerDependencyReference extends TriggerDependencyR
     }
 
     /**
-     * Set the size of the window when evaluating the dependency. If undefined the frequency of the tumbling window will be used, pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * Set the size of the window when evaluating the dependency. If undefined the frequency of the tumbling window will be used, .Net timespan format.
      *
      * @param size the size value to set
      * @return the TumblingWindowTriggerDependencyReference object itself.
