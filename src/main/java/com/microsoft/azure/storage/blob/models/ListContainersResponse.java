@@ -10,7 +10,6 @@
 
 package com.microsoft.azure.storage.blob.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -46,21 +45,11 @@ public final class ListContainersResponse {
     @JsonProperty(value = "MaxResults", required = true)
     private int maxResults;
 
-    private static final class ContainerItemsWrapper {
-        @JacksonXmlProperty(localName = "Container")
-        private final List<ContainerItem> items;
-
-        @JsonCreator
-        private ContainerItemsWrapper(@JacksonXmlProperty(localName = "Container") List<ContainerItem> items) {
-            this.items = items;
-        }
-    }
-
     /**
      * The containerItems property.
      */
-    @JsonProperty(value = "ContainerItems")
-    private ContainerItemsWrapper containerItems;
+    @JsonProperty("Containers")
+    private List<ContainerItem> containerItems = new ArrayList<>();
 
     /**
      * The nextMarker property.
@@ -154,10 +143,7 @@ public final class ListContainersResponse {
      * @return the containerItems value.
      */
     public List<ContainerItem> containerItems() {
-        if (this.containerItems == null) {
-            this.containerItems = new ContainerItemsWrapper(new ArrayList<ContainerItem>());
-        }
-        return this.containerItems.items;
+        return this.containerItems;
     }
 
     /**
@@ -167,7 +153,7 @@ public final class ListContainersResponse {
      * @return the ListContainersResponse object itself.
      */
     public ListContainersResponse withContainerItems(List<ContainerItem> containerItems) {
-        this.containerItems = new ContainerItemsWrapper(containerItems);
+        this.containerItems = containerItems;
         return this;
     }
 

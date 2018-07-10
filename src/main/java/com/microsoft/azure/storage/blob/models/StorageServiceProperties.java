@@ -32,14 +32,14 @@ public final class StorageServiceProperties {
      * A summary of request statistics grouped by API in hourly aggregates for
      * blobs.
      */
-    @JsonProperty(value = "HourMetrics")
+    @JsonProperty(value = "Metrics")
     private Metrics hourMetrics;
 
     /**
      * a summary of request statistics grouped by API in minute aggregates for
      * blobs.
      */
-    @JsonProperty(value = "MinuteMetrics")
+    @JsonProperty(value = "Metrics")
     private Metrics minuteMetrics;
 
     private static final class CorsWrapper {
@@ -69,7 +69,7 @@ public final class StorageServiceProperties {
     /**
      * The Delete Retention Policy for the service.
      */
-    @JsonProperty(value = "DeleteRetentionPolicy")
+    @JsonProperty(value = "RetentionPolicy")
     private RetentionPolicy deleteRetentionPolicy;
 
     /**

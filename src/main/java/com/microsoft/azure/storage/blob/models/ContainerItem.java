@@ -18,7 +18,7 @@ import java.util.Map;
 /**
  * An Azure Storage container.
  */
-@JacksonXmlRootElement(localName = "ContainerItem")
+@JacksonXmlRootElement(localName = "Container")
 public final class ContainerItem {
     /**
      * The name property.
@@ -29,7 +29,7 @@ public final class ContainerItem {
     /**
      * The properties property.
      */
-    @JsonProperty(value = "Properties", required = true)
+    @JsonProperty(value = "ContainerProperties", required = true)
     private ContainerProperties properties;
 
     /**

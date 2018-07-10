@@ -68,13 +68,13 @@ class ServiceAPITest extends APISpec {
                 primaryServiceURL.listContainersSegment(null,
                 new ListContainersOptions(null, null, 5)).blockingGet()
         String marker = response.body().nextMarker()
-        String firstContainerName = response.body().containers().get(0).name()
+        String firstContainerName = response.body().containerItems().get(0).name()
         response = primaryServiceURL.listContainersSegment(marker,
                 new ListContainersOptions(null, null, 5)).blockingGet()
 
         expect:
         // Assert that the second segment is indeed after the first alphabetically
-        firstContainerName < response.body().containers().get(0).name()
+        firstContainerName < response.body().containerItems().get(0).name()
     }
 
     def "Service list containers details"() {
@@ -87,7 +87,7 @@ class ServiceAPITest extends APISpec {
         expect:
         primaryServiceURL.listContainersSegment(null,
                 new ListContainersOptions(new ContainerListingDetails(true),
-                        "aaa"+containerPrefix, null)).blockingGet().body().containers()
+                        "aaa"+containerPrefix, null)).blockingGet().body().containerItems()
                 .get(0).metadata() == metadata
         // Container with prefix "aaa" will not be cleaned up by normal test cleanup.
         cu.delete(null).blockingGet().statusCode() == 202
@@ -97,7 +97,7 @@ class ServiceAPITest extends APISpec {
         expect:
         primaryServiceURL.listContainersSegment(null,
                 new ListContainersOptions(null, null, 10))
-                .blockingGet().body().containers().size() == 10
+                .blockingGet().body().containerItems().size() == 10
     }
 
     def "Service list containers error"() {

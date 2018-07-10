@@ -58,7 +58,7 @@ public final class ListBlobsFlatResponse {
     /**
      * The flatListSegment property.
      */
-    @JsonProperty(value = "FlatListSegment")
+    @JsonProperty(value = "Blobs")
     private FlatListSegment flatListSegment;
 
     /**
