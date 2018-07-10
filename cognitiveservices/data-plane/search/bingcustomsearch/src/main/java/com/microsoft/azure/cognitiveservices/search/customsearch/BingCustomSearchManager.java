@@ -27,7 +27,7 @@ public class BingCustomSearchManager {
      * @return the Bing Custom Search API client
      */
     public static BingCustomSearchAPI authenticate(String subscriptionKey) {
-        return authenticate("https://api.cognitive.microsoft.com/bing/v7.0/", subscriptionKey);
+        return authenticate("https://api.cognitive.microsoft.com/bingcustomsearch/v7.0/", subscriptionKey);
     }
 
     /**
@@ -66,7 +66,7 @@ public class BingCustomSearchManager {
      * @return the Bing Custom Search API client
      */
     public static BingCustomSearchAPI authenticate(ServiceClientCredentials credentials) {
-        return authenticate("https://api.cognitive.microsoft.com/bing/v7.0/", credentials);
+        return authenticate("https://api.cognitive.microsoft.com/bingcustomsearch/v7.0/", credentials);
     }
 
     /**

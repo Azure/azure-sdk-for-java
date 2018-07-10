@@ -118,7 +118,7 @@ public class BingWebSearchAPIImpl extends AzureServiceClient implements BingWebS
      * @param credentials the management credentials for Azure
      */
     public BingWebSearchAPIImpl(ServiceClientCredentials credentials) {
-        this("https://api.cognitive.microsoft.com/bing/v7.0", credentials);
+        this("https://api.cognitive.microsoft.com/bing/v7.0/", credentials);
     }
 
     /**

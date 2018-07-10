@@ -118,7 +118,7 @@ public class BingEntitySearchAPIImpl extends AzureServiceClient implements BingE
      * @param credentials the management credentials for Azure
      */
     public BingEntitySearchAPIImpl(ServiceClientCredentials credentials) {
-        this("https://api.cognitive.microsoft.com/bing/v7.0", credentials);
+        this("https://api.cognitive.microsoft.com/bing/v7.0/", credentials);
     }
 
     /**

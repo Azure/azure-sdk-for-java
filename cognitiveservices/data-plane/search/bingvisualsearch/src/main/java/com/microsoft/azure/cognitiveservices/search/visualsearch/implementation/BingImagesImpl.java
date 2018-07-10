@@ -139,7 +139,7 @@ public class BingImagesImpl implements BingImages {
      */
     public Observable<ServiceResponse<ImageKnowledge>> visualSearchWithServiceResponseAsync(String acceptLanguage, String contentType, String userAgent, String clientId, String clientIp, String location, String knowledgeRequest, byte[] image) {
         final String xBingApisSDK = "true";
-        RequestBody imageConverted = RequestBody.create(MediaType.parse("multipart/form-data"), new byte[0]);
+        RequestBody imageConverted = null;
         if (image != null) {
             imageConverted = RequestBody.create(MediaType.parse("multipart/form-data"), image);
         }

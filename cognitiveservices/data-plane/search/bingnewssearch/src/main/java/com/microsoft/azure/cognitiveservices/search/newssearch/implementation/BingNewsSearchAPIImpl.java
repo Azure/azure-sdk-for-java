@@ -118,7 +118,7 @@ public class BingNewsSearchAPIImpl extends AzureServiceClient implements BingNew
      * @param credentials the management credentials for Azure
      */
     public BingNewsSearchAPIImpl(ServiceClientCredentials credentials) {
-        this("https://api.cognitive.microsoft.com/bing/v7.0", credentials);
+        this("https://api.cognitive.microsoft.com/bing/v7.0/", credentials);
     }
 
     /**
