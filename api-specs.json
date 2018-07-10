@@ -38,6 +38,14 @@
     "source": "specification/containerregistry/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "datalake-analytics/data-plane/catalog": {
+    "source": "specification/datalake-analytics/data-plane/readme.md",
+    "args": "--tag=package-catalog-2016-11"
+  },
+  "datalake-analytics/data-plane/job": {
+    "source": "specification/datalake-analytics/data-plane/readme.md",
+    "args": "--tag=package-job-2017-09-preview"
+  },
   "dns/resource-manager": {
     "source": "specification/dns/resource-manager/readme.md",
     "args": "--multiapi --fluent"
