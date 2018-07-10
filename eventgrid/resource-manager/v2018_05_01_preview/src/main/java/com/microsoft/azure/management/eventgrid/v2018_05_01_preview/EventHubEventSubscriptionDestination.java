@@ -28,7 +28,7 @@ public class EventHubEventSubscriptionDestination extends EventSubscriptionDesti
     private String resourceId;
 
     /**
-     * Get the resourceId value.
+     * Get the Azure Resource Id that represents the endpoint of an Event Hub destination of an event subscription.
      *
      * @return the resourceId value
      */
@@ -37,7 +37,7 @@ public class EventHubEventSubscriptionDestination extends EventSubscriptionDesti
     }
 
     /**
-     * Set the resourceId value.
+     * Set the Azure Resource Id that represents the endpoint of an Event Hub destination of an event subscription.
      *
      * @param resourceId the resourceId value to set
      * @return the EventHubEventSubscriptionDestination object itself.

@@ -55,7 +55,7 @@ public class EventSubscriptionUpdateParameters {
     private DeadLetterDestination deadLetterDestination;
 
     /**
-     * Get the destination value.
+     * Get information about the destination where events have to be delivered for the event subscription.
      *
      * @return the destination value
      */
@@ -64,7 +64,7 @@ public class EventSubscriptionUpdateParameters {
     }
 
     /**
-     * Set the destination value.
+     * Set information about the destination where events have to be delivered for the event subscription.
      *
      * @param destination the destination value to set
      * @return the EventSubscriptionUpdateParameters object itself.
@@ -75,7 +75,7 @@ public class EventSubscriptionUpdateParameters {
     }
 
     /**
-     * Get the filter value.
+     * Get information about the filter for the event subscription.
      *
      * @return the filter value
      */
@@ -84,7 +84,7 @@ public class EventSubscriptionUpdateParameters {
     }
 
     /**
-     * Set the filter value.
+     * Set information about the filter for the event subscription.
      *
      * @param filter the filter value to set
      * @return the EventSubscriptionUpdateParameters object itself.
@@ -95,7 +95,7 @@ public class EventSubscriptionUpdateParameters {
     }
 
     /**
-     * Get the labels value.
+     * Get list of user defined labels.
      *
      * @return the labels value
      */
@@ -104,7 +104,7 @@ public class EventSubscriptionUpdateParameters {
     }
 
     /**
-     * Set the labels value.
+     * Set list of user defined labels.
      *
      * @param labels the labels value to set
      * @return the EventSubscriptionUpdateParameters object itself.
@@ -115,7 +115,7 @@ public class EventSubscriptionUpdateParameters {
     }
 
     /**
-     * Get the eventDeliverySchema value.
+     * Get the event delivery schema for the event subscription. Possible values include: 'EventGridSchema', 'InputEventSchema', 'CloudEventV01Schema'.
      *
      * @return the eventDeliverySchema value
      */
@@ -124,7 +124,7 @@ public class EventSubscriptionUpdateParameters {
     }
 
     /**
-     * Set the eventDeliverySchema value.
+     * Set the event delivery schema for the event subscription. Possible values include: 'EventGridSchema', 'InputEventSchema', 'CloudEventV01Schema'.
      *
      * @param eventDeliverySchema the eventDeliverySchema value to set
      * @return the EventSubscriptionUpdateParameters object itself.
@@ -135,7 +135,7 @@ public class EventSubscriptionUpdateParameters {
     }
 
     /**
-     * Get the retryPolicy value.
+     * Get the retry policy for events. This can be used to configure maximum number of delivery attempts and time to live for events.
      *
      * @return the retryPolicy value
      */
@@ -144,7 +144,7 @@ public class EventSubscriptionUpdateParameters {
     }
 
     /**
-     * Set the retryPolicy value.
+     * Set the retry policy for events. This can be used to configure maximum number of delivery attempts and time to live for events.
      *
      * @param retryPolicy the retryPolicy value to set
      * @return the EventSubscriptionUpdateParameters object itself.
@@ -155,7 +155,7 @@ public class EventSubscriptionUpdateParameters {
     }
 
     /**
-     * Get the deadLetterDestination value.
+     * Get the DeadLetter destination of the event subscription.
      *
      * @return the deadLetterDestination value
      */
@@ -164,7 +164,7 @@ public class EventSubscriptionUpdateParameters {
     }
 
     /**
-     * Set the deadLetterDestination value.
+     * Set the DeadLetter destination of the event subscription.
      *
      * @param deadLetterDestination the deadLetterDestination value to set
      * @return the EventSubscriptionUpdateParameters object itself.

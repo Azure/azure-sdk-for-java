@@ -32,7 +32,7 @@ public class TopicInner extends Resource {
     private String endpoint;
 
     /**
-     * Get the provisioningState value.
+     * Get provisioning state of the topic. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Canceled', 'Failed'.
      *
      * @return the provisioningState value
      */
@@ -41,7 +41,7 @@ public class TopicInner extends Resource {
     }
 
     /**
-     * Get the endpoint value.
+     * Get endpoint for the topic.
      *
      * @return the endpoint value
      */

@@ -39,7 +39,7 @@ public class OperationInfo {
     private String description;
 
     /**
-     * Get the provider value.
+     * Get name of the provider.
      *
      * @return the provider value
      */
@@ -48,7 +48,7 @@ public class OperationInfo {
     }
 
     /**
-     * Set the provider value.
+     * Set name of the provider.
      *
      * @param provider the provider value to set
      * @return the OperationInfo object itself.
@@ -59,7 +59,7 @@ public class OperationInfo {
     }
 
     /**
-     * Get the resource value.
+     * Get name of the resource type.
      *
      * @return the resource value
      */
@@ -68,7 +68,7 @@ public class OperationInfo {
     }
 
     /**
-     * Set the resource value.
+     * Set name of the resource type.
      *
      * @param resource the resource value to set
      * @return the OperationInfo object itself.
@@ -79,7 +79,7 @@ public class OperationInfo {
     }
 
     /**
-     * Get the operation value.
+     * Get name of the operation.
      *
      * @return the operation value
      */
@@ -88,7 +88,7 @@ public class OperationInfo {
     }
 
     /**
-     * Set the operation value.
+     * Set name of the operation.
      *
      * @param operation the operation value to set
      * @return the OperationInfo object itself.
@@ -99,7 +99,7 @@ public class OperationInfo {
     }
 
     /**
-     * Get the description value.
+     * Get description of the operation.
      *
      * @return the description value
      */
@@ -108,7 +108,7 @@ public class OperationInfo {
     }
 
     /**
-     * Set the description value.
+     * Set description of the operation.
      *
      * @param description the description value to set
      * @return the OperationInfo object itself.

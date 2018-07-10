@@ -63,7 +63,7 @@ public class JsonInputSchemaMapping extends InputSchemaMapping {
     private JsonFieldWithDefault dataVersion;
 
     /**
-     * Get the id value.
+     * Get the mapping information for the Id property of the Event Grid Event.
      *
      * @return the id value
      */
@@ -72,7 +72,7 @@ public class JsonInputSchemaMapping extends InputSchemaMapping {
     }
 
     /**
-     * Set the id value.
+     * Set the mapping information for the Id property of the Event Grid Event.
      *
      * @param id the id value to set
      * @return the JsonInputSchemaMapping object itself.
@@ -83,7 +83,7 @@ public class JsonInputSchemaMapping extends InputSchemaMapping {
     }
 
     /**
-     * Get the topic value.
+     * Get the mapping information for the Topic property of the Event Grid Event.
      *
      * @return the topic value
      */
@@ -92,7 +92,7 @@ public class JsonInputSchemaMapping extends InputSchemaMapping {
     }
 
     /**
-     * Set the topic value.
+     * Set the mapping information for the Topic property of the Event Grid Event.
      *
      * @param topic the topic value to set
      * @return the JsonInputSchemaMapping object itself.
@@ -103,7 +103,7 @@ public class JsonInputSchemaMapping extends InputSchemaMapping {
     }
 
     /**
-     * Get the eventTime value.
+     * Get the mapping information for the EventTime property of the Event Grid Event.
      *
      * @return the eventTime value
      */
@@ -112,7 +112,7 @@ public class JsonInputSchemaMapping extends InputSchemaMapping {
     }
 
     /**
-     * Set the eventTime value.
+     * Set the mapping information for the EventTime property of the Event Grid Event.
      *
      * @param eventTime the eventTime value to set
      * @return the JsonInputSchemaMapping object itself.
@@ -123,7 +123,7 @@ public class JsonInputSchemaMapping extends InputSchemaMapping {
     }
 
     /**
-     * Get the eventType value.
+     * Get the mapping information for the EventType property of the Event Grid Event.
      *
      * @return the eventType value
      */
@@ -132,7 +132,7 @@ public class JsonInputSchemaMapping extends InputSchemaMapping {
     }
 
     /**
-     * Set the eventType value.
+     * Set the mapping information for the EventType property of the Event Grid Event.
      *
      * @param eventType the eventType value to set
      * @return the JsonInputSchemaMapping object itself.
@@ -143,7 +143,7 @@ public class JsonInputSchemaMapping extends InputSchemaMapping {
     }
 
     /**
-     * Get the subject value.
+     * Get the mapping information for the Subject property of the Event Grid Event.
      *
      * @return the subject value
      */
@@ -152,7 +152,7 @@ public class JsonInputSchemaMapping extends InputSchemaMapping {
     }
 
     /**
-     * Set the subject value.
+     * Set the mapping information for the Subject property of the Event Grid Event.
      *
      * @param subject the subject value to set
      * @return the JsonInputSchemaMapping object itself.
@@ -163,7 +163,7 @@ public class JsonInputSchemaMapping extends InputSchemaMapping {
     }
 
     /**
-     * Get the dataVersion value.
+     * Get the mapping information for the DataVersion property of the Event Grid Event.
      *
      * @return the dataVersion value
      */
@@ -172,7 +172,7 @@ public class JsonInputSchemaMapping extends InputSchemaMapping {
     }
 
     /**
-     * Set the dataVersion value.
+     * Set the mapping information for the DataVersion property of the Event Grid Event.
      *
      * @param dataVersion the dataVersion value to set
      * @return the JsonInputSchemaMapping object itself.

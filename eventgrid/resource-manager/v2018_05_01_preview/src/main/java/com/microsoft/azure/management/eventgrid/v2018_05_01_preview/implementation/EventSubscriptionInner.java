@@ -78,7 +78,7 @@ public class EventSubscriptionInner extends ProxyResource {
     private DeadLetterDestination deadLetterDestination;
 
     /**
-     * Get the topic value.
+     * Get name of the topic of the event subscription.
      *
      * @return the topic value
      */
@@ -87,7 +87,7 @@ public class EventSubscriptionInner extends ProxyResource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get provisioning state of the event subscription. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Canceled', 'Failed', 'AwaitingManualAction'.
      *
      * @return the provisioningState value
      */
@@ -96,7 +96,7 @@ public class EventSubscriptionInner extends ProxyResource {
     }
 
     /**
-     * Get the destination value.
+     * Get information about the destination where events have to be delivered for the event subscription.
      *
      * @return the destination value
      */
@@ -105,7 +105,7 @@ public class EventSubscriptionInner extends ProxyResource {
     }
 
     /**
-     * Set the destination value.
+     * Set information about the destination where events have to be delivered for the event subscription.
      *
      * @param destination the destination value to set
      * @return the EventSubscriptionInner object itself.
@@ -116,7 +116,7 @@ public class EventSubscriptionInner extends ProxyResource {
     }
 
     /**
-     * Get the filter value.
+     * Get information about the filter for the event subscription.
      *
      * @return the filter value
      */
@@ -125,7 +125,7 @@ public class EventSubscriptionInner extends ProxyResource {
     }
 
     /**
-     * Set the filter value.
+     * Set information about the filter for the event subscription.
      *
      * @param filter the filter value to set
      * @return the EventSubscriptionInner object itself.
@@ -136,7 +136,7 @@ public class EventSubscriptionInner extends ProxyResource {
     }
 
     /**
-     * Get the labels value.
+     * Get list of user defined labels.
      *
      * @return the labels value
      */
@@ -145,7 +145,7 @@ public class EventSubscriptionInner extends ProxyResource {
     }
 
     /**
-     * Set the labels value.
+     * Set list of user defined labels.
      *
      * @param labels the labels value to set
      * @return the EventSubscriptionInner object itself.
@@ -156,7 +156,7 @@ public class EventSubscriptionInner extends ProxyResource {
     }
 
     /**
-     * Get the eventDeliverySchema value.
+     * Get the event delivery schema for the event subscription. Possible values include: 'EventGridSchema', 'InputEventSchema', 'CloudEventV01Schema'.
      *
      * @return the eventDeliverySchema value
      */
@@ -165,7 +165,7 @@ public class EventSubscriptionInner extends ProxyResource {
     }
 
     /**
-     * Set the eventDeliverySchema value.
+     * Set the event delivery schema for the event subscription. Possible values include: 'EventGridSchema', 'InputEventSchema', 'CloudEventV01Schema'.
      *
      * @param eventDeliverySchema the eventDeliverySchema value to set
      * @return the EventSubscriptionInner object itself.
@@ -176,7 +176,7 @@ public class EventSubscriptionInner extends ProxyResource {
     }
 
     /**
-     * Get the retryPolicy value.
+     * Get the retry policy for events. This can be used to configure maximum number of delivery attempts and time to live for events.
      *
      * @return the retryPolicy value
      */
@@ -185,7 +185,7 @@ public class EventSubscriptionInner extends ProxyResource {
     }
 
     /**
-     * Set the retryPolicy value.
+     * Set the retry policy for events. This can be used to configure maximum number of delivery attempts and time to live for events.
      *
      * @param retryPolicy the retryPolicy value to set
      * @return the EventSubscriptionInner object itself.
@@ -196,7 +196,7 @@ public class EventSubscriptionInner extends ProxyResource {
     }
 
     /**
-     * Get the deadLetterDestination value.
+     * Get the DeadLetter destination of the event subscription.
      *
      * @return the deadLetterDestination value
      */
@@ -205,7 +205,7 @@ public class EventSubscriptionInner extends ProxyResource {
     }
 
     /**
-     * Set the deadLetterDestination value.
+     * Set the DeadLetter destination of the event subscription.
      *
      * @param deadLetterDestination the deadLetterDestination value to set
      * @return the EventSubscriptionInner object itself.

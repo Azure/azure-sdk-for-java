@@ -27,7 +27,7 @@ public class TopicSharedAccessKeysInner {
     private String key2;
 
     /**
-     * Get the key1 value.
+     * Get shared access key1 for the topic.
      *
      * @return the key1 value
      */
@@ -36,7 +36,7 @@ public class TopicSharedAccessKeysInner {
     }
 
     /**
-     * Set the key1 value.
+     * Set shared access key1 for the topic.
      *
      * @param key1 the key1 value to set
      * @return the TopicSharedAccessKeysInner object itself.
@@ -47,7 +47,7 @@ public class TopicSharedAccessKeysInner {
     }
 
     /**
-     * Get the key2 value.
+     * Get shared access key2 for the topic.
      *
      * @return the key2 value
      */
@@ -56,7 +56,7 @@ public class TopicSharedAccessKeysInner {
     }
 
     /**
-     * Set the key2 value.
+     * Set shared access key2 for the topic.
      *
      * @param key2 the key2 value to set
      * @return the TopicSharedAccessKeysInner object itself.
