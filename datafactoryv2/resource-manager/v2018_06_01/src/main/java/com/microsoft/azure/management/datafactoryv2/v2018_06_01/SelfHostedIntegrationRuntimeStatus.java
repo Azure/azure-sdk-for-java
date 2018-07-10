@@ -104,6 +104,20 @@ public class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntimeStatus
     private String versionStatus;
 
     /**
+     * The list of linked integration runtimes that are created to share with
+     * this integration runtime.
+     */
+    @JsonProperty(value = "typeProperties.links")
+    private List<LinkedIntegrationRuntime> links;
+
+    /**
+     * The MSI-s of the data factories to which the integration runtime is
+     * shared.
+     */
+    @JsonProperty(value = "typeProperties.sharedWithFactories", access = JsonProperty.Access.WRITE_ONLY)
+    private List<String> sharedWithFactories;
+
+    /**
      * The version that the integration runtime is going to update to.
      */
     @JsonProperty(value = "typeProperties.pushedVersion", access = JsonProperty.Access.WRITE_ONLY)
@@ -232,6 +246,35 @@ public class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntimeStatus
      */
     public String versionStatus() {
         return this.versionStatus;
+    }
+
+    /**
+     * Get the list of linked integration runtimes that are created to share with this integration runtime.
+     *
+     * @return the links value
+     */
+    public List<LinkedIntegrationRuntime> links() {
+        return this.links;
+    }
+
+    /**
+     * Set the list of linked integration runtimes that are created to share with this integration runtime.
+     *
+     * @param links the links value to set
+     * @return the SelfHostedIntegrationRuntimeStatus object itself.
+     */
+    public SelfHostedIntegrationRuntimeStatus withLinks(List<LinkedIntegrationRuntime> links) {
+        this.links = links;
+        return this;
+    }
+
+    /**
+     * Get the MSI-s of the data factories to which the integration runtime is shared.
+     *
+     * @return the sharedWithFactories value
+     */
+    public List<String> sharedWithFactories() {
+        return this.sharedWithFactories;
     }
 
     /**

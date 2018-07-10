@@ -8,8 +8,10 @@
 
 package com.microsoft.azure.management.datafactoryv2.v2018_06_01;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.implementation.IntegrationRuntimeInner;
 
 /**
@@ -17,5 +19,32 @@ import com.microsoft.azure.management.datafactoryv2.v2018_06_01.implementation.I
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SelfHosted")
+@JsonFlatten
 public class SelfHostedIntegrationRuntime extends IntegrationRuntimeInner {
+    /**
+     * The linkedInfo property.
+     */
+    @JsonProperty(value = "typeProperties.linkedInfo")
+    private LinkedIntegrationRuntimeType linkedInfo;
+
+    /**
+     * Get the linkedInfo value.
+     *
+     * @return the linkedInfo value
+     */
+    public LinkedIntegrationRuntimeType linkedInfo() {
+        return this.linkedInfo;
+    }
+
+    /**
+     * Set the linkedInfo value.
+     *
+     * @param linkedInfo the linkedInfo value to set
+     * @return the SelfHostedIntegrationRuntime object itself.
+     */
+    public SelfHostedIntegrationRuntime withLinkedInfo(LinkedIntegrationRuntimeType linkedInfo) {
+        this.linkedInfo = linkedInfo;
+        return this;
+    }
+
 }

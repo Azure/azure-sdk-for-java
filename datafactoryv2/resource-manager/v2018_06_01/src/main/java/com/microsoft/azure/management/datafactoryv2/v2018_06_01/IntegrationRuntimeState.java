@@ -43,6 +43,9 @@ public final class IntegrationRuntimeState extends ExpandableStringEnum<Integrat
     /** Static value Offline for IntegrationRuntimeState. */
     public static final IntegrationRuntimeState OFFLINE = fromString("Offline");
 
+    /** Static value AccessDenied for IntegrationRuntimeState. */
+    public static final IntegrationRuntimeState ACCESS_DENIED = fromString("AccessDenied");
+
     /**
      * Creates or finds a IntegrationRuntimeState from its string representation.
      * @param name a name to look for
