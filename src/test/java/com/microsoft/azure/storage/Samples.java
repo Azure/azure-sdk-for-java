@@ -86,7 +86,6 @@ public class Samples {
 
         // This example shows several common operations just to get you started.
 
-        // <upload_download>
         /*
         Create a URL that references a to-be-created container in your Azure Storage account. This returns a
         ContainerURL object that wraps the container's URL and a request pipeline (inherited from serviceURL).
@@ -104,7 +103,7 @@ public class Samples {
         String data = "Hello world!";
 
         // Create the container on the service (with no metadata and no public access)
-        Single<DownloadResponse> downloadResponse = containerURL.create(null, null)
+        containerURL.create(null, null)
                 .flatMap(containersCreateResponse ->
                         /*
                          Create the blob with string (plain text) content.
@@ -114,16 +113,15 @@ public class Samples {
                                 null, null, null))
                 .flatMap(blobsDownloadResponse ->
                         // Download the blob's content.
-                        blobURL.download(null, null, false));
-                // </upload_download>
-                downloadResponse.flatMap(blobsDownloadResponse ->
-                        // Verify that the blob data round-tripped correctly.
-                        FlowableUtil.collectBytesInBuffer(blobsDownloadResponse.body())
-                                .doOnSuccess(byteBuffer -> {
-                                    if (byteBuffer.compareTo(ByteBuffer.wrap(data.getBytes())) != 0) {
-                                        throw new Exception("The downloaded data does not match the uploaded data.");
-                                    }
-                                }))
+                        blobURL.download(null, null, false))
+                .flatMap(blobsDownloadResponse ->
+                // Verify that the blob data round-tripped correctly.
+                FlowableUtil.collectBytesInBuffer(blobsDownloadResponse.body())
+                        .doOnSuccess(byteBuffer -> {
+                            if (byteBuffer.compareTo(ByteBuffer.wrap(data.getBytes())) != 0) {
+                                throw new Exception("The downloaded data does not match the uploaded data.");
+                            }
+                        }))
                 .flatMap(byteBuffer ->
                         /*
                          List the blob(s) in our container; since a container may hold millions of blobs, this is done
@@ -290,14 +288,13 @@ public class Samples {
     }
 
     @Test
-    /**
+    /*
      * This example shows how to handle errors thrown by various XxxURL methods. Any client-side error will be
      * propagated unmodified. However, any response from the service with an unexpected status code will be wrapped in a
      * StorageException. If the pipeline includes the RequestRetryFactory, which is the default, some of these errors
      * will be automatically retried if it makes sense to do so. The StorageException type exposes rich error
      * information returned by the service.
      */
-    // <exception>
     public void exampleStorageError() throws MalformedURLException {
         ContainerURL containerURL = new ContainerURL(new URL("http://myaccount.blob.core.windows.net/mycontainer"),
                 StorageURL.createPipeline(new AnonymousCredentials(), new PipelineOptions()));
@@ -333,14 +330,12 @@ public class Samples {
                  */
                 .blockingGet();
     }
-    // </exception>
 
     /*
     This example shows how to break a URL into its parts so you can examine and/or change some of its values and then
     construct a new URL.
      */
     @Test
-    // <url_parts>
     public void exampleBlobURLParts() throws MalformedURLException, UnknownHostException {
         /*
          Start with a URL that identifies a snapshot of a blob in a container and includes a Shared Access Signature
@@ -386,7 +381,6 @@ public class Samples {
         System.out.println(newURL);
         // NOTE: You can pass the new URL to the constructor for any XxxURL to manipulate the resource.
     }
-    // </url_parts
 
     // This example shows how to create and use an Azure Storage account Shared Access Signature(SAS).
     @Test
@@ -395,7 +389,6 @@ public class Samples {
         String accountName = getAccountName();
         String accountKey = getAccountKey();
 
-        // <account_sas>
         // Use your Storage account's name and key to create a credential object; this is required to sign a SAS.
         SharedKeyCredentials credential = new SharedKeyCredentials(accountName, accountKey);
 
@@ -442,8 +435,6 @@ public class Samples {
         ServiceURL serviceURL = new ServiceURL(u,
                 StorageURL.createPipeline(new AnonymousCredentials(), new PipelineOptions()));
         // Now, you can use this serviceURL just like any other to make requests of the resource.
-
-        // </account_sas>
     }
 
     // This example shows how to create and use a Blob Service Shared Access Signature (SAS).
@@ -453,7 +444,6 @@ public class Samples {
         String accountName = getAccountName();
         String accountKey = getAccountKey();
 
-        // <service_sas>
         // Use your Storage account's name and key to create a credential object; this is required to sign a SAS.
         SharedKeyCredentials credential = new SharedKeyCredentials(accountName, accountKey);
 
@@ -502,7 +492,6 @@ public class Samples {
         BlobURL blobURL = new BlobURL(u,
                 StorageURL.createPipeline(new AnonymousCredentials(), new PipelineOptions()));
         // Now, you can use this blobURL just like any other to make requests of the resource.
-        // </service_sas>
     }
 
     // This example shows how to manipulate a container's permissions.
@@ -840,13 +829,11 @@ public class Samples {
         ServiceURL s = new ServiceURL(u,
                 StorageURL.createPipeline(new SharedKeyCredentials(accountName, accountKey), new PipelineOptions()));
 
-        // <container_create>
         ContainerURL containerURL = s.createContainerURL("myjavacontainerheaders");
         BlockBlobURL blobURL = containerURL.createBlockBlobURL("Data.txt");
 
         // Create the container.
         containerURL.create(null, null)
-                // </container_create>
                 .flatMap(containersCreateResponse -> {
                     /*
                     Create the blob with HTTP headers.
@@ -922,7 +909,6 @@ public class Samples {
         ServiceURL s = new ServiceURL(u,
                 StorageURL.createPipeline(new SharedKeyCredentials(accountName, accountKey), new PipelineOptions()));
 
-        // <blocks>
         ContainerURL containerURL = s.createContainerURL("myjavacontainerblock");
         BlockBlobURL blobURL = containerURL.createBlockBlobURL("Data.txt");
 
@@ -972,7 +958,6 @@ public class Samples {
                          to include blocks that have been staged but not committed.
                          */
                         blobURL.getBlockList(BlockListType.ALL, null))
-                // // </blocks>
                 .flatMap(response -> {
                     for (Block block : response.body().committedBlocks()) {
                         System.out.println(String.format(Locale.ROOT, "Block ID=%s, Size=%d", block.name(),
@@ -1019,12 +1004,11 @@ public class Samples {
         ServiceURL s = new ServiceURL(u,
                 StorageURL.createPipeline(new SharedKeyCredentials(accountName, accountKey), new PipelineOptions()));
 
-        // <append_blob>
         ContainerURL containerURL = s.createContainerURL("myjavacontainerappend");
         AppendBlobURL blobURL = containerURL.createAppendBlobURL("Data.txt");
 
         // Create the container.
-        Completable completable = containerURL.create(null, null)
+        containerURL.create(null, null)
                 .flatMap(response ->
                         // Create the append blob. This creates a zero-length blob that we can now append to.
                         blobURL.create(null, null, null))
@@ -1036,10 +1020,9 @@ public class Samples {
                     String text = String.format(Locale.ROOT, "Appending block #%d\n", i);
                     return blobURL.appendBlock(Flowable.just(ByteBuffer.wrap(text.getBytes())), text.length(),
                             null).toCompletable();
-                });
-                // </append_blob>
+                })
                 // Download the blob.
-                completable.andThen(blobURL.download(null, null, false))
+                .andThen(blobURL.download(null, null, false))
                 .flatMap(response ->
                         // Print out the data.
                         FlowableUtil.collectBytesInBuffer(response.body())
@@ -1161,21 +1144,19 @@ public class Samples {
         ServiceURL s = new ServiceURL(u,
                 StorageURL.createPipeline(new SharedKeyCredentials(accountName, accountKey), new PipelineOptions()));
 
-        // <snapshot>
         ContainerURL containerURL = s.createContainerURL("myjavacontainersnapshot");
         BlockBlobURL blobURL = containerURL.createBlockBlobURL("Original.txt");
 
         // Create the container.
-        Single<BlobsCreateSnapshotResponse> snapshotResponse = containerURL.create(null, null)
+        containerURL.create(null, null)
                 .flatMap(response ->
                         // Create the original blob.
                         blobURL.upload(Flowable.just(ByteBuffer.wrap("Some text".getBytes())), "Some text".length(),
                                 null, null, null))
                 .flatMap(response ->
                         // Create a snapshot of the original blob.
-                        blobURL.createSnapshot(null, null));
-                // </snapshot>
-                snapshotResponse.flatMap(response ->
+                        blobURL.createSnapshot(null, null))
+                .flatMap(response ->
                         blobURL.upload(Flowable.just(ByteBuffer.wrap("New text".getBytes())), "New text".length(),
                                 null, null, null)
                                 .flatMap(response1 ->
@@ -1244,18 +1225,17 @@ public class Samples {
         ServiceURL s = new ServiceURL(u,
                 StorageURL.createPipeline(new SharedKeyCredentials(accountName, accountKey), new PipelineOptions()));
 
-        // <start_copy>
         ContainerURL containerURL = s.createContainerURL("myjavacontainercopy");
         BlockBlobURL blobURL = containerURL.createBlockBlobURL("CopiedBlob.bin");
 
         // Create the container.
-        Single<BlobsStartCopyFromURLResponse> copyResponse = containerURL.create(null, null)
+        containerURL.create(null, null)
                 .flatMap(response ->
+                        // Start the copy from the source url to the destination, which is the url pointed to by blobURL
                         blobURL.startCopyFromURL(
                                 new URL("https://cdn2.auth0.com/docs/media/addons/azure_blob.svg"),
-                                null, null, null));
-        // </start_copy>
-                copyResponse.flatMap(response ->
+                                null, null, null))
+                .flatMap(response ->
                         blobURL.getProperties(null))
                 .flatMap(response ->
                         waitForCopyHelper(blobURL, response))
@@ -1515,5 +1495,316 @@ public class Samples {
         return result;
     }
 
+    /*
+    The following is just used a place for quick code snippets that will be included in online documentation. This
+    is not meant to serve as a comprehensive example as the above examples are.
+     */
+    public void apiRefs() throws MalformedURLException, UnknownHostException, InvalidKeyException {
+        ServiceURL serviceURL = new ServiceURL(new URL("http://myaccount.blob.core.windows.net"),
+                StorageURL.createPipeline(new AnonymousCredentials(), new PipelineOptions()));
+        // <upload_download>
+        ContainerURL containerURL = serviceURL.createContainerURL("myjavacontainerbasic");
+
+        BlockBlobURL blobURL = containerURL.createBlockBlobURL("HelloWorld.txt");
+
+        String data = "Hello world!";
+
+        // Create the container on the service (with no metadata and no public access)
+        Single<DownloadResponse> downloadResponse = containerURL.create(null, null)
+                .flatMap(containersCreateResponse ->
+                        /*
+                         Create the blob with string (plain text) content.
+                         NOTE: It is imperative that the provided length matches the actual length exactly.
+                         */
+                        blobURL.upload(Flowable.just(ByteBuffer.wrap(data.getBytes())), data.length(),
+                                null, null, null))
+                .flatMap(blobsDownloadResponse ->
+                        // Download the blob's content.
+                        blobURL.download(null, null, false));
+        downloadResponse.flatMap(blobsDownloadResponse ->
+                // Verify that the blob data round-tripped correctly.
+                FlowableUtil.collectBytesInBuffer(blobsDownloadResponse.body())
+                        .doOnSuccess(byteBuffer -> {
+                            if (byteBuffer.compareTo(ByteBuffer.wrap(data.getBytes())) != 0) {
+                                throw new Exception("The downloaded data does not match the uploaded data.");
+                            }
+                        }));
+        downloadResponse.subscribe();
+        // </upload_download>
+
+        // <exception>
+        containerURL = new ContainerURL(new URL("http://myaccount.blob.core.windows.net/mycontainer"),
+                StorageURL.createPipeline(new AnonymousCredentials(), new PipelineOptions()));
+
+        containerURL.create(null, null)
+                // An error occurred.
+                .onErrorResumeNext(throwable -> {
+                    // Check if this error is from the service.
+                    if (throwable instanceof StorageException) {
+                        StorageException exception = (StorageException) throwable;
+                        // StorageErrorCode defines constants corresponding to all error codes returned by the service.
+                        if (exception.errorCode()
+                                == StorageErrorCode.CONTAINER_BEING_DELETED) {
+                            // Log more detailed information.
+                            System.out.println("Extended details: " + exception.message());
+
+                            // Examine the raw response.
+                            HttpResponse response = exception.response();
+                        }
+                        else if (exception.errorCode()
+                                == StorageErrorCode.CONTAINER_ALREADY_EXISTS) {
+                            // Process the error
+                        }
+                    }
+                    // We just fake a successful response to prevent the example from crashing.
+                    return Single.just(
+                            new ContainersCreateResponse(200, null, null, null));
+                }).subscribe();
+        // </exception>
+
+        // <url_parts>
+        /*
+         Start with a URL that identifies a snapshot of a blob in a container and includes a Shared Access Signature
+         (SAS).
+         */
+        URL u = new URL("https://myaccount.blob.core.windows.net/mycontainter/ReadMe.txt?" +
+                "snapshot=2011-03-09T01:42:34.9360000Z" +
+                "&sv=2015-02-21&sr=b&st=2111-01-09T01:42:34Z&se=2222-03-09T01:42:34Z&sp=rw" +
+                "&sip=168.1.5.60-168.1.5.70&spr=https,http&si=myIdentifier&ss=bf&srt=s" +
+                "&sig=92836758923659283652983562==");
+
+        // You can parse this URL into its constituent parts:
+        BlobURLParts parts = URLParser.parse(u);
+
+        // Now, we access the parts (this example prints them).
+        System.out.println(String.join("\n",
+                parts.host,
+                parts.containerName,
+                parts.blobName,
+                parts.snapshot));
+        System.out.println("");
+        SASQueryParameters sas = parts.sasQueryParameters;
+        System.out.println(String.join("\n",
+                sas.getVersion(),
+                sas.getResource(),
+                sas.getStartTime().toString(),
+                sas.getExpiryTime().toString(),
+                sas.getPermissions(),
+                sas.getIpRange().toString(),
+                sas.getProtocol().toString(),
+                sas.getIdentifier(),
+                sas.getServices(),
+                sas.getSignature()));
+
+        // You can then change some of the fields and construct a new URL.
+        parts.sasQueryParameters = null; // Remove the SAS query parameters.
+        parts.snapshot = null; // Remove the snapshot timestamp.
+        parts.containerName = "othercontainer"; // Change the container name.
+        // In this example, we'll keep the blob name as it is.
+
+        // Construct a new URL from the parts:
+        URL newURL = parts.toURL();
+        System.out.println(newURL);
+        // NOTE: You can pass the new URL to the constructor for any XxxURL to manipulate the resource.
+        // </url_parts>
+
+        // <account_sas>
+        // Use your Storage account's name and key to create a credential object; this is required to sign a SAS.
+        SharedKeyCredentials credential = new SharedKeyCredentials(getAccountName(), getAccountKey());
+
+        /*
+        Set the desired SAS signature values and sign them with the shared key credentials to get the SAS query
+        parameters.
+         */
+        AccountSASSignatureValues values = new AccountSASSignatureValues();
+        values.protocol = SASProtocol.HTTPS_ONLY; // Users MUST use HTTPS (not HTTP).
+        values.expiryTime = OffsetDateTime.now().plusDays(2); // 2 days before expiration.
+
+        AccountSASPermission permission = new AccountSASPermission();
+        permission.read = true;
+        permission.list = true;
+        values.permissions = permission.toString();
+
+        AccountSASService service = new AccountSASService();
+        service.blob = true;
+        values.services = service.toString();
+
+        AccountSASResourceType resourceType = new AccountSASResourceType();
+        resourceType.container = true;
+        resourceType.object = true;
+        values.resourceTypes = resourceType.toString();
+
+        SASQueryParameters params = values.generateSASQueryParameters(credential);
+
+        // Calling encode will generate the query string.
+        String encodedParams = params.encode();
+
+        String urlToSendToSomeone = String.format(Locale.ROOT, "https://%s.blob.core.windows.net?%s",
+                getAccountName(), encodedParams);
+        // At this point, you can send the urlToSendSomeone to someone via email or any other mechanism you choose.
+
+        // ***************************************************************************************************
+
+        // When someone receives the URL, the access the SAS-protected resource with code like this:
+        u = new URL(urlToSendToSomeone);
+
+        /*
+         Create a ServiceURL object that wraps the serviceURL (and its SAS) and a pipeline. When using SAS URLs,
+         AnonymousCredentials are required.
+         */
+        ServiceURL sURL = new ServiceURL(u,
+                StorageURL.createPipeline(new AnonymousCredentials(), new PipelineOptions()));
+        // Now, you can use this serviceURL just like any other to make requests of the resource.
+        // </account_sas>
+
+        // <service_sas>
+        // Use your Storage account's name and key to create a credential object; this is required to sign a SAS.
+        credential = new SharedKeyCredentials(getAccountName(), getAccountKey());
+
+        // This is the name of the container and blob that we're creating a SAS to.
+        String containerName = "mycontainer"; // Container names require lowercase.
+        String blobName = "HelloWorld.txt"; // Blob names can be mixed case.
+
+        /*
+        Set the desired SAS signature values and sign them with the shared key credentials to get the SAS query
+        parameters.
+         */
+        ServiceSASSignatureValues blobValues = new ServiceSASSignatureValues();
+        blobValues.protocol = SASProtocol.HTTPS_ONLY; // Users MUST use HTTPS (not HTTP).
+        blobValues.expiryTime = OffsetDateTime.now().plusDays(2); // 2 days before expiration.
+        blobValues.containerName = containerName;
+        blobValues.blobName = blobName;
+
+        /*
+        To produce a container SAS (as opposed to a blob SAS), assign to Permissions using ContainerSASPermissions, and
+        make sure the blobName field is null (the default).
+         */
+        BlobSASPermission blobPermission = new BlobSASPermission();
+        blobPermission.read = true;
+        blobPermission.add = true;
+        blobPermission.write = true;
+        values.permissions = blobPermission.toString();
+
+        SASQueryParameters serviceParams = values.generateSASQueryParameters(credential);
+
+        // Calling encode will generate the query string.
+        encodedParams = serviceParams.encode();
+
+        urlToSendToSomeone = String.format(Locale.ROOT, "https://%s.blob.core.windows.net/%s/%s?%s",
+                getAccountName(), containerName, blobName, encodedParams);
+        // At this point, you can send the urlToSendSomeone to someone via email or any other mechanism you choose.
+
+        // ***************************************************************************************************
+
+        // When someone receives the URL, the access the SAS-protected resource with code like this:
+        u = new URL(urlToSendToSomeone);
+
+        /*
+         Create a BlobURL object that wraps the blobURL (and its SAS) and a pipeline. When using SAS URLs,
+         AnonymousCredentials are required.
+         */
+        BlobURL bURL = new BlobURL(u,
+                StorageURL.createPipeline(new AnonymousCredentials(), new PipelineOptions()));
+        // Now, you can use this blobURL just like any other to make requests of the resource.
+        // </service_sas>
+
+        // <blocks>
+        containerURL = serviceURL.createContainerURL("myjavacontainerblock");
+        BlockBlobURL blockBlobURL = containerURL.createBlockBlobURL("Data.txt");
+
+        String[] blockData = {"Michael", "Gabriel", "Raphael", "John"};
+
+        // Create the container. We convert to an Observable to be able to work with the block list effectively.
+        containerURL.create(null, null).toObservable()
+                .flatMap(response ->
+                        // Create an Observable that will yield each of the Strings one at a time.
+                        Observable.fromIterable(Arrays.asList(blockData))
+                )
+                // Items emitted by an Observable that results from a concatMap call will preserve the original order.
+                .concatMap(block -> {
+                    /*
+                     Generate a base64 encoded blockID. Note that all blockIDs must be the same length. It is generally
+                     considered best practice to use UUIDs for the blockID.
+                     */
+                    String blockId = Base64.getEncoder().encodeToString(
+                            UUID.randomUUID().toString().getBytes());
+
+                    /*
+                     Upload a block to this blob specifying the BlockID and its content (up to 100MB); this block is
+                     uncommitted.
+                     NOTE: It is imperative that the provided length match the actual length of the data exactly.
+                     */
+                    return blockBlobURL.stageBlock(blockId, Flowable.just(ByteBuffer.wrap(block.getBytes())),
+                            block.length(), null)
+                            /*
+                             We do not care for any data on the response object, but we do want to keep track of the
+                             ID.
+                             */
+                            .map(x -> blockId).toObservable();
+                })
+                // Gather all of the IDs emitted by the previous observable into a single list.
+                .collectInto(new ArrayList<>(blockData.length), (BiConsumer<ArrayList<String>, String>) ArrayList::add)
+                .flatMap(idList ->
+                        /*
+                        By this point, all the blocks are upload and we have an ordered list of their IDs. Here, we
+                        atomically commit the whole list.
+                        NOTE: The block list order need not match the order in which the blocks were uploaded. The order
+                        of IDs in the commitBlockList call will determine the structure of the blob.
+                         */
+                        blockBlobURL.commitBlockList(idList, null, null, null))
+                .flatMap(response ->
+                        /*
+                         For the blob, show each block (ID and size) that is a committed part of it. It is also possible
+                         to include blocks that have been staged but not committed.
+                         */
+                        blockBlobURL.getBlockList(BlockListType.ALL, null))
+                .subscribe();
+        // </blocks>
+
+        // <append_blob>
+        containerURL = serviceURL.createContainerURL("myjavacontainerappend");
+        AppendBlobURL appendBlobURL = containerURL.createAppendBlobURL("Data.txt");
+
+        // Create the container.
+        containerURL.create(null, null)
+                .flatMap(response ->
+                        // Create the append blob. This creates a zero-length blob that we can now append to.
+                        appendBlobURL.create(null, null, null))
+                .toObservable()
+                .flatMap(response ->
+                        // This range will act as our for loop to create 5 blocks
+                        Observable.range(0, 5))
+                .concatMapCompletable(i -> {
+                    String text = String.format(Locale.ROOT, "Appending block #%d\n", i);
+                    return appendBlobURL.appendBlock(Flowable.just(ByteBuffer.wrap(text.getBytes())), text.length(),
+                            null).toCompletable();
+                }).subscribe();
+        // </append_blob>
+
+
+        // <snapshot>
+        // Create the container.
+        containerURL.create(null, null)
+                .flatMap(response ->
+                        // Create the original blob.
+                        blobURL.upload(Flowable.just(ByteBuffer.wrap("Some text".getBytes())), "Some text".length(),
+                                null, null, null))
+                .flatMap(response ->
+                        // Create a snapshot of the original blob.
+                        blobURL.createSnapshot(null, null))
+                .subscribe();
+        // </snapshot>
+
+        // <start_copy>
+        // Create the container.
+        containerURL.create(null, null)
+                .flatMap(response ->
+                        // Start the copy from the source url to the destination, which is the url pointed to by blobURL
+                        blobURL.startCopyFromURL(
+                                new URL("https://cdn2.auth0.com/docs/media/addons/azure_blob.svg"),
+                                null, null, null))
+                .subscribe();
+        // </start_copy>
+    }
 }
 
