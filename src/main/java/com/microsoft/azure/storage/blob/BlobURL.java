@@ -137,6 +137,9 @@ public class BlobURL extends StorageURL {
      * @apiNote
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=start_copy "Sample code for BlobURL.startCopyFromURL")]
      *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=start_copy_helper "Helper for start_copy sample.")]
+     *
      * @param sourceURL
      *      The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      * @param metadata
@@ -242,6 +245,9 @@ public class BlobURL extends StorageURL {
      * Deletes the specified blob or snapshot. Note that deleting a blob also deletes all its snapshots. For more
      * information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-blob">Azure Docs</a>.
+     *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blob_delete "Sample code for BlobURL.delete")]
      *
      * @param deleteBlobSnapshotOptions
      *      Specifies the behavior for deleting the snapshots on this blob. {@code Include} will delete the base blob

@@ -321,7 +321,7 @@ public class Samples {
                     }
                     // We just fake a successful response to prevent the example from crashing.
                     return Single.just(
-                            new ContainersCreateResponse(200, null, null, null));
+                            new ContainerCreateResponse(200, null, null, null));
                 })
                 /*
                 This will synchronize all the above operations. This is strongly discouraged for use in production as
@@ -1251,6 +1251,7 @@ public class Samples {
 
     }
 
+    // <start_copy_helper>
     public Single<BlobGetPropertiesResponse> waitForCopyHelper(BlobURL blobURL, BlobGetPropertiesResponse response)
             throws InterruptedException {
         System.out.println(response.headers().copyStatus());
@@ -1264,6 +1265,8 @@ public class Samples {
                     waitForCopyHelper(blobURL, response1));
 
     }
+
+    // </start_copy_helper>
 
     // This example shows how to copy a large file in blocks (chunks) to a block blob.
     @Test
@@ -1558,7 +1561,7 @@ public class Samples {
                     }
                     // We just fake a successful response to prevent the example from crashing.
                     return Single.just(
-                            new ContainersCreateResponse(200, null, null, null));
+                            new ContainerCreateResponse(200, null, null, null));
                 }).subscribe();
         // </exception>
 
@@ -1803,8 +1806,31 @@ public class Samples {
                         blobURL.startCopyFromURL(
                                 new URL("https://cdn2.auth0.com/docs/media/addons/azure_blob.svg"),
                                 null, null, null))
+                .flatMap(response ->
+                        blobURL.getProperties(null))
+                .flatMap(response ->
+                        waitForCopyHelper(blobURL, response))
                 .subscribe();
         // </start_copy>
+
+        // <abort_copy>
+        containerURL.create(null, null)
+                .flatMap(response ->
+                        // Start the copy from the source url to the destination, which is the url pointed to by blobURL
+                        blobURL.startCopyFromURL(
+                                new URL("https://cdn2.auth0.com/docs/media/addons/azure_blob.svg"),
+                                null, null, null))
+                .flatMap(response ->
+                        blobURL.getProperties(null))
+                .flatMap(response ->
+                        blobURL.abortCopyFromURL(response.headers().copyId(), null))
+                .subscribe();
+        // </abort_copy>
+
+        // <blob_delete>
+        blobURL.delete(null, null)
+                .subscribe();
+        // </blob_delete>
     }
 }
 
