@@ -1831,6 +1831,29 @@ public class Samples {
         blobURL.delete(null, null)
                 .subscribe();
         // </blob_delete>
+
+        // <properties_metadata>
+        containerURL.create(null, null)
+                .flatMap(containersCreateResponse ->
+                        /*
+                         Create the blob with string (plain text) content.
+                         NOTE: It is imperative that the provided length matches the actual length exactly.
+                         */
+                        blobURL.upload(Flowable.just(ByteBuffer.wrap(data.getBytes())), data.length(),
+                                null, null, null))
+                .flatMap(response ->
+                        blobURL.getProperties(null))
+                .flatMap(response-> {
+                    Metadata newMetadata = new Metadata(response.headers().metadata());
+                    // If one of the HTTP properties is set, all must be set again or they will be cleared.
+                    BlobHTTPHeaders newHeaders = new BlobHTTPHeaders(response.headers().cacheControl(),
+                            response.headers().contentDisposition(), response.headers().contentEncoding(),
+                            "new language", response.headers().contentMD5(), "new content");
+                    return blobURL.setMetadata(newMetadata, null)
+                            .flatMap(nextResponse -> blobURL.setHTTPHeaders(newHeaders, null));
+                })
+                .subscribe();
+        // </properties_metadata>
     }
 }
 

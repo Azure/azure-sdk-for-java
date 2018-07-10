@@ -277,6 +277,9 @@ public class BlobURL extends StorageURL {
      * Returns the blob's metadata and properties. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob-properties">Azure Docs</a>.
      *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=properties_metadata "Sample code for BlobURL.getProperties")]
+     *
      * @param accessConditions
      *      {@link BlobAccessConditions}
      * @return
@@ -299,6 +302,9 @@ public class BlobURL extends StorageURL {
     /**
      * Changes a blob's HTTP header properties. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-properties">Azure Docs</a>.
+     *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=properties_metadata "Sample code for BlobURL.setHTTPHeaders")]
      *
      * @param headers
      *      {@link BlobHTTPHeaders}
@@ -331,6 +337,9 @@ public class BlobURL extends StorageURL {
     /**
      * Changes a blob's metadata. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-metadata">Azure Docs</a>.
+     *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=properties_metadata "Sample code for BlobURL.setMetadata")]
      *
      * @param metadata
      *      {@link Metadata}
