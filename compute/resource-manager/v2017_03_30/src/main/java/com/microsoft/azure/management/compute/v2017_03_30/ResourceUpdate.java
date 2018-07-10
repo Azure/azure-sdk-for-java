@@ -28,7 +28,7 @@ public class ResourceUpdate {
     private DiskSku sku;
 
     /**
-     * Get the tags value.
+     * Get resource tags.
      *
      * @return the tags value
      */
@@ -37,7 +37,7 @@ public class ResourceUpdate {
     }
 
     /**
-     * Set the tags value.
+     * Set resource tags.
      *
      * @param tags the tags value to set
      * @return the ResourceUpdate object itself.
