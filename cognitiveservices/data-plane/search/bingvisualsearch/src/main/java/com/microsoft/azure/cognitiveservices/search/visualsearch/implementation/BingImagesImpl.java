@@ -57,7 +57,7 @@ public class BingImagesImpl implements BingImages {
     interface BingImagesService {
         @Multipart
         @POST("images/visualsearch")
-        Observable<Response<ResponseBody>> visualSearch(@Header("X-BingApis-SDK") String xBingApisSDK, @Header("Accept-Language") String acceptLanguage, @Header("Content-Type") String contentType, @Header("User-Agent") String userAgent, @Header("X-MSEdge-ClientID") String clientId, @Header("X-MSEdge-ClientIP") String clientIp, @Header("X-Search-Location") String location, @Part("knowledgeRequest") String knowledgeRequest, @Part("image") RequestBody image);
+        Observable<Response<ResponseBody>> visualSearch(@Header("X-BingApis-SDK") String xBingApisSDK, @Header("Accept-Language") String acceptLanguage, @Header("Content-Type") String contentType, @Header("User-Agent") String userAgent, @Header("X-MSEdge-ClientID") String clientId, @Header("X-MSEdge-ClientIP") String clientIp, @Header("X-Search-Location") String location, @Part("knowledgeRequest") RequestBody knowledgeRequest, @Part("image") RequestBody image);
 
     }
 
@@ -140,10 +140,14 @@ public class BingImagesImpl implements BingImages {
     public Observable<ServiceResponse<ImageKnowledge>> visualSearchWithServiceResponseAsync(String acceptLanguage, String contentType, String userAgent, String clientId, String clientIp, String location, String knowledgeRequest, byte[] image) {
         final String xBingApisSDK = "true";
         RequestBody imageConverted = null;
+        RequestBody knowledgeRequestConverted = null;
         if (image != null) {
             imageConverted = RequestBody.create(MediaType.parse("multipart/form-data"), image);
         }
-        return service.visualSearch(xBingApisSDK, acceptLanguage, contentType, userAgent, clientId, clientIp, location, knowledgeRequest, imageConverted)
+        if (knowledgeRequest != null) {
+            knowledgeRequestConverted = RequestBody.create(MediaType.parse("text/plain"), knowledgeRequest);
+        }
+        return service.visualSearch(xBingApisSDK, acceptLanguage, contentType, userAgent, clientId, clientIp, location, knowledgeRequestConverted, imageConverted)
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImageKnowledge>>>() {
                 @Override
                 public Observable<ServiceResponse<ImageKnowledge>> call(Response<ResponseBody> response) {
