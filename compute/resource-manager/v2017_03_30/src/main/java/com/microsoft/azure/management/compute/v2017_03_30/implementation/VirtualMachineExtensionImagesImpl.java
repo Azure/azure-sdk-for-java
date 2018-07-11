@@ -80,7 +80,8 @@ class VirtualMachineExtensionImagesImpl extends WrapperImpl<VirtualMachineExtens
             public Observable<VirtualMachineExtensionImageInner> call(List<VirtualMachineExtensionImageInner> innerList) {
                 return Observable.from(innerList);
             }
-        })    .map(new Func1<VirtualMachineExtensionImageInner, VirtualMachineExtensionImage>() {
+        })
+        .map(new Func1<VirtualMachineExtensionImageInner, VirtualMachineExtensionImage>() {
             @Override
             public VirtualMachineExtensionImage call(VirtualMachineExtensionImageInner inner) {
                 return new VirtualMachineExtensionImageImpl(inner, manager());

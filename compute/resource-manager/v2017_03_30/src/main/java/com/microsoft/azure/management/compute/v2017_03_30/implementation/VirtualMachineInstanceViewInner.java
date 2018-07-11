@@ -81,7 +81,7 @@ public class VirtualMachineInstanceViewInner {
     private List<InstanceViewStatus> statuses;
 
     /**
-     * Get the platformUpdateDomain value.
+     * Get specifies the update domain of the virtual machine.
      *
      * @return the platformUpdateDomain value
      */
@@ -90,7 +90,7 @@ public class VirtualMachineInstanceViewInner {
     }
 
     /**
-     * Set the platformUpdateDomain value.
+     * Set specifies the update domain of the virtual machine.
      *
      * @param platformUpdateDomain the platformUpdateDomain value to set
      * @return the VirtualMachineInstanceViewInner object itself.
@@ -101,7 +101,7 @@ public class VirtualMachineInstanceViewInner {
     }
 
     /**
-     * Get the platformFaultDomain value.
+     * Get specifies the fault domain of the virtual machine.
      *
      * @return the platformFaultDomain value
      */
@@ -110,7 +110,7 @@ public class VirtualMachineInstanceViewInner {
     }
 
     /**
-     * Set the platformFaultDomain value.
+     * Set specifies the fault domain of the virtual machine.
      *
      * @param platformFaultDomain the platformFaultDomain value to set
      * @return the VirtualMachineInstanceViewInner object itself.
@@ -121,7 +121,7 @@ public class VirtualMachineInstanceViewInner {
     }
 
     /**
-     * Get the rdpThumbPrint value.
+     * Get the Remote desktop certificate thumbprint.
      *
      * @return the rdpThumbPrint value
      */
@@ -130,7 +130,7 @@ public class VirtualMachineInstanceViewInner {
     }
 
     /**
-     * Set the rdpThumbPrint value.
+     * Set the Remote desktop certificate thumbprint.
      *
      * @param rdpThumbPrint the rdpThumbPrint value to set
      * @return the VirtualMachineInstanceViewInner object itself.
@@ -141,7 +141,7 @@ public class VirtualMachineInstanceViewInner {
     }
 
     /**
-     * Get the vmAgent value.
+     * Get the VM Agent running on the virtual machine.
      *
      * @return the vmAgent value
      */
@@ -150,7 +150,7 @@ public class VirtualMachineInstanceViewInner {
     }
 
     /**
-     * Set the vmAgent value.
+     * Set the VM Agent running on the virtual machine.
      *
      * @param vmAgent the vmAgent value to set
      * @return the VirtualMachineInstanceViewInner object itself.
@@ -161,7 +161,7 @@ public class VirtualMachineInstanceViewInner {
     }
 
     /**
-     * Get the maintenanceRedeployStatus value.
+     * Get the Maintenance Operation status on the virtual machine.
      *
      * @return the maintenanceRedeployStatus value
      */
@@ -170,7 +170,7 @@ public class VirtualMachineInstanceViewInner {
     }
 
     /**
-     * Set the maintenanceRedeployStatus value.
+     * Set the Maintenance Operation status on the virtual machine.
      *
      * @param maintenanceRedeployStatus the maintenanceRedeployStatus value to set
      * @return the VirtualMachineInstanceViewInner object itself.
@@ -181,7 +181,7 @@ public class VirtualMachineInstanceViewInner {
     }
 
     /**
-     * Get the disks value.
+     * Get the virtual machine disk information.
      *
      * @return the disks value
      */
@@ -190,7 +190,7 @@ public class VirtualMachineInstanceViewInner {
     }
 
     /**
-     * Set the disks value.
+     * Set the virtual machine disk information.
      *
      * @param disks the disks value to set
      * @return the VirtualMachineInstanceViewInner object itself.
@@ -201,7 +201,7 @@ public class VirtualMachineInstanceViewInner {
     }
 
     /**
-     * Get the extensions value.
+     * Get the extensions information.
      *
      * @return the extensions value
      */
@@ -210,7 +210,7 @@ public class VirtualMachineInstanceViewInner {
     }
 
     /**
-     * Set the extensions value.
+     * Set the extensions information.
      *
      * @param extensions the extensions value to set
      * @return the VirtualMachineInstanceViewInner object itself.
@@ -221,7 +221,7 @@ public class VirtualMachineInstanceViewInner {
     }
 
     /**
-     * Get the bootDiagnostics value.
+     * Get boot Diagnostics is a debugging feature which allows you to view Console Output and Screenshot to diagnose VM status. &lt;br&gt;&lt;br&gt; For Linux Virtual Machines, you can easily view the output of your console log. &lt;br&gt;&lt;br&gt; For both Windows and Linux virtual machines, Azure also enables you to see a screenshot of the VM from the hypervisor.
      *
      * @return the bootDiagnostics value
      */
@@ -230,7 +230,7 @@ public class VirtualMachineInstanceViewInner {
     }
 
     /**
-     * Set the bootDiagnostics value.
+     * Set boot Diagnostics is a debugging feature which allows you to view Console Output and Screenshot to diagnose VM status. &lt;br&gt;&lt;br&gt; For Linux Virtual Machines, you can easily view the output of your console log. &lt;br&gt;&lt;br&gt; For both Windows and Linux virtual machines, Azure also enables you to see a screenshot of the VM from the hypervisor.
      *
      * @param bootDiagnostics the bootDiagnostics value to set
      * @return the VirtualMachineInstanceViewInner object itself.
@@ -241,7 +241,7 @@ public class VirtualMachineInstanceViewInner {
     }
 
     /**
-     * Get the statuses value.
+     * Get the resource status information.
      *
      * @return the statuses value
      */
@@ -250,7 +250,7 @@ public class VirtualMachineInstanceViewInner {
     }
 
     /**
-     * Set the statuses value.
+     * Set the resource status information.
      *
      * @param statuses the statuses value to set
      * @return the VirtualMachineInstanceViewInner object itself.

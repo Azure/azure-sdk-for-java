@@ -21,7 +21,7 @@ public class VirtualMachineHealthStatus {
     private InstanceViewStatus status;
 
     /**
-     * Get the status value.
+     * Get the health status information for the VM.
      *
      * @return the status value
      */

@@ -28,7 +28,7 @@ public class ResourceSkuRestrictionInfo {
     private List<String> zones;
 
     /**
-     * Get the locations value.
+     * Get locations where the SKU is restricted.
      *
      * @return the locations value
      */
@@ -37,7 +37,7 @@ public class ResourceSkuRestrictionInfo {
     }
 
     /**
-     * Get the zones value.
+     * Get list of availability zones where the SKU is restricted.
      *
      * @return the zones value
      */
