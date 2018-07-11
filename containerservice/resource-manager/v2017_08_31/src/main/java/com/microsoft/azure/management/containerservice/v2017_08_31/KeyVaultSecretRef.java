@@ -33,7 +33,7 @@ public class KeyVaultSecretRef {
     private String version;
 
     /**
-     * Get the vaultID value.
+     * Get key vault identifier.
      *
      * @return the vaultID value
      */
@@ -42,7 +42,7 @@ public class KeyVaultSecretRef {
     }
 
     /**
-     * Set the vaultID value.
+     * Set key vault identifier.
      *
      * @param vaultID the vaultID value to set
      * @return the KeyVaultSecretRef object itself.
@@ -53,7 +53,7 @@ public class KeyVaultSecretRef {
     }
 
     /**
-     * Get the secretName value.
+     * Get the secret name.
      *
      * @return the secretName value
      */
@@ -62,7 +62,7 @@ public class KeyVaultSecretRef {
     }
 
     /**
-     * Set the secretName value.
+     * Set the secret name.
      *
      * @param secretName the secretName value to set
      * @return the KeyVaultSecretRef object itself.
@@ -73,7 +73,7 @@ public class KeyVaultSecretRef {
     }
 
     /**
-     * Get the version value.
+     * Get the secret version.
      *
      * @return the version value
      */
@@ -82,7 +82,7 @@ public class KeyVaultSecretRef {
     }
 
     /**
-     * Set the version value.
+     * Set the secret version.
      *
      * @param version the version value to set
      * @return the KeyVaultSecretRef object itself.

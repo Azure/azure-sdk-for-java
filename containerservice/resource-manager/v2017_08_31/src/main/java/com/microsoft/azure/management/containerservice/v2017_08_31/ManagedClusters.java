@@ -24,7 +24,7 @@ import com.microsoft.azure.arm.model.HasInner;
 public interface ManagedClusters extends SupportsCreating<ManagedCluster.DefinitionStages.Blank>, SupportsDeletingByResourceGroup, SupportsBatchDeletion, SupportsGettingByResourceGroup<ManagedCluster>, SupportsListingByResourceGroup<ManagedCluster>, SupportsListing<ManagedCluster>, HasInner<ManagedClustersInner> {
     /**
      * Gets access profile of a managed cluster.
-     * Gets the accessProfile for the specified role name of the managed cluster with a specified resource group and name.
+     * Use ManagedClusters_GetAccessProfile instead.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -33,6 +33,18 @@ public interface ManagedClusters extends SupportsCreating<ManagedCluster.Definit
      * @return the observable for the request
      */
     Observable<ManagedClusterAccessProfile> getAccessProfilesAsync(String resourceGroupName, String resourceName, String roleName);
+
+    /**
+     * Gets an access profile of a managed cluster.
+     * Gets the accessProfile for the specified role name of the managed cluster with a specified resource group and name.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param resourceName The name of the managed cluster resource.
+     * @param roleName The name of the role for managed cluster accessProfile resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<ManagedClusterAccessProfile> getAccessProfileAsync(String resourceGroupName, String resourceName, String roleName);
 
     /**
      * Gets upgrade profile for a managed cluster.

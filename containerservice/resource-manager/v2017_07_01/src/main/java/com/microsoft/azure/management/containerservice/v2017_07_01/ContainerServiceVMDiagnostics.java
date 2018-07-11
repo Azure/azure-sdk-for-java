@@ -27,7 +27,7 @@ public class ContainerServiceVMDiagnostics {
     private String storageUri;
 
     /**
-     * Get the enabled value.
+     * Get whether the VM diagnostic agent is provisioned on the VM.
      *
      * @return the enabled value
      */
@@ -36,7 +36,7 @@ public class ContainerServiceVMDiagnostics {
     }
 
     /**
-     * Set the enabled value.
+     * Set whether the VM diagnostic agent is provisioned on the VM.
      *
      * @param enabled the enabled value to set
      * @return the ContainerServiceVMDiagnostics object itself.
@@ -47,7 +47,7 @@ public class ContainerServiceVMDiagnostics {
     }
 
     /**
-     * Get the storageUri value.
+     * Get the URI of the storage account where diagnostics are stored.
      *
      * @return the storageUri value
      */

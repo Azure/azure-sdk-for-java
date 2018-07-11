@@ -21,7 +21,7 @@ public class ContainerServiceDiagnosticsProfile {
     private ContainerServiceVMDiagnostics vmDiagnostics;
 
     /**
-     * Get the vmDiagnostics value.
+     * Get profile for diagnostics on the container service VMs.
      *
      * @return the vmDiagnostics value
      */
@@ -30,7 +30,7 @@ public class ContainerServiceDiagnosticsProfile {
     }
 
     /**
-     * Set the vmDiagnostics value.
+     * Set profile for diagnostics on the container service VMs.
      *
      * @param vmDiagnostics the vmDiagnostics value to set
      * @return the ContainerServiceDiagnosticsProfile object itself.

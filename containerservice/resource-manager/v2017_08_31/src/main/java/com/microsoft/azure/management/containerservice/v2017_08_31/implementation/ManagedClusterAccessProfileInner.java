@@ -24,7 +24,7 @@ public class ManagedClusterAccessProfileInner extends Resource {
     private byte[] kubeConfig;
 
     /**
-     * Get the kubeConfig value.
+     * Get base64-encoded Kubernetes configuration file.
      *
      * @return the kubeConfig value
      */
@@ -33,7 +33,7 @@ public class ManagedClusterAccessProfileInner extends Resource {
     }
 
     /**
-     * Set the kubeConfig value.
+     * Set base64-encoded Kubernetes configuration file.
      *
      * @param kubeConfig the kubeConfig value to set
      * @return the ManagedClusterAccessProfileInner object itself.

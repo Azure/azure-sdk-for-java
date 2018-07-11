@@ -27,7 +27,7 @@ public class ContainerServiceLinuxProfile {
     private ContainerServiceSshConfiguration ssh;
 
     /**
-     * Get the adminUsername value.
+     * Get the administrator username to use for Linux VMs.
      *
      * @return the adminUsername value
      */
@@ -36,7 +36,7 @@ public class ContainerServiceLinuxProfile {
     }
 
     /**
-     * Set the adminUsername value.
+     * Set the administrator username to use for Linux VMs.
      *
      * @param adminUsername the adminUsername value to set
      * @return the ContainerServiceLinuxProfile object itself.
@@ -47,7 +47,7 @@ public class ContainerServiceLinuxProfile {
     }
 
     /**
-     * Get the ssh value.
+     * Get sSH configuration for Linux-based VMs running on Azure.
      *
      * @return the ssh value
      */
@@ -56,7 +56,7 @@ public class ContainerServiceLinuxProfile {
     }
 
     /**
-     * Set the ssh value.
+     * Set sSH configuration for Linux-based VMs running on Azure.
      *
      * @param ssh the ssh value to set
      * @return the ContainerServiceLinuxProfile object itself.

@@ -35,7 +35,7 @@ public class ContainerServiceServicePrincipalProfile {
     private KeyVaultSecretRef keyVaultSecretRef;
 
     /**
-     * Get the clientId value.
+     * Get the ID for the service principal.
      *
      * @return the clientId value
      */
@@ -44,7 +44,7 @@ public class ContainerServiceServicePrincipalProfile {
     }
 
     /**
-     * Set the clientId value.
+     * Set the ID for the service principal.
      *
      * @param clientId the clientId value to set
      * @return the ContainerServiceServicePrincipalProfile object itself.
@@ -55,7 +55,7 @@ public class ContainerServiceServicePrincipalProfile {
     }
 
     /**
-     * Get the secret value.
+     * Get the secret password associated with the service principal in plain text.
      *
      * @return the secret value
      */
@@ -64,7 +64,7 @@ public class ContainerServiceServicePrincipalProfile {
     }
 
     /**
-     * Set the secret value.
+     * Set the secret password associated with the service principal in plain text.
      *
      * @param secret the secret value to set
      * @return the ContainerServiceServicePrincipalProfile object itself.
@@ -75,7 +75,7 @@ public class ContainerServiceServicePrincipalProfile {
     }
 
     /**
-     * Get the keyVaultSecretRef value.
+     * Get reference to a secret stored in Azure Key Vault.
      *
      * @return the keyVaultSecretRef value
      */
@@ -84,7 +84,7 @@ public class ContainerServiceServicePrincipalProfile {
     }
 
     /**
-     * Set the keyVaultSecretRef value.
+     * Set reference to a secret stored in Azure Key Vault.
      *
      * @param keyVaultSecretRef the keyVaultSecretRef value to set
      * @return the ContainerServiceServicePrincipalProfile object itself.
