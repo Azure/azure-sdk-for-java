@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.datafactoryv2.v2018_06_01;
 
 import java.util.Map;
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -36,6 +37,13 @@ public class DatabricksNotebookActivity extends ExecutionActivity {
      */
     @JsonProperty(value = "typeProperties.baseParameters")
     private Map<String, Object> baseParameters;
+
+    /**
+     * A list of libraries to be installed on the cluster that will execute the
+     * job.
+     */
+    @JsonProperty(value = "typeProperties.libraries")
+    private List<Map<String, Object>> libraries;
 
     /**
      * Get the absolute path of the notebook to be run in the Databricks Workspace. This path must begin with a slash. Type: string (or Expression with resultType string).
@@ -74,6 +82,26 @@ public class DatabricksNotebookActivity extends ExecutionActivity {
      */
     public DatabricksNotebookActivity withBaseParameters(Map<String, Object> baseParameters) {
         this.baseParameters = baseParameters;
+        return this;
+    }
+
+    /**
+     * Get a list of libraries to be installed on the cluster that will execute the job.
+     *
+     * @return the libraries value
+     */
+    public List<Map<String, Object>> libraries() {
+        return this.libraries;
+    }
+
+    /**
+     * Set a list of libraries to be installed on the cluster that will execute the job.
+     *
+     * @param libraries the libraries value to set
+     * @return the DatabricksNotebookActivity object itself.
+     */
+    public DatabricksNotebookActivity withLibraries(List<Map<String, Object>> libraries) {
+        this.libraries = libraries;
         return this;
     }
 
