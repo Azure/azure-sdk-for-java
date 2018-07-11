@@ -29,7 +29,7 @@ public final class ContainerItem {
     /**
      * The properties property.
      */
-    @JsonProperty(value = "ContainerProperties", required = true)
+    @JsonProperty(value = "Properties", required = true)
     private ContainerProperties properties;
 
     /**

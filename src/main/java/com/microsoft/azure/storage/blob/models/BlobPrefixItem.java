@@ -15,10 +15,10 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /**
- * The BlobPrefix model.
+ * The BlobPrefixItem model.
  */
 @JacksonXmlRootElement(localName = "BlobPrefix")
-public final class BlobPrefix {
+public final class BlobPrefixItem {
     /**
      * The name property.
      */
@@ -38,9 +38,9 @@ public final class BlobPrefix {
      * Set the name value.
      *
      * @param name the name value to set.
-     * @return the BlobPrefix object itself.
+     * @return the BlobPrefixItem object itself.
      */
-    public BlobPrefix withName(String name) {
+    public BlobPrefixItem withName(String name) {
         this.name = name;
         return this;
     }

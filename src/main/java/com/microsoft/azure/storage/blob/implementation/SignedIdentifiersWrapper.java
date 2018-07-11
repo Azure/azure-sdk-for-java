@@ -23,7 +23,7 @@ import java.util.List;
  */
 @JacksonXmlRootElement(localName = "SignedIdentifiers")
 public final class SignedIdentifiersWrapper {
-    @JacksonXmlProperty(localName = "SignedIdentifier")
+    @JacksonXmlProperty(localName = "SignedIdentifiers")
     private final List<SignedIdentifier> signedIdentifiers;
 
     /**
@@ -32,7 +32,7 @@ public final class SignedIdentifiersWrapper {
      * @param signedIdentifiers the list.
      */
     @JsonCreator
-    public SignedIdentifiersWrapper(@JsonProperty("SignedIdentifier") List<SignedIdentifier> signedIdentifiers) {
+    public SignedIdentifiersWrapper(@JsonProperty("SignedIdentifiers") List<SignedIdentifier> signedIdentifiers) {
         this.signedIdentifiers = signedIdentifiers;
     }
 

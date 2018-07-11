@@ -25,7 +25,7 @@ public final class HierarchyListSegment {
      * The blobPrefixItems property.
      */
     @JsonProperty("BlobPrefix")
-    private List<BlobPrefix> blobPrefixItems = new ArrayList<>();
+    private List<BlobPrefixItem> blobPrefixItems = new ArrayList<>();
 
     /**
      * The blobItems property.
@@ -38,7 +38,7 @@ public final class HierarchyListSegment {
      *
      * @return the blobPrefixItems value.
      */
-    public List<BlobPrefix> blobPrefixItems() {
+    public List<BlobPrefixItem> blobPrefixItems() {
         return this.blobPrefixItems;
     }
 
@@ -48,7 +48,7 @@ public final class HierarchyListSegment {
      * @param blobPrefixItems the blobPrefixItems value to set.
      * @return the HierarchyListSegment object itself.
      */
-    public HierarchyListSegment withBlobPrefixItems(List<BlobPrefix> blobPrefixItems) {
+    public HierarchyListSegment withBlobPrefixItems(List<BlobPrefixItem> blobPrefixItems) {
         this.blobPrefixItems = blobPrefixItems;
         return this;
     }
