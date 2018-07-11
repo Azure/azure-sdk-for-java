@@ -150,7 +150,7 @@ public final class ContainerURL extends StorageURL {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
      *
      * @apiNote
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_create "Sample code for ContainerURL.create")]
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerURL.create")]
      *
      * @param metadata
      *      {@link Metadata}
@@ -172,6 +172,9 @@ public final class ContainerURL extends StorageURL {
      * Marks the specified container for deletion. The container and any blobs contained within it are later
      * deleted during garbage collection. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
+     *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerURL.delete")]
      *
      * @param accessConditions
      *      {@link ContainerAccessConditions}
@@ -200,6 +203,9 @@ public final class ContainerURL extends StorageURL {
      * Returns the container's metadata and system properties. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-container-metadata">Azure Docs</a>.
      *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerURL.getProperties")]
+     *
      * @param leaseAccessConditions
      *      {@link LeaseAccessConditions}
      * @return
@@ -216,6 +222,9 @@ public final class ContainerURL extends StorageURL {
     /**
      * Sets the container's metadata. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-container-metadata">Azure Docs</a>.
+     *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerURL.setMetadata")]
      *
      * @param metadata
      *      {@link Metadata}
@@ -247,6 +256,9 @@ public final class ContainerURL extends StorageURL {
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-container-acl">Azure Docs</a>.
      *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_policy "Sample code for ContainerURL.getAccessPolicy")]
+     *
      * @param leaseAccessConditions
      *      {@link LeaseAccessConditions}
      * @return
@@ -265,6 +277,9 @@ public final class ContainerURL extends StorageURL {
      * Note that, for each signed identifier, we will truncate the start and expiry times to the nearest second to
      * ensure the time formatting is compatible with the service. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-container-acl">Azure Docs</a>.
+     *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_policy "Sample code for ContainerURL.setAccessPolicy")]
      *
      * @param accessType
      *      Specifies how the data in this container is available to the public. See the x-ms-blob-public-access header

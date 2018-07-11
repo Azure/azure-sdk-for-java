@@ -1536,9 +1536,6 @@ public class Samples {
         // </upload_download>
 
         // <exception>
-        containerURL = new ContainerURL(new URL("http://myaccount.blob.core.windows.net/mycontainer"),
-                StorageURL.createPipeline(new AnonymousCredentials(), new PipelineOptions()));
-
         containerURL.create(null, null)
                 // An error occurred.
                 .onErrorResumeNext(throwable -> {
@@ -1712,7 +1709,6 @@ public class Samples {
         // </service_sas>
 
         // <blocks>
-        containerURL = serviceURL.createContainerURL("myjavacontainerblock");
         BlockBlobURL blockBlobURL = containerURL.createBlockBlobURL("Data.txt");
 
         String[] blockData = {"Michael", "Gabriel", "Raphael", "John"};
@@ -1765,7 +1761,6 @@ public class Samples {
         // </blocks>
 
         // <append_blob>
-        containerURL = serviceURL.createContainerURL("myjavacontainerappend");
         AppendBlobURL appendBlobURL = containerURL.createAppendBlobURL("Data.txt");
 
         // Create the container.
@@ -1795,7 +1790,10 @@ public class Samples {
                 .flatMap(response ->
                         // Create a snapshot of the original blob.
                         blobURL.createSnapshot(null, null))
-                .subscribe();
+                .flatMap(response -> {
+                    BlobURL snapshotURL = blobURL.withSnapshot(response.headers().snapshot());
+                    return snapshotURL.getProperties(null);
+                }).subscribe();
         // </snapshot>
 
         // <start_copy>
@@ -1854,6 +1852,24 @@ public class Samples {
                 })
                 .subscribe();
         // </properties_metadata>
+
+        // <container_basic>
+        containerURL.create(null, null)
+                .flatMap(response ->
+                        containerURL.getProperties(null))
+                .flatMap(response -> {
+                    Metadata metadata = new Metadata();
+                    metadata.put("key", "value");
+                    return containerURL.setMetadata(metadata, null);
+                })
+                .flatMap(response ->
+                        containerURL.delete(null))
+                .subscribe();
+        // </container_basic>
+
+        // <container_policy>
+        
+        // </container_policy>
     }
 }
 
