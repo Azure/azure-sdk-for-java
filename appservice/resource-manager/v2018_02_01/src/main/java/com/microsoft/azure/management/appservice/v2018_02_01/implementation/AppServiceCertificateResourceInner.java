@@ -49,7 +49,7 @@ public class AppServiceCertificateResourceInner extends Resource {
     private String kind;
 
     /**
-     * Get the keyVaultId value.
+     * Get key Vault resource Id.
      *
      * @return the keyVaultId value
      */
@@ -58,7 +58,7 @@ public class AppServiceCertificateResourceInner extends Resource {
     }
 
     /**
-     * Set the keyVaultId value.
+     * Set key Vault resource Id.
      *
      * @param keyVaultId the keyVaultId value to set
      * @return the AppServiceCertificateResourceInner object itself.
@@ -69,7 +69,7 @@ public class AppServiceCertificateResourceInner extends Resource {
     }
 
     /**
-     * Get the keyVaultSecretName value.
+     * Get key Vault secret name.
      *
      * @return the keyVaultSecretName value
      */
@@ -78,7 +78,7 @@ public class AppServiceCertificateResourceInner extends Resource {
     }
 
     /**
-     * Set the keyVaultSecretName value.
+     * Set key Vault secret name.
      *
      * @param keyVaultSecretName the keyVaultSecretName value to set
      * @return the AppServiceCertificateResourceInner object itself.
@@ -89,7 +89,7 @@ public class AppServiceCertificateResourceInner extends Resource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get status of the Key Vault secret. Possible values include: 'Initialized', 'WaitingOnCertificateOrder', 'Succeeded', 'CertificateOrderFailed', 'OperationNotPermittedOnKeyVault', 'AzureServiceUnauthorizedToAccessKeyVault', 'KeyVaultDoesNotExist', 'KeyVaultSecretDoesNotExist', 'UnknownError', 'ExternalPrivateKey', 'Unknown'.
      *
      * @return the provisioningState value
      */
@@ -98,7 +98,7 @@ public class AppServiceCertificateResourceInner extends Resource {
     }
 
     /**
-     * Get the kind value.
+     * Get kind of resource.
      *
      * @return the kind value
      */
@@ -107,7 +107,7 @@ public class AppServiceCertificateResourceInner extends Resource {
     }
 
     /**
-     * Set the kind value.
+     * Set kind of resource.
      *
      * @param kind the kind value to set
      * @return the AppServiceCertificateResourceInner object itself.

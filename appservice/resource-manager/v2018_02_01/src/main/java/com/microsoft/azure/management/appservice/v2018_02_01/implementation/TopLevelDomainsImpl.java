@@ -22,9 +22,9 @@ import com.microsoft.azure.arm.utils.PagedListConverter;
 
 class TopLevelDomainsImpl extends WrapperImpl<TopLevelDomainsInner> implements TopLevelDomains {
     private PagedListConverter<TopLevelDomainInner, TopLevelDomain> converter;
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
 
-    TopLevelDomainsImpl(AppServiceManager manager) {
+    TopLevelDomainsImpl(CertificateRegistrationManager manager) {
         super(manager.inner().topLevelDomains());
         this.manager = manager;
         this.converter = new PagedListConverter<TopLevelDomainInner, TopLevelDomain>() {
@@ -35,7 +35,7 @@ class TopLevelDomainsImpl extends WrapperImpl<TopLevelDomainsInner> implements T
         };
     }
 
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 
@@ -64,7 +64,8 @@ class TopLevelDomainsImpl extends WrapperImpl<TopLevelDomainsInner> implements T
             public Iterable<TldLegalAgreementInner> call(Page<TldLegalAgreementInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<TldLegalAgreementInner, TldLegalAgreement>() {
+        })
+        .map(new Func1<TldLegalAgreementInner, TldLegalAgreement>() {
             @Override
             public TldLegalAgreement call(TldLegalAgreementInner inner) {
                 return new TldLegalAgreementImpl(inner, manager());

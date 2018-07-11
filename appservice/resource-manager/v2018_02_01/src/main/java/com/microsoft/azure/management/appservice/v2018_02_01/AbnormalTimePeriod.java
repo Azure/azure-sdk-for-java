@@ -41,7 +41,7 @@ public class AbnormalTimePeriod {
     private List<Solution> solutions;
 
     /**
-     * Get the startTime value.
+     * Get start time of the downtime.
      *
      * @return the startTime value
      */
@@ -50,7 +50,7 @@ public class AbnormalTimePeriod {
     }
 
     /**
-     * Set the startTime value.
+     * Set start time of the downtime.
      *
      * @param startTime the startTime value to set
      * @return the AbnormalTimePeriod object itself.
@@ -61,7 +61,7 @@ public class AbnormalTimePeriod {
     }
 
     /**
-     * Get the endTime value.
+     * Get end time of the downtime.
      *
      * @return the endTime value
      */
@@ -70,7 +70,7 @@ public class AbnormalTimePeriod {
     }
 
     /**
-     * Set the endTime value.
+     * Set end time of the downtime.
      *
      * @param endTime the endTime value to set
      * @return the AbnormalTimePeriod object itself.
@@ -81,7 +81,7 @@ public class AbnormalTimePeriod {
     }
 
     /**
-     * Get the events value.
+     * Get list of Possible Cause of downtime.
      *
      * @return the events value
      */
@@ -90,7 +90,7 @@ public class AbnormalTimePeriod {
     }
 
     /**
-     * Set the events value.
+     * Set list of Possible Cause of downtime.
      *
      * @param events the events value to set
      * @return the AbnormalTimePeriod object itself.
@@ -101,7 +101,7 @@ public class AbnormalTimePeriod {
     }
 
     /**
-     * Get the solutions value.
+     * Get list of proposed solutions.
      *
      * @return the solutions value
      */
@@ -110,7 +110,7 @@ public class AbnormalTimePeriod {
     }
 
     /**
-     * Set the solutions value.
+     * Set list of proposed solutions.
      *
      * @param solutions the solutions value to set
      * @return the AbnormalTimePeriod object itself.

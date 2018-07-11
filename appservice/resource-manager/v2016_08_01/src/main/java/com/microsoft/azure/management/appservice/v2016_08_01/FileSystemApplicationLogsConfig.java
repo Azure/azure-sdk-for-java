@@ -22,7 +22,7 @@ public class FileSystemApplicationLogsConfig {
     private LogLevel level;
 
     /**
-     * Get the level value.
+     * Get log level. Possible values include: 'Off', 'Verbose', 'Information', 'Warning', 'Error'.
      *
      * @return the level value
      */
@@ -31,7 +31,7 @@ public class FileSystemApplicationLogsConfig {
     }
 
     /**
-     * Set the level value.
+     * Set log level. Possible values include: 'Off', 'Verbose', 'Information', 'Warning', 'Error'.
      *
      * @param level the level value to set
      * @return the FileSystemApplicationLogsConfig object itself.

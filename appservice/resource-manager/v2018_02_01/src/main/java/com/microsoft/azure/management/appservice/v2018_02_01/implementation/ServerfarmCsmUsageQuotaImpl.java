@@ -15,15 +15,15 @@ import com.microsoft.azure.management.appservice.v2018_02_01.LocalizableString;
 import org.joda.time.DateTime;
 
 class ServerfarmCsmUsageQuotaImpl extends WrapperImpl<CsmUsageQuotaInner> implements ServerfarmCsmUsageQuota {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
 
-    ServerfarmCsmUsageQuotaImpl(CsmUsageQuotaInner inner,  AppServiceManager manager) {
+    ServerfarmCsmUsageQuotaImpl(CsmUsageQuotaInner inner,  CertificateRegistrationManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 

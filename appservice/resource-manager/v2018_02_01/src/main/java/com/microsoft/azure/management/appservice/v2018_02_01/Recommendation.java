@@ -11,7 +11,7 @@ package com.microsoft.azure.management.appservice.v2018_02_01;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.RecommendationInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
 import java.util.List;
 import org.joda.time.DateTime;
 import java.util.UUID;
@@ -19,7 +19,7 @@ import java.util.UUID;
 /**
  * Type representing Recommendation.
  */
-public interface Recommendation extends HasInner<RecommendationInner>, HasManager<AppServiceManager> {
+public interface Recommendation extends HasInner<RecommendationInner>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the actionName value.
      */

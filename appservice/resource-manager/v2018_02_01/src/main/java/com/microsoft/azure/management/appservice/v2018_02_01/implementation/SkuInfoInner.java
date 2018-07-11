@@ -35,7 +35,7 @@ public class SkuInfoInner {
     private SkuCapacity capacity;
 
     /**
-     * Get the resourceType value.
+     * Get resource type that this SKU applies to.
      *
      * @return the resourceType value
      */
@@ -44,7 +44,7 @@ public class SkuInfoInner {
     }
 
     /**
-     * Set the resourceType value.
+     * Set resource type that this SKU applies to.
      *
      * @param resourceType the resourceType value to set
      * @return the SkuInfoInner object itself.
@@ -55,7 +55,7 @@ public class SkuInfoInner {
     }
 
     /**
-     * Get the sku value.
+     * Get name and tier of the SKU.
      *
      * @return the sku value
      */
@@ -64,7 +64,7 @@ public class SkuInfoInner {
     }
 
     /**
-     * Set the sku value.
+     * Set name and tier of the SKU.
      *
      * @param sku the sku value to set
      * @return the SkuInfoInner object itself.
@@ -75,7 +75,7 @@ public class SkuInfoInner {
     }
 
     /**
-     * Get the capacity value.
+     * Get min, max, and default scale values of the SKU.
      *
      * @return the capacity value
      */
@@ -84,7 +84,7 @@ public class SkuInfoInner {
     }
 
     /**
-     * Set the capacity value.
+     * Set min, max, and default scale values of the SKU.
      *
      * @param capacity the capacity value to set
      * @return the SkuInfoInner object itself.

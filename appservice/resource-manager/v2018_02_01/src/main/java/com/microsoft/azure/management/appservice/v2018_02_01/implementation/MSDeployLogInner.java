@@ -26,7 +26,7 @@ public class MSDeployLogInner extends ProxyOnlyResource {
     private List<MSDeployLogEntry> entries;
 
     /**
-     * Get the entries value.
+     * Get list of log entry messages.
      *
      * @return the entries value
      */

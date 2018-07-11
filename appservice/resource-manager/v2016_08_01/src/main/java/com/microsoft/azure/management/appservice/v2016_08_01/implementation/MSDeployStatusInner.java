@@ -51,7 +51,7 @@ public class MSDeployStatusInner extends ProxyOnlyResource {
     private Boolean complete;
 
     /**
-     * Get the deployer value.
+     * Get username of deployer.
      *
      * @return the deployer value
      */
@@ -60,7 +60,7 @@ public class MSDeployStatusInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get provisioning state. Possible values include: 'accepted', 'running', 'succeeded', 'failed', 'canceled'.
      *
      * @return the provisioningState value
      */
@@ -69,7 +69,7 @@ public class MSDeployStatusInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the startTime value.
+     * Get start time of deploy operation.
      *
      * @return the startTime value
      */
@@ -78,7 +78,7 @@ public class MSDeployStatusInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the endTime value.
+     * Get end time of deploy operation.
      *
      * @return the endTime value
      */
@@ -87,7 +87,7 @@ public class MSDeployStatusInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the complete value.
+     * Get whether the deployment operation has completed.
      *
      * @return the complete value
      */

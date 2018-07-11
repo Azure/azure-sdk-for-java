@@ -39,7 +39,8 @@ public class DeletedAppRestoreRequest extends ProxyOnlyResource {
     private String snapshotTime;
 
     /**
-     * Get the deletedSiteId value.
+     * Get aRM resource ID of the deleted app. Example:
+     /subscriptions/{subId}/providers/Microsoft.Web/deletedSites/{deletedSiteId}.
      *
      * @return the deletedSiteId value
      */
@@ -48,7 +49,8 @@ public class DeletedAppRestoreRequest extends ProxyOnlyResource {
     }
 
     /**
-     * Set the deletedSiteId value.
+     * Set aRM resource ID of the deleted app. Example:
+     /subscriptions/{subId}/providers/Microsoft.Web/deletedSites/{deletedSiteId}.
      *
      * @param deletedSiteId the deletedSiteId value to set
      * @return the DeletedAppRestoreRequest object itself.
@@ -59,7 +61,7 @@ public class DeletedAppRestoreRequest extends ProxyOnlyResource {
     }
 
     /**
-     * Get the recoverConfiguration value.
+     * Get if true, deleted site configuration, in addition to content, will be restored.
      *
      * @return the recoverConfiguration value
      */
@@ -68,7 +70,7 @@ public class DeletedAppRestoreRequest extends ProxyOnlyResource {
     }
 
     /**
-     * Set the recoverConfiguration value.
+     * Set if true, deleted site configuration, in addition to content, will be restored.
      *
      * @param recoverConfiguration the recoverConfiguration value to set
      * @return the DeletedAppRestoreRequest object itself.
@@ -79,7 +81,8 @@ public class DeletedAppRestoreRequest extends ProxyOnlyResource {
     }
 
     /**
-     * Get the snapshotTime value.
+     * Get point in time to restore the deleted app from, formatted as a DateTime string.
+     If unspecified, default value is the time that the app was deleted.
      *
      * @return the snapshotTime value
      */
@@ -88,7 +91,8 @@ public class DeletedAppRestoreRequest extends ProxyOnlyResource {
     }
 
     /**
-     * Set the snapshotTime value.
+     * Set point in time to restore the deleted app from, formatted as a DateTime string.
+     If unspecified, default value is the time that the app was deleted.
      *
      * @param snapshotTime the snapshotTime value to set
      * @return the DeletedAppRestoreRequest object itself.

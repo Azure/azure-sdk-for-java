@@ -21,7 +21,7 @@ public class SiteSealInner {
     private String html;
 
     /**
-     * Get the html value.
+     * Get hTML snippet.
      *
      * @return the html value
      */
@@ -30,7 +30,7 @@ public class SiteSealInner {
     }
 
     /**
-     * Set the html value.
+     * Set hTML snippet.
      *
      * @param html the html value to set
      * @return the SiteSealInner object itself.

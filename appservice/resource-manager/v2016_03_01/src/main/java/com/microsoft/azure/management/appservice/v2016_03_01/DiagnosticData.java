@@ -27,7 +27,7 @@ public class DiagnosticData {
     private Rendering renderingProperties;
 
     /**
-     * Get the table value.
+     * Get data in table form.
      *
      * @return the table value
      */
@@ -36,7 +36,7 @@ public class DiagnosticData {
     }
 
     /**
-     * Set the table value.
+     * Set data in table form.
      *
      * @param table the table value to set
      * @return the DiagnosticData object itself.
@@ -47,7 +47,7 @@ public class DiagnosticData {
     }
 
     /**
-     * Get the renderingProperties value.
+     * Get properties that describe how the table should be rendered.
      *
      * @return the renderingProperties value
      */
@@ -56,7 +56,7 @@ public class DiagnosticData {
     }
 
     /**
-     * Set the renderingProperties value.
+     * Set properties that describe how the table should be rendered.
      *
      * @param renderingProperties the renderingProperties value to set
      * @return the DiagnosticData object itself.

@@ -21,14 +21,14 @@ import com.microsoft.azure.management.appservice.v2018_02_01.DetectorDefinition;
 import com.microsoft.azure.management.appservice.v2018_02_01.DiagnosticDetectorResponse;
 
 class DiagnosticsImpl extends WrapperImpl<DiagnosticsInner> implements Diagnostics {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
 
-    DiagnosticsImpl(AppServiceManager manager) {
+    DiagnosticsImpl(CertificateRegistrationManager manager) {
         super(manager.inner().diagnostics());
         this.manager = manager;
     }
 
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 
@@ -45,7 +45,8 @@ class DiagnosticsImpl extends WrapperImpl<DiagnosticsInner> implements Diagnosti
             public Iterable<DiagnosticCategoryInner> call(Page<DiagnosticCategoryInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<DiagnosticCategoryInner, DiagnosticCategory>() {
+        })
+        .map(new Func1<DiagnosticCategoryInner, DiagnosticCategory>() {
             @Override
             public DiagnosticCategory call(DiagnosticCategoryInner inner) {
                 return new DiagnosticCategoryImpl(inner, manager());
@@ -169,7 +170,8 @@ class DiagnosticsImpl extends WrapperImpl<DiagnosticsInner> implements Diagnosti
             public Iterable<AnalysisDefinitionInner> call(Page<AnalysisDefinitionInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<AnalysisDefinitionInner, AnalysisDefinition>() {
+        })
+        .map(new Func1<AnalysisDefinitionInner, AnalysisDefinition>() {
             @Override
             public AnalysisDefinition call(AnalysisDefinitionInner inner) {
                 return new AnalysisDefinitionImpl(inner, manager());
@@ -228,7 +230,8 @@ class DiagnosticsImpl extends WrapperImpl<DiagnosticsInner> implements Diagnosti
             public Iterable<DetectorDefinitionInner> call(Page<DetectorDefinitionInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<DetectorDefinitionInner, DetectorDefinition>() {
+        })
+        .map(new Func1<DetectorDefinitionInner, DetectorDefinition>() {
             @Override
             public DetectorDefinition call(DetectorDefinitionInner inner) {
                 return new DetectorDefinitionImpl(inner, manager());
@@ -257,7 +260,8 @@ class DiagnosticsImpl extends WrapperImpl<DiagnosticsInner> implements Diagnosti
             public Iterable<DetectorDefinitionInner> call(Page<DetectorDefinitionInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<DetectorDefinitionInner, DetectorDefinition>() {
+        })
+        .map(new Func1<DetectorDefinitionInner, DetectorDefinition>() {
             @Override
             public DetectorDefinition call(DetectorDefinitionInner inner) {
                 return new DetectorDefinitionImpl(inner, manager());
@@ -274,7 +278,8 @@ class DiagnosticsImpl extends WrapperImpl<DiagnosticsInner> implements Diagnosti
             public Iterable<DetectorDefinitionInner> call(Page<DetectorDefinitionInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<DetectorDefinitionInner, DetectorDefinition>() {
+        })
+        .map(new Func1<DetectorDefinitionInner, DetectorDefinition>() {
             @Override
             public DetectorDefinition call(DetectorDefinitionInner inner) {
                 return new DetectorDefinitionImpl(inner, manager());

@@ -10,21 +10,21 @@ package com.microsoft.azure.management.appservice.v2018_02_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.Resource;
+import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
 import com.microsoft.azure.arm.resources.models.HasResourceGroup;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
-import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServicePlanInner;
 
 /**
  * Type representing AppServicePlan.
  */
-public interface AppServicePlan extends HasInner<AppServicePlanInner>, Resource, GroupableResourceCore<AppServiceManager, AppServicePlanInner>, HasResourceGroup, Refreshable<AppServicePlan>, Updatable<AppServicePlan.Update>, HasManager<AppServiceManager> {
+public interface AppServicePlan extends HasInner<AppServicePlanInner>, Resource, GroupableResourceCore<CertificateRegistrationManager, AppServicePlanInner>, HasResourceGroup, Refreshable<AppServicePlan>, Updatable<AppServicePlan.Update>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the adminSiteName value.
      */

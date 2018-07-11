@@ -13,15 +13,15 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import rx.Observable;
 
 class DetectorDefinitionImpl extends WrapperImpl<DetectorDefinitionInner> implements DetectorDefinition {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
 
-    DetectorDefinitionImpl(DetectorDefinitionInner inner,  AppServiceManager manager) {
+    DetectorDefinitionImpl(DetectorDefinitionInner inner,  CertificateRegistrationManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 

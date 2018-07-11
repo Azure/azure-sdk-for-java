@@ -14,14 +14,14 @@ import com.microsoft.azure.management.appservice.v2016_03_01.CsmOperationDisplay
 import com.microsoft.azure.management.appservice.v2016_03_01.CsmOperationDescriptionProperties;
 
 class CsmOperationDescriptionImpl extends WrapperImpl<CsmOperationDescriptionInner> implements CsmOperationDescription {
-    private final AppServiceManager manager;
-    CsmOperationDescriptionImpl(CsmOperationDescriptionInner inner, AppServiceManager manager) {
+    private final WebManager manager;
+    CsmOperationDescriptionImpl(CsmOperationDescriptionInner inner, WebManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 

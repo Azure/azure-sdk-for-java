@@ -18,14 +18,14 @@ import com.microsoft.azure.management.appservice.v2016_03_01.DiagnosticMetricSet
 import com.microsoft.azure.management.appservice.v2016_03_01.ResponseMetaData;
 
 class DiagnosticDetectorResponseImpl extends WrapperImpl<DiagnosticDetectorResponseInner> implements DiagnosticDetectorResponse {
-    private final AppServiceManager manager;
-    DiagnosticDetectorResponseImpl(DiagnosticDetectorResponseInner inner, AppServiceManager manager) {
+    private final WebManager manager;
+    DiagnosticDetectorResponseImpl(DiagnosticDetectorResponseInner inner, WebManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 

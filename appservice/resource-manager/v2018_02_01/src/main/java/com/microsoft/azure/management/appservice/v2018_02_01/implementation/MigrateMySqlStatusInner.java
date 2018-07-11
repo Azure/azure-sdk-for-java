@@ -38,7 +38,7 @@ public class MigrateMySqlStatusInner extends ProxyOnlyResource {
     private Boolean localMySqlEnabled;
 
     /**
-     * Get the migrationOperationStatus value.
+     * Get status of the migration task. Possible values include: 'InProgress', 'Failed', 'Succeeded', 'TimedOut', 'Created'.
      *
      * @return the migrationOperationStatus value
      */
@@ -47,7 +47,7 @@ public class MigrateMySqlStatusInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the operationId value.
+     * Get operation ID for the migration task.
      *
      * @return the operationId value
      */
@@ -56,7 +56,7 @@ public class MigrateMySqlStatusInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the localMySqlEnabled value.
+     * Get true if the web app has in app MySql enabled.
      *
      * @return the localMySqlEnabled value
      */

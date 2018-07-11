@@ -67,7 +67,7 @@ public class Operation {
     private UUID geoMasterOperationId;
 
     /**
-     * Get the id value.
+     * Get operation ID.
      *
      * @return the id value
      */
@@ -76,7 +76,7 @@ public class Operation {
     }
 
     /**
-     * Set the id value.
+     * Set operation ID.
      *
      * @param id the id value to set
      * @return the Operation object itself.
@@ -87,7 +87,7 @@ public class Operation {
     }
 
     /**
-     * Get the name value.
+     * Get operation name.
      *
      * @return the name value
      */
@@ -96,7 +96,7 @@ public class Operation {
     }
 
     /**
-     * Set the name value.
+     * Set operation name.
      *
      * @param name the name value to set
      * @return the Operation object itself.
@@ -107,7 +107,7 @@ public class Operation {
     }
 
     /**
-     * Get the status value.
+     * Get the current status of the operation. Possible values include: 'InProgress', 'Failed', 'Succeeded', 'TimedOut', 'Created'.
      *
      * @return the status value
      */
@@ -116,7 +116,7 @@ public class Operation {
     }
 
     /**
-     * Set the status value.
+     * Set the current status of the operation. Possible values include: 'InProgress', 'Failed', 'Succeeded', 'TimedOut', 'Created'.
      *
      * @param status the status value to set
      * @return the Operation object itself.
@@ -127,7 +127,7 @@ public class Operation {
     }
 
     /**
-     * Get the errors value.
+     * Get any errors associate with the operation.
      *
      * @return the errors value
      */
@@ -136,7 +136,7 @@ public class Operation {
     }
 
     /**
-     * Set the errors value.
+     * Set any errors associate with the operation.
      *
      * @param errors the errors value to set
      * @return the Operation object itself.
@@ -147,7 +147,7 @@ public class Operation {
     }
 
     /**
-     * Get the createdTime value.
+     * Get time when operation has started.
      *
      * @return the createdTime value
      */
@@ -156,7 +156,7 @@ public class Operation {
     }
 
     /**
-     * Set the createdTime value.
+     * Set time when operation has started.
      *
      * @param createdTime the createdTime value to set
      * @return the Operation object itself.
@@ -167,7 +167,7 @@ public class Operation {
     }
 
     /**
-     * Get the modifiedTime value.
+     * Get time when operation has been updated.
      *
      * @return the modifiedTime value
      */
@@ -176,7 +176,7 @@ public class Operation {
     }
 
     /**
-     * Set the modifiedTime value.
+     * Set time when operation has been updated.
      *
      * @param modifiedTime the modifiedTime value to set
      * @return the Operation object itself.
@@ -187,7 +187,7 @@ public class Operation {
     }
 
     /**
-     * Get the expirationTime value.
+     * Get time when operation will expire.
      *
      * @return the expirationTime value
      */
@@ -196,7 +196,7 @@ public class Operation {
     }
 
     /**
-     * Set the expirationTime value.
+     * Set time when operation will expire.
      *
      * @param expirationTime the expirationTime value to set
      * @return the Operation object itself.
@@ -207,7 +207,7 @@ public class Operation {
     }
 
     /**
-     * Get the geoMasterOperationId value.
+     * Get applicable only for stamp operation ids.
      *
      * @return the geoMasterOperationId value
      */
@@ -216,7 +216,7 @@ public class Operation {
     }
 
     /**
-     * Set the geoMasterOperationId value.
+     * Set applicable only for stamp operation ids.
      *
      * @param geoMasterOperationId the geoMasterOperationId value to set
      * @return the Operation object itself.

@@ -27,7 +27,7 @@ public class HttpLogsConfig {
     private AzureBlobStorageHttpLogsConfig azureBlobStorage;
 
     /**
-     * Get the fileSystem value.
+     * Get http logs to file system configuration.
      *
      * @return the fileSystem value
      */
@@ -36,7 +36,7 @@ public class HttpLogsConfig {
     }
 
     /**
-     * Set the fileSystem value.
+     * Set http logs to file system configuration.
      *
      * @param fileSystem the fileSystem value to set
      * @return the HttpLogsConfig object itself.
@@ -47,7 +47,7 @@ public class HttpLogsConfig {
     }
 
     /**
-     * Get the azureBlobStorage value.
+     * Get http logs to azure blob storage configuration.
      *
      * @return the azureBlobStorage value
      */
@@ -56,7 +56,7 @@ public class HttpLogsConfig {
     }
 
     /**
-     * Set the azureBlobStorage value.
+     * Set http logs to azure blob storage configuration.
      *
      * @param azureBlobStorage the azureBlobStorage value to set
      * @return the HttpLogsConfig object itself.

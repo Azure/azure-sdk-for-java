@@ -11,13 +11,13 @@ package com.microsoft.azure.management.appservice.v2018_02_01;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CsmUsageQuotaInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
 import org.joda.time.DateTime;
 
 /**
  * Type representing ServerfarmCsmUsageQuota.
  */
-public interface ServerfarmCsmUsageQuota extends HasInner<CsmUsageQuotaInner>, HasManager<AppServiceManager> {
+public interface ServerfarmCsmUsageQuota extends HasInner<CsmUsageQuotaInner>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the currentValue value.
      */

@@ -27,7 +27,7 @@ public class AutoHealRules {
     private AutoHealActions actions;
 
     /**
-     * Get the triggers value.
+     * Get conditions that describe when to execute the auto-heal actions.
      *
      * @return the triggers value
      */
@@ -36,7 +36,7 @@ public class AutoHealRules {
     }
 
     /**
-     * Set the triggers value.
+     * Set conditions that describe when to execute the auto-heal actions.
      *
      * @param triggers the triggers value to set
      * @return the AutoHealRules object itself.
@@ -47,7 +47,7 @@ public class AutoHealRules {
     }
 
     /**
-     * Get the actions value.
+     * Get actions to be executed when a rule is triggered.
      *
      * @return the actions value
      */
@@ -56,7 +56,7 @@ public class AutoHealRules {
     }
 
     /**
-     * Set the actions value.
+     * Set actions to be executed when a rule is triggered.
      *
      * @param actions the actions value to set
      * @return the AutoHealRules object itself.

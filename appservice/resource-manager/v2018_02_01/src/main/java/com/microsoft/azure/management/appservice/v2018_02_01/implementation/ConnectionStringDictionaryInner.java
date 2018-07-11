@@ -24,7 +24,7 @@ public class ConnectionStringDictionaryInner extends ProxyOnlyResource {
     private Map<String, ConnStringValueTypePair> properties;
 
     /**
-     * Get the properties value.
+     * Get connection strings.
      *
      * @return the properties value
      */
@@ -33,7 +33,7 @@ public class ConnectionStringDictionaryInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the properties value.
+     * Set connection strings.
      *
      * @param properties the properties value to set
      * @return the ConnectionStringDictionaryInner object itself.

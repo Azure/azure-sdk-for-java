@@ -58,7 +58,7 @@ public class ResourceMetricValue {
     private List<ResourceMetricProperty> properties;
 
     /**
-     * Get the timestamp value.
+     * Get value timestamp.
      *
      * @return the timestamp value
      */
@@ -67,7 +67,7 @@ public class ResourceMetricValue {
     }
 
     /**
-     * Get the average value.
+     * Get value average.
      *
      * @return the average value
      */
@@ -76,7 +76,7 @@ public class ResourceMetricValue {
     }
 
     /**
-     * Get the minimum value.
+     * Get value minimum.
      *
      * @return the minimum value
      */
@@ -85,7 +85,7 @@ public class ResourceMetricValue {
     }
 
     /**
-     * Get the maximum value.
+     * Get value maximum.
      *
      * @return the maximum value
      */
@@ -94,7 +94,7 @@ public class ResourceMetricValue {
     }
 
     /**
-     * Get the total value.
+     * Get value total.
      *
      * @return the total value
      */
@@ -103,7 +103,7 @@ public class ResourceMetricValue {
     }
 
     /**
-     * Get the count value.
+     * Get value count.
      *
      * @return the count value
      */
@@ -112,7 +112,7 @@ public class ResourceMetricValue {
     }
 
     /**
-     * Get the properties value.
+     * Get resource metric properties collection.
      *
      * @return the properties value
      */

@@ -67,7 +67,7 @@ public class DetectorAbnormalTimePeriod {
     private List<Solution> solutions;
 
     /**
-     * Get the startTime value.
+     * Get start time of the corelated event.
      *
      * @return the startTime value
      */
@@ -76,7 +76,7 @@ public class DetectorAbnormalTimePeriod {
     }
 
     /**
-     * Set the startTime value.
+     * Set start time of the corelated event.
      *
      * @param startTime the startTime value to set
      * @return the DetectorAbnormalTimePeriod object itself.
@@ -87,7 +87,7 @@ public class DetectorAbnormalTimePeriod {
     }
 
     /**
-     * Get the endTime value.
+     * Get end time of the corelated event.
      *
      * @return the endTime value
      */
@@ -96,7 +96,7 @@ public class DetectorAbnormalTimePeriod {
     }
 
     /**
-     * Set the endTime value.
+     * Set end time of the corelated event.
      *
      * @param endTime the endTime value to set
      * @return the DetectorAbnormalTimePeriod object itself.
@@ -107,7 +107,7 @@ public class DetectorAbnormalTimePeriod {
     }
 
     /**
-     * Get the message value.
+     * Get message describing the event.
      *
      * @return the message value
      */
@@ -116,7 +116,7 @@ public class DetectorAbnormalTimePeriod {
     }
 
     /**
-     * Set the message value.
+     * Set message describing the event.
      *
      * @param message the message value to set
      * @return the DetectorAbnormalTimePeriod object itself.
@@ -127,7 +127,7 @@ public class DetectorAbnormalTimePeriod {
     }
 
     /**
-     * Get the source value.
+     * Get represents the name of the Detector.
      *
      * @return the source value
      */
@@ -136,7 +136,7 @@ public class DetectorAbnormalTimePeriod {
     }
 
     /**
-     * Set the source value.
+     * Set represents the name of the Detector.
      *
      * @param source the source value to set
      * @return the DetectorAbnormalTimePeriod object itself.
@@ -147,7 +147,7 @@ public class DetectorAbnormalTimePeriod {
     }
 
     /**
-     * Get the priority value.
+     * Get represents the rank of the Detector.
      *
      * @return the priority value
      */
@@ -156,7 +156,7 @@ public class DetectorAbnormalTimePeriod {
     }
 
     /**
-     * Set the priority value.
+     * Set represents the rank of the Detector.
      *
      * @param priority the priority value to set
      * @return the DetectorAbnormalTimePeriod object itself.
@@ -167,7 +167,7 @@ public class DetectorAbnormalTimePeriod {
     }
 
     /**
-     * Get the metaData value.
+     * Get downtime metadata.
      *
      * @return the metaData value
      */
@@ -176,7 +176,7 @@ public class DetectorAbnormalTimePeriod {
     }
 
     /**
-     * Set the metaData value.
+     * Set downtime metadata.
      *
      * @param metaData the metaData value to set
      * @return the DetectorAbnormalTimePeriod object itself.
@@ -187,7 +187,7 @@ public class DetectorAbnormalTimePeriod {
     }
 
     /**
-     * Get the type value.
+     * Get represents the type of the Detector. Possible values include: 'ServiceIncident', 'AppDeployment', 'AppCrash', 'RuntimeIssueDetected', 'AseDeployment', 'UserIssue', 'PlatformIssue', 'Other'.
      *
      * @return the type value
      */
@@ -196,7 +196,7 @@ public class DetectorAbnormalTimePeriod {
     }
 
     /**
-     * Set the type value.
+     * Set represents the type of the Detector. Possible values include: 'ServiceIncident', 'AppDeployment', 'AppCrash', 'RuntimeIssueDetected', 'AseDeployment', 'UserIssue', 'PlatformIssue', 'Other'.
      *
      * @param type the type value to set
      * @return the DetectorAbnormalTimePeriod object itself.
@@ -207,7 +207,7 @@ public class DetectorAbnormalTimePeriod {
     }
 
     /**
-     * Get the solutions value.
+     * Get list of proposed solutions.
      *
      * @return the solutions value
      */
@@ -216,7 +216,7 @@ public class DetectorAbnormalTimePeriod {
     }
 
     /**
-     * Set the solutions value.
+     * Set list of proposed solutions.
      *
      * @param solutions the solutions value to set
      * @return the DetectorAbnormalTimePeriod object itself.

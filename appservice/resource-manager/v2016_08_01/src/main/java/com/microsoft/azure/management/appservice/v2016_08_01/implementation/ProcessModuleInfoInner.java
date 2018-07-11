@@ -84,7 +84,7 @@ public class ProcessModuleInfoInner extends ProxyOnlyResource {
     private String language;
 
     /**
-     * Get the baseAddress value.
+     * Get base address. Used as module identifier in ARM resource URI.
      *
      * @return the baseAddress value
      */
@@ -93,7 +93,7 @@ public class ProcessModuleInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the baseAddress value.
+     * Set base address. Used as module identifier in ARM resource URI.
      *
      * @param baseAddress the baseAddress value to set
      * @return the ProcessModuleInfoInner object itself.
@@ -104,7 +104,7 @@ public class ProcessModuleInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the fileName value.
+     * Get file name.
      *
      * @return the fileName value
      */
@@ -113,7 +113,7 @@ public class ProcessModuleInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the fileName value.
+     * Set file name.
      *
      * @param fileName the fileName value to set
      * @return the ProcessModuleInfoInner object itself.
@@ -124,7 +124,7 @@ public class ProcessModuleInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the href value.
+     * Get hRef URI.
      *
      * @return the href value
      */
@@ -133,7 +133,7 @@ public class ProcessModuleInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the href value.
+     * Set hRef URI.
      *
      * @param href the href value to set
      * @return the ProcessModuleInfoInner object itself.
@@ -144,7 +144,7 @@ public class ProcessModuleInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the filePath value.
+     * Get file path.
      *
      * @return the filePath value
      */
@@ -153,7 +153,7 @@ public class ProcessModuleInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the filePath value.
+     * Set file path.
      *
      * @param filePath the filePath value to set
      * @return the ProcessModuleInfoInner object itself.
@@ -164,7 +164,7 @@ public class ProcessModuleInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the moduleMemorySize value.
+     * Get module memory size.
      *
      * @return the moduleMemorySize value
      */
@@ -173,7 +173,7 @@ public class ProcessModuleInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the moduleMemorySize value.
+     * Set module memory size.
      *
      * @param moduleMemorySize the moduleMemorySize value to set
      * @return the ProcessModuleInfoInner object itself.
@@ -184,7 +184,7 @@ public class ProcessModuleInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the fileVersion value.
+     * Get file version.
      *
      * @return the fileVersion value
      */
@@ -193,7 +193,7 @@ public class ProcessModuleInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the fileVersion value.
+     * Set file version.
      *
      * @param fileVersion the fileVersion value to set
      * @return the ProcessModuleInfoInner object itself.
@@ -204,7 +204,7 @@ public class ProcessModuleInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the fileDescription value.
+     * Get file description.
      *
      * @return the fileDescription value
      */
@@ -213,7 +213,7 @@ public class ProcessModuleInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the fileDescription value.
+     * Set file description.
      *
      * @param fileDescription the fileDescription value to set
      * @return the ProcessModuleInfoInner object itself.
@@ -224,7 +224,7 @@ public class ProcessModuleInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the product value.
+     * Get product name.
      *
      * @return the product value
      */
@@ -233,7 +233,7 @@ public class ProcessModuleInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the product value.
+     * Set product name.
      *
      * @param product the product value to set
      * @return the ProcessModuleInfoInner object itself.
@@ -244,7 +244,7 @@ public class ProcessModuleInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the productVersion value.
+     * Get product version.
      *
      * @return the productVersion value
      */
@@ -253,7 +253,7 @@ public class ProcessModuleInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the productVersion value.
+     * Set product version.
      *
      * @param productVersion the productVersion value to set
      * @return the ProcessModuleInfoInner object itself.
@@ -264,7 +264,7 @@ public class ProcessModuleInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the isDebug value.
+     * Get is debug?.
      *
      * @return the isDebug value
      */
@@ -273,7 +273,7 @@ public class ProcessModuleInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the isDebug value.
+     * Set is debug?.
      *
      * @param isDebug the isDebug value to set
      * @return the ProcessModuleInfoInner object itself.
@@ -284,7 +284,7 @@ public class ProcessModuleInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the language value.
+     * Get module language (locale).
      *
      * @return the language value
      */
@@ -293,7 +293,7 @@ public class ProcessModuleInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the language value.
+     * Set module language (locale).
      *
      * @param language the language value to set
      * @return the ProcessModuleInfoInner object itself.

@@ -21,7 +21,7 @@ public class NameIdentifierInner {
     private String name;
 
     /**
-     * Get the name value.
+     * Get name of the object.
      *
      * @return the name value
      */
@@ -30,7 +30,7 @@ public class NameIdentifierInner {
     }
 
     /**
-     * Set the name value.
+     * Set name of the object.
      *
      * @param name the name value to set
      * @return the NameIdentifierInner object itself.

@@ -38,7 +38,9 @@ public class FileSystemHttpLogsConfig {
     private Boolean enabled;
 
     /**
-     * Get the retentionInMb value.
+     * Get maximum size in megabytes that http log files can use.
+     When reached old log files will be removed to make space for new ones.
+     Value can range between 25 and 100.
      *
      * @return the retentionInMb value
      */
@@ -47,7 +49,9 @@ public class FileSystemHttpLogsConfig {
     }
 
     /**
-     * Set the retentionInMb value.
+     * Set maximum size in megabytes that http log files can use.
+     When reached old log files will be removed to make space for new ones.
+     Value can range between 25 and 100.
      *
      * @param retentionInMb the retentionInMb value to set
      * @return the FileSystemHttpLogsConfig object itself.
@@ -58,7 +62,9 @@ public class FileSystemHttpLogsConfig {
     }
 
     /**
-     * Get the retentionInDays value.
+     * Get retention in days.
+     Remove files older than X days.
+     0 or lower means no retention.
      *
      * @return the retentionInDays value
      */
@@ -67,7 +73,9 @@ public class FileSystemHttpLogsConfig {
     }
 
     /**
-     * Set the retentionInDays value.
+     * Set retention in days.
+     Remove files older than X days.
+     0 or lower means no retention.
      *
      * @param retentionInDays the retentionInDays value to set
      * @return the FileSystemHttpLogsConfig object itself.
@@ -78,7 +86,7 @@ public class FileSystemHttpLogsConfig {
     }
 
     /**
-     * Get the enabled value.
+     * Get true if configuration is enabled, false if it is disabled and null if configuration is not set.
      *
      * @return the enabled value
      */
@@ -87,7 +95,7 @@ public class FileSystemHttpLogsConfig {
     }
 
     /**
-     * Set the enabled value.
+     * Set true if configuration is enabled, false if it is disabled and null if configuration is not set.
      *
      * @param enabled the enabled value to set
      * @return the FileSystemHttpLogsConfig object itself.
