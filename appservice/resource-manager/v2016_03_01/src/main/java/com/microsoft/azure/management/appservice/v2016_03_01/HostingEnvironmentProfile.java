@@ -33,7 +33,7 @@ public class HostingEnvironmentProfile {
     private String type;
 
     /**
-     * Get the id value.
+     * Get resource ID of the App Service Environment.
      *
      * @return the id value
      */
@@ -42,7 +42,7 @@ public class HostingEnvironmentProfile {
     }
 
     /**
-     * Set the id value.
+     * Set resource ID of the App Service Environment.
      *
      * @param id the id value to set
      * @return the HostingEnvironmentProfile object itself.
@@ -53,7 +53,7 @@ public class HostingEnvironmentProfile {
     }
 
     /**
-     * Get the name value.
+     * Get name of the App Service Environment.
      *
      * @return the name value
      */
@@ -62,7 +62,7 @@ public class HostingEnvironmentProfile {
     }
 
     /**
-     * Get the type value.
+     * Get resource type of the App Service Environment.
      *
      * @return the type value
      */

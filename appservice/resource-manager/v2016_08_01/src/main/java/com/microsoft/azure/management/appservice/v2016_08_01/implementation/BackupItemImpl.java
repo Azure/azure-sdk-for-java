@@ -17,12 +17,12 @@ import com.microsoft.azure.management.appservice.v2016_08_01.DatabaseBackupSetti
 import com.microsoft.azure.management.appservice.v2016_08_01.BackupItemStatus;
 
 class BackupItemImpl extends IndexableRefreshableWrapperImpl<BackupItem, BackupItemInner> implements BackupItem {
-    private final AppServiceManager manager;
+    private final WebManager manager;
     private String resourceGroupName;
     private String name;
     private String backupId;
 
-    BackupItemImpl(BackupItemInner inner,  AppServiceManager manager) {
+    BackupItemImpl(BackupItemInner inner,  WebManager manager) {
         super(null, inner);
         this.manager = manager;
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
@@ -31,7 +31,7 @@ class BackupItemImpl extends IndexableRefreshableWrapperImpl<BackupItem, BackupI
     }
 
     @Override
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 

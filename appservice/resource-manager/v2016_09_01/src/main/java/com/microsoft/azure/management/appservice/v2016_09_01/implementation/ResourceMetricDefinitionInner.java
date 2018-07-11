@@ -65,7 +65,7 @@ public class ResourceMetricDefinitionInner extends ProxyOnlyResource {
     private Map<String, String> properties;
 
     /**
-     * Get the resourceMetricDefinitionName value.
+     * Get name of the metric.
      *
      * @return the resourceMetricDefinitionName value
      */
@@ -74,7 +74,7 @@ public class ResourceMetricDefinitionInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the unit value.
+     * Get unit of the metric.
      *
      * @return the unit value
      */
@@ -83,7 +83,7 @@ public class ResourceMetricDefinitionInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the primaryAggregationType value.
+     * Get primary aggregation type.
      *
      * @return the primaryAggregationType value
      */
@@ -92,7 +92,7 @@ public class ResourceMetricDefinitionInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the metricAvailabilities value.
+     * Get list of time grains supported for the metric together with retention period.
      *
      * @return the metricAvailabilities value
      */
@@ -101,7 +101,7 @@ public class ResourceMetricDefinitionInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the resourceUri value.
+     * Get resource URI.
      *
      * @return the resourceUri value
      */
@@ -110,7 +110,7 @@ public class ResourceMetricDefinitionInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the resourceMetricDefinitionId value.
+     * Get resource ID.
      *
      * @return the resourceMetricDefinitionId value
      */
@@ -119,7 +119,7 @@ public class ResourceMetricDefinitionInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the properties value.
+     * Get resource metric definition properties.
      *
      * @return the properties value
      */

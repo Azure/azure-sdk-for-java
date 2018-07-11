@@ -57,7 +57,7 @@ public class BackupSchedule {
     private DateTime lastExecutionTime;
 
     /**
-     * Get the frequencyInterval value.
+     * Get how often the backup should be executed (e.g. for weekly backup, this should be set to 7 and FrequencyUnit should be set to Day).
      *
      * @return the frequencyInterval value
      */
@@ -66,7 +66,7 @@ public class BackupSchedule {
     }
 
     /**
-     * Set the frequencyInterval value.
+     * Set how often the backup should be executed (e.g. for weekly backup, this should be set to 7 and FrequencyUnit should be set to Day).
      *
      * @param frequencyInterval the frequencyInterval value to set
      * @return the BackupSchedule object itself.
@@ -77,7 +77,7 @@ public class BackupSchedule {
     }
 
     /**
-     * Get the frequencyUnit value.
+     * Get the unit of time for how often the backup should be executed (e.g. for weekly backup, this should be set to Day and FrequencyInterval should be set to 7). Possible values include: 'Day', 'Hour'.
      *
      * @return the frequencyUnit value
      */
@@ -86,7 +86,7 @@ public class BackupSchedule {
     }
 
     /**
-     * Set the frequencyUnit value.
+     * Set the unit of time for how often the backup should be executed (e.g. for weekly backup, this should be set to Day and FrequencyInterval should be set to 7). Possible values include: 'Day', 'Hour'.
      *
      * @param frequencyUnit the frequencyUnit value to set
      * @return the BackupSchedule object itself.
@@ -97,7 +97,7 @@ public class BackupSchedule {
     }
 
     /**
-     * Get the keepAtLeastOneBackup value.
+     * Get true if the retention policy should always keep at least one backup in the storage account, regardless how old it is; false otherwise.
      *
      * @return the keepAtLeastOneBackup value
      */
@@ -106,7 +106,7 @@ public class BackupSchedule {
     }
 
     /**
-     * Set the keepAtLeastOneBackup value.
+     * Set true if the retention policy should always keep at least one backup in the storage account, regardless how old it is; false otherwise.
      *
      * @param keepAtLeastOneBackup the keepAtLeastOneBackup value to set
      * @return the BackupSchedule object itself.
@@ -117,7 +117,7 @@ public class BackupSchedule {
     }
 
     /**
-     * Get the retentionPeriodInDays value.
+     * Get after how many days backups should be deleted.
      *
      * @return the retentionPeriodInDays value
      */
@@ -126,7 +126,7 @@ public class BackupSchedule {
     }
 
     /**
-     * Set the retentionPeriodInDays value.
+     * Set after how many days backups should be deleted.
      *
      * @param retentionPeriodInDays the retentionPeriodInDays value to set
      * @return the BackupSchedule object itself.
@@ -137,7 +137,7 @@ public class BackupSchedule {
     }
 
     /**
-     * Get the startTime value.
+     * Get when the schedule should start working.
      *
      * @return the startTime value
      */
@@ -146,7 +146,7 @@ public class BackupSchedule {
     }
 
     /**
-     * Set the startTime value.
+     * Set when the schedule should start working.
      *
      * @param startTime the startTime value to set
      * @return the BackupSchedule object itself.
@@ -157,7 +157,7 @@ public class BackupSchedule {
     }
 
     /**
-     * Get the lastExecutionTime value.
+     * Get last time when this schedule was triggered.
      *
      * @return the lastExecutionTime value
      */

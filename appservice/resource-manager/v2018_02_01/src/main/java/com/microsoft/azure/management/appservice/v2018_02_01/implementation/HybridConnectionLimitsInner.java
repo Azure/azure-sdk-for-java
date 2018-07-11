@@ -31,7 +31,7 @@ public class HybridConnectionLimitsInner extends ProxyOnlyResource {
     private Integer maximum;
 
     /**
-     * Get the current value.
+     * Get the current number of Hybrid Connections.
      *
      * @return the current value
      */
@@ -40,7 +40,7 @@ public class HybridConnectionLimitsInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the maximum value.
+     * Get the maximum number of Hybrid Connections allowed.
      *
      * @return the maximum value
      */

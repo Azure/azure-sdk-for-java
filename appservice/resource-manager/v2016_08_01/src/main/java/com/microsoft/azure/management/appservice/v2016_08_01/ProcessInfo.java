@@ -13,7 +13,7 @@ import com.microsoft.azure.management.appservice.v2016_08_01.implementation.Proc
 import com.microsoft.azure.arm.model.Indexable;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2016_08_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2016_08_01.implementation.WebManager;
 import java.util.List;
 import java.util.Map;
 import org.joda.time.DateTime;
@@ -21,7 +21,7 @@ import org.joda.time.DateTime;
 /**
  * Type representing ProcessInfo.
  */
-public interface ProcessInfo extends HasInner<ProcessInfoInner>, Indexable, Refreshable<ProcessInfo>, HasManager<AppServiceManager> {
+public interface ProcessInfo extends HasInner<ProcessInfoInner>, Indexable, Refreshable<ProcessInfo>, HasManager<WebManager> {
     /**
      * @return the children value.
      */

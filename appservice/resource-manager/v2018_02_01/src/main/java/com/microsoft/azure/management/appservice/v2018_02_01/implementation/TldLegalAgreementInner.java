@@ -39,7 +39,7 @@ public class TldLegalAgreementInner {
     private String url;
 
     /**
-     * Get the agreementKey value.
+     * Get unique identifier for the agreement.
      *
      * @return the agreementKey value
      */
@@ -48,7 +48,7 @@ public class TldLegalAgreementInner {
     }
 
     /**
-     * Set the agreementKey value.
+     * Set unique identifier for the agreement.
      *
      * @param agreementKey the agreementKey value to set
      * @return the TldLegalAgreementInner object itself.
@@ -59,7 +59,7 @@ public class TldLegalAgreementInner {
     }
 
     /**
-     * Get the title value.
+     * Get agreement title.
      *
      * @return the title value
      */
@@ -68,7 +68,7 @@ public class TldLegalAgreementInner {
     }
 
     /**
-     * Set the title value.
+     * Set agreement title.
      *
      * @param title the title value to set
      * @return the TldLegalAgreementInner object itself.
@@ -79,7 +79,7 @@ public class TldLegalAgreementInner {
     }
 
     /**
-     * Get the content value.
+     * Get agreement details.
      *
      * @return the content value
      */
@@ -88,7 +88,7 @@ public class TldLegalAgreementInner {
     }
 
     /**
-     * Set the content value.
+     * Set agreement details.
      *
      * @param content the content value to set
      * @return the TldLegalAgreementInner object itself.
@@ -99,7 +99,7 @@ public class TldLegalAgreementInner {
     }
 
     /**
-     * Get the url value.
+     * Get uRL where a copy of the agreement details is hosted.
      *
      * @return the url value
      */
@@ -108,7 +108,7 @@ public class TldLegalAgreementInner {
     }
 
     /**
-     * Set the url value.
+     * Set uRL where a copy of the agreement details is hosted.
      *
      * @param url the url value to set
      * @return the TldLegalAgreementInner object itself.

@@ -10,7 +10,7 @@ package com.microsoft.azure.management.appservice.v2016_08_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2016_08_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2016_08_01.implementation.WebManager;
 import com.microsoft.azure.management.appservice.v2016_08_01.implementation.OperationInner;
 import org.joda.time.DateTime;
 import java.util.List;
@@ -19,7 +19,7 @@ import java.util.UUID;
 /**
  * Type representing Operation.
  */
-public interface Operation extends HasInner<OperationInner>, HasManager<AppServiceManager> {
+public interface Operation extends HasInner<OperationInner>, HasManager<WebManager> {
     /**
      * @return the createdTime value.
      */

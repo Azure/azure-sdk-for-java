@@ -22,9 +22,9 @@ import com.microsoft.azure.arm.utils.PagedListConverter;
 
 class RecommendationsImpl extends WrapperImpl<RecommendationsInner> implements Recommendations {
     private PagedListConverter<RecommendationInner, Recommendation> converter;
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
 
-    RecommendationsImpl(AppServiceManager manager) {
+    RecommendationsImpl(CertificateRegistrationManager manager) {
         super(manager.inner().recommendations());
         this.manager = manager;
         this.converter = new PagedListConverter<RecommendationInner, Recommendation>() {
@@ -35,7 +35,7 @@ class RecommendationsImpl extends WrapperImpl<RecommendationsInner> implements R
         };
     }
 
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 
@@ -64,7 +64,8 @@ class RecommendationsImpl extends WrapperImpl<RecommendationsInner> implements R
             public Iterable<RecommendationInner> call(Page<RecommendationInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<RecommendationInner, Recommendation>() {
+        })
+        .map(new Func1<RecommendationInner, Recommendation>() {
             @Override
             public Recommendation call(RecommendationInner inner) {
                 return new RecommendationImpl(inner, manager());
@@ -135,7 +136,8 @@ class RecommendationsImpl extends WrapperImpl<RecommendationsInner> implements R
             public Iterable<RecommendationInner> call(Page<RecommendationInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<RecommendationInner, Recommendation>() {
+        })
+        .map(new Func1<RecommendationInner, Recommendation>() {
             @Override
             public Recommendation call(RecommendationInner inner) {
                 return new RecommendationImpl(inner, manager());

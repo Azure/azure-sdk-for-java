@@ -11,12 +11,12 @@ package com.microsoft.azure.management.appservice.v2018_02_01;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.DetectorDefinitionInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
 
 /**
  * Type representing DetectorDefinition.
  */
-public interface DetectorDefinition extends HasInner<DetectorDefinitionInner>, HasManager<AppServiceManager> {
+public interface DetectorDefinition extends HasInner<DetectorDefinitionInner>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the description value.
      */

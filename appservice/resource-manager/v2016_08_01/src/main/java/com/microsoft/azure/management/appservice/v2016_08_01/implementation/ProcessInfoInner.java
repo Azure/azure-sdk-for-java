@@ -237,7 +237,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     private String description;
 
     /**
-     * Get the processInfoId value.
+     * Get aRM Identifier for deployment.
      *
      * @return the processInfoId value
      */
@@ -246,7 +246,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the processInfoId value.
+     * Set aRM Identifier for deployment.
      *
      * @param processInfoId the processInfoId value to set
      * @return the ProcessInfoInner object itself.
@@ -257,7 +257,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the processInfoName value.
+     * Get deployment name.
      *
      * @return the processInfoName value
      */
@@ -266,7 +266,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the processInfoName value.
+     * Set deployment name.
      *
      * @param processInfoName the processInfoName value to set
      * @return the ProcessInfoInner object itself.
@@ -277,7 +277,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the href value.
+     * Get hRef URI.
      *
      * @return the href value
      */
@@ -286,7 +286,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the href value.
+     * Set hRef URI.
      *
      * @param href the href value to set
      * @return the ProcessInfoInner object itself.
@@ -297,7 +297,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the miniDump value.
+     * Get minidump URI.
      *
      * @return the miniDump value
      */
@@ -306,7 +306,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the miniDump value.
+     * Set minidump URI.
      *
      * @param miniDump the miniDump value to set
      * @return the ProcessInfoInner object itself.
@@ -317,7 +317,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the isProfileRunning value.
+     * Get is profile running?.
      *
      * @return the isProfileRunning value
      */
@@ -326,7 +326,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the isProfileRunning value.
+     * Set is profile running?.
      *
      * @param isProfileRunning the isProfileRunning value to set
      * @return the ProcessInfoInner object itself.
@@ -337,7 +337,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the isIisProfileRunning value.
+     * Get is the IIS Profile running?.
      *
      * @return the isIisProfileRunning value
      */
@@ -346,7 +346,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the isIisProfileRunning value.
+     * Set is the IIS Profile running?.
      *
      * @param isIisProfileRunning the isIisProfileRunning value to set
      * @return the ProcessInfoInner object itself.
@@ -357,7 +357,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the iisProfileTimeoutInSeconds value.
+     * Get iIS Profile timeout (seconds).
      *
      * @return the iisProfileTimeoutInSeconds value
      */
@@ -366,7 +366,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the iisProfileTimeoutInSeconds value.
+     * Set iIS Profile timeout (seconds).
      *
      * @param iisProfileTimeoutInSeconds the iisProfileTimeoutInSeconds value to set
      * @return the ProcessInfoInner object itself.
@@ -377,7 +377,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the parent value.
+     * Get parent process.
      *
      * @return the parent value
      */
@@ -386,7 +386,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the parent value.
+     * Set parent process.
      *
      * @param parent the parent value to set
      * @return the ProcessInfoInner object itself.
@@ -397,7 +397,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the children value.
+     * Get child process list.
      *
      * @return the children value
      */
@@ -406,7 +406,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the children value.
+     * Set child process list.
      *
      * @param children the children value to set
      * @return the ProcessInfoInner object itself.
@@ -417,7 +417,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the threads value.
+     * Get thread list.
      *
      * @return the threads value
      */
@@ -426,7 +426,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the threads value.
+     * Set thread list.
      *
      * @param threads the threads value to set
      * @return the ProcessInfoInner object itself.
@@ -437,7 +437,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the openFileHandles value.
+     * Get list of open files.
      *
      * @return the openFileHandles value
      */
@@ -446,7 +446,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the openFileHandles value.
+     * Set list of open files.
      *
      * @param openFileHandles the openFileHandles value to set
      * @return the ProcessInfoInner object itself.
@@ -457,7 +457,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the modules value.
+     * Get list of modules.
      *
      * @return the modules value
      */
@@ -466,7 +466,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the modules value.
+     * Set list of modules.
      *
      * @param modules the modules value to set
      * @return the ProcessInfoInner object itself.
@@ -477,7 +477,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the fileName value.
+     * Get file name of this process.
      *
      * @return the fileName value
      */
@@ -486,7 +486,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the fileName value.
+     * Set file name of this process.
      *
      * @param fileName the fileName value to set
      * @return the ProcessInfoInner object itself.
@@ -497,7 +497,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the commandLine value.
+     * Get command line.
      *
      * @return the commandLine value
      */
@@ -506,7 +506,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the commandLine value.
+     * Set command line.
      *
      * @param commandLine the commandLine value to set
      * @return the ProcessInfoInner object itself.
@@ -517,7 +517,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the userName value.
+     * Get user name.
      *
      * @return the userName value
      */
@@ -526,7 +526,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the userName value.
+     * Set user name.
      *
      * @param userName the userName value to set
      * @return the ProcessInfoInner object itself.
@@ -537,7 +537,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the handleCount value.
+     * Get handle count.
      *
      * @return the handleCount value
      */
@@ -546,7 +546,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the handleCount value.
+     * Set handle count.
      *
      * @param handleCount the handleCount value to set
      * @return the ProcessInfoInner object itself.
@@ -557,7 +557,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the moduleCount value.
+     * Get module count.
      *
      * @return the moduleCount value
      */
@@ -566,7 +566,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the moduleCount value.
+     * Set module count.
      *
      * @param moduleCount the moduleCount value to set
      * @return the ProcessInfoInner object itself.
@@ -577,7 +577,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the threadCount value.
+     * Get thread count.
      *
      * @return the threadCount value
      */
@@ -586,7 +586,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the threadCount value.
+     * Set thread count.
      *
      * @param threadCount the threadCount value to set
      * @return the ProcessInfoInner object itself.
@@ -597,7 +597,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the startTime value.
+     * Get start time.
      *
      * @return the startTime value
      */
@@ -606,7 +606,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the startTime value.
+     * Set start time.
      *
      * @param startTime the startTime value to set
      * @return the ProcessInfoInner object itself.
@@ -617,7 +617,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the totalProcessorTime value.
+     * Get total CPU time.
      *
      * @return the totalProcessorTime value
      */
@@ -626,7 +626,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the totalProcessorTime value.
+     * Set total CPU time.
      *
      * @param totalProcessorTime the totalProcessorTime value to set
      * @return the ProcessInfoInner object itself.
@@ -637,7 +637,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the userProcessorTime value.
+     * Get user CPU time.
      *
      * @return the userProcessorTime value
      */
@@ -646,7 +646,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the userProcessorTime value.
+     * Set user CPU time.
      *
      * @param userProcessorTime the userProcessorTime value to set
      * @return the ProcessInfoInner object itself.
@@ -657,7 +657,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the privilegedProcessorTime value.
+     * Get privileged CPU time.
      *
      * @return the privilegedProcessorTime value
      */
@@ -666,7 +666,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the privilegedProcessorTime value.
+     * Set privileged CPU time.
      *
      * @param privilegedProcessorTime the privilegedProcessorTime value to set
      * @return the ProcessInfoInner object itself.
@@ -677,7 +677,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the workingSet64 value.
+     * Get working set.
      *
      * @return the workingSet64 value
      */
@@ -686,7 +686,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the workingSet64 value.
+     * Set working set.
      *
      * @param workingSet64 the workingSet64 value to set
      * @return the ProcessInfoInner object itself.
@@ -697,7 +697,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the peakWorkingSet64 value.
+     * Get peak working set.
      *
      * @return the peakWorkingSet64 value
      */
@@ -706,7 +706,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the peakWorkingSet64 value.
+     * Set peak working set.
      *
      * @param peakWorkingSet64 the peakWorkingSet64 value to set
      * @return the ProcessInfoInner object itself.
@@ -717,7 +717,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the privateMemorySize64 value.
+     * Get private memory size.
      *
      * @return the privateMemorySize64 value
      */
@@ -726,7 +726,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the privateMemorySize64 value.
+     * Set private memory size.
      *
      * @param privateMemorySize64 the privateMemorySize64 value to set
      * @return the ProcessInfoInner object itself.
@@ -737,7 +737,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the virtualMemorySize64 value.
+     * Get virtual memory size.
      *
      * @return the virtualMemorySize64 value
      */
@@ -746,7 +746,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the virtualMemorySize64 value.
+     * Set virtual memory size.
      *
      * @param virtualMemorySize64 the virtualMemorySize64 value to set
      * @return the ProcessInfoInner object itself.
@@ -757,7 +757,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the peakVirtualMemorySize64 value.
+     * Get peak virtual memory usage.
      *
      * @return the peakVirtualMemorySize64 value
      */
@@ -766,7 +766,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the peakVirtualMemorySize64 value.
+     * Set peak virtual memory usage.
      *
      * @param peakVirtualMemorySize64 the peakVirtualMemorySize64 value to set
      * @return the ProcessInfoInner object itself.
@@ -777,7 +777,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the pagedSystemMemorySize64 value.
+     * Get paged system memory.
      *
      * @return the pagedSystemMemorySize64 value
      */
@@ -786,7 +786,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the pagedSystemMemorySize64 value.
+     * Set paged system memory.
      *
      * @param pagedSystemMemorySize64 the pagedSystemMemorySize64 value to set
      * @return the ProcessInfoInner object itself.
@@ -797,7 +797,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the nonpagedSystemMemorySize64 value.
+     * Get non-paged system memory.
      *
      * @return the nonpagedSystemMemorySize64 value
      */
@@ -806,7 +806,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the nonpagedSystemMemorySize64 value.
+     * Set non-paged system memory.
      *
      * @param nonpagedSystemMemorySize64 the nonpagedSystemMemorySize64 value to set
      * @return the ProcessInfoInner object itself.
@@ -817,7 +817,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the pagedMemorySize64 value.
+     * Get paged memory.
      *
      * @return the pagedMemorySize64 value
      */
@@ -826,7 +826,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the pagedMemorySize64 value.
+     * Set paged memory.
      *
      * @param pagedMemorySize64 the pagedMemorySize64 value to set
      * @return the ProcessInfoInner object itself.
@@ -837,7 +837,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the peakPagedMemorySize64 value.
+     * Get peak paged memory.
      *
      * @return the peakPagedMemorySize64 value
      */
@@ -846,7 +846,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the peakPagedMemorySize64 value.
+     * Set peak paged memory.
      *
      * @param peakPagedMemorySize64 the peakPagedMemorySize64 value to set
      * @return the ProcessInfoInner object itself.
@@ -857,7 +857,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the timeStamp value.
+     * Get time stamp.
      *
      * @return the timeStamp value
      */
@@ -866,7 +866,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the timeStamp value.
+     * Set time stamp.
      *
      * @param timeStamp the timeStamp value to set
      * @return the ProcessInfoInner object itself.
@@ -877,7 +877,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the environmentVariables value.
+     * Get list of environment variables.
      *
      * @return the environmentVariables value
      */
@@ -886,7 +886,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the environmentVariables value.
+     * Set list of environment variables.
      *
      * @param environmentVariables the environmentVariables value to set
      * @return the ProcessInfoInner object itself.
@@ -897,7 +897,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the isScmSite value.
+     * Get is this the SCM site?.
      *
      * @return the isScmSite value
      */
@@ -906,7 +906,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the isScmSite value.
+     * Set is this the SCM site?.
      *
      * @param isScmSite the isScmSite value to set
      * @return the ProcessInfoInner object itself.
@@ -917,7 +917,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the isWebJob value.
+     * Get is this a Web Job?.
      *
      * @return the isWebJob value
      */
@@ -926,7 +926,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the isWebJob value.
+     * Set is this a Web Job?.
      *
      * @param isWebJob the isWebJob value to set
      * @return the ProcessInfoInner object itself.
@@ -937,7 +937,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the description value.
+     * Get description of process.
      *
      * @return the description value
      */
@@ -946,7 +946,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the description value.
+     * Set description of process.
      *
      * @param description the description value to set
      * @return the ProcessInfoInner object itself.

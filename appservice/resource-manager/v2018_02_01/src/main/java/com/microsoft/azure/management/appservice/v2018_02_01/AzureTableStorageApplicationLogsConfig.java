@@ -28,7 +28,7 @@ public class AzureTableStorageApplicationLogsConfig {
     private String sasUrl;
 
     /**
-     * Get the level value.
+     * Get log level. Possible values include: 'Off', 'Verbose', 'Information', 'Warning', 'Error'.
      *
      * @return the level value
      */
@@ -37,7 +37,7 @@ public class AzureTableStorageApplicationLogsConfig {
     }
 
     /**
-     * Set the level value.
+     * Set log level. Possible values include: 'Off', 'Verbose', 'Information', 'Warning', 'Error'.
      *
      * @param level the level value to set
      * @return the AzureTableStorageApplicationLogsConfig object itself.
@@ -48,7 +48,7 @@ public class AzureTableStorageApplicationLogsConfig {
     }
 
     /**
-     * Get the sasUrl value.
+     * Get sAS URL to an Azure table with add/query/delete permissions.
      *
      * @return the sasUrl value
      */
@@ -57,7 +57,7 @@ public class AzureTableStorageApplicationLogsConfig {
     }
 
     /**
-     * Set the sasUrl value.
+     * Set sAS URL to an Azure table with add/query/delete permissions.
      *
      * @param sasUrl the sasUrl value to set
      * @return the AzureTableStorageApplicationLogsConfig object itself.

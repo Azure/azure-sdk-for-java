@@ -13,14 +13,14 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.appservice.v2018_02_01.DomainType;
 
 class DomainAvailablilityCheckResultImpl extends WrapperImpl<DomainAvailablilityCheckResultInner> implements DomainAvailablilityCheckResult {
-    private final AppServiceManager manager;
-    DomainAvailablilityCheckResultImpl(DomainAvailablilityCheckResultInner inner, AppServiceManager manager) {
+    private final CertificateRegistrationManager manager;
+    DomainAvailablilityCheckResultImpl(DomainAvailablilityCheckResultInner inner, CertificateRegistrationManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 

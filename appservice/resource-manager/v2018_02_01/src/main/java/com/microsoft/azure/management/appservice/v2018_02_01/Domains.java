@@ -24,6 +24,11 @@ import com.microsoft.azure.management.appservice.v2018_02_01.DomainOwnershipIden
  * Type representing Domains.
  */
 public interface Domains extends SupportsCreating<Domain.DefinitionStages.Blank>, SupportsDeletingByResourceGroup, SupportsBatchDeletion, SupportsGettingByResourceGroup<Domain>, SupportsListingByResourceGroup<Domain>, SupportsListing<Domain>, HasInner<DomainsInner> {
+    /**
+     * Begins definition for a new DomainOwnershipIdentifier resource.
+     * @param name resource name.
+     * @return the first stage of the new DomainOwnershipIdentifier definition.
+     */
     DomainOwnershipIdentifier.DefinitionStages.Blank defineDomainOwnershipIdentifier(String name);
 
     /**

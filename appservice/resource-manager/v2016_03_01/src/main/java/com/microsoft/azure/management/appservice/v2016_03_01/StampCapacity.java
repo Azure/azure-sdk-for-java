@@ -82,7 +82,7 @@ public class StampCapacity {
     private String siteMode;
 
     /**
-     * Get the name value.
+     * Get name of the stamp.
      *
      * @return the name value
      */
@@ -91,7 +91,7 @@ public class StampCapacity {
     }
 
     /**
-     * Set the name value.
+     * Set name of the stamp.
      *
      * @param name the name value to set
      * @return the StampCapacity object itself.
@@ -102,7 +102,7 @@ public class StampCapacity {
     }
 
     /**
-     * Get the availableCapacity value.
+     * Get available capacity (# of machines, bytes of storage etc...).
      *
      * @return the availableCapacity value
      */
@@ -111,7 +111,7 @@ public class StampCapacity {
     }
 
     /**
-     * Set the availableCapacity value.
+     * Set available capacity (# of machines, bytes of storage etc...).
      *
      * @param availableCapacity the availableCapacity value to set
      * @return the StampCapacity object itself.
@@ -122,7 +122,7 @@ public class StampCapacity {
     }
 
     /**
-     * Get the totalCapacity value.
+     * Get total capacity (# of machines, bytes of storage etc...).
      *
      * @return the totalCapacity value
      */
@@ -131,7 +131,7 @@ public class StampCapacity {
     }
 
     /**
-     * Set the totalCapacity value.
+     * Set total capacity (# of machines, bytes of storage etc...).
      *
      * @param totalCapacity the totalCapacity value to set
      * @return the StampCapacity object itself.
@@ -142,7 +142,7 @@ public class StampCapacity {
     }
 
     /**
-     * Get the unit value.
+     * Get name of the unit.
      *
      * @return the unit value
      */
@@ -151,7 +151,7 @@ public class StampCapacity {
     }
 
     /**
-     * Set the unit value.
+     * Set name of the unit.
      *
      * @param unit the unit value to set
      * @return the StampCapacity object itself.
@@ -162,7 +162,7 @@ public class StampCapacity {
     }
 
     /**
-     * Get the computeMode value.
+     * Get shared/dedicated workers. Possible values include: 'Shared', 'Dedicated', 'Dynamic'.
      *
      * @return the computeMode value
      */
@@ -171,7 +171,7 @@ public class StampCapacity {
     }
 
     /**
-     * Set the computeMode value.
+     * Set shared/dedicated workers. Possible values include: 'Shared', 'Dedicated', 'Dynamic'.
      *
      * @param computeMode the computeMode value to set
      * @return the StampCapacity object itself.
@@ -182,7 +182,7 @@ public class StampCapacity {
     }
 
     /**
-     * Get the workerSize value.
+     * Get size of the machines. Possible values include: 'Default', 'Small', 'Medium', 'Large', 'D1', 'D2', 'D3'.
      *
      * @return the workerSize value
      */
@@ -191,7 +191,7 @@ public class StampCapacity {
     }
 
     /**
-     * Set the workerSize value.
+     * Set size of the machines. Possible values include: 'Default', 'Small', 'Medium', 'Large', 'D1', 'D2', 'D3'.
      *
      * @param workerSize the workerSize value to set
      * @return the StampCapacity object itself.
@@ -202,7 +202,10 @@ public class StampCapacity {
     }
 
     /**
-     * Get the workerSizeId value.
+     * Get size ID of machines:
+     0 - Small
+     1 - Medium
+     2 - Large.
      *
      * @return the workerSizeId value
      */
@@ -211,7 +214,10 @@ public class StampCapacity {
     }
 
     /**
-     * Set the workerSizeId value.
+     * Set size ID of machines:
+     0 - Small
+     1 - Medium
+     2 - Large.
      *
      * @param workerSizeId the workerSizeId value to set
      * @return the StampCapacity object itself.
@@ -222,7 +228,8 @@ public class StampCapacity {
     }
 
     /**
-     * Get the excludeFromCapacityAllocation value.
+     * Get if &lt;code&gt;true&lt;/code&gt;, it includes basic apps.
+     Basic apps are not used for capacity allocation.
      *
      * @return the excludeFromCapacityAllocation value
      */
@@ -231,7 +238,8 @@ public class StampCapacity {
     }
 
     /**
-     * Set the excludeFromCapacityAllocation value.
+     * Set if &lt;code&gt;true&lt;/code&gt;, it includes basic apps.
+     Basic apps are not used for capacity allocation.
      *
      * @param excludeFromCapacityAllocation the excludeFromCapacityAllocation value to set
      * @return the StampCapacity object itself.
@@ -242,7 +250,7 @@ public class StampCapacity {
     }
 
     /**
-     * Get the isApplicableForAllComputeModes value.
+     * Get &lt;code&gt;true&lt;/code&gt; if capacity is applicable for all apps; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @return the isApplicableForAllComputeModes value
      */
@@ -251,7 +259,7 @@ public class StampCapacity {
     }
 
     /**
-     * Set the isApplicableForAllComputeModes value.
+     * Set &lt;code&gt;true&lt;/code&gt; if capacity is applicable for all apps; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @param isApplicableForAllComputeModes the isApplicableForAllComputeModes value to set
      * @return the StampCapacity object itself.
@@ -262,7 +270,7 @@ public class StampCapacity {
     }
 
     /**
-     * Get the siteMode value.
+     * Get shared or Dedicated.
      *
      * @return the siteMode value
      */
@@ -271,7 +279,7 @@ public class StampCapacity {
     }
 
     /**
-     * Set the siteMode value.
+     * Set shared or Dedicated.
      *
      * @param siteMode the siteMode value to set
      * @return the StampCapacity object itself.

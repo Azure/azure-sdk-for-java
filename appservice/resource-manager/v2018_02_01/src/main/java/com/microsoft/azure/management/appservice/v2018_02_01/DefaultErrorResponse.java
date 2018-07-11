@@ -21,7 +21,7 @@ public class DefaultErrorResponse {
     private DefaultErrorResponseError error;
 
     /**
-     * Get the error value.
+     * Get error model.
      *
      * @return the error value
      */

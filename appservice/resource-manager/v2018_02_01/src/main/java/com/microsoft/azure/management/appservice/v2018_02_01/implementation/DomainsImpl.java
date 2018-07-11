@@ -28,8 +28,8 @@ import com.microsoft.azure.management.appservice.v2018_02_01.NameIdentifier;
 import com.microsoft.azure.management.appservice.v2018_02_01.DomainRecommendationSearchParameters;
 import com.microsoft.azure.management.appservice.v2018_02_01.DomainOwnershipIdentifier;
 
-class DomainsImpl extends GroupableResourcesCoreImpl<Domain, DomainImpl, DomainInner, DomainsInner, AppServiceManager>  implements Domains {
-    protected DomainsImpl(AppServiceManager manager) {
+class DomainsImpl extends GroupableResourcesCoreImpl<Domain, DomainImpl, DomainInner, DomainsInner, CertificateRegistrationManager>  implements Domains {
+    protected DomainsImpl(CertificateRegistrationManager manager) {
         super(manager.inner().domains(), manager);
     }
 
@@ -169,7 +169,8 @@ class DomainsImpl extends GroupableResourcesCoreImpl<Domain, DomainImpl, DomainI
             public Iterable<NameIdentifierInner> call(Page<NameIdentifierInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<NameIdentifierInner, NameIdentifier>() {
+        })
+        .map(new Func1<NameIdentifierInner, NameIdentifier>() {
             @Override
             public NameIdentifier call(NameIdentifierInner inner) {
                 return new NameIdentifierImpl(inner, manager());

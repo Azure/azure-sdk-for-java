@@ -18,8 +18,18 @@ import com.microsoft.azure.management.appservice.v2018_02_01.AppServiceCertifica
  * Type representing AppServiceCertificateOrders.
  */
 public interface AppServiceCertificateOrders {
+    /**
+     * Begins definition for a new CertificateOrder resource.
+     * @param name resource name.
+     * @return the first stage of the new CertificateOrder definition.
+     */
     AppServiceCertificateOrder.DefinitionStages.Blank defineCertificateOrder(String name);
 
+    /**
+     * Begins definition for a new Certificate resource.
+     * @param name resource name.
+     * @return the first stage of the new Certificate definition.
+     */
     AppServiceCertificateResource.DefinitionStages.Blank defineCertificate(String name);
 
     /**

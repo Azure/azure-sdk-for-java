@@ -13,13 +13,13 @@ import com.microsoft.azure.management.appservice.v2018_02_01.implementation.Netw
 import com.microsoft.azure.arm.model.Indexable;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
 import java.util.List;
 
 /**
  * Type representing NetworkFeatures.
  */
-public interface NetworkFeatures extends HasInner<NetworkFeaturesInner>, Indexable, Refreshable<NetworkFeatures>, HasManager<AppServiceManager> {
+public interface NetworkFeatures extends HasInner<NetworkFeaturesInner>, Indexable, Refreshable<NetworkFeatures>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the hybridConnections value.
      */

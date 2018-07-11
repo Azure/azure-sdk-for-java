@@ -35,7 +35,7 @@ public class AutoHealActions {
     private String minProcessExecutionTime;
 
     /**
-     * Get the actionType value.
+     * Get predefined action to be taken. Possible values include: 'Recycle', 'LogEvent', 'CustomAction'.
      *
      * @return the actionType value
      */
@@ -44,7 +44,7 @@ public class AutoHealActions {
     }
 
     /**
-     * Set the actionType value.
+     * Set predefined action to be taken. Possible values include: 'Recycle', 'LogEvent', 'CustomAction'.
      *
      * @param actionType the actionType value to set
      * @return the AutoHealActions object itself.
@@ -55,7 +55,7 @@ public class AutoHealActions {
     }
 
     /**
-     * Get the customAction value.
+     * Get custom action to be taken.
      *
      * @return the customAction value
      */
@@ -64,7 +64,7 @@ public class AutoHealActions {
     }
 
     /**
-     * Set the customAction value.
+     * Set custom action to be taken.
      *
      * @param customAction the customAction value to set
      * @return the AutoHealActions object itself.
@@ -75,7 +75,8 @@ public class AutoHealActions {
     }
 
     /**
-     * Get the minProcessExecutionTime value.
+     * Get minimum time the process must execute
+     before taking the action.
      *
      * @return the minProcessExecutionTime value
      */
@@ -84,7 +85,8 @@ public class AutoHealActions {
     }
 
     /**
-     * Set the minProcessExecutionTime value.
+     * Set minimum time the process must execute
+     before taking the action.
      *
      * @param minProcessExecutionTime the minProcessExecutionTime value to set
      * @return the AutoHealActions object itself.

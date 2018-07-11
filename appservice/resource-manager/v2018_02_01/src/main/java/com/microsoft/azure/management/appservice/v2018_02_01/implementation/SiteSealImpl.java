@@ -12,14 +12,14 @@ import com.microsoft.azure.management.appservice.v2018_02_01.SiteSeal;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 
 class SiteSealImpl extends WrapperImpl<SiteSealInner> implements SiteSeal {
-    private final AppServiceManager manager;
-    SiteSealImpl(SiteSealInner inner, AppServiceManager manager) {
+    private final CertificateRegistrationManager manager;
+    SiteSealImpl(SiteSealInner inner, CertificateRegistrationManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 

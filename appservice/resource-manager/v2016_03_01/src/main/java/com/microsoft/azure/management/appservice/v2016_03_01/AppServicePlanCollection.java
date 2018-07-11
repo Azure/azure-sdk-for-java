@@ -28,7 +28,7 @@ public class AppServicePlanCollection {
     private String nextLink;
 
     /**
-     * Get the value value.
+     * Get collection of resources.
      *
      * @return the value value
      */
@@ -37,7 +37,7 @@ public class AppServicePlanCollection {
     }
 
     /**
-     * Set the value value.
+     * Set collection of resources.
      *
      * @param value the value value to set
      * @return the AppServicePlanCollection object itself.
@@ -48,7 +48,7 @@ public class AppServicePlanCollection {
     }
 
     /**
-     * Get the nextLink value.
+     * Get link to next page of resources.
      *
      * @return the nextLink value
      */
@@ -57,7 +57,7 @@ public class AppServicePlanCollection {
     }
 
     /**
-     * Set the nextLink value.
+     * Set link to next page of resources.
      *
      * @param nextLink the nextLink value to set
      * @return the AppServicePlanCollection object itself.

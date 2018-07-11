@@ -131,7 +131,7 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
     private ProvisioningState provisioningState;
 
     /**
-     * Get the workerTierName value.
+     * Get target worker tier assigned to the App Service plan.
      *
      * @return the workerTierName value
      */
@@ -140,7 +140,7 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the workerTierName value.
+     * Set target worker tier assigned to the App Service plan.
      *
      * @param workerTierName the workerTierName value to set
      * @return the AppServicePlanPatchResource object itself.
@@ -151,7 +151,7 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the status value.
+     * Get app Service plan status. Possible values include: 'Ready', 'Pending', 'Creating'.
      *
      * @return the status value
      */
@@ -160,7 +160,7 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the subscription value.
+     * Get app Service plan subscription.
      *
      * @return the subscription value
      */
@@ -169,7 +169,7 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the adminSiteName value.
+     * Get app Service plan administration site.
      *
      * @return the adminSiteName value
      */
@@ -178,7 +178,7 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the adminSiteName value.
+     * Set app Service plan administration site.
      *
      * @param adminSiteName the adminSiteName value to set
      * @return the AppServicePlanPatchResource object itself.
@@ -189,7 +189,7 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the hostingEnvironmentProfile value.
+     * Get specification for the App Service Environment to use for the App Service plan.
      *
      * @return the hostingEnvironmentProfile value
      */
@@ -198,7 +198,7 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the hostingEnvironmentProfile value.
+     * Set specification for the App Service Environment to use for the App Service plan.
      *
      * @param hostingEnvironmentProfile the hostingEnvironmentProfile value to set
      * @return the AppServicePlanPatchResource object itself.
@@ -209,7 +209,7 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the maximumNumberOfWorkers value.
+     * Get maximum number of instances that can be assigned to this App Service plan.
      *
      * @return the maximumNumberOfWorkers value
      */
@@ -218,7 +218,7 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the geoRegion value.
+     * Get geographical location for the App Service plan.
      *
      * @return the geoRegion value
      */
@@ -227,7 +227,8 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the perSiteScaling value.
+     * Get if &lt;code&gt;true&lt;/code&gt;, apps assigned to this App Service plan can be scaled independently.
+     If &lt;code&gt;false&lt;/code&gt;, apps assigned to this App Service plan will scale to all instances of the plan.
      *
      * @return the perSiteScaling value
      */
@@ -236,7 +237,8 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the perSiteScaling value.
+     * Set if &lt;code&gt;true&lt;/code&gt;, apps assigned to this App Service plan can be scaled independently.
+     If &lt;code&gt;false&lt;/code&gt;, apps assigned to this App Service plan will scale to all instances of the plan.
      *
      * @param perSiteScaling the perSiteScaling value to set
      * @return the AppServicePlanPatchResource object itself.
@@ -247,7 +249,7 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the numberOfSites value.
+     * Get number of apps assigned to this App Service plan.
      *
      * @return the numberOfSites value
      */
@@ -256,7 +258,7 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the isSpot value.
+     * Get if &lt;code&gt;true&lt;/code&gt;, this App Service Plan owns spot instances.
      *
      * @return the isSpot value
      */
@@ -265,7 +267,7 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the isSpot value.
+     * Set if &lt;code&gt;true&lt;/code&gt;, this App Service Plan owns spot instances.
      *
      * @param isSpot the isSpot value to set
      * @return the AppServicePlanPatchResource object itself.
@@ -276,7 +278,7 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the spotExpirationTime value.
+     * Get the time when the server farm expires. Valid only if it is a spot server farm.
      *
      * @return the spotExpirationTime value
      */
@@ -285,7 +287,7 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the spotExpirationTime value.
+     * Set the time when the server farm expires. Valid only if it is a spot server farm.
      *
      * @param spotExpirationTime the spotExpirationTime value to set
      * @return the AppServicePlanPatchResource object itself.
@@ -296,7 +298,7 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the resourceGroup value.
+     * Get resource group of the App Service plan.
      *
      * @return the resourceGroup value
      */
@@ -305,7 +307,7 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the reserved value.
+     * Get if Linux app service plan &lt;code&gt;true&lt;/code&gt;, &lt;code&gt;false&lt;/code&gt; otherwise.
      *
      * @return the reserved value
      */
@@ -314,7 +316,7 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the reserved value.
+     * Set if Linux app service plan &lt;code&gt;true&lt;/code&gt;, &lt;code&gt;false&lt;/code&gt; otherwise.
      *
      * @param reserved the reserved value to set
      * @return the AppServicePlanPatchResource object itself.
@@ -325,7 +327,7 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the isXenon value.
+     * Get if Hyper-V container app service plan &lt;code&gt;true&lt;/code&gt;, &lt;code&gt;false&lt;/code&gt; otherwise.
      *
      * @return the isXenon value
      */
@@ -334,7 +336,7 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the isXenon value.
+     * Set if Hyper-V container app service plan &lt;code&gt;true&lt;/code&gt;, &lt;code&gt;false&lt;/code&gt; otherwise.
      *
      * @param isXenon the isXenon value to set
      * @return the AppServicePlanPatchResource object itself.
@@ -345,7 +347,7 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the targetWorkerCount value.
+     * Get scaling worker count.
      *
      * @return the targetWorkerCount value
      */
@@ -354,7 +356,7 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the targetWorkerCount value.
+     * Set scaling worker count.
      *
      * @param targetWorkerCount the targetWorkerCount value to set
      * @return the AppServicePlanPatchResource object itself.
@@ -365,7 +367,7 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the targetWorkerSizeId value.
+     * Get scaling worker size ID.
      *
      * @return the targetWorkerSizeId value
      */
@@ -374,7 +376,7 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the targetWorkerSizeId value.
+     * Set scaling worker size ID.
      *
      * @param targetWorkerSizeId the targetWorkerSizeId value to set
      * @return the AppServicePlanPatchResource object itself.
@@ -385,7 +387,7 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get provisioning state of the App Service Environment. Possible values include: 'Succeeded', 'Failed', 'Canceled', 'InProgress', 'Deleting'.
      *
      * @return the provisioningState value
      */

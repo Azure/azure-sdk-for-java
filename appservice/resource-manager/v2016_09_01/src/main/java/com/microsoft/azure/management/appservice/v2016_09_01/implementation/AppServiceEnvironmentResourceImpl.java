@@ -25,9 +25,9 @@ import java.util.ArrayList;
 import com.microsoft.azure.management.appservice.v2016_09_01.StampCapacity;
 import rx.functions.Func1;
 
-class AppServiceEnvironmentResourceImpl extends GroupableResourceCoreImpl<AppServiceEnvironmentResource, AppServiceEnvironmentResourceInner, AppServiceEnvironmentResourceImpl, AppServiceManager> implements AppServiceEnvironmentResource, AppServiceEnvironmentResource.Definition, AppServiceEnvironmentResource.Update {
+class AppServiceEnvironmentResourceImpl extends GroupableResourceCoreImpl<AppServiceEnvironmentResource, AppServiceEnvironmentResourceInner, AppServiceEnvironmentResourceImpl, WebManager> implements AppServiceEnvironmentResource, AppServiceEnvironmentResource.Definition, AppServiceEnvironmentResource.Update {
     private AppServiceEnvironmentPatchResource updateParameter;
-    AppServiceEnvironmentResourceImpl(String name, AppServiceEnvironmentResourceInner inner, AppServiceManager manager) {
+    AppServiceEnvironmentResourceImpl(String name, AppServiceEnvironmentResourceInner inner, WebManager manager) {
         super(name, inner, manager);
         this.updateParameter = new AppServiceEnvironmentPatchResource();
     }

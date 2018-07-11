@@ -12,14 +12,14 @@ import com.microsoft.azure.management.appservice.v2016_03_01.ResourceHealthMetad
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 
 class ResourceHealthMetadataImpl extends WrapperImpl<ResourceHealthMetadataInner> implements ResourceHealthMetadata {
-    private final AppServiceManager manager;
-    ResourceHealthMetadataImpl(ResourceHealthMetadataInner inner, AppServiceManager manager) {
+    private final WebManager manager;
+    ResourceHealthMetadataImpl(ResourceHealthMetadataInner inner, WebManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 

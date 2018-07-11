@@ -46,7 +46,7 @@ public class CsmUsageQuota {
     private LocalizableString name;
 
     /**
-     * Get the unit value.
+     * Get units of measurement for the quota resourse.
      *
      * @return the unit value
      */
@@ -55,7 +55,7 @@ public class CsmUsageQuota {
     }
 
     /**
-     * Set the unit value.
+     * Set units of measurement for the quota resourse.
      *
      * @param unit the unit value to set
      * @return the CsmUsageQuota object itself.
@@ -66,7 +66,7 @@ public class CsmUsageQuota {
     }
 
     /**
-     * Get the nextResetTime value.
+     * Get next reset time for the resource counter.
      *
      * @return the nextResetTime value
      */
@@ -75,7 +75,7 @@ public class CsmUsageQuota {
     }
 
     /**
-     * Set the nextResetTime value.
+     * Set next reset time for the resource counter.
      *
      * @param nextResetTime the nextResetTime value to set
      * @return the CsmUsageQuota object itself.
@@ -86,7 +86,7 @@ public class CsmUsageQuota {
     }
 
     /**
-     * Get the currentValue value.
+     * Get the current value of the resource counter.
      *
      * @return the currentValue value
      */
@@ -95,7 +95,7 @@ public class CsmUsageQuota {
     }
 
     /**
-     * Set the currentValue value.
+     * Set the current value of the resource counter.
      *
      * @param currentValue the currentValue value to set
      * @return the CsmUsageQuota object itself.
@@ -106,7 +106,7 @@ public class CsmUsageQuota {
     }
 
     /**
-     * Get the limit value.
+     * Get the resource limit.
      *
      * @return the limit value
      */
@@ -115,7 +115,7 @@ public class CsmUsageQuota {
     }
 
     /**
-     * Set the limit value.
+     * Set the resource limit.
      *
      * @param limit the limit value to set
      * @return the CsmUsageQuota object itself.
@@ -126,7 +126,7 @@ public class CsmUsageQuota {
     }
 
     /**
-     * Get the name value.
+     * Get quota name.
      *
      * @return the name value
      */
@@ -135,7 +135,7 @@ public class CsmUsageQuota {
     }
 
     /**
-     * Set the name value.
+     * Set quota name.
      *
      * @param name the name value to set
      * @return the CsmUsageQuota object itself.

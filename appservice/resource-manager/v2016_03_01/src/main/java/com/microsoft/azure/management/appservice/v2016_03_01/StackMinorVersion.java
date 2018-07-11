@@ -34,7 +34,7 @@ public class StackMinorVersion {
     private Boolean isDefault;
 
     /**
-     * Get the displayVersion value.
+     * Get application stack minor version (display only).
      *
      * @return the displayVersion value
      */
@@ -43,7 +43,7 @@ public class StackMinorVersion {
     }
 
     /**
-     * Set the displayVersion value.
+     * Set application stack minor version (display only).
      *
      * @param displayVersion the displayVersion value to set
      * @return the StackMinorVersion object itself.
@@ -54,7 +54,7 @@ public class StackMinorVersion {
     }
 
     /**
-     * Get the runtimeVersion value.
+     * Get application stack minor version (runtime only).
      *
      * @return the runtimeVersion value
      */
@@ -63,7 +63,7 @@ public class StackMinorVersion {
     }
 
     /**
-     * Set the runtimeVersion value.
+     * Set application stack minor version (runtime only).
      *
      * @param runtimeVersion the runtimeVersion value to set
      * @return the StackMinorVersion object itself.
@@ -74,7 +74,7 @@ public class StackMinorVersion {
     }
 
     /**
-     * Get the isDefault value.
+     * Get &lt;code&gt;true&lt;/code&gt; if this is the default minor version; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @return the isDefault value
      */
@@ -83,7 +83,7 @@ public class StackMinorVersion {
     }
 
     /**
-     * Set the isDefault value.
+     * Set &lt;code&gt;true&lt;/code&gt; if this is the default minor version; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @param isDefault the isDefault value to set
      * @return the StackMinorVersion object itself.

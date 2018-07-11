@@ -16,13 +16,13 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2016_09_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2016_09_01.implementation.WebManager;
 import java.util.List;
 
 /**
  * Type representing WorkerPools.
  */
-public interface WorkerPools extends HasInner<WorkerPoolResourceInner>, Indexable, Refreshable<WorkerPools>, Updatable<WorkerPools.Update>, HasManager<AppServiceManager> {
+public interface WorkerPools extends HasInner<WorkerPoolResourceInner>, Indexable, Refreshable<WorkerPools>, Updatable<WorkerPools.Update>, HasManager<WebManager> {
     /**
      * @return the computeMode value.
      */

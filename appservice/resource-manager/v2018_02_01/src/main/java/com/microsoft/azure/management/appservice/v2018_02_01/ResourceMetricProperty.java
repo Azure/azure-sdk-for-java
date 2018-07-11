@@ -27,7 +27,7 @@ public class ResourceMetricProperty {
     private String value;
 
     /**
-     * Get the key value.
+     * Get key for resource metric property.
      *
      * @return the key value
      */
@@ -36,7 +36,7 @@ public class ResourceMetricProperty {
     }
 
     /**
-     * Set the key value.
+     * Set key for resource metric property.
      *
      * @param key the key value to set
      * @return the ResourceMetricProperty object itself.
@@ -47,7 +47,7 @@ public class ResourceMetricProperty {
     }
 
     /**
-     * Get the value value.
+     * Get value of pair.
      *
      * @return the value value
      */
@@ -56,7 +56,7 @@ public class ResourceMetricProperty {
     }
 
     /**
-     * Set the value value.
+     * Set value of pair.
      *
      * @param value the value value to set
      * @return the ResourceMetricProperty object itself.
