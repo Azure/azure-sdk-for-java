@@ -46,4 +46,23 @@ public interface Projects extends HasInner<ProjectsInner> {
      */
     Observable<Project> createAsync(String billingAccountId, ProjectInner parameters);
 
+    /**
+     * Lists all projects with create subscription permission for a user.
+     *
+     * @param billingAccountId billing Account Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<ProjectListResult> listWithCreateSubscriptionPermissionAsync(String billingAccountId);
+
+    /**
+     * The operation to create a project.
+     *
+     * @param billingAccountId billing Account Id.
+     * @param parameters Parameters supplied to the Create Project operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<Project> create1Async(String billingAccountId, ProjectInner parameters);
+
 }

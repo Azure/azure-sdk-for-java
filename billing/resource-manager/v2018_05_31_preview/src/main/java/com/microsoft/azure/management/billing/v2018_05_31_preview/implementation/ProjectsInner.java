@@ -12,6 +12,7 @@ import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.management.billing.v2018_05_31_preview.ErrorResponseException;
 import com.microsoft.azure.management.billing.v2018_05_31_preview.ProjectsListByBillingAccountIdHeaders;
+import com.microsoft.azure.management.billing.v2018_05_31_preview.ProjectsListWithCreateSubscriptionPermissionHeaders;
 import com.microsoft.azure.management.billing.v2018_05_31_preview.ProjectsUpdateHeaders;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
@@ -60,11 +61,19 @@ public class ProjectsInner {
     interface ProjectsService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_05_31_preview.Projects listByBillingAccountId" })
         @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountId}/projects")
-        Observable<Response<ResponseBody>> listByBillingAccountId(@Path("billingAccountId") String billingAccountId, @Query("api-version") String apiVersion, @Query("$expand") String expand, @Query("$filter") String filter, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listByBillingAccountId(@Path("billingAccountId") String billingAccountId, @Query("api-version") String apiVersion, @Query("$expand") String expand, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_05_31_preview.Projects create" })
         @POST("providers/Microsoft.Billing/billingAccounts/{billingAccountId}/projects")
         Observable<Response<ResponseBody>> create(@Path("billingAccountId") String billingAccountId, @Query("api-version") String apiVersion, @Body ProjectInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_05_31_preview.Projects listWithCreateSubscriptionPermission" })
+        @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountId}/listProjectsWithCreateProjectPermission")
+        Observable<Response<ResponseBody>> listWithCreateSubscriptionPermission(@Path("billingAccountId") String billingAccountId, @Query("api-version") String apiVersion, @Query("$expand") String expand, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_05_31_preview.Projects create1" })
+        @POST("providers/Microsoft.Billing/billingAccounts/{billingAccountId}/listProjectsWithCreateProjectPermission")
+        Observable<Response<ResponseBody>> create1(@Path("billingAccountId") String billingAccountId, @Query("api-version") String apiVersion, @Body ProjectInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_05_31_preview.Projects get" })
         @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountId}/projects/{projectId}")
@@ -132,8 +141,7 @@ public class ProjectsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String expand = null;
-        final String filter = null;
-        return service.listByBillingAccountId(billingAccountId, this.client.apiVersion(), expand, filter, this.client.acceptLanguage(), this.client.userAgent())
+        return service.listByBillingAccountId(billingAccountId, this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<ProjectListResultInner, ProjectsListByBillingAccountIdHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<ProjectListResultInner, ProjectsListByBillingAccountIdHeaders>> call(Response<ResponseBody> response) {
@@ -152,14 +160,13 @@ public class ProjectsInner {
      *
      * @param billingAccountId billing Account Id.
      * @param expand May be used to expand the eligibleOffers.
-     * @param filter May be used to filter by permission. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ProjectListResultInner object if successful.
      */
-    public ProjectListResultInner listByBillingAccountId(String billingAccountId, String expand, String filter) {
-        return listByBillingAccountIdWithServiceResponseAsync(billingAccountId, expand, filter).toBlocking().single().body();
+    public ProjectListResultInner listByBillingAccountId(String billingAccountId, String expand) {
+        return listByBillingAccountIdWithServiceResponseAsync(billingAccountId, expand).toBlocking().single().body();
     }
 
     /**
@@ -167,13 +174,12 @@ public class ProjectsInner {
      *
      * @param billingAccountId billing Account Id.
      * @param expand May be used to expand the eligibleOffers.
-     * @param filter May be used to filter by permission. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ProjectListResultInner> listByBillingAccountIdAsync(String billingAccountId, String expand, String filter, final ServiceCallback<ProjectListResultInner> serviceCallback) {
-        return ServiceFuture.fromHeaderResponse(listByBillingAccountIdWithServiceResponseAsync(billingAccountId, expand, filter), serviceCallback);
+    public ServiceFuture<ProjectListResultInner> listByBillingAccountIdAsync(String billingAccountId, String expand, final ServiceCallback<ProjectListResultInner> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(listByBillingAccountIdWithServiceResponseAsync(billingAccountId, expand), serviceCallback);
     }
 
     /**
@@ -181,12 +187,11 @@ public class ProjectsInner {
      *
      * @param billingAccountId billing Account Id.
      * @param expand May be used to expand the eligibleOffers.
-     * @param filter May be used to filter by permission. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ProjectListResultInner object
      */
-    public Observable<ProjectListResultInner> listByBillingAccountIdAsync(String billingAccountId, String expand, String filter) {
-        return listByBillingAccountIdWithServiceResponseAsync(billingAccountId, expand, filter).map(new Func1<ServiceResponseWithHeaders<ProjectListResultInner, ProjectsListByBillingAccountIdHeaders>, ProjectListResultInner>() {
+    public Observable<ProjectListResultInner> listByBillingAccountIdAsync(String billingAccountId, String expand) {
+        return listByBillingAccountIdWithServiceResponseAsync(billingAccountId, expand).map(new Func1<ServiceResponseWithHeaders<ProjectListResultInner, ProjectsListByBillingAccountIdHeaders>, ProjectListResultInner>() {
             @Override
             public ProjectListResultInner call(ServiceResponseWithHeaders<ProjectListResultInner, ProjectsListByBillingAccountIdHeaders> response) {
                 return response.body();
@@ -199,18 +204,17 @@ public class ProjectsInner {
      *
      * @param billingAccountId billing Account Id.
      * @param expand May be used to expand the eligibleOffers.
-     * @param filter May be used to filter by permission. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ProjectListResultInner object
      */
-    public Observable<ServiceResponseWithHeaders<ProjectListResultInner, ProjectsListByBillingAccountIdHeaders>> listByBillingAccountIdWithServiceResponseAsync(String billingAccountId, String expand, String filter) {
+    public Observable<ServiceResponseWithHeaders<ProjectListResultInner, ProjectsListByBillingAccountIdHeaders>> listByBillingAccountIdWithServiceResponseAsync(String billingAccountId, String expand) {
         if (billingAccountId == null) {
             throw new IllegalArgumentException("Parameter billingAccountId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.listByBillingAccountId(billingAccountId, this.client.apiVersion(), expand, filter, this.client.acceptLanguage(), this.client.userAgent())
+        return service.listByBillingAccountId(billingAccountId, this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<ProjectListResultInner, ProjectsListByBillingAccountIdHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<ProjectListResultInner, ProjectsListByBillingAccountIdHeaders>> call(Response<ResponseBody> response) {
@@ -310,6 +314,241 @@ public class ProjectsInner {
     }
 
     private ServiceResponse<ProjectInner> createDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ProjectInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(201, new TypeToken<ProjectInner>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Lists all projects with create subscription permission for a user.
+     *
+     * @param billingAccountId billing Account Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ProjectListResultInner object if successful.
+     */
+    public ProjectListResultInner listWithCreateSubscriptionPermission(String billingAccountId) {
+        return listWithCreateSubscriptionPermissionWithServiceResponseAsync(billingAccountId).toBlocking().single().body();
+    }
+
+    /**
+     * Lists all projects with create subscription permission for a user.
+     *
+     * @param billingAccountId billing Account Id.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ProjectListResultInner> listWithCreateSubscriptionPermissionAsync(String billingAccountId, final ServiceCallback<ProjectListResultInner> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(listWithCreateSubscriptionPermissionWithServiceResponseAsync(billingAccountId), serviceCallback);
+    }
+
+    /**
+     * Lists all projects with create subscription permission for a user.
+     *
+     * @param billingAccountId billing Account Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ProjectListResultInner object
+     */
+    public Observable<ProjectListResultInner> listWithCreateSubscriptionPermissionAsync(String billingAccountId) {
+        return listWithCreateSubscriptionPermissionWithServiceResponseAsync(billingAccountId).map(new Func1<ServiceResponseWithHeaders<ProjectListResultInner, ProjectsListWithCreateSubscriptionPermissionHeaders>, ProjectListResultInner>() {
+            @Override
+            public ProjectListResultInner call(ServiceResponseWithHeaders<ProjectListResultInner, ProjectsListWithCreateSubscriptionPermissionHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Lists all projects with create subscription permission for a user.
+     *
+     * @param billingAccountId billing Account Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ProjectListResultInner object
+     */
+    public Observable<ServiceResponseWithHeaders<ProjectListResultInner, ProjectsListWithCreateSubscriptionPermissionHeaders>> listWithCreateSubscriptionPermissionWithServiceResponseAsync(String billingAccountId) {
+        if (billingAccountId == null) {
+            throw new IllegalArgumentException("Parameter billingAccountId is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final String expand = null;
+        return service.listWithCreateSubscriptionPermission(billingAccountId, this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<ProjectListResultInner, ProjectsListWithCreateSubscriptionPermissionHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<ProjectListResultInner, ProjectsListWithCreateSubscriptionPermissionHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<ProjectListResultInner, ProjectsListWithCreateSubscriptionPermissionHeaders> clientResponse = listWithCreateSubscriptionPermissionDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Lists all projects with create subscription permission for a user.
+     *
+     * @param billingAccountId billing Account Id.
+     * @param expand May be used to expand the eligibleOffers.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ProjectListResultInner object if successful.
+     */
+    public ProjectListResultInner listWithCreateSubscriptionPermission(String billingAccountId, String expand) {
+        return listWithCreateSubscriptionPermissionWithServiceResponseAsync(billingAccountId, expand).toBlocking().single().body();
+    }
+
+    /**
+     * Lists all projects with create subscription permission for a user.
+     *
+     * @param billingAccountId billing Account Id.
+     * @param expand May be used to expand the eligibleOffers.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ProjectListResultInner> listWithCreateSubscriptionPermissionAsync(String billingAccountId, String expand, final ServiceCallback<ProjectListResultInner> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(listWithCreateSubscriptionPermissionWithServiceResponseAsync(billingAccountId, expand), serviceCallback);
+    }
+
+    /**
+     * Lists all projects with create subscription permission for a user.
+     *
+     * @param billingAccountId billing Account Id.
+     * @param expand May be used to expand the eligibleOffers.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ProjectListResultInner object
+     */
+    public Observable<ProjectListResultInner> listWithCreateSubscriptionPermissionAsync(String billingAccountId, String expand) {
+        return listWithCreateSubscriptionPermissionWithServiceResponseAsync(billingAccountId, expand).map(new Func1<ServiceResponseWithHeaders<ProjectListResultInner, ProjectsListWithCreateSubscriptionPermissionHeaders>, ProjectListResultInner>() {
+            @Override
+            public ProjectListResultInner call(ServiceResponseWithHeaders<ProjectListResultInner, ProjectsListWithCreateSubscriptionPermissionHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Lists all projects with create subscription permission for a user.
+     *
+     * @param billingAccountId billing Account Id.
+     * @param expand May be used to expand the eligibleOffers.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ProjectListResultInner object
+     */
+    public Observable<ServiceResponseWithHeaders<ProjectListResultInner, ProjectsListWithCreateSubscriptionPermissionHeaders>> listWithCreateSubscriptionPermissionWithServiceResponseAsync(String billingAccountId, String expand) {
+        if (billingAccountId == null) {
+            throw new IllegalArgumentException("Parameter billingAccountId is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listWithCreateSubscriptionPermission(billingAccountId, this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<ProjectListResultInner, ProjectsListWithCreateSubscriptionPermissionHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<ProjectListResultInner, ProjectsListWithCreateSubscriptionPermissionHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<ProjectListResultInner, ProjectsListWithCreateSubscriptionPermissionHeaders> clientResponse = listWithCreateSubscriptionPermissionDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponseWithHeaders<ProjectListResultInner, ProjectsListWithCreateSubscriptionPermissionHeaders> listWithCreateSubscriptionPermissionDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ProjectListResultInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ProjectListResultInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .buildWithHeaders(response, ProjectsListWithCreateSubscriptionPermissionHeaders.class);
+    }
+
+    /**
+     * The operation to create a project.
+     *
+     * @param billingAccountId billing Account Id.
+     * @param parameters Parameters supplied to the Create Project operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ProjectInner object if successful.
+     */
+    public ProjectInner create1(String billingAccountId, ProjectInner parameters) {
+        return create1WithServiceResponseAsync(billingAccountId, parameters).toBlocking().single().body();
+    }
+
+    /**
+     * The operation to create a project.
+     *
+     * @param billingAccountId billing Account Id.
+     * @param parameters Parameters supplied to the Create Project operation.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ProjectInner> create1Async(String billingAccountId, ProjectInner parameters, final ServiceCallback<ProjectInner> serviceCallback) {
+        return ServiceFuture.fromResponse(create1WithServiceResponseAsync(billingAccountId, parameters), serviceCallback);
+    }
+
+    /**
+     * The operation to create a project.
+     *
+     * @param billingAccountId billing Account Id.
+     * @param parameters Parameters supplied to the Create Project operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ProjectInner object
+     */
+    public Observable<ProjectInner> create1Async(String billingAccountId, ProjectInner parameters) {
+        return create1WithServiceResponseAsync(billingAccountId, parameters).map(new Func1<ServiceResponse<ProjectInner>, ProjectInner>() {
+            @Override
+            public ProjectInner call(ServiceResponse<ProjectInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * The operation to create a project.
+     *
+     * @param billingAccountId billing Account Id.
+     * @param parameters Parameters supplied to the Create Project operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ProjectInner object
+     */
+    public Observable<ServiceResponse<ProjectInner>> create1WithServiceResponseAsync(String billingAccountId, ProjectInner parameters) {
+        if (billingAccountId == null) {
+            throw new IllegalArgumentException("Parameter billingAccountId is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        }
+        Validator.validate(parameters);
+        return service.create1(billingAccountId, this.client.apiVersion(), parameters, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ProjectInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ProjectInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ProjectInner> clientResponse = create1Delegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ProjectInner> create1Delegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<ProjectInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(201, new TypeToken<ProjectInner>() { }.getType())
                 .registerError(ErrorResponseException.class)

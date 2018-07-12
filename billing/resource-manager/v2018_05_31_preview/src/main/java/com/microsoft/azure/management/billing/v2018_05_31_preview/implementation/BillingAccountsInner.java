@@ -53,11 +53,11 @@ public class BillingAccountsInner {
     interface BillingAccountsService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_05_31_preview.BillingAccounts list" })
         @GET("providers/Microsoft.Billing/billingAccounts")
-        Observable<Response<ResponseBody>> list(@Query("api-version") String apiVersion, @Query("$expand") String expand, @Query("$filter") String filter, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Query("api-version") String apiVersion, @Query("$expand") String expand, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_05_31_preview.BillingAccounts listWithCreateProjectPermission" })
         @GET("providers/Microsoft.Billing/listBillingAccountsWithCreateProjectPermission ")
-        Observable<Response<ResponseBody>> listWithCreateProjectPermission(@Query("api-version") String apiVersion, @Query("$expand") String expand, @Query("$filter") String filter, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listWithCreateProjectPermission(@Query("api-version") String apiVersion, @Query("$expand") String expand, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_05_31_preview.BillingAccounts get" })
         @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountId}")
@@ -114,8 +114,7 @@ public class BillingAccountsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String expand = null;
-        final String filter = null;
-        return service.list(this.client.apiVersion(), expand, filter, this.client.acceptLanguage(), this.client.userAgent())
+        return service.list(this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<BillingAccountListResultInner>>>() {
                 @Override
                 public Observable<ServiceResponse<BillingAccountListResultInner>> call(Response<ResponseBody> response) {
@@ -133,39 +132,36 @@ public class BillingAccountsInner {
      * Lists all billing accounts for a user which he has access to.
      *
      * @param expand May be used to expand the projects and billingProfiles.
-     * @param filter May be used to filter by permission. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the BillingAccountListResultInner object if successful.
      */
-    public BillingAccountListResultInner list(String expand, String filter) {
-        return listWithServiceResponseAsync(expand, filter).toBlocking().single().body();
+    public BillingAccountListResultInner list(String expand) {
+        return listWithServiceResponseAsync(expand).toBlocking().single().body();
     }
 
     /**
      * Lists all billing accounts for a user which he has access to.
      *
      * @param expand May be used to expand the projects and billingProfiles.
-     * @param filter May be used to filter by permission. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<BillingAccountListResultInner> listAsync(String expand, String filter, final ServiceCallback<BillingAccountListResultInner> serviceCallback) {
-        return ServiceFuture.fromResponse(listWithServiceResponseAsync(expand, filter), serviceCallback);
+    public ServiceFuture<BillingAccountListResultInner> listAsync(String expand, final ServiceCallback<BillingAccountListResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listWithServiceResponseAsync(expand), serviceCallback);
     }
 
     /**
      * Lists all billing accounts for a user which he has access to.
      *
      * @param expand May be used to expand the projects and billingProfiles.
-     * @param filter May be used to filter by permission. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingAccountListResultInner object
      */
-    public Observable<BillingAccountListResultInner> listAsync(String expand, String filter) {
-        return listWithServiceResponseAsync(expand, filter).map(new Func1<ServiceResponse<BillingAccountListResultInner>, BillingAccountListResultInner>() {
+    public Observable<BillingAccountListResultInner> listAsync(String expand) {
+        return listWithServiceResponseAsync(expand).map(new Func1<ServiceResponse<BillingAccountListResultInner>, BillingAccountListResultInner>() {
             @Override
             public BillingAccountListResultInner call(ServiceResponse<BillingAccountListResultInner> response) {
                 return response.body();
@@ -177,15 +173,14 @@ public class BillingAccountsInner {
      * Lists all billing accounts for a user which he has access to.
      *
      * @param expand May be used to expand the projects and billingProfiles.
-     * @param filter May be used to filter by permission. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingAccountListResultInner object
      */
-    public Observable<ServiceResponse<BillingAccountListResultInner>> listWithServiceResponseAsync(String expand, String filter) {
+    public Observable<ServiceResponse<BillingAccountListResultInner>> listWithServiceResponseAsync(String expand) {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.list(this.client.apiVersion(), expand, filter, this.client.acceptLanguage(), this.client.userAgent())
+        return service.list(this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<BillingAccountListResultInner>>>() {
                 @Override
                 public Observable<ServiceResponse<BillingAccountListResultInner>> call(Response<ResponseBody> response) {
@@ -255,8 +250,7 @@ public class BillingAccountsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String expand = null;
-        final String filter = null;
-        return service.listWithCreateProjectPermission(this.client.apiVersion(), expand, filter, this.client.acceptLanguage(), this.client.userAgent())
+        return service.listWithCreateProjectPermission(this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<BillingAccountListResultInner>>>() {
                 @Override
                 public Observable<ServiceResponse<BillingAccountListResultInner>> call(Response<ResponseBody> response) {
@@ -274,39 +268,36 @@ public class BillingAccountsInner {
      * Lists all billing accounts with create project permission for a user.
      *
      * @param expand May be used to expand the projects and billingProfiles.
-     * @param filter May be used to filter by permission. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the BillingAccountListResultInner object if successful.
      */
-    public BillingAccountListResultInner listWithCreateProjectPermission(String expand, String filter) {
-        return listWithCreateProjectPermissionWithServiceResponseAsync(expand, filter).toBlocking().single().body();
+    public BillingAccountListResultInner listWithCreateProjectPermission(String expand) {
+        return listWithCreateProjectPermissionWithServiceResponseAsync(expand).toBlocking().single().body();
     }
 
     /**
      * Lists all billing accounts with create project permission for a user.
      *
      * @param expand May be used to expand the projects and billingProfiles.
-     * @param filter May be used to filter by permission. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<BillingAccountListResultInner> listWithCreateProjectPermissionAsync(String expand, String filter, final ServiceCallback<BillingAccountListResultInner> serviceCallback) {
-        return ServiceFuture.fromResponse(listWithCreateProjectPermissionWithServiceResponseAsync(expand, filter), serviceCallback);
+    public ServiceFuture<BillingAccountListResultInner> listWithCreateProjectPermissionAsync(String expand, final ServiceCallback<BillingAccountListResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listWithCreateProjectPermissionWithServiceResponseAsync(expand), serviceCallback);
     }
 
     /**
      * Lists all billing accounts with create project permission for a user.
      *
      * @param expand May be used to expand the projects and billingProfiles.
-     * @param filter May be used to filter by permission. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingAccountListResultInner object
      */
-    public Observable<BillingAccountListResultInner> listWithCreateProjectPermissionAsync(String expand, String filter) {
-        return listWithCreateProjectPermissionWithServiceResponseAsync(expand, filter).map(new Func1<ServiceResponse<BillingAccountListResultInner>, BillingAccountListResultInner>() {
+    public Observable<BillingAccountListResultInner> listWithCreateProjectPermissionAsync(String expand) {
+        return listWithCreateProjectPermissionWithServiceResponseAsync(expand).map(new Func1<ServiceResponse<BillingAccountListResultInner>, BillingAccountListResultInner>() {
             @Override
             public BillingAccountListResultInner call(ServiceResponse<BillingAccountListResultInner> response) {
                 return response.body();
@@ -318,15 +309,14 @@ public class BillingAccountsInner {
      * Lists all billing accounts with create project permission for a user.
      *
      * @param expand May be used to expand the projects and billingProfiles.
-     * @param filter May be used to filter by permission. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingAccountListResultInner object
      */
-    public Observable<ServiceResponse<BillingAccountListResultInner>> listWithCreateProjectPermissionWithServiceResponseAsync(String expand, String filter) {
+    public Observable<ServiceResponse<BillingAccountListResultInner>> listWithCreateProjectPermissionWithServiceResponseAsync(String expand) {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.listWithCreateProjectPermission(this.client.apiVersion(), expand, filter, this.client.acceptLanguage(), this.client.userAgent())
+        return service.listWithCreateProjectPermission(this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<BillingAccountListResultInner>>>() {
                 @Override
                 public Observable<ServiceResponse<BillingAccountListResultInner>> call(Response<ResponseBody> response) {
