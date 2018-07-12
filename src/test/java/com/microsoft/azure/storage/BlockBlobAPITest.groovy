@@ -212,18 +212,6 @@ class BlockBlobAPITest extends APISpec {
         "foo" | "bar"  | "fizz" | "buzz"
     }
 
-    def "Commit block list metadata fail"() {
-        setup:
-        Metadata metadata = new Metadata()
-        metadata.put("!nvalid", "value")
-
-        when:
-        bu.commitBlockList(null, null, metadata, null).blockingGet()
-
-        then:
-        thrown(IllegalArgumentException)
-    }
-
     @Unroll
     def "Commit block list AC"() {
         setup:
@@ -468,18 +456,6 @@ class BlockBlobAPITest extends APISpec {
         key1  | value1 | key2   | value2
         null  | null   | null   | null
         "foo" | "bar"  | "fizz" | "buzz"
-    }
-
-    def "Upload metadata fail"() {
-        setup:
-        Metadata metadata = new Metadata()
-        metadata.put("!nvalid", "value")
-
-        when:
-        bu.upload(defaultFlowable, defaultDataSize, null, metadata, null).blockingGet()
-
-        then:
-        thrown(IllegalArgumentException)
     }
 
     @Unroll

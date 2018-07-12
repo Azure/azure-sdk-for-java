@@ -866,7 +866,7 @@ class BlobAPITest extends APISpec {
 
         then:
         cu.listBlobsFlatSegment(null, null).blockingGet()
-                .body().flatListSegment().blobItems().size()== blobsRemaining
+                .body().segment().blobItems().size()== blobsRemaining
 
         where:
         option                            | blobsRemaining

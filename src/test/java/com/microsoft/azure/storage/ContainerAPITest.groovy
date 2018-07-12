@@ -391,7 +391,7 @@ class ContainerAPITest extends APISpec {
         ContainerListBlobFlatSegmentResponse response = cu.listBlobsFlatSegment(null, null)
                 .blockingGet()
         ContainerListBlobFlatSegmentHeaders headers = response.headers()
-        List<BlobItem> blobs = response.body().flatListSegment().blobItems()
+        List<BlobItem> blobs = response.body().segment().blobItems()
 
         then:
         response.statusCode() == 200
@@ -439,7 +439,7 @@ class ContainerAPITest extends APISpec {
         setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         when:
-        List<BlobItem> blobs = cu.listBlobsFlatSegment(null, options).blockingGet().flatSegment().blobItems()
+        List<BlobItem> blobs = cu.listBlobsFlatSegment(null, options).blockingGet().body().segment().blobItems()
 
         then:
         blobs.get(0).name() == normalName
@@ -465,7 +465,7 @@ class ContainerAPITest extends APISpec {
         setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         when:
-        List<BlobItem> blobs = cu.listBlobsFlatSegment(null, options).blockingGet().body().flatListSegment().blobItems()
+        List<BlobItem> blobs = cu.listBlobsFlatSegment(null, options).blockingGet().body().segment().blobItems()
 
         then:
         blobs.get(0).name() == normalName
@@ -488,7 +488,7 @@ class ContainerAPITest extends APISpec {
         String snapshotTime = setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         when:
-        List<BlobItem> blobs = cu.listBlobsFlatSegment(null, options).blockingGet().body().flatListSegment().blobItems()
+        List<BlobItem> blobs = cu.listBlobsFlatSegment(null, options).blockingGet().body().segment().blobItems()
 
         then:
         blobs.get(0).name() == normalName
@@ -509,7 +509,7 @@ class ContainerAPITest extends APISpec {
         setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         when:
-        List<BlobItem> blobs = cu.listBlobsFlatSegment(null, options).blockingGet().body().flatListSegment().blobItems()
+        List<BlobItem> blobs = cu.listBlobsFlatSegment(null, options).blockingGet().body().segment().blobItems()
 
         then:
         blobs.get(0).name() == normalName
@@ -527,7 +527,7 @@ class ContainerAPITest extends APISpec {
         setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         when:
-        List<BlobItem> blobs = cu.listBlobsFlatSegment(null, options).blockingGet().body().flatListSegment().blobItems()
+        List<BlobItem> blobs = cu.listBlobsFlatSegment(null, options).blockingGet().body().segment().blobItems()
 
         then:
         blobs.get(0).name() == normalName
@@ -545,7 +545,7 @@ class ContainerAPITest extends APISpec {
         setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         when:
-        List<BlobItem> blobs = cu.listBlobsFlatSegment(null, options).blockingGet().body().flatListSegment().blobItems()
+        List<BlobItem> blobs = cu.listBlobsFlatSegment(null, options).blockingGet().body().segment().blobItems()
 
         then:
         blobs.size() == 2
@@ -562,13 +562,13 @@ class ContainerAPITest extends APISpec {
                 new ListBlobsOptions(null, null, 6))
                 .blockingGet()
         String marker = response.body().nextMarker()
-        int firstSegmentSize = response.body().flatListSegment().blobItems().size()
+        int firstSegmentSize = response.body().segment().blobItems().size()
         response = cu.listBlobsFlatSegment(marker, null).blockingGet()
 
         expect:
         firstSegmentSize == 6
         response.body().nextMarker() == null
-        response.body().flatListSegment().blobItems().size() == 4
+        response.body().segment().blobItems().size() == 4
     }
 
     def "Container list blobs flat error"() {
@@ -593,7 +593,7 @@ class ContainerAPITest extends APISpec {
                 cu.listBlobsHierarchySegment(null, "/", null)
                         .blockingGet()
         ContainerListBlobHierarchySegmentHeaders headers = response.headers()
-        List<BlobItem> blobs = response.body().hierarchyListSegment().blobItems()
+        List<BlobItem> blobs = response.body().segment().blobItems()
 
         then:
         response.statusCode() == 200
@@ -617,7 +617,7 @@ class ContainerAPITest extends APISpec {
         setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         when:
-        List<BlobItem> blobs = cu.listBlobsHierarchySegment(null, "", options).blockingGet().body().flatListSegment().blobItems()
+        List<BlobItem> blobs = cu.listBlobsHierarchySegment(null, "", options).blockingGet().body().segment().blobItems()
 
         then:
         blobs.get(0).name() == normalName
@@ -644,7 +644,7 @@ class ContainerAPITest extends APISpec {
 
         when:
         List<BlobItem> blobs = cu.listBlobsHierarchySegment(null, "", options)
-                .blockingGet().body().hierarchyListSegment().blobItems()
+                .blockingGet().body().segment().blobItems()
 
         then:
         blobs.get(0).name() == normalName
@@ -668,7 +668,7 @@ class ContainerAPITest extends APISpec {
 
         when:
         List<BlobItem> blobs = cu.listBlobsHierarchySegment(null, "", options)
-                .blockingGet().body().hierarchyListSegment().blobItems()
+                .blockingGet().body().segment().blobItems()
 
         then:
         blobs.get(0).name() == normalName
@@ -687,7 +687,7 @@ class ContainerAPITest extends APISpec {
 
         when:
         List<BlobItem> blobs = cu.listBlobsHierarchySegment(null, "", options)
-                .blockingGet().body().hierarchyListSegment().blobItems()
+                .blockingGet().body().segment().blobItems()
 
         then:
         blobs.get(0).name() == normalName
@@ -706,7 +706,7 @@ class ContainerAPITest extends APISpec {
 
         when:
         List<BlobItem> blobs = cu.listBlobsHierarchySegment(null, "", options)
-                .blockingGet().body().hierarchyListSegment().blobItems()
+                .blockingGet().body().segment().blobItems()
 
         then:
         blobs.size() == 1
@@ -726,10 +726,10 @@ class ContainerAPITest extends APISpec {
                 cu.listBlobsHierarchySegment(null, "/", null).blockingGet()
 
         then:
-        response.body().hierarchyListSegment().blobPrefixItems().size() == 1
-        response.body().hierarchyListSegment().blobPrefixItems().get(0).name() == "b/"
-        response.body().hierarchyListSegment().blobItems().size() == 1
-        response.body().hierarchyListSegment().blobItems().get(0).name() == "a"
+        response.body().segment().blobPrefixes().size() == 1
+        response.body().segment().blobPrefixes().get(0).name() == "b/"
+        response.body().segment().blobItems().size() == 1
+        response.body().segment().blobItems().get(0).name() == "a"
     }
 
     def "Container list blobs hier marker"() {
@@ -743,13 +743,13 @@ class ContainerAPITest extends APISpec {
                 new ListBlobsOptions(null, null, 6))
                 .blockingGet()
         String marker = response.body().nextMarker()
-        int firstSegmentSize = response.body().hierarchyListSegment().blobItems().size()
+        int firstSegmentSize = response.body().segment().blobItems().size()
         response = cu.listBlobsHierarchySegment(marker, "/", null).blockingGet()
 
         expect:
         firstSegmentSize == 6
         response.body().nextMarker() == null
-        response.body().hierarchyListSegment().blobItems().size() == 4
+        response.body().segment().blobItems().size() == 4
     }
 
     def "Container list blobs hier error"() {
@@ -998,7 +998,7 @@ class ContainerAPITest extends APISpec {
                 null, null, null).blockingGet().statusCode() == 201
 
         when:
-        List<BlobItem> blobs = cu.listBlobsFlatSegment(null, null).blockingGet().body().flatListSegment().blobItems()
+        List<BlobItem> blobs = cu.listBlobsFlatSegment(null, null).blockingGet().body().segment().blobItems()
 
         then:
         blobs.get(0).name() == name

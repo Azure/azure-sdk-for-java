@@ -149,8 +149,8 @@ public class Samples {
             ContainerURL containerURL, ContainerListBlobFlatSegmentResponse response) {
 
         // Process the blobs returned in this result segment (if the segment is empty, blob() will be null.
-        if (response.body().flatListSegment().blobItems() != null) {
-            for (BlobItem b : response.body().flatListSegment().blobItems()) {
+        if (response.body().segment().blobItems() != null) {
+            for (BlobItem b : response.body().segment().blobItems()) {
                 String output = "Blob name: " + b.name();
                 if (b.snapshot() != null) {
                     output += ", Snapshot: " + b.snapshot();
@@ -1432,14 +1432,14 @@ public class Samples {
             ContainerURL containerURL, ListBlobsOptions listBlobsOptions,
             ContainerListBlobFlatSegmentResponse response)
     {
-        Observable<BlobItem> result = Observable.fromIterable(response.body().flatListSegment().blobItems());
+        Observable<BlobItem> result = Observable.fromIterable(response.body().segment().blobItems());
 
-        System.out.println("!!! count: " + response.body().flatListSegment().blobItems());
+        System.out.println("!!! count: " + response.body().segment().blobItems());
 
         if (response.body().nextMarker() != null)
         {
-            System.out.println("Hit continuation in listing at " + response.body().flatListSegment().blobItems().get(
-                    response.body().flatListSegment().blobItems().size()-1).name());
+            System.out.println("Hit continuation in listing at " + response.body().segment().blobItems().get(
+                    response.body().segment().blobItems().size()-1).name());
             // Recursively add the continuation items to the observable.
             result = result.concatWith(containerURL.listBlobsFlatSegment(response.body().nextMarker(), listBlobsOptions)
                     .flatMapObservable((r) ->

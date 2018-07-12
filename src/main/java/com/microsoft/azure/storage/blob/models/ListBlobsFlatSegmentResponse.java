@@ -10,23 +10,26 @@
 
 package com.microsoft.azure.storage.blob.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
- * An enumeration of containers.
+ * An enumeration of blobs.
  */
 @JacksonXmlRootElement(localName = "EnumerationResults")
-public final class ListContainersResponse {
+public final class ListBlobsFlatSegmentResponse {
     /**
      * The serviceEndpoint property.
      */
     @JacksonXmlProperty(localName = "ServiceEndpoint", isAttribute = true)
     private String serviceEndpoint;
+
+    /**
+     * The containerName property.
+     */
+    @JacksonXmlProperty(localName = "ContainerName", isAttribute = true)
+    private String containerName;
 
     /**
      * The prefix property.
@@ -37,7 +40,7 @@ public final class ListContainersResponse {
     /**
      * The marker property.
      */
-    @JsonProperty(value = "Marker")
+    @JsonProperty(value = "Marker", required = true)
     private String marker;
 
     /**
@@ -46,21 +49,17 @@ public final class ListContainersResponse {
     @JsonProperty(value = "MaxResults", required = true)
     private int maxResults;
 
-    private static final class ContainerItemsWrapper {
-        @JacksonXmlProperty(localName = "Container")
-        private final List<ContainerItem> items;
-
-        @JsonCreator
-        private ContainerItemsWrapper(@JacksonXmlProperty(localName = "Container") List<ContainerItem> items) {
-            this.items = items;
-        }
-    }
+    /**
+     * The delimiter property.
+     */
+    @JsonProperty(value = "Delimiter", required = true)
+    private String delimiter;
 
     /**
-     * The containerItems property.
+     * The segment property.
      */
-    @JsonProperty(value = "ContainerItems")
-    private ContainerItemsWrapper containerItems;
+    @JsonProperty(value = "Blobs")
+    private BlobFlatListSegment segment;
 
     /**
      * The nextMarker property.
@@ -81,10 +80,30 @@ public final class ListContainersResponse {
      * Set the serviceEndpoint value.
      *
      * @param serviceEndpoint the serviceEndpoint value to set.
-     * @return the ListContainersResponse object itself.
+     * @return the ListBlobsFlatSegmentResponse object itself.
      */
-    public ListContainersResponse withServiceEndpoint(String serviceEndpoint) {
+    public ListBlobsFlatSegmentResponse withServiceEndpoint(String serviceEndpoint) {
         this.serviceEndpoint = serviceEndpoint;
+        return this;
+    }
+
+    /**
+     * Get the containerName value.
+     *
+     * @return the containerName value.
+     */
+    public String containerName() {
+        return this.containerName;
+    }
+
+    /**
+     * Set the containerName value.
+     *
+     * @param containerName the containerName value to set.
+     * @return the ListBlobsFlatSegmentResponse object itself.
+     */
+    public ListBlobsFlatSegmentResponse withContainerName(String containerName) {
+        this.containerName = containerName;
         return this;
     }
 
@@ -101,9 +120,9 @@ public final class ListContainersResponse {
      * Set the prefix value.
      *
      * @param prefix the prefix value to set.
-     * @return the ListContainersResponse object itself.
+     * @return the ListBlobsFlatSegmentResponse object itself.
      */
-    public ListContainersResponse withPrefix(String prefix) {
+    public ListBlobsFlatSegmentResponse withPrefix(String prefix) {
         this.prefix = prefix;
         return this;
     }
@@ -121,9 +140,9 @@ public final class ListContainersResponse {
      * Set the marker value.
      *
      * @param marker the marker value to set.
-     * @return the ListContainersResponse object itself.
+     * @return the ListBlobsFlatSegmentResponse object itself.
      */
-    public ListContainersResponse withMarker(String marker) {
+    public ListBlobsFlatSegmentResponse withMarker(String marker) {
         this.marker = marker;
         return this;
     }
@@ -141,33 +160,50 @@ public final class ListContainersResponse {
      * Set the maxResults value.
      *
      * @param maxResults the maxResults value to set.
-     * @return the ListContainersResponse object itself.
+     * @return the ListBlobsFlatSegmentResponse object itself.
      */
-    public ListContainersResponse withMaxResults(int maxResults) {
+    public ListBlobsFlatSegmentResponse withMaxResults(int maxResults) {
         this.maxResults = maxResults;
         return this;
     }
 
     /**
-     * Get the containerItems value.
+     * Get the delimiter value.
      *
-     * @return the containerItems value.
+     * @return the delimiter value.
      */
-    public List<ContainerItem> containerItems() {
-        if (this.containerItems == null) {
-            this.containerItems = new ContainerItemsWrapper(new ArrayList<ContainerItem>());
-        }
-        return this.containerItems.items;
+    public String delimiter() {
+        return this.delimiter;
     }
 
     /**
-     * Set the containerItems value.
+     * Set the delimiter value.
      *
-     * @param containerItems the containerItems value to set.
-     * @return the ListContainersResponse object itself.
+     * @param delimiter the delimiter value to set.
+     * @return the ListBlobsFlatSegmentResponse object itself.
      */
-    public ListContainersResponse withContainerItems(List<ContainerItem> containerItems) {
-        this.containerItems = new ContainerItemsWrapper(containerItems);
+    public ListBlobsFlatSegmentResponse withDelimiter(String delimiter) {
+        this.delimiter = delimiter;
+        return this;
+    }
+
+    /**
+     * Get the segment value.
+     *
+     * @return the segment value.
+     */
+    public BlobFlatListSegment segment() {
+        return this.segment;
+    }
+
+    /**
+     * Set the segment value.
+     *
+     * @param segment the segment value to set.
+     * @return the ListBlobsFlatSegmentResponse object itself.
+     */
+    public ListBlobsFlatSegmentResponse withSegment(BlobFlatListSegment segment) {
+        this.segment = segment;
         return this;
     }
 
@@ -184,9 +220,9 @@ public final class ListContainersResponse {
      * Set the nextMarker value.
      *
      * @param nextMarker the nextMarker value to set.
-     * @return the ListContainersResponse object itself.
+     * @return the ListBlobsFlatSegmentResponse object itself.
      */
-    public ListContainersResponse withNextMarker(String nextMarker) {
+    public ListBlobsFlatSegmentResponse withNextMarker(String nextMarker) {
         this.nextMarker = nextMarker;
         return this;
     }

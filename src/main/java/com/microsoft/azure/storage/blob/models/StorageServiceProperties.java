@@ -23,21 +23,19 @@ import java.util.List;
 @JacksonXmlRootElement(localName = "StorageServiceProperties")
 public final class StorageServiceProperties {
     /**
-     * Azure Analytics Logging settings.
+     * The logging property.
      */
     @JsonProperty(value = "Logging")
     private Logging logging;
 
     /**
-     * A summary of request statistics grouped by API in hourly aggregates for
-     * blobs.
+     * The hourMetrics property.
      */
     @JsonProperty(value = "HourMetrics")
     private Metrics hourMetrics;
 
     /**
-     * a summary of request statistics grouped by API in minute aggregates for
-     * blobs.
+     * The minuteMetrics property.
      */
     @JsonProperty(value = "MinuteMetrics")
     private Metrics minuteMetrics;
@@ -67,7 +65,7 @@ public final class StorageServiceProperties {
     private String defaultServiceVersion;
 
     /**
-     * The Delete Retention Policy for the service.
+     * The deleteRetentionPolicy property.
      */
     @JsonProperty(value = "DeleteRetentionPolicy")
     private RetentionPolicy deleteRetentionPolicy;

@@ -94,6 +94,11 @@ class ServiceAPITest extends APISpec {
     }
 
     def "Service list containers maxResults"() {
+        setup:
+        for (int i=0; i<11; i++) {
+            primaryServiceURL.createContainerURL(generateContainerName()).create(null, null)
+                    .blockingGet()
+        }
         expect:
         primaryServiceURL.listContainersSegment(null,
                 new ListContainersOptions(null, null, 10))

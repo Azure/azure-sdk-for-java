@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * Contains all response data for the listBlobFlatSegment operation.
  */
-public final class ContainerListBlobFlatSegmentResponse extends RestResponse<ContainerListBlobFlatSegmentHeaders, ListBlobsFlatResponse> {
+public final class ContainerListBlobFlatSegmentResponse extends RestResponse<ContainerListBlobFlatSegmentHeaders, ListBlobsFlatSegmentResponse> {
     /**
      * Creates an instance of ContainerListBlobFlatSegmentResponse.
      *
@@ -25,7 +25,7 @@ public final class ContainerListBlobFlatSegmentResponse extends RestResponse<Con
      * @param rawHeaders the raw headers of the HTTP response.
      * @param body the deserialized body of the HTTP response.
      */
-    public ContainerListBlobFlatSegmentResponse(int statusCode, ContainerListBlobFlatSegmentHeaders headers, Map<String, String> rawHeaders, ListBlobsFlatResponse body) {
+    public ContainerListBlobFlatSegmentResponse(int statusCode, ContainerListBlobFlatSegmentHeaders headers, Map<String, String> rawHeaders, ListBlobsFlatSegmentResponse body) {
         super(statusCode, headers, rawHeaders, body);
     }
 
@@ -41,7 +41,7 @@ public final class ContainerListBlobFlatSegmentResponse extends RestResponse<Con
      * @return the deserialized response body.
      */
     @Override
-    public ListBlobsFlatResponse body() {
+    public ListBlobsFlatSegmentResponse body() {
         return super.body();
     }
 }

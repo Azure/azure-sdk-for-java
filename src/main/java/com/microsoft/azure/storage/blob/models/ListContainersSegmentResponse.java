@@ -10,26 +10,23 @@
 
 package com.microsoft.azure.storage.blob.models;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * An enumeration of blobs.
+ * An enumeration of containers.
  */
 @JacksonXmlRootElement(localName = "EnumerationResults")
-public final class ListBlobsHierarchyResponse {
+public final class ListContainersSegmentResponse {
     /**
      * The serviceEndpoint property.
      */
     @JacksonXmlProperty(localName = "ServiceEndpoint", isAttribute = true)
     private String serviceEndpoint;
-
-    /**
-     * The containerName property.
-     */
-    @JacksonXmlProperty(localName = "ContainerName", isAttribute = true)
-    private String containerName;
 
     /**
      * The prefix property.
@@ -40,7 +37,7 @@ public final class ListBlobsHierarchyResponse {
     /**
      * The marker property.
      */
-    @JsonProperty(value = "Marker", required = true)
+    @JsonProperty(value = "Marker")
     private String marker;
 
     /**
@@ -49,17 +46,21 @@ public final class ListBlobsHierarchyResponse {
     @JsonProperty(value = "MaxResults", required = true)
     private int maxResults;
 
-    /**
-     * The delimiter property.
-     */
-    @JsonProperty(value = "Delimiter", required = true)
-    private String delimiter;
+    private static final class ContainersWrapper {
+        @JacksonXmlProperty(localName = "Container")
+        private final List<ContainerItem> items;
+
+        @JsonCreator
+        private ContainersWrapper(@JacksonXmlProperty(localName = "Container") List<ContainerItem> items) {
+            this.items = items;
+        }
+    }
 
     /**
-     * The hierarchyListSegment property.
+     * The containerItems property.
      */
-    @JsonProperty(value = "Blobs")
-    private HierarchyListSegment hierarchyListSegment;
+    @JsonProperty(value = "Containers")
+    private ContainersWrapper containerItems;
 
     /**
      * The nextMarker property.
@@ -80,30 +81,10 @@ public final class ListBlobsHierarchyResponse {
      * Set the serviceEndpoint value.
      *
      * @param serviceEndpoint the serviceEndpoint value to set.
-     * @return the ListBlobsHierarchyResponse object itself.
+     * @return the ListContainersSegmentResponse object itself.
      */
-    public ListBlobsHierarchyResponse withServiceEndpoint(String serviceEndpoint) {
+    public ListContainersSegmentResponse withServiceEndpoint(String serviceEndpoint) {
         this.serviceEndpoint = serviceEndpoint;
-        return this;
-    }
-
-    /**
-     * Get the containerName value.
-     *
-     * @return the containerName value.
-     */
-    public String containerName() {
-        return this.containerName;
-    }
-
-    /**
-     * Set the containerName value.
-     *
-     * @param containerName the containerName value to set.
-     * @return the ListBlobsHierarchyResponse object itself.
-     */
-    public ListBlobsHierarchyResponse withContainerName(String containerName) {
-        this.containerName = containerName;
         return this;
     }
 
@@ -120,9 +101,9 @@ public final class ListBlobsHierarchyResponse {
      * Set the prefix value.
      *
      * @param prefix the prefix value to set.
-     * @return the ListBlobsHierarchyResponse object itself.
+     * @return the ListContainersSegmentResponse object itself.
      */
-    public ListBlobsHierarchyResponse withPrefix(String prefix) {
+    public ListContainersSegmentResponse withPrefix(String prefix) {
         this.prefix = prefix;
         return this;
     }
@@ -140,9 +121,9 @@ public final class ListBlobsHierarchyResponse {
      * Set the marker value.
      *
      * @param marker the marker value to set.
-     * @return the ListBlobsHierarchyResponse object itself.
+     * @return the ListContainersSegmentResponse object itself.
      */
-    public ListBlobsHierarchyResponse withMarker(String marker) {
+    public ListContainersSegmentResponse withMarker(String marker) {
         this.marker = marker;
         return this;
     }
@@ -160,50 +141,33 @@ public final class ListBlobsHierarchyResponse {
      * Set the maxResults value.
      *
      * @param maxResults the maxResults value to set.
-     * @return the ListBlobsHierarchyResponse object itself.
+     * @return the ListContainersSegmentResponse object itself.
      */
-    public ListBlobsHierarchyResponse withMaxResults(int maxResults) {
+    public ListContainersSegmentResponse withMaxResults(int maxResults) {
         this.maxResults = maxResults;
         return this;
     }
 
     /**
-     * Get the delimiter value.
+     * Get the containerItems value.
      *
-     * @return the delimiter value.
+     * @return the containerItems value.
      */
-    public String delimiter() {
-        return this.delimiter;
+    public List<ContainerItem> containerItems() {
+        if (this.containerItems == null) {
+            this.containerItems = new ContainersWrapper(new ArrayList<ContainerItem>());
+        }
+        return this.containerItems.items;
     }
 
     /**
-     * Set the delimiter value.
+     * Set the containerItems value.
      *
-     * @param delimiter the delimiter value to set.
-     * @return the ListBlobsHierarchyResponse object itself.
+     * @param containerItems the containerItems value to set.
+     * @return the ListContainersSegmentResponse object itself.
      */
-    public ListBlobsHierarchyResponse withDelimiter(String delimiter) {
-        this.delimiter = delimiter;
-        return this;
-    }
-
-    /**
-     * Get the hierarchyListSegment value.
-     *
-     * @return the hierarchyListSegment value.
-     */
-    public HierarchyListSegment hierarchyListSegment() {
-        return this.hierarchyListSegment;
-    }
-
-    /**
-     * Set the hierarchyListSegment value.
-     *
-     * @param hierarchyListSegment the hierarchyListSegment value to set.
-     * @return the ListBlobsHierarchyResponse object itself.
-     */
-    public ListBlobsHierarchyResponse withHierarchyListSegment(HierarchyListSegment hierarchyListSegment) {
-        this.hierarchyListSegment = hierarchyListSegment;
+    public ListContainersSegmentResponse withContainerItems(List<ContainerItem> containerItems) {
+        this.containerItems = new ContainersWrapper(containerItems);
         return this;
     }
 
@@ -220,9 +184,9 @@ public final class ListBlobsHierarchyResponse {
      * Set the nextMarker value.
      *
      * @param nextMarker the nextMarker value to set.
-     * @return the ListBlobsHierarchyResponse object itself.
+     * @return the ListContainersSegmentResponse object itself.
      */
-    public ListBlobsHierarchyResponse withNextMarker(String nextMarker) {
+    public ListContainersSegmentResponse withNextMarker(String nextMarker) {
         this.nextMarker = nextMarker;
         return this;
     }

@@ -17,15 +17,41 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The FlatListSegment model.
+ * The BlobHierarchyListSegment model.
  */
 @JacksonXmlRootElement(localName = "Blobs")
-public final class FlatListSegment {
+public final class BlobHierarchyListSegment {
+    /**
+     * The blobPrefixes property.
+     */
+    @JsonProperty("BlobPrefix")
+    private List<BlobPrefix> blobPrefixes = new ArrayList<>();
+
     /**
      * The blobItems property.
      */
     @JsonProperty("Blob")
     private List<BlobItem> blobItems = new ArrayList<>();
+
+    /**
+     * Get the blobPrefixes value.
+     *
+     * @return the blobPrefixes value.
+     */
+    public List<BlobPrefix> blobPrefixes() {
+        return this.blobPrefixes;
+    }
+
+    /**
+     * Set the blobPrefixes value.
+     *
+     * @param blobPrefixes the blobPrefixes value to set.
+     * @return the BlobHierarchyListSegment object itself.
+     */
+    public BlobHierarchyListSegment withBlobPrefixes(List<BlobPrefix> blobPrefixes) {
+        this.blobPrefixes = blobPrefixes;
+        return this;
+    }
 
     /**
      * Get the blobItems value.
@@ -40,9 +66,9 @@ public final class FlatListSegment {
      * Set the blobItems value.
      *
      * @param blobItems the blobItems value to set.
-     * @return the FlatListSegment object itself.
+     * @return the BlobHierarchyListSegment object itself.
      */
-    public FlatListSegment withBlobItems(List<BlobItem> blobItems) {
+    public BlobHierarchyListSegment withBlobItems(List<BlobItem> blobItems) {
         this.blobItems = blobItems;
         return this;
     }

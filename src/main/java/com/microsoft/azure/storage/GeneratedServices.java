@@ -11,7 +11,7 @@
 package com.microsoft.azure.storage;
 
 import com.microsoft.azure.storage.blob.models.ListContainersIncludeType;
-import com.microsoft.azure.storage.blob.models.ListContainersResponse;
+import com.microsoft.azure.storage.blob.models.ListContainersSegmentResponse;
 import com.microsoft.azure.storage.blob.models.ServiceGetPropertiesResponse;
 import com.microsoft.azure.storage.blob.models.ServiceGetStatisticsResponse;
 import com.microsoft.azure.storage.blob.models.ServiceListContainersSegmentResponse;
@@ -288,9 +288,9 @@ public final class GeneratedServices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ListContainersResponse object if successful.
+     * @return the ListContainersSegmentResponse object if successful.
      */
-    public ListContainersResponse listContainersSegment(String prefix, String marker, Integer maxresults, ListContainersIncludeType include, Integer timeout, String requestId) {
+    public ListContainersSegmentResponse listContainersSegment(String prefix, String marker, Integer maxresults, ListContainersIncludeType include, Integer timeout, String requestId) {
         return listContainersSegmentAsync(prefix, marker, maxresults, include, timeout, requestId).blockingGet();
     }
 
@@ -307,7 +307,7 @@ public final class GeneratedServices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a ServiceFuture which will be completed with the result of the network request.
      */
-    public ServiceFuture<ListContainersResponse> listContainersSegmentAsync(String prefix, String marker, Integer maxresults, ListContainersIncludeType include, Integer timeout, String requestId, ServiceCallback<ListContainersResponse> serviceCallback) {
+    public ServiceFuture<ListContainersSegmentResponse> listContainersSegmentAsync(String prefix, String marker, Integer maxresults, ListContainersIncludeType include, Integer timeout, String requestId, ServiceCallback<ListContainersSegmentResponse> serviceCallback) {
         return ServiceFuture.fromBody(listContainersSegmentAsync(prefix, marker, maxresults, include, timeout, requestId), serviceCallback);
     }
 
@@ -346,7 +346,7 @@ public final class GeneratedServices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Single which performs the network request upon subscription.
      */
-    public Maybe<ListContainersResponse> listContainersSegmentAsync(String prefix, String marker, Integer maxresults, ListContainersIncludeType include, Integer timeout, String requestId) {
+    public Maybe<ListContainersSegmentResponse> listContainersSegmentAsync(String prefix, String marker, Integer maxresults, ListContainersIncludeType include, Integer timeout, String requestId) {
         return listContainersSegmentWithRestResponseAsync(prefix, marker, maxresults, include, timeout, requestId)
             .flatMapMaybe((ServiceListContainersSegmentResponse res) -> res.body() == null ? Maybe.empty() : Maybe.just(res.body()));
     }

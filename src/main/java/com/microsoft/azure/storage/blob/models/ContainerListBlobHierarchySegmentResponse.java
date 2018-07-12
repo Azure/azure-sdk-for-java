@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * Contains all response data for the listBlobHierarchySegment operation.
  */
-public final class ContainerListBlobHierarchySegmentResponse extends RestResponse<ContainerListBlobHierarchySegmentHeaders, ListBlobsHierarchyResponse> {
+public final class ContainerListBlobHierarchySegmentResponse extends RestResponse<ContainerListBlobHierarchySegmentHeaders, ListBlobsHierarchySegmentResponse> {
     /**
      * Creates an instance of ContainerListBlobHierarchySegmentResponse.
      *
@@ -25,7 +25,7 @@ public final class ContainerListBlobHierarchySegmentResponse extends RestRespons
      * @param rawHeaders the raw headers of the HTTP response.
      * @param body the deserialized body of the HTTP response.
      */
-    public ContainerListBlobHierarchySegmentResponse(int statusCode, ContainerListBlobHierarchySegmentHeaders headers, Map<String, String> rawHeaders, ListBlobsHierarchyResponse body) {
+    public ContainerListBlobHierarchySegmentResponse(int statusCode, ContainerListBlobHierarchySegmentHeaders headers, Map<String, String> rawHeaders, ListBlobsHierarchySegmentResponse body) {
         super(statusCode, headers, rawHeaders, body);
     }
 
@@ -41,7 +41,7 @@ public final class ContainerListBlobHierarchySegmentResponse extends RestRespons
      * @return the deserialized response body.
      */
     @Override
-    public ListBlobsHierarchyResponse body() {
+    public ListBlobsHierarchySegmentResponse body() {
         return super.body();
     }
 }

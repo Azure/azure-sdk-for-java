@@ -15,7 +15,8 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /**
- * The Metrics model.
+ * a summary of request statistics grouped by API in hour or minute aggregates
+ * for blobs.
  */
 @JacksonXmlRootElement(localName = "Metrics")
 public final class Metrics {

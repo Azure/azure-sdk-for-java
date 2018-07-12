@@ -18,7 +18,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  * An enumeration of blobs.
  */
 @JacksonXmlRootElement(localName = "EnumerationResults")
-public final class ListBlobsFlatResponse {
+public final class ListBlobsHierarchySegmentResponse {
     /**
      * The serviceEndpoint property.
      */
@@ -56,10 +56,10 @@ public final class ListBlobsFlatResponse {
     private String delimiter;
 
     /**
-     * The flatListSegment property.
+     * The segment property.
      */
     @JsonProperty(value = "Blobs")
-    private FlatListSegment flatListSegment;
+    private BlobHierarchyListSegment segment;
 
     /**
      * The nextMarker property.
@@ -80,9 +80,9 @@ public final class ListBlobsFlatResponse {
      * Set the serviceEndpoint value.
      *
      * @param serviceEndpoint the serviceEndpoint value to set.
-     * @return the ListBlobsFlatResponse object itself.
+     * @return the ListBlobsHierarchySegmentResponse object itself.
      */
-    public ListBlobsFlatResponse withServiceEndpoint(String serviceEndpoint) {
+    public ListBlobsHierarchySegmentResponse withServiceEndpoint(String serviceEndpoint) {
         this.serviceEndpoint = serviceEndpoint;
         return this;
     }
@@ -100,9 +100,9 @@ public final class ListBlobsFlatResponse {
      * Set the containerName value.
      *
      * @param containerName the containerName value to set.
-     * @return the ListBlobsFlatResponse object itself.
+     * @return the ListBlobsHierarchySegmentResponse object itself.
      */
-    public ListBlobsFlatResponse withContainerName(String containerName) {
+    public ListBlobsHierarchySegmentResponse withContainerName(String containerName) {
         this.containerName = containerName;
         return this;
     }
@@ -120,9 +120,9 @@ public final class ListBlobsFlatResponse {
      * Set the prefix value.
      *
      * @param prefix the prefix value to set.
-     * @return the ListBlobsFlatResponse object itself.
+     * @return the ListBlobsHierarchySegmentResponse object itself.
      */
-    public ListBlobsFlatResponse withPrefix(String prefix) {
+    public ListBlobsHierarchySegmentResponse withPrefix(String prefix) {
         this.prefix = prefix;
         return this;
     }
@@ -140,9 +140,9 @@ public final class ListBlobsFlatResponse {
      * Set the marker value.
      *
      * @param marker the marker value to set.
-     * @return the ListBlobsFlatResponse object itself.
+     * @return the ListBlobsHierarchySegmentResponse object itself.
      */
-    public ListBlobsFlatResponse withMarker(String marker) {
+    public ListBlobsHierarchySegmentResponse withMarker(String marker) {
         this.marker = marker;
         return this;
     }
@@ -160,9 +160,9 @@ public final class ListBlobsFlatResponse {
      * Set the maxResults value.
      *
      * @param maxResults the maxResults value to set.
-     * @return the ListBlobsFlatResponse object itself.
+     * @return the ListBlobsHierarchySegmentResponse object itself.
      */
-    public ListBlobsFlatResponse withMaxResults(int maxResults) {
+    public ListBlobsHierarchySegmentResponse withMaxResults(int maxResults) {
         this.maxResults = maxResults;
         return this;
     }
@@ -180,30 +180,30 @@ public final class ListBlobsFlatResponse {
      * Set the delimiter value.
      *
      * @param delimiter the delimiter value to set.
-     * @return the ListBlobsFlatResponse object itself.
+     * @return the ListBlobsHierarchySegmentResponse object itself.
      */
-    public ListBlobsFlatResponse withDelimiter(String delimiter) {
+    public ListBlobsHierarchySegmentResponse withDelimiter(String delimiter) {
         this.delimiter = delimiter;
         return this;
     }
 
     /**
-     * Get the flatListSegment value.
+     * Get the segment value.
      *
-     * @return the flatListSegment value.
+     * @return the segment value.
      */
-    public FlatListSegment flatListSegment() {
-        return this.flatListSegment;
+    public BlobHierarchyListSegment segment() {
+        return this.segment;
     }
 
     /**
-     * Set the flatListSegment value.
+     * Set the segment value.
      *
-     * @param flatListSegment the flatListSegment value to set.
-     * @return the ListBlobsFlatResponse object itself.
+     * @param segment the segment value to set.
+     * @return the ListBlobsHierarchySegmentResponse object itself.
      */
-    public ListBlobsFlatResponse withFlatListSegment(FlatListSegment flatListSegment) {
-        this.flatListSegment = flatListSegment;
+    public ListBlobsHierarchySegmentResponse withSegment(BlobHierarchyListSegment segment) {
+        this.segment = segment;
         return this;
     }
 
@@ -220,9 +220,9 @@ public final class ListBlobsFlatResponse {
      * Set the nextMarker value.
      *
      * @param nextMarker the nextMarker value to set.
-     * @return the ListBlobsFlatResponse object itself.
+     * @return the ListBlobsHierarchySegmentResponse object itself.
      */
-    public ListBlobsFlatResponse withNextMarker(String nextMarker) {
+    public ListBlobsHierarchySegmentResponse withNextMarker(String nextMarker) {
         this.nextMarker = nextMarker;
         return this;
     }
