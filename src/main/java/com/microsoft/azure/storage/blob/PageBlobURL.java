@@ -95,6 +95,9 @@ public final class PageBlobURL extends BlobURL {
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
      *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobURL.create")]
+     *
      * @param size
      *      Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
      *      512-byte boundary.
@@ -150,6 +153,9 @@ public final class PageBlobURL extends BlobURL {
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
      *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobURL.uploadPages")]
+     *
      * @param pageRange
      *      A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start offset must
      *      be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges are
@@ -187,6 +193,9 @@ public final class PageBlobURL extends BlobURL {
      * Frees the specified pages from the page blob.
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
+     *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobURL.clearPages")]
      *
      * @param pageRange
      *      A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start offset must

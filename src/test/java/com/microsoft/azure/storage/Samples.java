@@ -41,7 +41,6 @@ import java.security.InvalidKeyException;
 import java.time.OffsetDateTime;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -131,7 +130,7 @@ public class Samples {
                                 1)))
                 .flatMap(containersListBlobFlatSegmentResponse ->
                         // The asynchronous requests require we use recursion to continue our listing.
-                        listBlobsHelper(containerURL, containersListBlobFlatSegmentResponse))
+                        listBlobsFlatHelper(containerURL, containersListBlobFlatSegmentResponse))
                 .flatMap(containersListBlobFlatSegmentResponse ->
                         // Delete the blob we created earlier.
                         blobURL.delete(null, null))
@@ -146,7 +145,8 @@ public class Samples {
                 .blockingGet();
     }
 
-    public Single<ContainerListBlobFlatSegmentResponse> listBlobsHelper(
+    // <list_blobs_flat_helper>
+    public Single<ContainerListBlobFlatSegmentResponse> listBlobsFlatHelper(
             ContainerURL containerURL, ContainerListBlobFlatSegmentResponse response) {
 
         // Process the blobs returned in this result segment (if the segment is empty, blob() will be null.
@@ -177,9 +177,54 @@ public class Samples {
             return containerURL.listBlobsFlatSegment(nextMarker, new ListBlobsOptions(null, null,
                     1))
                     .flatMap(containersListBlobFlatSegmentResponse ->
-                            listBlobsHelper(containerURL, containersListBlobFlatSegmentResponse));
+                            listBlobsFlatHelper(containerURL, containersListBlobFlatSegmentResponse));
         }
     }
+    // </list_blobs_flat_helper>
+
+    // <list_blobs_hierarchy_helper>
+    public Single<ContainerListBlobHierarchySegmentResponse> listBlobsHierarchyHelper(
+            ContainerURL containerURL, ContainerListBlobHierarchySegmentResponse response) {
+
+        // Process the blobs returned in this result segment (if the segment is empty, blob() will be null.
+        if (response.body().segment().blobItems() != null) {
+            for (BlobItem b : response.body().segment().blobItems()) {
+                String output = "Blob name: " + b.name();
+                if (b.snapshot() != null) {
+                    output += ", Snapshot: " + b.snapshot();
+                }
+                System.out.println(output);
+            }
+        }
+
+        // Process the blobsPrefixes returned in this result segment
+        if (response.body().segment().blobPrefixes() != null) {
+            for (BlobPrefix bp : response.body().segment().blobPrefixes()) {
+                // Process the prefixes.
+            }
+        }
+
+        // If there is not another segment, return this response as the final response.
+        if (response.body().nextMarker() == null) {
+            return Single.just(response);
+        } else {
+            /*
+             IMPORTANT: ListBlobsFlatSegment returns the start of the next segment; you MUST use this to get the next
+             segment (after processing the current result segment
+             */
+            String nextMarker = response.body().nextMarker();
+
+            /*
+            The presence of the marker indicates that there are more blobs to list, so we make another call to
+            listBlobsFlatSegment and pass the result through this helper function.
+             */
+            return containerURL.listBlobsHierarchySegment(nextMarker, response.body().delimiter(),
+                    new ListBlobsOptions(null, null,1))
+                    .flatMap(containersListBlobHierarchySegmentResponse ->
+                            listBlobsHierarchyHelper(containerURL, containersListBlobHierarchySegmentResponse));
+        }
+    }
+    // </list_blobs_hierarchy_helper>
 
     // This example shows how you can configure a pipeline for making HTTP requests to the Azure Storage blob Service.
     @Test
@@ -1192,7 +1237,7 @@ public class Samples {
                                                      The asynchronous requests require we use recursion to continue our
                                                      listing.
                                                      */
-                                                    listBlobsHelper(containerURL, response2))
+                                                    listBlobsFlatHelper(containerURL, response2))
                                             .flatMap(response2 ->
                                                     blobURL.startCopyFromURL(snapshotURL.toURL(), null,
                                                             null, null));
@@ -1265,7 +1310,6 @@ public class Samples {
                     waitForCopyHelper(blobURL, response1));
 
     }
-
     // </start_copy_helper>
 
     // This example shows how to copy a large file in blocks (chunks) to a block blob.
@@ -1868,8 +1912,79 @@ public class Samples {
         // </container_basic>
 
         // <container_policy>
-        
+        containerURL.create(null, null)
+                .flatMap(response -> {
+                    /*
+                    Create a SignedIdentifier that gives read permissions and expires one day for now. This means that
+                    any SAS associated with this policy has these properties.
+                     */
+                    BlobSASPermission perms = new BlobSASPermission();
+                    perms.read = true;
+                    SignedIdentifier id = new SignedIdentifier().withId("policy1").withAccessPolicy(
+                            new AccessPolicy().withPermission(perms.toString()).withExpiry(OffsetDateTime.now()
+                                    .plusDays(1)));
+                    // Give public access to the blobs in this container and apply the SignedIdentifier.
+                    return containerURL.setAccessPolicy(PublicAccessType.BLOB, Arrays.asList(id), null);
+                })
+                .subscribe();
         // </container_policy>
+
+        // <list_blobs_flat>
+        containerURL.listBlobsFlatSegment(null, new ListBlobsOptions(null, null,
+                1))
+                .flatMap(containersListBlobFlatSegmentResponse ->
+                        // The asynchronous requests require we use recursion to continue our listing.
+                        listBlobsFlatHelper(containerURL, containersListBlobFlatSegmentResponse))
+                .subscribe();
+        // </list_blobs_flat>
+
+        // <list_blobs_hierarchy>
+        containerURL.listBlobsHierarchySegment(null, "my_delimiter",
+                new ListBlobsOptions(null, null,1))
+                .flatMap(containersListBlobHierarchySegmentResponse ->
+                        // The asynchronous requests require we use recursion to continue our listing.
+                        listBlobsHierarchyHelper(containerURL, containersListBlobHierarchySegmentResponse))
+                .subscribe();
+        // </list_blobs_hierarchy>
+
+        PageBlobURL pageBlobURL = containerURL.createPageBlobURL("pageBlob");
+        // <page_blob_basic>
+        containerURL.create(null, null)
+                .flatMap(response ->
+                        // Create the page blob with 4 512-byte pages.
+                        pageBlobURL.create(4 * PageBlobURL.PAGE_BYTES, null, null,
+                                null, null))
+                .flatMap(response -> {
+                    /*
+                     Upload data to a page.
+                     NOTE: The page range must start on a multiple of the page size and end on
+                     (multiple of page size) - 1.
+                     */
+                    byte[] pageData = new byte[PageBlobURL.PAGE_BYTES];
+                    for (int i = 0; i < PageBlobURL.PAGE_BYTES; i++) {
+                        pageData[i] = 'a';
+                    }
+                    return pageBlobURL.uploadPages(new PageRange().withStart(0).withEnd(PageBlobURL.PAGE_BYTES - 1),
+                            Flowable.just(ByteBuffer.wrap(pageData)), null);
+                })
+                .flatMap(response ->
+                        // Get the page ranges which have valid data.
+                        pageBlobURL.getPageRanges(null, null))
+                .flatMap(response -> {
+                    // Print the pages that are valid.
+                    for (PageRange range : response.body().pageRange()) {
+                        System.out.println(String.format(Locale.ROOT, "Start=%d, End=%d\n", range.start(),
+                                range.end()));
+                    }
+
+                    // Clear and invalidate the first range.
+                    return pageBlobURL.clearPages(new PageRange().withStart(0).withEnd(PageBlobURL.PAGE_BYTES - 1),
+                            null);
+                })
+                .flatMap(response ->
+                        pageBlobURL.resize())
+                .subscribe();
+        // </page_blob_basic>
     }
 }
 

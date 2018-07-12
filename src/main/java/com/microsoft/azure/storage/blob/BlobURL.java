@@ -136,8 +136,6 @@ public class BlobURL extends StorageURL {
      *
      * @apiNote
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=start_copy "Sample code for BlobURL.startCopyFromURL")]
-     *
-     * @apiNote
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=start_copy_helper "Helper for start_copy sample.")]
      *
      * @param sourceURL
