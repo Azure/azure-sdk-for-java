@@ -29,7 +29,7 @@ public class PerformanceTierPropertiesInner {
     private List<PerformanceTierServiceLevelObjectives> serviceLevelObjectives;
 
     /**
-     * Get the id value.
+     * Get iD of the performance tier.
      *
      * @return the id value
      */
@@ -38,7 +38,7 @@ public class PerformanceTierPropertiesInner {
     }
 
     /**
-     * Set the id value.
+     * Set iD of the performance tier.
      *
      * @param id the id value to set
      * @return the PerformanceTierPropertiesInner object itself.
@@ -49,7 +49,7 @@ public class PerformanceTierPropertiesInner {
     }
 
     /**
-     * Get the serviceLevelObjectives value.
+     * Get service level objectives associated with the performance tier.
      *
      * @return the serviceLevelObjectives value
      */
@@ -58,7 +58,7 @@ public class PerformanceTierPropertiesInner {
     }
 
     /**
-     * Set the serviceLevelObjectives value.
+     * Set service level objectives associated with the performance tier.
      *
      * @param serviceLevelObjectives the serviceLevelObjectives value to set
      * @return the PerformanceTierPropertiesInner object itself.

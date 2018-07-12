@@ -18,14 +18,14 @@ import java.util.List;
 import com.microsoft.azure.management.postgresql.v2017_12_01.Database;
 
 class DatabasesImpl extends WrapperImpl<DatabasesInner> implements Databases {
-    private final PostgreSQLManager manager;
+    private final DBforPostgreSQLManager manager;
 
-    DatabasesImpl(PostgreSQLManager manager) {
+    DatabasesImpl(DBforPostgreSQLManager manager) {
         super(manager.inner().databases());
         this.manager = manager;
     }
 
-    public PostgreSQLManager manager() {
+    public DBforPostgreSQLManager manager() {
         return this.manager;
     }
 

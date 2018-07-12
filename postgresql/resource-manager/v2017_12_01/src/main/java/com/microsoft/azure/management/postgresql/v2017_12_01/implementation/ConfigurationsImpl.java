@@ -17,14 +17,14 @@ import java.util.List;
 import com.microsoft.azure.management.postgresql.v2017_12_01.Configuration;
 
 class ConfigurationsImpl extends WrapperImpl<ConfigurationsInner> implements Configurations {
-    private final PostgreSQLManager manager;
+    private final DBforPostgreSQLManager manager;
 
-    ConfigurationsImpl(PostgreSQLManager manager) {
+    ConfigurationsImpl(DBforPostgreSQLManager manager) {
         super(manager.inner().configurations());
         this.manager = manager;
     }
 
-    public PostgreSQLManager manager() {
+    public DBforPostgreSQLManager manager() {
         return this.manager;
     }
 

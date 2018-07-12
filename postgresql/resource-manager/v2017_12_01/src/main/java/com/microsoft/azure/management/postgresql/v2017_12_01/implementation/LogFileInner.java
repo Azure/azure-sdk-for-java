@@ -49,7 +49,7 @@ public class LogFileInner extends ProxyResource {
     private String url;
 
     /**
-     * Get the sizeInKB value.
+     * Get size of the log file.
      *
      * @return the sizeInKB value
      */
@@ -58,7 +58,7 @@ public class LogFileInner extends ProxyResource {
     }
 
     /**
-     * Set the sizeInKB value.
+     * Set size of the log file.
      *
      * @param sizeInKB the sizeInKB value to set
      * @return the LogFileInner object itself.
@@ -69,7 +69,7 @@ public class LogFileInner extends ProxyResource {
     }
 
     /**
-     * Get the createdTime value.
+     * Get creation timestamp of the log file.
      *
      * @return the createdTime value
      */
@@ -78,7 +78,7 @@ public class LogFileInner extends ProxyResource {
     }
 
     /**
-     * Get the lastModifiedTime value.
+     * Get last modified timestamp of the log file.
      *
      * @return the lastModifiedTime value
      */
@@ -87,7 +87,7 @@ public class LogFileInner extends ProxyResource {
     }
 
     /**
-     * Get the logFileType value.
+     * Get type of the log file.
      *
      * @return the logFileType value
      */
@@ -96,7 +96,7 @@ public class LogFileInner extends ProxyResource {
     }
 
     /**
-     * Set the logFileType value.
+     * Set type of the log file.
      *
      * @param logFileType the logFileType value to set
      * @return the LogFileInner object itself.
@@ -107,7 +107,7 @@ public class LogFileInner extends ProxyResource {
     }
 
     /**
-     * Get the url value.
+     * Get the url to download the log file from.
      *
      * @return the url value
      */
@@ -116,7 +116,7 @@ public class LogFileInner extends ProxyResource {
     }
 
     /**
-     * Set the url value.
+     * Set the url to download the log file from.
      *
      * @param url the url value to set
      * @return the LogFileInner object itself.

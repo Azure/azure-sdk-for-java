@@ -14,15 +14,15 @@ import rx.Observable;
 import org.joda.time.DateTime;
 
 class LogFileImpl extends WrapperImpl<LogFileInner> implements LogFile {
-    private final PostgreSQLManager manager;
+    private final DBforPostgreSQLManager manager;
 
-    LogFileImpl(LogFileInner inner,  PostgreSQLManager manager) {
+    LogFileImpl(LogFileInner inner,  DBforPostgreSQLManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public PostgreSQLManager manager() {
+    public DBforPostgreSQLManager manager() {
         return this.manager;
     }
 
