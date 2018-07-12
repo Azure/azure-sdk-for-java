@@ -232,6 +232,9 @@ public final class PageBlobURL extends BlobURL {
      * Returns the list of valid page ranges for a page blob or snapshot of a page blob.
      * For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/get-page-ranges">Azure Docs</a>.
      *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobURL.getPageRanges")]
+     *
      * @param blobRange
      *      {@link BlobRange}
      * @param accessConditions
@@ -257,6 +260,9 @@ public final class PageBlobURL extends BlobURL {
     /**
      * Gets the collection of page ranges that differ between a specified snapshot and this page blob.
      * For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/get-page-ranges">Azure Docs</a>.
+     *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_diff "Sample code for PageBlobURL.getPageRangesDiff")]
      *
      * @param blobRange
      *     {@link BlobRange}
@@ -292,6 +298,9 @@ public final class PageBlobURL extends BlobURL {
      * Resizes the page blob to the specified size (which must be a multiple of 512).
      * For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-properties">Azure Docs</a>.
      *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobURL.resize")]
+     *
      * @param size
      *      Resizes a page blob to the specified size. If the specified value is less than the current size of the
      *      blob, then all pages above the specified value are cleared.
@@ -321,6 +330,10 @@ public final class PageBlobURL extends BlobURL {
 
     /**
      * Sets the page blob's sequence number.
+     * For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-properties">Azure Docs</a>.
+     *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobURL.updateSequenceNumber")]
      *
      * @param action
      *      Indicates how the service should modify the blob's sequence number.

@@ -1982,9 +1982,36 @@ public class Samples {
                             null);
                 })
                 .flatMap(response ->
-                        pageBlobURL.resize())
+                        pageBlobURL.resize(1024, null))
+                .flatMap(rsponse ->
+                        pageBlobURL.updateSequenceNumber(SequenceNumberActionType.INCREMENT, null,
+                                null))
                 .subscribe();
         // </page_blob_basic>
+
+        // <page_diff>
+        pageBlobURL.create(4 * PageBlobURL.PAGE_BYTES, null, null,
+                null, null)
+                .flatMap(response ->
+                        pageBlobURL.createSnapshot(null, null))
+                .flatMap(response -> {
+                    /*
+                     Upload data to a page.
+                     NOTE: The page range must start on a multiple of the page size and end on
+                     (multiple of page size) - 1.
+                     */
+                    byte[] pageData = new byte[PageBlobURL.PAGE_BYTES];
+                    for (int i = 0; i < PageBlobURL.PAGE_BYTES; i++) {
+                        pageData[i] = 'a';
+                    }
+                    return pageBlobURL.uploadPages(new PageRange().withStart(0).withEnd(PageBlobURL.PAGE_BYTES - 1),
+                            Flowable.just(ByteBuffer.wrap(pageData)), null)
+                            // We still need access to the snapshotResponse.
+                            .flatMap(uploadResponse ->
+                                    pageBlobURL.getPageRangesDiff(null, response.headers().snapshot(),
+                                            null));
+                });
+        // </page_diff>
     }
 }
 
