@@ -56,7 +56,7 @@ public class BillingAccountsInner {
         Observable<Response<ResponseBody>> list(@Query("api-version") String apiVersion, @Query("$expand") String expand, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_05_31_preview.BillingAccounts listWithCreateProjectPermission" })
-        @GET("providers/Microsoft.Billing/listBillingAccountsWithCreateProjectPermission ")
+        @GET("providers/Microsoft.Billing/listBillingAccountsWithCreateProjectPermission")
         Observable<Response<ResponseBody>> listWithCreateProjectPermission(@Query("api-version") String apiVersion, @Query("$expand") String expand, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_05_31_preview.BillingAccounts get" })
