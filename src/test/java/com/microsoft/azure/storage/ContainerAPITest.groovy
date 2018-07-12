@@ -517,6 +517,26 @@ class ContainerAPITest extends APISpec {
         blobs.size() == 4 // Normal, copy, metadata, uncommitted
     }
 
+    def "List blobs flat options deleted"() {
+        setup:
+        enableSoftDelete()
+        String name = generateBlobName()
+        AppendBlobURL bu = cu.createAppendBlobURL(name)
+        bu.create(null, null, null).blockingGet()
+        bu.delete(null, null).blockingGet()
+
+        when:
+        List<BlobItem> blobs = cu.listBlobsFlatSegment(null, new ListBlobsOptions(new BlobListingDetails(
+                false, false, false,false, true), null,
+                null)).blockingGet().body().segment().blobItems()
+
+        then:
+        blobs.get(0).name() == name
+        blobs.size() == 1
+
+        disableSoftDelete() == null // Must produce a true value or test will fail.
+    }
+
     def "List blobs flat options prefix"() {
         setup:
         ListBlobsOptions options = new ListBlobsOptions(null, "a", null)
@@ -609,7 +629,7 @@ class ContainerAPITest extends APISpec {
     def "List blobs hier options copy"() {
         setup:
         ListBlobsOptions options = new ListBlobsOptions(new BlobListingDetails(
-                true, false, false, false),
+                true, false, false, false, false),
                 null, null)
         String normalName = "a" + generateBlobName()
         String copyName = "c" + generateBlobName()
@@ -635,7 +655,7 @@ class ContainerAPITest extends APISpec {
     def "List blobs hier options metadata"() {
         setup:
         ListBlobsOptions options = new ListBlobsOptions(new BlobListingDetails(
-                false, true, false, false),
+                false, true, false, false, false),
                 null, null)
         String normalName = "a" + generateBlobName()
         String copyName = "c" + generateBlobName()
@@ -659,7 +679,7 @@ class ContainerAPITest extends APISpec {
     def "List blobs hier options uncommitted"() {
         setup:
         ListBlobsOptions options = new ListBlobsOptions(new BlobListingDetails(
-                false, false, false, true),
+                false, false, false, true, false),
                 null, null)
         String normalName = "a" + generateBlobName()
         String copyName = "c" + generateBlobName()
@@ -675,6 +695,27 @@ class ContainerAPITest extends APISpec {
         blobs.get(0).name() == normalName
         blobs.get(3).name() == uncommittedName
         blobs.size() == 4 // Normal, copy, metadata, uncommitted
+    }
+
+    def "List blobs hier options deleted"() {
+        setup:
+        enableSoftDelete()
+        String name = generateBlobName()
+        AppendBlobURL bu = cu.createAppendBlobURL(name)
+        bu.create(null, null, null).blockingGet()
+        bu.delete(null, null).blockingGet()
+
+        when:
+        List<BlobItem> blobs = cu.listBlobsHierarchySegment(null, "",
+                new ListBlobsOptions(new BlobListingDetails(false, false, false,
+                        false, true), null,null)).blockingGet()
+                .body().segment().blobItems()
+
+        then:
+        blobs.get(0).name() == name
+        blobs.size() == 1
+
+        disableSoftDelete() == null
     }
 
     def "List blobs hier options prefix"() {
@@ -698,7 +739,8 @@ class ContainerAPITest extends APISpec {
     def "List blobs hier options maxResults"() {
         setup:
         ListBlobsOptions options = new ListBlobsOptions(new BlobListingDetails(
-                true, false, false, true), null, 1)
+                true, false, false, true, false), null,
+                1)
         String normalName = "a" + generateBlobName()
         String copyName = "c" + generateBlobName()
         String metadataName = "m" + generateBlobName()

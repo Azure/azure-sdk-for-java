@@ -569,11 +569,6 @@ public class BlobURL extends StorageURL {
                 httpAccessConditions.getIfMatch().toString(), httpAccessConditions.getIfNoneMatch().toString(),
                 null));
     }
-<<<<<<< HEAD
 
-    //TODO: Undelete
-=======
-    //TODO: Set Tier
->>>>>>> soft delete support. no tests or samples yet
     // TODO: Update links
 }

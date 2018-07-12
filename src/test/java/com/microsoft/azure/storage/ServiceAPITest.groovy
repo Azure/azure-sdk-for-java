@@ -45,7 +45,7 @@ class ServiceAPITest extends APISpec {
         primaryServiceURL.setProperties(originalProps).blockingGet()
     }
 
-    def "Service list containers"() {
+    def "List containers"() {
         setup:
         ServiceListContainersSegmentResponse response =
                 primaryServiceURL.listContainersSegment(null, new ListContainersOptions(null,
@@ -59,7 +59,7 @@ class ServiceAPITest extends APISpec {
         response.headers().version() != null
     }
 
-    def "Service list containers marker"() {
+    def "List containers marker"() {
         setup:
         for (int i = 0; i < 10; i++) {
             ContainerURL cu = primaryServiceURL.createContainerURL(generateContainerName())
@@ -79,7 +79,7 @@ class ServiceAPITest extends APISpec {
         firstContainerName < response.body().containerItems().get(0).name()
     }
 
-    def "Service list containers details"() {
+    def "List containers details"() {
         setup:
         Metadata metadata = new Metadata()
         metadata.put("foo", "bar")
@@ -95,7 +95,7 @@ class ServiceAPITest extends APISpec {
         cu.delete(null).blockingGet().statusCode() == 202
     }
 
-    def "Service list containers maxResults"() {
+    def "List containers maxResults"() {
         setup:
         for (int i=0; i<11; i++) {
             primaryServiceURL.createContainerURL(generateContainerName()).create(null, null)
@@ -107,7 +107,7 @@ class ServiceAPITest extends APISpec {
                 .blockingGet().body().containerItems().size() == 10
     }
 
-    def "Service list containers error"() {
+    def "List containers error"() {
         when:
         primaryServiceURL.listContainersSegment("garbage", null).blockingGet()
 
@@ -151,7 +151,7 @@ class ServiceAPITest extends APISpec {
                 receivedProperties.deleteRetentionPolicy().days() == 5
     }
 
-    def "Service set get properties"() {
+    def "Set get properties"() {
         when:
         RetentionPolicy retentionPolicy = new RetentionPolicy().withDays(5).withEnabled(true)
         Logging logging = new Logging().withRead(true).withVersion("1.0")
@@ -186,7 +186,7 @@ class ServiceAPITest extends APISpec {
 
    // In java, we don't have support from the validator for checking the bounds on days. The service will catch these.
 
-    def "Service set props error"() {
+    def "Set props error"() {
         when:
         new ServiceURL(new URL("https://error.blob.core.windows.net"),
                 StorageURL.createPipeline(primaryCreds, new PipelineOptions()))
@@ -196,7 +196,7 @@ class ServiceAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    def "service get props error"() {
+    def "Get props error"() {
         when:
         new ServiceURL(new URL("https://error.blob.core.windows.net"),
                 StorageURL.createPipeline(primaryCreds, new PipelineOptions())).getProperties().blockingGet()
@@ -205,7 +205,7 @@ class ServiceAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    def "Service get stats"() {
+    def "Get stats"() {
         setup:
         BlobURLParts parts = URLParser.parse(primaryServiceURL.toURL())
         parts.host = "xclientdev3-secondary.blob.core.windows.net"
@@ -221,7 +221,7 @@ class ServiceAPITest extends APISpec {
         response.body().geoReplication().lastSyncTime() != null
     }
 
-    def "Service get stats error"() {
+    def "Get stats error"() {
         when:
         primaryServiceURL.getStatistics().blockingGet()
 

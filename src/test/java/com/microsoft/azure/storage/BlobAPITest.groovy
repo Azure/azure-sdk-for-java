@@ -1036,4 +1036,29 @@ class BlobAPITest extends APISpec {
         then:
         thrown(IllegalArgumentException)
     }
+
+    def "Undelete"() {
+        setup:
+        enableSoftDelete()
+        bu.delete(null, null).blockingGet()
+
+        when:
+        bu.undelete().blockingGet()
+        bu.getProperties(null).blockingGet()
+
+        then:
+        notThrown(StorageException)
+
+        disableSoftDelete() == null
+    }
+
+    def "Undelete error"() {
+        bu = cu.createBlockBlobURL(generateBlobName())
+
+        when:
+        bu.undelete().blockingGet()
+
+        then:
+        thrown(StorageException)
+    }
 }
