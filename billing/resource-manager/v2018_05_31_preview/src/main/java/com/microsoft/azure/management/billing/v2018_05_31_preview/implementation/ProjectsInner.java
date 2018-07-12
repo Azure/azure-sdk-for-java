@@ -71,10 +71,6 @@ public class ProjectsInner {
         @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountId}/listProjectsWithCreateProjectPermission")
         Observable<Response<ResponseBody>> listWithCreateSubscriptionPermission(@Path("billingAccountId") String billingAccountId, @Query("api-version") String apiVersion, @Query("$expand") String expand, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_05_31_preview.Projects create1" })
-        @POST("providers/Microsoft.Billing/billingAccounts/{billingAccountId}/listProjectsWithCreateProjectPermission")
-        Observable<Response<ResponseBody>> create1(@Path("billingAccountId") String billingAccountId, @Query("api-version") String apiVersion, @Body ProjectInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_05_31_preview.Projects get" })
         @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountId}/projects/{projectId}")
         Observable<Response<ResponseBody>> get(@Path("billingAccountId") String billingAccountId, @Path("projectId") String projectId, @Query("api-version") String apiVersion, @Query("$expand") String expand, @Query("$filter") String filter, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -469,90 +465,6 @@ public class ProjectsInner {
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .buildWithHeaders(response, ProjectsListWithCreateSubscriptionPermissionHeaders.class);
-    }
-
-    /**
-     * The operation to create a project.
-     *
-     * @param billingAccountId billing Account Id.
-     * @param parameters Parameters supplied to the Create Project operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the ProjectInner object if successful.
-     */
-    public ProjectInner create1(String billingAccountId, ProjectInner parameters) {
-        return create1WithServiceResponseAsync(billingAccountId, parameters).toBlocking().single().body();
-    }
-
-    /**
-     * The operation to create a project.
-     *
-     * @param billingAccountId billing Account Id.
-     * @param parameters Parameters supplied to the Create Project operation.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<ProjectInner> create1Async(String billingAccountId, ProjectInner parameters, final ServiceCallback<ProjectInner> serviceCallback) {
-        return ServiceFuture.fromResponse(create1WithServiceResponseAsync(billingAccountId, parameters), serviceCallback);
-    }
-
-    /**
-     * The operation to create a project.
-     *
-     * @param billingAccountId billing Account Id.
-     * @param parameters Parameters supplied to the Create Project operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ProjectInner object
-     */
-    public Observable<ProjectInner> create1Async(String billingAccountId, ProjectInner parameters) {
-        return create1WithServiceResponseAsync(billingAccountId, parameters).map(new Func1<ServiceResponse<ProjectInner>, ProjectInner>() {
-            @Override
-            public ProjectInner call(ServiceResponse<ProjectInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * The operation to create a project.
-     *
-     * @param billingAccountId billing Account Id.
-     * @param parameters Parameters supplied to the Create Project operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ProjectInner object
-     */
-    public Observable<ServiceResponse<ProjectInner>> create1WithServiceResponseAsync(String billingAccountId, ProjectInner parameters) {
-        if (billingAccountId == null) {
-            throw new IllegalArgumentException("Parameter billingAccountId is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        if (parameters == null) {
-            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
-        }
-        Validator.validate(parameters);
-        return service.create1(billingAccountId, this.client.apiVersion(), parameters, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ProjectInner>>>() {
-                @Override
-                public Observable<ServiceResponse<ProjectInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<ProjectInner> clientResponse = create1Delegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<ProjectInner> create1Delegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ProjectInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(201, new TypeToken<ProjectInner>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
     }
 
     /**

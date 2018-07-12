@@ -80,16 +80,4 @@ class ProjectsImpl extends WrapperImpl<ProjectsInner> implements Projects {
         });
     }
 
-    @Override
-    public Observable<Project> create1Async(String billingAccountId, ProjectInner parameters) {
-        ProjectsInner client = this.inner();
-        return client.create1Async(billingAccountId, parameters)
-        .map(new Func1<ProjectInner, Project>() {
-            @Override
-            public Project call(ProjectInner inner) {
-                return new ProjectImpl(inner, manager());
-            }
-        });
-    }
-
 }
