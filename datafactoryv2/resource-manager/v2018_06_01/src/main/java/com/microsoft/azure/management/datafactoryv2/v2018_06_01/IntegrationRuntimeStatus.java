@@ -39,7 +39,7 @@ public class IntegrationRuntimeStatus {
     /**
      * The state of integration runtime. Possible values include: 'Initial',
      * 'Stopped', 'Started', 'Starting', 'Stopping', 'NeedRegistration',
-     * 'Online', 'Limited', 'Offline'.
+     * 'Online', 'Limited', 'Offline', 'AccessDenied'.
      */
     @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private IntegrationRuntimeState state;
@@ -74,7 +74,7 @@ public class IntegrationRuntimeStatus {
     }
 
     /**
-     * Get the state of integration runtime. Possible values include: 'Initial', 'Stopped', 'Started', 'Starting', 'Stopping', 'NeedRegistration', 'Online', 'Limited', 'Offline'.
+     * Get the state of integration runtime. Possible values include: 'Initial', 'Stopped', 'Started', 'Starting', 'Stopping', 'NeedRegistration', 'Online', 'Limited', 'Offline', 'AccessDenied'.
      *
      * @return the state value
      */
