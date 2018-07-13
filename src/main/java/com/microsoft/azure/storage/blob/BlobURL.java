@@ -366,12 +366,14 @@ public class BlobURL extends StorageURL {
 
     /**
      * Sets the tier on a blob. The operation is allowed on a page blob in a premium storage account or a block blob in
-     * a block blob in a blob storage account (locally redundant storage only). A premium page blob's tier determines
-     * the allowed size, IOPS, and bandwidth of the blob. A block blob's tier determines the Hot/Cool/Archive storage
-     * type. This does not update the blob's etag. For detailed information about block blob level tiering see the
+     * a blob storage or GPV2 account. A premium page blob's tier determines the allowed size, IOPS, and bandwidth of
+     * the blob. A block blob's tier determines the Hot/Cool/Archive storage type. This does not update the blob's etag.
+     * For detailed information about block blob level tiering see the
      * <a href="https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blob-storage-tiers.">Azure Docs</a>.
      * @param tier
+     *      The new tier for the blob.
      * @return
+     *      Emits the successful response.
      */
     public Single<BlobSetTierResponse> setTier(AccessTier tier) {
         Utility.assertNotNull("tier", tier);
