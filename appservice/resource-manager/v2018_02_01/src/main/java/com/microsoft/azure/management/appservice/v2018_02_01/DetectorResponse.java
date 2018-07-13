@@ -9,23 +9,21 @@
 package com.microsoft.azure.management.appservice.v2018_02_01;
 
 import com.microsoft.azure.arm.model.HasInner;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.DetectorResponseInner;
+import com.microsoft.azure.arm.model.Indexable;
+import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.DetectorDefinitionInner;
+import java.util.List;
 
 /**
- * Type representing DetectorDefinition.
+ * Type representing DetectorResponse.
  */
-public interface DetectorDefinition extends HasInner<DetectorDefinitionInner>, HasManager<CertificateRegistrationManager> {
+public interface DetectorResponse extends HasInner<DetectorResponseInner>, Indexable, Refreshable<DetectorResponse>, HasManager<CertificateRegistrationManager> {
     /**
-     * @return the description value.
+     * @return the dataset value.
      */
-    String description();
-
-    /**
-     * @return the displayName value.
-     */
-    String displayName();
+    List<DiagnosticData> dataset();
 
     /**
      * @return the id value.
@@ -33,24 +31,19 @@ public interface DetectorDefinition extends HasInner<DetectorDefinitionInner>, H
     String id();
 
     /**
-     * @return the isEnabled value.
-     */
-    Boolean isEnabled();
-
-    /**
      * @return the kind value.
      */
     String kind();
 
     /**
+     * @return the metadata value.
+     */
+    DetectorInfo metadata();
+
+    /**
      * @return the name value.
      */
     String name();
-
-    /**
-     * @return the rank value.
-     */
-    Double rank();
 
     /**
      * @return the type value.

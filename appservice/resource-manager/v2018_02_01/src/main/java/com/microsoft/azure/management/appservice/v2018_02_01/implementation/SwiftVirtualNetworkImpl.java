@@ -8,12 +8,12 @@
 
 package com.microsoft.azure.management.appservice.v2018_02_01.implementation;
 
-import com.microsoft.azure.management.appservice.v2018_02_01.DetectorDefinition;
+import com.microsoft.azure.management.appservice.v2018_02_01.SwiftVirtualNetwork;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 
-class DetectorDefinitionImpl extends WrapperImpl<DetectorDefinitionInner> implements DetectorDefinition {
+class SwiftVirtualNetworkImpl extends WrapperImpl<SwiftVirtualNetworkInner> implements SwiftVirtualNetwork {
     private final CertificateRegistrationManager manager;
-    DetectorDefinitionImpl(DetectorDefinitionInner inner, CertificateRegistrationManager manager) {
+    SwiftVirtualNetworkImpl(SwiftVirtualNetworkInner inner, CertificateRegistrationManager manager) {
         super(inner);
         this.manager = manager;
     }
@@ -24,23 +24,8 @@ class DetectorDefinitionImpl extends WrapperImpl<DetectorDefinitionInner> implem
     }
 
     @Override
-    public String description() {
-        return this.inner().description();
-    }
-
-    @Override
-    public String displayName() {
-        return this.inner().displayName();
-    }
-
-    @Override
     public String id() {
         return this.inner().id();
-    }
-
-    @Override
-    public Boolean isEnabled() {
-        return this.inner().isEnabled();
     }
 
     @Override
@@ -54,8 +39,13 @@ class DetectorDefinitionImpl extends WrapperImpl<DetectorDefinitionInner> implem
     }
 
     @Override
-    public Double rank() {
-        return this.inner().rank();
+    public String subnetResourceId() {
+        return this.inner().subnetResourceId();
+    }
+
+    @Override
+    public Boolean swiftSupported() {
+        return this.inner().swiftSupported();
     }
 
     @Override

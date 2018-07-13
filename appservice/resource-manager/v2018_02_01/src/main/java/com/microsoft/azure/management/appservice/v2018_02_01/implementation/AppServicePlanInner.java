@@ -97,6 +97,12 @@ public class AppServicePlanInner extends Resource {
     private DateTime spotExpirationTime;
 
     /**
+     * The time when the server farm free offer expires.
+     */
+    @JsonProperty(value = "properties.freeOfferExpirationTime")
+    private DateTime freeOfferExpirationTime;
+
+    /**
      * Resource group of the App Service plan.
      */
     @JsonProperty(value = "properties.resourceGroup", access = JsonProperty.Access.WRITE_ONLY)
@@ -311,6 +317,26 @@ public class AppServicePlanInner extends Resource {
      */
     public AppServicePlanInner withSpotExpirationTime(DateTime spotExpirationTime) {
         this.spotExpirationTime = spotExpirationTime;
+        return this;
+    }
+
+    /**
+     * Get the time when the server farm free offer expires.
+     *
+     * @return the freeOfferExpirationTime value
+     */
+    public DateTime freeOfferExpirationTime() {
+        return this.freeOfferExpirationTime;
+    }
+
+    /**
+     * Set the time when the server farm free offer expires.
+     *
+     * @param freeOfferExpirationTime the freeOfferExpirationTime value to set
+     * @return the AppServicePlanInner object itself.
+     */
+    public AppServicePlanInner withFreeOfferExpirationTime(DateTime freeOfferExpirationTime) {
+        this.freeOfferExpirationTime = freeOfferExpirationTime;
         return this;
     }
 
