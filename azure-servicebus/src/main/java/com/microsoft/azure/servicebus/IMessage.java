@@ -137,7 +137,7 @@ public interface IMessage {
      *
      * @return the instant at which the message will be enqueued in Azure Service Bus
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-sequencing">Message Sequencing and Timestamps</a> 
-     * @deprecated Replaced by {@link #getScheduledEnqueueTimeUtc()
+     * @deprecated Replaced by {@link #getScheduledEnqueueTimeUtc()}
      */
     @Deprecated
     public Instant getScheduledEnqueuedTimeUtc();
@@ -147,7 +147,7 @@ public interface IMessage {
      * 
      * @param scheduledEnqueueTimeUtc the instant at which this message should be enqueued in Azure Service Bus
      * @see #getScheduledEnqueueTimeUtc()
-     * @deprecated Replaced by {@link #setScheduledEnqueueTimeUtc(Instant)()
+     * @deprecated Replaced by {@link #setScheduledEnqueueTimeUtc(Instant)}
      */
     @Deprecated
     public void setScheduledEnqueuedTimeUtc(Instant scheduledEnqueueTimeUtc);
