@@ -11,6 +11,8 @@ package com.microsoft.azure.management.appservice.v2018_02_01.implementation;
 import java.util.List;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.appservice.v2018_02_01.NameValuePair;
+import java.util.Map;
+import com.microsoft.azure.management.appservice.v2018_02_01.AzureStorageInfoValue;
 import com.microsoft.azure.management.appservice.v2018_02_01.ConnStringInfo;
 import com.microsoft.azure.management.appservice.v2018_02_01.SiteMachineKey;
 import com.microsoft.azure.management.appservice.v2018_02_01.HandlerMapping;
@@ -80,8 +82,8 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     /**
      * Xenon App Framework and version.
      */
-    @JsonProperty(value = "properties.xenonFxVersion")
-    private String xenonFxVersion;
+    @JsonProperty(value = "properties.windowsFxVersion")
+    private String windowsFxVersion;
 
     /**
      * &lt;code&gt;true&lt;/code&gt; if request tracing is enabled; otherwise,
@@ -140,6 +142,12 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      */
     @JsonProperty(value = "properties.appSettings")
     private List<NameValuePair> appSettings;
+
+    /**
+     * User-provided Azure storage accounts.
+     */
+    @JsonProperty(value = "properties.azureStorageAccounts")
+    private Map<String, AzureStorageInfoValue> azureStorageAccounts;
 
     /**
      * Connection strings.
@@ -346,6 +354,13 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     private FtpsState ftpsState;
 
     /**
+     * Number of reserved instances.
+     * This setting only applies to the Consumption Plan.
+     */
+    @JsonProperty(value = "properties.reservedInstanceCount")
+    private Integer reservedInstanceCount;
+
+    /**
      * Get number of workers.
      *
      * @return the numberOfWorkers value
@@ -488,20 +503,20 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     /**
      * Get xenon App Framework and version.
      *
-     * @return the xenonFxVersion value
+     * @return the windowsFxVersion value
      */
-    public String xenonFxVersion() {
-        return this.xenonFxVersion;
+    public String windowsFxVersion() {
+        return this.windowsFxVersion;
     }
 
     /**
      * Set xenon App Framework and version.
      *
-     * @param xenonFxVersion the xenonFxVersion value to set
+     * @param windowsFxVersion the windowsFxVersion value to set
      * @return the SiteConfigResourceInner object itself.
      */
-    public SiteConfigResourceInner withXenonFxVersion(String xenonFxVersion) {
-        this.xenonFxVersion = xenonFxVersion;
+    public SiteConfigResourceInner withWindowsFxVersion(String windowsFxVersion) {
+        this.windowsFxVersion = windowsFxVersion;
         return this;
     }
 
@@ -682,6 +697,26 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      */
     public SiteConfigResourceInner withAppSettings(List<NameValuePair> appSettings) {
         this.appSettings = appSettings;
+        return this;
+    }
+
+    /**
+     * Get user-provided Azure storage accounts.
+     *
+     * @return the azureStorageAccounts value
+     */
+    public Map<String, AzureStorageInfoValue> azureStorageAccounts() {
+        return this.azureStorageAccounts;
+    }
+
+    /**
+     * Set user-provided Azure storage accounts.
+     *
+     * @param azureStorageAccounts the azureStorageAccounts value to set
+     * @return the SiteConfigResourceInner object itself.
+     */
+    public SiteConfigResourceInner withAzureStorageAccounts(Map<String, AzureStorageInfoValue> azureStorageAccounts) {
+        this.azureStorageAccounts = azureStorageAccounts;
         return this;
     }
 
@@ -1311,6 +1346,28 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      */
     public SiteConfigResourceInner withFtpsState(FtpsState ftpsState) {
         this.ftpsState = ftpsState;
+        return this;
+    }
+
+    /**
+     * Get number of reserved instances.
+     This setting only applies to the Consumption Plan.
+     *
+     * @return the reservedInstanceCount value
+     */
+    public Integer reservedInstanceCount() {
+        return this.reservedInstanceCount;
+    }
+
+    /**
+     * Set number of reserved instances.
+     This setting only applies to the Consumption Plan.
+     *
+     * @param reservedInstanceCount the reservedInstanceCount value to set
+     * @return the SiteConfigResourceInner object itself.
+     */
+    public SiteConfigResourceInner withReservedInstanceCount(Integer reservedInstanceCount) {
+        this.reservedInstanceCount = reservedInstanceCount;
         return this;
     }
 

@@ -9,29 +9,21 @@
 package com.microsoft.azure.management.appservice.v2018_02_01;
 
 import com.microsoft.azure.arm.model.HasInner;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.DetectorResponseInner;
+import com.microsoft.azure.arm.model.Indexable;
+import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.SlotConfigNamesResourceInner;
 import java.util.List;
 
 /**
- * Type representing SlotConfigNamesResource.
+ * Type representing DetectorResponse.
  */
-public interface SlotConfigNamesResource extends HasInner<SlotConfigNamesResourceInner>, HasManager<CertificateRegistrationManager> {
+public interface DetectorResponse extends HasInner<DetectorResponseInner>, Indexable, Refreshable<DetectorResponse>, HasManager<CertificateRegistrationManager> {
     /**
-     * @return the appSettingNames value.
+     * @return the dataset value.
      */
-    List<String> appSettingNames();
-
-    /**
-     * @return the azureStorageConfigNames value.
-     */
-    List<String> azureStorageConfigNames();
-
-    /**
-     * @return the connectionStringNames value.
-     */
-    List<String> connectionStringNames();
+    List<DiagnosticData> dataset();
 
     /**
      * @return the id value.
@@ -42,6 +34,11 @@ public interface SlotConfigNamesResource extends HasInner<SlotConfigNamesResourc
      * @return the kind value.
      */
     String kind();
+
+    /**
+     * @return the metadata value.
+     */
+    DetectorInfo metadata();
 
     /**
      * @return the name value.

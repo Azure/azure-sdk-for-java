@@ -181,11 +181,6 @@ public interface ServerfarmSite extends HasInner<SiteInner>, HasManager<Certific
     SlotSwapStatus slotSwapStatus();
 
     /**
-     * @return the snapshotInfo value.
-     */
-    SnapshotRecoveryRequest snapshotInfo();
-
-    /**
      * @return the state value.
      */
     String state();

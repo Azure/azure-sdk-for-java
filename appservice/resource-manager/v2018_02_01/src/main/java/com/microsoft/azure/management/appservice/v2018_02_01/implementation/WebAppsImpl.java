@@ -21,6 +21,8 @@ import com.microsoft.azure.management.appservice.v2018_02_01.BackupItem;
 import com.microsoft.azure.management.appservice.v2018_02_01.SiteConfigResource;
 import com.microsoft.azure.management.appservice.v2018_02_01.BackupRequest;
 import com.microsoft.azure.management.appservice.v2018_02_01.StringDictionary;
+import com.microsoft.azure.management.appservice.v2018_02_01.SwiftVirtualNetwork;
+import com.microsoft.azure.management.appservice.v2018_02_01.RestoreRequest;
 import com.microsoft.azure.management.appservice.v2018_02_01.RelayServiceConnectionEntity;
 import com.microsoft.azure.management.appservice.v2018_02_01.SiteCloneability;
 import com.microsoft.azure.management.appservice.v2018_02_01.FunctionSecrets;
@@ -33,8 +35,8 @@ import com.microsoft.azure.management.appservice.v2018_02_01.StorageMigrationOpt
 import com.microsoft.azure.management.appservice.v2018_02_01.MigrateMySqlRequest;
 import com.microsoft.azure.management.appservice.v2018_02_01.DeletedAppRestoreRequest;
 import com.microsoft.azure.management.appservice.v2018_02_01.SnapshotRestoreRequest;
-import com.microsoft.azure.management.appservice.v2018_02_01.RestoreRequest;
 import com.microsoft.azure.management.appservice.v2018_02_01.SiteAuthSettings;
+import com.microsoft.azure.management.appservice.v2018_02_01.AzureStoragePropertyDictionaryResource;
 import com.microsoft.azure.management.appservice.v2018_02_01.ConnectionStringDictionary;
 import com.microsoft.azure.management.appservice.v2018_02_01.SiteLogsConfig;
 import com.microsoft.azure.management.appservice.v2018_02_01.User;
@@ -62,6 +64,7 @@ import com.microsoft.azure.management.appservice.v2018_02_01.MigrateMySqlStatus;
 import com.microsoft.azure.management.appservice.v2018_02_01.NetworkFeatures;
 import com.microsoft.azure.management.appservice.v2018_02_01.PerfMonResponse;
 import com.microsoft.azure.management.appservice.v2018_02_01.PremierAddOn;
+import com.microsoft.azure.management.appservice.v2018_02_01.PremierAddOnPatchResource;
 import com.microsoft.azure.management.appservice.v2018_02_01.PrivateAccess;
 import com.microsoft.azure.management.appservice.v2018_02_01.PublicCertificate;
 import com.microsoft.azure.management.appservice.v2018_02_01.SiteExtensionInfo;
@@ -621,6 +624,48 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     }
 
     @Override
+    public Observable<SwiftVirtualNetwork> getSwiftVirtualNetworkConnectionAsync(String resourceGroupName, String name) {
+        WebAppsInner client = this.inner();
+        return client.getSwiftVirtualNetworkConnectionAsync(resourceGroupName, name)
+        .map(new Func1<SwiftVirtualNetworkInner, SwiftVirtualNetwork>() {
+            @Override
+            public SwiftVirtualNetwork call(SwiftVirtualNetworkInner inner) {
+                return new SwiftVirtualNetworkImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<SwiftVirtualNetwork> createOrUpdateSwiftVirtualNetworkConnectionAsync(String resourceGroupName, String name, SwiftVirtualNetworkInner connectionEnvelope) {
+        WebAppsInner client = this.inner();
+        return client.createOrUpdateSwiftVirtualNetworkConnectionAsync(resourceGroupName, name, connectionEnvelope)
+        .map(new Func1<SwiftVirtualNetworkInner, SwiftVirtualNetwork>() {
+            @Override
+            public SwiftVirtualNetwork call(SwiftVirtualNetworkInner inner) {
+                return new SwiftVirtualNetworkImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Completable deleteSwiftVirtualNetworkAsync(String resourceGroupName, String name) {
+        WebAppsInner client = this.inner();
+        return client.deleteSwiftVirtualNetworkAsync(resourceGroupName, name).toCompletable();
+    }
+
+    @Override
+    public Observable<SwiftVirtualNetwork> updateSwiftVirtualNetworkConnectionAsync(String resourceGroupName, String name, SwiftVirtualNetworkInner connectionEnvelope) {
+        WebAppsInner client = this.inner();
+        return client.updateSwiftVirtualNetworkConnectionAsync(resourceGroupName, name, connectionEnvelope)
+        .map(new Func1<SwiftVirtualNetworkInner, SwiftVirtualNetwork>() {
+            @Override
+            public SwiftVirtualNetwork call(SwiftVirtualNetworkInner inner) {
+                return new SwiftVirtualNetworkImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
     public Observable<SiteConfigResource> getConfigurationAsync(String resourceGroupName, String name) {
         WebAppsInner client = this.inner();
         return client.getConfigurationAsync(resourceGroupName, name)
@@ -660,6 +705,18 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     public Completable getWebSiteContainerLogsAsync(String resourceGroupName, String name) {
         WebAppsInner client = this.inner();
         return client.getWebSiteContainerLogsAsync(resourceGroupName, name).toCompletable();
+    }
+
+    @Override
+    public Observable<RestoreRequest> discoverBackupAsync(String resourceGroupName, String name, RestoreRequestInner request) {
+        WebAppsInner client = this.inner();
+        return client.discoverBackupAsync(resourceGroupName, name, request)
+        .map(new Func1<RestoreRequestInner, RestoreRequest>() {
+            @Override
+            public RestoreRequest call(RestoreRequestInner inner) {
+                return new RestoreRequestImpl(inner, manager());
+            }
+        });
     }
 
     @Override
@@ -927,18 +984,6 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     }
 
     @Override
-    public Observable<RestoreRequest> discoverRestoreAsync(String resourceGroupName, String name, RestoreRequestInner request) {
-        WebAppsInner client = this.inner();
-        return client.discoverRestoreAsync(resourceGroupName, name, request)
-        .map(new Func1<RestoreRequestInner, RestoreRequest>() {
-            @Override
-            public RestoreRequest call(RestoreRequestInner inner) {
-                return new RestoreRequestImpl(inner, manager());
-            }
-        });
-    }
-
-    @Override
     public Observable<BackupItem> listBackupStatusSecretsAsync(String resourceGroupName, String name, String backupId, BackupRequestInner request) {
         WebAppsInner client = this.inner();
         return client.listBackupStatusSecretsAsync(resourceGroupName, name, backupId, request)
@@ -970,18 +1015,6 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
             @Override
             public BackupItem call(BackupItemInner inner) {
                 return new BackupItemImpl(inner, manager());
-            }
-        });
-    }
-
-    @Override
-    public Observable<RestoreRequest> discoverRestoreSlotAsync(String resourceGroupName, String name, String slot, RestoreRequestInner request) {
-        WebAppsInner client = this.inner();
-        return client.discoverRestoreSlotAsync(resourceGroupName, name, slot, request)
-        .map(new Func1<RestoreRequestInner, RestoreRequest>() {
-            @Override
-            public RestoreRequest call(RestoreRequestInner inner) {
-                return new RestoreRequestImpl(inner, manager());
             }
         });
     }
@@ -1114,6 +1147,54 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
             @Override
             public SiteAuthSettings call(SiteAuthSettingsInner inner) {
                 return new SiteAuthSettingsImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<AzureStoragePropertyDictionaryResource> updateAzureStorageAccountsAsync(String resourceGroupName, String name, AzureStoragePropertyDictionaryResourceInner azureStorageAccounts) {
+        WebAppsInner client = this.inner();
+        return client.updateAzureStorageAccountsAsync(resourceGroupName, name, azureStorageAccounts)
+        .map(new Func1<AzureStoragePropertyDictionaryResourceInner, AzureStoragePropertyDictionaryResource>() {
+            @Override
+            public AzureStoragePropertyDictionaryResource call(AzureStoragePropertyDictionaryResourceInner inner) {
+                return new AzureStoragePropertyDictionaryResourceImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<AzureStoragePropertyDictionaryResource> listAzureStorageAccountsAsync(String resourceGroupName, String name) {
+        WebAppsInner client = this.inner();
+        return client.listAzureStorageAccountsAsync(resourceGroupName, name)
+        .map(new Func1<AzureStoragePropertyDictionaryResourceInner, AzureStoragePropertyDictionaryResource>() {
+            @Override
+            public AzureStoragePropertyDictionaryResource call(AzureStoragePropertyDictionaryResourceInner inner) {
+                return new AzureStoragePropertyDictionaryResourceImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<AzureStoragePropertyDictionaryResource> updateAzureStorageAccountsSlotAsync(String resourceGroupName, String name, String slot, AzureStoragePropertyDictionaryResourceInner azureStorageAccounts) {
+        WebAppsInner client = this.inner();
+        return client.updateAzureStorageAccountsSlotAsync(resourceGroupName, name, slot, azureStorageAccounts)
+        .map(new Func1<AzureStoragePropertyDictionaryResourceInner, AzureStoragePropertyDictionaryResource>() {
+            @Override
+            public AzureStoragePropertyDictionaryResource call(AzureStoragePropertyDictionaryResourceInner inner) {
+                return new AzureStoragePropertyDictionaryResourceImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<AzureStoragePropertyDictionaryResource> listAzureStorageAccountsSlotAsync(String resourceGroupName, String name, String slot) {
+        WebAppsInner client = this.inner();
+        return client.listAzureStorageAccountsSlotAsync(resourceGroupName, name, slot)
+        .map(new Func1<AzureStoragePropertyDictionaryResourceInner, AzureStoragePropertyDictionaryResource>() {
+            @Override
+            public AzureStoragePropertyDictionaryResource call(AzureStoragePropertyDictionaryResourceInner inner) {
+                return new AzureStoragePropertyDictionaryResourceImpl(inner, manager());
             }
         });
     }
@@ -2835,6 +2916,18 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     }
 
     @Override
+    public Observable<PremierAddOn> updatePremierAddOnSlotAsync(String resourceGroupName, String name, String premierAddOnName, String slot, PremierAddOnPatchResource premierAddOn) {
+        WebAppsInner client = this.inner();
+        return client.updatePremierAddOnSlotAsync(resourceGroupName, name, premierAddOnName, slot, premierAddOn)
+        .map(new Func1<PremierAddOnInner, PremierAddOn>() {
+            @Override
+            public PremierAddOn call(PremierAddOnInner inner) {
+                return new PremierAddOnImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
     public Observable<PrivateAccess> getPrivateAccessAsync(String resourceGroupName, String name) {
         WebAppsInner client = this.inner();
         return client.getPrivateAccessAsync(resourceGroupName, name)
@@ -3189,6 +3282,48 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     }
 
     @Override
+    public Observable<SwiftVirtualNetwork> getSwiftVirtualNetworkConnectionSlotAsync(String resourceGroupName, String name, String slot) {
+        WebAppsInner client = this.inner();
+        return client.getSwiftVirtualNetworkConnectionSlotAsync(resourceGroupName, name, slot)
+        .map(new Func1<SwiftVirtualNetworkInner, SwiftVirtualNetwork>() {
+            @Override
+            public SwiftVirtualNetwork call(SwiftVirtualNetworkInner inner) {
+                return new SwiftVirtualNetworkImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<SwiftVirtualNetwork> createOrUpdateSwiftVirtualNetworkConnectionSlotAsync(String resourceGroupName, String name, String slot, SwiftVirtualNetworkInner connectionEnvelope) {
+        WebAppsInner client = this.inner();
+        return client.createOrUpdateSwiftVirtualNetworkConnectionSlotAsync(resourceGroupName, name, slot, connectionEnvelope)
+        .map(new Func1<SwiftVirtualNetworkInner, SwiftVirtualNetwork>() {
+            @Override
+            public SwiftVirtualNetwork call(SwiftVirtualNetworkInner inner) {
+                return new SwiftVirtualNetworkImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Completable deleteSwiftVirtualNetworkSlotAsync(String resourceGroupName, String name, String slot) {
+        WebAppsInner client = this.inner();
+        return client.deleteSwiftVirtualNetworkSlotAsync(resourceGroupName, name, slot).toCompletable();
+    }
+
+    @Override
+    public Observable<SwiftVirtualNetwork> updateSwiftVirtualNetworkConnectionSlotAsync(String resourceGroupName, String name, String slot, SwiftVirtualNetworkInner connectionEnvelope) {
+        WebAppsInner client = this.inner();
+        return client.updateSwiftVirtualNetworkConnectionSlotAsync(resourceGroupName, name, slot, connectionEnvelope)
+        .map(new Func1<SwiftVirtualNetworkInner, SwiftVirtualNetwork>() {
+            @Override
+            public SwiftVirtualNetwork call(SwiftVirtualNetworkInner inner) {
+                return new SwiftVirtualNetworkImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
     public Observable<SiteConfigResource> getConfigurationSlotAsync(String resourceGroupName, String name, String slot) {
         WebAppsInner client = this.inner();
         return client.getConfigurationSlotAsync(resourceGroupName, name, slot)
@@ -3228,6 +3363,18 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     public Completable getWebSiteContainerLogsSlotAsync(String resourceGroupName, String name, String slot) {
         WebAppsInner client = this.inner();
         return client.getWebSiteContainerLogsSlotAsync(resourceGroupName, name, slot).toCompletable();
+    }
+
+    @Override
+    public Observable<RestoreRequest> discoverBackupSlotAsync(String resourceGroupName, String name, String slot, RestoreRequestInner request) {
+        WebAppsInner client = this.inner();
+        return client.discoverBackupSlotAsync(resourceGroupName, name, slot, request)
+        .map(new Func1<RestoreRequestInner, RestoreRequest>() {
+            @Override
+            public RestoreRequest call(RestoreRequestInner inner) {
+                return new RestoreRequestImpl(inner, manager());
+            }
+        });
     }
 
     @Override

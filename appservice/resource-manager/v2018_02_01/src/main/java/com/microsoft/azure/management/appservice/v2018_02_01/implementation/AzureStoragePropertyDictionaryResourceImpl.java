@@ -8,12 +8,14 @@
 
 package com.microsoft.azure.management.appservice.v2018_02_01.implementation;
 
-import com.microsoft.azure.management.appservice.v2018_02_01.DetectorDefinition;
+import com.microsoft.azure.management.appservice.v2018_02_01.AzureStoragePropertyDictionaryResource;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
+import java.util.Map;
+import com.microsoft.azure.management.appservice.v2018_02_01.AzureStorageInfoValue;
 
-class DetectorDefinitionImpl extends WrapperImpl<DetectorDefinitionInner> implements DetectorDefinition {
+class AzureStoragePropertyDictionaryResourceImpl extends WrapperImpl<AzureStoragePropertyDictionaryResourceInner> implements AzureStoragePropertyDictionaryResource {
     private final CertificateRegistrationManager manager;
-    DetectorDefinitionImpl(DetectorDefinitionInner inner, CertificateRegistrationManager manager) {
+    AzureStoragePropertyDictionaryResourceImpl(AzureStoragePropertyDictionaryResourceInner inner, CertificateRegistrationManager manager) {
         super(inner);
         this.manager = manager;
     }
@@ -24,23 +26,8 @@ class DetectorDefinitionImpl extends WrapperImpl<DetectorDefinitionInner> implem
     }
 
     @Override
-    public String description() {
-        return this.inner().description();
-    }
-
-    @Override
-    public String displayName() {
-        return this.inner().displayName();
-    }
-
-    @Override
     public String id() {
         return this.inner().id();
-    }
-
-    @Override
-    public Boolean isEnabled() {
-        return this.inner().isEnabled();
     }
 
     @Override
@@ -54,8 +41,8 @@ class DetectorDefinitionImpl extends WrapperImpl<DetectorDefinitionInner> implem
     }
 
     @Override
-    public Double rank() {
-        return this.inner().rank();
+    public Map<String, AzureStorageInfoValue> properties() {
+        return this.inner().properties();
     }
 
     @Override

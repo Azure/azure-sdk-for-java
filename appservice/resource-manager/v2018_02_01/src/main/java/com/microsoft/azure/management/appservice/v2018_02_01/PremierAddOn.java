@@ -195,7 +195,7 @@ public interface PremierAddOn extends HasInner<PremierAddOnInner>, Indexable, Re
     /**
      * The template for a PremierAddOn update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<PremierAddOn>, UpdateStages.WithKind, UpdateStages.WithMarketplaceOffer, UpdateStages.WithMarketplacePublisher, UpdateStages.WithProduct, UpdateStages.WithSku, UpdateStages.WithTags, UpdateStages.WithVendor {
+    interface Update extends Appliable<PremierAddOn>, UpdateStages.WithKind, UpdateStages.WithMarketplaceOffer, UpdateStages.WithMarketplacePublisher, UpdateStages.WithProduct, UpdateStages.WithSku, UpdateStages.WithVendor {
     }
 
     /**
@@ -250,16 +250,6 @@ public interface PremierAddOn extends HasInner<PremierAddOnInner>, Indexable, Re
              * Specifies sku.
              */
             Update withSku(String sku);
-        }
-
-        /**
-         * The stage of the premieraddon update allowing to specify Tags.
-         */
-        interface WithTags {
-            /**
-             * Specifies tags.
-             */
-            Update withTags(Map<String, String> tags);
         }
 
         /**

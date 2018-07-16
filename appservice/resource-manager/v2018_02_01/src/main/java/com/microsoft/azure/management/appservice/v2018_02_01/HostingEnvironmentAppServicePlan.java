@@ -25,6 +25,11 @@ public interface HostingEnvironmentAppServicePlan extends HasInner<AppServicePla
     String adminSiteName();
 
     /**
+     * @return the freeOfferExpirationTime value.
+     */
+    DateTime freeOfferExpirationTime();
+
+    /**
      * @return the geoRegion value.
      */
     String geoRegion();

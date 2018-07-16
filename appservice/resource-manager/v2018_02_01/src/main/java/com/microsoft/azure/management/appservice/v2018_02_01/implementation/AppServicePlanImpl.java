@@ -75,6 +75,11 @@ class AppServicePlanImpl extends GroupableResourceCoreImpl<AppServicePlan, AppSe
     }
 
     @Override
+    public DateTime freeOfferExpirationTime() {
+        return this.inner().freeOfferExpirationTime();
+    }
+
+    @Override
     public String geoRegion() {
         return this.inner().geoRegion();
     }
@@ -176,6 +181,16 @@ class AppServicePlanImpl extends GroupableResourceCoreImpl<AppServicePlan, AppSe
             this.inner().withAdminSiteName(adminSiteName);
         } else {
             this.updateParameter.withAdminSiteName(adminSiteName);
+        }
+        return this;
+    }
+
+    @Override
+    public AppServicePlanImpl withFreeOfferExpirationTime(DateTime freeOfferExpirationTime) {
+        if (isInCreateMode()) {
+            this.inner().withFreeOfferExpirationTime(freeOfferExpirationTime);
+        } else {
+            this.updateParameter.withFreeOfferExpirationTime(freeOfferExpirationTime);
         }
         return this;
     }

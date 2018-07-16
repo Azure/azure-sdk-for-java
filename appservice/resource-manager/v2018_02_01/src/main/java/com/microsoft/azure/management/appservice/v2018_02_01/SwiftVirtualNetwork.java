@@ -11,28 +11,12 @@ package com.microsoft.azure.management.appservice.v2018_02_01;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.SlotConfigNamesResourceInner;
-import java.util.List;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.SwiftVirtualNetworkInner;
 
 /**
- * Type representing SlotConfigNamesResource.
+ * Type representing SwiftVirtualNetwork.
  */
-public interface SlotConfigNamesResource extends HasInner<SlotConfigNamesResourceInner>, HasManager<CertificateRegistrationManager> {
-    /**
-     * @return the appSettingNames value.
-     */
-    List<String> appSettingNames();
-
-    /**
-     * @return the azureStorageConfigNames value.
-     */
-    List<String> azureStorageConfigNames();
-
-    /**
-     * @return the connectionStringNames value.
-     */
-    List<String> connectionStringNames();
-
+public interface SwiftVirtualNetwork extends HasInner<SwiftVirtualNetworkInner>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the id value.
      */
@@ -47,6 +31,16 @@ public interface SlotConfigNamesResource extends HasInner<SlotConfigNamesResourc
      * @return the name value.
      */
     String name();
+
+    /**
+     * @return the subnetResourceId value.
+     */
+    String subnetResourceId();
+
+    /**
+     * @return the swiftSupported value.
+     */
+    Boolean swiftSupported();
 
     /**
      * @return the type value.
