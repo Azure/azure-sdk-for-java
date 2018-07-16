@@ -335,6 +335,9 @@ public final class ContainerURL extends StorageURL {
      * 60 seconds, or infinite (-1). For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-container">Azure Docs</a>.
      *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerURL.acquireLease")]
+     *
      * @param proposedID
      *      A {@code String} in any valid GUID format.
      * @param duration
@@ -366,6 +369,9 @@ public final class ContainerURL extends StorageURL {
      * Renews the container's previously-acquired lease. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-container">Azure Docs</a>.
      *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerURL.renewLease")]
+     *
      * @param leaseID
      *      The leaseId of the active lease on the container.
      * @param httpAccessConditions
@@ -394,6 +400,9 @@ public final class ContainerURL extends StorageURL {
      * Releases the container's previously-acquired lease. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-container">Azure Docs</a>.
      *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerURL.releaseLease")]
+     *
      * @param leaseID
      *      The leaseId of the active lease on the container.
      * @param httpAccessConditions
@@ -421,6 +430,9 @@ public final class ContainerURL extends StorageURL {
     /**
      * Breaks the container's previously-acquired lease. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-container">Azure Docs</a>.
+     *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerURL.breakLease")]
      *
      * @param breakPeriodInSeconds
      *      An optional {@code Integer} representing the proposed duration of seconds that the lease should continue
@@ -452,6 +464,9 @@ public final class ContainerURL extends StorageURL {
     /**
      * Changes the container's leaseID. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-container">Azure Docs</a>.
+     *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerURL.changeLease")]
      *
      * @param leaseID
      *      The leaseId of the active lease on the container.

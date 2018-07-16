@@ -414,6 +414,9 @@ public class BlobURL extends StorageURL {
      * 15 to 60 seconds, or infinite (-1). For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-blob">Azure Docs</a>.
      *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blob_lease "Sample code for BlobURL.acquireLease")]
+     *
      * @param proposedID
      *      A {@code String} in any valid GUID format. May be null.
      * @param duration
@@ -446,6 +449,9 @@ public class BlobURL extends StorageURL {
      * Renews the blob's previously-acquired lease. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-blob">Azure Docs</a>.
      *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blob_lease "Sample code for BlobURL.renewLease")]
+     *
      * @param leaseID
      *      The leaseId of the active lease on the blob.
      * @param httpAccessConditions
@@ -469,6 +475,9 @@ public class BlobURL extends StorageURL {
     /**
      * Releases the blob's previously-acquired lease. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-blob">Azure Docs</a>.
+     *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blob_lease "Sample code for BlobURL.releaseLease")]
      *
      * @param leaseID
      *      The leaseId of the active lease on the blob.
@@ -494,6 +503,9 @@ public class BlobURL extends StorageURL {
      * BreakLease breaks the blob's previously-acquired lease (if it exists). Pass the LeaseBreakDefault (-1) constant
      * to break a fixed-duration lease when it expires or an infinite lease immediately. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-blob">Azure Docs</a>.
+     *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blob_lease "Sample code for BlobURL.breakLease")]
      *
      * @param breakPeriodInSeconds
      *      An optional {@code Integer} representing the proposed duration of seconds that the lease should continue
@@ -521,6 +533,9 @@ public class BlobURL extends StorageURL {
     /**
      * ChangeLease changes the blob's lease ID. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-blob">Azure Docs</a>.
+     *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blob_lease "Sample code for BlobURL.changeLease")]
      *
      * @param leaseId
      *      The leaseId of the active lease on the blob.

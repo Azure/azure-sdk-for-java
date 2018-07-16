@@ -2012,6 +2012,33 @@ public class Samples {
                                             null));
                 });
         // </page_diff>
+
+        // <blob_lease>
+        blobURL.acquireLease(null, 20, null)
+                .flatMap(response ->
+                        blobURL.changeLease(response.headers().leaseId(), "proposed", null))
+                .flatMap(response ->
+                        blobURL.renewLease(response.headers().leaseId(), null))
+                .flatMap(response ->
+                        blobURL.breakLease(null, null)
+                                .flatMap(breakResponse ->
+                                        blobURL.releaseLease(response.headers().leaseId(), null)))
+                .subscribe();
+        // </blob_lease>
+
+        // <container_lease>
+        containerURL.acquireLease(null, 20, null)
+                .flatMap(response ->
+                        containerURL.changeLease(response.headers().leaseId(), "proposed",
+                                null))
+                .flatMap(response ->
+                        containerURL.renewLease(response.headers().leaseId(), null))
+                .flatMap(response ->
+                        containerURL.breakLease(null, null)
+                                .flatMap(breakResponse ->
+                                        containerURL.releaseLease(response.headers().leaseId(), null)))
+                .subscribe();
+        // </container_lease>
     }
 }
 
