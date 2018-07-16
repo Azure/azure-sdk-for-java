@@ -109,13 +109,8 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
 
     @Override
     public CompletableFuture<Boolean> checkpointStoreExists() {
-        return leaseStoreExistsInternal(this.checkpointOperationOptions, EventProcessorHostActionStrings.CHECKING_CHECKPOINT_STORE)
-                .whenCompleteAsync((result, e) ->
-                {
-                    if (e != null) {
-                        TRACE_LOGGER.error(this.hostContext.withHost("Failure while checking checkpoint store existence"), LoggingUtils.unwrapException(e, null));
-                    }
-                }, this.hostContext.getExecutor());
+    	return storeExistsInternal(this.checkpointOperationOptions, EventProcessorHostActionStrings.CHECKING_CHECKPOINT_STORE,
+    			"Failure while checking checkpoint store existence");
     }
 
 
@@ -133,19 +128,15 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
 
     @Override
     public CompletableFuture<Void> deleteCheckpointStore() {
-        return deleteLeaseStoreInternal(this.checkpointOperationOptions);
+        return deleteStoreInternal(this.checkpointOperationOptions);
     }
 
     @Override
     public CompletableFuture<Checkpoint> getCheckpoint(String partitionId) {
-        return CompletableFuture.supplyAsync(() ->
-        {
-            AzureBlobLease lease = null;
-            try {
-                lease = getLeaseInternal(partitionId, this.checkpointOperationOptions);
-            } catch (URISyntaxException | IOException | StorageException e) {
-                throw LoggingUtils.wrapException(e, EventProcessorHostActionStrings.GETTING_CHECKPOINT);
-            }
+    	CompletableFuture<Checkpoint> future = null;
+    	
+        try {
+            AzureBlobLease lease = getLeaseInternal(partitionId, this.checkpointOperationOptions);
             Checkpoint checkpoint = null;
             if (lease != null) {
                 if ((lease.getOffset() != null) && !lease.getOffset().isEmpty()) {
@@ -155,8 +146,13 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
                 }
                 // else offset is null meaning no checkpoint stored for this partition so return null
             }
-            return checkpoint;
-        }, this.hostContext.getExecutor());
+            future = CompletableFuture.completedFuture(checkpoint);
+        } catch (URISyntaxException | IOException | StorageException e) {
+        	future = new CompletableFuture<Checkpoint>();
+        	future.completeExceptionally(LoggingUtils.wrapException(e, EventProcessorHostActionStrings.GETTING_CHECKPOINT));
+        }
+        
+        return future;
     }
 
     @Override
@@ -174,13 +170,24 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
         updatedLease.setOffset(checkpoint.getOffset());
         updatedLease.setSequenceNumber(checkpoint.getSequenceNumber());
 
-        return updateLeaseInternal(updatedLease, this.checkpointOperationOptions, EventProcessorHostActionStrings.UPDATING_CHECKPOINT)
-                .thenAcceptAsync((result) ->
-                {
-                    if (!result) {
-                        throw LoggingUtils.wrapException(new LeaseLostException(lease, "Lease lost"), EventProcessorHostActionStrings.UPDATING_CHECKPOINT);
-                    }
-                }, this.hostContext.getExecutor());
+    	CompletableFuture<Void> future = null;
+    	
+    	try {
+    		if (updateLeaseInternal(updatedLease, this.checkpointOperationOptions)) {
+    			future = CompletableFuture.completedFuture(null);
+    		} else {
+                TRACE_LOGGER.warn(this.hostContext.withHostAndPartition(lease, "Lease lost"));
+                future = new CompletableFuture<Void>();
+                future.completeExceptionally(LoggingUtils.wrapException(new RuntimeException("Lease lost while updating checkpoint"),
+                		EventProcessorHostActionStrings.UPDATING_CHECKPOINT));
+    		}
+    	} catch (StorageException | IOException e) {
+            TRACE_LOGGER.warn(this.hostContext.withHostAndPartition(lease, "Failure updating checkpoint"), e);
+            future = new CompletableFuture<Void>();
+            future.completeExceptionally(LoggingUtils.wrapException(e, EventProcessorHostActionStrings.UPDATING_CHECKPOINT));
+    	}
+    	
+        return future;
     }
 
     @Override
@@ -201,104 +208,85 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
 
     @Override
     public CompletableFuture<Boolean> leaseStoreExists() {
-        return leaseStoreExistsInternal(this.leaseOperationOptions, EventProcessorHostActionStrings.CHECKING_LEASE_STORE)
-                .whenCompleteAsync((result, e) ->
-                {
-                    if (e != null) {
-                        TRACE_LOGGER.error(this.hostContext.withHost("Failure while checking lease store existence"), LoggingUtils.unwrapException(e, null));
-                    }
-                }, this.hostContext.getExecutor());
+    	return storeExistsInternal(this.leaseOperationOptions, EventProcessorHostActionStrings.CHECKING_LEASE_STORE,
+    			"Failure while checking lease store existence");
     }
 
-    private CompletableFuture<Boolean> leaseStoreExistsInternal(BlobRequestOptions options, String action) {
-        return CompletableFuture.supplyAsync(() ->
-        {
-            boolean result = false;
-            try {
-                result = this.eventHubContainer.exists(null, options, null);
-            } catch (StorageException e) {
-                throw LoggingUtils.wrapException(e, action);
-            }
-            return result;
-        }, this.hostContext.getExecutor());
+    private CompletableFuture<Boolean> storeExistsInternal(BlobRequestOptions options, String action, String trace) {
+    	CompletableFuture<Boolean> future = null;
+        try {
+    		future = CompletableFuture.completedFuture(this.eventHubContainer.exists(null, options, null));
+        } catch (StorageException e) {
+            TRACE_LOGGER.error(this.hostContext.withHost(trace), e);
+    		future = new CompletableFuture<Boolean>();
+    		future.completeExceptionally(LoggingUtils.wrapException(e, action));
+        }
+        return future;
     }
 
     @Override
     public CompletableFuture<Void> createLeaseStoreIfNotExists() {
-        return createLeaseStoreIfNotExistsInternal(this.leaseOperationOptions, EventProcessorHostActionStrings.CREATING_LEASE_STORE)
-                .whenCompleteAsync((result, e) ->
-                {
-                    if (e != null) {
-                        TRACE_LOGGER.error(this.hostContext.withHost("Failure while creating lease store"), LoggingUtils.unwrapException(e, null));
-                    }
-                }, this.hostContext.getExecutor());
-    }
-
-    private CompletableFuture<Void> createLeaseStoreIfNotExistsInternal(BlobRequestOptions options, String action) {
-        return CompletableFuture.runAsync(() ->
-        {
-            try {
-                // returns true if the container was created, false if it already existed -- we don't care
-                this.eventHubContainer.createIfNotExists(options, null);
-                TRACE_LOGGER.info(this.hostContext.withHost("Created lease store OK or it already existed"));
-            } catch (StorageException e) {
-                throw LoggingUtils.wrapException(e, action);
-            }
-        }, this.hostContext.getExecutor());
+    	CompletableFuture<Void> future = null;
+    	
+        try {
+            // returns true if the container was created, false if it already existed -- we don't care
+            this.eventHubContainer.createIfNotExists(this.leaseOperationOptions, null);
+            TRACE_LOGGER.info(this.hostContext.withHost("Created lease store OK or it already existed"));
+            future = CompletableFuture.completedFuture(null);
+        } catch (StorageException e) {
+        	future = new CompletableFuture<Void>();
+        	future.completeExceptionally(LoggingUtils.wrapException(e, EventProcessorHostActionStrings.CREATING_LEASE_STORE));
+            TRACE_LOGGER.error(this.hostContext.withHost("Failure while creating lease store"), e);
+        }
+        
+        return future;
     }
 
     @Override
     public CompletableFuture<Void> deleteLeaseStore() {
-        return deleteLeaseStoreInternal(this.leaseOperationOptions);
+        return deleteStoreInternal(this.leaseOperationOptions);
     }
 
-    private CompletableFuture<Void> deleteLeaseStoreInternal(BlobRequestOptions options) {
-        return CompletableFuture.runAsync(() ->
-        {
-            for (ListBlobItem blob : this.eventHubContainer.listBlobs(null, false, EnumSet.noneOf(BlobListingDetails.class), options, null)) {
-                if (blob instanceof CloudBlobDirectory) {
-                    try {
-                        for (ListBlobItem subBlob : ((CloudBlobDirectory) blob).listBlobs(null, false, EnumSet.noneOf(BlobListingDetails.class), options, null)) {
-                            ((CloudBlockBlob) subBlob).deleteIfExists(DeleteSnapshotsOption.NONE, null, options, null);
-                        }
-                    } catch (StorageException | URISyntaxException e) {
-                        TRACE_LOGGER.error(this.hostContext.withHost("Failure while deleting lease store"), e);
-                        throw new CompletionException(e);
+    private CompletableFuture<Void> deleteStoreInternal(BlobRequestOptions options) {
+    	CompletableFuture<Void> future = null;
+    	
+    	try {
+	        for (ListBlobItem blob : this.eventHubContainer.listBlobs(null, false, EnumSet.noneOf(BlobListingDetails.class), options, null)) {
+	            if (blob instanceof CloudBlobDirectory) {
+                    for (ListBlobItem subBlob : ((CloudBlobDirectory) blob).listBlobs(null, false, EnumSet.noneOf(BlobListingDetails.class), options, null)) {
+                        ((CloudBlockBlob) subBlob).deleteIfExists(DeleteSnapshotsOption.NONE, null, options, null);
                     }
-                } else if (blob instanceof CloudBlockBlob) {
-                    try {
-                        ((CloudBlockBlob) blob).deleteIfExists(DeleteSnapshotsOption.NONE, null, options, null);
-                    } catch (StorageException e) {
-                        TRACE_LOGGER.error(this.hostContext.withHost("Failure while deleting lease store"), e);
-                        throw new CompletionException(e);
-                    }
-                }
-            }
-
-            try {
-                this.eventHubContainer.deleteIfExists(null, options, null);
-            } catch (StorageException e) {
-                TRACE_LOGGER.error(this.hostContext.withHost("Failure while deleting lease store"), e);
-                throw new CompletionException(e);
-            }
-        }, this.hostContext.getExecutor());
+	            } else if (blob instanceof CloudBlockBlob) {
+                    ((CloudBlockBlob) blob).deleteIfExists(DeleteSnapshotsOption.NONE, null, options, null);
+	            }
+	        }
+	
+            this.eventHubContainer.deleteIfExists(null, options, null);
+            
+            future = CompletableFuture.completedFuture(null);
+    	}
+    	catch (StorageException | URISyntaxException e) {
+            TRACE_LOGGER.error(this.hostContext.withHost("Failure while deleting lease store"), e);
+    		future = new CompletableFuture<Void>();
+    		future.completeExceptionally(new CompletionException(e));
+    	}
+    	
+    	return future;
     }
 
     @Override
     public CompletableFuture<CompleteLease> getLease(String partitionId) {
-        return CompletableFuture.supplyAsync(() ->
-        {
-            CompleteLease result = null;
+        CompletableFuture<CompleteLease> future = null;
 
-            try {
-                result = getLeaseInternal(partitionId, this.leaseOperationOptions);
-            } catch (URISyntaxException | IOException | StorageException e) {
-                TRACE_LOGGER.warn(this.hostContext.withHostAndPartition(partitionId, "Failure while getting lease details"), e);
-                throw LoggingUtils.wrapException(e, EventProcessorHostActionStrings.GETTING_LEASE);
-            }
+        try {
+        	future = CompletableFuture.completedFuture(getLeaseInternal(partitionId, this.leaseOperationOptions));
+        } catch (URISyntaxException | IOException | StorageException e) {
+            TRACE_LOGGER.warn(this.hostContext.withHostAndPartition(partitionId, "Failure while getting lease details"), e);
+            future = new CompletableFuture<CompleteLease>();
+            future.completeExceptionally(LoggingUtils.wrapException(e, EventProcessorHostActionStrings.GETTING_LEASE));
+        }
 
-            return result;
-        }, this.hostContext.getExecutor());
+        return future;
     }
 
     private AzureBlobLease getLeaseInternal(String partitionId, BlobRequestOptions options) throws URISyntaxException, IOException, StorageException {
@@ -314,77 +302,87 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     
     @Override
     public CompletableFuture<List<BaseLease>> getAllLeases() {
-    	return CompletableFuture.supplyAsync(() -> {
-	    	ArrayList<BaseLease> infos = new ArrayList<BaseLease>();
-	    	
-	    	try {
-		    	EnumSet<BlobListingDetails> details = EnumSet.of(BlobListingDetails.METADATA);
-				Iterable<ListBlobItem> leaseBlobs = this.consumerGroupDirectory.listBlobs("", true, details, this.leaseOperationOptions, null);
-				leaseBlobs.forEach((lbi) -> {
-					CloudBlob blob = (CloudBlob)lbi;
-					BlobProperties bp = blob.getProperties();
-					HashMap<String, String> metadata = blob.getMetadata();
-					Path p = Paths.get(lbi.getUri().getPath());
-					infos.add(new BaseLease(p.getFileName().toString(), metadata.get(AzureStorageCheckpointLeaseManager.METADATA_OWNER_NAME),
-							(bp.getLeaseState() == LeaseState.LEASED)));
-				});
-			} catch (URISyntaxException | StorageException e) {
-                TRACE_LOGGER.warn(this.hostContext.withHost("Failure while getting lease state details"), e);
-                throw LoggingUtils.wrapException(e, EventProcessorHostActionStrings.GETTING_LEASE);
-			}
-	    	
-	    	return infos;
-    	}, this.hostContext.getExecutor());
+    	CompletableFuture<List<BaseLease>> future = null;
+    	
+    	try {
+        	ArrayList<BaseLease> infos = new ArrayList<BaseLease>();
+	    	EnumSet<BlobListingDetails> details = EnumSet.of(BlobListingDetails.METADATA);
+			Iterable<ListBlobItem> leaseBlobs = this.consumerGroupDirectory.listBlobs("", true, details, this.leaseOperationOptions, null);
+			leaseBlobs.forEach((lbi) -> {
+				CloudBlob blob = (CloudBlob)lbi;
+				BlobProperties bp = blob.getProperties();
+				HashMap<String, String> metadata = blob.getMetadata();
+				Path p = Paths.get(lbi.getUri().getPath());
+				infos.add(new BaseLease(p.getFileName().toString(), metadata.get(AzureStorageCheckpointLeaseManager.METADATA_OWNER_NAME),
+						(bp.getLeaseState() == LeaseState.LEASED)));
+			});
+			future = CompletableFuture.completedFuture(infos);
+		} catch (URISyntaxException | StorageException e) {
+            TRACE_LOGGER.warn(this.hostContext.withHost("Failure while getting lease state details"), e);
+            future = new CompletableFuture<List<BaseLease>>();
+            future.completeExceptionally(LoggingUtils.wrapException(e, EventProcessorHostActionStrings.GETTING_LEASE));
+		}
+    	
+    	return future;
     }
 
+    // NOTE NOTE NOTE: this is the one place where this lease manager implementation returns an uncompleted future.
+    // This is to support creating the blobs in parallel, which can be an important part of fast startup.
+    // Because it happens during startup, when no user code is running, it cannot deadlock with checkpointing.
     @Override
     public CompletableFuture<Void> createAllLeasesIfNotExists(List<String> partitionIds) {
-    	return CompletableFuture.supplyAsync(() -> {
-		    	// Optimization: list the blobs currently existing in the directory. If there are the
-		    	// expected number of blobs, then we can skip doing the creates.
-    			int blobCount = 0;
-		    	try {
-					Iterable<ListBlobItem> leaseBlobs = this.consumerGroupDirectory.listBlobs("", true, null, this.leaseOperationOptions, null);
-					Iterator<ListBlobItem> blobIterator = leaseBlobs.iterator();
-					while (blobIterator.hasNext()) {
-						blobCount++;
-						blobIterator.next();
-					}
-				} catch (URISyntaxException | StorageException e) {
-					TRACE_LOGGER.error(this.hostContext.withHost("Exception checking lease existence - leaseContainerName: " + this.storageContainerName + " consumerGroupName: " +
-							this.hostContext.getConsumerGroupName() + " storageBlobPrefix: " + this.storageBlobPrefix), e);
-					throw LoggingUtils.wrapException(e, EventProcessorHostActionStrings.CREATING_LEASES);
-				}
-				return (blobCount == partitionIds.size());
-	    	}, this.hostContext.getExecutor())
-    	.thenComposeAsync((exists) -> {
-    			CompletableFuture<Void> createAllFuture = CompletableFuture.completedFuture(null);
-    			if (!exists) {
-			    	ArrayList<CompletableFuture<CompleteLease>> createFutures = new ArrayList<CompletableFuture<CompleteLease>>();
-			    	
-			    	for (String id : partitionIds) {
-			            CompletableFuture<CompleteLease> oneCreate = CompletableFuture.supplyAsync(() -> {
-				                CompleteLease returnLease = null;
-				                try {
-				                    returnLease = createLeaseIfNotExistsInternal(id, this.leaseOperationOptions);
-				                } catch (URISyntaxException | IOException | StorageException e) {
-				                    TRACE_LOGGER.error(this.hostContext.withHostAndPartition(id,
-				                            "Exception creating lease - leaseContainerName: " + this.storageContainerName + " consumerGroupName: " + this.hostContext.getConsumerGroupName() +
-				                                    " storageBlobPrefix: " + this.storageBlobPrefix), e);
-				                    throw LoggingUtils.wrapException(e, EventProcessorHostActionStrings.CREATING_LEASES);
-				                }
-				                return returnLease;
-				            }, this.hostContext.getExecutor());
-			            createFutures.add(oneCreate);
-			    	}
-			
-			    	CompletableFuture<?> dummy[] = new CompletableFuture<?>[createFutures.size()];
-			    	createAllFuture = CompletableFuture.allOf(createFutures.toArray(dummy));
-    			}
-    			return createAllFuture;
-    		}, this.hostContext.getExecutor());
+    	CompletableFuture<Void> future = null;
+    	
+    	// Optimization: list the blobs currently existing in the directory. If there are the
+    	// expected number of blobs, then we can skip doing the creates.
+		int blobCount = 0;
+    	try {
+			Iterable<ListBlobItem> leaseBlobs = this.consumerGroupDirectory.listBlobs("", true, null, this.leaseOperationOptions, null);
+			Iterator<ListBlobItem> blobIterator = leaseBlobs.iterator();
+			while (blobIterator.hasNext()) {
+				blobCount++;
+				blobIterator.next();
+			}
+		} catch (URISyntaxException | StorageException e) {
+			TRACE_LOGGER.error(this.hostContext.withHost("Exception checking lease existence - leaseContainerName: " + this.storageContainerName + " consumerGroupName: " +
+					this.hostContext.getConsumerGroupName() + " storageBlobPrefix: " + this.storageBlobPrefix), e);
+			future = new CompletableFuture<Void>();
+			future.completeExceptionally(LoggingUtils.wrapException(e, EventProcessorHostActionStrings.CREATING_LEASES));
+		}
+    	
+    	if (future == null) {
+    		// No error checking the list, so keep going
+			if (blobCount == partitionIds.size()) {
+				// All expected blobs found, so short-circuit
+				future = CompletableFuture.completedFuture(null);
+			} else {
+				// Create the blobs in parallel
+		    	ArrayList<CompletableFuture<CompleteLease>> createFutures = new ArrayList<CompletableFuture<CompleteLease>>();
+		    	
+		    	for (String id : partitionIds) {
+		            CompletableFuture<CompleteLease> oneCreate = CompletableFuture.supplyAsync(() -> {
+			                CompleteLease returnLease = null;
+			                try {
+			                    returnLease = createLeaseIfNotExistsInternal(id, this.leaseOperationOptions);
+			                } catch (URISyntaxException | IOException | StorageException e) {
+			                    TRACE_LOGGER.error(this.hostContext.withHostAndPartition(id,
+			                            "Exception creating lease - leaseContainerName: " + this.storageContainerName + " consumerGroupName: " + this.hostContext.getConsumerGroupName() +
+			                                    " storageBlobPrefix: " + this.storageBlobPrefix), e);
+			                    throw LoggingUtils.wrapException(e, EventProcessorHostActionStrings.CREATING_LEASES);
+			                }
+			                return returnLease;
+			            }, this.hostContext.getExecutor());
+		            createFutures.add(oneCreate);
+		    	}
+		
+		    	CompletableFuture<?> dummy[] = new CompletableFuture<?>[createFutures.size()];
+		    	future = CompletableFuture.allOf(createFutures.toArray(dummy));
+			}
+    	}
+		
+		return future;
     }
-
+    
     private AzureBlobLease createLeaseIfNotExistsInternal(String partitionId, BlobRequestOptions options) throws URISyntaxException, IOException, StorageException {
         AzureBlobLease returnLease = null;
         try {
@@ -414,31 +412,34 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
 
     @Override
     public CompletableFuture<Void> deleteLease(CompleteLease lease) {
-        return CompletableFuture.runAsync(() ->
-        {
-            TRACE_LOGGER.info(this.hostContext.withHostAndPartition(lease, "Deleting lease"));
-            try {
-                ((AzureBlobLease) lease).getBlob().deleteIfExists();
-            } catch (StorageException e) {
-                TRACE_LOGGER.error(this.hostContext.withHostAndPartition(lease, "Exception deleting lease"), e);
-                throw LoggingUtils.wrapException(e, EventProcessorHostActionStrings.DELETING_LEASE);
-            }
-        }, this.hostContext.getExecutor());
+    	CompletableFuture<Void> future = null;
+    	
+        TRACE_LOGGER.info(this.hostContext.withHostAndPartition(lease, "Deleting lease"));
+        try {
+            ((AzureBlobLease) lease).getBlob().deleteIfExists();
+            future = CompletableFuture.completedFuture(null);
+        } catch (StorageException e) {
+            TRACE_LOGGER.error(this.hostContext.withHostAndPartition(lease, "Exception deleting lease"), e);
+            future = new CompletableFuture<Void>();
+            future.completeExceptionally(LoggingUtils.wrapException(e, EventProcessorHostActionStrings.DELETING_LEASE));
+        }
+        
+        return future;
     }
 
     @Override
     public CompletableFuture<Boolean> acquireLease(CompleteLease lease) {
-        return CompletableFuture.supplyAsync(() ->
-        {
-            boolean result = false;
-            try {
-                result = acquireLeaseInternal((AzureBlobLease) lease);
-            } catch (IOException | StorageException e) {
-                TRACE_LOGGER.warn(this.hostContext.withHostAndPartition(lease, "Failure acquiring lease"), e);
-                throw LoggingUtils.wrapException(e, EventProcessorHostActionStrings.ACQUIRING_LEASE);
-            }
-            return result;
-        }, this.hostContext.getExecutor());
+    	CompletableFuture<Boolean> future = null;
+    	
+        try {
+            future = CompletableFuture.completedFuture(acquireLeaseInternal((AzureBlobLease) lease));
+        } catch (IOException | StorageException e) {
+            TRACE_LOGGER.warn(this.hostContext.withHostAndPartition(lease, "Failure acquiring lease"), e);
+            future = new CompletableFuture<Boolean>();
+            future.completeExceptionally(LoggingUtils.wrapException(e, EventProcessorHostActionStrings.ACQUIRING_LEASE));
+        }
+        
+        return future;
     }
 
     private boolean acquireLeaseInternal(AzureBlobLease lease) throws IOException, StorageException {
@@ -490,101 +491,124 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
 
     @Override
     public CompletableFuture<Boolean> renewLease(CompleteLease lease) {
-        return CompletableFuture.supplyAsync(() ->
-        {
-            TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(lease, "Renewing lease"));
+        CompletableFuture<Boolean> future = null;
+        
+        try {
+            future = CompletableFuture.completedFuture(renewLeaseInternal(lease));
+        } catch (StorageException se) {
+        	future = new CompletableFuture<Boolean>();
+        	future.completeExceptionally(LoggingUtils.wrapException(se, EventProcessorHostActionStrings.RENEWING_LEASE));
+        }
 
-            AzureBlobLease azLease = (AzureBlobLease)lease;
-            CloudBlockBlob leaseBlob = azLease.getBlob();
-            boolean retval = true;
+        return future;
+    }
+    
+    private boolean renewLeaseInternal(CompleteLease lease) throws StorageException {
+        TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(lease, "Renewing lease"));
 
-            try {
-                leaseBlob.renewLease(AccessCondition.generateLeaseCondition(azLease.getToken()), this.renewRequestOptions, null);
-            } catch (StorageException se) {
-                if (wasLeaseLost(se, azLease.getPartitionId())) {
-                    retval = false;
-                } else {
-                    throw LoggingUtils.wrapException(se, EventProcessorHostActionStrings.RENEWING_LEASE);
-                }
+        boolean result = false;
+        AzureBlobLease azLease = (AzureBlobLease)lease;
+        CloudBlockBlob leaseBlob = azLease.getBlob();
+
+        try {
+            leaseBlob.renewLease(AccessCondition.generateLeaseCondition(azLease.getToken()), this.renewRequestOptions, null);
+            result = true;
+        } catch (StorageException se) {
+            if (wasLeaseLost(se, azLease.getPartitionId())) {
+                // leave result as false
+            } else {
+            	throw se;
             }
+        }
 
-            return retval;
-        }, this.hostContext.getExecutor());
+        return result;
     }
 
     @Override
     public CompletableFuture<Void> releaseLease(CompleteLease lease) {
-        return CompletableFuture.runAsync(() ->
-        {
-            TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(lease, "Releasing lease"));
+        TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(lease, "Releasing lease"));
 
-            AzureBlobLease inLease = (AzureBlobLease) lease;
-            CloudBlockBlob leaseBlob = inLease.getBlob();
-            try {
-                String leaseId = inLease.getToken();
-                AzureBlobLease releasedCopy = new AzureBlobLease(inLease);
-                releasedCopy.setToken("");
-                releasedCopy.setOwner("");
-                uploadLease(releasedCopy, leaseBlob, AccessCondition.generateLeaseCondition(leaseId), UploadActivity.Release, this.leaseOperationOptions);
-                leaseBlob.releaseLease(AccessCondition.generateLeaseCondition(leaseId));
-            } catch (StorageException se) {
-                if (wasLeaseLost(se, lease.getPartitionId())) {
-                    // If the lease was already lost, then the intent of releasing it has been achieved.
-                } else {
-                    throw LoggingUtils.wrapException(se, EventProcessorHostActionStrings.RELEASING_LEASE);
-                }
-            } catch (IOException ie) {
-                throw LoggingUtils.wrapException(ie, EventProcessorHostActionStrings.RELEASING_LEASE);
+        CompletableFuture<Void> future = null;
+        
+        AzureBlobLease inLease = (AzureBlobLease) lease;
+        CloudBlockBlob leaseBlob = inLease.getBlob();
+        
+        try {
+            String leaseId = inLease.getToken();
+            AzureBlobLease releasedCopy = new AzureBlobLease(inLease);
+            releasedCopy.setToken("");
+            releasedCopy.setOwner("");
+            uploadLease(releasedCopy, leaseBlob, AccessCondition.generateLeaseCondition(leaseId), UploadActivity.Release, this.leaseOperationOptions);
+            leaseBlob.releaseLease(AccessCondition.generateLeaseCondition(leaseId));
+            future = CompletableFuture.completedFuture(null);
+        } catch (StorageException se) {
+            if (wasLeaseLost(se, lease.getPartitionId())) {
+                // If the lease was already lost, then the intent of releasing it has been achieved.
+                future = CompletableFuture.completedFuture(null);
+            } else {
+            	future = new CompletableFuture<Void>();
+            	future.completeExceptionally(LoggingUtils.wrapException(se, EventProcessorHostActionStrings.RELEASING_LEASE));
             }
-        }, this.hostContext.getExecutor());
+        } catch (IOException ie) {
+        	future = new CompletableFuture<Void>();
+        	future.completeExceptionally(LoggingUtils.wrapException(ie, EventProcessorHostActionStrings.RELEASING_LEASE));
+        }
+        
+        return future;
     }
 
     @Override
     public CompletableFuture<Boolean> updateLease(CompleteLease lease) {
-        return updateLeaseInternal((AzureBlobLease) lease, this.leaseOperationOptions, EventProcessorHostActionStrings.UPDATING_LEASE)
-                .whenCompleteAsync((result, e) ->
-                {
-                    if (e != null) {
-                        TRACE_LOGGER.warn(this.hostContext.withHostAndPartition(lease, "Failure updating lease"), LoggingUtils.unwrapException(e, null));
-                    }
-                }, this.hostContext.getExecutor());
+    	CompletableFuture<Boolean> future = null;
+    	
+    	try {
+    		boolean result = updateLeaseInternal((AzureBlobLease) lease, this.leaseOperationOptions);
+    		future = CompletableFuture.completedFuture(result);
+    	} catch (StorageException | IOException e) {
+            TRACE_LOGGER.warn(this.hostContext.withHostAndPartition(lease, "Failure updating lease"), e);
+            future = new CompletableFuture<Boolean>();
+            future.completeExceptionally(LoggingUtils.wrapException(e, EventProcessorHostActionStrings.UPDATING_LEASE));
+    	}
+    	
+        return future;
     }
 
-    public CompletableFuture<Boolean> updateLeaseInternal(AzureBlobLease lease, BlobRequestOptions options, String action) {
-
+    public boolean updateLeaseInternal(AzureBlobLease lease, BlobRequestOptions options) throws StorageException, IOException {
         if (lease == null) {
-            return CompletableFuture.completedFuture(false);
+            return false;
         }
 
         TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(lease, "Updating lease"));
 
         String token = lease.getToken();
         if ((token == null) || (token.length() == 0)) {
-            return CompletableFuture.completedFuture(false);
+            return false;
         }
 
         // Renew the lease to make sure the update will go through.
         // Renewing the lease is always logically a lease operation, even if it is part of writing a checkpoint, so
         // don't pass options.
-        return renewLease(lease).thenApplyAsync((result) ->
-        {
+        boolean result = renewLeaseInternal(lease);
+		if (result) {
             CloudBlockBlob leaseBlob = lease.getBlob();
             try {
                 uploadLease(lease, leaseBlob, AccessCondition.generateLeaseCondition(token), UploadActivity.Update, options);
+                // Success! Result is already true, so pass it up unchanged
             } catch (StorageException se) {
                 if (wasLeaseLost(se, lease.getPartitionId())) {
-                    return false;
+                	result = false;
                 } else {
-                    throw LoggingUtils.wrapException(se, action);
+                	throw se;
                 }
             } catch (IOException ie) {
-                throw LoggingUtils.wrapException(ie, action);
+            	throw ie;
             }
-
-            return true;
-        }, this.hostContext.getExecutor());
+		}
+		// else could not renew lease due to lease loss. Result is already false, so pass it up unchanged
+        
+        return result;
     }
-
+    
     private AzureBlobLease downloadLease(CloudBlockBlob blob, BlobRequestOptions options) throws StorageException, IOException {
         String jsonLease = blob.downloadText(null, null, options, null);
         TRACE_LOGGER.debug(this.hostContext.withHost("Raw JSON downloaded: " + jsonLease));
