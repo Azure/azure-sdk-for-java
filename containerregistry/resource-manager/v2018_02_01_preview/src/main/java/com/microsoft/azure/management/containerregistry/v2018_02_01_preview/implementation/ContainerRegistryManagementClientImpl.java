@@ -51,11 +51,11 @@ public class ContainerRegistryManagementClientImpl extends AzureServiceClient {
         return this;
     }
 
-    /** The preferred language for the response. */
+    /** Gets or sets the preferred language for the response. */
     private String acceptLanguage;
 
     /**
-     * Gets The preferred language for the response.
+     * Gets Gets or sets the preferred language for the response.
      *
      * @return the acceptLanguage value.
      */
@@ -64,7 +64,7 @@ public class ContainerRegistryManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Sets The preferred language for the response.
+     * Sets Gets or sets the preferred language for the response.
      *
      * @param acceptLanguage the acceptLanguage value.
      * @return the service client itself
@@ -74,11 +74,11 @@ public class ContainerRegistryManagementClientImpl extends AzureServiceClient {
         return this;
     }
 
-    /** The retry timeout in seconds for Long Running Operations. Default value is 30. */
+    /** Gets or sets the retry timeout in seconds for Long Running Operations. Default value is 30. */
     private int longRunningOperationRetryTimeout;
 
     /**
-     * Gets The retry timeout in seconds for Long Running Operations. Default value is 30.
+     * Gets Gets or sets the retry timeout in seconds for Long Running Operations. Default value is 30.
      *
      * @return the longRunningOperationRetryTimeout value.
      */
@@ -87,7 +87,7 @@ public class ContainerRegistryManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Sets The retry timeout in seconds for Long Running Operations. Default value is 30.
+     * Sets Gets or sets the retry timeout in seconds for Long Running Operations. Default value is 30.
      *
      * @param longRunningOperationRetryTimeout the longRunningOperationRetryTimeout value.
      * @return the service client itself
@@ -97,11 +97,11 @@ public class ContainerRegistryManagementClientImpl extends AzureServiceClient {
         return this;
     }
 
-    /** Whether a unique x-ms-client-request-id should be generated. When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true. */
+    /** When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true. */
     private boolean generateClientRequestId;
 
     /**
-     * Gets Whether a unique x-ms-client-request-id should be generated. When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true.
+     * Gets When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true.
      *
      * @return the generateClientRequestId value.
      */
@@ -110,7 +110,7 @@ public class ContainerRegistryManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Sets Whether a unique x-ms-client-request-id should be generated. When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true.
+     * Sets When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true.
      *
      * @param generateClientRequestId the generateClientRequestId value.
      * @return the service client itself
