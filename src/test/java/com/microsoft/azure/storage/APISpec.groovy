@@ -370,8 +370,4 @@ class APISpec extends Specification {
 
         sleep(30000) // Wait for the policy to take effect.
     }
-
-    def clearServiceProperties() {
-
-    }
 }
