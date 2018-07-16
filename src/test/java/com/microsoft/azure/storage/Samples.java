@@ -1587,6 +1587,8 @@ public class Samples {
         ContainerURL containerURL = serviceURL.createContainerURL("myjavacontainerbasic");
 
         BlockBlobURL blobURL = containerURL.createBlockBlobURL("HelloWorld.txt");
+        AppendBlobURL appendBlobURL = containerURL.createAppendBlobURL("Data.txt");
+        PageBlobURL pageBlobURL = containerURL.createPageBlobURL("pageBlob");
 
         String data = "Hello world!";
 
@@ -1839,7 +1841,6 @@ public class Samples {
         // </blocks>
 
         // <append_blob>
-        AppendBlobURL appendBlobURL = containerURL.createAppendBlobURL("Data.txt");
 
         // Create the container.
         containerURL.create(null, null)
@@ -1907,6 +1908,22 @@ public class Samples {
         blobURL.delete(null, null)
                 .subscribe();
         // </blob_delete>
+
+        // <undelete>
+        // This sample assumes that the account has a delete retention policy set.
+        blobURL.delete(null, null)
+                .flatMap(response ->
+                        blobURL.undelete())
+                .subscribe();
+        // </undelete>
+
+        // <tier>
+        // BlockBlobs and PageBlobs have different sets of tiers.
+        blockBlobURL.setTier(AccessTier.HOT)
+                .subscribe();
+        pageBlobURL.setTier(AccessTier.P6)
+                .subscribe();
+        // </tier>
 
         // <properties_metadata>
         containerURL.create(null, null)
@@ -1981,7 +1998,6 @@ public class Samples {
                 .subscribe();
         // </list_blobs_hierarchy>
 
-        PageBlobURL pageBlobURL = containerURL.createPageBlobURL("pageBlob");
         // <page_blob_basic>
         containerURL.create(null, null)
                 .flatMap(response ->

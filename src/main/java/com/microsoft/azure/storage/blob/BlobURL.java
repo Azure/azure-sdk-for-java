@@ -391,12 +391,14 @@ public class BlobURL extends StorageURL {
     }
 
     /**
-<<<<<<< HEAD
      * Sets the tier on a blob. The operation is allowed on a page blob in a premium storage account or a block blob in
      * a blob storage or GPV2 account. A premium page blob's tier determines the allowed size, IOPS, and bandwidth of
      * the blob. A block blob's tier determines the Hot/Cool/Archive storage type. This does not update the blob's etag.
-     * For detailed information about block blob level tiering see the
-     * <a href="https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blob-storage-tiers.">Azure Docs</a>.
+     * For detailed information about block blob level tiering see the <a href="https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blob-storage-tiers.">Azure Docs</a>.
+     *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=tier "Sample code for BlobURL.setTier")]
+     *
      * @param tier
      *      The new tier for the blob.
      * @return
@@ -411,14 +413,11 @@ public class BlobURL extends StorageURL {
 
 
     /**
-     * Undelete restores the contents and metadata of a soft-deleted blob and any associated soft-deleted snapshots.
-=======
      * Undelete restores the content and metadata of a soft-deleted blob and/or any associated soft-deleted snapshots.
      * For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/undelete-blob">Azure Docs</a>.
      *
      * @apiNote
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=undelete "Sample code for BlobURL.undelete")]
->>>>>>> CR feedback
      *
      * @return
      *      Emits the successful response.
