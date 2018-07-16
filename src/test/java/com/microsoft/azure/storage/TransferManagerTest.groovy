@@ -32,10 +32,6 @@ import java.nio.ReadOnlyBufferException
 import java.nio.channels.FileChannel
 import java.security.MessageDigest
 
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertEquals
-
 class TransferManagerTest extends APISpec {
     BlockBlobURL bu
 
@@ -290,7 +286,7 @@ class TransferManagerTest extends APISpec {
         when:
         // Block length will be ignored for single shot.
         CommonRestResponse response = TransferManager.uploadByteBufferToBlockBlob(data, bu,
-                (int)(BlockBlobURL.MAX_PUT_BLOCK_BYTES/10),
+                (int)(BlockBlobURL.MAX_STAGE_BLOCK_BYTES/10),
                 new TransferManager.UploadToBlockBlobOptions(null, null, null,
                         null, 20)).blockingGet()
 
@@ -329,9 +325,9 @@ class TransferManagerTest extends APISpec {
         thrown(IllegalArgumentException)
 
         where:
-        blockLength                          | _
-        -1                                   | _
-        BlockBlobURL.MAX_PUT_BLOCK_BYTES + 1 | _
+        blockLength                            | _
+        -1                                     | _
+        BlockBlobURL.MAX_STAGE_BLOCK_BYTES + 1 | _
     }
 
     @Unroll
@@ -442,7 +438,7 @@ class TransferManagerTest extends APISpec {
         when:
         // Block length will be ignored for single shot.
         CommonRestResponse response = TransferManager.uploadFileToBlockBlob(FileChannel.open(file.toPath()), bu,
-                (int)(BlockBlobURL.MAX_PUT_BLOCK_BYTES/10),
+                (int)(BlockBlobURL.MAX_STAGE_BLOCK_BYTES/10),
                 new TransferManager.UploadToBlockBlobOptions(null, null, null,
                         null, 20)).blockingGet()
 
@@ -498,9 +494,9 @@ class TransferManagerTest extends APISpec {
         thrown(IllegalArgumentException)
 
         where:
-        blockLength                          | _
-        -1                                   | _
-        BlockBlobURL.MAX_PUT_BLOCK_BYTES + 1 | _
+        blockLength                            | _
+        -1                                     | _
+        BlockBlobURL.MAX_STAGE_BLOCK_BYTES + 1 | _
     }
 
     @Unroll
@@ -658,7 +654,7 @@ class TransferManagerTest extends APISpec {
 
                 return TransferManager.uploadFileToBlockBlob(
                         FileChannel.open(new File(getClass().getClassLoader().getResource("15mb.txt").getFile())
-                                .toPath()), asyncblob, BlockBlobURL.MAX_PUT_BLOCK_BYTES, asyncOptions).toObservable()
+                                .toPath()), asyncblob, BlockBlobURL.MAX_STAGE_BLOCK_BYTES, asyncOptions).toObservable()
             }
         }, 2000)
                 .onErrorReturn((new Function<Throwable, Object>() {

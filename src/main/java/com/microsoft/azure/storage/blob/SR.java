@@ -49,7 +49,7 @@ final class SR {
     public static final String INVALID_ACL_ACCESS_TYPE = "Invalid acl public access type returned '%s'. Expected blob or container.";
     public static final String INVALID_BLOB_TYPE = "Incorrect Blob type, please use the correct Blob type to access a blob on the server. Expected %s, actual %s.";
     public static final String INVALID_BLOCK_ID = "Invalid blockID, blockID must be a valid Base64 String.";
-    public static final String INVALID_BLOCK_SIZE = "Block data should not exceed BlockBlobURL.MAX_PUT_BLOCK_BYTES";
+    public static final String INVALID_BLOCK_SIZE = "Block data should not exceed BlockBlobURL.MAX_STAGE_BLOCK_BYTES";
     public static final String INVALID_CONDITIONAL_HEADERS = "The conditionals specified for this operation did not match server.";
     public static final String INVALID_CONNECTION_STRING = "Invalid connection string.";
     public static final String INVALID_CONNECTION_STRING_DEV_STORE_NOT_TRUE = "Invalid connection string, the UseDevelopmentStorage key must always be paired with 'true'.  Remove the flag entirely otherwise.";

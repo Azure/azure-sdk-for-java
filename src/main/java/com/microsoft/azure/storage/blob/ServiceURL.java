@@ -78,6 +78,9 @@ public final class ServiceURL extends StorageURL {
      * Marker) to get the next segment. For more information, see
      * the <a href="https://docs.microsoft.com/rest/api/storageservices/list-containers2">Azure Docs</a>.
      *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_list"Sample code for ServiceURL.listContainersSegment")]
+     *
      * @param marker
      *      Identifies the portion of the list to be returned with the next list operation.
      *      This value is returned in the response of a previous list operation as the
@@ -99,6 +102,9 @@ public final class ServiceURL extends StorageURL {
      * Gets the properties of a storage account’s Blob service. For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-service-properties">Azure Docs</a>.
      *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_getsetprops "Sample code for ServiceURL.getProperties")]
+     *
      * @return
      *      Emits the successful response.
      */
@@ -112,6 +118,9 @@ public final class ServiceURL extends StorageURL {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-service-properties">Azure Docs</a>.
      * Note that setting the default service version has no effect when using this client because this client explicitly
      * sets the version header on each request, overriding the default.
+     *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_getsetprops "Sample code for ServiceURL.setProperties")]
      *
      * @param properties
      *      Configures the service.
@@ -129,6 +138,9 @@ public final class ServiceURL extends StorageURL {
      * location endpoint when read-access geo-redundant replication is enabled for the storage account. For more
      * information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-service-stats">Azure Docs</a>.
+     *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_stats "Sample code for ServiceURL.getStats")]
      *
      * @return
      *      Emits the successful response.
