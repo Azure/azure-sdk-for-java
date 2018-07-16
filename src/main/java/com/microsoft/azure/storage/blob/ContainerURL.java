@@ -149,6 +149,9 @@ public final class ContainerURL extends StorageURL {
      * fails. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
      *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerURL.create")]
+     *
      * @param metadata
      *      {@link Metadata}
      * @param accessType
@@ -157,7 +160,7 @@ public final class ContainerURL extends StorageURL {
      * @return
      *      Emits the successful response.
      */
-    public Single<ContainersCreateResponse> create(
+    public Single<ContainerCreateResponse> create(
             Metadata metadata, PublicAccessType accessType) {
         metadata = metadata == null ? Metadata.NONE : metadata;
             return addErrorWrappingToSingle(this.storageClient.generatedContainers().createWithRestResponseAsync(
@@ -170,12 +173,15 @@ public final class ContainerURL extends StorageURL {
      * deleted during garbage collection. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
      *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerURL.delete")]
+     *
      * @param accessConditions
      *      {@link ContainerAccessConditions}
      * @return
      *      Emits the successful response.
      */
-    public Single<ContainersDeleteResponse> delete(
+    public Single<ContainerDeleteResponse> delete(
             ContainerAccessConditions accessConditions) {
         accessConditions = accessConditions == null ? ContainerAccessConditions.NONE : accessConditions;
 
@@ -197,12 +203,15 @@ public final class ContainerURL extends StorageURL {
      * Returns the container's metadata and system properties. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-container-metadata">Azure Docs</a>.
      *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerURL.getProperties")]
+     *
      * @param leaseAccessConditions
      *      {@link LeaseAccessConditions}
      * @return
      *      Emits the successful response.
      */
-    public Single<ContainersGetPropertiesResponse> getProperties(
+    public Single<ContainerGetPropertiesResponse> getProperties(
             LeaseAccessConditions leaseAccessConditions) {
         leaseAccessConditions = leaseAccessConditions == null ? LeaseAccessConditions.NONE : leaseAccessConditions;
 
@@ -214,6 +223,9 @@ public final class ContainerURL extends StorageURL {
      * Sets the container's metadata. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-container-metadata">Azure Docs</a>.
      *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerURL.setMetadata")]
+     *
      * @param metadata
      *      {@link Metadata}
      * @param accessConditions
@@ -221,7 +233,7 @@ public final class ContainerURL extends StorageURL {
      * @return
      *      Emits the successful response.
      */
-    public Single<ContainersSetMetadataResponse> setMetadata(
+    public Single<ContainerSetMetadataResponse> setMetadata(
             Metadata metadata, ContainerAccessConditions accessConditions) {
         metadata = metadata == null ? Metadata.NONE : metadata;
         accessConditions = accessConditions == null ? ContainerAccessConditions.NONE : accessConditions;
@@ -244,12 +256,15 @@ public final class ContainerURL extends StorageURL {
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-container-acl">Azure Docs</a>.
      *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_policy "Sample code for ContainerURL.getAccessPolicy")]
+     *
      * @param leaseAccessConditions
      *      {@link LeaseAccessConditions}
      * @return
      *      Emits the successful response.
      */
-    public Single<ContainersGetAccessPolicyResponse> getAccessPolicy(
+    public Single<ContainerGetAccessPolicyResponse> getAccessPolicy(
             LeaseAccessConditions leaseAccessConditions) {
         leaseAccessConditions = leaseAccessConditions == null ? LeaseAccessConditions.NONE : leaseAccessConditions;
 
@@ -263,6 +278,9 @@ public final class ContainerURL extends StorageURL {
      * ensure the time formatting is compatible with the service. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-container-acl">Azure Docs</a>.
      *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_policy "Sample code for ContainerURL.setAccessPolicy")]
+     *
      * @param accessType
      *      Specifies how the data in this container is available to the public. See the x-ms-blob-public-access header
      *      in the Azure Docs for more information. Pass null for no public access.
@@ -275,7 +293,7 @@ public final class ContainerURL extends StorageURL {
      * @return
      *      Emits the successful response.
      */
-    public Single<ContainersSetAccessPolicyResponse> setAccessPolicy(
+    public Single<ContainerSetAccessPolicyResponse> setAccessPolicy(
             PublicAccessType accessType, List<SignedIdentifier> identifiers,
             ContainerAccessConditions accessConditions) {
         accessConditions = accessConditions == null ? ContainerAccessConditions.NONE : accessConditions;
@@ -317,6 +335,9 @@ public final class ContainerURL extends StorageURL {
      * 60 seconds, or infinite (-1). For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-container">Azure Docs</a>.
      *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerURL.acquireLease")]
+     *
      * @param proposedID
      *      A {@code String} in any valid GUID format.
      * @param duration
@@ -327,7 +348,7 @@ public final class ContainerURL extends StorageURL {
      * @return
      *      Emits the successful response.
      */
-    public Single<ContainersAcquireLeaseResponse> acquireLease(
+    public Single<ContainerAcquireLeaseResponse> acquireLease(
             String proposedID, int duration, HTTPAccessConditions httpAccessConditions) {
         httpAccessConditions = httpAccessConditions == null ? HTTPAccessConditions.NONE : httpAccessConditions;
         if (!this.validateLeaseOperationAccessConditions(httpAccessConditions)){
@@ -348,6 +369,9 @@ public final class ContainerURL extends StorageURL {
      * Renews the container's previously-acquired lease. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-container">Azure Docs</a>.
      *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerURL.renewLease")]
+     *
      * @param leaseID
      *      The leaseId of the active lease on the container.
      * @param httpAccessConditions
@@ -355,7 +379,7 @@ public final class ContainerURL extends StorageURL {
      * @return
      *      Emits the successful response.
      */
-    public Single<ContainersRenewLeaseResponse> renewLease(
+    public Single<ContainerRenewLeaseResponse> renewLease(
             String leaseID, HTTPAccessConditions httpAccessConditions) {
         httpAccessConditions = httpAccessConditions == null ? HTTPAccessConditions.NONE : httpAccessConditions;
         if (!this.validateLeaseOperationAccessConditions(httpAccessConditions)) {
@@ -376,6 +400,9 @@ public final class ContainerURL extends StorageURL {
      * Releases the container's previously-acquired lease. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-container">Azure Docs</a>.
      *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerURL.releaseLease")]
+     *
      * @param leaseID
      *      The leaseId of the active lease on the container.
      * @param httpAccessConditions
@@ -383,7 +410,7 @@ public final class ContainerURL extends StorageURL {
      * @return
      *      Emits the successful response.
      */
-    public Single<ContainersReleaseLeaseResponse> releaseLease(
+    public Single<ContainerReleaseLeaseResponse> releaseLease(
             String leaseID, HTTPAccessConditions httpAccessConditions) {
         httpAccessConditions = httpAccessConditions == null ? HTTPAccessConditions.NONE : httpAccessConditions;
         if (!this.validateLeaseOperationAccessConditions(httpAccessConditions)) {
@@ -404,6 +431,9 @@ public final class ContainerURL extends StorageURL {
      * Breaks the container's previously-acquired lease. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-container">Azure Docs</a>.
      *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerURL.breakLease")]
+     *
      * @param breakPeriodInSeconds
      *      An optional {@code Integer} representing the proposed duration of seconds that the lease should continue
      *      before it is broken, between 0 and 60 seconds. This break period is only used if it is shorter than the time
@@ -414,7 +444,7 @@ public final class ContainerURL extends StorageURL {
      * @return
      *      Emits the successful response.
      */
-    public Single<ContainersBreakLeaseResponse> breakLease(
+    public Single<ContainerBreakLeaseResponse> breakLease(
             Integer breakPeriodInSeconds, HTTPAccessConditions httpAccessConditions) {
         httpAccessConditions = httpAccessConditions == null ? HTTPAccessConditions.NONE : httpAccessConditions;
         if (!this.validateLeaseOperationAccessConditions(httpAccessConditions)) {
@@ -435,6 +465,9 @@ public final class ContainerURL extends StorageURL {
      * Changes the container's leaseID. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-container">Azure Docs</a>.
      *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerURL.changeLease")]
+     *
      * @param leaseID
      *      The leaseId of the active lease on the container.
      * @param proposedID
@@ -444,7 +477,7 @@ public final class ContainerURL extends StorageURL {
      * @return
      *      Emits the successful response.
      */
-    public Single<ContainersChangeLeaseResponse> changeLease(
+    public Single<ContainerChangeLeaseResponse> changeLease(
             String leaseID, String proposedID, HTTPAccessConditions httpAccessConditions) {
         httpAccessConditions = httpAccessConditions == null ? HTTPAccessConditions.NONE : httpAccessConditions;
         if (!this.validateLeaseOperationAccessConditions(httpAccessConditions)) {
@@ -468,6 +501,10 @@ public final class ContainerURL extends StorageURL {
      * Marker) to get the next segment. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
      *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=list_blobs_flat "Sample code for ContainerURL.listBlobsFlatSegment")]
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=list_blobs_flat_helper "helper code for ContainerURL.listBlobsFlatSegment")]
+     *
      * @param marker
      *      Identifies the portion of the list to be returned with the next list operation.
      *      This value is returned in the response of a previous list operation as the
@@ -477,7 +514,7 @@ public final class ContainerURL extends StorageURL {
      * @return
      *      Emits the successful response.
      */
-    public Single<ContainersListBlobFlatSegmentResponse> listBlobsFlatSegment(
+    public Single<ContainerListBlobFlatSegmentResponse> listBlobsFlatSegment(
             String marker, ListBlobsOptions options) {
         options = options == null ? ListBlobsOptions.DEFAULT : options;
 
@@ -506,7 +543,7 @@ public final class ContainerURL extends StorageURL {
      * @return
      *      Emits the successful response.
      */
-    public Single<ContainersListBlobHierarchySegmentResponse> listBlobsHierarchySegment(
+    public Single<ContainerListBlobHierarchySegmentResponse> listBlobsHierarchySegment(
             String marker, String delimiter, ListBlobsOptions options) {
         options = options == null ? ListBlobsOptions.DEFAULT : options;
         if (options.getDetails().getSnapshots()) {

@@ -19,7 +19,7 @@ import java.time.OffsetDateTime;
 /**
  * Properties of a blob.
  */
-@JacksonXmlRootElement(localName = "BlobProperties")
+@JacksonXmlRootElement(localName = "Properties")
 public final class BlobProperties {
     /**
      * The lastModified property.

@@ -15,7 +15,8 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /**
- * the retention policy.
+ * the retention policy which determines how long the associated data should
+ * persist.
  */
 @JacksonXmlRootElement(localName = "RetentionPolicy")
 public final class RetentionPolicy {

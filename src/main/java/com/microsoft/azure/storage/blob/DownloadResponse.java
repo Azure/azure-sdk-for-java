@@ -15,7 +15,7 @@
 
 package com.microsoft.azure.storage.blob;
 
-import com.microsoft.azure.storage.blob.models.BlobsDownloadHeaders;
+import com.microsoft.azure.storage.blob.models.BlobDownloadHeaders;
 import com.microsoft.rest.v2.RestResponse;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
@@ -29,12 +29,12 @@ import java.util.Map;
  * {@code DownloadResponse} wraps the protocol-layer response from {@link BlobURL#download(BlobRange,
  * BlobAccessConditions, boolean)} to help provide information for retrying.
  */
-public class DownloadResponse extends RestResponse<BlobsDownloadHeaders, Flowable<ByteBuffer>> implements Closeable {
+public class DownloadResponse extends RestResponse<BlobDownloadHeaders, Flowable<ByteBuffer>> implements Closeable {
     private BlobURL blobURL;
 
     private RetryReader.HTTPGetterInfo info;
 
-    DownloadResponse(int statusCode, BlobsDownloadHeaders blobsDownloadHeaders, Map<String, String> rawHeaders,
+    DownloadResponse(int statusCode, BlobDownloadHeaders blobsDownloadHeaders, Map<String, String> rawHeaders,
             Flowable<ByteBuffer> byteBufferFlowable) {
         super(statusCode, blobsDownloadHeaders, rawHeaders, byteBufferFlowable);
     }
@@ -66,7 +66,7 @@ public class DownloadResponse extends RestResponse<BlobsDownloadHeaders, Flowabl
     }
 
     @Override
-    public BlobsDownloadHeaders headers() {
+    public BlobDownloadHeaders headers() {
         return super.headers();
     }
 

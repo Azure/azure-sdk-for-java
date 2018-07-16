@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * Contains all response data for the listContainersSegment operation.
  */
-public final class ServiceListContainersSegmentResponse extends RestResponse<ServiceListContainersSegmentHeaders, ListContainersResponse> {
+public final class ServiceListContainersSegmentResponse extends RestResponse<ServiceListContainersSegmentHeaders, ListContainersSegmentResponse> {
     /**
      * Creates an instance of ServiceListContainersSegmentResponse.
      *
@@ -25,7 +25,7 @@ public final class ServiceListContainersSegmentResponse extends RestResponse<Ser
      * @param rawHeaders the raw headers of the HTTP response.
      * @param body the deserialized body of the HTTP response.
      */
-    public ServiceListContainersSegmentResponse(int statusCode, ServiceListContainersSegmentHeaders headers, Map<String, String> rawHeaders, ListContainersResponse body) {
+    public ServiceListContainersSegmentResponse(int statusCode, ServiceListContainersSegmentHeaders headers, Map<String, String> rawHeaders, ListContainersSegmentResponse body) {
         super(statusCode, headers, rawHeaders, body);
     }
 
@@ -41,7 +41,7 @@ public final class ServiceListContainersSegmentResponse extends RestResponse<Ser
      * @return the deserialized response body.
      */
     @Override
-    public ListContainersResponse body() {
+    public ListContainersSegmentResponse body() {
         return super.body();
     }
 }

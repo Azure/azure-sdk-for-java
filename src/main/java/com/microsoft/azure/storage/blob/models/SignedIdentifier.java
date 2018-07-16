@@ -26,7 +26,7 @@ public final class SignedIdentifier {
     private String id;
 
     /**
-     * The access policy.
+     * The accessPolicy property.
      */
     @JsonProperty(value = "AccessPolicy", required = true)
     private AccessPolicy accessPolicy;

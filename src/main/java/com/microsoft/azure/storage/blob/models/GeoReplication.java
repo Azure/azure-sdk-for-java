@@ -17,7 +17,7 @@ import com.microsoft.rest.v2.DateTimeRfc1123;
 import java.time.OffsetDateTime;
 
 /**
- * The GeoReplication model.
+ * Geo-Replication information for the Secondary Storage Service.
  */
 @JacksonXmlRootElement(localName = "GeoReplication")
 public final class GeoReplication {

@@ -22,14 +22,14 @@ import com.microsoft.azure.storage.blob.HTTPAccessConditions
 import com.microsoft.azure.storage.blob.LeaseAccessConditions
 import com.microsoft.azure.storage.blob.Metadata
 import com.microsoft.azure.storage.blob.StorageException
-import com.microsoft.azure.storage.blob.models.BlobsGetPropertiesResponse
-import com.microsoft.azure.storage.blob.models.BlockBlobsCommitBlockListHeaders
-import com.microsoft.azure.storage.blob.models.BlockBlobsCommitBlockListResponse
-import com.microsoft.azure.storage.blob.models.BlockBlobsGetBlockListResponse
-import com.microsoft.azure.storage.blob.models.BlockBlobsStageBlockHeaders
-import com.microsoft.azure.storage.blob.models.BlockBlobsStageBlockResponse
-import com.microsoft.azure.storage.blob.models.BlockBlobsUploadHeaders
-import com.microsoft.azure.storage.blob.models.BlockBlobsUploadResponse
+import com.microsoft.azure.storage.blob.models.BlobGetPropertiesResponse
+import com.microsoft.azure.storage.blob.models.BlockBlobCommitBlockListHeaders
+import com.microsoft.azure.storage.blob.models.BlockBlobCommitBlockListResponse
+import com.microsoft.azure.storage.blob.models.BlockBlobGetBlockListResponse
+import com.microsoft.azure.storage.blob.models.BlockBlobStageBlockHeaders
+import com.microsoft.azure.storage.blob.models.BlockBlobStageBlockResponse
+import com.microsoft.azure.storage.blob.models.BlockBlobUploadHeaders
+import com.microsoft.azure.storage.blob.models.BlockBlobUploadResponse
 import com.microsoft.azure.storage.blob.models.BlockListType
 import com.microsoft.azure.storage.blob.models.StorageErrorCode
 import com.microsoft.rest.v2.util.FlowableUtil
@@ -54,9 +54,9 @@ class BlockBlobAPITest extends APISpec {
 
     def "Stage block"() {
         setup:
-        BlockBlobsStageBlockResponse response = bu.stageBlock(getBlockID(), defaultFlowable, defaultDataSize,
+        BlockBlobStageBlockResponse response = bu.stageBlock(getBlockID(), defaultFlowable, defaultDataSize,
                 null).blockingGet()
-        BlockBlobsStageBlockHeaders headers = response.headers()
+        BlockBlobStageBlockHeaders headers = response.headers()
 
         expect:
         response.statusCode() == 201
@@ -143,9 +143,9 @@ class BlockBlobAPITest extends APISpec {
         ids.add(blockID)
 
         when:
-        BlockBlobsCommitBlockListResponse response =
+        BlockBlobCommitBlockListResponse response =
                 bu.commitBlockList(ids, null, null, null).blockingGet()
-        BlockBlobsCommitBlockListHeaders headers = response.headers()
+        BlockBlobCommitBlockListHeaders headers = response.headers()
 
         then:
         response.statusCode() == 201
@@ -173,7 +173,7 @@ class BlockBlobAPITest extends APISpec {
 
         when:
         bu.commitBlockList(ids, headers, null, null).blockingGet()
-        BlobsGetPropertiesResponse response = bu.getProperties(null).blockingGet()
+        BlobGetPropertiesResponse response = bu.getProperties(null).blockingGet()
 
         then:
         response.statusCode() == 200
@@ -200,7 +200,7 @@ class BlockBlobAPITest extends APISpec {
 
         when:
         bu.commitBlockList(null, null, metadata, null).blockingGet()
-        BlobsGetPropertiesResponse response = bu.getProperties(null).blockingGet()
+        BlobGetPropertiesResponse response = bu.getProperties(null).blockingGet()
 
         then:
         response.statusCode() == 200
@@ -210,18 +210,6 @@ class BlockBlobAPITest extends APISpec {
         key1  | value1 | key2   | value2
         null  | null   | null   | null
         "foo" | "bar"  | "fizz" | "buzz"
-    }
-
-    def "Commit block list metadata fail"() {
-        setup:
-        Metadata metadata = new Metadata()
-        metadata.put("!nvalid", "value")
-
-        when:
-        bu.commitBlockList(null, null, metadata, null).blockingGet()
-
-        then:
-        thrown(IllegalArgumentException)
     }
 
     @Unroll
@@ -288,19 +276,26 @@ class BlockBlobAPITest extends APISpec {
     def "Get block list"() {
         setup:
         String blockID = getBlockID()
-        bu.stageBlock(blockID, defaultFlowable, defaultDataSize,
-                null).blockingGet()
+        bu.stageBlock(blockID, defaultFlowable, defaultDataSize,null).blockingGet()
+        bu.commitBlockList(Arrays.asList(blockID), null, null, null).blockingGet()
+        String blockID2 = getBlockID()
+        bu.stageBlock(blockID2, defaultFlowable, defaultDataSize, null).blockingGet()
 
         when:
-        BlockBlobsGetBlockListResponse response = bu.getBlockList(BlockListType.ALL, null)
+        BlockBlobGetBlockListResponse response = bu.getBlockList(BlockListType.ALL, null)
                 .blockingGet()
 
         then:
-        response.body().uncommittedBlocks().get(0).name() == blockID
+        response.body().committedBlocks().get(0).name() == blockID
+        response.body().committedBlocks().get(0).size() == defaultDataSize
+        response.body().uncommittedBlocks().get(0).name() == blockID2
+        response.body().uncommittedBlocks().get(0).size() == defaultDataSize
         validateBasicHeaders(response.headers())
         response.headers().contentType() != null
         response.headers().blobContentLength() == (long) defaultDataSize
     }
+
+    // TODO: at least two blocks per list
 
     @Unroll
     def "Get block list type"() {
@@ -316,7 +311,7 @@ class BlockBlobAPITest extends APISpec {
                 null).blockingGet()
 
         when:
-        BlockBlobsGetBlockListResponse response = bu.getBlockList(type, null).blockingGet()
+        BlockBlobGetBlockListResponse response = bu.getBlockList(type, null).blockingGet()
 
         then:
         response.body().committedBlocks().size() == committedCount
@@ -370,9 +365,9 @@ class BlockBlobAPITest extends APISpec {
 
     def "Upload"() {
         when:
-        BlockBlobsUploadResponse response = bu.upload(defaultFlowable, defaultDataSize,
+        BlockBlobUploadResponse response = bu.upload(defaultFlowable, defaultDataSize,
                 null, null, null).blockingGet()
-        BlockBlobsUploadHeaders headers = response.headers()
+        BlockBlobUploadHeaders headers = response.headers()
 
         then:
         response.statusCode() == 201
@@ -422,7 +417,7 @@ class BlockBlobAPITest extends APISpec {
         when:
         bu.upload(defaultFlowable, defaultDataSize,
                 headers, null, null).blockingGet()
-        BlobsGetPropertiesResponse response = bu.getProperties(null).blockingGet()
+        BlobGetPropertiesResponse response = bu.getProperties(null).blockingGet()
 
         then:
         validateBlobHeaders(response.headers(), cacheControl, contentDisposition, contentEncoding, contentLanguage,
@@ -451,7 +446,7 @@ class BlockBlobAPITest extends APISpec {
         when:
         bu.upload(defaultFlowable, defaultDataSize,
                 null, metadata, null).blockingGet()
-        BlobsGetPropertiesResponse response = bu.getProperties(null).blockingGet()
+        BlobGetPropertiesResponse response = bu.getProperties(null).blockingGet()
 
         then:
         response.statusCode() == 200
@@ -461,18 +456,6 @@ class BlockBlobAPITest extends APISpec {
         key1  | value1 | key2   | value2
         null  | null   | null   | null
         "foo" | "bar"  | "fizz" | "buzz"
-    }
-
-    def "Upload metadata fail"() {
-        setup:
-        Metadata metadata = new Metadata()
-        metadata.put("!nvalid", "value")
-
-        when:
-        bu.upload(defaultFlowable, defaultDataSize, null, metadata, null).blockingGet()
-
-        then:
-        thrown(IllegalArgumentException)
     }
 
     @Unroll
