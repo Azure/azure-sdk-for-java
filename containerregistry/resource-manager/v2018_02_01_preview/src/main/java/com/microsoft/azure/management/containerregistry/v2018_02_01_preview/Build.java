@@ -124,6 +124,8 @@ public interface Build extends HasInner<BuildInner>, Indexable, Refreshable<Buil
         interface WithIsArchiveEnabled {
             /**
              * Specifies isArchiveEnabled.
+             * @param isArchiveEnabled The value that indicates whether archiving is enabled or not
+             * @return the next update stage
              */
             Update withIsArchiveEnabled(Boolean isArchiveEnabled);
         }

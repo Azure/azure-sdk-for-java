@@ -65,6 +65,10 @@ public interface BuildStep extends HasInner<BuildStepInner>, Indexable, Refresha
         interface WithBuildTask {
            /**
             * Specifies resourceGroupName, registryName, buildTaskName.
+            * @param resourceGroupName The name of the resource group to which the container registry belongs
+            * @param registryName The name of the container registry
+            * @param buildTaskName The name of the container registry build task
+            * @return the next definition stage
             */
             WithProperties withExistingBuildTask(String resourceGroupName, String registryName, String buildTaskName);
         }
@@ -75,6 +79,8 @@ public interface BuildStep extends HasInner<BuildStepInner>, Indexable, Refresha
         interface WithProperties {
            /**
             * Specifies properties.
+            * @param properties The properties of a build step
+            * @return the next definition stage
             */
             WithCreate withProperties(BuildStepProperties properties);
         }
@@ -103,6 +109,8 @@ public interface BuildStep extends HasInner<BuildStepInner>, Indexable, Refresha
         interface WithProperties {
             /**
              * Specifies properties.
+             * @param properties The properties for updating a build step
+             * @return the next update stage
              */
             Update withProperties(BuildStepPropertiesUpdateParameters properties);
         }
@@ -113,6 +121,8 @@ public interface BuildStep extends HasInner<BuildStepInner>, Indexable, Refresha
         interface WithTags {
             /**
              * Specifies tags.
+             * @param tags The ARM resource tags
+             * @return the next update stage
              */
             Update withTags(Map<String, String> tags);
         }

@@ -88,26 +88,32 @@ public interface Registry extends HasInner<RegistryInner>, Resource, GroupableRe
         interface WithSku {
            /**
             * Specifies sku.
-            */
+            * @param sku The SKU of the container registry
+            * @return the next definition stage
+*/
             WithCreate withSku(Sku sku);
         }
 
         /**
-         * The stage of the registry update allowing to specify AdminUserEnabled.
+         * The stage of the registry definition allowing to specify AdminUserEnabled.
          */
         interface WithAdminUserEnabled {
             /**
              * Specifies adminUserEnabled.
+             * @param adminUserEnabled The value that indicates whether the admin user is enabled
+             * @return the next definition stage
              */
             WithCreate withAdminUserEnabled(Boolean adminUserEnabled);
         }
 
         /**
-         * The stage of the registry update allowing to specify StorageAccount.
+         * The stage of the registry definition allowing to specify StorageAccount.
          */
         interface WithStorageAccount {
             /**
              * Specifies storageAccount.
+             * @param storageAccount The properties of the storage account for the container registry. Only applicable to Basic SKU
+             * @return the next definition stage
              */
             WithCreate withStorageAccount(StorageAccountProperties storageAccount);
         }
@@ -131,31 +137,37 @@ public interface Registry extends HasInner<RegistryInner>, Resource, GroupableRe
      */
     interface UpdateStages {
         /**
-         * The stage of the registry {0} allowing to specify AdminUserEnabled.
+         * The stage of the registry update allowing to specify AdminUserEnabled.
          */
         interface WithAdminUserEnabled {
             /**
              * Specifies adminUserEnabled.
+             * @param adminUserEnabled The value that indicates whether the admin user is enabled
+             * @return the next update stage
              */
             Update withAdminUserEnabled(Boolean adminUserEnabled);
         }
 
         /**
-         * The stage of the registry {0} allowing to specify Sku.
+         * The stage of the registry update allowing to specify Sku.
          */
         interface WithSku {
             /**
              * Specifies sku.
+             * @param sku The SKU of the container registry
+             * @return the next update stage
              */
             Update withSku(Sku sku);
         }
 
         /**
-         * The stage of the registry {0} allowing to specify StorageAccount.
+         * The stage of the registry update allowing to specify StorageAccount.
          */
         interface WithStorageAccount {
             /**
              * Specifies storageAccount.
+             * @param storageAccount The parameters of a storage account for the container registry. Only applicable to Basic SKU. If specified, the storage account must be in the same physical location as the container registry
+             * @return the next update stage
              */
             Update withStorageAccount(StorageAccountProperties storageAccount);
         }

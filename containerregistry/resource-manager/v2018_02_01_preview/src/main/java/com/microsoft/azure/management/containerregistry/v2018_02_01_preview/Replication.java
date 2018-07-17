@@ -80,6 +80,9 @@ public interface Replication extends HasInner<ReplicationInner>, Indexable, Refr
         interface WithRegistry {
            /**
             * Specifies resourceGroupName, registryName.
+            * @param resourceGroupName The name of the resource group to which the container registry belongs
+            * @param registryName The name of the container registry
+            * @return the next definition stage
             */
             WithLocation withExistingRegistry(String resourceGroupName, String registryName);
         }
@@ -90,6 +93,8 @@ public interface Replication extends HasInner<ReplicationInner>, Indexable, Refr
         interface WithLocation {
            /**
             * Specifies location.
+            * @param location The location of the resource. This cannot be changed after the resource is created
+            * @return the next definition stage
             */
             WithCreate withLocation(String location);
         }
@@ -100,6 +105,8 @@ public interface Replication extends HasInner<ReplicationInner>, Indexable, Refr
         interface WithTags {
             /**
              * Specifies tags.
+             * @param tags The tags of the resource
+             * @return the next definition stage
              */
             WithCreate withTags(Map<String, String> tags);
         }
@@ -128,6 +135,8 @@ public interface Replication extends HasInner<ReplicationInner>, Indexable, Refr
         interface WithTags {
             /**
              * Specifies tags.
+             * @param tags The tags of the resource
+             * @return the next update stage
              */
             Update withTags(Map<String, String> tags);
         }
