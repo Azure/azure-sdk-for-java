@@ -40,7 +40,7 @@ public class OrchestratorVersionProfile {
     private List<OrchestratorProfile> upgrades;
 
     /**
-     * Get the orchestratorType value.
+     * Get orchestrator type.
      *
      * @return the orchestratorType value
      */
@@ -49,7 +49,7 @@ public class OrchestratorVersionProfile {
     }
 
     /**
-     * Set the orchestratorType value.
+     * Set orchestrator type.
      *
      * @param orchestratorType the orchestratorType value to set
      * @return the OrchestratorVersionProfile object itself.
@@ -60,7 +60,7 @@ public class OrchestratorVersionProfile {
     }
 
     /**
-     * Get the orchestratorVersion value.
+     * Get orchestrator version (major, minor, patch).
      *
      * @return the orchestratorVersion value
      */
@@ -69,7 +69,7 @@ public class OrchestratorVersionProfile {
     }
 
     /**
-     * Set the orchestratorVersion value.
+     * Set orchestrator version (major, minor, patch).
      *
      * @param orchestratorVersion the orchestratorVersion value to set
      * @return the OrchestratorVersionProfile object itself.
@@ -80,7 +80,7 @@ public class OrchestratorVersionProfile {
     }
 
     /**
-     * Get the defaultProperty value.
+     * Get installed by default if version is not specified.
      *
      * @return the defaultProperty value
      */
@@ -89,7 +89,7 @@ public class OrchestratorVersionProfile {
     }
 
     /**
-     * Set the defaultProperty value.
+     * Set installed by default if version is not specified.
      *
      * @param defaultProperty the defaultProperty value to set
      * @return the OrchestratorVersionProfile object itself.
@@ -100,7 +100,7 @@ public class OrchestratorVersionProfile {
     }
 
     /**
-     * Get the upgrades value.
+     * Get the list of available upgrade versions.
      *
      * @return the upgrades value
      */
@@ -109,7 +109,7 @@ public class OrchestratorVersionProfile {
     }
 
     /**
-     * Set the upgrades value.
+     * Set the list of available upgrade versions.
      *
      * @param upgrades the upgrades value to set
      * @return the OrchestratorVersionProfile object itself.
