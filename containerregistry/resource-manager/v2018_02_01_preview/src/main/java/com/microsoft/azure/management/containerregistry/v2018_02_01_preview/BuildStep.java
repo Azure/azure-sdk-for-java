@@ -46,7 +46,7 @@ public interface BuildStep extends HasInner<BuildStepInner>, Indexable, Refresha
     /**
      * The entirety of the BuildStep definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithBuildTask, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithBuildTask, DefinitionStages.WithProperties, DefinitionStages.WithCreate {
     }
 
     /**
@@ -66,7 +66,17 @@ public interface BuildStep extends HasInner<BuildStepInner>, Indexable, Refresha
            /**
             * Specifies resourceGroupName, registryName, buildTaskName.
             */
-            WithCreate withExistingBuildTask(String resourceGroupName, String registryName, String buildTaskName);
+            WithProperties withExistingBuildTask(String resourceGroupName, String registryName, String buildTaskName);
+        }
+
+        /**
+         * The stage of the buildstep definition allowing to specify Properties.
+         */
+        interface WithProperties {
+           /**
+            * Specifies properties.
+            */
+            WithCreate withProperties(BuildStepProperties properties);
         }
 
         /**

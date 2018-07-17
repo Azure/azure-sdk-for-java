@@ -111,12 +111,22 @@ public interface Build extends HasInner<BuildInner>, Indexable, Refreshable<Buil
     /**
      * The template for a Build update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<Build> {
+    interface Update extends Appliable<Build>, UpdateStages.WithIsArchiveEnabled {
     }
 
     /**
      * Grouping of Build update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the build update allowing to specify IsArchiveEnabled.
+         */
+        interface WithIsArchiveEnabled {
+            /**
+             * Specifies isArchiveEnabled.
+             */
+            Update withIsArchiveEnabled(Boolean isArchiveEnabled);
+        }
+
     }
 }
