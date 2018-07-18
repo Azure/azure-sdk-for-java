@@ -11,31 +11,16 @@ package com.microsoft.azure.management.appservice.v2018_02_01;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.DetectorDefinitionInner;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.SwiftVirtualNetworkInner;
 
 /**
- * Type representing DetectorDefinition.
+ * Type representing SwiftVirtualNetwork.
  */
-public interface DetectorDefinition extends HasInner<DetectorDefinitionInner>, HasManager<CertificateRegistrationManager> {
-    /**
-     * @return the description value.
-     */
-    String description();
-
-    /**
-     * @return the displayName value.
-     */
-    String displayName();
-
+public interface SwiftVirtualNetwork extends HasInner<SwiftVirtualNetworkInner>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the id value.
      */
     String id();
-
-    /**
-     * @return the isEnabled value.
-     */
-    Boolean isEnabled();
 
     /**
      * @return the kind value.
@@ -48,9 +33,14 @@ public interface DetectorDefinition extends HasInner<DetectorDefinitionInner>, H
     String name();
 
     /**
-     * @return the rank value.
+     * @return the subnetResourceId value.
      */
-    Double rank();
+    String subnetResourceId();
+
+    /**
+     * @return the swiftSupported value.
+     */
+    Boolean swiftSupported();
 
     /**
      * @return the type value.

@@ -217,6 +217,16 @@ class AppServiceEnvironmentResourceImpl extends GroupableResourceCoreImpl<AppSer
     }
 
     @Override
+    public String sslCertKeyVaultId() {
+        return this.inner().sslCertKeyVaultId();
+    }
+
+    @Override
+    public String sslCertKeyVaultSecretName() {
+        return this.inner().sslCertKeyVaultSecretName();
+    }
+
+    @Override
     public HostingEnvironmentStatus status() {
         return this.inner().status();
     }
@@ -411,6 +421,26 @@ class AppServiceEnvironmentResourceImpl extends GroupableResourceCoreImpl<AppSer
             this.inner().withNetworkAccessControlList(networkAccessControlList);
         } else {
             this.updateParameter.withNetworkAccessControlList(networkAccessControlList);
+        }
+        return this;
+    }
+
+    @Override
+    public AppServiceEnvironmentResourceImpl withSslCertKeyVaultId(String sslCertKeyVaultId) {
+        if (isInCreateMode()) {
+            this.inner().withSslCertKeyVaultId(sslCertKeyVaultId);
+        } else {
+            this.updateParameter.withSslCertKeyVaultId(sslCertKeyVaultId);
+        }
+        return this;
+    }
+
+    @Override
+    public AppServiceEnvironmentResourceImpl withSslCertKeyVaultSecretName(String sslCertKeyVaultSecretName) {
+        if (isInCreateMode()) {
+            this.inner().withSslCertKeyVaultSecretName(sslCertKeyVaultSecretName);
+        } else {
+            this.updateParameter.withSslCertKeyVaultSecretName(sslCertKeyVaultSecretName);
         }
         return this;
     }

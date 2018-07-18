@@ -230,12 +230,6 @@ class AppServiceEnvironmentsImpl extends WrapperImpl<AppServiceEnvironmentsInner
     }
 
     @Override
-    public Completable syncVirtualNetworkInfoAsync(String resourceGroupName, String name) {
-        AppServiceEnvironmentsInner client = this.inner();
-        return client.syncVirtualNetworkInfoAsync(resourceGroupName, name).toCompletable();
-    }
-
-    @Override
     public Observable<StampCapacity> listCapacitiesAsync(final String resourceGroupName, final String name) {
         AppServiceEnvironmentsInner client = this.inner();
         return client.listCapacitiesAsync(resourceGroupName, name)

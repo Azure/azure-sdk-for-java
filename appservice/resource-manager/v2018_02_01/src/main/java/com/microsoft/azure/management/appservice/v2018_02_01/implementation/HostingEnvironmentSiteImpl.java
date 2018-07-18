@@ -20,7 +20,6 @@ import com.microsoft.azure.management.appservice.v2018_02_01.ManagedServiceIdent
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.appservice.v2018_02_01.SiteConfig;
 import com.microsoft.azure.management.appservice.v2018_02_01.SlotSwapStatus;
-import com.microsoft.azure.management.appservice.v2018_02_01.SnapshotRecoveryRequest;
 import java.util.Map;
 import com.microsoft.azure.management.appservice.v2018_02_01.UsageState;
 
@@ -197,11 +196,6 @@ class HostingEnvironmentSiteImpl extends WrapperImpl<SiteInner> implements Hosti
     @Override
     public SlotSwapStatus slotSwapStatus() {
         return this.inner().slotSwapStatus();
-    }
-
-    @Override
-    public SnapshotRecoveryRequest snapshotInfo() {
-        return this.inner().snapshotInfo();
     }
 
     @Override

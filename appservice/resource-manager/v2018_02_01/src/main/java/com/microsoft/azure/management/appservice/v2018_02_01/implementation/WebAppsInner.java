@@ -22,6 +22,7 @@ import com.microsoft.azure.management.appservice.v2018_02_01.DefaultErrorRespons
 import com.microsoft.azure.management.appservice.v2018_02_01.DeletedAppRestoreRequest;
 import com.microsoft.azure.management.appservice.v2018_02_01.MigrateMySqlRequest;
 import com.microsoft.azure.management.appservice.v2018_02_01.MSDeploy;
+import com.microsoft.azure.management.appservice.v2018_02_01.PremierAddOnPatchResource;
 import com.microsoft.azure.management.appservice.v2018_02_01.PublishingProfileFormat;
 import com.microsoft.azure.management.appservice.v2018_02_01.SitePatchResource;
 import com.microsoft.azure.management.appservice.v2018_02_01.SnapshotRestoreRequest;
@@ -121,10 +122,6 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listBackups" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/backups")
         Observable<Response<ResponseBody>> listBackups(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps discoverRestore" })
-        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/backups/discover")
-        Observable<Response<ResponseBody>> discoverRestore(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body RestoreRequestInner request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps getBackupStatus" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/backups/{backupId}")
@@ -226,6 +223,22 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/slotConfigNames")
         Observable<Response<ResponseBody>> updateSlotConfigurationNames(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body SlotConfigNamesResourceInner slotConfigNames, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps getSwiftVirtualNetworkConnection" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/virtualNetwork")
+        Observable<Response<ResponseBody>> getSwiftVirtualNetworkConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps createOrUpdateSwiftVirtualNetworkConnection" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/virtualNetwork")
+        Observable<Response<ResponseBody>> createOrUpdateSwiftVirtualNetworkConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body SwiftVirtualNetworkInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps deleteSwiftVirtualNetwork" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/virtualNetwork", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> deleteSwiftVirtualNetwork(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps updateSwiftVirtualNetworkConnection" })
+        @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/virtualNetwork")
+        Observable<Response<ResponseBody>> updateSwiftVirtualNetworkConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body SwiftVirtualNetworkInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps getConfiguration" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/web")
         Observable<Response<ResponseBody>> getConfiguration(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -299,6 +312,10 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listDeploymentLog" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/deployments/{id}/log")
         Observable<Response<ResponseBody>> listDeploymentLog(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps discoverBackup" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/discoverbackup")
+        Observable<Response<ResponseBody>> discoverBackup(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body RestoreRequestInner request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listDomainOwnershipIdentifiers" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/domainOwnershipIdentifiers")
@@ -553,6 +570,10 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/premieraddons/{premierAddOnName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deletePremierAddOn(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("premierAddOnName") String premierAddOnName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps updatePremierAddOn" })
+        @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/premieraddons/{premierAddOnName}")
+        Observable<Response<ResponseBody>> updatePremierAddOn(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("premierAddOnName") String premierAddOnName, @Path("subscriptionId") String subscriptionId, @Body PremierAddOnPatchResource premierAddOn, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps getPrivateAccess" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/privateAccess/virtualNetworks")
         Observable<Response<ResponseBody>> getPrivateAccess(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -707,10 +728,6 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/backups")
         Observable<Response<ResponseBody>> listBackupsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps discoverRestoreSlot" })
-        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/backups/discover")
-        Observable<Response<ResponseBody>> discoverRestoreSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body RestoreRequestInner request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps getBackupStatusSlot" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/backups/{backupId}")
         Observable<Response<ResponseBody>> getBackupStatusSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("backupId") String backupId, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -803,6 +820,22 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/pushsettings/list")
         Observable<Response<ResponseBody>> listSitePushSettingsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps getSwiftVirtualNetworkConnectionSlot" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/virtualNetwork")
+        Observable<Response<ResponseBody>> getSwiftVirtualNetworkConnectionSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps createOrUpdateSwiftVirtualNetworkConnectionSlot" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/virtualNetwork")
+        Observable<Response<ResponseBody>> createOrUpdateSwiftVirtualNetworkConnectionSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body SwiftVirtualNetworkInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps deleteSwiftVirtualNetworkSlot" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/virtualNetwork", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> deleteSwiftVirtualNetworkSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps updateSwiftVirtualNetworkConnectionSlot" })
+        @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/virtualNetwork")
+        Observable<Response<ResponseBody>> updateSwiftVirtualNetworkConnectionSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body SwiftVirtualNetworkInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps getConfigurationSlot" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/web")
         Observable<Response<ResponseBody>> getConfigurationSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -876,6 +909,10 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listDeploymentLogSlot" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/deployments/{id}/log")
         Observable<Response<ResponseBody>> listDeploymentLogSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps discoverBackupSlot" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/discoverbackup")
+        Observable<Response<ResponseBody>> discoverBackupSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body RestoreRequestInner request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listDomainOwnershipIdentifiersSlot" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/domainOwnershipIdentifiers")
@@ -1113,6 +1150,10 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps deletePremierAddOnSlot" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/premieraddons/{premierAddOnName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deletePremierAddOnSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("premierAddOnName") String premierAddOnName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps updatePremierAddOnSlot" })
+        @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/premieraddons/{premierAddOnName}")
+        Observable<Response<ResponseBody>> updatePremierAddOnSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("premierAddOnName") String premierAddOnName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body PremierAddOnPatchResource premierAddOn, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps getPrivateAccessSlot" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/privateAccess/virtualNetworks")
@@ -3091,104 +3132,6 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     private ServiceResponse<PageImpl<BackupItemInner>> listBackupsDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<BackupItemInner>, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<BackupItemInner>>() { }.getType())
-                .registerError(DefaultErrorResponseException.class)
-                .build(response);
-    }
-
-    /**
-     * Discovers an existing app backup that can be restored from a blob in Azure storage.
-     * Discovers an existing app backup that can be restored from a blob in Azure storage.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the app.
-     * @param request A RestoreRequest object that includes Azure storage URL and blog name for discovery of backup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the RestoreRequestInner object if successful.
-     */
-    public RestoreRequestInner discoverRestore(String resourceGroupName, String name, RestoreRequestInner request) {
-        return discoverRestoreWithServiceResponseAsync(resourceGroupName, name, request).toBlocking().single().body();
-    }
-
-    /**
-     * Discovers an existing app backup that can be restored from a blob in Azure storage.
-     * Discovers an existing app backup that can be restored from a blob in Azure storage.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the app.
-     * @param request A RestoreRequest object that includes Azure storage URL and blog name for discovery of backup.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<RestoreRequestInner> discoverRestoreAsync(String resourceGroupName, String name, RestoreRequestInner request, final ServiceCallback<RestoreRequestInner> serviceCallback) {
-        return ServiceFuture.fromResponse(discoverRestoreWithServiceResponseAsync(resourceGroupName, name, request), serviceCallback);
-    }
-
-    /**
-     * Discovers an existing app backup that can be restored from a blob in Azure storage.
-     * Discovers an existing app backup that can be restored from a blob in Azure storage.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the app.
-     * @param request A RestoreRequest object that includes Azure storage URL and blog name for discovery of backup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the RestoreRequestInner object
-     */
-    public Observable<RestoreRequestInner> discoverRestoreAsync(String resourceGroupName, String name, RestoreRequestInner request) {
-        return discoverRestoreWithServiceResponseAsync(resourceGroupName, name, request).map(new Func1<ServiceResponse<RestoreRequestInner>, RestoreRequestInner>() {
-            @Override
-            public RestoreRequestInner call(ServiceResponse<RestoreRequestInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Discovers an existing app backup that can be restored from a blob in Azure storage.
-     * Discovers an existing app backup that can be restored from a blob in Azure storage.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the app.
-     * @param request A RestoreRequest object that includes Azure storage URL and blog name for discovery of backup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the RestoreRequestInner object
-     */
-    public Observable<ServiceResponse<RestoreRequestInner>> discoverRestoreWithServiceResponseAsync(String resourceGroupName, String name, RestoreRequestInner request) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (request == null) {
-            throw new IllegalArgumentException("Parameter request is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Validator.validate(request);
-        return service.discoverRestore(resourceGroupName, name, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RestoreRequestInner>>>() {
-                @Override
-                public Observable<ServiceResponse<RestoreRequestInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<RestoreRequestInner> clientResponse = discoverRestoreDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<RestoreRequestInner> discoverRestoreDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<RestoreRequestInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<RestoreRequestInner>() { }.getType())
                 .registerError(DefaultErrorResponseException.class)
                 .build(response);
     }
@@ -5569,6 +5512,398 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
+     * Gets a Swift Virtual Network connection.
+     * Gets a Swift Virtual Network connection.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SwiftVirtualNetworkInner object if successful.
+     */
+    public SwiftVirtualNetworkInner getSwiftVirtualNetworkConnection(String resourceGroupName, String name) {
+        return getSwiftVirtualNetworkConnectionWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
+    }
+
+    /**
+     * Gets a Swift Virtual Network connection.
+     * Gets a Swift Virtual Network connection.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<SwiftVirtualNetworkInner> getSwiftVirtualNetworkConnectionAsync(String resourceGroupName, String name, final ServiceCallback<SwiftVirtualNetworkInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getSwiftVirtualNetworkConnectionWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    }
+
+    /**
+     * Gets a Swift Virtual Network connection.
+     * Gets a Swift Virtual Network connection.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SwiftVirtualNetworkInner object
+     */
+    public Observable<SwiftVirtualNetworkInner> getSwiftVirtualNetworkConnectionAsync(String resourceGroupName, String name) {
+        return getSwiftVirtualNetworkConnectionWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<SwiftVirtualNetworkInner>, SwiftVirtualNetworkInner>() {
+            @Override
+            public SwiftVirtualNetworkInner call(ServiceResponse<SwiftVirtualNetworkInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets a Swift Virtual Network connection.
+     * Gets a Swift Virtual Network connection.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SwiftVirtualNetworkInner object
+     */
+    public Observable<ServiceResponse<SwiftVirtualNetworkInner>> getSwiftVirtualNetworkConnectionWithServiceResponseAsync(String resourceGroupName, String name) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getSwiftVirtualNetworkConnection(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SwiftVirtualNetworkInner>>>() {
+                @Override
+                public Observable<ServiceResponse<SwiftVirtualNetworkInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<SwiftVirtualNetworkInner> clientResponse = getSwiftVirtualNetworkConnectionDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<SwiftVirtualNetworkInner> getSwiftVirtualNetworkConnectionDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SwiftVirtualNetworkInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SwiftVirtualNetworkInner>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SwiftVirtualNetworkInner object if successful.
+     */
+    public SwiftVirtualNetworkInner createOrUpdateSwiftVirtualNetworkConnection(String resourceGroupName, String name, SwiftVirtualNetworkInner connectionEnvelope) {
+        return createOrUpdateSwiftVirtualNetworkConnectionWithServiceResponseAsync(resourceGroupName, name, connectionEnvelope).toBlocking().single().body();
+    }
+
+    /**
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<SwiftVirtualNetworkInner> createOrUpdateSwiftVirtualNetworkConnectionAsync(String resourceGroupName, String name, SwiftVirtualNetworkInner connectionEnvelope, final ServiceCallback<SwiftVirtualNetworkInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateSwiftVirtualNetworkConnectionWithServiceResponseAsync(resourceGroupName, name, connectionEnvelope), serviceCallback);
+    }
+
+    /**
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SwiftVirtualNetworkInner object
+     */
+    public Observable<SwiftVirtualNetworkInner> createOrUpdateSwiftVirtualNetworkConnectionAsync(String resourceGroupName, String name, SwiftVirtualNetworkInner connectionEnvelope) {
+        return createOrUpdateSwiftVirtualNetworkConnectionWithServiceResponseAsync(resourceGroupName, name, connectionEnvelope).map(new Func1<ServiceResponse<SwiftVirtualNetworkInner>, SwiftVirtualNetworkInner>() {
+            @Override
+            public SwiftVirtualNetworkInner call(ServiceResponse<SwiftVirtualNetworkInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SwiftVirtualNetworkInner object
+     */
+    public Observable<ServiceResponse<SwiftVirtualNetworkInner>> createOrUpdateSwiftVirtualNetworkConnectionWithServiceResponseAsync(String resourceGroupName, String name, SwiftVirtualNetworkInner connectionEnvelope) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (connectionEnvelope == null) {
+            throw new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(connectionEnvelope);
+        return service.createOrUpdateSwiftVirtualNetworkConnection(resourceGroupName, name, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SwiftVirtualNetworkInner>>>() {
+                @Override
+                public Observable<ServiceResponse<SwiftVirtualNetworkInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<SwiftVirtualNetworkInner> clientResponse = createOrUpdateSwiftVirtualNetworkConnectionDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<SwiftVirtualNetworkInner> createOrUpdateSwiftVirtualNetworkConnectionDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SwiftVirtualNetworkInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SwiftVirtualNetworkInner>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Deletes a Swift Virtual Network connection from an app (or deployment slot).
+     * Deletes a Swift Virtual Network connection from an app (or deployment slot).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void deleteSwiftVirtualNetwork(String resourceGroupName, String name) {
+        deleteSwiftVirtualNetworkWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
+    }
+
+    /**
+     * Deletes a Swift Virtual Network connection from an app (or deployment slot).
+     * Deletes a Swift Virtual Network connection from an app (or deployment slot).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> deleteSwiftVirtualNetworkAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteSwiftVirtualNetworkWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    }
+
+    /**
+     * Deletes a Swift Virtual Network connection from an app (or deployment slot).
+     * Deletes a Swift Virtual Network connection from an app (or deployment slot).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> deleteSwiftVirtualNetworkAsync(String resourceGroupName, String name) {
+        return deleteSwiftVirtualNetworkWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes a Swift Virtual Network connection from an app (or deployment slot).
+     * Deletes a Swift Virtual Network connection from an app (or deployment slot).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> deleteSwiftVirtualNetworkWithServiceResponseAsync(String resourceGroupName, String name) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.deleteSwiftVirtualNetwork(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = deleteSwiftVirtualNetworkDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> deleteSwiftVirtualNetworkDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .register(404, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SwiftVirtualNetworkInner object if successful.
+     */
+    public SwiftVirtualNetworkInner updateSwiftVirtualNetworkConnection(String resourceGroupName, String name, SwiftVirtualNetworkInner connectionEnvelope) {
+        return updateSwiftVirtualNetworkConnectionWithServiceResponseAsync(resourceGroupName, name, connectionEnvelope).toBlocking().single().body();
+    }
+
+    /**
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<SwiftVirtualNetworkInner> updateSwiftVirtualNetworkConnectionAsync(String resourceGroupName, String name, SwiftVirtualNetworkInner connectionEnvelope, final ServiceCallback<SwiftVirtualNetworkInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateSwiftVirtualNetworkConnectionWithServiceResponseAsync(resourceGroupName, name, connectionEnvelope), serviceCallback);
+    }
+
+    /**
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SwiftVirtualNetworkInner object
+     */
+    public Observable<SwiftVirtualNetworkInner> updateSwiftVirtualNetworkConnectionAsync(String resourceGroupName, String name, SwiftVirtualNetworkInner connectionEnvelope) {
+        return updateSwiftVirtualNetworkConnectionWithServiceResponseAsync(resourceGroupName, name, connectionEnvelope).map(new Func1<ServiceResponse<SwiftVirtualNetworkInner>, SwiftVirtualNetworkInner>() {
+            @Override
+            public SwiftVirtualNetworkInner call(ServiceResponse<SwiftVirtualNetworkInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SwiftVirtualNetworkInner object
+     */
+    public Observable<ServiceResponse<SwiftVirtualNetworkInner>> updateSwiftVirtualNetworkConnectionWithServiceResponseAsync(String resourceGroupName, String name, SwiftVirtualNetworkInner connectionEnvelope) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (connectionEnvelope == null) {
+            throw new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(connectionEnvelope);
+        return service.updateSwiftVirtualNetworkConnection(resourceGroupName, name, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SwiftVirtualNetworkInner>>>() {
+                @Override
+                public Observable<ServiceResponse<SwiftVirtualNetworkInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<SwiftVirtualNetworkInner> clientResponse = updateSwiftVirtualNetworkConnectionDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<SwiftVirtualNetworkInner> updateSwiftVirtualNetworkConnectionDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SwiftVirtualNetworkInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SwiftVirtualNetworkInner>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
      * Gets the configuration of an app, such as platform version and bitness, default documents, virtual applications, Always On, etc.
      * Gets the configuration of an app, such as platform version and bitness, default documents, virtual applications, Always On, etc.
      *
@@ -7394,6 +7729,104 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     private ServiceResponse<DeploymentInner> listDeploymentLogDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<DeploymentInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<DeploymentInner>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to get information about the databases stored in a backup.
+     * Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to get information about the databases stored in a backup.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param request A RestoreRequest object that includes Azure storage URL and blog name for discovery of backup.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the RestoreRequestInner object if successful.
+     */
+    public RestoreRequestInner discoverBackup(String resourceGroupName, String name, RestoreRequestInner request) {
+        return discoverBackupWithServiceResponseAsync(resourceGroupName, name, request).toBlocking().single().body();
+    }
+
+    /**
+     * Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to get information about the databases stored in a backup.
+     * Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to get information about the databases stored in a backup.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param request A RestoreRequest object that includes Azure storage URL and blog name for discovery of backup.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<RestoreRequestInner> discoverBackupAsync(String resourceGroupName, String name, RestoreRequestInner request, final ServiceCallback<RestoreRequestInner> serviceCallback) {
+        return ServiceFuture.fromResponse(discoverBackupWithServiceResponseAsync(resourceGroupName, name, request), serviceCallback);
+    }
+
+    /**
+     * Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to get information about the databases stored in a backup.
+     * Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to get information about the databases stored in a backup.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param request A RestoreRequest object that includes Azure storage URL and blog name for discovery of backup.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the RestoreRequestInner object
+     */
+    public Observable<RestoreRequestInner> discoverBackupAsync(String resourceGroupName, String name, RestoreRequestInner request) {
+        return discoverBackupWithServiceResponseAsync(resourceGroupName, name, request).map(new Func1<ServiceResponse<RestoreRequestInner>, RestoreRequestInner>() {
+            @Override
+            public RestoreRequestInner call(ServiceResponse<RestoreRequestInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to get information about the databases stored in a backup.
+     * Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to get information about the databases stored in a backup.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param request A RestoreRequest object that includes Azure storage URL and blog name for discovery of backup.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the RestoreRequestInner object
+     */
+    public Observable<ServiceResponse<RestoreRequestInner>> discoverBackupWithServiceResponseAsync(String resourceGroupName, String name, RestoreRequestInner request) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (request == null) {
+            throw new IllegalArgumentException("Parameter request is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(request);
+        return service.discoverBackup(resourceGroupName, name, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RestoreRequestInner>>>() {
+                @Override
+                public Observable<ServiceResponse<RestoreRequestInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<RestoreRequestInner> clientResponse = discoverBackupDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<RestoreRequestInner> discoverBackupDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<RestoreRequestInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<RestoreRequestInner>() { }.getType())
                 .registerError(DefaultErrorResponseException.class)
                 .build(response);
     }
@@ -14255,6 +14688,111 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
+     * Updates a named add-on of an app.
+     * Updates a named add-on of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param premierAddOnName Add-on name.
+     * @param premierAddOn A JSON representation of the edited premier add-on.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PremierAddOnInner object if successful.
+     */
+    public PremierAddOnInner updatePremierAddOn(String resourceGroupName, String name, String premierAddOnName, PremierAddOnPatchResource premierAddOn) {
+        return updatePremierAddOnWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, premierAddOn).toBlocking().single().body();
+    }
+
+    /**
+     * Updates a named add-on of an app.
+     * Updates a named add-on of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param premierAddOnName Add-on name.
+     * @param premierAddOn A JSON representation of the edited premier add-on.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<PremierAddOnInner> updatePremierAddOnAsync(String resourceGroupName, String name, String premierAddOnName, PremierAddOnPatchResource premierAddOn, final ServiceCallback<PremierAddOnInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updatePremierAddOnWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, premierAddOn), serviceCallback);
+    }
+
+    /**
+     * Updates a named add-on of an app.
+     * Updates a named add-on of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param premierAddOnName Add-on name.
+     * @param premierAddOn A JSON representation of the edited premier add-on.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PremierAddOnInner object
+     */
+    public Observable<PremierAddOnInner> updatePremierAddOnAsync(String resourceGroupName, String name, String premierAddOnName, PremierAddOnPatchResource premierAddOn) {
+        return updatePremierAddOnWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, premierAddOn).map(new Func1<ServiceResponse<PremierAddOnInner>, PremierAddOnInner>() {
+            @Override
+            public PremierAddOnInner call(ServiceResponse<PremierAddOnInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Updates a named add-on of an app.
+     * Updates a named add-on of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param premierAddOnName Add-on name.
+     * @param premierAddOn A JSON representation of the edited premier add-on.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PremierAddOnInner object
+     */
+    public Observable<ServiceResponse<PremierAddOnInner>> updatePremierAddOnWithServiceResponseAsync(String resourceGroupName, String name, String premierAddOnName, PremierAddOnPatchResource premierAddOn) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (premierAddOnName == null) {
+            throw new IllegalArgumentException("Parameter premierAddOnName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (premierAddOn == null) {
+            throw new IllegalArgumentException("Parameter premierAddOn is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(premierAddOn);
+        return service.updatePremierAddOn(resourceGroupName, name, premierAddOnName, this.client.subscriptionId(), premierAddOn, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PremierAddOnInner>>>() {
+                @Override
+                public Observable<ServiceResponse<PremierAddOnInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PremierAddOnInner> clientResponse = updatePremierAddOnDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PremierAddOnInner> updatePremierAddOnDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PremierAddOnInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PremierAddOnInner>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
      * Gets data around private site access enablement and authorized Virtual Networks that can access the site.
      * Gets data around private site access enablement and authorized Virtual Networks that can access the site.
      *
@@ -18537,111 +19075,6 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * Discovers an existing app backup that can be restored from a blob in Azure storage.
-     * Discovers an existing app backup that can be restored from a blob in Azure storage.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the app.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will perform discovery for the production slot.
-     * @param request A RestoreRequest object that includes Azure storage URL and blog name for discovery of backup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the RestoreRequestInner object if successful.
-     */
-    public RestoreRequestInner discoverRestoreSlot(String resourceGroupName, String name, String slot, RestoreRequestInner request) {
-        return discoverRestoreSlotWithServiceResponseAsync(resourceGroupName, name, slot, request).toBlocking().single().body();
-    }
-
-    /**
-     * Discovers an existing app backup that can be restored from a blob in Azure storage.
-     * Discovers an existing app backup that can be restored from a blob in Azure storage.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the app.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will perform discovery for the production slot.
-     * @param request A RestoreRequest object that includes Azure storage URL and blog name for discovery of backup.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<RestoreRequestInner> discoverRestoreSlotAsync(String resourceGroupName, String name, String slot, RestoreRequestInner request, final ServiceCallback<RestoreRequestInner> serviceCallback) {
-        return ServiceFuture.fromResponse(discoverRestoreSlotWithServiceResponseAsync(resourceGroupName, name, slot, request), serviceCallback);
-    }
-
-    /**
-     * Discovers an existing app backup that can be restored from a blob in Azure storage.
-     * Discovers an existing app backup that can be restored from a blob in Azure storage.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the app.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will perform discovery for the production slot.
-     * @param request A RestoreRequest object that includes Azure storage URL and blog name for discovery of backup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the RestoreRequestInner object
-     */
-    public Observable<RestoreRequestInner> discoverRestoreSlotAsync(String resourceGroupName, String name, String slot, RestoreRequestInner request) {
-        return discoverRestoreSlotWithServiceResponseAsync(resourceGroupName, name, slot, request).map(new Func1<ServiceResponse<RestoreRequestInner>, RestoreRequestInner>() {
-            @Override
-            public RestoreRequestInner call(ServiceResponse<RestoreRequestInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Discovers an existing app backup that can be restored from a blob in Azure storage.
-     * Discovers an existing app backup that can be restored from a blob in Azure storage.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the app.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will perform discovery for the production slot.
-     * @param request A RestoreRequest object that includes Azure storage URL and blog name for discovery of backup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the RestoreRequestInner object
-     */
-    public Observable<ServiceResponse<RestoreRequestInner>> discoverRestoreSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, RestoreRequestInner request) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (slot == null) {
-            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (request == null) {
-            throw new IllegalArgumentException("Parameter request is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Validator.validate(request);
-        return service.discoverRestoreSlot(resourceGroupName, name, slot, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RestoreRequestInner>>>() {
-                @Override
-                public Observable<ServiceResponse<RestoreRequestInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<RestoreRequestInner> clientResponse = discoverRestoreSlotDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<RestoreRequestInner> discoverRestoreSlotDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<RestoreRequestInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<RestoreRequestInner>() { }.getType())
-                .registerError(DefaultErrorResponseException.class)
-                .build(response);
-    }
-
-    /**
      * Gets a backup of an app by its ID.
      * Gets a backup of an app by its ID.
      *
@@ -20991,6 +21424,426 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
+     * Gets a Swift Virtual Network connection.
+     * Gets a Swift Virtual Network connection.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get a gateway for the production slot's Virtual Network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SwiftVirtualNetworkInner object if successful.
+     */
+    public SwiftVirtualNetworkInner getSwiftVirtualNetworkConnectionSlot(String resourceGroupName, String name, String slot) {
+        return getSwiftVirtualNetworkConnectionSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
+    }
+
+    /**
+     * Gets a Swift Virtual Network connection.
+     * Gets a Swift Virtual Network connection.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get a gateway for the production slot's Virtual Network.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<SwiftVirtualNetworkInner> getSwiftVirtualNetworkConnectionSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SwiftVirtualNetworkInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getSwiftVirtualNetworkConnectionSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    }
+
+    /**
+     * Gets a Swift Virtual Network connection.
+     * Gets a Swift Virtual Network connection.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get a gateway for the production slot's Virtual Network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SwiftVirtualNetworkInner object
+     */
+    public Observable<SwiftVirtualNetworkInner> getSwiftVirtualNetworkConnectionSlotAsync(String resourceGroupName, String name, String slot) {
+        return getSwiftVirtualNetworkConnectionSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<SwiftVirtualNetworkInner>, SwiftVirtualNetworkInner>() {
+            @Override
+            public SwiftVirtualNetworkInner call(ServiceResponse<SwiftVirtualNetworkInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets a Swift Virtual Network connection.
+     * Gets a Swift Virtual Network connection.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get a gateway for the production slot's Virtual Network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SwiftVirtualNetworkInner object
+     */
+    public Observable<ServiceResponse<SwiftVirtualNetworkInner>> getSwiftVirtualNetworkConnectionSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getSwiftVirtualNetworkConnectionSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SwiftVirtualNetworkInner>>>() {
+                @Override
+                public Observable<ServiceResponse<SwiftVirtualNetworkInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<SwiftVirtualNetworkInner> clientResponse = getSwiftVirtualNetworkConnectionSlotDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<SwiftVirtualNetworkInner> getSwiftVirtualNetworkConnectionSlotDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SwiftVirtualNetworkInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SwiftVirtualNetworkInner>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update connections for the production slot.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SwiftVirtualNetworkInner object if successful.
+     */
+    public SwiftVirtualNetworkInner createOrUpdateSwiftVirtualNetworkConnectionSlot(String resourceGroupName, String name, String slot, SwiftVirtualNetworkInner connectionEnvelope) {
+        return createOrUpdateSwiftVirtualNetworkConnectionSlotWithServiceResponseAsync(resourceGroupName, name, slot, connectionEnvelope).toBlocking().single().body();
+    }
+
+    /**
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update connections for the production slot.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<SwiftVirtualNetworkInner> createOrUpdateSwiftVirtualNetworkConnectionSlotAsync(String resourceGroupName, String name, String slot, SwiftVirtualNetworkInner connectionEnvelope, final ServiceCallback<SwiftVirtualNetworkInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateSwiftVirtualNetworkConnectionSlotWithServiceResponseAsync(resourceGroupName, name, slot, connectionEnvelope), serviceCallback);
+    }
+
+    /**
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update connections for the production slot.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SwiftVirtualNetworkInner object
+     */
+    public Observable<SwiftVirtualNetworkInner> createOrUpdateSwiftVirtualNetworkConnectionSlotAsync(String resourceGroupName, String name, String slot, SwiftVirtualNetworkInner connectionEnvelope) {
+        return createOrUpdateSwiftVirtualNetworkConnectionSlotWithServiceResponseAsync(resourceGroupName, name, slot, connectionEnvelope).map(new Func1<ServiceResponse<SwiftVirtualNetworkInner>, SwiftVirtualNetworkInner>() {
+            @Override
+            public SwiftVirtualNetworkInner call(ServiceResponse<SwiftVirtualNetworkInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update connections for the production slot.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SwiftVirtualNetworkInner object
+     */
+    public Observable<ServiceResponse<SwiftVirtualNetworkInner>> createOrUpdateSwiftVirtualNetworkConnectionSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, SwiftVirtualNetworkInner connectionEnvelope) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (connectionEnvelope == null) {
+            throw new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(connectionEnvelope);
+        return service.createOrUpdateSwiftVirtualNetworkConnectionSlot(resourceGroupName, name, slot, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SwiftVirtualNetworkInner>>>() {
+                @Override
+                public Observable<ServiceResponse<SwiftVirtualNetworkInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<SwiftVirtualNetworkInner> clientResponse = createOrUpdateSwiftVirtualNetworkConnectionSlotDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<SwiftVirtualNetworkInner> createOrUpdateSwiftVirtualNetworkConnectionSlotDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SwiftVirtualNetworkInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SwiftVirtualNetworkInner>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Deletes a Swift Virtual Network connection from an app (or deployment slot).
+     * Deletes a Swift Virtual Network connection from an app (or deployment slot).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the connection for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void deleteSwiftVirtualNetworkSlot(String resourceGroupName, String name, String slot) {
+        deleteSwiftVirtualNetworkSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
+    }
+
+    /**
+     * Deletes a Swift Virtual Network connection from an app (or deployment slot).
+     * Deletes a Swift Virtual Network connection from an app (or deployment slot).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the connection for the production slot.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> deleteSwiftVirtualNetworkSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteSwiftVirtualNetworkSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    }
+
+    /**
+     * Deletes a Swift Virtual Network connection from an app (or deployment slot).
+     * Deletes a Swift Virtual Network connection from an app (or deployment slot).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the connection for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> deleteSwiftVirtualNetworkSlotAsync(String resourceGroupName, String name, String slot) {
+        return deleteSwiftVirtualNetworkSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes a Swift Virtual Network connection from an app (or deployment slot).
+     * Deletes a Swift Virtual Network connection from an app (or deployment slot).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the connection for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> deleteSwiftVirtualNetworkSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.deleteSwiftVirtualNetworkSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = deleteSwiftVirtualNetworkSlotDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> deleteSwiftVirtualNetworkSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .register(404, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update connections for the production slot.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SwiftVirtualNetworkInner object if successful.
+     */
+    public SwiftVirtualNetworkInner updateSwiftVirtualNetworkConnectionSlot(String resourceGroupName, String name, String slot, SwiftVirtualNetworkInner connectionEnvelope) {
+        return updateSwiftVirtualNetworkConnectionSlotWithServiceResponseAsync(resourceGroupName, name, slot, connectionEnvelope).toBlocking().single().body();
+    }
+
+    /**
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update connections for the production slot.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<SwiftVirtualNetworkInner> updateSwiftVirtualNetworkConnectionSlotAsync(String resourceGroupName, String name, String slot, SwiftVirtualNetworkInner connectionEnvelope, final ServiceCallback<SwiftVirtualNetworkInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateSwiftVirtualNetworkConnectionSlotWithServiceResponseAsync(resourceGroupName, name, slot, connectionEnvelope), serviceCallback);
+    }
+
+    /**
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update connections for the production slot.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SwiftVirtualNetworkInner object
+     */
+    public Observable<SwiftVirtualNetworkInner> updateSwiftVirtualNetworkConnectionSlotAsync(String resourceGroupName, String name, String slot, SwiftVirtualNetworkInner connectionEnvelope) {
+        return updateSwiftVirtualNetworkConnectionSlotWithServiceResponseAsync(resourceGroupName, name, slot, connectionEnvelope).map(new Func1<ServiceResponse<SwiftVirtualNetworkInner>, SwiftVirtualNetworkInner>() {
+            @Override
+            public SwiftVirtualNetworkInner call(ServiceResponse<SwiftVirtualNetworkInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update connections for the production slot.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SwiftVirtualNetworkInner object
+     */
+    public Observable<ServiceResponse<SwiftVirtualNetworkInner>> updateSwiftVirtualNetworkConnectionSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, SwiftVirtualNetworkInner connectionEnvelope) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (connectionEnvelope == null) {
+            throw new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(connectionEnvelope);
+        return service.updateSwiftVirtualNetworkConnectionSlot(resourceGroupName, name, slot, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SwiftVirtualNetworkInner>>>() {
+                @Override
+                public Observable<ServiceResponse<SwiftVirtualNetworkInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<SwiftVirtualNetworkInner> clientResponse = updateSwiftVirtualNetworkConnectionSlotDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<SwiftVirtualNetworkInner> updateSwiftVirtualNetworkConnectionSlotDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SwiftVirtualNetworkInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SwiftVirtualNetworkInner>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
      * Gets the configuration of an app, such as platform version and bitness, default documents, virtual applications, Always On, etc.
      * Gets the configuration of an app, such as platform version and bitness, default documents, virtual applications, Always On, etc.
      *
@@ -22945,6 +23798,111 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     private ServiceResponse<DeploymentInner> listDeploymentLogSlotDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<DeploymentInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<DeploymentInner>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to get information about the databases stored in a backup.
+     * Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to get information about the databases stored in a backup.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will perform discovery for the production slot.
+     * @param request A RestoreRequest object that includes Azure storage URL and blog name for discovery of backup.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the RestoreRequestInner object if successful.
+     */
+    public RestoreRequestInner discoverBackupSlot(String resourceGroupName, String name, String slot, RestoreRequestInner request) {
+        return discoverBackupSlotWithServiceResponseAsync(resourceGroupName, name, slot, request).toBlocking().single().body();
+    }
+
+    /**
+     * Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to get information about the databases stored in a backup.
+     * Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to get information about the databases stored in a backup.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will perform discovery for the production slot.
+     * @param request A RestoreRequest object that includes Azure storage URL and blog name for discovery of backup.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<RestoreRequestInner> discoverBackupSlotAsync(String resourceGroupName, String name, String slot, RestoreRequestInner request, final ServiceCallback<RestoreRequestInner> serviceCallback) {
+        return ServiceFuture.fromResponse(discoverBackupSlotWithServiceResponseAsync(resourceGroupName, name, slot, request), serviceCallback);
+    }
+
+    /**
+     * Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to get information about the databases stored in a backup.
+     * Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to get information about the databases stored in a backup.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will perform discovery for the production slot.
+     * @param request A RestoreRequest object that includes Azure storage URL and blog name for discovery of backup.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the RestoreRequestInner object
+     */
+    public Observable<RestoreRequestInner> discoverBackupSlotAsync(String resourceGroupName, String name, String slot, RestoreRequestInner request) {
+        return discoverBackupSlotWithServiceResponseAsync(resourceGroupName, name, slot, request).map(new Func1<ServiceResponse<RestoreRequestInner>, RestoreRequestInner>() {
+            @Override
+            public RestoreRequestInner call(ServiceResponse<RestoreRequestInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to get information about the databases stored in a backup.
+     * Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to get information about the databases stored in a backup.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will perform discovery for the production slot.
+     * @param request A RestoreRequest object that includes Azure storage URL and blog name for discovery of backup.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the RestoreRequestInner object
+     */
+    public Observable<ServiceResponse<RestoreRequestInner>> discoverBackupSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, RestoreRequestInner request) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (request == null) {
+            throw new IllegalArgumentException("Parameter request is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(request);
+        return service.discoverBackupSlot(resourceGroupName, name, slot, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RestoreRequestInner>>>() {
+                @Override
+                public Observable<ServiceResponse<RestoreRequestInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<RestoreRequestInner> clientResponse = discoverBackupSlotDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<RestoreRequestInner> discoverBackupSlotDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<RestoreRequestInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<RestoreRequestInner>() { }.getType())
                 .registerError(DefaultErrorResponseException.class)
                 .build(response);
     }
@@ -29880,6 +30838,118 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
+     * Updates a named add-on of an app.
+     * Updates a named add-on of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param premierAddOnName Add-on name.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will update the named add-on for the production slot.
+     * @param premierAddOn A JSON representation of the edited premier add-on.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PremierAddOnInner object if successful.
+     */
+    public PremierAddOnInner updatePremierAddOnSlot(String resourceGroupName, String name, String premierAddOnName, String slot, PremierAddOnPatchResource premierAddOn) {
+        return updatePremierAddOnSlotWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, slot, premierAddOn).toBlocking().single().body();
+    }
+
+    /**
+     * Updates a named add-on of an app.
+     * Updates a named add-on of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param premierAddOnName Add-on name.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will update the named add-on for the production slot.
+     * @param premierAddOn A JSON representation of the edited premier add-on.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<PremierAddOnInner> updatePremierAddOnSlotAsync(String resourceGroupName, String name, String premierAddOnName, String slot, PremierAddOnPatchResource premierAddOn, final ServiceCallback<PremierAddOnInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updatePremierAddOnSlotWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, slot, premierAddOn), serviceCallback);
+    }
+
+    /**
+     * Updates a named add-on of an app.
+     * Updates a named add-on of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param premierAddOnName Add-on name.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will update the named add-on for the production slot.
+     * @param premierAddOn A JSON representation of the edited premier add-on.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PremierAddOnInner object
+     */
+    public Observable<PremierAddOnInner> updatePremierAddOnSlotAsync(String resourceGroupName, String name, String premierAddOnName, String slot, PremierAddOnPatchResource premierAddOn) {
+        return updatePremierAddOnSlotWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, slot, premierAddOn).map(new Func1<ServiceResponse<PremierAddOnInner>, PremierAddOnInner>() {
+            @Override
+            public PremierAddOnInner call(ServiceResponse<PremierAddOnInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Updates a named add-on of an app.
+     * Updates a named add-on of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param premierAddOnName Add-on name.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will update the named add-on for the production slot.
+     * @param premierAddOn A JSON representation of the edited premier add-on.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PremierAddOnInner object
+     */
+    public Observable<ServiceResponse<PremierAddOnInner>> updatePremierAddOnSlotWithServiceResponseAsync(String resourceGroupName, String name, String premierAddOnName, String slot, PremierAddOnPatchResource premierAddOn) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (premierAddOnName == null) {
+            throw new IllegalArgumentException("Parameter premierAddOnName is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (premierAddOn == null) {
+            throw new IllegalArgumentException("Parameter premierAddOn is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(premierAddOn);
+        return service.updatePremierAddOnSlot(resourceGroupName, name, premierAddOnName, slot, this.client.subscriptionId(), premierAddOn, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PremierAddOnInner>>>() {
+                @Override
+                public Observable<ServiceResponse<PremierAddOnInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PremierAddOnInner> clientResponse = updatePremierAddOnSlotDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PremierAddOnInner> updatePremierAddOnSlotDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PremierAddOnInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PremierAddOnInner>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
      * Gets data around private site access enablement and authorized Virtual Networks that can access the site.
      * Gets data around private site access enablement and authorized Virtual Networks that can access the site.
      *
@@ -33893,10 +34963,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the Object object if successful.
      */
-    public Object deleteSourceControlSlot(String resourceGroupName, String name, String slot) {
-        return deleteSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
+    public void deleteSourceControlSlot(String resourceGroupName, String name, String slot) {
+        deleteSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -33910,7 +34979,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Object> deleteSourceControlSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Object> serviceCallback) {
+    public ServiceFuture<Void> deleteSourceControlSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Void> serviceCallback) {
         return ServiceFuture.fromResponse(deleteSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
@@ -33922,12 +34991,12 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the source control configuration for the production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Object object
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Object> deleteSourceControlSlotAsync(String resourceGroupName, String name, String slot) {
-        return deleteSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<Object>, Object>() {
+    public Observable<Void> deleteSourceControlSlotAsync(String resourceGroupName, String name, String slot) {
+        return deleteSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
-            public Object call(ServiceResponse<Object> response) {
+            public Void call(ServiceResponse<Void> response) {
                 return response.body();
             }
         });
@@ -33941,9 +35010,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the source control configuration for the production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Object object
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Object>> deleteSourceControlSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
+    public Observable<ServiceResponse<Void>> deleteSourceControlSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -33960,11 +35029,11 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.deleteSourceControlSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
-                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Object> clientResponse = deleteSourceControlSlotDelegate(response);
+                        ServiceResponse<Void> clientResponse = deleteSourceControlSlotDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -33973,10 +35042,10 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
             });
     }
 
-    private ServiceResponse<Object> deleteSourceControlSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Object, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<Object>() { }.getType())
-                .register(202, new TypeToken<Object>() { }.getType())
+    private ServiceResponse<Void> deleteSourceControlSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -34084,6 +35153,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         return this.client.restClient().responseBuilderFactory().<SiteSourceControlInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SiteSourceControlInner>() { }.getType())
                 .register(201, new TypeToken<SiteSourceControlInner>() { }.getType())
+                .register(202, new TypeToken<SiteSourceControlInner>() { }.getType())
                 .registerError(DefaultErrorResponseException.class)
                 .build(response);
     }
@@ -37293,10 +38363,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the Object object if successful.
      */
-    public Object deleteSourceControl(String resourceGroupName, String name) {
-        return deleteSourceControlWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
+    public void deleteSourceControl(String resourceGroupName, String name) {
+        deleteSourceControlWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -37309,7 +38378,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Object> deleteSourceControlAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
+    public ServiceFuture<Void> deleteSourceControlAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
         return ServiceFuture.fromResponse(deleteSourceControlWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
@@ -37320,12 +38389,12 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Object object
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Object> deleteSourceControlAsync(String resourceGroupName, String name) {
-        return deleteSourceControlWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Object>, Object>() {
+    public Observable<Void> deleteSourceControlAsync(String resourceGroupName, String name) {
+        return deleteSourceControlWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
-            public Object call(ServiceResponse<Object> response) {
+            public Void call(ServiceResponse<Void> response) {
                 return response.body();
             }
         });
@@ -37338,9 +38407,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Object object
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Object>> deleteSourceControlWithServiceResponseAsync(String resourceGroupName, String name) {
+    public Observable<ServiceResponse<Void>> deleteSourceControlWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -37354,11 +38423,11 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.deleteSourceControl(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
-                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Object> clientResponse = deleteSourceControlDelegate(response);
+                        ServiceResponse<Void> clientResponse = deleteSourceControlDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -37367,10 +38436,10 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
             });
     }
 
-    private ServiceResponse<Object> deleteSourceControlDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Object, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<Object>() { }.getType())
-                .register(202, new TypeToken<Object>() { }.getType())
+    private ServiceResponse<Void> deleteSourceControlDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -37471,6 +38540,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         return this.client.restClient().responseBuilderFactory().<SiteSourceControlInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SiteSourceControlInner>() { }.getType())
                 .register(201, new TypeToken<SiteSourceControlInner>() { }.getType())
+                .register(202, new TypeToken<SiteSourceControlInner>() { }.getType())
                 .registerError(DefaultErrorResponseException.class)
                 .build(response);
     }

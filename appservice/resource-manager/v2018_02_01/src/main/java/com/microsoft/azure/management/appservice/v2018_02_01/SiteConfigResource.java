@@ -241,6 +241,11 @@ public interface SiteConfigResource extends HasInner<SiteConfigResourceInner>, H
     DateTime requestTracingExpirationTime();
 
     /**
+     * @return the reservedInstanceCount value.
+     */
+    Integer reservedInstanceCount();
+
+    /**
      * @return the scmType value.
      */
     ScmType scmType();
@@ -276,9 +281,9 @@ public interface SiteConfigResource extends HasInner<SiteConfigResourceInner>, H
     Boolean webSocketsEnabled();
 
     /**
-     * @return the xenonFxVersion value.
+     * @return the windowsFxVersion value.
      */
-    String xenonFxVersion();
+    String windowsFxVersion();
 
     /**
      * @return the xManagedServiceIdentityId value.

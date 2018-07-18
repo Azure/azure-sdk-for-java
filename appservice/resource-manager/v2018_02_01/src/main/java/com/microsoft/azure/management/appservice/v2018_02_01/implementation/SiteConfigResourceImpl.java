@@ -262,6 +262,11 @@ class SiteConfigResourceImpl extends WrapperImpl<SiteConfigResourceInner> implem
     }
 
     @Override
+    public Integer reservedInstanceCount() {
+        return this.inner().reservedInstanceCount();
+    }
+
+    @Override
     public ScmType scmType() {
         return this.inner().scmType();
     }
@@ -297,8 +302,8 @@ class SiteConfigResourceImpl extends WrapperImpl<SiteConfigResourceInner> implem
     }
 
     @Override
-    public String xenonFxVersion() {
-        return this.inner().xenonFxVersion();
+    public String windowsFxVersion() {
+        return this.inner().windowsFxVersion();
     }
 
     @Override

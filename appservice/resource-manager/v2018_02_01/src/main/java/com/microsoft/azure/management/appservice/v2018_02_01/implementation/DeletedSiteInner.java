@@ -17,7 +17,7 @@ public class DeletedSiteInner {
     /**
      * Numeric id for the deleted site.
      */
-    @JsonProperty(value = "deletedSiteId")
+    @JsonProperty(value = "deletedSiteId", access = JsonProperty.Access.WRITE_ONLY)
     private Integer deletedSiteId;
 
     /**
@@ -57,17 +57,6 @@ public class DeletedSiteInner {
      */
     public Integer deletedSiteId() {
         return this.deletedSiteId;
-    }
-
-    /**
-     * Set numeric id for the deleted site.
-     *
-     * @param deletedSiteId the deletedSiteId value to set
-     * @return the DeletedSiteInner object itself.
-     */
-    public DeletedSiteInner withDeletedSiteId(Integer deletedSiteId) {
-        this.deletedSiteId = deletedSiteId;
-        return this;
     }
 
     /**

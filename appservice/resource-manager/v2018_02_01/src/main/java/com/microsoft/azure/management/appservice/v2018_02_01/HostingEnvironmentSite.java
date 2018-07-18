@@ -181,11 +181,6 @@ public interface HostingEnvironmentSite extends HasInner<SiteInner>, HasManager<
     SlotSwapStatus slotSwapStatus();
 
     /**
-     * @return the snapshotInfo value.
-     */
-    SnapshotRecoveryRequest snapshotInfo();
-
-    /**
      * @return the state value.
      */
     String state();
