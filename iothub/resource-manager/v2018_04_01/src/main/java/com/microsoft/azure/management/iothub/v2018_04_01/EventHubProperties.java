@@ -50,7 +50,7 @@ public class EventHubProperties {
     private String endpoint;
 
     /**
-     * Get the retentionTimeInDays value.
+     * Get the retention time for device-to-cloud messages in days. See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#device-to-cloud-messages.
      *
      * @return the retentionTimeInDays value
      */
@@ -59,7 +59,7 @@ public class EventHubProperties {
     }
 
     /**
-     * Set the retentionTimeInDays value.
+     * Set the retention time for device-to-cloud messages in days. See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#device-to-cloud-messages.
      *
      * @param retentionTimeInDays the retentionTimeInDays value to set
      * @return the EventHubProperties object itself.
@@ -70,7 +70,7 @@ public class EventHubProperties {
     }
 
     /**
-     * Get the partitionCount value.
+     * Get the number of partitions for receiving device-to-cloud messages in the Event Hub-compatible endpoint. See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#device-to-cloud-messages.
      *
      * @return the partitionCount value
      */
@@ -79,7 +79,7 @@ public class EventHubProperties {
     }
 
     /**
-     * Set the partitionCount value.
+     * Set the number of partitions for receiving device-to-cloud messages in the Event Hub-compatible endpoint. See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#device-to-cloud-messages.
      *
      * @param partitionCount the partitionCount value to set
      * @return the EventHubProperties object itself.
@@ -90,7 +90,7 @@ public class EventHubProperties {
     }
 
     /**
-     * Get the partitionIds value.
+     * Get the partition ids in the Event Hub-compatible endpoint.
      *
      * @return the partitionIds value
      */
@@ -99,7 +99,7 @@ public class EventHubProperties {
     }
 
     /**
-     * Get the path value.
+     * Get the Event Hub-compatible name.
      *
      * @return the path value
      */
@@ -108,7 +108,7 @@ public class EventHubProperties {
     }
 
     /**
-     * Get the endpoint value.
+     * Get the Event Hub-compatible endpoint.
      *
      * @return the endpoint value
      */

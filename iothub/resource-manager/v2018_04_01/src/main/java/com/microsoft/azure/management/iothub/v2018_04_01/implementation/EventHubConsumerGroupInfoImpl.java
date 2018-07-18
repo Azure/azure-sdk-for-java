@@ -14,13 +14,13 @@ import rx.Observable;
 import java.util.Map;
 
 class EventHubConsumerGroupInfoImpl extends CreatableUpdatableImpl<EventHubConsumerGroupInfo, EventHubConsumerGroupInfoInner, EventHubConsumerGroupInfoImpl> implements EventHubConsumerGroupInfo, EventHubConsumerGroupInfo.Definition, EventHubConsumerGroupInfo.Update {
-    private final IoTHubManager manager;
+    private final DevicesManager manager;
     private String resourceGroupName;
     private String resourceName;
     private String eventHubEndpointName;
     private String name;
 
-    EventHubConsumerGroupInfoImpl(String name, IoTHubManager manager) {
+    EventHubConsumerGroupInfoImpl(String name, DevicesManager manager) {
         super(name, new EventHubConsumerGroupInfoInner());
         this.manager = manager;
         // Set resource name
@@ -28,7 +28,7 @@ class EventHubConsumerGroupInfoImpl extends CreatableUpdatableImpl<EventHubConsu
         //
     }
 
-    EventHubConsumerGroupInfoImpl(EventHubConsumerGroupInfoInner inner, IoTHubManager manager) {
+    EventHubConsumerGroupInfoImpl(EventHubConsumerGroupInfoInner inner, DevicesManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -42,7 +42,7 @@ class EventHubConsumerGroupInfoImpl extends CreatableUpdatableImpl<EventHubConsu
     }
 
     @Override
-    public IoTHubManager manager() {
+    public DevicesManager manager() {
         return this.manager;
     }
 

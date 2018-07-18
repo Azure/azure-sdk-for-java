@@ -10,20 +10,20 @@ package com.microsoft.azure.management.iothub.v2018_04_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.Resource;
+import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
 import com.microsoft.azure.arm.resources.models.HasResourceGroup;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
-import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.iothub.v2018_04_01.implementation.IoTHubManager;
+import com.microsoft.azure.management.iothub.v2018_04_01.implementation.DevicesManager;
 import com.microsoft.azure.management.iothub.v2018_04_01.implementation.IotHubDescriptionInner;
 
 /**
  * Type representing IotHubDescription.
  */
-public interface IotHubDescription extends HasInner<IotHubDescriptionInner>, Resource, GroupableResourceCore<IoTHubManager, IotHubDescriptionInner>, HasResourceGroup, Refreshable<IotHubDescription>, Updatable<IotHubDescription.Update>, HasManager<IoTHubManager> {
+public interface IotHubDescription extends HasInner<IotHubDescriptionInner>, Resource, GroupableResourceCore<DevicesManager, IotHubDescriptionInner>, HasResourceGroup, Refreshable<IotHubDescription>, Updatable<IotHubDescription.Update>, HasManager<DevicesManager> {
     /**
      * @return the etag value.
      */
@@ -102,12 +102,32 @@ public interface IotHubDescription extends HasInner<IotHubDescriptionInner>, Res
     /**
      * The template for a IotHubDescription update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<IotHubDescription>, Resource.UpdateWithTags<Update> {
+    interface Update extends Appliable<IotHubDescription>, Resource.UpdateWithTags<Update>, UpdateStages.WithEtag, UpdateStages.WithProperties {
     }
 
     /**
      * Grouping of IotHubDescription update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the iothubdescription {0} allowing to specify Etag.
+         */
+        interface WithEtag {
+            /**
+             * Specifies etag.
+             */
+            Update withEtag(String etag);
+        }
+
+        /**
+         * The stage of the iothubdescription {0} allowing to specify Properties.
+         */
+        interface WithProperties {
+            /**
+             * Specifies properties.
+             */
+            Update withProperties(IotHubProperties properties);
+        }
+
     }
 }

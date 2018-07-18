@@ -27,7 +27,7 @@ public class TestRouteInput {
     private RouteProperties route;
 
     /**
-     * Get the message value.
+     * Get routing message.
      *
      * @return the message value
      */
@@ -36,7 +36,7 @@ public class TestRouteInput {
     }
 
     /**
-     * Set the message value.
+     * Set routing message.
      *
      * @param message the message value to set
      * @return the TestRouteInput object itself.
@@ -47,7 +47,7 @@ public class TestRouteInput {
     }
 
     /**
-     * Get the route value.
+     * Get route properties.
      *
      * @return the route value
      */
@@ -56,7 +56,7 @@ public class TestRouteInput {
     }
 
     /**
-     * Set the route value.
+     * Set route properties.
      *
      * @param route the route value to set
      * @return the TestRouteInput object itself.

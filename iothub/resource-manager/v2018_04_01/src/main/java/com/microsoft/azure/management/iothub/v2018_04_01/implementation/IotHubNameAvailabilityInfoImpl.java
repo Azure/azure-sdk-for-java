@@ -13,14 +13,14 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.iothub.v2018_04_01.IotHubNameUnavailabilityReason;
 
 class IotHubNameAvailabilityInfoImpl extends WrapperImpl<IotHubNameAvailabilityInfoInner> implements IotHubNameAvailabilityInfo {
-    private final IoTHubManager manager;
-    IotHubNameAvailabilityInfoImpl(IotHubNameAvailabilityInfoInner inner, IoTHubManager manager) {
+    private final DevicesManager manager;
+    IotHubNameAvailabilityInfoImpl(IotHubNameAvailabilityInfoInner inner, DevicesManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public IoTHubManager manager() {
+    public DevicesManager manager() {
         return this.manager;
     }
 

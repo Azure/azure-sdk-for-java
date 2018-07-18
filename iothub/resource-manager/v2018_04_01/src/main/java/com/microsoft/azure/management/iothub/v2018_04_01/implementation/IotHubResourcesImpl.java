@@ -32,14 +32,14 @@ import com.microsoft.azure.management.iothub.v2018_04_01.TestAllRoutesInput;
 import com.microsoft.azure.management.iothub.v2018_04_01.TestRouteInput;
 
 class IotHubResourcesImpl extends WrapperImpl<IotHubResourcesInner> implements IotHubResources {
-    private final IoTHubManager manager;
+    private final DevicesManager manager;
 
-    IotHubResourcesImpl(IoTHubManager manager) {
+    IotHubResourcesImpl(DevicesManager manager) {
         super(manager.inner().iotHubResources());
         this.manager = manager;
     }
 
-    public IoTHubManager manager() {
+    public DevicesManager manager() {
         return this.manager;
     }
 
@@ -61,23 +61,23 @@ class IotHubResourcesImpl extends WrapperImpl<IotHubResourcesInner> implements I
         return new EventHubConsumerGroupInfoImpl(name, this.manager());
     }
 
-    private IotHubDescriptionImpl wrapModel(IotHubDescriptionInner inner) {
+    private IotHubDescriptionImpl wrapIotHubDescriptionModel(IotHubDescriptionInner inner) {
         return  new IotHubDescriptionImpl(inner.name(), inner, manager());
     }
 
-    private IotHubSkuDescriptionImpl wrapModel(IotHubSkuDescriptionInner inner) {
+    private IotHubSkuDescriptionImpl wrapIotHubSkuDescriptionModel(IotHubSkuDescriptionInner inner) {
         return  new IotHubSkuDescriptionImpl(inner, manager());
     }
 
-    private EventHubConsumerGroupInfoImpl wrapModel(EventHubConsumerGroupInfoInner inner) {
+    private EventHubConsumerGroupInfoImpl wrapEventHubConsumerGroupInfoModel(EventHubConsumerGroupInfoInner inner) {
         return  new EventHubConsumerGroupInfoImpl(inner, manager());
     }
 
-    private JobResponseImpl wrapModel(JobResponseInner inner) {
+    private JobResponseImpl wrapJobResponseModel(JobResponseInner inner) {
         return  new JobResponseImpl(inner, manager());
     }
 
-    private IotHubQuotaMetricInfoImpl wrapModel(IotHubQuotaMetricInfoInner inner) {
+    private IotHubQuotaMetricInfoImpl wrapIotHubQuotaMetricInfoModel(IotHubQuotaMetricInfoInner inner) {
         return  new IotHubQuotaMetricInfoImpl(inner, manager());
     }
 
@@ -86,88 +86,67 @@ class IotHubResourcesImpl extends WrapperImpl<IotHubResourcesInner> implements I
         return client.getByResourceGroupAsync(resourceGroupName, name);
     }
 
+    private Observable<EventHubConsumerGroupInfoInner> getEventHubConsumerGroupInfoInnerUsingIotHubResourcesInnerAsync(String id) {
+        String resourceGroupName = IdParsingUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceName = IdParsingUtils.getValueFromIdByName(id, "IotHubs");
+        String eventHubEndpointName = IdParsingUtils.getValueFromIdByName(id, "eventHubEndpoints");
+        String name = IdParsingUtils.getValueFromIdByName(id, "ConsumerGroups");
+        IotHubResourcesInner client = this.inner();
+        return client.getEventHubConsumerGroupAsync(resourceGroupName, resourceName, eventHubEndpointName, name);
+    }
+
+    private Observable<JobResponseInner> getJobResponseInnerUsingIotHubResourcesInnerAsync(String id) {
+        String resourceGroupName = IdParsingUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceName = IdParsingUtils.getValueFromIdByName(id, "IotHubs");
+        String jobId = IdParsingUtils.getValueFromIdByName(id, "jobs");
+        IotHubResourcesInner client = this.inner();
+        return client.getJobAsync(resourceGroupName, resourceName, jobId);
+    }
+
     @Override
     public Observable<IotHubDescription> getByResourceGroupAsync(String resourceGroupName, String name) {
         return this.getIotHubDescriptionInnerUsingIotHubResourcesInnerAsync(resourceGroupName, name).map(new Func1<IotHubDescriptionInner, IotHubDescription> () {
             @Override
             public IotHubDescription call(IotHubDescriptionInner inner) {
-                return wrapModel(inner);
+                return wrapIotHubDescriptionModel(inner);
             }
         });
     }
 
-    private Observable<Page<IotHubDescriptionInner>> listByResourceGroupNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        IotHubResourcesInner client = this.inner();
-        return client.listByResourceGroupNextAsync(nextLink)
-        .flatMap(new Func1<Page<IotHubDescriptionInner>, Observable<Page<IotHubDescriptionInner>>>() {
-            @Override
-            public Observable<Page<IotHubDescriptionInner>> call(Page<IotHubDescriptionInner> page) {
-                return Observable.just(page).concatWith(listByResourceGroupNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<IotHubDescription> listByResourceGroupAsync(String resourceGroupName) {
         IotHubResourcesInner client = this.inner();
         return client.listByResourceGroupAsync(resourceGroupName)
-        .flatMap(new Func1<Page<IotHubDescriptionInner>, Observable<Page<IotHubDescriptionInner>>>() {
-            @Override
-            public Observable<Page<IotHubDescriptionInner>> call(Page<IotHubDescriptionInner> page) {
-                return listByResourceGroupNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<IotHubDescriptionInner>, Iterable<IotHubDescriptionInner>>() {
             @Override
             public Iterable<IotHubDescriptionInner> call(Page<IotHubDescriptionInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<IotHubDescriptionInner, IotHubDescription>() {
             @Override
             public IotHubDescription call(IotHubDescriptionInner inner) {
-                return wrapModel(inner);
-            }
-       });
-    }
-
-    private Observable<Page<IotHubDescriptionInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        IotHubResourcesInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<IotHubDescriptionInner>, Observable<Page<IotHubDescriptionInner>>>() {
-            @Override
-            public Observable<Page<IotHubDescriptionInner>> call(Page<IotHubDescriptionInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
+                return wrapIotHubDescriptionModel(inner);
             }
         });
     }
+
     @Override
     public Observable<IotHubDescription> listAsync() {
         IotHubResourcesInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<IotHubDescriptionInner>, Observable<Page<IotHubDescriptionInner>>>() {
-            @Override
-            public Observable<Page<IotHubDescriptionInner>> call(Page<IotHubDescriptionInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<IotHubDescriptionInner>, Iterable<IotHubDescriptionInner>>() {
             @Override
             public Iterable<IotHubDescriptionInner> call(Page<IotHubDescriptionInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<IotHubDescriptionInner, IotHubDescription>() {
             @Override
             public IotHubDescription call(IotHubDescriptionInner inner) {
-                return wrapModel(inner);
+                return wrapIotHubDescriptionModel(inner);
             }
-       });
+        });
     }
 
     @Override
@@ -175,78 +154,40 @@ class IotHubResourcesImpl extends WrapperImpl<IotHubResourcesInner> implements I
         return this.inner().deleteAsync(resourceGroupName, name).toCompletable();
     }
 
-    private Observable<Page<EndpointHealthDataInner>> getEndpointHealthNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        IotHubResourcesInner client = this.inner();
-        return client.getEndpointHealthNextAsync(nextLink)
-        .flatMap(new Func1<Page<EndpointHealthDataInner>, Observable<Page<EndpointHealthDataInner>>>() {
-            @Override
-            public Observable<Page<EndpointHealthDataInner>> call(Page<EndpointHealthDataInner> page) {
-                return Observable.just(page).concatWith(getEndpointHealthNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<EndpointHealthData> getEndpointHealthAsync(final String resourceGroupName, final String iotHubName) {
         IotHubResourcesInner client = this.inner();
         return client.getEndpointHealthAsync(resourceGroupName, iotHubName)
-        .flatMap(new Func1<Page<EndpointHealthDataInner>, Observable<Page<EndpointHealthDataInner>>>() {
-            @Override
-            public Observable<Page<EndpointHealthDataInner>> call(Page<EndpointHealthDataInner> page) {
-                return getEndpointHealthNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<EndpointHealthDataInner>, Iterable<EndpointHealthDataInner>>() {
             @Override
             public Iterable<EndpointHealthDataInner> call(Page<EndpointHealthDataInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<EndpointHealthDataInner, EndpointHealthData>() {
             @Override
             public EndpointHealthData call(EndpointHealthDataInner inner) {
                 return new EndpointHealthDataImpl(inner, manager());
             }
-       });
-    }
-
-    private Observable<Page<SharedAccessSignatureAuthorizationRuleInner>> listKeysNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        IotHubResourcesInner client = this.inner();
-        return client.listKeysNextAsync(nextLink)
-        .flatMap(new Func1<Page<SharedAccessSignatureAuthorizationRuleInner>, Observable<Page<SharedAccessSignatureAuthorizationRuleInner>>>() {
-            @Override
-            public Observable<Page<SharedAccessSignatureAuthorizationRuleInner>> call(Page<SharedAccessSignatureAuthorizationRuleInner> page) {
-                return Observable.just(page).concatWith(listKeysNextInnerPageAsync(page.nextPageLink()));
-            }
         });
     }
+
     @Override
     public Observable<SharedAccessSignatureAuthorizationRule> listKeysAsync(final String resourceGroupName, final String resourceName) {
         IotHubResourcesInner client = this.inner();
         return client.listKeysAsync(resourceGroupName, resourceName)
-        .flatMap(new Func1<Page<SharedAccessSignatureAuthorizationRuleInner>, Observable<Page<SharedAccessSignatureAuthorizationRuleInner>>>() {
-            @Override
-            public Observable<Page<SharedAccessSignatureAuthorizationRuleInner>> call(Page<SharedAccessSignatureAuthorizationRuleInner> page) {
-                return listKeysNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<SharedAccessSignatureAuthorizationRuleInner>, Iterable<SharedAccessSignatureAuthorizationRuleInner>>() {
             @Override
             public Iterable<SharedAccessSignatureAuthorizationRuleInner> call(Page<SharedAccessSignatureAuthorizationRuleInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<SharedAccessSignatureAuthorizationRuleInner, SharedAccessSignatureAuthorizationRule>() {
             @Override
             public SharedAccessSignatureAuthorizationRule call(SharedAccessSignatureAuthorizationRuleInner inner) {
                 return new SharedAccessSignatureAuthorizationRuleImpl(inner, manager());
             }
-       });
+        });
     }
 
     @Override
@@ -297,41 +238,22 @@ class IotHubResourcesImpl extends WrapperImpl<IotHubResourcesInner> implements I
         });
     }
 
-    private Observable<Page<IotHubSkuDescriptionInner>> getValidSkusNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        IotHubResourcesInner client = this.inner();
-        return client.getValidSkusNextAsync(nextLink)
-        .flatMap(new Func1<Page<IotHubSkuDescriptionInner>, Observable<Page<IotHubSkuDescriptionInner>>>() {
-            @Override
-            public Observable<Page<IotHubSkuDescriptionInner>> call(Page<IotHubSkuDescriptionInner> page) {
-                return Observable.just(page).concatWith(getValidSkusNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<IotHubSkuDescription> getValidSkusAsync(final String resourceGroupName, final String resourceName) {
         IotHubResourcesInner client = this.inner();
         return client.getValidSkusAsync(resourceGroupName, resourceName)
-        .flatMap(new Func1<Page<IotHubSkuDescriptionInner>, Observable<Page<IotHubSkuDescriptionInner>>>() {
-            @Override
-            public Observable<Page<IotHubSkuDescriptionInner>> call(Page<IotHubSkuDescriptionInner> page) {
-                return getValidSkusNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<IotHubSkuDescriptionInner>, Iterable<IotHubSkuDescriptionInner>>() {
             @Override
             public Iterable<IotHubSkuDescriptionInner> call(Page<IotHubSkuDescriptionInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<IotHubSkuDescriptionInner, IotHubSkuDescription>() {
             @Override
             public IotHubSkuDescription call(IotHubSkuDescriptionInner inner) {
-                return wrapModel(inner);
+                return wrapIotHubSkuDescriptionModel(inner);
             }
-       });
+        });
     }
 
     @Override
@@ -341,46 +263,27 @@ class IotHubResourcesImpl extends WrapperImpl<IotHubResourcesInner> implements I
         .map(new Func1<EventHubConsumerGroupInfoInner, EventHubConsumerGroupInfo>() {
             @Override
             public EventHubConsumerGroupInfo call(EventHubConsumerGroupInfoInner inner) {
-                return wrapModel(inner);
+                return wrapEventHubConsumerGroupInfoModel(inner);
             }
        });
     }
 
-    private Observable<Page<EventHubConsumerGroupInfoInner>> listEventHubConsumerGroupsNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        IotHubResourcesInner client = this.inner();
-        return client.listEventHubConsumerGroupsNextAsync(nextLink)
-        .flatMap(new Func1<Page<EventHubConsumerGroupInfoInner>, Observable<Page<EventHubConsumerGroupInfoInner>>>() {
-            @Override
-            public Observable<Page<EventHubConsumerGroupInfoInner>> call(Page<EventHubConsumerGroupInfoInner> page) {
-                return Observable.just(page).concatWith(listEventHubConsumerGroupsNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<EventHubConsumerGroupInfo> listEventHubConsumerGroupsAsync(final String resourceGroupName, final String resourceName, final String eventHubEndpointName) {
         IotHubResourcesInner client = this.inner();
         return client.listEventHubConsumerGroupsAsync(resourceGroupName, resourceName, eventHubEndpointName)
-        .flatMap(new Func1<Page<EventHubConsumerGroupInfoInner>, Observable<Page<EventHubConsumerGroupInfoInner>>>() {
-            @Override
-            public Observable<Page<EventHubConsumerGroupInfoInner>> call(Page<EventHubConsumerGroupInfoInner> page) {
-                return listEventHubConsumerGroupsNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<EventHubConsumerGroupInfoInner>, Iterable<EventHubConsumerGroupInfoInner>>() {
             @Override
             public Iterable<EventHubConsumerGroupInfoInner> call(Page<EventHubConsumerGroupInfoInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<EventHubConsumerGroupInfoInner, EventHubConsumerGroupInfo>() {
             @Override
             public EventHubConsumerGroupInfo call(EventHubConsumerGroupInfoInner inner) {
-                return wrapModel(inner);
+                return wrapEventHubConsumerGroupInfoModel(inner);
             }
-       });
+        });
     }
 
     @Override
@@ -396,83 +299,45 @@ class IotHubResourcesImpl extends WrapperImpl<IotHubResourcesInner> implements I
         .map(new Func1<JobResponseInner, JobResponse>() {
             @Override
             public JobResponse call(JobResponseInner inner) {
-                return wrapModel(inner);
+                return wrapJobResponseModel(inner);
             }
        });
     }
 
-    private Observable<Page<JobResponseInner>> listJobsNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        IotHubResourcesInner client = this.inner();
-        return client.listJobsNextAsync(nextLink)
-        .flatMap(new Func1<Page<JobResponseInner>, Observable<Page<JobResponseInner>>>() {
-            @Override
-            public Observable<Page<JobResponseInner>> call(Page<JobResponseInner> page) {
-                return Observable.just(page).concatWith(listJobsNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<JobResponse> listJobsAsync(final String resourceGroupName, final String resourceName) {
         IotHubResourcesInner client = this.inner();
         return client.listJobsAsync(resourceGroupName, resourceName)
-        .flatMap(new Func1<Page<JobResponseInner>, Observable<Page<JobResponseInner>>>() {
-            @Override
-            public Observable<Page<JobResponseInner>> call(Page<JobResponseInner> page) {
-                return listJobsNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<JobResponseInner>, Iterable<JobResponseInner>>() {
             @Override
             public Iterable<JobResponseInner> call(Page<JobResponseInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<JobResponseInner, JobResponse>() {
             @Override
             public JobResponse call(JobResponseInner inner) {
-                return wrapModel(inner);
-            }
-       });
-    }
-
-    private Observable<Page<IotHubQuotaMetricInfoInner>> getQuotaMetricsNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        IotHubResourcesInner client = this.inner();
-        return client.getQuotaMetricsNextAsync(nextLink)
-        .flatMap(new Func1<Page<IotHubQuotaMetricInfoInner>, Observable<Page<IotHubQuotaMetricInfoInner>>>() {
-            @Override
-            public Observable<Page<IotHubQuotaMetricInfoInner>> call(Page<IotHubQuotaMetricInfoInner> page) {
-                return Observable.just(page).concatWith(getQuotaMetricsNextInnerPageAsync(page.nextPageLink()));
+                return wrapJobResponseModel(inner);
             }
         });
     }
+
     @Override
     public Observable<IotHubQuotaMetricInfo> getQuotaMetricsAsync(final String resourceGroupName, final String resourceName) {
         IotHubResourcesInner client = this.inner();
         return client.getQuotaMetricsAsync(resourceGroupName, resourceName)
-        .flatMap(new Func1<Page<IotHubQuotaMetricInfoInner>, Observable<Page<IotHubQuotaMetricInfoInner>>>() {
-            @Override
-            public Observable<Page<IotHubQuotaMetricInfoInner>> call(Page<IotHubQuotaMetricInfoInner> page) {
-                return getQuotaMetricsNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<IotHubQuotaMetricInfoInner>, Iterable<IotHubQuotaMetricInfoInner>>() {
             @Override
             public Iterable<IotHubQuotaMetricInfoInner> call(Page<IotHubQuotaMetricInfoInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<IotHubQuotaMetricInfoInner, IotHubQuotaMetricInfo>() {
             @Override
             public IotHubQuotaMetricInfo call(IotHubQuotaMetricInfoInner inner) {
-                return wrapModel(inner);
+                return wrapIotHubQuotaMetricInfoModel(inner);
             }
-       });
+        });
     }
 
     @Override
