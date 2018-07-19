@@ -125,17 +125,6 @@ public interface AppServiceEnvironments {
     Observable<Sites> suspendAsync(final String resourceGroupName, final String name);
 
     /**
-     * Resume an App Service Environment.
-     * Resume an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Completable syncVirtualNetworkInfoAsync(String resourceGroupName, String name);
-
-    /**
      * Get the used, available, and total worker capacity an App Service Environment.
      * Get the used, available, and total worker capacity an App Service Environment.
      *

@@ -16,12 +16,12 @@ import com.microsoft.azure.management.appservice.v2016_09_01.VnetRoute;
 import java.util.List;
 
 class VnetInfoImpl extends IndexableRefreshableWrapperImpl<VnetInfo, VnetInfoInner> implements VnetInfo {
-    private final AppServiceManager manager;
+    private final WebManager manager;
     private String resourceGroupName;
     private String name;
     private String vnetName;
 
-    VnetInfoImpl(VnetInfoInner inner,  AppServiceManager manager) {
+    VnetInfoImpl(VnetInfoInner inner,  WebManager manager) {
         super(null, inner);
         this.manager = manager;
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
@@ -30,7 +30,7 @@ class VnetInfoImpl extends IndexableRefreshableWrapperImpl<VnetInfo, VnetInfoInn
     }
 
     @Override
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 

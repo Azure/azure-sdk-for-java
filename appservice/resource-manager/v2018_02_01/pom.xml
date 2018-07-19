@@ -14,7 +14,7 @@
         <version>0.0.2-beta</version>
         <relativePath>../../../pom.xml</relativePath>
     </parent>
-    <artifactId>azure-mgmt-appservice</artifactId>
+    <artifactId>azure-mgmt-certificateregistration</artifactId>
     <version>1.0.0-beta</version>
     <packaging>jar</packaging>
     <name>Microsoft Azure SDK for CertificateRegistration Management</name>

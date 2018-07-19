@@ -16,12 +16,12 @@ import com.microsoft.azure.management.appservice.v2016_03_01.DiagnosticData;
 import com.microsoft.azure.management.appservice.v2016_03_01.DetectorInfo;
 
 class DetectorResponseImpl extends IndexableRefreshableWrapperImpl<DetectorResponse, DetectorResponseInner> implements DetectorResponse {
-    private final AppServiceManager manager;
+    private final WebManager manager;
     private String resourceGroupName;
     private String name;
     private String detectorName;
 
-    DetectorResponseImpl(DetectorResponseInner inner,  AppServiceManager manager) {
+    DetectorResponseImpl(DetectorResponseInner inner,  WebManager manager) {
         super(null, inner);
         this.manager = manager;
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
@@ -30,7 +30,7 @@ class DetectorResponseImpl extends IndexableRefreshableWrapperImpl<DetectorRespo
     }
 
     @Override
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 

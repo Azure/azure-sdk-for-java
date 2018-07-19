@@ -75,6 +75,13 @@ public class ValidateRequest {
     private String hostingEnvironment;
 
     /**
+     * &lt;code&gt;true&lt;/code&gt; if App Service plan is running as a
+     * windows container.
+     */
+    @JsonProperty(value = "properties.isXenon")
+    private Boolean isXenon;
+
+    /**
      * Get resource name to verify.
      *
      * @return the name value
@@ -251,6 +258,26 @@ public class ValidateRequest {
      */
     public ValidateRequest withHostingEnvironment(String hostingEnvironment) {
         this.hostingEnvironment = hostingEnvironment;
+        return this;
+    }
+
+    /**
+     * Get &lt;code&gt;true&lt;/code&gt; if App Service plan is running as a windows container.
+     *
+     * @return the isXenon value
+     */
+    public Boolean isXenon() {
+        return this.isXenon;
+    }
+
+    /**
+     * Set &lt;code&gt;true&lt;/code&gt; if App Service plan is running as a windows container.
+     *
+     * @param isXenon the isXenon value to set
+     * @return the ValidateRequest object itself.
+     */
+    public ValidateRequest withIsXenon(Boolean isXenon) {
+        this.isXenon = isXenon;
         return this;
     }
 

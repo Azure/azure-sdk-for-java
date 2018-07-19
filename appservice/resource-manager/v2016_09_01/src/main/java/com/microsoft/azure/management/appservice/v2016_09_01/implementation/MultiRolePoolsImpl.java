@@ -16,15 +16,15 @@ import java.util.List;
 import com.microsoft.azure.management.appservice.v2016_09_01.SkuDescription;
 
 class MultiRolePoolsImpl extends WrapperImpl<WorkerPoolResourceInner> implements MultiRolePools {
-    private final AppServiceManager manager;
+    private final WebManager manager;
 
-    MultiRolePoolsImpl(WorkerPoolResourceInner inner,  AppServiceManager manager) {
+    MultiRolePoolsImpl(WorkerPoolResourceInner inner,  WebManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 
