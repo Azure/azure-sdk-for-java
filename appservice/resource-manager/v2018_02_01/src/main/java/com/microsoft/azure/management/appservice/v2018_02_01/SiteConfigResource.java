@@ -13,6 +13,7 @@ import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.SiteConfigResourceInner;
 import java.util.List;
+import java.util.Map;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.PushSettingsInner;
 import org.joda.time.DateTime;
 
@@ -54,6 +55,11 @@ public interface SiteConfigResource extends HasInner<SiteConfigResourceInner>, H
      * @return the autoSwapSlotName value.
      */
     String autoSwapSlotName();
+
+    /**
+     * @return the azureStorageAccounts value.
+     */
+    Map<String, AzureStorageInfoValue> azureStorageAccounts();
 
     /**
      * @return the connectionStrings value.
