@@ -12,14 +12,14 @@ import com.microsoft.azure.management.appservice.v2016_03_01.DeletedSite;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 
 class DeletedSiteImpl extends WrapperImpl<DeletedSiteInner> implements DeletedSite {
-    private final AppServiceManager manager;
-    DeletedSiteImpl(DeletedSiteInner inner, AppServiceManager manager) {
+    private final WebManager manager;
+    DeletedSiteImpl(DeletedSiteInner inner, WebManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 

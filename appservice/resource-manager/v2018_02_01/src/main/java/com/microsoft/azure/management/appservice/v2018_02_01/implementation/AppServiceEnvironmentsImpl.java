@@ -36,14 +36,14 @@ import com.microsoft.azure.management.appservice.v2018_02_01.HostingEnvironmentS
 import com.microsoft.azure.management.appservice.v2018_02_01.WorkerPools;
 
 class AppServiceEnvironmentsImpl extends WrapperImpl<AppServiceEnvironmentsInner> implements AppServiceEnvironments {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
 
-    AppServiceEnvironmentsImpl(AppServiceManager manager) {
+    AppServiceEnvironmentsImpl(CertificateRegistrationManager manager) {
         super(manager.inner().appServiceEnvironments());
         this.manager = manager;
     }
 
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 
@@ -227,12 +227,6 @@ class AppServiceEnvironmentsImpl extends WrapperImpl<AppServiceEnvironmentsInner
                 return new SitesImpl(inner.name(), inner, manager());
             }
         });
-    }
-
-    @Override
-    public Completable syncVirtualNetworkInfoAsync(String resourceGroupName, String name) {
-        AppServiceEnvironmentsInner client = this.inner();
-        return client.syncVirtualNetworkInfoAsync(resourceGroupName, name).toCompletable();
     }
 
     @Override

@@ -31,14 +31,14 @@ import com.microsoft.azure.management.appservice.v2018_02_01.ServerfarmVnetGatew
 import com.microsoft.azure.management.appservice.v2018_02_01.VnetRoute;
 
 class AppServicePlansImpl extends WrapperImpl<AppServicePlansInner> implements AppServicePlans {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
 
-    AppServicePlansImpl(AppServiceManager manager) {
+    AppServicePlansImpl(CertificateRegistrationManager manager) {
         super(manager.inner().appServicePlans());
         this.manager = manager;
     }
 
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 

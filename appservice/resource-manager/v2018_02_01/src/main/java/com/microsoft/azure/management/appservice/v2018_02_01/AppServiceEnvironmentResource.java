@@ -17,7 +17,7 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
 import java.util.List;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.StampCapacityInner;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServiceEnvironmentResourceInner;
@@ -25,7 +25,7 @@ import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppS
 /**
  * Type representing AppServiceEnvironmentResource.
  */
-public interface AppServiceEnvironmentResource extends HasInner<AppServiceEnvironmentResourceInner>, Resource, GroupableResourceCore<AppServiceManager, AppServiceEnvironmentResourceInner>, HasResourceGroup, Refreshable<AppServiceEnvironmentResource>, Updatable<AppServiceEnvironmentResource.Update>, HasManager<AppServiceManager> {
+public interface AppServiceEnvironmentResource extends HasInner<AppServiceEnvironmentResourceInner>, Resource, GroupableResourceCore<CertificateRegistrationManager, AppServiceEnvironmentResourceInner>, HasResourceGroup, Refreshable<AppServiceEnvironmentResource>, Updatable<AppServiceEnvironmentResource.Update>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the allowedMultiSizes value.
      */
@@ -160,6 +160,16 @@ public interface AppServiceEnvironmentResource extends HasInner<AppServiceEnviro
      * @return the resourceGroup value.
      */
     String resourceGroup();
+
+    /**
+     * @return the sslCertKeyVaultId value.
+     */
+    String sslCertKeyVaultId();
+
+    /**
+     * @return the sslCertKeyVaultSecretName value.
+     */
+    String sslCertKeyVaultSecretName();
 
     /**
      * @return the status value.
@@ -399,6 +409,26 @@ public interface AppServiceEnvironmentResource extends HasInner<AppServiceEnviro
         }
 
         /**
+         * The stage of the appserviceenvironmentresource update allowing to specify SslCertKeyVaultId.
+         */
+        interface WithSslCertKeyVaultId {
+            /**
+             * Specifies sslCertKeyVaultId.
+             */
+            WithCreate withSslCertKeyVaultId(String sslCertKeyVaultId);
+        }
+
+        /**
+         * The stage of the appserviceenvironmentresource update allowing to specify SslCertKeyVaultSecretName.
+         */
+        interface WithSslCertKeyVaultSecretName {
+            /**
+             * Specifies sslCertKeyVaultSecretName.
+             */
+            WithCreate withSslCertKeyVaultSecretName(String sslCertKeyVaultSecretName);
+        }
+
+        /**
          * The stage of the appserviceenvironmentresource update allowing to specify Suspended.
          */
         interface WithSuspended {
@@ -453,13 +483,13 @@ public interface AppServiceEnvironmentResource extends HasInner<AppServiceEnviro
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<AppServiceEnvironmentResource>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithApiManagementAccountId, DefinitionStages.WithClusterSettings, DefinitionStages.WithDnsSuffix, DefinitionStages.WithDynamicCacheEnabled, DefinitionStages.WithFrontEndScaleFactor, DefinitionStages.WithHasLinuxWorkers, DefinitionStages.WithInternalLoadBalancingMode, DefinitionStages.WithIpsslAddressCount, DefinitionStages.WithKind, DefinitionStages.WithMultiRoleCount, DefinitionStages.WithMultiSize, DefinitionStages.WithNetworkAccessControlList, DefinitionStages.WithSuspended, DefinitionStages.WithUserWhitelistedIpRanges, DefinitionStages.WithVnetName, DefinitionStages.WithVnetResourceGroupName, DefinitionStages.WithVnetSubnetName {
+        interface WithCreate extends Creatable<AppServiceEnvironmentResource>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithApiManagementAccountId, DefinitionStages.WithClusterSettings, DefinitionStages.WithDnsSuffix, DefinitionStages.WithDynamicCacheEnabled, DefinitionStages.WithFrontEndScaleFactor, DefinitionStages.WithHasLinuxWorkers, DefinitionStages.WithInternalLoadBalancingMode, DefinitionStages.WithIpsslAddressCount, DefinitionStages.WithKind, DefinitionStages.WithMultiRoleCount, DefinitionStages.WithMultiSize, DefinitionStages.WithNetworkAccessControlList, DefinitionStages.WithSslCertKeyVaultId, DefinitionStages.WithSslCertKeyVaultSecretName, DefinitionStages.WithSuspended, DefinitionStages.WithUserWhitelistedIpRanges, DefinitionStages.WithVnetName, DefinitionStages.WithVnetResourceGroupName, DefinitionStages.WithVnetSubnetName {
         }
     }
     /**
      * The template for a AppServiceEnvironmentResource update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<AppServiceEnvironmentResource>, Resource.UpdateWithTags<Update>, UpdateStages.WithApiManagementAccountId, UpdateStages.WithClusterSettings, UpdateStages.WithDnsSuffix, UpdateStages.WithDynamicCacheEnabled, UpdateStages.WithFrontEndScaleFactor, UpdateStages.WithHasLinuxWorkers, UpdateStages.WithInternalLoadBalancingMode, UpdateStages.WithIpsslAddressCount, UpdateStages.WithKind, UpdateStages.WithMultiRoleCount, UpdateStages.WithMultiSize, UpdateStages.WithNetworkAccessControlList, UpdateStages.WithSuspended, UpdateStages.WithUserWhitelistedIpRanges, UpdateStages.WithVnetName, UpdateStages.WithVnetResourceGroupName, UpdateStages.WithVnetSubnetName {
+    interface Update extends Appliable<AppServiceEnvironmentResource>, Resource.UpdateWithTags<Update>, UpdateStages.WithApiManagementAccountId, UpdateStages.WithClusterSettings, UpdateStages.WithDnsSuffix, UpdateStages.WithDynamicCacheEnabled, UpdateStages.WithFrontEndScaleFactor, UpdateStages.WithHasLinuxWorkers, UpdateStages.WithInternalLoadBalancingMode, UpdateStages.WithIpsslAddressCount, UpdateStages.WithKind, UpdateStages.WithMultiRoleCount, UpdateStages.WithMultiSize, UpdateStages.WithNetworkAccessControlList, UpdateStages.WithSslCertKeyVaultId, UpdateStages.WithSslCertKeyVaultSecretName, UpdateStages.WithSuspended, UpdateStages.WithUserWhitelistedIpRanges, UpdateStages.WithVnetName, UpdateStages.WithVnetResourceGroupName, UpdateStages.WithVnetSubnetName {
     }
 
     /**
@@ -584,6 +614,26 @@ public interface AppServiceEnvironmentResource extends HasInner<AppServiceEnviro
              * Specifies networkAccessControlList.
              */
             Update withNetworkAccessControlList(List<NetworkAccessControlEntry> networkAccessControlList);
+        }
+
+        /**
+         * The stage of the appserviceenvironmentresource {0} allowing to specify SslCertKeyVaultId.
+         */
+        interface WithSslCertKeyVaultId {
+            /**
+             * Specifies sslCertKeyVaultId.
+             */
+            Update withSslCertKeyVaultId(String sslCertKeyVaultId);
+        }
+
+        /**
+         * The stage of the appserviceenvironmentresource {0} allowing to specify SslCertKeyVaultSecretName.
+         */
+        interface WithSslCertKeyVaultSecretName {
+            /**
+             * Specifies sslCertKeyVaultSecretName.
+             */
+            Update withSslCertKeyVaultSecretName(String sslCertKeyVaultSecretName);
         }
 
         /**

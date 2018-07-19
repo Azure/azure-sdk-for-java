@@ -17,7 +17,7 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
 import java.util.List;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.SiteInner;
@@ -25,7 +25,7 @@ import com.microsoft.azure.management.appservice.v2018_02_01.implementation.Site
 /**
  * Type representing Sites.
  */
-public interface Sites extends HasInner<SiteInner>, Resource, GroupableResourceCore<AppServiceManager, SiteInner>, HasResourceGroup, Refreshable<Sites>, Updatable<Sites.Update>, HasManager<AppServiceManager> {
+public interface Sites extends HasInner<SiteInner>, Resource, GroupableResourceCore<CertificateRegistrationManager, SiteInner>, HasResourceGroup, Refreshable<Sites>, Updatable<Sites.Update>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the availabilityState value.
      */
@@ -170,11 +170,6 @@ public interface Sites extends HasInner<SiteInner>, Resource, GroupableResourceC
      * @return the slotSwapStatus value.
      */
     SlotSwapStatus slotSwapStatus();
-
-    /**
-     * @return the snapshotInfo value.
-     */
-    SnapshotRecoveryRequest snapshotInfo();
 
     /**
      * @return the state value.
@@ -394,27 +389,17 @@ public interface Sites extends HasInner<SiteInner>, Resource, GroupableResourceC
         }
 
         /**
-         * The stage of the sites update allowing to specify SnapshotInfo.
-         */
-        interface WithSnapshotInfo {
-            /**
-             * Specifies snapshotInfo.
-             */
-            WithCreate withSnapshotInfo(SnapshotRecoveryRequest snapshotInfo);
-        }
-
-        /**
          * The stage of the definition which contains all the minimum required inputs for
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<Sites>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithClientAffinityEnabled, DefinitionStages.WithClientCertEnabled, DefinitionStages.WithCloningInfo, DefinitionStages.WithContainerSize, DefinitionStages.WithDailyMemoryTimeQuota, DefinitionStages.WithEnabled, DefinitionStages.WithHostingEnvironmentProfile, DefinitionStages.WithHostNamesDisabled, DefinitionStages.WithHostNameSslStates, DefinitionStages.WithHttpsOnly, DefinitionStages.WithIdentity, DefinitionStages.WithIsXenon, DefinitionStages.WithKind, DefinitionStages.WithReserved, DefinitionStages.WithScmSiteAlsoStopped, DefinitionStages.WithServerFarmId, DefinitionStages.WithSiteConfig, DefinitionStages.WithSnapshotInfo {
+        interface WithCreate extends Creatable<Sites>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithClientAffinityEnabled, DefinitionStages.WithClientCertEnabled, DefinitionStages.WithCloningInfo, DefinitionStages.WithContainerSize, DefinitionStages.WithDailyMemoryTimeQuota, DefinitionStages.WithEnabled, DefinitionStages.WithHostingEnvironmentProfile, DefinitionStages.WithHostNamesDisabled, DefinitionStages.WithHostNameSslStates, DefinitionStages.WithHttpsOnly, DefinitionStages.WithIdentity, DefinitionStages.WithIsXenon, DefinitionStages.WithKind, DefinitionStages.WithReserved, DefinitionStages.WithScmSiteAlsoStopped, DefinitionStages.WithServerFarmId, DefinitionStages.WithSiteConfig {
         }
     }
     /**
      * The template for a Sites update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<Sites>, Resource.UpdateWithTags<Update>, UpdateStages.WithClientAffinityEnabled, UpdateStages.WithClientCertEnabled, UpdateStages.WithCloningInfo, UpdateStages.WithContainerSize, UpdateStages.WithDailyMemoryTimeQuota, UpdateStages.WithEnabled, UpdateStages.WithHostingEnvironmentProfile, UpdateStages.WithHostNamesDisabled, UpdateStages.WithHostNameSslStates, UpdateStages.WithHttpsOnly, UpdateStages.WithIsXenon, UpdateStages.WithKind, UpdateStages.WithReserved, UpdateStages.WithScmSiteAlsoStopped, UpdateStages.WithServerFarmId, UpdateStages.WithSiteConfig, UpdateStages.WithSnapshotInfo {
+    interface Update extends Appliable<Sites>, Resource.UpdateWithTags<Update>, UpdateStages.WithClientAffinityEnabled, UpdateStages.WithClientCertEnabled, UpdateStages.WithCloningInfo, UpdateStages.WithContainerSize, UpdateStages.WithDailyMemoryTimeQuota, UpdateStages.WithEnabled, UpdateStages.WithHostingEnvironmentProfile, UpdateStages.WithHostNamesDisabled, UpdateStages.WithHostNameSslStates, UpdateStages.WithHttpsOnly, UpdateStages.WithIsXenon, UpdateStages.WithKind, UpdateStages.WithReserved, UpdateStages.WithScmSiteAlsoStopped, UpdateStages.WithServerFarmId, UpdateStages.WithSiteConfig {
     }
 
     /**
@@ -579,16 +564,6 @@ public interface Sites extends HasInner<SiteInner>, Resource, GroupableResourceC
              * Specifies siteConfig.
              */
             Update withSiteConfig(SiteConfig siteConfig);
-        }
-
-        /**
-         * The stage of the sites {0} allowing to specify SnapshotInfo.
-         */
-        interface WithSnapshotInfo {
-            /**
-             * Specifies snapshotInfo.
-             */
-            Update withSnapshotInfo(SnapshotRecoveryRequest snapshotInfo);
         }
 
     }

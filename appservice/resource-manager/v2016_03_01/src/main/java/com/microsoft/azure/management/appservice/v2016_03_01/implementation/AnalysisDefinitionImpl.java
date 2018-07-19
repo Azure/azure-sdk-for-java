@@ -12,14 +12,14 @@ import com.microsoft.azure.management.appservice.v2016_03_01.AnalysisDefinition;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 
 class AnalysisDefinitionImpl extends WrapperImpl<AnalysisDefinitionInner> implements AnalysisDefinition {
-    private final AppServiceManager manager;
-    AnalysisDefinitionImpl(AnalysisDefinitionInner inner, AppServiceManager manager) {
+    private final WebManager manager;
+    AnalysisDefinitionImpl(AnalysisDefinitionInner inner, WebManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 
