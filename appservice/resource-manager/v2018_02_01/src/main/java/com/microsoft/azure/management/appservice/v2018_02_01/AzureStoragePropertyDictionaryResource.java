@@ -11,28 +11,13 @@ package com.microsoft.azure.management.appservice.v2018_02_01;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.SlotConfigNamesResourceInner;
-import java.util.List;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AzureStoragePropertyDictionaryResourceInner;
+import java.util.Map;
 
 /**
- * Type representing SlotConfigNamesResource.
+ * Type representing AzureStoragePropertyDictionaryResource.
  */
-public interface SlotConfigNamesResource extends HasInner<SlotConfigNamesResourceInner>, HasManager<CertificateRegistrationManager> {
-    /**
-     * @return the appSettingNames value.
-     */
-    List<String> appSettingNames();
-
-    /**
-     * @return the azureStorageConfigNames value.
-     */
-    List<String> azureStorageConfigNames();
-
-    /**
-     * @return the connectionStringNames value.
-     */
-    List<String> connectionStringNames();
-
+public interface AzureStoragePropertyDictionaryResource extends HasInner<AzureStoragePropertyDictionaryResourceInner>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the id value.
      */
@@ -47,6 +32,11 @@ public interface SlotConfigNamesResource extends HasInner<SlotConfigNamesResourc
      * @return the name value.
      */
     String name();
+
+    /**
+     * @return the properties value.
+     */
+    Map<String, AzureStorageInfoValue> properties();
 
     /**
      * @return the type value.

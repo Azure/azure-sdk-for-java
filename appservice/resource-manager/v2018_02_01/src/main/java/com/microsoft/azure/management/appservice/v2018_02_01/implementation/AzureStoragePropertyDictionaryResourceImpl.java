@@ -8,13 +8,14 @@
 
 package com.microsoft.azure.management.appservice.v2018_02_01.implementation;
 
-import com.microsoft.azure.management.appservice.v2018_02_01.SlotConfigNamesResource;
+import com.microsoft.azure.management.appservice.v2018_02_01.AzureStoragePropertyDictionaryResource;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
-import java.util.List;
+import java.util.Map;
+import com.microsoft.azure.management.appservice.v2018_02_01.AzureStorageInfoValue;
 
-class SlotConfigNamesResourceImpl extends WrapperImpl<SlotConfigNamesResourceInner> implements SlotConfigNamesResource {
+class AzureStoragePropertyDictionaryResourceImpl extends WrapperImpl<AzureStoragePropertyDictionaryResourceInner> implements AzureStoragePropertyDictionaryResource {
     private final CertificateRegistrationManager manager;
-    SlotConfigNamesResourceImpl(SlotConfigNamesResourceInner inner, CertificateRegistrationManager manager) {
+    AzureStoragePropertyDictionaryResourceImpl(AzureStoragePropertyDictionaryResourceInner inner, CertificateRegistrationManager manager) {
         super(inner);
         this.manager = manager;
     }
@@ -22,21 +23,6 @@ class SlotConfigNamesResourceImpl extends WrapperImpl<SlotConfigNamesResourceInn
     @Override
     public CertificateRegistrationManager manager() {
         return this.manager;
-    }
-
-    @Override
-    public List<String> appSettingNames() {
-        return this.inner().appSettingNames();
-    }
-
-    @Override
-    public List<String> azureStorageConfigNames() {
-        return this.inner().azureStorageConfigNames();
-    }
-
-    @Override
-    public List<String> connectionStringNames() {
-        return this.inner().connectionStringNames();
     }
 
     @Override
@@ -52,6 +38,11 @@ class SlotConfigNamesResourceImpl extends WrapperImpl<SlotConfigNamesResourceInn
     @Override
     public String name() {
         return this.inner().name();
+    }
+
+    @Override
+    public Map<String, AzureStorageInfoValue> properties() {
+        return this.inner().properties();
     }
 
     @Override

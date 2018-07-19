@@ -36,6 +36,7 @@ import com.microsoft.azure.management.appservice.v2018_02_01.MigrateMySqlRequest
 import com.microsoft.azure.management.appservice.v2018_02_01.DeletedAppRestoreRequest;
 import com.microsoft.azure.management.appservice.v2018_02_01.SnapshotRestoreRequest;
 import com.microsoft.azure.management.appservice.v2018_02_01.SiteAuthSettings;
+import com.microsoft.azure.management.appservice.v2018_02_01.AzureStoragePropertyDictionaryResource;
 import com.microsoft.azure.management.appservice.v2018_02_01.ConnectionStringDictionary;
 import com.microsoft.azure.management.appservice.v2018_02_01.SiteLogsConfig;
 import com.microsoft.azure.management.appservice.v2018_02_01.User;
@@ -1146,6 +1147,54 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
             @Override
             public SiteAuthSettings call(SiteAuthSettingsInner inner) {
                 return new SiteAuthSettingsImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<AzureStoragePropertyDictionaryResource> updateAzureStorageAccountsAsync(String resourceGroupName, String name, AzureStoragePropertyDictionaryResourceInner azureStorageAccounts) {
+        WebAppsInner client = this.inner();
+        return client.updateAzureStorageAccountsAsync(resourceGroupName, name, azureStorageAccounts)
+        .map(new Func1<AzureStoragePropertyDictionaryResourceInner, AzureStoragePropertyDictionaryResource>() {
+            @Override
+            public AzureStoragePropertyDictionaryResource call(AzureStoragePropertyDictionaryResourceInner inner) {
+                return new AzureStoragePropertyDictionaryResourceImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<AzureStoragePropertyDictionaryResource> listAzureStorageAccountsAsync(String resourceGroupName, String name) {
+        WebAppsInner client = this.inner();
+        return client.listAzureStorageAccountsAsync(resourceGroupName, name)
+        .map(new Func1<AzureStoragePropertyDictionaryResourceInner, AzureStoragePropertyDictionaryResource>() {
+            @Override
+            public AzureStoragePropertyDictionaryResource call(AzureStoragePropertyDictionaryResourceInner inner) {
+                return new AzureStoragePropertyDictionaryResourceImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<AzureStoragePropertyDictionaryResource> updateAzureStorageAccountsSlotAsync(String resourceGroupName, String name, String slot, AzureStoragePropertyDictionaryResourceInner azureStorageAccounts) {
+        WebAppsInner client = this.inner();
+        return client.updateAzureStorageAccountsSlotAsync(resourceGroupName, name, slot, azureStorageAccounts)
+        .map(new Func1<AzureStoragePropertyDictionaryResourceInner, AzureStoragePropertyDictionaryResource>() {
+            @Override
+            public AzureStoragePropertyDictionaryResource call(AzureStoragePropertyDictionaryResourceInner inner) {
+                return new AzureStoragePropertyDictionaryResourceImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<AzureStoragePropertyDictionaryResource> listAzureStorageAccountsSlotAsync(String resourceGroupName, String name, String slot) {
+        WebAppsInner client = this.inner();
+        return client.listAzureStorageAccountsSlotAsync(resourceGroupName, name, slot)
+        .map(new Func1<AzureStoragePropertyDictionaryResourceInner, AzureStoragePropertyDictionaryResource>() {
+            @Override
+            public AzureStoragePropertyDictionaryResource call(AzureStoragePropertyDictionaryResourceInner inner) {
+                return new AzureStoragePropertyDictionaryResourceImpl(inner, manager());
             }
         });
     }

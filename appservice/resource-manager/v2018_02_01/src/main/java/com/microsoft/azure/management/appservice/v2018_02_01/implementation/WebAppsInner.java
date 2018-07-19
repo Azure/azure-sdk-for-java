@@ -163,6 +163,14 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/authsettings/list")
         Observable<Response<ResponseBody>> getAuthSettings(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps updateAzureStorageAccounts" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/azurestorageaccounts")
+        Observable<Response<ResponseBody>> updateAzureStorageAccounts(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body AzureStoragePropertyDictionaryResourceInner azureStorageAccounts, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listAzureStorageAccounts" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/azurestorageaccounts/list")
+        Observable<Response<ResponseBody>> listAzureStorageAccounts(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps updateBackupConfiguration" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/backup")
         Observable<Response<ResponseBody>> updateBackupConfiguration(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body BackupRequestInner request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -767,6 +775,14 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps getAuthSettingsSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/authsettings/list")
         Observable<Response<ResponseBody>> getAuthSettingsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps updateAzureStorageAccountsSlot" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/azurestorageaccounts")
+        Observable<Response<ResponseBody>> updateAzureStorageAccountsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body AzureStoragePropertyDictionaryResourceInner azureStorageAccounts, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listAzureStorageAccountsSlot" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/azurestorageaccounts/list")
+        Observable<Response<ResponseBody>> listAzureStorageAccountsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps updateBackupConfigurationSlot" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/backup")
@@ -4127,6 +4143,194 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     private ServiceResponse<SiteAuthSettingsInner> getAuthSettingsDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<SiteAuthSettingsInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SiteAuthSettingsInner>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Updates the Azure storage account configurations of an app.
+     * Updates the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param azureStorageAccounts Azure storage accounts of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the AzureStoragePropertyDictionaryResourceInner object if successful.
+     */
+    public AzureStoragePropertyDictionaryResourceInner updateAzureStorageAccounts(String resourceGroupName, String name, AzureStoragePropertyDictionaryResourceInner azureStorageAccounts) {
+        return updateAzureStorageAccountsWithServiceResponseAsync(resourceGroupName, name, azureStorageAccounts).toBlocking().single().body();
+    }
+
+    /**
+     * Updates the Azure storage account configurations of an app.
+     * Updates the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param azureStorageAccounts Azure storage accounts of the app.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<AzureStoragePropertyDictionaryResourceInner> updateAzureStorageAccountsAsync(String resourceGroupName, String name, AzureStoragePropertyDictionaryResourceInner azureStorageAccounts, final ServiceCallback<AzureStoragePropertyDictionaryResourceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateAzureStorageAccountsWithServiceResponseAsync(resourceGroupName, name, azureStorageAccounts), serviceCallback);
+    }
+
+    /**
+     * Updates the Azure storage account configurations of an app.
+     * Updates the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param azureStorageAccounts Azure storage accounts of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AzureStoragePropertyDictionaryResourceInner object
+     */
+    public Observable<AzureStoragePropertyDictionaryResourceInner> updateAzureStorageAccountsAsync(String resourceGroupName, String name, AzureStoragePropertyDictionaryResourceInner azureStorageAccounts) {
+        return updateAzureStorageAccountsWithServiceResponseAsync(resourceGroupName, name, azureStorageAccounts).map(new Func1<ServiceResponse<AzureStoragePropertyDictionaryResourceInner>, AzureStoragePropertyDictionaryResourceInner>() {
+            @Override
+            public AzureStoragePropertyDictionaryResourceInner call(ServiceResponse<AzureStoragePropertyDictionaryResourceInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Updates the Azure storage account configurations of an app.
+     * Updates the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param azureStorageAccounts Azure storage accounts of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AzureStoragePropertyDictionaryResourceInner object
+     */
+    public Observable<ServiceResponse<AzureStoragePropertyDictionaryResourceInner>> updateAzureStorageAccountsWithServiceResponseAsync(String resourceGroupName, String name, AzureStoragePropertyDictionaryResourceInner azureStorageAccounts) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (azureStorageAccounts == null) {
+            throw new IllegalArgumentException("Parameter azureStorageAccounts is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(azureStorageAccounts);
+        return service.updateAzureStorageAccounts(resourceGroupName, name, this.client.subscriptionId(), azureStorageAccounts, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AzureStoragePropertyDictionaryResourceInner>>>() {
+                @Override
+                public Observable<ServiceResponse<AzureStoragePropertyDictionaryResourceInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<AzureStoragePropertyDictionaryResourceInner> clientResponse = updateAzureStorageAccountsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<AzureStoragePropertyDictionaryResourceInner> updateAzureStorageAccountsDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<AzureStoragePropertyDictionaryResourceInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<AzureStoragePropertyDictionaryResourceInner>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets the Azure storage account configurations of an app.
+     * Gets the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the AzureStoragePropertyDictionaryResourceInner object if successful.
+     */
+    public AzureStoragePropertyDictionaryResourceInner listAzureStorageAccounts(String resourceGroupName, String name) {
+        return listAzureStorageAccountsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
+    }
+
+    /**
+     * Gets the Azure storage account configurations of an app.
+     * Gets the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<AzureStoragePropertyDictionaryResourceInner> listAzureStorageAccountsAsync(String resourceGroupName, String name, final ServiceCallback<AzureStoragePropertyDictionaryResourceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listAzureStorageAccountsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    }
+
+    /**
+     * Gets the Azure storage account configurations of an app.
+     * Gets the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AzureStoragePropertyDictionaryResourceInner object
+     */
+    public Observable<AzureStoragePropertyDictionaryResourceInner> listAzureStorageAccountsAsync(String resourceGroupName, String name) {
+        return listAzureStorageAccountsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<AzureStoragePropertyDictionaryResourceInner>, AzureStoragePropertyDictionaryResourceInner>() {
+            @Override
+            public AzureStoragePropertyDictionaryResourceInner call(ServiceResponse<AzureStoragePropertyDictionaryResourceInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets the Azure storage account configurations of an app.
+     * Gets the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AzureStoragePropertyDictionaryResourceInner object
+     */
+    public Observable<ServiceResponse<AzureStoragePropertyDictionaryResourceInner>> listAzureStorageAccountsWithServiceResponseAsync(String resourceGroupName, String name) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listAzureStorageAccounts(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AzureStoragePropertyDictionaryResourceInner>>>() {
+                @Override
+                public Observable<ServiceResponse<AzureStoragePropertyDictionaryResourceInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<AzureStoragePropertyDictionaryResourceInner> clientResponse = listAzureStorageAccountsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<AzureStoragePropertyDictionaryResourceInner> listAzureStorageAccountsDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<AzureStoragePropertyDictionaryResourceInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<AzureStoragePropertyDictionaryResourceInner>() { }.getType())
                 .registerError(DefaultErrorResponseException.class)
                 .build(response);
     }
@@ -20136,6 +20340,208 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     private ServiceResponse<SiteAuthSettingsInner> getAuthSettingsSlotDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<SiteAuthSettingsInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SiteAuthSettingsInner>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Updates the Azure storage account configurations of an app.
+     * Updates the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will update the Azure storage account configurations for the production slot.
+     * @param azureStorageAccounts Azure storage accounts of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the AzureStoragePropertyDictionaryResourceInner object if successful.
+     */
+    public AzureStoragePropertyDictionaryResourceInner updateAzureStorageAccountsSlot(String resourceGroupName, String name, String slot, AzureStoragePropertyDictionaryResourceInner azureStorageAccounts) {
+        return updateAzureStorageAccountsSlotWithServiceResponseAsync(resourceGroupName, name, slot, azureStorageAccounts).toBlocking().single().body();
+    }
+
+    /**
+     * Updates the Azure storage account configurations of an app.
+     * Updates the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will update the Azure storage account configurations for the production slot.
+     * @param azureStorageAccounts Azure storage accounts of the app.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<AzureStoragePropertyDictionaryResourceInner> updateAzureStorageAccountsSlotAsync(String resourceGroupName, String name, String slot, AzureStoragePropertyDictionaryResourceInner azureStorageAccounts, final ServiceCallback<AzureStoragePropertyDictionaryResourceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateAzureStorageAccountsSlotWithServiceResponseAsync(resourceGroupName, name, slot, azureStorageAccounts), serviceCallback);
+    }
+
+    /**
+     * Updates the Azure storage account configurations of an app.
+     * Updates the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will update the Azure storage account configurations for the production slot.
+     * @param azureStorageAccounts Azure storage accounts of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AzureStoragePropertyDictionaryResourceInner object
+     */
+    public Observable<AzureStoragePropertyDictionaryResourceInner> updateAzureStorageAccountsSlotAsync(String resourceGroupName, String name, String slot, AzureStoragePropertyDictionaryResourceInner azureStorageAccounts) {
+        return updateAzureStorageAccountsSlotWithServiceResponseAsync(resourceGroupName, name, slot, azureStorageAccounts).map(new Func1<ServiceResponse<AzureStoragePropertyDictionaryResourceInner>, AzureStoragePropertyDictionaryResourceInner>() {
+            @Override
+            public AzureStoragePropertyDictionaryResourceInner call(ServiceResponse<AzureStoragePropertyDictionaryResourceInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Updates the Azure storage account configurations of an app.
+     * Updates the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will update the Azure storage account configurations for the production slot.
+     * @param azureStorageAccounts Azure storage accounts of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AzureStoragePropertyDictionaryResourceInner object
+     */
+    public Observable<ServiceResponse<AzureStoragePropertyDictionaryResourceInner>> updateAzureStorageAccountsSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, AzureStoragePropertyDictionaryResourceInner azureStorageAccounts) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (azureStorageAccounts == null) {
+            throw new IllegalArgumentException("Parameter azureStorageAccounts is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(azureStorageAccounts);
+        return service.updateAzureStorageAccountsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), azureStorageAccounts, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AzureStoragePropertyDictionaryResourceInner>>>() {
+                @Override
+                public Observable<ServiceResponse<AzureStoragePropertyDictionaryResourceInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<AzureStoragePropertyDictionaryResourceInner> clientResponse = updateAzureStorageAccountsSlotDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<AzureStoragePropertyDictionaryResourceInner> updateAzureStorageAccountsSlotDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<AzureStoragePropertyDictionaryResourceInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<AzureStoragePropertyDictionaryResourceInner>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets the Azure storage account configurations of an app.
+     * Gets the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will update the Azure storage account configurations for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the AzureStoragePropertyDictionaryResourceInner object if successful.
+     */
+    public AzureStoragePropertyDictionaryResourceInner listAzureStorageAccountsSlot(String resourceGroupName, String name, String slot) {
+        return listAzureStorageAccountsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
+    }
+
+    /**
+     * Gets the Azure storage account configurations of an app.
+     * Gets the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will update the Azure storage account configurations for the production slot.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<AzureStoragePropertyDictionaryResourceInner> listAzureStorageAccountsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<AzureStoragePropertyDictionaryResourceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listAzureStorageAccountsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    }
+
+    /**
+     * Gets the Azure storage account configurations of an app.
+     * Gets the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will update the Azure storage account configurations for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AzureStoragePropertyDictionaryResourceInner object
+     */
+    public Observable<AzureStoragePropertyDictionaryResourceInner> listAzureStorageAccountsSlotAsync(String resourceGroupName, String name, String slot) {
+        return listAzureStorageAccountsSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<AzureStoragePropertyDictionaryResourceInner>, AzureStoragePropertyDictionaryResourceInner>() {
+            @Override
+            public AzureStoragePropertyDictionaryResourceInner call(ServiceResponse<AzureStoragePropertyDictionaryResourceInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets the Azure storage account configurations of an app.
+     * Gets the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will update the Azure storage account configurations for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AzureStoragePropertyDictionaryResourceInner object
+     */
+    public Observable<ServiceResponse<AzureStoragePropertyDictionaryResourceInner>> listAzureStorageAccountsSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listAzureStorageAccountsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AzureStoragePropertyDictionaryResourceInner>>>() {
+                @Override
+                public Observable<ServiceResponse<AzureStoragePropertyDictionaryResourceInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<AzureStoragePropertyDictionaryResourceInner> clientResponse = listAzureStorageAccountsSlotDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<AzureStoragePropertyDictionaryResourceInner> listAzureStorageAccountsSlotDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<AzureStoragePropertyDictionaryResourceInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<AzureStoragePropertyDictionaryResourceInner>() { }.getType())
                 .registerError(DefaultErrorResponseException.class)
                 .build(response);
     }
