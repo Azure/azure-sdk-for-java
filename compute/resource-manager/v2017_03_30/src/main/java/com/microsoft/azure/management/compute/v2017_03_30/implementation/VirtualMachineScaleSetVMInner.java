@@ -55,7 +55,7 @@ public class VirtualMachineScaleSetVMInner extends Resource {
      * The virtual machine instance view.
      */
     @JsonProperty(value = "properties.instanceView", access = JsonProperty.Access.WRITE_ONLY)
-    private VirtualMachineInstanceViewInner instanceView;
+    private VirtualMachineScaleSetVMInstanceViewInner instanceView;
 
     /**
      * Specifies the hardware settings for the virtual machine.
@@ -185,7 +185,7 @@ public class VirtualMachineScaleSetVMInner extends Resource {
      *
      * @return the instanceView value
      */
-    public VirtualMachineInstanceViewInner instanceView() {
+    public VirtualMachineScaleSetVMInstanceViewInner instanceView() {
         return this.instanceView;
     }
 
