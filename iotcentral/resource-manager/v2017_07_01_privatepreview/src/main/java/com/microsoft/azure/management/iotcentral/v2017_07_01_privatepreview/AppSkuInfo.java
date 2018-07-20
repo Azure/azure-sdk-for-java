@@ -21,7 +21,7 @@ public class AppSkuInfo {
     private AppSku name;
 
     /**
-     * Get the name value.
+     * Get the name of the SKU. Possible values include: 'F1', 'S1'.
      *
      * @return the name value
      */
@@ -30,7 +30,7 @@ public class AppSkuInfo {
     }
 
     /**
-     * Set the name value.
+     * Set the name of the SKU. Possible values include: 'F1', 'S1'.
      *
      * @param name the name value to set
      * @return the AppSkuInfo object itself.

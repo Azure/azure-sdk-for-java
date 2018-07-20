@@ -7,14 +7,14 @@
  * abc
  */
 
-package com.microsoft.azure.management.iotcentral.v2017_07_01_privatepreview.implementation;
+package com.microsoft.azure.management.iotcentral.v2018_09_01.implementation;
 
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
-import com.microsoft.azure.management.iotcentral.v2017_07_01_privatepreview.Operations;
+import com.microsoft.azure.management.iotcentral.v2018_09_01.Operations;
 import rx.functions.Func1;
 import rx.Observable;
 import com.microsoft.azure.Page;
-import com.microsoft.azure.management.iotcentral.v2017_07_01_privatepreview.Operation;
+import com.microsoft.azure.management.iotcentral.v2018_09_01.Operation;
 
 class OperationsImpl extends WrapperImpl<OperationsInner> implements Operations {
     private final IoTCentralManager manager;
