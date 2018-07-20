@@ -26,7 +26,7 @@ public class ServiceSasParameters {
      * include: Blob (b), Container (c), File (f), Share (s). Possible values
      * include: 'b', 'c', 'f', 's'.
      */
-    @JsonProperty(value = "signedResource", required = true)
+    @JsonProperty(value = "signedResource")
     private SignedResource resource;
 
     /**
