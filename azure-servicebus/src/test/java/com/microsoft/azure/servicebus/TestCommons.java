@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -505,6 +506,59 @@ public class TestCommons {
 		catch(MessageNotFoundException e)
 		{
 			// Expected
+		}
+	}
+	
+	public static void testSendReceiveMessageWithVariousPropertyTypes(IMessageSender sender, String sessionId, IMessageReceiver receiver) throws InterruptedException, ServiceBusException
+	{
+		Map<String, Object> sentProperties = new HashMap<>();
+		sentProperties.put("NullProperty", null);
+		sentProperties.put("BooleanProperty", true);
+		sentProperties.put("ByteProperty", (byte)1);
+		sentProperties.put("ShortProperty", (short)2);
+		sentProperties.put("IntProperty", 3);
+		sentProperties.put("LongProperty", 4l);
+		sentProperties.put("FloatProperty", 5.5f);
+		sentProperties.put("DoubleProperty", 6.6f);
+		sentProperties.put("CharProperty", 'z');
+		sentProperties.put("UUIDProperty", UUID.randomUUID());
+		sentProperties.put("StringProperty", "string");
+		
+//		These additional types are not supported in message properties by Azure Service Bus
+//		sentProperties.put("ArrayProperty", new Object[]{1, 2, 3, 4, 5});
+//		List<Integer> list = new ArrayList<>();
+//		list.add(10);
+//		list.add(11);
+//		sentProperties.put("ListProperty", list);
+//		Map<String, Object> map = new HashMap<>();
+//		map.put("key1", 20);
+//		map.put("key2", "thirty");
+//		sentProperties.put("MapProperty", map);
+		
+		String messageId = UUID.randomUUID().toString();
+		Message message = new Message("AMQP message");
+		message.setMessageId(messageId);
+		if(sessionId != null)
+		{
+			message.setSessionId(sessionId);
+		}
+		message.getProperties().putAll(sentProperties);
+		sender.send(message);
+				
+		IMessage receivedMessage = receiver.receive();
+		Assert.assertNotNull("Message not received", receivedMessage);
+		Assert.assertEquals("Message Id did not match", messageId, receivedMessage.getMessageId());
+		Map<String, Object> receivedProperties = receivedMessage.getProperties();
+		for(Map.Entry<String, Object> sentEntry : sentProperties.entrySet())
+		{
+			if(sentEntry.getValue() != null && sentEntry.getValue().getClass().isArray())
+			{
+				Assert.assertArrayEquals("Sent property didn't match with received property", (Object[])sentEntry.getValue(), (Object[])receivedProperties.get(sentEntry.getKey()));
+			}
+			else
+			{
+				Assert.assertEquals("Sent property didn't match with received property", sentEntry.getValue(), receivedProperties.get(sentEntry.getKey()));
+			}
 		}
 	}
 		

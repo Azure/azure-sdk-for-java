@@ -109,6 +109,10 @@ public final class ExceptionUtil
 		{
 			return new MessagingEntityAlreadyExistsException(errorCondition.getDescription());
 		}
+		else if (errorCondition.getCondition() == AmqpErrorCode.DecodeError)
+		{
+			return new ServiceBusException(false, new AmqpException(errorCondition));
+		}
 
 		return new ServiceBusException(ClientConstants.DEFAULT_IS_TRANSIENT, errorCondition.toString());
 	}	

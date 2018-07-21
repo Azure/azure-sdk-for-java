@@ -223,6 +223,13 @@ public abstract class SendReceiveTests extends Tests {
 		TestCommons.testReceiveBySequenceNumberAndDeadletter(this.sender, this.sessionId, this.receiver);
 	}	
 	
+	@Test
+	public void testSendReceiveMessageWithVariousPropertyTypes() throws InterruptedException, ServiceBusException
+	{
+		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveEntityPath, ReceiveMode.RECEIVEANDDELETE);
+		TestCommons.testSendReceiveMessageWithVariousPropertyTypes(this.sender, this.sessionId, this.receiver);
+	}
+	
 	private void drainAllMessages() throws InterruptedException, ServiceBusException
 	{
 		if(this.receiver != null)
