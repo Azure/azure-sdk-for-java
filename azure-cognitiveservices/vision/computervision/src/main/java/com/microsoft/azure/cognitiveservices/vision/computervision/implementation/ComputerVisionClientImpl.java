@@ -170,7 +170,7 @@ public class ComputerVisionClientImpl extends AzureServiceClient implements Comp
      * @param credentials the management credentials for Azure
      */
     public ComputerVisionClientImpl(ServiceClientCredentials credentials) {
-        this("https://{Endpoint}/vision/v2.0", credentials);
+        this("https://{Endpoint}", credentials);
     }
 
     /**
