@@ -33,7 +33,7 @@ public class OperationDisplay {
     private String operation;
 
     /**
-     * Get the provider value.
+     * Get service provider: Microsoft Storage.
      *
      * @return the provider value
      */
@@ -42,7 +42,7 @@ public class OperationDisplay {
     }
 
     /**
-     * Set the provider value.
+     * Set service provider: Microsoft Storage.
      *
      * @param provider the provider value to set
      * @return the OperationDisplay object itself.
@@ -53,7 +53,7 @@ public class OperationDisplay {
     }
 
     /**
-     * Get the resource value.
+     * Get resource on which the operation is performed etc.
      *
      * @return the resource value
      */
@@ -62,7 +62,7 @@ public class OperationDisplay {
     }
 
     /**
-     * Set the resource value.
+     * Set resource on which the operation is performed etc.
      *
      * @param resource the resource value to set
      * @return the OperationDisplay object itself.
@@ -73,7 +73,7 @@ public class OperationDisplay {
     }
 
     /**
-     * Get the operation value.
+     * Get type of operation: get, read, delete, etc.
      *
      * @return the operation value
      */
@@ -82,7 +82,7 @@ public class OperationDisplay {
     }
 
     /**
-     * Set the operation value.
+     * Set type of operation: get, read, delete, etc.
      *
      * @param operation the operation value to set
      * @return the OperationDisplay object itself.

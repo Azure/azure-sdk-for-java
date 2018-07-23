@@ -87,7 +87,7 @@ public class StorageAccountUpdateParameters {
     private Kind kind;
 
     /**
-     * Get the sku value.
+     * Get gets or sets the SKU name. Note that the SKU name cannot be updated to Standard_ZRS or Premium_LRS, nor can accounts of those sku names be updated to any other value.
      *
      * @return the sku value
      */
@@ -96,7 +96,7 @@ public class StorageAccountUpdateParameters {
     }
 
     /**
-     * Set the sku value.
+     * Set gets or sets the SKU name. Note that the SKU name cannot be updated to Standard_ZRS or Premium_LRS, nor can accounts of those sku names be updated to any other value.
      *
      * @param sku the sku value to set
      * @return the StorageAccountUpdateParameters object itself.
@@ -107,7 +107,7 @@ public class StorageAccountUpdateParameters {
     }
 
     /**
-     * Get the tags value.
+     * Get gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater in length than 128 characters and a value no greater in length than 256 characters.
      *
      * @return the tags value
      */
@@ -116,7 +116,7 @@ public class StorageAccountUpdateParameters {
     }
 
     /**
-     * Set the tags value.
+     * Set gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater in length than 128 characters and a value no greater in length than 256 characters.
      *
      * @param tags the tags value to set
      * @return the StorageAccountUpdateParameters object itself.
@@ -127,7 +127,7 @@ public class StorageAccountUpdateParameters {
     }
 
     /**
-     * Get the identity value.
+     * Get the identity of the resource.
      *
      * @return the identity value
      */
@@ -136,7 +136,7 @@ public class StorageAccountUpdateParameters {
     }
 
     /**
-     * Set the identity value.
+     * Set the identity of the resource.
      *
      * @param identity the identity value to set
      * @return the StorageAccountUpdateParameters object itself.
@@ -147,7 +147,7 @@ public class StorageAccountUpdateParameters {
     }
 
     /**
-     * Get the customDomain value.
+     * Get custom domain assigned to the storage account by the user. Name is the CNAME source. Only one custom domain is supported per storage account at this time. To clear the existing custom domain, use an empty string for the custom domain name property.
      *
      * @return the customDomain value
      */
@@ -156,7 +156,7 @@ public class StorageAccountUpdateParameters {
     }
 
     /**
-     * Set the customDomain value.
+     * Set custom domain assigned to the storage account by the user. Name is the CNAME source. Only one custom domain is supported per storage account at this time. To clear the existing custom domain, use an empty string for the custom domain name property.
      *
      * @param customDomain the customDomain value to set
      * @return the StorageAccountUpdateParameters object itself.
@@ -167,7 +167,7 @@ public class StorageAccountUpdateParameters {
     }
 
     /**
-     * Get the encryption value.
+     * Get provides the encryption settings on the account. The default setting is unencrypted.
      *
      * @return the encryption value
      */
@@ -176,7 +176,7 @@ public class StorageAccountUpdateParameters {
     }
 
     /**
-     * Set the encryption value.
+     * Set provides the encryption settings on the account. The default setting is unencrypted.
      *
      * @param encryption the encryption value to set
      * @return the StorageAccountUpdateParameters object itself.
@@ -187,7 +187,7 @@ public class StorageAccountUpdateParameters {
     }
 
     /**
-     * Get the accessTier value.
+     * Get required for storage accounts where kind = BlobStorage. The access tier used for billing. Possible values include: 'Hot', 'Cool'.
      *
      * @return the accessTier value
      */
@@ -196,7 +196,7 @@ public class StorageAccountUpdateParameters {
     }
 
     /**
-     * Set the accessTier value.
+     * Set required for storage accounts where kind = BlobStorage. The access tier used for billing. Possible values include: 'Hot', 'Cool'.
      *
      * @param accessTier the accessTier value to set
      * @return the StorageAccountUpdateParameters object itself.
@@ -207,7 +207,7 @@ public class StorageAccountUpdateParameters {
     }
 
     /**
-     * Get the enableHttpsTrafficOnly value.
+     * Get allows https traffic only to storage service if sets to true.
      *
      * @return the enableHttpsTrafficOnly value
      */
@@ -216,7 +216,7 @@ public class StorageAccountUpdateParameters {
     }
 
     /**
-     * Set the enableHttpsTrafficOnly value.
+     * Set allows https traffic only to storage service if sets to true.
      *
      * @param enableHttpsTrafficOnly the enableHttpsTrafficOnly value to set
      * @return the StorageAccountUpdateParameters object itself.
@@ -227,7 +227,7 @@ public class StorageAccountUpdateParameters {
     }
 
     /**
-     * Get the networkRuleSet value.
+     * Get network rule set.
      *
      * @return the networkRuleSet value
      */
@@ -236,7 +236,7 @@ public class StorageAccountUpdateParameters {
     }
 
     /**
-     * Set the networkRuleSet value.
+     * Set network rule set.
      *
      * @param networkRuleSet the networkRuleSet value to set
      * @return the StorageAccountUpdateParameters object itself.
@@ -247,7 +247,7 @@ public class StorageAccountUpdateParameters {
     }
 
     /**
-     * Get the kind value.
+     * Get optional. Indicates the type of storage account. Currently only StorageV2 value supported by server. Possible values include: 'Storage', 'StorageV2', 'BlobStorage'.
      *
      * @return the kind value
      */
@@ -256,7 +256,7 @@ public class StorageAccountUpdateParameters {
     }
 
     /**
-     * Set the kind value.
+     * Set optional. Indicates the type of storage account. Currently only StorageV2 value supported by server. Possible values include: 'Storage', 'StorageV2', 'BlobStorage'.
      *
      * @param kind the kind value to set
      * @return the StorageAccountUpdateParameters object itself.

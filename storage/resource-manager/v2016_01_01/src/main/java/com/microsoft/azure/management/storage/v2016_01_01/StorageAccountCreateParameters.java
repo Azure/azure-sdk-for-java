@@ -75,7 +75,7 @@ public class StorageAccountCreateParameters {
     private AccessTier accessTier;
 
     /**
-     * Get the sku value.
+     * Get required. Gets or sets the sku name.
      *
      * @return the sku value
      */
@@ -84,7 +84,7 @@ public class StorageAccountCreateParameters {
     }
 
     /**
-     * Set the sku value.
+     * Set required. Gets or sets the sku name.
      *
      * @param sku the sku value to set
      * @return the StorageAccountCreateParameters object itself.
@@ -95,7 +95,7 @@ public class StorageAccountCreateParameters {
     }
 
     /**
-     * Get the kind value.
+     * Get required. Indicates the type of storage account. Possible values include: 'Storage', 'BlobStorage'.
      *
      * @return the kind value
      */
@@ -104,7 +104,7 @@ public class StorageAccountCreateParameters {
     }
 
     /**
-     * Set the kind value.
+     * Set required. Indicates the type of storage account. Possible values include: 'Storage', 'BlobStorage'.
      *
      * @param kind the kind value to set
      * @return the StorageAccountCreateParameters object itself.
@@ -115,7 +115,7 @@ public class StorageAccountCreateParameters {
     }
 
     /**
-     * Get the location value.
+     * Get required. Gets or sets the location of the resource. This will be one of the supported and registered Azure Geo Regions (e.g. West US, East US, Southeast Asia, etc.). The geo region of a resource cannot be changed once it is created, but if an identical geo region is specified on update, the request will succeed.
      *
      * @return the location value
      */
@@ -124,7 +124,7 @@ public class StorageAccountCreateParameters {
     }
 
     /**
-     * Set the location value.
+     * Set required. Gets or sets the location of the resource. This will be one of the supported and registered Azure Geo Regions (e.g. West US, East US, Southeast Asia, etc.). The geo region of a resource cannot be changed once it is created, but if an identical geo region is specified on update, the request will succeed.
      *
      * @param location the location value to set
      * @return the StorageAccountCreateParameters object itself.
@@ -135,7 +135,7 @@ public class StorageAccountCreateParameters {
     }
 
     /**
-     * Get the tags value.
+     * Get gets or sets a list of key value pairs that describe the resource. These tags can be used for viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key with a length no greater than 128 characters and a value with a length no greater than 256 characters.
      *
      * @return the tags value
      */
@@ -144,7 +144,7 @@ public class StorageAccountCreateParameters {
     }
 
     /**
-     * Set the tags value.
+     * Set gets or sets a list of key value pairs that describe the resource. These tags can be used for viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key with a length no greater than 128 characters and a value with a length no greater than 256 characters.
      *
      * @param tags the tags value to set
      * @return the StorageAccountCreateParameters object itself.
@@ -155,7 +155,7 @@ public class StorageAccountCreateParameters {
     }
 
     /**
-     * Get the customDomain value.
+     * Get user domain assigned to the storage account. Name is the CNAME source. Only one custom domain is supported per storage account at this time. To clear the existing custom domain, use an empty string for the custom domain name property.
      *
      * @return the customDomain value
      */
@@ -164,7 +164,7 @@ public class StorageAccountCreateParameters {
     }
 
     /**
-     * Set the customDomain value.
+     * Set user domain assigned to the storage account. Name is the CNAME source. Only one custom domain is supported per storage account at this time. To clear the existing custom domain, use an empty string for the custom domain name property.
      *
      * @param customDomain the customDomain value to set
      * @return the StorageAccountCreateParameters object itself.
@@ -175,7 +175,7 @@ public class StorageAccountCreateParameters {
     }
 
     /**
-     * Get the encryption value.
+     * Get provides the encryption settings on the account. If left unspecified the account encryption settings will remain the same. The default setting is unencrypted.
      *
      * @return the encryption value
      */
@@ -184,7 +184,7 @@ public class StorageAccountCreateParameters {
     }
 
     /**
-     * Set the encryption value.
+     * Set provides the encryption settings on the account. If left unspecified the account encryption settings will remain the same. The default setting is unencrypted.
      *
      * @param encryption the encryption value to set
      * @return the StorageAccountCreateParameters object itself.
@@ -195,7 +195,7 @@ public class StorageAccountCreateParameters {
     }
 
     /**
-     * Get the accessTier value.
+     * Get required for storage accounts where kind = BlobStorage. The access tier used for billing. Possible values include: 'Hot', 'Cool'.
      *
      * @return the accessTier value
      */
@@ -204,7 +204,7 @@ public class StorageAccountCreateParameters {
     }
 
     /**
-     * Set the accessTier value.
+     * Set required for storage accounts where kind = BlobStorage. The access tier used for billing. Possible values include: 'Hot', 'Cool'.
      *
      * @param accessTier the accessTier value to set
      * @return the StorageAccountCreateParameters object itself.
