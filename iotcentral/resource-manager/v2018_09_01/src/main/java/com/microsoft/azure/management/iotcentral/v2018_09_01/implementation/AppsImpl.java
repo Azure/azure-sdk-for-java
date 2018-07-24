@@ -7,11 +7,11 @@
  * def
  */
 
-package com.microsoft.azure.management.iotcentral.v2017_07_01_privatepreview.implementation;
+package com.microsoft.azure.management.iotcentral.v2018_09_01.implementation;
 
 import com.microsoft.azure.arm.resources.collection.implementation.GroupableResourcesCoreImpl;
-import com.microsoft.azure.management.iotcentral.v2017_07_01_privatepreview.Apps;
-import com.microsoft.azure.management.iotcentral.v2017_07_01_privatepreview.App;
+import com.microsoft.azure.management.iotcentral.v2018_09_01.Apps;
+import com.microsoft.azure.management.iotcentral.v2018_09_01.App;
 import rx.Observable;
 import rx.Completable;
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ import com.microsoft.azure.arm.utils.RXMapper;
 import rx.functions.Func1;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
-import com.microsoft.azure.management.iotcentral.v2017_07_01_privatepreview.AppNameAvailabilityInfo;
+import com.microsoft.azure.management.iotcentral.v2018_09_01.AppNameAvailabilityInfo;
 
 class AppsImpl extends GroupableResourcesCoreImpl<App, AppImpl, AppInner, AppsInner, IoTCentralManager>  implements Apps {
     protected AppsImpl(IoTCentralManager manager) {
