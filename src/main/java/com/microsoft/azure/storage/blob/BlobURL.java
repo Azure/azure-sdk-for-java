@@ -231,6 +231,10 @@ public class BlobURL extends StorageURL {
         Boolean getMD5 = rangeGetContentMD5 ? rangeGetContentMD5 : null;
         range = range == null ? BlobRange.DEFAULT : range;
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
+        RetryReader.HTTPGetterInfo info = new RetryReader.HTTPGetterInfo();
+        info.offset = range.getOffset();
+        info.count = range.getCount();
+        info.eTag = accessConditions.getHttpAccessConditions().getIfMatch();
 
         return addErrorWrappingToSingle(this.storageClient.generatedBlobs().downloadWithRestResponseAsync(
                 null, null, range.toString(),
@@ -242,8 +246,8 @@ public class BlobURL extends StorageURL {
                 accessConditions.getHttpAccessConditions().getIfNoneMatch().toString(),
                 null))
                 .map(response ->
-                        new DownloadResponse(response.request(), response.statusCode(), response.headers(),
-                                response.rawHeaders(), response.body()));
+                        new DownloadResponse(response.request(), this, info, response.statusCode(),
+                                response.headers(), response.rawHeaders(), response.body()));
 
     }
 

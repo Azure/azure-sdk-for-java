@@ -15,10 +15,14 @@
 
 package com.microsoft.azure.storage.blob;
 
+import com.microsoft.azure.storage.blob.models.BlobDownloadResponse;
+import com.microsoft.azure.storage.blob.models.BlobGetPropertiesResponse;
+import com.microsoft.rest.v2.RestResponse;
 import io.reactivex.*;
 import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Function;
 
+import javax.rmi.CORBA.Util;
 import java.io.IOException;
 import java.lang.Error;
 import java.nio.ByteBuffer;
@@ -38,11 +42,13 @@ import static java.lang.StrictMath.toIntExact;
  */
 public class TransferManager {
 
+    /**
+     * Configures the parallel upload behavior for methods on the {@code TransferManager}.
+     */
     public static class UploadToBlockBlobOptions {
 
         /**
-         * An object which represents the default parallel upload options. progressReceiver=null. httpHeaders, metadata,
-         * and accessConditions are default values. parallelism=5.
+         * An object which represents the default parallel upload options.
          */
         public static final UploadToBlockBlobOptions DEFAULT = new UploadToBlockBlobOptions(null,
                 null, null, null, null);
@@ -72,7 +78,7 @@ public class TransferManager {
          *      {@link BlobAccessConditions}
          * @param parallelism
          *      A {@code int} that indicates the maximum number of blocks to upload in parallel. Must be greater than 0.
-         *      The default is 5 (null=default).
+         *      May be null to accept default behavior.
          */
         public UploadToBlockBlobOptions(IProgressReceiver progressReceiver, BlobHTTPHeaders httpHeaders,
                                         Metadata metadata, BlobAccessConditions accessConditions, Integer parallelism) {
@@ -89,6 +95,72 @@ public class TransferManager {
             this.httpHeaders = httpHeaders;
             this.metadata = metadata;
             this.accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
+        }
+    }
+
+    /**
+     * The default size of a download chunk for download large blobs.
+     */
+    public static final int BLOB_DEFAULT_DOWNLOAD_BLOCK_SIZE = 4 * Constants.MB;
+
+    /**
+     * Configures the parallel download behavior for methods on the {@code TransferManager}.
+     */
+    public static final class DownloadFromBlobOptions {
+
+        /**
+         * The default download options.
+         */
+        public static final DownloadFromBlobOptions DEFAULT = new DownloadFromBlobOptions(null,
+                null, null, null, null);
+
+        private long blockSize;
+
+        private IProgressReceiver progressReceiver;
+
+        private BlobAccessConditions accessConditions;
+
+        private int parallelism;
+
+        private RetryReaderOptions retryReaderOptionsPerBlock;
+
+        /**
+         * Returns an object that configures the parallel download behavior for methods on the {@code TransferManager}.
+         *
+         * @param blockSize
+         *      The size of the chunk into which large download operations will be broken into.
+         * @param progressReceiver
+         *      {@link IProgressReceiver}
+         * @param accessConditions
+         *      {@link BlobAccessConditions}
+         * @param parallelism
+         *      A {@code int} that indicates the maximum number of blocks to upload in parallel. Must be greater than 0.
+         *      May be null to accept default behavior.
+         * @param retryReaderOptions
+         *     {@link RetryReaderOptions}
+         */
+        public DownloadFromBlobOptions(Long blockSize, IProgressReceiver progressReceiver,
+                BlobAccessConditions accessConditions, Integer parallelism, RetryReaderOptions retryReaderOptions) {
+            if (blockSize != null) {
+                Utility.assertInBounds("blockSize", blockSize, 1, Long.MAX_VALUE);
+                this.blockSize = blockSize;
+            }
+            else {
+                this.blockSize = TransferManager.BLOB_DEFAULT_DOWNLOAD_BLOCK_SIZE;
+            }
+
+            if (parallelism != null) {
+                Utility.assertInBounds("parallelism", parallelism, 1, Integer.MAX_VALUE);
+                this.parallelism = parallelism;
+            }
+            else {
+                this.parallelism = 5;
+            }
+
+            this.accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
+            this.progressReceiver = progressReceiver;
+            this.retryReaderOptionsPerBlock = retryReaderOptions == null ?
+                    new RetryReaderOptions() : retryReaderOptions;
         }
     }
 
@@ -153,7 +225,7 @@ public class TransferManager {
         }
     }
 
-    static int calculateNumBlocks(long dataSize, int blockLength) {
+    private static int calculateNumBlocks(long dataSize, int blockLength) {
         // Can successfully cast to an int because MaxBlockSize is an int, which this expression must be less than.
         int numBlocks = toIntExact(dataSize/blockLength);
         // Include an extra block for trailing data.
@@ -259,8 +331,6 @@ public class TransferManager {
             throw new IllegalArgumentException(SR.BLOB_OVER_MAX_BLOCK_LIMIT);
         }
 
-        // TODO: context with cancel?
-
         // Generate an observable that emits items which are the ByteBuffers in the provided Iterable.
         return Observable.fromIterable(data)
                 /*
@@ -328,5 +398,30 @@ public class TransferManager {
         return blockBlobURL.upload(data, size, options.httpHeaders,
                 options.metadata, options.accessConditions)
                 .map(CommonRestResponse::createFromPutBlobResponse);
+    }
+
+    public static Completable downloadBlobToBuffer(BlobURL blobURL, BlobRange r, BlobAccessConditions accessConditions,
+            ByteBuffer buffer, DownloadFromBlobOptions options) {
+        BlobRange range = r == null ? BlobRange.DEFAULT : r;
+        options = options == null ? DownloadFromBlobOptions.DEFAULT : options;
+        Utility.assertNotNull("blobURL", blobURL);
+        Utility.assertNotNull("buffer", buffer);
+
+        Single<Long> setupSingle;
+
+        if (range.getCount() == null) {
+            setupSingle = blobURL.getProperties(accessConditions)
+                    .map(response -> response.headers().contentLength() - range.getOffset());
+        }
+        else {
+            setupSingle = Single.just(range.getCount());
+        }
+
+        return setupSingle.flatMapCompletable(count -> {
+            // Now I can break up the length into pieces based on the count and turn that into an observable and then flatMap those pieces into rest calls that put the data into the buffer either in another map or in a toCompletable.andThen or Single.concat.toCompletable.
+        })
+
+        // Can either optionally setup a preamble that will yield the count. Can map that into a single that emits the count.
+        // Or can construct all the optional downloading first and then try to figure out how to get the count into that one after the fact.
     }
 }
