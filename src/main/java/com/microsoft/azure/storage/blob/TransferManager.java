@@ -15,17 +15,14 @@
 
 package com.microsoft.azure.storage.blob;
 
-import com.microsoft.azure.storage.blob.models.BlobDownloadResponse;
-import com.microsoft.azure.storage.blob.models.BlobGetPropertiesResponse;
-import com.microsoft.rest.v2.RestResponse;
 import io.reactivex.*;
 import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Function;
 
-import javax.rmi.CORBA.Util;
 import java.io.IOException;
 import java.lang.Error;
 import java.nio.ByteBuffer;
+import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -114,7 +111,7 @@ public class TransferManager {
         public static final DownloadFromBlobOptions DEFAULT = new DownloadFromBlobOptions(null,
                 null, null, null, null);
 
-        private long blockSize;
+        private int blockSize;
 
         private IProgressReceiver progressReceiver;
 
@@ -128,7 +125,9 @@ public class TransferManager {
          * Returns an object that configures the parallel download behavior for methods on the {@code TransferManager}.
          *
          * @param blockSize
-         *      The size of the chunk into which large download operations will be broken into.
+         *      The size of the chunk into which large download operations will be broken into. These methods operate on
+         *      {@code ByteBuffer}s and {@code ByteBuffer}s only support {@code int} for their size, so only chunk sizes
+         *      of up to 2^31 can be processed.
          * @param progressReceiver
          *      {@link IProgressReceiver}
          * @param accessConditions
@@ -139,7 +138,7 @@ public class TransferManager {
          * @param retryReaderOptions
          *     {@link RetryReaderOptions}
          */
-        public DownloadFromBlobOptions(Long blockSize, IProgressReceiver progressReceiver,
+        public DownloadFromBlobOptions(Integer blockSize, IProgressReceiver progressReceiver,
                 BlobAccessConditions accessConditions, Integer parallelism, RetryReaderOptions retryReaderOptions) {
             if (blockSize != null) {
                 Utility.assertInBounds("blockSize", blockSize, 1, Long.MAX_VALUE);
@@ -211,7 +210,9 @@ public class TransferManager {
                          */
                         int count = Math.min(blockLength, (int)(file.size()-i*blockLength));
                         // Memory map the file to get a ByteBuffer to an in memory portion of the file.
-                        return file.map(FileChannel.MapMode.READ_ONLY, i*blockLength, count);
+                        MappedByteBuffer buf = file.map(FileChannel.MapMode.READ_ONLY, i*blockLength, count);
+                        buf.load();
+                        return buf;
                     })
                     // Gather all of the buffers, in order, into this list, which will become the block list.
                     .collectInto(new ArrayList<>(numBlocks),
@@ -400,15 +401,35 @@ public class TransferManager {
                 .map(CommonRestResponse::createFromPutBlobResponse);
     }
 
+    /**
+     * Note that only blobs of 2GB or less can be downloaded using this method due to the size constrains on
+     * {@code ByteBuffer}. For downloading large blobs, please see {@link TransferManager#downloadBlobToFile}.
+     *
+     * @apiNote
+     *      Todo
+     *
+     * @param blobURL
+     *      The URL to the blob to download.
+     * @param r
+     *      {@link BlobRange}
+     * @param accessConditions
+     *      {@link BlobAccessConditions}
+     * @param buffer
+     *      The destination buffer to which the blob data will be written.
+     * @param o
+     *      {@link DownloadFromBlobOptions}
+     * @return
+     *      A {@code Completable} that will signal when the download is complete.
+     */
     public static Completable downloadBlobToBuffer(BlobURL blobURL, BlobRange r, BlobAccessConditions accessConditions,
-            ByteBuffer buffer, DownloadFromBlobOptions options) {
+            ByteBuffer buffer, DownloadFromBlobOptions o) {
         BlobRange range = r == null ? BlobRange.DEFAULT : r;
-        options = options == null ? DownloadFromBlobOptions.DEFAULT : options;
+        DownloadFromBlobOptions options = o == null ? DownloadFromBlobOptions.DEFAULT : o;
         Utility.assertNotNull("blobURL", blobURL);
         Utility.assertNotNull("buffer", buffer);
 
+        // Construct a Single which will emit the total count of bytes to be downloaded.
         Single<Long> setupSingle;
-
         if (range.getCount() == null) {
             setupSingle = blobURL.getProperties(accessConditions)
                     .map(response -> response.headers().contentLength() - range.getOffset());
@@ -418,10 +439,45 @@ public class TransferManager {
         }
 
         return setupSingle.flatMapCompletable(count -> {
-            // Now I can break up the length into pieces based on the count and turn that into an observable and then flatMap those pieces into rest calls that put the data into the buffer either in another map or in a toCompletable.andThen or Single.concat.toCompletable.
-        })
+            if (buffer.remaining() < count) {
+                return Completable.error(new IllegalArgumentException("The buffer's remaining size should be greater " +
+                        "than or equal to the request count of bytes: " + count));
+            }
 
-        // Can either optionally setup a preamble that will yield the count. Can map that into a single that emits the count.
-        // Or can construct all the optional downloading first and then try to figure out how to get the count into that one after the fact.
+            int numBlocks = calculateNumBlocks(count, options.blockSize);
+
+            // For each range, we will download a corresponding part of the blob and write it to the buffer.
+            return Observable.range(0, numBlocks)
+                    .flatMap(i -> {
+                        /*
+                        Setup a window of the buffer which is scoped to this particular block download. We can safely
+                        call count.intValue because if count were a long, it would have exceeded the size of the buffer
+                        and thrown above.
+                         */
+                        int blockSizeActual = Math.min(options.blockSize, count.intValue()-i*options.blockSize);
+                        ByteBuffer block = buffer.duplicate();
+                        block.position(i*options.blockSize);
+                        block.limit(i*options.blockSize + blockSizeActual);
+
+                        // Make the download call.
+                        BlobRange blockRange = new BlobRange(range.getOffset() + i * options.blockSize, count);
+                        return blobURL.download(blockRange, options.accessConditions,
+                                false)
+                                // Extract the body.
+                                .flatMapObservable(response ->
+                                        response.body(options.retryReaderOptionsPerBlock)
+                                                /*
+                                                For each buffer emitted, write it into the user-provided buffer. The
+                                                buffers are emitted from the Flowable in order, and a call to put
+                                                advances the position of both buffers, so we can simply call put without
+                                                any bookkeeping.
+                                                 */
+                                                .map(block::put)
+                                                // We must satisfy the return type.
+                                                .toObservable());
+                    }, options.parallelism)
+                    // We don't care for any return values, so we transform to a Completable.
+                    .ignoreElements();
+        });
     }
 }

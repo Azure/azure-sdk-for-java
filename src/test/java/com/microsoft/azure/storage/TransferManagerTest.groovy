@@ -37,8 +37,6 @@ class TransferManagerTest extends APISpec {
 
     def setup() {
         bu = cu.createBlockBlobURL(generateBlobName())
-        bu.upload(defaultFlowable, defaultDataSize, null, null,
-                null).blockingGet()
     }
 
     def "Upload buffers single shot"() {
@@ -286,7 +284,7 @@ class TransferManagerTest extends APISpec {
         when:
         // Block length will be ignored for single shot.
         CommonRestResponse response = TransferManager.uploadByteBufferToBlockBlob(data, bu,
-                (int)(BlockBlobURL.MAX_STAGE_BLOCK_BYTES/10),
+                (int) (BlockBlobURL.MAX_STAGE_BLOCK_BYTES / 10),
                 new TransferManager.UploadToBlockBlobOptions(null, null, null,
                         null, 20)).blockingGet()
 
@@ -438,7 +436,7 @@ class TransferManagerTest extends APISpec {
         when:
         // Block length will be ignored for single shot.
         CommonRestResponse response = TransferManager.uploadFileToBlockBlob(FileChannel.open(file.toPath()), bu,
-                (int)(BlockBlobURL.MAX_STAGE_BLOCK_BYTES/10),
+                (int) (BlockBlobURL.MAX_STAGE_BLOCK_BYTES / 10),
                 new TransferManager.UploadToBlockBlobOptions(null, null, null,
                         null, 20)).blockingGet()
 
@@ -460,14 +458,14 @@ class TransferManagerTest extends APISpec {
         for (ByteBuffer received : data.blockingIterable()) {
             byte[] readBuffer = new byte[received.remaining()]
             fis.read(readBuffer)
-            for (int i=0; i < received.remaining(); i++) {
+            for (int i = 0; i < received.remaining(); i++) {
                 if (readBuffer[i] != received.get(i)) {
                     return false
                 }
             }
         }
 
-        fis.close();
+        fis.close()
         return true
     }
 
@@ -503,11 +501,11 @@ class TransferManagerTest extends APISpec {
     def "Upload file headers"() {
         setup:
         // We have to use the defaultData here so we can calculate the MD5. 
-        File file = File.createTempFile("testUpload", ".txt");
-        file.deleteOnExit();
-        FileOutputStream fos = new FileOutputStream(file);
+        File file = File.createTempFile("testUpload", ".txt")
+        file.deleteOnExit()
+        FileOutputStream fos = new FileOutputStream(file)
         fos.write(defaultData.array())
-        fos.close();
+        fos.close()
 
         when:
         TransferManager.uploadFileToBlockBlob(FileChannel.open(file.toPath()), bu, 5,
@@ -618,5 +616,24 @@ class TransferManagerTest extends APISpec {
 
         then:
         thrown(IllegalArgumentException)
+    }
+
+    @Unroll
+    def "Download buffer"() {
+        setup:
+        bu.upload(Flowable.just(data), size, null, null, null).blockingGet()
+        def outBuf = ByteBuffer.allocate(size.intValue())
+
+        when:
+        TransferManager.downloadBlobToBuffer(bu, null, null, outBuf, null).blockingGet()
+        outBuf.position(0)
+
+        then:
+        outBuf.compareTo(data) == 0
+
+        where:
+        data                           | size
+        defaultData                    | defaultDataSize
+        getRandomData(8 * 1024 * 1024) | 8 * 1024 * 1024
     }
 }
