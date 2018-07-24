@@ -10,14 +10,14 @@ package com.microsoft.azure.management.appservice.v2016_09_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2016_09_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2016_09_01.implementation.WebManager;
 import com.microsoft.azure.management.appservice.v2016_09_01.implementation.AddressResponseInner;
 import java.util.List;
 
 /**
  * Type representing AddressResponse.
  */
-public interface AddressResponse extends HasInner<AddressResponseInner>, HasManager<AppServiceManager> {
+public interface AddressResponse extends HasInner<AddressResponseInner>, HasManager<WebManager> {
     /**
      * @return the internalIpAddress value.
      */

@@ -13,15 +13,15 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import rx.Observable;
 
 class SiteInstanceImpl extends WrapperImpl<SiteInstanceInner> implements SiteInstance {
-    private final AppServiceManager manager;
+    private final WebManager manager;
 
-    SiteInstanceImpl(SiteInstanceInner inner,  AppServiceManager manager) {
+    SiteInstanceImpl(SiteInstanceInner inner,  WebManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 

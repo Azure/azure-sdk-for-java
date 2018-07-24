@@ -13,15 +13,15 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import rx.Observable;
 
 class CapabilityImpl extends WrapperImpl<CapabilityInner> implements Capability {
-    private final AppServiceManager manager;
+    private final WebManager manager;
 
-    CapabilityImpl(CapabilityInner inner,  AppServiceManager manager) {
+    CapabilityImpl(CapabilityInner inner,  WebManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 

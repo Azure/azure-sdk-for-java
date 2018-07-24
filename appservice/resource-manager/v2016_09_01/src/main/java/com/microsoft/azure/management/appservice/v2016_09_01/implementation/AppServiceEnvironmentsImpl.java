@@ -33,14 +33,14 @@ import com.microsoft.azure.management.appservice.v2016_09_01.HostingEnvironmentA
 import com.microsoft.azure.management.appservice.v2016_09_01.WorkerPools;
 
 class AppServiceEnvironmentsImpl extends WrapperImpl<AppServiceEnvironmentsInner> implements AppServiceEnvironments {
-    private final AppServiceManager manager;
+    private final WebManager manager;
 
-    AppServiceEnvironmentsImpl(AppServiceManager manager) {
+    AppServiceEnvironmentsImpl(WebManager manager) {
         super(manager.inner().appServiceEnvironments());
         this.manager = manager;
     }
 
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 

@@ -10,7 +10,7 @@ package com.microsoft.azure.management.appservice.v2018_02_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.SiteConfigResourceInner;
 import java.util.List;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.PushSettingsInner;
@@ -19,7 +19,7 @@ import org.joda.time.DateTime;
 /**
  * Type representing SiteConfigResource.
  */
-public interface SiteConfigResource extends HasInner<SiteConfigResourceInner>, HasManager<AppServiceManager> {
+public interface SiteConfigResource extends HasInner<SiteConfigResourceInner>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the alwaysOn value.
      */
@@ -241,6 +241,11 @@ public interface SiteConfigResource extends HasInner<SiteConfigResourceInner>, H
     DateTime requestTracingExpirationTime();
 
     /**
+     * @return the reservedInstanceCount value.
+     */
+    Integer reservedInstanceCount();
+
+    /**
      * @return the scmType value.
      */
     ScmType scmType();
@@ -276,9 +281,9 @@ public interface SiteConfigResource extends HasInner<SiteConfigResourceInner>, H
     Boolean webSocketsEnabled();
 
     /**
-     * @return the xenonFxVersion value.
+     * @return the windowsFxVersion value.
      */
-    String xenonFxVersion();
+    String windowsFxVersion();
 
     /**
      * @return the xManagedServiceIdentityId value.

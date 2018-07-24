@@ -206,13 +206,6 @@ public class SitePatchResource extends ProxyOnlyResource {
     private CloningInfo cloningInfo;
 
     /**
-     * If specified during app creation, the app is created from a previous
-     * snapshot.
-     */
-    @JsonProperty(value = "properties.snapshotInfo")
-    private SnapshotRecoveryRequest snapshotInfo;
-
-    /**
      * Name of the resource group the app belongs to. Read-only.
      */
     @JsonProperty(value = "properties.resourceGroup", access = JsonProperty.Access.WRITE_ONLY)
@@ -643,26 +636,6 @@ public class SitePatchResource extends ProxyOnlyResource {
      */
     public SitePatchResource withCloningInfo(CloningInfo cloningInfo) {
         this.cloningInfo = cloningInfo;
-        return this;
-    }
-
-    /**
-     * Get if specified during app creation, the app is created from a previous snapshot.
-     *
-     * @return the snapshotInfo value
-     */
-    public SnapshotRecoveryRequest snapshotInfo() {
-        return this.snapshotInfo;
-    }
-
-    /**
-     * Set if specified during app creation, the app is created from a previous snapshot.
-     *
-     * @param snapshotInfo the snapshotInfo value to set
-     * @return the SitePatchResource object itself.
-     */
-    public SitePatchResource withSnapshotInfo(SnapshotRecoveryRequest snapshotInfo) {
-        this.snapshotInfo = snapshotInfo;
         return this;
     }
 

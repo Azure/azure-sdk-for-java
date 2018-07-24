@@ -17,7 +17,7 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2016_08_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2016_08_01.implementation.WebManager;
 import java.util.List;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.appservice.v2016_08_01.implementation.SiteInner;
@@ -25,7 +25,7 @@ import com.microsoft.azure.management.appservice.v2016_08_01.implementation.Site
 /**
  * Type representing Sites.
  */
-public interface Sites extends HasInner<SiteInner>, Resource, GroupableResourceCore<AppServiceManager, SiteInner>, HasResourceGroup, Refreshable<Sites>, Updatable<Sites.Update>, HasManager<AppServiceManager> {
+public interface Sites extends HasInner<SiteInner>, Resource, GroupableResourceCore<WebManager, SiteInner>, HasResourceGroup, Refreshable<Sites>, Updatable<Sites.Update>, HasManager<WebManager> {
     /**
      * @return the availabilityState value.
      */

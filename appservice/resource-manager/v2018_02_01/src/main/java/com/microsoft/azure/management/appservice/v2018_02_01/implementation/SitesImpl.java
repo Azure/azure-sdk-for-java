@@ -20,14 +20,13 @@ import com.microsoft.azure.management.appservice.v2018_02_01.HostNameSslState;
 import com.microsoft.azure.management.appservice.v2018_02_01.SiteConfig;
 import com.microsoft.azure.management.appservice.v2018_02_01.HostingEnvironmentProfile;
 import com.microsoft.azure.management.appservice.v2018_02_01.CloningInfo;
-import com.microsoft.azure.management.appservice.v2018_02_01.SnapshotRecoveryRequest;
 import com.microsoft.azure.management.appservice.v2018_02_01.SlotSwapStatus;
 import com.microsoft.azure.management.appservice.v2018_02_01.ManagedServiceIdentity;
 import rx.functions.Func1;
 
-class SitesImpl extends GroupableResourceCoreImpl<Sites, SiteInner, SitesImpl, AppServiceManager> implements Sites, Sites.Definition, Sites.Update {
+class SitesImpl extends GroupableResourceCoreImpl<Sites, SiteInner, SitesImpl, CertificateRegistrationManager> implements Sites, Sites.Definition, Sites.Update {
     private SitePatchResource updateParameter;
-    SitesImpl(String name, SiteInner inner, AppServiceManager manager) {
+    SitesImpl(String name, SiteInner inner, CertificateRegistrationManager manager) {
         super(name, inner, manager);
         this.updateParameter = new SitePatchResource();
     }
@@ -221,11 +220,6 @@ class SitesImpl extends GroupableResourceCoreImpl<Sites, SiteInner, SitesImpl, A
     }
 
     @Override
-    public SnapshotRecoveryRequest snapshotInfo() {
-        return this.inner().snapshotInfo();
-    }
-
-    @Override
     public String state() {
         return this.inner().state();
     }
@@ -412,16 +406,6 @@ class SitesImpl extends GroupableResourceCoreImpl<Sites, SiteInner, SitesImpl, A
             this.inner().withSiteConfig(siteConfig);
         } else {
             this.updateParameter.withSiteConfig(siteConfig);
-        }
-        return this;
-    }
-
-    @Override
-    public SitesImpl withSnapshotInfo(SnapshotRecoveryRequest snapshotInfo) {
-        if (isInCreateMode()) {
-            this.inner().withSnapshotInfo(snapshotInfo);
-        } else {
-            this.updateParameter.withSnapshotInfo(snapshotInfo);
         }
         return this;
     }

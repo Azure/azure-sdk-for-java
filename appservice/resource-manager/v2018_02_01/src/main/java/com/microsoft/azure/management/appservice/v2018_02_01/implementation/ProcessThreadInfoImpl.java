@@ -14,14 +14,14 @@ import rx.Observable;
 import org.joda.time.DateTime;
 
 class ProcessThreadInfoImpl extends IndexableRefreshableWrapperImpl<ProcessThreadInfo, ProcessThreadInfoInner> implements ProcessThreadInfo {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
     private String resourceGroupName;
     private String name;
     private String processId;
     private String threadId;
     private String instanceId;
 
-    ProcessThreadInfoImpl(ProcessThreadInfoInner inner,  AppServiceManager manager) {
+    ProcessThreadInfoImpl(ProcessThreadInfoInner inner,  CertificateRegistrationManager manager) {
         super(null, inner);
         this.manager = manager;
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
@@ -32,7 +32,7 @@ class ProcessThreadInfoImpl extends IndexableRefreshableWrapperImpl<ProcessThrea
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 

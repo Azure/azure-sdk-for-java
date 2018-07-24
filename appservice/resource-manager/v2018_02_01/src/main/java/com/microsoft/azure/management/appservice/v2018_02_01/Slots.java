@@ -16,7 +16,7 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
 import java.util.List;
 import org.joda.time.DateTime;
 import java.util.Map;
@@ -24,7 +24,7 @@ import java.util.Map;
 /**
  * Type representing Slots.
  */
-public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots>, Updatable<Slots.Update>, HasManager<AppServiceManager> {
+public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots>, Updatable<Slots.Update>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the availabilityState value.
      */
@@ -184,11 +184,6 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
      * @return the slotSwapStatus value.
      */
     SlotSwapStatus slotSwapStatus();
-
-    /**
-     * @return the snapshotInfo value.
-     */
-    SnapshotRecoveryRequest snapshotInfo();
 
     /**
      * @return the state value.
@@ -432,16 +427,6 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
         }
 
         /**
-         * The stage of the slots definition allowing to specify SnapshotInfo.
-         */
-        interface WithSnapshotInfo {
-            /**
-             * Specifies snapshotInfo.
-             */
-            WithCreate withSnapshotInfo(SnapshotRecoveryRequest snapshotInfo);
-        }
-
-        /**
          * The stage of the slots definition allowing to specify Tags.
          */
         interface WithTags {
@@ -456,13 +441,13 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<Slots>, DefinitionStages.WithClientAffinityEnabled, DefinitionStages.WithClientCertEnabled, DefinitionStages.WithCloningInfo, DefinitionStages.WithContainerSize, DefinitionStages.WithDailyMemoryTimeQuota, DefinitionStages.WithEnabled, DefinitionStages.WithHostingEnvironmentProfile, DefinitionStages.WithHostNamesDisabled, DefinitionStages.WithHostNameSslStates, DefinitionStages.WithHttpsOnly, DefinitionStages.WithIdentity, DefinitionStages.WithIsXenon, DefinitionStages.WithKind, DefinitionStages.WithReserved, DefinitionStages.WithScmSiteAlsoStopped, DefinitionStages.WithServerFarmId, DefinitionStages.WithSiteConfig, DefinitionStages.WithSnapshotInfo, DefinitionStages.WithTags {
+        interface WithCreate extends Creatable<Slots>, DefinitionStages.WithClientAffinityEnabled, DefinitionStages.WithClientCertEnabled, DefinitionStages.WithCloningInfo, DefinitionStages.WithContainerSize, DefinitionStages.WithDailyMemoryTimeQuota, DefinitionStages.WithEnabled, DefinitionStages.WithHostingEnvironmentProfile, DefinitionStages.WithHostNamesDisabled, DefinitionStages.WithHostNameSslStates, DefinitionStages.WithHttpsOnly, DefinitionStages.WithIdentity, DefinitionStages.WithIsXenon, DefinitionStages.WithKind, DefinitionStages.WithReserved, DefinitionStages.WithScmSiteAlsoStopped, DefinitionStages.WithServerFarmId, DefinitionStages.WithSiteConfig, DefinitionStages.WithTags {
         }
     }
     /**
      * The template for a Slots update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<Slots>, UpdateStages.WithClientAffinityEnabled, UpdateStages.WithClientCertEnabled, UpdateStages.WithCloningInfo, UpdateStages.WithContainerSize, UpdateStages.WithDailyMemoryTimeQuota, UpdateStages.WithEnabled, UpdateStages.WithHostingEnvironmentProfile, UpdateStages.WithHostNamesDisabled, UpdateStages.WithHostNameSslStates, UpdateStages.WithHttpsOnly, UpdateStages.WithIsXenon, UpdateStages.WithKind, UpdateStages.WithReserved, UpdateStages.WithScmSiteAlsoStopped, UpdateStages.WithServerFarmId, UpdateStages.WithSiteConfig, UpdateStages.WithSnapshotInfo {
+    interface Update extends Appliable<Slots>, UpdateStages.WithClientAffinityEnabled, UpdateStages.WithClientCertEnabled, UpdateStages.WithCloningInfo, UpdateStages.WithContainerSize, UpdateStages.WithDailyMemoryTimeQuota, UpdateStages.WithEnabled, UpdateStages.WithHostingEnvironmentProfile, UpdateStages.WithHostNamesDisabled, UpdateStages.WithHostNameSslStates, UpdateStages.WithHttpsOnly, UpdateStages.WithIsXenon, UpdateStages.WithKind, UpdateStages.WithReserved, UpdateStages.WithScmSiteAlsoStopped, UpdateStages.WithServerFarmId, UpdateStages.WithSiteConfig {
     }
 
     /**
@@ -627,16 +612,6 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
              * Specifies siteConfig.
              */
             Update withSiteConfig(SiteConfig siteConfig);
-        }
-
-        /**
-         * The stage of the slots update allowing to specify SnapshotInfo.
-         */
-        interface WithSnapshotInfo {
-            /**
-             * Specifies snapshotInfo.
-             */
-            Update withSnapshotInfo(SnapshotRecoveryRequest snapshotInfo);
         }
 
     }
