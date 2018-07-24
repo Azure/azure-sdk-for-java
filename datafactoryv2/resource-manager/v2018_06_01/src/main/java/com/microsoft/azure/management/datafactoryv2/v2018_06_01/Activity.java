@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.management.datafactoryv2.v2018_06_01;
 
-import java.util.Map;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -25,12 +24,6 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
     @JsonSubTypes.Type(name = "Container", value = ControlActivity.class)
 })
 public class Activity {
-    /**
-     * Unmatched properties from the message are deserialized this collection.
-     */
-    @JsonProperty(value = "")
-    private Map<String, Object> additionalProperties;
-
     /**
      * Activity name.
      */
@@ -53,27 +46,7 @@ public class Activity {
      * Activity user properties.
      */
     @JsonProperty(value = "userProperties")
-    private Map<String, String> userProperties;
-
-    /**
-     * Get unmatched properties from the message are deserialized this collection.
-     *
-     * @return the additionalProperties value
-     */
-    public Map<String, Object> additionalProperties() {
-        return this.additionalProperties;
-    }
-
-    /**
-     * Set unmatched properties from the message are deserialized this collection.
-     *
-     * @param additionalProperties the additionalProperties value to set
-     * @return the Activity object itself.
-     */
-    public Activity withAdditionalProperties(Map<String, Object> additionalProperties) {
-        this.additionalProperties = additionalProperties;
-        return this;
-    }
+    private List<UserProperty> userProperties;
 
     /**
      * Get activity name.
@@ -140,7 +113,7 @@ public class Activity {
      *
      * @return the userProperties value
      */
-    public Map<String, String> userProperties() {
+    public List<UserProperty> userProperties() {
         return this.userProperties;
     }
 
@@ -150,7 +123,7 @@ public class Activity {
      * @param userProperties the userProperties value to set
      * @return the Activity object itself.
      */
-    public Activity withUserProperties(Map<String, String> userProperties) {
+    public Activity withUserProperties(List<UserProperty> userProperties) {
         this.userProperties = userProperties;
         return this;
     }
