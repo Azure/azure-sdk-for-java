@@ -54,7 +54,7 @@ public class FindSimilarRequest {
     private FindSimilarMatchMode mode;
 
     /**
-     * Get the faceId value.
+     * Get faceId of the query face. User needs to call Face - Detect first to get a valid faceId. Note that this faceId is not persisted and will expire 24 hours after the detection call.
      *
      * @return the faceId value
      */
@@ -63,7 +63,7 @@ public class FindSimilarRequest {
     }
 
     /**
-     * Set the faceId value.
+     * Set faceId of the query face. User needs to call Face - Detect first to get a valid faceId. Note that this faceId is not persisted and will expire 24 hours after the detection call.
      *
      * @param faceId the faceId value to set
      * @return the FindSimilarRequest object itself.
@@ -74,7 +74,7 @@ public class FindSimilarRequest {
     }
 
     /**
-     * Get the faceListId value.
+     * Get an existing user-specified unique candidate face list, created in Face List - Create a Face List. Face list contains a set of persistedFaceIds which are persisted and will never expire. Parameter faceListId and faceIds should not be provided at the same time.
      *
      * @return the faceListId value
      */
@@ -83,7 +83,7 @@ public class FindSimilarRequest {
     }
 
     /**
-     * Set the faceListId value.
+     * Set an existing user-specified unique candidate face list, created in Face List - Create a Face List. Face list contains a set of persistedFaceIds which are persisted and will never expire. Parameter faceListId and faceIds should not be provided at the same time.
      *
      * @param faceListId the faceListId value to set
      * @return the FindSimilarRequest object itself.
@@ -94,7 +94,7 @@ public class FindSimilarRequest {
     }
 
     /**
-     * Get the faceIds value.
+     * Get an array of candidate faceIds. All of them are created by Face - Detect and the faceIds will expire 24 hours after the detection call.
      *
      * @return the faceIds value
      */
@@ -103,7 +103,7 @@ public class FindSimilarRequest {
     }
 
     /**
-     * Set the faceIds value.
+     * Set an array of candidate faceIds. All of them are created by Face - Detect and the faceIds will expire 24 hours after the detection call.
      *
      * @param faceIds the faceIds value to set
      * @return the FindSimilarRequest object itself.
@@ -114,7 +114,7 @@ public class FindSimilarRequest {
     }
 
     /**
-     * Get the maxNumOfCandidatesReturned value.
+     * Get the number of top similar faces returned. The valid range is [1, 1000].
      *
      * @return the maxNumOfCandidatesReturned value
      */
@@ -123,7 +123,7 @@ public class FindSimilarRequest {
     }
 
     /**
-     * Set the maxNumOfCandidatesReturned value.
+     * Set the number of top similar faces returned. The valid range is [1, 1000].
      *
      * @param maxNumOfCandidatesReturned the maxNumOfCandidatesReturned value to set
      * @return the FindSimilarRequest object itself.
@@ -134,7 +134,7 @@ public class FindSimilarRequest {
     }
 
     /**
-     * Get the mode value.
+     * Get similar face searching mode. It can be "matchPerson" or "matchFace". Possible values include: 'matchPerson', 'matchFace'.
      *
      * @return the mode value
      */
@@ -143,7 +143,7 @@ public class FindSimilarRequest {
     }
 
     /**
-     * Set the mode value.
+     * Set similar face searching mode. It can be "matchPerson" or "matchFace". Possible values include: 'matchPerson', 'matchFace'.
      *
      * @param mode the mode value to set
      * @return the FindSimilarRequest object itself.

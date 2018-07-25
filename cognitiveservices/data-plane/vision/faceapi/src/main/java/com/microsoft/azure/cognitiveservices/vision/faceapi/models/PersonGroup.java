@@ -21,7 +21,7 @@ public class PersonGroup extends NameAndUserDataContract {
     private String personGroupId;
 
     /**
-     * Get the personGroupId value.
+     * Get personGroupId of the existing person groups.
      *
      * @return the personGroupId value
      */
@@ -30,7 +30,7 @@ public class PersonGroup extends NameAndUserDataContract {
     }
 
     /**
-     * Set the personGroupId value.
+     * Set personGroupId of the existing person groups.
      *
      * @param personGroupId the personGroupId value to set
      * @return the PersonGroup object itself.

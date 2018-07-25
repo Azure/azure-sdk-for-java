@@ -21,7 +21,7 @@ public class UpdatePersonFaceRequest {
     private String userData;
 
     /**
-     * Get the userData value.
+     * Get user-provided data attached to the face. The size limit is 1KB.
      *
      * @return the userData value
      */
@@ -30,7 +30,7 @@ public class UpdatePersonFaceRequest {
     }
 
     /**
-     * Set the userData value.
+     * Set user-provided data attached to the face. The size limit is 1KB.
      *
      * @param userData the userData value to set
      * @return the UpdatePersonFaceRequest object itself.

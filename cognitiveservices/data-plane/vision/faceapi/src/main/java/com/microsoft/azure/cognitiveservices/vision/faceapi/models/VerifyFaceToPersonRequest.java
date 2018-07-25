@@ -36,7 +36,7 @@ public class VerifyFaceToPersonRequest {
     private UUID personId;
 
     /**
-     * Get the faceId value.
+     * Get faceId the face, comes from Face - Detect.
      *
      * @return the faceId value
      */
@@ -45,7 +45,7 @@ public class VerifyFaceToPersonRequest {
     }
 
     /**
-     * Set the faceId value.
+     * Set faceId the face, comes from Face - Detect.
      *
      * @param faceId the faceId value to set
      * @return the VerifyFaceToPersonRequest object itself.
@@ -56,7 +56,7 @@ public class VerifyFaceToPersonRequest {
     }
 
     /**
-     * Get the personGroupId value.
+     * Get using existing personGroupId and personId for fast loading a specified person. personGroupId is created in Person Groups.Create.
      *
      * @return the personGroupId value
      */
@@ -65,7 +65,7 @@ public class VerifyFaceToPersonRequest {
     }
 
     /**
-     * Set the personGroupId value.
+     * Set using existing personGroupId and personId for fast loading a specified person. personGroupId is created in Person Groups.Create.
      *
      * @param personGroupId the personGroupId value to set
      * @return the VerifyFaceToPersonRequest object itself.
@@ -76,7 +76,7 @@ public class VerifyFaceToPersonRequest {
     }
 
     /**
-     * Get the personId value.
+     * Get specify a certain person in a person group. personId is created in Persons.Create.
      *
      * @return the personId value
      */
@@ -85,7 +85,7 @@ public class VerifyFaceToPersonRequest {
     }
 
     /**
-     * Set the personId value.
+     * Set specify a certain person in a person group. personId is created in Persons.Create.
      *
      * @param personId the personId value to set
      * @return the VerifyFaceToPersonRequest object itself.

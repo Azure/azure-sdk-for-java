@@ -103,7 +103,7 @@ public class FaceAttributes {
     private Noise noise;
 
     /**
-     * Get the age value.
+     * Get age in years.
      *
      * @return the age value
      */
@@ -112,7 +112,7 @@ public class FaceAttributes {
     }
 
     /**
-     * Set the age value.
+     * Set age in years.
      *
      * @param age the age value to set
      * @return the FaceAttributes object itself.
@@ -123,7 +123,7 @@ public class FaceAttributes {
     }
 
     /**
-     * Get the gender value.
+     * Get possible gender of the face. Possible values include: 'male', 'female', 'genderless'.
      *
      * @return the gender value
      */
@@ -132,7 +132,7 @@ public class FaceAttributes {
     }
 
     /**
-     * Set the gender value.
+     * Set possible gender of the face. Possible values include: 'male', 'female', 'genderless'.
      *
      * @param gender the gender value to set
      * @return the FaceAttributes object itself.
@@ -143,7 +143,7 @@ public class FaceAttributes {
     }
 
     /**
-     * Get the smile value.
+     * Get smile intensity, a number between [0,1].
      *
      * @return the smile value
      */
@@ -152,7 +152,7 @@ public class FaceAttributes {
     }
 
     /**
-     * Set the smile value.
+     * Set smile intensity, a number between [0,1].
      *
      * @param smile the smile value to set
      * @return the FaceAttributes object itself.
@@ -163,7 +163,7 @@ public class FaceAttributes {
     }
 
     /**
-     * Get the facialHair value.
+     * Get properties describing facial hair attributes.
      *
      * @return the facialHair value
      */
@@ -172,7 +172,7 @@ public class FaceAttributes {
     }
 
     /**
-     * Set the facialHair value.
+     * Set properties describing facial hair attributes.
      *
      * @param facialHair the facialHair value to set
      * @return the FaceAttributes object itself.
@@ -183,7 +183,7 @@ public class FaceAttributes {
     }
 
     /**
-     * Get the glasses value.
+     * Get glasses type if any of the face. Possible values include: 'noGlasses', 'readingGlasses', 'sunglasses', 'swimmingGoggles'.
      *
      * @return the glasses value
      */
@@ -192,7 +192,7 @@ public class FaceAttributes {
     }
 
     /**
-     * Set the glasses value.
+     * Set glasses type if any of the face. Possible values include: 'noGlasses', 'readingGlasses', 'sunglasses', 'swimmingGoggles'.
      *
      * @param glasses the glasses value to set
      * @return the FaceAttributes object itself.
@@ -203,7 +203,7 @@ public class FaceAttributes {
     }
 
     /**
-     * Get the headPose value.
+     * Get properties indicating head pose of the face.
      *
      * @return the headPose value
      */
@@ -212,7 +212,7 @@ public class FaceAttributes {
     }
 
     /**
-     * Set the headPose value.
+     * Set properties indicating head pose of the face.
      *
      * @param headPose the headPose value to set
      * @return the FaceAttributes object itself.
@@ -223,7 +223,7 @@ public class FaceAttributes {
     }
 
     /**
-     * Get the emotion value.
+     * Get properties describing facial emotion in form of confidence ranging from 0 to 1.
      *
      * @return the emotion value
      */
@@ -232,7 +232,7 @@ public class FaceAttributes {
     }
 
     /**
-     * Set the emotion value.
+     * Set properties describing facial emotion in form of confidence ranging from 0 to 1.
      *
      * @param emotion the emotion value to set
      * @return the FaceAttributes object itself.
@@ -243,7 +243,7 @@ public class FaceAttributes {
     }
 
     /**
-     * Get the hair value.
+     * Get properties describing hair attributes.
      *
      * @return the hair value
      */
@@ -252,7 +252,7 @@ public class FaceAttributes {
     }
 
     /**
-     * Set the hair value.
+     * Set properties describing hair attributes.
      *
      * @param hair the hair value to set
      * @return the FaceAttributes object itself.
@@ -263,7 +263,7 @@ public class FaceAttributes {
     }
 
     /**
-     * Get the makeup value.
+     * Get properties describing present makeups on a given face.
      *
      * @return the makeup value
      */
@@ -272,7 +272,7 @@ public class FaceAttributes {
     }
 
     /**
-     * Set the makeup value.
+     * Set properties describing present makeups on a given face.
      *
      * @param makeup the makeup value to set
      * @return the FaceAttributes object itself.
@@ -283,7 +283,7 @@ public class FaceAttributes {
     }
 
     /**
-     * Get the occlusion value.
+     * Get properties describing occlusions on a given face.
      *
      * @return the occlusion value
      */
@@ -292,7 +292,7 @@ public class FaceAttributes {
     }
 
     /**
-     * Set the occlusion value.
+     * Set properties describing occlusions on a given face.
      *
      * @param occlusion the occlusion value to set
      * @return the FaceAttributes object itself.
@@ -303,7 +303,7 @@ public class FaceAttributes {
     }
 
     /**
-     * Get the accessories value.
+     * Get properties describing any accessories on a given face.
      *
      * @return the accessories value
      */
@@ -312,7 +312,7 @@ public class FaceAttributes {
     }
 
     /**
-     * Set the accessories value.
+     * Set properties describing any accessories on a given face.
      *
      * @param accessories the accessories value to set
      * @return the FaceAttributes object itself.
@@ -323,7 +323,7 @@ public class FaceAttributes {
     }
 
     /**
-     * Get the blur value.
+     * Get properties describing any presence of blur within the image.
      *
      * @return the blur value
      */
@@ -332,7 +332,7 @@ public class FaceAttributes {
     }
 
     /**
-     * Set the blur value.
+     * Set properties describing any presence of blur within the image.
      *
      * @param blur the blur value to set
      * @return the FaceAttributes object itself.
@@ -343,7 +343,7 @@ public class FaceAttributes {
     }
 
     /**
-     * Get the exposure value.
+     * Get properties describing exposure level of the image.
      *
      * @return the exposure value
      */
@@ -352,7 +352,7 @@ public class FaceAttributes {
     }
 
     /**
-     * Set the exposure value.
+     * Set properties describing exposure level of the image.
      *
      * @param exposure the exposure value to set
      * @return the FaceAttributes object itself.
@@ -363,7 +363,7 @@ public class FaceAttributes {
     }
 
     /**
-     * Get the noise value.
+     * Get properties describing noise level of the image.
      *
      * @return the noise value
      */
@@ -372,7 +372,7 @@ public class FaceAttributes {
     }
 
     /**
-     * Set the noise value.
+     * Set properties describing noise level of the image.
      *
      * @param noise the noise value to set
      * @return the FaceAttributes object itself.

@@ -28,7 +28,7 @@ public class Accessory {
     private double confidence;
 
     /**
-     * Get the type value.
+     * Get type of an accessory. Possible values include: 'headWear', 'glasses', 'mask'.
      *
      * @return the type value
      */
@@ -37,7 +37,7 @@ public class Accessory {
     }
 
     /**
-     * Set the type value.
+     * Set type of an accessory. Possible values include: 'headWear', 'glasses', 'mask'.
      *
      * @param type the type value to set
      * @return the Accessory object itself.
@@ -48,7 +48,7 @@ public class Accessory {
     }
 
     /**
-     * Get the confidence value.
+     * Get confidence level of an accessory.
      *
      * @return the confidence value
      */
@@ -57,7 +57,7 @@ public class Accessory {
     }
 
     /**
-     * Set the confidence value.
+     * Set confidence level of an accessory.
      *
      * @param confidence the confidence value to set
      * @return the Accessory object itself.

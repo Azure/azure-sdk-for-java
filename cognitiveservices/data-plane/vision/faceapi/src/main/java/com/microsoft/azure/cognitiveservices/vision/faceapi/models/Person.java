@@ -31,7 +31,7 @@ public class Person extends NameAndUserDataContract {
     private List<UUID> persistedFaceIds;
 
     /**
-     * Get the personId value.
+     * Get personId of the target face list.
      *
      * @return the personId value
      */
@@ -40,7 +40,7 @@ public class Person extends NameAndUserDataContract {
     }
 
     /**
-     * Set the personId value.
+     * Set personId of the target face list.
      *
      * @param personId the personId value to set
      * @return the Person object itself.
@@ -51,7 +51,7 @@ public class Person extends NameAndUserDataContract {
     }
 
     /**
-     * Get the persistedFaceIds value.
+     * Get persistedFaceIds of registered faces in the person. These persistedFaceIds are returned from Person - Add a Person Face, and will not expire.
      *
      * @return the persistedFaceIds value
      */
@@ -60,7 +60,7 @@ public class Person extends NameAndUserDataContract {
     }
 
     /**
-     * Set the persistedFaceIds value.
+     * Set persistedFaceIds of registered faces in the person. These persistedFaceIds are returned from Person - Add a Person Face, and will not expire.
      *
      * @param persistedFaceIds the persistedFaceIds value to set
      * @return the Person object itself.

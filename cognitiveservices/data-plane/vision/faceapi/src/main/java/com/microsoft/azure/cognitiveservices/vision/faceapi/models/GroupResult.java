@@ -31,7 +31,7 @@ public class GroupResult {
     private List<UUID> messyGroup;
 
     /**
-     * Get the groups value.
+     * Get a partition of the original faces based on face similarity. Groups are ranked by number of faces.
      *
      * @return the groups value
      */
@@ -40,7 +40,7 @@ public class GroupResult {
     }
 
     /**
-     * Set the groups value.
+     * Set a partition of the original faces based on face similarity. Groups are ranked by number of faces.
      *
      * @param groups the groups value to set
      * @return the GroupResult object itself.
@@ -51,7 +51,7 @@ public class GroupResult {
     }
 
     /**
-     * Get the messyGroup value.
+     * Get face ids array of faces that cannot find any similar faces from original faces.
      *
      * @return the messyGroup value
      */
@@ -60,7 +60,7 @@ public class GroupResult {
     }
 
     /**
-     * Set the messyGroup value.
+     * Set face ids array of faces that cannot find any similar faces from original faces.
      *
      * @param messyGroup the messyGroup value to set
      * @return the GroupResult object itself.

@@ -47,7 +47,7 @@ public class IdentifyRequest {
     private Double confidenceThreshold;
 
     /**
-     * Get the personGroupId value.
+     * Get personGroupId of the target person group, created by PersonGroups.Create.
      *
      * @return the personGroupId value
      */
@@ -56,7 +56,7 @@ public class IdentifyRequest {
     }
 
     /**
-     * Set the personGroupId value.
+     * Set personGroupId of the target person group, created by PersonGroups.Create.
      *
      * @param personGroupId the personGroupId value to set
      * @return the IdentifyRequest object itself.
@@ -67,7 +67,7 @@ public class IdentifyRequest {
     }
 
     /**
-     * Get the faceIds value.
+     * Get array of query faces faceIds, created by the Face - Detect. Each of the faces are identified independently. The valid number of faceIds is between [1, 10].
      *
      * @return the faceIds value
      */
@@ -76,7 +76,7 @@ public class IdentifyRequest {
     }
 
     /**
-     * Set the faceIds value.
+     * Set array of query faces faceIds, created by the Face - Detect. Each of the faces are identified independently. The valid number of faceIds is between [1, 10].
      *
      * @param faceIds the faceIds value to set
      * @return the IdentifyRequest object itself.
@@ -87,7 +87,7 @@ public class IdentifyRequest {
     }
 
     /**
-     * Get the maxNumOfCandidatesReturned value.
+     * Get the range of maxNumOfCandidatesReturned is between 1 and 5 (default is 1).
      *
      * @return the maxNumOfCandidatesReturned value
      */
@@ -96,7 +96,7 @@ public class IdentifyRequest {
     }
 
     /**
-     * Set the maxNumOfCandidatesReturned value.
+     * Set the range of maxNumOfCandidatesReturned is between 1 and 5 (default is 1).
      *
      * @param maxNumOfCandidatesReturned the maxNumOfCandidatesReturned value to set
      * @return the IdentifyRequest object itself.
@@ -107,7 +107,7 @@ public class IdentifyRequest {
     }
 
     /**
-     * Get the confidenceThreshold value.
+     * Get confidence threshold of identification, used to judge whether one face belong to one person. The range of confidenceThreshold is [0, 1] (default specified by algorithm).
      *
      * @return the confidenceThreshold value
      */
@@ -116,7 +116,7 @@ public class IdentifyRequest {
     }
 
     /**
-     * Set the confidenceThreshold value.
+     * Set confidence threshold of identification, used to judge whether one face belong to one person. The range of confidenceThreshold is [0, 1] (default specified by algorithm).
      *
      * @param confidenceThreshold the confidenceThreshold value to set
      * @return the IdentifyRequest object itself.
