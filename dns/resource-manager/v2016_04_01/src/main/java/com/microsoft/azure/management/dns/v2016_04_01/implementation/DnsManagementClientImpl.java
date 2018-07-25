@@ -28,11 +28,11 @@ public class DnsManagementClientImpl extends AzureServiceClient {
         return this.azureClient;
     }
 
-    /** Specifies the Azure subscription ID, which uniquely identifies the Microsoft Azure subscription. */
+    /** The ID of the target subscription. */
     private String subscriptionId;
 
     /**
-     * Gets Specifies the Azure subscription ID, which uniquely identifies the Microsoft Azure subscription.
+     * Gets The ID of the target subscription.
      *
      * @return the subscriptionId value.
      */
@@ -41,7 +41,7 @@ public class DnsManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Sets Specifies the Azure subscription ID, which uniquely identifies the Microsoft Azure subscription.
+     * Sets The ID of the target subscription.
      *
      * @param subscriptionId the subscriptionId value.
      * @return the service client itself
@@ -51,11 +51,11 @@ public class DnsManagementClientImpl extends AzureServiceClient {
         return this;
     }
 
-    /** Specifies the API version. */
+    /** The API version to use for this operation. */
     private String apiVersion;
 
     /**
-     * Gets Specifies the API version.
+     * Gets The API version to use for this operation.
      *
      * @return the apiVersion value.
      */
