@@ -21,7 +21,7 @@ public class Content {
     private String contentValue;
 
     /**
-     * Get the contentValue value.
+     * Get content to evaluate for a job.
      *
      * @return the contentValue value
      */
@@ -30,7 +30,7 @@ public class Content {
     }
 
     /**
-     * Set the contentValue value.
+     * Set content to evaluate for a job.
      *
      * @param contentValue the contentValue value to set
      * @return the Content object itself.

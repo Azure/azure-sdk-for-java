@@ -28,7 +28,7 @@ public class TranscriptModerationBodyItem {
     private List<TranscriptModerationBodyItemTermsItem> terms;
 
     /**
-     * Get the timestamp value.
+     * Get timestamp of the image.
      *
      * @return the timestamp value
      */
@@ -37,7 +37,7 @@ public class TranscriptModerationBodyItem {
     }
 
     /**
-     * Set the timestamp value.
+     * Set timestamp of the image.
      *
      * @param timestamp the timestamp value to set
      * @return the TranscriptModerationBodyItem object itself.
@@ -48,7 +48,7 @@ public class TranscriptModerationBodyItem {
     }
 
     /**
-     * Get the terms value.
+     * Get optional metadata details.
      *
      * @return the terms value
      */
@@ -57,7 +57,7 @@ public class TranscriptModerationBodyItem {
     }
 
     /**
-     * Set the terms value.
+     * Set optional metadata details.
      *
      * @param terms the terms value to set
      * @return the TranscriptModerationBodyItem object itself.

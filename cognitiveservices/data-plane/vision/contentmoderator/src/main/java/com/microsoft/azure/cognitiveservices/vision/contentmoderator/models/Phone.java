@@ -33,7 +33,7 @@ public class Phone {
     private Integer index;
 
     /**
-     * Get the countryCode value.
+     * Get countryCode of the detected Phone number.
      *
      * @return the countryCode value
      */
@@ -42,7 +42,7 @@ public class Phone {
     }
 
     /**
-     * Set the countryCode value.
+     * Set countryCode of the detected Phone number.
      *
      * @param countryCode the countryCode value to set
      * @return the Phone object itself.
@@ -53,7 +53,7 @@ public class Phone {
     }
 
     /**
-     * Get the text value.
+     * Get detected Phone number.
      *
      * @return the text value
      */
@@ -62,7 +62,7 @@ public class Phone {
     }
 
     /**
-     * Set the text value.
+     * Set detected Phone number.
      *
      * @param text the text value to set
      * @return the Phone object itself.
@@ -73,7 +73,7 @@ public class Phone {
     }
 
     /**
-     * Get the index value.
+     * Get index(Location) of the Phone number in the input text content.
      *
      * @return the index value
      */
@@ -82,7 +82,7 @@ public class Phone {
     }
 
     /**
-     * Set the index value.
+     * Set index(Location) of the Phone number in the input text content.
      *
      * @param index the index value to set
      * @return the Phone object itself.

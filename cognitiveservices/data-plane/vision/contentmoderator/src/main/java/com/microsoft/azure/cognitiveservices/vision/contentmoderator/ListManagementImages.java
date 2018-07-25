@@ -8,13 +8,14 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator;
 
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.AddImageOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.AddImageUrlInputOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.AddImageFileInputOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.APIErrorException;
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.BodyModelModel;
+import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.BodyModel;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.Image;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.ImageIds;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
+import com.microsoft.rest.ServiceResponse;
+import java.io.IOException;
 import rx.Observable;
 
 /**
@@ -26,97 +27,86 @@ public interface ListManagementImages {
      * Add an image to the list with list Id equal to list Id passed.
      *
      * @param listId List Id of the image list.
-     * @param addImageOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Image object if successful.
      */
-    
-    Image addImage(String listId, AddImageOptionalParameter addImageOptionalParameter);
+    Image addImage(String listId);
 
     /**
      * Add an image to the list with list Id equal to list Id passed.
      *
      * @param listId List Id of the image list.
-     * @param addImageOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Image object
+     * @return the {@link ServiceFuture} object
      */
-    
-    Observable<Image> addImageAsync(String listId, AddImageOptionalParameter addImageOptionalParameter);
+    ServiceFuture<Image> addImageAsync(String listId, final ServiceCallback<Image> serviceCallback);
 
     /**
      * Add an image to the list with list Id equal to list Id passed.
      *
-     * @return the first stage of the addImage call
+     * @param listId List Id of the image list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Image object
      */
-    ListManagementImagesAddImageDefinitionStages.WithListId addImage();
+    Observable<Image> addImageAsync(String listId);
 
     /**
-     * Grouping of addImage definition stages.
+     * Add an image to the list with list Id equal to list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Image object
      */
-    interface ListManagementImagesAddImageDefinitionStages {
-        /**
-         * The stage of the definition to be specify listId.
-         */
-        interface WithListId {
-            /**
-             * List Id of the image list.
-             *
-             * @return next definition stage
-             */
-            ListManagementImagesAddImageDefinitionStages.WithExecute withListId(String listId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * Tag for the image.
-             *
-             * @return next definition stage
-             */
-            ListManagementImagesAddImageDefinitionStages.WithExecute withTag(Integer tag);
-
-            /**
-             * The image label.
-             *
-             * @return next definition stage
-             */
-            ListManagementImagesAddImageDefinitionStages.WithExecute withLabel(String label);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ListManagementImagesAddImageDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the Image object if successful.
-             */
-            Image execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the Image object
-             */
-            Observable<Image> executeAsync();
-        }
-    }
+    Observable<ServiceResponse<Image>> addImageWithServiceResponseAsync(String listId);
+    /**
+     * Add an image to the list with list Id equal to list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param tag Tag for the image.
+     * @param label The image label.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws APIErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the Image object if successful.
+     */
+    Image addImage(String listId, Integer tag, String label);
 
     /**
-     * The entirety of addImage definition.
+     * Add an image to the list with list Id equal to list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param tag Tag for the image.
+     * @param label The image label.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    interface ListManagementImagesAddImageDefinition extends
-        ListManagementImagesAddImageDefinitionStages.WithListId,
-        ListManagementImagesAddImageDefinitionStages.WithExecute {
-    }
+    ServiceFuture<Image> addImageAsync(String listId, Integer tag, String label, final ServiceCallback<Image> serviceCallback);
 
+    /**
+     * Add an image to the list with list Id equal to list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param tag Tag for the image.
+     * @param label The image label.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Image object
+     */
+    Observable<Image> addImageAsync(String listId, Integer tag, String label);
+
+    /**
+     * Add an image to the list with list Id equal to list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param tag Tag for the image.
+     * @param label The image label.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Image object
+     */
+    Observable<ServiceResponse<Image>> addImageWithServiceResponseAsync(String listId, Integer tag, String label);
 
     /**
      * Deletes all images from the list with list Id equal to list Id passed.
@@ -133,12 +123,29 @@ public interface ListManagementImages {
      * Deletes all images from the list with list Id equal to list Id passed.
      *
      * @param listId List Id of the image list.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<String> deleteAllImagesAsync(String listId, final ServiceCallback<String> serviceCallback);
+
+    /**
+     * Deletes all images from the list with list Id equal to list Id passed.
+     *
+     * @param listId List Id of the image list.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the String object
      */
     Observable<String> deleteAllImagesAsync(String listId);
 
-
+    /**
+     * Deletes all images from the list with list Id equal to list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the String object
+     */
+    Observable<ServiceResponse<String>> deleteAllImagesWithServiceResponseAsync(String listId);
 
     /**
      * Gets all image Ids from the list with list Id equal to list Id passed.
@@ -155,12 +162,29 @@ public interface ListManagementImages {
      * Gets all image Ids from the list with list Id equal to list Id passed.
      *
      * @param listId List Id of the image list.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<ImageIds> getAllImageIdsAsync(String listId, final ServiceCallback<ImageIds> serviceCallback);
+
+    /**
+     * Gets all image Ids from the list with list Id equal to list Id passed.
+     *
+     * @param listId List Id of the image list.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageIds object
      */
     Observable<ImageIds> getAllImageIdsAsync(String listId);
 
-
+    /**
+     * Gets all image Ids from the list with list Id equal to list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ImageIds object
+     */
+    Observable<ServiceResponse<ImageIds>> getAllImageIdsWithServiceResponseAsync(String listId);
 
     /**
      * Deletes an image from the list with list Id and image Id passed.
@@ -179,11 +203,31 @@ public interface ListManagementImages {
      *
      * @param listId List Id of the image list.
      * @param imageId Id of the image.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<String> deleteImageAsync(String listId, String imageId, final ServiceCallback<String> serviceCallback);
+
+    /**
+     * Deletes an image from the list with list Id and image Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param imageId Id of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the String object
      */
     Observable<String> deleteImageAsync(String listId, String imageId);
 
+    /**
+     * Deletes an image from the list with list Id and image Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param imageId Id of the image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the String object
+     */
+    Observable<ServiceResponse<String>> deleteImageWithServiceResponseAsync(String listId, String imageId);
 
     /**
      * Add an image to the list with list Id equal to list Id passed.
@@ -191,14 +235,12 @@ public interface ListManagementImages {
      * @param listId List Id of the image list.
      * @param contentType The content type.
      * @param imageUrl The image url.
-     * @param addImageUrlInputOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Image object if successful.
      */
-    
-    Image addImageUrlInput(String listId, String contentType, BodyModelModel imageUrl, AddImageUrlInputOptionalParameter addImageUrlInputOptionalParameter);
+    Image addImageUrlInput(String listId, String contentType, BodyModel imageUrl);
 
     /**
      * Add an image to the list with list Id equal to list Id passed.
@@ -206,215 +248,179 @@ public interface ListManagementImages {
      * @param listId List Id of the image list.
      * @param contentType The content type.
      * @param imageUrl The image url.
-     * @param addImageUrlInputOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Image object
+     * @return the {@link ServiceFuture} object
      */
-    
-    Observable<Image> addImageUrlInputAsync(String listId, String contentType, BodyModelModel imageUrl, AddImageUrlInputOptionalParameter addImageUrlInputOptionalParameter);
-
-    /**
-     * Add an image to the list with list Id equal to list Id passed.
-     *
-     * @return the first stage of the addImageUrlInput call
-     */
-    ListManagementImagesAddImageUrlInputDefinitionStages.WithListId addImageUrlInput();
-
-    /**
-     * Grouping of addImageUrlInput definition stages.
-     */
-    interface ListManagementImagesAddImageUrlInputDefinitionStages {
-        /**
-         * The stage of the definition to be specify listId.
-         */
-        interface WithListId {
-            /**
-             * List Id of the image list.
-             *
-             * @return next definition stage
-             */
-            WithContentType withListId(String listId);
-        }
-        /**
-         * The stage of the definition to be specify contentType.
-         */
-        interface WithContentType {
-            /**
-             * The content type.
-             *
-             * @return next definition stage
-             */
-            WithImageUrl withContentType(String contentType);
-        }
-        /**
-         * The stage of the definition to be specify imageUrl.
-         */
-        interface WithImageUrl {
-            /**
-             * The image url.
-             *
-             * @return next definition stage
-             */
-            ListManagementImagesAddImageUrlInputDefinitionStages.WithExecute withImageUrl(BodyModelModel imageUrl);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * Tag for the image.
-             *
-             * @return next definition stage
-             */
-            ListManagementImagesAddImageUrlInputDefinitionStages.WithExecute withTag(Integer tag);
-
-            /**
-             * The image label.
-             *
-             * @return next definition stage
-             */
-            ListManagementImagesAddImageUrlInputDefinitionStages.WithExecute withLabel(String label);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ListManagementImagesAddImageUrlInputDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the Image object if successful.
-             */
-            Image execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the Image object
-             */
-            Observable<Image> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of addImageUrlInput definition.
-     */
-    interface ListManagementImagesAddImageUrlInputDefinition extends
-        ListManagementImagesAddImageUrlInputDefinitionStages.WithListId,
-        ListManagementImagesAddImageUrlInputDefinitionStages.WithContentType,
-        ListManagementImagesAddImageUrlInputDefinitionStages.WithImageUrl,
-        ListManagementImagesAddImageUrlInputDefinitionStages.WithExecute {
-    }
+    ServiceFuture<Image> addImageUrlInputAsync(String listId, String contentType, BodyModel imageUrl, final ServiceCallback<Image> serviceCallback);
 
     /**
      * Add an image to the list with list Id equal to list Id passed.
      *
      * @param listId List Id of the image list.
-     * @param imageStream The image file.
-     * @param addImageFileInputOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param contentType The content type.
+     * @param imageUrl The image url.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Image object
+     */
+    Observable<Image> addImageUrlInputAsync(String listId, String contentType, BodyModel imageUrl);
+
+    /**
+     * Add an image to the list with list Id equal to list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param contentType The content type.
+     * @param imageUrl The image url.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Image object
+     */
+    Observable<ServiceResponse<Image>> addImageUrlInputWithServiceResponseAsync(String listId, String contentType, BodyModel imageUrl);
+    /**
+     * Add an image to the list with list Id equal to list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param contentType The content type.
+     * @param imageUrl The image url.
+     * @param tag Tag for the image.
+     * @param label The image label.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Image object if successful.
      */
-    
-    Image addImageFileInput(String listId, byte[] imageStream, AddImageFileInputOptionalParameter addImageFileInputOptionalParameter);
+    Image addImageUrlInput(String listId, String contentType, BodyModel imageUrl, Integer tag, String label);
+
+    /**
+     * Add an image to the list with list Id equal to list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param contentType The content type.
+     * @param imageUrl The image url.
+     * @param tag Tag for the image.
+     * @param label The image label.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<Image> addImageUrlInputAsync(String listId, String contentType, BodyModel imageUrl, Integer tag, String label, final ServiceCallback<Image> serviceCallback);
+
+    /**
+     * Add an image to the list with list Id equal to list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param contentType The content type.
+     * @param imageUrl The image url.
+     * @param tag Tag for the image.
+     * @param label The image label.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Image object
+     */
+    Observable<Image> addImageUrlInputAsync(String listId, String contentType, BodyModel imageUrl, Integer tag, String label);
+
+    /**
+     * Add an image to the list with list Id equal to list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param contentType The content type.
+     * @param imageUrl The image url.
+     * @param tag Tag for the image.
+     * @param label The image label.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Image object
+     */
+    Observable<ServiceResponse<Image>> addImageUrlInputWithServiceResponseAsync(String listId, String contentType, BodyModel imageUrl, Integer tag, String label);
 
     /**
      * Add an image to the list with list Id equal to list Id passed.
      *
      * @param listId List Id of the image list.
      * @param imageStream The image file.
-     * @param addImageFileInputOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Image object
+     * @throws APIErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the Image object if successful.
      */
-    
-    Observable<Image> addImageFileInputAsync(String listId, byte[] imageStream, AddImageFileInputOptionalParameter addImageFileInputOptionalParameter);
+    Image addImageFileInput(String listId, byte[] imageStream);
 
     /**
      * Add an image to the list with list Id equal to list Id passed.
      *
-     * @return the first stage of the addImageFileInput call
+     * @param listId List Id of the image list.
+     * @param imageStream The image file.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    ListManagementImagesAddImageFileInputDefinitionStages.WithListId addImageFileInput();
+    ServiceFuture<Image> addImageFileInputAsync(String listId, byte[] imageStream, final ServiceCallback<Image> serviceCallback);
 
     /**
-     * Grouping of addImageFileInput definition stages.
+     * Add an image to the list with list Id equal to list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param imageStream The image file.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Image object
      */
-    interface ListManagementImagesAddImageFileInputDefinitionStages {
-        /**
-         * The stage of the definition to be specify listId.
-         */
-        interface WithListId {
-            /**
-             * List Id of the image list.
-             *
-             * @return next definition stage
-             */
-            WithImageStream withListId(String listId);
-        }
-        /**
-         * The stage of the definition to be specify imageStream.
-         */
-        interface WithImageStream {
-            /**
-             * The image file.
-             *
-             * @return next definition stage
-             */
-            ListManagementImagesAddImageFileInputDefinitionStages.WithExecute withImageStream(byte[] imageStream);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * Tag for the image.
-             *
-             * @return next definition stage
-             */
-            ListManagementImagesAddImageFileInputDefinitionStages.WithExecute withTag(Integer tag);
-
-            /**
-             * The image label.
-             *
-             * @return next definition stage
-             */
-            ListManagementImagesAddImageFileInputDefinitionStages.WithExecute withLabel(String label);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ListManagementImagesAddImageFileInputDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the Image object if successful.
-             */
-            Image execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the Image object
-             */
-            Observable<Image> executeAsync();
-        }
-    }
+    Observable<Image> addImageFileInputAsync(String listId, byte[] imageStream);
 
     /**
-     * The entirety of addImageFileInput definition.
+     * Add an image to the list with list Id equal to list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param imageStream The image file.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Image object
      */
-    interface ListManagementImagesAddImageFileInputDefinition extends
-        ListManagementImagesAddImageFileInputDefinitionStages.WithListId,
-        ListManagementImagesAddImageFileInputDefinitionStages.WithImageStream,
-        ListManagementImagesAddImageFileInputDefinitionStages.WithExecute {
-    }
+    Observable<ServiceResponse<Image>> addImageFileInputWithServiceResponseAsync(String listId, byte[] imageStream);
+    /**
+     * Add an image to the list with list Id equal to list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param imageStream The image file.
+     * @param tag Tag for the image.
+     * @param label The image label.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws APIErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the Image object if successful.
+     */
+    Image addImageFileInput(String listId, byte[] imageStream, Integer tag, String label);
+
+    /**
+     * Add an image to the list with list Id equal to list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param imageStream The image file.
+     * @param tag Tag for the image.
+     * @param label The image label.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<Image> addImageFileInputAsync(String listId, byte[] imageStream, Integer tag, String label, final ServiceCallback<Image> serviceCallback);
+
+    /**
+     * Add an image to the list with list Id equal to list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param imageStream The image file.
+     * @param tag Tag for the image.
+     * @param label The image label.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Image object
+     */
+    Observable<Image> addImageFileInputAsync(String listId, byte[] imageStream, Integer tag, String label);
+
+    /**
+     * Add an image to the list with list Id equal to list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param imageStream The image file.
+     * @param tag Tag for the image.
+     * @param label The image label.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Image object
+     */
+    Observable<ServiceResponse<Image>> addImageFileInputWithServiceResponseAsync(String listId, byte[] imageStream, Integer tag, String label);
 
 }

@@ -40,7 +40,7 @@ public class ImageIds {
     private String trackingId;
 
     /**
-     * Get the contentSource value.
+     * Get source of the content.
      *
      * @return the contentSource value
      */
@@ -49,7 +49,7 @@ public class ImageIds {
     }
 
     /**
-     * Set the contentSource value.
+     * Set source of the content.
      *
      * @param contentSource the contentSource value to set
      * @return the ImageIds object itself.
@@ -60,7 +60,7 @@ public class ImageIds {
     }
 
     /**
-     * Get the contentIds value.
+     * Get id of the contents.
      *
      * @return the contentIds value
      */
@@ -69,7 +69,7 @@ public class ImageIds {
     }
 
     /**
-     * Set the contentIds value.
+     * Set id of the contents.
      *
      * @param contentIds the contentIds value to set
      * @return the ImageIds object itself.
@@ -80,7 +80,7 @@ public class ImageIds {
     }
 
     /**
-     * Get the status value.
+     * Get get Image status.
      *
      * @return the status value
      */
@@ -89,7 +89,7 @@ public class ImageIds {
     }
 
     /**
-     * Set the status value.
+     * Set get Image status.
      *
      * @param status the status value to set
      * @return the ImageIds object itself.
@@ -100,7 +100,7 @@ public class ImageIds {
     }
 
     /**
-     * Get the trackingId value.
+     * Get tracking Id.
      *
      * @return the trackingId value
      */
@@ -109,7 +109,7 @@ public class ImageIds {
     }
 
     /**
-     * Set the trackingId value.
+     * Set tracking Id.
      *
      * @param trackingId the trackingId value to set
      * @return the ImageIds object itself.

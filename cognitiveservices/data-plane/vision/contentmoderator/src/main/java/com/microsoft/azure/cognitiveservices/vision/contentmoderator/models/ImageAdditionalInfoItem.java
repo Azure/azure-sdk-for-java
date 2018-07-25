@@ -27,7 +27,7 @@ public class ImageAdditionalInfoItem {
     private String value;
 
     /**
-     * Get the key value.
+     * Get key parameter.
      *
      * @return the key value
      */
@@ -36,7 +36,7 @@ public class ImageAdditionalInfoItem {
     }
 
     /**
-     * Set the key value.
+     * Set key parameter.
      *
      * @param key the key value to set
      * @return the ImageAdditionalInfoItem object itself.
@@ -47,7 +47,7 @@ public class ImageAdditionalInfoItem {
     }
 
     /**
-     * Get the value value.
+     * Get value parameter.
      *
      * @return the value value
      */
@@ -56,7 +56,7 @@ public class ImageAdditionalInfoItem {
     }
 
     /**
-     * Set the value value.
+     * Set value parameter.
      *
      * @param value the value value to set
      * @return the ImageAdditionalInfoItem object itself.

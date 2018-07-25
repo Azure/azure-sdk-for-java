@@ -22,7 +22,7 @@ public class JobListResult {
     private List<String> value;
 
     /**
-     * Get the value value.
+     * Get the job id.
      *
      * @return the value value
      */
@@ -31,7 +31,7 @@ public class JobListResult {
     }
 
     /**
-     * Set the value value.
+     * Set the job id.
      *
      * @param value the value value to set
      * @return the JobListResult object itself.

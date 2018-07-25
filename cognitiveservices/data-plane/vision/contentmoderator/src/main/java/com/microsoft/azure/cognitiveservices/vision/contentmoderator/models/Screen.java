@@ -76,7 +76,7 @@ public class Screen {
     private String trackingId;
 
     /**
-     * Get the originalText value.
+     * Get the original text.
      *
      * @return the originalText value
      */
@@ -85,7 +85,7 @@ public class Screen {
     }
 
     /**
-     * Set the originalText value.
+     * Set the original text.
      *
      * @param originalText the originalText value to set
      * @return the Screen object itself.
@@ -96,7 +96,7 @@ public class Screen {
     }
 
     /**
-     * Get the normalizedText value.
+     * Get the normalized text.
      *
      * @return the normalizedText value
      */
@@ -105,7 +105,7 @@ public class Screen {
     }
 
     /**
-     * Set the normalizedText value.
+     * Set the normalized text.
      *
      * @param normalizedText the normalizedText value to set
      * @return the Screen object itself.
@@ -116,7 +116,7 @@ public class Screen {
     }
 
     /**
-     * Get the autoCorrectedText value.
+     * Get the autocorrected text.
      *
      * @return the autoCorrectedText value
      */
@@ -125,7 +125,7 @@ public class Screen {
     }
 
     /**
-     * Set the autoCorrectedText value.
+     * Set the autocorrected text.
      *
      * @param autoCorrectedText the autoCorrectedText value to set
      * @return the Screen object itself.
@@ -136,7 +136,7 @@ public class Screen {
     }
 
     /**
-     * Get the misrepresentation value.
+     * Get the misrepresentation text.
      *
      * @return the misrepresentation value
      */
@@ -145,7 +145,7 @@ public class Screen {
     }
 
     /**
-     * Set the misrepresentation value.
+     * Set the misrepresentation text.
      *
      * @param misrepresentation the misrepresentation value to set
      * @return the Screen object itself.
@@ -156,7 +156,7 @@ public class Screen {
     }
 
     /**
-     * Get the classification value.
+     * Get the classification details of the text.
      *
      * @return the classification value
      */
@@ -165,7 +165,7 @@ public class Screen {
     }
 
     /**
-     * Set the classification value.
+     * Set the classification details of the text.
      *
      * @param classification the classification value to set
      * @return the Screen object itself.
@@ -176,7 +176,7 @@ public class Screen {
     }
 
     /**
-     * Get the status value.
+     * Get the evaluate status.
      *
      * @return the status value
      */
@@ -185,7 +185,7 @@ public class Screen {
     }
 
     /**
-     * Set the status value.
+     * Set the evaluate status.
      *
      * @param status the status value to set
      * @return the Screen object itself.
@@ -196,7 +196,7 @@ public class Screen {
     }
 
     /**
-     * Get the pII value.
+     * Get personal Identifier Information details.
      *
      * @return the pII value
      */
@@ -205,7 +205,7 @@ public class Screen {
     }
 
     /**
-     * Set the pII value.
+     * Set personal Identifier Information details.
      *
      * @param pII the pII value to set
      * @return the Screen object itself.
@@ -216,7 +216,7 @@ public class Screen {
     }
 
     /**
-     * Get the language value.
+     * Get language of the input text content.
      *
      * @return the language value
      */
@@ -225,7 +225,7 @@ public class Screen {
     }
 
     /**
-     * Set the language value.
+     * Set language of the input text content.
      *
      * @param language the language value to set
      * @return the Screen object itself.
@@ -256,7 +256,7 @@ public class Screen {
     }
 
     /**
-     * Get the trackingId value.
+     * Get unique Content Moderator transaction Id.
      *
      * @return the trackingId value
      */
@@ -265,7 +265,7 @@ public class Screen {
     }
 
     /**
-     * Set the trackingId value.
+     * Set unique Content Moderator transaction Id.
      *
      * @param trackingId the trackingId value to set
      * @return the Screen object itself.

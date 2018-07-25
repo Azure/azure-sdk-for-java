@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.implementation;
 
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.GetAllTermsOptionalParameter;
 import retrofit2.Retrofit;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.ListManagementTerms;
 import com.google.common.base.Joiner;
@@ -132,8 +131,8 @@ public class ListManagementTermsImpl implements ListManagementTerms {
      * @return the observable to the Object object
      */
     public Observable<ServiceResponse<Object>> addTermWithServiceResponseAsync(String listId, String term, String language) {
-        if (this.client.baseUrl() == null) {
-            throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (listId == null) {
             throw new IllegalArgumentException("Parameter listId is required and cannot be null.");
@@ -144,7 +143,7 @@ public class ListManagementTermsImpl implements ListManagementTerms {
         if (language == null) {
             throw new IllegalArgumentException("Parameter language is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.addTerm(listId, term, language, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
                 @Override
@@ -223,8 +222,8 @@ public class ListManagementTermsImpl implements ListManagementTerms {
      * @return the observable to the String object
      */
     public Observable<ServiceResponse<String>> deleteTermWithServiceResponseAsync(String listId, String term, String language) {
-        if (this.client.baseUrl() == null) {
-            throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (listId == null) {
             throw new IllegalArgumentException("Parameter listId is required and cannot be null.");
@@ -235,7 +234,7 @@ public class ListManagementTermsImpl implements ListManagementTerms {
         if (language == null) {
             throw new IllegalArgumentException("Parameter language is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.deleteTerm(listId, term, language, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<String>>>() {
                 @Override
@@ -257,20 +256,18 @@ public class ListManagementTermsImpl implements ListManagementTerms {
                 .build(response);
     }
 
-
     /**
      * Gets all terms from the list with list Id equal to the list Id passed.
      *
      * @param listId List Id of the image list.
      * @param language Language of the terms.
-     * @param getAllTermsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Terms object if successful.
      */
-    public Terms getAllTerms(String listId, String language, GetAllTermsOptionalParameter getAllTermsOptionalParameter) {
-        return getAllTermsWithServiceResponseAsync(listId, language, getAllTermsOptionalParameter).toBlocking().single().body();
+    public Terms getAllTerms(String listId, String language) {
+        return getAllTermsWithServiceResponseAsync(listId, language).toBlocking().single().body();
     }
 
     /**
@@ -278,13 +275,12 @@ public class ListManagementTermsImpl implements ListManagementTerms {
      *
      * @param listId List Id of the image list.
      * @param language Language of the terms.
-     * @param getAllTermsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Terms> getAllTermsAsync(String listId, String language, GetAllTermsOptionalParameter getAllTermsOptionalParameter, final ServiceCallback<Terms> serviceCallback) {
-        return ServiceFuture.fromResponse(getAllTermsWithServiceResponseAsync(listId, language, getAllTermsOptionalParameter), serviceCallback);
+    public ServiceFuture<Terms> getAllTermsAsync(String listId, String language, final ServiceCallback<Terms> serviceCallback) {
+        return ServiceFuture.fromResponse(getAllTermsWithServiceResponseAsync(listId, language), serviceCallback);
     }
 
     /**
@@ -292,12 +288,11 @@ public class ListManagementTermsImpl implements ListManagementTerms {
      *
      * @param listId List Id of the image list.
      * @param language Language of the terms.
-     * @param getAllTermsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Terms object
      */
-    public Observable<Terms> getAllTermsAsync(String listId, String language, GetAllTermsOptionalParameter getAllTermsOptionalParameter) {
-        return getAllTermsWithServiceResponseAsync(listId, language, getAllTermsOptionalParameter).map(new Func1<ServiceResponse<Terms>, Terms>() {
+    public Observable<Terms> getAllTermsAsync(String listId, String language) {
+        return getAllTermsWithServiceResponseAsync(listId, language).map(new Func1<ServiceResponse<Terms>, Terms>() {
             @Override
             public Terms call(ServiceResponse<Terms> response) {
                 return response.body();
@@ -310,13 +305,12 @@ public class ListManagementTermsImpl implements ListManagementTerms {
      *
      * @param listId List Id of the image list.
      * @param language Language of the terms.
-     * @param getAllTermsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Terms object
      */
-    public Observable<ServiceResponse<Terms>> getAllTermsWithServiceResponseAsync(String listId, String language, GetAllTermsOptionalParameter getAllTermsOptionalParameter) {
-        if (this.client.baseUrl() == null) {
-            throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
+    public Observable<ServiceResponse<Terms>> getAllTermsWithServiceResponseAsync(String listId, String language) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (listId == null) {
             throw new IllegalArgumentException("Parameter listId is required and cannot be null.");
@@ -324,10 +318,71 @@ public class ListManagementTermsImpl implements ListManagementTerms {
         if (language == null) {
             throw new IllegalArgumentException("Parameter language is required and cannot be null.");
         }
-        final Integer offset = getAllTermsOptionalParameter != null ? getAllTermsOptionalParameter.offset() : null;
-        final Integer limit = getAllTermsOptionalParameter != null ? getAllTermsOptionalParameter.limit() : null;
+        final Integer offset = null;
+        final Integer limit = null;
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getAllTerms(listId, language, offset, limit, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Terms>>>() {
+                @Override
+                public Observable<ServiceResponse<Terms>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Terms> clientResponse = getAllTermsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
 
-        return getAllTermsWithServiceResponseAsync(listId, language, offset, limit);
+    /**
+     * Gets all terms from the list with list Id equal to the list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param language Language of the terms.
+     * @param offset The pagination start index.
+     * @param limit The max limit.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws APIErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the Terms object if successful.
+     */
+    public Terms getAllTerms(String listId, String language, Integer offset, Integer limit) {
+        return getAllTermsWithServiceResponseAsync(listId, language, offset, limit).toBlocking().single().body();
+    }
+
+    /**
+     * Gets all terms from the list with list Id equal to the list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param language Language of the terms.
+     * @param offset The pagination start index.
+     * @param limit The max limit.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Terms> getAllTermsAsync(String listId, String language, Integer offset, Integer limit, final ServiceCallback<Terms> serviceCallback) {
+        return ServiceFuture.fromResponse(getAllTermsWithServiceResponseAsync(listId, language, offset, limit), serviceCallback);
+    }
+
+    /**
+     * Gets all terms from the list with list Id equal to the list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param language Language of the terms.
+     * @param offset The pagination start index.
+     * @param limit The max limit.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Terms object
+     */
+    public Observable<Terms> getAllTermsAsync(String listId, String language, Integer offset, Integer limit) {
+        return getAllTermsWithServiceResponseAsync(listId, language, offset, limit).map(new Func1<ServiceResponse<Terms>, Terms>() {
+            @Override
+            public Terms call(ServiceResponse<Terms> response) {
+                return response.body();
+            }
+        });
     }
 
     /**
@@ -341,8 +396,8 @@ public class ListManagementTermsImpl implements ListManagementTerms {
      * @return the observable to the Terms object
      */
     public Observable<ServiceResponse<Terms>> getAllTermsWithServiceResponseAsync(String listId, String language, Integer offset, Integer limit) {
-        if (this.client.baseUrl() == null) {
-            throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (listId == null) {
             throw new IllegalArgumentException("Parameter listId is required and cannot be null.");
@@ -350,7 +405,7 @@ public class ListManagementTermsImpl implements ListManagementTerms {
         if (language == null) {
             throw new IllegalArgumentException("Parameter language is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.getAllTerms(listId, language, offset, limit, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Terms>>>() {
                 @Override
@@ -370,69 +425,6 @@ public class ListManagementTermsImpl implements ListManagementTerms {
                 .register(200, new TypeToken<Terms>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
-    }
-
-    @Override
-    public ListManagementTermsGetAllTermsParameters getAllTerms() {
-        return new ListManagementTermsGetAllTermsParameters(this);
-    }
-
-    /**
-     * Internal class implementing ListManagementTermsGetAllTermsDefinition.
-     */
-    class ListManagementTermsGetAllTermsParameters implements ListManagementTermsGetAllTermsDefinition {
-        private ListManagementTermsImpl parent;
-        private String listId;
-        private String language;
-        private Integer offset;
-        private Integer limit;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        ListManagementTermsGetAllTermsParameters(ListManagementTermsImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public ListManagementTermsGetAllTermsParameters withListId(String listId) {
-            this.listId = listId;
-            return this;
-        }
-
-        @Override
-        public ListManagementTermsGetAllTermsParameters withLanguage(String language) {
-            this.language = language;
-            return this;
-        }
-
-        @Override
-        public ListManagementTermsGetAllTermsParameters withOffset(Integer offset) {
-            this.offset = offset;
-            return this;
-        }
-
-        @Override
-        public ListManagementTermsGetAllTermsParameters withLimit(Integer limit) {
-            this.limit = limit;
-            return this;
-        }
-
-        @Override
-        public Terms execute() {
-        return getAllTermsWithServiceResponseAsync(listId, language, offset, limit).toBlocking().single().body();
-    }
-
-        @Override
-        public Observable<Terms> executeAsync() {
-            return getAllTermsWithServiceResponseAsync(listId, language, offset, limit).map(new Func1<ServiceResponse<Terms>, Terms>() {
-                @Override
-                public Terms call(ServiceResponse<Terms> response) {
-                    return response.body();
-                }
-            });
-        }
     }
 
     /**
@@ -488,8 +480,8 @@ public class ListManagementTermsImpl implements ListManagementTerms {
      * @return the observable to the String object
      */
     public Observable<ServiceResponse<String>> deleteAllTermsWithServiceResponseAsync(String listId, String language) {
-        if (this.client.baseUrl() == null) {
-            throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (listId == null) {
             throw new IllegalArgumentException("Parameter listId is required and cannot be null.");
@@ -497,7 +489,7 @@ public class ListManagementTermsImpl implements ListManagementTerms {
         if (language == null) {
             throw new IllegalArgumentException("Parameter language is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.deleteAllTerms(listId, language, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<String>>>() {
                 @Override

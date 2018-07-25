@@ -9,7 +9,6 @@
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator;
 
 import com.microsoft.azure.AzureClient;
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.AzureRegionBaseUrl;
 import com.microsoft.rest.RestClient;
 
 /**
@@ -37,19 +36,19 @@ public interface ContentModeratorClient {
     String userAgent();
 
     /**
-     * Gets Supported Azure regions for Content Moderator endpoints. Possible values include: 'westus.api.cognitive.microsoft.com', 'westus2.api.cognitive.microsoft.com', 'eastus.api.cognitive.microsoft.com', 'eastus2.api.cognitive.microsoft.com', 'westcentralus.api.cognitive.microsoft.com', 'southcentralus.api.cognitive.microsoft.com', 'westeurope.api.cognitive.microsoft.com', 'northeurope.api.cognitive.microsoft.com', 'southeastasia.api.cognitive.microsoft.com', 'eastasia.api.cognitive.microsoft.com', 'australiaeast.api.cognitive.microsoft.com', 'brazilsouth.api.cognitive.microsoft.com', 'contentmoderatortest.azure-api.net'.
+     * Gets Supported Cognitive Services endpoints (protocol and hostname, for example: https://westus.api.cognitive.microsoft.com)..
      *
-     * @return the baseUrl value.
+     * @return the endpoint value.
      */
-    AzureRegionBaseUrl baseUrl();
+    String endpoint();
 
     /**
-     * Sets Supported Azure regions for Content Moderator endpoints. Possible values include: 'westus.api.cognitive.microsoft.com', 'westus2.api.cognitive.microsoft.com', 'eastus.api.cognitive.microsoft.com', 'eastus2.api.cognitive.microsoft.com', 'westcentralus.api.cognitive.microsoft.com', 'southcentralus.api.cognitive.microsoft.com', 'westeurope.api.cognitive.microsoft.com', 'northeurope.api.cognitive.microsoft.com', 'southeastasia.api.cognitive.microsoft.com', 'eastasia.api.cognitive.microsoft.com', 'australiaeast.api.cognitive.microsoft.com', 'brazilsouth.api.cognitive.microsoft.com', 'contentmoderatortest.azure-api.net'.
+     * Sets Supported Cognitive Services endpoints (protocol and hostname, for example: https://westus.api.cognitive.microsoft.com)..
      *
-     * @param baseUrl the baseUrl value.
+     * @param endpoint the endpoint value.
      * @return the service client itself
      */
-    ContentModeratorClient withBaseUrl(AzureRegionBaseUrl baseUrl);
+    ContentModeratorClient withEndpoint(String endpoint);
 
     /**
      * Gets Gets or sets the preferred language for the response..
