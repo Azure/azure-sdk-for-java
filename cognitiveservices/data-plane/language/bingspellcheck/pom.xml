@@ -16,7 +16,7 @@
     <packaging>jar</packaging>
     <name>Microsoft Azure SDK for Cognitive Service Spell Check</name>
     <description>This package contains Microsoft Cognitive Service Spell Check SDK.</description>
-    <url>https://github.com/Azure/azure-sdk-for-java/azure-cognitiveservices/language/bingspellcheck</url>
+    <url>https://github.com/Azure/azure-sdk-for-java/cognitiveservices/data-plane/language/bingspellcheck</url>
     <licenses>
         <license>
             <name>The MIT License (MIT)</name>

@@ -16,7 +16,7 @@
     <packaging>jar</packaging>
     <name>Microsoft Azure SDK for Cognitive Service Image Search</name>
     <description>This package contains Microsoft Cognitive Service Image Search SDK.</description>
-    <url>https://github.com/Azure/azure-sdk-for-java/azure-cognitiveservices/search/bingimagesearch</url>
+    <url>https://github.com/Azure/azure-sdk-for-java/cognitiveservices/data-plane/search/bingimagesearch</url>
     <licenses>
         <license>
             <name>The MIT License (MIT)</name>

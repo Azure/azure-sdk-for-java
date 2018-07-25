@@ -300,6 +300,7 @@
     <module>./language/luis/authoring</module>
     <module>./language/luis/runtime</module>
     <module>./language/textanalytics</module>
+    <module>./search/bingautosuggest</module>
     <module>./search/bingcustomimagesearch</module>
     <module>./search/bingcustomsearch</module>
     <module>./search/bingentitysearch</module>
