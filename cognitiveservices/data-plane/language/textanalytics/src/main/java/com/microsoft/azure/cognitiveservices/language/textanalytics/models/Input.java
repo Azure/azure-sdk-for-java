@@ -27,7 +27,7 @@ public class Input {
     private String text;
 
     /**
-     * Get the id value.
+     * Get unique, non-empty document identifier.
      *
      * @return the id value
      */
@@ -36,7 +36,7 @@ public class Input {
     }
 
     /**
-     * Set the id value.
+     * Set unique, non-empty document identifier.
      *
      * @param id the id value to set
      * @return the Input object itself.

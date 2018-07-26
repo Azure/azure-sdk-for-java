@@ -53,7 +53,7 @@ public class EntityRecord {
     private String bingId;
 
     /**
-     * Get the name value.
+     * Get entity formal name.
      *
      * @return the name value
      */
@@ -62,7 +62,7 @@ public class EntityRecord {
     }
 
     /**
-     * Set the name value.
+     * Set entity formal name.
      *
      * @param name the name value to set
      * @return the EntityRecord object itself.
@@ -73,7 +73,7 @@ public class EntityRecord {
     }
 
     /**
-     * Get the matches value.
+     * Get list of instances this entity appears in the text.
      *
      * @return the matches value
      */
@@ -82,7 +82,7 @@ public class EntityRecord {
     }
 
     /**
-     * Get the wikipediaLanguage value.
+     * Get wikipedia language for which the WikipediaId and WikipediaUrl refers to.
      *
      * @return the wikipediaLanguage value
      */
@@ -91,7 +91,7 @@ public class EntityRecord {
     }
 
     /**
-     * Set the wikipediaLanguage value.
+     * Set wikipedia language for which the WikipediaId and WikipediaUrl refers to.
      *
      * @param wikipediaLanguage the wikipediaLanguage value to set
      * @return the EntityRecord object itself.
@@ -102,7 +102,7 @@ public class EntityRecord {
     }
 
     /**
-     * Get the wikipediaId value.
+     * Get wikipedia unique identifier of the recognized entity.
      *
      * @return the wikipediaId value
      */
@@ -111,7 +111,7 @@ public class EntityRecord {
     }
 
     /**
-     * Set the wikipediaId value.
+     * Set wikipedia unique identifier of the recognized entity.
      *
      * @param wikipediaId the wikipediaId value to set
      * @return the EntityRecord object itself.
@@ -122,7 +122,7 @@ public class EntityRecord {
     }
 
     /**
-     * Get the wikipediaUrl value.
+     * Get uRL for the entity's English Wikipedia page.
      *
      * @return the wikipediaUrl value
      */
@@ -131,7 +131,7 @@ public class EntityRecord {
     }
 
     /**
-     * Get the bingId value.
+     * Get bing unique identifier of the recognized entity. Use in conjunction with the Bing Entity Search API to fetch additional relevant information.
      *
      * @return the bingId value
      */
@@ -140,7 +140,7 @@ public class EntityRecord {
     }
 
     /**
-     * Set the bingId value.
+     * Set bing unique identifier of the recognized entity. Use in conjunction with the Bing Entity Search API to fetch additional relevant information.
      *
      * @param bingId the bingId value to set
      * @return the EntityRecord object itself.

@@ -30,7 +30,7 @@ public class SentimentBatchResultItem {
     private String id;
 
     /**
-     * Get the score value.
+     * Get a decimal number between 0 and 1 denoting the sentiment of the document. A score above 0.7 usually refers to a positive document while a score below 0.3 normally has a negative connotation. Mid values refer to neutral text.
      *
      * @return the score value
      */
@@ -39,7 +39,7 @@ public class SentimentBatchResultItem {
     }
 
     /**
-     * Get the id value.
+     * Get unique document identifier.
      *
      * @return the id value
      */

@@ -27,7 +27,7 @@ public class ErrorRecord {
     private String message;
 
     /**
-     * Get the id value.
+     * Get input document unique identifier the error refers to.
      *
      * @return the id value
      */
@@ -36,7 +36,7 @@ public class ErrorRecord {
     }
 
     /**
-     * Set the id value.
+     * Set input document unique identifier the error refers to.
      *
      * @param id the id value to set
      * @return the ErrorRecord object itself.
@@ -47,7 +47,7 @@ public class ErrorRecord {
     }
 
     /**
-     * Get the message value.
+     * Get error message.
      *
      * @return the message value
      */
@@ -56,7 +56,7 @@ public class ErrorRecord {
     }
 
     /**
-     * Set the message value.
+     * Set error message.
      *
      * @param message the message value to set
      * @return the ErrorRecord object itself.

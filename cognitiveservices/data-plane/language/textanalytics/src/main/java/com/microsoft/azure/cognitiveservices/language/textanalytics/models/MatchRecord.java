@@ -33,7 +33,7 @@ public class MatchRecord {
     private Integer length;
 
     /**
-     * Get the text value.
+     * Get entity text as appears in the request.
      *
      * @return the text value
      */
@@ -42,7 +42,7 @@ public class MatchRecord {
     }
 
     /**
-     * Set the text value.
+     * Set entity text as appears in the request.
      *
      * @param text the text value to set
      * @return the MatchRecord object itself.
@@ -53,7 +53,7 @@ public class MatchRecord {
     }
 
     /**
-     * Get the offset value.
+     * Get start position (in Unicode characters) for the entity match text.
      *
      * @return the offset value
      */
@@ -62,7 +62,7 @@ public class MatchRecord {
     }
 
     /**
-     * Set the offset value.
+     * Set start position (in Unicode characters) for the entity match text.
      *
      * @param offset the offset value to set
      * @return the MatchRecord object itself.
@@ -73,7 +73,7 @@ public class MatchRecord {
     }
 
     /**
-     * Get the length value.
+     * Get length (in Unicode characters) for the entity match text.
      *
      * @return the length value
      */
@@ -82,7 +82,7 @@ public class MatchRecord {
     }
 
     /**
-     * Set the length value.
+     * Set length (in Unicode characters) for the entity match text.
      *
      * @param length the length value to set
      * @return the MatchRecord object itself.

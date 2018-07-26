@@ -29,7 +29,7 @@ public class KeyPhraseBatchResultItem {
     private String id;
 
     /**
-     * Get the keyPhrases value.
+     * Get a list of representative words or phrases. The number of key phrases returned is proportional to the number of words in the input document.
      *
      * @return the keyPhrases value
      */
@@ -38,7 +38,7 @@ public class KeyPhraseBatchResultItem {
     }
 
     /**
-     * Get the id value.
+     * Get unique document identifier.
      *
      * @return the id value
      */

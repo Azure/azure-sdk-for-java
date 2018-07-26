@@ -35,7 +35,7 @@ public class DetectedLanguage {
     private Double score;
 
     /**
-     * Get the name value.
+     * Get long name of a detected language (e.g. English, French).
      *
      * @return the name value
      */
@@ -44,7 +44,7 @@ public class DetectedLanguage {
     }
 
     /**
-     * Set the name value.
+     * Set long name of a detected language (e.g. English, French).
      *
      * @param name the name value to set
      * @return the DetectedLanguage object itself.
@@ -55,7 +55,7 @@ public class DetectedLanguage {
     }
 
     /**
-     * Get the iso6391Name value.
+     * Get a two letter representation of the detected language according to the ISO 639-1 standard (e.g. en, fr).
      *
      * @return the iso6391Name value
      */
@@ -64,7 +64,7 @@ public class DetectedLanguage {
     }
 
     /**
-     * Set the iso6391Name value.
+     * Set a two letter representation of the detected language according to the ISO 639-1 standard (e.g. en, fr).
      *
      * @param iso6391Name the iso6391Name value to set
      * @return the DetectedLanguage object itself.
@@ -75,7 +75,7 @@ public class DetectedLanguage {
     }
 
     /**
-     * Get the score value.
+     * Get a confidence score between 0 and 1. Scores close to 1 indicate 100% certainty that the identified language is true.
      *
      * @return the score value
      */
@@ -84,7 +84,7 @@ public class DetectedLanguage {
     }
 
     /**
-     * Set the score value.
+     * Set a confidence score between 0 and 1. Scores close to 1 indicate 100% certainty that the identified language is true.
      *
      * @param score the score value to set
      * @return the DetectedLanguage object itself.

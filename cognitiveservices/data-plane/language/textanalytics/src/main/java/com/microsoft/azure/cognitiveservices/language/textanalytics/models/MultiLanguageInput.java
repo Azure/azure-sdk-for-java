@@ -34,7 +34,7 @@ public class MultiLanguageInput {
     private String text;
 
     /**
-     * Get the language value.
+     * Get this is the 2 letter ISO 639-1 representation of a language. For example, use "en" for English; "es" for Spanish etc.,.
      *
      * @return the language value
      */
@@ -43,7 +43,7 @@ public class MultiLanguageInput {
     }
 
     /**
-     * Set the language value.
+     * Set this is the 2 letter ISO 639-1 representation of a language. For example, use "en" for English; "es" for Spanish etc.,.
      *
      * @param language the language value to set
      * @return the MultiLanguageInput object itself.
@@ -54,7 +54,7 @@ public class MultiLanguageInput {
     }
 
     /**
-     * Get the id value.
+     * Get unique, non-empty document identifier.
      *
      * @return the id value
      */
@@ -63,7 +63,7 @@ public class MultiLanguageInput {
     }
 
     /**
-     * Set the id value.
+     * Set unique, non-empty document identifier.
      *
      * @param id the id value to set
      * @return the MultiLanguageInput object itself.

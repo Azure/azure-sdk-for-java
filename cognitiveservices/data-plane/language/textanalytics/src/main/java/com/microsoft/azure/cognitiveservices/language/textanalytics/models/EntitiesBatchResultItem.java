@@ -28,7 +28,7 @@ public class EntitiesBatchResultItem {
     private List<EntityRecord> entities;
 
     /**
-     * Get the id value.
+     * Get unique document identifier.
      *
      * @return the id value
      */
@@ -37,7 +37,7 @@ public class EntitiesBatchResultItem {
     }
 
     /**
-     * Get the entities value.
+     * Get recognized entities in the document.
      *
      * @return the entities value
      */

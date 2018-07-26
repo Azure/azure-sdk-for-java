@@ -28,7 +28,7 @@ public class LanguageBatchResultItem {
     private List<DetectedLanguage> detectedLanguages;
 
     /**
-     * Get the id value.
+     * Get unique document identifier.
      *
      * @return the id value
      */
@@ -37,7 +37,7 @@ public class LanguageBatchResultItem {
     }
 
     /**
-     * Get the detectedLanguages value.
+     * Get a list of extracted languages.
      *
      * @return the detectedLanguages value
      */
