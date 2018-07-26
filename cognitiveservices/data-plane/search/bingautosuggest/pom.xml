@@ -14,7 +14,7 @@
     <artifactId>azure-cognitiveservices-autosuggest</artifactId>
     <version>1.0.2-beta</version>
     <packaging>jar</packaging>
-    <name>Microsoft Azure SDK for Auto Suggest</name>
+    <name>Microsoft Azure SDK for Cognitive Services Auto Suggest</name>
     <description>This package contains Microsoft Cognitive Service Auto Suggest SDK.</description>
     <url>https://github.com/Azure/azure-sdk-for-java/cognitiveservices/data-plane/search/bingautosuggest</url>
     <licenses>
