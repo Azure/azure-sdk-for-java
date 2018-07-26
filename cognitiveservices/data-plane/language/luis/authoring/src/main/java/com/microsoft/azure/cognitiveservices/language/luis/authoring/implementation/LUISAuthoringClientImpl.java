@@ -13,9 +13,8 @@ import com.microsoft.azure.AzureServiceClient;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.Apps;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.Examples;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.Features;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.LUISAuthoringAPI;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.LUISAuthoringClient;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.Models;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AzureRegions;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.Patterns;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.Permissions;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.Trains;
@@ -24,9 +23,9 @@ import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.RestClient;
 
 /**
- * Initializes a new instance of the LUISAuthoringAPIImpl class.
+ * Initializes a new instance of the LUISAuthoringClientImpl class.
  */
-public class LUISAuthoringAPIImpl extends AzureServiceClient implements LUISAuthoringAPI {
+public class LUISAuthoringClientImpl extends AzureServiceClient implements LUISAuthoringClient {
     /** the {@link AzureClient} used for long running operations. */
     private AzureClient azureClient;
 
@@ -36,29 +35,6 @@ public class LUISAuthoringAPIImpl extends AzureServiceClient implements LUISAuth
      */
     public AzureClient getAzureClient() {
         return this.azureClient;
-    }
-
-    /** Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth'. */
-    private AzureRegions azureRegion;
-
-    /**
-     * Gets Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth'.
-     *
-     * @return the azureRegion value.
-     */
-    public AzureRegions azureRegion() {
-        return this.azureRegion;
-    }
-
-    /**
-     * Sets Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth'.
-     *
-     * @param azureRegion the azureRegion value.
-     * @return the service client itself
-     */
-    public LUISAuthoringAPIImpl withAzureRegion(AzureRegions azureRegion) {
-        this.azureRegion = azureRegion;
-        return this;
     }
 
     /** Gets or sets the preferred language for the response. */
@@ -79,7 +55,7 @@ public class LUISAuthoringAPIImpl extends AzureServiceClient implements LUISAuth
      * @param acceptLanguage the acceptLanguage value.
      * @return the service client itself
      */
-    public LUISAuthoringAPIImpl withAcceptLanguage(String acceptLanguage) {
+    public LUISAuthoringClientImpl withAcceptLanguage(String acceptLanguage) {
         this.acceptLanguage = acceptLanguage;
         return this;
     }
@@ -102,7 +78,7 @@ public class LUISAuthoringAPIImpl extends AzureServiceClient implements LUISAuth
      * @param longRunningOperationRetryTimeout the longRunningOperationRetryTimeout value.
      * @return the service client itself
      */
-    public LUISAuthoringAPIImpl withLongRunningOperationRetryTimeout(int longRunningOperationRetryTimeout) {
+    public LUISAuthoringClientImpl withLongRunningOperationRetryTimeout(int longRunningOperationRetryTimeout) {
         this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeout;
         return this;
     }
@@ -125,7 +101,7 @@ public class LUISAuthoringAPIImpl extends AzureServiceClient implements LUISAuth
      * @param generateClientRequestId the generateClientRequestId value.
      * @return the service client itself
      */
-    public LUISAuthoringAPIImpl withGenerateClientRequestId(boolean generateClientRequestId) {
+    public LUISAuthoringClientImpl withGenerateClientRequestId(boolean generateClientRequestId) {
         this.generateClientRequestId = generateClientRequestId;
         return this;
     }
@@ -235,31 +211,31 @@ public class LUISAuthoringAPIImpl extends AzureServiceClient implements LUISAuth
     }
 
     /**
-     * Initializes an instance of LUISAuthoringAPI client.
+     * Initializes an instance of LUISAuthoringClient client.
      *
      * @param credentials the management credentials for Azure
      */
-    public LUISAuthoringAPIImpl(ServiceClientCredentials credentials) {
-        this("https://{AzureRegion}.api.cognitive.microsoft.com/luis/api/v2.0", credentials);
+    public LUISAuthoringClientImpl(ServiceClientCredentials credentials) {
+        this("https://api.cognitive.microsoft.com/luis/api/v2.0", credentials);
     }
 
     /**
-     * Initializes an instance of LUISAuthoringAPI client.
+     * Initializes an instance of LUISAuthoringClient client.
      *
      * @param baseUrl the base URL of the host
      * @param credentials the management credentials for Azure
      */
-    public LUISAuthoringAPIImpl(String baseUrl, ServiceClientCredentials credentials) {
+    public LUISAuthoringClientImpl(String baseUrl, ServiceClientCredentials credentials) {
         super(baseUrl, credentials);
         initialize();
     }
 
     /**
-     * Initializes an instance of LUISAuthoringAPI client.
+     * Initializes an instance of LUISAuthoringClient client.
      *
      * @param restClient the REST client to connect to Azure.
      */
-    public LUISAuthoringAPIImpl(RestClient restClient) {
+    public LUISAuthoringClientImpl(RestClient restClient) {
         super(restClient);
         initialize();
     }
@@ -286,6 +262,6 @@ public class LUISAuthoringAPIImpl extends AzureServiceClient implements LUISAuth
      */
     @Override
     public String userAgent() {
-        return String.format("%s (%s, %s)", super.userAgent(), "LUISAuthoringAPI", "v2.0 preview");
+        return String.format("%s (%s, %s)", super.userAgent(), "LUISAuthoringClient", "2.0");
     }
 }

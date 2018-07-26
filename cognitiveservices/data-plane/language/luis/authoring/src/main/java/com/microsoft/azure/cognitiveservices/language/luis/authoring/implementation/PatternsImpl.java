@@ -12,7 +12,6 @@ import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.GetP
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.GetIntentPatternsOptionalParameter;
 import retrofit2.Retrofit;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.Patterns;
-import com.google.common.base.Joiner;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.OperationStatus;
@@ -48,7 +47,7 @@ public class PatternsImpl implements Patterns {
     /** The Retrofit service to perform REST calls. */
     private PatternsService service;
     /** The service client containing this operation class. */
-    private LUISAuthoringAPIImpl client;
+    private LUISAuthoringClientImpl client;
 
     /**
      * Initializes an instance of PatternsImpl.
@@ -56,7 +55,7 @@ public class PatternsImpl implements Patterns {
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public PatternsImpl(Retrofit retrofit, LUISAuthoringAPIImpl client) {
+    public PatternsImpl(Retrofit retrofit, LUISAuthoringClientImpl client) {
         this.service = retrofit.create(PatternsService.class);
         this.client = client;
     }
@@ -68,35 +67,35 @@ public class PatternsImpl implements Patterns {
     interface PatternsService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Patterns addPattern" })
         @POST("apps/{appId}/versions/{versionId}/patternrule")
-        Observable<Response<ResponseBody>> addPattern(@Path("appId") UUID appId, @Path("versionId") String versionId, @Body PatternRuleCreateObject pattern, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> addPattern(@Path("appId") UUID appId, @Path("versionId") String versionId, @Body PatternRuleCreateObject pattern, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Patterns getPatterns" })
         @GET("apps/{appId}/versions/{versionId}/patternrules")
-        Observable<Response<ResponseBody>> getPatterns(@Path("appId") UUID appId, @Path("versionId") String versionId, @Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getPatterns(@Path("appId") UUID appId, @Path("versionId") String versionId, @Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Patterns updatePatterns" })
         @PUT("apps/{appId}/versions/{versionId}/patternrules")
-        Observable<Response<ResponseBody>> updatePatterns(@Path("appId") UUID appId, @Path("versionId") String versionId, @Body List<PatternRuleUpdateObject> patterns, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> updatePatterns(@Path("appId") UUID appId, @Path("versionId") String versionId, @Body List<PatternRuleUpdateObject> patterns, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Patterns batchAddPatterns" })
         @POST("apps/{appId}/versions/{versionId}/patternrules")
-        Observable<Response<ResponseBody>> batchAddPatterns(@Path("appId") UUID appId, @Path("versionId") String versionId, @Body List<PatternRuleCreateObject> patterns, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> batchAddPatterns(@Path("appId") UUID appId, @Path("versionId") String versionId, @Body List<PatternRuleCreateObject> patterns, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Patterns deletePatterns" })
         @HTTP(path = "apps/{appId}/versions/{versionId}/patternrules", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deletePatterns(@Path("appId") UUID appId, @Path("versionId") String versionId, @Body List<UUID> patternIds, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> deletePatterns(@Path("appId") UUID appId, @Path("versionId") String versionId, @Body List<UUID> patternIds, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Patterns updatePattern" })
         @PUT("apps/{appId}/versions/{versionId}/patternrules/{patternId}")
-        Observable<Response<ResponseBody>> updatePattern(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("patternId") UUID patternId, @Body PatternRuleUpdateObject pattern, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> updatePattern(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("patternId") UUID patternId, @Body PatternRuleUpdateObject pattern, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Patterns deletePattern" })
         @HTTP(path = "apps/{appId}/versions/{versionId}/patternrules/{patternId}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deletePattern(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("patternId") UUID patternId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> deletePattern(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("patternId") UUID patternId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Patterns getIntentPatterns" })
         @GET("apps/{appId}/versions/{versionId}/intents/{intentId}/patternrules")
-        Observable<Response<ResponseBody>> getIntentPatterns(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("intentId") UUID intentId, @Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getIntentPatterns(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("intentId") UUID intentId, @Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -157,9 +156,6 @@ public class PatternsImpl implements Patterns {
      * @return the observable to the PatternRuleInfo object
      */
     public Observable<ServiceResponse<PatternRuleInfo>> addPatternWithServiceResponseAsync(UUID appId, String versionId, PatternRuleCreateObject pattern) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
-        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -170,8 +166,7 @@ public class PatternsImpl implements Patterns {
             throw new IllegalArgumentException("Parameter pattern is required and cannot be null.");
         }
         Validator.validate(pattern);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.addPattern(appId, versionId, pattern, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.addPattern(appId, versionId, pattern, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PatternRuleInfo>>>() {
                 @Override
                 public Observable<ServiceResponse<PatternRuleInfo>> call(Response<ResponseBody> response) {
@@ -250,9 +245,6 @@ public class PatternsImpl implements Patterns {
      * @return the observable to the List&lt;PatternRuleInfo&gt; object
      */
     public Observable<ServiceResponse<List<PatternRuleInfo>>> getPatternsWithServiceResponseAsync(UUID appId, String versionId, GetPatternsOptionalParameter getPatternsOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
-        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -276,17 +268,13 @@ public class PatternsImpl implements Patterns {
      * @return the observable to the List&lt;PatternRuleInfo&gt; object
      */
     public Observable<ServiceResponse<List<PatternRuleInfo>>> getPatternsWithServiceResponseAsync(UUID appId, String versionId, Integer skip, Integer take) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
-        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.getPatterns(appId, versionId, skip, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.getPatterns(appId, versionId, skip, take, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<PatternRuleInfo>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<PatternRuleInfo>>> call(Response<ResponseBody> response) {
@@ -427,9 +415,6 @@ public class PatternsImpl implements Patterns {
      * @return the observable to the List&lt;PatternRuleInfo&gt; object
      */
     public Observable<ServiceResponse<List<PatternRuleInfo>>> updatePatternsWithServiceResponseAsync(UUID appId, String versionId, List<PatternRuleUpdateObject> patterns) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
-        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -440,8 +425,7 @@ public class PatternsImpl implements Patterns {
             throw new IllegalArgumentException("Parameter patterns is required and cannot be null.");
         }
         Validator.validate(patterns);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.updatePatterns(appId, versionId, patterns, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.updatePatterns(appId, versionId, patterns, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<PatternRuleInfo>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<PatternRuleInfo>>> call(Response<ResponseBody> response) {
@@ -519,9 +503,6 @@ public class PatternsImpl implements Patterns {
      * @return the observable to the List&lt;PatternRuleInfo&gt; object
      */
     public Observable<ServiceResponse<List<PatternRuleInfo>>> batchAddPatternsWithServiceResponseAsync(UUID appId, String versionId, List<PatternRuleCreateObject> patterns) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
-        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -532,8 +513,7 @@ public class PatternsImpl implements Patterns {
             throw new IllegalArgumentException("Parameter patterns is required and cannot be null.");
         }
         Validator.validate(patterns);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.batchAddPatterns(appId, versionId, patterns, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.batchAddPatterns(appId, versionId, patterns, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<PatternRuleInfo>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<PatternRuleInfo>>> call(Response<ResponseBody> response) {
@@ -611,9 +591,6 @@ public class PatternsImpl implements Patterns {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deletePatternsWithServiceResponseAsync(UUID appId, String versionId, List<UUID> patternIds) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
-        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -624,8 +601,7 @@ public class PatternsImpl implements Patterns {
             throw new IllegalArgumentException("Parameter patternIds is required and cannot be null.");
         }
         Validator.validate(patternIds);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.deletePatterns(appId, versionId, patternIds, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.deletePatterns(appId, versionId, patternIds, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -707,9 +683,6 @@ public class PatternsImpl implements Patterns {
      * @return the observable to the PatternRuleInfo object
      */
     public Observable<ServiceResponse<PatternRuleInfo>> updatePatternWithServiceResponseAsync(UUID appId, String versionId, UUID patternId, PatternRuleUpdateObject pattern) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
-        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -723,8 +696,7 @@ public class PatternsImpl implements Patterns {
             throw new IllegalArgumentException("Parameter pattern is required and cannot be null.");
         }
         Validator.validate(pattern);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.updatePattern(appId, versionId, patternId, pattern, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.updatePattern(appId, versionId, patternId, pattern, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PatternRuleInfo>>>() {
                 @Override
                 public Observable<ServiceResponse<PatternRuleInfo>> call(Response<ResponseBody> response) {
@@ -802,9 +774,6 @@ public class PatternsImpl implements Patterns {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deletePatternWithServiceResponseAsync(UUID appId, String versionId, UUID patternId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
-        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -814,8 +783,7 @@ public class PatternsImpl implements Patterns {
         if (patternId == null) {
             throw new IllegalArgumentException("Parameter patternId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.deletePattern(appId, versionId, patternId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.deletePattern(appId, versionId, patternId, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -898,9 +866,6 @@ public class PatternsImpl implements Patterns {
      * @return the observable to the List&lt;PatternRuleInfo&gt; object
      */
     public Observable<ServiceResponse<List<PatternRuleInfo>>> getIntentPatternsWithServiceResponseAsync(UUID appId, String versionId, UUID intentId, GetIntentPatternsOptionalParameter getIntentPatternsOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
-        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -928,9 +893,6 @@ public class PatternsImpl implements Patterns {
      * @return the observable to the List&lt;PatternRuleInfo&gt; object
      */
     public Observable<ServiceResponse<List<PatternRuleInfo>>> getIntentPatternsWithServiceResponseAsync(UUID appId, String versionId, UUID intentId, Integer skip, Integer take) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
-        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -940,8 +902,7 @@ public class PatternsImpl implements Patterns {
         if (intentId == null) {
             throw new IllegalArgumentException("Parameter intentId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.getIntentPatterns(appId, versionId, intentId, skip, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.getIntentPatterns(appId, versionId, intentId, skip, take, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<PatternRuleInfo>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<PatternRuleInfo>>> call(Response<ResponseBody> response) {
