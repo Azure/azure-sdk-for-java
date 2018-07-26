@@ -18,20 +18,20 @@ public class ImageType {
      * Confidence level that the image is a clip art.
      */
     @JsonProperty(value = "clipArtType")
-    private Double clipArtType;
+    private double clipArtType;
 
     /**
      * Confidence level that the image is a line drawing.
      */
     @JsonProperty(value = "lineDrawingType")
-    private Double lineDrawingType;
+    private double lineDrawingType;
 
     /**
      * Get the clipArtType value.
      *
      * @return the clipArtType value
      */
-    public Double clipArtType() {
+    public double clipArtType() {
         return this.clipArtType;
     }
 
@@ -41,7 +41,7 @@ public class ImageType {
      * @param clipArtType the clipArtType value to set
      * @return the ImageType object itself.
      */
-    public ImageType withClipArtType(Double clipArtType) {
+    public ImageType withClipArtType(double clipArtType) {
         this.clipArtType = clipArtType;
         return this;
     }
@@ -51,7 +51,7 @@ public class ImageType {
      *
      * @return the lineDrawingType value
      */
-    public Double lineDrawingType() {
+    public double lineDrawingType() {
         return this.lineDrawingType;
     }
 
@@ -61,7 +61,7 @@ public class ImageType {
      * @param lineDrawingType the lineDrawingType value to set
      * @return the ImageType object itself.
      */
-    public ImageType withLineDrawingType(Double lineDrawingType) {
+    public ImageType withLineDrawingType(double lineDrawingType) {
         this.lineDrawingType = lineDrawingType;
         return this;
     }

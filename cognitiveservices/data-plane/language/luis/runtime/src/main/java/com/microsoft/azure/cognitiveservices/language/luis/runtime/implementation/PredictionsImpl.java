@@ -11,7 +11,6 @@ package com.microsoft.azure.cognitiveservices.language.luis.runtime.implementati
 import com.microsoft.azure.cognitiveservices.language.luis.runtime.models.ResolveOptionalParameter;
 import retrofit2.Retrofit;
 import com.microsoft.azure.cognitiveservices.language.luis.runtime.Predictions;
-import com.google.common.base.Joiner;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.cognitiveservices.language.luis.runtime.models.APIErrorException;
 import com.microsoft.azure.cognitiveservices.language.luis.runtime.models.LuisResult;
@@ -57,8 +56,8 @@ public class PredictionsImpl implements Predictions {
      */
     interface PredictionsService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.runtime.Predictions resolve" })
-        @POST("{appId}")
-        Observable<Response<ResponseBody>> resolve(@Path("appId") String appId, @Body String query, @Query("timezoneOffset") Double timezoneOffset, @Query("verbose") Boolean verbose, @Query("staging") Boolean staging, @Query("spellCheck") Boolean spellCheck, @Query("bing-spell-check-subscription-key") String bingSpellCheckSubscriptionKey, @Query("log") Boolean log, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @POST("apps/{appId}")
+        Observable<Response<ResponseBody>> resolve(@Path("appId") String appId, @Body String query, @Query("timezoneOffset") Double timezoneOffset, @Query("verbose") Boolean verbose, @Query("staging") Boolean staging, @Query("spellCheck") Boolean spellCheck, @Query("bing-spell-check-subscription-key") String bingSpellCheckSubscriptionKey, @Query("log") Boolean log, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -120,9 +119,6 @@ public class PredictionsImpl implements Predictions {
      * @return the observable to the LuisResult object
      */
     public Observable<ServiceResponse<LuisResult>> resolveWithServiceResponseAsync(String appId, String query, ResolveOptionalParameter resolveOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
-        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -154,17 +150,13 @@ public class PredictionsImpl implements Predictions {
      * @return the observable to the LuisResult object
      */
     public Observable<ServiceResponse<LuisResult>> resolveWithServiceResponseAsync(String appId, String query, Double timezoneOffset, Boolean verbose, Boolean staging, Boolean spellCheck, String bingSpellCheckSubscriptionKey, Boolean log) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
-        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
         if (query == null) {
             throw new IllegalArgumentException("Parameter query is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.resolve(appId, query, timezoneOffset, verbose, staging, spellCheck, bingSpellCheckSubscriptionKey, log, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.resolve(appId, query, timezoneOffset, verbose, staging, spellCheck, bingSpellCheckSubscriptionKey, log, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<LuisResult>>>() {
                 @Override
                 public Observable<ServiceResponse<LuisResult>> call(Response<ResponseBody> response) {
