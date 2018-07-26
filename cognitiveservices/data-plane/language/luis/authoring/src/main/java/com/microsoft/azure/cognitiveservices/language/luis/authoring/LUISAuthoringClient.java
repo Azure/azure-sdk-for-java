@@ -9,13 +9,12 @@
 package com.microsoft.azure.cognitiveservices.language.luis.authoring;
 
 import com.microsoft.azure.AzureClient;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AzureRegions;
 import com.microsoft.rest.RestClient;
 
 /**
- * The interface for LUISAuthoringAPI class.
+ * The interface for LUISAuthoringClient class.
  */
-public interface LUISAuthoringAPI {
+public interface LUISAuthoringClient {
     /**
      * Gets the REST client.
      *
@@ -37,21 +36,6 @@ public interface LUISAuthoringAPI {
     String userAgent();
 
     /**
-     * Gets Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth'.
-     *
-     * @return the azureRegion value.
-     */
-    AzureRegions azureRegion();
-
-    /**
-     * Sets Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth'.
-     *
-     * @param azureRegion the azureRegion value.
-     * @return the service client itself
-     */
-    LUISAuthoringAPI withAzureRegion(AzureRegions azureRegion);
-
-    /**
      * Gets Gets or sets the preferred language for the response..
      *
      * @return the acceptLanguage value.
@@ -64,7 +48,7 @@ public interface LUISAuthoringAPI {
      * @param acceptLanguage the acceptLanguage value.
      * @return the service client itself
      */
-    LUISAuthoringAPI withAcceptLanguage(String acceptLanguage);
+    LUISAuthoringClient withAcceptLanguage(String acceptLanguage);
 
     /**
      * Gets Gets or sets the retry timeout in seconds for Long Running Operations. Default value is 30..
@@ -79,7 +63,7 @@ public interface LUISAuthoringAPI {
      * @param longRunningOperationRetryTimeout the longRunningOperationRetryTimeout value.
      * @return the service client itself
      */
-    LUISAuthoringAPI withLongRunningOperationRetryTimeout(int longRunningOperationRetryTimeout);
+    LUISAuthoringClient withLongRunningOperationRetryTimeout(int longRunningOperationRetryTimeout);
 
     /**
      * Gets When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true..
@@ -94,7 +78,7 @@ public interface LUISAuthoringAPI {
      * @param generateClientRequestId the generateClientRequestId value.
      * @return the service client itself
      */
-    LUISAuthoringAPI withGenerateClientRequestId(boolean generateClientRequestId);
+    LUISAuthoringClient withGenerateClientRequestId(boolean generateClientRequestId);
 
     /**
      * Gets the Features object to access its operations.

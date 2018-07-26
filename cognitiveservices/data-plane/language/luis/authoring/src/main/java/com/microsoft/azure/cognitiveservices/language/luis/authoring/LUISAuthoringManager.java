@@ -6,8 +6,7 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring;
 
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.implementation.LUISAuthoringAPIImpl;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AzureRegions;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.implementation.LUISAuthoringClientImpl;
 import com.microsoft.rest.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import okhttp3.Interceptor;
@@ -24,13 +23,11 @@ public class LUISAuthoringManager {
     /**
      * Initializes an instance of Language Understanding (LUIS) Authoring API client.
      *
-     * @param region Supported Azure regions for Cognitive Services endpoints.
      * @param subscriptionKey the Language Understanding (LUIS) Authoring API key
      * @return the Language Understanding Authoring API client
      */
-    public static LUISAuthoringAPI authenticate(AzureRegions region, String subscriptionKey) {
-        return authenticate("https://{AzureRegion}.api.cognitive.microsoft.com/luis/api/v2.0/", subscriptionKey)
-                .withAzureRegion(region);
+    public static LUISAuthoringClient authenticate(String subscriptionKey) {
+        return authenticate("https://api.cognitive.microsoft.com/luis/api/v2.0/", subscriptionKey);
     }
 
     /**
@@ -40,7 +37,7 @@ public class LUISAuthoringManager {
      * @param subscriptionKey the Language Understanding (LUIS) Authoring API key
      * @return the Language Understanding (LUIS) Authoring API client
      */
-    public static LUISAuthoringAPI authenticate(String baseUrl, final String subscriptionKey) {
+    public static LUISAuthoringClient authenticate(String baseUrl, final String subscriptionKey) {
         ServiceClientCredentials serviceClientCredentials = new ServiceClientCredentials() {
             @Override
             public void applyCredentialsFilter(OkHttpClient.Builder builder) {
@@ -65,13 +62,11 @@ public class LUISAuthoringManager {
     /**
      * Initializes an instance of Language Understanding (LUIS) Authoring API client.
      *
-     * @param region Supported Azure regions for Cognitive Services endpoints.
      * @param credentials the management credentials for Azure
      * @return the Language Understanding (LUIS) Authoring API client
      */
-    public static LUISAuthoringAPI authenticate(AzureRegions region, ServiceClientCredentials credentials) {
-        return authenticate("https://{AzureRegion}.api.cognitive.microsoft.com/luis/api/v2.0/", credentials)
-                .withAzureRegion(region);
+    public static LUISAuthoringClient authenticate(ServiceClientCredentials credentials) {
+        return authenticate("https://api.cognitive.microsoft.com/luis/api/v2.0/", credentials);
     }
 
     /**
@@ -81,8 +76,8 @@ public class LUISAuthoringManager {
      * @param credentials the management credentials for Azure
      * @return the Language Understanding (LUIS) Authoring API client
      */
-    public static LUISAuthoringAPI authenticate(String baseUrl, ServiceClientCredentials credentials) {
-        return new LUISAuthoringAPIImpl(baseUrl, credentials);
+    public static LUISAuthoringClient authenticate(String baseUrl, ServiceClientCredentials credentials) {
+        return new LUISAuthoringClientImpl(baseUrl, credentials);
     }
 
     /**
@@ -91,7 +86,7 @@ public class LUISAuthoringManager {
      * @param restClient the REST client to connect to Azure.
      * @return the Language Understanding (LUIS) Authoring API client
      */
-    public static LUISAuthoringAPI authenticate(RestClient restClient) {
-        return new LUISAuthoringAPIImpl(restClient);
+    public static LUISAuthoringClient authenticate(RestClient restClient) {
+        return new LUISAuthoringClientImpl(restClient);
     }
 }

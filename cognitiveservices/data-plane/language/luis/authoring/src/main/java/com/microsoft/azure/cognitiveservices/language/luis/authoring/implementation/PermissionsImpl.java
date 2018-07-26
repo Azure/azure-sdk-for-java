@@ -13,7 +13,6 @@ import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.Dele
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.UpdatePermissionsOptionalParameter;
 import retrofit2.Retrofit;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.Permissions;
-import com.google.common.base.Joiner;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.CollaboratorsArray;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException;
@@ -48,7 +47,7 @@ public class PermissionsImpl implements Permissions {
     /** The Retrofit service to perform REST calls. */
     private PermissionsService service;
     /** The service client containing this operation class. */
-    private LUISAuthoringAPIImpl client;
+    private LUISAuthoringClientImpl client;
 
     /**
      * Initializes an instance of PermissionsImpl.
@@ -56,7 +55,7 @@ public class PermissionsImpl implements Permissions {
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public PermissionsImpl(Retrofit retrofit, LUISAuthoringAPIImpl client) {
+    public PermissionsImpl(Retrofit retrofit, LUISAuthoringClientImpl client) {
         this.service = retrofit.create(PermissionsService.class);
         this.client = client;
     }
@@ -68,19 +67,19 @@ public class PermissionsImpl implements Permissions {
     interface PermissionsService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Permissions list" })
         @GET("apps/{appId}/permissions")
-        Observable<Response<ResponseBody>> list(@Path("appId") UUID appId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Path("appId") UUID appId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Permissions add" })
         @POST("apps/{appId}/permissions")
-        Observable<Response<ResponseBody>> add(@Path("appId") UUID appId, @Header("accept-language") String acceptLanguage, @Body UserCollaborator userToAdd, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> add(@Path("appId") UUID appId, @Header("accept-language") String acceptLanguage, @Body UserCollaborator userToAdd, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Permissions delete" })
         @HTTP(path = "apps/{appId}/permissions", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> delete(@Path("appId") UUID appId, @Header("accept-language") String acceptLanguage, @Body UserCollaborator userToDelete, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> delete(@Path("appId") UUID appId, @Header("accept-language") String acceptLanguage, @Body UserCollaborator userToDelete, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Permissions update" })
         @PUT("apps/{appId}/permissions")
-        Observable<Response<ResponseBody>> update(@Path("appId") UUID appId, @Header("accept-language") String acceptLanguage, @Body CollaboratorsArray collaborators, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> update(@Path("appId") UUID appId, @Header("accept-language") String acceptLanguage, @Body CollaboratorsArray collaborators, @Header("User-Agent") String userAgent);
 
     }
 
@@ -133,14 +132,10 @@ public class PermissionsImpl implements Permissions {
      * @return the observable to the UserAccessList object
      */
     public Observable<ServiceResponse<UserAccessList>> listWithServiceResponseAsync(UUID appId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
-        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.list(appId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.list(appId, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UserAccessList>>>() {
                 @Override
                 public Observable<ServiceResponse<UserAccessList>> call(Response<ResponseBody> response) {
@@ -215,9 +210,6 @@ public class PermissionsImpl implements Permissions {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> addWithServiceResponseAsync(UUID appId, AddPermissionsOptionalParameter addOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
-        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -235,16 +227,12 @@ public class PermissionsImpl implements Permissions {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> addWithServiceResponseAsync(UUID appId, String email) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
-        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
         UserCollaborator userToAdd = new UserCollaborator();
         userToAdd.withEmail(email);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.add(appId, this.client.acceptLanguage(), userToAdd, parameterizedHost, this.client.userAgent())
+        return service.add(appId, this.client.acceptLanguage(), userToAdd, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -368,9 +356,6 @@ public class PermissionsImpl implements Permissions {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deleteWithServiceResponseAsync(UUID appId, DeletePermissionsOptionalParameter deleteOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
-        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -388,16 +373,12 @@ public class PermissionsImpl implements Permissions {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deleteWithServiceResponseAsync(UUID appId, String email) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
-        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
         UserCollaborator userToDelete = new UserCollaborator();
         userToDelete.withEmail(email);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.delete(appId, this.client.acceptLanguage(), userToDelete, parameterizedHost, this.client.userAgent())
+        return service.delete(appId, this.client.acceptLanguage(), userToDelete, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -521,9 +502,6 @@ public class PermissionsImpl implements Permissions {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateWithServiceResponseAsync(UUID appId, UpdatePermissionsOptionalParameter updateOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
-        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -541,17 +519,13 @@ public class PermissionsImpl implements Permissions {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateWithServiceResponseAsync(UUID appId, List<String> emails) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
-        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
         Validator.validate(emails);
         CollaboratorsArray collaborators = new CollaboratorsArray();
         collaborators.withEmails(emails);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.update(appId, this.client.acceptLanguage(), collaborators, parameterizedHost, this.client.userAgent())
+        return service.update(appId, this.client.acceptLanguage(), collaborators, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {

@@ -13,7 +13,6 @@ import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.List
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.UpdatePhraseListOptionalParameter;
 import retrofit2.Retrofit;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.Features;
-import com.google.common.base.Joiner;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.FeaturesResponseObject;
@@ -50,7 +49,7 @@ public class FeaturesImpl implements Features {
     /** The Retrofit service to perform REST calls. */
     private FeaturesService service;
     /** The service client containing this operation class. */
-    private LUISAuthoringAPIImpl client;
+    private LUISAuthoringClientImpl client;
 
     /**
      * Initializes an instance of FeaturesImpl.
@@ -58,7 +57,7 @@ public class FeaturesImpl implements Features {
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public FeaturesImpl(Retrofit retrofit, LUISAuthoringAPIImpl client) {
+    public FeaturesImpl(Retrofit retrofit, LUISAuthoringClientImpl client) {
         this.service = retrofit.create(FeaturesService.class);
         this.client = client;
     }
@@ -70,27 +69,27 @@ public class FeaturesImpl implements Features {
     interface FeaturesService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Features addPhraseList" })
         @POST("apps/{appId}/versions/{versionId}/phraselists")
-        Observable<Response<ResponseBody>> addPhraseList(@Path("appId") UUID appId, @Path("versionId") String versionId, @Body PhraselistCreateObject phraselistCreateObject, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> addPhraseList(@Path("appId") UUID appId, @Path("versionId") String versionId, @Body PhraselistCreateObject phraselistCreateObject, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Features listPhraseLists" })
         @GET("apps/{appId}/versions/{versionId}/phraselists")
-        Observable<Response<ResponseBody>> listPhraseLists(@Path("appId") UUID appId, @Path("versionId") String versionId, @Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listPhraseLists(@Path("appId") UUID appId, @Path("versionId") String versionId, @Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Features list" })
         @GET("apps/{appId}/versions/{versionId}/features")
-        Observable<Response<ResponseBody>> list(@Path("appId") UUID appId, @Path("versionId") String versionId, @Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Path("appId") UUID appId, @Path("versionId") String versionId, @Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Features getPhraseList" })
         @GET("apps/{appId}/versions/{versionId}/phraselists/{phraselistId}")
-        Observable<Response<ResponseBody>> getPhraseList(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("phraselistId") int phraselistId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getPhraseList(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("phraselistId") int phraselistId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Features updatePhraseList" })
         @PUT("apps/{appId}/versions/{versionId}/phraselists/{phraselistId}")
-        Observable<Response<ResponseBody>> updatePhraseList(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("phraselistId") int phraselistId, @Body PhraselistUpdateObject phraselistUpdateObject, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> updatePhraseList(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("phraselistId") int phraselistId, @Body PhraselistUpdateObject phraselistUpdateObject, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Features deletePhraseList" })
         @HTTP(path = "apps/{appId}/versions/{versionId}/phraselists/{phraselistId}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deletePhraseList(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("phraselistId") int phraselistId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> deletePhraseList(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("phraselistId") int phraselistId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -151,9 +150,6 @@ public class FeaturesImpl implements Features {
      * @return the observable to the Integer object
      */
     public Observable<ServiceResponse<Integer>> addPhraseListWithServiceResponseAsync(UUID appId, String versionId, PhraselistCreateObject phraselistCreateObject) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
-        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -164,8 +160,7 @@ public class FeaturesImpl implements Features {
             throw new IllegalArgumentException("Parameter phraselistCreateObject is required and cannot be null.");
         }
         Validator.validate(phraselistCreateObject);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.addPhraseList(appId, versionId, phraselistCreateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.addPhraseList(appId, versionId, phraselistCreateObject, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Integer>>>() {
                 @Override
                 public Observable<ServiceResponse<Integer>> call(Response<ResponseBody> response) {
@@ -244,9 +239,6 @@ public class FeaturesImpl implements Features {
      * @return the observable to the List&lt;PhraseListFeatureInfo&gt; object
      */
     public Observable<ServiceResponse<List<PhraseListFeatureInfo>>> listPhraseListsWithServiceResponseAsync(UUID appId, String versionId, ListPhraseListsOptionalParameter listPhraseListsOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
-        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -270,17 +262,13 @@ public class FeaturesImpl implements Features {
      * @return the observable to the List&lt;PhraseListFeatureInfo&gt; object
      */
     public Observable<ServiceResponse<List<PhraseListFeatureInfo>>> listPhraseListsWithServiceResponseAsync(UUID appId, String versionId, Integer skip, Integer take) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
-        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.listPhraseLists(appId, versionId, skip, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.listPhraseLists(appId, versionId, skip, take, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<PhraseListFeatureInfo>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<PhraseListFeatureInfo>>> call(Response<ResponseBody> response) {
@@ -422,9 +410,6 @@ public class FeaturesImpl implements Features {
      * @return the observable to the FeaturesResponseObject object
      */
     public Observable<ServiceResponse<FeaturesResponseObject>> listWithServiceResponseAsync(UUID appId, String versionId, ListFeaturesOptionalParameter listOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
-        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -448,17 +433,13 @@ public class FeaturesImpl implements Features {
      * @return the observable to the FeaturesResponseObject object
      */
     public Observable<ServiceResponse<FeaturesResponseObject>> listWithServiceResponseAsync(UUID appId, String versionId, Integer skip, Integer take) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
-        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.list(appId, versionId, skip, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.list(appId, versionId, skip, take, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<FeaturesResponseObject>>>() {
                 @Override
                 public Observable<ServiceResponse<FeaturesResponseObject>> call(Response<ResponseBody> response) {
@@ -599,17 +580,13 @@ public class FeaturesImpl implements Features {
      * @return the observable to the PhraseListFeatureInfo object
      */
     public Observable<ServiceResponse<PhraseListFeatureInfo>> getPhraseListWithServiceResponseAsync(UUID appId, String versionId, int phraselistId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
-        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.getPhraseList(appId, versionId, phraselistId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.getPhraseList(appId, versionId, phraselistId, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PhraseListFeatureInfo>>>() {
                 @Override
                 public Observable<ServiceResponse<PhraseListFeatureInfo>> call(Response<ResponseBody> response) {
@@ -692,9 +669,6 @@ public class FeaturesImpl implements Features {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updatePhraseListWithServiceResponseAsync(UUID appId, String versionId, int phraselistId, UpdatePhraseListOptionalParameter updatePhraseListOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
-        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -717,9 +691,6 @@ public class FeaturesImpl implements Features {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updatePhraseListWithServiceResponseAsync(UUID appId, String versionId, int phraselistId, PhraselistUpdateObject phraselistUpdateObject) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
-        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -727,8 +698,7 @@ public class FeaturesImpl implements Features {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
         Validator.validate(phraselistUpdateObject);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.updatePhraseList(appId, versionId, phraselistId, phraselistUpdateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.updatePhraseList(appId, versionId, phraselistId, phraselistUpdateObject, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -869,17 +839,13 @@ public class FeaturesImpl implements Features {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deletePhraseListWithServiceResponseAsync(UUID appId, String versionId, int phraselistId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
-        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.deletePhraseList(appId, versionId, phraselistId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.deletePhraseList(appId, versionId, phraselistId, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
