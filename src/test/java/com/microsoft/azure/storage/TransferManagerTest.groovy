@@ -2,6 +2,7 @@ package com.microsoft.azure.storage
 
 import com.microsoft.azure.storage.blob.BlobAccessConditions
 import com.microsoft.azure.storage.blob.BlobHTTPHeaders
+import com.microsoft.azure.storage.blob.BlobRange
 import com.microsoft.azure.storage.blob.BlockBlobURL
 import com.microsoft.azure.storage.blob.CommonRestResponse
 import com.microsoft.azure.storage.blob.ContainerURL
@@ -105,8 +106,8 @@ class TransferManagerTest extends APISpec {
 
         /*
         This test is just validating that exceptions are thrown if certain values are null. The values not being test do
-        not need to be correct, simply not null. Because order in which Spock initializes values, we can't just use the
-        bu property for the url.
+        not need to be correct, simply not null. Because of the order in which Spock initializes values, we can't just
+        use the bu property for the url.
          */
         where:
         data                       | blobURL
@@ -632,8 +633,72 @@ class TransferManagerTest extends APISpec {
         outBuf.compareTo(data) == 0
 
         where:
-        data                           | size
-        defaultData                    | defaultDataSize
-        getRandomData(8 * 1024 * 1024) | 8 * 1024 * 1024
+        data                                | size
+        defaultData                         | defaultDataSize // Small upload
+        getRandomData(16 * 1024 * 1024)     | 16 * 1024 * 1024 // Large upload in several chunks
+        getRandomData(8 * 1026 * 1024 + 10) | 8 * 1026 * 1024 + 10 // Medium upload not aligned on block boundary
+    }
+
+    @Unroll
+    def "Download buffer IA null"() {
+        when:
+        TransferManager.downloadBlobToBuffer(blobURL, null, null, buffer, null).blockingGet()
+
+        then:
+        thrown(IllegalArgumentException)
+
+        /*
+        This test is just validating that exceptions are thrown if certain values are null. The values not being test do
+        not need to be correct, simply not null. Because order in which Spock initializes values, we can't just use the
+        bu property for the url.
+         */
+        where:
+        buffer                  | blobURL
+        null                    | new BlockBlobURL(new URL("http://account.com"), StorageURL.createPipeline(primaryCreds, new PipelineOptions()))
+        ByteBuffer.allocate(10) | null
+    }
+
+    @Unroll
+    def "Download buffer range"() {
+        setup:
+        bu.upload(defaultFlowable, defaultDataSize, null, null, null).blockingGet()
+        ByteBuffer buffer = ByteBuffer.allocate((int)range.count)
+
+        when:
+        TransferManager.downloadBlobToBuffer(bu, range, null, buffer, null).blockingGet()
+        buffer.position(0)
+
+        then:
+        buffer.compareTo(
+                (ByteBuffer) defaultData.duplicate()
+                        .position((int) range.offset).limit((int) (range.offset + range.count))) == 0
+
+        where:
+        range                                 | _
+        new BlobRange(0, defaultDataSize)     | _
+        new BlobRange(1, defaultDataSize - 1) | _
+        new BlobRange(0, defaultDataSize - 1) | _
+    }
+
+    def "Download buffer count null"() {
+        setup:
+        bu.upload()
+    }
+
+    def "Download buffer IA buffer size"() {
+        setup:
+        bu.upload(defaultFlowable, defaultDataSize, null, null, null).blockingGet()
+
+        when:
+        Throwable t = TransferManager.downloadBlobToBuffer(bu, null, null,
+                ByteBuffer.allocate(defaultDataSize - 1), null).blockingGet()
+
+        then:
+        t instanceof IllegalArgumentException
+        t.getMessage().contains("remaining size")
+    }
+
+    def "Download options fail"() {
+
     }
 }

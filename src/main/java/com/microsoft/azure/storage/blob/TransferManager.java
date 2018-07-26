@@ -410,62 +410,65 @@ public class TransferManager {
      *
      * @param blobURL
      *      The URL to the blob to download.
-     * @param r
+     * @param range
      *      {@link BlobRange}
      * @param accessConditions
      *      {@link BlobAccessConditions}
      * @param buffer
      *      The destination buffer to which the blob data will be written.
-     * @param o
+     * @param options
      *      {@link DownloadFromBlobOptions}
      * @return
      *      A {@code Completable} that will signal when the download is complete.
      */
-    public static Completable downloadBlobToBuffer(BlobURL blobURL, BlobRange r, BlobAccessConditions accessConditions,
-            ByteBuffer buffer, DownloadFromBlobOptions o) {
-        BlobRange range = r == null ? BlobRange.DEFAULT : r;
-        DownloadFromBlobOptions options = o == null ? DownloadFromBlobOptions.DEFAULT : o;
+    public static Completable downloadBlobToBuffer(BlobURL blobURL, BlobRange range,
+            BlobAccessConditions accessConditions, ByteBuffer buffer, DownloadFromBlobOptions options) {
+        BlobRange r = range == null ? BlobRange.DEFAULT : range;
+        DownloadFromBlobOptions o = options == null ? DownloadFromBlobOptions.DEFAULT : options;
         Utility.assertNotNull("blobURL", blobURL);
         Utility.assertNotNull("buffer", buffer);
 
-        // Construct a Single which will emit the total count of bytes to be downloaded.
+        /*
+        Construct a Single which will emit the total count of bytes to be downloaded. We use a single for this because
+        we may have to make a REST call to get the length to calculate the count and we need to maintain asynchronicity.
+         */
         Single<Long> setupSingle;
-        if (range.getCount() == null) {
+        if (r.getCount() == null) {
             setupSingle = blobURL.getProperties(accessConditions)
-                    .map(response -> response.headers().contentLength() - range.getOffset());
+                    .map(response -> response.headers().contentLength() - r.getOffset());
         }
         else {
-            setupSingle = Single.just(range.getCount());
+            setupSingle = Single.just(r.getCount());
         }
 
-        return setupSingle.flatMapCompletable(count -> {
-            if (buffer.remaining() < count) {
-                return Completable.error(new IllegalArgumentException("The buffer's remaining size should be greater " +
-                        "than or equal to the request count of bytes: " + count));
+        return setupSingle.flatMapCompletable(totalBlobSize -> {
+            if (buffer.remaining() < totalBlobSize) {
+                throw new IllegalArgumentException("The buffer's remaining size should be greater " +
+                        "than or equal to the request totalBlobSize of bytes: " + totalBlobSize);
             }
 
-            int numBlocks = calculateNumBlocks(count, options.blockSize);
+            int numBlocks = calculateNumBlocks(totalBlobSize, o.blockSize);
 
-            // For each range, we will download a corresponding part of the blob and write it to the buffer.
+            // For each block, we will download a corresponding part of the blob and write it to the buffer.
             return Observable.range(0, numBlocks)
                     .flatMap(i -> {
                         /*
                         Setup a window of the buffer which is scoped to this particular block download. We can safely
-                        call count.intValue because if count were a long, it would have exceeded the size of the buffer
-                        and thrown above.
+                        call totalBlobSize.intValue because if totalBlobSize were a long, it would have exceeded the
+                        size of the buffer and thrown above.
                          */
-                        int blockSizeActual = Math.min(options.blockSize, count.intValue()-i*options.blockSize);
+                        int blockSizeActual = Math.min(o.blockSize, totalBlobSize.intValue()-i*o.blockSize);
                         ByteBuffer block = buffer.duplicate();
-                        block.position(i*options.blockSize);
-                        block.limit(i*options.blockSize + blockSizeActual);
+                        block.position(i*o.blockSize);
+                        block.limit(i*o.blockSize + blockSizeActual);
 
                         // Make the download call.
-                        BlobRange blockRange = new BlobRange(range.getOffset() + i * options.blockSize, count);
-                        return blobURL.download(blockRange, options.accessConditions,
-                                false)
+                        BlobRange blockRange = new BlobRange(r.getOffset() + (i * o.blockSize),
+                                (long)blockSizeActual);
+                        return blobURL.download(blockRange, o.accessConditions,false)
                                 // Extract the body.
                                 .flatMapObservable(response ->
-                                        response.body(options.retryReaderOptionsPerBlock)
+                                        response.body(o.retryReaderOptionsPerBlock)
                                                 /*
                                                 For each buffer emitted, write it into the user-provided buffer. The
                                                 buffers are emitted from the Flowable in order, and a call to put
@@ -475,7 +478,7 @@ public class TransferManager {
                                                 .map(block::put)
                                                 // We must satisfy the return type.
                                                 .toObservable());
-                    }, options.parallelism)
+                    }, o.parallelism)
                     // We don't care for any return values, so we transform to a Completable.
                     .ignoreElements();
         });

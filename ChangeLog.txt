@@ -4,6 +4,7 @@ XXXX.XX.XX Version XX.X.X
 * Support for the getAccountInfo api on ServiceURL, ContainerURL, and BlobURL.
 * Added support for setting service properties related to static websites.
 * Changed BlobURL.startCopy sourceAccessConditions parameter to be HTTPAccessConditions as lease is not actually supported.
+* Added methods to TransferManager for conveniently downloading a blob to a file.
 
 2018.08.08 Version 10.0.3-Preview
 * Resolved dependency issues
