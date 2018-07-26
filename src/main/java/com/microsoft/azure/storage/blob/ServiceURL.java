@@ -79,7 +79,7 @@ public final class ServiceURL extends StorageURL {
      * the <a href="https://docs.microsoft.com/rest/api/storageservices/list-containers2">Azure Docs</a>.
      *
      * @apiNote
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_list"Sample code for ServiceURL.listContainersSegment")]
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_list "Sample code for ServiceURL.listContainersSegment")]
      *
      * @param marker
      *      Identifies the portion of the list to be returned with the next list operation.
