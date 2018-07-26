@@ -16,6 +16,11 @@ import rx.Completable;
  * Type representing CognitiveServicesAccounts.
  */
 public interface CognitiveServicesAccounts {
+    /**
+     * Begins definition for a new Account resource.
+     * @param name resource name.
+     * @return the first stage of the new Account definition.
+     */
     CognitiveServicesAccount.DefinitionStages.Blank defineAccount(String name);
 
     /**
