@@ -11,15 +11,14 @@ package com.microsoft.azure.cognitiveservices.vision.computervision.implementati
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
 import com.microsoft.azure.cognitiveservices.vision.computervision.ComputerVision;
-import com.microsoft.azure.cognitiveservices.vision.computervision.ComputerVisionAPI;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.AzureRegions;
+import com.microsoft.azure.cognitiveservices.vision.computervision.ComputerVisionClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.RestClient;
 
 /**
- * Initializes a new instance of the ComputerVisionAPIImpl class.
+ * Initializes a new instance of the ComputerVisionClientImpl class.
  */
-public class ComputerVisionAPIImpl extends AzureServiceClient implements ComputerVisionAPI {
+public class ComputerVisionClientImpl extends AzureServiceClient implements ComputerVisionClient {
     /** the {@link AzureClient} used for long running operations. */
     private AzureClient azureClient;
 
@@ -31,26 +30,26 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
         return this.azureClient;
     }
 
-    /** Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth'. */
-    private AzureRegions azureRegion;
+    /** Supported Cognitive Services endpoints. */
+    private String endpoint;
 
     /**
-     * Gets Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth'.
+     * Gets Supported Cognitive Services endpoints.
      *
-     * @return the azureRegion value.
+     * @return the endpoint value.
      */
-    public AzureRegions azureRegion() {
-        return this.azureRegion;
+    public String endpoint() {
+        return this.endpoint;
     }
 
     /**
-     * Sets Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth'.
+     * Sets Supported Cognitive Services endpoints.
      *
-     * @param azureRegion the azureRegion value.
+     * @param endpoint the endpoint value.
      * @return the service client itself
      */
-    public ComputerVisionAPIImpl withAzureRegion(AzureRegions azureRegion) {
-        this.azureRegion = azureRegion;
+    public ComputerVisionClientImpl withEndpoint(String endpoint) {
+        this.endpoint = endpoint;
         return this;
     }
 
@@ -72,7 +71,7 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @param acceptLanguage the acceptLanguage value.
      * @return the service client itself
      */
-    public ComputerVisionAPIImpl withAcceptLanguage(String acceptLanguage) {
+    public ComputerVisionClientImpl withAcceptLanguage(String acceptLanguage) {
         this.acceptLanguage = acceptLanguage;
         return this;
     }
@@ -95,7 +94,7 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @param longRunningOperationRetryTimeout the longRunningOperationRetryTimeout value.
      * @return the service client itself
      */
-    public ComputerVisionAPIImpl withLongRunningOperationRetryTimeout(int longRunningOperationRetryTimeout) {
+    public ComputerVisionClientImpl withLongRunningOperationRetryTimeout(int longRunningOperationRetryTimeout) {
         this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeout;
         return this;
     }
@@ -118,7 +117,7 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @param generateClientRequestId the generateClientRequestId value.
      * @return the service client itself
      */
-    public ComputerVisionAPIImpl withGenerateClientRequestId(boolean generateClientRequestId) {
+    public ComputerVisionClientImpl withGenerateClientRequestId(boolean generateClientRequestId) {
         this.generateClientRequestId = generateClientRequestId;
         return this;
     }
@@ -137,31 +136,31 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
     }
 
     /**
-     * Initializes an instance of ComputerVisionAPI client.
+     * Initializes an instance of ComputerVisionClient client.
      *
      * @param credentials the management credentials for Azure
      */
-    public ComputerVisionAPIImpl(ServiceClientCredentials credentials) {
-        this("https://{AzureRegion}.api.cognitive.microsoft.com/vision/v1.0", credentials);
+    public ComputerVisionClientImpl(ServiceClientCredentials credentials) {
+        this("https://{Endpoint}/vision/v2.0", credentials);
     }
 
     /**
-     * Initializes an instance of ComputerVisionAPI client.
+     * Initializes an instance of ComputerVisionClient client.
      *
      * @param baseUrl the base URL of the host
      * @param credentials the management credentials for Azure
      */
-    public ComputerVisionAPIImpl(String baseUrl, ServiceClientCredentials credentials) {
+    public ComputerVisionClientImpl(String baseUrl, ServiceClientCredentials credentials) {
         super(baseUrl, credentials);
         initialize();
     }
 
     /**
-     * Initializes an instance of ComputerVisionAPI client.
+     * Initializes an instance of ComputerVisionClient client.
      *
      * @param restClient the REST client to connect to Azure.
      */
-    public ComputerVisionAPIImpl(RestClient restClient) {
+    public ComputerVisionClientImpl(RestClient restClient) {
         super(restClient);
         initialize();
     }
@@ -181,6 +180,6 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      */
     @Override
     public String userAgent() {
-        return String.format("%s (%s, %s)", super.userAgent(), "ComputerVisionAPI", "1.0");
+        return String.format("%s (%s, %s)", super.userAgent(), "ComputerVisionClient", "2.0");
     }
 }

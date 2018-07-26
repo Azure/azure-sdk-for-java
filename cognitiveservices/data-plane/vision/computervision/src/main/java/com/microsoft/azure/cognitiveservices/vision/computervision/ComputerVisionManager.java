@@ -6,8 +6,7 @@
 
 package com.microsoft.azure.cognitiveservices.vision.computervision;
 
-import com.microsoft.azure.cognitiveservices.vision.computervision.implementation.ComputerVisionAPIImpl;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.AzureRegions;
+import com.microsoft.azure.cognitiveservices.vision.computervision.implementation.ComputerVisionClientImpl;
 import com.microsoft.rest.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import okhttp3.Interceptor;
@@ -24,13 +23,11 @@ public class ComputerVisionManager {
     /**
      * Initializes an instance of Computer Vision API client.
      *
-     * @param region Supported Azure regions for Cognitive Services endpoints.
      * @param subscriptionKey the Computer Vision API key
      * @return the Computer Vision API client
      */
-    public static ComputerVisionAPI authenticate(AzureRegions region, String subscriptionKey) {
-        return authenticate("https://{AzureRegion}.api.cognitive.microsoft.com/vision/v1.0/", subscriptionKey)
-                .withAzureRegion(region);
+    public static ComputerVisionClient authenticate(String subscriptionKey) {
+        return authenticate("https://{endpoint}/vision/v2.0/", subscriptionKey);
     }
 
     /**
@@ -40,7 +37,7 @@ public class ComputerVisionManager {
      * @param subscriptionKey the Computer Vision API key
      * @return the Computer Vision API client
      */
-    public static ComputerVisionAPI authenticate(String baseUrl, final String subscriptionKey) {
+    public static ComputerVisionClient authenticate(String baseUrl, final String subscriptionKey) {
         ServiceClientCredentials serviceClientCredentials = new ServiceClientCredentials() {
             @Override
             public void applyCredentialsFilter(OkHttpClient.Builder builder) {
@@ -65,13 +62,13 @@ public class ComputerVisionManager {
     /**
      * Initializes an instance of Computer Vision API client.
      *
-     * @param region Supported Azure regions for Cognitive Services endpoints.
      * @param credentials the management credentials for Azure
+     * @param endpoint Supported Cognitive Services endpoints.
      * @return the Computer Vision API client
      */
-    public static ComputerVisionAPI authenticate(AzureRegions region, ServiceClientCredentials credentials) {
-        return authenticate("https://{AzureRegion}.api.cognitive.microsoft.com/vision/v1.0/", credentials)
-                .withAzureRegion(region);
+    public static ComputerVisionClient authenticate(ServiceClientCredentials credentials, String endpoint) {
+        return authenticate("https://{endpoint}/vision/v2.0/", credentials)
+                .withEndpoint(endpoint);
     }
 
     /**
@@ -81,8 +78,8 @@ public class ComputerVisionManager {
      * @param credentials the management credentials for Azure
      * @return the Computer Vision API client
      */
-    public static ComputerVisionAPI authenticate(String baseUrl, ServiceClientCredentials credentials) {
-        return new ComputerVisionAPIImpl(baseUrl, credentials);
+    public static ComputerVisionClient authenticate(String baseUrl, ServiceClientCredentials credentials) {
+        return new ComputerVisionClientImpl(baseUrl, credentials);
     }
 
     /**
@@ -91,7 +88,7 @@ public class ComputerVisionManager {
      * @param restClient the REST client to connect to Azure.
      * @return the Computer Vision API client
      */
-    public static ComputerVisionAPI authenticate(RestClient restClient) {
-        return new ComputerVisionAPIImpl(restClient);
+    public static ComputerVisionClient authenticate(RestClient restClient) {
+        return new ComputerVisionClientImpl(restClient);
     }
 }

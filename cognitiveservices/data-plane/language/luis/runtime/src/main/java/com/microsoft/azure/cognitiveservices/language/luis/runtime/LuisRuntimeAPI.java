@@ -9,7 +9,6 @@
 package com.microsoft.azure.cognitiveservices.language.luis.runtime;
 
 import com.microsoft.azure.AzureClient;
-import com.microsoft.azure.cognitiveservices.language.luis.runtime.models.AzureRegions;
 import com.microsoft.rest.RestClient;
 
 /**
@@ -35,21 +34,6 @@ public interface LuisRuntimeAPI {
      * @return the user agent string.
      */
     String userAgent();
-
-    /**
-     * Gets Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth'.
-     *
-     * @return the azureRegion value.
-     */
-    AzureRegions azureRegion();
-
-    /**
-     * Sets Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth'.
-     *
-     * @param azureRegion the azureRegion value.
-     * @return the service client itself
-     */
-    LuisRuntimeAPI withAzureRegion(AzureRegions azureRegion);
 
     /**
      * Gets Gets or sets the preferred language for the response..

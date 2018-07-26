@@ -11,7 +11,6 @@ package com.microsoft.azure.cognitiveservices.language.luis.runtime.implementati
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
 import com.microsoft.azure.cognitiveservices.language.luis.runtime.LuisRuntimeAPI;
-import com.microsoft.azure.cognitiveservices.language.luis.runtime.models.AzureRegions;
 import com.microsoft.azure.cognitiveservices.language.luis.runtime.Predictions;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.RestClient;
@@ -29,29 +28,6 @@ public class LuisRuntimeAPIImpl extends AzureServiceClient implements LuisRuntim
      */
     public AzureClient getAzureClient() {
         return this.azureClient;
-    }
-
-    /** Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth'. */
-    private AzureRegions azureRegion;
-
-    /**
-     * Gets Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth'.
-     *
-     * @return the azureRegion value.
-     */
-    public AzureRegions azureRegion() {
-        return this.azureRegion;
-    }
-
-    /**
-     * Sets Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth'.
-     *
-     * @param azureRegion the azureRegion value.
-     * @return the service client itself
-     */
-    public LuisRuntimeAPIImpl withAzureRegion(AzureRegions azureRegion) {
-        this.azureRegion = azureRegion;
-        return this;
     }
 
     /** Gets or sets the preferred language for the response. */
@@ -142,7 +118,7 @@ public class LuisRuntimeAPIImpl extends AzureServiceClient implements LuisRuntim
      * @param credentials the management credentials for Azure
      */
     public LuisRuntimeAPIImpl(ServiceClientCredentials credentials) {
-        this("https://{AzureRegion}.api.cognitive.microsoft.com/luis/v2.0/apps", credentials);
+        this("https://api.cognitive.microsoft.com/luis/v2.0", credentials);
     }
 
     /**
@@ -181,6 +157,6 @@ public class LuisRuntimeAPIImpl extends AzureServiceClient implements LuisRuntim
      */
     @Override
     public String userAgent() {
-        return String.format("%s (%s, %s)", super.userAgent(), "LuisRuntimeAPI", "v2.0 preview");
+        return String.format("%s (%s, %s)", super.userAgent(), "LuisRuntimeAPI", "2.0");
     }
 }

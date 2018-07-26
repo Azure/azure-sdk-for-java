@@ -9,13 +9,12 @@
 package com.microsoft.azure.cognitiveservices.vision.computervision;
 
 import com.microsoft.azure.AzureClient;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.AzureRegions;
 import com.microsoft.rest.RestClient;
 
 /**
- * The interface for ComputerVisionAPI class.
+ * The interface for ComputerVisionClient class.
  */
-public interface ComputerVisionAPI {
+public interface ComputerVisionClient {
     /**
      * Gets the REST client.
      *
@@ -37,19 +36,19 @@ public interface ComputerVisionAPI {
     String userAgent();
 
     /**
-     * Gets Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth'.
+     * Gets Supported Cognitive Services endpoints.
      *
-     * @return the azureRegion value.
+     * @return the endpoint value.
      */
-    AzureRegions azureRegion();
+    String endpoint();
 
     /**
-     * Sets Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth'.
+     * Sets Supported Cognitive Services endpoints.
      *
-     * @param azureRegion the azureRegion value.
+     * @param endpoint the endpoint value.
      * @return the service client itself
      */
-    ComputerVisionAPI withAzureRegion(AzureRegions azureRegion);
+    ComputerVisionClient withEndpoint(String endpoint);
 
     /**
      * Gets Gets or sets the preferred language for the response..
@@ -64,7 +63,7 @@ public interface ComputerVisionAPI {
      * @param acceptLanguage the acceptLanguage value.
      * @return the service client itself
      */
-    ComputerVisionAPI withAcceptLanguage(String acceptLanguage);
+    ComputerVisionClient withAcceptLanguage(String acceptLanguage);
 
     /**
      * Gets Gets or sets the retry timeout in seconds for Long Running Operations. Default value is 30..
@@ -79,7 +78,7 @@ public interface ComputerVisionAPI {
      * @param longRunningOperationRetryTimeout the longRunningOperationRetryTimeout value.
      * @return the service client itself
      */
-    ComputerVisionAPI withLongRunningOperationRetryTimeout(int longRunningOperationRetryTimeout);
+    ComputerVisionClient withLongRunningOperationRetryTimeout(int longRunningOperationRetryTimeout);
 
     /**
      * Gets When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true..
@@ -94,7 +93,7 @@ public interface ComputerVisionAPI {
      * @param generateClientRequestId the generateClientRequestId value.
      * @return the service client itself
      */
-    ComputerVisionAPI withGenerateClientRequestId(boolean generateClientRequestId);
+    ComputerVisionClient withGenerateClientRequestId(boolean generateClientRequestId);
 
     /**
      * Gets the ComputerVision object to access its operations.

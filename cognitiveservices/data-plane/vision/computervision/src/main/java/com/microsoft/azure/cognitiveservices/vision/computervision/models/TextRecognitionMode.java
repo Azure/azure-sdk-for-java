@@ -12,32 +12,32 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Defines values for Language1.
+ * Defines values for TextRecognitionMode.
  */
-public enum Language1 {
-    /** Enum value en. */
-    EN("en"),
+public enum TextRecognitionMode {
+    /** Enum value Handwritten. */
+    HANDWRITTEN("Handwritten"),
 
-    /** Enum value zh. */
-    ZH("zh");
+    /** Enum value Printed. */
+    PRINTED("Printed");
 
-    /** The actual serialized value for a Language1 instance. */
+    /** The actual serialized value for a TextRecognitionMode instance. */
     private String value;
 
-    Language1(String value) {
+    TextRecognitionMode(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a Language1 instance.
+     * Parses a serialized value to a TextRecognitionMode instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed Language1 object, or null if unable to parse.
+     * @return the parsed TextRecognitionMode object, or null if unable to parse.
      */
     @JsonCreator
-    public static Language1 fromString(String value) {
-        Language1[] items = Language1.values();
-        for (Language1 item : items) {
+    public static TextRecognitionMode fromString(String value) {
+        TextRecognitionMode[] items = TextRecognitionMode.values();
+        for (TextRecognitionMode item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

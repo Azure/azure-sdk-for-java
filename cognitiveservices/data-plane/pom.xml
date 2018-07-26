@@ -7,7 +7,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.microsoft.azure.cognitiveservices</groupId>
   <artifactId>azure-cognitiveservices-parent</artifactId>
-  <version>1.0.1</version>
+  <version>1.0.2</version>
   <packaging>pom</packaging>
 
   <name>Microsoft Azure Cognitive Services SDK Parent</name>
@@ -311,6 +311,8 @@
     <module>./search/bingwebsearch</module>
     <module>./vision/computervision</module>
     <module>./vision/contentmoderator</module>
+    <module>./vision/customvision/prediction</module>
+    <module>./vision/customvision/training</module>
     <module>./vision/faceapi</module>
   </modules>
 </project>

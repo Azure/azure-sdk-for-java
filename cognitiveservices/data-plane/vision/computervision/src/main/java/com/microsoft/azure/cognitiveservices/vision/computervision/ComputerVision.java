@@ -8,14 +8,12 @@
 
 package com.microsoft.azure.cognitiveservices.vision.computervision;
 
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.RecognizeTextInStreamOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.AnalyzeImageByDomainInStreamOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.TagImageInStreamOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.DescribeImageInStreamOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.RecognizePrintedTextInStreamOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.GenerateThumbnailInStreamOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.AnalyzeImageInStreamOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.RecognizeTextOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.AnalyzeImageByDomainOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.TagImageOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.DescribeImageOptionalParameter;
@@ -33,6 +31,7 @@ import com.microsoft.azure.cognitiveservices.vision.computervision.models.OcrLan
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.OcrResult;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.TagResult;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.TextOperationResult;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.TextRecognitionMode;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.VisualFeatureTypes;
 import java.io.InputStream;
 import java.util.List;
@@ -43,98 +42,32 @@ import rx.Observable;
  * in ComputerVision.
  */
 public interface ComputerVision {
+
     /**
-     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called
-     *   'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get
-     *   Handwritten Text Operation Result operation.
+     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field
+      *  called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for
+      *  your Get Recognize Text Operation Result operation.
      *
      * @param image An image stream.
-     * @param recognizeTextInStreamOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    
-    void recognizeTextInStream(byte[] image, RecognizeTextInStreamOptionalParameter recognizeTextInStreamOptionalParameter);
+    void recognizeTextInStream(byte[] image, TextRecognitionMode mode);
 
     /**
-     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called
-     *   'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get
-     *   Handwritten Text Operation Result operation.
+     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field
+      *  called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for
+      *  your Get Recognize Text Operation Result operation.
      *
      * @param image An image stream.
-     * @param recognizeTextInStreamOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return a representation of the deferred computation of this call if successful.
      */
-    
-    Observable<Void> recognizeTextInStreamAsync(byte[] image, RecognizeTextInStreamOptionalParameter recognizeTextInStreamOptionalParameter);
+    Observable<Void> recognizeTextInStreamAsync(byte[] image, TextRecognitionMode mode);
 
-    /**
-     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called
-     *   'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get
-     *   Handwritten Text Operation Result operation.
-     *
-     * @return the first stage of the recognizeTextInStream call
-     */
-    ComputerVisionRecognizeTextInStreamDefinitionStages.WithImage recognizeTextInStream();
-
-    /**
-     * Grouping of recognizeTextInStream definition stages.
-     */
-    interface ComputerVisionRecognizeTextInStreamDefinitionStages {
-        /**
-         * The stage of the definition to be specify image.
-         */
-        interface WithImage {
-            /**
-             * An image stream.
-             *
-             * @return next definition stage
-             */
-            ComputerVisionRecognizeTextInStreamDefinitionStages.WithExecute withImage(byte[] image);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * If 'true' is specified, handwriting recognition is performed. If this parameter is set to 'false' or is not
-             *   specified, printed text recognition is performed.
-             *
-             * @return next definition stage
-             */
-            ComputerVisionRecognizeTextInStreamDefinitionStages.WithExecute withDetectHandwriting(Boolean detectHandwriting);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ComputerVisionRecognizeTextInStreamDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             */
-            void execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return a representation of the deferred computation of this call if successful.
-             */
-            Observable<Void> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of recognizeTextInStream definition.
-     */
-    interface ComputerVisionRecognizeTextInStreamDefinition extends
-        ComputerVisionRecognizeTextInStreamDefinitionStages.WithImage,
-        ComputerVisionRecognizeTextInStreamDefinitionStages.WithExecute {
-    }
 
     /**
      * This operation recognizes content within an image by applying a domain-specific model.  The list of
@@ -152,7 +85,7 @@ public interface ComputerVision {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DomainModelResults object if successful.
      */
-    
+    @Deprecated
     DomainModelResults analyzeImageByDomainInStream(String model, byte[] image, AnalyzeImageByDomainInStreamOptionalParameter analyzeImageByDomainInStreamOptionalParameter);
 
     /**
@@ -169,7 +102,7 @@ public interface ComputerVision {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DomainModelResults object
      */
-    
+    @Deprecated
     Observable<DomainModelResults> analyzeImageByDomainInStreamAsync(String model, byte[] image, AnalyzeImageByDomainInStreamOptionalParameter analyzeImageByDomainInStreamOptionalParameter);
 
     /**
@@ -217,8 +150,8 @@ public interface ComputerVision {
         interface WithAllOptions {
             /**
              * The desired language for output generation. If this parameter is not specified, the default value is
-             *   &amp;quot;en&amp;quot;.Supported languages:en - English, Default.ja - Japanese pt - Portuguese zh -
-             *   Simplified Chinese. Possible values include: 'en', 'ja', 'pt', 'zh'.
+             *   &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt -
+             *   Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'.
              *
              * @return next definition stage
              */
@@ -269,7 +202,7 @@ public interface ComputerVision {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TagResult object if successful.
      */
-    
+    @Deprecated
     TagResult tagImageInStream(byte[] image, TagImageInStreamOptionalParameter tagImageInStreamOptionalParameter);
 
     /**
@@ -284,7 +217,7 @@ public interface ComputerVision {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TagResult object
      */
-    
+    @Deprecated
     Observable<TagResult> tagImageInStreamAsync(byte[] image, TagImageInStreamOptionalParameter tagImageInStreamOptionalParameter);
 
     /**
@@ -320,8 +253,8 @@ public interface ComputerVision {
         interface WithAllOptions {
             /**
              * The desired language for output generation. If this parameter is not specified, the default value is
-             *   &amp;quot;en&amp;quot;.Supported languages:en - English, Default.ja - Japanese pt - Portuguese zh -
-             *   Simplified Chinese. Possible values include: 'en', 'ja', 'pt', 'zh'.
+             *   &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt -
+             *   Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'.
              *
              * @return next definition stage
              */
@@ -372,7 +305,7 @@ public interface ComputerVision {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImageDescription object if successful.
      */
-    
+    @Deprecated
     ImageDescription describeImageInStream(byte[] image, DescribeImageInStreamOptionalParameter describeImageInStreamOptionalParameter);
 
     /**
@@ -388,7 +321,7 @@ public interface ComputerVision {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageDescription object
      */
-    
+    @Deprecated
     Observable<ImageDescription> describeImageInStreamAsync(byte[] image, DescribeImageInStreamOptionalParameter describeImageInStreamOptionalParameter);
 
     /**
@@ -432,8 +365,8 @@ public interface ComputerVision {
 
             /**
              * The desired language for output generation. If this parameter is not specified, the default value is
-             *   &amp;quot;en&amp;quot;.Supported languages:en - English, Default.ja - Japanese pt - Portuguese zh -
-             *   Simplified Chinese. Possible values include: 'en', 'ja', 'pt', 'zh'.
+             *   &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt -
+             *   Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'.
              *
              * @return next definition stage
              */
@@ -484,7 +417,7 @@ public interface ComputerVision {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OcrResult object if successful.
      */
-    
+    @Deprecated
     OcrResult recognizePrintedTextInStream(boolean detectOrientation, byte[] image, RecognizePrintedTextInStreamOptionalParameter recognizePrintedTextInStreamOptionalParameter);
 
     /**
@@ -500,7 +433,7 @@ public interface ComputerVision {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OcrResult object
      */
-    
+    @Deprecated
     Observable<OcrResult> recognizePrintedTextInStreamAsync(boolean detectOrientation, byte[] image, RecognizePrintedTextInStreamOptionalParameter recognizePrintedTextInStreamOptionalParameter);
 
     /**
@@ -601,7 +534,7 @@ public interface ComputerVision {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the InputStream object if successful.
      */
-    
+    @Deprecated
     InputStream generateThumbnailInStream(int width, int height, byte[] image, GenerateThumbnailInStreamOptionalParameter generateThumbnailInStreamOptionalParameter);
 
     /**
@@ -618,7 +551,7 @@ public interface ComputerVision {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InputStream object
      */
-    
+    @Deprecated
     Observable<InputStream> generateThumbnailInStreamAsync(int width, int height, byte[] image, GenerateThumbnailInStreamOptionalParameter generateThumbnailInStreamOptionalParameter);
 
     /**
@@ -723,7 +656,7 @@ public interface ComputerVision {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImageAnalysis object if successful.
      */
-    
+    @Deprecated
     ImageAnalysis analyzeImageInStream(byte[] image, AnalyzeImageInStreamOptionalParameter analyzeImageInStreamOptionalParameter);
 
     /**
@@ -734,7 +667,7 @@ public interface ComputerVision {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageAnalysis object
      */
-    
+    @Deprecated
     Observable<ImageAnalysis> analyzeImageInStreamAsync(byte[] image, AnalyzeImageInStreamOptionalParameter analyzeImageInStreamOptionalParameter);
 
     /**
@@ -789,8 +722,8 @@ public interface ComputerVision {
 
             /**
              * The desired language for output generation. If this parameter is not specified, the default value is
-             *   &amp;quot;en&amp;quot;.Supported languages:en - English, Default.ja - Japanese pt - Portuguese zh -
-             *   Simplified Chinese. Possible values include: 'en', 'ja', 'pt', 'zh'.
+             *   &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt -
+             *   Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'.
              *
              * @return next definition stage
              */
@@ -831,7 +764,7 @@ public interface ComputerVision {
      * This interface is used for getting text operation result. The URL to this interface should be
       *  retrieved from 'Operation-Location' field returned from Recognize Text interface.
      *
-     * @param operationId Id of the text operation returned in the response of the 'Recognize Handwritten Text'.
+     * @param operationId Id of the text operation returned in the response of the 'Recognize Text'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -843,105 +776,39 @@ public interface ComputerVision {
      * This interface is used for getting text operation result. The URL to this interface should be
       *  retrieved from 'Operation-Location' field returned from Recognize Text interface.
      *
-     * @param operationId Id of the text operation returned in the response of the 'Recognize Handwritten Text'.
+     * @param operationId Id of the text operation returned in the response of the 'Recognize Text'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TextOperationResult object
      */
     Observable<TextOperationResult> getTextOperationResultAsync(String operationId);
 
 
+
     /**
-     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called
-     *   'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get
-     *   Handwritten Text Operation Result operation.
+     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field
+      *  called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for
+      *  your Get Recognize Text Operation Result operation.
      *
+     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'.
      * @param url Publicly reachable URL of an image.
-     * @param recognizeTextOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    
-    void recognizeText(String url, RecognizeTextOptionalParameter recognizeTextOptionalParameter);
+    void recognizeText(String url, TextRecognitionMode mode);
 
     /**
-     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called
-     *   'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get
-     *   Handwritten Text Operation Result operation.
+     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field
+      *  called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for
+      *  your Get Recognize Text Operation Result operation.
      *
+     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'.
      * @param url Publicly reachable URL of an image.
-     * @param recognizeTextOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return a representation of the deferred computation of this call if successful.
      */
-    
-    Observable<Void> recognizeTextAsync(String url, RecognizeTextOptionalParameter recognizeTextOptionalParameter);
+    Observable<Void> recognizeTextAsync(String url, TextRecognitionMode mode);
 
-    /**
-     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called
-     *   'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get
-     *   Handwritten Text Operation Result operation.
-     *
-     * @return the first stage of the recognizeText call
-     */
-    ComputerVisionRecognizeTextDefinitionStages.WithUrl recognizeText();
-
-    /**
-     * Grouping of recognizeText definition stages.
-     */
-    interface ComputerVisionRecognizeTextDefinitionStages {
-        /**
-         * The stage of the definition to be specify url.
-         */
-        interface WithUrl {
-            /**
-             * Publicly reachable URL of an image.
-             *
-             * @return next definition stage
-             */
-            ComputerVisionRecognizeTextDefinitionStages.WithExecute withUrl(String url);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * If 'true' is specified, handwriting recognition is performed. If this parameter is set to 'false' or is not
-             *   specified, printed text recognition is performed.
-             *
-             * @return next definition stage
-             */
-            ComputerVisionRecognizeTextDefinitionStages.WithExecute withDetectHandwriting(Boolean detectHandwriting);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ComputerVisionRecognizeTextDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             */
-            void execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return a representation of the deferred computation of this call if successful.
-             */
-            Observable<Void> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of recognizeText definition.
-     */
-    interface ComputerVisionRecognizeTextDefinition extends
-        ComputerVisionRecognizeTextDefinitionStages.WithUrl,
-        ComputerVisionRecognizeTextDefinitionStages.WithExecute {
-    }
 
     /**
      * This operation recognizes content within an image by applying a domain-specific model.  The list of
@@ -959,7 +826,7 @@ public interface ComputerVision {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DomainModelResults object if successful.
      */
-    
+    @Deprecated
     DomainModelResults analyzeImageByDomain(String model, String url, AnalyzeImageByDomainOptionalParameter analyzeImageByDomainOptionalParameter);
 
     /**
@@ -976,7 +843,7 @@ public interface ComputerVision {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DomainModelResults object
      */
-    
+    @Deprecated
     Observable<DomainModelResults> analyzeImageByDomainAsync(String model, String url, AnalyzeImageByDomainOptionalParameter analyzeImageByDomainOptionalParameter);
 
     /**
@@ -1024,8 +891,8 @@ public interface ComputerVision {
         interface WithAllOptions {
             /**
              * The desired language for output generation. If this parameter is not specified, the default value is
-             *   &amp;quot;en&amp;quot;.Supported languages:en - English, Default.ja - Japanese pt - Portuguese zh -
-             *   Simplified Chinese. Possible values include: 'en', 'ja', 'pt', 'zh'.
+             *   &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt -
+             *   Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'.
              *
              * @return next definition stage
              */
@@ -1076,7 +943,7 @@ public interface ComputerVision {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TagResult object if successful.
      */
-    
+    @Deprecated
     TagResult tagImage(String url, TagImageOptionalParameter tagImageOptionalParameter);
 
     /**
@@ -1091,7 +958,7 @@ public interface ComputerVision {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TagResult object
      */
-    
+    @Deprecated
     Observable<TagResult> tagImageAsync(String url, TagImageOptionalParameter tagImageOptionalParameter);
 
     /**
@@ -1127,8 +994,8 @@ public interface ComputerVision {
         interface WithAllOptions {
             /**
              * The desired language for output generation. If this parameter is not specified, the default value is
-             *   &amp;quot;en&amp;quot;.Supported languages:en - English, Default.ja - Japanese pt - Portuguese zh -
-             *   Simplified Chinese. Possible values include: 'en', 'ja', 'pt', 'zh'.
+             *   &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt -
+             *   Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'.
              *
              * @return next definition stage
              */
@@ -1179,7 +1046,7 @@ public interface ComputerVision {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImageDescription object if successful.
      */
-    
+    @Deprecated
     ImageDescription describeImage(String url, DescribeImageOptionalParameter describeImageOptionalParameter);
 
     /**
@@ -1195,7 +1062,7 @@ public interface ComputerVision {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageDescription object
      */
-    
+    @Deprecated
     Observable<ImageDescription> describeImageAsync(String url, DescribeImageOptionalParameter describeImageOptionalParameter);
 
     /**
@@ -1239,8 +1106,8 @@ public interface ComputerVision {
 
             /**
              * The desired language for output generation. If this parameter is not specified, the default value is
-             *   &amp;quot;en&amp;quot;.Supported languages:en - English, Default.ja - Japanese pt - Portuguese zh -
-             *   Simplified Chinese. Possible values include: 'en', 'ja', 'pt', 'zh'.
+             *   &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt -
+             *   Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'.
              *
              * @return next definition stage
              */
@@ -1291,7 +1158,7 @@ public interface ComputerVision {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OcrResult object if successful.
      */
-    
+    @Deprecated
     OcrResult recognizePrintedText(boolean detectOrientation, String url, RecognizePrintedTextOptionalParameter recognizePrintedTextOptionalParameter);
 
     /**
@@ -1307,7 +1174,7 @@ public interface ComputerVision {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OcrResult object
      */
-    
+    @Deprecated
     Observable<OcrResult> recognizePrintedTextAsync(boolean detectOrientation, String url, RecognizePrintedTextOptionalParameter recognizePrintedTextOptionalParameter);
 
     /**
@@ -1408,7 +1275,7 @@ public interface ComputerVision {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the InputStream object if successful.
      */
-    
+    @Deprecated
     InputStream generateThumbnail(int width, int height, String url, GenerateThumbnailOptionalParameter generateThumbnailOptionalParameter);
 
     /**
@@ -1425,7 +1292,7 @@ public interface ComputerVision {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InputStream object
      */
-    
+    @Deprecated
     Observable<InputStream> generateThumbnailAsync(int width, int height, String url, GenerateThumbnailOptionalParameter generateThumbnailOptionalParameter);
 
     /**
@@ -1533,7 +1400,7 @@ public interface ComputerVision {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImageAnalysis object if successful.
      */
-    
+    @Deprecated
     ImageAnalysis analyzeImage(String url, AnalyzeImageOptionalParameter analyzeImageOptionalParameter);
 
     /**
@@ -1547,7 +1414,7 @@ public interface ComputerVision {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageAnalysis object
      */
-    
+    @Deprecated
     Observable<ImageAnalysis> analyzeImageAsync(String url, AnalyzeImageOptionalParameter analyzeImageOptionalParameter);
 
     /**
@@ -1604,8 +1471,8 @@ public interface ComputerVision {
 
             /**
              * The desired language for output generation. If this parameter is not specified, the default value is
-             *   &amp;quot;en&amp;quot;.Supported languages:en - English, Default.ja - Japanese pt - Portuguese zh -
-             *   Simplified Chinese. Possible values include: 'en', 'ja', 'pt', 'zh'.
+             *   &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt -
+             *   Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'.
              *
              * @return next definition stage
              */

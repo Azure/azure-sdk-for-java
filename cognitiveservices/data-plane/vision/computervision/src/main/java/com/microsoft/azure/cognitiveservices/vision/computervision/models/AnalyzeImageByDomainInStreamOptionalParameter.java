@@ -16,8 +16,9 @@ public class AnalyzeImageByDomainInStreamOptionalParameter {
     /**
      * The desired language for output generation. If this parameter is not
      * specified, the default value is &amp;quot;en&amp;quot;.Supported
-     * languages:en - English, Default.ja - Japanese pt - Portuguese zh -
-     * Simplified Chinese. Possible values include: 'en', 'ja', 'pt', 'zh'.
+     * languages:en - English, Default. es - Spanish, ja - Japanese, pt -
+     * Portuguese, zh - Simplified Chinese. Possible values include: 'en',
+     * 'es', 'ja', 'pt', 'zh'.
      */
     private String language;
 
