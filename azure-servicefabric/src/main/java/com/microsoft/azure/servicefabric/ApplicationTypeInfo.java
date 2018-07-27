@@ -36,9 +36,8 @@ public class ApplicationTypeInfo {
     private List<ApplicationParameter> defaultParameterList;
 
     /**
-     * The status of the application type.
-     * . Possible values include: 'Invalid', 'Provisioning', 'Available',
-     * 'Unprovisioning', 'Failed'.
+     * The status of the application type. Possible values include: 'Invalid',
+     * 'Provisioning', 'Available', 'Unprovisioning', 'Failed'.
      */
     @JsonProperty(value = "Status")
     private ApplicationTypeStatus status;
@@ -51,9 +50,8 @@ public class ApplicationTypeInfo {
     private String statusDetails;
 
     /**
-     * The mechanism used to define a Service Fabric application type.
-     * . Possible values include: 'Invalid', 'ServiceFabricApplicationPackage',
-     * 'Compose'.
+     * The mechanism used to define a Service Fabric application type. Possible
+     * values include: 'Invalid', 'ServiceFabricApplicationPackage', 'Compose'.
      */
     @JsonProperty(value = "ApplicationTypeDefinitionKind")
     private ApplicationTypeDefinitionKind applicationTypeDefinitionKind;
@@ -119,8 +117,7 @@ public class ApplicationTypeInfo {
     }
 
     /**
-     * Get the status of the application type.
-     . Possible values include: 'Invalid', 'Provisioning', 'Available', 'Unprovisioning', 'Failed'.
+     * Get the status of the application type. Possible values include: 'Invalid', 'Provisioning', 'Available', 'Unprovisioning', 'Failed'.
      *
      * @return the status value
      */
@@ -129,8 +126,7 @@ public class ApplicationTypeInfo {
     }
 
     /**
-     * Set the status of the application type.
-     . Possible values include: 'Invalid', 'Provisioning', 'Available', 'Unprovisioning', 'Failed'.
+     * Set the status of the application type. Possible values include: 'Invalid', 'Provisioning', 'Available', 'Unprovisioning', 'Failed'.
      *
      * @param status the status value to set
      * @return the ApplicationTypeInfo object itself.
@@ -161,8 +157,7 @@ public class ApplicationTypeInfo {
     }
 
     /**
-     * Get the mechanism used to define a Service Fabric application type.
-     . Possible values include: 'Invalid', 'ServiceFabricApplicationPackage', 'Compose'.
+     * Get the mechanism used to define a Service Fabric application type. Possible values include: 'Invalid', 'ServiceFabricApplicationPackage', 'Compose'.
      *
      * @return the applicationTypeDefinitionKind value
      */
@@ -171,8 +166,7 @@ public class ApplicationTypeInfo {
     }
 
     /**
-     * Set the mechanism used to define a Service Fabric application type.
-     . Possible values include: 'Invalid', 'ServiceFabricApplicationPackage', 'Compose'.
+     * Set the mechanism used to define a Service Fabric application type. Possible values include: 'Invalid', 'ServiceFabricApplicationPackage', 'Compose'.
      *
      * @param applicationTypeDefinitionKind the applicationTypeDefinitionKind value to set
      * @return the ApplicationTypeInfo object itself.

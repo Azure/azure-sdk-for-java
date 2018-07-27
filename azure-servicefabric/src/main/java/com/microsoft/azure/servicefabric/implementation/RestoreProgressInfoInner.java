@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class RestoreProgressInfoInner {
     /**
      * Represents the current state of the partition restore operation.
-     * . Possible values include: 'Invalid', 'Accepted', 'RestoreInProgress',
+     * Possible values include: 'Invalid', 'Accepted', 'RestoreInProgress',
      * 'Success', 'Failure', 'Timeout'.
      */
     @JsonProperty(value = "RestoreState")
@@ -51,8 +51,7 @@ public class RestoreProgressInfoInner {
     private FabricErrorError failureError;
 
     /**
-     * Get represents the current state of the partition restore operation.
-     . Possible values include: 'Invalid', 'Accepted', 'RestoreInProgress', 'Success', 'Failure', 'Timeout'.
+     * Get represents the current state of the partition restore operation. Possible values include: 'Invalid', 'Accepted', 'RestoreInProgress', 'Success', 'Failure', 'Timeout'.
      *
      * @return the restoreState value
      */
@@ -61,8 +60,7 @@ public class RestoreProgressInfoInner {
     }
 
     /**
-     * Set represents the current state of the partition restore operation.
-     . Possible values include: 'Invalid', 'Accepted', 'RestoreInProgress', 'Success', 'Failure', 'Timeout'.
+     * Set represents the current state of the partition restore operation. Possible values include: 'Invalid', 'Accepted', 'RestoreInProgress', 'Success', 'Failure', 'Timeout'.
      *
      * @param restoreState the restoreState value to set
      * @return the RestoreProgressInfoInner object itself.

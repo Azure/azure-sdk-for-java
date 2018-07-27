@@ -5866,8 +5866,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
      *
      * @param nodeName The name of the node.
      * @param timeout The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds.
-     * @param deactivationIntent Describes the intent or reason for deactivating the node. The possible values are following.
-     . Possible values include: 'Pause', 'Restart', 'RemoveData'
+     * @param deactivationIntent Describes the intent or reason for deactivating the node. The possible values are following. Possible values include: 'Pause', 'Restart', 'RemoveData'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws FabricErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -5882,8 +5881,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
      *
      * @param nodeName The name of the node.
      * @param timeout The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds.
-     * @param deactivationIntent Describes the intent or reason for deactivating the node. The possible values are following.
-     . Possible values include: 'Pause', 'Restart', 'RemoveData'
+     * @param deactivationIntent Describes the intent or reason for deactivating the node. The possible values are following. Possible values include: 'Pause', 'Restart', 'RemoveData'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -5898,8 +5896,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
      *
      * @param nodeName The name of the node.
      * @param timeout The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds.
-     * @param deactivationIntent Describes the intent or reason for deactivating the node. The possible values are following.
-     . Possible values include: 'Pause', 'Restart', 'RemoveData'
+     * @param deactivationIntent Describes the intent or reason for deactivating the node. The possible values are following. Possible values include: 'Pause', 'Restart', 'RemoveData'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
@@ -5918,8 +5915,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
      *
      * @param nodeName The name of the node.
      * @param timeout The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds.
-     * @param deactivationIntent Describes the intent or reason for deactivating the node. The possible values are following.
-     . Possible values include: 'Pause', 'Restart', 'RemoveData'
+     * @param deactivationIntent Describes the intent or reason for deactivating the node. The possible values are following. Possible values include: 'Pause', 'Restart', 'RemoveData'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */

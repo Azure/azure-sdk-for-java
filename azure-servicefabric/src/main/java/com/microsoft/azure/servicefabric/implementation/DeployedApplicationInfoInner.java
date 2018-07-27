@@ -42,9 +42,8 @@ public class DeployedApplicationInfoInner {
 
     /**
      * The status of the application deployed on the node. Following are the
-     * possible values.
-     * . Possible values include: 'Invalid', 'Downloading', 'Activating',
-     * 'Active', 'Upgrading', 'Deactivating'.
+     * possible values. Possible values include: 'Invalid', 'Downloading',
+     * 'Activating', 'Active', 'Upgrading', 'Deactivating'.
      */
     @JsonProperty(value = "Status")
     private DeployedApplicationStatus status;
@@ -144,8 +143,7 @@ public class DeployedApplicationInfoInner {
     }
 
     /**
-     * Get the status of the application deployed on the node. Following are the possible values.
-     . Possible values include: 'Invalid', 'Downloading', 'Activating', 'Active', 'Upgrading', 'Deactivating'.
+     * Get the status of the application deployed on the node. Following are the possible values. Possible values include: 'Invalid', 'Downloading', 'Activating', 'Active', 'Upgrading', 'Deactivating'.
      *
      * @return the status value
      */
@@ -154,8 +152,7 @@ public class DeployedApplicationInfoInner {
     }
 
     /**
-     * Set the status of the application deployed on the node. Following are the possible values.
-     . Possible values include: 'Invalid', 'Downloading', 'Activating', 'Active', 'Upgrading', 'Deactivating'.
+     * Set the status of the application deployed on the node. Following are the possible values. Possible values include: 'Invalid', 'Downloading', 'Activating', 'Active', 'Upgrading', 'Deactivating'.
      *
      * @param status the status value to set
      * @return the DeployedApplicationInfoInner object itself.
