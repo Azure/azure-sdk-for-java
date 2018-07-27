@@ -11,6 +11,7 @@ import com.microsoft.azure.storage.blob.LeaseAccessConditions
 import com.microsoft.azure.storage.blob.Metadata
 import com.microsoft.azure.storage.blob.PipelineOptions
 import com.microsoft.azure.storage.blob.RequestRetryOptions
+import com.microsoft.azure.storage.blob.RetryReaderOptions
 import com.microsoft.azure.storage.blob.ServiceURL
 import com.microsoft.azure.storage.blob.StorageException
 import com.microsoft.azure.storage.blob.StorageURL
@@ -626,7 +627,7 @@ class TransferManagerTest extends APISpec {
         def outBuf = ByteBuffer.allocate(size.intValue())
 
         when:
-        TransferManager.downloadBlobToBuffer(bu, null, null, outBuf, null).blockingGet()
+        TransferManager.downloadBlobToBuffer(bu, null, outBuf, null).blockingGet()
         outBuf.position(0)
 
         then:
@@ -640,32 +641,13 @@ class TransferManagerTest extends APISpec {
     }
 
     @Unroll
-    def "Download buffer IA null"() {
-        when:
-        TransferManager.downloadBlobToBuffer(blobURL, null, null, buffer, null).blockingGet()
-
-        then:
-        thrown(IllegalArgumentException)
-
-        /*
-        This test is just validating that exceptions are thrown if certain values are null. The values not being test do
-        not need to be correct, simply not null. Because order in which Spock initializes values, we can't just use the
-        bu property for the url.
-         */
-        where:
-        buffer                  | blobURL
-        null                    | new BlockBlobURL(new URL("http://account.com"), StorageURL.createPipeline(primaryCreds, new PipelineOptions()))
-        ByteBuffer.allocate(10) | null
-    }
-
-    @Unroll
     def "Download buffer range"() {
         setup:
         bu.upload(defaultFlowable, defaultDataSize, null, null, null).blockingGet()
-        ByteBuffer buffer = ByteBuffer.allocate((int)range.count)
+        ByteBuffer buffer = ByteBuffer.allocate((int) range.count)
 
         when:
-        TransferManager.downloadBlobToBuffer(bu, range, null, buffer, null).blockingGet()
+        TransferManager.downloadBlobToBuffer(bu, range, buffer, null).blockingGet()
         buffer.position(0)
 
         then:
@@ -682,7 +664,115 @@ class TransferManagerTest extends APISpec {
 
     def "Download buffer count null"() {
         setup:
-        bu.upload()
+        bu.upload(defaultFlowable, defaultDataSize, null, null, null).blockingGet()
+        def buffer = ByteBuffer.allocate(defaultDataSize)
+
+        when:
+        TransferManager.downloadBlobToBuffer(bu, new BlobRange(0, null), buffer,
+                null).blockingGet()
+
+        then:
+        buffer.compareTo(defaultData) == 0
+    }
+
+    @Unroll
+    def "Download buffer AC"() {
+        setup:
+        bu.upload(defaultFlowable, defaultDataSize, null, null, null).blockingGet()
+        def buffer = ByteBuffer.allocate(defaultDataSize)
+        match = setupBlobMatchCondition(bu, match)
+        leaseID = setupBlobLeaseCondition(bu, leaseID)
+        BlobAccessConditions bac = new BlobAccessConditions(
+                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
+                null, null)
+
+        when:
+        TransferManager.downloadBlobToBuffer(bu, null, buffer, new TransferManager.DownloadFromBlobOptions(
+                null, null, bac, null, null)).blockingGet()
+
+        then:
+        buffer.compareTo(defaultData) == 0
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | receivedLeaseID
+
+    }
+
+    @Unroll
+    def "Download buffer AC fail"() {
+        setup:
+        bu.upload(defaultFlowable, defaultDataSize, null, null, null).blockingGet()
+        def buffer = ByteBuffer.allocate(defaultDataSize)
+        noneMatch = setupBlobMatchCondition(bu, noneMatch)
+        setupBlobLeaseCondition(bu, leaseID)
+        BlobAccessConditions bac = new BlobAccessConditions(
+                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
+                null, null)
+
+        when:
+        Throwable t = TransferManager.downloadBlobToBuffer(bu, null, buffer,
+                new TransferManager.DownloadFromBlobOptions(null, null, bac, null,
+                        null)).blockingGet()
+
+        then:
+        t instanceof StorageException
+        ((StorageException) t).errorCode() == StorageErrorCode.CONDITION_NOT_MET ||
+                ((StorageException) t).errorCode() == StorageErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
+    }
+
+    @Unroll
+    def "Download buffer options"() {
+        setup:
+        bu.upload(defaultFlowable, defaultDataSize, null, null, null).blockingGet()
+        def buffer = ByteBuffer.allocate(defaultDataSize)
+        def retryReaderOptions = new RetryReaderOptions()
+        retryReaderOptions.maxRetryRequests = retries
+
+        when:
+        TransferManager.downloadBlobToBuffer(bu, null, buffer, new TransferManager.DownloadFromBlobOptions(
+                blockSize, null, null, parallelism, retryReaderOptions)).blockingGet()
+
+        then:
+        buffer.compareTo(defaultData) == 0
+
+        where:
+        blockSize | parallelism | retries
+        1         | null        | 2
+        null      | 1           | 2
+        null      | null        | 1
+    }
+
+    @Unroll
+    def "Download buffer IA null"() {
+        when:
+        TransferManager.downloadBlobToBuffer(blobURL, null, buffer, null).blockingGet()
+
+        then:
+        thrown(IllegalArgumentException)
+
+        /*
+        This test is just validating that exceptions are thrown if certain values are null. The values not being test do
+        not need to be correct, simply not null. Because order in which Spock initializes values, we can't just use the
+        bu property for the url.
+         */
+        where:
+        buffer                  | blobURL
+        null                    | new BlockBlobURL(new URL("http://account.com"), StorageURL.createPipeline(primaryCreds, new PipelineOptions()))
+        ByteBuffer.allocate(10) | null
     }
 
     def "Download buffer IA buffer size"() {
@@ -690,7 +780,7 @@ class TransferManagerTest extends APISpec {
         bu.upload(defaultFlowable, defaultDataSize, null, null, null).blockingGet()
 
         when:
-        Throwable t = TransferManager.downloadBlobToBuffer(bu, null, null,
+        Throwable t = TransferManager.downloadBlobToBuffer(bu, null,
                 ByteBuffer.allocate(defaultDataSize - 1), null).blockingGet()
 
         then:
@@ -702,3 +792,4 @@ class TransferManagerTest extends APISpec {
 
     }
 }
+

@@ -362,9 +362,9 @@ public class TransferManager {
                  Specify the number of concurrent subscribers to this map. This determines how many concurrent rest
                  calls are made. This is so because maxConcurrency is the number of internal subscribers available to
                  subscribe to the Observables emitted by the source. A subscriber is not released for a new subscription
-                 until its Observable calls onComplete, which here means that the call to stageBlock is finished. Prefetch
-                 is a hint that each of the Observables emitted by the source will emit only one value, which is true
-                 here because we have converted from a Single.
+                 until its Observable calls onComplete, which here means that the call to stageBlock is finished.
+                 Prefetch is a hint that each of the Observables emitted by the source will emit only one value,
+                 which is true here because we have converted from a Single.
                  */
 
                 }, optionsReal.parallelism, 1)
@@ -412,8 +412,6 @@ public class TransferManager {
      *      The URL to the blob to download.
      * @param range
      *      {@link BlobRange}
-     * @param accessConditions
-     *      {@link BlobAccessConditions}
      * @param buffer
      *      The destination buffer to which the blob data will be written.
      * @param options
@@ -421,8 +419,8 @@ public class TransferManager {
      * @return
      *      A {@code Completable} that will signal when the download is complete.
      */
-    public static Completable downloadBlobToBuffer(BlobURL blobURL, BlobRange range,
-            BlobAccessConditions accessConditions, ByteBuffer buffer, DownloadFromBlobOptions options) {
+    public static Completable downloadBlobToBuffer(BlobURL blobURL, BlobRange range, ByteBuffer buffer,
+            DownloadFromBlobOptions options) {
         BlobRange r = range == null ? BlobRange.DEFAULT : range;
         DownloadFromBlobOptions o = options == null ? DownloadFromBlobOptions.DEFAULT : options;
         Utility.assertNotNull("blobURL", blobURL);
@@ -434,7 +432,7 @@ public class TransferManager {
          */
         Single<Long> setupSingle;
         if (r.getCount() == null) {
-            setupSingle = blobURL.getProperties(accessConditions)
+            setupSingle = blobURL.getProperties(o.accessConditions)
                     .map(response -> response.headers().contentLength() - r.getOffset());
         }
         else {
