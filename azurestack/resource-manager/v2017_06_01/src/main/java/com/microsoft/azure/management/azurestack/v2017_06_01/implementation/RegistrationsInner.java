@@ -571,7 +571,6 @@ public class RegistrationsInner implements InnerSupportsGet<RegistrationInner>, 
     private ServiceResponse<RegistrationInner> updateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<RegistrationInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<RegistrationInner>() { }.getType())
-                .register(201, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
