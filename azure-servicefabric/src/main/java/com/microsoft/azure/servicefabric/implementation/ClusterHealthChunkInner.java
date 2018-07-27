@@ -25,9 +25,8 @@ public class ClusterHealthChunkInner {
      * The health evaluation of the entity reflects all events reported on the
      * entity and its children (if any).
      * The aggregation is done by applying the desired cluster health policy
-     * and the application health policies.
-     * . Possible values include: 'Invalid', 'Ok', 'Warning', 'Error',
-     * 'Unknown'.
+     * and the application health policies. Possible values include: 'Invalid',
+     * 'Ok', 'Warning', 'Error', 'Unknown'.
      */
     @JsonProperty(value = "HealthState")
     private HealthState healthState;
@@ -49,8 +48,7 @@ public class ClusterHealthChunkInner {
     /**
      * Get the HealthState representing the aggregated health state of the cluster computed by Health Manager.
      The health evaluation of the entity reflects all events reported on the entity and its children (if any).
-     The aggregation is done by applying the desired cluster health policy and the application health policies.
-     . Possible values include: 'Invalid', 'Ok', 'Warning', 'Error', 'Unknown'.
+     The aggregation is done by applying the desired cluster health policy and the application health policies. Possible values include: 'Invalid', 'Ok', 'Warning', 'Error', 'Unknown'.
      *
      * @return the healthState value
      */
@@ -61,8 +59,7 @@ public class ClusterHealthChunkInner {
     /**
      * Set the HealthState representing the aggregated health state of the cluster computed by Health Manager.
      The health evaluation of the entity reflects all events reported on the entity and its children (if any).
-     The aggregation is done by applying the desired cluster health policy and the application health policies.
-     . Possible values include: 'Invalid', 'Ok', 'Warning', 'Error', 'Unknown'.
+     The aggregation is done by applying the desired cluster health policy and the application health policies. Possible values include: 'Invalid', 'Ok', 'Warning', 'Error', 'Unknown'.
      *
      * @param healthState the healthState value to set
      * @return the ClusterHealthChunkInner object itself.

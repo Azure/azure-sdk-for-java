@@ -51,9 +51,8 @@ public class ApplicationInfoInner {
     private String typeVersion;
 
     /**
-     * The status of the application.
-     * . Possible values include: 'Invalid', 'Ready', 'Upgrading', 'Creating',
-     * 'Deleting', 'Failed'.
+     * The status of the application. Possible values include: 'Invalid',
+     * 'Ready', 'Upgrading', 'Creating', 'Deleting', 'Failed'.
      */
     @JsonProperty(value = "Status")
     private ApplicationStatus status;
@@ -74,9 +73,9 @@ public class ApplicationInfoInner {
     private HealthState healthState;
 
     /**
-     * The mechanism used to define a Service Fabric application.
-     * . Possible values include: 'Invalid',
-     * 'ServiceFabricApplicationDescription', 'Compose'.
+     * The mechanism used to define a Service Fabric application. Possible
+     * values include: 'Invalid', 'ServiceFabricApplicationDescription',
+     * 'Compose'.
      */
     @JsonProperty(value = "ApplicationDefinitionKind")
     private ApplicationDefinitionKind applicationDefinitionKind;
@@ -166,8 +165,7 @@ public class ApplicationInfoInner {
     }
 
     /**
-     * Get the status of the application.
-     . Possible values include: 'Invalid', 'Ready', 'Upgrading', 'Creating', 'Deleting', 'Failed'.
+     * Get the status of the application. Possible values include: 'Invalid', 'Ready', 'Upgrading', 'Creating', 'Deleting', 'Failed'.
      *
      * @return the status value
      */
@@ -176,8 +174,7 @@ public class ApplicationInfoInner {
     }
 
     /**
-     * Set the status of the application.
-     . Possible values include: 'Invalid', 'Ready', 'Upgrading', 'Creating', 'Deleting', 'Failed'.
+     * Set the status of the application. Possible values include: 'Invalid', 'Ready', 'Upgrading', 'Creating', 'Deleting', 'Failed'.
      *
      * @param status the status value to set
      * @return the ApplicationInfoInner object itself.
@@ -228,8 +225,7 @@ public class ApplicationInfoInner {
     }
 
     /**
-     * Get the mechanism used to define a Service Fabric application.
-     . Possible values include: 'Invalid', 'ServiceFabricApplicationDescription', 'Compose'.
+     * Get the mechanism used to define a Service Fabric application. Possible values include: 'Invalid', 'ServiceFabricApplicationDescription', 'Compose'.
      *
      * @return the applicationDefinitionKind value
      */
@@ -238,8 +234,7 @@ public class ApplicationInfoInner {
     }
 
     /**
-     * Set the mechanism used to define a Service Fabric application.
-     . Possible values include: 'Invalid', 'ServiceFabricApplicationDescription', 'Compose'.
+     * Set the mechanism used to define a Service Fabric application. Possible values include: 'Invalid', 'ServiceFabricApplicationDescription', 'Compose'.
      *
      * @param applicationDefinitionKind the applicationDefinitionKind value to set
      * @return the ApplicationInfoInner object itself.

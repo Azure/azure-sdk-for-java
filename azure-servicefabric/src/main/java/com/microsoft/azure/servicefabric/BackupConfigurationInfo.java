@@ -32,9 +32,8 @@ public class BackupConfigurationInfo {
     private String policyName;
 
     /**
-     * Specifies the scope at which the backup policy is applied.
-     * . Possible values include: 'Invalid', 'Partition', 'Service',
-     * 'Application'.
+     * Specifies the scope at which the backup policy is applied. Possible
+     * values include: 'Invalid', 'Partition', 'Service', 'Application'.
      */
     @JsonProperty(value = "PolicyInheritedFrom")
     private BackupPolicyScope policyInheritedFrom;
@@ -66,8 +65,7 @@ public class BackupConfigurationInfo {
     }
 
     /**
-     * Get specifies the scope at which the backup policy is applied.
-     . Possible values include: 'Invalid', 'Partition', 'Service', 'Application'.
+     * Get specifies the scope at which the backup policy is applied. Possible values include: 'Invalid', 'Partition', 'Service', 'Application'.
      *
      * @return the policyInheritedFrom value
      */
@@ -76,8 +74,7 @@ public class BackupConfigurationInfo {
     }
 
     /**
-     * Set specifies the scope at which the backup policy is applied.
-     . Possible values include: 'Invalid', 'Partition', 'Service', 'Application'.
+     * Set specifies the scope at which the backup policy is applied. Possible values include: 'Invalid', 'Partition', 'Service', 'Application'.
      *
      * @param policyInheritedFrom the policyInheritedFrom value to set
      * @return the BackupConfigurationInfo object itself.

@@ -24,16 +24,15 @@ public class ChaosInner {
     private ChaosParameters chaosParameters;
 
     /**
-     * Current status of the Chaos run.
-     * . Possible values include: 'Invalid', 'Running', 'Stopped'.
+     * Current status of the Chaos run. Possible values include: 'Invalid',
+     * 'Running', 'Stopped'.
      */
     @JsonProperty(value = "Status")
     private ChaosStatus status;
 
     /**
-     * Current status of the schedule.
-     * . Possible values include: 'Invalid', 'Stopped', 'Active', 'Expired',
-     * 'Pending'.
+     * Current status of the schedule. Possible values include: 'Invalid',
+     * 'Stopped', 'Active', 'Expired', 'Pending'.
      */
     @JsonProperty(value = "ScheduleStatus")
     private ChaosScheduleStatus scheduleStatus;
@@ -59,8 +58,7 @@ public class ChaosInner {
     }
 
     /**
-     * Get current status of the Chaos run.
-     . Possible values include: 'Invalid', 'Running', 'Stopped'.
+     * Get current status of the Chaos run. Possible values include: 'Invalid', 'Running', 'Stopped'.
      *
      * @return the status value
      */
@@ -69,8 +67,7 @@ public class ChaosInner {
     }
 
     /**
-     * Set current status of the Chaos run.
-     . Possible values include: 'Invalid', 'Running', 'Stopped'.
+     * Set current status of the Chaos run. Possible values include: 'Invalid', 'Running', 'Stopped'.
      *
      * @param status the status value to set
      * @return the ChaosInner object itself.
@@ -81,8 +78,7 @@ public class ChaosInner {
     }
 
     /**
-     * Get current status of the schedule.
-     . Possible values include: 'Invalid', 'Stopped', 'Active', 'Expired', 'Pending'.
+     * Get current status of the schedule. Possible values include: 'Invalid', 'Stopped', 'Active', 'Expired', 'Pending'.
      *
      * @return the scheduleStatus value
      */
@@ -91,8 +87,7 @@ public class ChaosInner {
     }
 
     /**
-     * Set current status of the schedule.
-     . Possible values include: 'Invalid', 'Stopped', 'Active', 'Expired', 'Pending'.
+     * Set current status of the schedule. Possible values include: 'Invalid', 'Stopped', 'Active', 'Expired', 'Pending'.
      *
      * @param scheduleStatus the scheduleStatus value to set
      * @return the ChaosInner object itself.

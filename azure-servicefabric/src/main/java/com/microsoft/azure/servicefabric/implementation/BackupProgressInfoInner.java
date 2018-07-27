@@ -20,9 +20,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class BackupProgressInfoInner {
     /**
-     * Represents the current state of the partition backup operation.
-     * . Possible values include: 'Invalid', 'Accepted', 'BackupInProgress',
-     * 'Success', 'Failure', 'Timeout'.
+     * Represents the current state of the partition backup operation. Possible
+     * values include: 'Invalid', 'Accepted', 'BackupInProgress', 'Success',
+     * 'Failure', 'Timeout'.
      */
     @JsonProperty(value = "BackupState")
     private BackupState backupState;
@@ -64,8 +64,7 @@ public class BackupProgressInfoInner {
     private FabricErrorError failureError;
 
     /**
-     * Get represents the current state of the partition backup operation.
-     . Possible values include: 'Invalid', 'Accepted', 'BackupInProgress', 'Success', 'Failure', 'Timeout'.
+     * Get represents the current state of the partition backup operation. Possible values include: 'Invalid', 'Accepted', 'BackupInProgress', 'Success', 'Failure', 'Timeout'.
      *
      * @return the backupState value
      */
@@ -74,8 +73,7 @@ public class BackupProgressInfoInner {
     }
 
     /**
-     * Set represents the current state of the partition backup operation.
-     . Possible values include: 'Invalid', 'Accepted', 'BackupInProgress', 'Success', 'Failure', 'Timeout'.
+     * Set represents the current state of the partition backup operation. Possible values include: 'Invalid', 'Accepted', 'BackupInProgress', 'Success', 'Failure', 'Timeout'.
      *
      * @param backupState the backupState value to set
      * @return the BackupProgressInfoInner object itself.

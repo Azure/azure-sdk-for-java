@@ -24,8 +24,8 @@ import com.microsoft.rest.serializer.JsonFlatten;
 @JsonFlatten
 public class ServiceResourceDescriptionInner {
     /**
-     * The Operating system type required by the code in service.
-     * . Possible values include: 'Linux', 'Windows'.
+     * The Operating system type required by the code in service. Possible
+     * values include: 'Linux', 'Windows'.
      */
     @JsonProperty(value = "properties.osType", required = true)
     private OperatingSystemTypes osType;
@@ -86,8 +86,7 @@ public class ServiceResourceDescriptionInner {
     private String name;
 
     /**
-     * Get the Operating system type required by the code in service.
-     . Possible values include: 'Linux', 'Windows'.
+     * Get the Operating system type required by the code in service. Possible values include: 'Linux', 'Windows'.
      *
      * @return the osType value
      */
@@ -96,8 +95,7 @@ public class ServiceResourceDescriptionInner {
     }
 
     /**
-     * Set the Operating system type required by the code in service.
-     . Possible values include: 'Linux', 'Windows'.
+     * Set the Operating system type required by the code in service. Possible values include: 'Linux', 'Windows'.
      *
      * @param osType the osType value to set
      * @return the ServiceResourceDescriptionInner object itself.

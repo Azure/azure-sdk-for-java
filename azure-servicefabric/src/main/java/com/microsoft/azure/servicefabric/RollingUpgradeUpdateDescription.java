@@ -48,8 +48,7 @@ public class RollingUpgradeUpdateDescription {
      * Invalid indicates the failure action is invalid. Rollback specifies that
      * the upgrade will start rolling back automatically.
      * Manual indicates that the upgrade will switch to UnmonitoredManual
-     * upgrade mode.
-     * . Possible values include: 'Invalid', 'Rollback', 'Manual'.
+     * upgrade mode. Possible values include: 'Invalid', 'Rollback', 'Manual'.
      */
     @JsonProperty(value = "FailureAction")
     private FailureAction failureAction;
@@ -164,8 +163,7 @@ public class RollingUpgradeUpdateDescription {
     /**
      * Get the compensating action to perform when a Monitored upgrade encounters monitoring policy or health policy violations.
      Invalid indicates the failure action is invalid. Rollback specifies that the upgrade will start rolling back automatically.
-     Manual indicates that the upgrade will switch to UnmonitoredManual upgrade mode.
-     . Possible values include: 'Invalid', 'Rollback', 'Manual'.
+     Manual indicates that the upgrade will switch to UnmonitoredManual upgrade mode. Possible values include: 'Invalid', 'Rollback', 'Manual'.
      *
      * @return the failureAction value
      */
@@ -176,8 +174,7 @@ public class RollingUpgradeUpdateDescription {
     /**
      * Set the compensating action to perform when a Monitored upgrade encounters monitoring policy or health policy violations.
      Invalid indicates the failure action is invalid. Rollback specifies that the upgrade will start rolling back automatically.
-     Manual indicates that the upgrade will switch to UnmonitoredManual upgrade mode.
-     . Possible values include: 'Invalid', 'Rollback', 'Manual'.
+     Manual indicates that the upgrade will switch to UnmonitoredManual upgrade mode. Possible values include: 'Invalid', 'Rollback', 'Manual'.
      *
      * @param failureAction the failureAction value to set
      * @return the RollingUpgradeUpdateDescription object itself.

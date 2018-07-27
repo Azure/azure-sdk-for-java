@@ -21,9 +21,8 @@ public class EntityHealth {
      * computed by Health Manager.
      * The health evaluation of the entity reflects all events reported on the
      * entity and its children (if any).
-     * The aggregation is done by applying the desired health policy.
-     * . Possible values include: 'Invalid', 'Ok', 'Warning', 'Error',
-     * 'Unknown'.
+     * The aggregation is done by applying the desired health policy. Possible
+     * values include: 'Invalid', 'Ok', 'Warning', 'Error', 'Unknown'.
      */
     @JsonProperty(value = "AggregatedHealthState")
     private HealthState aggregatedHealthState;
@@ -51,8 +50,7 @@ public class EntityHealth {
     /**
      * Get the HealthState representing the aggregated health state of the entity computed by Health Manager.
      The health evaluation of the entity reflects all events reported on the entity and its children (if any).
-     The aggregation is done by applying the desired health policy.
-     . Possible values include: 'Invalid', 'Ok', 'Warning', 'Error', 'Unknown'.
+     The aggregation is done by applying the desired health policy. Possible values include: 'Invalid', 'Ok', 'Warning', 'Error', 'Unknown'.
      *
      * @return the aggregatedHealthState value
      */
@@ -63,8 +61,7 @@ public class EntityHealth {
     /**
      * Set the HealthState representing the aggregated health state of the entity computed by Health Manager.
      The health evaluation of the entity reflects all events reported on the entity and its children (if any).
-     The aggregation is done by applying the desired health policy.
-     . Possible values include: 'Invalid', 'Ok', 'Warning', 'Error', 'Unknown'.
+     The aggregation is done by applying the desired health policy. Possible values include: 'Invalid', 'Ok', 'Warning', 'Error', 'Unknown'.
      *
      * @param aggregatedHealthState the aggregatedHealthState value to set
      * @return the EntityHealth object itself.

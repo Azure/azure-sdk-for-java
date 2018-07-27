@@ -37,12 +37,11 @@ public class ComposeDeploymentUpgradeProgressInfoInner {
     private String applicationName;
 
     /**
-     * The state of the compose deployment upgrade.
-     * . Possible values include: 'Invalid', 'ProvisioningTarget',
-     * 'RollingForwardInProgress', 'RollingForwardPending',
-     * 'UnprovisioningCurrent', 'RollingForwardCompleted',
-     * 'RollingBackInProgress', 'UnprovisioningTarget', 'RollingBackCompleted',
-     * 'Failed'.
+     * The state of the compose deployment upgrade. Possible values include:
+     * 'Invalid', 'ProvisioningTarget', 'RollingForwardInProgress',
+     * 'RollingForwardPending', 'UnprovisioningCurrent',
+     * 'RollingForwardCompleted', 'RollingBackInProgress',
+     * 'UnprovisioningTarget', 'RollingBackCompleted', 'Failed'.
      */
     @JsonProperty(value = "UpgradeState")
     private ComposeDeploymentUpgradeState upgradeState;
@@ -213,8 +212,7 @@ public class ComposeDeploymentUpgradeProgressInfoInner {
     }
 
     /**
-     * Get the state of the compose deployment upgrade.
-     . Possible values include: 'Invalid', 'ProvisioningTarget', 'RollingForwardInProgress', 'RollingForwardPending', 'UnprovisioningCurrent', 'RollingForwardCompleted', 'RollingBackInProgress', 'UnprovisioningTarget', 'RollingBackCompleted', 'Failed'.
+     * Get the state of the compose deployment upgrade. Possible values include: 'Invalid', 'ProvisioningTarget', 'RollingForwardInProgress', 'RollingForwardPending', 'UnprovisioningCurrent', 'RollingForwardCompleted', 'RollingBackInProgress', 'UnprovisioningTarget', 'RollingBackCompleted', 'Failed'.
      *
      * @return the upgradeState value
      */
@@ -223,8 +221,7 @@ public class ComposeDeploymentUpgradeProgressInfoInner {
     }
 
     /**
-     * Set the state of the compose deployment upgrade.
-     . Possible values include: 'Invalid', 'ProvisioningTarget', 'RollingForwardInProgress', 'RollingForwardPending', 'UnprovisioningCurrent', 'RollingForwardCompleted', 'RollingBackInProgress', 'UnprovisioningTarget', 'RollingBackCompleted', 'Failed'.
+     * Set the state of the compose deployment upgrade. Possible values include: 'Invalid', 'ProvisioningTarget', 'RollingForwardInProgress', 'RollingForwardPending', 'UnprovisioningCurrent', 'RollingForwardCompleted', 'RollingBackInProgress', 'UnprovisioningTarget', 'RollingBackCompleted', 'Failed'.
      *
      * @param upgradeState the upgradeState value to set
      * @return the ComposeDeploymentUpgradeProgressInfoInner object itself.
