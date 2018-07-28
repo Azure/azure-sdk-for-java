@@ -18,6 +18,7 @@ package com.microsoft.azure.storage.blob;
 import io.reactivex.*;
 import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Function;
+import io.reactivex.internal.operators.mixed.ObservableConcatMapCompletable;
 
 import java.io.IOException;
 import java.lang.Error;
@@ -65,24 +66,24 @@ public class TransferManager {
          * behavior.
          *
          * @param progressReceiver
-         *      An object that implements the {@link IProgressReceiver} interface which will be invoked periodically as
-         *      bytes are sent in a PutBlock call to the BlockBlobURL. May be null if no progress reports are desired.
+         *         An object that implements the {@link IProgressReceiver} interface which will be invoked periodically
+         *         as bytes are sent in a PutBlock call to the BlockBlobURL. May be null if no progress reports are
+         *         desired.
          * @param httpHeaders
-         *      {@link BlobHTTPHeaders}
+         *         {@link BlobHTTPHeaders}
          * @param metadata
-         *      {@link Metadata}
+         *         {@link Metadata}
          * @param accessConditions
-         *      {@link BlobAccessConditions}
+         *         {@link BlobAccessConditions}
          * @param parallelism
-         *      A {@code int} that indicates the maximum number of blocks to upload in parallel. Must be greater than 0.
-         *      May be null to accept default behavior.
+         *         A {@code int} that indicates the maximum number of blocks to upload in parallel. Must be greater than
+         *         0. May be null to accept default behavior.
          */
         public UploadToBlockBlobOptions(IProgressReceiver progressReceiver, BlobHTTPHeaders httpHeaders,
-                                        Metadata metadata, BlobAccessConditions accessConditions, Integer parallelism) {
+                Metadata metadata, BlobAccessConditions accessConditions, Integer parallelism) {
             if (parallelism == null) {
                 this.parallelism = 5;
-            }
-            else if (parallelism <= 0) {
+            } else if (parallelism <= 0) {
                 throw new IllegalArgumentException("Parallelism must be > 0");
             } else {
                 this.parallelism = parallelism;
@@ -125,34 +126,32 @@ public class TransferManager {
          * Returns an object that configures the parallel download behavior for methods on the {@code TransferManager}.
          *
          * @param blockSize
-         *      The size of the chunk into which large download operations will be broken into. These methods operate on
-         *      {@code ByteBuffer}s and {@code ByteBuffer}s only support {@code int} for their size, so only chunk sizes
-         *      of up to 2^31 can be processed.
+         *         The size of the chunk into which large download operations will be broken into. These methods operate
+         *         on {@code ByteBuffer}s and {@code ByteBuffer}s only support {@code int} for their size, so only chunk
+         *         sizes of up to 2^31 can be processed.
          * @param progressReceiver
-         *      {@link IProgressReceiver}
+         *         {@link IProgressReceiver}
          * @param accessConditions
-         *      {@link BlobAccessConditions}
+         *         {@link BlobAccessConditions}
          * @param parallelism
-         *      A {@code int} that indicates the maximum number of blocks to upload in parallel. Must be greater than 0.
-         *      May be null to accept default behavior.
+         *         A {@code int} that indicates the maximum number of blocks to upload in parallel. Must be greater than
+         *         0. May be null to accept default behavior.
          * @param retryReaderOptions
-         *     {@link RetryReaderOptions}
+         *         {@link RetryReaderOptions}
          */
         public DownloadFromBlobOptions(Integer blockSize, IProgressReceiver progressReceiver,
                 BlobAccessConditions accessConditions, Integer parallelism, RetryReaderOptions retryReaderOptions) {
             if (blockSize != null) {
                 Utility.assertInBounds("blockSize", blockSize, 1, Long.MAX_VALUE);
                 this.blockSize = blockSize;
-            }
-            else {
+            } else {
                 this.blockSize = TransferManager.BLOB_DEFAULT_DOWNLOAD_BLOCK_SIZE;
             }
 
             if (parallelism != null) {
                 Utility.assertInBounds("parallelism", parallelism, 1, Integer.MAX_VALUE);
                 this.parallelism = parallelism;
-            }
-            else {
+            } else {
                 this.parallelism = 5;
             }
 
@@ -172,18 +171,20 @@ public class TransferManager {
      * For more samples, please see the [Samples file](https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      *
      * @param file
-     *      The file to upload.
+     *         The file to upload.
      * @param blockBlobURL
-     *      Points to the blob to which the data should be uploaded.
+     *         Points to the blob to which the data should be uploaded.
      * @param blockLength
-     *      If the data must be broken up into blocks, this value determines what size those blocks will be. This will
-     *      affect the total number of service requests made. This value will be ignored if the data can be uploaded in
-     *      a single put-blob operation. Must be between 1 and {@link BlockBlobURL#MAX_STAGE_BLOCK_BYTES}. Note as well
-     *      that {@code fileLength/blockLength} must be less than or equal to {@link BlockBlobURL#MAX_BLOCKS}.
+     *         If the data must be broken up into blocks, this value determines what size those blocks will be. This
+     *         will affect the total number of service requests made. This value will be ignored if the data can be
+     *         uploaded in a single put-blob operation. Must be between 1 and {@link BlockBlobURL#MAX_STAGE_BLOCK_BYTES}.
+     *         Note as well that {@code fileLength/blockLength} must be less than or equal to {@link
+     *         BlockBlobURL#MAX_BLOCKS}.
      * @param options
-     *      {@link UploadToBlockBlobOptions}
-     * @return
-     *      Emits the successful response.
+     *         {@link UploadToBlockBlobOptions}
+     * @return Emits the successful response.
+     * @apiNote [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=tm_file
+     * "Sample code for TransferManager.uploadFileToBlockBlob")]
      */
     public static Single<CommonRestResponse> uploadFileToBlockBlob(
             final FileChannel file, final BlockBlobURL blockBlobURL, final int blockLength,
@@ -208,9 +209,9 @@ public class TransferManager {
                         The docs say that the result of mapping a region which is not entirely contained by the file
                         is undefined, so we must be precise with the last block size.
                          */
-                        int count = Math.min(blockLength, (int)(file.size()-i*blockLength));
+                        int count = Math.min(blockLength, (int) (file.size() - i * blockLength));
                         // Memory map the file to get a ByteBuffer to an in memory portion of the file.
-                        MappedByteBuffer buf = file.map(FileChannel.MapMode.READ_ONLY, i*blockLength, count);
+                        MappedByteBuffer buf = file.map(FileChannel.MapMode.READ_ONLY, i * blockLength, count);
                         buf.load();
                         return buf;
                     })
@@ -220,17 +221,16 @@ public class TransferManager {
                     // Turn the list into a call to uploadByteBuffersToBlockBlob and return that result.
                     .flatMap(blocks ->
                             uploadByteBuffersToBlockBlob(blocks, blockBlobURL, optionsReal));
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             throw new Error(e);
         }
     }
 
     private static int calculateNumBlocks(long dataSize, int blockLength) {
         // Can successfully cast to an int because MaxBlockSize is an int, which this expression must be less than.
-        int numBlocks = toIntExact(dataSize/blockLength);
+        int numBlocks = toIntExact(dataSize / blockLength);
         // Include an extra block for trailing data.
-        if (dataSize%blockLength != 0) {
+        if (dataSize % blockLength != 0) {
             numBlocks++;
         }
         return numBlocks;
@@ -245,17 +245,18 @@ public class TransferManager {
      * For more samples, please see the [Samples file](https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      *
      * @param data
-     *      The buffer to upload.
+     *         The buffer to upload.
      * @param blockBlobURL
-     *      A {@link BlockBlobURL} that points to the blob to which the data should be uploaded.
+     *         A {@link BlockBlobURL} that points to the blob to which the data should be uploaded.
      * @param blockLength
-     *      If the data must be broken up into blocks, this value determines what size those blocks will be. This will
-     *      affect the total number of service requests made. This value will be ignored if the data can be uploaded in
-     *      a single put-blob operation.
+     *         If the data must be broken up into blocks, this value determines what size those blocks will be. This
+     *         will affect the total number of service requests made. This value will be ignored if the data can be
+     *         uploaded in a single put-blob operation.
      * @param options
-     *      {@link UploadToBlockBlobOptions}
-     * @return
-     *      Emits the successful response.
+     *         {@link UploadToBlockBlobOptions}
+     * @return Emits the successful response.
+     * @apiNote [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=tm_buffer
+     * "Sample code for TransferManager.uploadByteBufferToBlockBlob")]
      */
     public static Single<CommonRestResponse> uploadByteBufferToBlockBlob(
             final ByteBuffer data, final BlockBlobURL blockBlobURL, final int blockLength,
@@ -274,10 +275,10 @@ public class TransferManager {
 
         return Observable.range(0, numBlocks)
                 .map(i -> {
-                    int count = Math.min(blockLength, data.remaining()-i*blockLength);
+                    int count = Math.min(blockLength, data.remaining() - i * blockLength);
                     ByteBuffer block = data.duplicate();
-                    block.position(i*blockLength);
-                    block.limit(i*blockLength+count);
+                    block.position(i * blockLength);
+                    block.limit(i * blockLength + count);
                     return block;
                 })
                 .collectInto(new ArrayList<>(numBlocks),
@@ -300,13 +301,14 @@ public class TransferManager {
      * For more samples, please see the [Samples file](https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      *
      * @param data
-     *      The data to upload.
+     *         The data to upload.
      * @param blockBlobURL
-     *      A {@link BlockBlobURL} that points to the blob to which the data should be uploaded.
+     *         A {@link BlockBlobURL} that points to the blob to which the data should be uploaded.
      * @param options
-     *      {@link UploadToBlockBlobOptions}
-     * @return
-     *      Emits the successful response.
+     *         {@link UploadToBlockBlobOptions}
+     * @return Emits the successful response.
+     * @apiNote [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=tm_buffers
+     * "Sample code for TransferManager.uploadByteBuffersToBlockBlob")]
      */
     public static Single<CommonRestResponse> uploadByteBuffersToBlockBlob(
             final Iterable<ByteBuffer> data, final BlockBlobURL blockBlobURL,
@@ -379,7 +381,7 @@ public class TransferManager {
                 call stageBlock list, all of the stageBlock calls will have finished. By flatMapping the list, we can
                 "map" it into a call to commitBlockList.
                  */
-                .flatMap( ids ->
+                .flatMap(ids ->
                         blockBlobURL.commitBlockList(ids, optionsReal.httpHeaders, optionsReal.metadata,
                                 optionsReal.accessConditions))
                 /*
@@ -402,22 +404,56 @@ public class TransferManager {
     }
 
     /**
-     * Note that only blobs of 2GB or less can be downloaded using this method due to the size constrains on
-     * {@code ByteBuffer}. For downloading large blobs, please see {@link TransferManager#downloadBlobToFile}.
-     *
-     * @apiNote
-     *      Todo
+     * @param blobURL
+     * @param range
+     * @param file
+     * @param options
+     * @return
+     * @apiNote todo
+     */
+    public static Completable downloadBlobToFile(BlobURL blobURL, BlobRange range, FileChannel file,
+            DownloadFromBlobOptions options) {
+        BlobRange r = range == null ? BlobRange.DEFAULT : range;
+        DownloadFromBlobOptions o = options == null ? DownloadFromBlobOptions.DEFAULT : options;
+        Utility.assertNotNull("blobURL", blobURL);
+        Utility.assertNotNull("file", file);
+
+        Single<Long> dataSizeSingle = getDataSizeSingle(blobURL, r, o);
+
+        return dataSizeSingle.flatMapCompletable(dataSize -> {
+            /*
+            A single MappedByteBuffer can only be of size up to maxInt. It is therefore possible that we will need to
+            use several buffers to get all the data into the file. We want to make as few of these as possible, so
+             */
+            int numBuffers = calculateNumBlocks(dataSize, Integer.MAX_VALUE);
+
+            return Observable.range(0, numBuffers)
+                    .flatMapCompletable(i -> {
+                        long bufferSizeActual = Math.min(Integer.MAX_VALUE, dataSize - i * Integer.MAX_VALUE);
+                        MappedByteBuffer block = file.map(FileChannel.MapMode.READ_WRITE, i * Integer.MAX_VALUE,
+                                bufferSizeActual);
+                        block.load();
+
+                        return downloadBlobToBuffer(blobURL, new BlobRange(i * Integer.MAX_VALUE,
+                                bufferSizeActual), block, o);
+                    });
+        });
+    }
+
+    /**
+     * Note that only blobs of 2GB or less can be downloaded using this method due to the size constrains on {@code
+     * ByteBuffer}. For downloading large blobs, please see {@link TransferManager#downloadBlobToFile}.
      *
      * @param blobURL
-     *      The URL to the blob to download.
+     *         The URL to the blob to download.
      * @param range
-     *      {@link BlobRange}
+     *         {@link BlobRange}
      * @param buffer
-     *      The destination buffer to which the blob data will be written.
+     *         The destination buffer to which the blob data will be written.
      * @param options
-     *      {@link DownloadFromBlobOptions}
-     * @return
-     *      A {@code Completable} that will signal when the download is complete.
+     *         {@link DownloadFromBlobOptions}
+     * @return A {@code Completable} that will signal when the download is complete.
+     * @apiNote Todo
      */
     public static Completable downloadBlobToBuffer(BlobURL blobURL, BlobRange range, ByteBuffer buffer,
             DownloadFromBlobOptions options) {
@@ -426,44 +462,33 @@ public class TransferManager {
         Utility.assertNotNull("blobURL", blobURL);
         Utility.assertNotNull("buffer", buffer);
 
-        /*
-        Construct a Single which will emit the total count of bytes to be downloaded. We use a single for this because
-        we may have to make a REST call to get the length to calculate the count and we need to maintain asynchronicity.
-         */
-        Single<Long> setupSingle;
-        if (r.getCount() == null) {
-            setupSingle = blobURL.getProperties(o.accessConditions)
-                    .map(response -> response.headers().contentLength() - r.getOffset());
-        }
-        else {
-            setupSingle = Single.just(r.getCount());
-        }
+        Single<Long> dataSizeSingle = getDataSizeSingle(blobURL, r, o);
 
-        return setupSingle.flatMapCompletable(totalBlobSize -> {
-            if (buffer.remaining() < totalBlobSize) {
+        return dataSizeSingle.flatMapCompletable(dataSize -> {
+            if (buffer.remaining() < dataSize) {
                 throw new IllegalArgumentException("The buffer's remaining size should be greater " +
-                        "than or equal to the request totalBlobSize of bytes: " + totalBlobSize);
+                        "than or equal to the request dataSize of bytes: " + dataSize);
             }
 
-            int numBlocks = calculateNumBlocks(totalBlobSize, o.blockSize);
+            int numBlocks = calculateNumBlocks(dataSize, o.blockSize);
 
             // For each block, we will download a corresponding part of the blob and write it to the buffer.
             return Observable.range(0, numBlocks)
                     .flatMap(i -> {
                         /*
                         Setup a window of the buffer which is scoped to this particular block download. We can safely
-                        call totalBlobSize.intValue because if totalBlobSize were a long, it would have exceeded the
+                        call dataSize.intValue because if dataSize were a long, it would have exceeded the
                         size of the buffer and thrown above.
                          */
-                        int blockSizeActual = Math.min(o.blockSize, totalBlobSize.intValue()-i*o.blockSize);
+                        int blockSizeActual = Math.min(o.blockSize, dataSize.intValue() - i * o.blockSize);
                         ByteBuffer block = buffer.duplicate();
-                        block.position(i*o.blockSize);
-                        block.limit(i*o.blockSize + blockSizeActual);
+                        block.position(i * o.blockSize);
+                        block.limit(i * o.blockSize + blockSizeActual);
 
                         // Make the download call.
                         BlobRange blockRange = new BlobRange(r.getOffset() + (i * o.blockSize),
-                                (long)blockSizeActual);
-                        return blobURL.download(blockRange, o.accessConditions,false)
+                                (long) blockSizeActual);
+                        return blobURL.download(blockRange, o.accessConditions, false)
                                 // Extract the body.
                                 .flatMapObservable(response ->
                                         response.body(o.retryReaderOptionsPerBlock)
@@ -480,5 +505,18 @@ public class TransferManager {
                     // We don't care for any return values, so we transform to a Completable.
                     .ignoreElements();
         });
+    }
+
+    private static Single<Long> getDataSizeSingle(BlobURL blobURL, BlobRange r, DownloadFromBlobOptions o) {
+        /*
+        Construct a Single which will emit the total count of bytes to be downloaded. We use a single for this because
+        we may have to make a REST call to get the length to calculate the count and we need to maintain asynchronicity.
+         */
+        if (r.getCount() == null) {
+            return blobURL.getProperties(o.accessConditions)
+                    .map(response -> response.headers().contentLength() - r.getOffset());
+        } else {
+            return Single.just(r.getCount());
+        }
     }
 }
