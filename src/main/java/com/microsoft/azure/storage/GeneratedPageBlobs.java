@@ -81,7 +81,7 @@ public final class GeneratedPageBlobs {
         @PUT("{containerName}/{blob}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Single<PageBlobCreateResponse> create(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("Content-Length") long contentLength, @HeaderParam("x-ms-blob-content-type") String blobContentType, @HeaderParam("x-ms-blob-content-encoding") String blobContentEncoding, @HeaderParam("x-ms-blob-content-language") String blobContentLanguage, @HeaderParam("x-ms-blob-content-md5") String blobContentMD5, @HeaderParam("x-ms-blob-cache-control") String blobCacheControl, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-blob-content-disposition") String blobContentDisposition, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatches, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("x-ms-blob-content-length") Long blobContentLength, @HeaderParam("x-ms-blob-sequence-number") Long blobSequenceNumber, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-blob-type") String blobType);
+        Single<PageBlobCreateResponse> create(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("Content-Length") long contentLength, @HeaderParam("x-ms-blob-content-type") String blobContentType, @HeaderParam("x-ms-blob-content-encoding") String blobContentEncoding, @HeaderParam("x-ms-blob-content-language") String blobContentLanguage, @HeaderParam("x-ms-blob-content-md5") String blobContentMD5, @HeaderParam("x-ms-blob-cache-control") String blobCacheControl, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-blob-content-disposition") String blobContentDisposition, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatches, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("x-ms-blob-content-length") long blobContentLength, @HeaderParam("x-ms-blob-sequence-number") Long blobSequenceNumber, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-blob-type") String blobType);
 
         @PUT("{containerName}/{blob}")
         @ExpectedResponses({201})
@@ -123,6 +123,7 @@ public final class GeneratedPageBlobs {
      * The Create operation creates a new page blob.
      *
      * @param contentLength The length of the request.
+     * @param blobContentLength This header specifies the maximum size for the page blob, up to 1 TB. The page blob size must be aligned to a 512-byte boundary.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param blobContentType Optional. Sets the blob's content type. If specified, this property is stored with the blob and returned with a read request.
      * @param blobContentEncoding Optional. Sets the blob's content encoding. If specified, this property is stored with the blob and returned with a read request.
@@ -136,21 +137,21 @@ public final class GeneratedPageBlobs {
      * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
      * @param ifMatches Specify an ETag value to operate only on blobs with a matching value.
      * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
-     * @param blobContentLength This header specifies the maximum size for the page blob, up to 1 TB. The page blob size must be aligned to a 512-byte boundary.
      * @param blobSequenceNumber Set for page blobs only. The sequence number is a user-controlled value that you can use to track requests. The value of the sequence number must be between 0 and 2^63 - 1.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    public void create(@NonNull long contentLength, Integer timeout, String blobContentType, String blobContentEncoding, String blobContentLanguage, byte[] blobContentMD5, String blobCacheControl, Map<String, String> metadata, String leaseId, String blobContentDisposition, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatches, String ifNoneMatch, Long blobContentLength, Long blobSequenceNumber, String requestId) {
-        createAsync(contentLength, timeout, blobContentType, blobContentEncoding, blobContentLanguage, blobContentMD5, blobCacheControl, metadata, leaseId, blobContentDisposition, ifModifiedSince, ifUnmodifiedSince, ifMatches, ifNoneMatch, blobContentLength, blobSequenceNumber, requestId).blockingAwait();
+    public void create(@NonNull long contentLength, @NonNull long blobContentLength, Integer timeout, String blobContentType, String blobContentEncoding, String blobContentLanguage, byte[] blobContentMD5, String blobCacheControl, Map<String, String> metadata, String leaseId, String blobContentDisposition, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatches, String ifNoneMatch, Long blobSequenceNumber, String requestId) {
+        createAsync(contentLength, blobContentLength, timeout, blobContentType, blobContentEncoding, blobContentLanguage, blobContentMD5, blobCacheControl, metadata, leaseId, blobContentDisposition, ifModifiedSince, ifUnmodifiedSince, ifMatches, ifNoneMatch, blobSequenceNumber, requestId).blockingAwait();
     }
 
     /**
      * The Create operation creates a new page blob.
      *
      * @param contentLength The length of the request.
+     * @param blobContentLength This header specifies the maximum size for the page blob, up to 1 TB. The page blob size must be aligned to a 512-byte boundary.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param blobContentType Optional. Sets the blob's content type. If specified, this property is stored with the blob and returned with a read request.
      * @param blobContentEncoding Optional. Sets the blob's content encoding. If specified, this property is stored with the blob and returned with a read request.
@@ -164,21 +165,21 @@ public final class GeneratedPageBlobs {
      * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
      * @param ifMatches Specify an ETag value to operate only on blobs with a matching value.
      * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
-     * @param blobContentLength This header specifies the maximum size for the page blob, up to 1 TB. The page blob size must be aligned to a 512-byte boundary.
      * @param blobSequenceNumber Set for page blobs only. The sequence number is a user-controlled value that you can use to track requests. The value of the sequence number must be between 0 and 2^63 - 1.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a ServiceFuture which will be completed with the result of the network request.
      */
-    public ServiceFuture<Void> createAsync(@NonNull long contentLength, Integer timeout, String blobContentType, String blobContentEncoding, String blobContentLanguage, byte[] blobContentMD5, String blobCacheControl, Map<String, String> metadata, String leaseId, String blobContentDisposition, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatches, String ifNoneMatch, Long blobContentLength, Long blobSequenceNumber, String requestId, ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromBody(createAsync(contentLength, timeout, blobContentType, blobContentEncoding, blobContentLanguage, blobContentMD5, blobCacheControl, metadata, leaseId, blobContentDisposition, ifModifiedSince, ifUnmodifiedSince, ifMatches, ifNoneMatch, blobContentLength, blobSequenceNumber, requestId), serviceCallback);
+    public ServiceFuture<Void> createAsync(@NonNull long contentLength, @NonNull long blobContentLength, Integer timeout, String blobContentType, String blobContentEncoding, String blobContentLanguage, byte[] blobContentMD5, String blobCacheControl, Map<String, String> metadata, String leaseId, String blobContentDisposition, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatches, String ifNoneMatch, Long blobSequenceNumber, String requestId, ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromBody(createAsync(contentLength, blobContentLength, timeout, blobContentType, blobContentEncoding, blobContentLanguage, blobContentMD5, blobCacheControl, metadata, leaseId, blobContentDisposition, ifModifiedSince, ifUnmodifiedSince, ifMatches, ifNoneMatch, blobSequenceNumber, requestId), serviceCallback);
     }
 
     /**
      * The Create operation creates a new page blob.
      *
      * @param contentLength The length of the request.
+     * @param blobContentLength This header specifies the maximum size for the page blob, up to 1 TB. The page blob size must be aligned to a 512-byte boundary.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param blobContentType Optional. Sets the blob's content type. If specified, this property is stored with the blob and returned with a read request.
      * @param blobContentEncoding Optional. Sets the blob's content encoding. If specified, this property is stored with the blob and returned with a read request.
@@ -192,13 +193,12 @@ public final class GeneratedPageBlobs {
      * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
      * @param ifMatches Specify an ETag value to operate only on blobs with a matching value.
      * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
-     * @param blobContentLength This header specifies the maximum size for the page blob, up to 1 TB. The page blob size must be aligned to a 512-byte boundary.
      * @param blobSequenceNumber Set for page blobs only. The sequence number is a user-controlled value that you can use to track requests. The value of the sequence number must be between 0 and 2^63 - 1.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Single which performs the network request upon subscription.
      */
-    public Single<PageBlobCreateResponse> createWithRestResponseAsync(@NonNull long contentLength, Integer timeout, String blobContentType, String blobContentEncoding, String blobContentLanguage, byte[] blobContentMD5, String blobCacheControl, Map<String, String> metadata, String leaseId, String blobContentDisposition, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatches, String ifNoneMatch, Long blobContentLength, Long blobSequenceNumber, String requestId) {
+    public Single<PageBlobCreateResponse> createWithRestResponseAsync(@NonNull long contentLength, @NonNull long blobContentLength, Integer timeout, String blobContentType, String blobContentEncoding, String blobContentLanguage, byte[] blobContentMD5, String blobCacheControl, Map<String, String> metadata, String leaseId, String blobContentDisposition, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatches, String ifNoneMatch, Long blobSequenceNumber, String requestId) {
         if (this.client.url() == null) {
             throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
         }
@@ -223,6 +223,7 @@ public final class GeneratedPageBlobs {
      * The Create operation creates a new page blob.
      *
      * @param contentLength The length of the request.
+     * @param blobContentLength This header specifies the maximum size for the page blob, up to 1 TB. The page blob size must be aligned to a 512-byte boundary.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param blobContentType Optional. Sets the blob's content type. If specified, this property is stored with the blob and returned with a read request.
      * @param blobContentEncoding Optional. Sets the blob's content encoding. If specified, this property is stored with the blob and returned with a read request.
@@ -236,14 +237,13 @@ public final class GeneratedPageBlobs {
      * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
      * @param ifMatches Specify an ETag value to operate only on blobs with a matching value.
      * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
-     * @param blobContentLength This header specifies the maximum size for the page blob, up to 1 TB. The page blob size must be aligned to a 512-byte boundary.
      * @param blobSequenceNumber Set for page blobs only. The sequence number is a user-controlled value that you can use to track requests. The value of the sequence number must be between 0 and 2^63 - 1.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Single which performs the network request upon subscription.
      */
-    public Completable createAsync(@NonNull long contentLength, Integer timeout, String blobContentType, String blobContentEncoding, String blobContentLanguage, byte[] blobContentMD5, String blobCacheControl, Map<String, String> metadata, String leaseId, String blobContentDisposition, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatches, String ifNoneMatch, Long blobContentLength, Long blobSequenceNumber, String requestId) {
-        return createWithRestResponseAsync(contentLength, timeout, blobContentType, blobContentEncoding, blobContentLanguage, blobContentMD5, blobCacheControl, metadata, leaseId, blobContentDisposition, ifModifiedSince, ifUnmodifiedSince, ifMatches, ifNoneMatch, blobContentLength, blobSequenceNumber, requestId)
+    public Completable createAsync(@NonNull long contentLength, @NonNull long blobContentLength, Integer timeout, String blobContentType, String blobContentEncoding, String blobContentLanguage, byte[] blobContentMD5, String blobCacheControl, Map<String, String> metadata, String leaseId, String blobContentDisposition, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatches, String ifNoneMatch, Long blobSequenceNumber, String requestId) {
+        return createWithRestResponseAsync(contentLength, blobContentLength, timeout, blobContentType, blobContentEncoding, blobContentLanguage, blobContentMD5, blobCacheControl, metadata, leaseId, blobContentDisposition, ifModifiedSince, ifUnmodifiedSince, ifMatches, ifNoneMatch, blobSequenceNumber, requestId)
             .toCompletable();
     }
 

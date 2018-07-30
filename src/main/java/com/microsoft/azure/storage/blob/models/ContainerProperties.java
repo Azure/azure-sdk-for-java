@@ -59,6 +59,18 @@ public final class ContainerProperties {
     private PublicAccessType publicAccess;
 
     /**
+     * The hasImmutabilityPolicy property.
+     */
+    @JsonProperty(value = "HasImmutabilityPolicy")
+    private Boolean hasImmutabilityPolicy;
+
+    /**
+     * The hasLegalHold property.
+     */
+    @JsonProperty(value = "HasLegalHold")
+    private Boolean hasLegalHold;
+
+    /**
      * Get the lastModified value.
      *
      * @return the lastModified value.
@@ -182,6 +194,46 @@ public final class ContainerProperties {
      */
     public ContainerProperties withPublicAccess(PublicAccessType publicAccess) {
         this.publicAccess = publicAccess;
+        return this;
+    }
+
+    /**
+     * Get the hasImmutabilityPolicy value.
+     *
+     * @return the hasImmutabilityPolicy value.
+     */
+    public Boolean hasImmutabilityPolicy() {
+        return this.hasImmutabilityPolicy;
+    }
+
+    /**
+     * Set the hasImmutabilityPolicy value.
+     *
+     * @param hasImmutabilityPolicy the hasImmutabilityPolicy value to set.
+     * @return the ContainerProperties object itself.
+     */
+    public ContainerProperties withHasImmutabilityPolicy(Boolean hasImmutabilityPolicy) {
+        this.hasImmutabilityPolicy = hasImmutabilityPolicy;
+        return this;
+    }
+
+    /**
+     * Get the hasLegalHold value.
+     *
+     * @return the hasLegalHold value.
+     */
+    public Boolean hasLegalHold() {
+        return this.hasLegalHold;
+    }
+
+    /**
+     * Set the hasLegalHold value.
+     *
+     * @param hasLegalHold the hasLegalHold value to set.
+     * @return the ContainerProperties object itself.
+     */
+    public ContainerProperties withHasLegalHold(Boolean hasLegalHold) {
+        this.hasLegalHold = hasLegalHold;
         return this;
     }
 }

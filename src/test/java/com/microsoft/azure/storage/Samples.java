@@ -992,14 +992,14 @@ public class Samples {
         BlockBlobURL blobURL = containerURL.createBlockBlobURL("Data.txt");
 
         String[] data = {"Michael", "Gabriel", "Raphael", "John"};
+        String initialBlockID = Base64.getEncoder().encodeToString(
+                UUID.randomUUID().toString().getBytes());
 
         // Create the container. We convert to an Observable to be able to work with the block list effectively.
-        containerURL.create(null, null).toObservable()
-                .flatMap(response ->
+        containerURL.create(null, null)
+                .flatMapObservable(response ->
                         // Create an Observable that will yield each of the Strings one at a time.
-                        Observable.fromIterable(Arrays.asList(data))
-                )
-                // Items emitted by an Observable that results from a concatMap call will preserve the original order.
+                        Observable.fromIterable(Arrays.asList(data)))
                 .concatMap(block -> {
                     /*
                      Generate a base64 encoded blockID. Note that all blockIDs must be the same length. It is generally
@@ -1023,43 +1023,23 @@ public class Samples {
                 })
                 // Gather all of the IDs emitted by the previous observable into a single list.
                 .collectInto(new ArrayList<>(data.length), (BiConsumer<ArrayList<String>, String>) ArrayList::add)
-                .flatMap(idList ->
+                .flatMap(idList -> {
                         /*
                         By this point, all the blocks are upload and we have an ordered list of their IDs. Here, we
                         atomically commit the whole list.
                         NOTE: The block list order need not match the order in which the blocks were uploaded. The order
                         of IDs in the commitBlockList call will determine the structure of the blob.
                          */
-                        blobURL.commitBlockList(idList, null, null, null))
+                    idList.add(0, initialBlockID);
+                    return blobURL.commitBlockList(idList, null, null, null);
+                })
                 .flatMap(response ->
                         /*
                          For the blob, show each block (ID and size) that is a committed part of it. It is also possible
                          to include blocks that have been staged but not committed.
                          */
                         blobURL.getBlockList(BlockListType.ALL, null))
-                .flatMap(response -> {
-                    for (Block block : response.body().committedBlocks()) {
-                        System.out.println(String.format(Locale.ROOT, "Block ID=%s, Size=%d", block.name(),
-                                block.size()));
-                    }
-
-                    /*
-                     Download the blob in its entirety; download operations do not take blocks into account.
-                     NOTE: For really large blobs, downloading them like this allocates a lot of memory.
-                     */
-                    return blobURL.download(null, null, false);
-                })
-                .flatMap(response ->
-                        // Print out the data.
-                        FlowableUtil.collectBytesInBuffer(response.body())
-                                .doOnSuccess(bytes ->
-                                        System.out.println(new String(bytes.array())))
-                )
-                .flatMap(response ->
-                        // Delete the container.
-                        containerURL.delete(null)
-                )
-                 /*
+                /*
                 This will synchronize all the above operations. This is strongly discouraged for use in production as
                 it eliminates the benefits of asynchronous IO. We use it here to enable the sample to complete and
                 demonstrate its effectiveness.
@@ -1792,10 +1772,12 @@ public class Samples {
         BlockBlobURL blockBlobURL = containerURL.createBlockBlobURL("Data.txt");
 
         String[] blockData = {"Michael", "Gabriel", "Raphael", "John"};
+        String initialBlockID = Base64.getEncoder().encodeToString(
+                UUID.randomUUID().toString().getBytes());
 
         // Create the container. We convert to an Observable to be able to work with the block list effectively.
-        containerURL.create(null, null).toObservable()
-                .flatMap(response ->
+        containerURL.create(null, null)
+                .flatMapObservable(response ->
                         // Create an Observable that will yield each of the Strings one at a time.
                         Observable.fromIterable(Arrays.asList(blockData))
                 )
@@ -1823,14 +1805,16 @@ public class Samples {
                 })
                 // Gather all of the IDs emitted by the previous observable into a single list.
                 .collectInto(new ArrayList<>(blockData.length), (BiConsumer<ArrayList<String>, String>) ArrayList::add)
-                .flatMap(idList ->
+                .flatMap(idList -> {
                         /*
                         By this point, all the blocks are upload and we have an ordered list of their IDs. Here, we
                         atomically commit the whole list.
                         NOTE: The block list order need not match the order in which the blocks were uploaded. The order
                         of IDs in the commitBlockList call will determine the structure of the blob.
                          */
-                        blockBlobURL.commitBlockList(idList, null, null, null))
+                    idList.add(0, initialBlockID);
+                    return blockBlobURL.commitBlockList(idList, null, null, null);
+                })
                 .flatMap(response ->
                         /*
                          For the blob, show each block (ID and size) that is a committed part of it. It is also possible
@@ -1839,6 +1823,16 @@ public class Samples {
                         blockBlobURL.getBlockList(BlockListType.ALL, null))
                 .subscribe();
         // </blocks>
+
+        // <block_from_url>
+        String blockID = Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes());
+        blockBlobURL.stageBlockFromURL(blockID, blobURL.toURL(), null, null,
+                null)
+                .flatMap(response ->
+                        blockBlobURL.commitBlockList(Arrays.asList(blockID), null, null,
+                                null))
+                .subscribe();
+        // </block_from_url>
 
         // <append_blob>
 

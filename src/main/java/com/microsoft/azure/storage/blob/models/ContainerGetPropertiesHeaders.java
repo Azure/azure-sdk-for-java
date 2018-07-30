@@ -96,6 +96,18 @@ public final class ContainerGetPropertiesHeaders {
     private PublicAccessType blobPublicAccess;
 
     /**
+     * Indicates whether the container has an immutability policy set on it.
+     */
+    @JsonProperty(value = "x-ms-has-immutability-policy")
+    private Boolean hasImmutabilityPolicy;
+
+    /**
+     * Indicates whether the container has a legal hold.
+     */
+    @JsonProperty(value = "x-ms-has-legal-hold")
+    private Boolean hasLegalHold;
+
+    /**
      * Get the metadata value.
      *
      * @return the metadata value.
@@ -306,6 +318,46 @@ public final class ContainerGetPropertiesHeaders {
      */
     public ContainerGetPropertiesHeaders withBlobPublicAccess(PublicAccessType blobPublicAccess) {
         this.blobPublicAccess = blobPublicAccess;
+        return this;
+    }
+
+    /**
+     * Get the hasImmutabilityPolicy value.
+     *
+     * @return the hasImmutabilityPolicy value.
+     */
+    public Boolean hasImmutabilityPolicy() {
+        return this.hasImmutabilityPolicy;
+    }
+
+    /**
+     * Set the hasImmutabilityPolicy value.
+     *
+     * @param hasImmutabilityPolicy the hasImmutabilityPolicy value to set.
+     * @return the ContainerGetPropertiesHeaders object itself.
+     */
+    public ContainerGetPropertiesHeaders withHasImmutabilityPolicy(Boolean hasImmutabilityPolicy) {
+        this.hasImmutabilityPolicy = hasImmutabilityPolicy;
+        return this;
+    }
+
+    /**
+     * Get the hasLegalHold value.
+     *
+     * @return the hasLegalHold value.
+     */
+    public Boolean hasLegalHold() {
+        return this.hasLegalHold;
+    }
+
+    /**
+     * Set the hasLegalHold value.
+     *
+     * @param hasLegalHold the hasLegalHold value to set.
+     * @return the ContainerGetPropertiesHeaders object itself.
+     */
+    public ContainerGetPropertiesHeaders withHasLegalHold(Boolean hasLegalHold) {
+        this.hasLegalHold = hasLegalHold;
         return this;
     }
 }

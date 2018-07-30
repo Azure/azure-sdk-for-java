@@ -132,7 +132,7 @@ public final class PageBlobURL extends BlobURL {
 
         // TODO: What if you pass 0 for pageblob size? Validate?
         return addErrorWrappingToSingle(this.storageClient.generatedPageBlobs().createWithRestResponseAsync(
-                0, null,
+                0, size, null,
                 headers.getContentType(),
                 headers.getContentEncoding(),
                 headers.getContentLanguage(),
@@ -145,7 +145,7 @@ public final class PageBlobURL extends BlobURL {
                 accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
                 accessConditions.getHttpAccessConditions().getIfMatch().toString(),
                 accessConditions.getHttpAccessConditions().getIfNoneMatch().toString(),
-                size, sequenceNumber, null));
+                sequenceNumber, null));
     }
 
     /**

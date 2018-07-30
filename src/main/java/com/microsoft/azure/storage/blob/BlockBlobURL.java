@@ -154,8 +154,8 @@ public final class BlockBlobURL extends BlobURL {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blocks "Sample code for BlockBlobURL.stageBlock")]
      *
      * @param base64BlockID
-     *      A Base64 encoded {@code String} that specifies the ID for this block. Note that all block ids must be the
-     *      same length.
+     *      A Base64 encoded {@code String} that specifies the ID for this block. Note that all block ids for a given
+     *      blob must be the same length.
      * @param data
      *      The data to write to the block.
      * @param length
@@ -172,6 +172,43 @@ public final class BlockBlobURL extends BlobURL {
 
         return addErrorWrappingToSingle(this.storageClient.generatedBlockBlobs().stageBlockWithRestResponseAsync(
                 base64BlockID, length, data,null, leaseAccessConditions.getLeaseId(), null));
+    }
+
+    /**
+     * Creates a new block to be committed as part of a blob where the contents are read from a URL. For more
+     * information, see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-block-from-url">Azure Docs</a>.
+     *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=block_from_url "Sample code for BlockBlobURL.stageBlockFromURL")]
+     *
+     * @param base64BlockID
+     *      A Base64 encoded {@code String} that specifies the ID for this block. Note that all block ids for a given
+     *      blob must be the same length.
+     * @param sourceURL
+     *      The url to the blob that will be the source of the copy.  A source blob in the same storage account can be
+     *      authenticated via Shared Key. However, if the source is a blob in another account, the source blob must
+     *      either be public or must be authenticated via a shared access signature. If the source blob is public, no
+     *      authentication is required to perform the operation.
+     * @param sourceRange
+     *      {@link BlobRange}
+     * @param sourceContentMD5
+     *      An MD5 hash of the block content from the source blob. If specified, the service will calculate the MD5 of
+     *      the received data and fail the request if it does not match the provided MD5.
+     * @param leaseAccessConditions
+     *      {@link LeaseAccessConditions}
+     * @return
+     *      Emits the successful response.
+     */
+    public Single<BlockBlobStageBlockFromURLResponse> stageBlockFromURL(
+            String base64BlockID, URL sourceURL, BlobRange sourceRange, byte[] sourceContentMD5,
+            LeaseAccessConditions leaseAccessConditions) {
+        leaseAccessConditions = leaseAccessConditions == null ? LeaseAccessConditions.NONE : leaseAccessConditions;
+        sourceRange = sourceRange == null ? BlobRange.DEFAULT : sourceRange;
+
+        return addErrorWrappingToSingle(
+                this.storageClient.generatedBlockBlobs().stageBlockFromURLWithRestResponseAsync(
+                        base64BlockID, 0, sourceURL, sourceRange.toString(), sourceContentMD5,
+                        null, leaseAccessConditions.getLeaseId(), null));
     }
 
     /**
