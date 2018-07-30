@@ -43,10 +43,10 @@ public class ColorInfo {
      * A value indicating if the image is black and white.
      */
     @JsonProperty(value = "isBWImg")
-    private Boolean isBWImg;
+    private boolean isBWImg;
 
     /**
-     * Get the dominantColorForeground value.
+     * Get possible dominant foreground color.
      *
      * @return the dominantColorForeground value
      */
@@ -55,7 +55,7 @@ public class ColorInfo {
     }
 
     /**
-     * Set the dominantColorForeground value.
+     * Set possible dominant foreground color.
      *
      * @param dominantColorForeground the dominantColorForeground value to set
      * @return the ColorInfo object itself.
@@ -66,7 +66,7 @@ public class ColorInfo {
     }
 
     /**
-     * Get the dominantColorBackground value.
+     * Get possible dominant background color.
      *
      * @return the dominantColorBackground value
      */
@@ -75,7 +75,7 @@ public class ColorInfo {
     }
 
     /**
-     * Set the dominantColorBackground value.
+     * Set possible dominant background color.
      *
      * @param dominantColorBackground the dominantColorBackground value to set
      * @return the ColorInfo object itself.
@@ -86,7 +86,7 @@ public class ColorInfo {
     }
 
     /**
-     * Get the dominantColors value.
+     * Get an array of possible dominant colors.
      *
      * @return the dominantColors value
      */
@@ -95,7 +95,7 @@ public class ColorInfo {
     }
 
     /**
-     * Set the dominantColors value.
+     * Set an array of possible dominant colors.
      *
      * @param dominantColors the dominantColors value to set
      * @return the ColorInfo object itself.
@@ -106,7 +106,7 @@ public class ColorInfo {
     }
 
     /**
-     * Get the accentColor value.
+     * Get possible accent color.
      *
      * @return the accentColor value
      */
@@ -115,7 +115,7 @@ public class ColorInfo {
     }
 
     /**
-     * Set the accentColor value.
+     * Set possible accent color.
      *
      * @param accentColor the accentColor value to set
      * @return the ColorInfo object itself.
@@ -126,21 +126,21 @@ public class ColorInfo {
     }
 
     /**
-     * Get the isBWImg value.
+     * Get a value indicating if the image is black and white.
      *
      * @return the isBWImg value
      */
-    public Boolean isBWImg() {
+    public boolean isBWImg() {
         return this.isBWImg;
     }
 
     /**
-     * Set the isBWImg value.
+     * Set a value indicating if the image is black and white.
      *
      * @param isBWImg the isBWImg value to set
      * @return the ColorInfo object itself.
      */
-    public ColorInfo withIsBWImg(Boolean isBWImg) {
+    public ColorInfo withIsBWImg(boolean isBWImg) {
         this.isBWImg = isBWImg;
         return this;
     }

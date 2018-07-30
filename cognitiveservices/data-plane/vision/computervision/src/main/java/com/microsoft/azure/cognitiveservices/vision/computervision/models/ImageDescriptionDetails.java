@@ -29,19 +29,7 @@ public class ImageDescriptionDetails {
     private List<ImageCaption> captions;
 
     /**
-     * Id of the REST API request.
-     */
-    @JsonProperty(value = "requestId")
-    private String requestId;
-
-    /**
-     * The metadata property.
-     */
-    @JsonProperty(value = "metadata")
-    private ImageMetadata metadata;
-
-    /**
-     * Get the tags value.
+     * Get a collection of image tags.
      *
      * @return the tags value
      */
@@ -50,7 +38,7 @@ public class ImageDescriptionDetails {
     }
 
     /**
-     * Set the tags value.
+     * Set a collection of image tags.
      *
      * @param tags the tags value to set
      * @return the ImageDescriptionDetails object itself.
@@ -61,7 +49,7 @@ public class ImageDescriptionDetails {
     }
 
     /**
-     * Get the captions value.
+     * Get a list of captions, sorted by confidence level.
      *
      * @return the captions value
      */
@@ -70,53 +58,13 @@ public class ImageDescriptionDetails {
     }
 
     /**
-     * Set the captions value.
+     * Set a list of captions, sorted by confidence level.
      *
      * @param captions the captions value to set
      * @return the ImageDescriptionDetails object itself.
      */
     public ImageDescriptionDetails withCaptions(List<ImageCaption> captions) {
         this.captions = captions;
-        return this;
-    }
-
-    /**
-     * Get the requestId value.
-     *
-     * @return the requestId value
-     */
-    public String requestId() {
-        return this.requestId;
-    }
-
-    /**
-     * Set the requestId value.
-     *
-     * @param requestId the requestId value to set
-     * @return the ImageDescriptionDetails object itself.
-     */
-    public ImageDescriptionDetails withRequestId(String requestId) {
-        this.requestId = requestId;
-        return this;
-    }
-
-    /**
-     * Get the metadata value.
-     *
-     * @return the metadata value
-     */
-    public ImageMetadata metadata() {
-        return this.metadata;
-    }
-
-    /**
-     * Set the metadata value.
-     *
-     * @param metadata the metadata value to set
-     * @return the ImageDescriptionDetails object itself.
-     */
-    public ImageDescriptionDetails withMetadata(ImageMetadata metadata) {
-        this.metadata = metadata;
         return this;
     }
 

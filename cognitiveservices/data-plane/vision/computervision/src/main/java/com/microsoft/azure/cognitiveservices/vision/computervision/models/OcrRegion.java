@@ -34,7 +34,7 @@ public class OcrRegion {
     private List<OcrLine> lines;
 
     /**
-     * Get the boundingBox value.
+     * Get bounding box of a recognized region. The four integers represent the x-coordinate of the left edge, the y-coordinate of the top edge, width, and height of the bounding box, in the coordinate system of the input image, after it has been rotated around its center according to the detected text angle (see textAngle property), with the origin at the top-left corner, and the y-axis pointing down.
      *
      * @return the boundingBox value
      */
@@ -43,7 +43,7 @@ public class OcrRegion {
     }
 
     /**
-     * Set the boundingBox value.
+     * Set bounding box of a recognized region. The four integers represent the x-coordinate of the left edge, the y-coordinate of the top edge, width, and height of the bounding box, in the coordinate system of the input image, after it has been rotated around its center according to the detected text angle (see textAngle property), with the origin at the top-left corner, and the y-axis pointing down.
      *
      * @param boundingBox the boundingBox value to set
      * @return the OcrRegion object itself.

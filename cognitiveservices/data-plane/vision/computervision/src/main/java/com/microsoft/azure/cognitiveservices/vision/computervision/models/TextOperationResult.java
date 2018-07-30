@@ -28,7 +28,7 @@ public class TextOperationResult {
     private RecognitionResult recognitionResult;
 
     /**
-     * Get the status value.
+     * Get status of the text operation. Possible values include: 'Not Started', 'Running', 'Failed', 'Succeeded'.
      *
      * @return the status value
      */
@@ -37,7 +37,7 @@ public class TextOperationResult {
     }
 
     /**
-     * Set the status value.
+     * Set status of the text operation. Possible values include: 'Not Started', 'Running', 'Failed', 'Succeeded'.
      *
      * @param status the status value to set
      * @return the TextOperationResult object itself.

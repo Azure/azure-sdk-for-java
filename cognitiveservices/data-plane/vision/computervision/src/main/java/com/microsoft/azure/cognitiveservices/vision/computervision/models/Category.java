@@ -24,7 +24,7 @@ public class Category {
      * Scoring of the category.
      */
     @JsonProperty(value = "score")
-    private Double score;
+    private double score;
 
     /**
      * The detail property.
@@ -33,7 +33,7 @@ public class Category {
     private CategoryDetail detail;
 
     /**
-     * Get the name value.
+     * Get name of the category.
      *
      * @return the name value
      */
@@ -42,7 +42,7 @@ public class Category {
     }
 
     /**
-     * Set the name value.
+     * Set name of the category.
      *
      * @param name the name value to set
      * @return the Category object itself.
@@ -53,21 +53,21 @@ public class Category {
     }
 
     /**
-     * Get the score value.
+     * Get scoring of the category.
      *
      * @return the score value
      */
-    public Double score() {
+    public double score() {
         return this.score;
     }
 
     /**
-     * Set the score value.
+     * Set scoring of the category.
      *
      * @param score the score value to set
      * @return the Category object itself.
      */
-    public Category withScore(Double score) {
+    public Category withScore(double score) {
         this.score = score;
         return this;
     }
