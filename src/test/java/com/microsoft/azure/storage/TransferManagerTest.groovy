@@ -788,6 +788,10 @@ class TransferManagerTest extends APISpec {
         t.getMessage().contains("remaining size")
     }
 
+    def "Download file"() {
+
+    }
+
     def "Download options fail"() {
 
     }
