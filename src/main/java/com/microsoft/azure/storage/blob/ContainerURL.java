@@ -36,6 +36,12 @@ import static com.microsoft.azure.storage.blob.Utility.addErrorWrappingToSingle;
  */
 public final class ContainerURL extends StorageURL {
 
+    public static final String ROOT_CONTAINER_NAME = "$root";
+
+    public static final String STATIC_WEBSITE_CONTAINER_NAME = "$web";
+
+    public static final String LOG_CONTAINER_NAME = "$logs";
+
     public ContainerURL(URL url, HttpPipeline pipeline) {
         super(url, pipeline);
     }
@@ -192,7 +198,8 @@ public final class ContainerURL extends StorageURL {
             throw new IllegalArgumentException("ETag access conditions are not supported for this API.");
         }
 
-        return addErrorWrappingToSingle(this.storageClient.generatedContainers().deleteWithRestResponseAsync(null,
+        return addErrorWrappingToSingle(this.storageClient.generatedContainers()
+                .deleteWithRestResponseAsync(null,
                 accessConditions.getLeaseAccessConditions().getLeaseId(),
                 accessConditions.getHttpAccessConditions().getIfModifiedSince(),
                 accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
@@ -215,7 +222,8 @@ public final class ContainerURL extends StorageURL {
             LeaseAccessConditions leaseAccessConditions) {
         leaseAccessConditions = leaseAccessConditions == null ? LeaseAccessConditions.NONE : leaseAccessConditions;
 
-        return addErrorWrappingToSingle(this.storageClient.generatedContainers().getPropertiesWithRestResponseAsync(null,
+        return addErrorWrappingToSingle(this.storageClient.generatedContainers()
+                .getPropertiesWithRestResponseAsync(null,
                 leaseAccessConditions.getLeaseId(), null));
     }
 
@@ -246,7 +254,8 @@ public final class ContainerURL extends StorageURL {
                     "If-Modified-Since is the only HTTP access condition supported for this API");
         }
 
-        return addErrorWrappingToSingle(this.storageClient.generatedContainers().setMetadataWithRestResponseAsync(null,
+        return addErrorWrappingToSingle(this.storageClient.generatedContainers()
+                .setMetadataWithRestResponseAsync(null,
                 accessConditions.getLeaseAccessConditions().getLeaseId(), metadata,
                 accessConditions.getHttpAccessConditions().getIfModifiedSince(),null));
     }
@@ -298,6 +307,13 @@ public final class ContainerURL extends StorageURL {
             ContainerAccessConditions accessConditions) {
         accessConditions = accessConditions == null ? ContainerAccessConditions.NONE : accessConditions;
 
+        if (!accessConditions.getHttpAccessConditions().getIfMatch().equals(ETag.NONE) ||
+                !accessConditions.getHttpAccessConditions().getIfNoneMatch().equals(ETag.NONE)) {
+            // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
+            // subscription.
+            throw new IllegalArgumentException("ETag access conditions are not supported for this API.");
+        }
+
         /*
         We truncate to seconds because the service only supports nanoseconds or seconds, but doing an
         OffsetDateTime.now will only give back milliseconds (more precise fields are zeroed and not serialized). This
@@ -318,7 +334,8 @@ public final class ContainerURL extends StorageURL {
         }
 
         // TODO: validate that empty list clears permissions and null list does not change list. Document behavior.
-        return addErrorWrappingToSingle(this.storageClient.generatedContainers().setAccessPolicyWithRestResponseAsync(identifiers, null,
+        return addErrorWrappingToSingle(this.storageClient.generatedContainers()
+                .setAccessPolicyWithRestResponseAsync(identifiers, null,
                 accessConditions.getLeaseAccessConditions().getLeaseId(), accessType,
                 accessConditions.getHttpAccessConditions().getIfModifiedSince(),
                 accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
@@ -518,7 +535,8 @@ public final class ContainerURL extends StorageURL {
             String marker, ListBlobsOptions options) {
         options = options == null ? ListBlobsOptions.DEFAULT : options;
 
-        return addErrorWrappingToSingle(this.storageClient.generatedContainers().listBlobFlatSegmentWithRestResponseAsync(
+        return addErrorWrappingToSingle(this.storageClient.generatedContainers()
+                .listBlobFlatSegmentWithRestResponseAsync(
                 options.getPrefix(), marker, options.getMaxResults(),
                 options.getDetails().toList(), null, null));
     }
@@ -550,7 +568,8 @@ public final class ContainerURL extends StorageURL {
             throw new IllegalArgumentException("Including snapshots in a hierarchical listing is not supported.");
         }
 
-        return addErrorWrappingToSingle(this.storageClient.generatedContainers().listBlobHierarchySegmentWithRestResponseAsync(
+        return addErrorWrappingToSingle(this.storageClient.generatedContainers()
+                .listBlobHierarchySegmentWithRestResponseAsync(
                 delimiter, options.getPrefix(), marker, options.getMaxResults(),
                 options.getDetails().toList(), null, null));
     }
