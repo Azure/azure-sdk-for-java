@@ -19,7 +19,6 @@ import com.microsoft.azure.management.appservice.v2018_02_01.implementation.Rest
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.RelayServiceConnectionEntityInner;
 import com.microsoft.azure.management.appservice.v2018_02_01.BackupItem;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.SiteAuthSettingsInner;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AzureStoragePropertyDictionaryResourceInner;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.ConnectionStringDictionaryInner;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.SiteLogsConfigInner;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.PushSettingsInner;
@@ -930,54 +929,6 @@ public interface WebApps {
      * @return the observable for the request
      */
     Observable<SiteAuthSettings> getAuthSettingsSlotAsync(String resourceGroupName, String name, String slot);
-
-    /**
-     * Updates the Azure storage account configurations of an app.
-     * Updates the Azure storage account configurations of an app.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the app.
-     * @param azureStorageAccounts Azure storage accounts of the app.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<AzureStoragePropertyDictionaryResource> updateAzureStorageAccountsAsync(String resourceGroupName, String name, AzureStoragePropertyDictionaryResourceInner azureStorageAccounts);
-
-    /**
-     * Gets the Azure storage account configurations of an app.
-     * Gets the Azure storage account configurations of an app.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the app.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<AzureStoragePropertyDictionaryResource> listAzureStorageAccountsAsync(String resourceGroupName, String name);
-
-    /**
-     * Updates the Azure storage account configurations of an app.
-     * Updates the Azure storage account configurations of an app.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the app.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will update the Azure storage account configurations for the production slot.
-     * @param azureStorageAccounts Azure storage accounts of the app.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<AzureStoragePropertyDictionaryResource> updateAzureStorageAccountsSlotAsync(String resourceGroupName, String name, String slot, AzureStoragePropertyDictionaryResourceInner azureStorageAccounts);
-
-    /**
-     * Gets the Azure storage account configurations of an app.
-     * Gets the Azure storage account configurations of an app.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the app.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will update the Azure storage account configurations for the production slot.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<AzureStoragePropertyDictionaryResource> listAzureStorageAccountsSlotAsync(String resourceGroupName, String name, String slot);
 
     /**
      * Replaces the connection strings of an app.
