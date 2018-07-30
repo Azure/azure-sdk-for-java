@@ -11,43 +11,43 @@ package com.microsoft.azure.cognitiveservices.vision.computervision.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * An image caption, i.e. a brief description of what the image depicts.
+ * A landmark recognized in the image.
  */
-public class ImageCaption {
+public class LandmarksModel {
     /**
-     * The text of the caption.
+     * Name of the landmark.
      */
-    @JsonProperty(value = "text")
-    private String text;
+    @JsonProperty(value = "name")
+    private String name;
 
     /**
-     * The level of confidence the service has in the caption.
+     * Confidence level for the landmark recognition.
      */
     @JsonProperty(value = "confidence")
     private double confidence;
 
     /**
-     * Get the text of the caption.
+     * Get name of the landmark.
      *
-     * @return the text value
+     * @return the name value
      */
-    public String text() {
-        return this.text;
+    public String name() {
+        return this.name;
     }
 
     /**
-     * Set the text of the caption.
+     * Set name of the landmark.
      *
-     * @param text the text value to set
-     * @return the ImageCaption object itself.
+     * @param name the name value to set
+     * @return the LandmarksModel object itself.
      */
-    public ImageCaption withText(String text) {
-        this.text = text;
+    public LandmarksModel withName(String name) {
+        this.name = name;
         return this;
     }
 
     /**
-     * Get the level of confidence the service has in the caption.
+     * Get confidence level for the landmark recognition.
      *
      * @return the confidence value
      */
@@ -56,12 +56,12 @@ public class ImageCaption {
     }
 
     /**
-     * Set the level of confidence the service has in the caption.
+     * Set confidence level for the landmark recognition.
      *
      * @param confidence the confidence value to set
-     * @return the ImageCaption object itself.
+     * @return the LandmarksModel object itself.
      */
-    public ImageCaption withConfidence(double confidence) {
+    public LandmarksModel withConfidence(double confidence) {
         this.confidence = confidence;
         return this;
     }

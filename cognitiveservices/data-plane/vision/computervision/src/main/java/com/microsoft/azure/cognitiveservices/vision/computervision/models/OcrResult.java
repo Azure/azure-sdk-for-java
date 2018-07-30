@@ -34,7 +34,7 @@ public class OcrResult {
      * recognized correctly.
      */
     @JsonProperty(value = "textAngle")
-    private Double textAngle;
+    private double textAngle;
 
     /**
      * Orientation of the text recognized in the image. The value
@@ -53,7 +53,7 @@ public class OcrResult {
     private List<OcrRegion> regions;
 
     /**
-     * Get the language value.
+     * Get the BCP-47 language code of the text in the image.
      *
      * @return the language value
      */
@@ -62,7 +62,7 @@ public class OcrResult {
     }
 
     /**
-     * Set the language value.
+     * Set the BCP-47 language code of the text in the image.
      *
      * @param language the language value to set
      * @return the OcrResult object itself.
@@ -73,27 +73,27 @@ public class OcrResult {
     }
 
     /**
-     * Get the textAngle value.
+     * Get the angle, in degrees, of the detected text with respect to the closest horizontal or vertical direction. After rotating the input image clockwise by this angle, the recognized text lines become horizontal or vertical. In combination with the orientation property it can be used to overlay recognition results correctly on the original image, by rotating either the original image or recognition results by a suitable angle around the center of the original image. If the angle cannot be confidently detected, this property is not present. If the image contains text at different angles, only part of the text will be recognized correctly.
      *
      * @return the textAngle value
      */
-    public Double textAngle() {
+    public double textAngle() {
         return this.textAngle;
     }
 
     /**
-     * Set the textAngle value.
+     * Set the angle, in degrees, of the detected text with respect to the closest horizontal or vertical direction. After rotating the input image clockwise by this angle, the recognized text lines become horizontal or vertical. In combination with the orientation property it can be used to overlay recognition results correctly on the original image, by rotating either the original image or recognition results by a suitable angle around the center of the original image. If the angle cannot be confidently detected, this property is not present. If the image contains text at different angles, only part of the text will be recognized correctly.
      *
      * @param textAngle the textAngle value to set
      * @return the OcrResult object itself.
      */
-    public OcrResult withTextAngle(Double textAngle) {
+    public OcrResult withTextAngle(double textAngle) {
         this.textAngle = textAngle;
         return this;
     }
 
     /**
-     * Get the orientation value.
+     * Get orientation of the text recognized in the image. The value (up,down,left, or right) refers to the direction that the top of the recognized text is facing, after the image has been rotated around its center according to the detected text angle (see textAngle property).
      *
      * @return the orientation value
      */
@@ -102,7 +102,7 @@ public class OcrResult {
     }
 
     /**
-     * Set the orientation value.
+     * Set orientation of the text recognized in the image. The value (up,down,left, or right) refers to the direction that the top of the recognized text is facing, after the image has been rotated around its center according to the detected text angle (see textAngle property).
      *
      * @param orientation the orientation value to set
      * @return the OcrResult object itself.
@@ -113,7 +113,7 @@ public class OcrResult {
     }
 
     /**
-     * Get the regions value.
+     * Get an array of objects, where each object represents a region of recognized text.
      *
      * @return the regions value
      */
@@ -122,7 +122,7 @@ public class OcrResult {
     }
 
     /**
-     * Set the regions value.
+     * Set an array of objects, where each object represents a region of recognized text.
      *
      * @param regions the regions value to set
      * @return the OcrResult object itself.

@@ -22,7 +22,7 @@ public class ListModelsResult {
     private List<ModelDescription> modelsProperty;
 
     /**
-     * Get the modelsProperty value.
+     * Get an array of supported models.
      *
      * @return the modelsProperty value
      */

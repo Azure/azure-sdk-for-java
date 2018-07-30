@@ -70,7 +70,7 @@ public class ImageAnalysis {
     private ImageMetadata metadata;
 
     /**
-     * Get the categories value.
+     * Get an array indicating identified categories.
      *
      * @return the categories value
      */
@@ -79,7 +79,7 @@ public class ImageAnalysis {
     }
 
     /**
-     * Set the categories value.
+     * Set an array indicating identified categories.
      *
      * @param categories the categories value to set
      * @return the ImageAnalysis object itself.
@@ -150,7 +150,7 @@ public class ImageAnalysis {
     }
 
     /**
-     * Get the tags value.
+     * Get a list of tags with confidence level.
      *
      * @return the tags value
      */
@@ -159,7 +159,7 @@ public class ImageAnalysis {
     }
 
     /**
-     * Set the tags value.
+     * Set a list of tags with confidence level.
      *
      * @param tags the tags value to set
      * @return the ImageAnalysis object itself.
@@ -190,7 +190,7 @@ public class ImageAnalysis {
     }
 
     /**
-     * Get the faces value.
+     * Get an array of possible faces within the image.
      *
      * @return the faces value
      */
@@ -199,7 +199,7 @@ public class ImageAnalysis {
     }
 
     /**
-     * Set the faces value.
+     * Set an array of possible faces within the image.
      *
      * @param faces the faces value to set
      * @return the ImageAnalysis object itself.
@@ -210,7 +210,7 @@ public class ImageAnalysis {
     }
 
     /**
-     * Get the requestId value.
+     * Get id of the request for tracking purposes.
      *
      * @return the requestId value
      */
@@ -219,7 +219,7 @@ public class ImageAnalysis {
     }
 
     /**
-     * Set the requestId value.
+     * Set id of the request for tracking purposes.
      *
      * @param requestId the requestId value to set
      * @return the ImageAnalysis object itself.

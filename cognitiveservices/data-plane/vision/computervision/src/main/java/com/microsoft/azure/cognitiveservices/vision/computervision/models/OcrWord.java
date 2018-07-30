@@ -32,7 +32,7 @@ public class OcrWord {
     private String text;
 
     /**
-     * Get the boundingBox value.
+     * Get bounding box of a recognized word. The four integers represent the x-coordinate of the left edge, the y-coordinate of the top edge, width, and height of the bounding box, in the coordinate system of the input image, after it has been rotated around its center according to the detected text angle (see textAngle property), with the origin at the top-left corner, and the y-axis pointing down.
      *
      * @return the boundingBox value
      */
@@ -41,7 +41,7 @@ public class OcrWord {
     }
 
     /**
-     * Set the boundingBox value.
+     * Set bounding box of a recognized word. The four integers represent the x-coordinate of the left edge, the y-coordinate of the top edge, width, and height of the bounding box, in the coordinate system of the input image, after it has been rotated around its center according to the detected text angle (see textAngle property), with the origin at the top-left corner, and the y-axis pointing down.
      *
      * @param boundingBox the boundingBox value to set
      * @return the OcrWord object itself.
@@ -52,7 +52,7 @@ public class OcrWord {
     }
 
     /**
-     * Get the text value.
+     * Get string value of a recognized word.
      *
      * @return the text value
      */
@@ -61,7 +61,7 @@ public class OcrWord {
     }
 
     /**
-     * Set the text value.
+     * Set string value of a recognized word.
      *
      * @param text the text value to set
      * @return the OcrWord object itself.

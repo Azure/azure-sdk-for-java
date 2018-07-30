@@ -18,102 +18,102 @@ public class FaceRectangle {
      * X-coordinate of the top left point of the face.
      */
     @JsonProperty(value = "left")
-    private Integer left;
+    private int left;
 
     /**
      * Y-coordinate of the top left point of the face.
      */
     @JsonProperty(value = "top")
-    private Integer top;
+    private int top;
 
     /**
      * Width measured from the top-left point of the face.
      */
     @JsonProperty(value = "width")
-    private Integer width;
+    private int width;
 
     /**
      * Height measured from the top-left point of the face.
      */
     @JsonProperty(value = "height")
-    private Integer height;
+    private int height;
 
     /**
-     * Get the left value.
+     * Get x-coordinate of the top left point of the face.
      *
      * @return the left value
      */
-    public Integer left() {
+    public int left() {
         return this.left;
     }
 
     /**
-     * Set the left value.
+     * Set x-coordinate of the top left point of the face.
      *
      * @param left the left value to set
      * @return the FaceRectangle object itself.
      */
-    public FaceRectangle withLeft(Integer left) {
+    public FaceRectangle withLeft(int left) {
         this.left = left;
         return this;
     }
 
     /**
-     * Get the top value.
+     * Get y-coordinate of the top left point of the face.
      *
      * @return the top value
      */
-    public Integer top() {
+    public int top() {
         return this.top;
     }
 
     /**
-     * Set the top value.
+     * Set y-coordinate of the top left point of the face.
      *
      * @param top the top value to set
      * @return the FaceRectangle object itself.
      */
-    public FaceRectangle withTop(Integer top) {
+    public FaceRectangle withTop(int top) {
         this.top = top;
         return this;
     }
 
     /**
-     * Get the width value.
+     * Get width measured from the top-left point of the face.
      *
      * @return the width value
      */
-    public Integer width() {
+    public int width() {
         return this.width;
     }
 
     /**
-     * Set the width value.
+     * Set width measured from the top-left point of the face.
      *
      * @param width the width value to set
      * @return the FaceRectangle object itself.
      */
-    public FaceRectangle withWidth(Integer width) {
+    public FaceRectangle withWidth(int width) {
         this.width = width;
         return this;
     }
 
     /**
-     * Get the height value.
+     * Get height measured from the top-left point of the face.
      *
      * @return the height value
      */
-    public Integer height() {
+    public int height() {
         return this.height;
     }
 
     /**
-     * Set the height value.
+     * Set height measured from the top-left point of the face.
      *
      * @param height the height value to set
      * @return the FaceRectangle object itself.
      */
-    public FaceRectangle withHeight(Integer height) {
+    public FaceRectangle withHeight(int height) {
         this.height = height;
         return this;
     }

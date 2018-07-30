@@ -8,18 +8,18 @@
 
 package com.microsoft.azure.cognitiveservices.vision.computervision.models;
 
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Result of image analysis using a specific domain model including additional
- * metadata.
+ * List of landmarks recognized in the image.
  */
-public class DomainModelResults {
+public class LandmarkResults {
     /**
-     * Model-specific response.
+     * The landmarks property.
      */
-    @JsonProperty(value = "result")
-    private Object result;
+    @JsonProperty(value = "landmarks")
+    private List<LandmarksModel> landmarks;
 
     /**
      * Id of the REST API request.
@@ -34,22 +34,22 @@ public class DomainModelResults {
     private ImageMetadata metadata;
 
     /**
-     * Get model-specific response.
+     * Get the landmarks value.
      *
-     * @return the result value
+     * @return the landmarks value
      */
-    public Object result() {
-        return this.result;
+    public List<LandmarksModel> landmarks() {
+        return this.landmarks;
     }
 
     /**
-     * Set model-specific response.
+     * Set the landmarks value.
      *
-     * @param result the result value to set
-     * @return the DomainModelResults object itself.
+     * @param landmarks the landmarks value to set
+     * @return the LandmarkResults object itself.
      */
-    public DomainModelResults withResult(Object result) {
-        this.result = result;
+    public LandmarkResults withLandmarks(List<LandmarksModel> landmarks) {
+        this.landmarks = landmarks;
         return this;
     }
 
@@ -66,9 +66,9 @@ public class DomainModelResults {
      * Set id of the REST API request.
      *
      * @param requestId the requestId value to set
-     * @return the DomainModelResults object itself.
+     * @return the LandmarkResults object itself.
      */
-    public DomainModelResults withRequestId(String requestId) {
+    public LandmarkResults withRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -86,9 +86,9 @@ public class DomainModelResults {
      * Set the metadata value.
      *
      * @param metadata the metadata value to set
-     * @return the DomainModelResults object itself.
+     * @return the LandmarkResults object itself.
      */
-    public DomainModelResults withMetadata(ImageMetadata metadata) {
+    public LandmarkResults withMetadata(ImageMetadata metadata) {
         this.metadata = metadata;
         return this;
     }

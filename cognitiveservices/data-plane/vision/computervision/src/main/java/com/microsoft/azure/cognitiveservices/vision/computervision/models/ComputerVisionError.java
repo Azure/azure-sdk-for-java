@@ -37,7 +37,7 @@ public class ComputerVisionError {
     private String requestId;
 
     /**
-     * Get the code value.
+     * Get the error code. Possible values include: 'InvalidImageUrl', 'InvalidImageFormat', 'InvalidImageSize', 'NotSupportedVisualFeature', 'NotSupportedImage', 'InvalidDetails', 'NotSupportedLanguage', 'BadArgument', 'FailedToProcess', 'Timeout', 'InternalServerError', 'Unspecified', 'StorageException'.
      *
      * @return the code value
      */
@@ -46,7 +46,7 @@ public class ComputerVisionError {
     }
 
     /**
-     * Set the code value.
+     * Set the error code. Possible values include: 'InvalidImageUrl', 'InvalidImageFormat', 'InvalidImageSize', 'NotSupportedVisualFeature', 'NotSupportedImage', 'InvalidDetails', 'NotSupportedLanguage', 'BadArgument', 'FailedToProcess', 'Timeout', 'InternalServerError', 'Unspecified', 'StorageException'.
      *
      * @param code the code value to set
      * @return the ComputerVisionError object itself.
@@ -57,7 +57,7 @@ public class ComputerVisionError {
     }
 
     /**
-     * Get the message value.
+     * Get a message explaining the error reported by the service.
      *
      * @return the message value
      */
@@ -66,7 +66,7 @@ public class ComputerVisionError {
     }
 
     /**
-     * Set the message value.
+     * Set a message explaining the error reported by the service.
      *
      * @param message the message value to set
      * @return the ComputerVisionError object itself.
@@ -77,7 +77,7 @@ public class ComputerVisionError {
     }
 
     /**
-     * Get the requestId value.
+     * Get a unique request identifier.
      *
      * @return the requestId value
      */
@@ -86,7 +86,7 @@ public class ComputerVisionError {
     }
 
     /**
-     * Set the requestId value.
+     * Set a unique request identifier.
      *
      * @param requestId the requestId value to set
      * @return the ComputerVisionError object itself.

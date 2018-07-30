@@ -8,18 +8,18 @@
 
 package com.microsoft.azure.cognitiveservices.vision.computervision.models;
 
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Result of image analysis using a specific domain model including additional
- * metadata.
+ * List of celebrities recognized in the image.
  */
-public class DomainModelResults {
+public class CelebrityResults {
     /**
-     * Model-specific response.
+     * The celebrities property.
      */
-    @JsonProperty(value = "result")
-    private Object result;
+    @JsonProperty(value = "celebrities")
+    private List<CelebritiesModel> celebrities;
 
     /**
      * Id of the REST API request.
@@ -34,22 +34,22 @@ public class DomainModelResults {
     private ImageMetadata metadata;
 
     /**
-     * Get model-specific response.
+     * Get the celebrities value.
      *
-     * @return the result value
+     * @return the celebrities value
      */
-    public Object result() {
-        return this.result;
+    public List<CelebritiesModel> celebrities() {
+        return this.celebrities;
     }
 
     /**
-     * Set model-specific response.
+     * Set the celebrities value.
      *
-     * @param result the result value to set
-     * @return the DomainModelResults object itself.
+     * @param celebrities the celebrities value to set
+     * @return the CelebrityResults object itself.
      */
-    public DomainModelResults withResult(Object result) {
-        this.result = result;
+    public CelebrityResults withCelebrities(List<CelebritiesModel> celebrities) {
+        this.celebrities = celebrities;
         return this;
     }
 
@@ -66,9 +66,9 @@ public class DomainModelResults {
      * Set id of the REST API request.
      *
      * @param requestId the requestId value to set
-     * @return the DomainModelResults object itself.
+     * @return the CelebrityResults object itself.
      */
-    public DomainModelResults withRequestId(String requestId) {
+    public CelebrityResults withRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -86,9 +86,9 @@ public class DomainModelResults {
      * Set the metadata value.
      *
      * @param metadata the metadata value to set
-     * @return the DomainModelResults object itself.
+     * @return the CelebrityResults object itself.
      */
-    public DomainModelResults withMetadata(ImageMetadata metadata) {
+    public CelebrityResults withMetadata(ImageMetadata metadata) {
         this.metadata = metadata;
         return this;
     }
