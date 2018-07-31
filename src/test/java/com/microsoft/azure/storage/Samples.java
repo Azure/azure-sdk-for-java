@@ -1236,7 +1236,6 @@ public class Samples {
                  */
                 .blockingGet();
     }
-    // </start_copy_helper>
 
     /*
     This example shows how to create a blob, take a snapshot of it, update the base blob, read from the blob snapshot,
@@ -1377,6 +1376,7 @@ public class Samples {
                         waitForCopyHelper(blobURL, response1));
 
     }
+    // </start_copy_helper>
 
     /*
     This example shows how to copy a large file in blocks (chunks) to a block blob and then download it from the blob
