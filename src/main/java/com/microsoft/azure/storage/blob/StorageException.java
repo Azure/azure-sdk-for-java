@@ -29,7 +29,9 @@ import com.microsoft.rest.v2.RestException;
  * exception will be thrown even though this may be considered an expected indication of absence in this case.
  *
  * @apiNote
- * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=exception "Sample code for StorageExceptions")]
+ * ## Sample Code \n
+ * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=exception "Sample code for StorageExceptions")] \n
+ * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
  */
 public final class StorageException extends RestException{
 

@@ -28,7 +28,9 @@ import java.util.Map;
  * NOTE: Changing any SAS-related field requires computing a new SAS signature.
  *
  * @apiNote
- * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=url_parts "Sample code for BlobURLParts")]
+ * ## Sample Code \n
+ * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=url_parts "Sample code for BlobURLParts")] \n
+ * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
  */
 public final class BlobURLParts {
 

@@ -67,7 +67,7 @@ public class Samples {
         SharedKeyCredentials credential = new SharedKeyCredentials(accountName, accountKey);
 
         /*
-        Create a request pipeline that is used to process HTTP(S) requests and responses. It requires your accont
+        Create a request pipeline that is used to process HTTP(S) requests and responses. It requires your account
         credentials. In more advanced scenarios, you can configure telemetry, retry policies, logging, and other
         options. Also you can configure multiple pipelines for different scenarios.
          */
@@ -1561,8 +1561,41 @@ public class Samples {
     is not meant to serve as a comprehensive example as the above examples are.
      */
     public void apiRefs() throws IOException, InvalidKeyException {
-        ServiceURL serviceURL = new ServiceURL(new URL("http://myaccount.blob.core.windows.net"),
-                StorageURL.createPipeline(new AnonymousCredentials(), new PipelineOptions()));
+        // <service_url>
+        // From the Azure portal, get your Storage account's name and account key.
+        String accountName = getAccountName();
+        String accountKey = getAccountKey();
+
+        // Use your Storage account's name and key to create a credential object; this is used to access your account.
+        SharedKeyCredentials sharedKeyCredentials = new SharedKeyCredentials(accountName, accountKey);
+
+        /*
+        Create a request pipeline that is used to process HTTP(S) requests and responses. It requires your account
+        credentials. In more advanced scenarios, you can configure telemetry, retry policies, logging, and other
+        options. Also you can configure multiple pipelines for different scenarios.
+         */
+        HttpPipeline pipeline = StorageURL.createPipeline(sharedKeyCredentials, new PipelineOptions());
+
+        /*
+        From the Azure portal, get your Storage account blob service URL endpoint.
+        The URL typically looks like this:
+         */
+        URL urlToBlob = new URL(String.format(Locale.ROOT, "https://%s.blob.core.windows.net", accountName));
+
+        // Create a ServiceURL objet that wraps the service URL and a request pipeline.
+        ServiceURL serviceURL = new ServiceURL(urlToBlob, pipeline);
+        // </service_url>
+
+        // <pipeline_options>
+        LoggingOptions loggingOptions = new LoggingOptions(2000);
+        RequestRetryOptions requestRetryOptions = new RequestRetryOptions(RetryPolicyType.EXPONENTIAL, 5,
+                4, 1000L, 10000L, "secondary-host");
+        PipelineOptions customOptions = new PipelineOptions();
+        customOptions.loggingOptions = loggingOptions;
+        customOptions.requestRetryOptions = requestRetryOptions;
+        StorageURL.createPipeline(new AnonymousCredentials(), customOptions);
+        // </pipeline_options>
+
         // <upload_download>
         ContainerURL containerURL = serviceURL.createContainerURL("myjavacontainerbasic");
 

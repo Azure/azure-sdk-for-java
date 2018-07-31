@@ -31,7 +31,9 @@ import java.time.OffsetDateTime;
  * more details on each value, including which are required.
  *
  * @apiNote
- * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_sas "Sample code for ServiceSASSignatureValues")]
+ * ## Sample Code \n
+ * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_sas "Sample code for ServiceSASSignatureValues")] \n
+ * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
  */
 public final class ServiceSASSignatureValues {
 

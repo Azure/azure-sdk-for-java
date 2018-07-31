@@ -156,7 +156,9 @@ public final class ContainerURL extends StorageURL {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
      *
      * @apiNote
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerURL.create")]
+     * ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerURL.create")] \n
+     * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      *
      * @param metadata
      *      {@link Metadata}
@@ -180,7 +182,9 @@ public final class ContainerURL extends StorageURL {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
      *
      * @apiNote
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerURL.delete")]
+     * ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerURL.delete")] \n
+     * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      *
      * @param accessConditions
      *      {@link ContainerAccessConditions}
@@ -211,7 +215,9 @@ public final class ContainerURL extends StorageURL {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-container-metadata">Azure Docs</a>.
      *
      * @apiNote
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerURL.getProperties")]
+     * ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerURL.getProperties")] \n
+     * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      *
      * @param leaseAccessConditions
      *      {@link LeaseAccessConditions}
@@ -232,7 +238,9 @@ public final class ContainerURL extends StorageURL {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-container-metadata">Azure Docs</a>.
      *
      * @apiNote
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerURL.setMetadata")]
+     * ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerURL.setMetadata")] \n
+     * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      *
      * @param metadata
      *      {@link Metadata}
@@ -266,7 +274,9 @@ public final class ContainerURL extends StorageURL {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-container-acl">Azure Docs</a>.
      *
      * @apiNote
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_policy "Sample code for ContainerURL.getAccessPolicy")]
+     * ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_policy "Sample code for ContainerURL.getAccessPolicy")] \n
+     * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      *
      * @param leaseAccessConditions
      *      {@link LeaseAccessConditions}
@@ -288,7 +298,9 @@ public final class ContainerURL extends StorageURL {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-container-acl">Azure Docs</a>.
      *
      * @apiNote
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_policy "Sample code for ContainerURL.setAccessPolicy")]
+     * ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_policy "Sample code for ContainerURL.setAccessPolicy")] \n
+     * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      *
      * @param accessType
      *      Specifies how the data in this container is available to the public. See the x-ms-blob-public-access header
@@ -353,7 +365,9 @@ public final class ContainerURL extends StorageURL {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-container">Azure Docs</a>.
      *
      * @apiNote
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerURL.acquireLease")]
+     * ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerURL.acquireLease")] \n
+     * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      *
      * @param proposedID
      *      A {@code String} in any valid GUID format.
@@ -387,7 +401,9 @@ public final class ContainerURL extends StorageURL {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-container">Azure Docs</a>.
      *
      * @apiNote
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerURL.renewLease")]
+     * ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerURL.renewLease")] \n
+     * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      *
      * @param leaseID
      *      The leaseId of the active lease on the container.
@@ -418,7 +434,9 @@ public final class ContainerURL extends StorageURL {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-container">Azure Docs</a>.
      *
      * @apiNote
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerURL.releaseLease")]
+     * ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerURL.releaseLease")] \n
+     * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      *
      * @param leaseID
      *      The leaseId of the active lease on the container.
@@ -449,7 +467,9 @@ public final class ContainerURL extends StorageURL {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-container">Azure Docs</a>.
      *
      * @apiNote
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerURL.breakLease")]
+     * ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerURL.breakLease")] \n
+     * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      *
      * @param breakPeriodInSeconds
      *      An optional {@code Integer} representing the proposed duration of seconds that the lease should continue
@@ -483,7 +503,9 @@ public final class ContainerURL extends StorageURL {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-container">Azure Docs</a>.
      *
      * @apiNote
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerURL.changeLease")]
+     * ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerURL.changeLease")] \n
+     * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      *
      * @param leaseID
      *      The leaseId of the active lease on the container.
@@ -519,8 +541,10 @@ public final class ContainerURL extends StorageURL {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
      *
      * @apiNote
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=list_blobs_flat "Sample code for ContainerURL.listBlobsFlatSegment")]
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=list_blobs_flat_helper "helper code for ContainerURL.listBlobsFlatSegment")]
+     * ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=list_blobs_flat "Sample code for ContainerURL.listBlobsFlatSegment")] \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=list_blobs_flat_helper "helper code for ContainerURL.listBlobsFlatSegment")] \n
+     * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      *
      * @param marker
      *      Identifies the portion of the list to be returned with the next list operation.
@@ -547,6 +571,12 @@ public final class ContainerURL extends StorageURL {
      * After getting a segment, process it, and then call ListBlobs again (passing the the previously-returned
      * Marker) to get the next segment. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
+     *
+     * @apiNote
+     * ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=list_blobs_hierarchy "Sample code for ContainerURL.listBlobsHierarchySegment")] \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=list_blobs_hierarchy_helper "helper code for ContainerURL.listBlobsHierarchySegment")] \n
+     * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      *
      * @param marker
      *      Identifies the portion of the list to be returned with the next list operation.
