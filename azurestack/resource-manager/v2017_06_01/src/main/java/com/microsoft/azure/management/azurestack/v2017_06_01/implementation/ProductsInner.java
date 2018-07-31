@@ -13,6 +13,7 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.management.azurestack.v2017_06_01.ErrorResponseException;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
@@ -82,7 +83,7 @@ public class ProductsInner {
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ProductInner&gt; object if successful.
      */
@@ -192,11 +193,10 @@ public class ProductsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<ProductInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<ProductInner>, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<ProductInner>> listDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ProductInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ProductInner>>() { }.getType())
-                .register(404, new TypeToken<Void>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -207,7 +207,7 @@ public class ProductsInner {
      * @param registrationName Name of the Azure Stack registration.
      * @param productName Name of the product.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ProductInner object if successful.
      */
@@ -286,11 +286,10 @@ public class ProductsInner {
             });
     }
 
-    private ServiceResponse<ProductInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ProductInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<ProductInner> getDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ProductInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ProductInner>() { }.getType())
-                .register(404, new TypeToken<Void>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -392,7 +391,7 @@ public class ProductsInner {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ProductInner&gt; object if successful.
      */
@@ -491,11 +490,10 @@ public class ProductsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<ProductInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<ProductInner>, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<ProductInner>> listNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ProductInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ProductInner>>() { }.getType())
-                .register(404, new TypeToken<Void>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 

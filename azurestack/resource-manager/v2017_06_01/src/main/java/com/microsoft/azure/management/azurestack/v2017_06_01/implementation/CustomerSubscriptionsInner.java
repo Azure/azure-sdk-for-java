@@ -13,6 +13,7 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.management.azurestack.v2017_06_01.ErrorResponseException;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
@@ -89,7 +90,7 @@ public class CustomerSubscriptionsInner {
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;CustomerSubscriptionInner&gt; object if successful.
      */
@@ -199,11 +200,10 @@ public class CustomerSubscriptionsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<CustomerSubscriptionInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<CustomerSubscriptionInner>, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<CustomerSubscriptionInner>> listDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<CustomerSubscriptionInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<CustomerSubscriptionInner>>() { }.getType())
-                .register(404, new TypeToken<Void>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -214,7 +214,7 @@ public class CustomerSubscriptionsInner {
      * @param registrationName Name of the Azure Stack registration.
      * @param customerSubscriptionName Name of the product.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the CustomerSubscriptionInner object if successful.
      */
@@ -293,11 +293,10 @@ public class CustomerSubscriptionsInner {
             });
     }
 
-    private ServiceResponse<CustomerSubscriptionInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<CustomerSubscriptionInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<CustomerSubscriptionInner> getDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<CustomerSubscriptionInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<CustomerSubscriptionInner>() { }.getType())
-                .register(404, new TypeToken<Void>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -500,7 +499,7 @@ public class CustomerSubscriptionsInner {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;CustomerSubscriptionInner&gt; object if successful.
      */
@@ -599,11 +598,10 @@ public class CustomerSubscriptionsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<CustomerSubscriptionInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<CustomerSubscriptionInner>, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<CustomerSubscriptionInner>> listNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<CustomerSubscriptionInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<CustomerSubscriptionInner>>() { }.getType())
-                .register(404, new TypeToken<Void>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
