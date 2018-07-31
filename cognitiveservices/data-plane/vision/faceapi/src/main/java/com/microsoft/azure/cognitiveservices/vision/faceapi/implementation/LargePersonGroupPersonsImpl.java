@@ -90,23 +90,23 @@ public class LargePersonGroupPersonsImpl implements LargePersonGroupPersons {
         Observable<Response<ResponseBody>> update(@Path("largePersonGroupId") String largePersonGroupId, @Path("personId") UUID personId, @Header("accept-language") String acceptLanguage, @Body NameAndUserDataContract body, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.LargePersonGroupPersons deleteFace" })
-        @HTTP(path = "largepersongroups/{largePersonGroupId}/persons/{personId}/persistedFaces/{persistedFaceId}", method = "DELETE", hasBody = true)
+        @HTTP(path = "largepersongroups/{largePersonGroupId}/persons/{personId}/persistedfaces/{persistedFaceId}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteFace(@Path("largePersonGroupId") String largePersonGroupId, @Path("personId") UUID personId, @Path("persistedFaceId") UUID persistedFaceId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.LargePersonGroupPersons getFace" })
-        @GET("largepersongroups/{largePersonGroupId}/persons/{personId}/persistedFaces/{persistedFaceId}")
+        @GET("largepersongroups/{largePersonGroupId}/persons/{personId}/persistedfaces/{persistedFaceId}")
         Observable<Response<ResponseBody>> getFace(@Path("largePersonGroupId") String largePersonGroupId, @Path("personId") UUID personId, @Path("persistedFaceId") UUID persistedFaceId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.LargePersonGroupPersons updateFace" })
-        @PATCH("largepersongroups/{largePersonGroupId}/persons/{personId}/persistedFaces/{persistedFaceId}")
+        @PATCH("largepersongroups/{largePersonGroupId}/persons/{personId}/persistedfaces/{persistedFaceId}")
         Observable<Response<ResponseBody>> updateFace(@Path("largePersonGroupId") String largePersonGroupId, @Path("personId") UUID personId, @Path("persistedFaceId") UUID persistedFaceId, @Header("accept-language") String acceptLanguage, @Body UpdateFaceRequest body, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.LargePersonGroupPersons addPersonFaceFromUrl" })
-        @POST("largepersongroups/{largePersonGroupId}/persons/{personId}/persistedFaces")
+        @POST("largepersongroups/{largePersonGroupId}/persons/{personId}/persistedfaces")
         Observable<Response<ResponseBody>> addPersonFaceFromUrl(@Path("largePersonGroupId") String largePersonGroupId, @Path("personId") UUID personId, @Query("userData") String userData, @Query("targetFace") String targetFace, @Header("accept-language") String acceptLanguage, @Body ImageUrl imageUrl, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/octet-stream", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.LargePersonGroupPersons addPersonFaceFromStream" })
-        @POST("largepersongroups/{largePersonGroupId}/persons/{personId}/persistedFaces")
+        @POST("largepersongroups/{largePersonGroupId}/persons/{personId}/persistedfaces")
         Observable<Response<ResponseBody>> addPersonFaceFromStream(@Path("largePersonGroupId") String largePersonGroupId, @Path("personId") UUID personId, @Query("userData") String userData, @Query("targetFace") String targetFace, @Body RequestBody image, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
     }

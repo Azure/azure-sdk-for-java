@@ -56,7 +56,7 @@ public class LargeFaceListFacesImpl implements LargeFaceListFaces {
      */
     interface LargeFaceListFacesService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.LargeFaceListFaces list" })
-        @GET("largefacelists/{largeFaceListId}/persistedFaces")
+        @GET("largefacelists/{largeFaceListId}/persistedfaces")
         Observable<Response<ResponseBody>> list(@Path("largeFaceListId") String largeFaceListId, @Query("start") String start, @Query("top") Integer top, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
     }

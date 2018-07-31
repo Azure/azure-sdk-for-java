@@ -90,23 +90,23 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
         Observable<Response<ResponseBody>> update(@Path("personGroupId") String personGroupId, @Path("personId") UUID personId, @Header("accept-language") String acceptLanguage, @Body NameAndUserDataContract body, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroupPersons deleteFace" })
-        @HTTP(path = "persongroups/{personGroupId}/persons/{personId}/persistedFaces/{persistedFaceId}", method = "DELETE", hasBody = true)
+        @HTTP(path = "persongroups/{personGroupId}/persons/{personId}/persistedfaces/{persistedFaceId}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteFace(@Path("personGroupId") String personGroupId, @Path("personId") UUID personId, @Path("persistedFaceId") UUID persistedFaceId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroupPersons getFace" })
-        @GET("persongroups/{personGroupId}/persons/{personId}/persistedFaces/{persistedFaceId}")
+        @GET("persongroups/{personGroupId}/persons/{personId}/persistedfaces/{persistedFaceId}")
         Observable<Response<ResponseBody>> getFace(@Path("personGroupId") String personGroupId, @Path("personId") UUID personId, @Path("persistedFaceId") UUID persistedFaceId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroupPersons updateFace" })
-        @PATCH("persongroups/{personGroupId}/persons/{personId}/persistedFaces/{persistedFaceId}")
+        @PATCH("persongroups/{personGroupId}/persons/{personId}/persistedfaces/{persistedFaceId}")
         Observable<Response<ResponseBody>> updateFace(@Path("personGroupId") String personGroupId, @Path("personId") UUID personId, @Path("persistedFaceId") UUID persistedFaceId, @Header("accept-language") String acceptLanguage, @Body UpdateFaceRequest body, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroupPersons addPersonFaceFromUrl" })
-        @POST("persongroups/{personGroupId}/persons/{personId}/persistedFaces")
+        @POST("persongroups/{personGroupId}/persons/{personId}/persistedfaces")
         Observable<Response<ResponseBody>> addPersonFaceFromUrl(@Path("personGroupId") String personGroupId, @Path("personId") UUID personId, @Query("userData") String userData, @Query("targetFace") String targetFace, @Header("accept-language") String acceptLanguage, @Body ImageUrl imageUrl, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/octet-stream", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroupPersons addPersonFaceFromStream" })
-        @POST("persongroups/{personGroupId}/persons/{personId}/persistedFaces")
+        @POST("persongroups/{personGroupId}/persons/{personId}/persistedfaces")
         Observable<Response<ResponseBody>> addPersonFaceFromStream(@Path("personGroupId") String personGroupId, @Path("personId") UUID personId, @Query("userData") String userData, @Query("targetFace") String targetFace, @Body RequestBody image, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
     }

@@ -100,23 +100,23 @@ public class LargeFaceListsImpl implements LargeFaceLists {
         Observable<Response<ResponseBody>> train(@Path("largeFaceListId") String largeFaceListId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.LargeFaceLists deleteFace" })
-        @HTTP(path = "largefacelists/{largeFaceListId}/persistedFaces/{persistedFaceId}", method = "DELETE", hasBody = true)
+        @HTTP(path = "largefacelists/{largeFaceListId}/persistedfaces/{persistedFaceId}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteFace(@Path("largeFaceListId") String largeFaceListId, @Path("persistedFaceId") UUID persistedFaceId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.LargeFaceLists getFace" })
-        @GET("largefacelists/{largeFaceListId}/persistedFaces/{persistedFaceId}")
+        @GET("largefacelists/{largeFaceListId}/persistedfaces/{persistedFaceId}")
         Observable<Response<ResponseBody>> getFace(@Path("largeFaceListId") String largeFaceListId, @Path("persistedFaceId") UUID persistedFaceId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.LargeFaceLists updateFace" })
-        @PATCH("largefacelists/{largeFaceListId}/persistedFaces/{persistedFaceId}")
+        @PATCH("largefacelists/{largeFaceListId}/persistedfaces/{persistedFaceId}")
         Observable<Response<ResponseBody>> updateFace(@Path("largeFaceListId") String largeFaceListId, @Path("persistedFaceId") UUID persistedFaceId, @Header("accept-language") String acceptLanguage, @Body UpdateFaceRequest body, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.LargeFaceLists addFaceFromUrl" })
-        @POST("largefacelists/{largeFaceListId}/persistedFaces")
+        @POST("largefacelists/{largeFaceListId}/persistedfaces")
         Observable<Response<ResponseBody>> addFaceFromUrl(@Path("largeFaceListId") String largeFaceListId, @Query("userData") String userData, @Query("targetFace") String targetFace, @Header("accept-language") String acceptLanguage, @Body ImageUrl imageUrl, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/octet-stream", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.LargeFaceLists addFaceFromStream" })
-        @POST("largefacelists/{largeFaceListId}/persistedFaces")
+        @POST("largefacelists/{largeFaceListId}/persistedfaces")
         Observable<Response<ResponseBody>> addFaceFromStream(@Path("largeFaceListId") String largeFaceListId, @Query("userData") String userData, @Query("targetFace") String targetFace, @Body RequestBody image, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
     }
