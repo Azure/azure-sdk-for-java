@@ -106,7 +106,9 @@ public final class BlockBlobURL extends BlobURL {
      * For more efficient bulk-upload scenarios, please refer to the {@link TransferManager} for convenience methods.
      *
      * @apiNote
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=upload_download "Sample code for BlockBlobURL.upload")]
+     * ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=upload_download "Sample code for BlockBlobURL.upload")] \n
+     * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      *
      * @param data
      *      The data to write to the blob.
@@ -151,11 +153,13 @@ public final class BlockBlobURL extends BlobURL {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs</a>.
      *
      * @apiNote
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blocks "Sample code for BlockBlobURL.stageBlock")]
+     * ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blocks "Sample code for BlockBlobURL.stageBlock")] \n
+     * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      *
      * @param base64BlockID
-     *      A Base64 encoded {@code String} that specifies the ID for this block. Note that all block ids must be the
-     *      same length.
+     *      A Base64 encoded {@code String} that specifies the ID for this block. Note that all block ids for a given
+     *      blob must be the same length.
      * @param data
      *      The data to write to the block.
      * @param length
@@ -175,12 +179,51 @@ public final class BlockBlobURL extends BlobURL {
     }
 
     /**
+     * Creates a new block to be committed as part of a blob where the contents are read from a URL. For more
+     * information, see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-block-from-url">Azure Docs</a>.
+     *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=block_from_url "Sample code for BlockBlobURL.stageBlockFromURL")]
+     *
+     * @param base64BlockID
+     *      A Base64 encoded {@code String} that specifies the ID for this block. Note that all block ids for a given
+     *      blob must be the same length.
+     * @param sourceURL
+     *      The url to the blob that will be the source of the copy.  A source blob in the same storage account can be
+     *      authenticated via Shared Key. However, if the source is a blob in another account, the source blob must
+     *      either be public or must be authenticated via a shared access signature. If the source blob is public, no
+     *      authentication is required to perform the operation.
+     * @param sourceRange
+     *      {@link BlobRange}
+     * @param sourceContentMD5
+     *      An MD5 hash of the block content from the source blob. If specified, the service will calculate the MD5 of
+     *      the received data and fail the request if it does not match the provided MD5.
+     * @param leaseAccessConditions
+     *      {@link LeaseAccessConditions}
+     * @return
+     *      Emits the successful response.
+     */
+    public Single<BlockBlobStageBlockFromURLResponse> stageBlockFromURL(
+            String base64BlockID, URL sourceURL, BlobRange sourceRange, byte[] sourceContentMD5,
+            LeaseAccessConditions leaseAccessConditions) {
+        leaseAccessConditions = leaseAccessConditions == null ? LeaseAccessConditions.NONE : leaseAccessConditions;
+        sourceRange = sourceRange == null ? BlobRange.DEFAULT : sourceRange;
+
+        return addErrorWrappingToSingle(
+                this.storageClient.generatedBlockBlobs().stageBlockFromURLWithRestResponseAsync(
+                        base64BlockID, 0, sourceURL, sourceRange.toString(), sourceContentMD5,
+                        null, leaseAccessConditions.getLeaseId(), null));
+    }
+
+    /**
      * Returns the list of blocks that have been uploaded as part of a block blob using the specified block list filter.
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-block-list">Azure Docs</a>.
      *
      * @apiNote
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blocks "Sample code for BlockBlobURL.getBlockList")]
+     * ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blocks "Sample code for BlockBlobURL.getBlockList")] \n
+     * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      *
      * @param listType
      *      Specifies which type of blocks to return.
@@ -209,7 +252,9 @@ public final class BlockBlobURL extends BlobURL {
      * For more efficient bulk-upload scenarios, please refer to the {@link TransferManager} for convenience methods.
      *
      * @apiNote
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blocks "Sample code for BlockBlobURL.commitBlockList")]
+     * ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blocks "Sample code for BlockBlobURL.commitBlockList")] \n
+     * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      *
      * @param base64BlockIDs
      *      A list of base64 encode {@code String}s that specifies the block IDs to be committed.

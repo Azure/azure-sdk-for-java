@@ -67,7 +67,7 @@ public class Samples {
         SharedKeyCredentials credential = new SharedKeyCredentials(accountName, accountKey);
 
         /*
-        Create a request pipeline that is used to process HTTP(S) requests and responses. It requires your accont
+        Create a request pipeline that is used to process HTTP(S) requests and responses. It requires your account
         credentials. In more advanced scenarios, you can configure telemetry, retry policies, logging, and other
         options. Also you can configure multiple pipelines for different scenarios.
          */
@@ -992,14 +992,14 @@ public class Samples {
         BlockBlobURL blobURL = containerURL.createBlockBlobURL("Data.txt");
 
         String[] data = {"Michael", "Gabriel", "Raphael", "John"};
+        String initialBlockID = Base64.getEncoder().encodeToString(
+                UUID.randomUUID().toString().getBytes());
 
         // Create the container. We convert to an Observable to be able to work with the block list effectively.
-        containerURL.create(null, null).toObservable()
-                .flatMap(response ->
+        containerURL.create(null, null)
+                .flatMapObservable(response ->
                         // Create an Observable that will yield each of the Strings one at a time.
-                        Observable.fromIterable(Arrays.asList(data))
-                )
-                // Items emitted by an Observable that results from a concatMap call will preserve the original order.
+                        Observable.fromIterable(Arrays.asList(data)))
                 .concatMap(block -> {
                     /*
                      Generate a base64 encoded blockID. Note that all blockIDs must be the same length. It is generally
@@ -1023,43 +1023,23 @@ public class Samples {
                 })
                 // Gather all of the IDs emitted by the previous observable into a single list.
                 .collectInto(new ArrayList<>(data.length), (BiConsumer<ArrayList<String>, String>) ArrayList::add)
-                .flatMap(idList ->
+                .flatMap(idList -> {
                         /*
                         By this point, all the blocks are upload and we have an ordered list of their IDs. Here, we
                         atomically commit the whole list.
                         NOTE: The block list order need not match the order in which the blocks were uploaded. The order
                         of IDs in the commitBlockList call will determine the structure of the blob.
                          */
-                        blobURL.commitBlockList(idList, null, null, null))
+                    idList.add(0, initialBlockID);
+                    return blobURL.commitBlockList(idList, null, null, null);
+                })
                 .flatMap(response ->
                         /*
                          For the blob, show each block (ID and size) that is a committed part of it. It is also possible
                          to include blocks that have been staged but not committed.
                          */
                         blobURL.getBlockList(BlockListType.ALL, null))
-                .flatMap(response -> {
-                    for (Block block : response.body().committedBlocks()) {
-                        System.out.println(String.format(Locale.ROOT, "Block ID=%s, Size=%d", block.name(),
-                                block.size()));
-                    }
-
-                    /*
-                     Download the blob in its entirety; download operations do not take blocks into account.
-                     NOTE: For really large blobs, downloading them like this allocates a lot of memory.
-                     */
-                    return blobURL.download(null, null, false);
-                })
-                .flatMap(response ->
-                        // Print out the data.
-                        FlowableUtil.collectBytesInBuffer(response.body())
-                                .doOnSuccess(bytes ->
-                                        System.out.println(new String(bytes.array())))
-                )
-                .flatMap(response ->
-                        // Delete the container.
-                        containerURL.delete(null)
-                )
-                 /*
+                /*
                 This will synchronize all the above operations. This is strongly discouraged for use in production as
                 it eliminates the benefits of asynchronous IO. We use it here to enable the sample to complete and
                 demonstrate its effectiveness.
@@ -1581,12 +1561,47 @@ public class Samples {
     is not meant to serve as a comprehensive example as the above examples are.
      */
     public void apiRefs() throws IOException, InvalidKeyException {
-        ServiceURL serviceURL = new ServiceURL(new URL("http://myaccount.blob.core.windows.net"),
-                StorageURL.createPipeline(new AnonymousCredentials(), new PipelineOptions()));
+        // <service_url>
+        // From the Azure portal, get your Storage account's name and account key.
+        String accountName = getAccountName();
+        String accountKey = getAccountKey();
+
+        // Use your Storage account's name and key to create a credential object; this is used to access your account.
+        SharedKeyCredentials sharedKeyCredentials = new SharedKeyCredentials(accountName, accountKey);
+
+        /*
+        Create a request pipeline that is used to process HTTP(S) requests and responses. It requires your account
+        credentials. In more advanced scenarios, you can configure telemetry, retry policies, logging, and other
+        options. Also you can configure multiple pipelines for different scenarios.
+         */
+        HttpPipeline pipeline = StorageURL.createPipeline(sharedKeyCredentials, new PipelineOptions());
+
+        /*
+        From the Azure portal, get your Storage account blob service URL endpoint.
+        The URL typically looks like this:
+         */
+        URL urlToBlob = new URL(String.format(Locale.ROOT, "https://%s.blob.core.windows.net", accountName));
+
+        // Create a ServiceURL objet that wraps the service URL and a request pipeline.
+        ServiceURL serviceURL = new ServiceURL(urlToBlob, pipeline);
+        // </service_url>
+
+        // <pipeline_options>
+        LoggingOptions loggingOptions = new LoggingOptions(2000);
+        RequestRetryOptions requestRetryOptions = new RequestRetryOptions(RetryPolicyType.EXPONENTIAL, 5,
+                4, 1000L, 10000L, "secondary-host");
+        PipelineOptions customOptions = new PipelineOptions();
+        customOptions.loggingOptions = loggingOptions;
+        customOptions.requestRetryOptions = requestRetryOptions;
+        StorageURL.createPipeline(new AnonymousCredentials(), customOptions);
+        // </pipeline_options>
+
         // <upload_download>
         ContainerURL containerURL = serviceURL.createContainerURL("myjavacontainerbasic");
 
         BlockBlobURL blobURL = containerURL.createBlockBlobURL("HelloWorld.txt");
+        AppendBlobURL appendBlobURL = containerURL.createAppendBlobURL("Data.txt");
+        PageBlobURL pageBlobURL = containerURL.createPageBlobURL("pageBlob");
 
         String data = "Hello world!";
 
@@ -1790,10 +1805,12 @@ public class Samples {
         BlockBlobURL blockBlobURL = containerURL.createBlockBlobURL("Data.txt");
 
         String[] blockData = {"Michael", "Gabriel", "Raphael", "John"};
+        String initialBlockID = Base64.getEncoder().encodeToString(
+                UUID.randomUUID().toString().getBytes());
 
         // Create the container. We convert to an Observable to be able to work with the block list effectively.
-        containerURL.create(null, null).toObservable()
-                .flatMap(response ->
+        containerURL.create(null, null)
+                .flatMapObservable(response ->
                         // Create an Observable that will yield each of the Strings one at a time.
                         Observable.fromIterable(Arrays.asList(blockData))
                 )
@@ -1821,14 +1838,16 @@ public class Samples {
                 })
                 // Gather all of the IDs emitted by the previous observable into a single list.
                 .collectInto(new ArrayList<>(blockData.length), (BiConsumer<ArrayList<String>, String>) ArrayList::add)
-                .flatMap(idList ->
+                .flatMap(idList -> {
                         /*
                         By this point, all the blocks are upload and we have an ordered list of their IDs. Here, we
                         atomically commit the whole list.
                         NOTE: The block list order need not match the order in which the blocks were uploaded. The order
                         of IDs in the commitBlockList call will determine the structure of the blob.
                          */
-                        blockBlobURL.commitBlockList(idList, null, null, null))
+                    idList.add(0, initialBlockID);
+                    return blockBlobURL.commitBlockList(idList, null, null, null);
+                })
                 .flatMap(response ->
                         /*
                          For the blob, show each block (ID and size) that is a committed part of it. It is also possible
@@ -1838,8 +1857,17 @@ public class Samples {
                 .subscribe();
         // </blocks>
 
+        // <block_from_url>
+        String blockID = Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes());
+        blockBlobURL.stageBlockFromURL(blockID, blobURL.toURL(), null, null,
+                null)
+                .flatMap(response ->
+                        blockBlobURL.commitBlockList(Arrays.asList(blockID), null, null,
+                                null))
+                .subscribe();
+        // </block_from_url>
+
         // <append_blob>
-        AppendBlobURL appendBlobURL = containerURL.createAppendBlobURL("Data.txt");
 
         // Create the container.
         containerURL.create(null, null)
@@ -1907,6 +1935,22 @@ public class Samples {
         blobURL.delete(null, null)
                 .subscribe();
         // </blob_delete>
+
+        // <undelete>
+        // This sample assumes that the account has a delete retention policy set.
+        blobURL.delete(null, null)
+                .flatMap(response ->
+                        blobURL.undelete())
+                .subscribe();
+        // </undelete>
+
+        // <tier>
+        // BlockBlobs and PageBlobs have different sets of tiers.
+        blockBlobURL.setTier(AccessTier.HOT)
+                .subscribe();
+        pageBlobURL.setTier(AccessTier.P6)
+                .subscribe();
+        // </tier>
 
         // <properties_metadata>
         containerURL.create(null, null)
@@ -1981,7 +2025,6 @@ public class Samples {
                 .subscribe();
         // </list_blobs_hierarchy>
 
-        PageBlobURL pageBlobURL = containerURL.createPageBlobURL("pageBlob");
         // <page_blob_basic>
         containerURL.create(null, null)
                 .flatMap(response ->

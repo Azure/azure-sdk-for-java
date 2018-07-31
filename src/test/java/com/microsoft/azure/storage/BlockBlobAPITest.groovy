@@ -17,6 +17,7 @@ package com.microsoft.azure.storage
 
 import com.microsoft.azure.storage.blob.BlobAccessConditions
 import com.microsoft.azure.storage.blob.BlobHTTPHeaders
+import com.microsoft.azure.storage.blob.BlobRange
 import com.microsoft.azure.storage.blob.BlockBlobURL
 import com.microsoft.azure.storage.blob.HTTPAccessConditions
 import com.microsoft.azure.storage.blob.LeaseAccessConditions
@@ -31,6 +32,7 @@ import com.microsoft.azure.storage.blob.models.BlockBlobStageBlockResponse
 import com.microsoft.azure.storage.blob.models.BlockBlobUploadHeaders
 import com.microsoft.azure.storage.blob.models.BlockBlobUploadResponse
 import com.microsoft.azure.storage.blob.models.BlockListType
+import com.microsoft.azure.storage.blob.models.PublicAccessType
 import com.microsoft.azure.storage.blob.models.StorageErrorCode
 import com.microsoft.rest.v2.util.FlowableUtil
 import io.reactivex.Flowable
@@ -128,6 +130,125 @@ class BlockBlobAPITest extends APISpec {
 
         when:
         bu.stageBlock("id", defaultFlowable, defaultDataSize, null)
+                .blockingGet()
+
+        then:
+        thrown(StorageException)
+    }
+
+    def "Stage block from url"() {
+        setup:
+        cu.setAccessPolicy(PublicAccessType.CONTAINER, null, null).blockingGet()
+        def bu2 = cu.createBlockBlobURL(generateBlobName())
+        def blockID = getBlockID()
+
+        when:
+        def response = bu2.stageBlockFromURL(blockID, bu.toURL(), null, null,
+                null).blockingGet()
+        def listResponse = bu2.getBlockList(BlockListType.ALL, null).blockingGet()
+        bu2.commitBlockList(Arrays.asList(blockID), null, null, null).blockingGet()
+
+        then:
+        response.headers().requestId() != null
+        response.headers().version() != null
+        response.headers().requestId() != null
+        response.headers().contentMD5() != null
+        response.headers().isServerEncrypted() != null
+
+        listResponse.body().uncommittedBlocks().get(0).name() == blockID
+        listResponse.body().uncommittedBlocks().size() == 1
+
+        FlowableUtil.collectBytesInBuffer(bu2.download(null, null, false)
+                .blockingGet().body()).blockingGet() == defaultData
+    }
+
+    @Unroll
+    def "Stage block from URL IA"() {
+        when:
+        bu.stageBlockFromURL(blockID, sourceURL, null, null, null)
+                .blockingGet()
+
+        then:
+        thrown(IllegalArgumentException)
+
+        where:
+        blockID | sourceURL
+        null | new URL("http://www.example.com")
+        getBlockID() | null
+    }
+
+    def "Stage block from URL range"() {
+        setup:
+        cu.setAccessPolicy(PublicAccessType.CONTAINER, null, null).blockingGet()
+        def destURL = cu.createBlockBlobURL(generateBlobName())
+
+        when:
+        destURL.stageBlockFromURL(getBlockID(), bu.toURL(), new BlobRange(2, 3), null,
+                null).blockingGet()
+
+        then:
+        destURL.getBlockList(BlockListType.ALL, null).blockingGet().body().uncommittedBlocks().get(0)
+                .size() == 3
+    }
+
+    def "Stage block from URL MD5"() {
+        setup:
+        cu.setAccessPolicy(PublicAccessType.CONTAINER, null, null).blockingGet()
+        def destURL = cu.createBlockBlobURL(generateBlobName())
+
+        when:
+        destURL.stageBlockFromURL(getBlockID(), bu.toURL(), null,
+                MessageDigest.getInstance("MD5").digest(defaultData.array()),null)
+                .blockingGet()
+
+        then:
+        notThrown(StorageException)
+    }
+
+    def "Stage block from URL MD5 fail"() {
+        setup:
+        cu.setAccessPolicy(PublicAccessType.CONTAINER, null, null).blockingGet()
+        def destURL = cu.createBlockBlobURL(generateBlobName())
+
+        when:
+        destURL.stageBlockFromURL(getBlockID(), bu.toURL(), null, "garbage".getBytes(),
+                null).blockingGet()
+
+        then:
+        thrown(StorageException)
+    }
+
+    def "Stage block from URL lease"() {
+        setup:
+        cu.setAccessPolicy(PublicAccessType.CONTAINER, null, null).blockingGet()
+        def lease = new LeaseAccessConditions(setupBlobLeaseCondition(bu, receivedLeaseID))
+
+        when:
+        bu.stageBlockFromURL(getBlockID(), bu.toURL(), null, null, lease).blockingGet()
+
+        then:
+        notThrown(StorageException)
+    }
+
+    def "Stage block from URL lease fail"() {
+        setup:
+        cu.setAccessPolicy(PublicAccessType.CONTAINER, null, null).blockingGet()
+        def lease = new LeaseAccessConditions("garbage")
+
+        when:
+        bu.stageBlockFromURL(getBlockID(), bu.toURL(), null, null, lease).blockingGet()
+
+        then:
+        thrown(StorageException)
+    }
+
+    def "Stage block from URL error"() {
+        setup:
+        cu = primaryServiceURL.createContainerURL(generateContainerName())
+        bu = cu.createBlockBlobURL(generateBlobName())
+
+        when:
+        bu.stageBlockFromURL(getBlockID(), bu.toURL(), null, null, null)
                 .blockingGet()
 
         then:

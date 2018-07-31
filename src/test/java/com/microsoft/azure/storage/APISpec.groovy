@@ -32,6 +32,8 @@ import com.microsoft.azure.storage.blob.models.ContainerGetPropertiesHeaders
 import com.microsoft.azure.storage.blob.models.ContainerItem
 import com.microsoft.azure.storage.blob.models.CopyStatusType
 import com.microsoft.azure.storage.blob.models.LeaseStateType
+import com.microsoft.azure.storage.blob.models.RetentionPolicy
+import com.microsoft.azure.storage.blob.models.StorageServiceProperties
 import com.microsoft.rest.v2.http.HttpClient
 import com.microsoft.rest.v2.http.HttpClientConfiguration
 import com.microsoft.rest.v2.http.HttpPipeline
@@ -65,7 +67,7 @@ class APISpec extends Specification {
     int defaultDataSize = defaultData.remaining()
 
     // If debugging is enabled, recordings cannot run as there can only be one proxy at a time.
-    static final boolean enableDebugging = true
+    static final boolean enableDebugging = false
 
     static final String containerPrefix = "jtc" // java test container
 
@@ -353,5 +355,19 @@ class APISpec extends Specification {
                 headers.class.getMethod("contentMD5").invoke(headers) == contentMD5 &&
                 headers.class.getMethod("contentType").invoke(headers)  == contentType
 
+    }
+
+    def enableSoftDelete() {
+        primaryServiceURL.setProperties(new StorageServiceProperties()
+                .withDeleteRetentionPolicy(new RetentionPolicy().withEnabled(true).withDays(2)))
+                .blockingGet()
+        sleep(30000) // Wait for the policy to take effect.
+    }
+
+    def disableSoftDelete() {
+        primaryServiceURL.setProperties(new StorageServiceProperties()
+                .withDeleteRetentionPolicy(new RetentionPolicy().withEnabled(false))).blockingGet()
+
+        sleep(30000) // Wait for the policy to take effect.
     }
 }

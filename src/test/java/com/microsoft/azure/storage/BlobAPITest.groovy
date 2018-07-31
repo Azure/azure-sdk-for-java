@@ -928,7 +928,7 @@ class BlobAPITest extends APISpec {
         initialResponse.headers().version() != null
         initialResponse.headers().requestId() != null
         bu.getProperties(null).blockingGet().headers().accessTier() == tier.toString()
-        cu.listBlobsFlatSegment(null, null).blockingGet().body().blobs().blob().get(0)
+        cu.listBlobsFlatSegment(null, null).blockingGet().body().segment().blobItems().get(0)
                 .properties().accessTier() == tier
 
         where:
@@ -951,7 +951,7 @@ class BlobAPITest extends APISpec {
 
         then:
         bu.getProperties(null).blockingGet().headers().accessTier() == tier.toString()
-        cu.listBlobsFlatSegment(null, null).blockingGet().body().blobs().blob().get(0)
+        cu.listBlobsFlatSegment(null, null).blockingGet().body().segment().blobItems().get(0)
                 .properties().accessTier() == tier
 
         where:
@@ -974,15 +974,15 @@ class BlobAPITest extends APISpec {
 
         when:
         boolean inferred1 = bu.getProperties(null).blockingGet().headers().accessTierInferred()
-        Boolean inferredList1 = cu.listBlobsFlatSegment(null, null).blockingGet().body().blobs().blob()
-                .get(0).properties().accessTierInferred()
+        Boolean inferredList1 = cu.listBlobsFlatSegment(null, null).blockingGet().body().segment()
+                .blobItems().get(0).properties().accessTierInferred()
 
         bu.setTier(AccessTier.HOT).blockingGet()
 
         BlobGetPropertiesHeaders headers = bu.getProperties(null).blockingGet().headers()
         Boolean inferred2 = headers.accessTierInferred()
-        Boolean inferredList2 = cu.listBlobsFlatSegment(null, null).blockingGet().body().blobs().blob()
-                .get(0).properties().accessTierInferred()
+        Boolean inferredList2 = cu.listBlobsFlatSegment(null, null).blockingGet().body().segment()
+                .blobItems().get(0).properties().accessTierInferred()
 
         then:
         inferred1
@@ -1005,7 +1005,7 @@ class BlobAPITest extends APISpec {
 
         then:
         bu.getProperties(null).blockingGet().headers().archiveStatus() == status.toString()
-        cu.listBlobsFlatSegment(null, null).blockingGet().body().blobs().blob()
+        cu.listBlobsFlatSegment(null, null).blockingGet().body().segment().blobItems()
                 .get(0).properties().archiveStatus()
 
         where:
@@ -1035,5 +1035,33 @@ class BlobAPITest extends APISpec {
 
         then:
         thrown(IllegalArgumentException)
+    }
+
+    def "Undelete"() {
+        setup:
+        enableSoftDelete()
+        bu.delete(null, null).blockingGet()
+
+        when:
+        def response =  bu.undelete().blockingGet()
+        bu.getProperties(null).blockingGet()
+
+        then:
+        notThrown(StorageException)
+        response.headers().requestId() != null
+        response.headers().version() != null
+        response.headers().date() != null
+
+        disableSoftDelete() == null
+    }
+
+    def "Undelete error"() {
+        bu = cu.createBlockBlobURL(generateBlobName())
+
+        when:
+        bu.undelete().blockingGet()
+
+        then:
+        thrown(StorageException)
     }
 }

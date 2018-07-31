@@ -36,6 +36,8 @@ import com.microsoft.azure.storage.blob.models.ServiceSetPropertiesHeaders
 import com.microsoft.azure.storage.blob.models.StorageServiceProperties
 import spock.lang.Unroll
 
+import java.lang.annotation.Retention
+
 class ServiceAPITest extends APISpec {
     StorageServiceProperties originalProps = primaryServiceURL.getProperties().blockingGet().body()
 
@@ -43,11 +45,11 @@ class ServiceAPITest extends APISpec {
         primaryServiceURL.setProperties(originalProps).blockingGet()
     }
 
-    def "Service list containers"() {
+    def "List containers"() {
         setup:
         ServiceListContainersSegmentResponse response =
                 primaryServiceURL.listContainersSegment(null, new ListContainersOptions(null,
-                containerPrefix, null)).blockingGet()
+                        containerPrefix, null)).blockingGet()
 
         expect:
         for (ContainerItem c : response.body().containerItems()) {
@@ -57,16 +59,16 @@ class ServiceAPITest extends APISpec {
         response.headers().version() != null
     }
 
-    def "Service list containers marker"() {
+    def "List containers marker"() {
         setup:
-        for (int i=0; i<10; i++) {
+        for (int i = 0; i < 10; i++) {
             ContainerURL cu = primaryServiceURL.createContainerURL(generateContainerName())
             cu.create(null, null).blockingGet()
         }
 
         ServiceListContainersSegmentResponse response =
                 primaryServiceURL.listContainersSegment(null,
-                new ListContainersOptions(null, null, 5)).blockingGet()
+                        new ListContainersOptions(null, null, 5)).blockingGet()
         String marker = response.body().nextMarker()
         String firstContainerName = response.body().containerItems().get(0).name()
         response = primaryServiceURL.listContainersSegment(marker,
@@ -77,11 +79,11 @@ class ServiceAPITest extends APISpec {
         firstContainerName < response.body().containerItems().get(0).name()
     }
 
-    def "Service list containers details"() {
+    def "List containers details"() {
         setup:
         Metadata metadata = new Metadata()
         metadata.put("foo", "bar")
-        cu = primaryServiceURL.createContainerURL("aaa"+generateContainerName())
+        cu = primaryServiceURL.createContainerURL("aaa" + generateContainerName())
         cu.create(metadata, null).blockingGet()
 
         expect:
@@ -93,7 +95,7 @@ class ServiceAPITest extends APISpec {
         cu.delete(null).blockingGet().statusCode() == 202
     }
 
-    def "Service list containers maxResults"() {
+    def "List containers maxResults"() {
         setup:
         for (int i=0; i<11; i++) {
             primaryServiceURL.createContainerURL(generateContainerName()).create(null, null)
@@ -105,7 +107,7 @@ class ServiceAPITest extends APISpec {
                 .blockingGet().body().containerItems().size() == 10
     }
 
-    def "Service list containers error"() {
+    def "List containers error"() {
         when:
         primaryServiceURL.listContainersSegment("garbage", null).blockingGet()
 
@@ -115,38 +117,41 @@ class ServiceAPITest extends APISpec {
 
     def validatePropsSet(ServiceSetPropertiesHeaders headers, StorageServiceProperties receivedProperties) {
         return headers.requestId() != null &&
-        headers.version() != null &&
+                headers.version() != null &&
 
-        receivedProperties.logging().read() &&
-        !receivedProperties.logging().delete() &&
-        !receivedProperties.logging().write() &&
-        receivedProperties.logging().version() == "1.0" &&
-        receivedProperties.logging().retentionPolicy().days() == 5 &&
-        receivedProperties.logging().retentionPolicy().enabled() &&
+                receivedProperties.logging().read() &&
+                !receivedProperties.logging().delete() &&
+                !receivedProperties.logging().write() &&
+                receivedProperties.logging().version() == "1.0" &&
+                receivedProperties.logging().retentionPolicy().days() == 5 &&
+                receivedProperties.logging().retentionPolicy().enabled() &&
 
-        receivedProperties.cors().size() == 1 &&
-        receivedProperties.cors().get(0).allowedMethods() == "GET,PUT,HEAD" &&
-        receivedProperties.cors().get(0).allowedHeaders() == "x-ms-version" &&
-        receivedProperties.cors().get(0).allowedOrigins() == "*" &&
-        receivedProperties.cors().get(0).exposedHeaders() == "x-ms-client-request-id" &&
-        receivedProperties.cors().get(0).maxAgeInSeconds() == 10 &&
+                receivedProperties.cors().size() == 1 &&
+                receivedProperties.cors().get(0).allowedMethods() == "GET,PUT,HEAD" &&
+                receivedProperties.cors().get(0).allowedHeaders() == "x-ms-version" &&
+                receivedProperties.cors().get(0).allowedOrigins() == "*" &&
+                receivedProperties.cors().get(0).exposedHeaders() == "x-ms-client-request-id" &&
+                receivedProperties.cors().get(0).maxAgeInSeconds() == 10 &&
 
-        receivedProperties.defaultServiceVersion() == "2016-05-31" &&
+                receivedProperties.defaultServiceVersion() == "2016-05-31" &&
 
-        receivedProperties.hourMetrics().enabled() &&
-        receivedProperties.hourMetrics().includeAPIs() &&
-        receivedProperties.hourMetrics().retentionPolicy().enabled() &&
-        receivedProperties.hourMetrics().retentionPolicy().days() == 5 &&
-        receivedProperties.hourMetrics().version() == "1.0" &&
+                receivedProperties.hourMetrics().enabled() &&
+                receivedProperties.hourMetrics().includeAPIs() &&
+                receivedProperties.hourMetrics().retentionPolicy().enabled() &&
+                receivedProperties.hourMetrics().retentionPolicy().days() == 5 &&
+                receivedProperties.hourMetrics().version() == "1.0" &&
 
-        receivedProperties.minuteMetrics().enabled() &&
-        receivedProperties.minuteMetrics().includeAPIs() &&
-        receivedProperties.minuteMetrics().retentionPolicy().enabled() &&
-        receivedProperties.minuteMetrics().retentionPolicy().days() == 5 &&
-        receivedProperties.minuteMetrics().version() == "1.0"
+                receivedProperties.minuteMetrics().enabled() &&
+                receivedProperties.minuteMetrics().includeAPIs() &&
+                receivedProperties.minuteMetrics().retentionPolicy().enabled() &&
+                receivedProperties.minuteMetrics().retentionPolicy().days() == 5 &&
+                receivedProperties.minuteMetrics().version() == "1.0" &&
+
+                receivedProperties.deleteRetentionPolicy().enabled() &&
+                receivedProperties.deleteRetentionPolicy().days() == 5
     }
 
-    def "Service set get properties"() {
+    def "Set get properties"() {
         when:
         RetentionPolicy retentionPolicy = new RetentionPolicy().withDays(5).withEnabled(true)
         Logging logging = new Logging().withRead(true).withVersion("1.0")
@@ -163,21 +168,25 @@ class ServiceAPITest extends APISpec {
         Metrics minuteMetrics = new Metrics().withEnabled(true).withVersion("1.0")
                 .withRetentionPolicy(retentionPolicy).withIncludeAPIs(true)
 
+
         ServiceSetPropertiesHeaders headers = primaryServiceURL.setProperties(new StorageServiceProperties()
                 .withLogging(logging).withCors(corsRules).withDefaultServiceVersion(defaultServiceVersion)
-                .withMinuteMetrics(minuteMetrics).withHourMetrics(hourMetrics)).blockingGet().headers()
+                .withMinuteMetrics(minuteMetrics).withHourMetrics(hourMetrics)
+                .withDeleteRetentionPolicy(retentionPolicy)).blockingGet().headers()
         StorageServiceProperties receivedProperties = primaryServiceURL.getProperties()
                 .blockingGet().body()
 
         then:
         if (!validatePropsSet(headers, receivedProperties)) {
             // Service properties may take up to 30s to take effect. If they weren't already in place, wait.
-            sleep(30*1000)
+            sleep(30 * 1000)
             validatePropsSet(headers, receivedProperties)
         }
     }
 
-    def "Service set props error"() {
+   // In java, we don't have support from the validator for checking the bounds on days. The service will catch these.
+
+    def "Set props error"() {
         when:
         new ServiceURL(new URL("https://error.blob.core.windows.net"),
                 StorageURL.createPipeline(primaryCreds, new PipelineOptions()))
@@ -187,7 +196,7 @@ class ServiceAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    def "service get props error"() {
+    def "Get props error"() {
         when:
         new ServiceURL(new URL("https://error.blob.core.windows.net"),
                 StorageURL.createPipeline(primaryCreds, new PipelineOptions())).getProperties().blockingGet()
@@ -196,7 +205,7 @@ class ServiceAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    def "Service get stats"() {
+    def "Get stats"() {
         setup:
         BlobURLParts parts = URLParser.parse(primaryServiceURL.toURL())
         parts.host = "xclientdev3-secondary.blob.core.windows.net"
@@ -212,7 +221,7 @@ class ServiceAPITest extends APISpec {
         response.body().geoReplication().lastSyncTime() != null
     }
 
-    def "Service get stats error"() {
+    def "Get stats error"() {
         when:
         primaryServiceURL.getStatistics().blockingGet()
 

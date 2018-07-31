@@ -22,6 +22,12 @@ import java.time.OffsetDateTime;
 @JacksonXmlRootElement(localName = "Properties")
 public final class BlobProperties {
     /**
+     * The creationTime property.
+     */
+    @JsonProperty(value = "Creation-Time")
+    private DateTimeRfc1123 creationTime;
+
+    /**
      * The lastModified property.
      */
     @JsonProperty(value = "Last-Modified", required = true)
@@ -191,6 +197,33 @@ public final class BlobProperties {
      */
     @JsonProperty(value = "ArchiveStatus")
     private ArchiveStatus archiveStatus;
+
+    /**
+     * Get the creationTime value.
+     *
+     * @return the creationTime value.
+     */
+    public OffsetDateTime creationTime() {
+        if (this.creationTime == null) {
+            return null;
+        }
+        return this.creationTime.dateTime();
+    }
+
+    /**
+     * Set the creationTime value.
+     *
+     * @param creationTime the creationTime value to set.
+     * @return the BlobProperties object itself.
+     */
+    public BlobProperties withCreationTime(OffsetDateTime creationTime) {
+        if (creationTime == null) {
+            this.creationTime = null;
+        } else {
+            this.creationTime = new DateTimeRfc1123(creationTime);
+        }
+        return this;
+    }
 
     /**
      * Get the lastModified value.

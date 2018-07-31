@@ -32,6 +32,12 @@ public final class BlobGetPropertiesHeaders {
     private DateTimeRfc1123 lastModified;
 
     /**
+     * Returns the date and time the blob was created.
+     */
+    @JsonProperty(value = "x-ms-creation-time")
+    private DateTimeRfc1123 xMsCreationTime;
+
+    /**
      * The metadata property.
      */
     @HeaderCollection("x-ms-meta-")
@@ -301,6 +307,33 @@ public final class BlobGetPropertiesHeaders {
             this.lastModified = null;
         } else {
             this.lastModified = new DateTimeRfc1123(lastModified);
+        }
+        return this;
+    }
+
+    /**
+     * Get the xMsCreationTime value.
+     *
+     * @return the xMsCreationTime value.
+     */
+    public OffsetDateTime xMsCreationTime() {
+        if (this.xMsCreationTime == null) {
+            return null;
+        }
+        return this.xMsCreationTime.dateTime();
+    }
+
+    /**
+     * Set the xMsCreationTime value.
+     *
+     * @param xMsCreationTime the xMsCreationTime value to set.
+     * @return the BlobGetPropertiesHeaders object itself.
+     */
+    public BlobGetPropertiesHeaders withXMsCreationTime(OffsetDateTime xMsCreationTime) {
+        if (xMsCreationTime == null) {
+            this.xMsCreationTime = null;
+        } else {
+            this.xMsCreationTime = new DateTimeRfc1123(xMsCreationTime);
         }
         return this;
     }

@@ -48,6 +48,11 @@ public final class RequestRetryOptions {
     /**
      * Configures how the {@link com.microsoft.rest.v2.http.HttpPipeline} should retry requests.
      *
+     * @apiNote
+     * ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=pipeline_options "Sample code for RequestRetryOptions constructor")] \n
+     * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     *
      * @param retryPolicyType
      *      A {@link RetryPolicyType} specifying the type of retry pattern to use. A value of {@code null} accepts the
      *      default.

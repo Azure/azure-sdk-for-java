@@ -24,9 +24,8 @@ public final class ListBlobsOptions {
      * An object representing the default options: no details, prefix, or delimiter. Uses the server default for
      * maxResults.
      */
-    public static final ListBlobsOptions DEFAULT = new ListBlobsOptions(
-            new BlobListingDetails(false, false, false, false),
-            null, null);
+    public static final ListBlobsOptions DEFAULT = new ListBlobsOptions(BlobListingDetails.NONE, null,
+            null);
 
     private final BlobListingDetails details;
 
