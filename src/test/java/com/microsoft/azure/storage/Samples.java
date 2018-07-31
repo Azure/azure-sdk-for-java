@@ -992,8 +992,6 @@ public class Samples {
         BlockBlobURL blobURL = containerURL.createBlockBlobURL("Data.txt");
 
         String[] data = {"Michael", "Gabriel", "Raphael", "John"};
-        String initialBlockID = Base64.getEncoder().encodeToString(
-                UUID.randomUUID().toString().getBytes());
 
         // Create the container. We convert to an Observable to be able to work with the block list effectively.
         containerURL.create(null, null)
@@ -1030,7 +1028,6 @@ public class Samples {
                         NOTE: The block list order need not match the order in which the blocks were uploaded. The order
                         of IDs in the commitBlockList call will determine the structure of the blob.
                          */
-                    idList.add(0, initialBlockID);
                     return blobURL.commitBlockList(idList, null, null, null);
                 })
                 .flatMap(response ->

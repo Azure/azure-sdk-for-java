@@ -924,7 +924,7 @@ class BlobAPITest extends APISpec {
         BlobSetTierResponse initialResponse = bu.setTier(tier).blockingGet()
 
         then:
-        initialResponse.statusCode() == 201
+        initialResponse.statusCode() == 200 || initialResponse.statusCode() == 202
         initialResponse.headers().version() != null
         initialResponse.headers().requestId() != null
         bu.getProperties(null).blockingGet().headers().accessTier() == tier.toString()
