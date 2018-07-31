@@ -18,7 +18,6 @@ package com.microsoft.azure.storage.blob;
 import io.reactivex.*;
 import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Function;
-import io.reactivex.internal.operators.mixed.ObservableConcatMapCompletable;
 
 import java.io.IOException;
 import java.lang.Error;
@@ -404,14 +403,21 @@ public class TransferManager {
     }
 
     /**
-     * @param blobURL
-     * @param range
+     * Downloads a file directly into a file, splitting the download into chunks and paralellizing as necessary.
+     *
      * @param file
+     *      The destination file to which the blob will be written.
+     * @param blobURL
+     *         The URL to the blob to download.
+     * @param range
+     *         {@link BlobRange}
      * @param options
-     * @return
-     * @apiNote todo
+     *         {@link DownloadFromBlobOptions}
+     * @return A {@code Completable} that will signal when the download is complete.
+     * @apiNote [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=tm_file
+     * "Sample code for TransferManager.downloadBlobToFile")]
      */
-    public static Completable downloadBlobToFile(BlobURL blobURL, BlobRange range, FileChannel file,
+    public static Completable downloadBlobToFile(FileChannel file, BlobURL blobURL, BlobRange range,
             DownloadFromBlobOptions options) {
         BlobRange r = range == null ? BlobRange.DEFAULT : range;
         DownloadFromBlobOptions o = options == null ? DownloadFromBlobOptions.DEFAULT : options;
@@ -434,28 +440,33 @@ public class TransferManager {
                                 bufferSizeActual);
                         block.load();
 
-                        return downloadBlobToBuffer(blobURL, new BlobRange(i * Integer.MAX_VALUE,
-                                bufferSizeActual), block, o);
+                        return downloadBlobToBuffer(block, blobURL, new BlobRange(
+                                i * Integer.MAX_VALUE + r.getOffset(),
+                                bufferSizeActual), o)
+                                .doFinally(block::force);
                     });
         });
     }
 
     /**
-     * Note that only blobs of 2GB or less can be downloaded using this method due to the size constrains on {@code
-     * ByteBuffer}. For downloading large blobs, please see {@link TransferManager#downloadBlobToFile}.
+     * Downloads a blob directly into a buffer, splitting the download into chunks and parallelizing as necessary.
      *
+     * Note that only blobs of 2GB or less can be downloaded using this method due to the size constrains on {@code
+     * ByteBuffer}. For downloading larger blobs, please see {@link TransferManager#downloadBlobToFile}.
+     *
+     * @param buffer
+     *         The destination buffer to which the blob data will be written.
      * @param blobURL
      *         The URL to the blob to download.
      * @param range
      *         {@link BlobRange}
-     * @param buffer
-     *         The destination buffer to which the blob data will be written.
      * @param options
      *         {@link DownloadFromBlobOptions}
      * @return A {@code Completable} that will signal when the download is complete.
-     * @apiNote Todo
+     * @apiNote [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=tm_buffer_download
+     * "Sample code for TransferManager.downloadBlobToBuffer")]
      */
-    public static Completable downloadBlobToBuffer(BlobURL blobURL, BlobRange range, ByteBuffer buffer,
+    public static Completable downloadBlobToBuffer(ByteBuffer buffer, BlobURL blobURL, BlobRange range,
             DownloadFromBlobOptions options) {
         BlobRange r = range == null ? BlobRange.DEFAULT : range;
         DownloadFromBlobOptions o = options == null ? DownloadFromBlobOptions.DEFAULT : options;

@@ -607,7 +607,7 @@ class TransferManagerTest extends APISpec {
         def outBuf = ByteBuffer.allocate(size.intValue())
 
         when:
-        TransferManager.downloadBlobToBuffer(bu, null, outBuf, null).blockingGet()
+        TransferManager.downloadBlobToBuffer(outBuf, bu, null, null).blockingGet()
         outBuf.position(0)
 
         then:
@@ -627,7 +627,7 @@ class TransferManagerTest extends APISpec {
         ByteBuffer buffer = ByteBuffer.allocate((int) range.count)
 
         when:
-        TransferManager.downloadBlobToBuffer(bu, range, buffer, null).blockingGet()
+        TransferManager.downloadBlobToBuffer(buffer, bu, range, null).blockingGet()
         buffer.position(0)
 
         then:
@@ -648,7 +648,7 @@ class TransferManagerTest extends APISpec {
         def buffer = ByteBuffer.allocate(defaultDataSize)
 
         when:
-        TransferManager.downloadBlobToBuffer(bu, new BlobRange(0, null), buffer,
+        TransferManager.downloadBlobToBuffer(buffer, bu, new BlobRange(0, null),
                 null).blockingGet()
 
         then:
@@ -667,7 +667,7 @@ class TransferManagerTest extends APISpec {
                 null, null)
 
         when:
-        TransferManager.downloadBlobToBuffer(bu, null, buffer, new TransferManager.DownloadFromBlobOptions(
+        TransferManager.downloadBlobToBuffer(buffer, bu, null, new TransferManager.DownloadFromBlobOptions(
                 null, null, bac, null, null)).blockingGet()
 
         then:
@@ -696,7 +696,7 @@ class TransferManagerTest extends APISpec {
                 null, null)
 
         when:
-        Throwable t = TransferManager.downloadBlobToBuffer(bu, null, buffer,
+        Throwable t = TransferManager.downloadBlobToBuffer(buffer, bu, null,
                 new TransferManager.DownloadFromBlobOptions(null, null, bac, null,
                         null)).blockingGet()
 
@@ -723,7 +723,7 @@ class TransferManagerTest extends APISpec {
         retryReaderOptions.maxRetryRequests = retries
 
         when:
-        TransferManager.downloadBlobToBuffer(bu, null, buffer, new TransferManager.DownloadFromBlobOptions(
+        TransferManager.downloadBlobToBuffer(buffer, bu, null, new TransferManager.DownloadFromBlobOptions(
                 blockSize, null, null, parallelism, retryReaderOptions)).blockingGet()
 
         then:
@@ -739,7 +739,7 @@ class TransferManagerTest extends APISpec {
     @Unroll
     def "Download buffer IA null"() {
         when:
-        TransferManager.downloadBlobToBuffer(blobURL, null, buffer, null).blockingGet()
+        TransferManager.downloadBlobToBuffer(buffer, blobURL, null, null).blockingGet()
 
         then:
         thrown(IllegalArgumentException)
@@ -760,8 +760,8 @@ class TransferManagerTest extends APISpec {
         bu.upload(defaultFlowable, defaultDataSize, null, null, null).blockingGet()
 
         when:
-        Throwable t = TransferManager.downloadBlobToBuffer(bu, null,
-                ByteBuffer.allocate(defaultDataSize - 1), null).blockingGet()
+        Throwable t = TransferManager.downloadBlobToBuffer(ByteBuffer.allocate(defaultDataSize - 1), bu, null
+                , null).blockingGet()
 
         then:
         t instanceof IllegalArgumentException
@@ -778,7 +778,7 @@ class TransferManagerTest extends APISpec {
                 StandardOpenOption.READ)
 
         when:
-        TransferManager.downloadBlobToFile(bu, null, outChannel, null).blockingGet()
+        TransferManager.downloadBlobToFile(outChannel, bu, null, null).blockingGet()
         outChannel.position(0)
 
         then:
@@ -792,15 +792,16 @@ class TransferManagerTest extends APISpec {
         getRandomFile(16 * 1024 * 1024)       | _
         getRandomFile(8 * 1026 * 1024 + 10)   | _
         getRandomFile(5 * 1024 * 1024 * 1024) | _
+        getRandomFile(0)                      | _
     }
 
     def compareFiles(FileChannel channel1, FileChannel channel2) {
-        ByteBuffer buf1 = ByteBuffer.allocate(8*1024*1024)
-        ByteBuffer buf2 = ByteBuffer.allocate(8*1024*1024)
+        ByteBuffer buf1 = ByteBuffer.allocate(8 * 1024 * 1024)
+        ByteBuffer buf2 = ByteBuffer.allocate(8 * 1024 * 1024)
 
         long read1 = 0
         long read2 = 0
-        while (read1 != -1 && read2 -1) {
+        while (read1 != -1 && read2 - 1) {
             read1 = channel1.read(buf1)
             read2 = channel2.read(buf2)
             if (buf1.compareTo(buf2) != 0) {
@@ -817,8 +818,191 @@ class TransferManagerTest extends APISpec {
         return true
     }
 
-    def "Download options fail"() {
+    @Unroll
+    def "Download file range"() {
+        setup:
+        FileChannel channel = FileChannel.open(file.toPath(), StandardOpenOption.READ, StandardOpenOption.WRITE)
+        TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null)
+                .blockingGet()
+        File outFile = getRandomFile(0)
+        FileChannel outChannel = FileChannel.open(outFile.toPath(), StandardOpenOption.WRITE,
+                StandardOpenOption.READ)
 
+        when:
+        TransferManager.downloadBlobToFile(outChannel, bu, range, null).blockingGet()
+        outChannel.position(0)
+
+        then:
+        /*
+        It would be nice to just reposition and truncate the source file to directly compare the files, but until the
+        MappedByteBuffer from downloadToFile is GCed, we can't perform those operations. The best workaround is to
+        leverage this other comparison function.
+         */
+        compareDataToFile(Flowable.just(channel.map(FileChannel.MapMode.READ_ONLY, range.offset, range.count)), outFile)
+        channel.close() == null
+        outChannel.close() == null
+
+        where:
+        file                           | range
+        getRandomFile(defaultDataSize) | new BlobRange(0, defaultDataSize)
+        getRandomFile(defaultDataSize) | new BlobRange(1, defaultDataSize - 1)
+        getRandomFile(defaultDataSize) | new BlobRange(0, defaultDataSize - 1)
+    }
+
+    def "Download file count null"() {
+        setup:
+        bu.upload(defaultFlowable, defaultDataSize, null, null, null).blockingGet()
+        File outFile = getRandomFile(0)
+        FileChannel outChannel = FileChannel.open(outFile.toPath(), StandardOpenOption.WRITE,
+                StandardOpenOption.READ)
+
+        when:
+        TransferManager.downloadBlobToFile(outChannel, bu, new BlobRange(0, null), null)
+                .blockingGet()
+        outChannel.position(0)
+
+        then:
+        /*
+        It would be nice to just reposition and truncate the source file to directly compare the files, but until the
+        MappedByteBuffer from downloadToFile is GCed, we can't perform those operations. The best workaround is to
+        leverage this other comparison function.
+         */
+        compareDataToFile(defaultFlowable, outFile)
+        outChannel.close() == null
+    }
+
+    @Unroll
+    def "Download file AC"() {
+        setup:
+        FileChannel channel = FileChannel.open(getRandomFile(defaultDataSize).toPath(), StandardOpenOption.READ,
+                StandardOpenOption.WRITE)
+        TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null)
+                .blockingGet()
+        FileChannel outChannel = FileChannel.open(getRandomFile(0).toPath(), StandardOpenOption.WRITE,
+                StandardOpenOption.READ)
+
+        match = setupBlobMatchCondition(bu, match)
+        leaseID = setupBlobLeaseCondition(bu, leaseID)
+        BlobAccessConditions bac = new BlobAccessConditions(
+                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
+                null, null)
+
+        when:
+        TransferManager.downloadBlobToFile(outChannel, bu, null, new TransferManager.DownloadFromBlobOptions(
+                null, null, bac, null, null)).blockingGet()
+        outChannel.position(0)
+
+        then:
+        compareFiles(channel, outChannel)
+        channel.close()
+        outChannel.close()
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | receivedLeaseID
+    }
+
+    @Unroll
+    def "Download file AC fail"() {
+        setup:
+        FileChannel channel = FileChannel.open(getRandomFile(defaultDataSize).toPath(), StandardOpenOption.READ,
+                StandardOpenOption.WRITE)
+        TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null)
+                .blockingGet()
+        FileChannel outChannel = FileChannel.open(getRandomFile(0).toPath(), StandardOpenOption.WRITE,
+                StandardOpenOption.READ)
+
+        noneMatch = setupBlobMatchCondition(bu, noneMatch)
+        setupBlobLeaseCondition(bu, leaseID)
+        BlobAccessConditions bac = new BlobAccessConditions(
+                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
+                null, null)
+
+        when:
+        def t = TransferManager.downloadBlobToFile(outChannel, bu, null,
+                new TransferManager.DownloadFromBlobOptions(null, null, bac, null,
+                        null)).blockingGet()
+
+        then:
+        t instanceof StorageException
+        ((StorageException) t).errorCode() == StorageErrorCode.CONDITION_NOT_MET ||
+                ((StorageException) t).errorCode() == StorageErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
+    }
+
+    @Unroll
+    def "Download file options"() {
+        setup:
+        FileChannel channel = FileChannel.open(getRandomFile(defaultDataSize).toPath(), StandardOpenOption.READ,
+                StandardOpenOption.WRITE)
+        TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null)
+                .blockingGet()
+        FileChannel outChannel = FileChannel.open(getRandomFile(0).toPath(), StandardOpenOption.WRITE,
+                StandardOpenOption.READ)
+        def retryReaderOptions = new RetryReaderOptions()
+        retryReaderOptions.maxRetryRequests = retries
+
+        when:
+        TransferManager.downloadBlobToFile(outChannel, bu, null, new TransferManager.DownloadFromBlobOptions(
+                blockSize, null, null, parallelism, retryReaderOptions)).blockingGet()
+        outChannel.position(0)
+
+        then:
+        compareFiles(channel, outChannel)
+        channel.close()
+        outChannel.close()
+
+        where:
+        blockSize | parallelism | retries
+        1         | null        | 2
+        null      | 1           | 2
+        null      | null        | 1
+    }
+
+    @Unroll
+    def "Download file IA null"() {
+        when:
+        TransferManager.downloadBlobToFile(file, blobURL, null, null).blockingGet()
+
+        then:
+        thrown(IllegalArgumentException)
+
+        /*
+        This test is just validating that exceptions are thrown if certain values are null. The values not being test do
+        not need to be correct, simply not null. Because order in which Spock initializes values, we can't just use the
+        bu property for the url.
+         */
+        where:
+        file                                         | blobURL
+        null                                         | new BlockBlobURL(new URL("http://account.com"), StorageURL.createPipeline(primaryCreds, new PipelineOptions()))
+        FileChannel.open(getRandomFile(10).toPath()) | null
+    }
+
+    @Unroll
+    def "Download options fail"() {
+        when:
+        new TransferManager.DownloadFromBlobOptions(blockSize, null, null, parallelism,
+                null)
+
+        then:
+        thrown(IllegalArgumentException)
+
+        where:
+        parallelism | blockSize
+        0 | 40
+        2 | 0
     }
 }
 
