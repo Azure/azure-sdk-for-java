@@ -15,6 +15,7 @@
 
 package com.microsoft.azure.storage
 
+import com.microsoft.azure.storage.blob.AnonymousCredentials
 import com.microsoft.azure.storage.blob.BlobURLParts
 import com.microsoft.azure.storage.blob.ContainerListingDetails
 import com.microsoft.azure.storage.blob.ContainerURL
@@ -232,6 +233,28 @@ class ServiceAPITest extends APISpec {
     def "Get stats error"() {
         when:
         primaryServiceURL.getStatistics().blockingGet()
+
+        then:
+        thrown(StorageException)
+    }
+
+    def "Get account info"() {
+        when:
+        def response = primaryServiceURL.getAccountInfo().blockingGet()
+
+        then:
+        response.headers().date() != null
+        response.headers().version() != null
+        response.headers().requestId() != null
+        response.headers().accountKind() != null
+        response.headers().skuName() != null
+    }
+
+    def "Get account info error"() {
+        when:
+        ServiceURL serviceURL = new ServiceURL(primaryServiceURL.toURL(),
+                StorageURL.createPipeline(new AnonymousCredentials(), new PipelineOptions()))
+        serviceURL.getAccountInfo().blockingGet()
 
         then:
         thrown(StorageException)

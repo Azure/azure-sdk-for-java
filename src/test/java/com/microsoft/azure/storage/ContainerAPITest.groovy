@@ -15,6 +15,7 @@
 
 package com.microsoft.azure.storage
 
+import com.microsoft.azure.storage.blob.AnonymousCredentials
 import com.microsoft.azure.storage.blob.AppendBlobURL
 import com.microsoft.azure.storage.blob.BlobURL
 import com.microsoft.azure.storage.blob.BlobListingDetails
@@ -27,6 +28,7 @@ import com.microsoft.azure.storage.blob.ListBlobsOptions
 import com.microsoft.azure.storage.blob.Metadata
 import com.microsoft.azure.storage.blob.PageBlobURL
 import com.microsoft.azure.storage.blob.PipelineOptions
+import com.microsoft.azure.storage.blob.ServiceURL
 import com.microsoft.azure.storage.blob.StorageException
 import com.microsoft.azure.storage.blob.StorageURL
 import com.microsoft.azure.storage.blob.models.AccessPolicy
@@ -1487,5 +1489,27 @@ class ContainerAPITest extends APISpec {
         then:
         def e = thrown(Exception)
         e.getMessage().contains("Expected error")
+    }
+
+    def "Get account info"() {
+        when:
+        def response = primaryServiceURL.getAccountInfo().blockingGet()
+
+        then:
+        response.headers().date() != null
+        response.headers().version() != null
+        response.headers().requestId() != null
+        response.headers().accountKind() != null
+        response.headers().skuName() != null
+    }
+
+    def "Get account info error"() {
+        when:
+        ServiceURL serviceURL = new ServiceURL(primaryServiceURL.toURL(),
+                StorageURL.createPipeline(new AnonymousCredentials(), new PipelineOptions()))
+        serviceURL.createContainerURL(generateContainerName()).getAccountInfo().blockingGet()
+
+        then:
+        thrown(StorageException)
     }
 }

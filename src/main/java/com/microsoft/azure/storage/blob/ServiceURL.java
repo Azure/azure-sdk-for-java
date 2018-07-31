@@ -164,4 +164,21 @@ public final class ServiceURL extends StorageURL {
         return addErrorWrappingToSingle(
                 this.storageClient.generatedServices().getStatisticsWithRestResponseAsync(null, null));
     }
+
+    /**
+     * Returns the sku name and account kind for the account. For more information, please see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a>.
+     *
+     * @apiNote
+     * ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=account_info "Sample code for ServiceURL.getAccountInfo")] \n
+     * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     *
+     * @return
+     *      Emits the successful response.
+     */
+    public Single<ServiceGetAccountInfoResponse> getAccountInfo() {
+        return addErrorWrappingToSingle(
+                this.storageClient.generatedServices().getAccountInfoWithRestResponseAsync());
+    }
 }

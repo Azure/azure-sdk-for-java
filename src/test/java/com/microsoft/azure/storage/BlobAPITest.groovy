@@ -16,6 +16,7 @@
 package com.microsoft.azure.storage
 
 import com.google.common.escape.ArrayBasedCharEscaper
+import com.microsoft.azure.storage.blob.AnonymousCredentials
 import com.microsoft.azure.storage.blob.BlobAccessConditions
 import com.microsoft.azure.storage.blob.BlobHTTPHeaders
 import com.microsoft.azure.storage.blob.BlobRange
@@ -27,7 +28,10 @@ import com.microsoft.azure.storage.blob.HTTPAccessConditions
 import com.microsoft.azure.storage.blob.LeaseAccessConditions
 import com.microsoft.azure.storage.blob.Metadata
 import com.microsoft.azure.storage.blob.PageBlobURL
+import com.microsoft.azure.storage.blob.PipelineOptions
+import com.microsoft.azure.storage.blob.ServiceURL
 import com.microsoft.azure.storage.blob.StorageException
+import com.microsoft.azure.storage.blob.StorageURL
 import com.microsoft.azure.storage.blob.models.AccessTier
 import com.microsoft.azure.storage.blob.models.ArchiveStatus
 import com.microsoft.azure.storage.blob.models.BlobSetTierResponse
@@ -1062,6 +1066,29 @@ class BlobAPITest extends APISpec {
 
         when:
         bu.undelete().blockingGet()
+
+        then:
+        thrown(StorageException)
+    }
+
+    def "Get account info"() {
+        when:
+        def response = primaryServiceURL.getAccountInfo().blockingGet()
+
+        then:
+        response.headers().date() != null
+        response.headers().version() != null
+        response.headers().requestId() != null
+        response.headers().accountKind() != null
+        response.headers().skuName() != null
+    }
+
+    def "Get account info error"() {
+        when:
+        ServiceURL serviceURL = new ServiceURL(primaryServiceURL.toURL(),
+                StorageURL.createPipeline(new AnonymousCredentials(), new PipelineOptions()))
+        serviceURL.createContainerURL(generateContainerName()).createBlobURL(generateBlobName())
+                .getAccountInfo().blockingGet()
 
         then:
         thrown(StorageException)

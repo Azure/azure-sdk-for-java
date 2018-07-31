@@ -2188,6 +2188,15 @@ public class Samples {
                         listContainersHelper(serviceURL, listContainersSegmentResponse))
                 .subscribe();
         // </service_list>
+
+        // <account_info>
+        serviceURL.getAccountInfo()
+                .subscribe();
+        containerURL.getAccountInfo()
+                .subscribe();
+        blobURL.getAccountInfo()
+                .subscribe();
+        // </account_info>
     }
 }
 
