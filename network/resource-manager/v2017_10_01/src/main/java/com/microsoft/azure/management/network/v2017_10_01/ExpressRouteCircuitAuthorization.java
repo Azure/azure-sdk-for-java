@@ -74,6 +74,9 @@ public interface ExpressRouteCircuitAuthorization extends HasInner<ExpressRouteC
         interface WithExpressRouteCircuit {
            /**
             * Specifies resourceGroupName, circuitName.
+            * @param resourceGroupName The name of the resource group
+            * @param circuitName The name of the express route circuit
+            * @return the next definition stage
             */
             WithCreate withExistingExpressRouteCircuit(String resourceGroupName, String circuitName);
         }
@@ -84,6 +87,8 @@ public interface ExpressRouteCircuitAuthorization extends HasInner<ExpressRouteC
         interface WithAuthorizationKey {
             /**
              * Specifies authorizationKey.
+             * @param authorizationKey The authorization key
+             * @return the next definition stage
              */
             WithCreate withAuthorizationKey(String authorizationKey);
         }
@@ -94,6 +99,8 @@ public interface ExpressRouteCircuitAuthorization extends HasInner<ExpressRouteC
         interface WithAuthorizationUseStatus {
             /**
              * Specifies authorizationUseStatus.
+             * @param authorizationUseStatus AuthorizationUseStatus. Possible values are: 'Available' and 'InUse'. Possible values include: 'Available', 'InUse'
+             * @return the next definition stage
              */
             WithCreate withAuthorizationUseStatus(AuthorizationUseStatus authorizationUseStatus);
         }
@@ -104,6 +111,8 @@ public interface ExpressRouteCircuitAuthorization extends HasInner<ExpressRouteC
         interface WithId {
             /**
              * Specifies id.
+             * @param id Resource ID
+             * @return the next definition stage
              */
             WithCreate withId(String id);
         }
@@ -114,6 +123,8 @@ public interface ExpressRouteCircuitAuthorization extends HasInner<ExpressRouteC
         interface WithName {
             /**
              * Specifies name.
+             * @param name Gets name of the resource that is unique within a resource group. This name can be used to access the resource
+             * @return the next definition stage
              */
             WithCreate withName(String name);
         }
@@ -124,6 +135,8 @@ public interface ExpressRouteCircuitAuthorization extends HasInner<ExpressRouteC
         interface WithProvisioningState {
             /**
              * Specifies provisioningState.
+             * @param provisioningState Gets the provisioning state of the public IP resource. Possible values are: 'Updating', 'Deleting', and 'Failed'
+             * @return the next definition stage
              */
             WithCreate withProvisioningState(String provisioningState);
         }
@@ -152,6 +165,8 @@ public interface ExpressRouteCircuitAuthorization extends HasInner<ExpressRouteC
         interface WithAuthorizationKey {
             /**
              * Specifies authorizationKey.
+             * @param authorizationKey The authorization key
+             * @return the next update stage
              */
             Update withAuthorizationKey(String authorizationKey);
         }
@@ -162,6 +177,8 @@ public interface ExpressRouteCircuitAuthorization extends HasInner<ExpressRouteC
         interface WithAuthorizationUseStatus {
             /**
              * Specifies authorizationUseStatus.
+             * @param authorizationUseStatus AuthorizationUseStatus. Possible values are: 'Available' and 'InUse'. Possible values include: 'Available', 'InUse'
+             * @return the next update stage
              */
             Update withAuthorizationUseStatus(AuthorizationUseStatus authorizationUseStatus);
         }
@@ -172,6 +189,8 @@ public interface ExpressRouteCircuitAuthorization extends HasInner<ExpressRouteC
         interface WithId {
             /**
              * Specifies id.
+             * @param id Resource ID
+             * @return the next update stage
              */
             Update withId(String id);
         }
@@ -182,6 +201,8 @@ public interface ExpressRouteCircuitAuthorization extends HasInner<ExpressRouteC
         interface WithName {
             /**
              * Specifies name.
+             * @param name Gets name of the resource that is unique within a resource group. This name can be used to access the resource
+             * @return the next update stage
              */
             Update withName(String name);
         }
@@ -192,6 +213,8 @@ public interface ExpressRouteCircuitAuthorization extends HasInner<ExpressRouteC
         interface WithProvisioningState {
             /**
              * Specifies provisioningState.
+             * @param provisioningState Gets the provisioning state of the public IP resource. Possible values are: 'Updating', 'Deleting', and 'Failed'
+             * @return the next update stage
              */
             Update withProvisioningState(String provisioningState);
         }

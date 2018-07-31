@@ -95,6 +95,9 @@ public interface PacketCaptureResult extends HasInner<PacketCaptureResultInner>,
         interface WithNetworkWatcher {
            /**
             * Specifies resourceGroupName, networkWatcherName.
+            * @param resourceGroupName The name of the resource group
+            * @param networkWatcherName The name of the network watcher
+            * @return the next definition stage
             */
             WithStorageLocation withExistingNetworkWatcher(String resourceGroupName, String networkWatcherName);
         }
@@ -105,6 +108,8 @@ public interface PacketCaptureResult extends HasInner<PacketCaptureResultInner>,
         interface WithStorageLocation {
            /**
             * Specifies storageLocation.
+            * @param storageLocation the storageLocation parameter value
+            * @return the next definition stage
             */
             WithTarget withStorageLocation(PacketCaptureStorageLocation storageLocation);
         }
@@ -115,6 +120,8 @@ public interface PacketCaptureResult extends HasInner<PacketCaptureResultInner>,
         interface WithTarget {
            /**
             * Specifies target.
+            * @param target The ID of the targeted resource, only VM is currently supported
+            * @return the next definition stage
             */
             WithCreate withTarget(String target);
         }
@@ -125,6 +132,8 @@ public interface PacketCaptureResult extends HasInner<PacketCaptureResultInner>,
         interface WithBytesToCapturePerPacket {
             /**
              * Specifies bytesToCapturePerPacket.
+             * @param bytesToCapturePerPacket Number of bytes captured per packet, the remaining bytes are truncated
+             * @return the next definition stage
              */
             WithCreate withBytesToCapturePerPacket(Integer bytesToCapturePerPacket);
         }
@@ -135,6 +144,8 @@ public interface PacketCaptureResult extends HasInner<PacketCaptureResultInner>,
         interface WithFilters {
             /**
              * Specifies filters.
+             * @param filters the filters parameter value
+             * @return the next definition stage
              */
             WithCreate withFilters(List<PacketCaptureFilter> filters);
         }
@@ -145,6 +156,8 @@ public interface PacketCaptureResult extends HasInner<PacketCaptureResultInner>,
         interface WithTimeLimitInSeconds {
             /**
              * Specifies timeLimitInSeconds.
+             * @param timeLimitInSeconds Maximum duration of the capture session in seconds
+             * @return the next definition stage
              */
             WithCreate withTimeLimitInSeconds(Integer timeLimitInSeconds);
         }
@@ -155,6 +168,8 @@ public interface PacketCaptureResult extends HasInner<PacketCaptureResultInner>,
         interface WithTotalBytesPerSession {
             /**
              * Specifies totalBytesPerSession.
+             * @param totalBytesPerSession Maximum size of the capture output
+             * @return the next definition stage
              */
             WithCreate withTotalBytesPerSession(Integer totalBytesPerSession);
         }
@@ -183,6 +198,8 @@ public interface PacketCaptureResult extends HasInner<PacketCaptureResultInner>,
         interface WithBytesToCapturePerPacket {
             /**
              * Specifies bytesToCapturePerPacket.
+             * @param bytesToCapturePerPacket Number of bytes captured per packet, the remaining bytes are truncated
+             * @return the next update stage
              */
             Update withBytesToCapturePerPacket(Integer bytesToCapturePerPacket);
         }
@@ -193,6 +210,8 @@ public interface PacketCaptureResult extends HasInner<PacketCaptureResultInner>,
         interface WithFilters {
             /**
              * Specifies filters.
+             * @param filters the filters parameter value
+             * @return the next update stage
              */
             Update withFilters(List<PacketCaptureFilter> filters);
         }
@@ -203,6 +222,8 @@ public interface PacketCaptureResult extends HasInner<PacketCaptureResultInner>,
         interface WithTimeLimitInSeconds {
             /**
              * Specifies timeLimitInSeconds.
+             * @param timeLimitInSeconds Maximum duration of the capture session in seconds
+             * @return the next update stage
              */
             Update withTimeLimitInSeconds(Integer timeLimitInSeconds);
         }
@@ -213,6 +234,8 @@ public interface PacketCaptureResult extends HasInner<PacketCaptureResultInner>,
         interface WithTotalBytesPerSession {
             /**
              * Specifies totalBytesPerSession.
+             * @param totalBytesPerSession Maximum size of the capture output
+             * @return the next update stage
              */
             Update withTotalBytesPerSession(Integer totalBytesPerSession);
         }

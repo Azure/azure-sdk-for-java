@@ -111,6 +111,9 @@ public interface ConnectionMonitorResult extends HasInner<ConnectionMonitorResul
         interface WithNetworkWatcher {
            /**
             * Specifies resourceGroupName, networkWatcherName.
+            * @param resourceGroupName The name of the resource group containing Network Watcher
+            * @param networkWatcherName The name of the Network Watcher resource
+            * @return the next definition stage
             */
             WithDestination withExistingNetworkWatcher(String resourceGroupName, String networkWatcherName);
         }
@@ -121,6 +124,8 @@ public interface ConnectionMonitorResult extends HasInner<ConnectionMonitorResul
         interface WithDestination {
            /**
             * Specifies destination.
+            * @param destination the destination parameter value
+            * @return the next definition stage
             */
             WithSource withDestination(ConnectionMonitorDestination destination);
         }
@@ -131,6 +136,8 @@ public interface ConnectionMonitorResult extends HasInner<ConnectionMonitorResul
         interface WithSource {
            /**
             * Specifies source.
+            * @param source the source parameter value
+            * @return the next definition stage
             */
             WithCreate withSource(ConnectionMonitorSource source);
         }
@@ -141,6 +148,8 @@ public interface ConnectionMonitorResult extends HasInner<ConnectionMonitorResul
         interface WithAutoStart {
             /**
              * Specifies autoStart.
+             * @param autoStart Determines if the connection monitor will start automatically once created
+             * @return the next definition stage
              */
             WithCreate withAutoStart(Boolean autoStart);
         }
@@ -151,6 +160,8 @@ public interface ConnectionMonitorResult extends HasInner<ConnectionMonitorResul
         interface WithLocation {
             /**
              * Specifies location.
+             * @param location Connection monitor location
+             * @return the next definition stage
              */
             WithCreate withLocation(String location);
         }
@@ -161,6 +172,8 @@ public interface ConnectionMonitorResult extends HasInner<ConnectionMonitorResul
         interface WithMonitoringIntervalInSeconds {
             /**
              * Specifies monitoringIntervalInSeconds.
+             * @param monitoringIntervalInSeconds Monitoring interval in seconds
+             * @return the next definition stage
              */
             WithCreate withMonitoringIntervalInSeconds(Integer monitoringIntervalInSeconds);
         }
@@ -171,6 +184,8 @@ public interface ConnectionMonitorResult extends HasInner<ConnectionMonitorResul
         interface WithTags {
             /**
              * Specifies tags.
+             * @param tags Connection monitor tags
+             * @return the next definition stage
              */
             WithCreate withTags(Map<String, String> tags);
         }
@@ -199,6 +214,8 @@ public interface ConnectionMonitorResult extends HasInner<ConnectionMonitorResul
         interface WithAutoStart {
             /**
              * Specifies autoStart.
+             * @param autoStart Determines if the connection monitor will start automatically once created
+             * @return the next update stage
              */
             Update withAutoStart(Boolean autoStart);
         }
@@ -209,6 +226,8 @@ public interface ConnectionMonitorResult extends HasInner<ConnectionMonitorResul
         interface WithLocation {
             /**
              * Specifies location.
+             * @param location Connection monitor location
+             * @return the next update stage
              */
             Update withLocation(String location);
         }
@@ -219,6 +238,8 @@ public interface ConnectionMonitorResult extends HasInner<ConnectionMonitorResul
         interface WithMonitoringIntervalInSeconds {
             /**
              * Specifies monitoringIntervalInSeconds.
+             * @param monitoringIntervalInSeconds Monitoring interval in seconds
+             * @return the next update stage
              */
             Update withMonitoringIntervalInSeconds(Integer monitoringIntervalInSeconds);
         }
@@ -229,6 +250,8 @@ public interface ConnectionMonitorResult extends HasInner<ConnectionMonitorResul
         interface WithTags {
             /**
              * Specifies tags.
+             * @param tags Connection monitor tags
+             * @return the next update stage
              */
             Update withTags(Map<String, String> tags);
         }

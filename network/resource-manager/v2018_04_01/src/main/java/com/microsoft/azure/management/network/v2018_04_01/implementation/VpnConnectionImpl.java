@@ -76,8 +76,8 @@ class VpnConnectionImpl extends CreatableUpdatableImpl<VpnConnection, VpnConnect
 
 
     @Override
-    public Integer connectionBandwidthInMbps() {
-        return this.inner().connectionBandwidthInMbps();
+    public Integer connectionBandwidth() {
+        return this.inner().connectionBandwidth();
     }
 
     @Override

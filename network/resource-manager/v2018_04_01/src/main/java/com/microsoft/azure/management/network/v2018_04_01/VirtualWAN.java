@@ -74,21 +74,25 @@ public interface VirtualWAN extends HasInner<VirtualWANInner>, Resource, Groupab
         }
 
         /**
-         * The stage of the virtualwan update allowing to specify DisableVpnEncryption.
+         * The stage of the virtualwan definition allowing to specify DisableVpnEncryption.
          */
         interface WithDisableVpnEncryption {
             /**
              * Specifies disableVpnEncryption.
+             * @param disableVpnEncryption Vpn encryption to be disabled or not
+             * @return the next definition stage
              */
             WithCreate withDisableVpnEncryption(Boolean disableVpnEncryption);
         }
 
         /**
-         * The stage of the virtualwan update allowing to specify ProvisioningState.
+         * The stage of the virtualwan definition allowing to specify ProvisioningState.
          */
         interface WithProvisioningState {
             /**
              * Specifies provisioningState.
+             * @param provisioningState The provisioning state of the resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+             * @return the next definition stage
              */
             WithCreate withProvisioningState(ProvisioningState provisioningState);
         }
@@ -112,21 +116,25 @@ public interface VirtualWAN extends HasInner<VirtualWANInner>, Resource, Groupab
      */
     interface UpdateStages {
         /**
-         * The stage of the virtualwan {0} allowing to specify DisableVpnEncryption.
+         * The stage of the virtualwan update allowing to specify DisableVpnEncryption.
          */
         interface WithDisableVpnEncryption {
             /**
              * Specifies disableVpnEncryption.
+             * @param disableVpnEncryption Vpn encryption to be disabled or not
+             * @return the next update stage
              */
             Update withDisableVpnEncryption(Boolean disableVpnEncryption);
         }
 
         /**
-         * The stage of the virtualwan {0} allowing to specify ProvisioningState.
+         * The stage of the virtualwan update allowing to specify ProvisioningState.
          */
         interface WithProvisioningState {
             /**
              * Specifies provisioningState.
+             * @param provisioningState The provisioning state of the resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+             * @return the next update stage
              */
             Update withProvisioningState(ProvisioningState provisioningState);
         }
