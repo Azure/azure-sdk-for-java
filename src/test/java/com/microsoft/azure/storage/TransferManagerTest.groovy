@@ -1,37 +1,17 @@
 package com.microsoft.azure.storage
 
-import com.microsoft.azure.storage.blob.BlobAccessConditions
-import com.microsoft.azure.storage.blob.BlobHTTPHeaders
-import com.microsoft.azure.storage.blob.BlobRange
-import com.microsoft.azure.storage.blob.BlockBlobURL
-import com.microsoft.azure.storage.blob.CommonRestResponse
-import com.microsoft.azure.storage.blob.ContainerURL
-import com.microsoft.azure.storage.blob.HTTPAccessConditions
-import com.microsoft.azure.storage.blob.LeaseAccessConditions
-import com.microsoft.azure.storage.blob.Metadata
-import com.microsoft.azure.storage.blob.PipelineOptions
-import com.microsoft.azure.storage.blob.RequestRetryOptions
-import com.microsoft.azure.storage.blob.RetryReaderOptions
-import com.microsoft.azure.storage.blob.ServiceURL
-import com.microsoft.azure.storage.blob.StorageException
-import com.microsoft.azure.storage.blob.StorageURL
-import com.microsoft.azure.storage.blob.TransferManager
+import com.microsoft.azure.storage.blob.*
 import com.microsoft.azure.storage.blob.models.BlobGetPropertiesResponse
 import com.microsoft.azure.storage.blob.models.BlockBlobCommitBlockListResponse
 import com.microsoft.azure.storage.blob.models.BlockBlobUploadResponse
 import com.microsoft.azure.storage.blob.models.StorageErrorCode
-import com.microsoft.rest.v2.http.HttpPipeline
 import com.microsoft.rest.v2.util.FlowableUtil
 import io.reactivex.Flowable
-import io.reactivex.Observable
-import io.reactivex.ObservableSource
-import io.reactivex.annotations.NonNull
-import io.reactivex.functions.Function
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
-import java.nio.ReadOnlyBufferException
 import java.nio.channels.FileChannel
+import java.nio.file.StandardOpenOption
 import java.security.MessageDigest
 
 class TransferManagerTest extends APISpec {
@@ -788,8 +768,53 @@ class TransferManagerTest extends APISpec {
         t.getMessage().contains("remaining size")
     }
 
+    @Unroll
     def "Download file"() {
+        setup:
+        FileChannel channel = FileChannel.open(file.toPath(), StandardOpenOption.READ, StandardOpenOption.WRITE)
+        TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null)
+                .blockingGet()
+        FileChannel outChannel = FileChannel.open(getRandomFile(0).toPath(), StandardOpenOption.WRITE,
+                StandardOpenOption.READ)
 
+        when:
+        TransferManager.downloadBlobToFile(bu, null, outChannel, null).blockingGet()
+        outChannel.position(0)
+
+        then:
+        compareFiles(channel, outChannel)
+        channel.close() == null
+        outChannel.close() == null
+
+        where:
+        file                                  | _
+        getRandomFile(20)                     | _
+        getRandomFile(16 * 1024 * 1024)       | _
+        getRandomFile(8 * 1026 * 1024 + 10)   | _
+        getRandomFile(5 * 1024 * 1024 * 1024) | _
+    }
+
+    def compareFiles(FileChannel channel1, FileChannel channel2) {
+        ByteBuffer buf1 = ByteBuffer.allocate(8*1024*1024)
+        ByteBuffer buf2 = ByteBuffer.allocate(8*1024*1024)
+
+        long read1 = 0
+        long read2 = 0
+        while (read1 != -1 && read2 -1) {
+            read1 = channel1.read(buf1)
+            read2 = channel2.read(buf2)
+            if (buf1.compareTo(buf2) != 0) {
+                return false
+            }
+            if (read1 != read2) {
+                return false
+            }
+            // Reset the positions so we can fill up the buffer again.
+            // There will be some left over at the end on the last read, but it should still match.
+            buf1.position(0)
+            buf2.position(0)
+        }
+        return true
     }
 
     def "Download options fail"() {
