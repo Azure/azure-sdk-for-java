@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A combination of user defined name and user specified data for the person,
- * personGroup, and faceList.
+ * largePersonGroup/personGroup, and largeFaceList/faceList.
  */
 public class NameAndUserDataContract {
     /**

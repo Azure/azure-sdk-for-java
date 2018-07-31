@@ -9,12 +9,12 @@
 package com.microsoft.azure.cognitiveservices.vision.faceapi.implementation;
 
 import retrofit2.Retrofit;
-import com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroups;
+import com.microsoft.azure.cognitiveservices.vision.faceapi.LargePersonGroups;
 import com.google.common.base.Joiner;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.APIErrorException;
+import com.microsoft.azure.cognitiveservices.vision.faceapi.models.LargePersonGroup;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.NameAndUserDataContract;
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.PersonGroup;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.TrainingStatus;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
@@ -38,93 +38,93 @@ import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
- * in PersonGroups.
+ * in LargePersonGroups.
  */
-public class PersonGroupsImpl implements PersonGroups {
+public class LargePersonGroupsImpl implements LargePersonGroups {
     /** The Retrofit service to perform REST calls. */
-    private PersonGroupsService service;
+    private LargePersonGroupsService service;
     /** The service client containing this operation class. */
     private FaceClientImpl client;
 
     /**
-     * Initializes an instance of PersonGroupsImpl.
+     * Initializes an instance of LargePersonGroupsImpl.
      *
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public PersonGroupsImpl(Retrofit retrofit, FaceClientImpl client) {
-        this.service = retrofit.create(PersonGroupsService.class);
+    public LargePersonGroupsImpl(Retrofit retrofit, FaceClientImpl client) {
+        this.service = retrofit.create(LargePersonGroupsService.class);
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for PersonGroups to be
+     * The interface defining all the services for LargePersonGroups to be
      * used by Retrofit to perform actually REST calls.
      */
-    interface PersonGroupsService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroups create" })
-        @PUT("persongroups/{personGroupId}")
-        Observable<Response<ResponseBody>> create(@Path("personGroupId") String personGroupId, @Header("accept-language") String acceptLanguage, @Body NameAndUserDataContract body, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+    interface LargePersonGroupsService {
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.LargePersonGroups create" })
+        @PUT("largepersongroups/{largePersonGroupId}")
+        Observable<Response<ResponseBody>> create(@Path("largePersonGroupId") String largePersonGroupId, @Header("accept-language") String acceptLanguage, @Body NameAndUserDataContract body, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroups delete" })
-        @HTTP(path = "persongroups/{personGroupId}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> delete(@Path("personGroupId") String personGroupId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.LargePersonGroups delete" })
+        @HTTP(path = "largepersongroups/{largePersonGroupId}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> delete(@Path("largePersonGroupId") String largePersonGroupId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroups get" })
-        @GET("persongroups/{personGroupId}")
-        Observable<Response<ResponseBody>> get(@Path("personGroupId") String personGroupId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.LargePersonGroups get" })
+        @GET("largepersongroups/{largePersonGroupId}")
+        Observable<Response<ResponseBody>> get(@Path("largePersonGroupId") String largePersonGroupId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroups update" })
-        @PATCH("persongroups/{personGroupId}")
-        Observable<Response<ResponseBody>> update(@Path("personGroupId") String personGroupId, @Header("accept-language") String acceptLanguage, @Body NameAndUserDataContract body, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.LargePersonGroups update" })
+        @PATCH("largepersongroups/{largePersonGroupId}")
+        Observable<Response<ResponseBody>> update(@Path("largePersonGroupId") String largePersonGroupId, @Header("accept-language") String acceptLanguage, @Body NameAndUserDataContract body, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroups getTrainingStatus" })
-        @GET("persongroups/{personGroupId}/training")
-        Observable<Response<ResponseBody>> getTrainingStatus(@Path("personGroupId") String personGroupId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.LargePersonGroups getTrainingStatus" })
+        @GET("largepersongroups/{largePersonGroupId}/training")
+        Observable<Response<ResponseBody>> getTrainingStatus(@Path("largePersonGroupId") String largePersonGroupId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroups list" })
-        @GET("persongroups")
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.LargePersonGroups list" })
+        @GET("largepersongroups")
         Observable<Response<ResponseBody>> list(@Query("start") String start, @Query("top") Integer top, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroups train" })
-        @POST("persongroups/{personGroupId}/train")
-        Observable<Response<ResponseBody>> train(@Path("personGroupId") String personGroupId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.LargePersonGroups train" })
+        @POST("largepersongroups/{largePersonGroupId}/train")
+        Observable<Response<ResponseBody>> train(@Path("largePersonGroupId") String largePersonGroupId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
     }
 
     /**
-     * Create a new person group with specified personGroupId, name and user-provided userData.
+     * Create a new large person group with specified largePersonGroupId, name and user-provided userData.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void create(String personGroupId) {
-        createWithServiceResponseAsync(personGroupId).toBlocking().single().body();
+    public void create(String largePersonGroupId) {
+        createWithServiceResponseAsync(largePersonGroupId).toBlocking().single().body();
     }
 
     /**
-     * Create a new person group with specified personGroupId, name and user-provided userData.
+     * Create a new large person group with specified largePersonGroupId, name and user-provided userData.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> createAsync(String personGroupId, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(createWithServiceResponseAsync(personGroupId), serviceCallback);
+    public ServiceFuture<Void> createAsync(String largePersonGroupId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(createWithServiceResponseAsync(largePersonGroupId), serviceCallback);
     }
 
     /**
-     * Create a new person group with specified personGroupId, name and user-provided userData.
+     * Create a new large person group with specified largePersonGroupId, name and user-provided userData.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> createAsync(String personGroupId) {
-        return createWithServiceResponseAsync(personGroupId).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Void> createAsync(String largePersonGroupId) {
+        return createWithServiceResponseAsync(largePersonGroupId).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
                 return response.body();
@@ -133,18 +133,18 @@ public class PersonGroupsImpl implements PersonGroups {
     }
 
     /**
-     * Create a new person group with specified personGroupId, name and user-provided userData.
+     * Create a new large person group with specified largePersonGroupId, name and user-provided userData.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> createWithServiceResponseAsync(String personGroupId) {
+    public Observable<ServiceResponse<Void>> createWithServiceResponseAsync(String largePersonGroupId) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
-        if (personGroupId == null) {
-            throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
+        if (largePersonGroupId == null) {
+            throw new IllegalArgumentException("Parameter largePersonGroupId is required and cannot be null.");
         }
         final String name = null;
         final String userData = null;
@@ -152,7 +152,7 @@ public class PersonGroupsImpl implements PersonGroups {
         body.withName(null);
         body.withUserData(null);
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.create(personGroupId, this.client.acceptLanguage(), body, parameterizedHost, this.client.userAgent())
+        return service.create(largePersonGroupId, this.client.acceptLanguage(), body, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -167,44 +167,44 @@ public class PersonGroupsImpl implements PersonGroups {
     }
 
     /**
-     * Create a new person group with specified personGroupId, name and user-provided userData.
+     * Create a new large person group with specified largePersonGroupId, name and user-provided userData.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param name User defined name, maximum length is 128.
      * @param userData User specified data. Length should not exceed 16KB.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void create(String personGroupId, String name, String userData) {
-        createWithServiceResponseAsync(personGroupId, name, userData).toBlocking().single().body();
+    public void create(String largePersonGroupId, String name, String userData) {
+        createWithServiceResponseAsync(largePersonGroupId, name, userData).toBlocking().single().body();
     }
 
     /**
-     * Create a new person group with specified personGroupId, name and user-provided userData.
+     * Create a new large person group with specified largePersonGroupId, name and user-provided userData.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param name User defined name, maximum length is 128.
      * @param userData User specified data. Length should not exceed 16KB.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> createAsync(String personGroupId, String name, String userData, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(createWithServiceResponseAsync(personGroupId, name, userData), serviceCallback);
+    public ServiceFuture<Void> createAsync(String largePersonGroupId, String name, String userData, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(createWithServiceResponseAsync(largePersonGroupId, name, userData), serviceCallback);
     }
 
     /**
-     * Create a new person group with specified personGroupId, name and user-provided userData.
+     * Create a new large person group with specified largePersonGroupId, name and user-provided userData.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param name User defined name, maximum length is 128.
      * @param userData User specified data. Length should not exceed 16KB.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> createAsync(String personGroupId, String name, String userData) {
-        return createWithServiceResponseAsync(personGroupId, name, userData).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Void> createAsync(String largePersonGroupId, String name, String userData) {
+        return createWithServiceResponseAsync(largePersonGroupId, name, userData).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
                 return response.body();
@@ -213,26 +213,26 @@ public class PersonGroupsImpl implements PersonGroups {
     }
 
     /**
-     * Create a new person group with specified personGroupId, name and user-provided userData.
+     * Create a new large person group with specified largePersonGroupId, name and user-provided userData.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param name User defined name, maximum length is 128.
      * @param userData User specified data. Length should not exceed 16KB.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> createWithServiceResponseAsync(String personGroupId, String name, String userData) {
+    public Observable<ServiceResponse<Void>> createWithServiceResponseAsync(String largePersonGroupId, String name, String userData) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
-        if (personGroupId == null) {
-            throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
+        if (largePersonGroupId == null) {
+            throw new IllegalArgumentException("Parameter largePersonGroupId is required and cannot be null.");
         }
         NameAndUserDataContract body = new NameAndUserDataContract();
         body.withName(name);
         body.withUserData(userData);
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.create(personGroupId, this.client.acceptLanguage(), body, parameterizedHost, this.client.userAgent())
+        return service.create(largePersonGroupId, this.client.acceptLanguage(), body, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -254,38 +254,38 @@ public class PersonGroupsImpl implements PersonGroups {
     }
 
     /**
-     * Delete an existing person group. Persisted face features of all people in the person group will also be deleted.
+     * Delete an existing large person group. Persisted face features of all people in the large person group will also be deleted.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void delete(String personGroupId) {
-        deleteWithServiceResponseAsync(personGroupId).toBlocking().single().body();
+    public void delete(String largePersonGroupId) {
+        deleteWithServiceResponseAsync(largePersonGroupId).toBlocking().single().body();
     }
 
     /**
-     * Delete an existing person group. Persisted face features of all people in the person group will also be deleted.
+     * Delete an existing large person group. Persisted face features of all people in the large person group will also be deleted.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> deleteAsync(String personGroupId, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(personGroupId), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String largePersonGroupId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(largePersonGroupId), serviceCallback);
     }
 
     /**
-     * Delete an existing person group. Persisted face features of all people in the person group will also be deleted.
+     * Delete an existing large person group. Persisted face features of all people in the large person group will also be deleted.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> deleteAsync(String personGroupId) {
-        return deleteWithServiceResponseAsync(personGroupId).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Void> deleteAsync(String largePersonGroupId) {
+        return deleteWithServiceResponseAsync(largePersonGroupId).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
                 return response.body();
@@ -294,21 +294,21 @@ public class PersonGroupsImpl implements PersonGroups {
     }
 
     /**
-     * Delete an existing person group. Persisted face features of all people in the person group will also be deleted.
+     * Delete an existing large person group. Persisted face features of all people in the large person group will also be deleted.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String personGroupId) {
+    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String largePersonGroupId) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
-        if (personGroupId == null) {
-            throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
+        if (largePersonGroupId == null) {
+            throw new IllegalArgumentException("Parameter largePersonGroupId is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.delete(personGroupId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.delete(largePersonGroupId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -330,67 +330,67 @@ public class PersonGroupsImpl implements PersonGroups {
     }
 
     /**
-     * Retrieve the information of a person group, including its name and userData.
+     * Retrieve the information of a large person group, including its name and userData.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PersonGroup object if successful.
+     * @return the LargePersonGroup object if successful.
      */
-    public PersonGroup get(String personGroupId) {
-        return getWithServiceResponseAsync(personGroupId).toBlocking().single().body();
+    public LargePersonGroup get(String largePersonGroupId) {
+        return getWithServiceResponseAsync(largePersonGroupId).toBlocking().single().body();
     }
 
     /**
-     * Retrieve the information of a person group, including its name and userData.
+     * Retrieve the information of a large person group, including its name and userData.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<PersonGroup> getAsync(String personGroupId, final ServiceCallback<PersonGroup> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(personGroupId), serviceCallback);
+    public ServiceFuture<LargePersonGroup> getAsync(String largePersonGroupId, final ServiceCallback<LargePersonGroup> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(largePersonGroupId), serviceCallback);
     }
 
     /**
-     * Retrieve the information of a person group, including its name and userData.
+     * Retrieve the information of a large person group, including its name and userData.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PersonGroup object
+     * @return the observable to the LargePersonGroup object
      */
-    public Observable<PersonGroup> getAsync(String personGroupId) {
-        return getWithServiceResponseAsync(personGroupId).map(new Func1<ServiceResponse<PersonGroup>, PersonGroup>() {
+    public Observable<LargePersonGroup> getAsync(String largePersonGroupId) {
+        return getWithServiceResponseAsync(largePersonGroupId).map(new Func1<ServiceResponse<LargePersonGroup>, LargePersonGroup>() {
             @Override
-            public PersonGroup call(ServiceResponse<PersonGroup> response) {
+            public LargePersonGroup call(ServiceResponse<LargePersonGroup> response) {
                 return response.body();
             }
         });
     }
 
     /**
-     * Retrieve the information of a person group, including its name and userData.
+     * Retrieve the information of a large person group, including its name and userData.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PersonGroup object
+     * @return the observable to the LargePersonGroup object
      */
-    public Observable<ServiceResponse<PersonGroup>> getWithServiceResponseAsync(String personGroupId) {
+    public Observable<ServiceResponse<LargePersonGroup>> getWithServiceResponseAsync(String largePersonGroupId) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
-        if (personGroupId == null) {
-            throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
+        if (largePersonGroupId == null) {
+            throw new IllegalArgumentException("Parameter largePersonGroupId is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.get(personGroupId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PersonGroup>>>() {
+        return service.get(largePersonGroupId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<LargePersonGroup>>>() {
                 @Override
-                public Observable<ServiceResponse<PersonGroup>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<LargePersonGroup>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PersonGroup> clientResponse = getDelegate(response);
+                        ServiceResponse<LargePersonGroup> clientResponse = getDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -399,46 +399,46 @@ public class PersonGroupsImpl implements PersonGroups {
             });
     }
 
-    private ServiceResponse<PersonGroup> getDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PersonGroup, APIErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PersonGroup>() { }.getType())
+    private ServiceResponse<LargePersonGroup> getDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<LargePersonGroup, APIErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<LargePersonGroup>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
     }
 
     /**
-     * Update an existing person group's display name and userData. The properties which does not appear in request body will not be updated.
+     * Update an existing large person group's display name and userData. The properties which does not appear in request body will not be updated.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void update(String personGroupId) {
-        updateWithServiceResponseAsync(personGroupId).toBlocking().single().body();
+    public void update(String largePersonGroupId) {
+        updateWithServiceResponseAsync(largePersonGroupId).toBlocking().single().body();
     }
 
     /**
-     * Update an existing person group's display name and userData. The properties which does not appear in request body will not be updated.
+     * Update an existing large person group's display name and userData. The properties which does not appear in request body will not be updated.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> updateAsync(String personGroupId, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(personGroupId), serviceCallback);
+    public ServiceFuture<Void> updateAsync(String largePersonGroupId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(largePersonGroupId), serviceCallback);
     }
 
     /**
-     * Update an existing person group's display name and userData. The properties which does not appear in request body will not be updated.
+     * Update an existing large person group's display name and userData. The properties which does not appear in request body will not be updated.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> updateAsync(String personGroupId) {
-        return updateWithServiceResponseAsync(personGroupId).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Void> updateAsync(String largePersonGroupId) {
+        return updateWithServiceResponseAsync(largePersonGroupId).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
                 return response.body();
@@ -447,18 +447,18 @@ public class PersonGroupsImpl implements PersonGroups {
     }
 
     /**
-     * Update an existing person group's display name and userData. The properties which does not appear in request body will not be updated.
+     * Update an existing large person group's display name and userData. The properties which does not appear in request body will not be updated.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> updateWithServiceResponseAsync(String personGroupId) {
+    public Observable<ServiceResponse<Void>> updateWithServiceResponseAsync(String largePersonGroupId) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
-        if (personGroupId == null) {
-            throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
+        if (largePersonGroupId == null) {
+            throw new IllegalArgumentException("Parameter largePersonGroupId is required and cannot be null.");
         }
         final String name = null;
         final String userData = null;
@@ -466,7 +466,7 @@ public class PersonGroupsImpl implements PersonGroups {
         body.withName(null);
         body.withUserData(null);
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.update(personGroupId, this.client.acceptLanguage(), body, parameterizedHost, this.client.userAgent())
+        return service.update(largePersonGroupId, this.client.acceptLanguage(), body, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -481,44 +481,44 @@ public class PersonGroupsImpl implements PersonGroups {
     }
 
     /**
-     * Update an existing person group's display name and userData. The properties which does not appear in request body will not be updated.
+     * Update an existing large person group's display name and userData. The properties which does not appear in request body will not be updated.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param name User defined name, maximum length is 128.
      * @param userData User specified data. Length should not exceed 16KB.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void update(String personGroupId, String name, String userData) {
-        updateWithServiceResponseAsync(personGroupId, name, userData).toBlocking().single().body();
+    public void update(String largePersonGroupId, String name, String userData) {
+        updateWithServiceResponseAsync(largePersonGroupId, name, userData).toBlocking().single().body();
     }
 
     /**
-     * Update an existing person group's display name and userData. The properties which does not appear in request body will not be updated.
+     * Update an existing large person group's display name and userData. The properties which does not appear in request body will not be updated.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param name User defined name, maximum length is 128.
      * @param userData User specified data. Length should not exceed 16KB.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> updateAsync(String personGroupId, String name, String userData, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(personGroupId, name, userData), serviceCallback);
+    public ServiceFuture<Void> updateAsync(String largePersonGroupId, String name, String userData, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(largePersonGroupId, name, userData), serviceCallback);
     }
 
     /**
-     * Update an existing person group's display name and userData. The properties which does not appear in request body will not be updated.
+     * Update an existing large person group's display name and userData. The properties which does not appear in request body will not be updated.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param name User defined name, maximum length is 128.
      * @param userData User specified data. Length should not exceed 16KB.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> updateAsync(String personGroupId, String name, String userData) {
-        return updateWithServiceResponseAsync(personGroupId, name, userData).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Void> updateAsync(String largePersonGroupId, String name, String userData) {
+        return updateWithServiceResponseAsync(largePersonGroupId, name, userData).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
                 return response.body();
@@ -527,26 +527,26 @@ public class PersonGroupsImpl implements PersonGroups {
     }
 
     /**
-     * Update an existing person group's display name and userData. The properties which does not appear in request body will not be updated.
+     * Update an existing large person group's display name and userData. The properties which does not appear in request body will not be updated.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param name User defined name, maximum length is 128.
      * @param userData User specified data. Length should not exceed 16KB.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> updateWithServiceResponseAsync(String personGroupId, String name, String userData) {
+    public Observable<ServiceResponse<Void>> updateWithServiceResponseAsync(String largePersonGroupId, String name, String userData) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
-        if (personGroupId == null) {
-            throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
+        if (largePersonGroupId == null) {
+            throw new IllegalArgumentException("Parameter largePersonGroupId is required and cannot be null.");
         }
         NameAndUserDataContract body = new NameAndUserDataContract();
         body.withName(name);
         body.withUserData(userData);
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.update(personGroupId, this.client.acceptLanguage(), body, parameterizedHost, this.client.userAgent())
+        return service.update(largePersonGroupId, this.client.acceptLanguage(), body, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -568,39 +568,39 @@ public class PersonGroupsImpl implements PersonGroups {
     }
 
     /**
-     * Retrieve the training status of a person group (completed or ongoing).
+     * Retrieve the training status of a large person group (completed or ongoing).
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TrainingStatus object if successful.
      */
-    public TrainingStatus getTrainingStatus(String personGroupId) {
-        return getTrainingStatusWithServiceResponseAsync(personGroupId).toBlocking().single().body();
+    public TrainingStatus getTrainingStatus(String largePersonGroupId) {
+        return getTrainingStatusWithServiceResponseAsync(largePersonGroupId).toBlocking().single().body();
     }
 
     /**
-     * Retrieve the training status of a person group (completed or ongoing).
+     * Retrieve the training status of a large person group (completed or ongoing).
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<TrainingStatus> getTrainingStatusAsync(String personGroupId, final ServiceCallback<TrainingStatus> serviceCallback) {
-        return ServiceFuture.fromResponse(getTrainingStatusWithServiceResponseAsync(personGroupId), serviceCallback);
+    public ServiceFuture<TrainingStatus> getTrainingStatusAsync(String largePersonGroupId, final ServiceCallback<TrainingStatus> serviceCallback) {
+        return ServiceFuture.fromResponse(getTrainingStatusWithServiceResponseAsync(largePersonGroupId), serviceCallback);
     }
 
     /**
-     * Retrieve the training status of a person group (completed or ongoing).
+     * Retrieve the training status of a large person group (completed or ongoing).
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TrainingStatus object
      */
-    public Observable<TrainingStatus> getTrainingStatusAsync(String personGroupId) {
-        return getTrainingStatusWithServiceResponseAsync(personGroupId).map(new Func1<ServiceResponse<TrainingStatus>, TrainingStatus>() {
+    public Observable<TrainingStatus> getTrainingStatusAsync(String largePersonGroupId) {
+        return getTrainingStatusWithServiceResponseAsync(largePersonGroupId).map(new Func1<ServiceResponse<TrainingStatus>, TrainingStatus>() {
             @Override
             public TrainingStatus call(ServiceResponse<TrainingStatus> response) {
                 return response.body();
@@ -609,21 +609,21 @@ public class PersonGroupsImpl implements PersonGroups {
     }
 
     /**
-     * Retrieve the training status of a person group (completed or ongoing).
+     * Retrieve the training status of a large person group (completed or ongoing).
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TrainingStatus object
      */
-    public Observable<ServiceResponse<TrainingStatus>> getTrainingStatusWithServiceResponseAsync(String personGroupId) {
+    public Observable<ServiceResponse<TrainingStatus>> getTrainingStatusWithServiceResponseAsync(String largePersonGroupId) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
-        if (personGroupId == null) {
-            throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
+        if (largePersonGroupId == null) {
+            throw new IllegalArgumentException("Parameter largePersonGroupId is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.getTrainingStatus(personGroupId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.getTrainingStatus(largePersonGroupId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TrainingStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<TrainingStatus>> call(Response<ResponseBody> response) {
@@ -645,50 +645,50 @@ public class PersonGroupsImpl implements PersonGroups {
     }
 
     /**
-     * List person groups and their information.
+     * List large person groups and their information.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the List&lt;PersonGroup&gt; object if successful.
+     * @return the List&lt;LargePersonGroup&gt; object if successful.
      */
-    public List<PersonGroup> list() {
+    public List<LargePersonGroup> list() {
         return listWithServiceResponseAsync().toBlocking().single().body();
     }
 
     /**
-     * List person groups and their information.
+     * List large person groups and their information.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<PersonGroup>> listAsync(final ServiceCallback<List<PersonGroup>> serviceCallback) {
+    public ServiceFuture<List<LargePersonGroup>> listAsync(final ServiceCallback<List<LargePersonGroup>> serviceCallback) {
         return ServiceFuture.fromResponse(listWithServiceResponseAsync(), serviceCallback);
     }
 
     /**
-     * List person groups and their information.
+     * List large person groups and their information.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;PersonGroup&gt; object
+     * @return the observable to the List&lt;LargePersonGroup&gt; object
      */
-    public Observable<List<PersonGroup>> listAsync() {
-        return listWithServiceResponseAsync().map(new Func1<ServiceResponse<List<PersonGroup>>, List<PersonGroup>>() {
+    public Observable<List<LargePersonGroup>> listAsync() {
+        return listWithServiceResponseAsync().map(new Func1<ServiceResponse<List<LargePersonGroup>>, List<LargePersonGroup>>() {
             @Override
-            public List<PersonGroup> call(ServiceResponse<List<PersonGroup>> response) {
+            public List<LargePersonGroup> call(ServiceResponse<List<LargePersonGroup>> response) {
                 return response.body();
             }
         });
     }
 
     /**
-     * List person groups and their information.
+     * List large person groups and their information.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;PersonGroup&gt; object
+     * @return the observable to the List&lt;LargePersonGroup&gt; object
      */
-    public Observable<ServiceResponse<List<PersonGroup>>> listWithServiceResponseAsync() {
+    public Observable<ServiceResponse<List<LargePersonGroup>>> listWithServiceResponseAsync() {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -696,11 +696,11 @@ public class PersonGroupsImpl implements PersonGroups {
         final Integer top = null;
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.list(start, top, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<PersonGroup>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<LargePersonGroup>>>>() {
                 @Override
-                public Observable<ServiceResponse<List<PersonGroup>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<List<LargePersonGroup>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<List<PersonGroup>> clientResponse = listDelegate(response);
+                        ServiceResponse<List<LargePersonGroup>> clientResponse = listDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -710,68 +710,68 @@ public class PersonGroupsImpl implements PersonGroups {
     }
 
     /**
-     * List person groups and their information.
+     * List large person groups and their information.
      *
-     * @param start List person groups from the least personGroupId greater than the "start".
-     * @param top The number of person groups to list.
+     * @param start List large person groups from the least largePersonGroupId greater than the "start".
+     * @param top The number of large person groups to list.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the List&lt;PersonGroup&gt; object if successful.
+     * @return the List&lt;LargePersonGroup&gt; object if successful.
      */
-    public List<PersonGroup> list(String start, Integer top) {
+    public List<LargePersonGroup> list(String start, Integer top) {
         return listWithServiceResponseAsync(start, top).toBlocking().single().body();
     }
 
     /**
-     * List person groups and their information.
+     * List large person groups and their information.
      *
-     * @param start List person groups from the least personGroupId greater than the "start".
-     * @param top The number of person groups to list.
+     * @param start List large person groups from the least largePersonGroupId greater than the "start".
+     * @param top The number of large person groups to list.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<PersonGroup>> listAsync(String start, Integer top, final ServiceCallback<List<PersonGroup>> serviceCallback) {
+    public ServiceFuture<List<LargePersonGroup>> listAsync(String start, Integer top, final ServiceCallback<List<LargePersonGroup>> serviceCallback) {
         return ServiceFuture.fromResponse(listWithServiceResponseAsync(start, top), serviceCallback);
     }
 
     /**
-     * List person groups and their information.
+     * List large person groups and their information.
      *
-     * @param start List person groups from the least personGroupId greater than the "start".
-     * @param top The number of person groups to list.
+     * @param start List large person groups from the least largePersonGroupId greater than the "start".
+     * @param top The number of large person groups to list.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;PersonGroup&gt; object
+     * @return the observable to the List&lt;LargePersonGroup&gt; object
      */
-    public Observable<List<PersonGroup>> listAsync(String start, Integer top) {
-        return listWithServiceResponseAsync(start, top).map(new Func1<ServiceResponse<List<PersonGroup>>, List<PersonGroup>>() {
+    public Observable<List<LargePersonGroup>> listAsync(String start, Integer top) {
+        return listWithServiceResponseAsync(start, top).map(new Func1<ServiceResponse<List<LargePersonGroup>>, List<LargePersonGroup>>() {
             @Override
-            public List<PersonGroup> call(ServiceResponse<List<PersonGroup>> response) {
+            public List<LargePersonGroup> call(ServiceResponse<List<LargePersonGroup>> response) {
                 return response.body();
             }
         });
     }
 
     /**
-     * List person groups and their information.
+     * List large person groups and their information.
      *
-     * @param start List person groups from the least personGroupId greater than the "start".
-     * @param top The number of person groups to list.
+     * @param start List large person groups from the least largePersonGroupId greater than the "start".
+     * @param top The number of large person groups to list.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;PersonGroup&gt; object
+     * @return the observable to the List&lt;LargePersonGroup&gt; object
      */
-    public Observable<ServiceResponse<List<PersonGroup>>> listWithServiceResponseAsync(String start, Integer top) {
+    public Observable<ServiceResponse<List<LargePersonGroup>>> listWithServiceResponseAsync(String start, Integer top) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.list(start, top, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<PersonGroup>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<LargePersonGroup>>>>() {
                 @Override
-                public Observable<ServiceResponse<List<PersonGroup>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<List<LargePersonGroup>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<List<PersonGroup>> clientResponse = listDelegate(response);
+                        ServiceResponse<List<LargePersonGroup>> clientResponse = listDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -780,46 +780,46 @@ public class PersonGroupsImpl implements PersonGroups {
             });
     }
 
-    private ServiceResponse<List<PersonGroup>> listDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<List<PersonGroup>, APIErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<List<PersonGroup>>() { }.getType())
+    private ServiceResponse<List<LargePersonGroup>> listDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<List<LargePersonGroup>, APIErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<List<LargePersonGroup>>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
     }
 
     /**
-     * Queue a person group training task, the training task may not be started immediately.
+     * Queue a large person group training task, the training task may not be started immediately.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void train(String personGroupId) {
-        trainWithServiceResponseAsync(personGroupId).toBlocking().single().body();
+    public void train(String largePersonGroupId) {
+        trainWithServiceResponseAsync(largePersonGroupId).toBlocking().single().body();
     }
 
     /**
-     * Queue a person group training task, the training task may not be started immediately.
+     * Queue a large person group training task, the training task may not be started immediately.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> trainAsync(String personGroupId, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(trainWithServiceResponseAsync(personGroupId), serviceCallback);
+    public ServiceFuture<Void> trainAsync(String largePersonGroupId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(trainWithServiceResponseAsync(largePersonGroupId), serviceCallback);
     }
 
     /**
-     * Queue a person group training task, the training task may not be started immediately.
+     * Queue a large person group training task, the training task may not be started immediately.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> trainAsync(String personGroupId) {
-        return trainWithServiceResponseAsync(personGroupId).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Void> trainAsync(String largePersonGroupId) {
+        return trainWithServiceResponseAsync(largePersonGroupId).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
                 return response.body();
@@ -828,21 +828,21 @@ public class PersonGroupsImpl implements PersonGroups {
     }
 
     /**
-     * Queue a person group training task, the training task may not be started immediately.
+     * Queue a large person group training task, the training task may not be started immediately.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> trainWithServiceResponseAsync(String personGroupId) {
+    public Observable<ServiceResponse<Void>> trainWithServiceResponseAsync(String largePersonGroupId) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
-        if (personGroupId == null) {
-            throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
+        if (largePersonGroupId == null) {
+            throw new IllegalArgumentException("Parameter largePersonGroupId is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.train(personGroupId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.train(largePersonGroupId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {

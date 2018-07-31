@@ -27,15 +27,27 @@ public class FindSimilarRequest {
     /**
      * An existing user-specified unique candidate face list, created in Face
      * List - Create a Face List. Face list contains a set of persistedFaceIds
-     * which are persisted and will never expire. Parameter faceListId and
-     * faceIds should not be provided at the same time.
+     * which are persisted and will never expire. Parameter faceListId,
+     * largeFaceListId and faceIds should not be provided at the same time。.
      */
     @JsonProperty(value = "faceListId")
     private String faceListId;
 
     /**
+     * An existing user-specified unique candidate large face list, created in
+     * LargeFaceList - Create. Large face list contains a set of
+     * persistedFaceIds which are persisted and will never expire. Parameter
+     * faceListId, largeFaceListId and faceIds should not be provided at the
+     * same time.
+     */
+    @JsonProperty(value = "largeFaceListId")
+    private String largeFaceListId;
+
+    /**
      * An array of candidate faceIds. All of them are created by Face - Detect
-     * and the faceIds will expire 24 hours after the detection call.
+     * and the faceIds will expire 24 hours after the detection call. The
+     * number of faceIds is limited to 1000. Parameter faceListId,
+     * largeFaceListId and faceIds should not be provided at the same time.
      */
     @JsonProperty(value = "faceIds")
     private List<UUID> faceIds;
@@ -74,7 +86,7 @@ public class FindSimilarRequest {
     }
 
     /**
-     * Get an existing user-specified unique candidate face list, created in Face List - Create a Face List. Face list contains a set of persistedFaceIds which are persisted and will never expire. Parameter faceListId and faceIds should not be provided at the same time.
+     * Get an existing user-specified unique candidate face list, created in Face List - Create a Face List. Face list contains a set of persistedFaceIds which are persisted and will never expire. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time。.
      *
      * @return the faceListId value
      */
@@ -83,7 +95,7 @@ public class FindSimilarRequest {
     }
 
     /**
-     * Set an existing user-specified unique candidate face list, created in Face List - Create a Face List. Face list contains a set of persistedFaceIds which are persisted and will never expire. Parameter faceListId and faceIds should not be provided at the same time.
+     * Set an existing user-specified unique candidate face list, created in Face List - Create a Face List. Face list contains a set of persistedFaceIds which are persisted and will never expire. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time。.
      *
      * @param faceListId the faceListId value to set
      * @return the FindSimilarRequest object itself.
@@ -94,7 +106,27 @@ public class FindSimilarRequest {
     }
 
     /**
-     * Get an array of candidate faceIds. All of them are created by Face - Detect and the faceIds will expire 24 hours after the detection call.
+     * Get an existing user-specified unique candidate large face list, created in LargeFaceList - Create. Large face list contains a set of persistedFaceIds which are persisted and will never expire. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time.
+     *
+     * @return the largeFaceListId value
+     */
+    public String largeFaceListId() {
+        return this.largeFaceListId;
+    }
+
+    /**
+     * Set an existing user-specified unique candidate large face list, created in LargeFaceList - Create. Large face list contains a set of persistedFaceIds which are persisted and will never expire. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time.
+     *
+     * @param largeFaceListId the largeFaceListId value to set
+     * @return the FindSimilarRequest object itself.
+     */
+    public FindSimilarRequest withLargeFaceListId(String largeFaceListId) {
+        this.largeFaceListId = largeFaceListId;
+        return this;
+    }
+
+    /**
+     * Get an array of candidate faceIds. All of them are created by Face - Detect and the faceIds will expire 24 hours after the detection call. The number of faceIds is limited to 1000. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time.
      *
      * @return the faceIds value
      */
@@ -103,7 +135,7 @@ public class FindSimilarRequest {
     }
 
     /**
-     * Set an array of candidate faceIds. All of them are created by Face - Detect and the faceIds will expire 24 hours after the detection call.
+     * Set an array of candidate faceIds. All of them are created by Face - Detect and the faceIds will expire 24 hours after the detection call. The number of faceIds is limited to 1000. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time.
      *
      * @param faceIds the faceIds value to set
      * @return the FindSimilarRequest object itself.

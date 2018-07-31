@@ -21,51 +21,51 @@ import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
- * in PersonGroupPersons.
+ * in LargePersonGroupPersons.
  */
-public interface PersonGroupPersons {
+public interface LargePersonGroupPersons {
     /**
-     * Create a new person in a specified person group.
+     * Create a new person in a specified large person group.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Person object if successful.
      */
-    Person create(String personGroupId);
+    Person create(String largePersonGroupId);
 
     /**
-     * Create a new person in a specified person group.
+     * Create a new person in a specified large person group.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<Person> createAsync(String personGroupId, final ServiceCallback<Person> serviceCallback);
+    ServiceFuture<Person> createAsync(String largePersonGroupId, final ServiceCallback<Person> serviceCallback);
 
     /**
-     * Create a new person in a specified person group.
+     * Create a new person in a specified large person group.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Person object
      */
-    Observable<Person> createAsync(String personGroupId);
+    Observable<Person> createAsync(String largePersonGroupId);
 
     /**
-     * Create a new person in a specified person group.
+     * Create a new person in a specified large person group.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Person object
      */
-    Observable<ServiceResponse<Person>> createWithServiceResponseAsync(String personGroupId);
+    Observable<ServiceResponse<Person>> createWithServiceResponseAsync(String largePersonGroupId);
     /**
-     * Create a new person in a specified person group.
+     * Create a new person in a specified large person group.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param name User defined name, maximum length is 128.
      * @param userData User specified data. Length should not exceed 16KB.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -73,84 +73,84 @@ public interface PersonGroupPersons {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Person object if successful.
      */
-    Person create(String personGroupId, String name, String userData);
+    Person create(String largePersonGroupId, String name, String userData);
 
     /**
-     * Create a new person in a specified person group.
+     * Create a new person in a specified large person group.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param name User defined name, maximum length is 128.
      * @param userData User specified data. Length should not exceed 16KB.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<Person> createAsync(String personGroupId, String name, String userData, final ServiceCallback<Person> serviceCallback);
+    ServiceFuture<Person> createAsync(String largePersonGroupId, String name, String userData, final ServiceCallback<Person> serviceCallback);
 
     /**
-     * Create a new person in a specified person group.
+     * Create a new person in a specified large person group.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param name User defined name, maximum length is 128.
      * @param userData User specified data. Length should not exceed 16KB.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Person object
      */
-    Observable<Person> createAsync(String personGroupId, String name, String userData);
+    Observable<Person> createAsync(String largePersonGroupId, String name, String userData);
 
     /**
-     * Create a new person in a specified person group.
+     * Create a new person in a specified large person group.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param name User defined name, maximum length is 128.
      * @param userData User specified data. Length should not exceed 16KB.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Person object
      */
-    Observable<ServiceResponse<Person>> createWithServiceResponseAsync(String personGroupId, String name, String userData);
+    Observable<ServiceResponse<Person>> createWithServiceResponseAsync(String largePersonGroupId, String name, String userData);
 
     /**
-     * List all persons in a person group, and retrieve person information (including personId, name, userData and persistedFaceIds of registered faces of the person).
+     * List all persons in a large person group, and retrieve person information (including personId, name, userData and persistedFaceIds of registered faces of the person).
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;Person&gt; object if successful.
      */
-    List<Person> list(String personGroupId);
+    List<Person> list(String largePersonGroupId);
 
     /**
-     * List all persons in a person group, and retrieve person information (including personId, name, userData and persistedFaceIds of registered faces of the person).
+     * List all persons in a large person group, and retrieve person information (including personId, name, userData and persistedFaceIds of registered faces of the person).
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<List<Person>> listAsync(String personGroupId, final ServiceCallback<List<Person>> serviceCallback);
+    ServiceFuture<List<Person>> listAsync(String largePersonGroupId, final ServiceCallback<List<Person>> serviceCallback);
 
     /**
-     * List all persons in a person group, and retrieve person information (including personId, name, userData and persistedFaceIds of registered faces of the person).
+     * List all persons in a large person group, and retrieve person information (including personId, name, userData and persistedFaceIds of registered faces of the person).
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;Person&gt; object
      */
-    Observable<List<Person>> listAsync(String personGroupId);
+    Observable<List<Person>> listAsync(String largePersonGroupId);
 
     /**
-     * List all persons in a person group, and retrieve person information (including personId, name, userData and persistedFaceIds of registered faces of the person).
+     * List all persons in a large person group, and retrieve person information (including personId, name, userData and persistedFaceIds of registered faces of the person).
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;Person&gt; object
      */
-    Observable<ServiceResponse<List<Person>>> listWithServiceResponseAsync(String personGroupId);
+    Observable<ServiceResponse<List<Person>>> listWithServiceResponseAsync(String largePersonGroupId);
     /**
-     * List all persons in a person group, and retrieve person information (including personId, name, userData and persistedFaceIds of registered faces of the person).
+     * List all persons in a large person group, and retrieve person information (including personId, name, userData and persistedFaceIds of registered faces of the person).
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param start Starting person id to return (used to list a range of persons).
      * @param top Number of persons to return starting with the person id indicated by the 'start' parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -158,172 +158,172 @@ public interface PersonGroupPersons {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;Person&gt; object if successful.
      */
-    List<Person> list(String personGroupId, String start, Integer top);
+    List<Person> list(String largePersonGroupId, String start, Integer top);
 
     /**
-     * List all persons in a person group, and retrieve person information (including personId, name, userData and persistedFaceIds of registered faces of the person).
+     * List all persons in a large person group, and retrieve person information (including personId, name, userData and persistedFaceIds of registered faces of the person).
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param start Starting person id to return (used to list a range of persons).
      * @param top Number of persons to return starting with the person id indicated by the 'start' parameter.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<List<Person>> listAsync(String personGroupId, String start, Integer top, final ServiceCallback<List<Person>> serviceCallback);
+    ServiceFuture<List<Person>> listAsync(String largePersonGroupId, String start, Integer top, final ServiceCallback<List<Person>> serviceCallback);
 
     /**
-     * List all persons in a person group, and retrieve person information (including personId, name, userData and persistedFaceIds of registered faces of the person).
+     * List all persons in a large person group, and retrieve person information (including personId, name, userData and persistedFaceIds of registered faces of the person).
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param start Starting person id to return (used to list a range of persons).
      * @param top Number of persons to return starting with the person id indicated by the 'start' parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;Person&gt; object
      */
-    Observable<List<Person>> listAsync(String personGroupId, String start, Integer top);
+    Observable<List<Person>> listAsync(String largePersonGroupId, String start, Integer top);
 
     /**
-     * List all persons in a person group, and retrieve person information (including personId, name, userData and persistedFaceIds of registered faces of the person).
+     * List all persons in a large person group, and retrieve person information (including personId, name, userData and persistedFaceIds of registered faces of the person).
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param start Starting person id to return (used to list a range of persons).
      * @param top Number of persons to return starting with the person id indicated by the 'start' parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;Person&gt; object
      */
-    Observable<ServiceResponse<List<Person>>> listWithServiceResponseAsync(String personGroupId, String start, Integer top);
+    Observable<ServiceResponse<List<Person>>> listWithServiceResponseAsync(String largePersonGroupId, String start, Integer top);
 
     /**
-     * Delete an existing person from a person group. All stored person data, and face features in the person entry will be deleted.
+     * Delete an existing person from a large person group. All stored person data, and face features in the person entry will be deleted.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param personId Id referencing a particular person.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    void delete(String personGroupId, UUID personId);
+    void delete(String largePersonGroupId, UUID personId);
 
     /**
-     * Delete an existing person from a person group. All stored person data, and face features in the person entry will be deleted.
+     * Delete an existing person from a large person group. All stored person data, and face features in the person entry will be deleted.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param personId Id referencing a particular person.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<Void> deleteAsync(String personGroupId, UUID personId, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> deleteAsync(String largePersonGroupId, UUID personId, final ServiceCallback<Void> serviceCallback);
 
     /**
-     * Delete an existing person from a person group. All stored person data, and face features in the person entry will be deleted.
+     * Delete an existing person from a large person group. All stored person data, and face features in the person entry will be deleted.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param personId Id referencing a particular person.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    Observable<Void> deleteAsync(String personGroupId, UUID personId);
+    Observable<Void> deleteAsync(String largePersonGroupId, UUID personId);
 
     /**
-     * Delete an existing person from a person group. All stored person data, and face features in the person entry will be deleted.
+     * Delete an existing person from a large person group. All stored person data, and face features in the person entry will be deleted.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param personId Id referencing a particular person.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String personGroupId, UUID personId);
+    Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String largePersonGroupId, UUID personId);
 
     /**
      * Retrieve a person's information, including registered persisted faces, name and userData.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param personId Id referencing a particular person.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Person object if successful.
      */
-    Person get(String personGroupId, UUID personId);
+    Person get(String largePersonGroupId, UUID personId);
 
     /**
      * Retrieve a person's information, including registered persisted faces, name and userData.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param personId Id referencing a particular person.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<Person> getAsync(String personGroupId, UUID personId, final ServiceCallback<Person> serviceCallback);
+    ServiceFuture<Person> getAsync(String largePersonGroupId, UUID personId, final ServiceCallback<Person> serviceCallback);
 
     /**
      * Retrieve a person's information, including registered persisted faces, name and userData.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param personId Id referencing a particular person.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Person object
      */
-    Observable<Person> getAsync(String personGroupId, UUID personId);
+    Observable<Person> getAsync(String largePersonGroupId, UUID personId);
 
     /**
      * Retrieve a person's information, including registered persisted faces, name and userData.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param personId Id referencing a particular person.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Person object
      */
-    Observable<ServiceResponse<Person>> getWithServiceResponseAsync(String personGroupId, UUID personId);
+    Observable<ServiceResponse<Person>> getWithServiceResponseAsync(String largePersonGroupId, UUID personId);
 
     /**
      * Update name or userData of a person.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param personId Id referencing a particular person.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    void update(String personGroupId, UUID personId);
+    void update(String largePersonGroupId, UUID personId);
 
     /**
      * Update name or userData of a person.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param personId Id referencing a particular person.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<Void> updateAsync(String personGroupId, UUID personId, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> updateAsync(String largePersonGroupId, UUID personId, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Update name or userData of a person.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param personId Id referencing a particular person.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    Observable<Void> updateAsync(String personGroupId, UUID personId);
+    Observable<Void> updateAsync(String largePersonGroupId, UUID personId);
 
     /**
      * Update name or userData of a person.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param personId Id referencing a particular person.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    Observable<ServiceResponse<Void>> updateWithServiceResponseAsync(String personGroupId, UUID personId);
+    Observable<ServiceResponse<Void>> updateWithServiceResponseAsync(String largePersonGroupId, UUID personId);
     /**
      * Update name or userData of a person.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param personId Id referencing a particular person.
      * @param name User defined name, maximum length is 128.
      * @param userData User specified data. Length should not exceed 16KB.
@@ -331,12 +331,12 @@ public interface PersonGroupPersons {
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    void update(String personGroupId, UUID personId, String name, String userData);
+    void update(String largePersonGroupId, UUID personId, String name, String userData);
 
     /**
      * Update name or userData of a person.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param personId Id referencing a particular person.
      * @param name User defined name, maximum length is 128.
      * @param userData User specified data. Length should not exceed 16KB.
@@ -344,82 +344,82 @@ public interface PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<Void> updateAsync(String personGroupId, UUID personId, String name, String userData, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> updateAsync(String largePersonGroupId, UUID personId, String name, String userData, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Update name or userData of a person.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param personId Id referencing a particular person.
      * @param name User defined name, maximum length is 128.
      * @param userData User specified data. Length should not exceed 16KB.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    Observable<Void> updateAsync(String personGroupId, UUID personId, String name, String userData);
+    Observable<Void> updateAsync(String largePersonGroupId, UUID personId, String name, String userData);
 
     /**
      * Update name or userData of a person.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param personId Id referencing a particular person.
      * @param name User defined name, maximum length is 128.
      * @param userData User specified data. Length should not exceed 16KB.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    Observable<ServiceResponse<Void>> updateWithServiceResponseAsync(String personGroupId, UUID personId, String name, String userData);
+    Observable<ServiceResponse<Void>> updateWithServiceResponseAsync(String largePersonGroupId, UUID personId, String name, String userData);
 
     /**
      * Delete a face from a person. Relative feature for the persisted face will also be deleted.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param personId Id referencing a particular person.
      * @param persistedFaceId Id referencing a particular persistedFaceId of an existing face.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    void deleteFace(String personGroupId, UUID personId, UUID persistedFaceId);
+    void deleteFace(String largePersonGroupId, UUID personId, UUID persistedFaceId);
 
     /**
      * Delete a face from a person. Relative feature for the persisted face will also be deleted.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param personId Id referencing a particular person.
      * @param persistedFaceId Id referencing a particular persistedFaceId of an existing face.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<Void> deleteFaceAsync(String personGroupId, UUID personId, UUID persistedFaceId, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> deleteFaceAsync(String largePersonGroupId, UUID personId, UUID persistedFaceId, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Delete a face from a person. Relative feature for the persisted face will also be deleted.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param personId Id referencing a particular person.
      * @param persistedFaceId Id referencing a particular persistedFaceId of an existing face.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    Observable<Void> deleteFaceAsync(String personGroupId, UUID personId, UUID persistedFaceId);
+    Observable<Void> deleteFaceAsync(String largePersonGroupId, UUID personId, UUID persistedFaceId);
 
     /**
      * Delete a face from a person. Relative feature for the persisted face will also be deleted.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param personId Id referencing a particular person.
      * @param persistedFaceId Id referencing a particular persistedFaceId of an existing face.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    Observable<ServiceResponse<Void>> deleteFaceWithServiceResponseAsync(String personGroupId, UUID personId, UUID persistedFaceId);
+    Observable<ServiceResponse<Void>> deleteFaceWithServiceResponseAsync(String largePersonGroupId, UUID personId, UUID persistedFaceId);
 
     /**
-     * Retrieve information about a persisted face (specified by persistedFaceId, personId and its belonging personGroupId).
+     * Retrieve information about a persisted face (specified by persistedFaceId, personId and its belonging largePersonGroupId).
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param personId Id referencing a particular person.
      * @param persistedFaceId Id referencing a particular persistedFaceId of an existing face.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -427,91 +427,91 @@ public interface PersonGroupPersons {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PersistedFace object if successful.
      */
-    PersistedFace getFace(String personGroupId, UUID personId, UUID persistedFaceId);
+    PersistedFace getFace(String largePersonGroupId, UUID personId, UUID persistedFaceId);
 
     /**
-     * Retrieve information about a persisted face (specified by persistedFaceId, personId and its belonging personGroupId).
+     * Retrieve information about a persisted face (specified by persistedFaceId, personId and its belonging largePersonGroupId).
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param personId Id referencing a particular person.
      * @param persistedFaceId Id referencing a particular persistedFaceId of an existing face.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<PersistedFace> getFaceAsync(String personGroupId, UUID personId, UUID persistedFaceId, final ServiceCallback<PersistedFace> serviceCallback);
+    ServiceFuture<PersistedFace> getFaceAsync(String largePersonGroupId, UUID personId, UUID persistedFaceId, final ServiceCallback<PersistedFace> serviceCallback);
 
     /**
-     * Retrieve information about a persisted face (specified by persistedFaceId, personId and its belonging personGroupId).
+     * Retrieve information about a persisted face (specified by persistedFaceId, personId and its belonging largePersonGroupId).
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param personId Id referencing a particular person.
      * @param persistedFaceId Id referencing a particular persistedFaceId of an existing face.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
      */
-    Observable<PersistedFace> getFaceAsync(String personGroupId, UUID personId, UUID persistedFaceId);
+    Observable<PersistedFace> getFaceAsync(String largePersonGroupId, UUID personId, UUID persistedFaceId);
 
     /**
-     * Retrieve information about a persisted face (specified by persistedFaceId, personId and its belonging personGroupId).
+     * Retrieve information about a persisted face (specified by persistedFaceId, personId and its belonging largePersonGroupId).
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param personId Id referencing a particular person.
      * @param persistedFaceId Id referencing a particular persistedFaceId of an existing face.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
      */
-    Observable<ServiceResponse<PersistedFace>> getFaceWithServiceResponseAsync(String personGroupId, UUID personId, UUID persistedFaceId);
+    Observable<ServiceResponse<PersistedFace>> getFaceWithServiceResponseAsync(String largePersonGroupId, UUID personId, UUID persistedFaceId);
 
     /**
      * Update a person persisted face's userData field.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param personId Id referencing a particular person.
      * @param persistedFaceId Id referencing a particular persistedFaceId of an existing face.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    void updateFace(String personGroupId, UUID personId, UUID persistedFaceId);
+    void updateFace(String largePersonGroupId, UUID personId, UUID persistedFaceId);
 
     /**
      * Update a person persisted face's userData field.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param personId Id referencing a particular person.
      * @param persistedFaceId Id referencing a particular persistedFaceId of an existing face.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<Void> updateFaceAsync(String personGroupId, UUID personId, UUID persistedFaceId, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> updateFaceAsync(String largePersonGroupId, UUID personId, UUID persistedFaceId, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Update a person persisted face's userData field.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param personId Id referencing a particular person.
      * @param persistedFaceId Id referencing a particular persistedFaceId of an existing face.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    Observable<Void> updateFaceAsync(String personGroupId, UUID personId, UUID persistedFaceId);
+    Observable<Void> updateFaceAsync(String largePersonGroupId, UUID personId, UUID persistedFaceId);
 
     /**
      * Update a person persisted face's userData field.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param personId Id referencing a particular person.
      * @param persistedFaceId Id referencing a particular persistedFaceId of an existing face.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    Observable<ServiceResponse<Void>> updateFaceWithServiceResponseAsync(String personGroupId, UUID personId, UUID persistedFaceId);
+    Observable<ServiceResponse<Void>> updateFaceWithServiceResponseAsync(String largePersonGroupId, UUID personId, UUID persistedFaceId);
     /**
      * Update a person persisted face's userData field.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param personId Id referencing a particular person.
      * @param persistedFaceId Id referencing a particular persistedFaceId of an existing face.
      * @param userData User-provided data attached to the face. The size limit is 1KB.
@@ -519,12 +519,12 @@ public interface PersonGroupPersons {
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    void updateFace(String personGroupId, UUID personId, UUID persistedFaceId, String userData);
+    void updateFace(String largePersonGroupId, UUID personId, UUID persistedFaceId, String userData);
 
     /**
      * Update a person persisted face's userData field.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param personId Id referencing a particular person.
      * @param persistedFaceId Id referencing a particular persistedFaceId of an existing face.
      * @param userData User-provided data attached to the face. The size limit is 1KB.
@@ -532,36 +532,36 @@ public interface PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<Void> updateFaceAsync(String personGroupId, UUID personId, UUID persistedFaceId, String userData, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> updateFaceAsync(String largePersonGroupId, UUID personId, UUID persistedFaceId, String userData, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Update a person persisted face's userData field.
      *
-     * @param personGroupId Id referencing a particular person group.
-     * @param personId Id referencing a particular person.
-     * @param persistedFaceId Id referencing a particular persistedFaceId of an existing face.
-     * @param userData User-provided data attached to the face. The size limit is 1KB.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    Observable<Void> updateFaceAsync(String personGroupId, UUID personId, UUID persistedFaceId, String userData);
-
-    /**
-     * Update a person persisted face's userData field.
-     *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param personId Id referencing a particular person.
      * @param persistedFaceId Id referencing a particular persistedFaceId of an existing face.
      * @param userData User-provided data attached to the face. The size limit is 1KB.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    Observable<ServiceResponse<Void>> updateFaceWithServiceResponseAsync(String personGroupId, UUID personId, UUID persistedFaceId, String userData);
+    Observable<Void> updateFaceAsync(String largePersonGroupId, UUID personId, UUID persistedFaceId, String userData);
+
+    /**
+     * Update a person persisted face's userData field.
+     *
+     * @param largePersonGroupId Id referencing a particular large person group.
+     * @param personId Id referencing a particular person.
+     * @param persistedFaceId Id referencing a particular persistedFaceId of an existing face.
+     * @param userData User-provided data attached to the face. The size limit is 1KB.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    Observable<ServiceResponse<Void>> updateFaceWithServiceResponseAsync(String largePersonGroupId, UUID personId, UUID persistedFaceId, String userData);
 
     /**
      * Add a representative face to a person for identification. The input face is specified as an image with a targetFace rectangle.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param personId Id referencing a particular person.
      * @param url Publicly reachable URL of an image
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -569,45 +569,45 @@ public interface PersonGroupPersons {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PersistedFace object if successful.
      */
-    PersistedFace addPersonFaceFromUrl(String personGroupId, UUID personId, String url);
+    PersistedFace addPersonFaceFromUrl(String largePersonGroupId, UUID personId, String url);
 
     /**
      * Add a representative face to a person for identification. The input face is specified as an image with a targetFace rectangle.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param personId Id referencing a particular person.
      * @param url Publicly reachable URL of an image
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<PersistedFace> addPersonFaceFromUrlAsync(String personGroupId, UUID personId, String url, final ServiceCallback<PersistedFace> serviceCallback);
+    ServiceFuture<PersistedFace> addPersonFaceFromUrlAsync(String largePersonGroupId, UUID personId, String url, final ServiceCallback<PersistedFace> serviceCallback);
 
     /**
      * Add a representative face to a person for identification. The input face is specified as an image with a targetFace rectangle.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param personId Id referencing a particular person.
      * @param url Publicly reachable URL of an image
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
      */
-    Observable<PersistedFace> addPersonFaceFromUrlAsync(String personGroupId, UUID personId, String url);
+    Observable<PersistedFace> addPersonFaceFromUrlAsync(String largePersonGroupId, UUID personId, String url);
 
     /**
      * Add a representative face to a person for identification. The input face is specified as an image with a targetFace rectangle.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param personId Id referencing a particular person.
      * @param url Publicly reachable URL of an image
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
      */
-    Observable<ServiceResponse<PersistedFace>> addPersonFaceFromUrlWithServiceResponseAsync(String personGroupId, UUID personId, String url);
+    Observable<ServiceResponse<PersistedFace>> addPersonFaceFromUrlWithServiceResponseAsync(String largePersonGroupId, UUID personId, String url);
     /**
      * Add a representative face to a person for identification. The input face is specified as an image with a targetFace rectangle.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param personId Id referencing a particular person.
      * @param url Publicly reachable URL of an image
      * @param userData User-specified data about the face for any purpose. The maximum length is 1KB.
@@ -617,12 +617,12 @@ public interface PersonGroupPersons {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PersistedFace object if successful.
      */
-    PersistedFace addPersonFaceFromUrl(String personGroupId, UUID personId, String url, String userData, List<Integer> targetFace);
+    PersistedFace addPersonFaceFromUrl(String largePersonGroupId, UUID personId, String url, String userData, List<Integer> targetFace);
 
     /**
      * Add a representative face to a person for identification. The input face is specified as an image with a targetFace rectangle.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param personId Id referencing a particular person.
      * @param url Publicly reachable URL of an image
      * @param userData User-specified data about the face for any purpose. The maximum length is 1KB.
@@ -631,12 +631,12 @@ public interface PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<PersistedFace> addPersonFaceFromUrlAsync(String personGroupId, UUID personId, String url, String userData, List<Integer> targetFace, final ServiceCallback<PersistedFace> serviceCallback);
+    ServiceFuture<PersistedFace> addPersonFaceFromUrlAsync(String largePersonGroupId, UUID personId, String url, String userData, List<Integer> targetFace, final ServiceCallback<PersistedFace> serviceCallback);
 
     /**
      * Add a representative face to a person for identification. The input face is specified as an image with a targetFace rectangle.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param personId Id referencing a particular person.
      * @param url Publicly reachable URL of an image
      * @param userData User-specified data about the face for any purpose. The maximum length is 1KB.
@@ -644,12 +644,12 @@ public interface PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
      */
-    Observable<PersistedFace> addPersonFaceFromUrlAsync(String personGroupId, UUID personId, String url, String userData, List<Integer> targetFace);
+    Observable<PersistedFace> addPersonFaceFromUrlAsync(String largePersonGroupId, UUID personId, String url, String userData, List<Integer> targetFace);
 
     /**
      * Add a representative face to a person for identification. The input face is specified as an image with a targetFace rectangle.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param personId Id referencing a particular person.
      * @param url Publicly reachable URL of an image
      * @param userData User-specified data about the face for any purpose. The maximum length is 1KB.
@@ -657,12 +657,12 @@ public interface PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
      */
-    Observable<ServiceResponse<PersistedFace>> addPersonFaceFromUrlWithServiceResponseAsync(String personGroupId, UUID personId, String url, String userData, List<Integer> targetFace);
+    Observable<ServiceResponse<PersistedFace>> addPersonFaceFromUrlWithServiceResponseAsync(String largePersonGroupId, UUID personId, String url, String userData, List<Integer> targetFace);
 
     /**
      * Add a representative face to a person for identification. The input face is specified as an image with a targetFace rectangle.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param personId Id referencing a particular person.
      * @param image An image stream.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -670,45 +670,45 @@ public interface PersonGroupPersons {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PersistedFace object if successful.
      */
-    PersistedFace addPersonFaceFromStream(String personGroupId, UUID personId, byte[] image);
+    PersistedFace addPersonFaceFromStream(String largePersonGroupId, UUID personId, byte[] image);
 
     /**
      * Add a representative face to a person for identification. The input face is specified as an image with a targetFace rectangle.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param personId Id referencing a particular person.
      * @param image An image stream.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<PersistedFace> addPersonFaceFromStreamAsync(String personGroupId, UUID personId, byte[] image, final ServiceCallback<PersistedFace> serviceCallback);
+    ServiceFuture<PersistedFace> addPersonFaceFromStreamAsync(String largePersonGroupId, UUID personId, byte[] image, final ServiceCallback<PersistedFace> serviceCallback);
 
     /**
      * Add a representative face to a person for identification. The input face is specified as an image with a targetFace rectangle.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param personId Id referencing a particular person.
      * @param image An image stream.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
      */
-    Observable<PersistedFace> addPersonFaceFromStreamAsync(String personGroupId, UUID personId, byte[] image);
+    Observable<PersistedFace> addPersonFaceFromStreamAsync(String largePersonGroupId, UUID personId, byte[] image);
 
     /**
      * Add a representative face to a person for identification. The input face is specified as an image with a targetFace rectangle.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param personId Id referencing a particular person.
      * @param image An image stream.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
      */
-    Observable<ServiceResponse<PersistedFace>> addPersonFaceFromStreamWithServiceResponseAsync(String personGroupId, UUID personId, byte[] image);
+    Observable<ServiceResponse<PersistedFace>> addPersonFaceFromStreamWithServiceResponseAsync(String largePersonGroupId, UUID personId, byte[] image);
     /**
      * Add a representative face to a person for identification. The input face is specified as an image with a targetFace rectangle.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param personId Id referencing a particular person.
      * @param image An image stream.
      * @param userData User-specified data about the face for any purpose. The maximum length is 1KB.
@@ -718,12 +718,12 @@ public interface PersonGroupPersons {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PersistedFace object if successful.
      */
-    PersistedFace addPersonFaceFromStream(String personGroupId, UUID personId, byte[] image, String userData, List<Integer> targetFace);
+    PersistedFace addPersonFaceFromStream(String largePersonGroupId, UUID personId, byte[] image, String userData, List<Integer> targetFace);
 
     /**
      * Add a representative face to a person for identification. The input face is specified as an image with a targetFace rectangle.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param personId Id referencing a particular person.
      * @param image An image stream.
      * @param userData User-specified data about the face for any purpose. The maximum length is 1KB.
@@ -732,12 +732,12 @@ public interface PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<PersistedFace> addPersonFaceFromStreamAsync(String personGroupId, UUID personId, byte[] image, String userData, List<Integer> targetFace, final ServiceCallback<PersistedFace> serviceCallback);
+    ServiceFuture<PersistedFace> addPersonFaceFromStreamAsync(String largePersonGroupId, UUID personId, byte[] image, String userData, List<Integer> targetFace, final ServiceCallback<PersistedFace> serviceCallback);
 
     /**
      * Add a representative face to a person for identification. The input face is specified as an image with a targetFace rectangle.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param personId Id referencing a particular person.
      * @param image An image stream.
      * @param userData User-specified data about the face for any purpose. The maximum length is 1KB.
@@ -745,12 +745,12 @@ public interface PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
      */
-    Observable<PersistedFace> addPersonFaceFromStreamAsync(String personGroupId, UUID personId, byte[] image, String userData, List<Integer> targetFace);
+    Observable<PersistedFace> addPersonFaceFromStreamAsync(String largePersonGroupId, UUID personId, byte[] image, String userData, List<Integer> targetFace);
 
     /**
      * Add a representative face to a person for identification. The input face is specified as an image with a targetFace rectangle.
      *
-     * @param personGroupId Id referencing a particular person group.
+     * @param largePersonGroupId Id referencing a particular large person group.
      * @param personId Id referencing a particular person.
      * @param image An image stream.
      * @param userData User-specified data about the face for any purpose. The maximum length is 1KB.
@@ -758,6 +758,6 @@ public interface PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
      */
-    Observable<ServiceResponse<PersistedFace>> addPersonFaceFromStreamWithServiceResponseAsync(String personGroupId, UUID personId, byte[] image, String userData, List<Integer> targetFace);
+    Observable<ServiceResponse<PersistedFace>> addPersonFaceFromStreamWithServiceResponseAsync(String largePersonGroupId, UUID personId, byte[] image, String userData, List<Integer> targetFace);
 
 }

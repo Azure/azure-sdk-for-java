@@ -119,4 +119,28 @@ public interface FaceClient {
      */
     FaceLists faceLists();
 
+    /**
+     * Gets the LargePersonGroupPersons object to access its operations.
+     * @return the LargePersonGroupPersons object.
+     */
+    LargePersonGroupPersons largePersonGroupPersons();
+
+    /**
+     * Gets the LargePersonGroups object to access its operations.
+     * @return the LargePersonGroups object.
+     */
+    LargePersonGroups largePersonGroups();
+
+    /**
+     * Gets the LargeFaceLists object to access its operations.
+     * @return the LargeFaceLists object.
+     */
+    LargeFaceLists largeFaceLists();
+
+    /**
+     * Gets the LargeFaceListFaces object to access its operations.
+     * @return the LargeFaceListFaces object.
+     */
+    LargeFaceListFaces largeFaceListFaces();
+
 }
