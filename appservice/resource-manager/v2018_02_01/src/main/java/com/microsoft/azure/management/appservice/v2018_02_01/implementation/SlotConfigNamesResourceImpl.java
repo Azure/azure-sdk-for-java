@@ -30,11 +30,6 @@ class SlotConfigNamesResourceImpl extends WrapperImpl<SlotConfigNamesResourceInn
     }
 
     @Override
-    public List<String> azureStorageConfigNames() {
-        return this.inner().azureStorageConfigNames();
-    }
-
-    @Override
     public List<String> connectionStringNames() {
         return this.inner().connectionStringNames();
     }

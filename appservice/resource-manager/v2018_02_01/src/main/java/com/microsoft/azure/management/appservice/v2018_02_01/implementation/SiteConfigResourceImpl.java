@@ -14,8 +14,6 @@ import com.microsoft.azure.management.appservice.v2018_02_01.ApiDefinitionInfo;
 import java.util.List;
 import com.microsoft.azure.management.appservice.v2018_02_01.NameValuePair;
 import com.microsoft.azure.management.appservice.v2018_02_01.AutoHealRules;
-import java.util.Map;
-import com.microsoft.azure.management.appservice.v2018_02_01.AzureStorageInfoValue;
 import com.microsoft.azure.management.appservice.v2018_02_01.ConnStringInfo;
 import com.microsoft.azure.management.appservice.v2018_02_01.CorsSettings;
 import com.microsoft.azure.management.appservice.v2018_02_01.Experiments;
@@ -76,11 +74,6 @@ class SiteConfigResourceImpl extends WrapperImpl<SiteConfigResourceInner> implem
     @Override
     public String autoSwapSlotName() {
         return this.inner().autoSwapSlotName();
-    }
-
-    @Override
-    public Map<String, AzureStorageInfoValue> azureStorageAccounts() {
-        return this.inner().azureStorageAccounts();
     }
 
     @Override

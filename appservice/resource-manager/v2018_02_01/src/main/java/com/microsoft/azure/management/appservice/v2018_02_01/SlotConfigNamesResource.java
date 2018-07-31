@@ -24,11 +24,6 @@ public interface SlotConfigNamesResource extends HasInner<SlotConfigNamesResourc
     List<String> appSettingNames();
 
     /**
-     * @return the azureStorageConfigNames value.
-     */
-    List<String> azureStorageConfigNames();
-
-    /**
      * @return the connectionStringNames value.
      */
     List<String> connectionStringNames();

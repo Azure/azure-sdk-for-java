@@ -11,8 +11,6 @@ package com.microsoft.azure.management.appservice.v2018_02_01.implementation;
 import java.util.List;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.appservice.v2018_02_01.NameValuePair;
-import java.util.Map;
-import com.microsoft.azure.management.appservice.v2018_02_01.AzureStorageInfoValue;
 import com.microsoft.azure.management.appservice.v2018_02_01.ConnStringInfo;
 import com.microsoft.azure.management.appservice.v2018_02_01.SiteMachineKey;
 import com.microsoft.azure.management.appservice.v2018_02_01.HandlerMapping;
@@ -142,12 +140,6 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      */
     @JsonProperty(value = "properties.appSettings")
     private List<NameValuePair> appSettings;
-
-    /**
-     * User-provided Azure storage accounts.
-     */
-    @JsonProperty(value = "properties.azureStorageAccounts")
-    private Map<String, AzureStorageInfoValue> azureStorageAccounts;
 
     /**
      * Connection strings.
@@ -697,26 +689,6 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      */
     public SiteConfigResourceInner withAppSettings(List<NameValuePair> appSettings) {
         this.appSettings = appSettings;
-        return this;
-    }
-
-    /**
-     * Get user-provided Azure storage accounts.
-     *
-     * @return the azureStorageAccounts value
-     */
-    public Map<String, AzureStorageInfoValue> azureStorageAccounts() {
-        return this.azureStorageAccounts;
-    }
-
-    /**
-     * Set user-provided Azure storage accounts.
-     *
-     * @param azureStorageAccounts the azureStorageAccounts value to set
-     * @return the SiteConfigResourceInner object itself.
-     */
-    public SiteConfigResourceInner withAzureStorageAccounts(Map<String, AzureStorageInfoValue> azureStorageAccounts) {
-        this.azureStorageAccounts = azureStorageAccounts;
         return this;
     }
 
