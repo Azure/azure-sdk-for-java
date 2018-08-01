@@ -203,6 +203,7 @@ class BlobAPITest extends APISpec {
         headers.accessTier() == AccessTier.HOT.toString()
         headers.accessTierInferred()
         headers.archiveStatus() == null
+        headers.creationTime() != null
         // TODO: Test where most of these values will not be null
     }
 

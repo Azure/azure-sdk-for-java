@@ -46,14 +46,22 @@ class ServiceAPITest extends APISpec {
     }
 
     def "List containers"() {
-        setup:
+        when:
         ServiceListContainersSegmentResponse response =
                 primaryServiceURL.listContainersSegment(null, new ListContainersOptions(null,
                         containerPrefix, null)).blockingGet()
 
-        expect:
+        then:
         for (ContainerItem c : response.body().containerItems()) {
-            c.name().startsWith(containerPrefix)
+            assert c.name().startsWith(containerPrefix)
+            assert c.properties().lastModified() != null
+            assert c.properties().etag() != null
+            assert c.properties().leaseStatus() != null
+            assert c.properties().leaseState() != null
+            assert c.properties().leaseDuration() == null
+            assert c.properties().publicAccess() == null
+            assert !c.properties().hasLegalHold()
+            assert !c.properties().hasImmutabilityPolicy()
         }
         response.headers().requestId() != null
         response.headers().version() != null

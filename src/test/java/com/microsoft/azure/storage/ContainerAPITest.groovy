@@ -30,6 +30,7 @@ import com.microsoft.azure.storage.blob.PipelineOptions
 import com.microsoft.azure.storage.blob.StorageException
 import com.microsoft.azure.storage.blob.StorageURL
 import com.microsoft.azure.storage.blob.models.AccessPolicy
+import com.microsoft.azure.storage.blob.models.AccessTier
 import com.microsoft.azure.storage.blob.models.AppendBlobCreateResponse
 import com.microsoft.azure.storage.blob.models.BlobGetPropertiesResponse
 import com.microsoft.azure.storage.blob.models.BlobItem
@@ -154,6 +155,8 @@ class ContainerAPITest extends APISpec {
         headers.leaseState() == LeaseStateType.AVAILABLE
         headers.leaseStatus() == LeaseStatusType.UNLOCKED
         headers.metadata().size() == 0
+        !headers.hasImmutabilityPolicy()
+        !headers.hasLegalHold()
     }
 
     def "Get properties lease"() {
@@ -553,6 +556,31 @@ class ContainerAPITest extends APISpec {
         headers.date() != null
         blobs.size() == 1
         blobs.get(0).name() == name
+        blobs.get(0).properties().blobType() == BlobType.PAGE_BLOB
+        blobs.get(0).properties().copyCompletionTime() == null
+        blobs.get(0).properties().copyStatusDescription() == null
+        blobs.get(0).properties().copyId() == null
+        blobs.get(0).properties().copyProgress() == null
+        blobs.get(0).properties().copySource() == null
+        blobs.get(0).properties().copyStatus() == null
+        blobs.get(0).properties().incrementalCopy() == null
+        blobs.get(0).properties().destinationSnapshot() == null
+        blobs.get(0).properties().leaseDuration() == null
+        blobs.get(0).properties().leaseState() == LeaseStateType.AVAILABLE
+        blobs.get(0).properties().leaseStatus() == LeaseStatusType.UNLOCKED
+        blobs.get(0).properties().contentLength() != null
+        blobs.get(0).properties().contentType() != null
+        blobs.get(0).properties().contentMD5() == null
+        blobs.get(0).properties().contentEncoding() == null
+        blobs.get(0).properties().contentDisposition() == null
+        blobs.get(0).properties().contentLanguage() == null
+        blobs.get(0).properties().cacheControl() == null
+        blobs.get(0).properties().blobSequenceNumber() == 0
+        blobs.get(0).properties().serverEncrypted()
+        blobs.get(0).properties().accessTierInferred()
+        blobs.get(0).properties().accessTier() == AccessTier.HOT
+        blobs.get(0).properties().archiveStatus() == null
+        blobs.get(0).properties().creationTime() != null
     }
 
     def setupListBlobsTest(String normalName, String copyName, String metadataName, String uncommittedName) {

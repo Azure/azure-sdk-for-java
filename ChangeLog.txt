@@ -8,6 +8,8 @@
 * Changed BlobListingDetails constructor to take a flag to include deleted blobs.
 * Restructured the blob and container listing responses.
 * BlockBlobURL.MAX_PUT_BLOCK_BYTES renamed to BlockBlobURL.MAX_STAGE_BLOCK_BYTES.
+* Support for the 2017-11-09 REST version. Please see our REST api documentation and blogs for information about the related added features.
+* Support for WORM containers.
 
 2018.07.03 Version 10.0.1-Preview
 * Added the RetryReader class to allow for more reliable streaming on large downloads. This is now the return type of blobURL.download
