@@ -137,10 +137,4 @@ public interface FaceClient {
      */
     LargeFaceLists largeFaceLists();
 
-    /**
-     * Gets the LargeFaceListFaces object to access its operations.
-     * @return the LargeFaceListFaces object.
-     */
-    LargeFaceListFaces largeFaceListFaces();
-
 }

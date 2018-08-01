@@ -646,6 +646,91 @@ public interface LargeFaceLists {
     Observable<ServiceResponse<PersistedFace>> addFaceFromUrlWithServiceResponseAsync(String largeFaceListId, String url, String userData, List<Integer> targetFace);
 
     /**
+     * List all faces in a large face list, and retrieve face information (including userData and persistedFaceIds of registered faces of the face).
+     *
+     * @param largeFaceListId Id referencing a particular large face list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws APIErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;PersistedFace&gt; object if successful.
+     */
+    List<PersistedFace> listFaces(String largeFaceListId);
+
+    /**
+     * List all faces in a large face list, and retrieve face information (including userData and persistedFaceIds of registered faces of the face).
+     *
+     * @param largeFaceListId Id referencing a particular large face list.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<List<PersistedFace>> listFacesAsync(String largeFaceListId, final ServiceCallback<List<PersistedFace>> serviceCallback);
+
+    /**
+     * List all faces in a large face list, and retrieve face information (including userData and persistedFaceIds of registered faces of the face).
+     *
+     * @param largeFaceListId Id referencing a particular large face list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;PersistedFace&gt; object
+     */
+    Observable<List<PersistedFace>> listFacesAsync(String largeFaceListId);
+
+    /**
+     * List all faces in a large face list, and retrieve face information (including userData and persistedFaceIds of registered faces of the face).
+     *
+     * @param largeFaceListId Id referencing a particular large face list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;PersistedFace&gt; object
+     */
+    Observable<ServiceResponse<List<PersistedFace>>> listFacesWithServiceResponseAsync(String largeFaceListId);
+    /**
+     * List all faces in a large face list, and retrieve face information (including userData and persistedFaceIds of registered faces of the face).
+     *
+     * @param largeFaceListId Id referencing a particular large face list.
+     * @param start Starting face id to return (used to list a range of faces).
+     * @param top Number of faces to return starting with the face id indicated by the 'start' parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws APIErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;PersistedFace&gt; object if successful.
+     */
+    List<PersistedFace> listFaces(String largeFaceListId, String start, Integer top);
+
+    /**
+     * List all faces in a large face list, and retrieve face information (including userData and persistedFaceIds of registered faces of the face).
+     *
+     * @param largeFaceListId Id referencing a particular large face list.
+     * @param start Starting face id to return (used to list a range of faces).
+     * @param top Number of faces to return starting with the face id indicated by the 'start' parameter.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<List<PersistedFace>> listFacesAsync(String largeFaceListId, String start, Integer top, final ServiceCallback<List<PersistedFace>> serviceCallback);
+
+    /**
+     * List all faces in a large face list, and retrieve face information (including userData and persistedFaceIds of registered faces of the face).
+     *
+     * @param largeFaceListId Id referencing a particular large face list.
+     * @param start Starting face id to return (used to list a range of faces).
+     * @param top Number of faces to return starting with the face id indicated by the 'start' parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;PersistedFace&gt; object
+     */
+    Observable<List<PersistedFace>> listFacesAsync(String largeFaceListId, String start, Integer top);
+
+    /**
+     * List all faces in a large face list, and retrieve face information (including userData and persistedFaceIds of registered faces of the face).
+     *
+     * @param largeFaceListId Id referencing a particular large face list.
+     * @param start Starting face id to return (used to list a range of faces).
+     * @param top Number of faces to return starting with the face id indicated by the 'start' parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;PersistedFace&gt; object
+     */
+    Observable<ServiceResponse<List<PersistedFace>>> listFacesWithServiceResponseAsync(String largeFaceListId, String start, Integer top);
+
+    /**
      * Add a face to a large face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
      *
      * @param largeFaceListId Id referencing a particular large face list.

@@ -115,6 +115,10 @@ public class LargeFaceListsImpl implements LargeFaceLists {
         @POST("largefacelists/{largeFaceListId}/persistedfaces")
         Observable<Response<ResponseBody>> addFaceFromUrl(@Path("largeFaceListId") String largeFaceListId, @Query("userData") String userData, @Query("targetFace") String targetFace, @Header("accept-language") String acceptLanguage, @Body ImageUrl imageUrl, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.LargeFaceLists listFaces" })
+        @GET("largefacelists/{largeFaceListId}/persistedfaces")
+        Observable<Response<ResponseBody>> listFaces(@Path("largeFaceListId") String largeFaceListId, @Query("start") String start, @Query("top") Integer top, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/octet-stream", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.LargeFaceLists addFaceFromStream" })
         @POST("largefacelists/{largeFaceListId}/persistedfaces")
         Observable<Response<ResponseBody>> addFaceFromStream(@Path("largeFaceListId") String largeFaceListId, @Query("userData") String userData, @Query("targetFace") String targetFace, @Body RequestBody image, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
@@ -1328,6 +1332,163 @@ public class LargeFaceListsImpl implements LargeFaceLists {
     private ServiceResponse<PersistedFace> addFaceFromUrlDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PersistedFace, APIErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PersistedFace>() { }.getType())
+                .registerError(APIErrorException.class)
+                .build(response);
+    }
+
+    /**
+     * List all faces in a large face list, and retrieve face information (including userData and persistedFaceIds of registered faces of the face).
+     *
+     * @param largeFaceListId Id referencing a particular large face list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws APIErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;PersistedFace&gt; object if successful.
+     */
+    public List<PersistedFace> listFaces(String largeFaceListId) {
+        return listFacesWithServiceResponseAsync(largeFaceListId).toBlocking().single().body();
+    }
+
+    /**
+     * List all faces in a large face list, and retrieve face information (including userData and persistedFaceIds of registered faces of the face).
+     *
+     * @param largeFaceListId Id referencing a particular large face list.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<PersistedFace>> listFacesAsync(String largeFaceListId, final ServiceCallback<List<PersistedFace>> serviceCallback) {
+        return ServiceFuture.fromResponse(listFacesWithServiceResponseAsync(largeFaceListId), serviceCallback);
+    }
+
+    /**
+     * List all faces in a large face list, and retrieve face information (including userData and persistedFaceIds of registered faces of the face).
+     *
+     * @param largeFaceListId Id referencing a particular large face list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;PersistedFace&gt; object
+     */
+    public Observable<List<PersistedFace>> listFacesAsync(String largeFaceListId) {
+        return listFacesWithServiceResponseAsync(largeFaceListId).map(new Func1<ServiceResponse<List<PersistedFace>>, List<PersistedFace>>() {
+            @Override
+            public List<PersistedFace> call(ServiceResponse<List<PersistedFace>> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * List all faces in a large face list, and retrieve face information (including userData and persistedFaceIds of registered faces of the face).
+     *
+     * @param largeFaceListId Id referencing a particular large face list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;PersistedFace&gt; object
+     */
+    public Observable<ServiceResponse<List<PersistedFace>>> listFacesWithServiceResponseAsync(String largeFaceListId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (largeFaceListId == null) {
+            throw new IllegalArgumentException("Parameter largeFaceListId is required and cannot be null.");
+        }
+        final String start = null;
+        final Integer top = null;
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.listFaces(largeFaceListId, start, top, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<PersistedFace>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<PersistedFace>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<List<PersistedFace>> clientResponse = listFacesDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * List all faces in a large face list, and retrieve face information (including userData and persistedFaceIds of registered faces of the face).
+     *
+     * @param largeFaceListId Id referencing a particular large face list.
+     * @param start Starting face id to return (used to list a range of faces).
+     * @param top Number of faces to return starting with the face id indicated by the 'start' parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws APIErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;PersistedFace&gt; object if successful.
+     */
+    public List<PersistedFace> listFaces(String largeFaceListId, String start, Integer top) {
+        return listFacesWithServiceResponseAsync(largeFaceListId, start, top).toBlocking().single().body();
+    }
+
+    /**
+     * List all faces in a large face list, and retrieve face information (including userData and persistedFaceIds of registered faces of the face).
+     *
+     * @param largeFaceListId Id referencing a particular large face list.
+     * @param start Starting face id to return (used to list a range of faces).
+     * @param top Number of faces to return starting with the face id indicated by the 'start' parameter.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<PersistedFace>> listFacesAsync(String largeFaceListId, String start, Integer top, final ServiceCallback<List<PersistedFace>> serviceCallback) {
+        return ServiceFuture.fromResponse(listFacesWithServiceResponseAsync(largeFaceListId, start, top), serviceCallback);
+    }
+
+    /**
+     * List all faces in a large face list, and retrieve face information (including userData and persistedFaceIds of registered faces of the face).
+     *
+     * @param largeFaceListId Id referencing a particular large face list.
+     * @param start Starting face id to return (used to list a range of faces).
+     * @param top Number of faces to return starting with the face id indicated by the 'start' parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;PersistedFace&gt; object
+     */
+    public Observable<List<PersistedFace>> listFacesAsync(String largeFaceListId, String start, Integer top) {
+        return listFacesWithServiceResponseAsync(largeFaceListId, start, top).map(new Func1<ServiceResponse<List<PersistedFace>>, List<PersistedFace>>() {
+            @Override
+            public List<PersistedFace> call(ServiceResponse<List<PersistedFace>> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * List all faces in a large face list, and retrieve face information (including userData and persistedFaceIds of registered faces of the face).
+     *
+     * @param largeFaceListId Id referencing a particular large face list.
+     * @param start Starting face id to return (used to list a range of faces).
+     * @param top Number of faces to return starting with the face id indicated by the 'start' parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;PersistedFace&gt; object
+     */
+    public Observable<ServiceResponse<List<PersistedFace>>> listFacesWithServiceResponseAsync(String largeFaceListId, String start, Integer top) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (largeFaceListId == null) {
+            throw new IllegalArgumentException("Parameter largeFaceListId is required and cannot be null.");
+        }
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.listFaces(largeFaceListId, start, top, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<PersistedFace>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<PersistedFace>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<List<PersistedFace>> clientResponse = listFacesDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<List<PersistedFace>> listFacesDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<List<PersistedFace>, APIErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<List<PersistedFace>>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
     }
