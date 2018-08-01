@@ -42,8 +42,8 @@ public class BackupItemInner extends ProxyOnlyResource {
     /**
      * Name of this backup.
      */
-    @JsonProperty(value = "properties.name", access = JsonProperty.Access.WRITE_ONLY)
-    private String backupItemName;
+    @JsonProperty(value = "properties.backupName", access = JsonProperty.Access.WRITE_ONLY)
+    private String backupName;
 
     /**
      * Backup status. Possible values include: 'InProgress', 'Failed',
@@ -138,10 +138,10 @@ public class BackupItemInner extends ProxyOnlyResource {
     /**
      * Get name of this backup.
      *
-     * @return the backupItemName value
+     * @return the backupName value
      */
-    public String backupItemName() {
-        return this.backupItemName;
+    public String backupName() {
+        return this.backupName;
     }
 
     /**

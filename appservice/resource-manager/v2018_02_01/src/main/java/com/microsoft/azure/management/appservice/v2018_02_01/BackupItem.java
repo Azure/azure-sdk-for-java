@@ -27,9 +27,9 @@ public interface BackupItem extends HasInner<BackupItemInner>, Indexable, Refres
     Integer backupId();
 
     /**
-     * @return the backupItemName value.
+     * @return the backupName value.
      */
-    String backupItemName();
+    String backupName();
 
     /**
      * @return the blobName value.
