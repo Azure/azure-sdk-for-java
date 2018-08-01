@@ -118,6 +118,18 @@ public interface IntegrationRuntimes extends SupportsCreating<IntegrationRuntime
     Completable upgradeAsync(String resourceGroupName, String factoryName, String integrationRuntimeName);
 
     /**
+     * Remove all linked integration runtimes under specific data factory in a self-hosted integration runtime.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param integrationRuntimeName The integration runtime name.
+     * @param linkedFactoryName The data factory name for linked integration runtime.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable removeLinksAsync(String resourceGroupName, String factoryName, String integrationRuntimeName, String linkedFactoryName);
+
+    /**
      * Gets an integration runtime.
      *
      * @param resourceGroupName The resource group name.

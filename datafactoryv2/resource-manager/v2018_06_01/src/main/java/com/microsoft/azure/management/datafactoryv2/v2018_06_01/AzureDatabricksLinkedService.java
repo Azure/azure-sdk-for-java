@@ -74,6 +74,12 @@ public class AzureDatabricksLinkedService extends LinkedServiceInner {
     private Map<String, Object> newClusterSparkConf;
 
     /**
+     * Additional tags for cluster resources.
+     */
+    @JsonProperty(value = "typeProperties.newClusterCustomTags")
+    private Map<String, Object> newClusterCustomTags;
+
+    /**
      * The encrypted credential used for authentication. Credentials are
      * encrypted using the integration runtime credential manager. Type: string
      * (or Expression with resultType string).
@@ -218,6 +224,26 @@ public class AzureDatabricksLinkedService extends LinkedServiceInner {
      */
     public AzureDatabricksLinkedService withNewClusterSparkConf(Map<String, Object> newClusterSparkConf) {
         this.newClusterSparkConf = newClusterSparkConf;
+        return this;
+    }
+
+    /**
+     * Get additional tags for cluster resources.
+     *
+     * @return the newClusterCustomTags value
+     */
+    public Map<String, Object> newClusterCustomTags() {
+        return this.newClusterCustomTags;
+    }
+
+    /**
+     * Set additional tags for cluster resources.
+     *
+     * @param newClusterCustomTags the newClusterCustomTags value to set
+     * @return the AzureDatabricksLinkedService object itself.
+     */
+    public AzureDatabricksLinkedService withNewClusterCustomTags(Map<String, Object> newClusterCustomTags) {
+        this.newClusterCustomTags = newClusterCustomTags;
         return this;
     }
 

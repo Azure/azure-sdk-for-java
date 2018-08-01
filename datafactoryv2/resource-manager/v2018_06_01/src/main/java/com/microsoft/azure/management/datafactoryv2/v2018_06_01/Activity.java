@@ -53,7 +53,7 @@ public class Activity {
      * Activity user properties.
      */
     @JsonProperty(value = "userProperties")
-    private Map<String, String> userProperties;
+    private List<UserProperty> userProperties;
 
     /**
      * Get unmatched properties from the message are deserialized this collection.
@@ -140,7 +140,7 @@ public class Activity {
      *
      * @return the userProperties value
      */
-    public Map<String, String> userProperties() {
+    public List<UserProperty> userProperties() {
         return this.userProperties;
     }
 
@@ -150,7 +150,7 @@ public class Activity {
      * @param userProperties the userProperties value to set
      * @return the Activity object itself.
      */
-    public Activity withUserProperties(Map<String, String> userProperties) {
+    public Activity withUserProperties(List<UserProperty> userProperties) {
         this.userProperties = userProperties;
         return this;
     }
