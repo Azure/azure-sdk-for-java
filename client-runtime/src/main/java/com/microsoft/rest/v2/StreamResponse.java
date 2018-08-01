@@ -6,6 +6,7 @@
 
 package com.microsoft.rest.v2;
 
+import com.microsoft.rest.v2.http.HttpRequest;
 import io.reactivex.Flowable;
 import io.reactivex.internal.functions.Functions;
 
@@ -20,18 +21,19 @@ public final class StreamResponse extends RestResponse<Void, Flowable<ByteBuffer
     /**
      * Creates a StreamResponse.
      *
+     * @param request the request which resulted in this StreamResponse
      * @param statusCode the status code of the HTTP response
      * @param rawHeaders the raw headers of the HTTP response
      * @param body the streaming body
      */
-    public StreamResponse(int statusCode, Map<String, String> rawHeaders, Flowable<ByteBuffer> body) {
-        super(statusCode, null, rawHeaders, body);
+    public StreamResponse(HttpRequest request, int statusCode, Map<String, String> rawHeaders, Flowable<ByteBuffer> body) {
+        super(request, statusCode, null, rawHeaders, body);
     }
 
     // Used for uniform reflective creation in RestProxy.
     @SuppressWarnings("unused")
-    StreamResponse(int statusCode, Void headers, Map<String, String> rawHeaders, Flowable<ByteBuffer> body) {
-        super(statusCode, headers, rawHeaders, body);
+    StreamResponse(HttpRequest request, int statusCode, Void headers, Map<String, String> rawHeaders, Flowable<ByteBuffer> body) {
+        super(request, statusCode, headers, rawHeaders, body);
     }
 
     /**

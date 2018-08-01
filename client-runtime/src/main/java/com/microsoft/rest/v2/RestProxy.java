@@ -387,9 +387,10 @@ public class RestProxy implements InvocationHandler {
                 // Generic constructor arguments turn into Object.
                 // Because some child class constructors have a more specific concrete type,
                 // there's not a single type we can check for the headers or body parameters.
-                if (c.getParameterTypes().length == 4
-                        && c.getParameterTypes()[0].equals(Integer.TYPE)
-                        && c.getParameterTypes()[2].equals(Map.class)) {
+                if (c.getParameterTypes().length == 5
+                        && c.getParameterTypes()[0].equals(HttpRequest.class)
+                        && c.getParameterTypes()[1].equals(Integer.TYPE)
+                        && c.getParameterTypes()[3].equals(Map.class)) {
                     ctor = (Constructor<? extends RestResponse<?, ?>>) c;
                 }
             }
@@ -420,13 +421,13 @@ public class RestProxy implements InvocationHandler {
                 TypeToken bodyTypeToken = TypeToken.of(bodyType);
                 if (bodyTypeToken.isSubtypeOf(Void.class)) {
                     asyncResult = response.body().lastElement().ignoreElement()
-                            .andThen(Single.just(responseConstructor.newInstance(responseStatusCode, deserializedHeaders, responseHeaders.toMap(), null)));
+                            .andThen(Single.just(responseConstructor.newInstance(response.request(), responseStatusCode, deserializedHeaders, responseHeaders.toMap(), null)));
                 } else {
                     final Map<String, String> rawHeaders = responseHeaders.toMap();
 
                     asyncResult = handleBodyReturnTypeAsync(response, methodParser, bodyType)
-                            .map((Function<Object, RestResponse<?, ?>>) body -> responseConstructor.newInstance(responseStatusCode, deserializedHeaders, rawHeaders, body))
-                            .toSingle(responseConstructor.newInstance(responseStatusCode, deserializedHeaders, rawHeaders, null));
+                            .map((Function<Object, RestResponse<?, ?>>) body -> responseConstructor.newInstance(response.request(), responseStatusCode, deserializedHeaders, rawHeaders, body))
+                            .toSingle(responseConstructor.newInstance(response.request(), responseStatusCode, deserializedHeaders, rawHeaders, null));
                 }
 
                 Type headersType = deserializedTypes[0];

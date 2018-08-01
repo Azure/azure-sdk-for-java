@@ -6,6 +6,8 @@
 
 package com.microsoft.rest.v2;
 
+import com.microsoft.rest.v2.http.HttpRequest;
+
 import java.util.Map;
 
 /**
@@ -13,19 +15,20 @@ import java.util.Map;
  */
 public final class VoidResponse extends RestResponse<Void, Void> {
     /**
-     * Creates a StreamResponse.
+     * Creates a VoidResponse.
      *
+     * @param request the request which resulted in this VoidResponse
      * @param statusCode the status code of the HTTP response
      * @param rawHeaders the raw headers of the HTTP response
      */
-    public VoidResponse(int statusCode, Map<String, String> rawHeaders) {
-        super(statusCode, null, rawHeaders, null);
+    public VoidResponse(HttpRequest request, int statusCode, Map<String, String> rawHeaders) {
+        super(request, statusCode, null, rawHeaders, null);
     }
 
     // Used for uniform reflective creation in RestProxy.
     @SuppressWarnings("unused")
-    VoidResponse(int statusCode, Void headers, Map<String, String> rawHeaders, Void body) {
-        super(statusCode, headers, rawHeaders, body);
+    VoidResponse(HttpRequest request, int statusCode, Void headers, Map<String, String> rawHeaders, Void body) {
+        super(request, statusCode, headers, rawHeaders, body);
     }
 
     /**

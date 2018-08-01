@@ -6,6 +6,8 @@
 
 package com.microsoft.rest.v2;
 
+import com.microsoft.rest.v2.http.HttpRequest;
+
 import java.util.Map;
 
 /**
@@ -14,6 +16,7 @@ import java.util.Map;
  * @param <TBody> The deserialized type of the response body.
  */
 public class RestResponse<THeaders, TBody> {
+    private final HttpRequest request;
     private final int statusCode;
     private final THeaders headers;
     private final Map<String, String> rawHeaders;
@@ -21,16 +24,25 @@ public class RestResponse<THeaders, TBody> {
 
     /**
      * Create a new RestResponse object.
+     * @param request The request which resulted in this RestResponse.
      * @param statusCode The status code of the HTTP response.
      * @param headers The deserialized headers of the HTTP response.
      * @param rawHeaders The raw headers of the HTTP response.
      * @param body The deserialized body.
      */
-    public RestResponse(int statusCode, THeaders headers, Map<String, String> rawHeaders, TBody body) {
+    public RestResponse(HttpRequest request, int statusCode, THeaders headers, Map<String, String> rawHeaders, TBody body) {
+        this.request = request;
         this.statusCode = statusCode;
         this.headers = headers;
         this.rawHeaders = rawHeaders;
         this.body = body;
+    }
+
+    /**
+     * @return The request which resulted in this RestResponse.
+     */
+    public HttpRequest request() {
+        return request;
     }
 
     /**

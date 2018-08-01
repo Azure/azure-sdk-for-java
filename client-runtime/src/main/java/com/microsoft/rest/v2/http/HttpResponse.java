@@ -22,6 +22,7 @@ public abstract class HttpResponse implements Closeable {
     private Object deserializedHeaders;
     private Object deserializedBody;
     private boolean isDecoded;
+    private HttpRequest request;
 
     /**
      * Get this response object's HTTP status code.
@@ -154,4 +155,24 @@ public abstract class HttpResponse implements Closeable {
         this.deserializedBody = deserializedBody;
         return this;
     }
+
+    /**
+     * @return The request which resulted in this HttpResponse.
+     */
+    public final HttpRequest request() {
+        return request;
+    }
+
+
+    /**
+     * Sets the request on this HttpResponse.
+     * @param request the request which resulted in this HttpResponse
+     * @return this HTTP response
+     */
+    public final HttpResponse withRequest(HttpRequest request) {
+        this.request = request;
+        return this;
+    }
+
+
 }

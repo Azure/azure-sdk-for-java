@@ -244,7 +244,7 @@ public final class HttpResponseDecoder {
                     // FIXME: RestProxy is always in charge of creating RestResponse--so this doesn't seem right
                     Object resultBody = convertToResultType(wireResponseBody, getTypeArguments(resultType)[1], wireType);
                     if (wireResponseBody != resultBody) {
-                        result = new RestResponse<>(restResponse.statusCode(), restResponse.headers(), restResponse.rawHeaders(), resultBody);
+                        result = new RestResponse<>(restResponse.request(), restResponse.statusCode(), restResponse.headers(), restResponse.rawHeaders(), resultBody);
                     } else {
                         result = restResponse;
                     }
