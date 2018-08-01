@@ -105,9 +105,9 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
         @POST("persongroups/{personGroupId}/persons/{personId}/persistedfaces")
         Observable<Response<ResponseBody>> addFaceFromUrl(@Path("personGroupId") String personGroupId, @Path("personId") UUID personId, @Query("userData") String userData, @Query("targetFace") String targetFace, @Header("accept-language") String acceptLanguage, @Body ImageUrl imageUrl, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/octet-stream", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroupPersons addPersonFaceFromStream" })
+        @Headers({ "Content-Type: application/octet-stream", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroupPersons addFaceFromStream" })
         @POST("persongroups/{personGroupId}/persons/{personId}/persistedfaces")
-        Observable<Response<ResponseBody>> addPersonFaceFromStream(@Path("personGroupId") String personGroupId, @Path("personId") UUID personId, @Query("userData") String userData, @Query("targetFace") String targetFace, @Body RequestBody image, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> addFaceFromStream(@Path("personGroupId") String personGroupId, @Path("personId") UUID personId, @Query("userData") String userData, @Query("targetFace") String targetFace, @Body RequestBody image, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
     }
 
@@ -1339,8 +1339,8 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PersistedFace object if successful.
      */
-    public PersistedFace addPersonFaceFromStream(String personGroupId, UUID personId, byte[] image) {
-        return addPersonFaceFromStreamWithServiceResponseAsync(personGroupId, personId, image).toBlocking().single().body();
+    public PersistedFace addFaceFromStream(String personGroupId, UUID personId, byte[] image) {
+        return addFaceFromStreamWithServiceResponseAsync(personGroupId, personId, image).toBlocking().single().body();
     }
 
     /**
@@ -1353,8 +1353,8 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<PersistedFace> addPersonFaceFromStreamAsync(String personGroupId, UUID personId, byte[] image, final ServiceCallback<PersistedFace> serviceCallback) {
-        return ServiceFuture.fromResponse(addPersonFaceFromStreamWithServiceResponseAsync(personGroupId, personId, image), serviceCallback);
+    public ServiceFuture<PersistedFace> addFaceFromStreamAsync(String personGroupId, UUID personId, byte[] image, final ServiceCallback<PersistedFace> serviceCallback) {
+        return ServiceFuture.fromResponse(addFaceFromStreamWithServiceResponseAsync(personGroupId, personId, image), serviceCallback);
     }
 
     /**
@@ -1366,8 +1366,8 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
      */
-    public Observable<PersistedFace> addPersonFaceFromStreamAsync(String personGroupId, UUID personId, byte[] image) {
-        return addPersonFaceFromStreamWithServiceResponseAsync(personGroupId, personId, image).map(new Func1<ServiceResponse<PersistedFace>, PersistedFace>() {
+    public Observable<PersistedFace> addFaceFromStreamAsync(String personGroupId, UUID personId, byte[] image) {
+        return addFaceFromStreamWithServiceResponseAsync(personGroupId, personId, image).map(new Func1<ServiceResponse<PersistedFace>, PersistedFace>() {
             @Override
             public PersistedFace call(ServiceResponse<PersistedFace> response) {
                 return response.body();
@@ -1384,7 +1384,7 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
      */
-    public Observable<ServiceResponse<PersistedFace>> addPersonFaceFromStreamWithServiceResponseAsync(String personGroupId, UUID personId, byte[] image) {
+    public Observable<ServiceResponse<PersistedFace>> addFaceFromStreamWithServiceResponseAsync(String personGroupId, UUID personId, byte[] image) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -1401,12 +1401,12 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
         final List<Integer> targetFace = null;
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         String targetFaceConverted = this.client.serializerAdapter().serializeList(targetFace, CollectionFormat.CSV);RequestBody imageConverted = RequestBody.create(MediaType.parse("application/octet-stream"), image);
-        return service.addPersonFaceFromStream(personGroupId, personId, userData, targetFaceConverted, imageConverted, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.addFaceFromStream(personGroupId, personId, userData, targetFaceConverted, imageConverted, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PersistedFace>>>() {
                 @Override
                 public Observable<ServiceResponse<PersistedFace>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PersistedFace> clientResponse = addPersonFaceFromStreamDelegate(response);
+                        ServiceResponse<PersistedFace> clientResponse = addFaceFromStreamDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1428,8 +1428,8 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PersistedFace object if successful.
      */
-    public PersistedFace addPersonFaceFromStream(String personGroupId, UUID personId, byte[] image, String userData, List<Integer> targetFace) {
-        return addPersonFaceFromStreamWithServiceResponseAsync(personGroupId, personId, image, userData, targetFace).toBlocking().single().body();
+    public PersistedFace addFaceFromStream(String personGroupId, UUID personId, byte[] image, String userData, List<Integer> targetFace) {
+        return addFaceFromStreamWithServiceResponseAsync(personGroupId, personId, image, userData, targetFace).toBlocking().single().body();
     }
 
     /**
@@ -1444,8 +1444,8 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<PersistedFace> addPersonFaceFromStreamAsync(String personGroupId, UUID personId, byte[] image, String userData, List<Integer> targetFace, final ServiceCallback<PersistedFace> serviceCallback) {
-        return ServiceFuture.fromResponse(addPersonFaceFromStreamWithServiceResponseAsync(personGroupId, personId, image, userData, targetFace), serviceCallback);
+    public ServiceFuture<PersistedFace> addFaceFromStreamAsync(String personGroupId, UUID personId, byte[] image, String userData, List<Integer> targetFace, final ServiceCallback<PersistedFace> serviceCallback) {
+        return ServiceFuture.fromResponse(addFaceFromStreamWithServiceResponseAsync(personGroupId, personId, image, userData, targetFace), serviceCallback);
     }
 
     /**
@@ -1459,8 +1459,8 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
      */
-    public Observable<PersistedFace> addPersonFaceFromStreamAsync(String personGroupId, UUID personId, byte[] image, String userData, List<Integer> targetFace) {
-        return addPersonFaceFromStreamWithServiceResponseAsync(personGroupId, personId, image, userData, targetFace).map(new Func1<ServiceResponse<PersistedFace>, PersistedFace>() {
+    public Observable<PersistedFace> addFaceFromStreamAsync(String personGroupId, UUID personId, byte[] image, String userData, List<Integer> targetFace) {
+        return addFaceFromStreamWithServiceResponseAsync(personGroupId, personId, image, userData, targetFace).map(new Func1<ServiceResponse<PersistedFace>, PersistedFace>() {
             @Override
             public PersistedFace call(ServiceResponse<PersistedFace> response) {
                 return response.body();
@@ -1479,7 +1479,7 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
      */
-    public Observable<ServiceResponse<PersistedFace>> addPersonFaceFromStreamWithServiceResponseAsync(String personGroupId, UUID personId, byte[] image, String userData, List<Integer> targetFace) {
+    public Observable<ServiceResponse<PersistedFace>> addFaceFromStreamWithServiceResponseAsync(String personGroupId, UUID personId, byte[] image, String userData, List<Integer> targetFace) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -1495,12 +1495,12 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
         Validator.validate(targetFace);
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         String targetFaceConverted = this.client.serializerAdapter().serializeList(targetFace, CollectionFormat.CSV);RequestBody imageConverted = RequestBody.create(MediaType.parse("application/octet-stream"), image);
-        return service.addPersonFaceFromStream(personGroupId, personId, userData, targetFaceConverted, imageConverted, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.addFaceFromStream(personGroupId, personId, userData, targetFaceConverted, imageConverted, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PersistedFace>>>() {
                 @Override
                 public Observable<ServiceResponse<PersistedFace>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PersistedFace> clientResponse = addPersonFaceFromStreamDelegate(response);
+                        ServiceResponse<PersistedFace> clientResponse = addFaceFromStreamDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1509,7 +1509,7 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
             });
     }
 
-    private ServiceResponse<PersistedFace> addPersonFaceFromStreamDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
+    private ServiceResponse<PersistedFace> addFaceFromStreamDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PersistedFace, APIErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PersistedFace>() { }.getType())
                 .registerError(APIErrorException.class)
