@@ -13,6 +13,9 @@ import com.microsoft.azure.AzureServiceClient;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.FaceClient;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.FaceLists;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.Faces;
+import com.microsoft.azure.cognitiveservices.vision.faceapi.LargeFaceLists;
+import com.microsoft.azure.cognitiveservices.vision.faceapi.LargePersonGroupPersons;
+import com.microsoft.azure.cognitiveservices.vision.faceapi.LargePersonGroups;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroupPersons;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroups;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
@@ -178,6 +181,45 @@ public class FaceClientImpl extends AzureServiceClient implements FaceClient {
     }
 
     /**
+     * The LargePersonGroupPersons object to access its operations.
+     */
+    private LargePersonGroupPersons largePersonGroupPersons;
+
+    /**
+     * Gets the LargePersonGroupPersons object to access its operations.
+     * @return the LargePersonGroupPersons object.
+     */
+    public LargePersonGroupPersons largePersonGroupPersons() {
+        return this.largePersonGroupPersons;
+    }
+
+    /**
+     * The LargePersonGroups object to access its operations.
+     */
+    private LargePersonGroups largePersonGroups;
+
+    /**
+     * Gets the LargePersonGroups object to access its operations.
+     * @return the LargePersonGroups object.
+     */
+    public LargePersonGroups largePersonGroups() {
+        return this.largePersonGroups;
+    }
+
+    /**
+     * The LargeFaceLists object to access its operations.
+     */
+    private LargeFaceLists largeFaceLists;
+
+    /**
+     * Gets the LargeFaceLists object to access its operations.
+     * @return the LargeFaceLists object.
+     */
+    public LargeFaceLists largeFaceLists() {
+        return this.largeFaceLists;
+    }
+
+    /**
      * Initializes an instance of FaceClient client.
      *
      * @param credentials the management credentials for Azure
@@ -215,6 +257,9 @@ public class FaceClientImpl extends AzureServiceClient implements FaceClient {
         this.personGroupPersons = new PersonGroupPersonsImpl(restClient().retrofit(), this);
         this.personGroups = new PersonGroupsImpl(restClient().retrofit(), this);
         this.faceLists = new FaceListsImpl(restClient().retrofit(), this);
+        this.largePersonGroupPersons = new LargePersonGroupPersonsImpl(restClient().retrofit(), this);
+        this.largePersonGroups = new LargePersonGroupsImpl(restClient().retrofit(), this);
+        this.largeFaceLists = new LargeFaceListsImpl(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 

@@ -17,19 +17,28 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class IdentifyRequest {
     /**
-     * PersonGroupId of the target person group, created by
-     * PersonGroups.Create.
-     */
-    @JsonProperty(value = "personGroupId", required = true)
-    private String personGroupId;
-
-    /**
      * Array of query faces faceIds, created by the Face - Detect. Each of the
      * faces are identified independently. The valid number of faceIds is
      * between [1, 10].
      */
     @JsonProperty(value = "faceIds", required = true)
     private List<UUID> faceIds;
+
+    /**
+     * PersonGroupId of the target person group, created by PersonGroup -
+     * Create. Parameter personGroupId and largePersonGroupId should not be
+     * provided at the same time.
+     */
+    @JsonProperty(value = "personGroupId")
+    private String personGroupId;
+
+    /**
+     * LargePersonGroupId of the target large person group, created by
+     * LargePersonGroup - Create. Parameter personGroupId and
+     * largePersonGroupId should not be provided at the same time.
+     */
+    @JsonProperty(value = "largePersonGroupId")
+    private String largePersonGroupId;
 
     /**
      * The range of maxNumOfCandidatesReturned is between 1 and 5 (default is
@@ -45,26 +54,6 @@ public class IdentifyRequest {
      */
     @JsonProperty(value = "confidenceThreshold")
     private Double confidenceThreshold;
-
-    /**
-     * Get personGroupId of the target person group, created by PersonGroups.Create.
-     *
-     * @return the personGroupId value
-     */
-    public String personGroupId() {
-        return this.personGroupId;
-    }
-
-    /**
-     * Set personGroupId of the target person group, created by PersonGroups.Create.
-     *
-     * @param personGroupId the personGroupId value to set
-     * @return the IdentifyRequest object itself.
-     */
-    public IdentifyRequest withPersonGroupId(String personGroupId) {
-        this.personGroupId = personGroupId;
-        return this;
-    }
 
     /**
      * Get array of query faces faceIds, created by the Face - Detect. Each of the faces are identified independently. The valid number of faceIds is between [1, 10].
@@ -83,6 +72,46 @@ public class IdentifyRequest {
      */
     public IdentifyRequest withFaceIds(List<UUID> faceIds) {
         this.faceIds = faceIds;
+        return this;
+    }
+
+    /**
+     * Get personGroupId of the target person group, created by PersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
+     *
+     * @return the personGroupId value
+     */
+    public String personGroupId() {
+        return this.personGroupId;
+    }
+
+    /**
+     * Set personGroupId of the target person group, created by PersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
+     *
+     * @param personGroupId the personGroupId value to set
+     * @return the IdentifyRequest object itself.
+     */
+    public IdentifyRequest withPersonGroupId(String personGroupId) {
+        this.personGroupId = personGroupId;
+        return this;
+    }
+
+    /**
+     * Get largePersonGroupId of the target large person group, created by LargePersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
+     *
+     * @return the largePersonGroupId value
+     */
+    public String largePersonGroupId() {
+        return this.largePersonGroupId;
+    }
+
+    /**
+     * Set largePersonGroupId of the target large person group, created by LargePersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
+     *
+     * @param largePersonGroupId the largePersonGroupId value to set
+     * @return the IdentifyRequest object itself.
+     */
+    public IdentifyRequest withLargePersonGroupId(String largePersonGroupId) {
+        this.largePersonGroupId = largePersonGroupId;
         return this;
     }
 

@@ -107,7 +107,7 @@ public interface PersonGroups {
     Observable<ServiceResponse<Void>> createWithServiceResponseAsync(String personGroupId, String name, String userData);
 
     /**
-     * Delete an existing person group. Persisted face images of all people in the person group will also be deleted.
+     * Delete an existing person group. Persisted face features of all people in the person group will also be deleted.
      *
      * @param personGroupId Id referencing a particular person group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -117,7 +117,7 @@ public interface PersonGroups {
     void delete(String personGroupId);
 
     /**
-     * Delete an existing person group. Persisted face images of all people in the person group will also be deleted.
+     * Delete an existing person group. Persisted face features of all people in the person group will also be deleted.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -127,7 +127,7 @@ public interface PersonGroups {
     ServiceFuture<Void> deleteAsync(String personGroupId, final ServiceCallback<Void> serviceCallback);
 
     /**
-     * Delete an existing person group. Persisted face images of all people in the person group will also be deleted.
+     * Delete an existing person group. Persisted face features of all people in the person group will also be deleted.
      *
      * @param personGroupId Id referencing a particular person group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -136,7 +136,7 @@ public interface PersonGroups {
     Observable<Void> deleteAsync(String personGroupId);
 
     /**
-     * Delete an existing person group. Persisted face images of all people in the person group will also be deleted.
+     * Delete an existing person group. Persisted face features of all people in the person group will also be deleted.
      *
      * @param personGroupId Id referencing a particular person group.
      * @throws IllegalArgumentException thrown if parameters fail the validation

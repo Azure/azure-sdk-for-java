@@ -104,7 +104,7 @@ public class FacesImpl implements Faces {
     }
 
     /**
-     * Given query face's faceId, find the similar-looking faces from a faceId array or a faceListId.
+     * Given query face's faceId, find the similar-looking faces from a faceId array, a face list or a large face list.
      *
      * @param faceId FaceId of the query face. User needs to call Face - Detect first to get a valid faceId. Note that this faceId is not persisted and will expire 24 hours after the detection call
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -117,7 +117,7 @@ public class FacesImpl implements Faces {
     }
 
     /**
-     * Given query face's faceId, find the similar-looking faces from a faceId array or a faceListId.
+     * Given query face's faceId, find the similar-looking faces from a faceId array, a face list or a large face list.
      *
      * @param faceId FaceId of the query face. User needs to call Face - Detect first to get a valid faceId. Note that this faceId is not persisted and will expire 24 hours after the detection call
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -129,7 +129,7 @@ public class FacesImpl implements Faces {
     }
 
     /**
-     * Given query face's faceId, find the similar-looking faces from a faceId array or a faceListId.
+     * Given query face's faceId, find the similar-looking faces from a faceId array, a face list or a large face list.
      *
      * @param faceId FaceId of the query face. User needs to call Face - Detect first to get a valid faceId. Note that this faceId is not persisted and will expire 24 hours after the detection call
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -145,7 +145,7 @@ public class FacesImpl implements Faces {
     }
 
     /**
-     * Given query face's faceId, find the similar-looking faces from a faceId array or a faceListId.
+     * Given query face's faceId, find the similar-looking faces from a faceId array, a face list or a large face list.
      *
      * @param faceId FaceId of the query face. User needs to call Face - Detect first to get a valid faceId. Note that this faceId is not persisted and will expire 24 hours after the detection call
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -159,12 +159,14 @@ public class FacesImpl implements Faces {
             throw new IllegalArgumentException("Parameter faceId is required and cannot be null.");
         }
         final String faceListId = null;
+        final String largeFaceListId = null;
         final List<UUID> faceIds = null;
         final Integer maxNumOfCandidatesReturned = null;
         final FindSimilarMatchMode mode = null;
         FindSimilarRequest body = new FindSimilarRequest();
         body.withFaceId(faceId);
         body.withFaceListId(null);
+        body.withLargeFaceListId(null);
         body.withFaceIds(null);
         body.withMaxNumOfCandidatesReturned(null);
         body.withMode(null);
@@ -184,11 +186,12 @@ public class FacesImpl implements Faces {
     }
 
     /**
-     * Given query face's faceId, find the similar-looking faces from a faceId array or a faceListId.
+     * Given query face's faceId, find the similar-looking faces from a faceId array, a face list or a large face list.
      *
      * @param faceId FaceId of the query face. User needs to call Face - Detect first to get a valid faceId. Note that this faceId is not persisted and will expire 24 hours after the detection call
-     * @param faceListId An existing user-specified unique candidate face list, created in Face List - Create a Face List. Face list contains a set of persistedFaceIds which are persisted and will never expire. Parameter faceListId and faceIds should not be provided at the same time
-     * @param faceIds An array of candidate faceIds. All of them are created by Face - Detect and the faceIds will expire 24 hours after the detection call.
+     * @param faceListId An existing user-specified unique candidate face list, created in Face List - Create a Face List. Face list contains a set of persistedFaceIds which are persisted and will never expire. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time。
+     * @param largeFaceListId An existing user-specified unique candidate large face list, created in LargeFaceList - Create. Large face list contains a set of persistedFaceIds which are persisted and will never expire. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time.
+     * @param faceIds An array of candidate faceIds. All of them are created by Face - Detect and the faceIds will expire 24 hours after the detection call. The number of faceIds is limited to 1000. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time.
      * @param maxNumOfCandidatesReturned The number of top similar faces returned. The valid range is [1, 1000].
      * @param mode Similar face searching mode. It can be "matchPerson" or "matchFace". Possible values include: 'matchPerson', 'matchFace'
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -196,39 +199,41 @@ public class FacesImpl implements Faces {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;SimilarFace&gt; object if successful.
      */
-    public List<SimilarFace> findSimilar(UUID faceId, String faceListId, List<UUID> faceIds, Integer maxNumOfCandidatesReturned, FindSimilarMatchMode mode) {
-        return findSimilarWithServiceResponseAsync(faceId, faceListId, faceIds, maxNumOfCandidatesReturned, mode).toBlocking().single().body();
+    public List<SimilarFace> findSimilar(UUID faceId, String faceListId, String largeFaceListId, List<UUID> faceIds, Integer maxNumOfCandidatesReturned, FindSimilarMatchMode mode) {
+        return findSimilarWithServiceResponseAsync(faceId, faceListId, largeFaceListId, faceIds, maxNumOfCandidatesReturned, mode).toBlocking().single().body();
     }
 
     /**
-     * Given query face's faceId, find the similar-looking faces from a faceId array or a faceListId.
+     * Given query face's faceId, find the similar-looking faces from a faceId array, a face list or a large face list.
      *
      * @param faceId FaceId of the query face. User needs to call Face - Detect first to get a valid faceId. Note that this faceId is not persisted and will expire 24 hours after the detection call
-     * @param faceListId An existing user-specified unique candidate face list, created in Face List - Create a Face List. Face list contains a set of persistedFaceIds which are persisted and will never expire. Parameter faceListId and faceIds should not be provided at the same time
-     * @param faceIds An array of candidate faceIds. All of them are created by Face - Detect and the faceIds will expire 24 hours after the detection call.
+     * @param faceListId An existing user-specified unique candidate face list, created in Face List - Create a Face List. Face list contains a set of persistedFaceIds which are persisted and will never expire. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time。
+     * @param largeFaceListId An existing user-specified unique candidate large face list, created in LargeFaceList - Create. Large face list contains a set of persistedFaceIds which are persisted and will never expire. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time.
+     * @param faceIds An array of candidate faceIds. All of them are created by Face - Detect and the faceIds will expire 24 hours after the detection call. The number of faceIds is limited to 1000. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time.
      * @param maxNumOfCandidatesReturned The number of top similar faces returned. The valid range is [1, 1000].
      * @param mode Similar face searching mode. It can be "matchPerson" or "matchFace". Possible values include: 'matchPerson', 'matchFace'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<SimilarFace>> findSimilarAsync(UUID faceId, String faceListId, List<UUID> faceIds, Integer maxNumOfCandidatesReturned, FindSimilarMatchMode mode, final ServiceCallback<List<SimilarFace>> serviceCallback) {
-        return ServiceFuture.fromResponse(findSimilarWithServiceResponseAsync(faceId, faceListId, faceIds, maxNumOfCandidatesReturned, mode), serviceCallback);
+    public ServiceFuture<List<SimilarFace>> findSimilarAsync(UUID faceId, String faceListId, String largeFaceListId, List<UUID> faceIds, Integer maxNumOfCandidatesReturned, FindSimilarMatchMode mode, final ServiceCallback<List<SimilarFace>> serviceCallback) {
+        return ServiceFuture.fromResponse(findSimilarWithServiceResponseAsync(faceId, faceListId, largeFaceListId, faceIds, maxNumOfCandidatesReturned, mode), serviceCallback);
     }
 
     /**
-     * Given query face's faceId, find the similar-looking faces from a faceId array or a faceListId.
+     * Given query face's faceId, find the similar-looking faces from a faceId array, a face list or a large face list.
      *
      * @param faceId FaceId of the query face. User needs to call Face - Detect first to get a valid faceId. Note that this faceId is not persisted and will expire 24 hours after the detection call
-     * @param faceListId An existing user-specified unique candidate face list, created in Face List - Create a Face List. Face list contains a set of persistedFaceIds which are persisted and will never expire. Parameter faceListId and faceIds should not be provided at the same time
-     * @param faceIds An array of candidate faceIds. All of them are created by Face - Detect and the faceIds will expire 24 hours after the detection call.
+     * @param faceListId An existing user-specified unique candidate face list, created in Face List - Create a Face List. Face list contains a set of persistedFaceIds which are persisted and will never expire. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time。
+     * @param largeFaceListId An existing user-specified unique candidate large face list, created in LargeFaceList - Create. Large face list contains a set of persistedFaceIds which are persisted and will never expire. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time.
+     * @param faceIds An array of candidate faceIds. All of them are created by Face - Detect and the faceIds will expire 24 hours after the detection call. The number of faceIds is limited to 1000. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time.
      * @param maxNumOfCandidatesReturned The number of top similar faces returned. The valid range is [1, 1000].
      * @param mode Similar face searching mode. It can be "matchPerson" or "matchFace". Possible values include: 'matchPerson', 'matchFace'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;SimilarFace&gt; object
      */
-    public Observable<List<SimilarFace>> findSimilarAsync(UUID faceId, String faceListId, List<UUID> faceIds, Integer maxNumOfCandidatesReturned, FindSimilarMatchMode mode) {
-        return findSimilarWithServiceResponseAsync(faceId, faceListId, faceIds, maxNumOfCandidatesReturned, mode).map(new Func1<ServiceResponse<List<SimilarFace>>, List<SimilarFace>>() {
+    public Observable<List<SimilarFace>> findSimilarAsync(UUID faceId, String faceListId, String largeFaceListId, List<UUID> faceIds, Integer maxNumOfCandidatesReturned, FindSimilarMatchMode mode) {
+        return findSimilarWithServiceResponseAsync(faceId, faceListId, largeFaceListId, faceIds, maxNumOfCandidatesReturned, mode).map(new Func1<ServiceResponse<List<SimilarFace>>, List<SimilarFace>>() {
             @Override
             public List<SimilarFace> call(ServiceResponse<List<SimilarFace>> response) {
                 return response.body();
@@ -237,17 +242,18 @@ public class FacesImpl implements Faces {
     }
 
     /**
-     * Given query face's faceId, find the similar-looking faces from a faceId array or a faceListId.
+     * Given query face's faceId, find the similar-looking faces from a faceId array, a face list or a large face list.
      *
      * @param faceId FaceId of the query face. User needs to call Face - Detect first to get a valid faceId. Note that this faceId is not persisted and will expire 24 hours after the detection call
-     * @param faceListId An existing user-specified unique candidate face list, created in Face List - Create a Face List. Face list contains a set of persistedFaceIds which are persisted and will never expire. Parameter faceListId and faceIds should not be provided at the same time
-     * @param faceIds An array of candidate faceIds. All of them are created by Face - Detect and the faceIds will expire 24 hours after the detection call.
+     * @param faceListId An existing user-specified unique candidate face list, created in Face List - Create a Face List. Face list contains a set of persistedFaceIds which are persisted and will never expire. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time。
+     * @param largeFaceListId An existing user-specified unique candidate large face list, created in LargeFaceList - Create. Large face list contains a set of persistedFaceIds which are persisted and will never expire. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time.
+     * @param faceIds An array of candidate faceIds. All of them are created by Face - Detect and the faceIds will expire 24 hours after the detection call. The number of faceIds is limited to 1000. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time.
      * @param maxNumOfCandidatesReturned The number of top similar faces returned. The valid range is [1, 1000].
      * @param mode Similar face searching mode. It can be "matchPerson" or "matchFace". Possible values include: 'matchPerson', 'matchFace'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;SimilarFace&gt; object
      */
-    public Observable<ServiceResponse<List<SimilarFace>>> findSimilarWithServiceResponseAsync(UUID faceId, String faceListId, List<UUID> faceIds, Integer maxNumOfCandidatesReturned, FindSimilarMatchMode mode) {
+    public Observable<ServiceResponse<List<SimilarFace>>> findSimilarWithServiceResponseAsync(UUID faceId, String faceListId, String largeFaceListId, List<UUID> faceIds, Integer maxNumOfCandidatesReturned, FindSimilarMatchMode mode) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -258,6 +264,7 @@ public class FacesImpl implements Faces {
         FindSimilarRequest body = new FindSimilarRequest();
         body.withFaceId(faceId);
         body.withFaceListId(faceListId);
+        body.withLargeFaceListId(largeFaceListId);
         body.withFaceIds(faceIds);
         body.withMaxNumOfCandidatesReturned(maxNumOfCandidatesReturned);
         body.withMode(mode);
@@ -364,42 +371,39 @@ public class FacesImpl implements Faces {
     }
 
     /**
-     * Identify unknown faces from a person group.
+     * 1-to-many identification to find the closest matches of the specific query person face from a person group or large person group.
      *
-     * @param personGroupId PersonGroupId of the target person group, created by PersonGroups.Create
      * @param faceIds Array of query faces faceIds, created by the Face - Detect. Each of the faces are identified independently. The valid number of faceIds is between [1, 10].
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;IdentifyResult&gt; object if successful.
      */
-    public List<IdentifyResult> identify(String personGroupId, List<UUID> faceIds) {
-        return identifyWithServiceResponseAsync(personGroupId, faceIds).toBlocking().single().body();
+    public List<IdentifyResult> identify(List<UUID> faceIds) {
+        return identifyWithServiceResponseAsync(faceIds).toBlocking().single().body();
     }
 
     /**
-     * Identify unknown faces from a person group.
+     * 1-to-many identification to find the closest matches of the specific query person face from a person group or large person group.
      *
-     * @param personGroupId PersonGroupId of the target person group, created by PersonGroups.Create
      * @param faceIds Array of query faces faceIds, created by the Face - Detect. Each of the faces are identified independently. The valid number of faceIds is between [1, 10].
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<IdentifyResult>> identifyAsync(String personGroupId, List<UUID> faceIds, final ServiceCallback<List<IdentifyResult>> serviceCallback) {
-        return ServiceFuture.fromResponse(identifyWithServiceResponseAsync(personGroupId, faceIds), serviceCallback);
+    public ServiceFuture<List<IdentifyResult>> identifyAsync(List<UUID> faceIds, final ServiceCallback<List<IdentifyResult>> serviceCallback) {
+        return ServiceFuture.fromResponse(identifyWithServiceResponseAsync(faceIds), serviceCallback);
     }
 
     /**
-     * Identify unknown faces from a person group.
+     * 1-to-many identification to find the closest matches of the specific query person face from a person group or large person group.
      *
-     * @param personGroupId PersonGroupId of the target person group, created by PersonGroups.Create
      * @param faceIds Array of query faces faceIds, created by the Face - Detect. Each of the faces are identified independently. The valid number of faceIds is between [1, 10].
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;IdentifyResult&gt; object
      */
-    public Observable<List<IdentifyResult>> identifyAsync(String personGroupId, List<UUID> faceIds) {
-        return identifyWithServiceResponseAsync(personGroupId, faceIds).map(new Func1<ServiceResponse<List<IdentifyResult>>, List<IdentifyResult>>() {
+    public Observable<List<IdentifyResult>> identifyAsync(List<UUID> faceIds) {
+        return identifyWithServiceResponseAsync(faceIds).map(new Func1<ServiceResponse<List<IdentifyResult>>, List<IdentifyResult>>() {
             @Override
             public List<IdentifyResult> call(ServiceResponse<List<IdentifyResult>> response) {
                 return response.body();
@@ -408,29 +412,28 @@ public class FacesImpl implements Faces {
     }
 
     /**
-     * Identify unknown faces from a person group.
+     * 1-to-many identification to find the closest matches of the specific query person face from a person group or large person group.
      *
-     * @param personGroupId PersonGroupId of the target person group, created by PersonGroups.Create
      * @param faceIds Array of query faces faceIds, created by the Face - Detect. Each of the faces are identified independently. The valid number of faceIds is between [1, 10].
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;IdentifyResult&gt; object
      */
-    public Observable<ServiceResponse<List<IdentifyResult>>> identifyWithServiceResponseAsync(String personGroupId, List<UUID> faceIds) {
+    public Observable<ServiceResponse<List<IdentifyResult>>> identifyWithServiceResponseAsync(List<UUID> faceIds) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
-        }
-        if (personGroupId == null) {
-            throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
         }
         if (faceIds == null) {
             throw new IllegalArgumentException("Parameter faceIds is required and cannot be null.");
         }
         Validator.validate(faceIds);
+        final String personGroupId = null;
+        final String largePersonGroupId = null;
         final Integer maxNumOfCandidatesReturned = null;
         final Double confidenceThreshold = null;
         IdentifyRequest body = new IdentifyRequest();
-        body.withPersonGroupId(personGroupId);
         body.withFaceIds(faceIds);
+        body.withPersonGroupId(null);
+        body.withLargePersonGroupId(null);
         body.withMaxNumOfCandidatesReturned(null);
         body.withConfidenceThreshold(null);
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
@@ -449,10 +452,11 @@ public class FacesImpl implements Faces {
     }
 
     /**
-     * Identify unknown faces from a person group.
+     * 1-to-many identification to find the closest matches of the specific query person face from a person group or large person group.
      *
-     * @param personGroupId PersonGroupId of the target person group, created by PersonGroups.Create
      * @param faceIds Array of query faces faceIds, created by the Face - Detect. Each of the faces are identified independently. The valid number of faceIds is between [1, 10].
+     * @param personGroupId PersonGroupId of the target person group, created by PersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
+     * @param largePersonGroupId LargePersonGroupId of the target large person group, created by LargePersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
      * @param maxNumOfCandidatesReturned The range of maxNumOfCandidatesReturned is between 1 and 5 (default is 1).
      * @param confidenceThreshold Confidence threshold of identification, used to judge whether one face belong to one person. The range of confidenceThreshold is [0, 1] (default specified by algorithm).
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -460,37 +464,39 @@ public class FacesImpl implements Faces {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;IdentifyResult&gt; object if successful.
      */
-    public List<IdentifyResult> identify(String personGroupId, List<UUID> faceIds, Integer maxNumOfCandidatesReturned, Double confidenceThreshold) {
-        return identifyWithServiceResponseAsync(personGroupId, faceIds, maxNumOfCandidatesReturned, confidenceThreshold).toBlocking().single().body();
+    public List<IdentifyResult> identify(List<UUID> faceIds, String personGroupId, String largePersonGroupId, Integer maxNumOfCandidatesReturned, Double confidenceThreshold) {
+        return identifyWithServiceResponseAsync(faceIds, personGroupId, largePersonGroupId, maxNumOfCandidatesReturned, confidenceThreshold).toBlocking().single().body();
     }
 
     /**
-     * Identify unknown faces from a person group.
+     * 1-to-many identification to find the closest matches of the specific query person face from a person group or large person group.
      *
-     * @param personGroupId PersonGroupId of the target person group, created by PersonGroups.Create
      * @param faceIds Array of query faces faceIds, created by the Face - Detect. Each of the faces are identified independently. The valid number of faceIds is between [1, 10].
+     * @param personGroupId PersonGroupId of the target person group, created by PersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
+     * @param largePersonGroupId LargePersonGroupId of the target large person group, created by LargePersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
      * @param maxNumOfCandidatesReturned The range of maxNumOfCandidatesReturned is between 1 and 5 (default is 1).
      * @param confidenceThreshold Confidence threshold of identification, used to judge whether one face belong to one person. The range of confidenceThreshold is [0, 1] (default specified by algorithm).
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<IdentifyResult>> identifyAsync(String personGroupId, List<UUID> faceIds, Integer maxNumOfCandidatesReturned, Double confidenceThreshold, final ServiceCallback<List<IdentifyResult>> serviceCallback) {
-        return ServiceFuture.fromResponse(identifyWithServiceResponseAsync(personGroupId, faceIds, maxNumOfCandidatesReturned, confidenceThreshold), serviceCallback);
+    public ServiceFuture<List<IdentifyResult>> identifyAsync(List<UUID> faceIds, String personGroupId, String largePersonGroupId, Integer maxNumOfCandidatesReturned, Double confidenceThreshold, final ServiceCallback<List<IdentifyResult>> serviceCallback) {
+        return ServiceFuture.fromResponse(identifyWithServiceResponseAsync(faceIds, personGroupId, largePersonGroupId, maxNumOfCandidatesReturned, confidenceThreshold), serviceCallback);
     }
 
     /**
-     * Identify unknown faces from a person group.
+     * 1-to-many identification to find the closest matches of the specific query person face from a person group or large person group.
      *
-     * @param personGroupId PersonGroupId of the target person group, created by PersonGroups.Create
      * @param faceIds Array of query faces faceIds, created by the Face - Detect. Each of the faces are identified independently. The valid number of faceIds is between [1, 10].
+     * @param personGroupId PersonGroupId of the target person group, created by PersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
+     * @param largePersonGroupId LargePersonGroupId of the target large person group, created by LargePersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
      * @param maxNumOfCandidatesReturned The range of maxNumOfCandidatesReturned is between 1 and 5 (default is 1).
      * @param confidenceThreshold Confidence threshold of identification, used to judge whether one face belong to one person. The range of confidenceThreshold is [0, 1] (default specified by algorithm).
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;IdentifyResult&gt; object
      */
-    public Observable<List<IdentifyResult>> identifyAsync(String personGroupId, List<UUID> faceIds, Integer maxNumOfCandidatesReturned, Double confidenceThreshold) {
-        return identifyWithServiceResponseAsync(personGroupId, faceIds, maxNumOfCandidatesReturned, confidenceThreshold).map(new Func1<ServiceResponse<List<IdentifyResult>>, List<IdentifyResult>>() {
+    public Observable<List<IdentifyResult>> identifyAsync(List<UUID> faceIds, String personGroupId, String largePersonGroupId, Integer maxNumOfCandidatesReturned, Double confidenceThreshold) {
+        return identifyWithServiceResponseAsync(faceIds, personGroupId, largePersonGroupId, maxNumOfCandidatesReturned, confidenceThreshold).map(new Func1<ServiceResponse<List<IdentifyResult>>, List<IdentifyResult>>() {
             @Override
             public List<IdentifyResult> call(ServiceResponse<List<IdentifyResult>> response) {
                 return response.body();
@@ -499,29 +505,28 @@ public class FacesImpl implements Faces {
     }
 
     /**
-     * Identify unknown faces from a person group.
+     * 1-to-many identification to find the closest matches of the specific query person face from a person group or large person group.
      *
-     * @param personGroupId PersonGroupId of the target person group, created by PersonGroups.Create
      * @param faceIds Array of query faces faceIds, created by the Face - Detect. Each of the faces are identified independently. The valid number of faceIds is between [1, 10].
+     * @param personGroupId PersonGroupId of the target person group, created by PersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
+     * @param largePersonGroupId LargePersonGroupId of the target large person group, created by LargePersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
      * @param maxNumOfCandidatesReturned The range of maxNumOfCandidatesReturned is between 1 and 5 (default is 1).
      * @param confidenceThreshold Confidence threshold of identification, used to judge whether one face belong to one person. The range of confidenceThreshold is [0, 1] (default specified by algorithm).
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;IdentifyResult&gt; object
      */
-    public Observable<ServiceResponse<List<IdentifyResult>>> identifyWithServiceResponseAsync(String personGroupId, List<UUID> faceIds, Integer maxNumOfCandidatesReturned, Double confidenceThreshold) {
+    public Observable<ServiceResponse<List<IdentifyResult>>> identifyWithServiceResponseAsync(List<UUID> faceIds, String personGroupId, String largePersonGroupId, Integer maxNumOfCandidatesReturned, Double confidenceThreshold) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
-        }
-        if (personGroupId == null) {
-            throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
         }
         if (faceIds == null) {
             throw new IllegalArgumentException("Parameter faceIds is required and cannot be null.");
         }
         Validator.validate(faceIds);
         IdentifyRequest body = new IdentifyRequest();
-        body.withPersonGroupId(personGroupId);
         body.withFaceIds(faceIds);
+        body.withPersonGroupId(personGroupId);
+        body.withLargePersonGroupId(largePersonGroupId);
         body.withMaxNumOfCandidatesReturned(maxNumOfCandidatesReturned);
         body.withConfidenceThreshold(confidenceThreshold);
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
@@ -805,43 +810,40 @@ public class FacesImpl implements Faces {
     /**
      * Verify whether two faces belong to a same person. Compares a face Id with a Person Id.
      *
-     * @param faceId FaceId the face, comes from Face - Detect
-     * @param personGroupId Using existing personGroupId and personId for fast loading a specified person. personGroupId is created in Person Groups.Create.
-     * @param personId Specify a certain person in a person group. personId is created in Persons.Create.
+     * @param faceId FaceId of the face, comes from Face - Detect
+     * @param personId Specify a certain person in a person group or a large person group. personId is created in PersonGroup Person - Create or LargePersonGroup Person - Create.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the VerifyResult object if successful.
      */
-    public VerifyResult verifyFaceToPerson(UUID faceId, String personGroupId, UUID personId) {
-        return verifyFaceToPersonWithServiceResponseAsync(faceId, personGroupId, personId).toBlocking().single().body();
+    public VerifyResult verifyFaceToPerson(UUID faceId, UUID personId) {
+        return verifyFaceToPersonWithServiceResponseAsync(faceId, personId).toBlocking().single().body();
     }
 
     /**
      * Verify whether two faces belong to a same person. Compares a face Id with a Person Id.
      *
-     * @param faceId FaceId the face, comes from Face - Detect
-     * @param personGroupId Using existing personGroupId and personId for fast loading a specified person. personGroupId is created in Person Groups.Create.
-     * @param personId Specify a certain person in a person group. personId is created in Persons.Create.
+     * @param faceId FaceId of the face, comes from Face - Detect
+     * @param personId Specify a certain person in a person group or a large person group. personId is created in PersonGroup Person - Create or LargePersonGroup Person - Create.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<VerifyResult> verifyFaceToPersonAsync(UUID faceId, String personGroupId, UUID personId, final ServiceCallback<VerifyResult> serviceCallback) {
-        return ServiceFuture.fromResponse(verifyFaceToPersonWithServiceResponseAsync(faceId, personGroupId, personId), serviceCallback);
+    public ServiceFuture<VerifyResult> verifyFaceToPersonAsync(UUID faceId, UUID personId, final ServiceCallback<VerifyResult> serviceCallback) {
+        return ServiceFuture.fromResponse(verifyFaceToPersonWithServiceResponseAsync(faceId, personId), serviceCallback);
     }
 
     /**
      * Verify whether two faces belong to a same person. Compares a face Id with a Person Id.
      *
-     * @param faceId FaceId the face, comes from Face - Detect
-     * @param personGroupId Using existing personGroupId and personId for fast loading a specified person. personGroupId is created in Person Groups.Create.
-     * @param personId Specify a certain person in a person group. personId is created in Persons.Create.
+     * @param faceId FaceId of the face, comes from Face - Detect
+     * @param personId Specify a certain person in a person group or a large person group. personId is created in PersonGroup Person - Create or LargePersonGroup Person - Create.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VerifyResult object
      */
-    public Observable<VerifyResult> verifyFaceToPersonAsync(UUID faceId, String personGroupId, UUID personId) {
-        return verifyFaceToPersonWithServiceResponseAsync(faceId, personGroupId, personId).map(new Func1<ServiceResponse<VerifyResult>, VerifyResult>() {
+    public Observable<VerifyResult> verifyFaceToPersonAsync(UUID faceId, UUID personId) {
+        return verifyFaceToPersonWithServiceResponseAsync(faceId, personId).map(new Func1<ServiceResponse<VerifyResult>, VerifyResult>() {
             @Override
             public VerifyResult call(ServiceResponse<VerifyResult> response) {
                 return response.body();
@@ -852,21 +854,109 @@ public class FacesImpl implements Faces {
     /**
      * Verify whether two faces belong to a same person. Compares a face Id with a Person Id.
      *
-     * @param faceId FaceId the face, comes from Face - Detect
-     * @param personGroupId Using existing personGroupId and personId for fast loading a specified person. personGroupId is created in Person Groups.Create.
-     * @param personId Specify a certain person in a person group. personId is created in Persons.Create.
+     * @param faceId FaceId of the face, comes from Face - Detect
+     * @param personId Specify a certain person in a person group or a large person group. personId is created in PersonGroup Person - Create or LargePersonGroup Person - Create.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VerifyResult object
      */
-    public Observable<ServiceResponse<VerifyResult>> verifyFaceToPersonWithServiceResponseAsync(UUID faceId, String personGroupId, UUID personId) {
+    public Observable<ServiceResponse<VerifyResult>> verifyFaceToPersonWithServiceResponseAsync(UUID faceId, UUID personId) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (faceId == null) {
             throw new IllegalArgumentException("Parameter faceId is required and cannot be null.");
         }
-        if (personGroupId == null) {
-            throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
+        if (personId == null) {
+            throw new IllegalArgumentException("Parameter personId is required and cannot be null.");
+        }
+        final String personGroupId = null;
+        final String largePersonGroupId = null;
+        VerifyFaceToPersonRequest body = new VerifyFaceToPersonRequest();
+        body.withFaceId(faceId);
+        body.withPersonGroupId(null);
+        body.withLargePersonGroupId(null);
+        body.withPersonId(personId);
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.verifyFaceToPerson(this.client.acceptLanguage(), body, parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<VerifyResult>>>() {
+                @Override
+                public Observable<ServiceResponse<VerifyResult>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<VerifyResult> clientResponse = verifyFaceToPersonDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Verify whether two faces belong to a same person. Compares a face Id with a Person Id.
+     *
+     * @param faceId FaceId of the face, comes from Face - Detect
+     * @param personId Specify a certain person in a person group or a large person group. personId is created in PersonGroup Person - Create or LargePersonGroup Person - Create.
+     * @param personGroupId Using existing personGroupId and personId for fast loading a specified person. personGroupId is created in PersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
+     * @param largePersonGroupId Using existing largePersonGroupId and personId for fast loading a specified person. largePersonGroupId is created in LargePersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws APIErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the VerifyResult object if successful.
+     */
+    public VerifyResult verifyFaceToPerson(UUID faceId, UUID personId, String personGroupId, String largePersonGroupId) {
+        return verifyFaceToPersonWithServiceResponseAsync(faceId, personId, personGroupId, largePersonGroupId).toBlocking().single().body();
+    }
+
+    /**
+     * Verify whether two faces belong to a same person. Compares a face Id with a Person Id.
+     *
+     * @param faceId FaceId of the face, comes from Face - Detect
+     * @param personId Specify a certain person in a person group or a large person group. personId is created in PersonGroup Person - Create or LargePersonGroup Person - Create.
+     * @param personGroupId Using existing personGroupId and personId for fast loading a specified person. personGroupId is created in PersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
+     * @param largePersonGroupId Using existing largePersonGroupId and personId for fast loading a specified person. largePersonGroupId is created in LargePersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<VerifyResult> verifyFaceToPersonAsync(UUID faceId, UUID personId, String personGroupId, String largePersonGroupId, final ServiceCallback<VerifyResult> serviceCallback) {
+        return ServiceFuture.fromResponse(verifyFaceToPersonWithServiceResponseAsync(faceId, personId, personGroupId, largePersonGroupId), serviceCallback);
+    }
+
+    /**
+     * Verify whether two faces belong to a same person. Compares a face Id with a Person Id.
+     *
+     * @param faceId FaceId of the face, comes from Face - Detect
+     * @param personId Specify a certain person in a person group or a large person group. personId is created in PersonGroup Person - Create or LargePersonGroup Person - Create.
+     * @param personGroupId Using existing personGroupId and personId for fast loading a specified person. personGroupId is created in PersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
+     * @param largePersonGroupId Using existing largePersonGroupId and personId for fast loading a specified person. largePersonGroupId is created in LargePersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the VerifyResult object
+     */
+    public Observable<VerifyResult> verifyFaceToPersonAsync(UUID faceId, UUID personId, String personGroupId, String largePersonGroupId) {
+        return verifyFaceToPersonWithServiceResponseAsync(faceId, personId, personGroupId, largePersonGroupId).map(new Func1<ServiceResponse<VerifyResult>, VerifyResult>() {
+            @Override
+            public VerifyResult call(ServiceResponse<VerifyResult> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Verify whether two faces belong to a same person. Compares a face Id with a Person Id.
+     *
+     * @param faceId FaceId of the face, comes from Face - Detect
+     * @param personId Specify a certain person in a person group or a large person group. personId is created in PersonGroup Person - Create or LargePersonGroup Person - Create.
+     * @param personGroupId Using existing personGroupId and personId for fast loading a specified person. personGroupId is created in PersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
+     * @param largePersonGroupId Using existing largePersonGroupId and personId for fast loading a specified person. largePersonGroupId is created in LargePersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the VerifyResult object
+     */
+    public Observable<ServiceResponse<VerifyResult>> verifyFaceToPersonWithServiceResponseAsync(UUID faceId, UUID personId, String personGroupId, String largePersonGroupId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (faceId == null) {
+            throw new IllegalArgumentException("Parameter faceId is required and cannot be null.");
         }
         if (personId == null) {
             throw new IllegalArgumentException("Parameter personId is required and cannot be null.");
@@ -874,6 +964,7 @@ public class FacesImpl implements Faces {
         VerifyFaceToPersonRequest body = new VerifyFaceToPersonRequest();
         body.withFaceId(faceId);
         body.withPersonGroupId(personGroupId);
+        body.withLargePersonGroupId(largePersonGroupId);
         body.withPersonId(personId);
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.verifyFaceToPerson(this.client.acceptLanguage(), body, parameterizedHost, this.client.userAgent())
