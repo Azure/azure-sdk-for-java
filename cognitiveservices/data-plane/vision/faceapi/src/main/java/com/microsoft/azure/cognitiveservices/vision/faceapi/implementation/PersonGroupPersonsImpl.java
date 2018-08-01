@@ -101,9 +101,9 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
         @PATCH("persongroups/{personGroupId}/persons/{personId}/persistedfaces/{persistedFaceId}")
         Observable<Response<ResponseBody>> updateFace(@Path("personGroupId") String personGroupId, @Path("personId") UUID personId, @Path("persistedFaceId") UUID persistedFaceId, @Header("accept-language") String acceptLanguage, @Body UpdateFaceRequest body, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroupPersons addPersonFaceFromUrl" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroupPersons addFaceFromUrl" })
         @POST("persongroups/{personGroupId}/persons/{personId}/persistedfaces")
-        Observable<Response<ResponseBody>> addPersonFaceFromUrl(@Path("personGroupId") String personGroupId, @Path("personId") UUID personId, @Query("userData") String userData, @Query("targetFace") String targetFace, @Header("accept-language") String acceptLanguage, @Body ImageUrl imageUrl, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> addFaceFromUrl(@Path("personGroupId") String personGroupId, @Path("personId") UUID personId, @Query("userData") String userData, @Query("targetFace") String targetFace, @Header("accept-language") String acceptLanguage, @Body ImageUrl imageUrl, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/octet-stream", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroupPersons addPersonFaceFromStream" })
         @POST("persongroups/{personGroupId}/persons/{personId}/persistedfaces")
@@ -1147,8 +1147,8 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PersistedFace object if successful.
      */
-    public PersistedFace addPersonFaceFromUrl(String personGroupId, UUID personId, String url) {
-        return addPersonFaceFromUrlWithServiceResponseAsync(personGroupId, personId, url).toBlocking().single().body();
+    public PersistedFace addFaceFromUrl(String personGroupId, UUID personId, String url) {
+        return addFaceFromUrlWithServiceResponseAsync(personGroupId, personId, url).toBlocking().single().body();
     }
 
     /**
@@ -1161,8 +1161,8 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<PersistedFace> addPersonFaceFromUrlAsync(String personGroupId, UUID personId, String url, final ServiceCallback<PersistedFace> serviceCallback) {
-        return ServiceFuture.fromResponse(addPersonFaceFromUrlWithServiceResponseAsync(personGroupId, personId, url), serviceCallback);
+    public ServiceFuture<PersistedFace> addFaceFromUrlAsync(String personGroupId, UUID personId, String url, final ServiceCallback<PersistedFace> serviceCallback) {
+        return ServiceFuture.fromResponse(addFaceFromUrlWithServiceResponseAsync(personGroupId, personId, url), serviceCallback);
     }
 
     /**
@@ -1174,8 +1174,8 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
      */
-    public Observable<PersistedFace> addPersonFaceFromUrlAsync(String personGroupId, UUID personId, String url) {
-        return addPersonFaceFromUrlWithServiceResponseAsync(personGroupId, personId, url).map(new Func1<ServiceResponse<PersistedFace>, PersistedFace>() {
+    public Observable<PersistedFace> addFaceFromUrlAsync(String personGroupId, UUID personId, String url) {
+        return addFaceFromUrlWithServiceResponseAsync(personGroupId, personId, url).map(new Func1<ServiceResponse<PersistedFace>, PersistedFace>() {
             @Override
             public PersistedFace call(ServiceResponse<PersistedFace> response) {
                 return response.body();
@@ -1192,7 +1192,7 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
      */
-    public Observable<ServiceResponse<PersistedFace>> addPersonFaceFromUrlWithServiceResponseAsync(String personGroupId, UUID personId, String url) {
+    public Observable<ServiceResponse<PersistedFace>> addFaceFromUrlWithServiceResponseAsync(String personGroupId, UUID personId, String url) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -1211,12 +1211,12 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
         imageUrl.withUrl(url);
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         String targetFaceConverted = this.client.serializerAdapter().serializeList(targetFace, CollectionFormat.CSV);
-        return service.addPersonFaceFromUrl(personGroupId, personId, userData, targetFaceConverted, this.client.acceptLanguage(), imageUrl, parameterizedHost, this.client.userAgent())
+        return service.addFaceFromUrl(personGroupId, personId, userData, targetFaceConverted, this.client.acceptLanguage(), imageUrl, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PersistedFace>>>() {
                 @Override
                 public Observable<ServiceResponse<PersistedFace>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PersistedFace> clientResponse = addPersonFaceFromUrlDelegate(response);
+                        ServiceResponse<PersistedFace> clientResponse = addFaceFromUrlDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1238,8 +1238,8 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PersistedFace object if successful.
      */
-    public PersistedFace addPersonFaceFromUrl(String personGroupId, UUID personId, String url, String userData, List<Integer> targetFace) {
-        return addPersonFaceFromUrlWithServiceResponseAsync(personGroupId, personId, url, userData, targetFace).toBlocking().single().body();
+    public PersistedFace addFaceFromUrl(String personGroupId, UUID personId, String url, String userData, List<Integer> targetFace) {
+        return addFaceFromUrlWithServiceResponseAsync(personGroupId, personId, url, userData, targetFace).toBlocking().single().body();
     }
 
     /**
@@ -1254,8 +1254,8 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<PersistedFace> addPersonFaceFromUrlAsync(String personGroupId, UUID personId, String url, String userData, List<Integer> targetFace, final ServiceCallback<PersistedFace> serviceCallback) {
-        return ServiceFuture.fromResponse(addPersonFaceFromUrlWithServiceResponseAsync(personGroupId, personId, url, userData, targetFace), serviceCallback);
+    public ServiceFuture<PersistedFace> addFaceFromUrlAsync(String personGroupId, UUID personId, String url, String userData, List<Integer> targetFace, final ServiceCallback<PersistedFace> serviceCallback) {
+        return ServiceFuture.fromResponse(addFaceFromUrlWithServiceResponseAsync(personGroupId, personId, url, userData, targetFace), serviceCallback);
     }
 
     /**
@@ -1269,8 +1269,8 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
      */
-    public Observable<PersistedFace> addPersonFaceFromUrlAsync(String personGroupId, UUID personId, String url, String userData, List<Integer> targetFace) {
-        return addPersonFaceFromUrlWithServiceResponseAsync(personGroupId, personId, url, userData, targetFace).map(new Func1<ServiceResponse<PersistedFace>, PersistedFace>() {
+    public Observable<PersistedFace> addFaceFromUrlAsync(String personGroupId, UUID personId, String url, String userData, List<Integer> targetFace) {
+        return addFaceFromUrlWithServiceResponseAsync(personGroupId, personId, url, userData, targetFace).map(new Func1<ServiceResponse<PersistedFace>, PersistedFace>() {
             @Override
             public PersistedFace call(ServiceResponse<PersistedFace> response) {
                 return response.body();
@@ -1289,7 +1289,7 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
      */
-    public Observable<ServiceResponse<PersistedFace>> addPersonFaceFromUrlWithServiceResponseAsync(String personGroupId, UUID personId, String url, String userData, List<Integer> targetFace) {
+    public Observable<ServiceResponse<PersistedFace>> addFaceFromUrlWithServiceResponseAsync(String personGroupId, UUID personId, String url, String userData, List<Integer> targetFace) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -1307,12 +1307,12 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
         imageUrl.withUrl(url);
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         String targetFaceConverted = this.client.serializerAdapter().serializeList(targetFace, CollectionFormat.CSV);
-        return service.addPersonFaceFromUrl(personGroupId, personId, userData, targetFaceConverted, this.client.acceptLanguage(), imageUrl, parameterizedHost, this.client.userAgent())
+        return service.addFaceFromUrl(personGroupId, personId, userData, targetFaceConverted, this.client.acceptLanguage(), imageUrl, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PersistedFace>>>() {
                 @Override
                 public Observable<ServiceResponse<PersistedFace>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PersistedFace> clientResponse = addPersonFaceFromUrlDelegate(response);
+                        ServiceResponse<PersistedFace> clientResponse = addFaceFromUrlDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1321,7 +1321,7 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
             });
     }
 
-    private ServiceResponse<PersistedFace> addPersonFaceFromUrlDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
+    private ServiceResponse<PersistedFace> addFaceFromUrlDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PersistedFace, APIErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PersistedFace>() { }.getType())
                 .registerError(APIErrorException.class)

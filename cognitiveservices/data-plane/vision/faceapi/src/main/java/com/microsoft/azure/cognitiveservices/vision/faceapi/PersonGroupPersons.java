@@ -569,7 +569,7 @@ public interface PersonGroupPersons {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PersistedFace object if successful.
      */
-    PersistedFace addPersonFaceFromUrl(String personGroupId, UUID personId, String url);
+    PersistedFace addFaceFromUrl(String personGroupId, UUID personId, String url);
 
     /**
      * Add a representative face to a person for identification. The input face is specified as an image with a targetFace rectangle.
@@ -581,7 +581,7 @@ public interface PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<PersistedFace> addPersonFaceFromUrlAsync(String personGroupId, UUID personId, String url, final ServiceCallback<PersistedFace> serviceCallback);
+    ServiceFuture<PersistedFace> addFaceFromUrlAsync(String personGroupId, UUID personId, String url, final ServiceCallback<PersistedFace> serviceCallback);
 
     /**
      * Add a representative face to a person for identification. The input face is specified as an image with a targetFace rectangle.
@@ -592,7 +592,7 @@ public interface PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
      */
-    Observable<PersistedFace> addPersonFaceFromUrlAsync(String personGroupId, UUID personId, String url);
+    Observable<PersistedFace> addFaceFromUrlAsync(String personGroupId, UUID personId, String url);
 
     /**
      * Add a representative face to a person for identification. The input face is specified as an image with a targetFace rectangle.
@@ -603,7 +603,7 @@ public interface PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
      */
-    Observable<ServiceResponse<PersistedFace>> addPersonFaceFromUrlWithServiceResponseAsync(String personGroupId, UUID personId, String url);
+    Observable<ServiceResponse<PersistedFace>> addFaceFromUrlWithServiceResponseAsync(String personGroupId, UUID personId, String url);
     /**
      * Add a representative face to a person for identification. The input face is specified as an image with a targetFace rectangle.
      *
@@ -617,7 +617,7 @@ public interface PersonGroupPersons {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PersistedFace object if successful.
      */
-    PersistedFace addPersonFaceFromUrl(String personGroupId, UUID personId, String url, String userData, List<Integer> targetFace);
+    PersistedFace addFaceFromUrl(String personGroupId, UUID personId, String url, String userData, List<Integer> targetFace);
 
     /**
      * Add a representative face to a person for identification. The input face is specified as an image with a targetFace rectangle.
@@ -631,7 +631,7 @@ public interface PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<PersistedFace> addPersonFaceFromUrlAsync(String personGroupId, UUID personId, String url, String userData, List<Integer> targetFace, final ServiceCallback<PersistedFace> serviceCallback);
+    ServiceFuture<PersistedFace> addFaceFromUrlAsync(String personGroupId, UUID personId, String url, String userData, List<Integer> targetFace, final ServiceCallback<PersistedFace> serviceCallback);
 
     /**
      * Add a representative face to a person for identification. The input face is specified as an image with a targetFace rectangle.
@@ -644,7 +644,7 @@ public interface PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
      */
-    Observable<PersistedFace> addPersonFaceFromUrlAsync(String personGroupId, UUID personId, String url, String userData, List<Integer> targetFace);
+    Observable<PersistedFace> addFaceFromUrlAsync(String personGroupId, UUID personId, String url, String userData, List<Integer> targetFace);
 
     /**
      * Add a representative face to a person for identification. The input face is specified as an image with a targetFace rectangle.
@@ -657,7 +657,7 @@ public interface PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
      */
-    Observable<ServiceResponse<PersistedFace>> addPersonFaceFromUrlWithServiceResponseAsync(String personGroupId, UUID personId, String url, String userData, List<Integer> targetFace);
+    Observable<ServiceResponse<PersistedFace>> addFaceFromUrlWithServiceResponseAsync(String personGroupId, UUID personId, String url, String userData, List<Integer> targetFace);
 
     /**
      * Add a representative face to a person for identification. The input face is specified as an image with a targetFace rectangle.
