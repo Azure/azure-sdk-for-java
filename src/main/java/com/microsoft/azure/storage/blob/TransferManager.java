@@ -435,7 +435,7 @@ public class TransferManager {
 
             return Observable.range(0, numBuffers)
                     .flatMapCompletable(i -> {
-                        long bufferSizeActual = Math.min(Integer.MAX_VALUE, dataSize - i * Integer.MAX_VALUE);
+                        long bufferSizeActual = Math.min(Integer.MAX_VALUE, dataSize - (long)i * Integer.MAX_VALUE);
                         MappedByteBuffer block = file.map(FileChannel.MapMode.READ_WRITE, i * Integer.MAX_VALUE,
                                 bufferSizeActual);
                         block.load();
