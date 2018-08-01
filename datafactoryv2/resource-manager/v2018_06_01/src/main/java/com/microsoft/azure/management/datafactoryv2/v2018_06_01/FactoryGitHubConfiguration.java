@@ -19,18 +19,29 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("FactoryGithubConfiguration")
 public class FactoryGitHubConfiguration extends FactoryRepoConfiguration {
     /**
-     * GitHub repo host name.
+     * GitHub Enterprise host name. For example: https://github.mydomain.com.
      */
-    @JsonProperty(value = "hostName", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "hostName")
     private String hostName;
 
     /**
-     * Get gitHub repo host name.
+     * Get gitHub Enterprise host name. For example: https://github.mydomain.com.
      *
      * @return the hostName value
      */
     public String hostName() {
         return this.hostName;
+    }
+
+    /**
+     * Set gitHub Enterprise host name. For example: https://github.mydomain.com.
+     *
+     * @param hostName the hostName value to set
+     * @return the FactoryGitHubConfiguration object itself.
+     */
+    public FactoryGitHubConfiguration withHostName(String hostName) {
+        this.hostName = hostName;
+        return this;
     }
 
 }
