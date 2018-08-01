@@ -15,20 +15,15 @@
 
 package com.microsoft.azure.storage
 
-import com.microsoft.azure.storage.blob.AppendBlobAccessConditions
-import com.microsoft.azure.storage.blob.AppendBlobURL
-import com.microsoft.azure.storage.blob.BlobAccessConditions
-import com.microsoft.azure.storage.blob.BlobHTTPHeaders
-import com.microsoft.azure.storage.blob.ETag
-import com.microsoft.azure.storage.blob.HTTPAccessConditions
-import com.microsoft.azure.storage.blob.LeaseAccessConditions
-import com.microsoft.azure.storage.blob.Metadata
-import com.microsoft.azure.storage.blob.StorageException
+import com.microsoft.azure.storage.blob.*
 import com.microsoft.azure.storage.blob.models.AppendBlobAppendBlockHeaders
 import com.microsoft.azure.storage.blob.models.AppendBlobCreateResponse
 import com.microsoft.azure.storage.blob.models.BlobGetPropertiesResponse
 import com.microsoft.rest.v2.util.FlowableUtil
+import io.reactivex.Flowable
 import spock.lang.Unroll
+
+import java.nio.ByteBuffer
 import java.security.MessageDigest
 
 public class AppendBlobAPITest extends APISpec {
@@ -39,7 +34,7 @@ public class AppendBlobAPITest extends APISpec {
         bu.create(null, null, null).blockingGet()
     }
 
-    def "Append blob create defaults"() {
+    def "Create defaults"() {
         when:
         AppendBlobCreateResponse createResponse =
                 bu.create(null, null, null).blockingGet()
@@ -51,7 +46,7 @@ public class AppendBlobAPITest extends APISpec {
         createResponse.headers().isServerEncrypted()
     }
 
-    def "Append blob create error"() {
+    def "Create error"() {
         when:
         bu.create(null, null, new BlobAccessConditions(
                 new HTTPAccessConditions(null, null,
@@ -63,7 +58,7 @@ public class AppendBlobAPITest extends APISpec {
     }
 
     @Unroll
-    def "Append blob create headers"() {
+    def "Create headers"() {
         setup:
         BlobHTTPHeaders headers = new BlobHTTPHeaders(cacheControl, contentDisposition, contentEncoding,
                 contentLanguage, contentMD5, contentType)
@@ -84,7 +79,7 @@ public class AppendBlobAPITest extends APISpec {
     }
 
     @Unroll
-    def "Append blob create metadata"() {
+    def "Create metadata"() {
         setup:
         Metadata metadata = new Metadata()
         if (key1 != null) {
@@ -108,7 +103,7 @@ public class AppendBlobAPITest extends APISpec {
     }
 
     @Unroll
-    def "Append blob create AC"() {
+    def "Create AC"() {
         setup:
         match = setupBlobMatchCondition(bu, match)
         leaseID = setupBlobLeaseCondition(bu, leaseID)
@@ -130,7 +125,31 @@ public class AppendBlobAPITest extends APISpec {
         null     | null       | null         | null        | receivedLeaseID
     }
 
-    def "Append blob append block defaults"() {
+    @Unroll
+    def "Create AC fail"() {
+        setup:
+        noneMatch = setupBlobMatchCondition(bu, noneMatch)
+        setupBlobLeaseCondition(bu, leaseID)
+        BlobAccessConditions bac = new BlobAccessConditions(
+                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
+                null, null)
+
+        when:
+        bu.create(null, null, bac).blockingGet()
+
+        then:
+        thrown(StorageException)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
+    }
+
+    def "Append block defaults"() {
         setup:
         AppendBlobAppendBlockHeaders headers =
                 bu.appendBlock(defaultFlowable, defaultDataSize,
@@ -145,22 +164,39 @@ public class AppendBlobAPITest extends APISpec {
         headers.blobCommittedBlockCount() != null
     }
 
-    /*
-    TODO: Negative cases where data size does not equal the passed value for length
-    defaultData | defaultDataSize + 1 | defaultData                                        || -1
-    defaultData | 2                           | ByteBuffer.wrap(defaultText.substring(0, 3).bytes) || -1/*
-    try{
-        statusCode = bu.appendBlock(Flowable.just(inputData), dataSize, null)
-                    .blockingGet().statusCode()
-       }
-    catch (TimeoutException | RestException e) {
-            statusCode = -1
-        }
-        statusCode == expectedCode || receivedData == expectedData
-     */
+    @Unroll
+    def "Append block IA"() {
+        when:
+        bu.appendBlock(data, dataSize, null).blockingGet()
+
+        then:
+        thrown(IllegalArgumentException)
+
+        where:
+        data            | dataSize
+        null            | defaultDataSize
+        defaultFlowable | defaultDataSize + 1
+        defaultFlowable | defaultDataSize - 1
+    }
+
+    def "Append block empty body"() {
+        when:
+        bu.appendBlock(Flowable.just(ByteBuffer.wrap(new byte[0])), 0, null).blockingGet()
+
+        then:
+        thrown(StorageException)
+    }
+
+    def "Append block null body"() {
+        when:
+        bu.appendBlock(Flowable.just(null), 0, null).blockingGet()
+
+        then:
+        thrown(NullPointerException) // Thrown by Flowable.
+    }
 
     @Unroll
-    def "Append blob append block AC"() {
+    def "Append block AC"() {
         setup:
         match = setupBlobMatchCondition(bu, match)
         leaseID = setupBlobLeaseCondition(bu, leaseID)
@@ -184,7 +220,34 @@ public class AppendBlobAPITest extends APISpec {
         null     | null       | null         | null        | null            | null       | 100
     }
 
-    def "Append blob append block error"() {
+    @Unroll
+    def "Append block AC fail"() {
+        setup:
+        noneMatch = setupBlobMatchCondition(bu, noneMatch)
+        setupBlobLeaseCondition(bu, leaseID)
+        BlobAccessConditions bac = new BlobAccessConditions(
+                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
+                new AppendBlobAccessConditions(appendPosE, maxSizeLTE), null)
+
+        when:
+        bu.appendBlock(defaultFlowable, defaultDataSize, bac)
+                .blockingGet().statusCode()
+
+        then:
+        thrown(StorageException)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID        | appendPosE | maxSizeLTE
+        newDate  | null       | null        | null         | null           | null       | null
+        null     | oldDate    | null        | null         | null           | null       | null
+        null     | null       | garbageEtag | null         | null           | null       | null
+        null     | null       | null        | receivedEtag | null           | null       | null
+        null     | null       | null        | null         | garbageLeaseID | null       | null
+        null     | null       | null        | null         | null           | 1          | null
+        null     | null       | null        | null         | null           | null       | 1
+    }
+
+    def "Append block error"() {
         setup:
         bu = cu.createAppendBlobURL(generateBlobName())
 
