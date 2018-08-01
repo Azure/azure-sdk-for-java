@@ -53,12 +53,14 @@ public final class BlockBlobURL extends BlobURL {
     public static final int MAX_BLOCKS = 50000;
 
     /**
-     * Creates a new {@link BlockBlobURL} object.
+     * Creates a {@code BlockBlobURL} object pointing to the account specified by the URL and using the provided
+     * pipeline to make HTTP requests.
      *
      * @param url
-     *      A {@code java.net.URL} to a block blob.
+     *      A {@code URL} to an Azure Storage block blob.
      * @param pipeline
-     *      An {@link HttpPipeline} for sending requests.
+     *      A {@code HttpPipeline} which configures the behavior of HTTP exchanges. Please refer to the createPipeline
+     *      method on {@link StorageURL} for more information.
      */
     public BlockBlobURL(URL url, HttpPipeline pipeline) {
         super(url, pipeline);

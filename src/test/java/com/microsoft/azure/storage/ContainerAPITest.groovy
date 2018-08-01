@@ -1469,6 +1469,18 @@ class ContainerAPITest extends APISpec {
         propsResponse.headers().blobType() == BlobType.APPEND_BLOB
     }
 
+    def "Web container"() {
+        setup:
+        def webContainer = primaryServiceURL.createContainerURL(ContainerURL.STATIC_WEBSITE_CONTAINER_NAME)
+
+        when:
+        // Validate some basic operation.
+        webContainer.setAccessPolicy(null, null, null).blockingGet()
+
+        then:
+        notThrown(StorageException)
+    }
+
     def "With pipeline"() {
         setup:
         ContainerURL withPipeline = cu.withPipeline(HttpPipeline.build(new RequestPolicyFactory() {

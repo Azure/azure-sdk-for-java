@@ -36,12 +36,24 @@ import static com.microsoft.azure.storage.blob.Utility.addErrorWrappingToSingle;
  */
 public final class ContainerURL extends StorageURL {
 
+
     public static final String ROOT_CONTAINER_NAME = "$root";
 
     public static final String STATIC_WEBSITE_CONTAINER_NAME = "$web";
 
     public static final String LOG_CONTAINER_NAME = "$logs";
 
+
+    /**
+     * Creates a {@code ContainerURL} object pointing to the account specified by the URL and using the provided
+     * pipeline to make HTTP requests.
+     *
+     * @param url
+     *      A {@code URL} to an Azure Storage container.
+     * @param pipeline
+     *      A {@code HttpPipeline} which configures the behavior of HTTP exchanges. Please refer to the createPipeline
+     *      method on {@link StorageURL} for more information.
+     */
     public ContainerURL(URL url, HttpPipeline pipeline) {
         super(url, pipeline);
     }

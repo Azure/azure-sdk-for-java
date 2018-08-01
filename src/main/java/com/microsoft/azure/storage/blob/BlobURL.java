@@ -36,12 +36,14 @@ import static com.microsoft.azure.storage.blob.Utility.*;
 public class BlobURL extends StorageURL {
 
     /**
-     * Creates a new {@link BlobURL} object.
+     * Creates a {@code BlobURL} object pointing to the account specified by the URL and using the provided
+     * pipeline to make HTTP requests.
      *
      * @param url
-     *      A {@code java.net.URL} to a blob.
+     *      A {@code URL} to an Azure Storage blob.
      * @param pipeline
-     *      An {@link HttpPipeline} for sending requests.
+     *      A {@code HttpPipeline} which configures the behavior of HTTP exchanges. Please refer to the createPipeline
+     *      method on {@link StorageURL} for more information.
      */
     public BlobURL(URL url, HttpPipeline pipeline) {
         super(url, pipeline);

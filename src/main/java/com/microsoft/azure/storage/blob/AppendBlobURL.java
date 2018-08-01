@@ -46,13 +46,14 @@ public final class AppendBlobURL extends BlobURL {
     public static final int MAX_BLOCKS = 50000;
 
     /**
-     * Creates a new {@code AppendBlobURL} object with its own pipeline.
+     * Creates a {@code AppendBlobURL} object pointing to the account specified by the URL and using the provided
+     * pipeline to make HTTP requests.
      *
      * @param url
-     *      A {@code URL} to an append blob.
+     *      A {@code URL} to an Azure Storage append blob.
      * @param pipeline
-     *      An {@code HttpPipeline} for sending requests. Please refer to {@link StorageURL} for how to generate a
-     *      default pipeline. Pipelines may also be created with custom policies if desired.
+     *      A {@code HttpPipeline} which configures the behavior of HTTP exchanges. Please refer to the createPipeline
+     *      method on {@link StorageURL} for more information.
      */
     public AppendBlobURL(URL url, HttpPipeline pipeline) {
         super(url, pipeline);
