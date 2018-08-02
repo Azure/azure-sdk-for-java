@@ -610,7 +610,7 @@ class RequestResponseLink extends ClientEntity{
 			}
 			else
 			{
-			    TRACE_LOGGER.error("Opening internal receive link of requestresponselink to {} failed.", parent.linkPath, completionException);
+			    TRACE_LOGGER.error("Opening internal receive link '{}' of requestresponselink to {} failed.", this.receiveLink.getName(), this.parent.linkPath, completionException);
 			    this.setClosed();
 			    this.closeFuture.complete(null);
 				this.openFuture.completeExceptionally(completionException);
@@ -628,12 +628,12 @@ class RequestResponseLink extends ClientEntity{
 			{
 				if(!this.closeFuture.isDone())
 				{
-				    TRACE_LOGGER.error("Closing internal receive link of requestresponselink to {} failed.", parent.linkPath, exception);
+				    TRACE_LOGGER.error("Closing internal receive link '{}' of requestresponselink to {} failed.", this.receiveLink.getName(), this.parent.linkPath, exception);
 					this.closeFuture.completeExceptionally(exception);
 				}
 			}
 			
-			TRACE_LOGGER.warn("Internal receive link of requestresponselink to '{}' encountered error.", this.parent.linkPath, exception);
+			TRACE_LOGGER.warn("Internal receive link '{}' of requestresponselink to '{}' encountered error.", this.receiveLink.getName(), this.parent.linkPath, exception);
 			this.parent.underlyingFactory.deregisterForConnectionError(this.receiveLink);
 			if(this.parent.amqpSender.sendLink != null)
             {
@@ -658,7 +658,7 @@ class RequestResponseLink extends ClientEntity{
 					else
 					{
 						Exception exception = ExceptionUtil.toException(condition);
-						TRACE_LOGGER.error("Closing internal receive link of requestresponselink to {} failed.", parent.linkPath, exception);
+						TRACE_LOGGER.error("Closing internal receive link '{}' of requestresponselink to {} failed.", this.receiveLink.getName(), this.parent.linkPath, exception);
 						this.closeFuture.completeExceptionally(exception);
 					}
 				}
@@ -674,7 +674,7 @@ class RequestResponseLink extends ClientEntity{
 					}
 					else
 					{
-					    TRACE_LOGGER.warn("Internal receive link of requestresponselink to '{}' closed with error.", this.parent.linkPath, exception);
+					    TRACE_LOGGER.warn("Internal receive link '{}' of requestresponselink to '{}' closed with error.", this.receiveLink.getName(), this.parent.linkPath, exception);
 					    this.parent.underlyingFactory.deregisterForConnectionError(this.receiveLink);
 					    if(this.parent.amqpSender.sendLink != null)
 			            {
@@ -819,7 +819,7 @@ class RequestResponseLink extends ClientEntity{
 			}
 			else
 			{
-			    TRACE_LOGGER.error("Opening internal send link of requestresponselink to {} failed.", parent.linkPath, completionException);
+			    TRACE_LOGGER.error("Opening internal send link '{}' of requestresponselink to {} failed.", this.sendLink.getName(), this.parent.linkPath, completionException);
 			    this.setClosed();
 			    this.closeFuture.complete(null);
 				this.openFuture.completeExceptionally(completionException);
@@ -837,12 +837,12 @@ class RequestResponseLink extends ClientEntity{
 			{
 				if(!this.closeFuture.isDone())
 				{
-				    TRACE_LOGGER.error("Closing internal send link of requestresponselink to {} failed.", parent.linkPath, exception);
+				    TRACE_LOGGER.error("Closing internal send link '{}' of requestresponselink to {} failed.", this.sendLink.getName(), this.parent.linkPath, exception);
 					this.closeFuture.completeExceptionally(exception);
 				}
 			}
 			
-			TRACE_LOGGER.warn("Internal send link of requestresponselink to '{}' encountered error.", this.parent.linkPath, exception);
+			TRACE_LOGGER.warn("Internal send link '{}' of requestresponselink to '{}' encountered error.", this.sendLink.getName(), this.parent.linkPath, exception);
 			this.parent.underlyingFactory.deregisterForConnectionError(this.sendLink);
 			if(this.parent.amqpReceiver.receiveLink != null)
             {
@@ -861,13 +861,13 @@ class RequestResponseLink extends ClientEntity{
 				{
 					if(condition == null || condition.getCondition() == null)
 					{
-					    TRACE_LOGGER.info("Closed internal send link of requestresponselink to {}", parent.linkPath);
+					    TRACE_LOGGER.info("Closed internal send link of requestresponselink to {}", this.parent.linkPath);
 						this.closeFuture.complete(null);
 					}
 					else
 					{
 						Exception exception = ExceptionUtil.toException(condition);
-						TRACE_LOGGER.error("Closing internal send link of requestresponselink to {} failed.", parent.linkPath, exception);
+						TRACE_LOGGER.error("Closing internal send link '{}' of requestresponselink to {} failed.", this.sendLink.getName(), this.parent.linkPath, exception);
 						this.closeFuture.completeExceptionally(exception);
 					}
 				}
@@ -883,7 +883,7 @@ class RequestResponseLink extends ClientEntity{
 					}
 					else
 					{
-					    TRACE_LOGGER.warn("Internal send link of requestresponselink to '{}' closed with error.", this.parent.linkPath, exception);
+					    TRACE_LOGGER.warn("Internal send link '{}' of requestresponselink to '{}' closed with error.", this.sendLink.getName(), this.parent.linkPath, exception);
 					    this.parent.underlyingFactory.deregisterForConnectionError(this.sendLink);
 					    
 					    if(this.parent.amqpReceiver.receiveLink != null)

@@ -643,14 +643,14 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
             
 			if (this.linkOpen != null && !this.linkOpen.getWork().isDone())
 			{
-			    TRACE_LOGGER.error("Opening receive link to '{}' failed.", this.receivePath, exception);
+			    TRACE_LOGGER.error("Opening receive link '{}' to '{}' failed.", this.receiveLink.getName(), this.receivePath, exception);
 				this.setClosed();
 				ExceptionUtil.completeExceptionally(this.linkOpen.getWork(), exception, this, true);
 			}
 			
 			if(this.receiveLinkReopenFuture != null && !this.receiveLinkReopenFuture.isDone())
             {
-			    TRACE_LOGGER.warn("Opening receive link to '{}' failed.", this.receivePath, exception);
+			    TRACE_LOGGER.warn("Opening receive link '{}' to '{}' failed.", this.receiveLink.getName(), this.receivePath, exception);
 			    AsyncUtil.completeFutureExceptionally(this.receiveLinkReopenFuture, exception);
 			    if(this.isSessionReceiver && (exception instanceof SessionLockLostException || exception instanceof SessionCannotBeLockedException))
                 {
@@ -832,7 +832,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 		}
 		else
 		{
-		    TRACE_LOGGER.warn("Receive link to '{}', sessionId '{}' closed with error.", this.receivePath, this.sessionId, exception);
+		    TRACE_LOGGER.warn("Receive link '{}' to '{}', sessionId '{}' closed with error.", this.receiveLink.getName(), this.receivePath, this.sessionId, exception);
 			this.lastKnownLinkError = exception;
 			if ((this.linkOpen != null && !this.linkOpen.getWork().isDone()) ||
 			     (this.receiveLinkReopenFuture !=null && !receiveLinkReopenFuture.isDone()))
@@ -866,7 +866,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 	                            .getNextRetryInterval(this.getClientId(), exception, workItem.getTimeoutTracker().remaining());
 	                    if (nextRetryInterval != null)
 	                    {
-	                        TRACE_LOGGER.info("Receive link to '{}', sessionId '{}' will be reopened after '{}'", this.receivePath, this.sessionId, nextRetryInterval);
+	                        TRACE_LOGGER.info("Receive link '{}' to '{}', sessionId '{}' will be reopened after '{}'", this.receiveLink.getName(), this.receivePath, this.sessionId, nextRetryInterval);
 	                        Timer.schedule(() -> {CoreMessageReceiver.this.ensureLinkIsOpen();}, nextRetryInterval, TimerType.OneTimeRun);
 	                    }
 	                }

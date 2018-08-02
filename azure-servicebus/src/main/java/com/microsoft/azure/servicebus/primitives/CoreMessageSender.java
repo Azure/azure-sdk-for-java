@@ -466,14 +466,14 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 		    this.cancelSASTokenRenewTimer();
 			if (!this.linkFirstOpen.isDone())
 			{
-			    TRACE_LOGGER.error("Opening send link to '{}' failed", this.sendPath, completionException);
+			    TRACE_LOGGER.error("Opening send link '{}' to '{}' failed", this.sendLink.getName(), this.sendPath, completionException);
 				this.setClosed();				
 				ExceptionUtil.completeExceptionally(this.linkFirstOpen, completionException, this, true);
 			}
 			
 			if(this.sendLinkReopenFuture != null && !this.sendLinkReopenFuture.isDone())
             {
-			    TRACE_LOGGER.warn("Opening send link to '{}' failed", this.sendPath, completionException);
+			    TRACE_LOGGER.warn("Opening send link '{}' to '{}' failed", this.sendLink.getName(), this.sendPath, completionException);
                 AsyncUtil.completeFutureExceptionally(this.sendLinkReopenFuture, completionException);
             }
 		}
@@ -514,7 +514,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 			if (completionException != null &&
 					(!(completionException instanceof ServiceBusException) || !((ServiceBusException) completionException).getIsTransient()))
 			{
-			    TRACE_LOGGER.warn("Send link to '{}' closed. Failing all pending send requests.", this.sendPath);
+			    TRACE_LOGGER.warn("Send link '{}' to '{}' closed. Failing all pending send requests.", this.sendLink.getName(), this.sendPath);
 				this.clearAllPendingSendsWithException(completionException);
 			}
 			else
@@ -528,7 +528,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 						final Duration nextRetryInterval = this.retryPolicy.getNextRetryInterval(this.getClientId(), completionException, tracker.remaining());
 						if (nextRetryInterval != null)
 						{
-						    TRACE_LOGGER.warn("Send link to '{}' closed. Will retry link creation after '{}'.", this.sendPath, nextRetryInterval);
+						    TRACE_LOGGER.warn("Send link '{}' to '{}' closed. Will retry link creation after '{}'.", this.sendLink.getName(), this.sendPath, nextRetryInterval);
 						    Timer.schedule(() -> {CoreMessageSender.this.ensureLinkIsOpen();}, nextRetryInterval, TimerType.OneTimeRun);
 						}
 					}
