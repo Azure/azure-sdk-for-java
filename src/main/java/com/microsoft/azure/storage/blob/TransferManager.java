@@ -18,12 +18,14 @@ package com.microsoft.azure.storage.blob;
 import io.reactivex.*;
 import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Function;
+import javafx.util.Pair;
 
 import java.io.IOException;
 import java.lang.Error;
 import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.UUID;
@@ -176,14 +178,12 @@ public class TransferManager {
      * @param blockLength
      *         If the data must be broken up into blocks, this value determines what size those blocks will be. This
      *         will affect the total number of service requests made. This value will be ignored if the data can be
-     *         uploaded in a single put-blob operation. Must be between 1 and {@link BlockBlobURL#MAX_STAGE_BLOCK_BYTES}.
-     *         Note as well that {@code fileLength/blockLength} must be less than or equal to {@link
-     *         BlockBlobURL#MAX_BLOCKS}.
+     *         uploaded in a single put-blob operation. Must be between 1 and
+     *         {@link BlockBlobURL#MAX_STAGE_BLOCK_BYTES}. Note as well that {@code fileLength/blockLength} must be less
+     *         than or equal to {@link BlockBlobURL#MAX_BLOCKS}.
      * @param options
      *         {@link UploadToBlockBlobOptions}
      * @return Emits the successful response.
-     * @apiNote [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=tm_file
-     * "Sample code for TransferManager.uploadFileToBlockBlob")]
      */
     public static Single<CommonRestResponse> uploadFileToBlockBlob(
             final FileChannel file, final BlockBlobURL blockBlobURL, final int blockLength,
@@ -254,8 +254,6 @@ public class TransferManager {
      * @param options
      *         {@link UploadToBlockBlobOptions}
      * @return Emits the successful response.
-     * @apiNote [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=tm_buffer
-     * "Sample code for TransferManager.uploadByteBufferToBlockBlob")]
      */
     public static Single<CommonRestResponse> uploadByteBufferToBlockBlob(
             final ByteBuffer data, final BlockBlobURL blockBlobURL, final int blockLength,
@@ -299,6 +297,11 @@ public class TransferManager {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=tm_buffers "Sample code for TransferManager.uploadByteBuffersToBlockBlob")] \n
      * For more samples, please see the [Samples file](https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      *
+     * @apiNote
+     * ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=tm_buffers "Sample code for TransferManager.uploadByteBuffersToBlockBlob")]\n
+     * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     *
      * @param data
      *         The data to upload.
      * @param blockBlobURL
@@ -306,8 +309,6 @@ public class TransferManager {
      * @param options
      *         {@link UploadToBlockBlobOptions}
      * @return Emits the successful response.
-     * @apiNote [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=tm_buffers
-     * "Sample code for TransferManager.uploadByteBuffersToBlockBlob")]
      */
     public static Single<CommonRestResponse> uploadByteBuffersToBlockBlob(
             final Iterable<ByteBuffer> data, final BlockBlobURL blockBlobURL,
@@ -403,7 +404,12 @@ public class TransferManager {
     }
 
     /**
-     * Downloads a file directly into a file, splitting the download into chunks and paralellizing as necessary.
+     * Downloads a file directly into a file, splitting the download into chunks and parallelizing as necessary.
+     *
+     * @apiNote
+     * ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=tm_file "Sample code for TransferManager.downloadBlobToFile")] \n
+     * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      *
      * @param file
      *      The destination file to which the blob will be written.
@@ -414,8 +420,6 @@ public class TransferManager {
      * @param options
      *         {@link DownloadFromBlobOptions}
      * @return A {@code Completable} that will signal when the download is complete.
-     * @apiNote [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=tm_file
-     * "Sample code for TransferManager.downloadBlobToFile")]
      */
     public static Completable downloadBlobToFile(FileChannel file, BlobURL blobURL, BlobRange range,
             DownloadFromBlobOptions options) {
@@ -424,9 +428,11 @@ public class TransferManager {
         Utility.assertNotNull("blobURL", blobURL);
         Utility.assertNotNull("file", file);
 
-        Single<Long> dataSizeSingle = getDataSizeSingle(blobURL, r, o);
+        Single<Pair<Long, BlobAccessConditions>> dataSizeSingle = getSetupSingle(blobURL, r, o);
 
-        return dataSizeSingle.flatMapCompletable(dataSize -> {
+        return dataSizeSingle.flatMapCompletable(setupPair -> {
+            Long dataSize = setupPair.getKey();
+            o.accessConditions = setupPair.getValue();
             /*
             A single MappedByteBuffer can only be of size up to maxInt. It is therefore possible that we will need to
             use several buffers to get all the data into the file. We want to make as few of these as possible, so
@@ -454,6 +460,11 @@ public class TransferManager {
      * Note that only blobs of 2GB or less can be downloaded using this method due to the size constrains on {@code
      * ByteBuffer}. For downloading larger blobs, please see {@link TransferManager#downloadBlobToFile}.
      *
+     * @apiNote
+     * ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=tm_buffer_download "Sample code for TransferManager.downloadBlobToBuffer")] \n
+     * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     *
      * @param buffer
      *         The destination buffer to which the blob data will be written.
      * @param blobURL
@@ -463,8 +474,6 @@ public class TransferManager {
      * @param options
      *         {@link DownloadFromBlobOptions}
      * @return A {@code Completable} that will signal when the download is complete.
-     * @apiNote [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=tm_buffer_download
-     * "Sample code for TransferManager.downloadBlobToBuffer")]
      */
     public static Completable downloadBlobToBuffer(ByteBuffer buffer, BlobURL blobURL, BlobRange range,
             DownloadFromBlobOptions options) {
@@ -473,9 +482,11 @@ public class TransferManager {
         Utility.assertNotNull("blobURL", blobURL);
         Utility.assertNotNull("buffer", buffer);
 
-        Single<Long> dataSizeSingle = getDataSizeSingle(blobURL, r, o);
+        Single<Pair<Long, BlobAccessConditions>> dataSizeSingle = getSetupSingle(blobURL, r, o);
 
-        return dataSizeSingle.flatMapCompletable(dataSize -> {
+        return dataSizeSingle.flatMapCompletable(setupPair -> {
+            Long dataSize = setupPair.getKey();
+            BlobAccessConditions realConditions = setupPair.getValue();
             if (buffer.remaining() < dataSize) {
                 throw new IllegalArgumentException("The buffer's remaining size should be greater " +
                         "than or equal to the request dataSize of bytes: " + dataSize);
@@ -499,7 +510,7 @@ public class TransferManager {
                         // Make the download call.
                         BlobRange blockRange = new BlobRange(r.getOffset() + (i * o.blockSize),
                                 (long) blockSizeActual);
-                        return blobURL.download(blockRange, o.accessConditions, false)
+                        return blobURL.download(blockRange, realConditions, false)
                                 // Extract the body.
                                 .flatMapObservable(response ->
                                         response.body(o.retryReaderOptionsPerBlock)
@@ -518,16 +529,42 @@ public class TransferManager {
         });
     }
 
-    private static Single<Long> getDataSizeSingle(BlobURL blobURL, BlobRange r, DownloadFromBlobOptions o) {
+    private static Single<Pair<Long, BlobAccessConditions>> getSetupSingle(BlobURL blobURL, BlobRange r,
+            DownloadFromBlobOptions o) {
         /*
-        Construct a Single which will emit the total count of bytes to be downloaded. We use a single for this because
-        we may have to make a REST call to get the length to calculate the count and we need to maintain asynchronicity.
+        Construct a Single which will emit the total count of bytes to be downloaded and retrieve an etag to lock on to
+        if one was not specified. We use a single for this because we may have to make a REST call to get the length to
+        calculate the count and we need to maintain asynchronicity.
          */
-        if (r.getCount() == null) {
+        if (r.getCount() == null || o.accessConditions.getHttpAccessConditions().getIfMatch() == ETag.NONE) {
             return blobURL.getProperties(o.accessConditions)
-                    .map(response -> response.headers().contentLength() - r.getOffset());
+                    .map(response -> {
+                        BlobAccessConditions newConditions;
+                        if (o.accessConditions.getHttpAccessConditions().getIfMatch() == ETag.NONE) {
+                            newConditions = new BlobAccessConditions(
+                                    new HTTPAccessConditions(
+                                            o.accessConditions.getHttpAccessConditions().getIfModifiedSince(),
+                                            o.accessConditions.getHttpAccessConditions().getIfModifiedSince(),
+                                            new ETag(response.headers().eTag()),
+                                            o.accessConditions.getHttpAccessConditions().getIfNoneMatch()),
+                                    o.accessConditions.getLeaseAccessConditions(),
+                                    o.accessConditions.getAppendBlobAccessConditions(),
+                                    o.accessConditions.getPageBlobAccessConditions());
+                        }
+                        else {
+                            newConditions = o.accessConditions;
+                        }
+                        long newCount;
+                        if (r.getCount() == null) {
+                            newCount = response.headers().contentLength() - r.getOffset();
+                        }
+                        else {
+                            newCount = r.getCount();
+                        }
+                        return new Pair<>(newCount, newConditions);
+                    });
         } else {
-            return Single.just(r.getCount());
+            return Single.just(new Pair<>(r.getCount(), o.accessConditions));
         }
     }
 }

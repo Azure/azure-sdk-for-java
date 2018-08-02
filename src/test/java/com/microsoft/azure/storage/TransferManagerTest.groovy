@@ -7,6 +7,10 @@ import com.microsoft.azure.storage.blob.models.BlockBlobUploadResponse
 import com.microsoft.azure.storage.blob.models.StorageErrorCode
 import com.microsoft.rest.v2.util.FlowableUtil
 import io.reactivex.Flowable
+import io.reactivex.exceptions.OnErrorNotImplementedException
+import io.reactivex.exceptions.UndeliverableException
+import io.reactivex.functions.Action
+import io.reactivex.functions.Consumer
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -714,6 +718,50 @@ class TransferManagerTest extends APISpec {
         null     | null       | null        | null         | garbageLeaseID
     }
 
+    def "Download buffer etag lock"() {
+        setup:
+        bu.upload(Flowable.just(getRandomData(1 * 1024 * 1024)), 1 * 1024 * 1024, null, null,
+                null).blockingGet()
+        def buffer = ByteBuffer.allocate(1 * 1024 * 1024)
+
+        when:
+        /*
+         Set up a large download in small chunks so it makes a lot of requests. This will give us time to cut in an
+         operation that will change the etag.
+         */
+        def success = false
+        TransferManager.downloadBlobToBuffer(buffer, bu, null,
+                new TransferManager.DownloadFromBlobOptions(1024, null, null,
+                        null, null))
+                .subscribe(
+                new Action() {
+                    @Override
+                    void run() throws Exception {
+                        success = false
+                    }
+                },
+                new Consumer<Throwable>() {
+                    @Override
+                    void accept(Throwable throwable) throws Exception {
+                        if (throwable instanceof StorageException &&
+                                ((StorageException) throwable).statusCode() == 412) {
+                            success = true
+                            return
+                        }
+                        success = false
+                    }
+                })
+
+
+        sleep(500) // Give some time for the download request to start.
+        bu.upload(defaultFlowable, defaultDataSize, null, null, null).blockingGet()
+
+        sleep(1000) // Allow time for the upload operation
+
+        then:
+        success
+    }
+
     @Unroll
     def "Download buffer options"() {
         setup:
@@ -940,6 +988,52 @@ class TransferManagerTest extends APISpec {
         null     | null       | garbageEtag | null         | null
         null     | null       | null        | receivedEtag | null
         null     | null       | null        | null         | garbageLeaseID
+    }
+
+    def "Download file etag lock"() {
+        setup:
+        bu.upload(Flowable.just(getRandomData(1 * 1024 * 1024)), 1 * 1024 * 1024, null, null,
+                null).blockingGet()
+        FileChannel outChannel = FileChannel.open(getRandomFile(0).toPath(), StandardOpenOption.WRITE,
+                StandardOpenOption.READ)
+
+        when:
+        /*
+         Set up a large download in small chunks so it makes a lot of requests. This will give us time to cut in an
+         operation that will change the etag.
+         */
+        def success = false
+        TransferManager.downloadBlobToFile(outChannel, bu, null,
+                new TransferManager.DownloadFromBlobOptions(1024, null, null,
+                        null, null))
+                .subscribe(
+                new Action() {
+                    @Override
+                    void run() throws Exception {
+                        success = false
+                    }
+                },
+                new Consumer<Throwable>() {
+                    @Override
+                    void accept(Throwable throwable) throws Exception {
+                        if (throwable instanceof StorageException &&
+                                ((StorageException) throwable).statusCode() == 412) {
+                            success = true
+                            return
+                        }
+                        success = false
+                    }
+                })
+
+
+        sleep(500) // Give some time for the download request to start.
+        bu.upload(defaultFlowable, defaultDataSize, null, null, null).blockingGet()
+
+        sleep(1000) // Allow time for the upload operation
+
+        then:
+        success
+        outChannel.close()
     }
 
     @Unroll
