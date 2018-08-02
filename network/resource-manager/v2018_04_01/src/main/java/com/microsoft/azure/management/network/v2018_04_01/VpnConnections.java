@@ -32,11 +32,12 @@ public interface VpnConnections extends SupportsCreating<VpnConnection.Definitio
     /**
      * Retrieves all vpn connections for a particular virtual wan vpn gateway.
      *
+     * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<VpnConnection> listByVpnGatewayAsync(final String gatewayName);
+    Observable<VpnConnection> listByVpnGatewayAsync(final String resourceGroupName, final String gatewayName);
 
     /**
      * Deletes a vpn connection.

@@ -58,8 +58,8 @@ public class VpnConnectionInner extends Resource {
     /**
      * Expected bandwidth in MBPS.
      */
-    @JsonProperty(value = "properties.connectionBandwidthInMbps", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer connectionBandwidthInMbps;
+    @JsonProperty(value = "properties.connectionBandwidth", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer connectionBandwidth;
 
     /**
      * SharedKey for the vpn connection.
@@ -180,10 +180,10 @@ public class VpnConnectionInner extends Resource {
     /**
      * Get expected bandwidth in MBPS.
      *
-     * @return the connectionBandwidthInMbps value
+     * @return the connectionBandwidth value
      */
-    public Integer connectionBandwidthInMbps() {
-        return this.connectionBandwidthInMbps;
+    public Integer connectionBandwidth() {
+        return this.connectionBandwidth;
     }
 
     /**
