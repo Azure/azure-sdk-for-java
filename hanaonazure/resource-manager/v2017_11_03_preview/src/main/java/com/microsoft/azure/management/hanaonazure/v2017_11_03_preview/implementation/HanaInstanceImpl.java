@@ -14,6 +14,7 @@ import rx.Observable;
 import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.HardwareProfile;
 import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.NetworkProfile;
 import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.OSProfile;
+import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.HanaInstancePowerStateEnum;
 import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.StorageProfile;
 
 class HanaInstanceImpl extends GroupableResourceCoreImpl<HanaInstance, HanaInstanceInner, HanaInstanceImpl, HanaOnAzureManager> implements HanaInstance {
@@ -62,7 +63,7 @@ class HanaInstanceImpl extends GroupableResourceCoreImpl<HanaInstance, HanaInsta
     }
 
     @Override
-    public String powerState() {
+    public HanaInstancePowerStateEnum powerState() {
         return this.inner().powerState();
     }
 

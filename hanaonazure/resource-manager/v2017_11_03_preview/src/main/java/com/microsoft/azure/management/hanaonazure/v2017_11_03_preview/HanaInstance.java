@@ -44,7 +44,7 @@ public interface HanaInstance extends HasInner<HanaInstanceInner>, Resource, Gro
     /**
      * @return the powerState value.
      */
-    String powerState();
+    HanaInstancePowerStateEnum powerState();
 
     /**
      * @return the storageProfile value.

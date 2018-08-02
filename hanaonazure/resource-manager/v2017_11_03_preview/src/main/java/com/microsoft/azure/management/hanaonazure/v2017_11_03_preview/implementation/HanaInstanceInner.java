@@ -12,6 +12,7 @@ import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.HardwarePr
 import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.StorageProfile;
 import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.OSProfile;
 import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.NetworkProfile;
+import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.HanaInstancePowerStateEnum;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.rest.SkipParentValidation;
@@ -54,10 +55,11 @@ public class HanaInstanceInner extends Resource {
     private String hanaInstanceId;
 
     /**
-     * Resource power state.
+     * Resource power state. Possible values include: 'starting', 'started',
+     * 'stopping', 'stopped', 'restarting', 'unknown'.
      */
     @JsonProperty(value = "properties.powerState", access = JsonProperty.Access.WRITE_ONLY)
-    private String powerState;
+    private HanaInstancePowerStateEnum powerState;
 
     /**
      * Get specifies the hardware settings for the HANA instance.
@@ -149,11 +151,11 @@ public class HanaInstanceInner extends Resource {
     }
 
     /**
-     * Get resource power state.
+     * Get resource power state. Possible values include: 'starting', 'started', 'stopping', 'stopped', 'restarting', 'unknown'.
      *
      * @return the powerState value
      */
-    public String powerState() {
+    public HanaInstancePowerStateEnum powerState() {
         return this.powerState;
     }
 
