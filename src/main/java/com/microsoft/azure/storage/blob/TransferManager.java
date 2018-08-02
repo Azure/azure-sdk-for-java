@@ -52,15 +52,15 @@ public class TransferManager {
         public static final UploadToBlockBlobOptions DEFAULT = new UploadToBlockBlobOptions(null,
                 null, null, null, null);
 
-        private IProgressReceiver progressReceiver;
+        private final IProgressReceiver progressReceiver;
 
-        private BlobHTTPHeaders httpHeaders;
+        private final BlobHTTPHeaders httpHeaders;
 
-        private Metadata metadata;
+        private final Metadata metadata;
 
-        private BlobAccessConditions accessConditions;
+        private final BlobAccessConditions accessConditions;
 
-        private int parallelism;
+        private final int parallelism;
 
         /**
          * Creates a new object that configures the parallel upload behavior. Null may be passed to accept the default
@@ -113,15 +113,16 @@ public class TransferManager {
         public static final DownloadFromBlobOptions DEFAULT = new DownloadFromBlobOptions(null,
                 null, null, null, null);
 
-        private int blockSize;
+        private final int blockSize;
 
-        private IProgressReceiver progressReceiver;
+        private final IProgressReceiver progressReceiver;
 
+        // Cannot be final because we may have to set this property in order to lock on the etag.
         private BlobAccessConditions accessConditions;
 
-        private int parallelism;
+        private final int parallelism;
 
-        private RetryReaderOptions retryReaderOptionsPerBlock;
+        private final RetryReaderOptions retryReaderOptionsPerBlock;
 
         /**
          * Returns an object that configures the parallel download behavior for methods on the {@code TransferManager}.
