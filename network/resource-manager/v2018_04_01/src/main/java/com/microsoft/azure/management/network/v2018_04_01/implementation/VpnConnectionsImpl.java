@@ -43,9 +43,9 @@ class VpnConnectionsImpl extends WrapperImpl<VpnConnectionsInner> implements Vpn
     }
 
     @Override
-    public Observable<VpnConnection> listByVpnGatewayAsync(final String gatewayName) {
+    public Observable<VpnConnection> listByVpnGatewayAsync(final String resourceGroupName, final String gatewayName) {
         VpnConnectionsInner client = this.inner();
-        return client.listByVpnGatewayAsync(gatewayName)
+        return client.listByVpnGatewayAsync(resourceGroupName, gatewayName)
         .flatMapIterable(new Func1<Page<VpnConnectionInner>, Iterable<VpnConnectionInner>>() {
             @Override
             public Iterable<VpnConnectionInner> call(Page<VpnConnectionInner> page) {
