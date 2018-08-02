@@ -56,7 +56,7 @@ public class HanaInstanceInner extends Resource {
     /**
      * Resource power state.
      */
-    @JsonProperty(value = "powerState", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.powerState", access = JsonProperty.Access.WRITE_ONLY)
     private String powerState;
 
     /**
