@@ -12,8 +12,18 @@ import java.util.concurrent.Executors;
 
 final class TestUtilities {
     static final ExecutorService EXECUTOR_SERVICE = Executors.newSingleThreadExecutor();
+    
+    static void skipIfAppveyor() {
+    	String appveyor = System.getenv("APPVEYOR"); // Set to "true" by Appveyor
+    	if (appveyor != null) {
+    		TestBase.logInfo("SKIPPING - APPVEYOR DETECTED");
+    	}
+    	Assume.assumeTrue(appveyor == null);
+    }
 
     static String getStorageConnectionString() {
+    	TestUtilities.skipIfAppveyor();
+    	
         String retval = System.getenv("EPHTESTSTORAGE");
 
         // if EPHTESTSTORAGE is not set - we cannot run integration tests

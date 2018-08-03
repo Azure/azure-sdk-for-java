@@ -17,8 +17,6 @@ install:
   - cmd: SET PATH=C:\maven\apache-maven-3.2.5\bin;%JAVA_HOME%\bin;%PATH%
   - cmd: SET MAVEN_OPTS=-XX:MaxPermSize=2g -Xmx4g
   - cmd: SET JAVA_OPTS=-XX:MaxPermSize=2g -Xmx4g
-  - cmd: SET EPHTESTSTORAGE=
-  - cmd: SET EVENT_HUB_CONNECTION_STRING=
 build_script:
   - mvn clean package javadoc:jar source:jar
 cache:
