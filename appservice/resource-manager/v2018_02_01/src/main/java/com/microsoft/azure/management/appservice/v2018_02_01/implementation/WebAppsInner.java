@@ -13099,7 +13099,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param details Specify "true" to include metric details in the response. It is "false" by default.
-     * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws DefaultErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -13122,7 +13122,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param details Specify "true" to include metric details in the response. It is "false" by default.
-     * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -13146,7 +13146,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param details Specify "true" to include metric details in the response. It is "false" by default.
-     * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
@@ -13167,7 +13167,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param details Specify "true" to include metric details in the response. It is "false" by default.
-     * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
@@ -13192,7 +13192,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param name Name of the app.
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param details Specify "true" to include metric details in the response. It is "false" by default.
-    ServiceResponse<PageImpl<ResourceMetricInner>> * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -14286,7 +14286,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
-     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws DefaultErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -14308,7 +14308,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
-     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -14331,7 +14331,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
-     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PerfMonResponseInner&gt; object
      */
@@ -14351,7 +14351,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
-     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PerfMonResponseInner&gt; object
      */
@@ -14375,7 +14375,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      *
     ServiceResponse<PageImpl<PerfMonResponseInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<PerfMonResponseInner>> * @param name Name of web app.
-    ServiceResponse<PageImpl<PerfMonResponseInner>> * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+    ServiceResponse<PageImpl<PerfMonResponseInner>> * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;PerfMonResponseInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -29723,7 +29723,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get metrics of the production slot.
      * @param details Specify "true" to include metric details in the response. It is "false" by default.
-     * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws DefaultErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -29747,7 +29747,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get metrics of the production slot.
      * @param details Specify "true" to include metric details in the response. It is "false" by default.
-     * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -29772,7 +29772,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get metrics of the production slot.
      * @param details Specify "true" to include metric details in the response. It is "false" by default.
-     * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
@@ -29794,7 +29794,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get metrics of the production slot.
      * @param details Specify "true" to include metric details in the response. It is "false" by default.
-     * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
@@ -29820,7 +29820,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param name Name of the app.
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param slot Name of the deployment slot. If a slot is not specified, the API will get metrics of the production slot.
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param details Specify "true" to include metric details in the response. It is "false" by default.
-    ServiceResponse<PageImpl<ResourceMetricInner>> * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -30596,7 +30596,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws DefaultErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -30619,7 +30619,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -30643,7 +30643,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PerfMonResponseInner&gt; object
      */
@@ -30664,7 +30664,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PerfMonResponseInner&gt; object
      */
@@ -30689,7 +30689,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     ServiceResponse<PageImpl<PerfMonResponseInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<PerfMonResponseInner>> * @param name Name of web app.
     ServiceResponse<PageImpl<PerfMonResponseInner>> * @param slot Name of web app slot. If not specified then will default to production slot.
-    ServiceResponse<PageImpl<PerfMonResponseInner>> * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+    ServiceResponse<PageImpl<PerfMonResponseInner>> * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;PerfMonResponseInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -36791,7 +36791,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get quota information of the production slot.
-     * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws DefaultErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -36814,7 +36814,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get quota information of the production slot.
-     * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -36838,7 +36838,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get quota information of the production slot.
-     * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CsmUsageQuotaInner&gt; object
      */
@@ -36859,7 +36859,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get quota information of the production slot.
-     * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CsmUsageQuotaInner&gt; object
      */
@@ -36884,7 +36884,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param name Name of the app.
     ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param slot Name of the deployment slot. If a slot is not specified, the API will get quota information of the production slot.
-    ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+    ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -40097,7 +40097,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
-     * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws DefaultErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -40119,7 +40119,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
-     * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -40142,7 +40142,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
-     * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CsmUsageQuotaInner&gt; object
      */
@@ -40162,7 +40162,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
-     * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CsmUsageQuotaInner&gt; object
      */
@@ -40186,7 +40186,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      *
     ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param name Name of the app.
-    ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+    ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
