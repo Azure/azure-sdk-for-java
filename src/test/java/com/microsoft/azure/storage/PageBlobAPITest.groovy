@@ -482,6 +482,7 @@ class PageBlobAPITest extends APISpec {
 
         expect:
         bu2.getProperties(null).blockingGet().headers().isIncrementalCopy()
+        bu2.getProperties(null).blockingGet().headers().destinationSnapshot() != null
         validateBasicHeaders(headers)
         headers.copyId() != null
         headers.copyStatus() != null

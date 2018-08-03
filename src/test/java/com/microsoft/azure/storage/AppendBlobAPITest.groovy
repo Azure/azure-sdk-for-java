@@ -162,6 +162,7 @@ public class AppendBlobAPITest extends APISpec {
         headers.contentMD5() != null
         headers.blobAppendOffset() != null
         headers.blobCommittedBlockCount() != null
+        bu.getProperties(null).blockingGet().headers().blobCommittedBlockCount() == 1
     }
 
     @Unroll

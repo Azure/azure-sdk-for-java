@@ -145,7 +145,7 @@ public class TransferManager {
                     .collectInto(new ArrayList<>(numBlocks),
                             (BiConsumer<ArrayList<ByteBuffer>, ByteBuffer>) ArrayList::add)
                     // Turn the list into a call to uploadByteBuffersToBlockBlob and return that result.
-                    .flatMap((Function<ArrayList<ByteBuffer>, SingleSource<CommonRestResponse>>) blocks ->
+                    .flatMap(blocks ->
                             uploadByteBuffersToBlockBlob(blocks, blockBlobURL, optionsReal));
         }
         catch (IOException e) {

@@ -15,51 +15,9 @@
 
 package com.microsoft.azure.storage
 
-import com.google.common.escape.ArrayBasedCharEscaper
-import com.microsoft.azure.storage.blob.AnonymousCredentials
-import com.microsoft.azure.storage.blob.BlobAccessConditions
-import com.microsoft.azure.storage.blob.BlobHTTPHeaders
-import com.microsoft.azure.storage.blob.BlobRange
-import com.microsoft.azure.storage.blob.BlobURL
-import com.microsoft.azure.storage.blob.BlockBlobURL
-import com.microsoft.azure.storage.blob.ContainerURL
-import com.microsoft.azure.storage.blob.DownloadResponse
-import com.microsoft.azure.storage.blob.HTTPAccessConditions
-import com.microsoft.azure.storage.blob.LeaseAccessConditions
-import com.microsoft.azure.storage.blob.Metadata
-import com.microsoft.azure.storage.blob.PageBlobURL
-import com.microsoft.azure.storage.blob.PipelineOptions
-import com.microsoft.azure.storage.blob.ServiceURL
-import com.microsoft.azure.storage.blob.StorageException
-import com.microsoft.azure.storage.blob.StorageURL
-import com.microsoft.azure.storage.blob.models.AccessTier
-import com.microsoft.azure.storage.blob.models.ArchiveStatus
-import com.microsoft.azure.storage.blob.models.BlobSetTierResponse
-import com.microsoft.azure.storage.blob.models.BlobType
-import com.microsoft.azure.storage.blob.models.BlobAbortCopyFromURLHeaders
-import com.microsoft.azure.storage.blob.models.BlobAbortCopyFromURLResponse
-import com.microsoft.azure.storage.blob.models.BlobAcquireLeaseHeaders
-import com.microsoft.azure.storage.blob.models.BlobBreakLeaseHeaders
-import com.microsoft.azure.storage.blob.models.BlobChangeLeaseHeaders
-import com.microsoft.azure.storage.blob.models.BlobCreateSnapshotHeaders
-import com.microsoft.azure.storage.blob.models.BlobCreateSnapshotResponse
-import com.microsoft.azure.storage.blob.models.BlobDeleteHeaders
-import com.microsoft.azure.storage.blob.models.BlobDeleteResponse
-import com.microsoft.azure.storage.blob.models.BlobDownloadHeaders
-import com.microsoft.azure.storage.blob.models.BlobGetPropertiesHeaders
-import com.microsoft.azure.storage.blob.models.BlobReleaseLeaseHeaders
-import com.microsoft.azure.storage.blob.models.BlobRenewLeaseHeaders
-import com.microsoft.azure.storage.blob.models.BlobSetHTTPHeadersResponse
-import com.microsoft.azure.storage.blob.models.BlobSetMetadataResponse
-import com.microsoft.azure.storage.blob.models.BlobStartCopyFromURLHeaders
-import com.microsoft.azure.storage.blob.models.BlobStartCopyFromURLResponse
-import com.microsoft.azure.storage.blob.models.CopyStatusType
-import com.microsoft.azure.storage.blob.models.DeleteSnapshotsOptionType
-import com.microsoft.azure.storage.blob.models.LeaseDurationType
-import com.microsoft.azure.storage.blob.models.LeaseStateType
-import com.microsoft.azure.storage.blob.models.LeaseStatusType
-import com.microsoft.azure.storage.blob.models.PublicAccessType
-import com.microsoft.azure.storage.blob.models.StorageErrorCode
+import com.microsoft.azure.storage.blob.*
+import com.microsoft.azure.storage.blob.models.*
+
 import com.microsoft.rest.v2.util.FlowableUtil
 import io.reactivex.Flowable
 import spock.lang.Unroll
@@ -76,7 +34,7 @@ class BlobAPITest extends APISpec {
                 null).blockingGet()
     }
 
-    def "Blob download all null"() {
+    def "Download all null"() {
         when:
         DownloadResponse response = bu.download(null, null, false)
                 .blockingGet()
@@ -110,11 +68,10 @@ class BlobAPITest extends APISpec {
         headers.blobCommittedBlockCount() == null
         headers.serverEncrypted
         headers.blobContentMD5() != null
-        //TODO: Add in tests that cover non-null values for these headers
     }
 
     @Unroll
-    def "Blob download range"() {
+    def "Download range"() {
         setup:
         BlobRange range = new BlobRange(offset, count)
 
@@ -127,15 +84,14 @@ class BlobAPITest extends APISpec {
         bodyStr == expectedData
 
         where:
-        offset | count | expectedData
-        0      | null  | defaultText
-        0      | 5     | defaultText.substring(0, 5)
-        3      | 2     | defaultText.substring(3, 3 + 2)
+        offset | count || expectedData
+        0      | null  || defaultText
+        0      | 5     || defaultText.substring(0, 5)
+        3      | 2     || defaultText.substring(3, 3 + 2)
     }
-    //TODO: offset negative. Count null or less than offset. offset greater than blob length, count + offset greater than blob length, count negative, count + offset > maxint
 
     @Unroll
-    def "Blob download AC"() {
+    def "Download AC"() {
         setup:
         match = setupBlobMatchCondition(bu, match)
         leaseID = setupBlobLeaseCondition(bu, leaseID)
@@ -156,14 +112,38 @@ class BlobAPITest extends APISpec {
         null     | null       | null         | null        | receivedLeaseID
     }
 
-    def "Blob download md5"() {
+    @Unroll
+    def "Download AC fail"() {
+        setup:
+        noneMatch = setupBlobMatchCondition(bu, noneMatch)
+        setupBlobLeaseCondition(bu, leaseID)
+        BlobAccessConditions bac = new BlobAccessConditions(
+                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
+                null, null)
+
+        when:
+        bu.download(null, bac, false).blockingGet().statusCode() == 206
+
+        then:
+        thrown(StorageException)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
+    }
+
+    def "Download md5"() {
         expect:
         bu.download(new BlobRange(0, 3), null, true).blockingGet()
                 .headers().contentMD5() ==
                 MessageDigest.getInstance("MD5").digest(defaultText.substring(0, 3).getBytes())
     }
 
-    def "Blob download error"() {
+    def "Download error"() {
         setup:
         bu = cu.createBlockBlobURL(generateBlobName())
 
@@ -174,7 +154,7 @@ class BlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    def "Blob get properties all null"() {
+    def "Get properties all null"() {
         when:
         BlobGetPropertiesHeaders headers = bu.getProperties(null).blockingGet().headers()
 
@@ -182,37 +162,36 @@ class BlobAPITest extends APISpec {
         validateBasicHeaders(headers)
         headers.metadata().isEmpty()
         headers.blobType() == BlobType.BLOCK_BLOB
-        headers.copyCompletionTime() == null
-        headers.copyStatusDescription() == null
-        headers.copyId() == null
-        headers.copyProgress() == null
-        headers.copySource() == null
-        headers.copyStatus() == null
-        headers.isIncrementalCopy() == null
-        headers.destinationSnapshot() == null
-        headers.leaseDuration() == null
+        headers.copyCompletionTime() == null // tested in "copy"
+        headers.copyStatusDescription() == null // only returned when the service has errors; cannot validate.
+        headers.copyId() == null // tested in "abort copy"
+        headers.copyProgress() == null // tested in "copy"
+        headers.copySource() == null // tested in "copy"
+        headers.copyStatus() == null // tested in "copy"
+        headers.isIncrementalCopy() == null // tested in PageBlob."start incremental copy"
+        headers.destinationSnapshot() == null // tested in PageBlob."start incremental copy"
+        headers.leaseDuration() == null // tested in "acquire lease"
         headers.leaseState() == LeaseStateType.AVAILABLE
         headers.leaseStatus() == LeaseStatusType.UNLOCKED
         headers.contentLength() != null
         headers.contentType() != null
         headers.contentMD5() != null
-        headers.contentEncoding() == null
-        headers.contentDisposition() == null
-        headers.contentLanguage() == null
-        headers.cacheControl() == null
-        headers.blobSequenceNumber() == null
+        headers.contentEncoding() == null // tested in "set HTTP headers"
+        headers.contentDisposition() == null // tested in "set HTTP headers"
+        headers.contentLanguage() == null // tested in "set HTTP headers"
+        headers.cacheControl() == null // tested in "set HTTP headers"
+        headers.blobSequenceNumber() == null // tested in PageBlob."create sequence number"
         headers.acceptRanges() == "bytes"
-        headers.blobCommittedBlockCount() == null
+        headers.blobCommittedBlockCount() == null // tested in AppendBlob."append block"
         headers.isServerEncrypted()
         headers.accessTier() == AccessTier.HOT.toString()
         headers.accessTierInferred()
         headers.archiveStatus() == null
         headers.creationTime() != null
-        // TODO: Test where most of these values will not be null
     }
 
     @Unroll
-    def "Blob get properties AC"() {
+    def "Get properties AC"() {
         setup:
         match = setupBlobMatchCondition(bu, match)
         leaseID = setupBlobLeaseCondition(bu, leaseID)
@@ -233,7 +212,31 @@ class BlobAPITest extends APISpec {
         null     | null       | null         | null        | receivedLeaseID
     }
 
-    def "Blob get properties error"() {
+    @Unroll
+    def "Get properties AC fail"() {
+        setup:
+        noneMatch = setupBlobMatchCondition(bu, noneMatch)
+        setupBlobLeaseCondition(bu, leaseID)
+        BlobAccessConditions bac = new BlobAccessConditions(
+                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
+                null, null)
+
+        when:
+        bu.getProperties(bac).blockingGet()
+
+        then:
+        thrown(StorageException)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
+    }
+
+    def "Get properties error"() {
         setup:
         bu = cu.createBlockBlobURL(generateBlobName())
 
@@ -244,7 +247,7 @@ class BlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    def "Blob set HTTP headers null"() {
+    def "Set HTTP headers null"() {
         setup:
         BlobSetHTTPHeadersResponse response = bu.setHTTPHeaders(null, null).blockingGet()
 
@@ -252,11 +255,10 @@ class BlobAPITest extends APISpec {
         response.statusCode() == 200
         validateBasicHeaders(response.headers())
         response.headers().blobSequenceNumber() == null
-        // TODO: Try with a pageBlob to check sequence number
     }
 
     @Unroll
-    def "Blob set HTTP headers headers"() {
+    def "Set HTTP headers headers"() {
         setup:
         BlobHTTPHeaders putHeaders = new BlobHTTPHeaders(cacheControl, contentDisposition, contentEncoding,
                 contentLanguage, contentMD5, contentType)
@@ -276,7 +278,7 @@ class BlobAPITest extends APISpec {
     }
 
     @Unroll
-    def "Blob set HTTP headers AC"() {
+    def "Set HTTP headers AC"() {
         setup:
         match = setupBlobMatchCondition(bu, match)
         leaseID = setupBlobLeaseCondition(bu, leaseID)
@@ -297,7 +299,31 @@ class BlobAPITest extends APISpec {
         null     | null       | null         | null        | receivedLeaseID
     }
 
-    def "Blob set Http headers error"() {
+    @Unroll
+    def "Set HTTP headers AC fail"() {
+        setup:
+        noneMatch = setupBlobMatchCondition(bu, noneMatch)
+        setupBlobLeaseCondition(bu, leaseID)
+        BlobAccessConditions bac = new BlobAccessConditions(
+                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
+                null, null)
+
+        when:
+        bu.setHTTPHeaders(null, bac).blockingGet()
+
+        then:
+        thrown(StorageException)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
+    }
+
+    def "Set HTTP headers error"() {
         setup:
         bu = cu.createBlockBlobURL(generateBlobName())
 
@@ -308,7 +334,7 @@ class BlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    def "Blob set metadata all null"() {
+    def "Set metadata all null"() {
         setup:
         BlobSetMetadataResponse response = bu.setMetadata(null, null).blockingGet()
 
@@ -320,7 +346,7 @@ class BlobAPITest extends APISpec {
     }
 
     @Unroll
-    def "Blob set metadata metadata"() {
+    def "Set metadata metadata"() {
         setup:
         Metadata metadata = new Metadata()
         if (key1 != null && value1 != null) {
@@ -338,11 +364,10 @@ class BlobAPITest extends APISpec {
         key1  | value1 | key2   | value2 || statusCode
         null  | null   | null   | null   || 200
         "foo" | "bar"  | "fizz" | "buzz" || 200
-        // TODO: Support: null  | "bar"  | null   | null   || 200?
     }
 
     @Unroll
-    def "Blob set metadata AC"() {
+    def "Set metadata AC"() {
         setup:
         match = setupBlobMatchCondition(bu, match)
         leaseID = setupBlobLeaseCondition(bu, leaseID)
@@ -363,7 +388,32 @@ class BlobAPITest extends APISpec {
         null     | null       | null         | null        | receivedLeaseID
     }
 
-    def "Blob set metadata error"() {
+    @Unroll
+    def "Set metadata AC fail"() {
+        setup:
+        noneMatch = setupBlobMatchCondition(bu, noneMatch)
+        setupBlobLeaseCondition(bu, leaseID)
+
+        BlobAccessConditions bac = new BlobAccessConditions(
+                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
+                null, null)
+
+        when:
+        bu.setMetadata(null, bac).blockingGet()
+
+        then:
+        thrown(StorageException)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
+    }
+
+    def "Set metadata error"() {
         setup:
         bu = cu.createBlockBlobURL(generateBlobName())
 
@@ -375,10 +425,10 @@ class BlobAPITest extends APISpec {
     }
 
     @Unroll
-    def "Blob acquire lease"() {
+    def "Acquire lease"() {
         setup:
         BlobAcquireLeaseHeaders headers =
-                bu.acquireLease(UUID.randomUUID().toString(), leaseTime, null)
+                bu.acquireLease(proposedID, leaseTime, null)
                         .blockingGet().headers()
 
         when:
@@ -397,10 +447,9 @@ class BlobAPITest extends APISpec {
         null                         | 25        || LeaseStateType.LEASED | LeaseDurationType.FIXED
         UUID.randomUUID().toString() | -1        || LeaseStateType.LEASED | LeaseDurationType.INFINITE
     }
-    // TODO: Invalid lease times. Invalid proposed ID format
 
     @Unroll
-    def "Blob acquire lease AC"() {
+    def "Acquire lease AC"() {
         setup:
         match = setupBlobMatchCondition(bu, match)
         HTTPAccessConditions hac = new HTTPAccessConditions(modified, unmodified, match, noneMatch)
@@ -417,7 +466,27 @@ class BlobAPITest extends APISpec {
         null     | null       | null         | garbageEtag
     }
 
-    def "Blob acquire lease error"() {
+    @Unroll
+    def "Acquire lease AC fail"() {
+        setup:
+        noneMatch = setupBlobMatchCondition(bu, noneMatch)
+        HTTPAccessConditions hac = new HTTPAccessConditions(modified, unmodified, match, noneMatch)
+
+        when:
+        bu.acquireLease(null, -1, hac).blockingGet()
+
+        then:
+        thrown(StorageException)
+
+        where:
+        modified | unmodified | match       | noneMatch
+        newDate  | null       | null        | null
+        null     | oldDate    | null        | null
+        null     | null       | garbageEtag | null
+        null     | null       | null        | receivedEtag
+    }
+
+    def "Acquire lease error"() {
         setup:
         bu = cu.createBlockBlobURL(generateBlobName())
 
@@ -428,7 +497,7 @@ class BlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    def "Blob renew lease"() {
+    def "Renew lease"() {
         setup:
         String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
 
@@ -443,7 +512,7 @@ class BlobAPITest extends APISpec {
     }
 
     @Unroll
-    def "Blob renew lease AC"() {
+    def "Renew lease AC"() {
         setup:
         match = setupBlobMatchCondition(bu, match)
         String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
@@ -461,7 +530,27 @@ class BlobAPITest extends APISpec {
         null     | null       | null         | garbageEtag
     }
 
-    def "Blob renew lease error"() {
+    @Unroll
+    def "Renew lease AC fail"() {
+        noneMatch = setupBlobMatchCondition(bu, noneMatch)
+        String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
+        HTTPAccessConditions hac = new HTTPAccessConditions(modified, unmodified, match, noneMatch)
+
+        when:
+        bu.renewLease(leaseID, hac).blockingGet()
+
+        then:
+        thrown(StorageException)
+
+        where:
+        modified | unmodified | match       | noneMatch
+        newDate  | null       | null        | null
+        null     | oldDate    | null        | null
+        null     | null       | garbageEtag | null
+        null     | null       | null        | receivedEtag
+    }
+
+    def "Renew lease error"() {
         setup:
         bu = cu.createBlockBlobURL(generateBlobName())
 
@@ -472,7 +561,7 @@ class BlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    def "Blob release lease"() {
+    def "Release lease"() {
         setup:
         String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
 
@@ -484,7 +573,7 @@ class BlobAPITest extends APISpec {
     }
 
     @Unroll
-    def "Blob release leaseAC"() {
+    def "Release lease AC"() {
         setup:
         match = setupBlobMatchCondition(bu, match)
         String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
@@ -502,7 +591,28 @@ class BlobAPITest extends APISpec {
         null     | null       | null         | garbageEtag
     }
 
-    def "blob release lease error"() {
+    @Unroll
+    def "Release lease AC fail"() {
+        setup:
+        noneMatch = setupBlobMatchCondition(bu, noneMatch)
+        String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
+        HTTPAccessConditions hac = new HTTPAccessConditions(modified, unmodified, match, noneMatch)
+
+        when:
+        bu.releaseLease(leaseID, hac).blockingGet()
+
+        then:
+        thrown(StorageException)
+
+        where:
+        modified | unmodified | match       | noneMatch
+        newDate  | null       | null        | null
+        null     | oldDate    | null        | null
+        null     | null       | garbageEtag | null
+        null     | null       | null        | receivedEtag
+    }
+
+    def "Release lease error"() {
         setup:
         bu = cu.createBlockBlobURL(generateBlobName())
 
@@ -514,7 +624,7 @@ class BlobAPITest extends APISpec {
     }
 
     @Unroll
-    def "Blob break lease"() {
+    def "Break lease"() {
         setup:
         bu.acquireLease(UUID.randomUUID().toString(), leaseTime, null).blockingGet()
 
@@ -535,7 +645,7 @@ class BlobAPITest extends APISpec {
     }
 
     @Unroll
-    def "Blob break lease AC"() {
+    def "Break lease AC"() {
         setup:
         match = setupBlobMatchCondition(bu, match)
         setupBlobLeaseCondition(bu, receivedLeaseID)
@@ -553,7 +663,28 @@ class BlobAPITest extends APISpec {
         null     | null       | null         | garbageEtag
     }
 
-    def "Blob break lease error"() {
+    @Unroll
+    def "Break lease AC fail"() {
+        setup:
+        noneMatch = setupBlobMatchCondition(bu, noneMatch)
+        setupBlobLeaseCondition(bu, receivedLeaseID)
+        HTTPAccessConditions hac = new HTTPAccessConditions(modified, unmodified, match, noneMatch)
+
+        when:
+        bu.breakLease(null, hac).blockingGet()
+
+        then:
+        thrown(StorageException)
+
+        where:
+        modified | unmodified | match       | noneMatch
+        newDate  | null       | null        | null
+        null     | oldDate    | null        | null
+        null     | null       | garbageEtag | null
+        null     | null       | null        | receivedEtag
+    }
+
+    def "Break lease error"() {
         setup:
         bu = cu.createBlockBlobURL(generateBlobName())
 
@@ -564,7 +695,7 @@ class BlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    def "Blob change lease"() {
+    def "Change lease"() {
         setup:
         String leaseID =
                 bu.acquireLease(UUID.randomUUID().toString(), 15, null).blockingGet()
@@ -579,7 +710,7 @@ class BlobAPITest extends APISpec {
     }
 
     @Unroll
-    def "Blob change lease AC"() {
+    def "Change lease AC"() {
         setup:
         match = setupBlobMatchCondition(bu, match)
         String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
@@ -597,7 +728,28 @@ class BlobAPITest extends APISpec {
         null     | null       | null         | garbageEtag
     }
 
-    def "Blob change lease error"() {
+    @Unroll
+    def "Change lease AC fail"() {
+        setup:
+        noneMatch = setupBlobMatchCondition(bu, noneMatch)
+        String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
+        HTTPAccessConditions hac = new HTTPAccessConditions(modified, unmodified, match, noneMatch)
+
+        when:
+        bu.changeLease(leaseID, UUID.randomUUID().toString(), hac).blockingGet()
+
+        then:
+        thrown(StorageException)
+
+        where:
+        modified | unmodified | match       | noneMatch
+        newDate  | null       | null        | null
+        null     | oldDate    | null        | null
+        null     | null       | garbageEtag | null
+        null     | null       | null        | receivedEtag
+    }
+
+    def "Change lease error"() {
         setup:
         bu = cu.createBlockBlobURL(generateBlobName())
 
@@ -608,7 +760,7 @@ class BlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    def "Blob snapshot"() {
+    def "Snapshot"() {
         when:
         BlobCreateSnapshotHeaders headers = bu.createSnapshot(null, null)
                 .blockingGet().headers()
@@ -619,7 +771,7 @@ class BlobAPITest extends APISpec {
     }
 
     @Unroll
-    def "Blob snapshot metadata"() {
+    def "Snapshot metadata"() {
         setup:
         Metadata metadata = new Metadata()
         if (key1 != null && value1 != null) {
@@ -640,11 +792,10 @@ class BlobAPITest extends APISpec {
         key1  | value1 | key2   | value2 || statusCode
         null  | null   | null   | null   || 200
         "foo" | "bar"  | "fizz" | "buzz" || 200
-        // TODO: Support: null  | "bar"  | null   | null   || 200?
     }
 
     @Unroll
-    def "Blob snapshot AC"() {
+    def "Snapshot AC"() {
         setup:
         match = setupBlobMatchCondition(bu, match)
         leaseID = setupBlobLeaseCondition(bu, leaseID)
@@ -665,7 +816,31 @@ class BlobAPITest extends APISpec {
         null     | null       | null         | null        | receivedLeaseID
     }
 
-    def "Blob snapshot error"() {
+    @Unroll
+    def "Snapshot AC fail"() {
+        setup:
+        noneMatch = setupBlobMatchCondition(bu, noneMatch)
+        setupBlobLeaseCondition(bu, leaseID)
+        BlobAccessConditions bac = new BlobAccessConditions(
+                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
+                null, null)
+
+        when:
+        bu.createSnapshot(null, bac).blockingGet()
+
+        then:
+        thrown(StorageException)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
+    }
+
+    def "Snapshot error"() {
         setup:
         bu = cu.createBlockBlobURL(generateBlobName())
 
@@ -676,7 +851,7 @@ class BlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    def "Blob copy"() {
+    def "Copy"() {
         setup:
         BlobURL bu2 = cu.createBlockBlobURL(generateBlobName())
         BlobStartCopyFromURLHeaders headers =
@@ -684,16 +859,22 @@ class BlobAPITest extends APISpec {
                         .blockingGet().headers()
 
         when:
-        CopyStatusType status = bu2.getProperties(null).blockingGet().headers().copyStatus()
+        while (bu2.getProperties(null).blockingGet().headers().copyStatus() == CopyStatusType.PENDING) {
+            sleep(1000)
+        }
+        BlobGetPropertiesHeaders headers2 = bu2.getProperties(null).blockingGet().headers()
 
         then:
-        status == CopyStatusType.SUCCESS || status == CopyStatusType.PENDING
+        headers2.copyStatus() == CopyStatusType.SUCCESS
+        headers2.copyCompletionTime() != null
+        headers2.copyProgress() != null
+        headers2.copySource() != null
         validateBasicHeaders(headers)
         headers.copyId() != null
     }
 
     @Unroll
-    def "Blob copy metadata"() {
+    def "Copy metadata"() {
         setup:
         BlobURL bu2 = cu.createBlockBlobURL(generateBlobName())
         Metadata metadata = new Metadata()
@@ -719,17 +900,60 @@ class BlobAPITest extends APISpec {
     }
 
     @Unroll
-    def "Blob copy source AC"() {
+    def "Copy source AC"() {
         setup:
         BlobURL bu2 = cu.createBlockBlobURL(generateBlobName())
         match = setupBlobMatchCondition(bu, match)
-        leaseID = setupBlobLeaseCondition(bu, leaseID)
+        HTTPAccessConditions hac = new HTTPAccessConditions(modified, unmodified, match, noneMatch)
+
+        expect:
+        bu2.startCopyFromURL(bu.toURL(), null, hac, null).blockingGet().statusCode() == 202
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+    }
+
+    @Unroll
+    def "Copy source AC fail"() {
+        setup:
+        BlobURL bu2 = cu.createBlockBlobURL(generateBlobName())
+        noneMatch = setupBlobMatchCondition(bu, noneMatch)
+        def hac = new HTTPAccessConditions(modified, unmodified, match, noneMatch)
+
+        when:
+        bu2.startCopyFromURL(bu.toURL(), null, hac, null).blockingGet()
+
+        then:
+        thrown(StorageException)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+    }
+
+    @Unroll
+    def "Copy dest AC"() {
+        setup:
+        BlobURL bu2 = cu.createBlockBlobURL(generateBlobName())
+        bu2.upload(defaultFlowable, defaultDataSize, null, null,
+                null).blockingGet()
+        match = setupBlobMatchCondition(bu2, match)
+        leaseID = setupBlobLeaseCondition(bu2, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions(
                 new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
                 null, null)
 
         expect:
-        bu2.startCopyFromURL(bu.toURL(), null, bac, null).blockingGet().statusCode() == 202
+        bu2.startCopyFromURL(bu.toURL(), null, null, bac)
+                .blockingGet().statusCode() == 202
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -742,31 +966,33 @@ class BlobAPITest extends APISpec {
     }
 
     @Unroll
-    def "Blob copy dest AC"() {
+    def "Copy dest AC fail"() {
         setup:
         BlobURL bu2 = cu.createBlockBlobURL(generateBlobName())
         bu2.upload(defaultFlowable, defaultDataSize, null, null,
                 null).blockingGet()
-        match = setupBlobMatchCondition(bu2, match)
-        leaseID = setupBlobLeaseCondition(bu2, leaseID)
+        noneMatch = setupBlobMatchCondition(bu2, noneMatch)
+        setupBlobLeaseCondition(bu2, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions(
                 new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
                 null, null)
 
-        expect:
-        bu2.startCopyFromURL(bu.toURL(), null, null, bac).blockingGet().statusCode() == 202
+        when:
+        bu2.startCopyFromURL(bu.toURL(), null, null, bac).blockingGet()
+
+        then:
+        thrown(StorageException)
 
         where:
-        modified | unmodified | match        | noneMatch   | leaseID
-        null     | null       | null         | null        | null
-        oldDate  | null       | null         | null        | null
-        null     | newDate    | null         | null        | null
-        null     | null       | receivedEtag | null        | null
-        null     | null       | null         | garbageEtag | null
-        null     | null       | null         | null        | receivedLeaseID
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
     }
 
-    def "Blob copy error"() {
+    def "Copy error"() {
         setup:
         bu = cu.createBlockBlobURL(generateBlobName())
 
@@ -778,7 +1004,7 @@ class BlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    def "Blob abort copy"() {
+    def "Abort copy"() {
         setup:
         // Data has to be large enough and copied between accounts to give us enough time to abort
         ByteBuffer data = getRandomData(8 * 1024 * 1024)
@@ -808,7 +1034,7 @@ class BlobAPITest extends APISpec {
         cu2.delete(null).blockingGet().statusCode() == 202
     }
 
-    def "Blob abort copy lease"() {
+    def "Abort copy lease"() {
         setup:
         // Data has to be large enough and copied between accounts to give us enough time to abort
         ByteBuffer data = getRandomData(8 * 1024 * 1024)
@@ -838,7 +1064,37 @@ class BlobAPITest extends APISpec {
         cu2.delete(null).blockingGet()
     }
 
-    def "Blob abort copy error"() {
+    def "Abort copy lease fail"() {
+        // Data has to be large enough and copied between accounts to give us enough time to abort
+        ByteBuffer data = getRandomData(8 * 1024 * 1024)
+        bu.toBlockBlobURL()
+                .upload(Flowable.just(data), 8 * 1024 * 1024, null, null, null)
+                .blockingGet()
+        // So we don't have to create a SAS.
+        cu.setAccessPolicy(PublicAccessType.BLOB, null, null).blockingGet()
+
+        ContainerURL cu2 = alternateServiceURL.createContainerURL(generateBlobName())
+        cu2.create(null, null).blockingGet()
+        BlockBlobURL bu2 = cu2.createBlockBlobURL(generateBlobName())
+        bu2.upload(defaultFlowable, defaultDataSize, null, null, null)
+                .blockingGet()
+        String leaseID = setupBlobLeaseCondition(bu2, receivedLeaseID)
+
+        when:
+        String copyID =
+                bu2.startCopyFromURL(bu.toURL(), null, null,
+                        new BlobAccessConditions(null, new LeaseAccessConditions(leaseID),
+                                null, null))
+                        .blockingGet().headers().copyId()
+        bu2.abortCopyFromURL(copyID, new LeaseAccessConditions(garbageLeaseID)).blockingGet()
+
+        then:
+        def e = thrown(StorageException)
+        e.statusCode() == 412
+        cu2.delete(null).blockingGet()
+    }
+
+    def "Abort copy error"() {
         setup:
         bu = cu.createBlockBlobURL(generateBlobName())
 
@@ -849,7 +1105,7 @@ class BlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    def "Blob delete"() {
+    def "Delete"() {
         when:
         BlobDeleteResponse response = bu.delete(null, null).blockingGet()
         BlobDeleteHeaders headers = response.headers()
@@ -862,7 +1118,7 @@ class BlobAPITest extends APISpec {
     }
 
     @Unroll
-    def "Blob delete options"() {
+    def "Delete options"() {
         setup:
         bu.createSnapshot(null, null).blockingGet()
         // Create an extra blob so the list isn't empty (null) when we delete base blob, too
@@ -875,7 +1131,7 @@ class BlobAPITest extends APISpec {
 
         then:
         cu.listBlobsFlatSegment(null, null).blockingGet()
-                .body().segment().blobItems().size()== blobsRemaining
+                .body().segment().blobItems().size() == blobsRemaining
 
         where:
         option                            | blobsRemaining
@@ -884,7 +1140,7 @@ class BlobAPITest extends APISpec {
     }
 
     @Unroll
-    def "Blob delete AC"() {
+    def "Delete AC"() {
         setup:
         match = setupBlobMatchCondition(bu, match)
         leaseID = setupBlobLeaseCondition(bu, leaseID)
@@ -903,6 +1159,30 @@ class BlobAPITest extends APISpec {
         null     | null       | receivedEtag | null        | null
         null     | null       | null         | garbageEtag | null
         null     | null       | null         | null        | receivedLeaseID
+    }
+
+    @Unroll
+    def "Delete AC fail"() {
+        setup:
+        noneMatch = setupBlobMatchCondition(bu, noneMatch)
+        setupBlobLeaseCondition(bu, leaseID)
+        BlobAccessConditions bac = new BlobAccessConditions(
+                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
+                null, null)
+
+        when:
+        bu.delete(DeleteSnapshotsOptionType.INCLUDE, bac).blockingGet()
+
+        then:
+        thrown(StorageException)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
     }
 
     def "Blob delete error"() {
@@ -1049,7 +1329,7 @@ class BlobAPITest extends APISpec {
         bu.delete(null, null).blockingGet()
 
         when:
-        def response =  bu.undelete().blockingGet()
+        def response = bu.undelete().blockingGet()
         bu.getProperties(null).blockingGet()
 
         then:

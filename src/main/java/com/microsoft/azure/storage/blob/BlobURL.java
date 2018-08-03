@@ -146,26 +146,27 @@ public class BlobURL extends StorageURL {
      *      The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      * @param metadata
      *      {@link Metadata}
-     * @param sourceAccessConditions
-     *      {@link BlobAccessConditions} against the source.
+     * @param sourceHttpAccessConditions
+     *      {@link HTTPAccessConditions} against the source.
      * @param destAccessConditions
      *      {@link BlobAccessConditions} against the destination.
      * @return
      *      Emits the successful response.
      */
     public Single<BlobStartCopyFromURLResponse> startCopyFromURL(
-            URL sourceURL, Metadata metadata, BlobAccessConditions sourceAccessConditions,
+            URL sourceURL, Metadata metadata, HTTPAccessConditions sourceHttpAccessConditions,
             BlobAccessConditions destAccessConditions) {
         metadata = metadata == null ? Metadata.NONE : metadata;
-        sourceAccessConditions = sourceAccessConditions == null ? BlobAccessConditions.NONE : sourceAccessConditions;
+        sourceHttpAccessConditions = sourceHttpAccessConditions == null ?
+                HTTPAccessConditions.NONE : sourceHttpAccessConditions;
         destAccessConditions = destAccessConditions == null ? BlobAccessConditions.NONE : destAccessConditions;
 
         return addErrorWrappingToSingle(this.storageClient.generatedBlobs().startCopyFromURLWithRestResponseAsync(
                 sourceURL, null, metadata,
-                sourceAccessConditions.getHttpAccessConditions().getIfModifiedSince(),
-                sourceAccessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
-                sourceAccessConditions.getHttpAccessConditions().getIfMatch().toString(),
-                sourceAccessConditions.getHttpAccessConditions().getIfNoneMatch().toString(),
+                sourceHttpAccessConditions.getIfModifiedSince(),
+                sourceHttpAccessConditions.getIfUnmodifiedSince(),
+                sourceHttpAccessConditions.getIfMatch().toString(),
+                sourceHttpAccessConditions.getIfNoneMatch().toString(),
                 destAccessConditions.getHttpAccessConditions().getIfModifiedSince(),
                 destAccessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
                 destAccessConditions.getHttpAccessConditions().getIfMatch().toString(),

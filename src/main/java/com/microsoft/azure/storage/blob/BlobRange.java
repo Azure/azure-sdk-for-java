@@ -70,11 +70,12 @@ public final class BlobRange {
         return count;
     }
 
-    @Override
+
     /**
-     * @returns
+     * @return
      *      A {@code String} compliant with the format of the Azure Storage x-ms-range and Range headers.
      */
+    @Override
     public String toString() {
 
         if (count != null) {
