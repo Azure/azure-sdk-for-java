@@ -396,14 +396,14 @@ public final class PageBlobURL extends BlobURL {
      *      The source page blob.
      * @param snapshot
      *      The snapshot on the copy source.
-     * @param accessConditions
+     * @param httpAccessConditions
      *      {@link BlobAccessConditions}
      * @return
      *      Emits the successful response.
      */
     public Single<PageBlobCopyIncrementalResponse> copyIncremental(
-            URL source, String snapshot, BlobAccessConditions accessConditions) {
-        accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
+            URL source, String snapshot, HTTPAccessConditions httpAccessConditions) {
+        httpAccessConditions = httpAccessConditions == null ? HTTPAccessConditions.NONE : httpAccessConditions;
 
         UrlBuilder builder = UrlBuilder.parse(source);
         builder.setQueryParameter(Constants.SNAPSHOT_QUERY_PARAMETER, snapshot);
@@ -413,12 +413,12 @@ public final class PageBlobURL extends BlobURL {
             // We are parsing a valid url and adding a query parameter. If this fails, we can't recover.
             throw new Error(e);
         }
-        return addErrorWrappingToSingle(this.storageClient.generatedPageBlobs().copyIncrementalWithRestResponseAsync(source,
-                null, null,
-                accessConditions.getHttpAccessConditions().getIfModifiedSince(),
-                accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
-                accessConditions.getHttpAccessConditions().getIfMatch().toString(),
-                accessConditions.getHttpAccessConditions().getIfNoneMatch().toString(), null));
+        return addErrorWrappingToSingle(this.storageClient.generatedPageBlobs().copyIncrementalWithRestResponseAsync(
+                source, null, null,
+                httpAccessConditions.getIfModifiedSince(),
+                httpAccessConditions.getIfUnmodifiedSince(),
+                httpAccessConditions.getIfMatch().toString(),
+                httpAccessConditions.getIfNoneMatch().toString(), null));
     }
 
     private static String pageRangeToString(PageRange pageRange) {

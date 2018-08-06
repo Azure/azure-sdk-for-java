@@ -15,34 +15,11 @@
 
 package com.microsoft.azure.storage
 
-import com.microsoft.azure.storage.blob.BlobAccessConditions
-import com.microsoft.azure.storage.blob.BlobHTTPHeaders
-import com.microsoft.azure.storage.blob.BlobRange
-import com.microsoft.azure.storage.blob.HTTPAccessConditions
-import com.microsoft.azure.storage.blob.LeaseAccessConditions
-import com.microsoft.azure.storage.blob.Metadata
-import com.microsoft.azure.storage.blob.PageBlobAccessConditions
-import com.microsoft.azure.storage.blob.PageBlobURL
-import com.microsoft.azure.storage.blob.StorageException
-import com.microsoft.azure.storage.blob.models.BlobGetPropertiesResponse
-import com.microsoft.azure.storage.blob.models.PageBlobClearPagesHeaders
-import com.microsoft.azure.storage.blob.models.PageBlobCopyIncrementalHeaders
-import com.microsoft.azure.storage.blob.models.PageBlobCreateResponse
-import com.microsoft.azure.storage.blob.models.PageBlobGetPageRangesDiffHeaders
-import com.microsoft.azure.storage.blob.models.PageBlobGetPageRangesDiffResponse
-import com.microsoft.azure.storage.blob.models.PageBlobGetPageRangesHeaders
-import com.microsoft.azure.storage.blob.models.PageBlobGetPageRangesResponse
-import com.microsoft.azure.storage.blob.models.PageBlobResizeHeaders
-import com.microsoft.azure.storage.blob.models.PageBlobUpdateSequenceNumberHeaders
-import com.microsoft.azure.storage.blob.models.PageBlobUploadPagesHeaders
-import com.microsoft.azure.storage.blob.models.PageBlobUploadPagesResponse
-import com.microsoft.azure.storage.blob.models.PageRange
-import com.microsoft.azure.storage.blob.models.PublicAccessType
-import com.microsoft.azure.storage.blob.models.SequenceNumberActionType
+import com.microsoft.azure.storage.blob.*
+import com.microsoft.azure.storage.blob.models.*
 import io.reactivex.Flowable
 import spock.lang.Unroll
 
-import java.nio.ByteBuffer
 import java.security.MessageDigest
 
 class PageBlobAPITest extends APISpec {
@@ -53,7 +30,7 @@ class PageBlobAPITest extends APISpec {
         bu.create(512, null, null, null, null).blockingGet()
     }
 
-    def "Page blob create all null"() {
+    def "Create all null"() {
         setup:
         bu = cu.createPageBlobURL(generateBlobName())
 
@@ -68,7 +45,7 @@ class PageBlobAPITest extends APISpec {
         response.headers().isServerEncrypted()
     }
 
-    def "Page blob create sequence number"() {
+    def "Create sequence number"() {
         when:
         bu.create(512, 2, null, null, null).blockingGet()
 
@@ -77,7 +54,7 @@ class PageBlobAPITest extends APISpec {
     }
 
     @Unroll
-    def "Page blob create headers"() {
+    def "Create headers"() {
         setup:
         BlobHTTPHeaders headers = new BlobHTTPHeaders(cacheControl, contentDisposition, contentEncoding,
                 contentLanguage, contentMD5, contentType)
@@ -98,7 +75,7 @@ class PageBlobAPITest extends APISpec {
     }
 
     @Unroll
-    def "Page blob create metadata"() {
+    def "Create metadata"() {
         setup:
         Metadata metadata = new Metadata()
         if (key1 != null) {
@@ -123,7 +100,7 @@ class PageBlobAPITest extends APISpec {
     }
 
     @Unroll
-    def "Page blob create AC"() {
+    def "Create AC"() {
         setup:
         match = setupBlobMatchCondition(bu, match)
         leaseID = setupBlobLeaseCondition(bu, leaseID)
@@ -145,17 +122,29 @@ class PageBlobAPITest extends APISpec {
         null     | null       | null         | null        | receivedLeaseID
     }
 
-    def "Page blob create error"() {
+    @Unroll
+    def "Create AC fail"() {
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
+    }
+
+    def "Create error"() {
         when:
         bu.create(512, null, null, null,
                 new BlobAccessConditions(null, new LeaseAccessConditions("id"),
-                        null,null)).blockingGet()
+                        null, null)).blockingGet()
 
         then:
         thrown(StorageException)
     }
 
-    def "Page blob upload page"() {
+    def "Upload page"() {
         when:
         PageBlobUploadPagesResponse response = bu.uploadPages(new PageRange().withStart(0).withEnd(511),
                 Flowable.just(getRandomData(512)), null).blockingGet()
@@ -170,7 +159,22 @@ class PageBlobAPITest extends APISpec {
     }
 
     @Unroll
-    def "Page blob upload page AC"() {
+    def "Upload page IA"() {
+        when:
+        bu.uploadPages(new PageRange().withStart(0).withEnd(1023), data, null).blockingGet()
+
+        then:
+        thrown(IllegalArgumentException)
+
+        where:
+        data                                  | _
+        null                                  | _
+        Flowable.just(getRandomData(512))     | _
+        Flowable.just(getRandomData(512 * 3)) | _
+    }
+
+    @Unroll
+    def "Upload page AC"() {
         setup:
         match = setupBlobMatchCondition(bu, match)
         leaseID = setupBlobLeaseCondition(bu, leaseID)
@@ -196,7 +200,36 @@ class PageBlobAPITest extends APISpec {
         null     | null       | null         | null        | null            | null             | null              | 0
     }
 
-    def "Page blob upload page error"() {
+    @Unroll
+    def "Upload page AC fail"() {
+        setup:
+        noneMatch = setupBlobMatchCondition(bu, noneMatch)
+        setupBlobLeaseCondition(bu, leaseID)
+        BlobAccessConditions bac = new BlobAccessConditions(
+                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
+                null,
+                new PageBlobAccessConditions(sequenceNumberLT, sequenceNumberLTE, sequenceNumberEqual))
+
+        when:
+        bu.uploadPages(new PageRange().withStart(0).withEnd(511),
+                Flowable.just(getRandomData(512)), bac).blockingGet()
+
+        then:
+        thrown(StorageException)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID        | sequenceNumberLT | sequenceNumberLTE | sequenceNumberEqual
+        newDate  | null       | null        | null         | null           | null             | null              | null
+        null     | oldDate    | null        | null         | null           | null             | null              | null
+        null     | null       | garbageEtag | null         | null           | null             | null              | null
+        null     | null       | null        | receivedEtag | null           | null             | null              | null
+        null     | null       | null        | null         | garbageLeaseID | null             | null              | null
+        null     | null       | null        | null         | null           | -1               | null              | null
+        null     | null       | null        | null         | null           | null             | -1                | null
+        null     | null       | null        | null         | null           | null             | null              | 100
+    }
+
+    def "Upload page error"() {
         setup:
         bu = cu.createPageBlobURL(generateBlobName())
 
@@ -210,7 +243,7 @@ class PageBlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    def "Page blob clear page"() {
+    def "Clear page"() {
         setup:
         bu.uploadPages(new PageRange().withStart(0).withEnd(511),
                 Flowable.just(getRandomData(512)), null).blockingGet()
@@ -228,7 +261,7 @@ class PageBlobAPITest extends APISpec {
     }
 
     @Unroll
-    def "Page blob clear pages AC"() {
+    def "Clear pages AC"() {
         setup:
         bu.uploadPages(new PageRange().withStart(0).withEnd(511),
                 Flowable.just(getRandomData(512)), null).blockingGet()
@@ -255,7 +288,37 @@ class PageBlobAPITest extends APISpec {
         null     | null       | null         | null        | null            | null             | null              | 0
     }
 
-    def "Page blob clear page error"() {
+    @Unroll
+    def "Clear pages AC fail"() {
+        setup:
+        bu.uploadPages(new PageRange().withStart(0).withEnd(511),
+                Flowable.just(getRandomData(512)), null).blockingGet()
+        noneMatch = setupBlobMatchCondition(bu, noneMatch)
+        setupBlobLeaseCondition(bu, leaseID)
+        BlobAccessConditions bac = new BlobAccessConditions(
+                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
+                null,
+                new PageBlobAccessConditions(sequenceNumberLT, sequenceNumberLTE, sequenceNumberEqual))
+
+        when:
+        bu.clearPages(new PageRange().withStart(0).withEnd(511), bac).blockingGet()
+
+        then:
+        thrown(StorageException)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID        | sequenceNumberLT | sequenceNumberLTE | sequenceNumberEqual
+        newDate  | null       | null        | null         | null           | null             | null              | null
+        null     | oldDate    | null        | null         | null           | null             | null              | null
+        null     | null       | garbageEtag | null         | null           | null             | null              | null
+        null     | null       | null        | receivedEtag | null           | null             | null              | null
+        null     | null       | null        | null         | garbageLeaseID | null             | null              | null
+        null     | null       | null        | null         | null           | -1               | null              | null
+        null     | null       | null        | null         | null           | null             | -1                | null
+        null     | null       | null        | null         | null           | null             | null              | 100
+    }
+
+    def "Clear page error"() {
         setup:
         bu = cu.createPageBlobURL(generateBlobName())
 
@@ -266,7 +329,7 @@ class PageBlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    def "Page blob get page ranges"() {
+    def "Get page ranges"() {
         setup:
         bu.uploadPages(new PageRange().withStart(0).withEnd(511),
                 Flowable.just(getRandomData(512)), null).blockingGet()
@@ -284,32 +347,52 @@ class PageBlobAPITest extends APISpec {
     }
 
     @Unroll
-    def "Page blob get page ranges AC"() {
+    def "Get page ranges AC"() {
         setup:
         match = setupBlobMatchCondition(bu, match)
         leaseID = setupBlobLeaseCondition(bu, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions(
                 new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
-                null,
-                new PageBlobAccessConditions(sequenceNumberLT, sequenceNumberLTE, sequenceNumberEqual))
+                null, null)
 
         expect:
         bu.getPageRanges(new BlobRange(0, 512), bac).blockingGet().statusCode() == 200
 
         where:
-        modified | unmodified | match        | noneMatch   | leaseID         | sequenceNumberLT | sequenceNumberLTE | sequenceNumberEqual
-        null     | null       | null         | null        | null            | null             | null              | null
-        oldDate  | null       | null         | null        | null            | null             | null              | null
-        null     | newDate    | null         | null        | null            | null             | null              | null
-        null     | null       | receivedEtag | null        | null            | null             | null              | null
-        null     | null       | null         | garbageEtag | null            | null             | null              | null
-        null     | null       | null         | null        | receivedLeaseID | null             | null              | null
-        null     | null       | null         | null        | null            | 5                | null              | null
-        null     | null       | null         | null        | null            | null             | 3                 | null
-        null     | null       | null         | null        | null            | null             | null              | 0
+        modified | unmodified | match        | noneMatch   | leaseID
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | receivedLeaseID
     }
 
-    def "Page blob get page ranges error"() {
+    @Unroll
+    def "Get page ranges AC fail"() {
+        setup:
+        noneMatch = setupBlobMatchCondition(bu, noneMatch)
+        setupBlobLeaseCondition(bu, leaseID)
+        BlobAccessConditions bac = new BlobAccessConditions(
+                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
+                null, null)
+
+        when:
+        bu.getPageRanges(new BlobRange(0, 512), bac).blockingGet().statusCode()
+
+        then:
+        thrown(StorageException)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
+    }
+
+    def "Get page ranges error"() {
         setup:
         bu = cu.createPageBlobURL(generateBlobName())
 
@@ -320,7 +403,7 @@ class PageBlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    def "Page blob get page ranges diff"() {
+    def "Get page ranges diff"() {
         setup:
         String snapshot = bu.createSnapshot(null, null).blockingGet().headers().snapshot()
         bu.uploadPages(new PageRange().withStart(0).withEnd(511),
@@ -338,33 +421,54 @@ class PageBlobAPITest extends APISpec {
     }
 
     @Unroll
-    def "Page blob get page ranges diff AC"() {
+    def "Get page ranges diff AC"() {
         setup:
         String snapshot = bu.createSnapshot(null, null).blockingGet().headers().snapshot()
         match = setupBlobMatchCondition(bu, match)
         leaseID = setupBlobLeaseCondition(bu, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions(
                 new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
-                null,
-                new PageBlobAccessConditions(sequenceNumberLT, sequenceNumberLTE, sequenceNumberEqual))
+                null, null)
 
         expect:
         bu.getPageRangesDiff(new BlobRange(0, 512), snapshot, bac).blockingGet().statusCode() == 200
 
         where:
-        modified | unmodified | match        | noneMatch   | leaseID         | sequenceNumberLT | sequenceNumberLTE | sequenceNumberEqual
-        null     | null       | null         | null        | null            | null             | null              | null
-        oldDate  | null       | null         | null        | null            | null             | null              | null
-        null     | newDate    | null         | null        | null            | null             | null              | null
-        null     | null       | receivedEtag | null        | null            | null             | null              | null
-        null     | null       | null         | garbageEtag | null            | null             | null              | null
-        null     | null       | null         | null        | receivedLeaseID | null             | null              | null
-        null     | null       | null         | null        | null            | 5                | null              | null
-        null     | null       | null         | null        | null            | null             | 3                 | null
-        null     | null       | null         | null        | null            | null             | null              | 0
+        modified | unmodified | match        | noneMatch   | leaseID
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | receivedLeaseID
     }
 
-    def "Page blob get page ranges diff error"() {
+    @Unroll
+    def "Get page ranges diff AC fail"() {
+        setup:
+        String snapshot = bu.createSnapshot(null, null).blockingGet().headers().snapshot()
+        noneMatch = setupBlobMatchCondition(bu, noneMatch)
+        setupBlobLeaseCondition(bu, leaseID)
+        BlobAccessConditions bac = new BlobAccessConditions(
+                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
+                null, null)
+
+        when:
+        bu.getPageRangesDiff(new BlobRange(0, 512), snapshot, bac).blockingGet()
+
+        then:
+        thrown(StorageException)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
+    }
+
+    def "Get page ranges diff error"() {
         setup:
         bu = cu.createPageBlobURL(generateBlobName())
 
@@ -375,7 +479,24 @@ class PageBlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    def "Page blob resize"() {
+    // Test the serialization of PageRange with illegal bounds
+    @Unroll
+    def "PageRange IA"() {
+        setup:
+        def range = new PageRange().withStart(start).withEnd(end)
+
+        when:
+        bu.clearPages(range, null)
+
+        then:
+        thrown(IllegalArgumentException)
+
+        where:
+        start | end
+        1 | 1
+    }
+
+    def "Resize"() {
         setup:
         PageBlobResizeHeaders headers = bu.resize(1024, null).blockingGet().headers()
 
@@ -386,32 +507,52 @@ class PageBlobAPITest extends APISpec {
     }
 
     @Unroll
-    def "Page blob resize AC"() {
+    def "Resize AC"() {
         setup:
         match = setupBlobMatchCondition(bu, match)
         leaseID = setupBlobLeaseCondition(bu, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions(
                 new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
-                null,
-                new PageBlobAccessConditions(sequenceNumberLT, sequenceNumberLTE, sequenceNumberEqual))
+                null, null)
 
         expect:
         bu.resize(1024, bac).blockingGet().statusCode() == 200
 
         where:
-        modified | unmodified | match        | noneMatch   | leaseID         | sequenceNumberLT | sequenceNumberLTE | sequenceNumberEqual
-        null     | null       | null         | null        | null            | null             | null              | null
-        oldDate  | null       | null         | null        | null            | null             | null              | null
-        null     | newDate    | null         | null        | null            | null             | null              | null
-        null     | null       | receivedEtag | null        | null            | null             | null              | null
-        null     | null       | null         | garbageEtag | null            | null             | null              | null
-        null     | null       | null         | null        | receivedLeaseID | null             | null              | null
-        null     | null       | null         | null        | null            | 5                | null              | null
-        null     | null       | null         | null        | null            | null             | 3                 | null
-        null     | null       | null         | null        | null            | null             | null              | 0
+        modified | unmodified | match        | noneMatch   | leaseID
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | receivedLeaseID
     }
 
-    def "Page blob resize error"() {
+    @Unroll
+    def "Resize AC fail"() {
+        setup:
+        noneMatch = setupBlobMatchCondition(bu, noneMatch)
+        setupBlobLeaseCondition(bu, leaseID)
+        BlobAccessConditions bac = new BlobAccessConditions(
+                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
+                null, null)
+
+        when:
+        bu.resize(1024, bac).blockingGet()
+
+        then:
+        thrown(StorageException)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
+    }
+
+    def "Resize error"() {
         setup:
         bu = cu.createPageBlobURL(generateBlobName())
 
@@ -422,7 +563,7 @@ class PageBlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    def "Page blob sequence number"() {
+    def "Sequence number"() {
         setup:
         PageBlobUpdateSequenceNumberHeaders headers =
                 bu.updateSequenceNumber(SequenceNumberActionType.UPDATE, 5, null)
@@ -435,33 +576,53 @@ class PageBlobAPITest extends APISpec {
     }
 
     @Unroll
-    def "Page blob sequence number AC"() {
+    def "Sequence number AC"() {
         setup:
         match = setupBlobMatchCondition(bu, match)
         leaseID = setupBlobLeaseCondition(bu, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions(
                 new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
-                null,
-                new PageBlobAccessConditions(sequenceNumberLT, sequenceNumberLTE, sequenceNumberEqual))
+                null, null)
 
         expect:
         bu.updateSequenceNumber(SequenceNumberActionType.UPDATE, 1, bac).blockingGet()
                 .statusCode() == 200
 
         where:
-        modified | unmodified | match        | noneMatch   | leaseID         | sequenceNumberLT | sequenceNumberLTE | sequenceNumberEqual
-        null     | null       | null         | null        | null            | null             | null              | null
-        oldDate  | null       | null         | null        | null            | null             | null              | null
-        null     | newDate    | null         | null        | null            | null             | null              | null
-        null     | null       | receivedEtag | null        | null            | null             | null              | null
-        null     | null       | null         | garbageEtag | null            | null             | null              | null
-        null     | null       | null         | null        | receivedLeaseID | null             | null              | null
-        null     | null       | null         | null        | null            | 5                | null              | null
-        null     | null       | null         | null        | null            | null             | 3                 | null
-        null     | null       | null         | null        | null            | null             | null              | 0
+        modified | unmodified | match        | noneMatch   | leaseID
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | receivedLeaseID
     }
 
-    def "Page blob sequence number error"() {
+    @Unroll
+    def "Sequence number AC fail"() {
+        setup:
+        noneMatch = setupBlobMatchCondition(bu, noneMatch)
+        setupBlobLeaseCondition(bu, leaseID)
+        BlobAccessConditions bac = new BlobAccessConditions(
+                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
+                null, null)
+
+        when:
+        bu.updateSequenceNumber(SequenceNumberActionType.UPDATE, 1, bac).blockingGet()
+
+        then:
+        thrown(StorageException)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
+    }
+
+    def "Sequence number error"() {
         setup:
         bu = cu.createPageBlobURL(generateBlobName())
 
@@ -472,7 +633,7 @@ class PageBlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    def "Page blob start incremental copy"() {
+    def "Start incremental copy"() {
         setup:
         cu.setAccessPolicy(PublicAccessType.BLOB, null, null).blockingGet()
         PageBlobURL bu2 = cu.createPageBlobURL(generateBlobName())
@@ -489,29 +650,54 @@ class PageBlobAPITest extends APISpec {
     }
 
     @Unroll
-    def "Page blob start incremental copy AC"() {
+    def "Start incremental copy AC"() {
         setup:
         cu.setAccessPolicy(PublicAccessType.BLOB, null, null).blockingGet()
         PageBlobURL bu2 = cu.createPageBlobURL(generateBlobName())
         String snapshot = bu.createSnapshot(null, null).blockingGet().headers().snapshot()
+        bu2.copyIncremental(bu.toURL(), snapshot, null).blockingGet()
+        snapshot = bu.createSnapshot(null, null).blockingGet().headers().snapshot()
+        match = setupBlobMatchCondition(bu2, match)
+        def hac = new HTTPAccessConditions(modified, unmodified, match, noneMatch)
 
         expect:
-        bu2.copyIncremental(bu.toURL(), snapshot, null).blockingGet().statusCode() == 202
+        bu2.copyIncremental(bu.toURL(), snapshot, hac).blockingGet().statusCode() == 202
 
         where:
-        modified | unmodified | match        | noneMatch   | leaseID         | sequenceNumberLT | sequenceNumberLTE | sequenceNumberEqual
-        null     | null       | null         | null        | null            | null             | null              | null
-        oldDate  | null       | null         | null        | null            | null             | null              | null
-        null     | newDate    | null         | null        | null            | null             | null              | null
-        null     | null       | receivedEtag | null        | null            | null             | null              | null
-        null     | null       | null         | garbageEtag | null            | null             | null              | null
-        null     | null       | null         | null        | receivedLeaseID | null             | null              | null
-        null     | null       | null         | null        | null            | 5                | null              | null
-        null     | null       | null         | null        | null            | null             | 3                 | null
-        null     | null       | null         | null        | null            | null             | null              | 0
+        modified | unmodified | match        | noneMatch
+        null     | null       | null         | null
+        oldDate  | null       | null         | null
+        null     | newDate    | null         | null
+        null     | null       | receivedEtag | null
+        null     | null       | null         | garbageEtag
     }
 
-    def "Page blob start incremental copy er"() {
+    @Unroll
+    def "Start incremental copy AC fail"() {
+        setup:
+        cu.setAccessPolicy(PublicAccessType.BLOB, null, null).blockingGet()
+        PageBlobURL bu2 = cu.createPageBlobURL(generateBlobName())
+        String snapshot = bu.createSnapshot(null, null).blockingGet().headers().snapshot()
+        bu2.copyIncremental(bu.toURL(), snapshot, null).blockingGet()
+        snapshot = bu.createSnapshot(null, null).blockingGet().headers().snapshot()
+        noneMatch = setupBlobMatchCondition(bu2, noneMatch)
+        def hac = new HTTPAccessConditions(modified, unmodified, match, noneMatch)
+
+        when:
+        bu2.copyIncremental(bu.toURL(), snapshot, hac).blockingGet().statusCode()
+
+        then:
+        thrown(StorageException)
+
+        where:
+        modified | unmodified | match       | noneMatch
+        newDate  | null       | null        | null
+        null     | oldDate    | null        | null
+        null     | null       | garbageEtag | null
+        null     | null       | null        | receivedEtag
+    }
+
+    def "Start incremental copy error"() {
         setup:
         bu = cu.createPageBlobURL(generateBlobName())
 

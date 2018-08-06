@@ -1,8 +1,10 @@
-﻿2018.08.07 Version 10.0.2-Preview
+﻿XXXX.XX.XX Version X.X.X
+* Changed BlobURL.startCopy sourceAccessConditions parameter to be HTTPAccessConditions as lease is not actually supported.
+
+2018.08.07 Version 10.0.2-Preview
 * Changed BlobListingDetails constructor to take a flag to include deleted blobs.
 * Restructured the blob and container listing responses.
 * BlockBlobURL.MAX_PUT_BLOCK_BYTES renamed to BlockBlobURL.MAX_STAGE_BLOCK_BYTES.
-* Changed BlobURL.startCopy sourceAccessConditions parameter to be HTTPAccessConditions as lease is not actually supported.
 
 2018.07.03 Version 10.0.1-Preview
 * Created the StorageException type, which deserializes the XML payload in an error response if present and gives access to the ErrorCode header as a property.
