@@ -1,3 +1,10 @@
+2.0.0-beta4 (2018-08-06)
+- Added HttpRequest request() property to RestResponse
+- Added isProxyHTTPS() property to HttpClientConfiguration
+
+2.0.0-beta3 (2018-06-26)
+- Added FlowableUtil.ensureLength() operator to better handle cases where the request body had an unexpected size
+
 2.0.0-beta2 (2018-04-23)
 - Major refinements to HTTP content streaming, in large part thanks to contributions by [David Moten](https://github.com/davidmoten).
 - Removed Joda Time in favor of Java 8 DateTime classes

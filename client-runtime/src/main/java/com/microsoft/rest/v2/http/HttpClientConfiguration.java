@@ -13,6 +13,7 @@ import java.net.Proxy;
  */
 public class HttpClientConfiguration {
     private final Proxy proxy;
+    private final boolean isProxyHTTPS;
 
     /**
      * @return The optional proxy to use.
@@ -22,10 +23,21 @@ public class HttpClientConfiguration {
     }
 
     /**
+     * Indicates whether the connection to the proxy is via HTTP or HTTPS.
+     * This is unrelated to whether the final resource being accessed is over HTTP or HTTPS.
+     * @return true if the proxy should be connected via HTTPS
+     */
+    public boolean isProxyHTTPS() {
+        return isProxyHTTPS;
+    }
+
+    /**
      * Creates an HttpClientConfiguration.
      * @param proxy The optional proxy to use.
+     * @param isProxyHTTPS true if the proxy should be connected via HTTPS
      */
-    public HttpClientConfiguration(Proxy proxy) {
+    public HttpClientConfiguration(Proxy proxy, boolean isProxyHTTPS) {
         this.proxy = proxy;
+        this.isProxyHTTPS = isProxyHTTPS;
     }
 }
