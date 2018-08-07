@@ -22,13 +22,17 @@ import com.microsoft.azure.storage.blob.models.StorageErrorException;
 import com.microsoft.rest.v2.RestResponse;
 import com.microsoft.rest.v2.http.HttpHeaders;
 import com.microsoft.rest.v2.http.HttpResponse;
+import io.netty.channel.ChannelException;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 import org.reactivestreams.Subscriber;
 
-import java.io.IOException;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.nio.ByteBuffer;
+import java.nio.channels.ClosedChannelException;
 import java.util.HashMap;
+import java.util.concurrent.TimeoutException;
 
 public class RetryReaderMockFlowable extends Flowable<ByteBuffer> {
 
@@ -111,7 +115,7 @@ public class RetryReaderMockFlowable extends Flowable<ByteBuffer> {
                     toSend.position((this.tryNumber-1)*256);
                     toSend.limit(this.tryNumber*256);
                     s.onNext(toSend);
-                    s.onError(new IOException());
+                    s.onError(new ChannelException());
                     break;
                 }
                 if (this.info.offset != (this.tryNumber-1)*256 ||
@@ -127,7 +131,7 @@ public class RetryReaderMockFlowable extends Flowable<ByteBuffer> {
                 break;
 
             case RR_TEST_SCENARIO_MAX_RETRIES_EXCEEDED:
-                s.onError(new IOException());
+                s.onError(new SocketTimeoutException());
                 break;
 
             case RR_TEST_SCENARIO_NON_RETRYABLE_ERROR:
@@ -135,7 +139,11 @@ public class RetryReaderMockFlowable extends Flowable<ByteBuffer> {
                 break;
 
             case RR_TEST_SCENARIO_ERROR_GETTER_MIDDLE:
-                s.onError(new IOException());
+                /*
+                We return a retryable error here so we have to invoke the getter, which will throw an error in this
+                case.
+                 */
+                s.onError(new ChannelException());
                 break;
 
             case RR_TEST_SCENARIO_SUCCESSFUL_INITIAL_RESPONSE:
@@ -147,11 +155,11 @@ public class RetryReaderMockFlowable extends Flowable<ByteBuffer> {
                 switch (this.tryNumber) {
                     case 1:
                         // Test the value of info when getting the initial response.
-                        s.onError(new IOException());
+                        s.onError(new TimeoutException());
                         break;
                     case 2:
                         // Test the value of info when getting an intermediate response.
-                        s.onError(new IOException());
+                        s.onError(new SocketException());
                         break;
                     case 3:
                         // All calls to getter checked. Exit. This test does not check for data.
@@ -173,7 +181,7 @@ public class RetryReaderMockFlowable extends Flowable<ByteBuffer> {
 
         switch(this.scenario) {
             case RR_TEST_SCENARIO_ERROR_GETTER_INITIAL:
-                throw new Error("Getter error", new IOException());
+                throw new Error("Getter error", new ClosedChannelException());
             case RR_TEST_SCENARIO_ERROR_GETTER_MIDDLE:
                 switch (this.tryNumber) {
                     case 1:

@@ -400,8 +400,7 @@ public class Samples {
                     }
                     // We just fake a successful response to prevent the example from crashing.
                     return Single.just(
-                            new ContainerCreateResponse(null,200, null, null,
-                                    null));
+                            new ContainerCreateResponse(null,200, null, null, null));
                 })
                 /*
                 This will synchronize all the above operations. This is strongly discouraged for use in production as
@@ -1649,8 +1648,7 @@ public class Samples {
                     }
                     // We just fake a successful response to prevent the example from crashing.
                     return Single.just(
-                            new ContainerCreateResponse(null,200, null, null,
-                                    null));
+                            new ContainerCreateResponse(null,200, null, null, null));
                 }).subscribe();
         // </exception>
 
