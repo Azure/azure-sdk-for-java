@@ -116,12 +116,12 @@ final class Constants {
         /**
          * Specifies the value to use for UserAgent header.
          */
-        static final String USER_AGENT_PREFIX = "Azure-Storage-Async";
+        static final String USER_AGENT_PREFIX = "Azure-Storage";
 
         /**
          * Specifies the value to use for UserAgent header.
          */
-        static final String USER_AGENT_VERSION = "10.0.1-Preview";
+        static final String USER_AGENT_VERSION = "10.0.2-Preview";
 
         private HeaderConstants() {
             // Private to prevent construction.

@@ -169,7 +169,7 @@ public class RetryReaderMockFlowable extends Flowable<ByteBuffer> {
         this.tryNumber++;
         this.info = info;
         RestResponse<BlobDownloadHeaders, Flowable<ByteBuffer>> response =
-                new RestResponse<>(200, new BlobDownloadHeaders(), new HashMap<>(), this);
+                new RestResponse<>(null,200, new BlobDownloadHeaders(), new HashMap<>(), this);
 
         switch(this.scenario) {
             case RR_TEST_SCENARIO_ERROR_GETTER_INITIAL:

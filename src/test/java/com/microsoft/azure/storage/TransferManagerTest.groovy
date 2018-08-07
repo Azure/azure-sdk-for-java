@@ -298,8 +298,8 @@ class TransferManagerTest extends APISpec {
 
         where:
         data                                               | responseType
-        defaultData                                        | BlockBlobsUploadResponse
-        getRandomData(BlockBlobURL.MAX_PUT_BLOB_BYTES + 1) | BlockBlobsCommitBlockListResponse
+        defaultData                                        | BlockBlobUploadResponse
+        getRandomData(BlockBlobURL.MAX_PUT_BLOB_BYTES + 1) | BlockBlobCommitBlockListResponse
     }
 
     @Unroll
@@ -450,8 +450,8 @@ class TransferManagerTest extends APISpec {
 
         where:
         file                                               | responseType
-        getRandomFile(10)                                  | BlockBlobsUploadResponse
-        getRandomFile(BlockBlobURL.MAX_PUT_BLOB_BYTES + 1) | BlockBlobsCommitBlockListResponse
+        getRandomFile(10)                                  | BlockBlobUploadResponse
+        getRandomFile(BlockBlobURL.MAX_PUT_BLOB_BYTES + 1) | BlockBlobCommitBlockListResponse
     }
 
     def compareDataToFile(Flowable<ByteBuffer> data, File file) {

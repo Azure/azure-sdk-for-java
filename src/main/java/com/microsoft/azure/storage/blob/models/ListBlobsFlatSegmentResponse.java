@@ -58,7 +58,7 @@ public final class ListBlobsFlatSegmentResponse {
     /**
      * The segment property.
      */
-    @JsonProperty(value = "Blobs")
+    @JsonProperty(value = "Blobs", required = true)
     private BlobFlatListSegment segment;
 
     /**

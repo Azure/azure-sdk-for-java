@@ -1,4 +1,4 @@
-XXXX.XX.XX Version XX.X.X-Preview
+2018.08.07 Version 10.0.2-Preview
 * Support for 2017-07-29 REST version. Please see our REST api documentation and blogs for information about the related added features.
 * Support for setting a block blob's tier.
 * Added support for soft delete feature. If a delete retention policy is enabled through the set service properties API, then blobs or snapshots can be deleted softly and retained for a specified number of days, before being permanently removed by garbage collection.

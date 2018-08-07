@@ -169,7 +169,6 @@ public class BlobURL extends StorageURL {
                 destAccessConditions.getHttpAccessConditions().getIfMatch().toString(),
                 destAccessConditions.getHttpAccessConditions().getIfNoneMatch().toString(),
                 destAccessConditions.getLeaseAccessConditions().getLeaseId(),
-                sourceAccessConditions.getLeaseAccessConditions().getLeaseId(),
                 null));
     }
 
@@ -240,7 +239,7 @@ public class BlobURL extends StorageURL {
                 accessConditions.getHttpAccessConditions().getIfNoneMatch().toString(),
                 null))
                 .map(response ->
-                        new DownloadResponse(response.statusCode(), response.headers(),
+                        new DownloadResponse(response.request(), response.statusCode(), response.headers(),
                                 response.rawHeaders(), response.body()));
 
     }

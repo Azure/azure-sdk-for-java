@@ -11,6 +11,7 @@
 package com.microsoft.azure.storage.blob.models;
 
 import com.microsoft.rest.v2.RestResponse;
+import com.microsoft.rest.v2.http.HttpRequest;
 import java.util.Map;
 
 /**
@@ -20,13 +21,14 @@ public final class ServiceGetPropertiesResponse extends RestResponse<ServiceGetP
     /**
      * Creates an instance of ServiceGetPropertiesResponse.
      *
+     * @param request the request which resulted in this {response.Name}.
      * @param statusCode the status code of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param body the deserialized body of the HTTP response.
      */
-    public ServiceGetPropertiesResponse(int statusCode, ServiceGetPropertiesHeaders headers, Map<String, String> rawHeaders, StorageServiceProperties body) {
-        super(statusCode, headers, rawHeaders, body);
+    public ServiceGetPropertiesResponse(HttpRequest request, int statusCode, ServiceGetPropertiesHeaders headers, Map<String, String> rawHeaders, StorageServiceProperties body) {
+        super(request, statusCode, headers, rawHeaders, body);
     }
 
     /**

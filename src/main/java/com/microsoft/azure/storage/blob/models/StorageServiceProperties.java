@@ -71,6 +71,12 @@ public final class StorageServiceProperties {
     private RetentionPolicy deleteRetentionPolicy;
 
     /**
+     * The staticWebsite property.
+     */
+    @JsonProperty(value = "StaticWebsite")
+    private StaticWebsite staticWebsite;
+
+    /**
      * Get the logging value.
      *
      * @return the logging value.
@@ -190,6 +196,26 @@ public final class StorageServiceProperties {
      */
     public StorageServiceProperties withDeleteRetentionPolicy(RetentionPolicy deleteRetentionPolicy) {
         this.deleteRetentionPolicy = deleteRetentionPolicy;
+        return this;
+    }
+
+    /**
+     * Get the staticWebsite value.
+     *
+     * @return the staticWebsite value.
+     */
+    public StaticWebsite staticWebsite() {
+        return this.staticWebsite;
+    }
+
+    /**
+     * Set the staticWebsite value.
+     *
+     * @param staticWebsite the staticWebsite value to set.
+     * @return the StorageServiceProperties object itself.
+     */
+    public StorageServiceProperties withStaticWebsite(StaticWebsite staticWebsite) {
+        this.staticWebsite = staticWebsite;
         return this;
     }
 }

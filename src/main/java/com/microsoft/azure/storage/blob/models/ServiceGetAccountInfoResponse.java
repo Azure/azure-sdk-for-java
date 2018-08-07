@@ -15,11 +15,11 @@ import com.microsoft.rest.v2.http.HttpRequest;
 import java.util.Map;
 
 /**
- * Contains all response data for the getProperties operation.
+ * Contains all response data for the getAccountInfo operation.
  */
-public final class ContainerGetPropertiesResponse extends RestResponse<ContainerGetPropertiesHeaders, Void> {
+public final class ServiceGetAccountInfoResponse extends RestResponse<ServiceGetAccountInfoHeaders, Void> {
     /**
-     * Creates an instance of ContainerGetPropertiesResponse.
+     * Creates an instance of ServiceGetAccountInfoResponse.
      *
      * @param request the request which resulted in this {response.Name}.
      * @param statusCode the status code of the HTTP response.
@@ -27,7 +27,7 @@ public final class ContainerGetPropertiesResponse extends RestResponse<Container
      * @param rawHeaders the raw headers of the HTTP response.
      * @param body the deserialized body of the HTTP response.
      */
-    public ContainerGetPropertiesResponse(HttpRequest request, int statusCode, ContainerGetPropertiesHeaders headers, Map<String, String> rawHeaders, Void body) {
+    public ServiceGetAccountInfoResponse(HttpRequest request, int statusCode, ServiceGetAccountInfoHeaders headers, Map<String, String> rawHeaders, Void body) {
         super(request, statusCode, headers, rawHeaders, body);
     }
 
@@ -35,7 +35,7 @@ public final class ContainerGetPropertiesResponse extends RestResponse<Container
      * @return the deserialized response headers.
      */
     @Override
-    public ContainerGetPropertiesHeaders headers() {
+    public ServiceGetAccountInfoHeaders headers() {
         return super.headers();
     }
 }

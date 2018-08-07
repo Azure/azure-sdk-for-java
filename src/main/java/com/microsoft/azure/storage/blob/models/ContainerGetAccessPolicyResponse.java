@@ -11,6 +11,7 @@
 package com.microsoft.azure.storage.blob.models;
 
 import com.microsoft.rest.v2.RestResponse;
+import com.microsoft.rest.v2.http.HttpRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -22,13 +23,14 @@ public final class ContainerGetAccessPolicyResponse extends RestResponse<Contain
     /**
      * Creates an instance of ContainerGetAccessPolicyResponse.
      *
+     * @param request the request which resulted in this {response.Name}.
      * @param statusCode the status code of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param body the deserialized body of the HTTP response.
      */
-    public ContainerGetAccessPolicyResponse(int statusCode, ContainerGetAccessPolicyHeaders headers, Map<String, String> rawHeaders, List<SignedIdentifier> body) {
-        super(statusCode, headers, rawHeaders, body);
+    public ContainerGetAccessPolicyResponse(HttpRequest request, int statusCode, ContainerGetAccessPolicyHeaders headers, Map<String, String> rawHeaders, List<SignedIdentifier> body) {
+        super(request, statusCode, headers, rawHeaders, body);
     }
 
     /**

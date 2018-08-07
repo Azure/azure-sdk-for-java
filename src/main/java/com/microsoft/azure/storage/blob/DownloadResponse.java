@@ -17,6 +17,7 @@ package com.microsoft.azure.storage.blob;
 
 import com.microsoft.azure.storage.blob.models.BlobDownloadHeaders;
 import com.microsoft.rest.v2.RestResponse;
+import com.microsoft.rest.v2.http.HttpRequest;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.internal.functions.Functions;
@@ -34,9 +35,9 @@ public class DownloadResponse extends RestResponse<BlobDownloadHeaders, Flowable
 
     private RetryReader.HTTPGetterInfo info;
 
-    DownloadResponse(int statusCode, BlobDownloadHeaders blobsDownloadHeaders, Map<String, String> rawHeaders,
-            Flowable<ByteBuffer> byteBufferFlowable) {
-        super(statusCode, blobsDownloadHeaders, rawHeaders, byteBufferFlowable);
+    DownloadResponse(HttpRequest request, int statusCode, BlobDownloadHeaders blobsDownloadHeaders,
+            Map<String, String> rawHeaders, Flowable<ByteBuffer> byteBufferFlowable) {
+        super(request, statusCode, blobsDownloadHeaders, rawHeaders, byteBufferFlowable);
     }
 
     /**
