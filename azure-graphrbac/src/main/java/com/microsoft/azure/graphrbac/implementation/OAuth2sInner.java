@@ -65,6 +65,7 @@ public class OAuth2sInner {
     }
 
     /**
+     * Queries OAuth2 permissions for the relevant SP ObjectId of an app.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -76,6 +77,7 @@ public class OAuth2sInner {
     }
 
     /**
+     * Queries OAuth2 permissions for the relevant SP ObjectId of an app.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -86,6 +88,7 @@ public class OAuth2sInner {
     }
 
     /**
+     * Queries OAuth2 permissions for the relevant SP ObjectId of an app.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OAuth2Inner object
@@ -100,6 +103,7 @@ public class OAuth2sInner {
     }
 
     /**
+     * Queries OAuth2 permissions for the relevant SP ObjectId of an app.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OAuth2Inner object
@@ -127,6 +131,7 @@ public class OAuth2sInner {
     }
 
     /**
+     * Queries OAuth2 permissions for the relevant SP ObjectId of an app.
      *
      * @param filter the String value
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -139,6 +144,7 @@ public class OAuth2sInner {
     }
 
     /**
+     * Queries OAuth2 permissions for the relevant SP ObjectId of an app.
      *
      * @param filter the String value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -150,6 +156,7 @@ public class OAuth2sInner {
     }
 
     /**
+     * Queries OAuth2 permissions for the relevant SP ObjectId of an app.
      *
      * @param filter the String value
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -165,6 +172,7 @@ public class OAuth2sInner {
     }
 
     /**
+     * Queries OAuth2 permissions for the relevant SP ObjectId of an app.
      *
      * @param filter the String value
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -199,6 +207,7 @@ public class OAuth2sInner {
     }
 
     /**
+     * Grants OAuth2 permissions for the relevant resource Ids of an app.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -210,6 +219,7 @@ public class OAuth2sInner {
     }
 
     /**
+     * Grants OAuth2 permissions for the relevant resource Ids of an app.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -220,6 +230,7 @@ public class OAuth2sInner {
     }
 
     /**
+     * Grants OAuth2 permissions for the relevant resource Ids of an app.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OAuth2Inner object
@@ -234,6 +245,7 @@ public class OAuth2sInner {
     }
 
     /**
+     * Grants OAuth2 permissions for the relevant resource Ids of an app.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OAuth2Inner object
@@ -261,6 +273,7 @@ public class OAuth2sInner {
     }
 
     /**
+     * Grants OAuth2 permissions for the relevant resource Ids of an app.
      *
      * @param body the OAuth2Inner value
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -273,6 +286,7 @@ public class OAuth2sInner {
     }
 
     /**
+     * Grants OAuth2 permissions for the relevant resource Ids of an app.
      *
      * @param body the OAuth2Inner value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -284,6 +298,7 @@ public class OAuth2sInner {
     }
 
     /**
+     * Grants OAuth2 permissions for the relevant resource Ids of an app.
      *
      * @param body the OAuth2Inner value
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -299,6 +314,7 @@ public class OAuth2sInner {
     }
 
     /**
+     * Grants OAuth2 permissions for the relevant resource Ids of an app.
      *
      * @param body the OAuth2Inner value
      * @throws IllegalArgumentException thrown if parameters fail the validation
