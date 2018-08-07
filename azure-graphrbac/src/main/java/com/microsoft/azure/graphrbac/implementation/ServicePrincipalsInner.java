@@ -79,7 +79,7 @@ public class ServicePrincipalsInner {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.graphrbac.ServicePrincipals get" })
         @GET("{tenantID}/servicePrincipals/{objectId}")
-        Observable<Response<ResponseBody>> get(@Path("objectId") String objectId, @Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> get(@Path("objectId") String objectId, @Path("tenantID") String tenantID, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.graphrbac.ServicePrincipals listOwners" })
         @GET("{tenantID}/servicePrincipals/{objectId}/owners")
@@ -536,7 +536,84 @@ public class ServicePrincipalsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.get(objectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String filter = null;
+        return service.get(objectId, this.client.tenantID(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ServicePrincipalInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ServicePrincipalInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ServicePrincipalInner> clientResponse = getDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Gets service principal information from the directory.
+     *
+     * @param objectId The object ID of the service principal to get.
+     * @param filter the String value
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws GraphErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ServicePrincipalInner object if successful.
+     */
+    public ServicePrincipalInner get(String objectId, String filter) {
+        return getWithServiceResponseAsync(objectId, filter).toBlocking().single().body();
+    }
+
+    /**
+     * Gets service principal information from the directory.
+     *
+     * @param objectId The object ID of the service principal to get.
+     * @param filter the String value
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ServicePrincipalInner> getAsync(String objectId, String filter, final ServiceCallback<ServicePrincipalInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(objectId, filter), serviceCallback);
+    }
+
+    /**
+     * Gets service principal information from the directory.
+     *
+     * @param objectId The object ID of the service principal to get.
+     * @param filter the String value
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ServicePrincipalInner object
+     */
+    public Observable<ServicePrincipalInner> getAsync(String objectId, String filter) {
+        return getWithServiceResponseAsync(objectId, filter).map(new Func1<ServiceResponse<ServicePrincipalInner>, ServicePrincipalInner>() {
+            @Override
+            public ServicePrincipalInner call(ServiceResponse<ServicePrincipalInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets service principal information from the directory.
+     *
+     * @param objectId The object ID of the service principal to get.
+     * @param filter the String value
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ServicePrincipalInner object
+     */
+    public Observable<ServiceResponse<ServicePrincipalInner>> getWithServiceResponseAsync(String objectId, String filter) {
+        if (objectId == null) {
+            throw new IllegalArgumentException("Parameter objectId is required and cannot be null.");
+        }
+        if (this.client.tenantID() == null) {
+            throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.get(objectId, this.client.tenantID(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ServicePrincipalInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ServicePrincipalInner>> call(Response<ResponseBody> response) {
