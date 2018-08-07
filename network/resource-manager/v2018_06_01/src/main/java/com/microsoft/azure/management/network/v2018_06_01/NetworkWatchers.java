@@ -149,10 +149,10 @@ public interface NetworkWatchers extends SupportsCreating<NetworkWatcher.Definit
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
-     * @param targetResourceId The ID of the target resource to perform network configuration diagnostic. Valid options are VM, NetworkInterface, VMSS/NetworkInterface and Application Gateway.
+     * @param parameters Parameters to get network configuration diagnostic.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<NetworkConfigurationDiagnosticResponse> getNetworkConfigurationDiagnosticAsync(String resourceGroupName, String networkWatcherName, String targetResourceId);
+    Observable<NetworkConfigurationDiagnosticResponse> getNetworkConfigurationDiagnosticAsync(String resourceGroupName, String networkWatcherName, NetworkConfigurationDiagnosticParameters parameters);
 
 }

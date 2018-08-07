@@ -26,7 +26,7 @@ public class NetworkConfigurationDiagnosticParameters {
     /**
      * List of traffic queries.
      */
-    @JsonProperty(value = "queries", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "queries", required = true)
     private List<TrafficQuery> queries;
 
     /**
@@ -56,6 +56,17 @@ public class NetworkConfigurationDiagnosticParameters {
      */
     public List<TrafficQuery> queries() {
         return this.queries;
+    }
+
+    /**
+     * Set list of traffic queries.
+     *
+     * @param queries the queries value to set
+     * @return the NetworkConfigurationDiagnosticParameters object itself.
+     */
+    public NetworkConfigurationDiagnosticParameters withQueries(List<TrafficQuery> queries) {
+        this.queries = queries;
+        return this;
     }
 
 }

@@ -39,6 +39,7 @@ import com.microsoft.azure.management.network.v2018_06_01.TroubleshootingParamet
 import com.microsoft.azure.management.network.v2018_06_01.ConnectivityParameters;
 import com.microsoft.azure.management.network.v2018_06_01.AzureReachabilityReportParameters;
 import com.microsoft.azure.management.network.v2018_06_01.AvailableProvidersListParameters;
+import com.microsoft.azure.management.network.v2018_06_01.NetworkConfigurationDiagnosticParameters;
 
 class NetworkWatchersImpl extends GroupableResourcesCoreImpl<NetworkWatcher, NetworkWatcherImpl, NetworkWatcherInner, NetworkWatchersInner, NetworkManager>  implements NetworkWatchers {
     protected NetworkWatchersImpl(NetworkManager manager) {
@@ -275,9 +276,9 @@ class NetworkWatchersImpl extends GroupableResourcesCoreImpl<NetworkWatcher, Net
     }
 
     @Override
-    public Observable<NetworkConfigurationDiagnosticResponse> getNetworkConfigurationDiagnosticAsync(String resourceGroupName, String networkWatcherName, String targetResourceId) {
+    public Observable<NetworkConfigurationDiagnosticResponse> getNetworkConfigurationDiagnosticAsync(String resourceGroupName, String networkWatcherName, NetworkConfigurationDiagnosticParameters parameters) {
         NetworkWatchersInner client = this.inner();
-        return client.getNetworkConfigurationDiagnosticAsync(resourceGroupName, networkWatcherName, targetResourceId)
+        return client.getNetworkConfigurationDiagnosticAsync(resourceGroupName, networkWatcherName, parameters)
         .map(new Func1<NetworkConfigurationDiagnosticResponseInner, NetworkConfigurationDiagnosticResponse>() {
             @Override
             public NetworkConfigurationDiagnosticResponse call(NetworkConfigurationDiagnosticResponseInner inner) {

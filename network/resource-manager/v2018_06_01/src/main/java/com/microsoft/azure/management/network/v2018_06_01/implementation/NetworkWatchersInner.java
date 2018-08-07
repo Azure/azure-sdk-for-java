@@ -190,11 +190,11 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2018_06_01.NetworkWatchers getNetworkConfigurationDiagnostic" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/networkConfigurationDiagnostic")
-        Observable<Response<ResponseBody>> getNetworkConfigurationDiagnostic(@Path("resourceGroupName") String resourceGroupName, @Path("networkWatcherName") String networkWatcherName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body NetworkConfigurationDiagnosticParameters parameters, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getNetworkConfigurationDiagnostic(@Path("resourceGroupName") String resourceGroupName, @Path("networkWatcherName") String networkWatcherName, @Path("subscriptionId") String subscriptionId, @Body NetworkConfigurationDiagnosticParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2018_06_01.NetworkWatchers beginGetNetworkConfigurationDiagnostic" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/networkConfigurationDiagnostic")
-        Observable<Response<ResponseBody>> beginGetNetworkConfigurationDiagnostic(@Path("resourceGroupName") String resourceGroupName, @Path("networkWatcherName") String networkWatcherName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body NetworkConfigurationDiagnosticParameters parameters, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginGetNetworkConfigurationDiagnostic(@Path("resourceGroupName") String resourceGroupName, @Path("networkWatcherName") String networkWatcherName, @Path("subscriptionId") String subscriptionId, @Body NetworkConfigurationDiagnosticParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -2644,14 +2644,14 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
-     * @param targetResourceId The ID of the target resource to perform network configuration diagnostic. Valid options are VM, NetworkInterface, VMSS/NetworkInterface and Application Gateway.
+     * @param parameters Parameters to get network configuration diagnostic.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the NetworkConfigurationDiagnosticResponseInner object if successful.
      */
-    public NetworkConfigurationDiagnosticResponseInner getNetworkConfigurationDiagnostic(String resourceGroupName, String networkWatcherName, String targetResourceId) {
-        return getNetworkConfigurationDiagnosticWithServiceResponseAsync(resourceGroupName, networkWatcherName, targetResourceId).toBlocking().last().body();
+    public NetworkConfigurationDiagnosticResponseInner getNetworkConfigurationDiagnostic(String resourceGroupName, String networkWatcherName, NetworkConfigurationDiagnosticParameters parameters) {
+        return getNetworkConfigurationDiagnosticWithServiceResponseAsync(resourceGroupName, networkWatcherName, parameters).toBlocking().last().body();
     }
 
     /**
@@ -2659,13 +2659,13 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
-     * @param targetResourceId The ID of the target resource to perform network configuration diagnostic. Valid options are VM, NetworkInterface, VMSS/NetworkInterface and Application Gateway.
+     * @param parameters Parameters to get network configuration diagnostic.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<NetworkConfigurationDiagnosticResponseInner> getNetworkConfigurationDiagnosticAsync(String resourceGroupName, String networkWatcherName, String targetResourceId, final ServiceCallback<NetworkConfigurationDiagnosticResponseInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getNetworkConfigurationDiagnosticWithServiceResponseAsync(resourceGroupName, networkWatcherName, targetResourceId), serviceCallback);
+    public ServiceFuture<NetworkConfigurationDiagnosticResponseInner> getNetworkConfigurationDiagnosticAsync(String resourceGroupName, String networkWatcherName, NetworkConfigurationDiagnosticParameters parameters, final ServiceCallback<NetworkConfigurationDiagnosticResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getNetworkConfigurationDiagnosticWithServiceResponseAsync(resourceGroupName, networkWatcherName, parameters), serviceCallback);
     }
 
     /**
@@ -2673,12 +2673,12 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
-     * @param targetResourceId The ID of the target resource to perform network configuration diagnostic. Valid options are VM, NetworkInterface, VMSS/NetworkInterface and Application Gateway.
+     * @param parameters Parameters to get network configuration diagnostic.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<NetworkConfigurationDiagnosticResponseInner> getNetworkConfigurationDiagnosticAsync(String resourceGroupName, String networkWatcherName, String targetResourceId) {
-        return getNetworkConfigurationDiagnosticWithServiceResponseAsync(resourceGroupName, networkWatcherName, targetResourceId).map(new Func1<ServiceResponse<NetworkConfigurationDiagnosticResponseInner>, NetworkConfigurationDiagnosticResponseInner>() {
+    public Observable<NetworkConfigurationDiagnosticResponseInner> getNetworkConfigurationDiagnosticAsync(String resourceGroupName, String networkWatcherName, NetworkConfigurationDiagnosticParameters parameters) {
+        return getNetworkConfigurationDiagnosticWithServiceResponseAsync(resourceGroupName, networkWatcherName, parameters).map(new Func1<ServiceResponse<NetworkConfigurationDiagnosticResponseInner>, NetworkConfigurationDiagnosticResponseInner>() {
             @Override
             public NetworkConfigurationDiagnosticResponseInner call(ServiceResponse<NetworkConfigurationDiagnosticResponseInner> response) {
                 return response.body();
@@ -2691,11 +2691,11 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
-     * @param targetResourceId The ID of the target resource to perform network configuration diagnostic. Valid options are VM, NetworkInterface, VMSS/NetworkInterface and Application Gateway.
+     * @param parameters Parameters to get network configuration diagnostic.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<NetworkConfigurationDiagnosticResponseInner>> getNetworkConfigurationDiagnosticWithServiceResponseAsync(String resourceGroupName, String networkWatcherName, String targetResourceId) {
+    public Observable<ServiceResponse<NetworkConfigurationDiagnosticResponseInner>> getNetworkConfigurationDiagnosticWithServiceResponseAsync(String resourceGroupName, String networkWatcherName, NetworkConfigurationDiagnosticParameters parameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -2705,13 +2705,12 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (targetResourceId == null) {
-            throw new IllegalArgumentException("Parameter targetResourceId is required and cannot be null.");
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
+        Validator.validate(parameters);
         final String apiVersion = "2018-06-01";
-        NetworkConfigurationDiagnosticParameters parameters = new NetworkConfigurationDiagnosticParameters();
-        parameters.withTargetResourceId(targetResourceId);
-        Observable<Response<ResponseBody>> observable = service.getNetworkConfigurationDiagnostic(resourceGroupName, networkWatcherName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent());
+        Observable<Response<ResponseBody>> observable = service.getNetworkConfigurationDiagnostic(resourceGroupName, networkWatcherName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<NetworkConfigurationDiagnosticResponseInner>() { }.getType());
     }
 
@@ -2720,14 +2719,14 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
-     * @param targetResourceId The ID of the target resource to perform network configuration diagnostic. Valid options are VM, NetworkInterface, VMSS/NetworkInterface and Application Gateway.
+     * @param parameters Parameters to get network configuration diagnostic.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the NetworkConfigurationDiagnosticResponseInner object if successful.
      */
-    public NetworkConfigurationDiagnosticResponseInner beginGetNetworkConfigurationDiagnostic(String resourceGroupName, String networkWatcherName, String targetResourceId) {
-        return beginGetNetworkConfigurationDiagnosticWithServiceResponseAsync(resourceGroupName, networkWatcherName, targetResourceId).toBlocking().single().body();
+    public NetworkConfigurationDiagnosticResponseInner beginGetNetworkConfigurationDiagnostic(String resourceGroupName, String networkWatcherName, NetworkConfigurationDiagnosticParameters parameters) {
+        return beginGetNetworkConfigurationDiagnosticWithServiceResponseAsync(resourceGroupName, networkWatcherName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -2735,13 +2734,13 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
-     * @param targetResourceId The ID of the target resource to perform network configuration diagnostic. Valid options are VM, NetworkInterface, VMSS/NetworkInterface and Application Gateway.
+     * @param parameters Parameters to get network configuration diagnostic.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<NetworkConfigurationDiagnosticResponseInner> beginGetNetworkConfigurationDiagnosticAsync(String resourceGroupName, String networkWatcherName, String targetResourceId, final ServiceCallback<NetworkConfigurationDiagnosticResponseInner> serviceCallback) {
-        return ServiceFuture.fromResponse(beginGetNetworkConfigurationDiagnosticWithServiceResponseAsync(resourceGroupName, networkWatcherName, targetResourceId), serviceCallback);
+    public ServiceFuture<NetworkConfigurationDiagnosticResponseInner> beginGetNetworkConfigurationDiagnosticAsync(String resourceGroupName, String networkWatcherName, NetworkConfigurationDiagnosticParameters parameters, final ServiceCallback<NetworkConfigurationDiagnosticResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginGetNetworkConfigurationDiagnosticWithServiceResponseAsync(resourceGroupName, networkWatcherName, parameters), serviceCallback);
     }
 
     /**
@@ -2749,12 +2748,12 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
-     * @param targetResourceId The ID of the target resource to perform network configuration diagnostic. Valid options are VM, NetworkInterface, VMSS/NetworkInterface and Application Gateway.
+     * @param parameters Parameters to get network configuration diagnostic.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the NetworkConfigurationDiagnosticResponseInner object
      */
-    public Observable<NetworkConfigurationDiagnosticResponseInner> beginGetNetworkConfigurationDiagnosticAsync(String resourceGroupName, String networkWatcherName, String targetResourceId) {
-        return beginGetNetworkConfigurationDiagnosticWithServiceResponseAsync(resourceGroupName, networkWatcherName, targetResourceId).map(new Func1<ServiceResponse<NetworkConfigurationDiagnosticResponseInner>, NetworkConfigurationDiagnosticResponseInner>() {
+    public Observable<NetworkConfigurationDiagnosticResponseInner> beginGetNetworkConfigurationDiagnosticAsync(String resourceGroupName, String networkWatcherName, NetworkConfigurationDiagnosticParameters parameters) {
+        return beginGetNetworkConfigurationDiagnosticWithServiceResponseAsync(resourceGroupName, networkWatcherName, parameters).map(new Func1<ServiceResponse<NetworkConfigurationDiagnosticResponseInner>, NetworkConfigurationDiagnosticResponseInner>() {
             @Override
             public NetworkConfigurationDiagnosticResponseInner call(ServiceResponse<NetworkConfigurationDiagnosticResponseInner> response) {
                 return response.body();
@@ -2767,11 +2766,11 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
-     * @param targetResourceId The ID of the target resource to perform network configuration diagnostic. Valid options are VM, NetworkInterface, VMSS/NetworkInterface and Application Gateway.
+     * @param parameters Parameters to get network configuration diagnostic.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the NetworkConfigurationDiagnosticResponseInner object
      */
-    public Observable<ServiceResponse<NetworkConfigurationDiagnosticResponseInner>> beginGetNetworkConfigurationDiagnosticWithServiceResponseAsync(String resourceGroupName, String networkWatcherName, String targetResourceId) {
+    public Observable<ServiceResponse<NetworkConfigurationDiagnosticResponseInner>> beginGetNetworkConfigurationDiagnosticWithServiceResponseAsync(String resourceGroupName, String networkWatcherName, NetworkConfigurationDiagnosticParameters parameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -2781,13 +2780,12 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (targetResourceId == null) {
-            throw new IllegalArgumentException("Parameter targetResourceId is required and cannot be null.");
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
+        Validator.validate(parameters);
         final String apiVersion = "2018-06-01";
-        NetworkConfigurationDiagnosticParameters parameters = new NetworkConfigurationDiagnosticParameters();
-        parameters.withTargetResourceId(targetResourceId);
-        return service.beginGetNetworkConfigurationDiagnostic(resourceGroupName, networkWatcherName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent())
+        return service.beginGetNetworkConfigurationDiagnostic(resourceGroupName, networkWatcherName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<NetworkConfigurationDiagnosticResponseInner>>>() {
                 @Override
                 public Observable<ServiceResponse<NetworkConfigurationDiagnosticResponseInner>> call(Response<ResponseBody> response) {
