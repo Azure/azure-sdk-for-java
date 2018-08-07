@@ -8,12 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.vision.faceapi;
 
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.CreatePersonGroupsOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.UpdatePersonGroupsOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.ListPersonGroupsOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.APIErrorException;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.PersonGroup;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.TrainingStatus;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
+import com.microsoft.rest.ServiceResponse;
+import java.io.IOException;
 import java.util.List;
 import rx.Observable;
 
@@ -26,99 +27,87 @@ public interface PersonGroups {
      * Create a new person group with specified personGroupId, name and user-provided userData.
      *
      * @param personGroupId Id referencing a particular person group.
-     * @param createOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    
-    void create(String personGroupId, CreatePersonGroupsOptionalParameter createOptionalParameter);
+    void create(String personGroupId);
 
     /**
      * Create a new person group with specified personGroupId, name and user-provided userData.
      *
      * @param personGroupId Id referencing a particular person group.
-     * @param createOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return a representation of the deferred computation of this call if successful.
+     * @return the {@link ServiceFuture} object
      */
-    
-    Observable<Void> createAsync(String personGroupId, CreatePersonGroupsOptionalParameter createOptionalParameter);
+    ServiceFuture<Void> createAsync(String personGroupId, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Create a new person group with specified personGroupId, name and user-provided userData.
      *
-     * @return the first stage of the create call
+     * @param personGroupId Id referencing a particular person group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
      */
-    PersonGroupsCreateDefinitionStages.WithPersonGroupId create();
+    Observable<Void> createAsync(String personGroupId);
 
     /**
-     * Grouping of create definition stages.
+     * Create a new person group with specified personGroupId, name and user-provided userData.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
      */
-    interface PersonGroupsCreateDefinitionStages {
-        /**
-         * The stage of the definition to be specify personGroupId.
-         */
-        interface WithPersonGroupId {
-            /**
-             * Id referencing a particular person group.
-             *
-             * @return next definition stage
-             */
-            PersonGroupsCreateDefinitionStages.WithExecute withPersonGroupId(String personGroupId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * User defined name, maximum length is 128.
-             *
-             * @return next definition stage
-             */
-            PersonGroupsCreateDefinitionStages.WithExecute withName(String name);
-
-            /**
-             * User specified data. Length should not exceed 16KB.
-             *
-             * @return next definition stage
-             */
-            PersonGroupsCreateDefinitionStages.WithExecute withUserData(String userData);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends PersonGroupsCreateDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             */
-            void execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return a representation of the deferred computation of this call if successful.
-             */
-            Observable<Void> executeAsync();
-        }
-    }
+    Observable<ServiceResponse<Void>> createWithServiceResponseAsync(String personGroupId);
+    /**
+     * Create a new person group with specified personGroupId, name and user-provided userData.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param name User defined name, maximum length is 128.
+     * @param userData User specified data. Length should not exceed 16KB.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws APIErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    void create(String personGroupId, String name, String userData);
 
     /**
-     * The entirety of create definition.
+     * Create a new person group with specified personGroupId, name and user-provided userData.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param name User defined name, maximum length is 128.
+     * @param userData User specified data. Length should not exceed 16KB.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    interface PersonGroupsCreateDefinition extends
-        PersonGroupsCreateDefinitionStages.WithPersonGroupId,
-        PersonGroupsCreateDefinitionStages.WithExecute {
-    }
-
+    ServiceFuture<Void> createAsync(String personGroupId, String name, String userData, final ServiceCallback<Void> serviceCallback);
 
     /**
-     * Delete an existing person group. Persisted face images of all people in the person group will also
-      *  be deleted.
+     * Create a new person group with specified personGroupId, name and user-provided userData.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param name User defined name, maximum length is 128.
+     * @param userData User specified data. Length should not exceed 16KB.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    Observable<Void> createAsync(String personGroupId, String name, String userData);
+
+    /**
+     * Create a new person group with specified personGroupId, name and user-provided userData.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param name User defined name, maximum length is 128.
+     * @param userData User specified data. Length should not exceed 16KB.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    Observable<ServiceResponse<Void>> createWithServiceResponseAsync(String personGroupId, String name, String userData);
+
+    /**
+     * Delete an existing person group. Persisted face features of all people in the person group will also be deleted.
      *
      * @param personGroupId Id referencing a particular person group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -128,16 +117,32 @@ public interface PersonGroups {
     void delete(String personGroupId);
 
     /**
-     * Delete an existing person group. Persisted face images of all people in the person group will also
-      *  be deleted.
+     * Delete an existing person group. Persisted face features of all people in the person group will also be deleted.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<Void> deleteAsync(String personGroupId, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Delete an existing person group. Persisted face features of all people in the person group will also be deleted.
      *
      * @param personGroupId Id referencing a particular person group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return a representation of the deferred computation of this call if successful.
+     * @return the {@link ServiceResponse} object if successful.
      */
     Observable<Void> deleteAsync(String personGroupId);
 
-
+    /**
+     * Delete an existing person group. Persisted face features of all people in the person group will also be deleted.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String personGroupId);
 
     /**
      * Retrieve the information of a person group, including its name and userData.
@@ -154,108 +159,112 @@ public interface PersonGroups {
      * Retrieve the information of a person group, including its name and userData.
      *
      * @param personGroupId Id referencing a particular person group.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<PersonGroup> getAsync(String personGroupId, final ServiceCallback<PersonGroup> serviceCallback);
+
+    /**
+     * Retrieve the information of a person group, including its name and userData.
+     *
+     * @param personGroupId Id referencing a particular person group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersonGroup object
      */
     Observable<PersonGroup> getAsync(String personGroupId);
 
-
     /**
-     * Update an existing person group's display name and userData. The properties which does not appear in request
-     *   body will not be updated.
+     * Retrieve the information of a person group, including its name and userData.
      *
      * @param personGroupId Id referencing a particular person group.
-     * @param updateOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PersonGroup object
+     */
+    Observable<ServiceResponse<PersonGroup>> getWithServiceResponseAsync(String personGroupId);
+
+    /**
+     * Update an existing person group's display name and userData. The properties which does not appear in request body will not be updated.
+     *
+     * @param personGroupId Id referencing a particular person group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    
-    void update(String personGroupId, UpdatePersonGroupsOptionalParameter updateOptionalParameter);
+    void update(String personGroupId);
 
     /**
-     * Update an existing person group's display name and userData. The properties which does not appear in request
-     *   body will not be updated.
+     * Update an existing person group's display name and userData. The properties which does not appear in request body will not be updated.
      *
      * @param personGroupId Id referencing a particular person group.
-     * @param updateOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return a representation of the deferred computation of this call if successful.
+     * @return the {@link ServiceFuture} object
      */
-    
-    Observable<Void> updateAsync(String personGroupId, UpdatePersonGroupsOptionalParameter updateOptionalParameter);
+    ServiceFuture<Void> updateAsync(String personGroupId, final ServiceCallback<Void> serviceCallback);
 
     /**
-     * Update an existing person group's display name and userData. The properties which does not appear in request
-     *   body will not be updated.
+     * Update an existing person group's display name and userData. The properties which does not appear in request body will not be updated.
      *
-     * @return the first stage of the update call
+     * @param personGroupId Id referencing a particular person group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
      */
-    PersonGroupsUpdateDefinitionStages.WithPersonGroupId update();
+    Observable<Void> updateAsync(String personGroupId);
 
     /**
-     * Grouping of update definition stages.
+     * Update an existing person group's display name and userData. The properties which does not appear in request body will not be updated.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
      */
-    interface PersonGroupsUpdateDefinitionStages {
-        /**
-         * The stage of the definition to be specify personGroupId.
-         */
-        interface WithPersonGroupId {
-            /**
-             * Id referencing a particular person group.
-             *
-             * @return next definition stage
-             */
-            PersonGroupsUpdateDefinitionStages.WithExecute withPersonGroupId(String personGroupId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * User defined name, maximum length is 128.
-             *
-             * @return next definition stage
-             */
-            PersonGroupsUpdateDefinitionStages.WithExecute withName(String name);
-
-            /**
-             * User specified data. Length should not exceed 16KB.
-             *
-             * @return next definition stage
-             */
-            PersonGroupsUpdateDefinitionStages.WithExecute withUserData(String userData);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends PersonGroupsUpdateDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             */
-            void execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return a representation of the deferred computation of this call if successful.
-             */
-            Observable<Void> executeAsync();
-        }
-    }
+    Observable<ServiceResponse<Void>> updateWithServiceResponseAsync(String personGroupId);
+    /**
+     * Update an existing person group's display name and userData. The properties which does not appear in request body will not be updated.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param name User defined name, maximum length is 128.
+     * @param userData User specified data. Length should not exceed 16KB.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws APIErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    void update(String personGroupId, String name, String userData);
 
     /**
-     * The entirety of update definition.
+     * Update an existing person group's display name and userData. The properties which does not appear in request body will not be updated.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param name User defined name, maximum length is 128.
+     * @param userData User specified data. Length should not exceed 16KB.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    interface PersonGroupsUpdateDefinition extends
-        PersonGroupsUpdateDefinitionStages.WithPersonGroupId,
-        PersonGroupsUpdateDefinitionStages.WithExecute {
-    }
+    ServiceFuture<Void> updateAsync(String personGroupId, String name, String userData, final ServiceCallback<Void> serviceCallback);
 
+    /**
+     * Update an existing person group's display name and userData. The properties which does not appear in request body will not be updated.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param name User defined name, maximum length is 128.
+     * @param userData User specified data. Length should not exceed 16KB.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    Observable<Void> updateAsync(String personGroupId, String name, String userData);
+
+    /**
+     * Update an existing person group's display name and userData. The properties which does not appear in request body will not be updated.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param name User defined name, maximum length is 128.
+     * @param userData User specified data. Length should not exceed 16KB.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    Observable<ServiceResponse<Void>> updateWithServiceResponseAsync(String personGroupId, String name, String userData);
 
     /**
      * Retrieve the training status of a person group (completed or ongoing).
@@ -272,93 +281,106 @@ public interface PersonGroups {
      * Retrieve the training status of a person group (completed or ongoing).
      *
      * @param personGroupId Id referencing a particular person group.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<TrainingStatus> getTrainingStatusAsync(String personGroupId, final ServiceCallback<TrainingStatus> serviceCallback);
+
+    /**
+     * Retrieve the training status of a person group (completed or ongoing).
+     *
+     * @param personGroupId Id referencing a particular person group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TrainingStatus object
      */
     Observable<TrainingStatus> getTrainingStatusAsync(String personGroupId);
 
+    /**
+     * Retrieve the training status of a person group (completed or ongoing).
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the TrainingStatus object
+     */
+    Observable<ServiceResponse<TrainingStatus>> getTrainingStatusWithServiceResponseAsync(String personGroupId);
 
     /**
      * List person groups and their information.
      *
-     * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;PersonGroup&gt; object if successful.
      */
-    
-    List<PersonGroup> list(ListPersonGroupsOptionalParameter listOptionalParameter);
+    List<PersonGroup> list();
 
     /**
      * List person groups and their information.
      *
-     * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<List<PersonGroup>> listAsync(final ServiceCallback<List<PersonGroup>> serviceCallback);
+
+    /**
+     * List person groups and their information.
+     *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;PersonGroup&gt; object
      */
-    
-    Observable<List<PersonGroup>> listAsync(ListPersonGroupsOptionalParameter listOptionalParameter);
+    Observable<List<PersonGroup>> listAsync();
 
     /**
      * List person groups and their information.
      *
-     * @return the first stage of the list call
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;PersonGroup&gt; object
      */
-    PersonGroupsListDefinitionStages.WithExecute list();
+    Observable<ServiceResponse<List<PersonGroup>>> listWithServiceResponseAsync();
+    /**
+     * List person groups and their information.
+     *
+     * @param start List person groups from the least personGroupId greater than the "start".
+     * @param top The number of person groups to list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws APIErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;PersonGroup&gt; object if successful.
+     */
+    List<PersonGroup> list(String start, Integer top);
 
     /**
-     * Grouping of list definition stages.
+     * List person groups and their information.
+     *
+     * @param start List person groups from the least personGroupId greater than the "start".
+     * @param top The number of person groups to list.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    interface PersonGroupsListDefinitionStages {
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * List person groups from the least personGroupId greater than the "start".
-             *
-             * @return next definition stage
-             */
-            PersonGroupsListDefinitionStages.WithExecute withStart(String start);
-
-            /**
-             * The number of person groups to list.
-             *
-             * @return next definition stage
-             */
-            PersonGroupsListDefinitionStages.WithExecute withTop(Integer top);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends PersonGroupsListDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the List&lt;PersonGroup&gt; object if successful.
-             */
-            List<PersonGroup> execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the List&lt;PersonGroup&gt; object
-             */
-            Observable<List<PersonGroup>> executeAsync();
-        }
-    }
+    ServiceFuture<List<PersonGroup>> listAsync(String start, Integer top, final ServiceCallback<List<PersonGroup>> serviceCallback);
 
     /**
-     * The entirety of list definition.
+     * List person groups and their information.
+     *
+     * @param start List person groups from the least personGroupId greater than the "start".
+     * @param top The number of person groups to list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;PersonGroup&gt; object
      */
-    interface PersonGroupsListDefinition extends
-        PersonGroupsListDefinitionStages.WithExecute {
-    }
+    Observable<List<PersonGroup>> listAsync(String start, Integer top);
 
+    /**
+     * List person groups and their information.
+     *
+     * @param start List person groups from the least personGroupId greater than the "start".
+     * @param top The number of person groups to list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;PersonGroup&gt; object
+     */
+    Observable<ServiceResponse<List<PersonGroup>>> listWithServiceResponseAsync(String start, Integer top);
 
     /**
      * Queue a person group training task, the training task may not be started immediately.
@@ -374,10 +396,28 @@ public interface PersonGroups {
      * Queue a person group training task, the training task may not be started immediately.
      *
      * @param personGroupId Id referencing a particular person group.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return a representation of the deferred computation of this call if successful.
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<Void> trainAsync(String personGroupId, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Queue a person group training task, the training task may not be started immediately.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
      */
     Observable<Void> trainAsync(String personGroupId);
 
+    /**
+     * Queue a person group training task, the training task may not be started immediately.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    Observable<ServiceResponse<Void>> trainWithServiceResponseAsync(String personGroupId);
 
 }

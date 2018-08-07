@@ -39,7 +39,7 @@ public class Email {
     private Integer index;
 
     /**
-     * Get the detected value.
+     * Get detected Email Address from the input text content.
      *
      * @return the detected value
      */
@@ -48,7 +48,7 @@ public class Email {
     }
 
     /**
-     * Set the detected value.
+     * Set detected Email Address from the input text content.
      *
      * @param detected the detected value to set
      * @return the Email object itself.
@@ -59,7 +59,7 @@ public class Email {
     }
 
     /**
-     * Get the subType value.
+     * Get subtype of the detected Email Address.
      *
      * @return the subType value
      */
@@ -68,7 +68,7 @@ public class Email {
     }
 
     /**
-     * Set the subType value.
+     * Set subtype of the detected Email Address.
      *
      * @param subType the subType value to set
      * @return the Email object itself.
@@ -79,7 +79,7 @@ public class Email {
     }
 
     /**
-     * Get the text value.
+     * Get email Address in the input text content.
      *
      * @return the text value
      */
@@ -88,7 +88,7 @@ public class Email {
     }
 
     /**
-     * Set the text value.
+     * Set email Address in the input text content.
      *
      * @param text the text value to set
      * @return the Email object itself.
@@ -99,7 +99,7 @@ public class Email {
     }
 
     /**
-     * Get the index value.
+     * Get index(Location) of the Email address in the input text content.
      *
      * @return the index value
      */
@@ -108,7 +108,7 @@ public class Email {
     }
 
     /**
-     * Set the index value.
+     * Set index(Location) of the Email address in the input text content.
      *
      * @param index the index value to set
      * @return the Email object itself.

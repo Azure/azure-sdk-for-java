@@ -8,9 +8,6 @@
 
 package com.microsoft.azure.cognitiveservices.vision.faceapi.implementation;
 
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.CreatePersonGroupsOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.UpdatePersonGroupsOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.ListPersonGroupsOptionalParameter;
 import retrofit2.Retrofit;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroups;
 import com.google.common.base.Joiner;
@@ -47,7 +44,7 @@ public class PersonGroupsImpl implements PersonGroups {
     /** The Retrofit service to perform REST calls. */
     private PersonGroupsService service;
     /** The service client containing this operation class. */
-    private FaceAPIImpl client;
+    private FaceClientImpl client;
 
     /**
      * Initializes an instance of PersonGroupsImpl.
@@ -55,7 +52,7 @@ public class PersonGroupsImpl implements PersonGroups {
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public PersonGroupsImpl(Retrofit retrofit, FaceAPIImpl client) {
+    public PersonGroupsImpl(Retrofit retrofit, FaceClientImpl client) {
         this.service = retrofit.create(PersonGroupsService.class);
         this.client = client;
     }
@@ -67,7 +64,7 @@ public class PersonGroupsImpl implements PersonGroups {
     interface PersonGroupsService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroups create" })
         @PUT("persongroups/{personGroupId}")
-        Observable<Response<ResponseBody>> create(@Path("personGroupId") String personGroupId, @Header("accept-language") String acceptLanguage, @Body NameAndUserDataContract bodyParameter, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> create(@Path("personGroupId") String personGroupId, @Header("accept-language") String acceptLanguage, @Body NameAndUserDataContract body, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroups delete" })
         @HTTP(path = "persongroups/{personGroupId}", method = "DELETE", hasBody = true)
@@ -79,7 +76,7 @@ public class PersonGroupsImpl implements PersonGroups {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroups update" })
         @PATCH("persongroups/{personGroupId}")
-        Observable<Response<ResponseBody>> update(@Path("personGroupId") String personGroupId, @Header("accept-language") String acceptLanguage, @Body NameAndUserDataContract bodyParameter, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> update(@Path("personGroupId") String personGroupId, @Header("accept-language") String acceptLanguage, @Body NameAndUserDataContract body, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroups getTrainingStatus" })
         @GET("persongroups/{personGroupId}/training")
@@ -95,43 +92,39 @@ public class PersonGroupsImpl implements PersonGroups {
 
     }
 
-
     /**
      * Create a new person group with specified personGroupId, name and user-provided userData.
      *
      * @param personGroupId Id referencing a particular person group.
-     * @param createOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void create(String personGroupId, CreatePersonGroupsOptionalParameter createOptionalParameter) {
-        createWithServiceResponseAsync(personGroupId, createOptionalParameter).toBlocking().single().body();
+    public void create(String personGroupId) {
+        createWithServiceResponseAsync(personGroupId).toBlocking().single().body();
     }
 
     /**
      * Create a new person group with specified personGroupId, name and user-provided userData.
      *
      * @param personGroupId Id referencing a particular person group.
-     * @param createOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> createAsync(String personGroupId, CreatePersonGroupsOptionalParameter createOptionalParameter, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(createWithServiceResponseAsync(personGroupId, createOptionalParameter), serviceCallback);
+    public ServiceFuture<Void> createAsync(String personGroupId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(createWithServiceResponseAsync(personGroupId), serviceCallback);
     }
 
     /**
      * Create a new person group with specified personGroupId, name and user-provided userData.
      *
      * @param personGroupId Id referencing a particular person group.
-     * @param createOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> createAsync(String personGroupId, CreatePersonGroupsOptionalParameter createOptionalParameter) {
-        return createWithServiceResponseAsync(personGroupId, createOptionalParameter).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Void> createAsync(String personGroupId) {
+        return createWithServiceResponseAsync(personGroupId).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
                 return response.body();
@@ -143,21 +136,80 @@ public class PersonGroupsImpl implements PersonGroups {
      * Create a new person group with specified personGroupId, name and user-provided userData.
      *
      * @param personGroupId Id referencing a particular person group.
-     * @param createOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> createWithServiceResponseAsync(String personGroupId, CreatePersonGroupsOptionalParameter createOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public Observable<ServiceResponse<Void>> createWithServiceResponseAsync(String personGroupId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
         }
-        final String name = createOptionalParameter != null ? createOptionalParameter.name() : null;
-        final String userData = createOptionalParameter != null ? createOptionalParameter.userData() : null;
+        final String name = null;
+        final String userData = null;
+        NameAndUserDataContract body = new NameAndUserDataContract();
+        body.withName(null);
+        body.withUserData(null);
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.create(personGroupId, this.client.acceptLanguage(), body, parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = createDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
 
-        return createWithServiceResponseAsync(personGroupId, name, userData);
+    /**
+     * Create a new person group with specified personGroupId, name and user-provided userData.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param name User defined name, maximum length is 128.
+     * @param userData User specified data. Length should not exceed 16KB.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws APIErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void create(String personGroupId, String name, String userData) {
+        createWithServiceResponseAsync(personGroupId, name, userData).toBlocking().single().body();
+    }
+
+    /**
+     * Create a new person group with specified personGroupId, name and user-provided userData.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param name User defined name, maximum length is 128.
+     * @param userData User specified data. Length should not exceed 16KB.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> createAsync(String personGroupId, String name, String userData, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(createWithServiceResponseAsync(personGroupId, name, userData), serviceCallback);
+    }
+
+    /**
+     * Create a new person group with specified personGroupId, name and user-provided userData.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param name User defined name, maximum length is 128.
+     * @param userData User specified data. Length should not exceed 16KB.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> createAsync(String personGroupId, String name, String userData) {
+        return createWithServiceResponseAsync(personGroupId, name, userData).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
     }
 
     /**
@@ -170,17 +222,17 @@ public class PersonGroupsImpl implements PersonGroups {
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> createWithServiceResponseAsync(String personGroupId, String name, String userData) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
         }
-        NameAndUserDataContract bodyParameter = new NameAndUserDataContract();
-        bodyParameter.withName(name);
-        bodyParameter.withUserData(userData);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.create(personGroupId, this.client.acceptLanguage(), bodyParameter, parameterizedHost, this.client.userAgent())
+        NameAndUserDataContract body = new NameAndUserDataContract();
+        body.withName(name);
+        body.withUserData(userData);
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.create(personGroupId, this.client.acceptLanguage(), body, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -201,64 +253,8 @@ public class PersonGroupsImpl implements PersonGroups {
                 .build(response);
     }
 
-    @Override
-    public PersonGroupsCreateParameters create() {
-        return new PersonGroupsCreateParameters(this);
-    }
-
     /**
-     * Internal class implementing PersonGroupsCreateDefinition.
-     */
-    class PersonGroupsCreateParameters implements PersonGroupsCreateDefinition {
-        private PersonGroupsImpl parent;
-        private String personGroupId;
-        private String name;
-        private String userData;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        PersonGroupsCreateParameters(PersonGroupsImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public PersonGroupsCreateParameters withPersonGroupId(String personGroupId) {
-            this.personGroupId = personGroupId;
-            return this;
-        }
-
-        @Override
-        public PersonGroupsCreateParameters withName(String name) {
-            this.name = name;
-            return this;
-        }
-
-        @Override
-        public PersonGroupsCreateParameters withUserData(String userData) {
-            this.userData = userData;
-            return this;
-        }
-
-        @Override
-        public void execute() {
-        createWithServiceResponseAsync(personGroupId, name, userData).toBlocking().single().body();
-    }
-
-        @Override
-        public Observable<Void> executeAsync() {
-            return createWithServiceResponseAsync(personGroupId, name, userData).map(new Func1<ServiceResponse<Void>, Void>() {
-                @Override
-                public Void call(ServiceResponse<Void> response) {
-                    return response.body();
-                }
-            });
-        }
-    }
-
-    /**
-     * Delete an existing person group. Persisted face images of all people in the person group will also be deleted.
+     * Delete an existing person group. Persisted face features of all people in the person group will also be deleted.
      *
      * @param personGroupId Id referencing a particular person group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -270,7 +266,7 @@ public class PersonGroupsImpl implements PersonGroups {
     }
 
     /**
-     * Delete an existing person group. Persisted face images of all people in the person group will also be deleted.
+     * Delete an existing person group. Persisted face features of all people in the person group will also be deleted.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -282,7 +278,7 @@ public class PersonGroupsImpl implements PersonGroups {
     }
 
     /**
-     * Delete an existing person group. Persisted face images of all people in the person group will also be deleted.
+     * Delete an existing person group. Persisted face features of all people in the person group will also be deleted.
      *
      * @param personGroupId Id referencing a particular person group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -298,20 +294,20 @@ public class PersonGroupsImpl implements PersonGroups {
     }
 
     /**
-     * Delete an existing person group. Persisted face images of all people in the person group will also be deleted.
+     * Delete an existing person group. Persisted face features of all people in the person group will also be deleted.
      *
      * @param personGroupId Id referencing a particular person group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String personGroupId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.delete(personGroupId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
@@ -382,13 +378,13 @@ public class PersonGroupsImpl implements PersonGroups {
      * @return the observable to the PersonGroup object
      */
     public Observable<ServiceResponse<PersonGroup>> getWithServiceResponseAsync(String personGroupId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.get(personGroupId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PersonGroup>>>() {
                 @Override
@@ -410,43 +406,39 @@ public class PersonGroupsImpl implements PersonGroups {
                 .build(response);
     }
 
-
     /**
      * Update an existing person group's display name and userData. The properties which does not appear in request body will not be updated.
      *
      * @param personGroupId Id referencing a particular person group.
-     * @param updateOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void update(String personGroupId, UpdatePersonGroupsOptionalParameter updateOptionalParameter) {
-        updateWithServiceResponseAsync(personGroupId, updateOptionalParameter).toBlocking().single().body();
+    public void update(String personGroupId) {
+        updateWithServiceResponseAsync(personGroupId).toBlocking().single().body();
     }
 
     /**
      * Update an existing person group's display name and userData. The properties which does not appear in request body will not be updated.
      *
      * @param personGroupId Id referencing a particular person group.
-     * @param updateOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> updateAsync(String personGroupId, UpdatePersonGroupsOptionalParameter updateOptionalParameter, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(personGroupId, updateOptionalParameter), serviceCallback);
+    public ServiceFuture<Void> updateAsync(String personGroupId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(personGroupId), serviceCallback);
     }
 
     /**
      * Update an existing person group's display name and userData. The properties which does not appear in request body will not be updated.
      *
      * @param personGroupId Id referencing a particular person group.
-     * @param updateOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> updateAsync(String personGroupId, UpdatePersonGroupsOptionalParameter updateOptionalParameter) {
-        return updateWithServiceResponseAsync(personGroupId, updateOptionalParameter).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Void> updateAsync(String personGroupId) {
+        return updateWithServiceResponseAsync(personGroupId).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
                 return response.body();
@@ -458,21 +450,80 @@ public class PersonGroupsImpl implements PersonGroups {
      * Update an existing person group's display name and userData. The properties which does not appear in request body will not be updated.
      *
      * @param personGroupId Id referencing a particular person group.
-     * @param updateOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> updateWithServiceResponseAsync(String personGroupId, UpdatePersonGroupsOptionalParameter updateOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public Observable<ServiceResponse<Void>> updateWithServiceResponseAsync(String personGroupId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
         }
-        final String name = updateOptionalParameter != null ? updateOptionalParameter.name() : null;
-        final String userData = updateOptionalParameter != null ? updateOptionalParameter.userData() : null;
+        final String name = null;
+        final String userData = null;
+        NameAndUserDataContract body = new NameAndUserDataContract();
+        body.withName(null);
+        body.withUserData(null);
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.update(personGroupId, this.client.acceptLanguage(), body, parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = updateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
 
-        return updateWithServiceResponseAsync(personGroupId, name, userData);
+    /**
+     * Update an existing person group's display name and userData. The properties which does not appear in request body will not be updated.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param name User defined name, maximum length is 128.
+     * @param userData User specified data. Length should not exceed 16KB.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws APIErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void update(String personGroupId, String name, String userData) {
+        updateWithServiceResponseAsync(personGroupId, name, userData).toBlocking().single().body();
+    }
+
+    /**
+     * Update an existing person group's display name and userData. The properties which does not appear in request body will not be updated.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param name User defined name, maximum length is 128.
+     * @param userData User specified data. Length should not exceed 16KB.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> updateAsync(String personGroupId, String name, String userData, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(personGroupId, name, userData), serviceCallback);
+    }
+
+    /**
+     * Update an existing person group's display name and userData. The properties which does not appear in request body will not be updated.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param name User defined name, maximum length is 128.
+     * @param userData User specified data. Length should not exceed 16KB.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> updateAsync(String personGroupId, String name, String userData) {
+        return updateWithServiceResponseAsync(personGroupId, name, userData).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
     }
 
     /**
@@ -485,17 +536,17 @@ public class PersonGroupsImpl implements PersonGroups {
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> updateWithServiceResponseAsync(String personGroupId, String name, String userData) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
         }
-        NameAndUserDataContract bodyParameter = new NameAndUserDataContract();
-        bodyParameter.withName(name);
-        bodyParameter.withUserData(userData);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.update(personGroupId, this.client.acceptLanguage(), bodyParameter, parameterizedHost, this.client.userAgent())
+        NameAndUserDataContract body = new NameAndUserDataContract();
+        body.withName(name);
+        body.withUserData(userData);
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.update(personGroupId, this.client.acceptLanguage(), body, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -514,62 +565,6 @@ public class PersonGroupsImpl implements PersonGroups {
                 .register(200, new TypeToken<Void>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
-    }
-
-    @Override
-    public PersonGroupsUpdateParameters update() {
-        return new PersonGroupsUpdateParameters(this);
-    }
-
-    /**
-     * Internal class implementing PersonGroupsUpdateDefinition.
-     */
-    class PersonGroupsUpdateParameters implements PersonGroupsUpdateDefinition {
-        private PersonGroupsImpl parent;
-        private String personGroupId;
-        private String name;
-        private String userData;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        PersonGroupsUpdateParameters(PersonGroupsImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public PersonGroupsUpdateParameters withPersonGroupId(String personGroupId) {
-            this.personGroupId = personGroupId;
-            return this;
-        }
-
-        @Override
-        public PersonGroupsUpdateParameters withName(String name) {
-            this.name = name;
-            return this;
-        }
-
-        @Override
-        public PersonGroupsUpdateParameters withUserData(String userData) {
-            this.userData = userData;
-            return this;
-        }
-
-        @Override
-        public void execute() {
-        updateWithServiceResponseAsync(personGroupId, name, userData).toBlocking().single().body();
-    }
-
-        @Override
-        public Observable<Void> executeAsync() {
-            return updateWithServiceResponseAsync(personGroupId, name, userData).map(new Func1<ServiceResponse<Void>, Void>() {
-                @Override
-                public Void call(ServiceResponse<Void> response) {
-                    return response.body();
-                }
-            });
-        }
     }
 
     /**
@@ -621,13 +616,13 @@ public class PersonGroupsImpl implements PersonGroups {
      * @return the observable to the TrainingStatus object
      */
     public Observable<ServiceResponse<TrainingStatus>> getTrainingStatusWithServiceResponseAsync(String personGroupId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.getTrainingStatus(personGroupId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TrainingStatus>>>() {
                 @Override
@@ -649,41 +644,37 @@ public class PersonGroupsImpl implements PersonGroups {
                 .build(response);
     }
 
-
     /**
      * List person groups and their information.
      *
-     * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;PersonGroup&gt; object if successful.
      */
-    public List<PersonGroup> list(ListPersonGroupsOptionalParameter listOptionalParameter) {
-        return listWithServiceResponseAsync(listOptionalParameter).toBlocking().single().body();
+    public List<PersonGroup> list() {
+        return listWithServiceResponseAsync().toBlocking().single().body();
     }
 
     /**
      * List person groups and their information.
      *
-     * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<PersonGroup>> listAsync(ListPersonGroupsOptionalParameter listOptionalParameter, final ServiceCallback<List<PersonGroup>> serviceCallback) {
-        return ServiceFuture.fromResponse(listWithServiceResponseAsync(listOptionalParameter), serviceCallback);
+    public ServiceFuture<List<PersonGroup>> listAsync(final ServiceCallback<List<PersonGroup>> serviceCallback) {
+        return ServiceFuture.fromResponse(listWithServiceResponseAsync(), serviceCallback);
     }
 
     /**
      * List person groups and their information.
      *
-     * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;PersonGroup&gt; object
      */
-    public Observable<List<PersonGroup>> listAsync(ListPersonGroupsOptionalParameter listOptionalParameter) {
-        return listWithServiceResponseAsync(listOptionalParameter).map(new Func1<ServiceResponse<List<PersonGroup>>, List<PersonGroup>>() {
+    public Observable<List<PersonGroup>> listAsync() {
+        return listWithServiceResponseAsync().map(new Func1<ServiceResponse<List<PersonGroup>>, List<PersonGroup>>() {
             @Override
             public List<PersonGroup> call(ServiceResponse<List<PersonGroup>> response) {
                 return response.body();
@@ -694,18 +685,72 @@ public class PersonGroupsImpl implements PersonGroups {
     /**
      * List person groups and their information.
      *
-     * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;PersonGroup&gt; object
      */
-    public Observable<ServiceResponse<List<PersonGroup>>> listWithServiceResponseAsync(ListPersonGroupsOptionalParameter listOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public Observable<ServiceResponse<List<PersonGroup>>> listWithServiceResponseAsync() {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
-        final String start = listOptionalParameter != null ? listOptionalParameter.start() : null;
-        final Integer top = listOptionalParameter != null ? listOptionalParameter.top() : null;
+        final String start = null;
+        final Integer top = null;
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.list(start, top, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<PersonGroup>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<PersonGroup>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<List<PersonGroup>> clientResponse = listDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
 
-        return listWithServiceResponseAsync(start, top);
+    /**
+     * List person groups and their information.
+     *
+     * @param start List person groups from the least personGroupId greater than the "start".
+     * @param top The number of person groups to list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws APIErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;PersonGroup&gt; object if successful.
+     */
+    public List<PersonGroup> list(String start, Integer top) {
+        return listWithServiceResponseAsync(start, top).toBlocking().single().body();
+    }
+
+    /**
+     * List person groups and their information.
+     *
+     * @param start List person groups from the least personGroupId greater than the "start".
+     * @param top The number of person groups to list.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<PersonGroup>> listAsync(String start, Integer top, final ServiceCallback<List<PersonGroup>> serviceCallback) {
+        return ServiceFuture.fromResponse(listWithServiceResponseAsync(start, top), serviceCallback);
+    }
+
+    /**
+     * List person groups and their information.
+     *
+     * @param start List person groups from the least personGroupId greater than the "start".
+     * @param top The number of person groups to list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;PersonGroup&gt; object
+     */
+    public Observable<List<PersonGroup>> listAsync(String start, Integer top) {
+        return listWithServiceResponseAsync(start, top).map(new Func1<ServiceResponse<List<PersonGroup>>, List<PersonGroup>>() {
+            @Override
+            public List<PersonGroup> call(ServiceResponse<List<PersonGroup>> response) {
+                return response.body();
+            }
+        });
     }
 
     /**
@@ -717,10 +762,10 @@ public class PersonGroupsImpl implements PersonGroups {
      * @return the observable to the List&lt;PersonGroup&gt; object
      */
     public Observable<ServiceResponse<List<PersonGroup>>> listWithServiceResponseAsync(String start, Integer top) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.list(start, top, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<PersonGroup>>>>() {
                 @Override
@@ -740,55 +785,6 @@ public class PersonGroupsImpl implements PersonGroups {
                 .register(200, new TypeToken<List<PersonGroup>>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
-    }
-
-    @Override
-    public PersonGroupsListParameters list() {
-        return new PersonGroupsListParameters(this);
-    }
-
-    /**
-     * Internal class implementing PersonGroupsListDefinition.
-     */
-    class PersonGroupsListParameters implements PersonGroupsListDefinition {
-        private PersonGroupsImpl parent;
-        private String start;
-        private Integer top;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        PersonGroupsListParameters(PersonGroupsImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public PersonGroupsListParameters withStart(String start) {
-            this.start = start;
-            return this;
-        }
-
-        @Override
-        public PersonGroupsListParameters withTop(Integer top) {
-            this.top = top;
-            return this;
-        }
-
-        @Override
-        public List<PersonGroup> execute() {
-        return listWithServiceResponseAsync(start, top).toBlocking().single().body();
-    }
-
-        @Override
-        public Observable<List<PersonGroup>> executeAsync() {
-            return listWithServiceResponseAsync(start, top).map(new Func1<ServiceResponse<List<PersonGroup>>, List<PersonGroup>>() {
-                @Override
-                public List<PersonGroup> call(ServiceResponse<List<PersonGroup>> response) {
-                    return response.body();
-                }
-            });
-        }
     }
 
     /**
@@ -839,13 +835,13 @@ public class PersonGroupsImpl implements PersonGroups {
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> trainWithServiceResponseAsync(String personGroupId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.train(personGroupId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override

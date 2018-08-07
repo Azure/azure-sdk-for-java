@@ -27,7 +27,7 @@ public class Tag {
     private String value;
 
     /**
-     * Get the key value.
+     * Get the key parameter.
      *
      * @return the key value
      */
@@ -36,7 +36,7 @@ public class Tag {
     }
 
     /**
-     * Set the key value.
+     * Set the key parameter.
      *
      * @param key the key value to set
      * @return the Tag object itself.
@@ -47,7 +47,7 @@ public class Tag {
     }
 
     /**
-     * Get the value value.
+     * Get the value parameter.
      *
      * @return the value value
      */
@@ -56,7 +56,7 @@ public class Tag {
     }
 
     /**
-     * Set the value value.
+     * Set the value parameter.
      *
      * @param value the value value to set
      * @return the Tag object itself.

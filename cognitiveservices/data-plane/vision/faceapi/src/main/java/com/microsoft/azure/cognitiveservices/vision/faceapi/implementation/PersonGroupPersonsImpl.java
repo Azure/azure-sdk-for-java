@@ -8,12 +8,6 @@
 
 package com.microsoft.azure.cognitiveservices.vision.faceapi.implementation;
 
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.CreatePersonGroupPersonsOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.ListPersonGroupPersonsOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.UpdatePersonGroupPersonsOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.UpdateFaceOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.AddPersonFaceFromUrlOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.AddPersonFaceFromStreamOptionalParameter;
 import retrofit2.Retrofit;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroupPersons;
 import com.google.common.base.Joiner;
@@ -23,12 +17,13 @@ import com.microsoft.azure.cognitiveservices.vision.faceapi.models.ImageUrl;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.NameAndUserDataContract;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.PersistedFace;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.Person;
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.UpdatePersonFaceRequest;
+import com.microsoft.azure.cognitiveservices.vision.faceapi.models.UpdateFaceRequest;
 import com.microsoft.rest.CollectionFormat;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
+import java.io.InputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
@@ -56,7 +51,7 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
     /** The Retrofit service to perform REST calls. */
     private PersonGroupPersonsService service;
     /** The service client containing this operation class. */
-    private FaceAPIImpl client;
+    private FaceClientImpl client;
 
     /**
      * Initializes an instance of PersonGroupPersonsImpl.
@@ -64,7 +59,7 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public PersonGroupPersonsImpl(Retrofit retrofit, FaceAPIImpl client) {
+    public PersonGroupPersonsImpl(Retrofit retrofit, FaceClientImpl client) {
         this.service = retrofit.create(PersonGroupPersonsService.class);
         this.client = client;
     }
@@ -76,7 +71,7 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
     interface PersonGroupPersonsService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroupPersons create" })
         @POST("persongroups/{personGroupId}/persons")
-        Observable<Response<ResponseBody>> create(@Path("personGroupId") String personGroupId, @Header("accept-language") String acceptLanguage, @Body NameAndUserDataContract bodyParameter, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> create(@Path("personGroupId") String personGroupId, @Header("accept-language") String acceptLanguage, @Body NameAndUserDataContract body, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroupPersons list" })
         @GET("persongroups/{personGroupId}/persons")
@@ -92,68 +87,64 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroupPersons update" })
         @PATCH("persongroups/{personGroupId}/persons/{personId}")
-        Observable<Response<ResponseBody>> update(@Path("personGroupId") String personGroupId, @Path("personId") UUID personId, @Header("accept-language") String acceptLanguage, @Body NameAndUserDataContract bodyParameter, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> update(@Path("personGroupId") String personGroupId, @Path("personId") UUID personId, @Header("accept-language") String acceptLanguage, @Body NameAndUserDataContract body, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroupPersons deleteFace" })
-        @HTTP(path = "persongroups/{personGroupId}/persons/{personId}/persistedFaces/{persistedFaceId}", method = "DELETE", hasBody = true)
+        @HTTP(path = "persongroups/{personGroupId}/persons/{personId}/persistedfaces/{persistedFaceId}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteFace(@Path("personGroupId") String personGroupId, @Path("personId") UUID personId, @Path("persistedFaceId") UUID persistedFaceId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroupPersons getFace" })
-        @GET("persongroups/{personGroupId}/persons/{personId}/persistedFaces/{persistedFaceId}")
+        @GET("persongroups/{personGroupId}/persons/{personId}/persistedfaces/{persistedFaceId}")
         Observable<Response<ResponseBody>> getFace(@Path("personGroupId") String personGroupId, @Path("personId") UUID personId, @Path("persistedFaceId") UUID persistedFaceId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroupPersons updateFace" })
-        @PATCH("persongroups/{personGroupId}/persons/{personId}/persistedFaces/{persistedFaceId}")
-        Observable<Response<ResponseBody>> updateFace(@Path("personGroupId") String personGroupId, @Path("personId") UUID personId, @Path("persistedFaceId") UUID persistedFaceId, @Header("accept-language") String acceptLanguage, @Body UpdatePersonFaceRequest bodyParameter, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @PATCH("persongroups/{personGroupId}/persons/{personId}/persistedfaces/{persistedFaceId}")
+        Observable<Response<ResponseBody>> updateFace(@Path("personGroupId") String personGroupId, @Path("personId") UUID personId, @Path("persistedFaceId") UUID persistedFaceId, @Header("accept-language") String acceptLanguage, @Body UpdateFaceRequest body, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroupPersons addPersonFaceFromUrl" })
-        @POST("persongroups/{personGroupId}/persons/{personId}/persistedFaces")
-        Observable<Response<ResponseBody>> addPersonFaceFromUrl(@Path("personGroupId") String personGroupId, @Path("personId") UUID personId, @Query("userData") String userData, @Query("targetFace") String targetFace, @Header("accept-language") String acceptLanguage, @Body ImageUrl imageUrl, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroupPersons addFaceFromUrl" })
+        @POST("persongroups/{personGroupId}/persons/{personId}/persistedfaces")
+        Observable<Response<ResponseBody>> addFaceFromUrl(@Path("personGroupId") String personGroupId, @Path("personId") UUID personId, @Query("userData") String userData, @Query("targetFace") String targetFace, @Header("accept-language") String acceptLanguage, @Body ImageUrl imageUrl, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/octet-stream", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroupPersons addPersonFaceFromStream" })
-        @POST("persongroups/{personGroupId}/persons/{personId}/persistedFaces")
-        Observable<Response<ResponseBody>> addPersonFaceFromStream(@Path("personGroupId") String personGroupId, @Path("personId") UUID personId, @Query("userData") String userData, @Query("targetFace") String targetFace, @Body RequestBody image, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/octet-stream", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroupPersons addFaceFromStream" })
+        @POST("persongroups/{personGroupId}/persons/{personId}/persistedfaces")
+        Observable<Response<ResponseBody>> addFaceFromStream(@Path("personGroupId") String personGroupId, @Path("personId") UUID personId, @Query("userData") String userData, @Query("targetFace") String targetFace, @Body RequestBody image, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
     }
-
 
     /**
      * Create a new person in a specified person group.
      *
      * @param personGroupId Id referencing a particular person group.
-     * @param createOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Person object if successful.
      */
-    public Person create(String personGroupId, CreatePersonGroupPersonsOptionalParameter createOptionalParameter) {
-        return createWithServiceResponseAsync(personGroupId, createOptionalParameter).toBlocking().single().body();
+    public Person create(String personGroupId) {
+        return createWithServiceResponseAsync(personGroupId).toBlocking().single().body();
     }
 
     /**
      * Create a new person in a specified person group.
      *
      * @param personGroupId Id referencing a particular person group.
-     * @param createOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Person> createAsync(String personGroupId, CreatePersonGroupPersonsOptionalParameter createOptionalParameter, final ServiceCallback<Person> serviceCallback) {
-        return ServiceFuture.fromResponse(createWithServiceResponseAsync(personGroupId, createOptionalParameter), serviceCallback);
+    public ServiceFuture<Person> createAsync(String personGroupId, final ServiceCallback<Person> serviceCallback) {
+        return ServiceFuture.fromResponse(createWithServiceResponseAsync(personGroupId), serviceCallback);
     }
 
     /**
      * Create a new person in a specified person group.
      *
      * @param personGroupId Id referencing a particular person group.
-     * @param createOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Person object
      */
-    public Observable<Person> createAsync(String personGroupId, CreatePersonGroupPersonsOptionalParameter createOptionalParameter) {
-        return createWithServiceResponseAsync(personGroupId, createOptionalParameter).map(new Func1<ServiceResponse<Person>, Person>() {
+    public Observable<Person> createAsync(String personGroupId) {
+        return createWithServiceResponseAsync(personGroupId).map(new Func1<ServiceResponse<Person>, Person>() {
             @Override
             public Person call(ServiceResponse<Person> response) {
                 return response.body();
@@ -165,21 +156,81 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * Create a new person in a specified person group.
      *
      * @param personGroupId Id referencing a particular person group.
-     * @param createOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Person object
      */
-    public Observable<ServiceResponse<Person>> createWithServiceResponseAsync(String personGroupId, CreatePersonGroupPersonsOptionalParameter createOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public Observable<ServiceResponse<Person>> createWithServiceResponseAsync(String personGroupId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
         }
-        final String name = createOptionalParameter != null ? createOptionalParameter.name() : null;
-        final String userData = createOptionalParameter != null ? createOptionalParameter.userData() : null;
+        final String name = null;
+        final String userData = null;
+        NameAndUserDataContract body = new NameAndUserDataContract();
+        body.withName(null);
+        body.withUserData(null);
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.create(personGroupId, this.client.acceptLanguage(), body, parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Person>>>() {
+                @Override
+                public Observable<ServiceResponse<Person>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Person> clientResponse = createDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
 
-        return createWithServiceResponseAsync(personGroupId, name, userData);
+    /**
+     * Create a new person in a specified person group.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param name User defined name, maximum length is 128.
+     * @param userData User specified data. Length should not exceed 16KB.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws APIErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the Person object if successful.
+     */
+    public Person create(String personGroupId, String name, String userData) {
+        return createWithServiceResponseAsync(personGroupId, name, userData).toBlocking().single().body();
+    }
+
+    /**
+     * Create a new person in a specified person group.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param name User defined name, maximum length is 128.
+     * @param userData User specified data. Length should not exceed 16KB.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Person> createAsync(String personGroupId, String name, String userData, final ServiceCallback<Person> serviceCallback) {
+        return ServiceFuture.fromResponse(createWithServiceResponseAsync(personGroupId, name, userData), serviceCallback);
+    }
+
+    /**
+     * Create a new person in a specified person group.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param name User defined name, maximum length is 128.
+     * @param userData User specified data. Length should not exceed 16KB.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Person object
+     */
+    public Observable<Person> createAsync(String personGroupId, String name, String userData) {
+        return createWithServiceResponseAsync(personGroupId, name, userData).map(new Func1<ServiceResponse<Person>, Person>() {
+            @Override
+            public Person call(ServiceResponse<Person> response) {
+                return response.body();
+            }
+        });
     }
 
     /**
@@ -192,17 +243,17 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @return the observable to the Person object
      */
     public Observable<ServiceResponse<Person>> createWithServiceResponseAsync(String personGroupId, String name, String userData) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
         }
-        NameAndUserDataContract bodyParameter = new NameAndUserDataContract();
-        bodyParameter.withName(name);
-        bodyParameter.withUserData(userData);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.create(personGroupId, this.client.acceptLanguage(), bodyParameter, parameterizedHost, this.client.userAgent())
+        NameAndUserDataContract body = new NameAndUserDataContract();
+        body.withName(name);
+        body.withUserData(userData);
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.create(personGroupId, this.client.acceptLanguage(), body, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Person>>>() {
                 @Override
                 public Observable<ServiceResponse<Person>> call(Response<ResponseBody> response) {
@@ -223,100 +274,40 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
                 .build(response);
     }
 
-    @Override
-    public PersonGroupPersonsCreateParameters create() {
-        return new PersonGroupPersonsCreateParameters(this);
-    }
-
-    /**
-     * Internal class implementing PersonGroupPersonsCreateDefinition.
-     */
-    class PersonGroupPersonsCreateParameters implements PersonGroupPersonsCreateDefinition {
-        private PersonGroupPersonsImpl parent;
-        private String personGroupId;
-        private String name;
-        private String userData;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        PersonGroupPersonsCreateParameters(PersonGroupPersonsImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public PersonGroupPersonsCreateParameters withPersonGroupId(String personGroupId) {
-            this.personGroupId = personGroupId;
-            return this;
-        }
-
-        @Override
-        public PersonGroupPersonsCreateParameters withName(String name) {
-            this.name = name;
-            return this;
-        }
-
-        @Override
-        public PersonGroupPersonsCreateParameters withUserData(String userData) {
-            this.userData = userData;
-            return this;
-        }
-
-        @Override
-        public Person execute() {
-        return createWithServiceResponseAsync(personGroupId, name, userData).toBlocking().single().body();
-    }
-
-        @Override
-        public Observable<Person> executeAsync() {
-            return createWithServiceResponseAsync(personGroupId, name, userData).map(new Func1<ServiceResponse<Person>, Person>() {
-                @Override
-                public Person call(ServiceResponse<Person> response) {
-                    return response.body();
-                }
-            });
-        }
-    }
-
-
     /**
      * List all persons in a person group, and retrieve person information (including personId, name, userData and persistedFaceIds of registered faces of the person).
      *
      * @param personGroupId Id referencing a particular person group.
-     * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;Person&gt; object if successful.
      */
-    public List<Person> list(String personGroupId, ListPersonGroupPersonsOptionalParameter listOptionalParameter) {
-        return listWithServiceResponseAsync(personGroupId, listOptionalParameter).toBlocking().single().body();
+    public List<Person> list(String personGroupId) {
+        return listWithServiceResponseAsync(personGroupId).toBlocking().single().body();
     }
 
     /**
      * List all persons in a person group, and retrieve person information (including personId, name, userData and persistedFaceIds of registered faces of the person).
      *
      * @param personGroupId Id referencing a particular person group.
-     * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<Person>> listAsync(String personGroupId, ListPersonGroupPersonsOptionalParameter listOptionalParameter, final ServiceCallback<List<Person>> serviceCallback) {
-        return ServiceFuture.fromResponse(listWithServiceResponseAsync(personGroupId, listOptionalParameter), serviceCallback);
+    public ServiceFuture<List<Person>> listAsync(String personGroupId, final ServiceCallback<List<Person>> serviceCallback) {
+        return ServiceFuture.fromResponse(listWithServiceResponseAsync(personGroupId), serviceCallback);
     }
 
     /**
      * List all persons in a person group, and retrieve person information (including personId, name, userData and persistedFaceIds of registered faces of the person).
      *
      * @param personGroupId Id referencing a particular person group.
-     * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;Person&gt; object
      */
-    public Observable<List<Person>> listAsync(String personGroupId, ListPersonGroupPersonsOptionalParameter listOptionalParameter) {
-        return listWithServiceResponseAsync(personGroupId, listOptionalParameter).map(new Func1<ServiceResponse<List<Person>>, List<Person>>() {
+    public Observable<List<Person>> listAsync(String personGroupId) {
+        return listWithServiceResponseAsync(personGroupId).map(new Func1<ServiceResponse<List<Person>>, List<Person>>() {
             @Override
             public List<Person> call(ServiceResponse<List<Person>> response) {
                 return response.body();
@@ -328,21 +319,78 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * List all persons in a person group, and retrieve person information (including personId, name, userData and persistedFaceIds of registered faces of the person).
      *
      * @param personGroupId Id referencing a particular person group.
-     * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;Person&gt; object
      */
-    public Observable<ServiceResponse<List<Person>>> listWithServiceResponseAsync(String personGroupId, ListPersonGroupPersonsOptionalParameter listOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public Observable<ServiceResponse<List<Person>>> listWithServiceResponseAsync(String personGroupId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
         }
-        final String start = listOptionalParameter != null ? listOptionalParameter.start() : null;
-        final Integer top = listOptionalParameter != null ? listOptionalParameter.top() : null;
+        final String start = null;
+        final Integer top = null;
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.list(personGroupId, start, top, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<Person>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<Person>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<List<Person>> clientResponse = listDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
 
-        return listWithServiceResponseAsync(personGroupId, start, top);
+    /**
+     * List all persons in a person group, and retrieve person information (including personId, name, userData and persistedFaceIds of registered faces of the person).
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param start Starting person id to return (used to list a range of persons).
+     * @param top Number of persons to return starting with the person id indicated by the 'start' parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws APIErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;Person&gt; object if successful.
+     */
+    public List<Person> list(String personGroupId, String start, Integer top) {
+        return listWithServiceResponseAsync(personGroupId, start, top).toBlocking().single().body();
+    }
+
+    /**
+     * List all persons in a person group, and retrieve person information (including personId, name, userData and persistedFaceIds of registered faces of the person).
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param start Starting person id to return (used to list a range of persons).
+     * @param top Number of persons to return starting with the person id indicated by the 'start' parameter.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<Person>> listAsync(String personGroupId, String start, Integer top, final ServiceCallback<List<Person>> serviceCallback) {
+        return ServiceFuture.fromResponse(listWithServiceResponseAsync(personGroupId, start, top), serviceCallback);
+    }
+
+    /**
+     * List all persons in a person group, and retrieve person information (including personId, name, userData and persistedFaceIds of registered faces of the person).
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param start Starting person id to return (used to list a range of persons).
+     * @param top Number of persons to return starting with the person id indicated by the 'start' parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;Person&gt; object
+     */
+    public Observable<List<Person>> listAsync(String personGroupId, String start, Integer top) {
+        return listWithServiceResponseAsync(personGroupId, start, top).map(new Func1<ServiceResponse<List<Person>>, List<Person>>() {
+            @Override
+            public List<Person> call(ServiceResponse<List<Person>> response) {
+                return response.body();
+            }
+        });
     }
 
     /**
@@ -355,13 +403,13 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @return the observable to the List&lt;Person&gt; object
      */
     public Observable<ServiceResponse<List<Person>>> listWithServiceResponseAsync(String personGroupId, String start, Integer top) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.list(personGroupId, start, top, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<Person>>>>() {
                 @Override
@@ -383,64 +431,8 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
                 .build(response);
     }
 
-    @Override
-    public PersonGroupPersonsListParameters list() {
-        return new PersonGroupPersonsListParameters(this);
-    }
-
     /**
-     * Internal class implementing PersonGroupPersonsListDefinition.
-     */
-    class PersonGroupPersonsListParameters implements PersonGroupPersonsListDefinition {
-        private PersonGroupPersonsImpl parent;
-        private String personGroupId;
-        private String start;
-        private Integer top;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        PersonGroupPersonsListParameters(PersonGroupPersonsImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public PersonGroupPersonsListParameters withPersonGroupId(String personGroupId) {
-            this.personGroupId = personGroupId;
-            return this;
-        }
-
-        @Override
-        public PersonGroupPersonsListParameters withStart(String start) {
-            this.start = start;
-            return this;
-        }
-
-        @Override
-        public PersonGroupPersonsListParameters withTop(Integer top) {
-            this.top = top;
-            return this;
-        }
-
-        @Override
-        public List<Person> execute() {
-        return listWithServiceResponseAsync(personGroupId, start, top).toBlocking().single().body();
-    }
-
-        @Override
-        public Observable<List<Person>> executeAsync() {
-            return listWithServiceResponseAsync(personGroupId, start, top).map(new Func1<ServiceResponse<List<Person>>, List<Person>>() {
-                @Override
-                public List<Person> call(ServiceResponse<List<Person>> response) {
-                    return response.body();
-                }
-            });
-        }
-    }
-
-    /**
-     * Delete an existing person from a person group. Persisted face images of the person will also be deleted.
+     * Delete an existing person from a person group. All stored person data, and face features in the person entry will be deleted.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
@@ -453,7 +445,7 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
     }
 
     /**
-     * Delete an existing person from a person group. Persisted face images of the person will also be deleted.
+     * Delete an existing person from a person group. All stored person data, and face features in the person entry will be deleted.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
@@ -466,7 +458,7 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
     }
 
     /**
-     * Delete an existing person from a person group. Persisted face images of the person will also be deleted.
+     * Delete an existing person from a person group. All stored person data, and face features in the person entry will be deleted.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
@@ -483,7 +475,7 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
     }
 
     /**
-     * Delete an existing person from a person group. Persisted face images of the person will also be deleted.
+     * Delete an existing person from a person group. All stored person data, and face features in the person entry will be deleted.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
@@ -491,8 +483,8 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String personGroupId, UUID personId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
@@ -500,7 +492,7 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
         if (personId == null) {
             throw new IllegalArgumentException("Parameter personId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.delete(personGroupId, personId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
@@ -575,8 +567,8 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @return the observable to the Person object
      */
     public Observable<ServiceResponse<Person>> getWithServiceResponseAsync(String personGroupId, UUID personId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
@@ -584,7 +576,7 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
         if (personId == null) {
             throw new IllegalArgumentException("Parameter personId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.get(personGroupId, personId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Person>>>() {
                 @Override
@@ -606,19 +598,17 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
                 .build(response);
     }
 
-
     /**
      * Update name or userData of a person.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
-     * @param updateOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void update(String personGroupId, UUID personId, UpdatePersonGroupPersonsOptionalParameter updateOptionalParameter) {
-        updateWithServiceResponseAsync(personGroupId, personId, updateOptionalParameter).toBlocking().single().body();
+    public void update(String personGroupId, UUID personId) {
+        updateWithServiceResponseAsync(personGroupId, personId).toBlocking().single().body();
     }
 
     /**
@@ -626,13 +616,12 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
-     * @param updateOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> updateAsync(String personGroupId, UUID personId, UpdatePersonGroupPersonsOptionalParameter updateOptionalParameter, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(personGroupId, personId, updateOptionalParameter), serviceCallback);
+    public ServiceFuture<Void> updateAsync(String personGroupId, UUID personId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(personGroupId, personId), serviceCallback);
     }
 
     /**
@@ -640,12 +629,11 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
-     * @param updateOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> updateAsync(String personGroupId, UUID personId, UpdatePersonGroupPersonsOptionalParameter updateOptionalParameter) {
-        return updateWithServiceResponseAsync(personGroupId, personId, updateOptionalParameter).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Void> updateAsync(String personGroupId, UUID personId) {
+        return updateWithServiceResponseAsync(personGroupId, personId).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
                 return response.body();
@@ -658,13 +646,12 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
-     * @param updateOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> updateWithServiceResponseAsync(String personGroupId, UUID personId, UpdatePersonGroupPersonsOptionalParameter updateOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public Observable<ServiceResponse<Void>> updateWithServiceResponseAsync(String personGroupId, UUID personId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
@@ -672,10 +659,73 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
         if (personId == null) {
             throw new IllegalArgumentException("Parameter personId is required and cannot be null.");
         }
-        final String name = updateOptionalParameter != null ? updateOptionalParameter.name() : null;
-        final String userData = updateOptionalParameter != null ? updateOptionalParameter.userData() : null;
+        final String name = null;
+        final String userData = null;
+        NameAndUserDataContract body = new NameAndUserDataContract();
+        body.withName(null);
+        body.withUserData(null);
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.update(personGroupId, personId, this.client.acceptLanguage(), body, parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = updateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
 
-        return updateWithServiceResponseAsync(personGroupId, personId, name, userData);
+    /**
+     * Update name or userData of a person.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param personId Id referencing a particular person.
+     * @param name User defined name, maximum length is 128.
+     * @param userData User specified data. Length should not exceed 16KB.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws APIErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void update(String personGroupId, UUID personId, String name, String userData) {
+        updateWithServiceResponseAsync(personGroupId, personId, name, userData).toBlocking().single().body();
+    }
+
+    /**
+     * Update name or userData of a person.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param personId Id referencing a particular person.
+     * @param name User defined name, maximum length is 128.
+     * @param userData User specified data. Length should not exceed 16KB.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> updateAsync(String personGroupId, UUID personId, String name, String userData, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(personGroupId, personId, name, userData), serviceCallback);
+    }
+
+    /**
+     * Update name or userData of a person.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param personId Id referencing a particular person.
+     * @param name User defined name, maximum length is 128.
+     * @param userData User specified data. Length should not exceed 16KB.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> updateAsync(String personGroupId, UUID personId, String name, String userData) {
+        return updateWithServiceResponseAsync(personGroupId, personId, name, userData).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
     }
 
     /**
@@ -689,8 +739,8 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> updateWithServiceResponseAsync(String personGroupId, UUID personId, String name, String userData) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
@@ -698,11 +748,11 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
         if (personId == null) {
             throw new IllegalArgumentException("Parameter personId is required and cannot be null.");
         }
-        NameAndUserDataContract bodyParameter = new NameAndUserDataContract();
-        bodyParameter.withName(name);
-        bodyParameter.withUserData(userData);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.update(personGroupId, personId, this.client.acceptLanguage(), bodyParameter, parameterizedHost, this.client.userAgent())
+        NameAndUserDataContract body = new NameAndUserDataContract();
+        body.withName(name);
+        body.withUserData(userData);
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.update(personGroupId, personId, this.client.acceptLanguage(), body, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -723,71 +773,8 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
                 .build(response);
     }
 
-    @Override
-    public PersonGroupPersonsUpdateParameters update() {
-        return new PersonGroupPersonsUpdateParameters(this);
-    }
-
     /**
-     * Internal class implementing PersonGroupPersonsUpdateDefinition.
-     */
-    class PersonGroupPersonsUpdateParameters implements PersonGroupPersonsUpdateDefinition {
-        private PersonGroupPersonsImpl parent;
-        private String personGroupId;
-        private UUID personId;
-        private String name;
-        private String userData;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        PersonGroupPersonsUpdateParameters(PersonGroupPersonsImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public PersonGroupPersonsUpdateParameters withPersonGroupId(String personGroupId) {
-            this.personGroupId = personGroupId;
-            return this;
-        }
-
-        @Override
-        public PersonGroupPersonsUpdateParameters withPersonId(UUID personId) {
-            this.personId = personId;
-            return this;
-        }
-
-        @Override
-        public PersonGroupPersonsUpdateParameters withName(String name) {
-            this.name = name;
-            return this;
-        }
-
-        @Override
-        public PersonGroupPersonsUpdateParameters withUserData(String userData) {
-            this.userData = userData;
-            return this;
-        }
-
-        @Override
-        public void execute() {
-        updateWithServiceResponseAsync(personGroupId, personId, name, userData).toBlocking().single().body();
-    }
-
-        @Override
-        public Observable<Void> executeAsync() {
-            return updateWithServiceResponseAsync(personGroupId, personId, name, userData).map(new Func1<ServiceResponse<Void>, Void>() {
-                @Override
-                public Void call(ServiceResponse<Void> response) {
-                    return response.body();
-                }
-            });
-        }
-    }
-
-    /**
-     * Delete a face from a person. Relative image for the persisted face will also be deleted.
+     * Delete a face from a person. Relative feature for the persisted face will also be deleted.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
@@ -801,7 +788,7 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
     }
 
     /**
-     * Delete a face from a person. Relative image for the persisted face will also be deleted.
+     * Delete a face from a person. Relative feature for the persisted face will also be deleted.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
@@ -815,7 +802,7 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
     }
 
     /**
-     * Delete a face from a person. Relative image for the persisted face will also be deleted.
+     * Delete a face from a person. Relative feature for the persisted face will also be deleted.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
@@ -833,7 +820,7 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
     }
 
     /**
-     * Delete a face from a person. Relative image for the persisted face will also be deleted.
+     * Delete a face from a person. Relative feature for the persisted face will also be deleted.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
@@ -842,8 +829,8 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteFaceWithServiceResponseAsync(String personGroupId, UUID personId, UUID persistedFaceId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
@@ -854,7 +841,7 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
         if (persistedFaceId == null) {
             throw new IllegalArgumentException("Parameter persistedFaceId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.deleteFace(personGroupId, personId, persistedFaceId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
@@ -933,8 +920,8 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @return the observable to the PersistedFace object
      */
     public Observable<ServiceResponse<PersistedFace>> getFaceWithServiceResponseAsync(String personGroupId, UUID personId, UUID persistedFaceId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
@@ -945,7 +932,7 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
         if (persistedFaceId == null) {
             throw new IllegalArgumentException("Parameter persistedFaceId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.getFace(personGroupId, personId, persistedFaceId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PersistedFace>>>() {
                 @Override
@@ -967,20 +954,18 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
                 .build(response);
     }
 
-
     /**
      * Update a person persisted face's userData field.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
      * @param persistedFaceId Id referencing a particular persistedFaceId of an existing face.
-     * @param updateFaceOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void updateFace(String personGroupId, UUID personId, UUID persistedFaceId, UpdateFaceOptionalParameter updateFaceOptionalParameter) {
-        updateFaceWithServiceResponseAsync(personGroupId, personId, persistedFaceId, updateFaceOptionalParameter).toBlocking().single().body();
+    public void updateFace(String personGroupId, UUID personId, UUID persistedFaceId) {
+        updateFaceWithServiceResponseAsync(personGroupId, personId, persistedFaceId).toBlocking().single().body();
     }
 
     /**
@@ -989,13 +974,12 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
      * @param persistedFaceId Id referencing a particular persistedFaceId of an existing face.
-     * @param updateFaceOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> updateFaceAsync(String personGroupId, UUID personId, UUID persistedFaceId, UpdateFaceOptionalParameter updateFaceOptionalParameter, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(updateFaceWithServiceResponseAsync(personGroupId, personId, persistedFaceId, updateFaceOptionalParameter), serviceCallback);
+    public ServiceFuture<Void> updateFaceAsync(String personGroupId, UUID personId, UUID persistedFaceId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(updateFaceWithServiceResponseAsync(personGroupId, personId, persistedFaceId), serviceCallback);
     }
 
     /**
@@ -1004,12 +988,11 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
      * @param persistedFaceId Id referencing a particular persistedFaceId of an existing face.
-     * @param updateFaceOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> updateFaceAsync(String personGroupId, UUID personId, UUID persistedFaceId, UpdateFaceOptionalParameter updateFaceOptionalParameter) {
-        return updateFaceWithServiceResponseAsync(personGroupId, personId, persistedFaceId, updateFaceOptionalParameter).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Void> updateFaceAsync(String personGroupId, UUID personId, UUID persistedFaceId) {
+        return updateFaceWithServiceResponseAsync(personGroupId, personId, persistedFaceId).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
                 return response.body();
@@ -1023,13 +1006,12 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
      * @param persistedFaceId Id referencing a particular persistedFaceId of an existing face.
-     * @param updateFaceOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> updateFaceWithServiceResponseAsync(String personGroupId, UUID personId, UUID persistedFaceId, UpdateFaceOptionalParameter updateFaceOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public Observable<ServiceResponse<Void>> updateFaceWithServiceResponseAsync(String personGroupId, UUID personId, UUID persistedFaceId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
@@ -1040,9 +1022,71 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
         if (persistedFaceId == null) {
             throw new IllegalArgumentException("Parameter persistedFaceId is required and cannot be null.");
         }
-        final String userData = updateFaceOptionalParameter != null ? updateFaceOptionalParameter.userData() : null;
+        final String userData = null;
+        UpdateFaceRequest body = new UpdateFaceRequest();
+        body.withUserData(null);
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.updateFace(personGroupId, personId, persistedFaceId, this.client.acceptLanguage(), body, parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = updateFaceDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
 
-        return updateFaceWithServiceResponseAsync(personGroupId, personId, persistedFaceId, userData);
+    /**
+     * Update a person persisted face's userData field.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param personId Id referencing a particular person.
+     * @param persistedFaceId Id referencing a particular persistedFaceId of an existing face.
+     * @param userData User-provided data attached to the face. The size limit is 1KB.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws APIErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void updateFace(String personGroupId, UUID personId, UUID persistedFaceId, String userData) {
+        updateFaceWithServiceResponseAsync(personGroupId, personId, persistedFaceId, userData).toBlocking().single().body();
+    }
+
+    /**
+     * Update a person persisted face's userData field.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param personId Id referencing a particular person.
+     * @param persistedFaceId Id referencing a particular persistedFaceId of an existing face.
+     * @param userData User-provided data attached to the face. The size limit is 1KB.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> updateFaceAsync(String personGroupId, UUID personId, UUID persistedFaceId, String userData, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(updateFaceWithServiceResponseAsync(personGroupId, personId, persistedFaceId, userData), serviceCallback);
+    }
+
+    /**
+     * Update a person persisted face's userData field.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param personId Id referencing a particular person.
+     * @param persistedFaceId Id referencing a particular persistedFaceId of an existing face.
+     * @param userData User-provided data attached to the face. The size limit is 1KB.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> updateFaceAsync(String personGroupId, UUID personId, UUID persistedFaceId, String userData) {
+        return updateFaceWithServiceResponseAsync(personGroupId, personId, persistedFaceId, userData).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
     }
 
     /**
@@ -1056,8 +1100,8 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> updateFaceWithServiceResponseAsync(String personGroupId, UUID personId, UUID persistedFaceId, String userData) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
@@ -1068,10 +1112,10 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
         if (persistedFaceId == null) {
             throw new IllegalArgumentException("Parameter persistedFaceId is required and cannot be null.");
         }
-        UpdatePersonFaceRequest bodyParameter = new UpdatePersonFaceRequest();
-        bodyParameter.withUserData(userData);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.updateFace(personGroupId, personId, persistedFaceId, this.client.acceptLanguage(), bodyParameter, parameterizedHost, this.client.userAgent())
+        UpdateFaceRequest body = new UpdateFaceRequest();
+        body.withUserData(userData);
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.updateFace(personGroupId, personId, persistedFaceId, this.client.acceptLanguage(), body, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -1092,84 +1136,19 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
                 .build(response);
     }
 
-    @Override
-    public PersonGroupPersonsUpdateFaceParameters updateFace() {
-        return new PersonGroupPersonsUpdateFaceParameters(this);
-    }
-
-    /**
-     * Internal class implementing PersonGroupPersonsUpdateFaceDefinition.
-     */
-    class PersonGroupPersonsUpdateFaceParameters implements PersonGroupPersonsUpdateFaceDefinition {
-        private PersonGroupPersonsImpl parent;
-        private String personGroupId;
-        private UUID personId;
-        private UUID persistedFaceId;
-        private String userData;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        PersonGroupPersonsUpdateFaceParameters(PersonGroupPersonsImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public PersonGroupPersonsUpdateFaceParameters withPersonGroupId(String personGroupId) {
-            this.personGroupId = personGroupId;
-            return this;
-        }
-
-        @Override
-        public PersonGroupPersonsUpdateFaceParameters withPersonId(UUID personId) {
-            this.personId = personId;
-            return this;
-        }
-
-        @Override
-        public PersonGroupPersonsUpdateFaceParameters withPersistedFaceId(UUID persistedFaceId) {
-            this.persistedFaceId = persistedFaceId;
-            return this;
-        }
-
-        @Override
-        public PersonGroupPersonsUpdateFaceParameters withUserData(String userData) {
-            this.userData = userData;
-            return this;
-        }
-
-        @Override
-        public void execute() {
-        updateFaceWithServiceResponseAsync(personGroupId, personId, persistedFaceId, userData).toBlocking().single().body();
-    }
-
-        @Override
-        public Observable<Void> executeAsync() {
-            return updateFaceWithServiceResponseAsync(personGroupId, personId, persistedFaceId, userData).map(new Func1<ServiceResponse<Void>, Void>() {
-                @Override
-                public Void call(ServiceResponse<Void> response) {
-                    return response.body();
-                }
-            });
-        }
-    }
-
-
     /**
      * Add a representative face to a person for identification. The input face is specified as an image with a targetFace rectangle.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
      * @param url Publicly reachable URL of an image
-     * @param addPersonFaceFromUrlOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PersistedFace object if successful.
      */
-    public PersistedFace addPersonFaceFromUrl(String personGroupId, UUID personId, String url, AddPersonFaceFromUrlOptionalParameter addPersonFaceFromUrlOptionalParameter) {
-        return addPersonFaceFromUrlWithServiceResponseAsync(personGroupId, personId, url, addPersonFaceFromUrlOptionalParameter).toBlocking().single().body();
+    public PersistedFace addFaceFromUrl(String personGroupId, UUID personId, String url) {
+        return addFaceFromUrlWithServiceResponseAsync(personGroupId, personId, url).toBlocking().single().body();
     }
 
     /**
@@ -1178,13 +1157,12 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
      * @param url Publicly reachable URL of an image
-     * @param addPersonFaceFromUrlOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<PersistedFace> addPersonFaceFromUrlAsync(String personGroupId, UUID personId, String url, AddPersonFaceFromUrlOptionalParameter addPersonFaceFromUrlOptionalParameter, final ServiceCallback<PersistedFace> serviceCallback) {
-        return ServiceFuture.fromResponse(addPersonFaceFromUrlWithServiceResponseAsync(personGroupId, personId, url, addPersonFaceFromUrlOptionalParameter), serviceCallback);
+    public ServiceFuture<PersistedFace> addFaceFromUrlAsync(String personGroupId, UUID personId, String url, final ServiceCallback<PersistedFace> serviceCallback) {
+        return ServiceFuture.fromResponse(addFaceFromUrlWithServiceResponseAsync(personGroupId, personId, url), serviceCallback);
     }
 
     /**
@@ -1193,12 +1171,11 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
      * @param url Publicly reachable URL of an image
-     * @param addPersonFaceFromUrlOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
      */
-    public Observable<PersistedFace> addPersonFaceFromUrlAsync(String personGroupId, UUID personId, String url, AddPersonFaceFromUrlOptionalParameter addPersonFaceFromUrlOptionalParameter) {
-        return addPersonFaceFromUrlWithServiceResponseAsync(personGroupId, personId, url, addPersonFaceFromUrlOptionalParameter).map(new Func1<ServiceResponse<PersistedFace>, PersistedFace>() {
+    public Observable<PersistedFace> addFaceFromUrlAsync(String personGroupId, UUID personId, String url) {
+        return addFaceFromUrlWithServiceResponseAsync(personGroupId, personId, url).map(new Func1<ServiceResponse<PersistedFace>, PersistedFace>() {
             @Override
             public PersistedFace call(ServiceResponse<PersistedFace> response) {
                 return response.body();
@@ -1212,13 +1189,12 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
      * @param url Publicly reachable URL of an image
-     * @param addPersonFaceFromUrlOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
      */
-    public Observable<ServiceResponse<PersistedFace>> addPersonFaceFromUrlWithServiceResponseAsync(String personGroupId, UUID personId, String url, AddPersonFaceFromUrlOptionalParameter addPersonFaceFromUrlOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public Observable<ServiceResponse<PersistedFace>> addFaceFromUrlWithServiceResponseAsync(String personGroupId, UUID personId, String url) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
@@ -1229,10 +1205,57 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
         if (url == null) {
             throw new IllegalArgumentException("Parameter url is required and cannot be null.");
         }
-        final String userData = addPersonFaceFromUrlOptionalParameter != null ? addPersonFaceFromUrlOptionalParameter.userData() : null;
-        final List<Integer> targetFace = addPersonFaceFromUrlOptionalParameter != null ? addPersonFaceFromUrlOptionalParameter.targetFace() : null;
+        final String userData = null;
+        final List<Integer> targetFace = null;
+        ImageUrl imageUrl = new ImageUrl();
+        imageUrl.withUrl(url);
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        String targetFaceConverted = this.client.serializerAdapter().serializeList(targetFace, CollectionFormat.CSV);
+        return service.addFaceFromUrl(personGroupId, personId, userData, targetFaceConverted, this.client.acceptLanguage(), imageUrl, parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PersistedFace>>>() {
+                @Override
+                public Observable<ServiceResponse<PersistedFace>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PersistedFace> clientResponse = addFaceFromUrlDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
 
-        return addPersonFaceFromUrlWithServiceResponseAsync(personGroupId, personId, url, userData, targetFace);
+    /**
+     * Add a representative face to a person for identification. The input face is specified as an image with a targetFace rectangle.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param personId Id referencing a particular person.
+     * @param url Publicly reachable URL of an image
+     * @param userData User-specified data about the face for any purpose. The maximum length is 1KB.
+     * @param targetFace A face rectangle to specify the target face to be added to a person in the format of "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the image, targetFace is required to specify which face to add. No targetFace means there is only one face detected in the entire image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws APIErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PersistedFace object if successful.
+     */
+    public PersistedFace addFaceFromUrl(String personGroupId, UUID personId, String url, String userData, List<Integer> targetFace) {
+        return addFaceFromUrlWithServiceResponseAsync(personGroupId, personId, url, userData, targetFace).toBlocking().single().body();
+    }
+
+    /**
+     * Add a representative face to a person for identification. The input face is specified as an image with a targetFace rectangle.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param personId Id referencing a particular person.
+     * @param url Publicly reachable URL of an image
+     * @param userData User-specified data about the face for any purpose. The maximum length is 1KB.
+     * @param targetFace A face rectangle to specify the target face to be added to a person in the format of "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the image, targetFace is required to specify which face to add. No targetFace means there is only one face detected in the entire image.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<PersistedFace> addFaceFromUrlAsync(String personGroupId, UUID personId, String url, String userData, List<Integer> targetFace, final ServiceCallback<PersistedFace> serviceCallback) {
+        return ServiceFuture.fromResponse(addFaceFromUrlWithServiceResponseAsync(personGroupId, personId, url, userData, targetFace), serviceCallback);
     }
 
     /**
@@ -1246,9 +1269,29 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
      */
-    public Observable<ServiceResponse<PersistedFace>> addPersonFaceFromUrlWithServiceResponseAsync(String personGroupId, UUID personId, String url, String userData, List<Integer> targetFace) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public Observable<PersistedFace> addFaceFromUrlAsync(String personGroupId, UUID personId, String url, String userData, List<Integer> targetFace) {
+        return addFaceFromUrlWithServiceResponseAsync(personGroupId, personId, url, userData, targetFace).map(new Func1<ServiceResponse<PersistedFace>, PersistedFace>() {
+            @Override
+            public PersistedFace call(ServiceResponse<PersistedFace> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Add a representative face to a person for identification. The input face is specified as an image with a targetFace rectangle.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param personId Id referencing a particular person.
+     * @param url Publicly reachable URL of an image
+     * @param userData User-specified data about the face for any purpose. The maximum length is 1KB.
+     * @param targetFace A face rectangle to specify the target face to be added to a person in the format of "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the image, targetFace is required to specify which face to add. No targetFace means there is only one face detected in the entire image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PersistedFace object
+     */
+    public Observable<ServiceResponse<PersistedFace>> addFaceFromUrlWithServiceResponseAsync(String personGroupId, UUID personId, String url, String userData, List<Integer> targetFace) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
@@ -1262,14 +1305,14 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
         Validator.validate(targetFace);
         ImageUrl imageUrl = new ImageUrl();
         imageUrl.withUrl(url);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         String targetFaceConverted = this.client.serializerAdapter().serializeList(targetFace, CollectionFormat.CSV);
-        return service.addPersonFaceFromUrl(personGroupId, personId, userData, targetFaceConverted, this.client.acceptLanguage(), imageUrl, parameterizedHost, this.client.userAgent())
+        return service.addFaceFromUrl(personGroupId, personId, userData, targetFaceConverted, this.client.acceptLanguage(), imageUrl, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PersistedFace>>>() {
                 @Override
                 public Observable<ServiceResponse<PersistedFace>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PersistedFace> clientResponse = addPersonFaceFromUrlDelegate(response);
+                        ServiceResponse<PersistedFace> clientResponse = addFaceFromUrlDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1278,98 +1321,26 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
             });
     }
 
-    private ServiceResponse<PersistedFace> addPersonFaceFromUrlDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
+    private ServiceResponse<PersistedFace> addFaceFromUrlDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PersistedFace, APIErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PersistedFace>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
     }
 
-    @Override
-    public PersonGroupPersonsAddPersonFaceFromUrlParameters addPersonFaceFromUrl() {
-        return new PersonGroupPersonsAddPersonFaceFromUrlParameters(this);
-    }
-
-    /**
-     * Internal class implementing PersonGroupPersonsAddPersonFaceFromUrlDefinition.
-     */
-    class PersonGroupPersonsAddPersonFaceFromUrlParameters implements PersonGroupPersonsAddPersonFaceFromUrlDefinition {
-        private PersonGroupPersonsImpl parent;
-        private String personGroupId;
-        private UUID personId;
-        private String url;
-        private String userData;
-        private List<Integer> targetFace;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        PersonGroupPersonsAddPersonFaceFromUrlParameters(PersonGroupPersonsImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public PersonGroupPersonsAddPersonFaceFromUrlParameters withPersonGroupId(String personGroupId) {
-            this.personGroupId = personGroupId;
-            return this;
-        }
-
-        @Override
-        public PersonGroupPersonsAddPersonFaceFromUrlParameters withPersonId(UUID personId) {
-            this.personId = personId;
-            return this;
-        }
-
-        @Override
-        public PersonGroupPersonsAddPersonFaceFromUrlParameters withUrl(String url) {
-            this.url = url;
-            return this;
-        }
-
-        @Override
-        public PersonGroupPersonsAddPersonFaceFromUrlParameters withUserData(String userData) {
-            this.userData = userData;
-            return this;
-        }
-
-        @Override
-        public PersonGroupPersonsAddPersonFaceFromUrlParameters withTargetFace(List<Integer> targetFace) {
-            this.targetFace = targetFace;
-            return this;
-        }
-
-        @Override
-        public PersistedFace execute() {
-        return addPersonFaceFromUrlWithServiceResponseAsync(personGroupId, personId, url, userData, targetFace).toBlocking().single().body();
-    }
-
-        @Override
-        public Observable<PersistedFace> executeAsync() {
-            return addPersonFaceFromUrlWithServiceResponseAsync(personGroupId, personId, url, userData, targetFace).map(new Func1<ServiceResponse<PersistedFace>, PersistedFace>() {
-                @Override
-                public PersistedFace call(ServiceResponse<PersistedFace> response) {
-                    return response.body();
-                }
-            });
-        }
-    }
-
-
     /**
      * Add a representative face to a person for identification. The input face is specified as an image with a targetFace rectangle.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
      * @param image An image stream.
-     * @param addPersonFaceFromStreamOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PersistedFace object if successful.
      */
-    public PersistedFace addPersonFaceFromStream(String personGroupId, UUID personId, byte[] image, AddPersonFaceFromStreamOptionalParameter addPersonFaceFromStreamOptionalParameter) {
-        return addPersonFaceFromStreamWithServiceResponseAsync(personGroupId, personId, image, addPersonFaceFromStreamOptionalParameter).toBlocking().single().body();
+    public PersistedFace addFaceFromStream(String personGroupId, UUID personId, byte[] image) {
+        return addFaceFromStreamWithServiceResponseAsync(personGroupId, personId, image).toBlocking().single().body();
     }
 
     /**
@@ -1378,13 +1349,12 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
      * @param image An image stream.
-     * @param addPersonFaceFromStreamOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<PersistedFace> addPersonFaceFromStreamAsync(String personGroupId, UUID personId, byte[] image, AddPersonFaceFromStreamOptionalParameter addPersonFaceFromStreamOptionalParameter, final ServiceCallback<PersistedFace> serviceCallback) {
-        return ServiceFuture.fromResponse(addPersonFaceFromStreamWithServiceResponseAsync(personGroupId, personId, image, addPersonFaceFromStreamOptionalParameter), serviceCallback);
+    public ServiceFuture<PersistedFace> addFaceFromStreamAsync(String personGroupId, UUID personId, byte[] image, final ServiceCallback<PersistedFace> serviceCallback) {
+        return ServiceFuture.fromResponse(addFaceFromStreamWithServiceResponseAsync(personGroupId, personId, image), serviceCallback);
     }
 
     /**
@@ -1393,12 +1363,11 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
      * @param image An image stream.
-     * @param addPersonFaceFromStreamOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
      */
-    public Observable<PersistedFace> addPersonFaceFromStreamAsync(String personGroupId, UUID personId, byte[] image, AddPersonFaceFromStreamOptionalParameter addPersonFaceFromStreamOptionalParameter) {
-        return addPersonFaceFromStreamWithServiceResponseAsync(personGroupId, personId, image, addPersonFaceFromStreamOptionalParameter).map(new Func1<ServiceResponse<PersistedFace>, PersistedFace>() {
+    public Observable<PersistedFace> addFaceFromStreamAsync(String personGroupId, UUID personId, byte[] image) {
+        return addFaceFromStreamWithServiceResponseAsync(personGroupId, personId, image).map(new Func1<ServiceResponse<PersistedFace>, PersistedFace>() {
             @Override
             public PersistedFace call(ServiceResponse<PersistedFace> response) {
                 return response.body();
@@ -1412,13 +1381,12 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
      * @param image An image stream.
-     * @param addPersonFaceFromStreamOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
      */
-    public Observable<ServiceResponse<PersistedFace>> addPersonFaceFromStreamWithServiceResponseAsync(String personGroupId, UUID personId, byte[] image, AddPersonFaceFromStreamOptionalParameter addPersonFaceFromStreamOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public Observable<ServiceResponse<PersistedFace>> addFaceFromStreamWithServiceResponseAsync(String personGroupId, UUID personId, byte[] image) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
@@ -1429,10 +1397,55 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
         if (image == null) {
             throw new IllegalArgumentException("Parameter image is required and cannot be null.");
         }
-        final String userData = addPersonFaceFromStreamOptionalParameter != null ? addPersonFaceFromStreamOptionalParameter.userData() : null;
-        final List<Integer> targetFace = addPersonFaceFromStreamOptionalParameter != null ? addPersonFaceFromStreamOptionalParameter.targetFace() : null;
+        final String userData = null;
+        final List<Integer> targetFace = null;
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        String targetFaceConverted = this.client.serializerAdapter().serializeList(targetFace, CollectionFormat.CSV);RequestBody imageConverted = RequestBody.create(MediaType.parse("application/octet-stream"), image);
+        return service.addFaceFromStream(personGroupId, personId, userData, targetFaceConverted, imageConverted, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PersistedFace>>>() {
+                @Override
+                public Observable<ServiceResponse<PersistedFace>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PersistedFace> clientResponse = addFaceFromStreamDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
 
-        return addPersonFaceFromStreamWithServiceResponseAsync(personGroupId, personId, image, userData, targetFace);
+    /**
+     * Add a representative face to a person for identification. The input face is specified as an image with a targetFace rectangle.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param personId Id referencing a particular person.
+     * @param image An image stream.
+     * @param userData User-specified data about the face for any purpose. The maximum length is 1KB.
+     * @param targetFace A face rectangle to specify the target face to be added to a person in the format of "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the image, targetFace is required to specify which face to add. No targetFace means there is only one face detected in the entire image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws APIErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PersistedFace object if successful.
+     */
+    public PersistedFace addFaceFromStream(String personGroupId, UUID personId, byte[] image, String userData, List<Integer> targetFace) {
+        return addFaceFromStreamWithServiceResponseAsync(personGroupId, personId, image, userData, targetFace).toBlocking().single().body();
+    }
+
+    /**
+     * Add a representative face to a person for identification. The input face is specified as an image with a targetFace rectangle.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param personId Id referencing a particular person.
+     * @param image An image stream.
+     * @param userData User-specified data about the face for any purpose. The maximum length is 1KB.
+     * @param targetFace A face rectangle to specify the target face to be added to a person in the format of "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the image, targetFace is required to specify which face to add. No targetFace means there is only one face detected in the entire image.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<PersistedFace> addFaceFromStreamAsync(String personGroupId, UUID personId, byte[] image, String userData, List<Integer> targetFace, final ServiceCallback<PersistedFace> serviceCallback) {
+        return ServiceFuture.fromResponse(addFaceFromStreamWithServiceResponseAsync(personGroupId, personId, image, userData, targetFace), serviceCallback);
     }
 
     /**
@@ -1446,9 +1459,29 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
      */
-    public Observable<ServiceResponse<PersistedFace>> addPersonFaceFromStreamWithServiceResponseAsync(String personGroupId, UUID personId, byte[] image, String userData, List<Integer> targetFace) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public Observable<PersistedFace> addFaceFromStreamAsync(String personGroupId, UUID personId, byte[] image, String userData, List<Integer> targetFace) {
+        return addFaceFromStreamWithServiceResponseAsync(personGroupId, personId, image, userData, targetFace).map(new Func1<ServiceResponse<PersistedFace>, PersistedFace>() {
+            @Override
+            public PersistedFace call(ServiceResponse<PersistedFace> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Add a representative face to a person for identification. The input face is specified as an image with a targetFace rectangle.
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param personId Id referencing a particular person.
+     * @param image An image stream.
+     * @param userData User-specified data about the face for any purpose. The maximum length is 1KB.
+     * @param targetFace A face rectangle to specify the target face to be added to a person in the format of "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the image, targetFace is required to specify which face to add. No targetFace means there is only one face detected in the entire image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PersistedFace object
+     */
+    public Observable<ServiceResponse<PersistedFace>> addFaceFromStreamWithServiceResponseAsync(String personGroupId, UUID personId, byte[] image, String userData, List<Integer> targetFace) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
@@ -1460,15 +1493,14 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
             throw new IllegalArgumentException("Parameter image is required and cannot be null.");
         }
         Validator.validate(targetFace);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        String targetFaceConverted = this.client.serializerAdapter().serializeList(targetFace, CollectionFormat.CSV);
-        RequestBody imageConverted = RequestBody.create(MediaType.parse("application/octet-stream"), image);
-        return service.addPersonFaceFromStream(personGroupId, personId, userData, targetFaceConverted, imageConverted, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        String targetFaceConverted = this.client.serializerAdapter().serializeList(targetFace, CollectionFormat.CSV);RequestBody imageConverted = RequestBody.create(MediaType.parse("application/octet-stream"), image);
+        return service.addFaceFromStream(personGroupId, personId, userData, targetFaceConverted, imageConverted, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PersistedFace>>>() {
                 @Override
                 public Observable<ServiceResponse<PersistedFace>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PersistedFace> clientResponse = addPersonFaceFromStreamDelegate(response);
+                        ServiceResponse<PersistedFace> clientResponse = addFaceFromStreamDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1477,81 +1509,11 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
             });
     }
 
-    private ServiceResponse<PersistedFace> addPersonFaceFromStreamDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
+    private ServiceResponse<PersistedFace> addFaceFromStreamDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PersistedFace, APIErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PersistedFace>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
-    }
-
-    @Override
-    public PersonGroupPersonsAddPersonFaceFromStreamParameters addPersonFaceFromStream() {
-        return new PersonGroupPersonsAddPersonFaceFromStreamParameters(this);
-    }
-
-    /**
-     * Internal class implementing PersonGroupPersonsAddPersonFaceFromStreamDefinition.
-     */
-    class PersonGroupPersonsAddPersonFaceFromStreamParameters implements PersonGroupPersonsAddPersonFaceFromStreamDefinition {
-        private PersonGroupPersonsImpl parent;
-        private String personGroupId;
-        private UUID personId;
-        private byte[] image;
-        private String userData;
-        private List<Integer> targetFace;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        PersonGroupPersonsAddPersonFaceFromStreamParameters(PersonGroupPersonsImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public PersonGroupPersonsAddPersonFaceFromStreamParameters withPersonGroupId(String personGroupId) {
-            this.personGroupId = personGroupId;
-            return this;
-        }
-
-        @Override
-        public PersonGroupPersonsAddPersonFaceFromStreamParameters withPersonId(UUID personId) {
-            this.personId = personId;
-            return this;
-        }
-
-        @Override
-        public PersonGroupPersonsAddPersonFaceFromStreamParameters withImage(byte[] image) {
-            this.image = image;
-            return this;
-        }
-
-        @Override
-        public PersonGroupPersonsAddPersonFaceFromStreamParameters withUserData(String userData) {
-            this.userData = userData;
-            return this;
-        }
-
-        @Override
-        public PersonGroupPersonsAddPersonFaceFromStreamParameters withTargetFace(List<Integer> targetFace) {
-            this.targetFace = targetFace;
-            return this;
-        }
-
-        @Override
-        public PersistedFace execute() {
-        return addPersonFaceFromStreamWithServiceResponseAsync(personGroupId, personId, image, userData, targetFace).toBlocking().single().body();
-    }
-
-        @Override
-        public Observable<PersistedFace> executeAsync() {
-            return addPersonFaceFromStreamWithServiceResponseAsync(personGroupId, personId, image, userData, targetFace).map(new Func1<ServiceResponse<PersistedFace>, PersistedFace>() {
-                @Override
-                public PersistedFace call(ServiceResponse<PersistedFace> response) {
-                    return response.body();
-                }
-            });
-        }
     }
 
 }

@@ -8,21 +8,20 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.implementation;
 
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.AddImageOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.AddImageUrlInputOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.AddImageFileInputOptionalParameter;
 import retrofit2.Retrofit;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.ListManagementImages;
 import com.google.common.base.Joiner;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.APIErrorException;
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.BodyModelModel;
+import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.AzureRegionBaseUrl;
+import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.BodyModel;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.Image;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.ImageIds;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
+import java.io.InputStream;
 import java.io.IOException;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -83,7 +82,7 @@ public class ListManagementImagesImpl implements ListManagementImages {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.contentmoderator.ListManagementImages addImageUrlInput" })
         @POST("contentmoderator/lists/v1.0/imagelists/{listId}/images")
-        Observable<Response<ResponseBody>> addImageUrlInput(@Path("listId") String listId, @Query("tag") Integer tag, @Query("label") String label, @Header("Content-Type") String contentType, @Body BodyModelModel imageUrl, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> addImageUrlInput(@Path("listId") String listId, @Query("tag") Integer tag, @Query("label") String label, @Header("Content-Type") String contentType, @Body BodyModel imageUrl, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: image/gif", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.contentmoderator.ListManagementImages addImageFileInput" })
         @POST("contentmoderator/lists/v1.0/imagelists/{listId}/images")
@@ -91,44 +90,40 @@ public class ListManagementImagesImpl implements ListManagementImages {
 
     }
 
-
     /**
      * Add an image to the list with list Id equal to list Id passed.
      *
      * @param listId List Id of the image list.
-     * @param addImageOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Image object if successful.
      */
-    public Image addImage(String listId, AddImageOptionalParameter addImageOptionalParameter) {
-        return addImageWithServiceResponseAsync(listId, addImageOptionalParameter).toBlocking().single().body();
+    public Image addImage(String listId) {
+        return addImageWithServiceResponseAsync(listId).toBlocking().single().body();
     }
 
     /**
      * Add an image to the list with list Id equal to list Id passed.
      *
      * @param listId List Id of the image list.
-     * @param addImageOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Image> addImageAsync(String listId, AddImageOptionalParameter addImageOptionalParameter, final ServiceCallback<Image> serviceCallback) {
-        return ServiceFuture.fromResponse(addImageWithServiceResponseAsync(listId, addImageOptionalParameter), serviceCallback);
+    public ServiceFuture<Image> addImageAsync(String listId, final ServiceCallback<Image> serviceCallback) {
+        return ServiceFuture.fromResponse(addImageWithServiceResponseAsync(listId), serviceCallback);
     }
 
     /**
      * Add an image to the list with list Id equal to list Id passed.
      *
      * @param listId List Id of the image list.
-     * @param addImageOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Image object
      */
-    public Observable<Image> addImageAsync(String listId, AddImageOptionalParameter addImageOptionalParameter) {
-        return addImageWithServiceResponseAsync(listId, addImageOptionalParameter).map(new Func1<ServiceResponse<Image>, Image>() {
+    public Observable<Image> addImageAsync(String listId) {
+        return addImageWithServiceResponseAsync(listId).map(new Func1<ServiceResponse<Image>, Image>() {
             @Override
             public Image call(ServiceResponse<Image> response) {
                 return response.body();
@@ -140,21 +135,78 @@ public class ListManagementImagesImpl implements ListManagementImages {
      * Add an image to the list with list Id equal to list Id passed.
      *
      * @param listId List Id of the image list.
-     * @param addImageOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Image object
      */
-    public Observable<ServiceResponse<Image>> addImageWithServiceResponseAsync(String listId, AddImageOptionalParameter addImageOptionalParameter) {
+    public Observable<ServiceResponse<Image>> addImageWithServiceResponseAsync(String listId) {
         if (this.client.baseUrl() == null) {
             throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
         }
         if (listId == null) {
             throw new IllegalArgumentException("Parameter listId is required and cannot be null.");
         }
-        final Integer tag = addImageOptionalParameter != null ? addImageOptionalParameter.tag() : null;
-        final String label = addImageOptionalParameter != null ? addImageOptionalParameter.label() : null;
+        final Integer tag = null;
+        final String label = null;
+        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
+        return service.addImage(listId, tag, label, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Image>>>() {
+                @Override
+                public Observable<ServiceResponse<Image>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Image> clientResponse = addImageDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
 
-        return addImageWithServiceResponseAsync(listId, tag, label);
+    /**
+     * Add an image to the list with list Id equal to list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param tag Tag for the image.
+     * @param label The image label.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws APIErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the Image object if successful.
+     */
+    public Image addImage(String listId, Integer tag, String label) {
+        return addImageWithServiceResponseAsync(listId, tag, label).toBlocking().single().body();
+    }
+
+    /**
+     * Add an image to the list with list Id equal to list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param tag Tag for the image.
+     * @param label The image label.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Image> addImageAsync(String listId, Integer tag, String label, final ServiceCallback<Image> serviceCallback) {
+        return ServiceFuture.fromResponse(addImageWithServiceResponseAsync(listId, tag, label), serviceCallback);
+    }
+
+    /**
+     * Add an image to the list with list Id equal to list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param tag Tag for the image.
+     * @param label The image label.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Image object
+     */
+    public Observable<Image> addImageAsync(String listId, Integer tag, String label) {
+        return addImageWithServiceResponseAsync(listId, tag, label).map(new Func1<ServiceResponse<Image>, Image>() {
+            @Override
+            public Image call(ServiceResponse<Image> response) {
+                return response.body();
+            }
+        });
     }
 
     /**
@@ -193,62 +245,6 @@ public class ListManagementImagesImpl implements ListManagementImages {
                 .register(200, new TypeToken<Image>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
-    }
-
-    @Override
-    public ListManagementImagesAddImageParameters addImage() {
-        return new ListManagementImagesAddImageParameters(this);
-    }
-
-    /**
-     * Internal class implementing ListManagementImagesAddImageDefinition.
-     */
-    class ListManagementImagesAddImageParameters implements ListManagementImagesAddImageDefinition {
-        private ListManagementImagesImpl parent;
-        private String listId;
-        private Integer tag;
-        private String label;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        ListManagementImagesAddImageParameters(ListManagementImagesImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public ListManagementImagesAddImageParameters withListId(String listId) {
-            this.listId = listId;
-            return this;
-        }
-
-        @Override
-        public ListManagementImagesAddImageParameters withTag(Integer tag) {
-            this.tag = tag;
-            return this;
-        }
-
-        @Override
-        public ListManagementImagesAddImageParameters withLabel(String label) {
-            this.label = label;
-            return this;
-        }
-
-        @Override
-        public Image execute() {
-        return addImageWithServiceResponseAsync(listId, tag, label).toBlocking().single().body();
-    }
-
-        @Override
-        public Observable<Image> executeAsync() {
-            return addImageWithServiceResponseAsync(listId, tag, label).map(new Func1<ServiceResponse<Image>, Image>() {
-                @Override
-                public Image call(ServiceResponse<Image> response) {
-                    return response.body();
-                }
-            });
-        }
     }
 
     /**
@@ -489,21 +485,19 @@ public class ListManagementImagesImpl implements ListManagementImages {
                 .build(response);
     }
 
-
     /**
      * Add an image to the list with list Id equal to list Id passed.
      *
      * @param listId List Id of the image list.
      * @param contentType The content type.
      * @param imageUrl The image url.
-     * @param addImageUrlInputOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Image object if successful.
      */
-    public Image addImageUrlInput(String listId, String contentType, BodyModelModel imageUrl, AddImageUrlInputOptionalParameter addImageUrlInputOptionalParameter) {
-        return addImageUrlInputWithServiceResponseAsync(listId, contentType, imageUrl, addImageUrlInputOptionalParameter).toBlocking().single().body();
+    public Image addImageUrlInput(String listId, String contentType, BodyModel imageUrl) {
+        return addImageUrlInputWithServiceResponseAsync(listId, contentType, imageUrl).toBlocking().single().body();
     }
 
     /**
@@ -512,13 +506,12 @@ public class ListManagementImagesImpl implements ListManagementImages {
      * @param listId List Id of the image list.
      * @param contentType The content type.
      * @param imageUrl The image url.
-     * @param addImageUrlInputOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Image> addImageUrlInputAsync(String listId, String contentType, BodyModelModel imageUrl, AddImageUrlInputOptionalParameter addImageUrlInputOptionalParameter, final ServiceCallback<Image> serviceCallback) {
-        return ServiceFuture.fromResponse(addImageUrlInputWithServiceResponseAsync(listId, contentType, imageUrl, addImageUrlInputOptionalParameter), serviceCallback);
+    public ServiceFuture<Image> addImageUrlInputAsync(String listId, String contentType, BodyModel imageUrl, final ServiceCallback<Image> serviceCallback) {
+        return ServiceFuture.fromResponse(addImageUrlInputWithServiceResponseAsync(listId, contentType, imageUrl), serviceCallback);
     }
 
     /**
@@ -527,12 +520,11 @@ public class ListManagementImagesImpl implements ListManagementImages {
      * @param listId List Id of the image list.
      * @param contentType The content type.
      * @param imageUrl The image url.
-     * @param addImageUrlInputOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Image object
      */
-    public Observable<Image> addImageUrlInputAsync(String listId, String contentType, BodyModelModel imageUrl, AddImageUrlInputOptionalParameter addImageUrlInputOptionalParameter) {
-        return addImageUrlInputWithServiceResponseAsync(listId, contentType, imageUrl, addImageUrlInputOptionalParameter).map(new Func1<ServiceResponse<Image>, Image>() {
+    public Observable<Image> addImageUrlInputAsync(String listId, String contentType, BodyModel imageUrl) {
+        return addImageUrlInputWithServiceResponseAsync(listId, contentType, imageUrl).map(new Func1<ServiceResponse<Image>, Image>() {
             @Override
             public Image call(ServiceResponse<Image> response) {
                 return response.body();
@@ -546,11 +538,10 @@ public class ListManagementImagesImpl implements ListManagementImages {
      * @param listId List Id of the image list.
      * @param contentType The content type.
      * @param imageUrl The image url.
-     * @param addImageUrlInputOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Image object
      */
-    public Observable<ServiceResponse<Image>> addImageUrlInputWithServiceResponseAsync(String listId, String contentType, BodyModelModel imageUrl, AddImageUrlInputOptionalParameter addImageUrlInputOptionalParameter) {
+    public Observable<ServiceResponse<Image>> addImageUrlInputWithServiceResponseAsync(String listId, String contentType, BodyModel imageUrl) {
         if (this.client.baseUrl() == null) {
             throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
         }
@@ -564,10 +555,54 @@ public class ListManagementImagesImpl implements ListManagementImages {
             throw new IllegalArgumentException("Parameter imageUrl is required and cannot be null.");
         }
         Validator.validate(imageUrl);
-        final Integer tag = addImageUrlInputOptionalParameter != null ? addImageUrlInputOptionalParameter.tag() : null;
-        final String label = addImageUrlInputOptionalParameter != null ? addImageUrlInputOptionalParameter.label() : null;
+        final Integer tag = null;
+        final String label = null;
+        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
+        return service.addImageUrlInput(listId, tag, label, contentType, imageUrl, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Image>>>() {
+                @Override
+                public Observable<ServiceResponse<Image>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Image> clientResponse = addImageUrlInputDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
 
-        return addImageUrlInputWithServiceResponseAsync(listId, contentType, imageUrl, tag, label);
+    /**
+     * Add an image to the list with list Id equal to list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param contentType The content type.
+     * @param imageUrl The image url.
+     * @param tag Tag for the image.
+     * @param label The image label.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws APIErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the Image object if successful.
+     */
+    public Image addImageUrlInput(String listId, String contentType, BodyModel imageUrl, Integer tag, String label) {
+        return addImageUrlInputWithServiceResponseAsync(listId, contentType, imageUrl, tag, label).toBlocking().single().body();
+    }
+
+    /**
+     * Add an image to the list with list Id equal to list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param contentType The content type.
+     * @param imageUrl The image url.
+     * @param tag Tag for the image.
+     * @param label The image label.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Image> addImageUrlInputAsync(String listId, String contentType, BodyModel imageUrl, Integer tag, String label, final ServiceCallback<Image> serviceCallback) {
+        return ServiceFuture.fromResponse(addImageUrlInputWithServiceResponseAsync(listId, contentType, imageUrl, tag, label), serviceCallback);
     }
 
     /**
@@ -581,7 +616,27 @@ public class ListManagementImagesImpl implements ListManagementImages {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Image object
      */
-    public Observable<ServiceResponse<Image>> addImageUrlInputWithServiceResponseAsync(String listId, String contentType, BodyModelModel imageUrl, Integer tag, String label) {
+    public Observable<Image> addImageUrlInputAsync(String listId, String contentType, BodyModel imageUrl, Integer tag, String label) {
+        return addImageUrlInputWithServiceResponseAsync(listId, contentType, imageUrl, tag, label).map(new Func1<ServiceResponse<Image>, Image>() {
+            @Override
+            public Image call(ServiceResponse<Image> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Add an image to the list with list Id equal to list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param contentType The content type.
+     * @param imageUrl The image url.
+     * @param tag Tag for the image.
+     * @param label The image label.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Image object
+     */
+    public Observable<ServiceResponse<Image>> addImageUrlInputWithServiceResponseAsync(String listId, String contentType, BodyModel imageUrl, Integer tag, String label) {
         if (this.client.baseUrl() == null) {
             throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
         }
@@ -617,90 +672,18 @@ public class ListManagementImagesImpl implements ListManagementImages {
                 .build(response);
     }
 
-    @Override
-    public ListManagementImagesAddImageUrlInputParameters addImageUrlInput() {
-        return new ListManagementImagesAddImageUrlInputParameters(this);
-    }
-
-    /**
-     * Internal class implementing ListManagementImagesAddImageUrlInputDefinition.
-     */
-    class ListManagementImagesAddImageUrlInputParameters implements ListManagementImagesAddImageUrlInputDefinition {
-        private ListManagementImagesImpl parent;
-        private String listId;
-        private String contentType;
-        private BodyModelModel imageUrl;
-        private Integer tag;
-        private String label;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        ListManagementImagesAddImageUrlInputParameters(ListManagementImagesImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public ListManagementImagesAddImageUrlInputParameters withListId(String listId) {
-            this.listId = listId;
-            return this;
-        }
-
-        @Override
-        public ListManagementImagesAddImageUrlInputParameters withContentType(String contentType) {
-            this.contentType = contentType;
-            return this;
-        }
-
-        @Override
-        public ListManagementImagesAddImageUrlInputParameters withImageUrl(BodyModelModel imageUrl) {
-            this.imageUrl = imageUrl;
-            return this;
-        }
-
-        @Override
-        public ListManagementImagesAddImageUrlInputParameters withTag(Integer tag) {
-            this.tag = tag;
-            return this;
-        }
-
-        @Override
-        public ListManagementImagesAddImageUrlInputParameters withLabel(String label) {
-            this.label = label;
-            return this;
-        }
-
-        @Override
-        public Image execute() {
-        return addImageUrlInputWithServiceResponseAsync(listId, contentType, imageUrl, tag, label).toBlocking().single().body();
-    }
-
-        @Override
-        public Observable<Image> executeAsync() {
-            return addImageUrlInputWithServiceResponseAsync(listId, contentType, imageUrl, tag, label).map(new Func1<ServiceResponse<Image>, Image>() {
-                @Override
-                public Image call(ServiceResponse<Image> response) {
-                    return response.body();
-                }
-            });
-        }
-    }
-
-
     /**
      * Add an image to the list with list Id equal to list Id passed.
      *
      * @param listId List Id of the image list.
      * @param imageStream The image file.
-     * @param addImageFileInputOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Image object if successful.
      */
-    public Image addImageFileInput(String listId, byte[] imageStream, AddImageFileInputOptionalParameter addImageFileInputOptionalParameter) {
-        return addImageFileInputWithServiceResponseAsync(listId, imageStream, addImageFileInputOptionalParameter).toBlocking().single().body();
+    public Image addImageFileInput(String listId, byte[] imageStream) {
+        return addImageFileInputWithServiceResponseAsync(listId, imageStream).toBlocking().single().body();
     }
 
     /**
@@ -708,13 +691,12 @@ public class ListManagementImagesImpl implements ListManagementImages {
      *
      * @param listId List Id of the image list.
      * @param imageStream The image file.
-     * @param addImageFileInputOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Image> addImageFileInputAsync(String listId, byte[] imageStream, AddImageFileInputOptionalParameter addImageFileInputOptionalParameter, final ServiceCallback<Image> serviceCallback) {
-        return ServiceFuture.fromResponse(addImageFileInputWithServiceResponseAsync(listId, imageStream, addImageFileInputOptionalParameter), serviceCallback);
+    public ServiceFuture<Image> addImageFileInputAsync(String listId, byte[] imageStream, final ServiceCallback<Image> serviceCallback) {
+        return ServiceFuture.fromResponse(addImageFileInputWithServiceResponseAsync(listId, imageStream), serviceCallback);
     }
 
     /**
@@ -722,12 +704,11 @@ public class ListManagementImagesImpl implements ListManagementImages {
      *
      * @param listId List Id of the image list.
      * @param imageStream The image file.
-     * @param addImageFileInputOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Image object
      */
-    public Observable<Image> addImageFileInputAsync(String listId, byte[] imageStream, AddImageFileInputOptionalParameter addImageFileInputOptionalParameter) {
-        return addImageFileInputWithServiceResponseAsync(listId, imageStream, addImageFileInputOptionalParameter).map(new Func1<ServiceResponse<Image>, Image>() {
+    public Observable<Image> addImageFileInputAsync(String listId, byte[] imageStream) {
+        return addImageFileInputWithServiceResponseAsync(listId, imageStream).map(new Func1<ServiceResponse<Image>, Image>() {
             @Override
             public Image call(ServiceResponse<Image> response) {
                 return response.body();
@@ -740,11 +721,10 @@ public class ListManagementImagesImpl implements ListManagementImages {
      *
      * @param listId List Id of the image list.
      * @param imageStream The image file.
-     * @param addImageFileInputOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Image object
      */
-    public Observable<ServiceResponse<Image>> addImageFileInputWithServiceResponseAsync(String listId, byte[] imageStream, AddImageFileInputOptionalParameter addImageFileInputOptionalParameter) {
+    public Observable<ServiceResponse<Image>> addImageFileInputWithServiceResponseAsync(String listId, byte[] imageStream) {
         if (this.client.baseUrl() == null) {
             throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
         }
@@ -754,10 +734,72 @@ public class ListManagementImagesImpl implements ListManagementImages {
         if (imageStream == null) {
             throw new IllegalArgumentException("Parameter imageStream is required and cannot be null.");
         }
-        final Integer tag = addImageFileInputOptionalParameter != null ? addImageFileInputOptionalParameter.tag() : null;
-        final String label = addImageFileInputOptionalParameter != null ? addImageFileInputOptionalParameter.label() : null;
+        final Integer tag = null;
+        final String label = null;
+        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
+        RequestBody imageStreamConverted = RequestBody.create(MediaType.parse("image/gif"), imageStream);
+        return service.addImageFileInput(listId, tag, label, imageStreamConverted, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Image>>>() {
+                @Override
+                public Observable<ServiceResponse<Image>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Image> clientResponse = addImageFileInputDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
 
-        return addImageFileInputWithServiceResponseAsync(listId, imageStream, tag, label);
+    /**
+     * Add an image to the list with list Id equal to list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param imageStream The image file.
+     * @param tag Tag for the image.
+     * @param label The image label.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws APIErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the Image object if successful.
+     */
+    public Image addImageFileInput(String listId, byte[] imageStream, Integer tag, String label) {
+        return addImageFileInputWithServiceResponseAsync(listId, imageStream, tag, label).toBlocking().single().body();
+    }
+
+    /**
+     * Add an image to the list with list Id equal to list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param imageStream The image file.
+     * @param tag Tag for the image.
+     * @param label The image label.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Image> addImageFileInputAsync(String listId, byte[] imageStream, Integer tag, String label, final ServiceCallback<Image> serviceCallback) {
+        return ServiceFuture.fromResponse(addImageFileInputWithServiceResponseAsync(listId, imageStream, tag, label), serviceCallback);
+    }
+
+    /**
+     * Add an image to the list with list Id equal to list Id passed.
+     *
+     * @param listId List Id of the image list.
+     * @param imageStream The image file.
+     * @param tag Tag for the image.
+     * @param label The image label.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Image object
+     */
+    public Observable<Image> addImageFileInputAsync(String listId, byte[] imageStream, Integer tag, String label) {
+        return addImageFileInputWithServiceResponseAsync(listId, imageStream, tag, label).map(new Func1<ServiceResponse<Image>, Image>() {
+            @Override
+            public Image call(ServiceResponse<Image> response) {
+                return response.body();
+            }
+        });
     }
 
     /**
@@ -801,69 +843,6 @@ public class ListManagementImagesImpl implements ListManagementImages {
                 .register(200, new TypeToken<Image>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
-    }
-
-    @Override
-    public ListManagementImagesAddImageFileInputParameters addImageFileInput() {
-        return new ListManagementImagesAddImageFileInputParameters(this);
-    }
-
-    /**
-     * Internal class implementing ListManagementImagesAddImageFileInputDefinition.
-     */
-    class ListManagementImagesAddImageFileInputParameters implements ListManagementImagesAddImageFileInputDefinition {
-        private ListManagementImagesImpl parent;
-        private String listId;
-        private byte[] imageStream;
-        private Integer tag;
-        private String label;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        ListManagementImagesAddImageFileInputParameters(ListManagementImagesImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public ListManagementImagesAddImageFileInputParameters withListId(String listId) {
-            this.listId = listId;
-            return this;
-        }
-
-        @Override
-        public ListManagementImagesAddImageFileInputParameters withImageStream(byte[] imageStream) {
-            this.imageStream = imageStream;
-            return this;
-        }
-
-        @Override
-        public ListManagementImagesAddImageFileInputParameters withTag(Integer tag) {
-            this.tag = tag;
-            return this;
-        }
-
-        @Override
-        public ListManagementImagesAddImageFileInputParameters withLabel(String label) {
-            this.label = label;
-            return this;
-        }
-
-        @Override
-        public Image execute() {
-        return addImageFileInputWithServiceResponseAsync(listId, imageStream, tag, label).toBlocking().single().body();
-    }
-
-        @Override
-        public Observable<Image> executeAsync() {
-            return addImageFileInputWithServiceResponseAsync(listId, imageStream, tag, label).map(new Func1<ServiceResponse<Image>, Image>() {
-                @Override
-                public Image call(ServiceResponse<Image> response) {
-                    return response.body();
-                }
-            });
-        }
     }
 
 }

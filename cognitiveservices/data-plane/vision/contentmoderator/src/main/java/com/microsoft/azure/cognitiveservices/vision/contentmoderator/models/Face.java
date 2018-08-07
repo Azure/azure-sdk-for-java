@@ -39,7 +39,7 @@ public class Face {
     private Integer top;
 
     /**
-     * Get the bottom value.
+     * Get the bottom coordinate.
      *
      * @return the bottom value
      */
@@ -48,7 +48,7 @@ public class Face {
     }
 
     /**
-     * Set the bottom value.
+     * Set the bottom coordinate.
      *
      * @param bottom the bottom value to set
      * @return the Face object itself.
@@ -59,7 +59,7 @@ public class Face {
     }
 
     /**
-     * Get the left value.
+     * Get the left coordinate.
      *
      * @return the left value
      */
@@ -68,7 +68,7 @@ public class Face {
     }
 
     /**
-     * Set the left value.
+     * Set the left coordinate.
      *
      * @param left the left value to set
      * @return the Face object itself.
@@ -79,7 +79,7 @@ public class Face {
     }
 
     /**
-     * Get the right value.
+     * Get the right coordinate.
      *
      * @return the right value
      */
@@ -88,7 +88,7 @@ public class Face {
     }
 
     /**
-     * Set the right value.
+     * Set the right coordinate.
      *
      * @param right the right value to set
      * @return the Face object itself.
@@ -99,7 +99,7 @@ public class Face {
     }
 
     /**
-     * Get the top value.
+     * Get the top coordinate.
      *
      * @return the top value
      */
@@ -108,7 +108,7 @@ public class Face {
     }
 
     /**
-     * Set the top value.
+     * Set the top coordinate.
      *
      * @param top the top value to set
      * @return the Face object itself.

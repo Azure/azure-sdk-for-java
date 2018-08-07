@@ -27,7 +27,7 @@ public class CreateReviewBodyItemMetadataItem {
     private String value;
 
     /**
-     * Get the key value.
+     * Get your key parameter.
      *
      * @return the key value
      */
@@ -36,7 +36,7 @@ public class CreateReviewBodyItemMetadataItem {
     }
 
     /**
-     * Set the key value.
+     * Set your key parameter.
      *
      * @param key the key value to set
      * @return the CreateReviewBodyItemMetadataItem object itself.
@@ -47,7 +47,7 @@ public class CreateReviewBodyItemMetadataItem {
     }
 
     /**
-     * Get the value value.
+     * Get your value parameter.
      *
      * @return the value value
      */
@@ -56,7 +56,7 @@ public class CreateReviewBodyItemMetadataItem {
     }
 
     /**
-     * Set the value value.
+     * Set your value parameter.
      *
      * @param value the value value to set
      * @return the CreateReviewBodyItemMetadataItem object itself.

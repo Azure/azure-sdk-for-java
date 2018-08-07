@@ -27,7 +27,7 @@ public class TranscriptModerationBodyItemTermsItem {
     private String term;
 
     /**
-     * Get the index value.
+     * Get index of the word.
      *
      * @return the index value
      */
@@ -36,7 +36,7 @@ public class TranscriptModerationBodyItemTermsItem {
     }
 
     /**
-     * Set the index value.
+     * Set index of the word.
      *
      * @param index the index value to set
      * @return the TranscriptModerationBodyItemTermsItem object itself.
@@ -47,7 +47,7 @@ public class TranscriptModerationBodyItemTermsItem {
     }
 
     /**
-     * Get the term value.
+     * Get detected word.
      *
      * @return the term value
      */
@@ -56,7 +56,7 @@ public class TranscriptModerationBodyItemTermsItem {
     }
 
     /**
-     * Set the term value.
+     * Set detected word.
      *
      * @param term the term value to set
      * @return the TranscriptModerationBodyItemTermsItem object itself.

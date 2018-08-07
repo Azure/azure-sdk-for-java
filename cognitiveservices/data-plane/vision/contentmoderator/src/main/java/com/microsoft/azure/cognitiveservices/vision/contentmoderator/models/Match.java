@@ -46,7 +46,7 @@ public class Match {
     private String label;
 
     /**
-     * Get the score value.
+     * Get confidence score of the image match.
      *
      * @return the score value
      */
@@ -55,7 +55,7 @@ public class Match {
     }
 
     /**
-     * Set the score value.
+     * Set confidence score of the image match.
      *
      * @param score the score value to set
      * @return the Match object itself.
@@ -66,7 +66,7 @@ public class Match {
     }
 
     /**
-     * Get the matchId value.
+     * Get the match id.
      *
      * @return the matchId value
      */
@@ -75,7 +75,7 @@ public class Match {
     }
 
     /**
-     * Set the matchId value.
+     * Set the match id.
      *
      * @param matchId the matchId value to set
      * @return the Match object itself.
@@ -86,7 +86,7 @@ public class Match {
     }
 
     /**
-     * Get the source value.
+     * Get the source.
      *
      * @return the source value
      */
@@ -95,7 +95,7 @@ public class Match {
     }
 
     /**
-     * Set the source value.
+     * Set the source.
      *
      * @param source the source value to set
      * @return the Match object itself.
@@ -106,7 +106,7 @@ public class Match {
     }
 
     /**
-     * Get the tags value.
+     * Get the tags for match details.
      *
      * @return the tags value
      */
@@ -115,7 +115,7 @@ public class Match {
     }
 
     /**
-     * Set the tags value.
+     * Set the tags for match details.
      *
      * @param tags the tags value to set
      * @return the Match object itself.
@@ -126,7 +126,7 @@ public class Match {
     }
 
     /**
-     * Get the label value.
+     * Get the label.
      *
      * @return the label value
      */
@@ -135,7 +135,7 @@ public class Match {
     }
 
     /**
-     * Set the label value.
+     * Set the label.
      *
      * @param label the label value to set
      * @return the Match object itself.

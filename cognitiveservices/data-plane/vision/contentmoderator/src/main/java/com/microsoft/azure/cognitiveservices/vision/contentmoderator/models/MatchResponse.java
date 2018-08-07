@@ -46,7 +46,7 @@ public class MatchResponse {
     private Status status;
 
     /**
-     * Get the trackingId value.
+     * Get the tracking id.
      *
      * @return the trackingId value
      */
@@ -55,7 +55,7 @@ public class MatchResponse {
     }
 
     /**
-     * Set the trackingId value.
+     * Set the tracking id.
      *
      * @param trackingId the trackingId value to set
      * @return the MatchResponse object itself.
@@ -66,7 +66,7 @@ public class MatchResponse {
     }
 
     /**
-     * Get the cacheID value.
+     * Get the cache id.
      *
      * @return the cacheID value
      */
@@ -75,7 +75,7 @@ public class MatchResponse {
     }
 
     /**
-     * Set the cacheID value.
+     * Set the cache id.
      *
      * @param cacheID the cacheID value to set
      * @return the MatchResponse object itself.
@@ -86,7 +86,7 @@ public class MatchResponse {
     }
 
     /**
-     * Get the isMatch value.
+     * Get indicates if there is a match.
      *
      * @return the isMatch value
      */
@@ -95,7 +95,7 @@ public class MatchResponse {
     }
 
     /**
-     * Set the isMatch value.
+     * Set indicates if there is a match.
      *
      * @param isMatch the isMatch value to set
      * @return the MatchResponse object itself.
@@ -106,7 +106,7 @@ public class MatchResponse {
     }
 
     /**
-     * Get the matches value.
+     * Get the match details.
      *
      * @return the matches value
      */
@@ -115,7 +115,7 @@ public class MatchResponse {
     }
 
     /**
-     * Set the matches value.
+     * Set the match details.
      *
      * @param matches the matches value to set
      * @return the MatchResponse object itself.
@@ -126,7 +126,7 @@ public class MatchResponse {
     }
 
     /**
-     * Get the status value.
+     * Get the evaluate status.
      *
      * @return the status value
      */
@@ -135,7 +135,7 @@ public class MatchResponse {
     }
 
     /**
-     * Set the status value.
+     * Set the evaluate status.
      *
      * @param status the status value to set
      * @return the MatchResponse object itself.

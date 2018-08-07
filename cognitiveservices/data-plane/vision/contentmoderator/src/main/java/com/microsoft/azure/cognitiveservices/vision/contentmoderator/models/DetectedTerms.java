@@ -41,7 +41,7 @@ public class DetectedTerms {
     private String term;
 
     /**
-     * Get the index value.
+     * Get index(Location) of the detected profanity term in the input text content.
      *
      * @return the index value
      */
@@ -50,7 +50,7 @@ public class DetectedTerms {
     }
 
     /**
-     * Set the index value.
+     * Set index(Location) of the detected profanity term in the input text content.
      *
      * @param index the index value to set
      * @return the DetectedTerms object itself.
@@ -61,7 +61,7 @@ public class DetectedTerms {
     }
 
     /**
-     * Get the originalIndex value.
+     * Get original Index(Location) of the detected profanity term in the input text content.
      *
      * @return the originalIndex value
      */
@@ -70,7 +70,7 @@ public class DetectedTerms {
     }
 
     /**
-     * Set the originalIndex value.
+     * Set original Index(Location) of the detected profanity term in the input text content.
      *
      * @param originalIndex the originalIndex value to set
      * @return the DetectedTerms object itself.
@@ -81,7 +81,7 @@ public class DetectedTerms {
     }
 
     /**
-     * Get the listId value.
+     * Get matched Terms list Id.
      *
      * @return the listId value
      */
@@ -90,7 +90,7 @@ public class DetectedTerms {
     }
 
     /**
-     * Set the listId value.
+     * Set matched Terms list Id.
      *
      * @param listId the listId value to set
      * @return the DetectedTerms object itself.
@@ -101,7 +101,7 @@ public class DetectedTerms {
     }
 
     /**
-     * Get the term value.
+     * Get detected profanity term.
      *
      * @return the term value
      */
@@ -110,7 +110,7 @@ public class DetectedTerms {
     }
 
     /**
-     * Set the term value.
+     * Set detected profanity term.
      *
      * @param term the term value to set
      * @return the DetectedTerms object itself.

@@ -39,7 +39,7 @@ public class TermList {
     private TermListMetadata metadata;
 
     /**
-     * Get the id value.
+     * Get term list Id.
      *
      * @return the id value
      */
@@ -48,7 +48,7 @@ public class TermList {
     }
 
     /**
-     * Set the id value.
+     * Set term list Id.
      *
      * @param id the id value to set
      * @return the TermList object itself.
@@ -59,7 +59,7 @@ public class TermList {
     }
 
     /**
-     * Get the name value.
+     * Get term list name.
      *
      * @return the name value
      */
@@ -68,7 +68,7 @@ public class TermList {
     }
 
     /**
-     * Set the name value.
+     * Set term list name.
      *
      * @param name the name value to set
      * @return the TermList object itself.
@@ -79,7 +79,7 @@ public class TermList {
     }
 
     /**
-     * Get the description value.
+     * Get description for term list.
      *
      * @return the description value
      */
@@ -88,7 +88,7 @@ public class TermList {
     }
 
     /**
-     * Set the description value.
+     * Set description for term list.
      *
      * @param description the description value to set
      * @return the TermList object itself.
@@ -99,7 +99,7 @@ public class TermList {
     }
 
     /**
-     * Get the metadata value.
+     * Get term list metadata.
      *
      * @return the metadata value
      */
@@ -108,7 +108,7 @@ public class TermList {
     }
 
     /**
-     * Set the metadata value.
+     * Set term list metadata.
      *
      * @param metadata the metadata value to set
      * @return the TermList object itself.

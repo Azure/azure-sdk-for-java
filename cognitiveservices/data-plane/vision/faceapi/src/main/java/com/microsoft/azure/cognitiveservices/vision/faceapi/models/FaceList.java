@@ -28,7 +28,7 @@ public class FaceList extends NameAndUserDataContract {
     private List<PersistedFace> persistedFaces;
 
     /**
-     * Get the faceListId value.
+     * Get faceListId of the target face list.
      *
      * @return the faceListId value
      */
@@ -37,7 +37,7 @@ public class FaceList extends NameAndUserDataContract {
     }
 
     /**
-     * Set the faceListId value.
+     * Set faceListId of the target face list.
      *
      * @param faceListId the faceListId value to set
      * @return the FaceList object itself.
@@ -48,7 +48,7 @@ public class FaceList extends NameAndUserDataContract {
     }
 
     /**
-     * Get the persistedFaces value.
+     * Get persisted faces within the face list.
      *
      * @return the persistedFaces value
      */
@@ -57,7 +57,7 @@ public class FaceList extends NameAndUserDataContract {
     }
 
     /**
-     * Set the persistedFaces value.
+     * Set persisted faces within the face list.
      *
      * @param persistedFaces the persistedFaces value to set
      * @return the FaceList object itself.

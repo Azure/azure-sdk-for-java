@@ -33,7 +33,7 @@ public class Status {
     private String exception;
 
     /**
-     * Get the code value.
+     * Get status code.
      *
      * @return the code value
      */
@@ -42,7 +42,7 @@ public class Status {
     }
 
     /**
-     * Set the code value.
+     * Set status code.
      *
      * @param code the code value to set
      * @return the Status object itself.
@@ -53,7 +53,7 @@ public class Status {
     }
 
     /**
-     * Get the description value.
+     * Get status description.
      *
      * @return the description value
      */
@@ -62,7 +62,7 @@ public class Status {
     }
 
     /**
-     * Set the description value.
+     * Set status description.
      *
      * @param description the description value to set
      * @return the Status object itself.
@@ -73,7 +73,7 @@ public class Status {
     }
 
     /**
-     * Get the exception value.
+     * Get exception status.
      *
      * @return the exception value
      */
@@ -82,7 +82,7 @@ public class Status {
     }
 
     /**
-     * Set the exception value.
+     * Set exception status.
      *
      * @param exception the exception value to set
      * @return the Status object itself.

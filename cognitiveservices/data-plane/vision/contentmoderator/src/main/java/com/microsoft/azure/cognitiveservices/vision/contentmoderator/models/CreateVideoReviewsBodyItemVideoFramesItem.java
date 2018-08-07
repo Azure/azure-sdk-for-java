@@ -46,7 +46,7 @@ public class CreateVideoReviewsBodyItemVideoFramesItem {
     private List<CreateVideoReviewsBodyItemVideoFramesItemMetadataItem> metadata;
 
     /**
-     * Get the id value.
+     * Get id of the frame.
      *
      * @return the id value
      */
@@ -55,7 +55,7 @@ public class CreateVideoReviewsBodyItemVideoFramesItem {
     }
 
     /**
-     * Set the id value.
+     * Set id of the frame.
      *
      * @param id the id value to set
      * @return the CreateVideoReviewsBodyItemVideoFramesItem object itself.
@@ -66,7 +66,7 @@ public class CreateVideoReviewsBodyItemVideoFramesItem {
     }
 
     /**
-     * Get the timestamp value.
+     * Get timestamp of the frame.
      *
      * @return the timestamp value
      */
@@ -75,7 +75,7 @@ public class CreateVideoReviewsBodyItemVideoFramesItem {
     }
 
     /**
-     * Set the timestamp value.
+     * Set timestamp of the frame.
      *
      * @param timestamp the timestamp value to set
      * @return the CreateVideoReviewsBodyItemVideoFramesItem object itself.
@@ -86,7 +86,7 @@ public class CreateVideoReviewsBodyItemVideoFramesItem {
     }
 
     /**
-     * Get the frameImage value.
+     * Get frame image Url.
      *
      * @return the frameImage value
      */
@@ -95,7 +95,7 @@ public class CreateVideoReviewsBodyItemVideoFramesItem {
     }
 
     /**
-     * Set the frameImage value.
+     * Set frame image Url.
      *
      * @param frameImage the frameImage value to set
      * @return the CreateVideoReviewsBodyItemVideoFramesItem object itself.
@@ -126,7 +126,7 @@ public class CreateVideoReviewsBodyItemVideoFramesItem {
     }
 
     /**
-     * Get the metadata value.
+     * Get optional metadata details.
      *
      * @return the metadata value
      */
@@ -135,7 +135,7 @@ public class CreateVideoReviewsBodyItemVideoFramesItem {
     }
 
     /**
-     * Set the metadata value.
+     * Set optional metadata details.
      *
      * @param metadata the metadata value to set
      * @return the CreateVideoReviewsBodyItemVideoFramesItem object itself.

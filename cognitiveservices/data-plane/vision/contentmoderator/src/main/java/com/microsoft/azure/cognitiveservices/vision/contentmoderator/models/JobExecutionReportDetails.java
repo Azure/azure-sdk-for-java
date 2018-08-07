@@ -27,7 +27,7 @@ public class JobExecutionReportDetails {
     private String msg;
 
     /**
-     * Get the ts value.
+     * Get time details.
      *
      * @return the ts value
      */
@@ -36,7 +36,7 @@ public class JobExecutionReportDetails {
     }
 
     /**
-     * Set the ts value.
+     * Set time details.
      *
      * @param ts the ts value to set
      * @return the JobExecutionReportDetails object itself.
@@ -47,7 +47,7 @@ public class JobExecutionReportDetails {
     }
 
     /**
-     * Get the msg value.
+     * Get message details.
      *
      * @return the msg value
      */
@@ -56,7 +56,7 @@ public class JobExecutionReportDetails {
     }
 
     /**
-     * Set the msg value.
+     * Set message details.
      *
      * @param msg the msg value to set
      * @return the JobExecutionReportDetails object itself.

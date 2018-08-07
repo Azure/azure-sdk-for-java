@@ -45,7 +45,7 @@ public class Classification {
     private Boolean reviewRecommended;
 
     /**
-     * Get the category1 value.
+     * Get the category1 score details of the text. &lt;a href="https://aka.ms/textClassifyCategories"&gt;Click here&lt;/a&gt; for more details on category classification.
      *
      * @return the category1 value
      */
@@ -54,7 +54,7 @@ public class Classification {
     }
 
     /**
-     * Set the category1 value.
+     * Set the category1 score details of the text. &lt;a href="https://aka.ms/textClassifyCategories"&gt;Click here&lt;/a&gt; for more details on category classification.
      *
      * @param category1 the category1 value to set
      * @return the Classification object itself.
@@ -65,7 +65,7 @@ public class Classification {
     }
 
     /**
-     * Get the category2 value.
+     * Get the category2 score details of the text. &lt;a href="https://aka.ms/textClassifyCategories"&gt;Click here&lt;/a&gt; for more details on category classification.
      *
      * @return the category2 value
      */
@@ -74,7 +74,7 @@ public class Classification {
     }
 
     /**
-     * Set the category2 value.
+     * Set the category2 score details of the text. &lt;a href="https://aka.ms/textClassifyCategories"&gt;Click here&lt;/a&gt; for more details on category classification.
      *
      * @param category2 the category2 value to set
      * @return the Classification object itself.
@@ -85,7 +85,7 @@ public class Classification {
     }
 
     /**
-     * Get the category3 value.
+     * Get the category3 score details of the text. &lt;a href="https://aka.ms/textClassifyCategories"&gt;Click here&lt;/a&gt; for more details on category classification.
      *
      * @return the category3 value
      */
@@ -94,7 +94,7 @@ public class Classification {
     }
 
     /**
-     * Set the category3 value.
+     * Set the category3 score details of the text. &lt;a href="https://aka.ms/textClassifyCategories"&gt;Click here&lt;/a&gt; for more details on category classification.
      *
      * @param category3 the category3 value to set
      * @return the Classification object itself.
@@ -105,7 +105,7 @@ public class Classification {
     }
 
     /**
-     * Get the reviewRecommended value.
+     * Get the review recommended flag.
      *
      * @return the reviewRecommended value
      */
@@ -114,7 +114,7 @@ public class Classification {
     }
 
     /**
-     * Set the reviewRecommended value.
+     * Set the review recommended flag.
      *
      * @param reviewRecommended the reviewRecommended value to set
      * @return the Classification object itself.

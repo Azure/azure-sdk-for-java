@@ -15,80 +15,54 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class BodyModel {
     /**
-     * Name of the list.
+     * The dataRepresentation property.
      */
-    @JsonProperty(value = "Name")
-    private String name;
+    @JsonProperty(value = "DataRepresentation")
+    private String dataRepresentation;
 
     /**
-     * Description of the list.
+     * The value property.
      */
-    @JsonProperty(value = "Description")
-    private String description;
+    @JsonProperty(value = "Value")
+    private String value;
 
     /**
-     * Metadata of the list.
-     */
-    @JsonProperty(value = "Metadata")
-    private BodyMetadata metadata;
-
-    /**
-     * Get the name value.
+     * Get the dataRepresentation value.
      *
-     * @return the name value
+     * @return the dataRepresentation value
      */
-    public String name() {
-        return this.name;
+    public String dataRepresentation() {
+        return this.dataRepresentation;
     }
 
     /**
-     * Set the name value.
+     * Set the dataRepresentation value.
      *
-     * @param name the name value to set
+     * @param dataRepresentation the dataRepresentation value to set
      * @return the BodyModel object itself.
      */
-    public BodyModel withName(String name) {
-        this.name = name;
+    public BodyModel withDataRepresentation(String dataRepresentation) {
+        this.dataRepresentation = dataRepresentation;
         return this;
     }
 
     /**
-     * Get the description value.
+     * Get the value value.
      *
-     * @return the description value
+     * @return the value value
      */
-    public String description() {
-        return this.description;
+    public String value() {
+        return this.value;
     }
 
     /**
-     * Set the description value.
+     * Set the value value.
      *
-     * @param description the description value to set
+     * @param value the value value to set
      * @return the BodyModel object itself.
      */
-    public BodyModel withDescription(String description) {
-        this.description = description;
-        return this;
-    }
-
-    /**
-     * Get the metadata value.
-     *
-     * @return the metadata value
-     */
-    public BodyMetadata metadata() {
-        return this.metadata;
-    }
-
-    /**
-     * Set the metadata value.
-     *
-     * @param metadata the metadata value to set
-     * @return the BodyModel object itself.
-     */
-    public BodyModel withMetadata(BodyMetadata metadata) {
-        this.metadata = metadata;
+    public BodyModel withValue(String value) {
+        this.value = value;
         return this;
     }
 

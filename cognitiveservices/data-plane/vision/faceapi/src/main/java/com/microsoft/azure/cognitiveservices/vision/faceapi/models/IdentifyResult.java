@@ -31,7 +31,7 @@ public class IdentifyResult {
     private List<IdentifyCandidate> candidates;
 
     /**
-     * Get the faceId value.
+     * Get faceId of the query face.
      *
      * @return the faceId value
      */
@@ -40,7 +40,7 @@ public class IdentifyResult {
     }
 
     /**
-     * Set the faceId value.
+     * Set faceId of the query face.
      *
      * @param faceId the faceId value to set
      * @return the IdentifyResult object itself.
@@ -51,7 +51,7 @@ public class IdentifyResult {
     }
 
     /**
-     * Get the candidates value.
+     * Get identified person candidates for that face (ranked by confidence). Array size should be no larger than input maxNumOfCandidatesReturned. If no person is identified, will return an empty array.
      *
      * @return the candidates value
      */
@@ -60,7 +60,7 @@ public class IdentifyResult {
     }
 
     /**
-     * Set the candidates value.
+     * Set identified person candidates for that face (ranked by confidence). Array size should be no larger than input maxNumOfCandidatesReturned. If no person is identified, will return an empty array.
      *
      * @param candidates the candidates value to set
      * @return the IdentifyResult object itself.

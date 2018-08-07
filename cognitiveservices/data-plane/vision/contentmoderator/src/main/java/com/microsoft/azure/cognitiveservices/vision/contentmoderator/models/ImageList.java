@@ -39,7 +39,7 @@ public class ImageList {
     private ImageListMetadata metadata;
 
     /**
-     * Get the id value.
+     * Get image List Id.
      *
      * @return the id value
      */
@@ -48,7 +48,7 @@ public class ImageList {
     }
 
     /**
-     * Set the id value.
+     * Set image List Id.
      *
      * @param id the id value to set
      * @return the ImageList object itself.
@@ -59,7 +59,7 @@ public class ImageList {
     }
 
     /**
-     * Get the name value.
+     * Get image List Name.
      *
      * @return the name value
      */
@@ -68,7 +68,7 @@ public class ImageList {
     }
 
     /**
-     * Set the name value.
+     * Set image List Name.
      *
      * @param name the name value to set
      * @return the ImageList object itself.
@@ -79,7 +79,7 @@ public class ImageList {
     }
 
     /**
-     * Get the description value.
+     * Get description for image list.
      *
      * @return the description value
      */
@@ -88,7 +88,7 @@ public class ImageList {
     }
 
     /**
-     * Set the description value.
+     * Set description for image list.
      *
      * @param description the description value to set
      * @return the ImageList object itself.
@@ -99,7 +99,7 @@ public class ImageList {
     }
 
     /**
-     * Get the metadata value.
+     * Get image List Metadata.
      *
      * @return the metadata value
      */
@@ -108,7 +108,7 @@ public class ImageList {
     }
 
     /**
-     * Set the metadata value.
+     * Set image List Metadata.
      *
      * @param metadata the metadata value to set
      * @return the ImageList object itself.

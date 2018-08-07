@@ -16,7 +16,6 @@ import com.microsoft.azure.cognitiveservices.vision.contentmoderator.ListManagem
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.ListManagementImages;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.ListManagementTermLists;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.ListManagementTerms;
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.AzureRegionBaseUrl;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.Reviews;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.TextModerations;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
@@ -235,7 +234,7 @@ public class ContentModeratorClientImpl extends AzureServiceClient implements Co
      * @param baseUrl the base URL of the host
      * @param credentials the management credentials for Azure
      */
-    public ContentModeratorClientImpl(String baseUrl, ServiceClientCredentials credentials) {
+    private ContentModeratorClientImpl(String baseUrl, ServiceClientCredentials credentials) {
         super(baseUrl, credentials);
         initialize();
     }

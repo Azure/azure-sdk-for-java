@@ -27,7 +27,7 @@ public class TermListMetadata {
     private String keyTwo;
 
     /**
-     * Get the keyOne value.
+     * Get optional Key value pair to describe your list.
      *
      * @return the keyOne value
      */
@@ -36,7 +36,7 @@ public class TermListMetadata {
     }
 
     /**
-     * Set the keyOne value.
+     * Set optional Key value pair to describe your list.
      *
      * @param keyOne the keyOne value to set
      * @return the TermListMetadata object itself.
@@ -47,7 +47,7 @@ public class TermListMetadata {
     }
 
     /**
-     * Get the keyTwo value.
+     * Get optional Key value pair to describe your list.
      *
      * @return the keyTwo value
      */
@@ -56,7 +56,7 @@ public class TermListMetadata {
     }
 
     /**
-     * Set the keyTwo value.
+     * Set optional Key value pair to describe your list.
      *
      * @param keyTwo the keyTwo value to set
      * @return the TermListMetadata object itself.

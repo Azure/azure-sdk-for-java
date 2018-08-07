@@ -76,7 +76,7 @@ public class Review {
     private String callbackEndpoint;
 
     /**
-     * Get the reviewId value.
+     * Get id of the review.
      *
      * @return the reviewId value
      */
@@ -85,7 +85,7 @@ public class Review {
     }
 
     /**
-     * Set the reviewId value.
+     * Set id of the review.
      *
      * @param reviewId the reviewId value to set
      * @return the Review object itself.
@@ -96,7 +96,7 @@ public class Review {
     }
 
     /**
-     * Get the subTeam value.
+     * Get name of the subteam.
      *
      * @return the subTeam value
      */
@@ -105,7 +105,7 @@ public class Review {
     }
 
     /**
-     * Set the subTeam value.
+     * Set name of the subteam.
      *
      * @param subTeam the subTeam value to set
      * @return the Review object itself.
@@ -116,7 +116,7 @@ public class Review {
     }
 
     /**
-     * Get the status value.
+     * Get the status string (&lt;Pending, Complete&gt;).
      *
      * @return the status value
      */
@@ -125,7 +125,7 @@ public class Review {
     }
 
     /**
-     * Set the status value.
+     * Set the status string (&lt;Pending, Complete&gt;).
      *
      * @param status the status value to set
      * @return the Review object itself.
@@ -136,7 +136,7 @@ public class Review {
     }
 
     /**
-     * Get the reviewerResultTags value.
+     * Get array of KeyValue with Reviewer set Tags.
      *
      * @return the reviewerResultTags value
      */
@@ -145,7 +145,7 @@ public class Review {
     }
 
     /**
-     * Set the reviewerResultTags value.
+     * Set array of KeyValue with Reviewer set Tags.
      *
      * @param reviewerResultTags the reviewerResultTags value to set
      * @return the Review object itself.
@@ -156,7 +156,7 @@ public class Review {
     }
 
     /**
-     * Get the createdBy value.
+     * Get the reviewer name.
      *
      * @return the createdBy value
      */
@@ -165,7 +165,7 @@ public class Review {
     }
 
     /**
-     * Set the createdBy value.
+     * Set the reviewer name.
      *
      * @param createdBy the createdBy value to set
      * @return the Review object itself.
@@ -176,7 +176,7 @@ public class Review {
     }
 
     /**
-     * Get the metadata value.
+     * Get array of KeyValue.
      *
      * @return the metadata value
      */
@@ -185,7 +185,7 @@ public class Review {
     }
 
     /**
-     * Set the metadata value.
+     * Set array of KeyValue.
      *
      * @param metadata the metadata value to set
      * @return the Review object itself.
@@ -196,7 +196,7 @@ public class Review {
     }
 
     /**
-     * Get the type value.
+     * Get the type of content.
      *
      * @return the type value
      */
@@ -205,7 +205,7 @@ public class Review {
     }
 
     /**
-     * Set the type value.
+     * Set the type of content.
      *
      * @param type the type value to set
      * @return the Review object itself.
@@ -236,7 +236,7 @@ public class Review {
     }
 
     /**
-     * Get the contentId value.
+     * Get id of the content.
      *
      * @return the contentId value
      */
@@ -245,7 +245,7 @@ public class Review {
     }
 
     /**
-     * Set the contentId value.
+     * Set id of the content.
      *
      * @param contentId the contentId value to set
      * @return the Review object itself.
@@ -256,7 +256,7 @@ public class Review {
     }
 
     /**
-     * Get the callbackEndpoint value.
+     * Get the callback endpoint.
      *
      * @return the callbackEndpoint value
      */
@@ -265,7 +265,7 @@ public class Review {
     }
 
     /**
-     * Set the callbackEndpoint value.
+     * Set the callback endpoint.
      *
      * @param callbackEndpoint the callbackEndpoint value to set
      * @return the Review object itself.

@@ -27,7 +27,7 @@ public class RefreshIndexAdvancedInfoItem {
     private String keyTwo;
 
     /**
-     * Get the keyOne value.
+     * Get key parameter to describe advanced info.
      *
      * @return the keyOne value
      */
@@ -36,7 +36,7 @@ public class RefreshIndexAdvancedInfoItem {
     }
 
     /**
-     * Set the keyOne value.
+     * Set key parameter to describe advanced info.
      *
      * @param keyOne the keyOne value to set
      * @return the RefreshIndexAdvancedInfoItem object itself.
@@ -47,7 +47,7 @@ public class RefreshIndexAdvancedInfoItem {
     }
 
     /**
-     * Get the keyTwo value.
+     * Get key parameter to describe advanced info.
      *
      * @return the keyTwo value
      */
@@ -56,7 +56,7 @@ public class RefreshIndexAdvancedInfoItem {
     }
 
     /**
-     * Set the keyTwo value.
+     * Set key parameter to describe advanced info.
      *
      * @param keyTwo the keyTwo value to set
      * @return the RefreshIndexAdvancedInfoItem object itself.

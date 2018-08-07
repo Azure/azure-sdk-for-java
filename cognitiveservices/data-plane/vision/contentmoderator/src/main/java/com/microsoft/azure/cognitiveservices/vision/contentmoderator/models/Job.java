@@ -70,7 +70,7 @@ public class Job {
     private List<JobExecutionReportDetails> jobExecutionReport;
 
     /**
-     * Get the id value.
+     * Get the job id.
      *
      * @return the id value
      */
@@ -79,7 +79,7 @@ public class Job {
     }
 
     /**
-     * Set the id value.
+     * Set the job id.
      *
      * @param id the id value to set
      * @return the Job object itself.
@@ -90,7 +90,7 @@ public class Job {
     }
 
     /**
-     * Get the teamName value.
+     * Get the team name associated with the job.
      *
      * @return the teamName value
      */
@@ -99,7 +99,7 @@ public class Job {
     }
 
     /**
-     * Set the teamName value.
+     * Set the team name associated with the job.
      *
      * @param teamName the teamName value to set
      * @return the Job object itself.
@@ -110,7 +110,7 @@ public class Job {
     }
 
     /**
-     * Get the status value.
+     * Get the status string (&lt;Pending, Failed, Completed&gt;).
      *
      * @return the status value
      */
@@ -119,7 +119,7 @@ public class Job {
     }
 
     /**
-     * Set the status value.
+     * Set the status string (&lt;Pending, Failed, Completed&gt;).
      *
      * @param status the status value to set
      * @return the Job object itself.
@@ -130,7 +130,7 @@ public class Job {
     }
 
     /**
-     * Get the workflowId value.
+     * Get the Id of the workflow.
      *
      * @return the workflowId value
      */
@@ -139,7 +139,7 @@ public class Job {
     }
 
     /**
-     * Set the workflowId value.
+     * Set the Id of the workflow.
      *
      * @param workflowId the workflowId value to set
      * @return the Job object itself.
@@ -150,7 +150,7 @@ public class Job {
     }
 
     /**
-     * Get the type value.
+     * Get type of the content.
      *
      * @return the type value
      */
@@ -159,7 +159,7 @@ public class Job {
     }
 
     /**
-     * Set the type value.
+     * Set type of the content.
      *
      * @param type the type value to set
      * @return the Job object itself.
@@ -170,7 +170,7 @@ public class Job {
     }
 
     /**
-     * Get the callBackEndpoint value.
+     * Get the callback endpoint.
      *
      * @return the callBackEndpoint value
      */
@@ -179,7 +179,7 @@ public class Job {
     }
 
     /**
-     * Set the callBackEndpoint value.
+     * Set the callback endpoint.
      *
      * @param callBackEndpoint the callBackEndpoint value to set
      * @return the Job object itself.
@@ -190,7 +190,7 @@ public class Job {
     }
 
     /**
-     * Get the reviewId value.
+     * Get review Id if one is created.
      *
      * @return the reviewId value
      */
@@ -199,7 +199,7 @@ public class Job {
     }
 
     /**
-     * Set the reviewId value.
+     * Set review Id if one is created.
      *
      * @param reviewId the reviewId value to set
      * @return the Job object itself.
@@ -210,7 +210,7 @@ public class Job {
     }
 
     /**
-     * Get the resultMetaData value.
+     * Get array of KeyValue pairs.
      *
      * @return the resultMetaData value
      */
@@ -219,7 +219,7 @@ public class Job {
     }
 
     /**
-     * Set the resultMetaData value.
+     * Set array of KeyValue pairs.
      *
      * @param resultMetaData the resultMetaData value to set
      * @return the Job object itself.
@@ -230,7 +230,7 @@ public class Job {
     }
 
     /**
-     * Get the jobExecutionReport value.
+     * Get job execution report- Array of KeyValue pairs object.
      *
      * @return the jobExecutionReport value
      */
@@ -239,7 +239,7 @@ public class Job {
     }
 
     /**
-     * Set the jobExecutionReport value.
+     * Set job execution report- Array of KeyValue pairs object.
      *
      * @param jobExecutionReport the jobExecutionReport value to set
      * @return the Job object itself.

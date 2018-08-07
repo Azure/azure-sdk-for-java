@@ -9,7 +9,6 @@
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator;
 
 import com.microsoft.azure.AzureClient;
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.AzureRegionBaseUrl;
 import com.microsoft.rest.RestClient;
 
 /**

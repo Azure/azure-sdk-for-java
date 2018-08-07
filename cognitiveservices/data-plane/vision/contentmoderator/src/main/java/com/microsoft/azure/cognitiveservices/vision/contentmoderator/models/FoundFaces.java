@@ -58,7 +58,7 @@ public class FoundFaces {
     private List<Face> faces;
 
     /**
-     * Get the status value.
+     * Get the evaluate status.
      *
      * @return the status value
      */
@@ -67,7 +67,7 @@ public class FoundFaces {
     }
 
     /**
-     * Set the status value.
+     * Set the evaluate status.
      *
      * @param status the status value to set
      * @return the FoundFaces object itself.
@@ -78,7 +78,7 @@ public class FoundFaces {
     }
 
     /**
-     * Get the trackingId value.
+     * Get the tracking id.
      *
      * @return the trackingId value
      */
@@ -87,7 +87,7 @@ public class FoundFaces {
     }
 
     /**
-     * Set the trackingId value.
+     * Set the tracking id.
      *
      * @param trackingId the trackingId value to set
      * @return the FoundFaces object itself.
@@ -98,7 +98,7 @@ public class FoundFaces {
     }
 
     /**
-     * Get the cacheId value.
+     * Get the cache id.
      *
      * @return the cacheId value
      */
@@ -107,7 +107,7 @@ public class FoundFaces {
     }
 
     /**
-     * Set the cacheId value.
+     * Set the cache id.
      *
      * @param cacheId the cacheId value to set
      * @return the FoundFaces object itself.
@@ -118,7 +118,7 @@ public class FoundFaces {
     }
 
     /**
-     * Get the result value.
+     * Get true if result was found.
      *
      * @return the result value
      */
@@ -127,7 +127,7 @@ public class FoundFaces {
     }
 
     /**
-     * Set the result value.
+     * Set true if result was found.
      *
      * @param result the result value to set
      * @return the FoundFaces object itself.
@@ -138,7 +138,7 @@ public class FoundFaces {
     }
 
     /**
-     * Get the count value.
+     * Get number of faces found.
      *
      * @return the count value
      */
@@ -147,7 +147,7 @@ public class FoundFaces {
     }
 
     /**
-     * Set the count value.
+     * Set number of faces found.
      *
      * @param count the count value to set
      * @return the FoundFaces object itself.
@@ -158,7 +158,7 @@ public class FoundFaces {
     }
 
     /**
-     * Get the advancedInfo value.
+     * Get the advanced info.
      *
      * @return the advancedInfo value
      */
@@ -167,7 +167,7 @@ public class FoundFaces {
     }
 
     /**
-     * Set the advancedInfo value.
+     * Set the advanced info.
      *
      * @param advancedInfo the advancedInfo value to set
      * @return the FoundFaces object itself.
@@ -178,7 +178,7 @@ public class FoundFaces {
     }
 
     /**
-     * Get the faces value.
+     * Get the list of faces.
      *
      * @return the faces value
      */
@@ -187,7 +187,7 @@ public class FoundFaces {
     }
 
     /**
-     * Set the faces value.
+     * Set the list of faces.
      *
      * @param faces the faces value to set
      * @return the FoundFaces object itself.

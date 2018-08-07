@@ -33,7 +33,7 @@ public class DetectedLanguage {
     private String trackingId;
 
     /**
-     * Get the detectedLanguage value.
+     * Get the detected language.
      *
      * @return the detectedLanguage value
      */
@@ -42,7 +42,7 @@ public class DetectedLanguage {
     }
 
     /**
-     * Set the detectedLanguage value.
+     * Set the detected language.
      *
      * @param detectedLanguage the detectedLanguage value to set
      * @return the DetectedLanguage object itself.
@@ -53,7 +53,7 @@ public class DetectedLanguage {
     }
 
     /**
-     * Get the status value.
+     * Get the detect language status.
      *
      * @return the status value
      */
@@ -62,7 +62,7 @@ public class DetectedLanguage {
     }
 
     /**
-     * Set the status value.
+     * Set the detect language status.
      *
      * @param status the status value to set
      * @return the DetectedLanguage object itself.
@@ -73,7 +73,7 @@ public class DetectedLanguage {
     }
 
     /**
-     * Get the trackingId value.
+     * Get the tracking id.
      *
      * @return the trackingId value
      */
@@ -82,7 +82,7 @@ public class DetectedLanguage {
     }
 
     /**
-     * Set the trackingId value.
+     * Set the tracking id.
      *
      * @param trackingId the trackingId value to set
      * @return the DetectedLanguage object itself.

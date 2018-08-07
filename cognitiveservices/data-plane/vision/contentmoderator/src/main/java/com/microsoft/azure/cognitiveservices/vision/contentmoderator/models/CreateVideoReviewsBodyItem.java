@@ -66,13 +66,16 @@ public class CreateVideoReviewsBodyItem {
 
     /**
      * Creates an instance of CreateVideoReviewsBodyItem class.
+     * @param content video content url to review.
+     * @param contentId content Identifier.
+     * @param status status of the video(Complete,Unpublished,Pending). Possible values include: 'Complete', 'Unpublished', 'Pending'.
      */
     public CreateVideoReviewsBodyItem() {
         type = "Video";
     }
 
     /**
-     * Get the videoFrames value.
+     * Get optional metadata details.
      *
      * @return the videoFrames value
      */
@@ -81,7 +84,7 @@ public class CreateVideoReviewsBodyItem {
     }
 
     /**
-     * Set the videoFrames value.
+     * Set optional metadata details.
      *
      * @param videoFrames the videoFrames value to set
      * @return the CreateVideoReviewsBodyItem object itself.
@@ -92,7 +95,7 @@ public class CreateVideoReviewsBodyItem {
     }
 
     /**
-     * Get the metadata value.
+     * Get optional metadata details.
      *
      * @return the metadata value
      */
@@ -101,7 +104,7 @@ public class CreateVideoReviewsBodyItem {
     }
 
     /**
-     * Set the metadata value.
+     * Set optional metadata details.
      *
      * @param metadata the metadata value to set
      * @return the CreateVideoReviewsBodyItem object itself.
@@ -112,7 +115,7 @@ public class CreateVideoReviewsBodyItem {
     }
 
     /**
-     * Get the type value.
+     * Get type of the content.
      *
      * @return the type value
      */
@@ -121,7 +124,7 @@ public class CreateVideoReviewsBodyItem {
     }
 
     /**
-     * Set the type value.
+     * Set type of the content.
      *
      * @param type the type value to set
      * @return the CreateVideoReviewsBodyItem object itself.
@@ -132,7 +135,7 @@ public class CreateVideoReviewsBodyItem {
     }
 
     /**
-     * Get the content value.
+     * Get video content url to review.
      *
      * @return the content value
      */
@@ -141,7 +144,7 @@ public class CreateVideoReviewsBodyItem {
     }
 
     /**
-     * Set the content value.
+     * Set video content url to review.
      *
      * @param content the content value to set
      * @return the CreateVideoReviewsBodyItem object itself.
@@ -152,7 +155,7 @@ public class CreateVideoReviewsBodyItem {
     }
 
     /**
-     * Get the contentId value.
+     * Get content Identifier.
      *
      * @return the contentId value
      */
@@ -161,7 +164,7 @@ public class CreateVideoReviewsBodyItem {
     }
 
     /**
-     * Set the contentId value.
+     * Set content Identifier.
      *
      * @param contentId the contentId value to set
      * @return the CreateVideoReviewsBodyItem object itself.
@@ -172,7 +175,7 @@ public class CreateVideoReviewsBodyItem {
     }
 
     /**
-     * Get the status value.
+     * Get status of the video(Complete,Unpublished,Pending). Possible values include: 'Complete', 'Unpublished', 'Pending'.
      *
      * @return the status value
      */
@@ -181,7 +184,7 @@ public class CreateVideoReviewsBodyItem {
     }
 
     /**
-     * Set the status value.
+     * Set status of the video(Complete,Unpublished,Pending). Possible values include: 'Complete', 'Unpublished', 'Pending'.
      *
      * @param status the status value to set
      * @return the CreateVideoReviewsBodyItem object itself.
@@ -192,7 +195,7 @@ public class CreateVideoReviewsBodyItem {
     }
 
     /**
-     * Get the timescale value.
+     * Get timescale of the video.
      *
      * @return the timescale value
      */
@@ -201,7 +204,7 @@ public class CreateVideoReviewsBodyItem {
     }
 
     /**
-     * Set the timescale value.
+     * Set timescale of the video.
      *
      * @param timescale the timescale value to set
      * @return the CreateVideoReviewsBodyItem object itself.
@@ -212,7 +215,7 @@ public class CreateVideoReviewsBodyItem {
     }
 
     /**
-     * Get the callbackEndpoint value.
+     * Get optional CallbackEndpoint.
      *
      * @return the callbackEndpoint value
      */
@@ -221,7 +224,7 @@ public class CreateVideoReviewsBodyItem {
     }
 
     /**
-     * Set the callbackEndpoint value.
+     * Set optional CallbackEndpoint.
      *
      * @param callbackEndpoint the callbackEndpoint value to set
      * @return the CreateVideoReviewsBodyItem object itself.
