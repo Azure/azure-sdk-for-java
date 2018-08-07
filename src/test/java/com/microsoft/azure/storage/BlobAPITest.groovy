@@ -953,6 +953,7 @@ class BlobAPITest extends APISpec {
         bu.getProperties(null).blockingGet().headers().accessTier() == tier.toString()
         cu.listBlobsFlatSegment(null, null).blockingGet().body().segment().blobItems().get(0)
                 .properties().accessTier() == tier
+        cu.delete(null).blockingGet()
 
         where:
         tier           | _

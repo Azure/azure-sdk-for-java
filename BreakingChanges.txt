@@ -1,4 +1,4 @@
-﻿XXXX.XX.XX Version XX.X.X-Preview
+﻿2018.08.07 Version 10.0.2-Preview
 * Changed BlobListingDetails constructor to take a flag to include deleted blobs.
 * Restructured the blob and container listing responses.
 * BlockBlobURL.MAX_PUT_BLOCK_BYTES renamed to BlockBlobURL.MAX_STAGE_BLOCK_BYTES.
