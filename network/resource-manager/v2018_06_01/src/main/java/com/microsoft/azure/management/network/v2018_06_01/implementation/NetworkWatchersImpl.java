@@ -31,6 +31,7 @@ import com.microsoft.azure.management.network.v2018_06_01.FlowLogInformation;
 import com.microsoft.azure.management.network.v2018_06_01.ConnectivityInformation;
 import com.microsoft.azure.management.network.v2018_06_01.AzureReachabilityReport;
 import com.microsoft.azure.management.network.v2018_06_01.AvailableProvidersList;
+import com.microsoft.azure.management.network.v2018_06_01.NetworkConfigurationDiagnosticResponse;
 import com.microsoft.azure.management.network.v2018_06_01.TopologyParameters;
 import com.microsoft.azure.management.network.v2018_06_01.VerificationIPFlowParameters;
 import com.microsoft.azure.management.network.v2018_06_01.NextHopParameters;
@@ -269,6 +270,18 @@ class NetworkWatchersImpl extends GroupableResourcesCoreImpl<NetworkWatcher, Net
             @Override
             public AvailableProvidersList call(AvailableProvidersListInner inner) {
                 return new AvailableProvidersListImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<NetworkConfigurationDiagnosticResponse> getNetworkConfigurationDiagnosticAsync(String resourceGroupName, String networkWatcherName, String targetResourceId) {
+        NetworkWatchersInner client = this.inner();
+        return client.getNetworkConfigurationDiagnosticAsync(resourceGroupName, networkWatcherName, targetResourceId)
+        .map(new Func1<NetworkConfigurationDiagnosticResponseInner, NetworkConfigurationDiagnosticResponse>() {
+            @Override
+            public NetworkConfigurationDiagnosticResponse call(NetworkConfigurationDiagnosticResponseInner inner) {
+                return new NetworkConfigurationDiagnosticResponseImpl(inner, manager());
             }
         });
     }
