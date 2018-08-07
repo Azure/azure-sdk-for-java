@@ -30,7 +30,7 @@ public final class BlobListingDetails {
      * An object representing no listing details.
      */
     public static final BlobListingDetails NONE = new BlobListingDetails(false, false, false,
-            false);
+            false, false);
 
     private final boolean copy;
 
@@ -39,6 +39,8 @@ public final class BlobListingDetails {
     private final boolean snapshots;
 
     private final boolean uncommittedBlobs;
+
+    private final boolean deletedBlobs;
 
     /**
      * A {@link BlobListingDetails} object.
@@ -53,12 +55,16 @@ public final class BlobListingDetails {
      * @param uncommittedBlobs
      *      Whether blobs for which blocks have been uploaded, but which have not been committed using Put Block List,
      *      should be included in the response.
+     * @param deletedBlobs
+     *      Whether blobs which have been soft deleted should be returned.
      */
-    public BlobListingDetails(boolean copy, boolean metadata, boolean snapshots, boolean uncommittedBlobs) {
+    public BlobListingDetails(boolean copy, boolean metadata, boolean snapshots, boolean uncommittedBlobs,
+            boolean deletedBlobs) {
         this.copy = copy;
         this.metadata = metadata;
         this.snapshots = snapshots;
         this.uncommittedBlobs = uncommittedBlobs;
+        this.deletedBlobs = deletedBlobs;
     }
 
     /**
@@ -66,7 +72,7 @@ public final class BlobListingDetails {
      *      Whether blob copies should be returned.
      */
     public boolean getCopy() {
-        return copy;
+        return this.copy;
     }
 
     /**
@@ -74,7 +80,7 @@ public final class BlobListingDetails {
      *      Whether metadata should be returned.
      */
     public boolean getMetadata() {
-        return metadata;
+        return this.metadata;
     }
 
     /**
@@ -82,7 +88,7 @@ public final class BlobListingDetails {
      *      Whether snapshots should be returned.
      */
     public boolean getSnapshots() {
-        return snapshots;
+        return this.snapshots;
     }
 
     /**
@@ -90,7 +96,15 @@ public final class BlobListingDetails {
      *      Whether uncommitted blobs should be returned.
      */
     public boolean getUncommittedBlobs() {
-        return uncommittedBlobs;
+        return this.uncommittedBlobs;
+    }
+
+    /**
+     * @return
+     *      Whether soft-deleted blobs should be returned.
+     */
+    public boolean getDeletedBlobs() {
+        return this.deletedBlobs;
     }
 
     /*
@@ -101,6 +115,9 @@ public final class BlobListingDetails {
         ArrayList<ListBlobsIncludeItem> details = new ArrayList<ListBlobsIncludeItem>();
         if(this.copy) {
             details.add(ListBlobsIncludeItem.COPY);
+        }
+        if(this.deletedBlobs) {
+            details.add(ListBlobsIncludeItem.DELETED);
         }
         if(this.metadata) {
             details.add(ListBlobsIncludeItem.METADATA);

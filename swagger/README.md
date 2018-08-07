@@ -9,7 +9,7 @@ namespace: com.microsoft.azure.storage
 license-header: MICROSOFT_MIT_NO_VERSION
 output-folder: ../
 input-file:
-- path/to/swagger
+- path\to\json
 directive:
   # removes the x-ms-error-code from default response headers
   where: $..default.headers["x-ms-error-code"]

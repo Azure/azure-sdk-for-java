@@ -106,7 +106,7 @@ final class Constants {
         /**
          * The current storage version header value.
          */
-        static final String TARGET_STORAGE_VERSION = "2017-07-29";
+        static final String TARGET_STORAGE_VERSION = "2018-03-28";
 
         /**
          * The UserAgent header.
@@ -116,12 +116,12 @@ final class Constants {
         /**
          * Specifies the value to use for UserAgent header.
          */
-        static final String USER_AGENT_PREFIX = "Azure-Storage-Async";
+        static final String USER_AGENT_PREFIX = "Azure-Storage";
 
         /**
          * Specifies the value to use for UserAgent header.
          */
-        static final String USER_AGENT_VERSION = "10.0.1-Preview";
+        static final String USER_AGENT_VERSION = "10.0.2-Preview";
 
         private HeaderConstants() {
             // Private to prevent construction.

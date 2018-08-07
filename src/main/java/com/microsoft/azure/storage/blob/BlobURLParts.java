@@ -26,6 +26,11 @@ import java.util.Map;
  * existing URL into its parts with the {@link URLParser} class. You may construct a URL from parts by calling toURL().
  * It is also possible to use the empty constructor to build a blobURL from scratch.
  * NOTE: Changing any SAS-related field requires computing a new SAS signature.
+ *
+ * @apiNote
+ * ## Sample Code \n
+ * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=url_parts "Sample code for BlobURLParts")] \n
+ * For more samples, please see the [Samples file](https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
  */
 public final class BlobURLParts {
 

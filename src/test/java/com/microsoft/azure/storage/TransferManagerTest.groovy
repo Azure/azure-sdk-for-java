@@ -14,9 +14,9 @@ import com.microsoft.azure.storage.blob.ServiceURL
 import com.microsoft.azure.storage.blob.StorageException
 import com.microsoft.azure.storage.blob.StorageURL
 import com.microsoft.azure.storage.blob.TransferManager
-import com.microsoft.azure.storage.blob.models.BlobsGetPropertiesResponse
-import com.microsoft.azure.storage.blob.models.BlockBlobsCommitBlockListResponse
-import com.microsoft.azure.storage.blob.models.BlockBlobsUploadResponse
+import com.microsoft.azure.storage.blob.models.BlobGetPropertiesResponse
+import com.microsoft.azure.storage.blob.models.BlockBlobCommitBlockListResponse
+import com.microsoft.azure.storage.blob.models.BlockBlobUploadResponse
 import com.microsoft.azure.storage.blob.models.StorageErrorCode
 import com.microsoft.rest.v2.http.HttpPipeline
 import com.microsoft.rest.v2.util.FlowableUtil
@@ -31,10 +31,6 @@ import java.nio.ByteBuffer
 import java.nio.ReadOnlyBufferException
 import java.nio.channels.FileChannel
 import java.security.MessageDigest
-
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertEquals
 
 class TransferManagerTest extends APISpec {
     BlockBlobURL bu
@@ -56,7 +52,7 @@ class TransferManagerTest extends APISpec {
                         null, null)).blockingGet()
 
         then:
-        response.response() instanceof BlockBlobsUploadResponse // Ensure we did a single put for a small blob.
+        response.response() instanceof BlockBlobUploadResponse // Ensure we did a single put for a small blob.
         validateBasicHeaders(response)
         FlowableUtil.collectBytesInBuffer(bu.download(null, null, false)
                 .blockingGet().body()).blockingGet() == defaultData
@@ -73,7 +69,7 @@ class TransferManagerTest extends APISpec {
 
         then:
         // Ensure we did a commitBlockList for large blobs.
-        response.response() instanceof BlockBlobsCommitBlockListResponse
+        response.response() instanceof BlockBlobCommitBlockListResponse
         validateBasicHeaders(response)
         compareBufferListToFlowable(buffers, bu.download(null, null, false)
                 .blockingGet().body())
@@ -162,7 +158,7 @@ class TransferManagerTest extends APISpec {
                         contentDisposition, contentEncoding, contentLanguage, contentMD5, contentType), null,
                         null, null)).blockingGet()
 
-        BlobsGetPropertiesResponse response = bu.getProperties(null).blockingGet()
+        BlobGetPropertiesResponse response = bu.getProperties(null).blockingGet()
 
         then:
         validateBlobHeaders(response.headers(), cacheControl, contentDisposition, contentEncoding, contentLanguage,
@@ -195,7 +191,7 @@ class TransferManagerTest extends APISpec {
         TransferManager.uploadByteBuffersToBlockBlob(data, bu,
                 new TransferManager.UploadToBlockBlobOptions(null, null, metadata,
                         null, null)).blockingGet()
-        BlobsGetPropertiesResponse response = bu.getProperties(null).blockingGet()
+        BlobGetPropertiesResponse response = bu.getProperties(null).blockingGet()
 
         then:
         response.statusCode() == 200
@@ -290,7 +286,7 @@ class TransferManagerTest extends APISpec {
         when:
         // Block length will be ignored for single shot.
         CommonRestResponse response = TransferManager.uploadByteBufferToBlockBlob(data, bu,
-                (int)(BlockBlobURL.MAX_PUT_BLOCK_BYTES/10),
+                (int)(BlockBlobURL.MAX_STAGE_BLOCK_BYTES/10),
                 new TransferManager.UploadToBlockBlobOptions(null, null, null,
                         null, 20)).blockingGet()
 
@@ -302,8 +298,8 @@ class TransferManagerTest extends APISpec {
 
         where:
         data                                               | responseType
-        defaultData                                        | BlockBlobsUploadResponse
-        getRandomData(BlockBlobURL.MAX_PUT_BLOB_BYTES + 1) | BlockBlobsCommitBlockListResponse
+        defaultData                                        | BlockBlobUploadResponse
+        getRandomData(BlockBlobURL.MAX_PUT_BLOB_BYTES + 1) | BlockBlobCommitBlockListResponse
     }
 
     @Unroll
@@ -329,9 +325,9 @@ class TransferManagerTest extends APISpec {
         thrown(IllegalArgumentException)
 
         where:
-        blockLength                          | _
-        -1                                   | _
-        BlockBlobURL.MAX_PUT_BLOCK_BYTES + 1 | _
+        blockLength                            | _
+        -1                                     | _
+        BlockBlobURL.MAX_STAGE_BLOCK_BYTES + 1 | _
     }
 
     @Unroll
@@ -342,7 +338,7 @@ class TransferManagerTest extends APISpec {
                         contentDisposition, contentEncoding, contentLanguage, contentMD5, contentType), null,
                         null, null)).blockingGet()
 
-        BlobsGetPropertiesResponse response = bu.getProperties(null).blockingGet()
+        BlobGetPropertiesResponse response = bu.getProperties(null).blockingGet()
 
         then:
         validateBlobHeaders(response.headers(), cacheControl, contentDisposition, contentEncoding, contentLanguage,
@@ -372,7 +368,7 @@ class TransferManagerTest extends APISpec {
         TransferManager.uploadByteBufferToBlockBlob(defaultData, bu, 5,
                 new TransferManager.UploadToBlockBlobOptions(null, null, metadata,
                         null, null)).blockingGet()
-        BlobsGetPropertiesResponse response = bu.getProperties(null).blockingGet()
+        BlobGetPropertiesResponse response = bu.getProperties(null).blockingGet()
 
         then:
         response.statusCode() == 200
@@ -442,7 +438,7 @@ class TransferManagerTest extends APISpec {
         when:
         // Block length will be ignored for single shot.
         CommonRestResponse response = TransferManager.uploadFileToBlockBlob(FileChannel.open(file.toPath()), bu,
-                (int)(BlockBlobURL.MAX_PUT_BLOCK_BYTES/10),
+                (int)(BlockBlobURL.MAX_STAGE_BLOCK_BYTES/10),
                 new TransferManager.UploadToBlockBlobOptions(null, null, null,
                         null, 20)).blockingGet()
 
@@ -454,8 +450,8 @@ class TransferManagerTest extends APISpec {
 
         where:
         file                                               | responseType
-        getRandomFile(10)                                  | BlockBlobsUploadResponse
-        getRandomFile(BlockBlobURL.MAX_PUT_BLOB_BYTES + 1) | BlockBlobsCommitBlockListResponse
+        getRandomFile(10)                                  | BlockBlobUploadResponse
+        getRandomFile(BlockBlobURL.MAX_PUT_BLOB_BYTES + 1) | BlockBlobCommitBlockListResponse
     }
 
     def compareDataToFile(Flowable<ByteBuffer> data, File file) {
@@ -498,9 +494,9 @@ class TransferManagerTest extends APISpec {
         thrown(IllegalArgumentException)
 
         where:
-        blockLength                          | _
-        -1                                   | _
-        BlockBlobURL.MAX_PUT_BLOCK_BYTES + 1 | _
+        blockLength                            | _
+        -1                                     | _
+        BlockBlobURL.MAX_STAGE_BLOCK_BYTES + 1 | _
     }
 
     @Unroll
@@ -519,7 +515,7 @@ class TransferManagerTest extends APISpec {
                         contentDisposition, contentEncoding, contentLanguage, contentMD5, contentType), null,
                         null, null)).blockingGet()
 
-        BlobsGetPropertiesResponse response = bu.getProperties(null).blockingGet()
+        BlobGetPropertiesResponse response = bu.getProperties(null).blockingGet()
 
         then:
         validateBlobHeaders(response.headers(), cacheControl, contentDisposition, contentEncoding, contentLanguage,
@@ -549,7 +545,7 @@ class TransferManagerTest extends APISpec {
         TransferManager.uploadFileToBlockBlob(FileChannel.open(getRandomFile(10).toPath()), bu, 5,
                 new TransferManager.UploadToBlockBlobOptions(null, null, metadata,
                         null, null)).blockingGet()
-        BlobsGetPropertiesResponse response = bu.getProperties(null).blockingGet()
+        BlobGetPropertiesResponse response = bu.getProperties(null).blockingGet()
 
         then:
         response.statusCode() == 200
@@ -622,62 +618,5 @@ class TransferManagerTest extends APISpec {
 
         then:
         thrown(IllegalArgumentException)
-    }
-
-    /*
-    We are simply testing for no errors here. There has historically been a problem with Netty that caused it to
-    crash when uploading multiple medium size files in parallel over https. Here we validate that behavior is
-    fixed. We will test for correctness of the parallel upload elsewhere.
-     */
-
-    def "Https parallel file upload"() {
-        setup:
-        PipelineOptions po = new PipelineOptions()
-        RequestRetryOptions retryOptions = new RequestRetryOptions(null, null, 300,
-                null, null, null)
-        po.requestRetryOptions = retryOptions
-        po.client = getHttpClient()
-
-        HttpPipeline pipeline = StorageURL.createPipeline(primaryCreds, po)
-
-        // This test requires https.
-        ServiceURL surl = new ServiceURL(new URL("https://" + primaryCreds.getAccountName() + ".blob.core.windows.net"),
-                pipeline)
-
-        ContainerURL containerURL = surl.createContainerURL(generateContainerName())
-        containerURL.create(null, null).blockingGet()
-
-        when:
-        Observable.range(0, 4000)
-                .flatMap(new Function<Integer, ObservableSource>() {
-            @Override
-            ObservableSource apply(@NonNull Integer i) throws Exception {
-                BlockBlobURL asyncblob = containerURL.createBlockBlobURL("asyncblob" + i)
-                TransferManager.UploadToBlockBlobOptions asyncOptions = new TransferManager.UploadToBlockBlobOptions(
-                        null, null, null, null, 1)
-
-                return TransferManager.uploadFileToBlockBlob(
-                        FileChannel.open(new File(getClass().getClassLoader().getResource("15mb.txt").getFile())
-                                .toPath()), asyncblob, BlockBlobURL.MAX_PUT_BLOCK_BYTES, asyncOptions).toObservable()
-            }
-        }, 2000)
-                .onErrorReturn((new Function<Throwable, Object>() {
-            @Override
-            Object apply(Throwable throwable) throws Exception {
-                /*
-                We only care about the ReadOnlyBufferException as an indication of the netty failure with memory mapped
-                files. Everything else, like throttling, is fine here.
-                 */
-                if (throwable instanceof ReadOnlyBufferException) {
-                    throw throwable
-                }
-                // This value is not meaningful. We just want the observable to continue.
-                return new Object()
-            }
-        })).blockingSubscribe()
-        containerURL.delete(null).blockingGet()
-
-        then:
-        notThrown(ReadOnlyBufferException)
     }
 }

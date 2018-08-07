@@ -37,7 +37,6 @@ import java.util.concurrent.TimeoutException;
  * secondary can handle the request. Exponential and fixed backoff are supported. The factory and policy must only be
  * used directly when creating a custom pipeline.
  */
-//TODO: This was retrying when I got the xml bom issue. Investigate that
 public final class RequestRetryFactory implements RequestPolicyFactory {
 
     private final RequestRetryOptions requestRetryOptions;

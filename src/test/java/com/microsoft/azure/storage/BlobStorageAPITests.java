@@ -73,7 +73,7 @@ public class BlobStorageAPITests {
         // Currently only the default PipelineOptions are supported.
         PipelineOptions po = new PipelineOptions();
         HttpClientConfiguration configuration = new HttpClientConfiguration(
-                new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)));
+                new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)), false);
         po.client = HttpClient.createDefault();//configuration);
         HttpPipeline pipeline = StorageURL.createPipeline(creds, po);
 

@@ -95,6 +95,11 @@ public class TransferManager {
     /**
      * Uploads the contents of a file to a block blob in parallel, breaking it into block-size chunks if necessary.
      *
+     * @apiNote
+     * ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=tm_file "Sample code for TransferManager.uploadFileToBlockBlob")] \n
+     * For more samples, please see the [Samples file](https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     *
      * @param file
      *      The file to upload.
      * @param blockBlobURL
@@ -102,7 +107,7 @@ public class TransferManager {
      * @param blockLength
      *      If the data must be broken up into blocks, this value determines what size those blocks will be. This will
      *      affect the total number of service requests made. This value will be ignored if the data can be uploaded in
-     *      a single put-blob operation. Must be between 1 and {@link BlockBlobURL#MAX_PUT_BLOCK_BYTES}. Note as well
+     *      a single put-blob operation. Must be between 1 and {@link BlockBlobURL#MAX_STAGE_BLOCK_BYTES}. Note as well
      *      that {@code fileLength/blockLength} must be less than or equal to {@link BlockBlobURL#MAX_BLOCKS}.
      * @param options
      *      {@link UploadToBlockBlobOptions}
@@ -114,7 +119,7 @@ public class TransferManager {
             final UploadToBlockBlobOptions options) {
         Utility.assertNotNull("file", file);
         Utility.assertNotNull("blockBlobURL", blockBlobURL);
-        Utility.assertInBounds("blockLength", blockLength, 1, BlockBlobURL.MAX_PUT_BLOCK_BYTES);
+        Utility.assertInBounds("blockLength", blockLength, 1, BlockBlobURL.MAX_STAGE_BLOCK_BYTES);
         UploadToBlockBlobOptions optionsReal = options == null ? UploadToBlockBlobOptions.DEFAULT : options;
 
         try {
@@ -161,6 +166,11 @@ public class TransferManager {
     /**
      * Uploads a large ByteBuffer to a block blob in parallel, breaking it up into block-size chunks if necessary.
      *
+     * @apiNote
+     * ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=tm_buffer "Sample code for TransferManager.uploadByteBufferToBlockBlob")] \n
+     * For more samples, please see the [Samples file](https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     *
      * @param data
      *      The buffer to upload.
      * @param blockBlobURL
@@ -179,7 +189,7 @@ public class TransferManager {
             final UploadToBlockBlobOptions options) {
         Utility.assertNotNull("data", data);
         Utility.assertNotNull("blockBlobURL", blockBlobURL);
-        Utility.assertInBounds("blockLength", blockLength, 1, BlockBlobURL.MAX_PUT_BLOCK_BYTES);
+        Utility.assertInBounds("blockLength", blockLength, 1, BlockBlobURL.MAX_STAGE_BLOCK_BYTES);
         UploadToBlockBlobOptions optionsReal = options == null ? UploadToBlockBlobOptions.DEFAULT : options;
 
         // If the size of the buffer can fit in a single upload, do it this way.
@@ -208,8 +218,13 @@ public class TransferManager {
      * (i.e. less than or equal to {@link BlockBlobURL#MAX_PUT_BLOB_BYTES}, this method will perform a single upload
      * operation. Otherwise, each {@code ByteBuffer} in the iterable is assumed to be its own discreet block of data for
      * the block blob and will be uploaded as such. Note that in this case, each ByteBuffer must be less than or equal
-     * to {@link BlockBlobURL#MAX_PUT_BLOCK_BYTES}. Note as well that there can only be up to
+     * to {@link BlockBlobURL#MAX_STAGE_BLOCK_BYTES}. Note as well that there can only be up to
      * {@link BlockBlobURL#MAX_BLOCKS} ByteBuffers in the list.
+     *
+     * @apiNote
+     * ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=tm_buffers "Sample code for TransferManager.uploadByteBuffersToBlockBlob")] \n
+     * For more samples, please see the [Samples file](https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      *
      * @param data
      *      The data to upload.
@@ -254,7 +269,7 @@ public class TransferManager {
                  composing the list of Ids later.
                  */
                 .concatMapEager(blockData -> {
-                    if (blockData.remaining() > BlockBlobURL.MAX_PUT_BLOCK_BYTES) {
+                    if (blockData.remaining() > BlockBlobURL.MAX_STAGE_BLOCK_BYTES) {
                         throw new IllegalArgumentException(SR.INVALID_BLOCK_SIZE);
                     }
 

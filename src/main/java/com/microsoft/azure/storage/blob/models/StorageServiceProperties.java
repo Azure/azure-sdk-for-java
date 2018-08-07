@@ -23,21 +23,19 @@ import java.util.List;
 @JacksonXmlRootElement(localName = "StorageServiceProperties")
 public final class StorageServiceProperties {
     /**
-     * Azure Analytics Logging settings.
+     * The logging property.
      */
     @JsonProperty(value = "Logging")
     private Logging logging;
 
     /**
-     * A summary of request statistics grouped by API in hourly aggregates for
-     * blobs.
+     * The hourMetrics property.
      */
     @JsonProperty(value = "HourMetrics")
     private Metrics hourMetrics;
 
     /**
-     * a summary of request statistics grouped by API in minute aggregates for
-     * blobs.
+     * The minuteMetrics property.
      */
     @JsonProperty(value = "MinuteMetrics")
     private Metrics minuteMetrics;
@@ -67,10 +65,16 @@ public final class StorageServiceProperties {
     private String defaultServiceVersion;
 
     /**
-     * The Delete Retention Policy for the service.
+     * The deleteRetentionPolicy property.
      */
     @JsonProperty(value = "DeleteRetentionPolicy")
     private RetentionPolicy deleteRetentionPolicy;
+
+    /**
+     * The staticWebsite property.
+     */
+    @JsonProperty(value = "StaticWebsite")
+    private StaticWebsite staticWebsite;
 
     /**
      * Get the logging value.
@@ -192,6 +196,26 @@ public final class StorageServiceProperties {
      */
     public StorageServiceProperties withDeleteRetentionPolicy(RetentionPolicy deleteRetentionPolicy) {
         this.deleteRetentionPolicy = deleteRetentionPolicy;
+        return this;
+    }
+
+    /**
+     * Get the staticWebsite value.
+     *
+     * @return the staticWebsite value.
+     */
+    public StaticWebsite staticWebsite() {
+        return this.staticWebsite;
+    }
+
+    /**
+     * Set the staticWebsite value.
+     *
+     * @param staticWebsite the staticWebsite value to set.
+     * @return the StorageServiceProperties object itself.
+     */
+    public StorageServiceProperties withStaticWebsite(StaticWebsite staticWebsite) {
+        this.staticWebsite = staticWebsite;
         return this;
     }
 }

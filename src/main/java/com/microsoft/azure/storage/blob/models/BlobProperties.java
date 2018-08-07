@@ -19,8 +19,14 @@ import java.time.OffsetDateTime;
 /**
  * Properties of a blob.
  */
-@JacksonXmlRootElement(localName = "BlobProperties")
+@JacksonXmlRootElement(localName = "Properties")
 public final class BlobProperties {
+    /**
+     * The creationTime property.
+     */
+    @JsonProperty(value = "Creation-Time")
+    private DateTimeRfc1123 creationTime;
+
     /**
      * The lastModified property.
      */
@@ -191,6 +197,39 @@ public final class BlobProperties {
      */
     @JsonProperty(value = "ArchiveStatus")
     private ArchiveStatus archiveStatus;
+
+    /**
+     * The accessTierChangeTime property.
+     */
+    @JsonProperty(value = "AccessTierChangeTime")
+    private DateTimeRfc1123 accessTierChangeTime;
+
+    /**
+     * Get the creationTime value.
+     *
+     * @return the creationTime value.
+     */
+    public OffsetDateTime creationTime() {
+        if (this.creationTime == null) {
+            return null;
+        }
+        return this.creationTime.dateTime();
+    }
+
+    /**
+     * Set the creationTime value.
+     *
+     * @param creationTime the creationTime value to set.
+     * @return the BlobProperties object itself.
+     */
+    public BlobProperties withCreationTime(OffsetDateTime creationTime) {
+        if (creationTime == null) {
+            this.creationTime = null;
+        } else {
+            this.creationTime = new DateTimeRfc1123(creationTime);
+        }
+        return this;
+    }
 
     /**
      * Get the lastModified value.
@@ -770,6 +809,33 @@ public final class BlobProperties {
      */
     public BlobProperties withArchiveStatus(ArchiveStatus archiveStatus) {
         this.archiveStatus = archiveStatus;
+        return this;
+    }
+
+    /**
+     * Get the accessTierChangeTime value.
+     *
+     * @return the accessTierChangeTime value.
+     */
+    public OffsetDateTime accessTierChangeTime() {
+        if (this.accessTierChangeTime == null) {
+            return null;
+        }
+        return this.accessTierChangeTime.dateTime();
+    }
+
+    /**
+     * Set the accessTierChangeTime value.
+     *
+     * @param accessTierChangeTime the accessTierChangeTime value to set.
+     * @return the BlobProperties object itself.
+     */
+    public BlobProperties withAccessTierChangeTime(OffsetDateTime accessTierChangeTime) {
+        if (accessTierChangeTime == null) {
+            this.accessTierChangeTime = null;
+        } else {
+            this.accessTierChangeTime = new DateTimeRfc1123(accessTierChangeTime);
+        }
         return this;
     }
 }

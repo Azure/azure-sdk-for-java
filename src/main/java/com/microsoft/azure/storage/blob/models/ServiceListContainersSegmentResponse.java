@@ -11,22 +11,24 @@
 package com.microsoft.azure.storage.blob.models;
 
 import com.microsoft.rest.v2.RestResponse;
+import com.microsoft.rest.v2.http.HttpRequest;
 import java.util.Map;
 
 /**
  * Contains all response data for the listContainersSegment operation.
  */
-public final class ServiceListContainersSegmentResponse extends RestResponse<ServiceListContainersSegmentHeaders, ListContainersResponse> {
+public final class ServiceListContainersSegmentResponse extends RestResponse<ServiceListContainersSegmentHeaders, ListContainersSegmentResponse> {
     /**
      * Creates an instance of ServiceListContainersSegmentResponse.
      *
+     * @param request the request which resulted in this {response.Name}.
      * @param statusCode the status code of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param body the deserialized body of the HTTP response.
      */
-    public ServiceListContainersSegmentResponse(int statusCode, ServiceListContainersSegmentHeaders headers, Map<String, String> rawHeaders, ListContainersResponse body) {
-        super(statusCode, headers, rawHeaders, body);
+    public ServiceListContainersSegmentResponse(HttpRequest request, int statusCode, ServiceListContainersSegmentHeaders headers, Map<String, String> rawHeaders, ListContainersSegmentResponse body) {
+        super(request, statusCode, headers, rawHeaders, body);
     }
 
     /**
@@ -41,7 +43,7 @@ public final class ServiceListContainersSegmentResponse extends RestResponse<Ser
      * @return the deserialized response body.
      */
     @Override
-    public ListContainersResponse body() {
+    public ListContainersSegmentResponse body() {
         return super.body();
     }
 }

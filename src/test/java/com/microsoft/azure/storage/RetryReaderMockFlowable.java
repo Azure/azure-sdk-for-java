@@ -17,7 +17,7 @@ package com.microsoft.azure.storage;
 
 import com.microsoft.azure.storage.blob.ETag;
 import com.microsoft.azure.storage.blob.RetryReader;
-import com.microsoft.azure.storage.blob.models.BlobsDownloadHeaders;
+import com.microsoft.azure.storage.blob.models.BlobDownloadHeaders;
 import com.microsoft.azure.storage.blob.models.StorageErrorException;
 import com.microsoft.rest.v2.RestResponse;
 import com.microsoft.rest.v2.http.HttpHeaders;
@@ -168,8 +168,8 @@ public class RetryReaderMockFlowable extends Flowable<ByteBuffer> {
     public Single<? extends RestResponse<?, Flowable<ByteBuffer>>> getter(RetryReader.HTTPGetterInfo info) {
         this.tryNumber++;
         this.info = info;
-        RestResponse<BlobsDownloadHeaders, Flowable<ByteBuffer>> response =
-                new RestResponse<>(200, new BlobsDownloadHeaders(), new HashMap<>(), this);
+        RestResponse<BlobDownloadHeaders, Flowable<ByteBuffer>> response =
+                new RestResponse<>(null,200, new BlobDownloadHeaders(), new HashMap<>(), this);
 
         switch(this.scenario) {
             case RR_TEST_SCENARIO_ERROR_GETTER_INITIAL:

@@ -23,13 +23,11 @@ import com.microsoft.azure.storage.blob.ETag
 import com.microsoft.azure.storage.blob.HTTPAccessConditions
 import com.microsoft.azure.storage.blob.LeaseAccessConditions
 import com.microsoft.azure.storage.blob.Metadata
-import com.microsoft.azure.storage.blob.PageBlobURL
 import com.microsoft.azure.storage.blob.StorageException
-import com.microsoft.azure.storage.blob.models.AppendBlobsAppendBlockHeaders
-import com.microsoft.azure.storage.blob.models.AppendBlobsCreateResponse
-import com.microsoft.azure.storage.blob.models.BlobsGetPropertiesResponse
+import com.microsoft.azure.storage.blob.models.AppendBlobAppendBlockHeaders
+import com.microsoft.azure.storage.blob.models.AppendBlobCreateResponse
+import com.microsoft.azure.storage.blob.models.BlobGetPropertiesResponse
 import com.microsoft.rest.v2.util.FlowableUtil
-import io.reactivex.Flowable
 import spock.lang.Unroll
 import java.security.MessageDigest
 
@@ -43,7 +41,7 @@ public class AppendBlobAPITest extends APISpec {
 
     def "Append blob create defaults"() {
         when:
-        AppendBlobsCreateResponse createResponse =
+        AppendBlobCreateResponse createResponse =
                 bu.create(null, null, null).blockingGet()
 
         then:
@@ -72,7 +70,7 @@ public class AppendBlobAPITest extends APISpec {
 
         when:
         bu.create(headers, null, null).blockingGet()
-        BlobsGetPropertiesResponse response = bu.getProperties(null).blockingGet()
+        BlobGetPropertiesResponse response = bu.getProperties(null).blockingGet()
 
         then:
         validateBlobHeaders(response.headers(), cacheControl, contentDisposition, contentEncoding, contentLanguage,
@@ -98,7 +96,7 @@ public class AppendBlobAPITest extends APISpec {
 
         when:
         bu.create(null, metadata, null).blockingGet()
-        BlobsGetPropertiesResponse response = bu.getProperties(null).blockingGet()
+        BlobGetPropertiesResponse response = bu.getProperties(null).blockingGet()
 
         then:
         response.headers().metadata() == metadata
@@ -134,7 +132,7 @@ public class AppendBlobAPITest extends APISpec {
 
     def "Append blob append block defaults"() {
         setup:
-        AppendBlobsAppendBlockHeaders headers =
+        AppendBlobAppendBlockHeaders headers =
                 bu.appendBlock(defaultFlowable, defaultDataSize,
                         null).blockingGet().headers()
 

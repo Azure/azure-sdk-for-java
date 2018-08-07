@@ -23,14 +23,17 @@ import com.microsoft.azure.storage.blob.PipelineOptions
 import com.microsoft.azure.storage.blob.ServiceURL
 import com.microsoft.azure.storage.blob.SharedKeyCredentials
 import com.microsoft.azure.storage.blob.StorageURL
-import com.microsoft.azure.storage.blob.models.BlobsAcquireLeaseHeaders
-import com.microsoft.azure.storage.blob.models.BlobsGetPropertiesHeaders
-import com.microsoft.azure.storage.blob.models.BlobsStartCopyFromURLResponse
-import com.microsoft.azure.storage.blob.models.Container
-import com.microsoft.azure.storage.blob.models.ContainersAcquireLeaseHeaders
-import com.microsoft.azure.storage.blob.models.ContainersGetPropertiesHeaders
+import com.microsoft.azure.storage.blob.models.BlobAcquireLeaseHeaders
+import com.microsoft.azure.storage.blob.models.BlobGetPropertiesHeaders
+import com.microsoft.azure.storage.blob.models.BlobStartCopyFromURLResponse
+import com.microsoft.azure.storage.blob.models.ContainerItem
+import com.microsoft.azure.storage.blob.models.ContainerAcquireLeaseHeaders
+import com.microsoft.azure.storage.blob.models.ContainerGetPropertiesHeaders
+import com.microsoft.azure.storage.blob.models.ContainerItem
 import com.microsoft.azure.storage.blob.models.CopyStatusType
 import com.microsoft.azure.storage.blob.models.LeaseStateType
+import com.microsoft.azure.storage.blob.models.RetentionPolicy
+import com.microsoft.azure.storage.blob.models.StorageServiceProperties
 import com.microsoft.rest.v2.http.HttpClient
 import com.microsoft.rest.v2.http.HttpClientConfiguration
 import com.microsoft.rest.v2.http.HttpPipeline
@@ -100,6 +103,10 @@ class APISpec extends Specification {
     static SharedKeyCredentials alternateCreds = getGenericCreds("SECONDARY_")
 
     static ServiceURL alternateServiceURL = getGenericServiceURL(alternateCreds)
+
+    static ServiceURL blobStorageServiceURL = getGenericServiceURL(getGenericCreds("BLOB_STORAGE_"))
+
+    static ServiceURL premiumServiceURL = getGenericServiceURL(getGenericCreds("PREMIUM_"))
 
     static String getTestName(ISpecificationContext ctx) {
         return ctx.getCurrentFeature().name.replace(' ', '').toLowerCase()
@@ -173,7 +180,8 @@ class APISpec extends Specification {
     static HttpClient getHttpClient() {
         if (enableDebugging) {
             HttpClientConfiguration configuration = new HttpClientConfiguration(
-                    new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)))
+                    new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)),
+                    false)
             return HttpClient.createDefault(configuration)
         }
         else return HttpClient.createDefault()
@@ -196,9 +204,9 @@ class APISpec extends Specification {
         ServiceURL serviceURL = new ServiceURL(
                 new URL("http://" + System.getenv().get("ACCOUNT_NAME") + ".blob.core.windows.net"), pipeline)
         // There should not be more than 5000 containers from these tests
-        for (Container c : serviceURL.listContainersSegment(null,
+        for (ContainerItem c : serviceURL.listContainersSegment(null,
                 new ListContainersOptions(null, containerPrefix, null)).blockingGet()
-                .body().containers()) {
+                .body().containerItems()) {
             ContainerURL containerURL = serviceURL.createContainerURL(c.name())
             if (c.properties().leaseState().equals(LeaseStateType.LEASED)) {
                 containerURL.breakLease(0, null).blockingGet()
@@ -258,7 +266,7 @@ class APISpec extends Specification {
      */
     def setupBlobMatchCondition(BlobURL bu, ETag match) {
         if (match == receivedEtag) {
-            BlobsGetPropertiesHeaders headers = bu.getProperties(null).blockingGet().headers()
+            BlobGetPropertiesHeaders headers = bu.getProperties(null).blockingGet().headers()
             return new ETag(headers.eTag())
         } else {
             return match
@@ -279,7 +287,7 @@ class APISpec extends Specification {
      *      The actual leaseID of the blob if recievedLeaseID is passed, otherwise whatever was passed will be returned.
      */
     def setupBlobLeaseCondition(BlobURL bu, String leaseID) {
-        BlobsAcquireLeaseHeaders headers = null
+        BlobAcquireLeaseHeaders headers = null
         if (leaseID == receivedLeaseID || leaseID == garbageLeaseID) {
             headers = bu.acquireLease(null, -1, null).blockingGet().headers()
         }
@@ -292,7 +300,7 @@ class APISpec extends Specification {
 
     def setupContainerMatchCondition(ContainerURL cu, ETag match) {
         if (match == receivedEtag) {
-            ContainersGetPropertiesHeaders headers = cu.getProperties(null).blockingGet().headers()
+            ContainerGetPropertiesHeaders headers = cu.getProperties(null).blockingGet().headers()
             return new ETag(headers.eTag())
         } else {
             return match
@@ -301,7 +309,7 @@ class APISpec extends Specification {
 
     def setupContainerLeaseCondition(ContainerURL cu, String leaseID) {
         if (leaseID == receivedLeaseID) {
-            ContainersAcquireLeaseHeaders headers =
+            ContainerAcquireLeaseHeaders headers =
                     cu.acquireLease(null, -1, null).blockingGet().headers()
             return headers.leaseId()
         } else {
@@ -309,7 +317,7 @@ class APISpec extends Specification {
         }
     }
 
-    def waitForCopy(BlobURL bu, BlobsStartCopyFromURLResponse response) {
+    def waitForCopy(BlobURL bu, BlobStartCopyFromURLResponse response) {
         CopyStatusType status = response.headers().copyStatus()
 
         OffsetDateTime start = OffsetDateTime.now()
@@ -348,5 +356,19 @@ class APISpec extends Specification {
                 headers.class.getMethod("contentMD5").invoke(headers) == contentMD5 &&
                 headers.class.getMethod("contentType").invoke(headers)  == contentType
 
+    }
+
+    def enableSoftDelete() {
+        primaryServiceURL.setProperties(new StorageServiceProperties()
+                .withDeleteRetentionPolicy(new RetentionPolicy().withEnabled(true).withDays(2)))
+                .blockingGet()
+        sleep(30000) // Wait for the policy to take effect.
+    }
+
+    def disableSoftDelete() {
+        primaryServiceURL.setProperties(new StorageServiceProperties()
+                .withDeleteRetentionPolicy(new RetentionPolicy().withEnabled(false))).blockingGet()
+
+        sleep(30000) // Wait for the policy to take effect.
     }
 }
