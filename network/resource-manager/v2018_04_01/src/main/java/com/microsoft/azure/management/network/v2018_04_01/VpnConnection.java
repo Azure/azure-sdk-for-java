@@ -26,9 +26,9 @@ import java.util.List;
  */
 public interface VpnConnection extends HasInner<VpnConnectionInner>, Indexable, Refreshable<VpnConnection>, Updatable<VpnConnection.Update>, HasManager<NetworkManager> {
     /**
-     * @return the connectionBandwidthInMbps value.
+     * @return the connectionBandwidth value.
      */
-    Integer connectionBandwidthInMbps();
+    Integer connectionBandwidth();
 
     /**
      * @return the connectionStatus value.

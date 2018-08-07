@@ -82,8 +82,8 @@ public class VpnConnectionsInner {
         Observable<Response<ResponseBody>> beginDelete(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("gatewayName") String gatewayName, @Path("connectionName") String connectionName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2018_04_01.VpnConnections listByVpnGateway" })
-        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Network/vpnGateways/{gatewayName}/vpnConnections")
-        Observable<Response<ResponseBody>> listByVpnGateway(@Path("subscriptionId") String subscriptionId, @Path("gatewayName") String gatewayName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnGateways/{gatewayName}/vpnConnections")
+        Observable<Response<ResponseBody>> listByVpnGateway(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("gatewayName") String gatewayName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2018_04_01.VpnConnections listByVpnGatewayNext" })
         @GET
@@ -532,14 +532,15 @@ public class VpnConnectionsInner {
     /**
      * Retrieves all vpn connections for a particular virtual wan vpn gateway.
      *
+     * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;VpnConnectionInner&gt; object if successful.
      */
-    public PagedList<VpnConnectionInner> listByVpnGateway(final String gatewayName) {
-        ServiceResponse<Page<VpnConnectionInner>> response = listByVpnGatewaySinglePageAsync(gatewayName).toBlocking().single();
+    public PagedList<VpnConnectionInner> listByVpnGateway(final String resourceGroupName, final String gatewayName) {
+        ServiceResponse<Page<VpnConnectionInner>> response = listByVpnGatewaySinglePageAsync(resourceGroupName, gatewayName).toBlocking().single();
         return new PagedList<VpnConnectionInner>(response.body()) {
             @Override
             public Page<VpnConnectionInner> nextPage(String nextPageLink) {
@@ -551,14 +552,15 @@ public class VpnConnectionsInner {
     /**
      * Retrieves all vpn connections for a particular virtual wan vpn gateway.
      *
+     * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<VpnConnectionInner>> listByVpnGatewayAsync(final String gatewayName, final ListOperationCallback<VpnConnectionInner> serviceCallback) {
+    public ServiceFuture<List<VpnConnectionInner>> listByVpnGatewayAsync(final String resourceGroupName, final String gatewayName, final ListOperationCallback<VpnConnectionInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listByVpnGatewaySinglePageAsync(gatewayName),
+            listByVpnGatewaySinglePageAsync(resourceGroupName, gatewayName),
             new Func1<String, Observable<ServiceResponse<Page<VpnConnectionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<VpnConnectionInner>>> call(String nextPageLink) {
@@ -571,12 +573,13 @@ public class VpnConnectionsInner {
     /**
      * Retrieves all vpn connections for a particular virtual wan vpn gateway.
      *
+     * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;VpnConnectionInner&gt; object
      */
-    public Observable<Page<VpnConnectionInner>> listByVpnGatewayAsync(final String gatewayName) {
-        return listByVpnGatewayWithServiceResponseAsync(gatewayName)
+    public Observable<Page<VpnConnectionInner>> listByVpnGatewayAsync(final String resourceGroupName, final String gatewayName) {
+        return listByVpnGatewayWithServiceResponseAsync(resourceGroupName, gatewayName)
             .map(new Func1<ServiceResponse<Page<VpnConnectionInner>>, Page<VpnConnectionInner>>() {
                 @Override
                 public Page<VpnConnectionInner> call(ServiceResponse<Page<VpnConnectionInner>> response) {
@@ -588,12 +591,13 @@ public class VpnConnectionsInner {
     /**
      * Retrieves all vpn connections for a particular virtual wan vpn gateway.
      *
+     * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;VpnConnectionInner&gt; object
      */
-    public Observable<ServiceResponse<Page<VpnConnectionInner>>> listByVpnGatewayWithServiceResponseAsync(final String gatewayName) {
-        return listByVpnGatewaySinglePageAsync(gatewayName)
+    public Observable<ServiceResponse<Page<VpnConnectionInner>>> listByVpnGatewayWithServiceResponseAsync(final String resourceGroupName, final String gatewayName) {
+        return listByVpnGatewaySinglePageAsync(resourceGroupName, gatewayName)
             .concatMap(new Func1<ServiceResponse<Page<VpnConnectionInner>>, Observable<ServiceResponse<Page<VpnConnectionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<VpnConnectionInner>>> call(ServiceResponse<Page<VpnConnectionInner>> page) {
@@ -609,19 +613,23 @@ public class VpnConnectionsInner {
     /**
      * Retrieves all vpn connections for a particular virtual wan vpn gateway.
      *
+    ServiceResponse<PageImpl<VpnConnectionInner>> * @param resourceGroupName The resource group name of the VpnGateway.
     ServiceResponse<PageImpl<VpnConnectionInner>> * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;VpnConnectionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<VpnConnectionInner>>> listByVpnGatewaySinglePageAsync(final String gatewayName) {
+    public Observable<ServiceResponse<Page<VpnConnectionInner>>> listByVpnGatewaySinglePageAsync(final String resourceGroupName, final String gatewayName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (gatewayName == null) {
             throw new IllegalArgumentException("Parameter gatewayName is required and cannot be null.");
         }
         final String apiVersion = "2018-04-01";
-        return service.listByVpnGateway(this.client.subscriptionId(), gatewayName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.listByVpnGateway(this.client.subscriptionId(), resourceGroupName, gatewayName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<VpnConnectionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<VpnConnectionInner>>> call(Response<ResponseBody> response) {
