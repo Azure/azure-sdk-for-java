@@ -35,7 +35,7 @@ public final class BlobGetPropertiesHeaders {
      * Returns the date and time the blob was created.
      */
     @JsonProperty(value = "x-ms-creation-time")
-    private DateTimeRfc1123 xMsCreationTime;
+    private DateTimeRfc1123 creationTime;
 
     /**
      * The metadata property.
@@ -285,6 +285,13 @@ public final class BlobGetPropertiesHeaders {
     private String archiveStatus;
 
     /**
+     * The time the tier was changed on the object. This is only returned if
+     * the tier on the block blob was ever set.
+     */
+    @JsonProperty(value = "x-ms-access-tier-change-time")
+    private DateTimeRfc1123 accessTierChangeTime;
+
+    /**
      * Get the lastModified value.
      *
      * @return the lastModified value.
@@ -312,28 +319,28 @@ public final class BlobGetPropertiesHeaders {
     }
 
     /**
-     * Get the xMsCreationTime value.
+     * Get the creationTime value.
      *
-     * @return the xMsCreationTime value.
+     * @return the creationTime value.
      */
-    public OffsetDateTime xMsCreationTime() {
-        if (this.xMsCreationTime == null) {
+    public OffsetDateTime creationTime() {
+        if (this.creationTime == null) {
             return null;
         }
-        return this.xMsCreationTime.dateTime();
+        return this.creationTime.dateTime();
     }
 
     /**
-     * Set the xMsCreationTime value.
+     * Set the creationTime value.
      *
-     * @param xMsCreationTime the xMsCreationTime value to set.
+     * @param creationTime the creationTime value to set.
      * @return the BlobGetPropertiesHeaders object itself.
      */
-    public BlobGetPropertiesHeaders withXMsCreationTime(OffsetDateTime xMsCreationTime) {
-        if (xMsCreationTime == null) {
-            this.xMsCreationTime = null;
+    public BlobGetPropertiesHeaders withCreationTime(OffsetDateTime creationTime) {
+        if (creationTime == null) {
+            this.creationTime = null;
         } else {
-            this.xMsCreationTime = new DateTimeRfc1123(xMsCreationTime);
+            this.creationTime = new DateTimeRfc1123(creationTime);
         }
         return this;
     }
@@ -969,6 +976,33 @@ public final class BlobGetPropertiesHeaders {
      */
     public BlobGetPropertiesHeaders withArchiveStatus(String archiveStatus) {
         this.archiveStatus = archiveStatus;
+        return this;
+    }
+
+    /**
+     * Get the accessTierChangeTime value.
+     *
+     * @return the accessTierChangeTime value.
+     */
+    public OffsetDateTime accessTierChangeTime() {
+        if (this.accessTierChangeTime == null) {
+            return null;
+        }
+        return this.accessTierChangeTime.dateTime();
+    }
+
+    /**
+     * Set the accessTierChangeTime value.
+     *
+     * @param accessTierChangeTime the accessTierChangeTime value to set.
+     * @return the BlobGetPropertiesHeaders object itself.
+     */
+    public BlobGetPropertiesHeaders withAccessTierChangeTime(OffsetDateTime accessTierChangeTime) {
+        if (accessTierChangeTime == null) {
+            this.accessTierChangeTime = null;
+        } else {
+            this.accessTierChangeTime = new DateTimeRfc1123(accessTierChangeTime);
+        }
         return this;
     }
 }

@@ -180,7 +180,8 @@ class APISpec extends Specification {
     static HttpClient getHttpClient() {
         if (enableDebugging) {
             HttpClientConfiguration configuration = new HttpClientConfiguration(
-                    new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)))
+                    new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)),
+                    false)
             return HttpClient.createDefault(configuration)
         }
         else return HttpClient.createDefault()

@@ -12,6 +12,7 @@ package com.microsoft.azure.storage;
 
 import com.microsoft.azure.storage.blob.models.ListContainersIncludeType;
 import com.microsoft.azure.storage.blob.models.ListContainersSegmentResponse;
+import com.microsoft.azure.storage.blob.models.ServiceGetAccountInfoResponse;
 import com.microsoft.azure.storage.blob.models.ServiceGetPropertiesResponse;
 import com.microsoft.azure.storage.blob.models.ServiceGetStatisticsResponse;
 import com.microsoft.azure.storage.blob.models.ServiceListContainersSegmentResponse;
@@ -87,6 +88,11 @@ public final class GeneratedServices {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Single<ServiceListContainersSegmentResponse> listContainersSegment(@HostParam("url") String url, @QueryParam("prefix") String prefix, @QueryParam("marker") String marker, @QueryParam("maxresults") Integer maxresults, @QueryParam("include") ListContainersIncludeType include, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp);
+
+        @GET("")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        Single<ServiceGetAccountInfoResponse> getAccountInfo(@HostParam("url") String url, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, @QueryParam("comp") String comp);
     }
 
     /**
@@ -349,5 +355,53 @@ public final class GeneratedServices {
     public Maybe<ListContainersSegmentResponse> listContainersSegmentAsync(String prefix, String marker, Integer maxresults, ListContainersIncludeType include, Integer timeout, String requestId) {
         return listContainersSegmentWithRestResponseAsync(prefix, marker, maxresults, include, timeout, requestId)
             .flatMapMaybe((ServiceListContainersSegmentResponse res) -> res.body() == null ? Maybe.empty() : Maybe.just(res.body()));
+    }
+
+    /**
+     * Returns the sku name and account kind.
+     *
+     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void getAccountInfo() {
+        getAccountInfoAsync().blockingAwait();
+    }
+
+    /**
+     * Returns the sku name and account kind.
+     *
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a ServiceFuture which will be completed with the result of the network request.
+     */
+    public ServiceFuture<Void> getAccountInfoAsync(ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromBody(getAccountInfoAsync(), serviceCallback);
+    }
+
+    /**
+     * Returns the sku name and account kind.
+     *
+     * @return a Single which performs the network request upon subscription.
+     */
+    public Single<ServiceGetAccountInfoResponse> getAccountInfoWithRestResponseAsync() {
+        if (this.client.url() == null) {
+            throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
+        }
+        if (this.client.version() == null) {
+            throw new IllegalArgumentException("Parameter this.client.version() is required and cannot be null.");
+        }
+        final String restype = "account";
+        final String comp = "properties";
+        return service.getAccountInfo(this.client.url(), this.client.version(), restype, comp);
+    }
+
+    /**
+     * Returns the sku name and account kind.
+     *
+     * @return a Single which performs the network request upon subscription.
+     */
+    public Completable getAccountInfoAsync() {
+        return getAccountInfoWithRestResponseAsync()
+            .toCompletable();
     }
 }

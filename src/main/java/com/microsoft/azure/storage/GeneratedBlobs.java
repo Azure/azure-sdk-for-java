@@ -18,6 +18,7 @@ import com.microsoft.azure.storage.blob.models.BlobChangeLeaseResponse;
 import com.microsoft.azure.storage.blob.models.BlobCreateSnapshotResponse;
 import com.microsoft.azure.storage.blob.models.BlobDeleteResponse;
 import com.microsoft.azure.storage.blob.models.BlobDownloadResponse;
+import com.microsoft.azure.storage.blob.models.BlobGetAccountInfoResponse;
 import com.microsoft.azure.storage.blob.models.BlobGetPropertiesResponse;
 import com.microsoft.azure.storage.blob.models.BlobReleaseLeaseResponse;
 import com.microsoft.azure.storage.blob.models.BlobRenewLeaseResponse;
@@ -149,7 +150,7 @@ public final class GeneratedBlobs {
         @PUT("{containerName}/{blob}")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Single<BlobStartCopyFromURLResponse> startCopyFromURL(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-source-if-modified-since") DateTimeRfc1123 sourceIfModifiedSince, @HeaderParam("x-ms-source-if-unmodified-since") DateTimeRfc1123 sourceIfUnmodifiedSince, @HeaderParam("x-ms-source-if-match") String sourceIfMatches, @HeaderParam("x-ms-source-if-none-match") String sourceIfNoneMatch, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatches, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("x-ms-copy-source") URL copySource, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-source-lease-id") String sourceLeaseId, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId);
+        Single<BlobStartCopyFromURLResponse> startCopyFromURL(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-source-if-modified-since") DateTimeRfc1123 sourceIfModifiedSince, @HeaderParam("x-ms-source-if-unmodified-since") DateTimeRfc1123 sourceIfUnmodifiedSince, @HeaderParam("x-ms-source-if-match") String sourceIfMatches, @HeaderParam("x-ms-source-if-none-match") String sourceIfNoneMatch, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatches, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("x-ms-copy-source") URL copySource, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId);
 
         @PUT("{containerName}/{blob}")
         @ExpectedResponses({204})
@@ -160,6 +161,11 @@ public final class GeneratedBlobs {
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Single<BlobSetTierResponse> setTier(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-access-tier") AccessTier tier, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp);
+
+        @GET("{containerName}/{blobName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        Single<BlobGetAccountInfoResponse> getAccountInfo(@HostParam("url") String url, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, @QueryParam("comp") String comp);
     }
 
     /**
@@ -1263,14 +1269,13 @@ public final class GeneratedBlobs {
      * @param ifMatches Specify an ETag value to operate only on blobs with a matching value.
      * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
      * @param leaseId If specified, the operation only succeeds if the container's lease is active and matches this ID.
-     * @param sourceLeaseId Specify this header to perform the operation only if the lease ID given matches the active lease ID of the source blob.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    public void startCopyFromURL(@NonNull URL copySource, Integer timeout, Map<String, String> metadata, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatches, String sourceIfNoneMatch, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatches, String ifNoneMatch, String leaseId, String sourceLeaseId, String requestId) {
-        startCopyFromURLAsync(copySource, timeout, metadata, sourceIfModifiedSince, sourceIfUnmodifiedSince, sourceIfMatches, sourceIfNoneMatch, ifModifiedSince, ifUnmodifiedSince, ifMatches, ifNoneMatch, leaseId, sourceLeaseId, requestId).blockingAwait();
+    public void startCopyFromURL(@NonNull URL copySource, Integer timeout, Map<String, String> metadata, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatches, String sourceIfNoneMatch, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatches, String ifNoneMatch, String leaseId, String requestId) {
+        startCopyFromURLAsync(copySource, timeout, metadata, sourceIfModifiedSince, sourceIfUnmodifiedSince, sourceIfMatches, sourceIfNoneMatch, ifModifiedSince, ifUnmodifiedSince, ifMatches, ifNoneMatch, leaseId, requestId).blockingAwait();
     }
 
     /**
@@ -1288,14 +1293,13 @@ public final class GeneratedBlobs {
      * @param ifMatches Specify an ETag value to operate only on blobs with a matching value.
      * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
      * @param leaseId If specified, the operation only succeeds if the container's lease is active and matches this ID.
-     * @param sourceLeaseId Specify this header to perform the operation only if the lease ID given matches the active lease ID of the source blob.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a ServiceFuture which will be completed with the result of the network request.
      */
-    public ServiceFuture<Void> startCopyFromURLAsync(@NonNull URL copySource, Integer timeout, Map<String, String> metadata, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatches, String sourceIfNoneMatch, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatches, String ifNoneMatch, String leaseId, String sourceLeaseId, String requestId, ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromBody(startCopyFromURLAsync(copySource, timeout, metadata, sourceIfModifiedSince, sourceIfUnmodifiedSince, sourceIfMatches, sourceIfNoneMatch, ifModifiedSince, ifUnmodifiedSince, ifMatches, ifNoneMatch, leaseId, sourceLeaseId, requestId), serviceCallback);
+    public ServiceFuture<Void> startCopyFromURLAsync(@NonNull URL copySource, Integer timeout, Map<String, String> metadata, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatches, String sourceIfNoneMatch, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatches, String ifNoneMatch, String leaseId, String requestId, ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromBody(startCopyFromURLAsync(copySource, timeout, metadata, sourceIfModifiedSince, sourceIfUnmodifiedSince, sourceIfMatches, sourceIfNoneMatch, ifModifiedSince, ifUnmodifiedSince, ifMatches, ifNoneMatch, leaseId, requestId), serviceCallback);
     }
 
     /**
@@ -1313,12 +1317,11 @@ public final class GeneratedBlobs {
      * @param ifMatches Specify an ETag value to operate only on blobs with a matching value.
      * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
      * @param leaseId If specified, the operation only succeeds if the container's lease is active and matches this ID.
-     * @param sourceLeaseId Specify this header to perform the operation only if the lease ID given matches the active lease ID of the source blob.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Single which performs the network request upon subscription.
      */
-    public Single<BlobStartCopyFromURLResponse> startCopyFromURLWithRestResponseAsync(@NonNull URL copySource, Integer timeout, Map<String, String> metadata, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatches, String sourceIfNoneMatch, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatches, String ifNoneMatch, String leaseId, String sourceLeaseId, String requestId) {
+    public Single<BlobStartCopyFromURLResponse> startCopyFromURLWithRestResponseAsync(@NonNull URL copySource, Integer timeout, Map<String, String> metadata, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatches, String sourceIfNoneMatch, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatches, String ifNoneMatch, String leaseId, String requestId) {
         if (this.client.url() == null) {
             throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
         }
@@ -1346,7 +1349,7 @@ public final class GeneratedBlobs {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.startCopyFromURL(this.client.url(), timeout, metadata, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatches, sourceIfNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatches, ifNoneMatch, copySource, leaseId, sourceLeaseId, this.client.version(), requestId);
+        return service.startCopyFromURL(this.client.url(), timeout, metadata, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatches, sourceIfNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatches, ifNoneMatch, copySource, leaseId, this.client.version(), requestId);
     }
 
     /**
@@ -1364,13 +1367,12 @@ public final class GeneratedBlobs {
      * @param ifMatches Specify an ETag value to operate only on blobs with a matching value.
      * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
      * @param leaseId If specified, the operation only succeeds if the container's lease is active and matches this ID.
-     * @param sourceLeaseId Specify this header to perform the operation only if the lease ID given matches the active lease ID of the source blob.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Single which performs the network request upon subscription.
      */
-    public Completable startCopyFromURLAsync(@NonNull URL copySource, Integer timeout, Map<String, String> metadata, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatches, String sourceIfNoneMatch, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatches, String ifNoneMatch, String leaseId, String sourceLeaseId, String requestId) {
-        return startCopyFromURLWithRestResponseAsync(copySource, timeout, metadata, sourceIfModifiedSince, sourceIfUnmodifiedSince, sourceIfMatches, sourceIfNoneMatch, ifModifiedSince, ifUnmodifiedSince, ifMatches, ifNoneMatch, leaseId, sourceLeaseId, requestId)
+    public Completable startCopyFromURLAsync(@NonNull URL copySource, Integer timeout, Map<String, String> metadata, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatches, String sourceIfNoneMatch, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatches, String ifNoneMatch, String leaseId, String requestId) {
+        return startCopyFromURLWithRestResponseAsync(copySource, timeout, metadata, sourceIfModifiedSince, sourceIfUnmodifiedSince, sourceIfMatches, sourceIfNoneMatch, ifModifiedSince, ifUnmodifiedSince, ifMatches, ifNoneMatch, leaseId, requestId)
             .toCompletable();
     }
 
@@ -1506,6 +1508,54 @@ public final class GeneratedBlobs {
      */
     public Completable setTierAsync(@NonNull AccessTier tier, Integer timeout, String requestId) {
         return setTierWithRestResponseAsync(tier, timeout, requestId)
+            .toCompletable();
+    }
+
+    /**
+     * Returns the sku name and account kind.
+     *
+     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void getAccountInfo() {
+        getAccountInfoAsync().blockingAwait();
+    }
+
+    /**
+     * Returns the sku name and account kind.
+     *
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a ServiceFuture which will be completed with the result of the network request.
+     */
+    public ServiceFuture<Void> getAccountInfoAsync(ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromBody(getAccountInfoAsync(), serviceCallback);
+    }
+
+    /**
+     * Returns the sku name and account kind.
+     *
+     * @return a Single which performs the network request upon subscription.
+     */
+    public Single<BlobGetAccountInfoResponse> getAccountInfoWithRestResponseAsync() {
+        if (this.client.url() == null) {
+            throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
+        }
+        if (this.client.version() == null) {
+            throw new IllegalArgumentException("Parameter this.client.version() is required and cannot be null.");
+        }
+        final String restype = "account";
+        final String comp = "properties";
+        return service.getAccountInfo(this.client.url(), this.client.version(), restype, comp);
+    }
+
+    /**
+     * Returns the sku name and account kind.
+     *
+     * @return a Single which performs the network request upon subscription.
+     */
+    public Completable getAccountInfoAsync() {
+        return getAccountInfoWithRestResponseAsync()
             .toCompletable();
     }
 }

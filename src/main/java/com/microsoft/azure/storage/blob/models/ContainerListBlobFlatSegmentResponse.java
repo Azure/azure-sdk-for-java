@@ -11,6 +11,7 @@
 package com.microsoft.azure.storage.blob.models;
 
 import com.microsoft.rest.v2.RestResponse;
+import com.microsoft.rest.v2.http.HttpRequest;
 import java.util.Map;
 
 /**
@@ -20,13 +21,14 @@ public final class ContainerListBlobFlatSegmentResponse extends RestResponse<Con
     /**
      * Creates an instance of ContainerListBlobFlatSegmentResponse.
      *
+     * @param request the request which resulted in this {response.Name}.
      * @param statusCode the status code of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param body the deserialized body of the HTTP response.
      */
-    public ContainerListBlobFlatSegmentResponse(int statusCode, ContainerListBlobFlatSegmentHeaders headers, Map<String, String> rawHeaders, ListBlobsFlatSegmentResponse body) {
-        super(statusCode, headers, rawHeaders, body);
+    public ContainerListBlobFlatSegmentResponse(HttpRequest request, int statusCode, ContainerListBlobFlatSegmentHeaders headers, Map<String, String> rawHeaders, ListBlobsFlatSegmentResponse body) {
+        super(request, statusCode, headers, rawHeaders, body);
     }
 
     /**
