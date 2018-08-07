@@ -159,6 +159,19 @@ public class SignalRManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The UsagesInner object to access its operations.
+     */
+    private UsagesInner usages;
+
+    /**
+     * Gets the UsagesInner object to access its operations.
+     * @return the UsagesInner object.
+     */
+    public UsagesInner usages() {
+        return this.usages;
+    }
+
+    /**
      * Initializes an instance of SignalRManagementClient client.
      *
      * @param credentials the management credentials for Azure
@@ -195,6 +208,7 @@ public class SignalRManagementClientImpl extends AzureServiceClient {
         this.generateClientRequestId = true;
         this.operations = new OperationsInner(restClient().retrofit(), this);
         this.signalRs = new SignalRsInner(restClient().retrofit(), this);
+        this.usages = new UsagesInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 

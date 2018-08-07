@@ -18,6 +18,7 @@ import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
 import com.microsoft.azure.management.signalr.v2018_03_01_preview.Operations;
 import com.microsoft.azure.management.signalr.v2018_03_01_preview.SignalRs;
+import com.microsoft.azure.management.signalr.v2018_03_01_preview.Usages;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -27,6 +28,7 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 public final class SignalRServiceManager extends ManagerCore<SignalRServiceManager, SignalRManagementClientImpl> {
     private Operations operations;
     private SignalRs signalRs;
+    private Usages usages;
     /**
     * Get a Configurable instance that can be used to create SignalRServiceManager with optional configuration.
     *
@@ -92,6 +94,16 @@ public final class SignalRServiceManager extends ManagerCore<SignalRServiceManag
             this.signalRs = new SignalRsImpl(this);
         }
         return this.signalRs;
+    }
+
+    /**
+     * @return Entry point to manage Usages.
+     */
+    public Usages usages() {
+        if (this.usages == null) {
+            this.usages = new UsagesImpl(this);
+        }
+        return this.usages;
     }
 
     /**
