@@ -60,7 +60,7 @@ public class OAuth2sInner {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.graphrbac.OAuth2s post" })
         @POST("{tenantID}/oauth2PermissionGrants")
-        Observable<Response<ResponseBody>> post(@Path("tenantID") String tenantID, @Body OAuth2Inner body, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> post(@Path("tenantID") String tenantID, @Body PermissionsInner body, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -70,9 +70,9 @@ public class OAuth2sInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the OAuth2Inner object if successful.
+     * @return the PermissionsInner object if successful.
      */
-    public OAuth2Inner get() {
+    public PermissionsInner get() {
         return getWithServiceResponseAsync().toBlocking().single().body();
     }
 
@@ -83,7 +83,7 @@ public class OAuth2sInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<OAuth2Inner> getAsync(final ServiceCallback<OAuth2Inner> serviceCallback) {
+    public ServiceFuture<PermissionsInner> getAsync(final ServiceCallback<PermissionsInner> serviceCallback) {
         return ServiceFuture.fromResponse(getWithServiceResponseAsync(), serviceCallback);
     }
 
@@ -91,12 +91,12 @@ public class OAuth2sInner {
      * Queries OAuth2 permissions for the relevant SP ObjectId of an app.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OAuth2Inner object
+     * @return the observable to the PermissionsInner object
      */
-    public Observable<OAuth2Inner> getAsync() {
-        return getWithServiceResponseAsync().map(new Func1<ServiceResponse<OAuth2Inner>, OAuth2Inner>() {
+    public Observable<PermissionsInner> getAsync() {
+        return getWithServiceResponseAsync().map(new Func1<ServiceResponse<PermissionsInner>, PermissionsInner>() {
             @Override
-            public OAuth2Inner call(ServiceResponse<OAuth2Inner> response) {
+            public PermissionsInner call(ServiceResponse<PermissionsInner> response) {
                 return response.body();
             }
         });
@@ -106,9 +106,9 @@ public class OAuth2sInner {
      * Queries OAuth2 permissions for the relevant SP ObjectId of an app.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OAuth2Inner object
+     * @return the observable to the PermissionsInner object
      */
-    public Observable<ServiceResponse<OAuth2Inner>> getWithServiceResponseAsync() {
+    public Observable<ServiceResponse<PermissionsInner>> getWithServiceResponseAsync() {
         if (this.client.tenantID() == null) {
             throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
         }
@@ -117,11 +117,11 @@ public class OAuth2sInner {
         }
         final String filter = null;
         return service.get(this.client.tenantID(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OAuth2Inner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PermissionsInner>>>() {
                 @Override
-                public Observable<ServiceResponse<OAuth2Inner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<PermissionsInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<OAuth2Inner> clientResponse = getDelegate(response);
+                        ServiceResponse<PermissionsInner> clientResponse = getDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -133,39 +133,39 @@ public class OAuth2sInner {
     /**
      * Queries OAuth2 permissions for the relevant SP ObjectId of an app.
      *
-     * @param filter the String value
+     * @param filter This is the Service Principal ObjectId associated with the app
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the OAuth2Inner object if successful.
+     * @return the PermissionsInner object if successful.
      */
-    public OAuth2Inner get(String filter) {
+    public PermissionsInner get(String filter) {
         return getWithServiceResponseAsync(filter).toBlocking().single().body();
     }
 
     /**
      * Queries OAuth2 permissions for the relevant SP ObjectId of an app.
      *
-     * @param filter the String value
+     * @param filter This is the Service Principal ObjectId associated with the app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<OAuth2Inner> getAsync(String filter, final ServiceCallback<OAuth2Inner> serviceCallback) {
+    public ServiceFuture<PermissionsInner> getAsync(String filter, final ServiceCallback<PermissionsInner> serviceCallback) {
         return ServiceFuture.fromResponse(getWithServiceResponseAsync(filter), serviceCallback);
     }
 
     /**
      * Queries OAuth2 permissions for the relevant SP ObjectId of an app.
      *
-     * @param filter the String value
+     * @param filter This is the Service Principal ObjectId associated with the app
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OAuth2Inner object
+     * @return the observable to the PermissionsInner object
      */
-    public Observable<OAuth2Inner> getAsync(String filter) {
-        return getWithServiceResponseAsync(filter).map(new Func1<ServiceResponse<OAuth2Inner>, OAuth2Inner>() {
+    public Observable<PermissionsInner> getAsync(String filter) {
+        return getWithServiceResponseAsync(filter).map(new Func1<ServiceResponse<PermissionsInner>, PermissionsInner>() {
             @Override
-            public OAuth2Inner call(ServiceResponse<OAuth2Inner> response) {
+            public PermissionsInner call(ServiceResponse<PermissionsInner> response) {
                 return response.body();
             }
         });
@@ -174,11 +174,11 @@ public class OAuth2sInner {
     /**
      * Queries OAuth2 permissions for the relevant SP ObjectId of an app.
      *
-     * @param filter the String value
+     * @param filter This is the Service Principal ObjectId associated with the app
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OAuth2Inner object
+     * @return the observable to the PermissionsInner object
      */
-    public Observable<ServiceResponse<OAuth2Inner>> getWithServiceResponseAsync(String filter) {
+    public Observable<ServiceResponse<PermissionsInner>> getWithServiceResponseAsync(String filter) {
         if (this.client.tenantID() == null) {
             throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
         }
@@ -186,11 +186,11 @@ public class OAuth2sInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.get(this.client.tenantID(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OAuth2Inner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PermissionsInner>>>() {
                 @Override
-                public Observable<ServiceResponse<OAuth2Inner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<PermissionsInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<OAuth2Inner> clientResponse = getDelegate(response);
+                        ServiceResponse<PermissionsInner> clientResponse = getDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -199,9 +199,9 @@ public class OAuth2sInner {
             });
     }
 
-    private ServiceResponse<OAuth2Inner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<OAuth2Inner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<OAuth2Inner>() { }.getType())
+    private ServiceResponse<PermissionsInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PermissionsInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PermissionsInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -212,9 +212,9 @@ public class OAuth2sInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the OAuth2Inner object if successful.
+     * @return the PermissionsInner object if successful.
      */
-    public OAuth2Inner post() {
+    public PermissionsInner post() {
         return postWithServiceResponseAsync().toBlocking().single().body();
     }
 
@@ -225,7 +225,7 @@ public class OAuth2sInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<OAuth2Inner> postAsync(final ServiceCallback<OAuth2Inner> serviceCallback) {
+    public ServiceFuture<PermissionsInner> postAsync(final ServiceCallback<PermissionsInner> serviceCallback) {
         return ServiceFuture.fromResponse(postWithServiceResponseAsync(), serviceCallback);
     }
 
@@ -233,12 +233,12 @@ public class OAuth2sInner {
      * Grants OAuth2 permissions for the relevant resource Ids of an app.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OAuth2Inner object
+     * @return the observable to the PermissionsInner object
      */
-    public Observable<OAuth2Inner> postAsync() {
-        return postWithServiceResponseAsync().map(new Func1<ServiceResponse<OAuth2Inner>, OAuth2Inner>() {
+    public Observable<PermissionsInner> postAsync() {
+        return postWithServiceResponseAsync().map(new Func1<ServiceResponse<PermissionsInner>, PermissionsInner>() {
             @Override
-            public OAuth2Inner call(ServiceResponse<OAuth2Inner> response) {
+            public PermissionsInner call(ServiceResponse<PermissionsInner> response) {
                 return response.body();
             }
         });
@@ -248,22 +248,22 @@ public class OAuth2sInner {
      * Grants OAuth2 permissions for the relevant resource Ids of an app.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OAuth2Inner object
+     * @return the observable to the PermissionsInner object
      */
-    public Observable<ServiceResponse<OAuth2Inner>> postWithServiceResponseAsync() {
+    public Observable<ServiceResponse<PermissionsInner>> postWithServiceResponseAsync() {
         if (this.client.tenantID() == null) {
             throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        final OAuth2Inner body = null;
+        final PermissionsInner body = null;
         return service.post(this.client.tenantID(), body, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OAuth2Inner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PermissionsInner>>>() {
                 @Override
-                public Observable<ServiceResponse<OAuth2Inner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<PermissionsInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<OAuth2Inner> clientResponse = postDelegate(response);
+                        ServiceResponse<PermissionsInner> clientResponse = postDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -275,39 +275,39 @@ public class OAuth2sInner {
     /**
      * Grants OAuth2 permissions for the relevant resource Ids of an app.
      *
-     * @param body the OAuth2Inner value
+     * @param body the PermissionsInner value
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the OAuth2Inner object if successful.
+     * @return the PermissionsInner object if successful.
      */
-    public OAuth2Inner post(OAuth2Inner body) {
+    public PermissionsInner post(PermissionsInner body) {
         return postWithServiceResponseAsync(body).toBlocking().single().body();
     }
 
     /**
      * Grants OAuth2 permissions for the relevant resource Ids of an app.
      *
-     * @param body the OAuth2Inner value
+     * @param body the PermissionsInner value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<OAuth2Inner> postAsync(OAuth2Inner body, final ServiceCallback<OAuth2Inner> serviceCallback) {
+    public ServiceFuture<PermissionsInner> postAsync(PermissionsInner body, final ServiceCallback<PermissionsInner> serviceCallback) {
         return ServiceFuture.fromResponse(postWithServiceResponseAsync(body), serviceCallback);
     }
 
     /**
      * Grants OAuth2 permissions for the relevant resource Ids of an app.
      *
-     * @param body the OAuth2Inner value
+     * @param body the PermissionsInner value
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OAuth2Inner object
+     * @return the observable to the PermissionsInner object
      */
-    public Observable<OAuth2Inner> postAsync(OAuth2Inner body) {
-        return postWithServiceResponseAsync(body).map(new Func1<ServiceResponse<OAuth2Inner>, OAuth2Inner>() {
+    public Observable<PermissionsInner> postAsync(PermissionsInner body) {
+        return postWithServiceResponseAsync(body).map(new Func1<ServiceResponse<PermissionsInner>, PermissionsInner>() {
             @Override
-            public OAuth2Inner call(ServiceResponse<OAuth2Inner> response) {
+            public PermissionsInner call(ServiceResponse<PermissionsInner> response) {
                 return response.body();
             }
         });
@@ -316,11 +316,11 @@ public class OAuth2sInner {
     /**
      * Grants OAuth2 permissions for the relevant resource Ids of an app.
      *
-     * @param body the OAuth2Inner value
+     * @param body the PermissionsInner value
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OAuth2Inner object
+     * @return the observable to the PermissionsInner object
      */
-    public Observable<ServiceResponse<OAuth2Inner>> postWithServiceResponseAsync(OAuth2Inner body) {
+    public Observable<ServiceResponse<PermissionsInner>> postWithServiceResponseAsync(PermissionsInner body) {
         if (this.client.tenantID() == null) {
             throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
         }
@@ -329,11 +329,11 @@ public class OAuth2sInner {
         }
         Validator.validate(body);
         return service.post(this.client.tenantID(), body, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OAuth2Inner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PermissionsInner>>>() {
                 @Override
-                public Observable<ServiceResponse<OAuth2Inner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<PermissionsInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<OAuth2Inner> clientResponse = postDelegate(response);
+                        ServiceResponse<PermissionsInner> clientResponse = postDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -342,9 +342,9 @@ public class OAuth2sInner {
             });
     }
 
-    private ServiceResponse<OAuth2Inner> postDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<OAuth2Inner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(201, new TypeToken<OAuth2Inner>() { }.getType())
+    private ServiceResponse<PermissionsInner> postDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PermissionsInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(201, new TypeToken<PermissionsInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
