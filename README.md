@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/Azure/azure-keyvault-java.svg?branch=dev)](https://travis-ci.org/Azure/azure-keyvault-java)
+
 # Microsoft Azure Key Vault SDK for Java
 
 This is the Microsoft Azure Key Vault client library which allows for the consumption of Key Vault services. Azure Key Vault helps safeguard cryptographic keys and secrets used by cloud applications and services. By using Key Vault, you can encrypt keys and secrets (such as authentication keys, storage account keys, data encryption keys, .PFX files, and passwords) using keys protected by hardware security modules (HSMs). For added assurance, you can import or generate keys in HSMs. If you choose to do this, Microsoft processes your keys in FIPS 140-2 Level 2 validated HSMs (hardware and firmware).
