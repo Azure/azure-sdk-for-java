@@ -132,6 +132,9 @@ If you would like to become an active contributor to this project please follow 
 
 | Version | Comments |
 | :-------: | :-------- |
+| [1.1-beta-1](https://github.com/Azure/azure-keyvault-java/tree/v1.0.0)   | Version 1.1.0 **beta** release |
+| [1.1-alpha-2](https://github.com/Azure/azure-keyvault-java/tree/v1.1-alpha-2
+)   | Version 1.1.0 **alpha** release |
 | [1.0.0](https://github.com/Azure/azure-keyvault-java/tree/v1.0.0)   | Version 1.0.0 release |
 
 # More information
