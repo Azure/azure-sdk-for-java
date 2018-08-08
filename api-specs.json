@@ -50,6 +50,10 @@
     "source": "specification/eventgrid/data-plane/readme.md",
     "args": "--multiapi"
   },
+  "hdinsight/resource-manager": {
+    "source": "specification/hdinsight/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "iotcentral/resource-manager": {
     "source": "specification/iotcentral/resource-manager/readme.md",
     "args": "--multiapi --fluent",
@@ -70,6 +74,10 @@
   },
   "logic/resource-manager": {
     "source": "specification/logic/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "notificationhubs/resource-manager": {
+    "source": "specification/notificationhubs/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
   "mediaservices/resource-manager": {
