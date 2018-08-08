@@ -7,6 +7,69 @@ For more information refer to [What is Key Vault?](https://docs.microsoft.com/en
 ## Sample code
 You can find sample code that illustrates key vault usage scenarios [here](https://azure.microsoft.com/en-us/resources/samples/?sort=0&service=key-vault&platform=java).
 
+<table>
+    <tr>
+        <th>Category</th>
+        <th>Samples</th>
+    </tr>
+    <tr>
+        <td>Authentication</td>
+        <td>
+            <ul>
+                <li>
+                    <a href="https://github.com/Azure-Samples/key-vault-java-authentication">Authenticating with a service principal and a self-signed certificate</a>
+                </li>
+                <li>
+                    <a href="https://github.com/Azure-Samples/key-vault-java-authentication">Authenticating with ADAL through a callback</a>
+                </li>
+                <li>
+                     <a href="https://azure.microsoft.com/en-us/resources/samples/key-vault-java-certificate-authentication/">Authenticating with a .pfx file</a>
+                </li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>Vault Management</td>
+        <td>
+            <ul>
+                <li>
+                    <a href="https://azure.microsoft.com/en-us/resources/samples/key-vault-java-certificate-authentication/">Creating a vault</a>
+                </li>
+                <li>
+                    <a href="https://azure.microsoft.com/en-us/resources/samples/key-vault-java-network-acl/">Creating a vault with access restrictions based on IP and Azure Virtual Networks</a>
+                </li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>Secret Management</td>
+        <td>
+            <ul>
+                <li>
+                    <a href="https://azure.microsoft.com/en-us/resources/samples/key-vault-java-certificate-authentication/">Putting keys and secrets into a vault</a>
+                </li>
+                <li>
+                    <a href="https://azure.microsoft.com/en-us/resources/samples/key-vault-java-certificate-authentication/">Signing</a>
+                </li>
+                <li>
+                    <a href="https://azure.microsoft.com/en-us/resources/samples/key-vault-java-certificate-authentication/">Verification of signature with both Java Security and Azure Key Vault REST</a>
+                </li>
+                <li>
+                    <a href="https://azure.microsoft.com/en-us/resources/samples/key-vault-java-certificate-authentication/">Injecting a .pfx file into a VM at deployment using a template</a>
+                </li>
+                <li>
+                    <a href="https://azure.microsoft.com/en-us/resources/samples/key-vault-java-recovery/">Using the soft delete and backup restore features</a>
+                </li>
+                <li>
+                    <a href="https://azure.microsoft.com/en-us/resources/samples/key-vault-java-recovery/">Managing storage accounts</a>
+                </li>
+            </ul>
+        </td>
+    </tr>
+</table>
+
+For more information on using Java with Azure, see [here](https://azure.microsoft.com/en-us/develop/java/)
+
 ## Download
 
 To get the binaries of this library as distributed by Microsoft, ready for use within your project, you can use Maven.
