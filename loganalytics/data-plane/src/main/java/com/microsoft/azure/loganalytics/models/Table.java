@@ -32,7 +32,7 @@ public class Table {
      * The resulting rows from this query.
      */
     @JsonProperty(value = "rows", required = true)
-    private List<List<String>> rows;
+    private List<List<Object>> rows;
 
     /**
      * Get the name of the table.
@@ -79,7 +79,7 @@ public class Table {
      *
      * @return the rows value
      */
-    public List<List<String>> rows() {
+    public List<List<Object>> rows() {
         return this.rows;
     }
 
@@ -89,7 +89,7 @@ public class Table {
      * @param rows the rows value to set
      * @return the Table object itself.
      */
-    public Table withRows(List<List<String>> rows) {
+    public Table withRows(List<List<Object>> rows) {
         this.rows = rows;
         return this;
     }
