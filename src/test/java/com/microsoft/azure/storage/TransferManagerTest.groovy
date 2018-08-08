@@ -838,8 +838,8 @@ class TransferManagerTest extends APISpec {
         file                                  | _
         getRandomFile(20)                     | _
         getRandomFile(16 * 1024 * 1024)       | _
-        getRandomFile(8 * 1026 * 1024 + 10)   | _
-        getRandomFile(5 * 1024 * 1024 * 1024) | _
+        getRandomFile(8L * 1026 * 1024 + 10)   | _
+        getRandomFile(5L * 1024 * 1024 * 1024) | _
         getRandomFile(0)                      | _
     }
 
@@ -895,6 +895,7 @@ class TransferManagerTest extends APISpec {
         getRandomFile(defaultDataSize) | new BlobRange(0, defaultDataSize)
         getRandomFile(defaultDataSize) | new BlobRange(1, defaultDataSize - 1)
         getRandomFile(defaultDataSize) | new BlobRange(0, defaultDataSize - 1)
+        getRandomFile(defaultDataSize) | new BlobRange(0, 10L * 1024 * 1024 * 1024)
     }
 
     def "Download file count null"() {

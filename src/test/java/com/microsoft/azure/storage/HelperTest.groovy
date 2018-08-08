@@ -31,7 +31,9 @@ import spock.lang.Unroll
 
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
-import java.time.ZonedDateTime
+import java.nio.channels.FileChannel
+import java.nio.file.StandardOpenOption
+
 
 class HelperTest extends APISpec {
 
@@ -46,7 +48,7 @@ class HelperTest extends APISpec {
         e.message().contains("Value for one of the query parameters specified in the request URI is invalid.")
         e.getMessage().contains("<?xml") // Ensure that the details in the payload are printable
     }
-
+    
     @Unroll
     def "Blob range"() {
         expect:

@@ -96,17 +96,14 @@ public class Samples {
 
         return result;
     }
-    // </list_blobs_flat_helper>
 
     private String getAccountName() {
         return System.getenv("ACCOUNT_NAME");
     }
-    // </list_blobs_hierarchy_helper>
 
     private String getAccountKey() {
         return System.getenv("ACCOUNT_KEY");
     }
-    // </service_list_helper>
 
     /**
      * This example shows how to start using the Azure Storage Blob SDK for Java.
@@ -235,6 +232,7 @@ public class Samples {
                             listBlobsFlatHelper(containerURL, containersListBlobFlatSegmentResponse));
         }
     }
+    // </list_blobs_flat_helper>
 
     // <list_blobs_hierarchy_helper>
     public Single<ContainerListBlobHierarchySegmentResponse> listBlobsHierarchyHelper(
@@ -278,6 +276,7 @@ public class Samples {
                             listBlobsHierarchyHelper(containerURL, containersListBlobHierarchySegmentResponse));
         }
     }
+    // </list_blobs_hierarchy_helper>
 
     // <service_list_helper>
     public Single<ServiceListContainersSegmentResponse> listContainersHelper(
@@ -310,6 +309,7 @@ public class Samples {
                             listContainersHelper(serviceURL, response));
         }
     }
+    // </service_list_helper>
 
     // This example shows how you can configure a pipeline for making HTTP requests to the Azure Storage blob Service.
     @Test

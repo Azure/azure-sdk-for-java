@@ -25,7 +25,6 @@ import java.lang.Error;
 import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
-import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.UUID;
@@ -127,25 +126,26 @@ public class TransferManager {
         /**
          * Returns an object that configures the parallel download behavior for methods on the {@code TransferManager}.
          *
-         * @param blockSize
+         * @param chunkSize
          *         The size of the chunk into which large download operations will be broken into. These methods operate
          *         on {@code ByteBuffer}s and {@code ByteBuffer}s only support {@code int} for their size, so only chunk
-         *         sizes of up to 2^31 can be processed.
+         *         sizes of up to 2^31 can be processed. Note that if the chunkSize is large, fewer but larger requests
+         *         will be made and it may be halpful to configure the {@code retryReaderOptions} to allow more retries.
          * @param progressReceiver
          *         {@link IProgressReceiver}
          * @param accessConditions
          *         {@link BlobAccessConditions}
          * @param parallelism
-         *         A {@code int} that indicates the maximum number of blocks to upload in parallel. Must be greater than
-         *         0. May be null to accept default behavior.
+         *         A {@code int} that indicates the maximum number of chunks to download in parallel. Must be greater
+         *         than 0. May be null to accept default behavior.
          * @param retryReaderOptions
          *         {@link RetryReaderOptions}
          */
-        public DownloadFromBlobOptions(Integer blockSize, IProgressReceiver progressReceiver,
+        public DownloadFromBlobOptions(Integer chunkSize, IProgressReceiver progressReceiver,
                 BlobAccessConditions accessConditions, Integer parallelism, RetryReaderOptions retryReaderOptions) {
-            if (blockSize != null) {
-                Utility.assertInBounds("blockSize", blockSize, 1, Long.MAX_VALUE);
-                this.blockSize = blockSize;
+            if (chunkSize != null) {
+                Utility.assertInBounds("chunkSize", chunkSize, 1, Long.MAX_VALUE);
+                this.blockSize = chunkSize;
             } else {
                 this.blockSize = TransferManager.BLOB_DEFAULT_DOWNLOAD_BLOCK_SIZE;
             }
@@ -154,6 +154,7 @@ public class TransferManager {
                 Utility.assertInBounds("parallelism", parallelism, 1, Integer.MAX_VALUE);
                 this.parallelism = parallelism;
             } else {
+                // We chose this to match Go, which followed AWS' default.
                 this.parallelism = 5;
             }
 
@@ -221,6 +222,12 @@ public class TransferManager {
                     // Turn the list into a call to uploadByteBuffersToBlockBlob and return that result.
                     .flatMap(blocks ->
                             uploadByteBuffersToBlockBlob(blocks, blockBlobURL, optionsReal));
+            /*
+            Note that there is no unmap call because Java does not support this operation. The mapping remains valid
+            until the MappedByteBuffer gets GC'ed. We have decided that this is not a deal breaker for this
+            implementation because the MappedByteBuffer objects are small and go out of scope quickly, so they shouldn't
+            linger very long.
+             */
         } catch (IOException e) {
             throw new Error(e);
         }
@@ -237,7 +244,8 @@ public class TransferManager {
     }
 
     /**
-     * Uploads a large ByteBuffer to a block blob in parallel, breaking it up into block-size chunks if necessary.
+     * Uploads a large ByteBuffer to a block blob in parallel, breaking it up into block-size chunks if necessary. This
+     * method will overwrite existing data stored in the blob.
      *
      * @apiNote
      * ## Sample Code \n
@@ -436,7 +444,8 @@ public class TransferManager {
             o.accessConditions = setupPair.getValue();
             /*
             A single MappedByteBuffer can only be of size up to maxInt. It is therefore possible that we will need to
-            use several buffers to get all the data into the file. We want to make as few of these as possible, so
+            use several buffers to get all the data into the file. We want to make as few of these as possible, so we
+            will try to use the entire range as many times as we can.
              */
             int numBuffers = calculateNumBlocks(dataSize, Integer.MAX_VALUE);
 
@@ -556,7 +565,12 @@ public class TransferManager {
                             newConditions = o.accessConditions;
                         }
                         long newCount;
-                        if (r.getCount() == null) {
+                        /*
+                        If the user either didn't specify a count or they specified a count greater than the size of the
+                        remaining data, take the size of the remaining data. This is to prevent the case where the count
+                        is much much larger than the size of the blob and we could try to download at an invalid offset.
+                         */
+                        if (r.getCount() == null) {// || r.getCount() > response.headers().contentLength() - r.getOffset()) {
                             newCount = response.headers().contentLength() - r.getOffset();
                         }
                         else {
