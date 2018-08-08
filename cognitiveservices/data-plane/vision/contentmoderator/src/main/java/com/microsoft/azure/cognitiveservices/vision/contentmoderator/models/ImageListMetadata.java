@@ -8,12 +8,19 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
+import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Image List Metadata.
  */
 public class ImageListMetadata {
+    /**
+     * Unmatched properties from the message are deserialized this collection.
+     */
+    @JsonProperty(value = "")
+    private Map<String, String> additionalProperties;
+
     /**
      * Optional Key value pair to describe your list.
      */
@@ -25,6 +32,26 @@ public class ImageListMetadata {
      */
     @JsonProperty(value = "Key Two")
     private String keyTwo;
+
+    /**
+     * Get unmatched properties from the message are deserialized this collection.
+     *
+     * @return the additionalProperties value
+     */
+    public Map<String, String> additionalProperties() {
+        return this.additionalProperties;
+    }
+
+    /**
+     * Set unmatched properties from the message are deserialized this collection.
+     *
+     * @param additionalProperties the additionalProperties value to set
+     * @return the ImageListMetadata object itself.
+     */
+    public ImageListMetadata withAdditionalProperties(Map<String, String> additionalProperties) {
+        this.additionalProperties = additionalProperties;
+        return this;
+    }
 
     /**
      * Get optional Key value pair to describe your list.
