@@ -38,14 +38,14 @@ public class MetricCriteria {
      * 'GreaterThan', 'GreaterThanOrEqual', 'LessThan', 'LessThanOrEqual'.
      */
     @JsonProperty(value = "operator", required = true)
-    private MetricCriteriaOperator operator;
+    private MetricAlertRuleCondition operator;
 
     /**
      * the criteria time aggregation types. Possible values include: 'Average',
      * 'Minimum', 'Maximum', 'Total'.
      */
     @JsonProperty(value = "timeAggregation", required = true)
-    private MetricCriteriaAggregationType timeAggregation;
+    private MetricAlertRuleAggregationTime timeAggregation;
 
     /**
      * the criteria threshold value that activates the alert.
@@ -124,7 +124,7 @@ public class MetricCriteria {
      *
      * @return the operator value
      */
-    public MetricCriteriaOperator operator() {
+    public MetricAlertRuleCondition operator() {
         return this.operator;
     }
 
@@ -134,7 +134,7 @@ public class MetricCriteria {
      * @param operator the operator value to set
      * @return the MetricCriteria object itself.
      */
-    public MetricCriteria withOperator(MetricCriteriaOperator operator) {
+    public MetricCriteria withOperator(MetricAlertRuleCondition operator) {
         this.operator = operator;
         return this;
     }
@@ -144,7 +144,7 @@ public class MetricCriteria {
      *
      * @return the timeAggregation value
      */
-    public MetricCriteriaAggregationType timeAggregation() {
+    public MetricAlertRuleAggregationTime timeAggregation() {
         return this.timeAggregation;
     }
 
@@ -154,7 +154,7 @@ public class MetricCriteria {
      * @param timeAggregation the timeAggregation value to set
      * @return the MetricCriteria object itself.
      */
-    public MetricCriteria withTimeAggregation(MetricCriteriaAggregationType timeAggregation) {
+    public MetricCriteria withTimeAggregation(MetricAlertRuleAggregationTime timeAggregation) {
         this.timeAggregation = timeAggregation;
         return this;
     }
