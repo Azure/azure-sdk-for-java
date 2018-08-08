@@ -62,6 +62,12 @@ If you would like to become an active contributor to this project please follow 
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
 
+# Previous Versions
+
+| Version | Comments |
+| :-------: | :-------- |
+| [1.0.0](https://github.com/Azure/azure-keyvault-java/tree/v1.0.0)   | Version 1.0.0 release |
+
 # More information
 * [Azure Key Vault Java Documentation](https://docs.microsoft.com/en-us/java/api/overview/azure/keyvault)
 * [What is Key Vault?](https://docs.microsoft.com/en-us/azure/key-vault/key-vault-whatis)
