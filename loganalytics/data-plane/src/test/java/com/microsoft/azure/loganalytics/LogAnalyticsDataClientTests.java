@@ -14,7 +14,7 @@ public class LogAnalyticsDataClientTests {
     protected static LogAnalyticsDataClientImpl logAnalyticsClient;
     
     public void initialize() {
-        ApplicationTokenCredentials credentials = new ApplicationTokenCredentials("997631f8-3a55-4bb2-81b2-c0972b222260", "microsoft.onmicrosoft.com", "Fmvuhf5imWGlA5zQ5jZNmelm5cpcVP85k8ja7BMPgzA=", null);
+        ApplicationTokenCredentials credentials = new ApplicationTokenCredentials("", "", "", null);
         logAnalyticsClient = new LogAnalyticsDataClientImpl(credentials);
     }
 
@@ -32,6 +32,6 @@ public class LogAnalyticsDataClientTests {
         // Check type behavior on results
         Assert.assertTrue(queryResults.tables().get(0).rows().get(0).get(16) instanceof Double);
         Assert.assertNull(queryResults.tables().get(0).rows().get(0).get(15));
-        
+
     }
 }
