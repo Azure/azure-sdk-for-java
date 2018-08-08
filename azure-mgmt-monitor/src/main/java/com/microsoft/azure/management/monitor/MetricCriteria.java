@@ -45,7 +45,7 @@ public class MetricCriteria {
      * 'Minimum', 'Maximum', 'Total'.
      */
     @JsonProperty(value = "timeAggregation", required = true)
-    private MetricAlertRuleAggregationTime timeAggregation;
+    private MetricAlertRuleTimeAggregation timeAggregation;
 
     /**
      * the criteria threshold value that activates the alert.
@@ -144,7 +144,7 @@ public class MetricCriteria {
      *
      * @return the timeAggregation value
      */
-    public MetricAlertRuleAggregationTime timeAggregation() {
+    public MetricAlertRuleTimeAggregation timeAggregation() {
         return this.timeAggregation;
     }
 
@@ -154,7 +154,7 @@ public class MetricCriteria {
      * @param timeAggregation the timeAggregation value to set
      * @return the MetricCriteria object itself.
      */
-    public MetricCriteria withTimeAggregation(MetricAlertRuleAggregationTime timeAggregation) {
+    public MetricCriteria withTimeAggregation(MetricAlertRuleTimeAggregation timeAggregation) {
         this.timeAggregation = timeAggregation;
         return this;
     }
