@@ -80,6 +80,9 @@ final class RealEventHubUtilities {
 
     private void ehCacheCheck(boolean skipIfFakeEH) {
         if (this.hubName == null) {
+        	if (skipIfFakeEH) {
+        		TestUtilities.skipIfAppveyor();
+        	}
         	String rawConnectionString = System.getenv("EVENT_HUB_CONNECTION_STRING");
             if (rawConnectionString == null) {
             	if (skipIfFakeEH) {
