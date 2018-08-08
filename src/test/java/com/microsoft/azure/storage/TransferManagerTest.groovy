@@ -886,7 +886,8 @@ class TransferManagerTest extends APISpec {
         MappedByteBuffer from downloadToFile is GCed, we can't perform those operations. The best workaround is to
         leverage this other comparison function.
          */
-        compareDataToFile(Flowable.just(channel.map(FileChannel.MapMode.READ_ONLY, range.offset, range.count)), outFile)
+        compareDataToFile(
+                Flowable.just(channel.map(FileChannel.MapMode.READ_ONLY, range.getOffset(), range.getCount())), outFile)
         channel.close() == null
         outChannel.close() == null
 
