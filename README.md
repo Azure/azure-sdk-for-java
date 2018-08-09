@@ -26,7 +26,7 @@ You can find sample code that illustrates key vault usage scenarios [here](https
                     <a href="https://github.com/Azure-Samples/key-vault-java-authentication">Authenticating with ADAL through a callback</a>
                 </li>
                 <li>
-                     <a href="https://azure.microsoft.com/en-us/resources/samples/key-vault-java-certificate-authentication/">Authenticating with a .pfx file</a>
+                     <a href="https://github.com/Azure-Samples/key-vault-java-certificate-authentication/">Authenticating with a .pfx file</a>
                 </li>
             </ul>
         </td>
@@ -36,10 +36,10 @@ You can find sample code that illustrates key vault usage scenarios [here](https
         <td>
             <ul>
                 <li>
-                    <a href="https://azure.microsoft.com/en-us/resources/samples/key-vault-java-certificate-authentication/">Creating a vault</a>
+                    <a href="https://github.com/Azure-Samples/key-vault-java-certificate-authentication/">Creating a vault</a>
                 </li>
                 <li>
-                    <a href="https://azure.microsoft.com/en-us/resources/samples/key-vault-java-network-acl/">Creating a vault with access restrictions based on IP and Azure Virtual Networks</a>
+                    <a href="https://github.com/Azure-Samples/key-vault-java-network-acl/">Creating a vault with access restrictions based on IP and Azure Virtual Networks</a>
                 </li>
             </ul>
         </td>
@@ -49,22 +49,23 @@ You can find sample code that illustrates key vault usage scenarios [here](https
         <td>
             <ul>
                 <li>
-                    <a href="https://azure.microsoft.com/en-us/resources/samples/key-vault-java-certificate-authentication/">Putting keys and secrets into a vault</a>
+                    <a href="https://github.com/Azure-Samples/key-vault-java-certificate-authentication
+">Putting keys and secrets into a vault</a>
                 </li>
                 <li>
-                    <a href="https://azure.microsoft.com/en-us/resources/samples/key-vault-java-certificate-authentication/">Signing</a>
+                    <a href="https://github.com/Azure-Samples/key-vault-java-certificate-authentication/">Signing</a>
                 </li>
                 <li>
-                    <a href="https://azure.microsoft.com/en-us/resources/samples/key-vault-java-certificate-authentication/">Verification of signature with both Java Security and Azure Key Vault REST</a>
+                    <a href="https://github.com/Azure-Samples/key-vault-java-certificate-authentication/">Verification of signature with both Java Security and Azure Key Vault REST</a>
                 </li>
                 <li>
-                    <a href="https://azure.microsoft.com/en-us/resources/samples/key-vault-java-certificate-authentication/">Injecting a .pfx file into a VM at deployment using a template</a>
+                    <a href="https://github.com/Azure-Samples/key-vault-java-certificate-authentication/">Injecting a .pfx file into a VM at deployment using a template</a>
                 </li>
                 <li>
-                    <a href="https://azure.microsoft.com/en-us/resources/samples/key-vault-java-recovery/">Using the soft delete and backup restore features</a>
+                    <a href="https://github.com/Azure-Samples/key-vault-java-recovery/">Using the soft delete and backup restore features</a>
                 </li>
                 <li>
-                    <a href="https://azure.microsoft.com/en-us/resources/samples/key-vault-java-recovery/">Managing storage accounts</a>
+                    <a href="https://github.com/Azure-Samples/key-vault-java-recovery/">Managing storage accounts</a>
                 </li>
             </ul>
         </td>
