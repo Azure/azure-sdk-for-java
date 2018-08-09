@@ -112,7 +112,7 @@ public class TransferManager {
         public static final DownloadFromBlobOptions DEFAULT = new DownloadFromBlobOptions(null,
                 null, null, null, null);
 
-        private final int blockSize;
+        private final int chunkSize;
 
         private final IProgressReceiver progressReceiver;
 
@@ -145,9 +145,9 @@ public class TransferManager {
                 BlobAccessConditions accessConditions, Integer parallelism, RetryReaderOptions retryReaderOptions) {
             if (chunkSize != null) {
                 Utility.assertInBounds("chunkSize", chunkSize, 1, Long.MAX_VALUE);
-                this.blockSize = chunkSize;
+                this.chunkSize = chunkSize;
             } else {
-                this.blockSize = TransferManager.BLOB_DEFAULT_DOWNLOAD_BLOCK_SIZE;
+                this.chunkSize = TransferManager.BLOB_DEFAULT_DOWNLOAD_BLOCK_SIZE;
             }
 
             if (parallelism != null) {
@@ -441,7 +441,8 @@ public class TransferManager {
 
         return dataSizeSingle.flatMapCompletable(setupPair -> {
             Long dataSize = setupPair.getKey();
-            o.accessConditions = setupPair.getValue();
+            DownloadFromBlobOptions optionsReal = new DownloadFromBlobOptions(o.chunkSize, o.progressReceiver,
+                    setupPair.getValue(), o.parallelism, o.retryReaderOptionsPerBlock);
             /*
             A single MappedByteBuffer can only be of size up to maxInt. It is therefore possible that we will need to
             use several buffers to get all the data into the file. We want to make as few of these as possible, so we
@@ -458,7 +459,7 @@ public class TransferManager {
 
                         return downloadBlobToBuffer(block, blobURL, new BlobRange(
                                 i * Integer.MAX_VALUE + r.getOffset(),
-                                bufferSizeActual), o)
+                                bufferSizeActual), optionsReal)
                                 .doFinally(block::force);
                     });
         });
@@ -502,7 +503,7 @@ public class TransferManager {
                         "than or equal to the request dataSize of bytes: " + dataSize);
             }
 
-            int numBlocks = calculateNumBlocks(dataSize, o.blockSize);
+            int numBlocks = calculateNumBlocks(dataSize, o.chunkSize);
 
             // For each block, we will download a corresponding part of the blob and write it to the buffer.
             return Observable.range(0, numBlocks)
@@ -512,13 +513,13 @@ public class TransferManager {
                         call dataSize.intValue because if dataSize were a long, it would have exceeded the
                         size of the buffer and thrown above.
                          */
-                        int blockSizeActual = Math.min(o.blockSize, dataSize.intValue() - i * o.blockSize);
+                        int blockSizeActual = Math.min(o.chunkSize, dataSize.intValue() - i * o.chunkSize);
                         ByteBuffer block = buffer.duplicate();
-                        block.position(i * o.blockSize);
-                        block.limit(i * o.blockSize + blockSizeActual);
+                        block.position(i * o.chunkSize);
+                        block.limit(i * o.chunkSize + blockSizeActual);
 
                         // Make the download call.
-                        BlobRange blockRange = new BlobRange(r.getOffset() + (i * o.blockSize),
+                        BlobRange blockRange = new BlobRange(r.getOffset() + (i * o.chunkSize),
                                 (long) blockSizeActual);
                         return blobURL.download(blockRange, realConditions, false)
                                 // Extract the body.
@@ -570,7 +571,7 @@ public class TransferManager {
                         remaining data, take the size of the remaining data. This is to prevent the case where the count
                         is much much larger than the size of the blob and we could try to download at an invalid offset.
                          */
-                        if (r.getCount() == null) {// || r.getCount() > response.headers().contentLength() - r.getOffset()) {
+                        if (r.getCount() == null || r.getCount() > response.headers().contentLength() - r.getOffset()) {
                             newCount = response.headers().contentLength() - r.getOffset();
                         }
                         else {

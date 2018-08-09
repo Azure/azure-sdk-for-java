@@ -7,8 +7,6 @@ import com.microsoft.azure.storage.blob.models.BlockBlobUploadResponse
 import com.microsoft.azure.storage.blob.models.StorageErrorCode
 import com.microsoft.rest.v2.util.FlowableUtil
 import io.reactivex.Flowable
-import io.reactivex.exceptions.OnErrorNotImplementedException
-import io.reactivex.exceptions.UndeliverableException
 import io.reactivex.functions.Action
 import io.reactivex.functions.Consumer
 import spock.lang.Unroll
@@ -835,12 +833,12 @@ class TransferManagerTest extends APISpec {
         outChannel.close() == null
 
         where:
-        file                                  | _
-        getRandomFile(20)                     | _
-        getRandomFile(16 * 1024 * 1024)       | _
+        file                                   | _
+        getRandomFile(20)                      | _
+        getRandomFile(16 * 1024 * 1024)        | _
         getRandomFile(8L * 1026 * 1024 + 10)   | _
         getRandomFile(5L * 1024 * 1024 * 1024) | _
-        getRandomFile(0)                      | _
+        getRandomFile(0)                       | _
     }
 
     def compareFiles(FileChannel channel1, FileChannel channel2) {
@@ -887,16 +885,16 @@ class TransferManagerTest extends APISpec {
         leverage this other comparison function.
          */
         compareDataToFile(
-                Flowable.just(channel.map(FileChannel.MapMode.READ_ONLY, range.getOffset(), range.getCount())), outFile)
+                Flowable.just(channel.map(FileChannel.MapMode.READ_ONLY, range.getOffset(), dataSize)), outFile)
         channel.close() == null
         outChannel.close() == null
 
         where:
-        file                           | range
-        getRandomFile(defaultDataSize) | new BlobRange(0, defaultDataSize)
-        getRandomFile(defaultDataSize) | new BlobRange(1, defaultDataSize - 1)
-        getRandomFile(defaultDataSize) | new BlobRange(0, defaultDataSize - 1)
-        getRandomFile(defaultDataSize) | new BlobRange(0, 10L * 1024 * 1024 * 1024)
+        file                           | range                                      | dataSize
+        getRandomFile(defaultDataSize) | new BlobRange(0, defaultDataSize)          | defaultDataSize
+        getRandomFile(defaultDataSize) | new BlobRange(1, defaultDataSize - 1)      | defaultDataSize - 1
+        getRandomFile(defaultDataSize) | new BlobRange(0, defaultDataSize - 1)      | defaultDataSize - 1
+        getRandomFile(defaultDataSize) | new BlobRange(0, 10L * 1024 * 1024 * 1024) | defaultDataSize
     }
 
     def "Download file count null"() {
@@ -1097,8 +1095,8 @@ class TransferManagerTest extends APISpec {
 
         where:
         parallelism | blockSize
-        0 | 40
-        2 | 0
+        0           | 40
+        2           | 0
     }
 }
 
