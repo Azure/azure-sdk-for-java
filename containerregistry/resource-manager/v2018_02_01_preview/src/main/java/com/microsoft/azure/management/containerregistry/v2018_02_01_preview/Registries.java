@@ -16,6 +16,7 @@ import rx.Observable;
 import com.microsoft.azure.arm.resources.collection.SupportsListingByResourceGroup;
 import com.microsoft.azure.arm.collection.SupportsListing;
 import rx.Completable;
+import com.microsoft.azure.management.containerregistry.v2018_02_01_preview.implementation.RegistryPoliciesInner;
 import com.microsoft.azure.management.containerregistry.v2018_02_01_preview.implementation.RegistriesInner;
 import com.microsoft.azure.arm.model.HasInner;
 
@@ -56,6 +57,17 @@ public interface Registries extends SupportsCreating<Registry.DefinitionStages.B
     Observable<RegistryListCredentialsResult> regenerateCredentialAsync(String resourceGroupName, String registryName, PasswordName name);
 
     /**
+     * Updates the policies for the specified container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param registryPoliciesUpdateParameters The parameters for updating policies of a container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<RegistryPolicies> updatePoliciesAsync(String resourceGroupName, String registryName, RegistryPoliciesInner registryPoliciesUpdateParameters);
+
+    /**
      * Creates a new build based on the request parameters and add it to the build queue.
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
@@ -94,5 +106,15 @@ public interface Registries extends SupportsCreating<Registry.DefinitionStages.B
      * @return the observable for the request
      */
     Observable<RegistryUsageListResult> listUsagesAsync(String resourceGroupName, String registryName);
+
+    /**
+     * Lists the policies for the specified container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<RegistryPolicies> listPoliciesAsync(String resourceGroupName, String registryName);
 
 }
