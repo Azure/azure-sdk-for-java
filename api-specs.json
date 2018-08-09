@@ -3,6 +3,10 @@
     "source": "specification/applicationinsights/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "applicationinsights/data-plane": {
+      "source": "specification/applicationinsights/data-plane/readme.md",
+      "args": "--payload-flattening-threshold=1"
+    },
   "appservice/resource-manager": {
     "source": "specification/web/resource-manager/readme.md",
     "args": "--multiapi --fluent",
