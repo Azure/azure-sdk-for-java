@@ -194,6 +194,10 @@ public class RequestResponseTest extends ApiTestBase {
 
     @Test
     public void testGetRuntimes() throws Exception {
+        testGetRuntimeInfos(TestContext.getConnectionString());
+    }
+
+    public void testGetRuntimeInfos(ConnectionStringBuilder connectionString) throws Exception {
         EventHubClient ehc = EventHubClient.createSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
         EventHubRuntimeInformation ehInfo = ehc.getRuntimeInformation().get();
 
@@ -237,6 +241,13 @@ public class RequestResponseTest extends ApiTestBase {
         }
 
         ehc.closeSync();
+    }
+
+    @Test
+    public void testGetRuntimesWebSockets() throws Exception {
+        ConnectionStringBuilder connectionStringBuilder = TestContext.getConnectionString();
+        connectionStringBuilder.setTransportType(TransportType.AMQP_WEB_SOCKETS);
+        testGetRuntimeInfos(connectionStringBuilder);
     }
 
     @Test

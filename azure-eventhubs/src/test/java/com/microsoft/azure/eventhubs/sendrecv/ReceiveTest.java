@@ -27,8 +27,12 @@ public class ReceiveTest extends ApiTestBase {
     PartitionReceiver datetimeReceiver = null;
 
     @BeforeClass
-    public static void initializeEventHub() throws Exception {
+    public static void initialize() throws Exception {
         final ConnectionStringBuilder connectionString = TestContext.getConnectionString();
+        initializeEventHub(connectionString);
+    }
+
+    public static void initializeEventHub(ConnectionStringBuilder connectionString) throws Exception {
         ehClient = EventHubClient.createSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
         TestBase.pushEventsToPartition(ehClient, partitionId, 25).get();
     }

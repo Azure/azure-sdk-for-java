@@ -17,7 +17,6 @@ import java.time.Instant;
 import java.util.concurrent.ExecutionException;
 
 public class SendLargeMessageTest extends ApiTestBase {
-    static ConnectionStringBuilder connStr;
     static String partitionId = "0";
 
     static EventHubClient ehClient;
@@ -27,8 +26,11 @@ public class SendLargeMessageTest extends ApiTestBase {
     static PartitionReceiver receiver;
 
     @BeforeClass
-    public static void initializeEventHub() throws Exception {
-        connStr = TestContext.getConnectionString();
+    public static void initialize() throws Exception {
+        initializeEventHubClients(TestContext.getConnectionString());
+    }
+
+    public static void initializeEventHubClients(ConnectionStringBuilder connStr) throws Exception {
 
         ehClient = EventHubClient.create(connStr.toString(), TestContext.EXECUTOR_SERVICE).get();
         sender = ehClient.createPartitionSender(partitionId).get();

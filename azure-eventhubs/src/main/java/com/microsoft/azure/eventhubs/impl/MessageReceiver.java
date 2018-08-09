@@ -158,7 +158,7 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                 this.underlyingFactory);
     }
 
-    // @param connection Connection on which the MessageReceiver's receive Amqp link need to be created on.
+    // @param connection Connection on which the MessageReceiver's receive AMQP link need to be created on.
     // Connection has to be associated with Reactor before Creating a receiver on it.
     public static CompletableFuture<MessageReceiver> create(
             final MessagingFactory factory,

@@ -10,6 +10,7 @@ import java.time.Duration;
 
 public final class ClientConstants {
     public final static int AMQPS_PORT = 5671;
+    public final static int HTTPS_PORT = 443;
     public final static int MAX_PARTITION_KEY_LENGTH = 128;
     public final static Symbol SERVER_BUSY_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":server-busy");
     public final static Symbol ARGUMENT_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":argument-error");
@@ -37,7 +38,7 @@ public final class ClientConstants {
     public final static String NO_RETRY = "NoRetry";
     public final static String DEFAULT_RETRY = "Default";
     public final static String PRODUCT_NAME = "MSJavaClient";
-    public final static String CURRENT_JAVACLIENT_VERSION = "1.0.2";
+    public final static String CURRENT_JAVACLIENT_VERSION = "1.1.0-SNAPSHOT";
     public static final String PLATFORM_INFO = getPlatformInfo();
     public static final String FRAMEWORK_INFO = getFrameworkInfo();
     public static final String CBS_ADDRESS = "$cbs";
@@ -74,6 +75,7 @@ public final class ClientConstants {
     public static final String AMQP_REQUEST_FAILED_ERROR = "status-code: %s, status-description: %s";
     public static final String TOKEN_AUDIENCE_FORMAT = "amqp://%s/%s";
     public static final int MAX_RECEIVER_NAME_LENGTH = 64;
+
     /**
      * This is a constant defined to represent the start of a partition stream in EventHub.
      */

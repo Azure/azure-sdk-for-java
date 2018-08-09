@@ -21,7 +21,7 @@ public class FaultInjectingReactorFactory extends MessagingFactory.ReactorFactor
     }
 
     @Override
-    public Reactor create(final ReactorHandler reactorHandler) throws IOException {
+    public Reactor create(final ReactorHandler reactorHandler, final int maxFrameSize) throws IOException {
         final Reactor reactor = Proton.reactor(reactorHandler);
 
         switch (this.faultType) {

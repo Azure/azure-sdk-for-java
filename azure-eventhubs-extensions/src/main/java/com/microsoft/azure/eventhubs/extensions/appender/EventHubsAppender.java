@@ -30,7 +30,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public final class EventHubsAppender extends AbstractAppender {
     private static final int MAX_BATCH_SIZE_BYTES = 200 * 1024;
 
-    // this constant is tuned to use the MaximumAllowedMessageSize(256K) including Amqp-Headers for a LogEvent of 1Char
+    // this constant is tuned to use the MaximumAllowedMessageSize(256K) including AMQP-Headers for a LogEvent of 1Char
     private static final int MAX_BATCH_SIZE = 21312;
     private static final long serialVersionUID = 1L;
 

@@ -33,8 +33,11 @@ public class SendTest extends ApiTestBase {
     List<PartitionReceiver> receivers = new LinkedList<>();
 
     @BeforeClass
-    public static void initializeEventHub() throws Exception {
+    public static void initialize() throws Exception {
         final ConnectionStringBuilder connectionString = TestContext.getConnectionString();
+        initializeEventHub(connectionString);
+    }
+    public static void initializeEventHub(final ConnectionStringBuilder connectionString) throws Exception {
         ehClient = EventHubClient.createSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
     }
 

@@ -7,7 +7,13 @@ package com.microsoft.azure.eventhubs.impl;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
-import org.apache.qpid.proton.engine.*;
+import org.apache.qpid.proton.engine.BaseHandler;
+import org.apache.qpid.proton.engine.Connection;
+import org.apache.qpid.proton.engine.EndpointState;
+import org.apache.qpid.proton.engine.Event;
+import org.apache.qpid.proton.engine.SslDomain;
+import org.apache.qpid.proton.engine.Transport;
+import org.apache.qpid.proton.engine.impl.TransportInternal;
 import org.apache.qpid.proton.reactor.Handshaker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +23,7 @@ import java.util.Map;
 
 // ServiceBus <-> ProtonReactor interaction handles all
 // amqp_connection/transport related events from reactor
-public final class ConnectionHandler extends BaseHandler {
+public class ConnectionHandler extends BaseHandler {
 
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(ConnectionHandler.class);
 
@@ -65,10 +71,23 @@ public final class ConnectionHandler extends BaseHandler {
         connection.open();
     }
 
+    protected void addTransportLayers(final Event event, final TransportInternal transport) {
+    }
+
+    protected int getPort() {
+        return ClientConstants.AMQPS_PORT;
+    }
+
+    protected int getMaxFrameSize() {
+        return AmqpConstants.MAX_FRAME_SIZE;
+    }
+
     @Override
     public void onConnectionBound(Event event) {
 
         final Transport transport = event.getTransport();
+
+        this.addTransportLayers(event, (TransportInternal) transport);
 
         final SslDomain domain = makeDomain(SslDomain.Mode.CLIENT);
         transport.ssl(domain);

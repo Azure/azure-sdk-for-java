@@ -6,13 +6,14 @@
 	
 	<groupId>com.microsoft.azure</groupId>
 	<artifactId>azure-eventhubs-clients</artifactId>
-	<version>1.0.2</version>
+	<version>1.1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	
 	<url>https://github.com/Azure/azure-event-hubs</url>
 	
 	<properties>
-		<proton-j-version>0.25.0</proton-j-version>
+		<proton-j-version>0.28.0</proton-j-version>
+		<qpid-proton-j-extensions-version>1.0.0</qpid-proton-j-extensions-version>
 	  	<junit-version>4.12</junit-version>
 		<slf4j-version>1.8.0-alpha2</slf4j-version>
 	</properties>
@@ -35,22 +36,27 @@
 	</build>
 
 	 <dependencies>
-	 	<dependency>
-	 	    <groupId>org.apache.qpid</groupId>
-	 	    <artifactId>proton-j</artifactId>
-	 	    <version>${proton-j-version}</version>
-	 	</dependency>
-		<dependency>
-			 <groupId>org.slf4j</groupId>
-			 <artifactId>slf4j-api</artifactId>
-			 <version>${slf4j-version}</version>
-		</dependency>
-		<dependency>
-	 	    <groupId>junit</groupId>
-	 	    <artifactId>junit</artifactId>
-	 	    <version>${junit-version}</version>
-	 	    <scope>test</scope>
-		</dependency>
+         <dependency>
+             <groupId>org.apache.qpid</groupId>
+             <artifactId>proton-j</artifactId>
+             <version>${proton-j-version}</version>
+         </dependency>
+         <dependency>
+             <groupId>com.microsoft.azure</groupId>
+             <artifactId>qpid-proton-j-extensions</artifactId>
+             <version>${qpid-proton-j-extensions-version}</version>
+         </dependency>
+         <dependency>
+             <groupId>org.slf4j</groupId>
+             <artifactId>slf4j-api</artifactId>
+             <version>${slf4j-version}</version>
+         </dependency>
+         <dependency>
+             <groupId>junit</groupId>
+             <artifactId>junit</artifactId>
+             <version>${junit-version}</version>
+             <scope>test</scope>
+         </dependency>
 	 </dependencies>
 	
 	 <modules> 

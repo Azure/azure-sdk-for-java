@@ -4,7 +4,9 @@
  */
 package com.microsoft.azure.eventhubs.sendrecv;
 
+import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
 import com.microsoft.azure.eventhubs.EventHubException;
+import com.microsoft.azure.eventhubs.TransportType;
 import com.microsoft.azure.eventhubs.lib.SasTokenTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
 import org.junit.*;
@@ -12,7 +14,7 @@ import org.junit.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
-public class SasTokenSendTest extends SasTokenTestBase {
+public class WebSocketsSendTest extends SasTokenTestBase {
 
     private static SendTest sendTest;
 
@@ -24,7 +26,10 @@ public class SasTokenSendTest extends SasTokenTestBase {
                 && TestContext.getConnectionString().getSasKeyName() == null);
 
         sendTest = new SendTest();
-        SendTest.initializeEventHub(TestContext.getConnectionString());
+
+        ConnectionStringBuilder connectionString = TestContext.getConnectionString();
+        connectionString.setTransportType(TransportType.AMQP_WEB_SOCKETS);
+        SendTest.initializeEventHub(connectionString);
     }
 
     @AfterClass
