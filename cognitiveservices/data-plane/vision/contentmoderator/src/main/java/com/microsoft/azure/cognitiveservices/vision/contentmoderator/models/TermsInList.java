@@ -21,7 +21,7 @@ public class TermsInList {
     private String term;
 
     /**
-     * Get the term value.
+     * Get added term details.
      *
      * @return the term value
      */
@@ -30,7 +30,7 @@ public class TermsInList {
     }
 
     /**
-     * Set the term value.
+     * Set added term details.
      *
      * @param term the term value to set
      * @return the TermsInList object itself.

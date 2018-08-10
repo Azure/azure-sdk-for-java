@@ -40,7 +40,7 @@ public class TermsData {
     private String trackingId;
 
     /**
-     * Get the language value.
+     * Get language of the terms.
      *
      * @return the language value
      */
@@ -49,7 +49,7 @@ public class TermsData {
     }
 
     /**
-     * Set the language value.
+     * Set language of the terms.
      *
      * @param language the language value to set
      * @return the TermsData object itself.
@@ -60,7 +60,7 @@ public class TermsData {
     }
 
     /**
-     * Get the terms value.
+     * Get list of terms.
      *
      * @return the terms value
      */
@@ -69,7 +69,7 @@ public class TermsData {
     }
 
     /**
-     * Set the terms value.
+     * Set list of terms.
      *
      * @param terms the terms value to set
      * @return the TermsData object itself.
@@ -80,7 +80,7 @@ public class TermsData {
     }
 
     /**
-     * Get the status value.
+     * Get term Status.
      *
      * @return the status value
      */
@@ -89,7 +89,7 @@ public class TermsData {
     }
 
     /**
-     * Set the status value.
+     * Set term Status.
      *
      * @param status the status value to set
      * @return the TermsData object itself.
@@ -100,7 +100,7 @@ public class TermsData {
     }
 
     /**
-     * Get the trackingId value.
+     * Get tracking Id.
      *
      * @return the trackingId value
      */
@@ -109,7 +109,7 @@ public class TermsData {
     }
 
     /**
-     * Set the trackingId value.
+     * Set tracking Id.
      *
      * @param trackingId the trackingId value to set
      * @return the TermsData object itself.

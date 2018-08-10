@@ -33,7 +33,7 @@ public class IPA {
     private Integer index;
 
     /**
-     * Get the subType value.
+     * Get subtype of the detected IP Address.
      *
      * @return the subType value
      */
@@ -42,7 +42,7 @@ public class IPA {
     }
 
     /**
-     * Set the subType value.
+     * Set subtype of the detected IP Address.
      *
      * @param subType the subType value to set
      * @return the IPA object itself.
@@ -53,7 +53,7 @@ public class IPA {
     }
 
     /**
-     * Get the text value.
+     * Get detected IP Address.
      *
      * @return the text value
      */
@@ -62,7 +62,7 @@ public class IPA {
     }
 
     /**
-     * Set the text value.
+     * Set detected IP Address.
      *
      * @param text the text value to set
      * @return the IPA object itself.
@@ -73,7 +73,7 @@ public class IPA {
     }
 
     /**
-     * Get the index value.
+     * Get index(Location) of the IP Address in the input text content.
      *
      * @return the index value
      */
@@ -82,7 +82,7 @@ public class IPA {
     }
 
     /**
-     * Set the index value.
+     * Set index(Location) of the IP Address in the input text content.
      *
      * @param index the index value to set
      * @return the IPA object itself.

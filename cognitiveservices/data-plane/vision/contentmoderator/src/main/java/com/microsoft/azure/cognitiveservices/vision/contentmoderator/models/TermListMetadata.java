@@ -8,12 +8,19 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
+import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Term list metadata.
  */
 public class TermListMetadata {
+    /**
+     * Unmatched properties from the message are deserialized this collection.
+     */
+    @JsonProperty(value = "")
+    private Map<String, String> additionalProperties;
+
     /**
      * Optional Key value pair to describe your list.
      */
@@ -27,7 +34,27 @@ public class TermListMetadata {
     private String keyTwo;
 
     /**
-     * Get the keyOne value.
+     * Get unmatched properties from the message are deserialized this collection.
+     *
+     * @return the additionalProperties value
+     */
+    public Map<String, String> additionalProperties() {
+        return this.additionalProperties;
+    }
+
+    /**
+     * Set unmatched properties from the message are deserialized this collection.
+     *
+     * @param additionalProperties the additionalProperties value to set
+     * @return the TermListMetadata object itself.
+     */
+    public TermListMetadata withAdditionalProperties(Map<String, String> additionalProperties) {
+        this.additionalProperties = additionalProperties;
+        return this;
+    }
+
+    /**
+     * Get optional Key value pair to describe your list.
      *
      * @return the keyOne value
      */
@@ -36,7 +63,7 @@ public class TermListMetadata {
     }
 
     /**
-     * Set the keyOne value.
+     * Set optional Key value pair to describe your list.
      *
      * @param keyOne the keyOne value to set
      * @return the TermListMetadata object itself.
@@ -47,7 +74,7 @@ public class TermListMetadata {
     }
 
     /**
-     * Get the keyTwo value.
+     * Get optional Key value pair to describe your list.
      *
      * @return the keyTwo value
      */
@@ -56,7 +83,7 @@ public class TermListMetadata {
     }
 
     /**
-     * Set the keyTwo value.
+     * Set optional Key value pair to describe your list.
      *
      * @param keyTwo the keyTwo value to set
      * @return the TermListMetadata object itself.

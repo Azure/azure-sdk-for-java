@@ -27,7 +27,7 @@ public class SSN {
     private Integer index;
 
     /**
-     * Get the text value.
+     * Get detected SSN in the input text content.
      *
      * @return the text value
      */
@@ -36,7 +36,7 @@ public class SSN {
     }
 
     /**
-     * Set the text value.
+     * Set detected SSN in the input text content.
      *
      * @param text the text value to set
      * @return the SSN object itself.
@@ -47,7 +47,7 @@ public class SSN {
     }
 
     /**
-     * Get the index value.
+     * Get index(Location) of the SSN in the input text content.
      *
      * @return the index value
      */
@@ -56,7 +56,7 @@ public class SSN {
     }
 
     /**
-     * Set the index value.
+     * Set index(Location) of the SSN in the input text content.
      *
      * @param index the index value to set
      * @return the SSN object itself.

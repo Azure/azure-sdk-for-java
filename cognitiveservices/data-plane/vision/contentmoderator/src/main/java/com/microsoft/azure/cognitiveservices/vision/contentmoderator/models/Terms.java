@@ -27,7 +27,7 @@ public class Terms {
     private TermsPaging paging;
 
     /**
-     * Get the data value.
+     * Get term data details.
      *
      * @return the data value
      */
@@ -36,7 +36,7 @@ public class Terms {
     }
 
     /**
-     * Set the data value.
+     * Set term data details.
      *
      * @param data the data value to set
      * @return the Terms object itself.
@@ -47,7 +47,7 @@ public class Terms {
     }
 
     /**
-     * Get the paging value.
+     * Get paging details.
      *
      * @return the paging value
      */
@@ -56,7 +56,7 @@ public class Terms {
     }
 
     /**
-     * Set the paging value.
+     * Set paging details.
      *
      * @param paging the paging value to set
      * @return the Terms object itself.

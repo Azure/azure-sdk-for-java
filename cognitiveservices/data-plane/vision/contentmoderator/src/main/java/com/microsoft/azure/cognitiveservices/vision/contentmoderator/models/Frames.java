@@ -28,7 +28,7 @@ public class Frames {
     private List<Frame> videoFrames;
 
     /**
-     * Get the reviewId value.
+     * Get id of the review.
      *
      * @return the reviewId value
      */
@@ -37,7 +37,7 @@ public class Frames {
     }
 
     /**
-     * Set the reviewId value.
+     * Set id of the review.
      *
      * @param reviewId the reviewId value to set
      * @return the Frames object itself.

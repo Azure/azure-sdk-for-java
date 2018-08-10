@@ -40,7 +40,7 @@ public class VideoFrameBodyItem {
     private List<VideoFrameBodyItemMetadataItem> metadata;
 
     /**
-     * Get the timestamp value.
+     * Get timestamp of the frame.
      *
      * @return the timestamp value
      */
@@ -49,7 +49,7 @@ public class VideoFrameBodyItem {
     }
 
     /**
-     * Set the timestamp value.
+     * Set timestamp of the frame.
      *
      * @param timestamp the timestamp value to set
      * @return the VideoFrameBodyItem object itself.
@@ -60,7 +60,7 @@ public class VideoFrameBodyItem {
     }
 
     /**
-     * Get the frameImage value.
+     * Get content to review.
      *
      * @return the frameImage value
      */
@@ -69,7 +69,7 @@ public class VideoFrameBodyItem {
     }
 
     /**
-     * Set the frameImage value.
+     * Set content to review.
      *
      * @param frameImage the frameImage value to set
      * @return the VideoFrameBodyItem object itself.
@@ -100,7 +100,7 @@ public class VideoFrameBodyItem {
     }
 
     /**
-     * Get the metadata value.
+     * Get optional metadata details.
      *
      * @return the metadata value
      */
@@ -109,7 +109,7 @@ public class VideoFrameBodyItem {
     }
 
     /**
-     * Set the metadata value.
+     * Set optional metadata details.
      *
      * @param metadata the metadata value to set
      * @return the VideoFrameBodyItem object itself.

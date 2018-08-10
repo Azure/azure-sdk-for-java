@@ -46,7 +46,7 @@ public class CreateReviewBodyItem {
     private List<CreateReviewBodyItemMetadataItem> metadata;
 
     /**
-     * Get the type value.
+     * Get type of the content. Possible values include: 'Image', 'Text'.
      *
      * @return the type value
      */
@@ -55,7 +55,7 @@ public class CreateReviewBodyItem {
     }
 
     /**
-     * Set the type value.
+     * Set type of the content. Possible values include: 'Image', 'Text'.
      *
      * @param type the type value to set
      * @return the CreateReviewBodyItem object itself.
@@ -66,7 +66,7 @@ public class CreateReviewBodyItem {
     }
 
     /**
-     * Get the content value.
+     * Get content to review.
      *
      * @return the content value
      */
@@ -75,7 +75,7 @@ public class CreateReviewBodyItem {
     }
 
     /**
-     * Set the content value.
+     * Set content to review.
      *
      * @param content the content value to set
      * @return the CreateReviewBodyItem object itself.
@@ -86,7 +86,7 @@ public class CreateReviewBodyItem {
     }
 
     /**
-     * Get the contentId value.
+     * Get content Identifier.
      *
      * @return the contentId value
      */
@@ -95,7 +95,7 @@ public class CreateReviewBodyItem {
     }
 
     /**
-     * Set the contentId value.
+     * Set content Identifier.
      *
      * @param contentId the contentId value to set
      * @return the CreateReviewBodyItem object itself.
@@ -106,7 +106,7 @@ public class CreateReviewBodyItem {
     }
 
     /**
-     * Get the callbackEndpoint value.
+     * Get optional CallbackEndpoint.
      *
      * @return the callbackEndpoint value
      */
@@ -115,7 +115,7 @@ public class CreateReviewBodyItem {
     }
 
     /**
-     * Set the callbackEndpoint value.
+     * Set optional CallbackEndpoint.
      *
      * @param callbackEndpoint the callbackEndpoint value to set
      * @return the CreateReviewBodyItem object itself.
@@ -126,7 +126,7 @@ public class CreateReviewBodyItem {
     }
 
     /**
-     * Get the metadata value.
+     * Get optional metadata details.
      *
      * @return the metadata value
      */
@@ -135,7 +135,7 @@ public class CreateReviewBodyItem {
     }
 
     /**
-     * Set the metadata value.
+     * Set optional metadata details.
      *
      * @param metadata the metadata value to set
      * @return the CreateReviewBodyItem object itself.

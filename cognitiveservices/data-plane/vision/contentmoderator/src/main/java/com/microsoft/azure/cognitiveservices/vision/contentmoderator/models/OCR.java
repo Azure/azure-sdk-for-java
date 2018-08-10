@@ -58,7 +58,7 @@ public class OCR {
     private List<Candidate> candidates;
 
     /**
-     * Get the status value.
+     * Get the evaluate status.
      *
      * @return the status value
      */
@@ -67,7 +67,7 @@ public class OCR {
     }
 
     /**
-     * Set the status value.
+     * Set the evaluate status.
      *
      * @param status the status value to set
      * @return the OCR object itself.
@@ -78,7 +78,7 @@ public class OCR {
     }
 
     /**
-     * Get the metadata value.
+     * Get array of KeyValue.
      *
      * @return the metadata value
      */
@@ -87,7 +87,7 @@ public class OCR {
     }
 
     /**
-     * Set the metadata value.
+     * Set array of KeyValue.
      *
      * @param metadata the metadata value to set
      * @return the OCR object itself.
@@ -98,7 +98,7 @@ public class OCR {
     }
 
     /**
-     * Get the trackingId value.
+     * Get the tracking id.
      *
      * @return the trackingId value
      */
@@ -107,7 +107,7 @@ public class OCR {
     }
 
     /**
-     * Set the trackingId value.
+     * Set the tracking id.
      *
      * @param trackingId the trackingId value to set
      * @return the OCR object itself.
@@ -118,7 +118,7 @@ public class OCR {
     }
 
     /**
-     * Get the cacheId value.
+     * Get the cache id.
      *
      * @return the cacheId value
      */
@@ -127,7 +127,7 @@ public class OCR {
     }
 
     /**
-     * Set the cacheId value.
+     * Set the cache id.
      *
      * @param cacheId the cacheId value to set
      * @return the OCR object itself.
@@ -138,7 +138,7 @@ public class OCR {
     }
 
     /**
-     * Get the language value.
+     * Get the ISO 639-3 code.
      *
      * @return the language value
      */
@@ -147,7 +147,7 @@ public class OCR {
     }
 
     /**
-     * Set the language value.
+     * Set the ISO 639-3 code.
      *
      * @param language the language value to set
      * @return the OCR object itself.
@@ -158,7 +158,7 @@ public class OCR {
     }
 
     /**
-     * Get the text value.
+     * Get the found text.
      *
      * @return the text value
      */
@@ -167,7 +167,7 @@ public class OCR {
     }
 
     /**
-     * Set the text value.
+     * Set the found text.
      *
      * @param text the text value to set
      * @return the OCR object itself.
@@ -178,7 +178,7 @@ public class OCR {
     }
 
     /**
-     * Get the candidates value.
+     * Get the list of candidate text.
      *
      * @return the candidates value
      */
@@ -187,7 +187,7 @@ public class OCR {
     }
 
     /**
-     * Set the candidates value.
+     * Set the list of candidate text.
      *
      * @param candidates the candidates value to set
      * @return the OCR object itself.

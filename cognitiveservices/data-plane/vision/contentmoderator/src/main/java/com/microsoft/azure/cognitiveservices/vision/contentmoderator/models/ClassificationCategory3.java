@@ -23,7 +23,7 @@ public class ClassificationCategory3 {
     private Double score;
 
     /**
-     * Get the score value.
+     * Get the category3 score.
      *
      * @return the score value
      */
@@ -32,7 +32,7 @@ public class ClassificationCategory3 {
     }
 
     /**
-     * Set the score value.
+     * Set the category3 score.
      *
      * @param score the score value to set
      * @return the ClassificationCategory3 object itself.

@@ -27,7 +27,7 @@ public class Address {
     private Integer index;
 
     /**
-     * Get the text value.
+     * Get detected Address.
      *
      * @return the text value
      */
@@ -36,7 +36,7 @@ public class Address {
     }
 
     /**
-     * Set the text value.
+     * Set detected Address.
      *
      * @param text the text value to set
      * @return the Address object itself.
@@ -47,7 +47,7 @@ public class Address {
     }
 
     /**
-     * Get the index value.
+     * Get index(Location) of the Address in the input text content.
      *
      * @return the index value
      */
@@ -56,7 +56,7 @@ public class Address {
     }
 
     /**
-     * Set the index value.
+     * Set index(Location) of the Address in the input text content.
      *
      * @param index the index value to set
      * @return the Address object itself.

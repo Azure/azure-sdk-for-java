@@ -40,7 +40,7 @@ public class Frame {
     private List<Tag> reviewerResultTags;
 
     /**
-     * Get the timestamp value.
+     * Get timestamp of the frame.
      *
      * @return the timestamp value
      */
@@ -49,7 +49,7 @@ public class Frame {
     }
 
     /**
-     * Set the timestamp value.
+     * Set timestamp of the frame.
      *
      * @param timestamp the timestamp value to set
      * @return the Frame object itself.
@@ -60,7 +60,7 @@ public class Frame {
     }
 
     /**
-     * Get the frameImage value.
+     * Get frame image.
      *
      * @return the frameImage value
      */
@@ -69,7 +69,7 @@ public class Frame {
     }
 
     /**
-     * Set the frameImage value.
+     * Set frame image.
      *
      * @param frameImage the frameImage value to set
      * @return the Frame object itself.
@@ -80,7 +80,7 @@ public class Frame {
     }
 
     /**
-     * Get the metadata value.
+     * Get array of KeyValue.
      *
      * @return the metadata value
      */
@@ -89,7 +89,7 @@ public class Frame {
     }
 
     /**
-     * Set the metadata value.
+     * Set array of KeyValue.
      *
      * @param metadata the metadata value to set
      * @return the Frame object itself.
@@ -100,7 +100,7 @@ public class Frame {
     }
 
     /**
-     * Get the reviewerResultTags value.
+     * Get reviewer result tags.
      *
      * @return the reviewerResultTags value
      */
@@ -109,7 +109,7 @@ public class Frame {
     }
 
     /**
-     * Set the reviewerResultTags value.
+     * Set reviewer result tags.
      *
      * @param reviewerResultTags the reviewerResultTags value to set
      * @return the Frame object itself.

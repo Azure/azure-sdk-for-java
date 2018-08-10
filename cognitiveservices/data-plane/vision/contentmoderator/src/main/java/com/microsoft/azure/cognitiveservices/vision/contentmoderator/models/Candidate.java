@@ -27,7 +27,7 @@ public class Candidate {
     private Double confidence;
 
     /**
-     * Get the text value.
+     * Get the text found.
      *
      * @return the text value
      */
@@ -36,7 +36,7 @@ public class Candidate {
     }
 
     /**
-     * Set the text value.
+     * Set the text found.
      *
      * @param text the text value to set
      * @return the Candidate object itself.
@@ -47,7 +47,7 @@ public class Candidate {
     }
 
     /**
-     * Get the confidence value.
+     * Get the confidence level.
      *
      * @return the confidence value
      */
@@ -56,7 +56,7 @@ public class Candidate {
     }
 
     /**
-     * Set the confidence value.
+     * Set the confidence level.
      *
      * @param confidence the confidence value to set
      * @return the Candidate object itself.

@@ -39,7 +39,7 @@ public class TermsPaging {
     private Integer returned;
 
     /**
-     * Get the total value.
+     * Get total details.
      *
      * @return the total value
      */
@@ -48,7 +48,7 @@ public class TermsPaging {
     }
 
     /**
-     * Set the total value.
+     * Set total details.
      *
      * @param total the total value to set
      * @return the TermsPaging object itself.
@@ -59,7 +59,7 @@ public class TermsPaging {
     }
 
     /**
-     * Get the limit value.
+     * Get limit details.
      *
      * @return the limit value
      */
@@ -68,7 +68,7 @@ public class TermsPaging {
     }
 
     /**
-     * Set the limit value.
+     * Set limit details.
      *
      * @param limit the limit value to set
      * @return the TermsPaging object itself.
@@ -79,7 +79,7 @@ public class TermsPaging {
     }
 
     /**
-     * Get the offset value.
+     * Get offset details.
      *
      * @return the offset value
      */
@@ -88,7 +88,7 @@ public class TermsPaging {
     }
 
     /**
-     * Set the offset value.
+     * Set offset details.
      *
      * @param offset the offset value to set
      * @return the TermsPaging object itself.
@@ -99,7 +99,7 @@ public class TermsPaging {
     }
 
     /**
-     * Get the returned value.
+     * Get returned text details.
      *
      * @return the returned value
      */
@@ -108,7 +108,7 @@ public class TermsPaging {
     }
 
     /**
-     * Set the returned value.
+     * Set returned text details.
      *
      * @param returned the returned value to set
      * @return the TermsPaging object itself.

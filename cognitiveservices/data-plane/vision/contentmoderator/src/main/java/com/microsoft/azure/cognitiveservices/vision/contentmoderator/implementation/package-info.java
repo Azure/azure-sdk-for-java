@@ -10,11 +10,5 @@
  When using the API, images need to have a minimum of 128 pixels and a maximum file size of 4MB.
  Text can be at most 1024 characters long.
  If the content passed to the text API or the image API exceeds the size limits, the API will return an error code that informs about the issue.
- This API is currently available in:
- * West US - westus.api.cognitive.microsoft.com
- * East US 2 - eastus2.api.cognitive.microsoft.com
- * West Central US - westcentralus.api.cognitive.microsoft.com
- * West Europe - westeurope.api.cognitive.microsoft.com
- * Southeast Asia - southeastasia.api.cognitive.microsoft.com .
  */
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.implementation;

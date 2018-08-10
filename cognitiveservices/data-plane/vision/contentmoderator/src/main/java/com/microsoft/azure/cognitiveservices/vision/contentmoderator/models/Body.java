@@ -11,55 +11,29 @@ package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Image List Properties.
+ * The Body model.
  */
-public class ImageList {
+public class Body {
     /**
-     * Image List Id.
-     */
-    @JsonProperty(value = "Id")
-    private Integer id;
-
-    /**
-     * Image List Name.
+     * Name of the list.
      */
     @JsonProperty(value = "Name")
     private String name;
 
     /**
-     * Description for image list.
+     * Description of the list.
      */
     @JsonProperty(value = "Description")
     private String description;
 
     /**
-     * Image List Metadata.
+     * Metadata of the list.
      */
     @JsonProperty(value = "Metadata")
-    private ImageListMetadata metadata;
+    private BodyMetadata metadata;
 
     /**
-     * Get image List Id.
-     *
-     * @return the id value
-     */
-    public Integer id() {
-        return this.id;
-    }
-
-    /**
-     * Set image List Id.
-     *
-     * @param id the id value to set
-     * @return the ImageList object itself.
-     */
-    public ImageList withId(Integer id) {
-        this.id = id;
-        return this;
-    }
-
-    /**
-     * Get image List Name.
+     * Get name of the list.
      *
      * @return the name value
      */
@@ -68,18 +42,18 @@ public class ImageList {
     }
 
     /**
-     * Set image List Name.
+     * Set name of the list.
      *
      * @param name the name value to set
-     * @return the ImageList object itself.
+     * @return the Body object itself.
      */
-    public ImageList withName(String name) {
+    public Body withName(String name) {
         this.name = name;
         return this;
     }
 
     /**
-     * Get description for image list.
+     * Get description of the list.
      *
      * @return the description value
      */
@@ -88,32 +62,32 @@ public class ImageList {
     }
 
     /**
-     * Set description for image list.
+     * Set description of the list.
      *
      * @param description the description value to set
-     * @return the ImageList object itself.
+     * @return the Body object itself.
      */
-    public ImageList withDescription(String description) {
+    public Body withDescription(String description) {
         this.description = description;
         return this;
     }
 
     /**
-     * Get image List Metadata.
+     * Get metadata of the list.
      *
      * @return the metadata value
      */
-    public ImageListMetadata metadata() {
+    public BodyMetadata metadata() {
         return this.metadata;
     }
 
     /**
-     * Set image List Metadata.
+     * Set metadata of the list.
      *
      * @param metadata the metadata value to set
-     * @return the ImageList object itself.
+     * @return the Body object itself.
      */
-    public ImageList withMetadata(ImageListMetadata metadata) {
+    public Body withMetadata(BodyMetadata metadata) {
         this.metadata = metadata;
         return this;
     }

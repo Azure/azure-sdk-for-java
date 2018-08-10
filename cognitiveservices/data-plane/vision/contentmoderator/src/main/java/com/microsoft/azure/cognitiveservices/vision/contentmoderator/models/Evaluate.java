@@ -70,7 +70,7 @@ public class Evaluate {
     private Status status;
 
     /**
-     * Get the cacheID value.
+     * Get the cache id.
      *
      * @return the cacheID value
      */
@@ -79,7 +79,7 @@ public class Evaluate {
     }
 
     /**
-     * Set the cacheID value.
+     * Set the cache id.
      *
      * @param cacheID the cacheID value to set
      * @return the Evaluate object itself.
@@ -90,7 +90,7 @@ public class Evaluate {
     }
 
     /**
-     * Get the result value.
+     * Get evaluate result.
      *
      * @return the result value
      */
@@ -99,7 +99,7 @@ public class Evaluate {
     }
 
     /**
-     * Set the result value.
+     * Set evaluate result.
      *
      * @param result the result value to set
      * @return the Evaluate object itself.
@@ -110,7 +110,7 @@ public class Evaluate {
     }
 
     /**
-     * Get the trackingId value.
+     * Get the tracking id.
      *
      * @return the trackingId value
      */
@@ -119,7 +119,7 @@ public class Evaluate {
     }
 
     /**
-     * Set the trackingId value.
+     * Set the tracking id.
      *
      * @param trackingId the trackingId value to set
      * @return the Evaluate object itself.
@@ -130,7 +130,7 @@ public class Evaluate {
     }
 
     /**
-     * Get the adultClassificationScore value.
+     * Get the adult classification score.
      *
      * @return the adultClassificationScore value
      */
@@ -139,7 +139,7 @@ public class Evaluate {
     }
 
     /**
-     * Set the adultClassificationScore value.
+     * Set the adult classification score.
      *
      * @param adultClassificationScore the adultClassificationScore value to set
      * @return the Evaluate object itself.
@@ -150,7 +150,7 @@ public class Evaluate {
     }
 
     /**
-     * Get the isImageAdultClassified value.
+     * Get indicates if an image is classified as adult.
      *
      * @return the isImageAdultClassified value
      */
@@ -159,7 +159,7 @@ public class Evaluate {
     }
 
     /**
-     * Set the isImageAdultClassified value.
+     * Set indicates if an image is classified as adult.
      *
      * @param isImageAdultClassified the isImageAdultClassified value to set
      * @return the Evaluate object itself.
@@ -170,7 +170,7 @@ public class Evaluate {
     }
 
     /**
-     * Get the racyClassificationScore value.
+     * Get the racy classication score.
      *
      * @return the racyClassificationScore value
      */
@@ -179,7 +179,7 @@ public class Evaluate {
     }
 
     /**
-     * Set the racyClassificationScore value.
+     * Set the racy classication score.
      *
      * @param racyClassificationScore the racyClassificationScore value to set
      * @return the Evaluate object itself.
@@ -190,7 +190,7 @@ public class Evaluate {
     }
 
     /**
-     * Get the isImageRacyClassified value.
+     * Get indicates if the image is classified as racy.
      *
      * @return the isImageRacyClassified value
      */
@@ -199,7 +199,7 @@ public class Evaluate {
     }
 
     /**
-     * Set the isImageRacyClassified value.
+     * Set indicates if the image is classified as racy.
      *
      * @param isImageRacyClassified the isImageRacyClassified value to set
      * @return the Evaluate object itself.
@@ -210,7 +210,7 @@ public class Evaluate {
     }
 
     /**
-     * Get the advancedInfo value.
+     * Get the advanced info.
      *
      * @return the advancedInfo value
      */
@@ -219,7 +219,7 @@ public class Evaluate {
     }
 
     /**
-     * Set the advancedInfo value.
+     * Set the advanced info.
      *
      * @param advancedInfo the advancedInfo value to set
      * @return the Evaluate object itself.
@@ -230,7 +230,7 @@ public class Evaluate {
     }
 
     /**
-     * Get the status value.
+     * Get the evaluate status.
      *
      * @return the status value
      */
@@ -239,7 +239,7 @@ public class Evaluate {
     }
 
     /**
-     * Set the status value.
+     * Set the evaluate status.
      *
      * @param status the status value to set
      * @return the Evaluate object itself.

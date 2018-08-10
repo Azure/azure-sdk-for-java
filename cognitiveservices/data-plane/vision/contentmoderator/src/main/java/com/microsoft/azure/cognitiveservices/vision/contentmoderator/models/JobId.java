@@ -21,7 +21,7 @@ public class JobId {
     private String jobId;
 
     /**
-     * Get the jobId value.
+     * Get id of the created job.
      *
      * @return the jobId value
      */
@@ -30,7 +30,7 @@ public class JobId {
     }
 
     /**
-     * Set the jobId value.
+     * Set id of the created job.
      *
      * @param jobId the jobId value to set
      * @return the JobId object itself.

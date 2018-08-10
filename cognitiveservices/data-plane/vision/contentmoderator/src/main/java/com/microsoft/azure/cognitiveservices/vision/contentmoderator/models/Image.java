@@ -40,7 +40,7 @@ public class Image {
     private String trackingId;
 
     /**
-     * Get the contentId value.
+     * Get content Id.
      *
      * @return the contentId value
      */
@@ -49,7 +49,7 @@ public class Image {
     }
 
     /**
-     * Set the contentId value.
+     * Set content Id.
      *
      * @param contentId the contentId value to set
      * @return the Image object itself.
@@ -60,7 +60,7 @@ public class Image {
     }
 
     /**
-     * Get the additionalInfo value.
+     * Get advanced info list.
      *
      * @return the additionalInfo value
      */
@@ -69,7 +69,7 @@ public class Image {
     }
 
     /**
-     * Set the additionalInfo value.
+     * Set advanced info list.
      *
      * @param additionalInfo the additionalInfo value to set
      * @return the Image object itself.
@@ -80,7 +80,7 @@ public class Image {
     }
 
     /**
-     * Get the status value.
+     * Get status details.
      *
      * @return the status value
      */
@@ -89,7 +89,7 @@ public class Image {
     }
 
     /**
-     * Set the status value.
+     * Set status details.
      *
      * @param status the status value to set
      * @return the Image object itself.
@@ -100,7 +100,7 @@ public class Image {
     }
 
     /**
-     * Get the trackingId value.
+     * Get tracking Id.
      *
      * @return the trackingId value
      */
@@ -109,7 +109,7 @@ public class Image {
     }
 
     /**
-     * Set the trackingId value.
+     * Set tracking Id.
      *
      * @param trackingId the trackingId value to set
      * @return the Image object itself.
