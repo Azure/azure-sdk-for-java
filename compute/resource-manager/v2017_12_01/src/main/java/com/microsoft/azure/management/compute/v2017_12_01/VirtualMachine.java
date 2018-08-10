@@ -10,16 +10,16 @@ package com.microsoft.azure.management.compute.v2017_12_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.Resource;
+import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
 import com.microsoft.azure.arm.resources.models.HasResourceGroup;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
-import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.compute.v2017_12_01.implementation.ComputeManager;
 import com.microsoft.azure.SubResource;
-import com.microsoft.azure.management.compute.v2017_12_01.implementation.VirtualMachineInstanceViewInner;
+import com.microsoft.azure.management.compute.v2017_12_01.implementation.VirtualMachineScaleSetVMInstanceViewInner;
 import java.util.List;
 import com.microsoft.azure.management.compute.v2017_12_01.implementation.VirtualMachineInner;
 
@@ -50,7 +50,7 @@ public interface VirtualMachine extends HasInner<VirtualMachineInner>, Resource,
     /**
      * @return the instanceView value.
      */
-    VirtualMachineInstanceView instanceView();
+    VirtualMachineScaleSetVMInstanceView instanceView();
 
     /**
      * @return the licenseType value.

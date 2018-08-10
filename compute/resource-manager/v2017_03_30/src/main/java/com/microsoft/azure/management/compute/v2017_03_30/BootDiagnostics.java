@@ -32,7 +32,7 @@ public class BootDiagnostics {
     private String storageUri;
 
     /**
-     * Get the enabled value.
+     * Get whether boot diagnostics should be enabled on the Virtual Machine.
      *
      * @return the enabled value
      */
@@ -41,7 +41,7 @@ public class BootDiagnostics {
     }
 
     /**
-     * Set the enabled value.
+     * Set whether boot diagnostics should be enabled on the Virtual Machine.
      *
      * @param enabled the enabled value to set
      * @return the BootDiagnostics object itself.
@@ -52,7 +52,7 @@ public class BootDiagnostics {
     }
 
     /**
-     * Get the storageUri value.
+     * Get uri of the storage account to use for placing the console output and screenshot.
      *
      * @return the storageUri value
      */
@@ -61,7 +61,7 @@ public class BootDiagnostics {
     }
 
     /**
-     * Set the storageUri value.
+     * Set uri of the storage account to use for placing the console output and screenshot.
      *
      * @param storageUri the storageUri value to set
      * @return the BootDiagnostics object itself.

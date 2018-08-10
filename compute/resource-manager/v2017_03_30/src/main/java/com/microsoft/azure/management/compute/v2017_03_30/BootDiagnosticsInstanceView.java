@@ -27,7 +27,7 @@ public class BootDiagnosticsInstanceView {
     private String serialConsoleLogBlobUri;
 
     /**
-     * Get the consoleScreenshotBlobUri value.
+     * Get the console screenshot blob URI.
      *
      * @return the consoleScreenshotBlobUri value
      */
@@ -36,7 +36,7 @@ public class BootDiagnosticsInstanceView {
     }
 
     /**
-     * Set the consoleScreenshotBlobUri value.
+     * Set the console screenshot blob URI.
      *
      * @param consoleScreenshotBlobUri the consoleScreenshotBlobUri value to set
      * @return the BootDiagnosticsInstanceView object itself.
@@ -47,7 +47,7 @@ public class BootDiagnosticsInstanceView {
     }
 
     /**
-     * Get the serialConsoleLogBlobUri value.
+     * Get the Linux serial console log blob Uri.
      *
      * @return the serialConsoleLogBlobUri value
      */
@@ -56,7 +56,7 @@ public class BootDiagnosticsInstanceView {
     }
 
     /**
-     * Set the serialConsoleLogBlobUri value.
+     * Set the Linux serial console log blob Uri.
      *
      * @param serialConsoleLogBlobUri the serialConsoleLogBlobUri value to set
      * @return the BootDiagnosticsInstanceView object itself.
