@@ -260,47 +260,4 @@ public interface Events {
      */
     Observable<ServiceResponse<EventsResults>> getWithServiceResponseAsync(String appId, EventType eventType, String eventId, String timespan);
 
-    /**
-     * Get OData metadata.
-     * Gets OData EDMX metadata describing the event data model.
-     *
-     * @param appId ID of the application. This is Application ID from the API Access settings blade in the Azure portal.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the Object object if successful.
-     */
-    Object getOdataMetadata(String appId);
-
-    /**
-     * Get OData metadata.
-     * Gets OData EDMX metadata describing the event data model.
-     *
-     * @param appId ID of the application. This is Application ID from the API Access settings blade in the Azure portal.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<Object> getOdataMetadataAsync(String appId, final ServiceCallback<Object> serviceCallback);
-
-    /**
-     * Get OData metadata.
-     * Gets OData EDMX metadata describing the event data model.
-     *
-     * @param appId ID of the application. This is Application ID from the API Access settings blade in the Azure portal.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Object object
-     */
-    Observable<Object> getOdataMetadataAsync(String appId);
-
-    /**
-     * Get OData metadata.
-     * Gets OData EDMX metadata describing the event data model.
-     *
-     * @param appId ID of the application. This is Application ID from the API Access settings blade in the Azure portal.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Object object
-     */
-    Observable<ServiceResponse<Object>> getOdataMetadataWithServiceResponseAsync(String appId);
-
 }

@@ -62,10 +62,6 @@ public class EventsImpl implements Events {
         @GET("apps/{appId}/events/{eventType}/{eventId}")
         Observable<Response<ResponseBody>> get(@Path("appId") String appId, @Path("eventType") EventType eventType1, @Path("eventId") String eventId, @Query("timespan") String timespan, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.applicationinsights.query.Events getOdataMetadata" })
-        @GET("apps/{appId}/events/$metadata")
-        Observable<Response<ResponseBody>> getOdataMetadata(@Path("appId") String appId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
     }
 
     /**
@@ -455,83 +451,6 @@ public class EventsImpl implements Events {
     private ServiceResponse<EventsResults> getDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<EventsResults, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<EventsResults>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
-    }
-
-    /**
-     * Get OData metadata.
-     * Gets OData EDMX metadata describing the event data model.
-     *
-     * @param appId ID of the application. This is Application ID from the API Access settings blade in the Azure portal.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the Object object if successful.
-     */
-    public Object getOdataMetadata(String appId) {
-        return getOdataMetadataWithServiceResponseAsync(appId).toBlocking().single().body();
-    }
-
-    /**
-     * Get OData metadata.
-     * Gets OData EDMX metadata describing the event data model.
-     *
-     * @param appId ID of the application. This is Application ID from the API Access settings blade in the Azure portal.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<Object> getOdataMetadataAsync(String appId, final ServiceCallback<Object> serviceCallback) {
-        return ServiceFuture.fromResponse(getOdataMetadataWithServiceResponseAsync(appId), serviceCallback);
-    }
-
-    /**
-     * Get OData metadata.
-     * Gets OData EDMX metadata describing the event data model.
-     *
-     * @param appId ID of the application. This is Application ID from the API Access settings blade in the Azure portal.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Object object
-     */
-    public Observable<Object> getOdataMetadataAsync(String appId) {
-        return getOdataMetadataWithServiceResponseAsync(appId).map(new Func1<ServiceResponse<Object>, Object>() {
-            @Override
-            public Object call(ServiceResponse<Object> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Get OData metadata.
-     * Gets OData EDMX metadata describing the event data model.
-     *
-     * @param appId ID of the application. This is Application ID from the API Access settings blade in the Azure portal.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Object object
-     */
-    public Observable<ServiceResponse<Object>> getOdataMetadataWithServiceResponseAsync(String appId) {
-        if (appId == null) {
-            throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
-        }
-        return service.getOdataMetadata(appId, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
-                @Override
-                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Object> clientResponse = getOdataMetadataDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<Object> getOdataMetadataDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Object, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }
