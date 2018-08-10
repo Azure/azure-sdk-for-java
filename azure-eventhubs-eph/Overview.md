@@ -141,10 +141,14 @@ final String namespaceName = "---ServiceBusNamespaceName---";
 final String eventHubName = "---EventHubName---";
 final String sasKeyName = "---SharedAccessSignatureKeyName---";
 final String sasKey = "---SharedAccessSignatureKey---";
-ConnectionStringBuilder eventHubConnectionString = new ConnectionStringBuilder(namespaceName, eventHubName, sasKeyName, sasKey);
+ConnectionStringBuilder eventHubConnectionString = new ConnectionStringBuilder()
+                .setNamespaceName(namespaceName)
+                .setEventHubName(eventHubName)
+                .setSasKeyName(sasKeyName)
+                .setSasKey(sasKey);
 
 final String hostname = EventProcessorHost.createHostName("examplehost"); // createHostName adds a UUID to make a unique host name
-final String consumerGroupName = EventHubClient.DEFAULT\_CONSUMER\_GROUP_NAME; // or any consumer group you have created
+final String consumerGroupName = EventHubClient.DEFAULT_CONSUMER_GROUP_NAME; // or any consumer group you have created
 final String storageConnectionString = "---YouCanGetTheConnectionStringForAStorageAccountFromPortal---";
 final String storageContainerName = "---StorageContainerName---";
 EventProcessorHost host = new EventProcessorHost(hostname, eventHubName, consumerGroupName, eventHubConnectionString.toString(), storageConnectionString, storageContainerName);
