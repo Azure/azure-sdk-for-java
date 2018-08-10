@@ -16,6 +16,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 You can find all of the issues that have been filed in the [Issues](https://github.com/Azure/azure-service-bus-java/issues) section of the repository.
 
+If your first sample is not running as expected or you notice some WARNING or ERROR traces in the console, it is likely to do with your configuration, not a bug. Focus on the exception thrown to your code, not on the traces alone. Go through our samples, read the API documentation before filing an issue.
+
 If you encounter any bugs, please file an issue [here](https://github.com/Azure/azure-service-bus-java/issues/new) and make sure to fill out the provided template with the requested information.
 
 To suggest a new feature or changes that could be made, file an issue the same way you would for a bug, but remove the provided template and replace it with information about your suggestion.
