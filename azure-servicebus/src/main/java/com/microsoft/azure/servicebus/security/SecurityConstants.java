@@ -22,5 +22,13 @@ public class SecurityConstants {
      * Default validity of a security token in seconds.
      */
     public static final int DEFAULT_SAS_TOKEN_VALIDITY_IN_SECONDS = 20*60; // 20 minutes
+    /**
+     * Max allowed length for security key name.
+     */
+    public static final int MAX_KEY_NAME_LENGTH = 256;
+    /**
+     * Max allowed length for security key.
+     */
+    public static final int MAX_KEY_LENGTH = 256;
     
 }

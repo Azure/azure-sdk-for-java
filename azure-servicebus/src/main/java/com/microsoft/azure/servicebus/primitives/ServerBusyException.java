@@ -22,7 +22,7 @@ public class ServerBusyException extends ServiceBusException
 		super(true);
 	}
 
-	ServerBusyException(final String message)
+	public ServerBusyException(final String message)
 	{
 		super(true, message);
 	}

@@ -29,4 +29,23 @@ public class SqlFilter extends Filter {
     public String getSqlExpression() {
         return this.sqlExpression;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof SqlFilter)) {
+            return false;
+        }
+
+        SqlFilter other = (SqlFilter)o;
+        return (this.sqlExpression == null ? other.sqlExpression == null : this.sqlExpression.equals(other.sqlExpression));
+    }
+
+    @Override
+    public int hashCode() {
+        if (this.sqlExpression != null) {
+            return this.sqlExpression.hashCode();
+        }
+
+        return super.hashCode();
+    }
 }

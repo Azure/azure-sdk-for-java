@@ -34,6 +34,22 @@ public class SharedAccessSignatureTokenProvider extends TokenProvider
      */
     public SharedAccessSignatureTokenProvider(String sasKeyName, String sasKey, int tokenValidityInSeconds)
     {
+        if (sasKeyName == null || sasKeyName.isEmpty()) {
+            throw new IllegalArgumentException("sasKeyName cannot be empty");
+        }
+
+        if (sasKeyName.length() > SecurityConstants.MAX_KEY_NAME_LENGTH) {
+            throw new IllegalArgumentException("sasKeyName cannot be greater than " + SecurityConstants.MAX_KEY_NAME_LENGTH + " characters.");
+        }
+
+        if (sasKey == null || sasKey.isEmpty()) {
+            throw new IllegalArgumentException("sasKeyName cannot be empty");
+        }
+
+        if (sasKey.length() > SecurityConstants.MAX_KEY_LENGTH) {
+            throw new IllegalArgumentException("sasKey cannot be greater than " + SecurityConstants.MAX_KEY_LENGTH + " characters.");
+        }
+
         this.sasKeyName = sasKeyName;
         this.sasKey = sasKey;
         this.tokenValidityInSeconds = tokenValidityInSeconds;

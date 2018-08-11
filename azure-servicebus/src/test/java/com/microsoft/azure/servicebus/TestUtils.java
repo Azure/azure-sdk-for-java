@@ -17,6 +17,8 @@ public class TestUtils {
 	{
 		// Read connection string
         namespaceConnectionString = System.getenv(NAMESPACE_CONNECTION_STRING_ENVIRONMENT_VARIABLE_NAME);
+        namespaceConnectionString = "Endpoint=sb://nemakamtest1.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=K9dVT66fAbuBf9XqpgmSXZxs08hvOokUJWiBZC3MY5o=";
+        //namespaceConnectionString = "Endpoint=sb://contoso.servicebus.onebox.windows-int.net/;SharedAccessKeyName=DefaultNamespaceSasAllKeyName;SharedAccessKey=8864/auVd3qDC75iTjBL1GJ4D2oXC6bIttRd0jzDZ+g=";
 		if(namespaceConnectionString == null || namespaceConnectionString.isEmpty())
 		{			
 			System.err.println(NAMESPACE_CONNECTION_STRING_ENVIRONMENT_VARIABLE_NAME + " environment variable not set. Tests will not be able to connect to to any service bus entity.");

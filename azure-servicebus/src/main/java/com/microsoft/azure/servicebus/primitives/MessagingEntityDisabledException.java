@@ -1,7 +1,7 @@
 package com.microsoft.azure.servicebus.primitives;
 
 /**
- * This exception is thrown when a client attempts to send messages to or receive messages from a disabled entity. An entity can be disabled for SEND operations or RECEIVE operations or both.
+ * This exception is thrown when a client attempts to send messages to or receive messages from a disabled entity. An entity can be disabled for Send operations or RECEIVE operations or both.
  * @since 1.0
  *
  */

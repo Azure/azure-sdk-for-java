@@ -266,7 +266,7 @@ public class ConnectionStringBuilder
 	}
 
 	/**
-	 * Gets the duration after which a pending operation like SEND or RECEIVE will time out. If a timeout is not specified, it defaults to {@link #DefaultOperationTimeout}
+	 * Gets the duration after which a pending operation like Send or RECEIVE will time out. If a timeout is not specified, it defaults to {@link #DefaultOperationTimeout}
 	 * This value will be used by all operations which uses this {@link ConnectionStringBuilder}, unless explicitly over-ridden. 
 	 * @return operationTimeout
 	 */

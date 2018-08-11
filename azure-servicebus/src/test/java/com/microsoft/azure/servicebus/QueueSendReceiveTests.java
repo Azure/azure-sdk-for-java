@@ -1,13 +1,10 @@
 package com.microsoft.azure.servicebus;
 
-import com.microsoft.azure.servicebus.management.EntityManager;
-import com.microsoft.azure.servicebus.management.ManagementException;
 import com.microsoft.azure.servicebus.management.QueueDescription;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.net.URI;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.UUID;
@@ -143,15 +140,13 @@ public class QueueSendReceiveTests extends SendReceiveTests
     }
 
     @Test
-    public void transactionThrowsWhenOperationsOfDifferentPartitionAreInSameTransaction() throws ManagementException, ServiceBusException, InterruptedException, ExecutionException {
+    public void transactionThrowsWhenOperationsOfDifferentPartitionAreInSameTransaction() throws ServiceBusException, InterruptedException, ExecutionException {
         // Need a partitioned entity for this test. Creating one manually.
         String partitionedEntityName = TestUtils.randomizeEntityName(this.getEntityNamePrefix());
         QueueDescription queueDescription = new QueueDescription(partitionedEntityName);
         queueDescription.setEnablePartitioning(true);
 
-        URI namespaceEndpointURI = TestUtils.getNamespaceEndpointURI();
-        ClientSettings managementClientSettings = TestUtils.getManagementClientSettings();
-        EntityManager.createEntity(namespaceEndpointURI, managementClientSettings, queueDescription);
+        managementClient.createQueueAsync(queueDescription).get();
 
         try {
             IMessageSender pSender = ClientFactory.createMessageSenderFromEntityPath(factory, partitionedEntityName);
@@ -196,7 +191,7 @@ public class QueueSendReceiveTests extends SendReceiveTests
             this.factory.endTransactionAsync(transaction, false);
         }
         finally {
-            EntityManager.deleteEntity(namespaceEndpointURI, managementClientSettings, partitionedEntityName);
+            managementClient.deleteQueueAsync(partitionedEntityName);
         }
     }
 
@@ -225,22 +220,19 @@ public class QueueSendReceiveTests extends SendReceiveTests
     }
 
     @Test
-    public void transactionalSendViaTest() throws ManagementException, ServiceBusException, InterruptedException, ExecutionException {
+    public void transactionalSendViaTest() throws ServiceBusException, InterruptedException, ExecutionException {
         // Need three partitioned entities for this test. Creating manually.
-        URI namespaceEndpointURI = TestUtils.getNamespaceEndpointURI();
-        ClientSettings managementClientSettings = TestUtils.getManagementClientSettings();
-
         String intermediateQueue = TestUtils.randomizeEntityName(this.getEntityNamePrefix());
         QueueDescription queueDescription = new QueueDescription(intermediateQueue);
         queueDescription.setEnablePartitioning(true);
-        EntityManager.createEntity(namespaceEndpointURI, managementClientSettings, queueDescription);
+        managementClient.createQueueAsync(queueDescription).get();
         IMessageSender intermediateSender = ClientFactory.createMessageSenderFromEntityPath(factory, intermediateQueue);
         IMessageReceiver intermediateReceiver = ClientFactory.createMessageReceiverFromEntityPath(factory, intermediateQueue, ReceiveMode.PEEKLOCK);
 
         String destination1 = TestUtils.randomizeEntityName(this.getEntityNamePrefix());
         queueDescription = new QueueDescription(destination1);
         queueDescription.setEnablePartitioning(true);
-        EntityManager.createEntity(namespaceEndpointURI, managementClientSettings, queueDescription);
+        managementClient.createQueueAsync(queueDescription).get();
         IMessageSender destination1Sender = ClientFactory.createMessageSenderFromEntityPath(factory, destination1);
         IMessageSender destination1ViaSender = ClientFactory.createTransferMessageSenderFromEntityPathAsync(factory, destination1, intermediateQueue).get();
         IMessageReceiver destination1Receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, destination1, ReceiveMode.PEEKLOCK);
@@ -248,7 +240,7 @@ public class QueueSendReceiveTests extends SendReceiveTests
         String destination2 = TestUtils.randomizeEntityName(this.getEntityNamePrefix());
         queueDescription = new QueueDescription(destination2);
         queueDescription.setEnablePartitioning(true);
-        EntityManager.createEntity(namespaceEndpointURI, managementClientSettings, queueDescription);
+        managementClient.createQueueAsync(queueDescription).get();
         IMessageSender destination2ViaSender = ClientFactory.createTransferMessageSenderFromEntityPathAsync(factory, destination2, intermediateQueue).get();
         IMessageReceiver destination2Receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, destination2, ReceiveMode.PEEKLOCK);
 
@@ -314,24 +306,21 @@ public class QueueSendReceiveTests extends SendReceiveTests
             destination1Receiver.close();
             destination2Receiver.close();
 
-            EntityManager.deleteEntity(namespaceEndpointURI, managementClientSettings, intermediateQueue);
-            EntityManager.deleteEntity(namespaceEndpointURI, managementClientSettings, destination1);
-            EntityManager.deleteEntity(namespaceEndpointURI, managementClientSettings, destination2);
+            managementClient.deleteQueueAsync(destination1).get();
+            managementClient.deleteQueueAsync(intermediateQueue).get();
+            managementClient.deleteQueueAsync(destination2).get();
         }
     }
 
     @Test
-    public void sendViaScheduledMessagesTest() throws ManagementException, ServiceBusException, InterruptedException, ExecutionException {
-        URI namespaceEndpointURI = TestUtils.getNamespaceEndpointURI();
-        ClientSettings managementClientSettings = TestUtils.getManagementClientSettings();
-
+    public void sendViaScheduledMessagesTest() throws ServiceBusException, InterruptedException, ExecutionException {
         String viaQueue = TestUtils.randomizeEntityName(this.getEntityNamePrefix());
         QueueDescription queueDescription = new QueueDescription(viaQueue);
-        EntityManager.createEntity(namespaceEndpointURI, managementClientSettings, queueDescription);
+        managementClient.createQueueAsync(queueDescription).get();
 
         String destinationQ = TestUtils.randomizeEntityName(this.getEntityNamePrefix());
         queueDescription = new QueueDescription(destinationQ);
-        EntityManager.createEntity(namespaceEndpointURI, managementClientSettings, queueDescription);
+        managementClient.createQueueAsync(queueDescription).get();
 
         IMessageSender destination1ViaSender = ClientFactory.createTransferMessageSenderFromEntityPathAsync(factory, destinationQ, viaQueue).get();
         IMessageReceiver destinationReceiver = ClientFactory.createMessageReceiverFromEntityPath(factory, destinationQ, ReceiveMode.PEEKLOCK);
@@ -346,7 +335,7 @@ public class QueueSendReceiveTests extends SendReceiveTests
             long sequenceNum;
 
             TransactionContext transaction = this.factory.startTransaction();
-            sequenceNum = destination1ViaSender.scheduleMessage(message1, Instant.now().plusSeconds(2), transaction);
+            destination1ViaSender.scheduleMessage(message1, Instant.now().plusSeconds(2), transaction);
             transaction.rollback();
 
             transaction = this.factory.startTransaction();
@@ -365,8 +354,8 @@ public class QueueSendReceiveTests extends SendReceiveTests
             destination1ViaSender.close();
             destinationReceiver.close();
 
-            EntityManager.deleteEntity(namespaceEndpointURI, managementClientSettings, viaQueue);
-            EntityManager.deleteEntity(namespaceEndpointURI, managementClientSettings, destinationQ);
+            managementClient.deleteQueueAsync(viaQueue).get();
+            managementClient.deleteQueueAsync(destinationQ).get();
         }
     }
 }

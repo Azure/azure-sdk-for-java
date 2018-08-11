@@ -190,4 +190,60 @@ public class CorrelationFilter extends Filter {
     public void setProperties(Map<String, Object> properties) {
         this.properties = properties;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof CorrelationFilter)) {
+            return false;
+        }
+
+        CorrelationFilter other = (CorrelationFilter)o;
+
+        if ((this.correlationId == null ? other.correlationId == null : this.correlationId.equals(other.correlationId))
+                && (this.messageId == null ? other.messageId == null : this.messageId.equals(other.messageId))
+                && (this.to == null ? other.to == null : this.to.equals(other.to))
+                && (this.replyTo == null ? other.replyTo == null : this.replyTo.equals(other.replyTo))
+                && (this.label == null ? other.label == null : this.label.equals(other.label))
+                && (this.sessionId == null ? other.sessionId == null : this.sessionId.equals(other.sessionId))
+                && (this.replyToSessionId == null ? other.replyToSessionId == null : this.replyToSessionId.equals(other.replyToSessionId))
+                && (this.contentType == null ? other.contentType == null : this.contentType.equals(other.contentType))
+                && (this.properties != null && other.properties != null
+                        || this.properties == null && other.properties == null)) {
+            if (this.properties != null) {
+                if (this.properties.size() != other.properties.size()) {
+                    return false;
+                }
+
+                for (Map.Entry<String, Object> entry : this.properties.entrySet()) {
+                    Object otherValue = other.properties.get(entry.getKey());
+                    Object thisValue = entry.getValue();
+                    if (!(thisValue == null ? otherValue == null : thisValue.equals(otherValue))) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 13;
+
+        if (this.correlationId != null) {
+            hash = (hash * 7) + this.correlationId.hashCode();
+        }
+
+        if (this.messageId != null) {
+            hash = (hash * 7) + this.messageId.hashCode();
+        }
+
+        if (this.sessionId != null) {
+            hash = (hash * 7) + this.sessionId.hashCode();
+        }
+
+        return hash;
+    }
 }
