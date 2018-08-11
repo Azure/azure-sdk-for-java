@@ -155,4 +155,14 @@ public interface NetworkWatchers extends SupportsCreating<NetworkWatcher.Definit
      */
     Observable<NetworkConfigurationDiagnosticResponse> getNetworkConfigurationDiagnosticAsync(String resourceGroupName, String networkWatcherName, NetworkConfigurationDiagnosticParameters parameters);
 
+    /**
+     * Query connection monitors.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<ConnectionMonitorsQueryResultItem> queryConnectionMonitorsAsync(final String resourceGroupName, final String networkWatcherName);
+
 }

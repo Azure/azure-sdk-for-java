@@ -32,6 +32,7 @@ import com.microsoft.azure.management.network.v2018_06_01.ConnectivityInformatio
 import com.microsoft.azure.management.network.v2018_06_01.AzureReachabilityReport;
 import com.microsoft.azure.management.network.v2018_06_01.AvailableProvidersList;
 import com.microsoft.azure.management.network.v2018_06_01.NetworkConfigurationDiagnosticResponse;
+import com.microsoft.azure.management.network.v2018_06_01.ConnectionMonitorsQueryResultItem;
 import com.microsoft.azure.management.network.v2018_06_01.TopologyParameters;
 import com.microsoft.azure.management.network.v2018_06_01.VerificationIPFlowParameters;
 import com.microsoft.azure.management.network.v2018_06_01.NextHopParameters;
@@ -283,6 +284,24 @@ class NetworkWatchersImpl extends GroupableResourcesCoreImpl<NetworkWatcher, Net
             @Override
             public NetworkConfigurationDiagnosticResponse call(NetworkConfigurationDiagnosticResponseInner inner) {
                 return new NetworkConfigurationDiagnosticResponseImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<ConnectionMonitorsQueryResultItem> queryConnectionMonitorsAsync(final String resourceGroupName, final String networkWatcherName) {
+        NetworkWatchersInner client = this.inner();
+        return client.queryConnectionMonitorsAsync(resourceGroupName, networkWatcherName)
+        .flatMapIterable(new Func1<Page<ConnectionMonitorsQueryResultItemInner>, Iterable<ConnectionMonitorsQueryResultItemInner>>() {
+            @Override
+            public Iterable<ConnectionMonitorsQueryResultItemInner> call(Page<ConnectionMonitorsQueryResultItemInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<ConnectionMonitorsQueryResultItemInner, ConnectionMonitorsQueryResultItem>() {
+            @Override
+            public ConnectionMonitorsQueryResultItem call(ConnectionMonitorsQueryResultItemInner inner) {
+                return new ConnectionMonitorsQueryResultItemImpl(inner, manager());
             }
         });
     }
