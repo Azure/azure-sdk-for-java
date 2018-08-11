@@ -148,15 +148,15 @@ public final class ServiceSASSignatureValues {
                  this.startTime == null ? "" : Utility.ISO8601UTCDateFormatter.format(this.startTime),
                  this.expiryTime == null ? "" : Utility.ISO8601UTCDateFormatter.format(this.expiryTime),
                  getCanonicalName(sharedKeyCredentials.getAccountName()),
-                 this.identifier,
+                 this.identifier == null ? "" : this.identifier,
                  this.ipRange == null ? IPRange.DEFAULT.toString() : this.ipRange.toString(),
                  this.protocol == null ? "" : protocol.toString(),
                  this.version,
-                 this.cacheControl,
-                 this.contentDisposition,
-                 this.contentEncoding,
-                 this.contentLanguage,
-                 this.contentType
+                 this.cacheControl == null ? "" : this.cacheControl,
+                 this.contentDisposition == null ? "" : this.contentDisposition,
+                 this.contentEncoding == null ? "" : this.contentEncoding,
+                 this.contentLanguage == null ? "" : this.contentLanguage,
+                 this.contentType == null ? "" : this.contentType
          );
 
         String signature = null;
