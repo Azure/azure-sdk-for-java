@@ -34,6 +34,9 @@ class ApplicationInsightsComponentFavoriteImpl extends CreatableUpdatableImpl<Ap
         // Set resource name
         this.favoriteId = inner.name();
         // resource ancestor names
+        this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
+        this.resourceName = IdParsingUtils.getValueFromIdByName(inner.id(), "components");
+        this.favoriteId = IdParsingUtils.getValueFromIdByName(inner.id(), "favorites");
         //
     }
 
@@ -62,7 +65,9 @@ class ApplicationInsightsComponentFavoriteImpl extends CreatableUpdatableImpl<Ap
     }
 
     @Override
-    public boolean isInCreateMode() { return false; }
+    public boolean isInCreateMode() {
+        return this.inner().id() == null;
+    }
 
 
     @Override

@@ -332,7 +332,11 @@ public class WorkItemConfigurationsInner {
                 public Observable<ServiceResponse<WorkItemConfigurationInner>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<WorkItemConfigurationInner> result = getDefaultDelegate(response);
-                        ServiceResponse<WorkItemConfigurationInner> clientResponse = new ServiceResponse<WorkItemConfigurationInner>(result.body(), result.response());
+                        WorkItemConfigurationInner items = null;
+                        if (result.body() != null) {
+                            items = result.body().items();
+                        }
+                        ServiceResponse<WorkItemConfigurationInner> clientResponse = new ServiceResponse<WorkItemConfigurationInner>(items, result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
