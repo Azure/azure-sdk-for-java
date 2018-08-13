@@ -158,7 +158,9 @@ public class Samples {
                 .flatMap(containerCreateResponse ->
                         /*
                          Create the blob with string (plain text) content.
-                         NOTE: It is imperative that the provided length matches the actual length exactly.
+                         NOTE: The Flowable containing the data must be replayable to support retries. That is, it must
+                         yield the same data every time it is subscribed to.
+                         NOTE: If the provided length does not match the actual length, this method will throw.
                          */
                         blobURL.upload(Flowable.just(ByteBuffer.wrap(data.getBytes())), data.length(),
                                 null, null, null))
@@ -1018,6 +1020,8 @@ public class Samples {
                     /*
                      Upload a block to this blob specifying the BlockID and its content (up to 100MB); this block is
                      uncommitted.
+                     NOTE: The Flowable containing the data must be replayable to support retries. That is, it must
+                         yield the same data every time it is subscribed to.
                      NOTE: It is imperative that the provided length match the actual length of the data exactly.
                      */
                     return blobURL.stageBlock(blockId, Flowable.just(ByteBuffer.wrap(block.getBytes())),
@@ -1086,8 +1090,12 @@ public class Samples {
                         Observable.range(0, 5))
                 .concatMapCompletable(i -> {
                     String text = String.format(Locale.ROOT, "Appending block #%d\n", i);
+                    /*
+                    NOTE: The Flowable containing the data must be replayable to support retries. That is, it must
+                    yield the same data every time it is subscribed to.
+                     */
                     return blobURL.appendBlock(Flowable.just(ByteBuffer.wrap(text.getBytes())), text.length(),
-                            null).toCompletable();
+                            null).ignoreElement();
                 })
                 // Download the blob.
                 .andThen(blobURL.download(null, null, false))
@@ -1140,6 +1148,10 @@ public class Samples {
                     for (int i = 0; i < PageBlobURL.PAGE_BYTES; i++) {
                         data[i] = 'a';
                     }
+                    /*
+                    NOTE: The Flowable containing the data must be replayable to support retries. That is, it must
+                    yield the same data every time it is subscribed to.
+                     */
                     return blobURL.uploadPages(new PageRange().withStart(0).withEnd(PageBlobURL.PAGE_BYTES - 1),
                             Flowable.just(ByteBuffer.wrap(data)), null);
                 })

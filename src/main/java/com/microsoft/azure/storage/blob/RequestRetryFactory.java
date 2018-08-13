@@ -188,6 +188,21 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
                         return Single.just(response);
                     })
                     .onErrorResumeNext(throwable -> {
+                        /*
+                        It is likely that many users will not realize that their Flowable must be replayable and
+                        get an error upon retries when the provided data length does not match the length of the exact
+                        data. We cannot enforce the desired Flowable behavior, so we provide a hint when this is likely
+                        the root cause.
+                         */
+                        if (throwable instanceof IllegalArgumentException && attempt > 1) {
+                            if (throwable.getMessage().startsWith("Flowable<ByteBuffer> emmitted")) {
+                                return Single.error(new IllegalArgumentException("The request failed because the " +
+                                        "size of the contents of the provided Flowable did not match the provided " +
+                                        "data size upon attempting to retry. This is likely caused by the Flowable " +
+                                        "not being replayable. To support retries, all Flowables must produce the " +
+                                        "same data for each subscriber. Please ensure this behavior.", throwable));
+                            }
+                        }
                         String action;
                         /*
                         IOException is a catch-all for IO related errors. Technically it includes many types which may

@@ -144,6 +144,9 @@ public final class PageBlobURL extends BlobURL {
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
      *
+     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
+     * {@code Flowable} must produce the same data each time it is subscribed to.
+     *
      * @apiNote
      * ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobURL.uploadPages")] \n
@@ -154,7 +157,8 @@ public final class PageBlobURL extends BlobURL {
      *      be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges are
      *      0-511, 512-1023, etc.
      * @param body
-     *      The data to upload.
+     *      The data to upload. Note that this {@code Flowable} must be replayable if retries are enabled
+     *      (the default). In other words, the Flowable must produce the same data each time it is subscribed to.
      * @param pageBlobAccessConditions
      *      {@link PageBlobAccessConditions}
      * @return

@@ -77,7 +77,8 @@ class BlockBlobAPITest extends APISpec {
         bu.stageBlock(blockID, data, dataSize, null).blockingGet()
 
         then:
-        thrown(IllegalArgumentException)
+        def e = thrown(IllegalArgumentException)
+        System.out.println(e.toString())
 
         where:
         blockID      | data            | dataSize

@@ -105,6 +105,9 @@ public final class BlockBlobURL extends BlobURL {
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
      *
+     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
+     * {@code Flowable} must produce the same data each time it is subscribed to.
+     *
      * For more efficient bulk-upload scenarios, please refer to the {@link TransferManager} for convenience methods.
      *
      * @apiNote
@@ -113,7 +116,8 @@ public final class BlockBlobURL extends BlobURL {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      *
      * @param data
-     *      The data to write to the blob.
+     *      The data to write to the blob. Note that this {@code Flowable} must be replayable if retries are enabled
+     *      (the default). In other words, the Flowable must produce the same data each time it is subscribed to.
      * @param length
      *      The exact length of the data. It is important that this value match precisely the length of the data
      *      emitted by the {@code Flowable}.
@@ -141,6 +145,9 @@ public final class BlockBlobURL extends BlobURL {
      * commitBlockList. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs</a>.
      *
+     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
+     * {@code Flowable} must produce the same data each time it is subscribed to.
+     *
      * @apiNote
      * ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blocks "Sample code for BlockBlobURL.stageBlock")] \n
@@ -150,7 +157,8 @@ public final class BlockBlobURL extends BlobURL {
      *      A Base64 encoded {@code String} that specifies the ID for this block. Note that all block ids for a given
      *      blob must be the same length.
      * @param data
-     *      The data to write to the block.
+     *      The data to write to the block. Note that this {@code Flowable} must be replayable if retries are enabled
+     *      (the default). In other words, the Flowable must produce the same data each time it is subscribed to.
      * @param length
      *      The exact length of the data. It is important that this value match precisely the length of the data
      *      emitted by the {@code Flowable}.

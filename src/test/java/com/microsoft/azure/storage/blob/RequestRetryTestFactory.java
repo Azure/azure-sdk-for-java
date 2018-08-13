@@ -59,6 +59,8 @@ public class RequestRetryTestFactory implements RequestPolicyFactory {
 
     public static final int RETRY_TEST_SCENARIO_TRY_TIMEOUT = 8;
 
+    public static final int RETRY_TEST_SCENARIO_NON_REPLAYABLE_FLOWABLE = 9;
+
     // Cancelable
 
     public static final String RETRY_TEST_PRIMARY_HOST = "PrimaryDC";
@@ -305,6 +307,17 @@ public class RequestRetryTestFactory implements RequestPolicyFactory {
                             return RETRY_TEST_OK_RESPONSE;
                         default:
                             throw new IllegalArgumentException("Retries continued after success.");
+                    }
+
+                case RETRY_TEST_SCENARIO_NON_REPLAYABLE_FLOWABLE:
+                    switch (this.factory.tryNumber) {
+                        case 1:
+                            return RETRY_TEST_TEMPORARY_ERROR_RESPONSE;
+                        case 2:
+                            return Single.error(new IllegalArgumentException("Flowable<ByteBuffer> emmitted 6 bytes " +
+                                    "instead of 7"));
+                        default:
+                            throw new IllegalArgumentException("Retries continued on non retryable error.");
                     }
             }
             return Single.error(new IllegalArgumentException("Invalid scenario"));

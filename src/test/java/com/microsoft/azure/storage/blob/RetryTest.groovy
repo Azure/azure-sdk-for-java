@@ -164,6 +164,23 @@ class RetryTest extends APISpec {
         retryTestFactory.tryNumber == 4
     }
 
+    def "Retries non replyable flowable"() {
+        setup:
+        RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(
+                RequestRetryTestFactory.RETRY_TEST_SCENARIO_NON_REPLAYABLE_FLOWABLE, retryTestOptions)
+        HttpPipeline pipeline = HttpPipeline.build(new RequestRetryFactory(retryTestOptions), retryTestFactory)
+
+        when:
+        pipeline.sendRequestAsync(new HttpRequest(null, HttpMethod.GET, retryTestURL,
+                new HttpHeaders(), Flowable.just(RequestRetryTestFactory.RETRY_TEST_DEFAULT_DATA),
+                null)).blockingGet()
+
+        then:
+        def e = thrown(IllegalArgumentException)
+        e.getMessage().startsWith("The request failed because")
+        e.getCause().getMessage().startsWith("Flowable<ByteBuffer>")
+    }
+
     @Unroll
     def "Retries options invalid"() {
         when:
