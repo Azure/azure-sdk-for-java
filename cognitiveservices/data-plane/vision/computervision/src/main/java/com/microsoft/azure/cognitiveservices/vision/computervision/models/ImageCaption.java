@@ -24,7 +24,7 @@ public class ImageCaption {
      * The level of confidence the service has in the caption.
      */
     @JsonProperty(value = "confidence")
-    private Double confidence;
+    private double confidence;
 
     /**
      * Get the text value.
@@ -51,7 +51,7 @@ public class ImageCaption {
      *
      * @return the confidence value
      */
-    public Double confidence() {
+    public double confidence() {
         return this.confidence;
     }
 
@@ -61,7 +61,7 @@ public class ImageCaption {
      * @param confidence the confidence value to set
      * @return the ImageCaption object itself.
      */
-    public ImageCaption withConfidence(Double confidence) {
+    public ImageCaption withConfidence(double confidence) {
         this.confidence = confidence;
         return this;
     }

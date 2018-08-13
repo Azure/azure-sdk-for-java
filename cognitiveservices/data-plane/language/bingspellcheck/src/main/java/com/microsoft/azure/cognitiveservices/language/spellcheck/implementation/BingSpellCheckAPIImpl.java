@@ -118,7 +118,7 @@ public class BingSpellCheckAPIImpl extends AzureServiceClient implements BingSpe
      * @param credentials the management credentials for Azure
      */
     public BingSpellCheckAPIImpl(ServiceClientCredentials credentials) {
-        this("https://api.cognitive.microsoft.com/bing/v7.0", credentials);
+        this("https://api.cognitive.microsoft.com/bing/v7.0/", credentials);
     }
 
     /**

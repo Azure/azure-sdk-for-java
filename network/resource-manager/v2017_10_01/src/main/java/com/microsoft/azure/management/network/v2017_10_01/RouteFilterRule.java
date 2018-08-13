@@ -91,6 +91,9 @@ public interface RouteFilterRule extends HasInner<RouteFilterRuleInner>, Indexab
         interface WithRouteFilter {
            /**
             * Specifies resourceGroupName, routeFilterName.
+            * @param resourceGroupName The name of the resource group
+            * @param routeFilterName The name of the route filter
+            * @return the next definition stage
             */
             WithAccess withExistingRouteFilter(String resourceGroupName, String routeFilterName);
         }
@@ -101,6 +104,8 @@ public interface RouteFilterRule extends HasInner<RouteFilterRuleInner>, Indexab
         interface WithAccess {
            /**
             * Specifies access.
+            * @param access The access type of the rule. Valid values are: 'Allow', 'Deny'. Possible values include: 'Allow', 'Deny'
+            * @return the next definition stage
             */
             WithCommunities withAccess(Access access);
         }
@@ -111,6 +116,8 @@ public interface RouteFilterRule extends HasInner<RouteFilterRuleInner>, Indexab
         interface WithCommunities {
            /**
             * Specifies communities.
+            * @param communities The collection for bgp community values to filter on. e.g. ['12076:5010','12076:5020']
+            * @return the next definition stage
             */
             WithRouteFilterRuleType withCommunities(List<String> communities);
         }
@@ -121,6 +128,8 @@ public interface RouteFilterRule extends HasInner<RouteFilterRuleInner>, Indexab
         interface WithRouteFilterRuleType {
            /**
             * Specifies routeFilterRuleType.
+            * @param routeFilterRuleType The rule type of the rule. Valid value is: 'Community'
+            * @return the next definition stage
             */
             WithCreate withRouteFilterRuleType(String routeFilterRuleType);
         }
@@ -131,6 +140,8 @@ public interface RouteFilterRule extends HasInner<RouteFilterRuleInner>, Indexab
         interface WithId {
             /**
              * Specifies id.
+             * @param id Resource ID
+             * @return the next definition stage
              */
             WithCreate withId(String id);
         }
@@ -141,6 +152,8 @@ public interface RouteFilterRule extends HasInner<RouteFilterRuleInner>, Indexab
         interface WithLocation {
             /**
              * Specifies location.
+             * @param location Resource location
+             * @return the next definition stage
              */
             WithCreate withLocation(String location);
         }
@@ -151,6 +164,8 @@ public interface RouteFilterRule extends HasInner<RouteFilterRuleInner>, Indexab
         interface WithName {
             /**
              * Specifies name.
+             * @param name The name of the resource that is unique within a resource group. This name can be used to access the resource
+             * @return the next definition stage
              */
             WithCreate withName(String name);
         }
@@ -161,6 +176,8 @@ public interface RouteFilterRule extends HasInner<RouteFilterRuleInner>, Indexab
         interface WithTags {
             /**
              * Specifies tags.
+             * @param tags Resource tags
+             * @return the next definition stage
              */
             WithCreate withTags(Map<String, String> tags);
         }
@@ -189,6 +206,8 @@ public interface RouteFilterRule extends HasInner<RouteFilterRuleInner>, Indexab
         interface WithId {
             /**
              * Specifies id.
+             * @param id Resource ID
+             * @return the next update stage
              */
             Update withId(String id);
         }
@@ -199,6 +218,8 @@ public interface RouteFilterRule extends HasInner<RouteFilterRuleInner>, Indexab
         interface WithTags {
             /**
              * Specifies tags.
+             * @param tags Resource tags
+             * @return the next update stage
              */
             Update withTags(Map<String, String> tags);
         }

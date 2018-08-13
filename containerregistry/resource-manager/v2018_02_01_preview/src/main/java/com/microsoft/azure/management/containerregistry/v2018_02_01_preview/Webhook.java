@@ -91,6 +91,9 @@ public interface Webhook extends HasInner<WebhookInner>, Indexable, Refreshable<
         interface WithRegistry {
            /**
             * Specifies resourceGroupName, registryName.
+            * @param resourceGroupName The name of the resource group to which the container registry belongs
+            * @param registryName The name of the container registry
+            * @return the next definition stage
             */
             WithActions withExistingRegistry(String resourceGroupName, String registryName);
         }
@@ -101,6 +104,8 @@ public interface Webhook extends HasInner<WebhookInner>, Indexable, Refreshable<
         interface WithActions {
            /**
             * Specifies actions.
+            * @param actions The list of actions that trigger the webhook to post notifications
+            * @return the next definition stage
             */
             WithLocation withActions(List<WebhookAction> actions);
         }
@@ -111,6 +116,8 @@ public interface Webhook extends HasInner<WebhookInner>, Indexable, Refreshable<
         interface WithLocation {
            /**
             * Specifies location.
+            * @param location The location of the webhook. This cannot be changed after the resource is created
+            * @return the next definition stage
             */
             WithServiceUri withLocation(String location);
         }
@@ -121,6 +128,8 @@ public interface Webhook extends HasInner<WebhookInner>, Indexable, Refreshable<
         interface WithServiceUri {
            /**
             * Specifies serviceUri.
+            * @param serviceUri The service URI for the webhook to post notifications
+            * @return the next definition stage
             */
             WithCreate withServiceUri(String serviceUri);
         }
@@ -131,6 +140,8 @@ public interface Webhook extends HasInner<WebhookInner>, Indexable, Refreshable<
         interface WithCustomHeaders {
             /**
              * Specifies customHeaders.
+             * @param customHeaders Custom headers that will be added to the webhook notifications
+             * @return the next definition stage
              */
             WithCreate withCustomHeaders(Map<String, String> customHeaders);
         }
@@ -141,6 +152,8 @@ public interface Webhook extends HasInner<WebhookInner>, Indexable, Refreshable<
         interface WithScope {
             /**
              * Specifies scope.
+             * @param scope The scope of repositories where the event can be triggered. For example, 'foo:*' means events for all tags under repository 'foo'. 'foo:bar' means events for 'foo:bar' only. 'foo' is equivalent to 'foo:latest'. Empty means all events
+             * @return the next definition stage
              */
             WithCreate withScope(String scope);
         }
@@ -151,6 +164,8 @@ public interface Webhook extends HasInner<WebhookInner>, Indexable, Refreshable<
         interface WithStatus {
             /**
              * Specifies status.
+             * @param status The status of the webhook at the time the operation was called. Possible values include: 'enabled', 'disabled'
+             * @return the next definition stage
              */
             WithCreate withStatus(WebhookStatus status);
         }
@@ -161,6 +176,8 @@ public interface Webhook extends HasInner<WebhookInner>, Indexable, Refreshable<
         interface WithTags {
             /**
              * Specifies tags.
+             * @param tags The tags for the webhook
+             * @return the next definition stage
              */
             WithCreate withTags(Map<String, String> tags);
         }
@@ -189,6 +206,8 @@ public interface Webhook extends HasInner<WebhookInner>, Indexable, Refreshable<
         interface WithActions {
             /**
              * Specifies actions.
+             * @param actions The list of actions that trigger the webhook to post notifications
+             * @return the next update stage
              */
             Update withActions(List<WebhookAction> actions);
         }
@@ -199,6 +218,8 @@ public interface Webhook extends HasInner<WebhookInner>, Indexable, Refreshable<
         interface WithCustomHeaders {
             /**
              * Specifies customHeaders.
+             * @param customHeaders Custom headers that will be added to the webhook notifications
+             * @return the next update stage
              */
             Update withCustomHeaders(Map<String, String> customHeaders);
         }
@@ -209,6 +230,8 @@ public interface Webhook extends HasInner<WebhookInner>, Indexable, Refreshable<
         interface WithScope {
             /**
              * Specifies scope.
+             * @param scope The scope of repositories where the event can be triggered. For example, 'foo:*' means events for all tags under repository 'foo'. 'foo:bar' means events for 'foo:bar' only. 'foo' is equivalent to 'foo:latest'. Empty means all events
+             * @return the next update stage
              */
             Update withScope(String scope);
         }
@@ -219,6 +242,8 @@ public interface Webhook extends HasInner<WebhookInner>, Indexable, Refreshable<
         interface WithServiceUri {
             /**
              * Specifies serviceUri.
+             * @param serviceUri The service URI for the webhook to post notifications
+             * @return the next update stage
              */
             Update withServiceUri(String serviceUri);
         }
@@ -229,6 +254,8 @@ public interface Webhook extends HasInner<WebhookInner>, Indexable, Refreshable<
         interface WithStatus {
             /**
              * Specifies status.
+             * @param status The status of the webhook at the time the operation was called. Possible values include: 'enabled', 'disabled'
+             * @return the next update stage
              */
             Update withStatus(WebhookStatus status);
         }
@@ -239,6 +266,8 @@ public interface Webhook extends HasInner<WebhookInner>, Indexable, Refreshable<
         interface WithTags {
             /**
              * Specifies tags.
+             * @param tags The tags for the webhook
+             * @return the next update stage
              */
             Update withTags(Map<String, String> tags);
         }

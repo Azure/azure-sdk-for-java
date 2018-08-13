@@ -23,6 +23,7 @@ import rx.functions.Func1;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.management.containerregistry.v2017_10_01.RegistryListCredentialsResult;
+import com.microsoft.azure.management.containerregistry.v2017_10_01.RegistryPolicies;
 import com.microsoft.azure.management.containerregistry.v2017_10_01.RegistryNameStatus;
 import com.microsoft.azure.management.containerregistry.v2017_10_01.ImportImageParameters;
 import com.microsoft.azure.management.containerregistry.v2017_10_01.PasswordName;
@@ -161,6 +162,18 @@ class RegistriesImpl extends GroupableResourcesCoreImpl<Registry, RegistryImpl, 
     }
 
     @Override
+    public Observable<RegistryPolicies> updatePoliciesAsync(String resourceGroupName, String registryName, RegistryPoliciesInner registryPoliciesUpdateParameters) {
+        RegistriesInner client = this.inner();
+        return client.updatePoliciesAsync(resourceGroupName, registryName, registryPoliciesUpdateParameters)
+        .map(new Func1<RegistryPoliciesInner, RegistryPolicies>() {
+            @Override
+            public RegistryPolicies call(RegistryPoliciesInner inner) {
+                return new RegistryPoliciesImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
     public Observable<RegistryNameStatus> checkNameAvailabilityAsync(String name) {
         RegistriesInner client = this.inner();
         return client.checkNameAvailabilityAsync(name)
@@ -190,6 +203,18 @@ class RegistriesImpl extends GroupableResourcesCoreImpl<Registry, RegistryImpl, 
             @Override
             public RegistryUsageListResult call(RegistryUsageListResultInner inner) {
                 return new RegistryUsageListResultImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<RegistryPolicies> listPoliciesAsync(String resourceGroupName, String registryName) {
+        RegistriesInner client = this.inner();
+        return client.listPoliciesAsync(resourceGroupName, registryName)
+        .map(new Func1<RegistryPoliciesInner, RegistryPolicies>() {
+            @Override
+            public RegistryPolicies call(RegistryPoliciesInner inner) {
+                return new RegistryPoliciesImpl(inner, manager());
             }
         });
     }

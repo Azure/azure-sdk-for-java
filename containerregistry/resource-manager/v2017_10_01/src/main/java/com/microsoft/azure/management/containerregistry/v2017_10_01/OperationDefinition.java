@@ -27,4 +27,14 @@ public interface OperationDefinition extends HasInner<OperationDefinitionInner>,
      */
     String name();
 
+    /**
+     * @return the origin value.
+     */
+    String origin();
+
+    /**
+     * @return the serviceSpecification value.
+     */
+    OperationServiceSpecificationDefinition serviceSpecification();
+
 }
