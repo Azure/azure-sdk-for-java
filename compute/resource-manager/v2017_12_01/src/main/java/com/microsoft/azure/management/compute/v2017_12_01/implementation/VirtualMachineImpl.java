@@ -21,7 +21,7 @@ import com.microsoft.azure.management.compute.v2017_12_01.OSProfile;
 import com.microsoft.azure.management.compute.v2017_12_01.NetworkProfile;
 import com.microsoft.azure.management.compute.v2017_12_01.DiagnosticsProfile;
 import com.microsoft.azure.management.compute.v2017_12_01.VirtualMachineIdentity;
-import com.microsoft.azure.management.compute.v2017_12_01.VirtualMachineInstanceView;
+import com.microsoft.azure.management.compute.v2017_12_01.VirtualMachineScaleSetVMInstanceView;
 import java.util.ArrayList;
 import com.microsoft.azure.management.compute.v2017_12_01.VirtualMachineExtension;
 import rx.functions.Func1;
@@ -97,10 +97,10 @@ class VirtualMachineImpl extends GroupableResourceCoreImpl<VirtualMachine, Virtu
     }
 
     @Override
-    public VirtualMachineInstanceView instanceView() {
-        VirtualMachineInstanceViewInner inner = this.inner().instanceView();
+    public VirtualMachineScaleSetVMInstanceView instanceView() {
+        VirtualMachineScaleSetVMInstanceViewInner inner = this.inner().instanceView();
         if (inner != null) {
-            return  new VirtualMachineInstanceViewImpl(inner, manager());
+            return  new VirtualMachineScaleSetVMInstanceViewImpl(inner, manager());
         } else {
             return null;
         }

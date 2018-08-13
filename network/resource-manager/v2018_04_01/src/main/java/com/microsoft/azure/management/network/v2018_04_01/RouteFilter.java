@@ -70,25 +70,21 @@ public interface RouteFilter extends HasInner<RouteFilterInner>, Resource, Group
         }
 
         /**
-         * The stage of the routefilter definition allowing to specify Peerings.
+         * The stage of the routefilter update allowing to specify Peerings.
          */
         interface WithPeerings {
             /**
              * Specifies peerings.
-             * @param peerings A collection of references to express route circuit peerings
-             * @return the next definition stage
              */
             WithCreate withPeerings(List<ExpressRouteCircuitPeeringInner> peerings);
         }
 
         /**
-         * The stage of the routefilter definition allowing to specify Rules.
+         * The stage of the routefilter update allowing to specify Rules.
          */
         interface WithRules {
             /**
              * Specifies rules.
-             * @param rules Collection of RouteFilterRules contained within a route filter
-             * @return the next definition stage
              */
             WithCreate withRules(List<RouteFilterRuleInner> rules);
         }
@@ -112,25 +108,21 @@ public interface RouteFilter extends HasInner<RouteFilterInner>, Resource, Group
      */
     interface UpdateStages {
         /**
-         * The stage of the routefilter update allowing to specify Peerings.
+         * The stage of the routefilter {0} allowing to specify Peerings.
          */
         interface WithPeerings {
             /**
              * Specifies peerings.
-             * @param peerings A collection of references to express route circuit peerings
-             * @return the next update stage
              */
             Update withPeerings(List<ExpressRouteCircuitPeeringInner> peerings);
         }
 
         /**
-         * The stage of the routefilter update allowing to specify Rules.
+         * The stage of the routefilter {0} allowing to specify Rules.
          */
         interface WithRules {
             /**
              * Specifies rules.
-             * @param rules Collection of RouteFilterRules contained within a route filter
-             * @return the next update stage
              */
             Update withRules(List<RouteFilterRuleInner> rules);
         }

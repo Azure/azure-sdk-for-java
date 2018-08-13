@@ -49,7 +49,7 @@ public class AdditionalUnattendContent {
     private String content;
 
     /**
-     * Get the passName value.
+     * Get the pass name. Currently, the only allowable value is OobeSystem. Possible values include: 'OobeSystem'.
      *
      * @return the passName value
      */
@@ -58,7 +58,7 @@ public class AdditionalUnattendContent {
     }
 
     /**
-     * Set the passName value.
+     * Set the pass name. Currently, the only allowable value is OobeSystem. Possible values include: 'OobeSystem'.
      *
      * @param passName the passName value to set
      * @return the AdditionalUnattendContent object itself.
@@ -69,7 +69,7 @@ public class AdditionalUnattendContent {
     }
 
     /**
-     * Get the componentName value.
+     * Get the component name. Currently, the only allowable value is Microsoft-Windows-Shell-Setup. Possible values include: 'Microsoft-Windows-Shell-Setup'.
      *
      * @return the componentName value
      */
@@ -78,7 +78,7 @@ public class AdditionalUnattendContent {
     }
 
     /**
-     * Set the componentName value.
+     * Set the component name. Currently, the only allowable value is Microsoft-Windows-Shell-Setup. Possible values include: 'Microsoft-Windows-Shell-Setup'.
      *
      * @param componentName the componentName value to set
      * @return the AdditionalUnattendContent object itself.
@@ -89,7 +89,7 @@ public class AdditionalUnattendContent {
     }
 
     /**
-     * Get the settingName value.
+     * Get specifies the name of the setting to which the content applies. Possible values are: FirstLogonCommands and AutoLogon. Possible values include: 'AutoLogon', 'FirstLogonCommands'.
      *
      * @return the settingName value
      */
@@ -98,7 +98,7 @@ public class AdditionalUnattendContent {
     }
 
     /**
-     * Set the settingName value.
+     * Set specifies the name of the setting to which the content applies. Possible values are: FirstLogonCommands and AutoLogon. Possible values include: 'AutoLogon', 'FirstLogonCommands'.
      *
      * @param settingName the settingName value to set
      * @return the AdditionalUnattendContent object itself.
@@ -109,7 +109,7 @@ public class AdditionalUnattendContent {
     }
 
     /**
-     * Get the content value.
+     * Get specifies the XML formatted content that is added to the unattend.xml file for the specified path and component. The XML must be less than 4KB and must include the root element for the setting or feature that is being inserted.
      *
      * @return the content value
      */
@@ -118,7 +118,7 @@ public class AdditionalUnattendContent {
     }
 
     /**
-     * Set the content value.
+     * Set specifies the XML formatted content that is added to the unattend.xml file for the specified path and component. The XML must be less than 4KB and must include the root element for the setting or feature that is being inserted.
      *
      * @param content the content value to set
      * @return the AdditionalUnattendContent object itself.

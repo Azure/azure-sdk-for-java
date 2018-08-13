@@ -74,49 +74,41 @@ public interface RouteTable extends HasInner<RouteTableInner>, Resource, Groupab
         }
 
         /**
-         * The stage of the routetable definition allowing to specify DisableBgpRoutePropagation.
+         * The stage of the routetable update allowing to specify DisableBgpRoutePropagation.
          */
         interface WithDisableBgpRoutePropagation {
             /**
              * Specifies disableBgpRoutePropagation.
-             * @param disableBgpRoutePropagation Gets or sets whether to disable the routes learned by BGP on that route table. True means disable
-             * @return the next definition stage
              */
             WithCreate withDisableBgpRoutePropagation(Boolean disableBgpRoutePropagation);
         }
 
         /**
-         * The stage of the routetable definition allowing to specify Etag.
+         * The stage of the routetable update allowing to specify Etag.
          */
         interface WithEtag {
             /**
              * Specifies etag.
-             * @param etag Gets a unique read-only string that changes whenever the resource is updated
-             * @return the next definition stage
              */
             WithCreate withEtag(String etag);
         }
 
         /**
-         * The stage of the routetable definition allowing to specify ProvisioningState.
+         * The stage of the routetable update allowing to specify ProvisioningState.
          */
         interface WithProvisioningState {
             /**
              * Specifies provisioningState.
-             * @param provisioningState The provisioning state of the resource. Possible values are: 'Updating', 'Deleting', and 'Failed'
-             * @return the next definition stage
              */
             WithCreate withProvisioningState(String provisioningState);
         }
 
         /**
-         * The stage of the routetable definition allowing to specify Routes.
+         * The stage of the routetable update allowing to specify Routes.
          */
         interface WithRoutes {
             /**
              * Specifies routes.
-             * @param routes Collection of routes contained within a route table
-             * @return the next definition stage
              */
             WithCreate withRoutes(List<RouteInner> routes);
         }
@@ -140,49 +132,41 @@ public interface RouteTable extends HasInner<RouteTableInner>, Resource, Groupab
      */
     interface UpdateStages {
         /**
-         * The stage of the routetable update allowing to specify DisableBgpRoutePropagation.
+         * The stage of the routetable {0} allowing to specify DisableBgpRoutePropagation.
          */
         interface WithDisableBgpRoutePropagation {
             /**
              * Specifies disableBgpRoutePropagation.
-             * @param disableBgpRoutePropagation Gets or sets whether to disable the routes learned by BGP on that route table. True means disable
-             * @return the next update stage
              */
             Update withDisableBgpRoutePropagation(Boolean disableBgpRoutePropagation);
         }
 
         /**
-         * The stage of the routetable update allowing to specify Etag.
+         * The stage of the routetable {0} allowing to specify Etag.
          */
         interface WithEtag {
             /**
              * Specifies etag.
-             * @param etag Gets a unique read-only string that changes whenever the resource is updated
-             * @return the next update stage
              */
             Update withEtag(String etag);
         }
 
         /**
-         * The stage of the routetable update allowing to specify ProvisioningState.
+         * The stage of the routetable {0} allowing to specify ProvisioningState.
          */
         interface WithProvisioningState {
             /**
              * Specifies provisioningState.
-             * @param provisioningState The provisioning state of the resource. Possible values are: 'Updating', 'Deleting', and 'Failed'
-             * @return the next update stage
              */
             Update withProvisioningState(String provisioningState);
         }
 
         /**
-         * The stage of the routetable update allowing to specify Routes.
+         * The stage of the routetable {0} allowing to specify Routes.
          */
         interface WithRoutes {
             /**
              * Specifies routes.
-             * @param routes Collection of routes contained within a route table
-             * @return the next update stage
              */
             Update withRoutes(List<RouteInner> routes);
         }

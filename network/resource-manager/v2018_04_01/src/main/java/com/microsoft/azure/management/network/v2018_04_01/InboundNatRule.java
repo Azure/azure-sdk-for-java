@@ -100,9 +100,6 @@ public interface InboundNatRule extends HasInner<InboundNatRuleInner>, Indexable
         interface WithLoadBalancer {
            /**
             * Specifies resourceGroupName, loadBalancerName.
-            * @param resourceGroupName The name of the resource group
-            * @param loadBalancerName The name of the load balancer
-            * @return the next definition stage
             */
             WithCreate withExistingLoadBalancer(String resourceGroupName, String loadBalancerName);
         }
@@ -113,8 +110,6 @@ public interface InboundNatRule extends HasInner<InboundNatRuleInner>, Indexable
         interface WithBackendPort {
             /**
              * Specifies backendPort.
-             * @param backendPort The port used for the internal endpoint. Acceptable values range from 1 to 65535
-             * @return the next definition stage
              */
             WithCreate withBackendPort(Integer backendPort);
         }
@@ -125,8 +120,6 @@ public interface InboundNatRule extends HasInner<InboundNatRuleInner>, Indexable
         interface WithEnableFloatingIP {
             /**
              * Specifies enableFloatingIP.
-             * @param enableFloatingIP Configures a virtual machine's endpoint for the floating IP capability required to configure a SQL AlwaysOn Availability Group. This setting is required when using the SQL AlwaysOn Availability Groups in SQL server. This setting can't be changed after you create the endpoint
-             * @return the next definition stage
              */
             WithCreate withEnableFloatingIP(Boolean enableFloatingIP);
         }
@@ -137,8 +130,6 @@ public interface InboundNatRule extends HasInner<InboundNatRuleInner>, Indexable
         interface WithEtag {
             /**
              * Specifies etag.
-             * @param etag A unique read-only string that changes whenever the resource is updated
-             * @return the next definition stage
              */
             WithCreate withEtag(String etag);
         }
@@ -149,8 +140,6 @@ public interface InboundNatRule extends HasInner<InboundNatRuleInner>, Indexable
         interface WithFrontendIPConfiguration {
             /**
              * Specifies frontendIPConfiguration.
-             * @param frontendIPConfiguration A reference to frontend IP addresses
-             * @return the next definition stage
              */
             WithCreate withFrontendIPConfiguration(SubResource frontendIPConfiguration);
         }
@@ -161,8 +150,6 @@ public interface InboundNatRule extends HasInner<InboundNatRuleInner>, Indexable
         interface WithFrontendPort {
             /**
              * Specifies frontendPort.
-             * @param frontendPort The port for the external endpoint. Port numbers for each rule must be unique within the Load Balancer. Acceptable values range from 1 to 65534
-             * @return the next definition stage
              */
             WithCreate withFrontendPort(Integer frontendPort);
         }
@@ -173,8 +160,6 @@ public interface InboundNatRule extends HasInner<InboundNatRuleInner>, Indexable
         interface WithId {
             /**
              * Specifies id.
-             * @param id Resource ID
-             * @return the next definition stage
              */
             WithCreate withId(String id);
         }
@@ -185,8 +170,6 @@ public interface InboundNatRule extends HasInner<InboundNatRuleInner>, Indexable
         interface WithIdleTimeoutInMinutes {
             /**
              * Specifies idleTimeoutInMinutes.
-             * @param idleTimeoutInMinutes The timeout for the TCP idle connection. The value can be set between 4 and 30 minutes. The default value is 4 minutes. This element is only used when the protocol is set to TCP
-             * @return the next definition stage
              */
             WithCreate withIdleTimeoutInMinutes(Integer idleTimeoutInMinutes);
         }
@@ -197,8 +180,6 @@ public interface InboundNatRule extends HasInner<InboundNatRuleInner>, Indexable
         interface WithName {
             /**
              * Specifies name.
-             * @param name Gets name of the resource that is unique within a resource group. This name can be used to access the resource
-             * @return the next definition stage
              */
             WithCreate withName(String name);
         }
@@ -209,8 +190,6 @@ public interface InboundNatRule extends HasInner<InboundNatRuleInner>, Indexable
         interface WithProtocol {
             /**
              * Specifies protocol.
-             * @param protocol Possible values include: 'Udp', 'Tcp', 'All'
-             * @return the next definition stage
              */
             WithCreate withProtocol(TransportProtocol protocol);
         }
@@ -221,8 +200,6 @@ public interface InboundNatRule extends HasInner<InboundNatRuleInner>, Indexable
         interface WithProvisioningState {
             /**
              * Specifies provisioningState.
-             * @param provisioningState Gets the provisioning state of the public IP resource. Possible values are: 'Updating', 'Deleting', and 'Failed'
-             * @return the next definition stage
              */
             WithCreate withProvisioningState(String provisioningState);
         }
@@ -251,8 +228,6 @@ public interface InboundNatRule extends HasInner<InboundNatRuleInner>, Indexable
         interface WithBackendPort {
             /**
              * Specifies backendPort.
-             * @param backendPort The port used for the internal endpoint. Acceptable values range from 1 to 65535
-             * @return the next update stage
              */
             Update withBackendPort(Integer backendPort);
         }
@@ -263,8 +238,6 @@ public interface InboundNatRule extends HasInner<InboundNatRuleInner>, Indexable
         interface WithEnableFloatingIP {
             /**
              * Specifies enableFloatingIP.
-             * @param enableFloatingIP Configures a virtual machine's endpoint for the floating IP capability required to configure a SQL AlwaysOn Availability Group. This setting is required when using the SQL AlwaysOn Availability Groups in SQL server. This setting can't be changed after you create the endpoint
-             * @return the next update stage
              */
             Update withEnableFloatingIP(Boolean enableFloatingIP);
         }
@@ -275,8 +248,6 @@ public interface InboundNatRule extends HasInner<InboundNatRuleInner>, Indexable
         interface WithEtag {
             /**
              * Specifies etag.
-             * @param etag A unique read-only string that changes whenever the resource is updated
-             * @return the next update stage
              */
             Update withEtag(String etag);
         }
@@ -287,8 +258,6 @@ public interface InboundNatRule extends HasInner<InboundNatRuleInner>, Indexable
         interface WithFrontendIPConfiguration {
             /**
              * Specifies frontendIPConfiguration.
-             * @param frontendIPConfiguration A reference to frontend IP addresses
-             * @return the next update stage
              */
             Update withFrontendIPConfiguration(SubResource frontendIPConfiguration);
         }
@@ -299,8 +268,6 @@ public interface InboundNatRule extends HasInner<InboundNatRuleInner>, Indexable
         interface WithFrontendPort {
             /**
              * Specifies frontendPort.
-             * @param frontendPort The port for the external endpoint. Port numbers for each rule must be unique within the Load Balancer. Acceptable values range from 1 to 65534
-             * @return the next update stage
              */
             Update withFrontendPort(Integer frontendPort);
         }
@@ -311,8 +278,6 @@ public interface InboundNatRule extends HasInner<InboundNatRuleInner>, Indexable
         interface WithId {
             /**
              * Specifies id.
-             * @param id Resource ID
-             * @return the next update stage
              */
             Update withId(String id);
         }
@@ -323,8 +288,6 @@ public interface InboundNatRule extends HasInner<InboundNatRuleInner>, Indexable
         interface WithIdleTimeoutInMinutes {
             /**
              * Specifies idleTimeoutInMinutes.
-             * @param idleTimeoutInMinutes The timeout for the TCP idle connection. The value can be set between 4 and 30 minutes. The default value is 4 minutes. This element is only used when the protocol is set to TCP
-             * @return the next update stage
              */
             Update withIdleTimeoutInMinutes(Integer idleTimeoutInMinutes);
         }
@@ -335,8 +298,6 @@ public interface InboundNatRule extends HasInner<InboundNatRuleInner>, Indexable
         interface WithName {
             /**
              * Specifies name.
-             * @param name Gets name of the resource that is unique within a resource group. This name can be used to access the resource
-             * @return the next update stage
              */
             Update withName(String name);
         }
@@ -347,8 +308,6 @@ public interface InboundNatRule extends HasInner<InboundNatRuleInner>, Indexable
         interface WithProtocol {
             /**
              * Specifies protocol.
-             * @param protocol Possible values include: 'Udp', 'Tcp', 'All'
-             * @return the next update stage
              */
             Update withProtocol(TransportProtocol protocol);
         }
@@ -359,8 +318,6 @@ public interface InboundNatRule extends HasInner<InboundNatRuleInner>, Indexable
         interface WithProvisioningState {
             /**
              * Specifies provisioningState.
-             * @param provisioningState Gets the provisioning state of the public IP resource. Possible values are: 'Updating', 'Deleting', and 'Failed'
-             * @return the next update stage
              */
             Update withProvisioningState(String provisioningState);
         }

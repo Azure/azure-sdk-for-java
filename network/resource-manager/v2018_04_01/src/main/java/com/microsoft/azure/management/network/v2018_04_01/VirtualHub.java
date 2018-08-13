@@ -75,49 +75,41 @@ public interface VirtualHub extends HasInner<VirtualHubInner>, Resource, Groupab
         }
 
         /**
-         * The stage of the virtualhub definition allowing to specify AddressPrefix.
+         * The stage of the virtualhub update allowing to specify AddressPrefix.
          */
         interface WithAddressPrefix {
             /**
              * Specifies addressPrefix.
-             * @param addressPrefix Address-prefix for this VirtualHub
-             * @return the next definition stage
              */
             WithCreate withAddressPrefix(String addressPrefix);
         }
 
         /**
-         * The stage of the virtualhub definition allowing to specify HubVirtualNetworkConnections.
+         * The stage of the virtualhub update allowing to specify HubVirtualNetworkConnections.
          */
         interface WithHubVirtualNetworkConnections {
             /**
              * Specifies hubVirtualNetworkConnections.
-             * @param hubVirtualNetworkConnections list of all vnet connections with this VirtualHub
-             * @return the next definition stage
              */
             WithCreate withHubVirtualNetworkConnections(List<HubVirtualNetworkConnectionInner> hubVirtualNetworkConnections);
         }
 
         /**
-         * The stage of the virtualhub definition allowing to specify ProvisioningState.
+         * The stage of the virtualhub update allowing to specify ProvisioningState.
          */
         interface WithProvisioningState {
             /**
              * Specifies provisioningState.
-             * @param provisioningState The provisioning state of the resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
-             * @return the next definition stage
              */
             WithCreate withProvisioningState(ProvisioningState provisioningState);
         }
 
         /**
-         * The stage of the virtualhub definition allowing to specify VirtualWan.
+         * The stage of the virtualhub update allowing to specify VirtualWan.
          */
         interface WithVirtualWan {
             /**
              * Specifies virtualWan.
-             * @param virtualWan The VirtualWAN to which the VirtualHub belongs
-             * @return the next definition stage
              */
             WithCreate withVirtualWan(SubResource virtualWan);
         }
@@ -141,49 +133,41 @@ public interface VirtualHub extends HasInner<VirtualHubInner>, Resource, Groupab
      */
     interface UpdateStages {
         /**
-         * The stage of the virtualhub update allowing to specify AddressPrefix.
+         * The stage of the virtualhub {0} allowing to specify AddressPrefix.
          */
         interface WithAddressPrefix {
             /**
              * Specifies addressPrefix.
-             * @param addressPrefix Address-prefix for this VirtualHub
-             * @return the next update stage
              */
             Update withAddressPrefix(String addressPrefix);
         }
 
         /**
-         * The stage of the virtualhub update allowing to specify HubVirtualNetworkConnections.
+         * The stage of the virtualhub {0} allowing to specify HubVirtualNetworkConnections.
          */
         interface WithHubVirtualNetworkConnections {
             /**
              * Specifies hubVirtualNetworkConnections.
-             * @param hubVirtualNetworkConnections list of all vnet connections with this VirtualHub
-             * @return the next update stage
              */
             Update withHubVirtualNetworkConnections(List<HubVirtualNetworkConnectionInner> hubVirtualNetworkConnections);
         }
 
         /**
-         * The stage of the virtualhub update allowing to specify ProvisioningState.
+         * The stage of the virtualhub {0} allowing to specify ProvisioningState.
          */
         interface WithProvisioningState {
             /**
              * Specifies provisioningState.
-             * @param provisioningState The provisioning state of the resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
-             * @return the next update stage
              */
             Update withProvisioningState(ProvisioningState provisioningState);
         }
 
         /**
-         * The stage of the virtualhub update allowing to specify VirtualWan.
+         * The stage of the virtualhub {0} allowing to specify VirtualWan.
          */
         interface WithVirtualWan {
             /**
              * Specifies virtualWan.
-             * @param virtualWan The VirtualWAN to which the VirtualHub belongs
-             * @return the next update stage
              */
             Update withVirtualWan(SubResource virtualWan);
         }

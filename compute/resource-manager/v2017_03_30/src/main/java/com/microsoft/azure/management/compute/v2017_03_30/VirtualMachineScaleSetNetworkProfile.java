@@ -31,7 +31,7 @@ public class VirtualMachineScaleSetNetworkProfile {
     private List<VirtualMachineScaleSetNetworkConfiguration> networkInterfaceConfigurations;
 
     /**
-     * Get the healthProbe value.
+     * Get a reference to a load balancer probe used to determine the health of an instance in the virtual machine scale set. The reference will be in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/probes/{probeName}'.
      *
      * @return the healthProbe value
      */
@@ -40,7 +40,7 @@ public class VirtualMachineScaleSetNetworkProfile {
     }
 
     /**
-     * Set the healthProbe value.
+     * Set a reference to a load balancer probe used to determine the health of an instance in the virtual machine scale set. The reference will be in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/probes/{probeName}'.
      *
      * @param healthProbe the healthProbe value to set
      * @return the VirtualMachineScaleSetNetworkProfile object itself.
@@ -51,7 +51,7 @@ public class VirtualMachineScaleSetNetworkProfile {
     }
 
     /**
-     * Get the networkInterfaceConfigurations value.
+     * Get the list of network configurations.
      *
      * @return the networkInterfaceConfigurations value
      */
@@ -60,7 +60,7 @@ public class VirtualMachineScaleSetNetworkProfile {
     }
 
     /**
-     * Set the networkInterfaceConfigurations value.
+     * Set the list of network configurations.
      *
      * @param networkInterfaceConfigurations the networkInterfaceConfigurations value to set
      * @return the VirtualMachineScaleSetNetworkProfile object itself.

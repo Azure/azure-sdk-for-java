@@ -21,7 +21,7 @@ public class VirtualHardDisk {
     private String uri;
 
     /**
-     * Get the uri value.
+     * Get specifies the virtual hard disk's uri.
      *
      * @return the uri value
      */
@@ -30,7 +30,7 @@ public class VirtualHardDisk {
     }
 
     /**
-     * Set the uri value.
+     * Set specifies the virtual hard disk's uri.
      *
      * @param uri the uri value to set
      * @return the VirtualHardDisk object itself.
