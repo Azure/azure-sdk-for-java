@@ -7,7 +7,6 @@
 package com.microsoft.azure.cognitiveservices.language.luis.runtime;
 
 import com.microsoft.azure.cognitiveservices.language.luis.runtime.implementation.LuisRuntimeAPIImpl;
-import com.microsoft.azure.cognitiveservices.language.luis.runtime.models.AzureRegions;
 import com.microsoft.rest.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import okhttp3.Interceptor;
@@ -24,13 +23,11 @@ public class LuisRuntimeManager {
     /**
      * Initializes an instance of Language Understanding (LUIS) Runtime API client.
      *
-     * @param region Supported Azure regions for Cognitive Services endpoints.
      * @param subscriptionKey the Language Understanding (LUIS) Runtime API key
      * @return the Language Understanding Runtime API client
      */
-    public static LuisRuntimeAPI authenticate(AzureRegions region, String subscriptionKey) {
-        return authenticate("https://{AzureRegion}.api.cognitive.microsoft.com/luis/v2.0/apps/", subscriptionKey)
-                .withAzureRegion(region);
+    public static LuisRuntimeAPI authenticate(String subscriptionKey) {
+        return authenticate("https://api.cognitive.microsoft.com/luis/v2.0/", subscriptionKey);
     }
 
     /**
@@ -65,13 +62,11 @@ public class LuisRuntimeManager {
     /**
      * Initializes an instance of Language Understanding (LUIS) Runtime API client.
      *
-     * @param region Supported Azure regions for Cognitive Services endpoints.
      * @param credentials the management credentials for Azure
      * @return the Language Understanding (LUIS) Runtime API client
      */
-    public static LuisRuntimeAPI authenticate(AzureRegions region, ServiceClientCredentials credentials) {
-        return authenticate("https://{AzureRegion}.api.cognitive.microsoft.com/luis/v2.0/apps/", credentials)
-                .withAzureRegion(region);
+    public static LuisRuntimeAPI authenticate(ServiceClientCredentials credentials) {
+        return authenticate("https://api.cognitive.microsoft.com/luis/v2.0/", credentials);
     }
 
     /**

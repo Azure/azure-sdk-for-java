@@ -14,7 +14,6 @@ import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.Upda
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ImportMethodVersionsOptionalParameter;
 import retrofit2.Retrofit;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.Versions;
-import com.google.common.base.Joiner;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.LuisApp;
@@ -50,7 +49,7 @@ public class VersionsImpl implements Versions {
     /** The Retrofit service to perform REST calls. */
     private VersionsService service;
     /** The service client containing this operation class. */
-    private LUISAuthoringAPIImpl client;
+    private LUISAuthoringClientImpl client;
 
     /**
      * Initializes an instance of VersionsImpl.
@@ -58,7 +57,7 @@ public class VersionsImpl implements Versions {
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public VersionsImpl(Retrofit retrofit, LUISAuthoringAPIImpl client) {
+    public VersionsImpl(Retrofit retrofit, LUISAuthoringClientImpl client) {
         this.service = retrofit.create(VersionsService.class);
         this.client = client;
     }
@@ -70,35 +69,35 @@ public class VersionsImpl implements Versions {
     interface VersionsService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Versions clone" })
         @POST("apps/{appId}/versions/{versionId}/clone")
-        Observable<Response<ResponseBody>> clone(@Path("appId") UUID appId, @Path("versionId") String versionId, @Header("accept-language") String acceptLanguage, @Body TaskUpdateObject versionCloneObject, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> clone(@Path("appId") UUID appId, @Path("versionId") String versionId, @Header("accept-language") String acceptLanguage, @Body TaskUpdateObject versionCloneObject, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Versions list" })
         @GET("apps/{appId}/versions")
-        Observable<Response<ResponseBody>> list(@Path("appId") UUID appId, @Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Path("appId") UUID appId, @Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Versions get" })
         @GET("apps/{appId}/versions/{versionId}/")
-        Observable<Response<ResponseBody>> get(@Path("appId") UUID appId, @Path("versionId") String versionId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> get(@Path("appId") UUID appId, @Path("versionId") String versionId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Versions update" })
         @PUT("apps/{appId}/versions/{versionId}/")
-        Observable<Response<ResponseBody>> update(@Path("appId") UUID appId, @Path("versionId") String versionId, @Header("accept-language") String acceptLanguage, @Body TaskUpdateObject versionUpdateObject, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> update(@Path("appId") UUID appId, @Path("versionId") String versionId, @Header("accept-language") String acceptLanguage, @Body TaskUpdateObject versionUpdateObject, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Versions delete" })
         @HTTP(path = "apps/{appId}/versions/{versionId}/", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> delete(@Path("appId") UUID appId, @Path("versionId") String versionId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> delete(@Path("appId") UUID appId, @Path("versionId") String versionId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Versions export" })
         @GET("apps/{appId}/versions/{versionId}/export")
-        Observable<Response<ResponseBody>> export(@Path("appId") UUID appId, @Path("versionId") String versionId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> export(@Path("appId") UUID appId, @Path("versionId") String versionId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Versions importMethod" })
         @POST("apps/{appId}/versions/import")
-        Observable<Response<ResponseBody>> importMethod(@Path("appId") UUID appId, @Query("versionId") String versionId, @Body LuisApp luisApp, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> importMethod(@Path("appId") UUID appId, @Query("versionId") String versionId, @Body LuisApp luisApp, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Versions deleteUnlabelledUtterance" })
         @HTTP(path = "apps/{appId}/versions/{versionId}/suggest", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteUnlabelledUtterance(@Path("appId") UUID appId, @Path("versionId") String versionId, @Body String utterance, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> deleteUnlabelledUtterance(@Path("appId") UUID appId, @Path("versionId") String versionId, @Body String utterance, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -160,9 +159,6 @@ public class VersionsImpl implements Versions {
      * @return the observable to the String object
      */
     public Observable<ServiceResponse<String>> cloneWithServiceResponseAsync(UUID appId, String versionId, CloneOptionalParameter cloneOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
-        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -184,9 +180,6 @@ public class VersionsImpl implements Versions {
      * @return the observable to the String object
      */
     public Observable<ServiceResponse<String>> cloneWithServiceResponseAsync(UUID appId, String versionId, String version) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
-        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -198,8 +191,7 @@ public class VersionsImpl implements Versions {
             versionCloneObject = new TaskUpdateObject();
             versionCloneObject.withVersion(version);
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.clone(appId, versionId, this.client.acceptLanguage(), versionCloneObject, parameterizedHost, this.client.userAgent())
+        return service.clone(appId, versionId, this.client.acceptLanguage(), versionCloneObject, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<String>>>() {
                 @Override
                 public Observable<ServiceResponse<String>> call(Response<ResponseBody> response) {
@@ -330,9 +322,6 @@ public class VersionsImpl implements Versions {
      * @return the observable to the List&lt;VersionInfo&gt; object
      */
     public Observable<ServiceResponse<List<VersionInfo>>> listWithServiceResponseAsync(UUID appId, ListVersionsOptionalParameter listOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
-        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -352,14 +341,10 @@ public class VersionsImpl implements Versions {
      * @return the observable to the List&lt;VersionInfo&gt; object
      */
     public Observable<ServiceResponse<List<VersionInfo>>> listWithServiceResponseAsync(UUID appId, Integer skip, Integer take) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
-        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.list(appId, skip, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.list(appId, skip, take, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<VersionInfo>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<VersionInfo>>> call(Response<ResponseBody> response) {
@@ -489,17 +474,13 @@ public class VersionsImpl implements Versions {
      * @return the observable to the VersionInfo object
      */
     public Observable<ServiceResponse<VersionInfo>> getWithServiceResponseAsync(UUID appId, String versionId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
-        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.get(appId, versionId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.get(appId, versionId, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<VersionInfo>>>() {
                 @Override
                 public Observable<ServiceResponse<VersionInfo>> call(Response<ResponseBody> response) {
@@ -578,9 +559,6 @@ public class VersionsImpl implements Versions {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateWithServiceResponseAsync(UUID appId, String versionId, UpdateVersionsOptionalParameter updateOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
-        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -602,9 +580,6 @@ public class VersionsImpl implements Versions {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateWithServiceResponseAsync(UUID appId, String versionId, String version) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
-        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -613,8 +588,7 @@ public class VersionsImpl implements Versions {
         }
         TaskUpdateObject versionUpdateObject = new TaskUpdateObject();
         versionUpdateObject.withVersion(version);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.update(appId, versionId, this.client.acceptLanguage(), versionUpdateObject, parameterizedHost, this.client.userAgent())
+        return service.update(appId, versionId, this.client.acceptLanguage(), versionUpdateObject, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -744,17 +718,13 @@ public class VersionsImpl implements Versions {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deleteWithServiceResponseAsync(UUID appId, String versionId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
-        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.delete(appId, versionId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.delete(appId, versionId, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -828,17 +798,13 @@ public class VersionsImpl implements Versions {
      * @return the observable to the LuisApp object
      */
     public Observable<ServiceResponse<LuisApp>> exportWithServiceResponseAsync(UUID appId, String versionId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
-        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.export(appId, versionId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.export(appId, versionId, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<LuisApp>>>() {
                 @Override
                 public Observable<ServiceResponse<LuisApp>> call(Response<ResponseBody> response) {
@@ -917,9 +883,6 @@ public class VersionsImpl implements Versions {
      * @return the observable to the String object
      */
     public Observable<ServiceResponse<String>> importMethodWithServiceResponseAsync(UUID appId, LuisApp luisApp, ImportMethodVersionsOptionalParameter importMethodOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
-        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -942,9 +905,6 @@ public class VersionsImpl implements Versions {
      * @return the observable to the String object
      */
     public Observable<ServiceResponse<String>> importMethodWithServiceResponseAsync(UUID appId, LuisApp luisApp, String versionId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
-        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -952,8 +912,7 @@ public class VersionsImpl implements Versions {
             throw new IllegalArgumentException("Parameter luisApp is required and cannot be null.");
         }
         Validator.validate(luisApp);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.importMethod(appId, versionId, luisApp, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.importMethod(appId, versionId, luisApp, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<String>>>() {
                 @Override
                 public Observable<ServiceResponse<String>> call(Response<ResponseBody> response) {
@@ -1087,9 +1046,6 @@ public class VersionsImpl implements Versions {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deleteUnlabelledUtteranceWithServiceResponseAsync(UUID appId, String versionId, String utterance) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
-        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -1099,8 +1055,7 @@ public class VersionsImpl implements Versions {
         if (utterance == null) {
             throw new IllegalArgumentException("Parameter utterance is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.deleteUnlabelledUtterance(appId, versionId, utterance, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.deleteUnlabelledUtterance(appId, versionId, utterance, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {

@@ -26,7 +26,6 @@ import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
 import java.util.List;
-import java.util.UUID;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -71,43 +70,43 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
     interface AppsService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.iotcentral.v2017_07_01_privatepreview.Apps getByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTCentral/IoTApps/{resourceName}")
-        Observable<Response<ResponseBody>> getByResourceGroup(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceName") String resourceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getByResourceGroup(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceName") String resourceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.iotcentral.v2017_07_01_privatepreview.Apps createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTCentral/IoTApps/{resourceName}")
-        Observable<Response<ResponseBody>> createOrUpdate(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceName") String resourceName, @Query("api-version") String apiVersion, @Body AppInner app, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceName") String resourceName, @Query("api-version") String apiVersion, @Body AppInner app, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.iotcentral.v2017_07_01_privatepreview.Apps beginCreateOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTCentral/IoTApps/{resourceName}")
-        Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceName") String resourceName, @Query("api-version") String apiVersion, @Body AppInner app, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceName") String resourceName, @Query("api-version") String apiVersion, @Body AppInner app, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.iotcentral.v2017_07_01_privatepreview.Apps update" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTCentral/IoTApps/{resourceName}")
-        Observable<Response<ResponseBody>> update(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceName") String resourceName, @Query("api-version") String apiVersion, @Body AppPatch appPatch, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> update(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceName") String resourceName, @Query("api-version") String apiVersion, @Body AppPatch appPatch, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.iotcentral.v2017_07_01_privatepreview.Apps beginUpdate" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTCentral/IoTApps/{resourceName}")
-        Observable<Response<ResponseBody>> beginUpdate(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceName") String resourceName, @Query("api-version") String apiVersion, @Body AppPatch appPatch, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceName") String resourceName, @Query("api-version") String apiVersion, @Body AppPatch appPatch, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.iotcentral.v2017_07_01_privatepreview.Apps delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTCentral/IoTApps/{resourceName}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> delete(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceName") String resourceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> delete(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceName") String resourceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.iotcentral.v2017_07_01_privatepreview.Apps beginDelete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTCentral/IoTApps/{resourceName}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> beginDelete(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceName") String resourceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginDelete(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceName") String resourceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.iotcentral.v2017_07_01_privatepreview.Apps list" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.IoTCentral/IoTApps")
-        Observable<Response<ResponseBody>> list(@Path("subscriptionId") UUID subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.iotcentral.v2017_07_01_privatepreview.Apps listByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTCentral/IoTApps")
-        Observable<Response<ResponseBody>> listByResourceGroup(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listByResourceGroup(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.iotcentral.v2017_07_01_privatepreview.Apps checkNameAvailability" })
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.IoTCentral/checkNameAvailability")
-        Observable<Response<ResponseBody>> checkNameAvailability(@Path("subscriptionId") UUID subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body OperationInputs operationInputs, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> checkNameAvailability(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body OperationInputs operationInputs, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.iotcentral.v2017_07_01_privatepreview.Apps listNext" })
         @GET
@@ -180,6 +179,9 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
         }
         if (resourceName == null) {
             throw new IllegalArgumentException("Parameter resourceName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.getByResourceGroup(this.client.subscriptionId(), resourceGroupName, resourceName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AppInner>>>() {
@@ -268,6 +270,9 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
         if (resourceName == null) {
             throw new IllegalArgumentException("Parameter resourceName is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         if (app == null) {
             throw new IllegalArgumentException("Parameter app is required and cannot be null.");
         }
@@ -341,6 +346,9 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
         }
         if (resourceName == null) {
             throw new IllegalArgumentException("Parameter resourceName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         if (app == null) {
             throw new IllegalArgumentException("Parameter app is required and cannot be null.");
@@ -435,6 +443,9 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
         if (resourceName == null) {
             throw new IllegalArgumentException("Parameter resourceName is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         if (appPatch == null) {
             throw new IllegalArgumentException("Parameter appPatch is required and cannot be null.");
         }
@@ -508,6 +519,9 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
         }
         if (resourceName == null) {
             throw new IllegalArgumentException("Parameter resourceName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         if (appPatch == null) {
             throw new IllegalArgumentException("Parameter appPatch is required and cannot be null.");
@@ -596,6 +610,9 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
         if (resourceName == null) {
             throw new IllegalArgumentException("Parameter resourceName is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         Observable<Response<ResponseBody>> observable = service.delete(this.client.subscriptionId(), resourceGroupName, resourceName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
@@ -660,6 +677,9 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
         }
         if (resourceName == null) {
             throw new IllegalArgumentException("Parameter resourceName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.beginDelete(this.client.subscriptionId(), resourceGroupName, resourceName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
@@ -766,6 +786,9 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
     public Observable<ServiceResponse<Page<AppInner>>> listSinglePageAsync() {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.list(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<AppInner>>>>() {
@@ -879,6 +902,9 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         return service.listByResourceGroup(this.client.subscriptionId(), resourceGroupName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<AppInner>>>>() {
                 @Override
@@ -951,6 +977,9 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
     public Observable<ServiceResponse<AppNameAvailabilityInfoInner>> checkNameAvailabilityWithServiceResponseAsync(String name) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         if (name == null) {
             throw new IllegalArgumentException("Parameter name is required and cannot be null.");
