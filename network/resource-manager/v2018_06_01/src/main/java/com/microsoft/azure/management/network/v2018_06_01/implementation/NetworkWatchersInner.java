@@ -14,11 +14,11 @@ import com.microsoft.azure.arm.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.network.v2018_06_01.AvailableProvidersListParameters;
 import com.microsoft.azure.management.network.v2018_06_01.AzureReachabilityReportParameters;
 import com.microsoft.azure.management.network.v2018_06_01.ConnectivityParameters;
+import com.microsoft.azure.management.network.v2018_06_01.ErrorResponseException;
 import com.microsoft.azure.management.network.v2018_06_01.FlowLogStatusParameters;
 import com.microsoft.azure.management.network.v2018_06_01.NetworkConfigurationDiagnosticParameters;
 import com.microsoft.azure.management.network.v2018_06_01.NextHopParameters;
@@ -225,7 +225,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the network watcher resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the NetworkWatcherInner object if successful.
      */
@@ -303,11 +303,11 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
             });
     }
 
-    private ServiceResponse<NetworkWatcherInner> createOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<NetworkWatcherInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<NetworkWatcherInner> createOrUpdateDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<NetworkWatcherInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<NetworkWatcherInner>() { }.getType())
                 .register(201, new TypeToken<NetworkWatcherInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -317,7 +317,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the NetworkWatcherInner object if successful.
      */
@@ -388,10 +388,10 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
             });
     }
 
-    private ServiceResponse<NetworkWatcherInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<NetworkWatcherInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<NetworkWatcherInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<NetworkWatcherInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<NetworkWatcherInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -401,7 +401,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String networkWatcherName) {
@@ -467,7 +467,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void beginDelete(String resourceGroupName, String networkWatcherName) {
@@ -537,11 +537,11 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
             });
     }
 
-    private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -551,7 +551,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the NetworkWatcherInner object if successful.
      */
@@ -632,7 +632,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher.
      * @param tags Resource tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the NetworkWatcherInner object if successful.
      */
@@ -709,10 +709,10 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
             });
     }
 
-    private ServiceResponse<NetworkWatcherInner> updateTagsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<NetworkWatcherInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<NetworkWatcherInner> updateTagsDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<NetworkWatcherInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<NetworkWatcherInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -795,10 +795,10 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
             });
     }
 
-    private ServiceResponse<PageImpl1<NetworkWatcherInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl1<NetworkWatcherInner>, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl1<NetworkWatcherInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<NetworkWatcherInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl1<NetworkWatcherInner>>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -874,10 +874,10 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
             });
     }
 
-    private ServiceResponse<PageImpl1<NetworkWatcherInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl1<NetworkWatcherInner>, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl1<NetworkWatcherInner>> listDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<NetworkWatcherInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl1<NetworkWatcherInner>>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -888,7 +888,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the representation of topology.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TopologyInner object if successful.
      */
@@ -966,10 +966,10 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
             });
     }
 
-    private ServiceResponse<TopologyInner> getTopologyDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<TopologyInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<TopologyInner> getTopologyDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<TopologyInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<TopologyInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -980,7 +980,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the IP flow to be verified.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the VerificationIPFlowResultInner object if successful.
      */
@@ -1055,7 +1055,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the IP flow to be verified.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the VerificationIPFlowResultInner object if successful.
      */
@@ -1133,11 +1133,11 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
             });
     }
 
-    private ServiceResponse<VerificationIPFlowResultInner> beginVerifyIPFlowDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<VerificationIPFlowResultInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<VerificationIPFlowResultInner> beginVerifyIPFlowDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<VerificationIPFlowResultInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<VerificationIPFlowResultInner>() { }.getType())
                 .register(202, new TypeToken<VerificationIPFlowResultInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -1148,7 +1148,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the source and destination endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the NextHopResultInner object if successful.
      */
@@ -1223,7 +1223,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the source and destination endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the NextHopResultInner object if successful.
      */
@@ -1301,11 +1301,11 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
             });
     }
 
-    private ServiceResponse<NextHopResultInner> beginGetNextHopDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<NextHopResultInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<NextHopResultInner> beginGetNextHopDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<NextHopResultInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<NextHopResultInner>() { }.getType())
                 .register(202, new TypeToken<NextHopResultInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -1316,7 +1316,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher.
      * @param targetResourceId ID of the target VM.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SecurityGroupViewResultInner object if successful.
      */
@@ -1392,7 +1392,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher.
      * @param targetResourceId ID of the target VM.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SecurityGroupViewResultInner object if successful.
      */
@@ -1471,11 +1471,11 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
             });
     }
 
-    private ServiceResponse<SecurityGroupViewResultInner> beginGetVMSecurityRulesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<SecurityGroupViewResultInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<SecurityGroupViewResultInner> beginGetVMSecurityRulesDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SecurityGroupViewResultInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SecurityGroupViewResultInner>() { }.getType())
                 .register(202, new TypeToken<SecurityGroupViewResultInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -1486,7 +1486,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the resource to troubleshoot.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TroubleshootingResultInner object if successful.
      */
@@ -1561,7 +1561,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the resource to troubleshoot.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TroubleshootingResultInner object if successful.
      */
@@ -1639,11 +1639,11 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
             });
     }
 
-    private ServiceResponse<TroubleshootingResultInner> beginGetTroubleshootingDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<TroubleshootingResultInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<TroubleshootingResultInner> beginGetTroubleshootingDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<TroubleshootingResultInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<TroubleshootingResultInner>() { }.getType())
                 .register(202, new TypeToken<TroubleshootingResultInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -1654,7 +1654,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher resource.
      * @param targetResourceId The target resource ID to query the troubleshooting result.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TroubleshootingResultInner object if successful.
      */
@@ -1730,7 +1730,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher resource.
      * @param targetResourceId The target resource ID to query the troubleshooting result.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TroubleshootingResultInner object if successful.
      */
@@ -1809,11 +1809,11 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
             });
     }
 
-    private ServiceResponse<TroubleshootingResultInner> beginGetTroubleshootingResultDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<TroubleshootingResultInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<TroubleshootingResultInner> beginGetTroubleshootingResultDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<TroubleshootingResultInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<TroubleshootingResultInner>() { }.getType())
                 .register(202, new TypeToken<TroubleshootingResultInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -1824,7 +1824,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the configuration of flow log.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the FlowLogInformationInner object if successful.
      */
@@ -1899,7 +1899,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the configuration of flow log.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the FlowLogInformationInner object if successful.
      */
@@ -1977,11 +1977,11 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
             });
     }
 
-    private ServiceResponse<FlowLogInformationInner> beginSetFlowLogConfigurationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<FlowLogInformationInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<FlowLogInformationInner> beginSetFlowLogConfigurationDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<FlowLogInformationInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<FlowLogInformationInner>() { }.getType())
                 .register(202, new TypeToken<FlowLogInformationInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -1992,7 +1992,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher resource.
      * @param targetResourceId The target resource where getting the flow log and traffic analytics (optional) status.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the FlowLogInformationInner object if successful.
      */
@@ -2068,7 +2068,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher resource.
      * @param targetResourceId The target resource where getting the flow log and traffic analytics (optional) status.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the FlowLogInformationInner object if successful.
      */
@@ -2147,11 +2147,11 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
             });
     }
 
-    private ServiceResponse<FlowLogInformationInner> beginGetFlowLogStatusDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<FlowLogInformationInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<FlowLogInformationInner> beginGetFlowLogStatusDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<FlowLogInformationInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<FlowLogInformationInner>() { }.getType())
                 .register(202, new TypeToken<FlowLogInformationInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -2162,7 +2162,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that determine how the connectivity check will be performed.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ConnectivityInformationInner object if successful.
      */
@@ -2237,7 +2237,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that determine how the connectivity check will be performed.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ConnectivityInformationInner object if successful.
      */
@@ -2315,11 +2315,11 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
             });
     }
 
-    private ServiceResponse<ConnectivityInformationInner> beginCheckConnectivityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ConnectivityInformationInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<ConnectivityInformationInner> beginCheckConnectivityDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ConnectivityInformationInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ConnectivityInformationInner>() { }.getType())
                 .register(202, new TypeToken<ConnectivityInformationInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -2330,7 +2330,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that determine Azure reachability report configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AzureReachabilityReportInner object if successful.
      */
@@ -2405,7 +2405,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that determine Azure reachability report configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AzureReachabilityReportInner object if successful.
      */
@@ -2483,11 +2483,11 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
             });
     }
 
-    private ServiceResponse<AzureReachabilityReportInner> beginGetAzureReachabilityReportDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<AzureReachabilityReportInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<AzureReachabilityReportInner> beginGetAzureReachabilityReportDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<AzureReachabilityReportInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<AzureReachabilityReportInner>() { }.getType())
                 .register(202, new TypeToken<AzureReachabilityReportInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -2498,7 +2498,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that scope the list of available providers.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AvailableProvidersListInner object if successful.
      */
@@ -2573,7 +2573,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that scope the list of available providers.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AvailableProvidersListInner object if successful.
      */
@@ -2651,11 +2651,11 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
             });
     }
 
-    private ServiceResponse<AvailableProvidersListInner> beginListAvailableProvidersDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<AvailableProvidersListInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<AvailableProvidersListInner> beginListAvailableProvidersDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<AvailableProvidersListInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<AvailableProvidersListInner>() { }.getType())
                 .register(202, new TypeToken<AvailableProvidersListInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -2666,7 +2666,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters to get network configuration diagnostic.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the NetworkConfigurationDiagnosticResponseInner object if successful.
      */
@@ -2741,7 +2741,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters to get network configuration diagnostic.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the NetworkConfigurationDiagnosticResponseInner object if successful.
      */
@@ -2819,11 +2819,11 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
             });
     }
 
-    private ServiceResponse<NetworkConfigurationDiagnosticResponseInner> beginGetNetworkConfigurationDiagnosticDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<NetworkConfigurationDiagnosticResponseInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<NetworkConfigurationDiagnosticResponseInner> beginGetNetworkConfigurationDiagnosticDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<NetworkConfigurationDiagnosticResponseInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<NetworkConfigurationDiagnosticResponseInner>() { }.getType())
                 .register(202, new TypeToken<NetworkConfigurationDiagnosticResponseInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -2833,7 +2833,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ConnectionMonitorsQueryResultItemInner&gt; object if successful.
      */
@@ -2951,7 +2951,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher.
      * @param connectionMonitorIds List of connection monitors ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ConnectionMonitorsQueryResultItemInner&gt; object if successful.
      */
@@ -3066,11 +3066,11 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
             });
     }
 
-    private ServiceResponse<PageImpl<ConnectionMonitorsQueryResultItemInner>> queryConnectionMonitorsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<ConnectionMonitorsQueryResultItemInner>, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<ConnectionMonitorsQueryResultItemInner>> queryConnectionMonitorsDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException, InterruptedException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ConnectionMonitorsQueryResultItemInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ConnectionMonitorsQueryResultItemInner>>() { }.getType())
                 .register(202, new TypeToken<PageImpl<ConnectionMonitorsQueryResultItemInner>>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -3080,7 +3080,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ConnectionMonitorsQueryResultItemInner&gt; object if successful.
      */
@@ -3198,7 +3198,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher.
      * @param connectionMonitorIds List of connection monitors ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ConnectionMonitorsQueryResultItemInner&gt; object if successful.
      */
@@ -3313,11 +3313,11 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
             });
     }
 
-    private ServiceResponse<PageImpl<ConnectionMonitorsQueryResultItemInner>> beginQueryConnectionMonitorsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<ConnectionMonitorsQueryResultItemInner>, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<ConnectionMonitorsQueryResultItemInner>> beginQueryConnectionMonitorsDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ConnectionMonitorsQueryResultItemInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ConnectionMonitorsQueryResultItemInner>>() { }.getType())
                 .register(202, new TypeToken<PageImpl<ConnectionMonitorsQueryResultItemInner>>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -3326,7 +3326,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ConnectionMonitorsQueryResultItemInner&gt; object if successful.
      */
@@ -3425,11 +3425,11 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
             });
     }
 
-    private ServiceResponse<PageImpl<ConnectionMonitorsQueryResultItemInner>> queryConnectionMonitorsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<ConnectionMonitorsQueryResultItemInner>, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<ConnectionMonitorsQueryResultItemInner>> queryConnectionMonitorsNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException, InterruptedException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ConnectionMonitorsQueryResultItemInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ConnectionMonitorsQueryResultItemInner>>() { }.getType())
                 .register(202, new TypeToken<PageImpl<ConnectionMonitorsQueryResultItemInner>>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -3438,7 +3438,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ConnectionMonitorsQueryResultItemInner&gt; object if successful.
      */
@@ -3537,11 +3537,11 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
             });
     }
 
-    private ServiceResponse<PageImpl<ConnectionMonitorsQueryResultItemInner>> beginQueryConnectionMonitorsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<ConnectionMonitorsQueryResultItemInner>, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<ConnectionMonitorsQueryResultItemInner>> beginQueryConnectionMonitorsNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ConnectionMonitorsQueryResultItemInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ConnectionMonitorsQueryResultItemInner>>() { }.getType())
                 .register(202, new TypeToken<PageImpl<ConnectionMonitorsQueryResultItemInner>>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
