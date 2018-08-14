@@ -10,12 +10,17 @@ package com.microsoft.azure.management.mediaservices.v2018_07_01.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceFuture;
+import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.mediaservices.v2018_07_01.ApiErrorException;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -26,6 +31,7 @@ import retrofit2.http.PATCH;
 import retrofit2.http.Path;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -76,6 +82,10 @@ public class AccountFiltersInner {
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/accountFilters/{filterName}")
         Observable<Response<ResponseBody>> update(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("filterName") String filterName, @Body AccountFilterInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.mediaservices.v2018_07_01.AccountFilters listNext" })
+        @GET
+        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
     }
 
     /**
@@ -87,10 +97,16 @@ public class AccountFiltersInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ApiErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the AccountFilterCollectionInner object if successful.
+     * @return the PagedList&lt;AccountFilterInner&gt; object if successful.
      */
-    public AccountFilterCollectionInner list(String resourceGroupName, String accountName) {
-        return listWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().body();
+    public PagedList<AccountFilterInner> list(final String resourceGroupName, final String accountName) {
+        ServiceResponse<Page<AccountFilterInner>> response = listSinglePageAsync(resourceGroupName, accountName).toBlocking().single();
+        return new PagedList<AccountFilterInner>(response.body()) {
+            @Override
+            public Page<AccountFilterInner> nextPage(String nextPageLink) {
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
     }
 
     /**
@@ -103,8 +119,16 @@ public class AccountFiltersInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<AccountFilterCollectionInner> listAsync(String resourceGroupName, String accountName, final ServiceCallback<AccountFilterCollectionInner> serviceCallback) {
-        return ServiceFuture.fromResponse(listWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
+    public ServiceFuture<List<AccountFilterInner>> listAsync(final String resourceGroupName, final String accountName, final ListOperationCallback<AccountFilterInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listSinglePageAsync(resourceGroupName, accountName),
+            new Func1<String, Observable<ServiceResponse<Page<AccountFilterInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<AccountFilterInner>>> call(String nextPageLink) {
+                    return listNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
     }
 
     /**
@@ -114,15 +138,16 @@ public class AccountFiltersInner {
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the AccountFilterCollectionInner object
+     * @return the observable to the PagedList&lt;AccountFilterInner&gt; object
      */
-    public Observable<AccountFilterCollectionInner> listAsync(String resourceGroupName, String accountName) {
-        return listWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<AccountFilterCollectionInner>, AccountFilterCollectionInner>() {
-            @Override
-            public AccountFilterCollectionInner call(ServiceResponse<AccountFilterCollectionInner> response) {
-                return response.body();
-            }
-        });
+    public Observable<Page<AccountFilterInner>> listAsync(final String resourceGroupName, final String accountName) {
+        return listWithServiceResponseAsync(resourceGroupName, accountName)
+            .map(new Func1<ServiceResponse<Page<AccountFilterInner>>, Page<AccountFilterInner>>() {
+                @Override
+                public Page<AccountFilterInner> call(ServiceResponse<Page<AccountFilterInner>> response) {
+                    return response.body();
+                }
+            });
     }
 
     /**
@@ -132,9 +157,32 @@ public class AccountFiltersInner {
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the AccountFilterCollectionInner object
+     * @return the observable to the PagedList&lt;AccountFilterInner&gt; object
      */
-    public Observable<ServiceResponse<AccountFilterCollectionInner>> listWithServiceResponseAsync(String resourceGroupName, String accountName) {
+    public Observable<ServiceResponse<Page<AccountFilterInner>>> listWithServiceResponseAsync(final String resourceGroupName, final String accountName) {
+        return listSinglePageAsync(resourceGroupName, accountName)
+            .concatMap(new Func1<ServiceResponse<Page<AccountFilterInner>>, Observable<ServiceResponse<Page<AccountFilterInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<AccountFilterInner>>> call(ServiceResponse<Page<AccountFilterInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * List Account Filters.
+     * List Account Filters in the Media Services account.
+     *
+    ServiceResponse<PageImpl<AccountFilterInner>> * @param resourceGroupName The name of the resource group within the Azure subscription.
+    ServiceResponse<PageImpl<AccountFilterInner>> * @param accountName The Media Services account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;AccountFilterInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<AccountFilterInner>>> listSinglePageAsync(final String resourceGroupName, final String accountName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -148,12 +196,12 @@ public class AccountFiltersInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.list(this.client.subscriptionId(), resourceGroupName, accountName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AccountFilterCollectionInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<AccountFilterInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<AccountFilterCollectionInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<AccountFilterInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<AccountFilterCollectionInner> clientResponse = listDelegate(response);
-                        return Observable.just(clientResponse);
+                        ServiceResponse<PageImpl<AccountFilterInner>> result = listDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<AccountFilterInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -161,9 +209,9 @@ public class AccountFiltersInner {
             });
     }
 
-    private ServiceResponse<AccountFilterCollectionInner> listDelegate(Response<ResponseBody> response) throws ApiErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<AccountFilterCollectionInner, ApiErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<AccountFilterCollectionInner>() { }.getType())
+    private ServiceResponse<PageImpl<AccountFilterInner>> listDelegate(Response<ResponseBody> response) throws ApiErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AccountFilterInner>, ApiErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<AccountFilterInner>>() { }.getType())
                 .registerError(ApiErrorException.class)
                 .build(response);
     }
@@ -570,6 +618,122 @@ public class AccountFiltersInner {
     private ServiceResponse<AccountFilterInner> updateDelegate(Response<ResponseBody> response) throws ApiErrorException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<AccountFilterInner, ApiErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<AccountFilterInner>() { }.getType())
+                .registerError(ApiErrorException.class)
+                .build(response);
+    }
+
+    /**
+     * List Account Filters.
+     * List Account Filters in the Media Services account.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ApiErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;AccountFilterInner&gt; object if successful.
+     */
+    public PagedList<AccountFilterInner> listNext(final String nextPageLink) {
+        ServiceResponse<Page<AccountFilterInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<AccountFilterInner>(response.body()) {
+            @Override
+            public Page<AccountFilterInner> nextPage(String nextPageLink) {
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * List Account Filters.
+     * List Account Filters in the Media Services account.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<AccountFilterInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<AccountFilterInner>> serviceFuture, final ListOperationCallback<AccountFilterInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<AccountFilterInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<AccountFilterInner>>> call(String nextPageLink) {
+                    return listNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * List Account Filters.
+     * List Account Filters in the Media Services account.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;AccountFilterInner&gt; object
+     */
+    public Observable<Page<AccountFilterInner>> listNextAsync(final String nextPageLink) {
+        return listNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<AccountFilterInner>>, Page<AccountFilterInner>>() {
+                @Override
+                public Page<AccountFilterInner> call(ServiceResponse<Page<AccountFilterInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * List Account Filters.
+     * List Account Filters in the Media Services account.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;AccountFilterInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<AccountFilterInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
+        return listNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<AccountFilterInner>>, Observable<ServiceResponse<Page<AccountFilterInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<AccountFilterInner>>> call(ServiceResponse<Page<AccountFilterInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * List Account Filters.
+     * List Account Filters in the Media Services account.
+     *
+    ServiceResponse<PageImpl<AccountFilterInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;AccountFilterInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<AccountFilterInner>>> listNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<AccountFilterInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<AccountFilterInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<AccountFilterInner>> result = listNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<AccountFilterInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<AccountFilterInner>> listNextDelegate(Response<ResponseBody> response) throws ApiErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AccountFilterInner>, ApiErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<AccountFilterInner>>() { }.getType())
                 .registerError(ApiErrorException.class)
                 .build(response);
     }

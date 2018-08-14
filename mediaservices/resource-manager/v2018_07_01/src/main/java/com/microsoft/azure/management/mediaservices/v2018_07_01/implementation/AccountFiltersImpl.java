@@ -14,7 +14,7 @@ import com.microsoft.azure.management.mediaservices.v2018_07_01.AccountFilters;
 import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
-import com.microsoft.azure.management.mediaservices.v2018_07_01.AccountFilterCollection;
+import com.microsoft.azure.Page;
 import com.microsoft.azure.management.mediaservices.v2018_07_01.AccountFilter;
 
 class AccountFiltersImpl extends WrapperImpl<AccountFiltersInner> implements AccountFilters {
@@ -43,13 +43,19 @@ class AccountFiltersImpl extends WrapperImpl<AccountFiltersInner> implements Acc
     }
 
     @Override
-    public Observable<AccountFilterCollection> listAsync(String resourceGroupName, String accountName) {
+    public Observable<AccountFilter> listAsync(final String resourceGroupName, final String accountName) {
         AccountFiltersInner client = this.inner();
         return client.listAsync(resourceGroupName, accountName)
-        .map(new Func1<AccountFilterCollectionInner, AccountFilterCollection>() {
+        .flatMapIterable(new Func1<Page<AccountFilterInner>, Iterable<AccountFilterInner>>() {
             @Override
-            public AccountFilterCollection call(AccountFilterCollectionInner inner) {
-                return new AccountFilterCollectionImpl(inner, manager());
+            public Iterable<AccountFilterInner> call(Page<AccountFilterInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<AccountFilterInner, AccountFilter>() {
+            @Override
+            public AccountFilter call(AccountFilterInner inner) {
+                return wrapModel(inner);
             }
         });
     }

@@ -19,17 +19,6 @@ import com.microsoft.azure.arm.model.HasInner;
  */
 public interface AccountFilters extends SupportsCreating<AccountFilter.DefinitionStages.Blank>, HasInner<AccountFiltersInner> {
     /**
-     * List Account Filters.
-     * List Account Filters in the Media Services account.
-     *
-     * @param resourceGroupName The name of the resource group within the Azure subscription.
-     * @param accountName The Media Services account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<AccountFilterCollection> listAsync(String resourceGroupName, String accountName);
-
-    /**
      * Get an Account Filter.
      * Get the details of an Account Filter in the Media Services account.
      *
@@ -40,6 +29,17 @@ public interface AccountFilters extends SupportsCreating<AccountFilter.Definitio
      * @return the observable for the request
      */
     Observable<AccountFilter> getAsync(String resourceGroupName, String accountName, String filterName);
+
+    /**
+     * List Account Filters.
+     * List Account Filters in the Media Services account.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<AccountFilter> listAsync(final String resourceGroupName, final String accountName);
 
     /**
      * Delete an Account Filter.
