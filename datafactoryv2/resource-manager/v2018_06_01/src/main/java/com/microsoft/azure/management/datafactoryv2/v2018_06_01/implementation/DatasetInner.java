@@ -118,7 +118,8 @@ public class DatasetInner {
     private List<Object> annotations;
 
     /**
-     * The folder that this Dataset is in.
+     * The folder that this Dataset is in. If not specified, Dataset will
+     * appear at the root level.
      */
     @JsonProperty(value = "folder")
     private DatasetFolder folder;
@@ -244,7 +245,7 @@ public class DatasetInner {
     }
 
     /**
-     * Get the folder that this Dataset is in.
+     * Get the folder that this Dataset is in. If not specified, Dataset will appear at the root level.
      *
      * @return the folder value
      */
@@ -253,7 +254,7 @@ public class DatasetInner {
     }
 
     /**
-     * Set the folder that this Dataset is in.
+     * Set the folder that this Dataset is in. If not specified, Dataset will appear at the root level.
      *
      * @param folder the folder value to set
      * @return the DatasetInner object itself.

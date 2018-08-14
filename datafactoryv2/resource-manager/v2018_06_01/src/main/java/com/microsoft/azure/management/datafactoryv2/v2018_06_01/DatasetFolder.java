@@ -11,7 +11,8 @@ package com.microsoft.azure.management.datafactoryv2.v2018_06_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The folder that this Dataset is in.
+ * The folder that this Dataset is in. If not specified, Dataset will appear at
+ * the root level.
  */
 public class DatasetFolder {
     /**
