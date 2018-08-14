@@ -106,18 +106,7 @@ public final class AccountSASSignatureValues {
         Utility.assertNotNull("permissions", this.permissions);
 
         // Signature is generated on the un-url-encoded values.
-        String stringToSign = String.join("\n",
-                sharedKeyCredentials.getAccountName(),
-                AccountSASPermission.parse(this.permissions).toString(), // guarantees ordering
-                this.services,
-                resourceTypes,
-                this.startTime == null ? "" : Utility.ISO8601UTCDateFormatter.format(this.startTime),
-                this.expiryTime == null ? "" : Utility.ISO8601UTCDateFormatter.format(this.expiryTime),
-                this.ipRange == null ? IPRange.DEFAULT.toString() : this.ipRange.toString(),
-                this.protocol == null ? "" : this.protocol.toString(),
-                this.version,
-                Constants.EMPTY_STRING // Account SAS requires an additional newline character
-        );
+        final String stringToSign = stringToSign(sharedKeyCredentials);
 
         String signature;
         try {
@@ -129,5 +118,20 @@ public final class AccountSASSignatureValues {
         return new SASQueryParameters(this.version, this.services, resourceTypes,
                 this.protocol, this.startTime, this.expiryTime, this.ipRange, null,
                 null, this.permissions, signature);
+    }
+
+    private String stringToSign(final SharedKeyCredentials sharedKeyCredentials) {
+        return String.join("\n",
+                sharedKeyCredentials.getAccountName(),
+                AccountSASPermission.parse(this.permissions).toString(), // guarantees ordering
+                this.services,
+                resourceTypes,
+                this.startTime == null ? "" : Utility.ISO8601UTCDateFormatter.format(this.startTime),
+                this.expiryTime == null ? "" : Utility.ISO8601UTCDateFormatter.format(this.expiryTime),
+                this.ipRange == null ? IPRange.DEFAULT.toString() : this.ipRange.toString(),
+                this.protocol == null ? "" : this.protocol.toString(),
+                this.version,
+                Constants.EMPTY_STRING // Account SAS requires an additional newline character
+        );
     }
 }
