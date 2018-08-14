@@ -20,26 +20,34 @@ following dependency declaration inside of your Maven project file:
  Maven Central Repository](https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22azure-eventhubs%22) or from [the Release distribution point on GitHub](https://github.com/Azure/azure-event-hubs/releases).  
 
 
-For a simple event publisher, you'll need to import the *com.microsoft.azure.eventhubs* package for the Event Hub client classes
-and the *com.microsoft.azure.servicebus* package for utility classes like common exceptions that are shared with the  
-Azure Service Bus Messaging client. 
+For a simple event publisher, you'll need to import the *com.microsoft.azure.eventhubs* package for the Event Hub client classes. 
  
  
 ```Java
     import com.microsoft.azure.eventhubs.*;
 ```
 
+Event Hubs client library uses qpid proton reactor framework which exposes AMQP connection and message delivery related 
+state transitions as reactive events. In the process,
+the library will need to run many asynchronous tasks while sending and receiving messages to Event Hubs.
+So, `EventHubClient` requires an instance of `Executor`, where all these tasks are run.
+
+
+```Java
+    ExecutorService executor = Executors.newCachedThreadPool();
+```
+
 Using an Event Hub connection string, which holds all required connection information including an authorization key or token 
 (see [Connection Strings](#connection-strings)), you then create an *EventHubClient* instance.   
    
 ```Java
-    final String namespaceName = "----ServiceBusNamespaceName-----";
-    final String eventHubName = "----EventHubName-----";
-    final String sasKeyName = "-----SharedAccessSignatureKeyName-----";
-    final String sasKey = "---SharedAccessSignatureKey----";
-    ConnectionStringBuilder connStr = new ConnectionStringBuilder(namespaceName, eventHubName, sasKeyName, sasKey);
-		
-    EventHubClient ehClient = EventHubClient.createFromConnectionStringSync(connStr.toString());
+    ConnectionStringBuilder connStr = new ConnectionStringBuilder()
+                .setNamespaceName("----ServiceBusNamespaceName-----")
+                .setEventHubName("----EventHubName-----")
+                .setSasKeyName("-----SharedAccessSignatureKeyName-----")
+                .setSasKey("---SharedAccessSignatureKey----");	
+	
+    EventHubClient ehClient = EventHubClient.createSync(connStr.toString(), executor);
 ```
 
 Once you have the client in hands, you can package any arbitrary payload as a plain array of bytes and send it. The samples 
@@ -68,7 +76,7 @@ number of events "in flight" with asynchronous and robust acknowledgement flow, 
 pattern.
 
 AMQP 1.0 is a TCP based protocol. For Azure Event Hubs, all traffic *must* be protected using TLS (SSL) and is using 
-TCP port 5672.  
+TCP port 5671.  
 
 This library will provide HTTPS support via WebSockets when Proton-J supports HTTPS.
 
@@ -134,8 +142,8 @@ you can send directly to the partition, but doing so requires an extra gesture s
 option. To send to a partition you explicitly need to create a client object that is tied to the partition as shown below:
 
 ```Java
-    EventHubClient ehClient = EventHubClient.createFromConnectionStringSync(str);
->	EventHubSender sender = ehClient.createPartitionSenderSync("0");
+    EventHubClient ehClient = EventHubClient.createSync(connStr.toString(), executor);
+>	PartitionSender sender = ehClient.createPartitionSenderSync("0");
     EventData sendEvent = EventData.create(payloadBytes);
     sender.sendSync(sendEvent);
 ```
@@ -162,5 +170,5 @@ down or experience congestion. If you leave choosing the target partition for an
 react to such availability blips for publishers.        
 
 Generally, you should *not* use partitioning as a traffic prioritization scheme, and you should *not* use it 
-for fine grained assignment of particular kinds of events to a particular partitions. Partitions are a load 
-distribution mechanism, not a filtering model.
+for fine grained assignment of particular kinds of events to a particular partitions. *Partitions are a load 
+distribution mechanism, not a filtering model*.

@@ -27,28 +27,38 @@ following dependency declaration inside of your Maven project file:
    		<groupId>com.microsoft.azure</groupId> 
    		<artifactId>azure-eventhubs</artifactId>
    		<version>1.0.2</version>
-   	</dependency>
- ```
+    </dependency>
+```
  
 For different types of build environments, the latest released JAR files can also be [explicitly obtained from the 
 Maven Central Repository]() or from [the Release distribution point on GitHub]().  
 
-For a simple event publisher, you'll need to import the *com.microsoft.azure.eventhubs* package for the Event Hub client classes.
+For a simple event consumer, you'll need to import the *com.microsoft.azure.eventhubs* package for the Event Hub client classes.
 
 ```Java
     import com.microsoft.azure.eventhubs.*;
 ```
 
+Event Hubs client library uses qpid proton reactor framework which exposes AMQP connection and message delivery related 
+state transitions as reactive events. In the process,
+the library will need to run many asynchronous tasks while sending and receiving messages to Event Hubs.
+So, `EventHubClient` requires an instance of `Executor`, where all these tasks are run.
+
+
+```Java
+    ExecutorService executor = Executors.newCachedThreadPool();
+```
+
 The receiver code creates an *EventHubClient* from a given connecting string
       
 ```Java
-    final String namespaceName = "----ServiceBusNamespaceName-----";
-    final String eventHubName = "----EventHubName-----";
-    final String sasKeyName = "-----SharedAccessSignatureKeyName-----";
-    final String sasKey = "---SharedAccessSignatureKey----";
-    ConnectionStringBuilder connStr = new ConnectionStringBuilder(namespaceName, eventHubName, sasKeyName, sasKey);
-		
-    EventHubClient ehClient = EventHubClient.createFromConnectionStringSync(connStr.toString());
+    ConnectionStringBuilder connStr = new ConnectionStringBuilder()
+                .setNamespaceName("----ServiceBusNamespaceName-----")
+                .setEventHubName("----EventHubName-----")
+                .setSasKeyName("-----SharedAccessSignatureKeyName-----")
+                .setSasKey("---SharedAccessSignatureKey----");	
+	
+    EventHubClient ehClient = EventHubClient.createSync(connStr.toString(), executor);
 ```           
 
 The receiver code then creates (at least) one *PartitionReceiver* that will receive the data. The receiver is seeded with an offset, in the snippet below it's simply the start of the log.    
@@ -58,8 +68,7 @@ The receiver code then creates (at least) one *PartitionReceiver* that will rece
 		PartitionReceiver receiver = ehClient.createReceiverSync(
 				EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, 
 				partitionId, 
-				PartitionReceiver.START_OF_STREAM,
-				false);
+				EventPosition.fromStartOfStream());
 
 		receiver.setReceiveTimeout(Duration.ofSeconds(20));
 ``` 
@@ -91,12 +100,13 @@ You can create up to 20 such consumer groups on an Event Hub via the Azure porta
 Each Event Hub has a configurable event retention period, which defaults to one day and can be extended to seven days. 
 By contacting Microsoft product support you can ask for further extend the retention period to up to 30 days.
 
-There are three options for a consumer to pick at which point into the retained event stream it wants to 
+There are several options for a consumer to pick at which point into the retained event stream it wants to 
 begin receiving events:
 
 1. **Start of stream** Receive from the start of the retained stream, as shown in the example above. This option will start 
-   with the oldest available retained event in the partition and then continously deliver events until all available events 
-   have been read. 
+   with the oldest available retained event in the partition and then continuously deliver events until all available events 
+   have been read.
+
 2. **Time offset**. This option will start with the oldest event in the partition that has been received into the Event Hub 
    after the given instant.
    
@@ -104,8 +114,9 @@ begin receiving events:
    PartitionReceiver receiver = ehClient.createReceiverSync(
 				EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, 
 				partitionId, 
-				Instant.now());
+				EventPosition.fromEnqueuedTime(instant));
    ```  
+
 3. **Absolute offset** This option is commonly used to resume receiving events after a previous receiver on the partition 
    has been aborted or suspended for any reason. The offset is a system-supplied string that should not be interpreted by
    the application. The next section will discuss scenarios for using this option.
@@ -114,9 +125,14 @@ begin receiving events:
    PartitionReceiver receiver = ehClient.createReceiverSync(
        EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, 
 	   partitionId, 
-	   savedOffset);
+	   EventPosition.fromOffset(savedOffset));
     ``` 
-   
+
+4. **End of stream** While this option is self explanatory, one point to remember here is that, this call is designed to be
+   more performant than using `EventPosition.fromEnqueuedTime(Instant.now())`.
+
+5. **Sequence number** This option is baked into the API to provide better integration with stream processing technologies 
+   (ex: APACHE SPARK). 
 
 ## Ownership, Failover, and Epochs
 As mentioned in the overview above, the common consumption model for Event Hubs is that multiple consumers process events 
@@ -153,8 +169,8 @@ That mechanism is called **epochs**. An epoch is an integer value that acts as a
    epochValue = 1
    PartitionReceiver receiver1 = ehClient.createEpochReceiverSync(
        EventHubClient.DefaultConsumerGroupName, 
-	   partitionId, 
-	   savedOffset,
+       partitionId, 
+       EventPosition.fromOffset(savedOffset),
        epochValue);
   ```
   
@@ -166,8 +182,8 @@ That mechanism is called **epochs**. An epoch is an integer value that acts as a
    epochValue = 2
    PartitionReceiver receiver2 = ehClient.createEpochReceiverSync(
        EventHubClient.DefaultConsumerGroupName, 
-	   partitionId, 
-	   savedOffset,
+       partitionId, 
+       EventPosition.fromOffset(savedOffset),
        epochValue);
   ```   
   
@@ -210,11 +226,11 @@ A connection string will therefore have the following form:
 If you want to read Device to Cloud (D2C) messages sent to **Azure IoT Hub**, [IoT Hub Event Hub-compatible endpoint](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-devguide-messages-read-builtin#read-from-the-built-in-endpoint) covers the connection string to be used in this case in detail.
 
 Consumers generally have a different relationship with the Event Hub than publishers. Usually there are relatively few consumers 
-and those consumers enjoy a high level of trust within the context of a system. The relationshiop between an event consumer
+and those consumers enjoy a high level of trust within the context of a system. The relationship between an event consumer
 and the Event Hub is commonly also much longer-lived.
 
 It's therefore more common for a consumer to be directly configured with a SAS key rule name and key as part of the 
-connection string. In order to prevent the SAS key from leaking, it is stil advisable to use a long-lived
+connection string. In order to prevent the SAS key from leaking, it is still advisable to use a long-lived
 token rather than the naked key.
 
 A generated token will be configured into the connection string with the *SharedAccessSignature* property.   
