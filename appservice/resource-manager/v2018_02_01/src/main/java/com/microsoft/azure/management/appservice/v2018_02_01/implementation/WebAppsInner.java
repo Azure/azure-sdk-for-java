@@ -23,7 +23,6 @@ import com.microsoft.azure.management.appservice.v2018_02_01.DeletedAppRestoreRe
 import com.microsoft.azure.management.appservice.v2018_02_01.MigrateMySqlRequest;
 import com.microsoft.azure.management.appservice.v2018_02_01.MSDeploy;
 import com.microsoft.azure.management.appservice.v2018_02_01.PremierAddOnPatchResource;
-import com.microsoft.azure.management.appservice.v2018_02_01.PublishingProfileFormat;
 import com.microsoft.azure.management.appservice.v2018_02_01.SitePatchResource;
 import com.microsoft.azure.management.appservice.v2018_02_01.SnapshotRestoreRequest;
 import com.microsoft.azure.management.appservice.v2018_02_01.StorageMigrationOptions;
@@ -162,6 +161,14 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps getAuthSettings" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/authsettings/list")
         Observable<Response<ResponseBody>> getAuthSettings(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps updateAzureStorageAccounts" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/azurestorageaccounts")
+        Observable<Response<ResponseBody>> updateAzureStorageAccounts(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body AzureStoragePropertyDictionaryResourceInner azureStorageAccounts, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listAzureStorageAccounts" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/azurestorageaccounts/list")
+        Observable<Response<ResponseBody>> listAzureStorageAccounts(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps updateBackupConfiguration" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/backup")
@@ -634,7 +641,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listPublishingProfileXmlWithSecrets" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/publishxml")
         @Streaming
-        Observable<Response<ResponseBody>> listPublishingProfileXmlWithSecrets(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CsmPublishingProfileOptions publishingProfileOptions, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listPublishingProfileXmlWithSecrets(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body CsmPublishingProfileOptions publishingProfileOptions, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps resetProductionSlotConfig" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/resetSlotConfig")
@@ -767,6 +774,14 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps getAuthSettingsSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/authsettings/list")
         Observable<Response<ResponseBody>> getAuthSettingsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps updateAzureStorageAccountsSlot" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/azurestorageaccounts")
+        Observable<Response<ResponseBody>> updateAzureStorageAccountsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body AzureStoragePropertyDictionaryResourceInner azureStorageAccounts, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listAzureStorageAccountsSlot" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/azurestorageaccounts/list")
+        Observable<Response<ResponseBody>> listAzureStorageAccountsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps updateBackupConfigurationSlot" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/backup")
@@ -1215,7 +1230,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listPublishingProfileXmlWithSecretsSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/publishxml")
         @Streaming
-        Observable<Response<ResponseBody>> listPublishingProfileXmlWithSecretsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CsmPublishingProfileOptions publishingProfileOptions, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listPublishingProfileXmlWithSecretsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body CsmPublishingProfileOptions publishingProfileOptions, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps resetSlotConfigurationSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/resetSlotConfig")
@@ -4127,6 +4142,194 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     private ServiceResponse<SiteAuthSettingsInner> getAuthSettingsDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<SiteAuthSettingsInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SiteAuthSettingsInner>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Updates the Azure storage account configurations of an app.
+     * Updates the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param azureStorageAccounts Azure storage accounts of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the AzureStoragePropertyDictionaryResourceInner object if successful.
+     */
+    public AzureStoragePropertyDictionaryResourceInner updateAzureStorageAccounts(String resourceGroupName, String name, AzureStoragePropertyDictionaryResourceInner azureStorageAccounts) {
+        return updateAzureStorageAccountsWithServiceResponseAsync(resourceGroupName, name, azureStorageAccounts).toBlocking().single().body();
+    }
+
+    /**
+     * Updates the Azure storage account configurations of an app.
+     * Updates the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param azureStorageAccounts Azure storage accounts of the app.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<AzureStoragePropertyDictionaryResourceInner> updateAzureStorageAccountsAsync(String resourceGroupName, String name, AzureStoragePropertyDictionaryResourceInner azureStorageAccounts, final ServiceCallback<AzureStoragePropertyDictionaryResourceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateAzureStorageAccountsWithServiceResponseAsync(resourceGroupName, name, azureStorageAccounts), serviceCallback);
+    }
+
+    /**
+     * Updates the Azure storage account configurations of an app.
+     * Updates the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param azureStorageAccounts Azure storage accounts of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AzureStoragePropertyDictionaryResourceInner object
+     */
+    public Observable<AzureStoragePropertyDictionaryResourceInner> updateAzureStorageAccountsAsync(String resourceGroupName, String name, AzureStoragePropertyDictionaryResourceInner azureStorageAccounts) {
+        return updateAzureStorageAccountsWithServiceResponseAsync(resourceGroupName, name, azureStorageAccounts).map(new Func1<ServiceResponse<AzureStoragePropertyDictionaryResourceInner>, AzureStoragePropertyDictionaryResourceInner>() {
+            @Override
+            public AzureStoragePropertyDictionaryResourceInner call(ServiceResponse<AzureStoragePropertyDictionaryResourceInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Updates the Azure storage account configurations of an app.
+     * Updates the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param azureStorageAccounts Azure storage accounts of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AzureStoragePropertyDictionaryResourceInner object
+     */
+    public Observable<ServiceResponse<AzureStoragePropertyDictionaryResourceInner>> updateAzureStorageAccountsWithServiceResponseAsync(String resourceGroupName, String name, AzureStoragePropertyDictionaryResourceInner azureStorageAccounts) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (azureStorageAccounts == null) {
+            throw new IllegalArgumentException("Parameter azureStorageAccounts is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(azureStorageAccounts);
+        return service.updateAzureStorageAccounts(resourceGroupName, name, this.client.subscriptionId(), azureStorageAccounts, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AzureStoragePropertyDictionaryResourceInner>>>() {
+                @Override
+                public Observable<ServiceResponse<AzureStoragePropertyDictionaryResourceInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<AzureStoragePropertyDictionaryResourceInner> clientResponse = updateAzureStorageAccountsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<AzureStoragePropertyDictionaryResourceInner> updateAzureStorageAccountsDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<AzureStoragePropertyDictionaryResourceInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<AzureStoragePropertyDictionaryResourceInner>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets the Azure storage account configurations of an app.
+     * Gets the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the AzureStoragePropertyDictionaryResourceInner object if successful.
+     */
+    public AzureStoragePropertyDictionaryResourceInner listAzureStorageAccounts(String resourceGroupName, String name) {
+        return listAzureStorageAccountsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
+    }
+
+    /**
+     * Gets the Azure storage account configurations of an app.
+     * Gets the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<AzureStoragePropertyDictionaryResourceInner> listAzureStorageAccountsAsync(String resourceGroupName, String name, final ServiceCallback<AzureStoragePropertyDictionaryResourceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listAzureStorageAccountsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    }
+
+    /**
+     * Gets the Azure storage account configurations of an app.
+     * Gets the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AzureStoragePropertyDictionaryResourceInner object
+     */
+    public Observable<AzureStoragePropertyDictionaryResourceInner> listAzureStorageAccountsAsync(String resourceGroupName, String name) {
+        return listAzureStorageAccountsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<AzureStoragePropertyDictionaryResourceInner>, AzureStoragePropertyDictionaryResourceInner>() {
+            @Override
+            public AzureStoragePropertyDictionaryResourceInner call(ServiceResponse<AzureStoragePropertyDictionaryResourceInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets the Azure storage account configurations of an app.
+     * Gets the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AzureStoragePropertyDictionaryResourceInner object
+     */
+    public Observable<ServiceResponse<AzureStoragePropertyDictionaryResourceInner>> listAzureStorageAccountsWithServiceResponseAsync(String resourceGroupName, String name) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listAzureStorageAccounts(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AzureStoragePropertyDictionaryResourceInner>>>() {
+                @Override
+                public Observable<ServiceResponse<AzureStoragePropertyDictionaryResourceInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<AzureStoragePropertyDictionaryResourceInner> clientResponse = listAzureStorageAccountsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<AzureStoragePropertyDictionaryResourceInner> listAzureStorageAccountsDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<AzureStoragePropertyDictionaryResourceInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<AzureStoragePropertyDictionaryResourceInner>() { }.getType())
                 .registerError(DefaultErrorResponseException.class)
                 .build(response);
     }
@@ -16319,13 +16522,14 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @param publishingProfileOptions Specifies publishingProfileOptions for publishing profile. For example, use {"format": "FileZilla3"} to get a FileZilla publishing profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws DefaultErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the InputStream object if successful.
      */
-    public InputStream listPublishingProfileXmlWithSecrets(String resourceGroupName, String name) {
-        return listPublishingProfileXmlWithSecretsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
+    public InputStream listPublishingProfileXmlWithSecrets(String resourceGroupName, String name, CsmPublishingProfileOptions publishingProfileOptions) {
+        return listPublishingProfileXmlWithSecretsWithServiceResponseAsync(resourceGroupName, name, publishingProfileOptions).toBlocking().single().body();
     }
 
     /**
@@ -16334,12 +16538,13 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @param publishingProfileOptions Specifies publishingProfileOptions for publishing profile. For example, use {"format": "FileZilla3"} to get a FileZilla publishing profile.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<InputStream> listPublishingProfileXmlWithSecretsAsync(String resourceGroupName, String name, final ServiceCallback<InputStream> serviceCallback) {
-        return ServiceFuture.fromResponse(listPublishingProfileXmlWithSecretsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<InputStream> listPublishingProfileXmlWithSecretsAsync(String resourceGroupName, String name, CsmPublishingProfileOptions publishingProfileOptions, final ServiceCallback<InputStream> serviceCallback) {
+        return ServiceFuture.fromResponse(listPublishingProfileXmlWithSecretsWithServiceResponseAsync(resourceGroupName, name, publishingProfileOptions), serviceCallback);
     }
 
     /**
@@ -16348,11 +16553,12 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @param publishingProfileOptions Specifies publishingProfileOptions for publishing profile. For example, use {"format": "FileZilla3"} to get a FileZilla publishing profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InputStream object
      */
-    public Observable<InputStream> listPublishingProfileXmlWithSecretsAsync(String resourceGroupName, String name) {
-        return listPublishingProfileXmlWithSecretsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<InputStream>, InputStream>() {
+    public Observable<InputStream> listPublishingProfileXmlWithSecretsAsync(String resourceGroupName, String name, CsmPublishingProfileOptions publishingProfileOptions) {
+        return listPublishingProfileXmlWithSecretsWithServiceResponseAsync(resourceGroupName, name, publishingProfileOptions).map(new Func1<ServiceResponse<InputStream>, InputStream>() {
             @Override
             public InputStream call(ServiceResponse<InputStream> response) {
                 return response.body();
@@ -16366,10 +16572,11 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @param publishingProfileOptions Specifies publishingProfileOptions for publishing profile. For example, use {"format": "FileZilla3"} to get a FileZilla publishing profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InputStream object
      */
-    public Observable<ServiceResponse<InputStream>> listPublishingProfileXmlWithSecretsWithServiceResponseAsync(String resourceGroupName, String name) {
+    public Observable<ServiceResponse<InputStream>> listPublishingProfileXmlWithSecretsWithServiceResponseAsync(String resourceGroupName, String name, CsmPublishingProfileOptions publishingProfileOptions) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -16379,114 +16586,14 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        final PublishingProfileFormat format = null;
-        CsmPublishingProfileOptions publishingProfileOptions = new CsmPublishingProfileOptions();
-        publishingProfileOptions.withFormat(null);
-        return service.listPublishingProfileXmlWithSecrets(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), publishingProfileOptions, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<InputStream>>>() {
-                @Override
-                public Observable<ServiceResponse<InputStream>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<InputStream> clientResponse = listPublishingProfileXmlWithSecretsDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    /**
-     * Gets the publishing profile for an app (or deployment slot, if specified).
-     * Gets the publishing profile for an app (or deployment slot, if specified).
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the app.
-     * @param format Name of the format. Valid values are:
-     FileZilla3
-     WebDeploy -- default
-     Ftp. Possible values include: 'FileZilla3', 'WebDeploy', 'Ftp'
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the InputStream object if successful.
-     */
-    public InputStream listPublishingProfileXmlWithSecrets(String resourceGroupName, String name, PublishingProfileFormat format) {
-        return listPublishingProfileXmlWithSecretsWithServiceResponseAsync(resourceGroupName, name, format).toBlocking().single().body();
-    }
-
-    /**
-     * Gets the publishing profile for an app (or deployment slot, if specified).
-     * Gets the publishing profile for an app (or deployment slot, if specified).
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the app.
-     * @param format Name of the format. Valid values are:
-     FileZilla3
-     WebDeploy -- default
-     Ftp. Possible values include: 'FileZilla3', 'WebDeploy', 'Ftp'
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<InputStream> listPublishingProfileXmlWithSecretsAsync(String resourceGroupName, String name, PublishingProfileFormat format, final ServiceCallback<InputStream> serviceCallback) {
-        return ServiceFuture.fromResponse(listPublishingProfileXmlWithSecretsWithServiceResponseAsync(resourceGroupName, name, format), serviceCallback);
-    }
-
-    /**
-     * Gets the publishing profile for an app (or deployment slot, if specified).
-     * Gets the publishing profile for an app (or deployment slot, if specified).
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the app.
-     * @param format Name of the format. Valid values are:
-     FileZilla3
-     WebDeploy -- default
-     Ftp. Possible values include: 'FileZilla3', 'WebDeploy', 'Ftp'
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the InputStream object
-     */
-    public Observable<InputStream> listPublishingProfileXmlWithSecretsAsync(String resourceGroupName, String name, PublishingProfileFormat format) {
-        return listPublishingProfileXmlWithSecretsWithServiceResponseAsync(resourceGroupName, name, format).map(new Func1<ServiceResponse<InputStream>, InputStream>() {
-            @Override
-            public InputStream call(ServiceResponse<InputStream> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Gets the publishing profile for an app (or deployment slot, if specified).
-     * Gets the publishing profile for an app (or deployment slot, if specified).
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the app.
-     * @param format Name of the format. Valid values are:
-     FileZilla3
-     WebDeploy -- default
-     Ftp. Possible values include: 'FileZilla3', 'WebDeploy', 'Ftp'
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the InputStream object
-     */
-    public Observable<ServiceResponse<InputStream>> listPublishingProfileXmlWithSecretsWithServiceResponseAsync(String resourceGroupName, String name, PublishingProfileFormat format) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        if (publishingProfileOptions == null) {
+            throw new IllegalArgumentException("Parameter publishingProfileOptions is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        CsmPublishingProfileOptions publishingProfileOptions = new CsmPublishingProfileOptions();
-        publishingProfileOptions.withFormat(format);
-        return service.listPublishingProfileXmlWithSecrets(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), publishingProfileOptions, this.client.userAgent())
+        Validator.validate(publishingProfileOptions);
+        return service.listPublishingProfileXmlWithSecrets(resourceGroupName, name, this.client.subscriptionId(), publishingProfileOptions, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<InputStream>>>() {
                 @Override
                 public Observable<ServiceResponse<InputStream>> call(Response<ResponseBody> response) {
@@ -20136,6 +20243,208 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     private ServiceResponse<SiteAuthSettingsInner> getAuthSettingsSlotDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<SiteAuthSettingsInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SiteAuthSettingsInner>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Updates the Azure storage account configurations of an app.
+     * Updates the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will update the Azure storage account configurations for the production slot.
+     * @param azureStorageAccounts Azure storage accounts of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the AzureStoragePropertyDictionaryResourceInner object if successful.
+     */
+    public AzureStoragePropertyDictionaryResourceInner updateAzureStorageAccountsSlot(String resourceGroupName, String name, String slot, AzureStoragePropertyDictionaryResourceInner azureStorageAccounts) {
+        return updateAzureStorageAccountsSlotWithServiceResponseAsync(resourceGroupName, name, slot, azureStorageAccounts).toBlocking().single().body();
+    }
+
+    /**
+     * Updates the Azure storage account configurations of an app.
+     * Updates the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will update the Azure storage account configurations for the production slot.
+     * @param azureStorageAccounts Azure storage accounts of the app.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<AzureStoragePropertyDictionaryResourceInner> updateAzureStorageAccountsSlotAsync(String resourceGroupName, String name, String slot, AzureStoragePropertyDictionaryResourceInner azureStorageAccounts, final ServiceCallback<AzureStoragePropertyDictionaryResourceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateAzureStorageAccountsSlotWithServiceResponseAsync(resourceGroupName, name, slot, azureStorageAccounts), serviceCallback);
+    }
+
+    /**
+     * Updates the Azure storage account configurations of an app.
+     * Updates the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will update the Azure storage account configurations for the production slot.
+     * @param azureStorageAccounts Azure storage accounts of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AzureStoragePropertyDictionaryResourceInner object
+     */
+    public Observable<AzureStoragePropertyDictionaryResourceInner> updateAzureStorageAccountsSlotAsync(String resourceGroupName, String name, String slot, AzureStoragePropertyDictionaryResourceInner azureStorageAccounts) {
+        return updateAzureStorageAccountsSlotWithServiceResponseAsync(resourceGroupName, name, slot, azureStorageAccounts).map(new Func1<ServiceResponse<AzureStoragePropertyDictionaryResourceInner>, AzureStoragePropertyDictionaryResourceInner>() {
+            @Override
+            public AzureStoragePropertyDictionaryResourceInner call(ServiceResponse<AzureStoragePropertyDictionaryResourceInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Updates the Azure storage account configurations of an app.
+     * Updates the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will update the Azure storage account configurations for the production slot.
+     * @param azureStorageAccounts Azure storage accounts of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AzureStoragePropertyDictionaryResourceInner object
+     */
+    public Observable<ServiceResponse<AzureStoragePropertyDictionaryResourceInner>> updateAzureStorageAccountsSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, AzureStoragePropertyDictionaryResourceInner azureStorageAccounts) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (azureStorageAccounts == null) {
+            throw new IllegalArgumentException("Parameter azureStorageAccounts is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(azureStorageAccounts);
+        return service.updateAzureStorageAccountsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), azureStorageAccounts, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AzureStoragePropertyDictionaryResourceInner>>>() {
+                @Override
+                public Observable<ServiceResponse<AzureStoragePropertyDictionaryResourceInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<AzureStoragePropertyDictionaryResourceInner> clientResponse = updateAzureStorageAccountsSlotDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<AzureStoragePropertyDictionaryResourceInner> updateAzureStorageAccountsSlotDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<AzureStoragePropertyDictionaryResourceInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<AzureStoragePropertyDictionaryResourceInner>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets the Azure storage account configurations of an app.
+     * Gets the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will update the Azure storage account configurations for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the AzureStoragePropertyDictionaryResourceInner object if successful.
+     */
+    public AzureStoragePropertyDictionaryResourceInner listAzureStorageAccountsSlot(String resourceGroupName, String name, String slot) {
+        return listAzureStorageAccountsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
+    }
+
+    /**
+     * Gets the Azure storage account configurations of an app.
+     * Gets the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will update the Azure storage account configurations for the production slot.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<AzureStoragePropertyDictionaryResourceInner> listAzureStorageAccountsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<AzureStoragePropertyDictionaryResourceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listAzureStorageAccountsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    }
+
+    /**
+     * Gets the Azure storage account configurations of an app.
+     * Gets the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will update the Azure storage account configurations for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AzureStoragePropertyDictionaryResourceInner object
+     */
+    public Observable<AzureStoragePropertyDictionaryResourceInner> listAzureStorageAccountsSlotAsync(String resourceGroupName, String name, String slot) {
+        return listAzureStorageAccountsSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<AzureStoragePropertyDictionaryResourceInner>, AzureStoragePropertyDictionaryResourceInner>() {
+            @Override
+            public AzureStoragePropertyDictionaryResourceInner call(ServiceResponse<AzureStoragePropertyDictionaryResourceInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets the Azure storage account configurations of an app.
+     * Gets the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will update the Azure storage account configurations for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AzureStoragePropertyDictionaryResourceInner object
+     */
+    public Observable<ServiceResponse<AzureStoragePropertyDictionaryResourceInner>> listAzureStorageAccountsSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listAzureStorageAccountsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AzureStoragePropertyDictionaryResourceInner>>>() {
+                @Override
+                public Observable<ServiceResponse<AzureStoragePropertyDictionaryResourceInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<AzureStoragePropertyDictionaryResourceInner> clientResponse = listAzureStorageAccountsSlotDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<AzureStoragePropertyDictionaryResourceInner> listAzureStorageAccountsSlotDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<AzureStoragePropertyDictionaryResourceInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<AzureStoragePropertyDictionaryResourceInner>() { }.getType())
                 .registerError(DefaultErrorResponseException.class)
                 .build(response);
     }
@@ -32579,13 +32888,14 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing profile for the production slot.
+     * @param publishingProfileOptions Specifies publishingProfileOptions for publishing profile. For example, use {"format": "FileZilla3"} to get a FileZilla publishing profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws DefaultErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the InputStream object if successful.
      */
-    public InputStream listPublishingProfileXmlWithSecretsSlot(String resourceGroupName, String name, String slot) {
-        return listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
+    public InputStream listPublishingProfileXmlWithSecretsSlot(String resourceGroupName, String name, String slot, CsmPublishingProfileOptions publishingProfileOptions) {
+        return listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(resourceGroupName, name, slot, publishingProfileOptions).toBlocking().single().body();
     }
 
     /**
@@ -32595,12 +32905,13 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing profile for the production slot.
+     * @param publishingProfileOptions Specifies publishingProfileOptions for publishing profile. For example, use {"format": "FileZilla3"} to get a FileZilla publishing profile.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<InputStream> listPublishingProfileXmlWithSecretsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<InputStream> serviceCallback) {
-        return ServiceFuture.fromResponse(listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    public ServiceFuture<InputStream> listPublishingProfileXmlWithSecretsSlotAsync(String resourceGroupName, String name, String slot, CsmPublishingProfileOptions publishingProfileOptions, final ServiceCallback<InputStream> serviceCallback) {
+        return ServiceFuture.fromResponse(listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(resourceGroupName, name, slot, publishingProfileOptions), serviceCallback);
     }
 
     /**
@@ -32610,11 +32921,12 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing profile for the production slot.
+     * @param publishingProfileOptions Specifies publishingProfileOptions for publishing profile. For example, use {"format": "FileZilla3"} to get a FileZilla publishing profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InputStream object
      */
-    public Observable<InputStream> listPublishingProfileXmlWithSecretsSlotAsync(String resourceGroupName, String name, String slot) {
-        return listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<InputStream>, InputStream>() {
+    public Observable<InputStream> listPublishingProfileXmlWithSecretsSlotAsync(String resourceGroupName, String name, String slot, CsmPublishingProfileOptions publishingProfileOptions) {
+        return listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(resourceGroupName, name, slot, publishingProfileOptions).map(new Func1<ServiceResponse<InputStream>, InputStream>() {
             @Override
             public InputStream call(ServiceResponse<InputStream> response) {
                 return response.body();
@@ -32629,10 +32941,11 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing profile for the production slot.
+     * @param publishingProfileOptions Specifies publishingProfileOptions for publishing profile. For example, use {"format": "FileZilla3"} to get a FileZilla publishing profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InputStream object
      */
-    public Observable<ServiceResponse<InputStream>> listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
+    public Observable<ServiceResponse<InputStream>> listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, CsmPublishingProfileOptions publishingProfileOptions) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -32645,121 +32958,14 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        final PublishingProfileFormat format = null;
-        CsmPublishingProfileOptions publishingProfileOptions = new CsmPublishingProfileOptions();
-        publishingProfileOptions.withFormat(null);
-        return service.listPublishingProfileXmlWithSecretsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), publishingProfileOptions, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<InputStream>>>() {
-                @Override
-                public Observable<ServiceResponse<InputStream>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<InputStream> clientResponse = listPublishingProfileXmlWithSecretsSlotDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    /**
-     * Gets the publishing profile for an app (or deployment slot, if specified).
-     * Gets the publishing profile for an app (or deployment slot, if specified).
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the app.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing profile for the production slot.
-     * @param format Name of the format. Valid values are:
-     FileZilla3
-     WebDeploy -- default
-     Ftp. Possible values include: 'FileZilla3', 'WebDeploy', 'Ftp'
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the InputStream object if successful.
-     */
-    public InputStream listPublishingProfileXmlWithSecretsSlot(String resourceGroupName, String name, String slot, PublishingProfileFormat format) {
-        return listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(resourceGroupName, name, slot, format).toBlocking().single().body();
-    }
-
-    /**
-     * Gets the publishing profile for an app (or deployment slot, if specified).
-     * Gets the publishing profile for an app (or deployment slot, if specified).
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the app.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing profile for the production slot.
-     * @param format Name of the format. Valid values are:
-     FileZilla3
-     WebDeploy -- default
-     Ftp. Possible values include: 'FileZilla3', 'WebDeploy', 'Ftp'
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<InputStream> listPublishingProfileXmlWithSecretsSlotAsync(String resourceGroupName, String name, String slot, PublishingProfileFormat format, final ServiceCallback<InputStream> serviceCallback) {
-        return ServiceFuture.fromResponse(listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(resourceGroupName, name, slot, format), serviceCallback);
-    }
-
-    /**
-     * Gets the publishing profile for an app (or deployment slot, if specified).
-     * Gets the publishing profile for an app (or deployment slot, if specified).
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the app.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing profile for the production slot.
-     * @param format Name of the format. Valid values are:
-     FileZilla3
-     WebDeploy -- default
-     Ftp. Possible values include: 'FileZilla3', 'WebDeploy', 'Ftp'
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the InputStream object
-     */
-    public Observable<InputStream> listPublishingProfileXmlWithSecretsSlotAsync(String resourceGroupName, String name, String slot, PublishingProfileFormat format) {
-        return listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(resourceGroupName, name, slot, format).map(new Func1<ServiceResponse<InputStream>, InputStream>() {
-            @Override
-            public InputStream call(ServiceResponse<InputStream> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Gets the publishing profile for an app (or deployment slot, if specified).
-     * Gets the publishing profile for an app (or deployment slot, if specified).
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the app.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing profile for the production slot.
-     * @param format Name of the format. Valid values are:
-     FileZilla3
-     WebDeploy -- default
-     Ftp. Possible values include: 'FileZilla3', 'WebDeploy', 'Ftp'
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the InputStream object
-     */
-    public Observable<ServiceResponse<InputStream>> listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, PublishingProfileFormat format) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (slot == null) {
-            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        if (publishingProfileOptions == null) {
+            throw new IllegalArgumentException("Parameter publishingProfileOptions is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        CsmPublishingProfileOptions publishingProfileOptions = new CsmPublishingProfileOptions();
-        publishingProfileOptions.withFormat(format);
-        return service.listPublishingProfileXmlWithSecretsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), publishingProfileOptions, this.client.userAgent())
+        Validator.validate(publishingProfileOptions);
+        return service.listPublishingProfileXmlWithSecretsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), publishingProfileOptions, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<InputStream>>>() {
                 @Override
                 public Observable<ServiceResponse<InputStream>> call(Response<ResponseBody> response) {

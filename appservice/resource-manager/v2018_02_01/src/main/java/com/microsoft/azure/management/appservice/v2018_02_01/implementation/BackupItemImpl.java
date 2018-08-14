@@ -49,8 +49,8 @@ class BackupItemImpl extends IndexableRefreshableWrapperImpl<BackupItem, BackupI
     }
 
     @Override
-    public String backupName() {
-        return this.inner().backupName();
+    public String backupItemName() {
+        return this.inner().backupItemName();
     }
 
     @Override

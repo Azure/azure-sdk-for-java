@@ -48,7 +48,7 @@ public class AzureStorageInfoValue {
      * State of the storage account. Possible values include: 'Ok',
      * 'InvalidCredentials', 'InvalidShare'.
      */
-    @JsonProperty(value = "state")
+    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private AzureStorageState state;
 
     /**
@@ -158,17 +158,6 @@ public class AzureStorageInfoValue {
      */
     public AzureStorageState state() {
         return this.state;
-    }
-
-    /**
-     * Set state of the storage account. Possible values include: 'Ok', 'InvalidCredentials', 'InvalidShare'.
-     *
-     * @param state the state value to set
-     * @return the AzureStorageInfoValue object itself.
-     */
-    public AzureStorageInfoValue withState(AzureStorageState state) {
-        this.state = state;
-        return this;
     }
 
 }
