@@ -59,7 +59,8 @@ public class PipelineResourceInner extends SubResource {
     private List<Object> annotations;
 
     /**
-     * The folder that this Pipeline is in.
+     * The folder that this Pipeline is in. If not specified, Pipeline will
+     * appear at the root level.
      */
     @JsonProperty(value = "properties.folder")
     private PipelineFolder folder;
@@ -203,7 +204,7 @@ public class PipelineResourceInner extends SubResource {
     }
 
     /**
-     * Get the folder that this Pipeline is in.
+     * Get the folder that this Pipeline is in. If not specified, Pipeline will appear at the root level.
      *
      * @return the folder value
      */
@@ -212,7 +213,7 @@ public class PipelineResourceInner extends SubResource {
     }
 
     /**
-     * Set the folder that this Pipeline is in.
+     * Set the folder that this Pipeline is in. If not specified, Pipeline will appear at the root level.
      *
      * @param folder the folder value to set
      * @return the PipelineResourceInner object itself.
