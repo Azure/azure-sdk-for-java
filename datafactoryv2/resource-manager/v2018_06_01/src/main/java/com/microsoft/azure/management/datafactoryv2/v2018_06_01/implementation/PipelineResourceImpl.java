@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.List;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.Activity;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.ParameterSpecification;
+import com.microsoft.azure.management.datafactoryv2.v2018_06_01.PipelineFolder;
 
 class PipelineResourceImpl extends CreatableUpdatableImpl<PipelineResource, PipelineResourceInner, PipelineResourceImpl> implements PipelineResource, PipelineResource.Definition, PipelineResource.Update {
     private final DataFactoryManager manager;
@@ -104,6 +105,11 @@ class PipelineResourceImpl extends CreatableUpdatableImpl<PipelineResource, Pipe
     }
 
     @Override
+    public PipelineFolder folder() {
+        return this.inner().folder();
+    }
+
+    @Override
     public String id() {
         return this.inner().id();
     }
@@ -157,6 +163,12 @@ class PipelineResourceImpl extends CreatableUpdatableImpl<PipelineResource, Pipe
     @Override
     public PipelineResourceImpl withDescription(String description) {
         this.inner().withDescription(description);
+        return this;
+    }
+
+    @Override
+    public PipelineResourceImpl withFolder(PipelineFolder folder) {
+        this.inner().withFolder(folder);
         return this;
     }
 

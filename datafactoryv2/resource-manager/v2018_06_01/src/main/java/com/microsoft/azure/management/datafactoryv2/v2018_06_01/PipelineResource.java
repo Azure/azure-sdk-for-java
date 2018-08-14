@@ -55,6 +55,11 @@ public interface PipelineResource extends HasInner<PipelineResourceInner>, Index
     String etag();
 
     /**
+     * @return the folder value.
+     */
+    PipelineFolder folder();
+
+    /**
      * @return the id value.
      */
     String id();
@@ -151,6 +156,16 @@ public interface PipelineResource extends HasInner<PipelineResourceInner>, Index
         }
 
         /**
+         * The stage of the pipelineresource definition allowing to specify Folder.
+         */
+        interface WithFolder {
+            /**
+             * Specifies folder.
+             */
+            WithCreate withFolder(PipelineFolder folder);
+        }
+
+        /**
          * The stage of the pipelineresource definition allowing to specify Parameters.
          */
         interface WithParameters {
@@ -165,13 +180,13 @@ public interface PipelineResource extends HasInner<PipelineResourceInner>, Index
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<PipelineResource>, DefinitionStages.WithActivities, DefinitionStages.WithAdditionalProperties, DefinitionStages.WithAnnotations, DefinitionStages.WithConcurrency, DefinitionStages.WithDescription, DefinitionStages.WithParameters {
+        interface WithCreate extends Creatable<PipelineResource>, DefinitionStages.WithActivities, DefinitionStages.WithAdditionalProperties, DefinitionStages.WithAnnotations, DefinitionStages.WithConcurrency, DefinitionStages.WithDescription, DefinitionStages.WithFolder, DefinitionStages.WithParameters {
         }
     }
     /**
      * The template for a PipelineResource update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<PipelineResource>, UpdateStages.WithActivities, UpdateStages.WithAdditionalProperties, UpdateStages.WithAnnotations, UpdateStages.WithConcurrency, UpdateStages.WithDescription, UpdateStages.WithParameters {
+    interface Update extends Appliable<PipelineResource>, UpdateStages.WithActivities, UpdateStages.WithAdditionalProperties, UpdateStages.WithAnnotations, UpdateStages.WithConcurrency, UpdateStages.WithDescription, UpdateStages.WithFolder, UpdateStages.WithParameters {
     }
 
     /**
@@ -226,6 +241,16 @@ public interface PipelineResource extends HasInner<PipelineResourceInner>, Index
              * Specifies description.
              */
             Update withDescription(String description);
+        }
+
+        /**
+         * The stage of the pipelineresource update allowing to specify Folder.
+         */
+        interface WithFolder {
+            /**
+             * Specifies folder.
+             */
+            Update withFolder(PipelineFolder folder);
         }
 
         /**

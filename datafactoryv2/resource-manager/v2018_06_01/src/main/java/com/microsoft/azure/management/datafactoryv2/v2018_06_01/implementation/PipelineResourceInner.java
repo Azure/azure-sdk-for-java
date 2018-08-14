@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.List;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.Activity;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.ParameterSpecification;
+import com.microsoft.azure.management.datafactoryv2.v2018_06_01.PipelineFolder;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.SubResource;
@@ -56,6 +57,12 @@ public class PipelineResourceInner extends SubResource {
      */
     @JsonProperty(value = "properties.annotations")
     private List<Object> annotations;
+
+    /**
+     * The folder that this Pipeline is in.
+     */
+    @JsonProperty(value = "properties.folder")
+    private PipelineFolder folder;
 
     /**
      * The resource name.
@@ -192,6 +199,26 @@ public class PipelineResourceInner extends SubResource {
      */
     public PipelineResourceInner withAnnotations(List<Object> annotations) {
         this.annotations = annotations;
+        return this;
+    }
+
+    /**
+     * Get the folder that this Pipeline is in.
+     *
+     * @return the folder value
+     */
+    public PipelineFolder folder() {
+        return this.folder;
+    }
+
+    /**
+     * Set the folder that this Pipeline is in.
+     *
+     * @param folder the folder value to set
+     * @return the PipelineResourceInner object itself.
+     */
+    public PipelineResourceInner withFolder(PipelineFolder folder) {
+        this.folder = folder;
         return this;
     }
 
