@@ -79,6 +79,7 @@ public final class Conflict extends Resource {
 
     /**
      * Gets the conflicting resource in the Azure Cosmos DB service.
+     * @param <T>   The type of the object.
      * @param klass The returned type of conflicting resource.
      * @return The conflicting resource.
      */
