@@ -13,12 +13,16 @@ import com.microsoft.azure.arm.collection.InnerSupportsDelete;
 import com.microsoft.azure.arm.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.CloudException;
+import com.microsoft.azure.AzureServiceFuture;
+import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.network.v2018_06_01.AvailableProvidersListParameters;
 import com.microsoft.azure.management.network.v2018_06_01.AzureReachabilityReportParameters;
 import com.microsoft.azure.management.network.v2018_06_01.ConnectivityParameters;
+import com.microsoft.azure.management.network.v2018_06_01.ErrorResponseException;
 import com.microsoft.azure.management.network.v2018_06_01.FlowLogStatusParameters;
+import com.microsoft.azure.management.network.v2018_06_01.NetworkConfigurationDiagnosticParameters;
 import com.microsoft.azure.management.network.v2018_06_01.NextHopParameters;
+import com.microsoft.azure.management.network.v2018_06_01.QueryConnectionMonitorsParameters;
 import com.microsoft.azure.management.network.v2018_06_01.QueryTroubleshootingParameters;
 import com.microsoft.azure.management.network.v2018_06_01.SecurityGroupViewParameters;
 import com.microsoft.azure.management.network.v2018_06_01.TagsObject;
@@ -45,6 +49,7 @@ import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -187,6 +192,30 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/availableProvidersList")
         Observable<Response<ResponseBody>> beginListAvailableProviders(@Path("resourceGroupName") String resourceGroupName, @Path("networkWatcherName") String networkWatcherName, @Path("subscriptionId") String subscriptionId, @Body AvailableProvidersListParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2018_06_01.NetworkWatchers getNetworkConfigurationDiagnostic" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/networkConfigurationDiagnostic")
+        Observable<Response<ResponseBody>> getNetworkConfigurationDiagnostic(@Path("resourceGroupName") String resourceGroupName, @Path("networkWatcherName") String networkWatcherName, @Path("subscriptionId") String subscriptionId, @Body NetworkConfigurationDiagnosticParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2018_06_01.NetworkWatchers beginGetNetworkConfigurationDiagnostic" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/networkConfigurationDiagnostic")
+        Observable<Response<ResponseBody>> beginGetNetworkConfigurationDiagnostic(@Path("resourceGroupName") String resourceGroupName, @Path("networkWatcherName") String networkWatcherName, @Path("subscriptionId") String subscriptionId, @Body NetworkConfigurationDiagnosticParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2018_06_01.NetworkWatchers queryConnectionMonitors" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/queryConnectionMonitors")
+        Observable<Response<ResponseBody>> queryConnectionMonitors(@Path("resourceGroupName") String resourceGroupName, @Path("networkWatcherName") String networkWatcherName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body QueryConnectionMonitorsParameters parameters, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2018_06_01.NetworkWatchers beginQueryConnectionMonitors" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/queryConnectionMonitors")
+        Observable<Response<ResponseBody>> beginQueryConnectionMonitors(@Path("resourceGroupName") String resourceGroupName, @Path("networkWatcherName") String networkWatcherName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body QueryConnectionMonitorsParameters parameters, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2018_06_01.NetworkWatchers queryConnectionMonitorsNext" })
+        @GET
+        Observable<Response<ResponseBody>> queryConnectionMonitorsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2018_06_01.NetworkWatchers beginQueryConnectionMonitorsNext" })
+        @GET
+        Observable<Response<ResponseBody>> beginQueryConnectionMonitorsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
     }
 
     /**
@@ -196,7 +225,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the network watcher resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the NetworkWatcherInner object if successful.
      */
@@ -274,11 +303,11 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
             });
     }
 
-    private ServiceResponse<NetworkWatcherInner> createOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<NetworkWatcherInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<NetworkWatcherInner> createOrUpdateDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<NetworkWatcherInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<NetworkWatcherInner>() { }.getType())
                 .register(201, new TypeToken<NetworkWatcherInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -288,7 +317,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the NetworkWatcherInner object if successful.
      */
@@ -359,10 +388,10 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
             });
     }
 
-    private ServiceResponse<NetworkWatcherInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<NetworkWatcherInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<NetworkWatcherInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<NetworkWatcherInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<NetworkWatcherInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -372,7 +401,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String networkWatcherName) {
@@ -438,7 +467,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void beginDelete(String resourceGroupName, String networkWatcherName) {
@@ -508,11 +537,11 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
             });
     }
 
-    private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -522,7 +551,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the NetworkWatcherInner object if successful.
      */
@@ -603,7 +632,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher.
      * @param tags Resource tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the NetworkWatcherInner object if successful.
      */
@@ -680,10 +709,10 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
             });
     }
 
-    private ServiceResponse<NetworkWatcherInner> updateTagsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<NetworkWatcherInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<NetworkWatcherInner> updateTagsDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<NetworkWatcherInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<NetworkWatcherInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -766,10 +795,10 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
             });
     }
 
-    private ServiceResponse<PageImpl1<NetworkWatcherInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl1<NetworkWatcherInner>, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl1<NetworkWatcherInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<NetworkWatcherInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl1<NetworkWatcherInner>>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -845,10 +874,10 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
             });
     }
 
-    private ServiceResponse<PageImpl1<NetworkWatcherInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl1<NetworkWatcherInner>, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl1<NetworkWatcherInner>> listDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<NetworkWatcherInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl1<NetworkWatcherInner>>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -859,7 +888,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the representation of topology.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TopologyInner object if successful.
      */
@@ -937,10 +966,10 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
             });
     }
 
-    private ServiceResponse<TopologyInner> getTopologyDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<TopologyInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<TopologyInner> getTopologyDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<TopologyInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<TopologyInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -951,7 +980,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the IP flow to be verified.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the VerificationIPFlowResultInner object if successful.
      */
@@ -1026,7 +1055,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the IP flow to be verified.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the VerificationIPFlowResultInner object if successful.
      */
@@ -1104,11 +1133,11 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
             });
     }
 
-    private ServiceResponse<VerificationIPFlowResultInner> beginVerifyIPFlowDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<VerificationIPFlowResultInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<VerificationIPFlowResultInner> beginVerifyIPFlowDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<VerificationIPFlowResultInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<VerificationIPFlowResultInner>() { }.getType())
                 .register(202, new TypeToken<VerificationIPFlowResultInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -1119,7 +1148,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the source and destination endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the NextHopResultInner object if successful.
      */
@@ -1194,7 +1223,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the source and destination endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the NextHopResultInner object if successful.
      */
@@ -1272,11 +1301,11 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
             });
     }
 
-    private ServiceResponse<NextHopResultInner> beginGetNextHopDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<NextHopResultInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<NextHopResultInner> beginGetNextHopDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<NextHopResultInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<NextHopResultInner>() { }.getType())
                 .register(202, new TypeToken<NextHopResultInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -1287,7 +1316,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher.
      * @param targetResourceId ID of the target VM.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SecurityGroupViewResultInner object if successful.
      */
@@ -1363,7 +1392,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher.
      * @param targetResourceId ID of the target VM.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SecurityGroupViewResultInner object if successful.
      */
@@ -1442,11 +1471,11 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
             });
     }
 
-    private ServiceResponse<SecurityGroupViewResultInner> beginGetVMSecurityRulesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<SecurityGroupViewResultInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<SecurityGroupViewResultInner> beginGetVMSecurityRulesDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SecurityGroupViewResultInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SecurityGroupViewResultInner>() { }.getType())
                 .register(202, new TypeToken<SecurityGroupViewResultInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -1457,7 +1486,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the resource to troubleshoot.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TroubleshootingResultInner object if successful.
      */
@@ -1532,7 +1561,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the resource to troubleshoot.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TroubleshootingResultInner object if successful.
      */
@@ -1610,11 +1639,11 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
             });
     }
 
-    private ServiceResponse<TroubleshootingResultInner> beginGetTroubleshootingDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<TroubleshootingResultInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<TroubleshootingResultInner> beginGetTroubleshootingDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<TroubleshootingResultInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<TroubleshootingResultInner>() { }.getType())
                 .register(202, new TypeToken<TroubleshootingResultInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -1625,7 +1654,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher resource.
      * @param targetResourceId The target resource ID to query the troubleshooting result.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TroubleshootingResultInner object if successful.
      */
@@ -1701,7 +1730,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher resource.
      * @param targetResourceId The target resource ID to query the troubleshooting result.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TroubleshootingResultInner object if successful.
      */
@@ -1780,11 +1809,11 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
             });
     }
 
-    private ServiceResponse<TroubleshootingResultInner> beginGetTroubleshootingResultDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<TroubleshootingResultInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<TroubleshootingResultInner> beginGetTroubleshootingResultDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<TroubleshootingResultInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<TroubleshootingResultInner>() { }.getType())
                 .register(202, new TypeToken<TroubleshootingResultInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -1795,7 +1824,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the configuration of flow log.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the FlowLogInformationInner object if successful.
      */
@@ -1870,7 +1899,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the configuration of flow log.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the FlowLogInformationInner object if successful.
      */
@@ -1948,11 +1977,11 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
             });
     }
 
-    private ServiceResponse<FlowLogInformationInner> beginSetFlowLogConfigurationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<FlowLogInformationInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<FlowLogInformationInner> beginSetFlowLogConfigurationDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<FlowLogInformationInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<FlowLogInformationInner>() { }.getType())
                 .register(202, new TypeToken<FlowLogInformationInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -1963,7 +1992,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher resource.
      * @param targetResourceId The target resource where getting the flow log and traffic analytics (optional) status.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the FlowLogInformationInner object if successful.
      */
@@ -2039,7 +2068,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher resource.
      * @param targetResourceId The target resource where getting the flow log and traffic analytics (optional) status.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the FlowLogInformationInner object if successful.
      */
@@ -2118,11 +2147,11 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
             });
     }
 
-    private ServiceResponse<FlowLogInformationInner> beginGetFlowLogStatusDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<FlowLogInformationInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<FlowLogInformationInner> beginGetFlowLogStatusDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<FlowLogInformationInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<FlowLogInformationInner>() { }.getType())
                 .register(202, new TypeToken<FlowLogInformationInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -2133,7 +2162,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that determine how the connectivity check will be performed.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ConnectivityInformationInner object if successful.
      */
@@ -2208,7 +2237,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that determine how the connectivity check will be performed.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ConnectivityInformationInner object if successful.
      */
@@ -2286,11 +2315,11 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
             });
     }
 
-    private ServiceResponse<ConnectivityInformationInner> beginCheckConnectivityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ConnectivityInformationInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<ConnectivityInformationInner> beginCheckConnectivityDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ConnectivityInformationInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ConnectivityInformationInner>() { }.getType())
                 .register(202, new TypeToken<ConnectivityInformationInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -2301,7 +2330,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that determine Azure reachability report configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AzureReachabilityReportInner object if successful.
      */
@@ -2376,7 +2405,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that determine Azure reachability report configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AzureReachabilityReportInner object if successful.
      */
@@ -2454,11 +2483,11 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
             });
     }
 
-    private ServiceResponse<AzureReachabilityReportInner> beginGetAzureReachabilityReportDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<AzureReachabilityReportInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<AzureReachabilityReportInner> beginGetAzureReachabilityReportDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<AzureReachabilityReportInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<AzureReachabilityReportInner>() { }.getType())
                 .register(202, new TypeToken<AzureReachabilityReportInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -2469,7 +2498,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that scope the list of available providers.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AvailableProvidersListInner object if successful.
      */
@@ -2544,7 +2573,7 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that scope the list of available providers.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AvailableProvidersListInner object if successful.
      */
@@ -2622,11 +2651,897 @@ public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInne
             });
     }
 
-    private ServiceResponse<AvailableProvidersListInner> beginListAvailableProvidersDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<AvailableProvidersListInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<AvailableProvidersListInner> beginListAvailableProvidersDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<AvailableProvidersListInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<AvailableProvidersListInner>() { }.getType())
                 .register(202, new TypeToken<AvailableProvidersListInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Get network configuration diagnostic.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param parameters Parameters to get network configuration diagnostic.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the NetworkConfigurationDiagnosticResponseInner object if successful.
+     */
+    public NetworkConfigurationDiagnosticResponseInner getNetworkConfigurationDiagnostic(String resourceGroupName, String networkWatcherName, NetworkConfigurationDiagnosticParameters parameters) {
+        return getNetworkConfigurationDiagnosticWithServiceResponseAsync(resourceGroupName, networkWatcherName, parameters).toBlocking().last().body();
+    }
+
+    /**
+     * Get network configuration diagnostic.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param parameters Parameters to get network configuration diagnostic.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<NetworkConfigurationDiagnosticResponseInner> getNetworkConfigurationDiagnosticAsync(String resourceGroupName, String networkWatcherName, NetworkConfigurationDiagnosticParameters parameters, final ServiceCallback<NetworkConfigurationDiagnosticResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getNetworkConfigurationDiagnosticWithServiceResponseAsync(resourceGroupName, networkWatcherName, parameters), serviceCallback);
+    }
+
+    /**
+     * Get network configuration diagnostic.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param parameters Parameters to get network configuration diagnostic.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<NetworkConfigurationDiagnosticResponseInner> getNetworkConfigurationDiagnosticAsync(String resourceGroupName, String networkWatcherName, NetworkConfigurationDiagnosticParameters parameters) {
+        return getNetworkConfigurationDiagnosticWithServiceResponseAsync(resourceGroupName, networkWatcherName, parameters).map(new Func1<ServiceResponse<NetworkConfigurationDiagnosticResponseInner>, NetworkConfigurationDiagnosticResponseInner>() {
+            @Override
+            public NetworkConfigurationDiagnosticResponseInner call(ServiceResponse<NetworkConfigurationDiagnosticResponseInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Get network configuration diagnostic.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param parameters Parameters to get network configuration diagnostic.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<NetworkConfigurationDiagnosticResponseInner>> getNetworkConfigurationDiagnosticWithServiceResponseAsync(String resourceGroupName, String networkWatcherName, NetworkConfigurationDiagnosticParameters parameters) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (networkWatcherName == null) {
+            throw new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        }
+        Validator.validate(parameters);
+        final String apiVersion = "2018-06-01";
+        Observable<Response<ResponseBody>> observable = service.getNetworkConfigurationDiagnostic(resourceGroupName, networkWatcherName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<NetworkConfigurationDiagnosticResponseInner>() { }.getType());
+    }
+
+    /**
+     * Get network configuration diagnostic.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param parameters Parameters to get network configuration diagnostic.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the NetworkConfigurationDiagnosticResponseInner object if successful.
+     */
+    public NetworkConfigurationDiagnosticResponseInner beginGetNetworkConfigurationDiagnostic(String resourceGroupName, String networkWatcherName, NetworkConfigurationDiagnosticParameters parameters) {
+        return beginGetNetworkConfigurationDiagnosticWithServiceResponseAsync(resourceGroupName, networkWatcherName, parameters).toBlocking().single().body();
+    }
+
+    /**
+     * Get network configuration diagnostic.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param parameters Parameters to get network configuration diagnostic.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<NetworkConfigurationDiagnosticResponseInner> beginGetNetworkConfigurationDiagnosticAsync(String resourceGroupName, String networkWatcherName, NetworkConfigurationDiagnosticParameters parameters, final ServiceCallback<NetworkConfigurationDiagnosticResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginGetNetworkConfigurationDiagnosticWithServiceResponseAsync(resourceGroupName, networkWatcherName, parameters), serviceCallback);
+    }
+
+    /**
+     * Get network configuration diagnostic.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param parameters Parameters to get network configuration diagnostic.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the NetworkConfigurationDiagnosticResponseInner object
+     */
+    public Observable<NetworkConfigurationDiagnosticResponseInner> beginGetNetworkConfigurationDiagnosticAsync(String resourceGroupName, String networkWatcherName, NetworkConfigurationDiagnosticParameters parameters) {
+        return beginGetNetworkConfigurationDiagnosticWithServiceResponseAsync(resourceGroupName, networkWatcherName, parameters).map(new Func1<ServiceResponse<NetworkConfigurationDiagnosticResponseInner>, NetworkConfigurationDiagnosticResponseInner>() {
+            @Override
+            public NetworkConfigurationDiagnosticResponseInner call(ServiceResponse<NetworkConfigurationDiagnosticResponseInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Get network configuration diagnostic.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param parameters Parameters to get network configuration diagnostic.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the NetworkConfigurationDiagnosticResponseInner object
+     */
+    public Observable<ServiceResponse<NetworkConfigurationDiagnosticResponseInner>> beginGetNetworkConfigurationDiagnosticWithServiceResponseAsync(String resourceGroupName, String networkWatcherName, NetworkConfigurationDiagnosticParameters parameters) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (networkWatcherName == null) {
+            throw new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        }
+        Validator.validate(parameters);
+        final String apiVersion = "2018-06-01";
+        return service.beginGetNetworkConfigurationDiagnostic(resourceGroupName, networkWatcherName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<NetworkConfigurationDiagnosticResponseInner>>>() {
+                @Override
+                public Observable<ServiceResponse<NetworkConfigurationDiagnosticResponseInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<NetworkConfigurationDiagnosticResponseInner> clientResponse = beginGetNetworkConfigurationDiagnosticDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<NetworkConfigurationDiagnosticResponseInner> beginGetNetworkConfigurationDiagnosticDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<NetworkConfigurationDiagnosticResponseInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<NetworkConfigurationDiagnosticResponseInner>() { }.getType())
+                .register(202, new TypeToken<NetworkConfigurationDiagnosticResponseInner>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Query connection monitors.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;ConnectionMonitorsQueryResultItemInner&gt; object if successful.
+     */
+    public PagedList<ConnectionMonitorsQueryResultItemInner> queryConnectionMonitors(final String resourceGroupName, final String networkWatcherName) {
+        ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>> response = queryConnectionMonitorsSinglePageAsync(resourceGroupName, networkWatcherName).toBlocking().single();
+        return new PagedList<ConnectionMonitorsQueryResultItemInner>(response.body()) {
+            @Override
+            public Page<ConnectionMonitorsQueryResultItemInner> nextPage(String nextPageLink) {
+                return queryConnectionMonitorsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Query connection monitors.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<ConnectionMonitorsQueryResultItemInner>> queryConnectionMonitorsAsync(final String resourceGroupName, final String networkWatcherName, final ListOperationCallback<ConnectionMonitorsQueryResultItemInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            queryConnectionMonitorsSinglePageAsync(resourceGroupName, networkWatcherName),
+            new Func1<String, Observable<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>> call(String nextPageLink) {
+                    return queryConnectionMonitorsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Query connection monitors.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;ConnectionMonitorsQueryResultItemInner&gt; object
+     */
+    public Observable<Page<ConnectionMonitorsQueryResultItemInner>> queryConnectionMonitorsAsync(final String resourceGroupName, final String networkWatcherName) {
+        return queryConnectionMonitorsWithServiceResponseAsync(resourceGroupName, networkWatcherName)
+            .map(new Func1<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>, Page<ConnectionMonitorsQueryResultItemInner>>() {
+                @Override
+                public Page<ConnectionMonitorsQueryResultItemInner> call(ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Query connection monitors.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;ConnectionMonitorsQueryResultItemInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>> queryConnectionMonitorsWithServiceResponseAsync(final String resourceGroupName, final String networkWatcherName) {
+        return queryConnectionMonitorsSinglePageAsync(resourceGroupName, networkWatcherName)
+            .concatMap(new Func1<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>, Observable<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>> call(ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(queryConnectionMonitorsNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Query connection monitors.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;ConnectionMonitorsQueryResultItemInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>> queryConnectionMonitorsSinglePageAsync(final String resourceGroupName, final String networkWatcherName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (networkWatcherName == null) {
+            throw new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2018-06-01";
+        final List<String> connectionMonitorIds = null;
+        QueryConnectionMonitorsParameters parameters = new QueryConnectionMonitorsParameters();
+        parameters.withConnectionMonitorIds(null);
+        return service.queryConnectionMonitors(resourceGroupName, networkWatcherName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ConnectionMonitorsQueryResultItemInner>> result = queryConnectionMonitorsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Query connection monitors.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionMonitorIds List of connection monitors ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;ConnectionMonitorsQueryResultItemInner&gt; object if successful.
+     */
+    public PagedList<ConnectionMonitorsQueryResultItemInner> queryConnectionMonitors(final String resourceGroupName, final String networkWatcherName, final List<String> connectionMonitorIds) {
+        ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>> response = queryConnectionMonitorsSinglePageAsync(resourceGroupName, networkWatcherName, connectionMonitorIds).toBlocking().single();
+        return new PagedList<ConnectionMonitorsQueryResultItemInner>(response.body()) {
+            @Override
+            public Page<ConnectionMonitorsQueryResultItemInner> nextPage(String nextPageLink) {
+                return queryConnectionMonitorsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Query connection monitors.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionMonitorIds List of connection monitors ID.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<ConnectionMonitorsQueryResultItemInner>> queryConnectionMonitorsAsync(final String resourceGroupName, final String networkWatcherName, final List<String> connectionMonitorIds, final ListOperationCallback<ConnectionMonitorsQueryResultItemInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            queryConnectionMonitorsSinglePageAsync(resourceGroupName, networkWatcherName, connectionMonitorIds),
+            new Func1<String, Observable<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>> call(String nextPageLink) {
+                    return queryConnectionMonitorsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Query connection monitors.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionMonitorIds List of connection monitors ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;ConnectionMonitorsQueryResultItemInner&gt; object
+     */
+    public Observable<Page<ConnectionMonitorsQueryResultItemInner>> queryConnectionMonitorsAsync(final String resourceGroupName, final String networkWatcherName, final List<String> connectionMonitorIds) {
+        return queryConnectionMonitorsWithServiceResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorIds)
+            .map(new Func1<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>, Page<ConnectionMonitorsQueryResultItemInner>>() {
+                @Override
+                public Page<ConnectionMonitorsQueryResultItemInner> call(ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Query connection monitors.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionMonitorIds List of connection monitors ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;ConnectionMonitorsQueryResultItemInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>> queryConnectionMonitorsWithServiceResponseAsync(final String resourceGroupName, final String networkWatcherName, final List<String> connectionMonitorIds) {
+        return queryConnectionMonitorsSinglePageAsync(resourceGroupName, networkWatcherName, connectionMonitorIds)
+            .concatMap(new Func1<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>, Observable<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>> call(ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(queryConnectionMonitorsNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Query connection monitors.
+     *
+    ServiceResponse<PageImpl<ConnectionMonitorsQueryResultItemInner>> * @param resourceGroupName The name of the resource group.
+    ServiceResponse<PageImpl<ConnectionMonitorsQueryResultItemInner>> * @param networkWatcherName The name of the network watcher.
+    ServiceResponse<PageImpl<ConnectionMonitorsQueryResultItemInner>> * @param connectionMonitorIds List of connection monitors ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;ConnectionMonitorsQueryResultItemInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>> queryConnectionMonitorsSinglePageAsync(final String resourceGroupName, final String networkWatcherName, final List<String> connectionMonitorIds) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (networkWatcherName == null) {
+            throw new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        Validator.validate(connectionMonitorIds);
+        final String apiVersion = "2018-06-01";
+        QueryConnectionMonitorsParameters parameters = new QueryConnectionMonitorsParameters();
+        parameters.withConnectionMonitorIds(connectionMonitorIds);
+        return service.queryConnectionMonitors(resourceGroupName, networkWatcherName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ConnectionMonitorsQueryResultItemInner>> result = queryConnectionMonitorsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<ConnectionMonitorsQueryResultItemInner>> queryConnectionMonitorsDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException, InterruptedException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ConnectionMonitorsQueryResultItemInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<ConnectionMonitorsQueryResultItemInner>>() { }.getType())
+                .register(202, new TypeToken<PageImpl<ConnectionMonitorsQueryResultItemInner>>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Query connection monitors.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;ConnectionMonitorsQueryResultItemInner&gt; object if successful.
+     */
+    public PagedList<ConnectionMonitorsQueryResultItemInner> beginQueryConnectionMonitors(final String resourceGroupName, final String networkWatcherName) {
+        ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>> response = beginQueryConnectionMonitorsSinglePageAsync(resourceGroupName, networkWatcherName).toBlocking().single();
+        return new PagedList<ConnectionMonitorsQueryResultItemInner>(response.body()) {
+            @Override
+            public Page<ConnectionMonitorsQueryResultItemInner> nextPage(String nextPageLink) {
+                return beginQueryConnectionMonitorsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Query connection monitors.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<ConnectionMonitorsQueryResultItemInner>> beginQueryConnectionMonitorsAsync(final String resourceGroupName, final String networkWatcherName, final ListOperationCallback<ConnectionMonitorsQueryResultItemInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            beginQueryConnectionMonitorsSinglePageAsync(resourceGroupName, networkWatcherName),
+            new Func1<String, Observable<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>> call(String nextPageLink) {
+                    return beginQueryConnectionMonitorsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Query connection monitors.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;ConnectionMonitorsQueryResultItemInner&gt; object
+     */
+    public Observable<Page<ConnectionMonitorsQueryResultItemInner>> beginQueryConnectionMonitorsAsync(final String resourceGroupName, final String networkWatcherName) {
+        return beginQueryConnectionMonitorsWithServiceResponseAsync(resourceGroupName, networkWatcherName)
+            .map(new Func1<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>, Page<ConnectionMonitorsQueryResultItemInner>>() {
+                @Override
+                public Page<ConnectionMonitorsQueryResultItemInner> call(ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Query connection monitors.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;ConnectionMonitorsQueryResultItemInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>> beginQueryConnectionMonitorsWithServiceResponseAsync(final String resourceGroupName, final String networkWatcherName) {
+        return beginQueryConnectionMonitorsSinglePageAsync(resourceGroupName, networkWatcherName)
+            .concatMap(new Func1<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>, Observable<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>> call(ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(beginQueryConnectionMonitorsNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Query connection monitors.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;ConnectionMonitorsQueryResultItemInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>> beginQueryConnectionMonitorsSinglePageAsync(final String resourceGroupName, final String networkWatcherName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (networkWatcherName == null) {
+            throw new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2018-06-01";
+        final List<String> connectionMonitorIds = null;
+        QueryConnectionMonitorsParameters parameters = new QueryConnectionMonitorsParameters();
+        parameters.withConnectionMonitorIds(null);
+        return service.beginQueryConnectionMonitors(resourceGroupName, networkWatcherName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ConnectionMonitorsQueryResultItemInner>> result = beginQueryConnectionMonitorsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Query connection monitors.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionMonitorIds List of connection monitors ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;ConnectionMonitorsQueryResultItemInner&gt; object if successful.
+     */
+    public PagedList<ConnectionMonitorsQueryResultItemInner> beginQueryConnectionMonitors(final String resourceGroupName, final String networkWatcherName, final List<String> connectionMonitorIds) {
+        ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>> response = beginQueryConnectionMonitorsSinglePageAsync(resourceGroupName, networkWatcherName, connectionMonitorIds).toBlocking().single();
+        return new PagedList<ConnectionMonitorsQueryResultItemInner>(response.body()) {
+            @Override
+            public Page<ConnectionMonitorsQueryResultItemInner> nextPage(String nextPageLink) {
+                return beginQueryConnectionMonitorsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Query connection monitors.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionMonitorIds List of connection monitors ID.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<ConnectionMonitorsQueryResultItemInner>> beginQueryConnectionMonitorsAsync(final String resourceGroupName, final String networkWatcherName, final List<String> connectionMonitorIds, final ListOperationCallback<ConnectionMonitorsQueryResultItemInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            beginQueryConnectionMonitorsSinglePageAsync(resourceGroupName, networkWatcherName, connectionMonitorIds),
+            new Func1<String, Observable<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>> call(String nextPageLink) {
+                    return beginQueryConnectionMonitorsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Query connection monitors.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionMonitorIds List of connection monitors ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;ConnectionMonitorsQueryResultItemInner&gt; object
+     */
+    public Observable<Page<ConnectionMonitorsQueryResultItemInner>> beginQueryConnectionMonitorsAsync(final String resourceGroupName, final String networkWatcherName, final List<String> connectionMonitorIds) {
+        return beginQueryConnectionMonitorsWithServiceResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorIds)
+            .map(new Func1<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>, Page<ConnectionMonitorsQueryResultItemInner>>() {
+                @Override
+                public Page<ConnectionMonitorsQueryResultItemInner> call(ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Query connection monitors.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionMonitorIds List of connection monitors ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;ConnectionMonitorsQueryResultItemInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>> beginQueryConnectionMonitorsWithServiceResponseAsync(final String resourceGroupName, final String networkWatcherName, final List<String> connectionMonitorIds) {
+        return beginQueryConnectionMonitorsSinglePageAsync(resourceGroupName, networkWatcherName, connectionMonitorIds)
+            .concatMap(new Func1<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>, Observable<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>> call(ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(beginQueryConnectionMonitorsNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Query connection monitors.
+     *
+    ServiceResponse<PageImpl<ConnectionMonitorsQueryResultItemInner>> * @param resourceGroupName The name of the resource group.
+    ServiceResponse<PageImpl<ConnectionMonitorsQueryResultItemInner>> * @param networkWatcherName The name of the network watcher.
+    ServiceResponse<PageImpl<ConnectionMonitorsQueryResultItemInner>> * @param connectionMonitorIds List of connection monitors ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;ConnectionMonitorsQueryResultItemInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>> beginQueryConnectionMonitorsSinglePageAsync(final String resourceGroupName, final String networkWatcherName, final List<String> connectionMonitorIds) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (networkWatcherName == null) {
+            throw new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        Validator.validate(connectionMonitorIds);
+        final String apiVersion = "2018-06-01";
+        QueryConnectionMonitorsParameters parameters = new QueryConnectionMonitorsParameters();
+        parameters.withConnectionMonitorIds(connectionMonitorIds);
+        return service.beginQueryConnectionMonitors(resourceGroupName, networkWatcherName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ConnectionMonitorsQueryResultItemInner>> result = beginQueryConnectionMonitorsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<ConnectionMonitorsQueryResultItemInner>> beginQueryConnectionMonitorsDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ConnectionMonitorsQueryResultItemInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<ConnectionMonitorsQueryResultItemInner>>() { }.getType())
+                .register(202, new TypeToken<PageImpl<ConnectionMonitorsQueryResultItemInner>>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Query connection monitors.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;ConnectionMonitorsQueryResultItemInner&gt; object if successful.
+     */
+    public PagedList<ConnectionMonitorsQueryResultItemInner> queryConnectionMonitorsNext(final String nextPageLink) {
+        ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>> response = queryConnectionMonitorsNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<ConnectionMonitorsQueryResultItemInner>(response.body()) {
+            @Override
+            public Page<ConnectionMonitorsQueryResultItemInner> nextPage(String nextPageLink) {
+                return queryConnectionMonitorsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Query connection monitors.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<ConnectionMonitorsQueryResultItemInner>> queryConnectionMonitorsNextAsync(final String nextPageLink, final ServiceFuture<List<ConnectionMonitorsQueryResultItemInner>> serviceFuture, final ListOperationCallback<ConnectionMonitorsQueryResultItemInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            queryConnectionMonitorsNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>> call(String nextPageLink) {
+                    return queryConnectionMonitorsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Query connection monitors.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;ConnectionMonitorsQueryResultItemInner&gt; object
+     */
+    public Observable<Page<ConnectionMonitorsQueryResultItemInner>> queryConnectionMonitorsNextAsync(final String nextPageLink) {
+        return queryConnectionMonitorsNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>, Page<ConnectionMonitorsQueryResultItemInner>>() {
+                @Override
+                public Page<ConnectionMonitorsQueryResultItemInner> call(ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Query connection monitors.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;ConnectionMonitorsQueryResultItemInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>> queryConnectionMonitorsNextWithServiceResponseAsync(final String nextPageLink) {
+        return queryConnectionMonitorsNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>, Observable<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>> call(ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(queryConnectionMonitorsNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Query connection monitors.
+     *
+    ServiceResponse<PageImpl<ConnectionMonitorsQueryResultItemInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;ConnectionMonitorsQueryResultItemInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>> queryConnectionMonitorsNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.queryConnectionMonitorsNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ConnectionMonitorsQueryResultItemInner>> result = queryConnectionMonitorsNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<ConnectionMonitorsQueryResultItemInner>> queryConnectionMonitorsNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException, InterruptedException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ConnectionMonitorsQueryResultItemInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<ConnectionMonitorsQueryResultItemInner>>() { }.getType())
+                .register(202, new TypeToken<PageImpl<ConnectionMonitorsQueryResultItemInner>>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Query connection monitors.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;ConnectionMonitorsQueryResultItemInner&gt; object if successful.
+     */
+    public PagedList<ConnectionMonitorsQueryResultItemInner> beginQueryConnectionMonitorsNext(final String nextPageLink) {
+        ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>> response = beginQueryConnectionMonitorsNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<ConnectionMonitorsQueryResultItemInner>(response.body()) {
+            @Override
+            public Page<ConnectionMonitorsQueryResultItemInner> nextPage(String nextPageLink) {
+                return beginQueryConnectionMonitorsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Query connection monitors.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<ConnectionMonitorsQueryResultItemInner>> beginQueryConnectionMonitorsNextAsync(final String nextPageLink, final ServiceFuture<List<ConnectionMonitorsQueryResultItemInner>> serviceFuture, final ListOperationCallback<ConnectionMonitorsQueryResultItemInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            beginQueryConnectionMonitorsNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>> call(String nextPageLink) {
+                    return beginQueryConnectionMonitorsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Query connection monitors.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;ConnectionMonitorsQueryResultItemInner&gt; object
+     */
+    public Observable<Page<ConnectionMonitorsQueryResultItemInner>> beginQueryConnectionMonitorsNextAsync(final String nextPageLink) {
+        return beginQueryConnectionMonitorsNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>, Page<ConnectionMonitorsQueryResultItemInner>>() {
+                @Override
+                public Page<ConnectionMonitorsQueryResultItemInner> call(ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Query connection monitors.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;ConnectionMonitorsQueryResultItemInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>> beginQueryConnectionMonitorsNextWithServiceResponseAsync(final String nextPageLink) {
+        return beginQueryConnectionMonitorsNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>, Observable<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>> call(ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(beginQueryConnectionMonitorsNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Query connection monitors.
+     *
+    ServiceResponse<PageImpl<ConnectionMonitorsQueryResultItemInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;ConnectionMonitorsQueryResultItemInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>> beginQueryConnectionMonitorsNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.beginQueryConnectionMonitorsNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ConnectionMonitorsQueryResultItemInner>> result = beginQueryConnectionMonitorsNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ConnectionMonitorsQueryResultItemInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<ConnectionMonitorsQueryResultItemInner>> beginQueryConnectionMonitorsNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ConnectionMonitorsQueryResultItemInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<ConnectionMonitorsQueryResultItemInner>>() { }.getType())
+                .register(202, new TypeToken<PageImpl<ConnectionMonitorsQueryResultItemInner>>() { }.getType())
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 

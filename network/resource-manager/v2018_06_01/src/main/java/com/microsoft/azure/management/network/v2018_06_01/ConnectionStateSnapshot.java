@@ -43,6 +43,36 @@ public class ConnectionStateSnapshot {
     private EvaluationState evaluationState;
 
     /**
+     * Average latency in ms.
+     */
+    @JsonProperty(value = "avgLatencyInMs")
+    private Integer avgLatencyInMs;
+
+    /**
+     * Minimum latency in ms.
+     */
+    @JsonProperty(value = "minLatencyInMs")
+    private Integer minLatencyInMs;
+
+    /**
+     * Maximum latency in ms.
+     */
+    @JsonProperty(value = "maxLatencyInMs")
+    private Integer maxLatencyInMs;
+
+    /**
+     * The number of sent probes.
+     */
+    @JsonProperty(value = "probesSent")
+    private Integer probesSent;
+
+    /**
+     * The number of failed probes.
+     */
+    @JsonProperty(value = "probesFailed")
+    private Integer probesFailed;
+
+    /**
      * List of hops between the source and the destination.
      */
     @JsonProperty(value = "hops", access = JsonProperty.Access.WRITE_ONLY)
@@ -125,6 +155,106 @@ public class ConnectionStateSnapshot {
      */
     public ConnectionStateSnapshot withEvaluationState(EvaluationState evaluationState) {
         this.evaluationState = evaluationState;
+        return this;
+    }
+
+    /**
+     * Get average latency in ms.
+     *
+     * @return the avgLatencyInMs value
+     */
+    public Integer avgLatencyInMs() {
+        return this.avgLatencyInMs;
+    }
+
+    /**
+     * Set average latency in ms.
+     *
+     * @param avgLatencyInMs the avgLatencyInMs value to set
+     * @return the ConnectionStateSnapshot object itself.
+     */
+    public ConnectionStateSnapshot withAvgLatencyInMs(Integer avgLatencyInMs) {
+        this.avgLatencyInMs = avgLatencyInMs;
+        return this;
+    }
+
+    /**
+     * Get minimum latency in ms.
+     *
+     * @return the minLatencyInMs value
+     */
+    public Integer minLatencyInMs() {
+        return this.minLatencyInMs;
+    }
+
+    /**
+     * Set minimum latency in ms.
+     *
+     * @param minLatencyInMs the minLatencyInMs value to set
+     * @return the ConnectionStateSnapshot object itself.
+     */
+    public ConnectionStateSnapshot withMinLatencyInMs(Integer minLatencyInMs) {
+        this.minLatencyInMs = minLatencyInMs;
+        return this;
+    }
+
+    /**
+     * Get maximum latency in ms.
+     *
+     * @return the maxLatencyInMs value
+     */
+    public Integer maxLatencyInMs() {
+        return this.maxLatencyInMs;
+    }
+
+    /**
+     * Set maximum latency in ms.
+     *
+     * @param maxLatencyInMs the maxLatencyInMs value to set
+     * @return the ConnectionStateSnapshot object itself.
+     */
+    public ConnectionStateSnapshot withMaxLatencyInMs(Integer maxLatencyInMs) {
+        this.maxLatencyInMs = maxLatencyInMs;
+        return this;
+    }
+
+    /**
+     * Get the number of sent probes.
+     *
+     * @return the probesSent value
+     */
+    public Integer probesSent() {
+        return this.probesSent;
+    }
+
+    /**
+     * Set the number of sent probes.
+     *
+     * @param probesSent the probesSent value to set
+     * @return the ConnectionStateSnapshot object itself.
+     */
+    public ConnectionStateSnapshot withProbesSent(Integer probesSent) {
+        this.probesSent = probesSent;
+        return this;
+    }
+
+    /**
+     * Get the number of failed probes.
+     *
+     * @return the probesFailed value
+     */
+    public Integer probesFailed() {
+        return this.probesFailed;
+    }
+
+    /**
+     * Set the number of failed probes.
+     *
+     * @param probesFailed the probesFailed value to set
+     * @return the ConnectionStateSnapshot object itself.
+     */
+    public ConnectionStateSnapshot withProbesFailed(Integer probesFailed) {
+        this.probesFailed = probesFailed;
         return this;
     }
 
