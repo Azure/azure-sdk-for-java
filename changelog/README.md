@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2.0.1
+- Fixed a bug for non-english locales ([github #51](https://github.com/Azure/azure-cosmosdb-java/issues/51)).
+- Added helper methods for Conflict resource.
+
 ### 2.0.0
 - Replaced org.json dependency by jackson due to performance reasons and licensing ([github #29](https://github.com/Azure/azure-cosmosdb-java/issues/29)).
 - Removed deprecated OfferV2 class.
