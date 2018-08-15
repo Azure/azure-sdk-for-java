@@ -75,7 +75,7 @@ public class ServerInner extends Resource {
     private StorageProfile storageProfile;
 
     /**
-     * Get the sku value.
+     * Get the SKU (pricing tier) of the server.
      *
      * @return the sku value
      */
@@ -84,7 +84,7 @@ public class ServerInner extends Resource {
     }
 
     /**
-     * Set the sku value.
+     * Set the SKU (pricing tier) of the server.
      *
      * @param sku the sku value to set
      * @return the ServerInner object itself.
@@ -95,7 +95,7 @@ public class ServerInner extends Resource {
     }
 
     /**
-     * Get the administratorLogin value.
+     * Get the administrator's login name of a server. Can only be specified when the server is being created (and is required for creation).
      *
      * @return the administratorLogin value
      */
@@ -104,7 +104,7 @@ public class ServerInner extends Resource {
     }
 
     /**
-     * Set the administratorLogin value.
+     * Set the administrator's login name of a server. Can only be specified when the server is being created (and is required for creation).
      *
      * @param administratorLogin the administratorLogin value to set
      * @return the ServerInner object itself.
@@ -115,7 +115,7 @@ public class ServerInner extends Resource {
     }
 
     /**
-     * Get the version value.
+     * Get server version. Possible values include: '5.6', '5.7'.
      *
      * @return the version value
      */
@@ -124,7 +124,7 @@ public class ServerInner extends Resource {
     }
 
     /**
-     * Set the version value.
+     * Set server version. Possible values include: '5.6', '5.7'.
      *
      * @param version the version value to set
      * @return the ServerInner object itself.
@@ -135,7 +135,7 @@ public class ServerInner extends Resource {
     }
 
     /**
-     * Get the sslEnforcement value.
+     * Get enable ssl enforcement or not when connect to server. Possible values include: 'Enabled', 'Disabled'.
      *
      * @return the sslEnforcement value
      */
@@ -144,7 +144,7 @@ public class ServerInner extends Resource {
     }
 
     /**
-     * Set the sslEnforcement value.
+     * Set enable ssl enforcement or not when connect to server. Possible values include: 'Enabled', 'Disabled'.
      *
      * @param sslEnforcement the sslEnforcement value to set
      * @return the ServerInner object itself.
@@ -155,7 +155,7 @@ public class ServerInner extends Resource {
     }
 
     /**
-     * Get the userVisibleState value.
+     * Get a state of a server that is visible to user. Possible values include: 'Ready', 'Dropping', 'Disabled'.
      *
      * @return the userVisibleState value
      */
@@ -164,7 +164,7 @@ public class ServerInner extends Resource {
     }
 
     /**
-     * Set the userVisibleState value.
+     * Set a state of a server that is visible to user. Possible values include: 'Ready', 'Dropping', 'Disabled'.
      *
      * @param userVisibleState the userVisibleState value to set
      * @return the ServerInner object itself.
@@ -175,7 +175,7 @@ public class ServerInner extends Resource {
     }
 
     /**
-     * Get the fullyQualifiedDomainName value.
+     * Get the fully qualified domain name of a server.
      *
      * @return the fullyQualifiedDomainName value
      */
@@ -184,7 +184,7 @@ public class ServerInner extends Resource {
     }
 
     /**
-     * Set the fullyQualifiedDomainName value.
+     * Set the fully qualified domain name of a server.
      *
      * @param fullyQualifiedDomainName the fullyQualifiedDomainName value to set
      * @return the ServerInner object itself.
@@ -195,7 +195,7 @@ public class ServerInner extends Resource {
     }
 
     /**
-     * Get the earliestRestoreDate value.
+     * Get earliest restore point creation time (ISO8601 format).
      *
      * @return the earliestRestoreDate value
      */
@@ -204,7 +204,7 @@ public class ServerInner extends Resource {
     }
 
     /**
-     * Set the earliestRestoreDate value.
+     * Set earliest restore point creation time (ISO8601 format).
      *
      * @param earliestRestoreDate the earliestRestoreDate value to set
      * @return the ServerInner object itself.
@@ -215,7 +215,7 @@ public class ServerInner extends Resource {
     }
 
     /**
-     * Get the storageProfile value.
+     * Get storage profile of a server.
      *
      * @return the storageProfile value
      */
@@ -224,7 +224,7 @@ public class ServerInner extends Resource {
     }
 
     /**
-     * Set the storageProfile value.
+     * Set storage profile of a server.
      *
      * @param storageProfile the storageProfile value to set
      * @return the ServerInner object itself.

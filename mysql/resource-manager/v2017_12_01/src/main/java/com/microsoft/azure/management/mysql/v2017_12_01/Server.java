@@ -10,21 +10,21 @@ package com.microsoft.azure.management.mysql.v2017_12_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.Resource;
+import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
 import com.microsoft.azure.arm.resources.models.HasResourceGroup;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
-import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.mysql.v2017_12_01.implementation.MySQLManager;
+import com.microsoft.azure.management.mysql.v2017_12_01.implementation.DBforMySQLManager;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.mysql.v2017_12_01.implementation.ServerInner;
 
 /**
  * Type representing Server.
  */
-public interface Server extends HasInner<ServerInner>, Resource, GroupableResourceCore<MySQLManager, ServerInner>, HasResourceGroup, Refreshable<Server>, Updatable<Server.Update>, HasManager<MySQLManager> {
+public interface Server extends HasInner<ServerInner>, Resource, GroupableResourceCore<DBforMySQLManager, ServerInner>, HasResourceGroup, Refreshable<Server>, Updatable<Server.Update>, HasManager<DBforMySQLManager> {
     /**
      * @return the administratorLogin value.
      */
