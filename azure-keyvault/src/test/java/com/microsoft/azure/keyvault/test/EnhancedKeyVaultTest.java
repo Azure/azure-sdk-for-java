@@ -106,6 +106,7 @@ public class EnhancedKeyVaultTest {
                 .request(getRequest())
                 .protocol(okhttp3.Protocol.HTTP_2)
                 .code(200)
+                .message("OK")
                 .build();
     }
 
