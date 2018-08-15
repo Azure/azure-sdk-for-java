@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.management.network.v2018_06_01.implementation;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -22,10 +21,10 @@ public class ConnectionMonitorsQueryResultItemInner {
     private String resourceId;
 
     /**
-     * List of connection monitors query results.
+     * The report property.
      */
     @JsonProperty(value = "report")
-    private List<ConnectionMonitorQueryResultInner> report;
+    private ConnectionMonitorQueryResultInner report;
 
     /**
      * Get connection monitor resource ID.
@@ -48,21 +47,21 @@ public class ConnectionMonitorsQueryResultItemInner {
     }
 
     /**
-     * Get list of connection monitors query results.
+     * Get the report value.
      *
      * @return the report value
      */
-    public List<ConnectionMonitorQueryResultInner> report() {
+    public ConnectionMonitorQueryResultInner report() {
         return this.report;
     }
 
     /**
-     * Set list of connection monitors query results.
+     * Set the report value.
      *
      * @param report the report value to set
      * @return the ConnectionMonitorsQueryResultItemInner object itself.
      */
-    public ConnectionMonitorsQueryResultItemInner withReport(List<ConnectionMonitorQueryResultInner> report) {
+    public ConnectionMonitorsQueryResultItemInner withReport(ConnectionMonitorQueryResultInner report) {
         this.report = report;
         return this;
     }

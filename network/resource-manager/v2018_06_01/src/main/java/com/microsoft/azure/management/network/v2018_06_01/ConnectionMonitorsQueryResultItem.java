@@ -13,7 +13,6 @@ import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.network.v2018_06_01.implementation.NetworkManager;
 import com.microsoft.azure.management.network.v2018_06_01.implementation.ConnectionMonitorsQueryResultItemInner;
 import com.microsoft.azure.management.network.v2018_06_01.implementation.ConnectionMonitorQueryResultInner;
-import java.util.List;
 
 /**
  * Type representing ConnectionMonitorsQueryResultItem.
@@ -22,7 +21,7 @@ public interface ConnectionMonitorsQueryResultItem extends HasInner<ConnectionMo
     /**
      * @return the report value.
      */
-    List<ConnectionMonitorQueryResultInner> report();
+    ConnectionMonitorQueryResultInner report();
 
     /**
      * @return the resourceId value.

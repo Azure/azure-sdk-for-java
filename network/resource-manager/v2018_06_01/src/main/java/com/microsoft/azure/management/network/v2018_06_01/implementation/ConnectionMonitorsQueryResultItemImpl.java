@@ -10,7 +10,6 @@ package com.microsoft.azure.management.network.v2018_06_01.implementation;
 
 import com.microsoft.azure.management.network.v2018_06_01.ConnectionMonitorsQueryResultItem;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
-import java.util.List;
 
 class ConnectionMonitorsQueryResultItemImpl extends WrapperImpl<ConnectionMonitorsQueryResultItemInner> implements ConnectionMonitorsQueryResultItem {
     private final NetworkManager manager;
@@ -25,7 +24,7 @@ class ConnectionMonitorsQueryResultItemImpl extends WrapperImpl<ConnectionMonito
     }
 
     @Override
-    public List<ConnectionMonitorQueryResultInner> report() {
+    public ConnectionMonitorQueryResultInner report() {
         return this.inner().report();
     }
 
