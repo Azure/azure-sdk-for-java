@@ -113,6 +113,14 @@ public class VirtualNetworkGatewaysInner implements InnerSupportsGet<VirtualNetw
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworkGateways/{virtualNetworkGatewayName}/reset")
         Observable<Response<ResponseBody>> beginReset(@Path("resourceGroupName") String resourceGroupName, @Path("virtualNetworkGatewayName") String virtualNetworkGatewayName, @Path("subscriptionId") String subscriptionId, @Query("gatewayVip") String gatewayVip, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2018_06_01.VirtualNetworkGateways resetvpnclientsharedkey" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworkGateways/{virtualNetworkGatewayName}/resetvpnclientsharedkey")
+        Observable<Response<ResponseBody>> resetvpnclientsharedkey(@Path("resourceGroupName") String resourceGroupName, @Path("virtualNetworkGatewayName") String virtualNetworkGatewayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2018_06_01.VirtualNetworkGateways beginResetvpnclientsharedkey" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworkGateways/{virtualNetworkGatewayName}/resetvpnclientsharedkey")
+        Observable<Response<ResponseBody>> beginResetvpnclientsharedkey(@Path("resourceGroupName") String resourceGroupName, @Path("virtualNetworkGatewayName") String virtualNetworkGatewayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2018_06_01.VirtualNetworkGateways generatevpnclientpackage" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworkGateways/{virtualNetworkGatewayName}/generatevpnclientpackage")
         Observable<Response<ResponseBody>> generatevpnclientpackage(@Path("resourceGroupName") String resourceGroupName, @Path("virtualNetworkGatewayName") String virtualNetworkGatewayName, @Path("subscriptionId") String subscriptionId, @Body VpnClientParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -1446,6 +1454,156 @@ public class VirtualNetworkGatewaysInner implements InnerSupportsGet<VirtualNetw
     private ServiceResponse<VirtualNetworkGatewayInner> beginResetDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<VirtualNetworkGatewayInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<VirtualNetworkGatewayInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Resets the VPN client shared key of the virtual network gateway in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void resetvpnclientsharedkey(String resourceGroupName, String virtualNetworkGatewayName) {
+        resetvpnclientsharedkeyWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayName).toBlocking().last().body();
+    }
+
+    /**
+     * Resets the VPN client shared key of the virtual network gateway in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> resetvpnclientsharedkeyAsync(String resourceGroupName, String virtualNetworkGatewayName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(resetvpnclientsharedkeyWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayName), serviceCallback);
+    }
+
+    /**
+     * Resets the VPN client shared key of the virtual network gateway in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<Void> resetvpnclientsharedkeyAsync(String resourceGroupName, String virtualNetworkGatewayName) {
+        return resetvpnclientsharedkeyWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Resets the VPN client shared key of the virtual network gateway in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> resetvpnclientsharedkeyWithServiceResponseAsync(String resourceGroupName, String virtualNetworkGatewayName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (virtualNetworkGatewayName == null) {
+            throw new IllegalArgumentException("Parameter virtualNetworkGatewayName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2018-06-01";
+        Observable<Response<ResponseBody>> observable = service.resetvpnclientsharedkey(resourceGroupName, virtualNetworkGatewayName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
+    }
+
+    /**
+     * Resets the VPN client shared key of the virtual network gateway in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void beginResetvpnclientsharedkey(String resourceGroupName, String virtualNetworkGatewayName) {
+        beginResetvpnclientsharedkeyWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayName).toBlocking().single().body();
+    }
+
+    /**
+     * Resets the VPN client shared key of the virtual network gateway in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> beginResetvpnclientsharedkeyAsync(String resourceGroupName, String virtualNetworkGatewayName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginResetvpnclientsharedkeyWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayName), serviceCallback);
+    }
+
+    /**
+     * Resets the VPN client shared key of the virtual network gateway in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> beginResetvpnclientsharedkeyAsync(String resourceGroupName, String virtualNetworkGatewayName) {
+        return beginResetvpnclientsharedkeyWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Resets the VPN client shared key of the virtual network gateway in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginResetvpnclientsharedkeyWithServiceResponseAsync(String resourceGroupName, String virtualNetworkGatewayName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (virtualNetworkGatewayName == null) {
+            throw new IllegalArgumentException("Parameter virtualNetworkGatewayName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2018-06-01";
+        return service.beginResetvpnclientsharedkey(resourceGroupName, virtualNetworkGatewayName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = beginResetvpnclientsharedkeyDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> beginResetvpnclientsharedkeyDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
