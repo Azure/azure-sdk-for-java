@@ -19,7 +19,7 @@ import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.compute.v2017_12_01.implementation.ComputeManager;
 import com.microsoft.azure.SubResource;
-import com.microsoft.azure.management.compute.v2017_12_01.implementation.VirtualMachineScaleSetVMInstanceViewInner;
+import com.microsoft.azure.management.compute.v2017_12_01.implementation.VirtualMachineInstanceViewInner;
 import java.util.List;
 import com.microsoft.azure.management.compute.v2017_12_01.implementation.VirtualMachineInner;
 
@@ -50,7 +50,7 @@ public interface VirtualMachine extends HasInner<VirtualMachineInner>, Resource,
     /**
      * @return the instanceView value.
      */
-    VirtualMachineScaleSetVMInstanceView instanceView();
+    VirtualMachineInstanceView instanceView();
 
     /**
      * @return the licenseType value.

@@ -21,7 +21,7 @@ import com.microsoft.azure.management.compute.v2017_12_01.DiagnosticsProfile;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.compute.v2017_12_01.Plan;
 import java.util.List;
-import com.microsoft.azure.management.compute.v2017_12_01.VirtualMachineInstanceView;
+import com.microsoft.azure.management.compute.v2017_12_01.VirtualMachineScaleSetVMInstanceView;
 import java.util.ArrayList;
 import com.microsoft.azure.management.compute.v2017_12_01.VirtualMachineExtension;
 
@@ -107,10 +107,10 @@ class VirtualMachineScaleSetVMImpl extends CreatableUpdatableImpl<VirtualMachine
     }
 
     @Override
-    public VirtualMachineInstanceView instanceView() {
-        VirtualMachineInstanceViewInner inner = this.inner().instanceView();
+    public VirtualMachineScaleSetVMInstanceView instanceView() {
+        VirtualMachineScaleSetVMInstanceViewInner inner = this.inner().instanceView();
         if (inner != null) {
-            return  new VirtualMachineInstanceViewImpl(inner, manager());
+            return  new VirtualMachineScaleSetVMInstanceViewImpl(inner, manager());
         } else {
             return null;
         }

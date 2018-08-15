@@ -9,7 +9,7 @@
 package com.microsoft.azure.management.compute.v2017_12_01;
 
 import com.microsoft.azure.SubResource;
-import com.microsoft.azure.management.compute.v2017_12_01.implementation.VirtualMachineScaleSetVMInstanceViewInner;
+import com.microsoft.azure.management.compute.v2017_12_01.implementation.VirtualMachineInstanceViewInner;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
@@ -89,7 +89,7 @@ public class VirtualMachineUpdate extends UpdateResource {
      * The virtual machine instance view.
      */
     @JsonProperty(value = "properties.instanceView", access = JsonProperty.Access.WRITE_ONLY)
-    private VirtualMachineScaleSetVMInstanceViewInner instanceView;
+    private VirtualMachineInstanceViewInner instanceView;
 
     /**
      * Specifies that the image or disk that is being used was licensed
@@ -280,7 +280,7 @@ public class VirtualMachineUpdate extends UpdateResource {
      *
      * @return the instanceView value
      */
-    public VirtualMachineScaleSetVMInstanceViewInner instanceView() {
+    public VirtualMachineInstanceViewInner instanceView() {
         return this.instanceView;
     }
 
