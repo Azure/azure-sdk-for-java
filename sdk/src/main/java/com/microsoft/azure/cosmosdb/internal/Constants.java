@@ -135,6 +135,7 @@ public final class Constants {
         // Conflict.
         public static final String CONFLICT = "conflict";
         public static final String OPERATION_TYPE = "operationType";
+        public static final String SOURCE_RESOURCE_ID = "resourceId";
 
         // Offer resource
         public static final String OFFER_TYPE = "offerType";
