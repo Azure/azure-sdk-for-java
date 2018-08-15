@@ -2232,7 +2232,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             logger.debug("Deleting a Conflict. conflictLink [{}]", conflictLink);
             String path = Utils.joinPath(conflictLink, null);
             Map<String, String> requestHeaders = getRequestHeaders(options);
-            RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read,
+            RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Delete,
                     ResourceType.Conflict, path, requestHeaders);
             Observable<RxDocumentServiceRequest> reqObs = addPartitionKeyInformation(request, null, options).toObservable();
             return reqObs.flatMap(req -> this.delete(request).map(response -> toResourceResponse(response, Conflict.class)));

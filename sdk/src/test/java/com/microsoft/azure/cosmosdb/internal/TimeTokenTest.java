@@ -26,16 +26,36 @@ package com.microsoft.azure.cosmosdb.internal;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-public class UtilsTest {
+public class TimeTokenTest {
+
+    private Locale defaultLocale;
+
+    @BeforeTest
+    public void beforeMethod() {
+        defaultLocale = Locale.getDefault();
+    }
+
     @Test(groups = { "internal" })
-    public void localeUS() {
-    	Locale.setDefault(Locale.ITALIAN);
-    	DateTimeFormatter RFC_1123_DATE_TIME = 
-    			DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss zzz",Locale.US);
-    	String time=Utils.nowAsRFC1123();
-    	Locale.setDefault(Locale.US);
-    	RFC_1123_DATE_TIME.parse(time);
+    public void nonLocaleUS() {
+        Locale.setDefault(Locale.ITALIAN);
+        DateTimeFormatter RFC_1123_DATE_TIME = 
+                DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
+        String time = Utils.nowAsRFC1123();
+        Locale.setDefault(Locale.US);
+        RFC_1123_DATE_TIME.parse(time);
+    }
+
+    @AfterTest
+    public void afterMethod() {
+        // set back default locale before test
+        if (defaultLocale != null) {
+            Locale.setDefault(defaultLocale);
+        } else {
+            Locale.setDefault(Locale.US);
+        }
     }
 }
