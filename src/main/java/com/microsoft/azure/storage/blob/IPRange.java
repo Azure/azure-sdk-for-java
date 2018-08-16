@@ -29,12 +29,12 @@ public final class IPRange {
     /**
      * A {@link Inet4Address} representing the minimum IP address of the range.
      */
-    public Inet4Address ipMin;
+    public String ipMin;
 
     /**
      * A {@link Inet4Address} representing the maximum IP address of the range.
      */
-    public Inet4Address ipMax;
+    public String ipMax;
 
     public IPRange() { }
 
@@ -50,10 +50,10 @@ public final class IPRange {
             return "";
         }
         this.ipMax = this.ipMax == null ? this.ipMin : this.ipMax;
-        StringBuilder str = new StringBuilder(this.ipMin.getHostAddress());
+        StringBuilder str = new StringBuilder(this.ipMin);
         if (!this.ipMin.equals(this.ipMax)) {
             str.append('-');
-            str.append(this.ipMax.getHostAddress());
+            str.append(this.ipMax);
         }
 
         return str.toString();
@@ -69,17 +69,12 @@ public final class IPRange {
      *      The {@code IPRange} generated from the {@code String}.
      */
     public static IPRange parse(String rangeStr) {
-        try {
-            String[] addrs = rangeStr.split("-");
-            IPRange range = new IPRange();
-            range.ipMin = (Inet4Address) (Inet4Address.getByName(addrs[0]));
-            if (addrs.length > 1) {
-                range.ipMax = (Inet4Address) (Inet4Address.getByName(addrs[1]));
-            }
-            return range;
+        String[] addrs = rangeStr.split("-");
+        IPRange range = new IPRange();
+        range.ipMin = addrs[0];
+        if (addrs.length > 1) {
+            range.ipMax = addrs[1];
         }
-        catch (UnknownHostException e) {
-            throw new Error("Invalid host. Host names may not be used with IPRange.");
-        }
+        return range;
     }
 }

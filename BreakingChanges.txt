@@ -2,6 +2,7 @@
 * Changed BlobURL.startCopy sourceAccessConditions parameter to be HTTPAccessConditions as lease is not actually supported.
 * UploadFromFile now takes an AsynchronousFileChannel.
 * UploadByteBuffersToBlockBlob, UploadByteBufferToBlockBlob, and DownloadToBuffer have been removed.
+* IPRange fields are now strings.
 
 2018.08.07 Version 10.0.2-Preview
 * Changed BlobListingDetails constructor to take a flag to include deleted blobs.

@@ -127,18 +127,22 @@ public final class ServiceSASSignatureValues {
      *      {@link SASQueryParameters}
      */
     public SASQueryParameters generateSASQueryParameters(SharedKeyCredentials sharedKeyCredentials) {
-        if (sharedKeyCredentials == null) {
-            throw new IllegalArgumentException("SharedKeyCredentials cannot be null.");
-        }
+        Utility.assertNotNull("sharedKeyCredentials", sharedKeyCredentials);
+        Utility.assertNotNull("version", this.version);
+        Utility.assertNotNull("containerName", this.containerName);
 
         String resource = "c";
-        String verifiedPermissions;
+        String verifiedPermissions = null;
         // Calling parse and toString guarantees the proper ordering and throws on invalid characters.
         if (Utility.isNullOrEmpty(this.blobName)) {
-            verifiedPermissions = ContainerSASPermission.parse(this.permissions).toString();
+            if (this.permissions != null) {
+                verifiedPermissions = ContainerSASPermission.parse(this.permissions).toString();
+            }
         }
         else {
-            verifiedPermissions = BlobSASPermission.parse(this.permissions).toString();
+            if (this.permissions != null) {
+                verifiedPermissions = BlobSASPermission.parse(this.permissions).toString();
+            }
             resource = "b";
         }
 
@@ -173,7 +177,7 @@ public final class ServiceSASSignatureValues {
     private String stringToSign(final String verifiedPermissions,
                                 final SharedKeyCredentials sharedKeyCredentials) {
         return String.join("\n",
-                verifiedPermissions,
+                verifiedPermissions == null ? "" : verifiedPermissions,
                 this.startTime == null ? "" : Utility.ISO8601UTCDateFormatter.format(this.startTime),
                 this.expiryTime == null ? "" : Utility.ISO8601UTCDateFormatter.format(this.expiryTime),
                 getCanonicalName(sharedKeyCredentials.getAccountName()),

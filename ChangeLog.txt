@@ -8,6 +8,7 @@ XXXX.XX.XX Version XX.X.X
 * Added methods to TransferManager for conveniently downloading a blob to a file.
 * UploadFromFile now takes an AsynchronousFileChannel.
 * UploadByteBuffersToBlockBlob, UploadByteBufferToBlockBlob, and DownloadToBuffer have been removed.
+* IPRange fields are now strings.
 
 2018.08.08 Version 10.0.3-Preview
 * Resolved dependency issues

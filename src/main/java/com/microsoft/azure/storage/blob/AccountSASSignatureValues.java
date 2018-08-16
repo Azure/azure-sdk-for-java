@@ -104,6 +104,7 @@ public final class AccountSASSignatureValues {
         Utility.assertNotNull("resourceTypes", this.resourceTypes);
         Utility.assertNotNull("expiryTime", this.expiryTime);
         Utility.assertNotNull("permissions", this.permissions);
+        Utility.assertNotNull("version", this.version);
 
         // Signature is generated on the un-url-encoded values.
         final String stringToSign = stringToSign(sharedKeyCredentials);
@@ -127,7 +128,7 @@ public final class AccountSASSignatureValues {
                 this.services,
                 resourceTypes,
                 this.startTime == null ? "" : Utility.ISO8601UTCDateFormatter.format(this.startTime),
-                this.expiryTime == null ? "" : Utility.ISO8601UTCDateFormatter.format(this.expiryTime),
+                Utility.ISO8601UTCDateFormatter.format(this.expiryTime),
                 this.ipRange == null ? IPRange.DEFAULT.toString() : this.ipRange.toString(),
                 this.protocol == null ? "" : this.protocol.toString(),
                 this.version,
