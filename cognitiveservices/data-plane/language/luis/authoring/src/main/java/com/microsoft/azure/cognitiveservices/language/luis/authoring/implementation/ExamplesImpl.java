@@ -11,6 +11,7 @@ package com.microsoft.azure.cognitiveservices.language.luis.authoring.implementa
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ListExamplesOptionalParameter;
 import retrofit2.Retrofit;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.Examples;
+import com.google.common.base.Joiner;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.BatchLabelExample;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException;
@@ -66,19 +67,19 @@ public class ExamplesImpl implements Examples {
     interface ExamplesService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Examples add" })
         @POST("apps/{appId}/versions/{versionId}/example")
-        Observable<Response<ResponseBody>> add(@Path("appId") UUID appId, @Path("versionId") String versionId, @Body ExampleLabelObject exampleLabelObject, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> add(@Path("appId") UUID appId, @Path("versionId") String versionId, @Body ExampleLabelObject exampleLabelObject, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Examples batch" })
         @POST("apps/{appId}/versions/{versionId}/examples")
-        Observable<Response<ResponseBody>> batch(@Path("appId") UUID appId, @Path("versionId") String versionId, @Body List<ExampleLabelObject> exampleLabelObjectArray, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> batch(@Path("appId") UUID appId, @Path("versionId") String versionId, @Body List<ExampleLabelObject> exampleLabelObjectArray, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Examples list" })
         @GET("apps/{appId}/versions/{versionId}/examples")
-        Observable<Response<ResponseBody>> list(@Path("appId") UUID appId, @Path("versionId") String versionId, @Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Path("appId") UUID appId, @Path("versionId") String versionId, @Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Examples delete" })
         @HTTP(path = "apps/{appId}/versions/{versionId}/examples/{exampleId}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> delete(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("exampleId") int exampleId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> delete(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("exampleId") int exampleId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
     }
 
@@ -139,6 +140,9 @@ public class ExamplesImpl implements Examples {
      * @return the observable to the LabelExampleResponse object
      */
     public Observable<ServiceResponse<LabelExampleResponse>> addWithServiceResponseAsync(UUID appId, String versionId, ExampleLabelObject exampleLabelObject) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -149,7 +153,8 @@ public class ExamplesImpl implements Examples {
             throw new IllegalArgumentException("Parameter exampleLabelObject is required and cannot be null.");
         }
         Validator.validate(exampleLabelObject);
-        return service.add(appId, versionId, exampleLabelObject, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.add(appId, versionId, exampleLabelObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<LabelExampleResponse>>>() {
                 @Override
                 public Observable<ServiceResponse<LabelExampleResponse>> call(Response<ResponseBody> response) {
@@ -227,6 +232,9 @@ public class ExamplesImpl implements Examples {
      * @return the observable to the List&lt;BatchLabelExample&gt; object
      */
     public Observable<ServiceResponse<List<BatchLabelExample>>> batchWithServiceResponseAsync(UUID appId, String versionId, List<ExampleLabelObject> exampleLabelObjectArray) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -237,7 +245,8 @@ public class ExamplesImpl implements Examples {
             throw new IllegalArgumentException("Parameter exampleLabelObjectArray is required and cannot be null.");
         }
         Validator.validate(exampleLabelObjectArray);
-        return service.batch(appId, versionId, exampleLabelObjectArray, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.batch(appId, versionId, exampleLabelObjectArray, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<BatchLabelExample>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<BatchLabelExample>>> call(Response<ResponseBody> response) {
@@ -317,6 +326,9 @@ public class ExamplesImpl implements Examples {
      * @return the observable to the List&lt;LabeledUtterance&gt; object
      */
     public Observable<ServiceResponse<List<LabeledUtterance>>> listWithServiceResponseAsync(UUID appId, String versionId, ListExamplesOptionalParameter listOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -340,13 +352,17 @@ public class ExamplesImpl implements Examples {
      * @return the observable to the List&lt;LabeledUtterance&gt; object
      */
     public Observable<ServiceResponse<List<LabeledUtterance>>> listWithServiceResponseAsync(UUID appId, String versionId, Integer skip, Integer take) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        return service.list(appId, versionId, skip, take, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.list(appId, versionId, skip, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<LabeledUtterance>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<LabeledUtterance>>> call(Response<ResponseBody> response) {
@@ -487,13 +503,17 @@ public class ExamplesImpl implements Examples {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deleteWithServiceResponseAsync(UUID appId, String versionId, int exampleId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        return service.delete(appId, versionId, exampleId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.delete(appId, versionId, exampleId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
