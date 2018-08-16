@@ -37,7 +37,6 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
-import java.nio.channels.FileChannel;
 import java.nio.file.StandardOpenOption;
 import java.security.InvalidKeyException;
 import java.time.OffsetDateTime;
@@ -1407,15 +1406,15 @@ public class Samples {
                         AsynchronousFileChannel::close
                 ))
                 .flatMap(response -> Single.using(
-                        () -> FileChannel.open(tempFile.toPath(), StandardOpenOption.READ),
+                        () -> AsynchronousFileChannel.open(tempFile.toPath(), StandardOpenOption.READ),
                         channel -> TransferManager.uploadFileToBlockBlob(channel, blobURL,
                                 BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null),
-                        FileChannel::close)
+                        AsynchronousFileChannel::close)
                 )
                 .flatMapCompletable(response -> Completable.using(
-                        () -> FileChannel.open(tempFile.toPath(), StandardOpenOption.WRITE),
+                        () -> AsynchronousFileChannel.open(tempFile.toPath(), StandardOpenOption.WRITE),
                         channel -> TransferManager.downloadBlobToFile(channel, blobURL, null, null),
-                        FileChannel::close)
+                        AsynchronousFileChannel::close)
                 )
                 .andThen(
                         // Delete the container.
@@ -1434,7 +1433,7 @@ public class Samples {
     byte successfully read before the failure.
      */
     @Test
-    public void exampleDownloadStream() throws MalformedURLException, InvalidKeyException {
+    public void exampleReliableDownloadStream() throws IOException, InvalidKeyException {
         // From the Azure portal, get your Storage account's name and account key.
         String accountName = getAccountName();
         String accountKey = getAccountKey();
@@ -1449,6 +1448,9 @@ public class Samples {
         RetryReaderOptions options = new RetryReaderOptions();
         options.maxRetryRequests = 5;
 
+        File file = File.createTempFile("tempfile", "txt");
+        file.deleteOnExit();
+
         /*
         Passing RetryReaderOptions to a call to body() will ensure the download stream is intelligently retried in case
         of failures. The returned body is still a Flowable<ByteBuffer> and may be used as a normal download stream.
@@ -1456,8 +1458,10 @@ public class Samples {
         containerURL.create(null, null)
                 .flatMap(response ->
                         // Upload some data to a blob
-                        TransferManager.uploadByteBufferToBlockBlob(ByteBuffer.wrap("Data".getBytes()), blobURL,
-                                BlockBlobURL.MAX_STAGE_BLOCK_BYTES, TransferManager.UploadToBlockBlobOptions.DEFAULT))
+                        Single.using(() -> AsynchronousFileChannel.open(file.toPath()),
+                                fileChannel -> TransferManager.uploadFileToBlockBlob(fileChannel, blobURL,
+                                BlockBlobURL.MAX_STAGE_BLOCK_BYTES, TransferManager.UploadToBlockBlobOptions.DEFAULT),
+                                AsynchronousFileChannel::close))
                 .flatMap(response ->
                         blobURL.download(null, null, false))
                 .flatMapPublisher(response ->
@@ -2133,25 +2137,9 @@ public class Samples {
                 .subscribe();
         // </container_lease>
 
-        // <tm_buffers>
-        List<ByteBuffer> dataList =
-                Arrays.asList(ByteBuffer.wrap("Data1".getBytes()), ByteBuffer.wrap("Data2".getBytes()));
-        TransferManager.uploadByteBuffersToBlockBlob(dataList, blockBlobURL, null)
-                .subscribe();
-        // </tm_buffers>
-
         ByteBuffer largeData = ByteBuffer.wrap("LargeData".getBytes());
-        // <tm_buffer>
-        TransferManager.uploadByteBufferToBlockBlob(largeData, blockBlobURL, BlockBlobURL.MAX_STAGE_BLOCK_BYTES,
-                null)
-                .subscribe();
-        // </tm_buffer>
 
         ByteBuffer largeBuffer = ByteBuffer.allocate(10*1024);
-        // <tm_buffer_download>
-        TransferManager.downloadBlobToBuffer(largeBuffer, blobURL, null, null)
-                .subscribe();
-        // </tm_buffer_download>
 
         File tempFile = File.createTempFile("BigFile", ".bin");
         tempFile.deleteOnExit();
@@ -2159,19 +2147,17 @@ public class Samples {
         Single.using(
                 () -> AsynchronousFileChannel.open(tempFile.toPath(), StandardOpenOption.WRITE),
                 channel -> Single.fromFuture(channel
-                        .write(ByteBuffer.wrap("Big data".getBytes()), 0)),
-                AsynchronousFileChannel::close
-        )
+                        .write(ByteBuffer.wrap("Big data".getBytes()), 0)), AsynchronousFileChannel::close)
                 .flatMap(response -> Single.using(
-                        () -> FileChannel.open(tempFile.toPath(), StandardOpenOption.READ),
+                        () -> AsynchronousFileChannel.open(tempFile.toPath(), StandardOpenOption.READ),
                         channel -> TransferManager.uploadFileToBlockBlob(channel, blobURL,
                                 BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null),
-                        FileChannel::close)
+                        AsynchronousFileChannel::close)
                 )
                 .flatMapCompletable(response -> Completable.using(
-                        () -> FileChannel.open(tempFile.toPath(), StandardOpenOption.WRITE),
+                        () -> AsynchronousFileChannel.open(tempFile.toPath(), StandardOpenOption.WRITE),
                         channel -> TransferManager.downloadBlobToFile(channel, blobURL, null, null),
-                        FileChannel::close)
+                        AsynchronousFileChannel::close)
                 )
                 .andThen(
                         // Delete the container.
