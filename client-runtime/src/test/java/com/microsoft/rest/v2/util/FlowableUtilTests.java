@@ -19,6 +19,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.TimeUnit;
 
+import com.microsoft.rest.v2.http.UnexpectedLengthException;
 import io.reactivex.Flowable;
 import org.junit.Test;
 
@@ -32,7 +33,7 @@ public class FlowableUtilTests {
         Flowable<ByteBuffer> content = Flowable.just(ByteBuffer.allocate(4));
         content.compose(ensureLength(8))
                 .test()
-                .assertError(IllegalArgumentException.class);
+                .assertError(UnexpectedLengthException.class);
     }
 
     @Test
@@ -40,7 +41,7 @@ public class FlowableUtilTests {
         Flowable<ByteBuffer> content = Flowable.just(ByteBuffer.allocate(4));
         content.compose(ensureLength(1))
                 .test()
-                .assertError(IllegalArgumentException.class);
+                .assertError(UnexpectedLengthException.class);
     }
 
 
@@ -50,7 +51,7 @@ public class FlowableUtilTests {
         content.compose(ensureLength(1))
                 .test()
                 .awaitDone(1, TimeUnit.SECONDS)
-                .assertError(IllegalArgumentException.class);
+                .assertError(UnexpectedLengthException.class);
     }
 
     @Test

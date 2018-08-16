@@ -8,6 +8,7 @@ package com.microsoft.rest.v2.util;
 
 import com.google.common.reflect.TypeToken;
 
+import com.microsoft.rest.v2.http.UnexpectedLengthException;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.reactivex.Completable;
@@ -89,14 +90,19 @@ public final class FlowableUtil {
                 return source.doOnNext(bb -> {
                     bytesRead += bb.remaining();
                     if (bytesRead > bytesExpected) {
-                        throw new IllegalArgumentException("Flowable<ByteBuffer> emitted more bytes than the expected " + bytesExpected);
+                        throw new UnexpectedLengthException(
+                                "Flowable<ByteBuffer> emitted more bytes than the expected " + bytesExpected,
+                                bytesRead,
+                                bytesExpected);
                     }
                 }).doOnComplete(() -> {
                     if (bytesRead != bytesExpected) {
-                        throw new IllegalArgumentException(
+                        throw new UnexpectedLengthException(
                                 String.format("Flowable<ByteBuffer> emitted %d bytes instead of the expected %d bytes.",
                                         bytesRead,
-                                        bytesExpected));
+                                        bytesExpected),
+                                bytesRead,
+                                bytesExpected);
                     }
                 });
             }
