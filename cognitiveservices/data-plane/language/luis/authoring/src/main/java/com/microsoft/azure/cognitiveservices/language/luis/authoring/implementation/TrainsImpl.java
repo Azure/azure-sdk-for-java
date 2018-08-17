@@ -10,6 +10,7 @@ package com.microsoft.azure.cognitiveservices.language.luis.authoring.implementa
 
 import retrofit2.Retrofit;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.Trains;
+import com.google.common.base.Joiner;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.EnqueueTrainingResponse;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException;
@@ -58,11 +59,11 @@ public class TrainsImpl implements Trains {
     interface TrainsService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Trains trainVersion" })
         @POST("apps/{appId}/versions/{versionId}/train")
-        Observable<Response<ResponseBody>> trainVersion(@Path("appId") UUID appId, @Path("versionId") String versionId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> trainVersion(@Path("appId") UUID appId, @Path("versionId") String versionId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Trains getStatus" })
         @GET("apps/{appId}/versions/{versionId}/train")
-        Observable<Response<ResponseBody>> getStatus(@Path("appId") UUID appId, @Path("versionId") String versionId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getStatus(@Path("appId") UUID appId, @Path("versionId") String versionId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
     }
 
@@ -119,13 +120,17 @@ public class TrainsImpl implements Trains {
      * @return the observable to the EnqueueTrainingResponse object
      */
     public Observable<ServiceResponse<EnqueueTrainingResponse>> trainVersionWithServiceResponseAsync(UUID appId, String versionId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        return service.trainVersion(appId, versionId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.trainVersion(appId, versionId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<EnqueueTrainingResponse>>>() {
                 @Override
                 public Observable<ServiceResponse<EnqueueTrainingResponse>> call(Response<ResponseBody> response) {
@@ -199,13 +204,17 @@ public class TrainsImpl implements Trains {
      * @return the observable to the List&lt;ModelTrainingInfo&gt; object
      */
     public Observable<ServiceResponse<List<ModelTrainingInfo>>> getStatusWithServiceResponseAsync(UUID appId, String versionId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        return service.getStatus(appId, versionId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getStatus(appId, versionId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<ModelTrainingInfo>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<ModelTrainingInfo>>> call(Response<ResponseBody> response) {

@@ -15,6 +15,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 import java.io.IOException;
+import java.net.URI;
 
 /**
  * Entry point to Azure Cognitive Services Language Understanding (LUIS) Authoring manager.
@@ -23,21 +24,23 @@ public class LUISAuthoringManager {
     /**
      * Initializes an instance of Language Understanding (LUIS) Authoring API client.
      *
-     * @param subscriptionKey the Language Understanding (LUIS) Authoring API key
+     * @param endpointAPI the endpoint API
+     * @param luisAuthoringKey the Language Understanding (LUIS) Authoring API key (see https://www.luis.ai)
      * @return the Language Understanding Authoring API client
      */
-    public static LUISAuthoringClient authenticate(String subscriptionKey) {
-        return authenticate("https://api.cognitive.microsoft.com/luis/api/v2.0/", subscriptionKey);
+    public static LUISAuthoringClient authenticate(EndpointAPI endpointAPI, String luisAuthoringKey) {
+        return authenticate(String.format("https://%s/luis/api/v2.0/", endpointAPI.toString()), luisAuthoringKey)
+            .withEndpoint(endpointAPI.toString());
     }
 
     /**
      * Initializes an instance of Language Understanding (LUIS) Authoring API client.
      *
      * @param baseUrl the base URL of the service
-     * @param subscriptionKey the Language Understanding (LUIS) Authoring API key
+     * @param luisAuthoringKey the Language Understanding (LUIS) Authoring API key (see https://www.luis.ai)
      * @return the Language Understanding (LUIS) Authoring API client
      */
-    public static LUISAuthoringClient authenticate(String baseUrl, final String subscriptionKey) {
+    public static LUISAuthoringClient authenticate(String baseUrl, final String luisAuthoringKey) {
         ServiceClientCredentials serviceClientCredentials = new ServiceClientCredentials() {
             @Override
             public void applyCredentialsFilter(OkHttpClient.Builder builder) {
@@ -49,24 +52,34 @@ public class LUISAuthoringManager {
                                 Request original = chain.request();
                                 // Request customization: add request headers
                                 Request.Builder requestBuilder = original.newBuilder()
-                                        .addHeader("Ocp-Apim-Subscription-Key", subscriptionKey);
+                                        .addHeader("Ocp-Apim-Subscription-Key", luisAuthoringKey);
                                 request = requestBuilder.build();
                                 return chain.proceed(request);
                             }
                         });
             }
         };
-        return authenticate(baseUrl, serviceClientCredentials);
+        String endpointAPI = null;
+        try {
+            URI uri = new URI(baseUrl);
+            endpointAPI = uri.getHost();
+        } catch (Exception e) {
+            endpointAPI = EndpointAPI.US_WEST.toString();
+        }
+        return authenticate(baseUrl, serviceClientCredentials)
+            .withEndpoint(endpointAPI);
     }
 
     /**
      * Initializes an instance of Language Understanding (LUIS) Authoring API client.
      *
+     * @param endpointAPI the endpoint API
      * @param credentials the management credentials for Azure
      * @return the Language Understanding (LUIS) Authoring API client
      */
-    public static LUISAuthoringClient authenticate(ServiceClientCredentials credentials) {
-        return authenticate("https://api.cognitive.microsoft.com/luis/api/v2.0/", credentials);
+    public static LUISAuthoringClient authenticate(EndpointAPI endpointAPI, ServiceClientCredentials credentials) {
+        return authenticate(String.format("https://%s/luis/api/v2.0/", endpointAPI), credentials)
+            .withEndpoint(endpointAPI.toString());
     }
 
     /**

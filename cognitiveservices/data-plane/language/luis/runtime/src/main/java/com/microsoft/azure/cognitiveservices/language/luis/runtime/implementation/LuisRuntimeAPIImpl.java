@@ -30,6 +30,29 @@ public class LuisRuntimeAPIImpl extends AzureServiceClient implements LuisRuntim
         return this.azureClient;
     }
 
+    /** Supported Cognitive Services endpoints (protocol and hostname, for example: https://westus.api.cognitive.microsoft.com). */
+    private String endpoint;
+
+    /**
+     * Gets Supported Cognitive Services endpoints (protocol and hostname, for example: https://westus.api.cognitive.microsoft.com).
+     *
+     * @return the endpoint value.
+     */
+    public String endpoint() {
+        return this.endpoint;
+    }
+
+    /**
+     * Sets Supported Cognitive Services endpoints (protocol and hostname, for example: https://westus.api.cognitive.microsoft.com).
+     *
+     * @param endpoint the endpoint value.
+     * @return the service client itself
+     */
+    public LuisRuntimeAPIImpl withEndpoint(String endpoint) {
+        this.endpoint = endpoint;
+        return this;
+    }
+
     /** Gets or sets the preferred language for the response. */
     private String acceptLanguage;
 
@@ -118,7 +141,7 @@ public class LuisRuntimeAPIImpl extends AzureServiceClient implements LuisRuntim
      * @param credentials the management credentials for Azure
      */
     public LuisRuntimeAPIImpl(ServiceClientCredentials credentials) {
-        this("https://api.cognitive.microsoft.com/luis/v2.0", credentials);
+        this("https://{endpoint}/luis/v2.0", credentials);
     }
 
     /**

@@ -36,6 +36,21 @@ public interface LUISAuthoringClient {
     String userAgent();
 
     /**
+     * Gets Supported Cognitive Services endpoints (protocol and hostname, for example: https://westus.api.cognitive.microsoft.com)..
+     *
+     * @return the endpoint value.
+     */
+    String endpoint();
+
+    /**
+     * Sets Supported Cognitive Services endpoints (protocol and hostname, for example: https://westus.api.cognitive.microsoft.com)..
+     *
+     * @param endpoint the endpoint value.
+     * @return the service client itself
+     */
+    LUISAuthoringClient withEndpoint(String endpoint);
+
+    /**
      * Gets Gets or sets the preferred language for the response..
      *
      * @return the acceptLanguage value.
