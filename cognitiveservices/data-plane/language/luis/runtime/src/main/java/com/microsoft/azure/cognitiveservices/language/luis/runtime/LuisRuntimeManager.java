@@ -15,6 +15,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 import java.io.IOException;
+import java.net.URI;
 
 /**
  * Entry point to Azure Cognitive Services Language Understanding (LUIS) Runtime manager.
@@ -23,21 +24,23 @@ public class LuisRuntimeManager {
     /**
      * Initializes an instance of Language Understanding (LUIS) Runtime API client.
      *
-     * @param subscriptionKey the Language Understanding (LUIS) Runtime API key
+     * @param endpointAPI the endpoint API
+     * @param key the Language Understanding (LUIS) Runtime API key
      * @return the Language Understanding Runtime API client
      */
-    public static LuisRuntimeAPI authenticate(String subscriptionKey) {
-        return authenticate("https://api.cognitive.microsoft.com/luis/v2.0/", subscriptionKey);
+    public static LuisRuntimeAPI authenticate(EndpointAPI endpointAPI, String key) {
+        return authenticate(String.format("https://%s/luis/api/v2.0/", endpointAPI), key)
+            .withEndpoint(endpointAPI.toString());
     }
 
     /**
      * Initializes an instance of Language Understanding (LUIS) Runtime API client.
      *
      * @param baseUrl the base URL of the service
-     * @param subscriptionKey the Language Understanding (LUIS) Runtime API key
+     * @param key the Language Understanding (LUIS) Runtime API key
      * @return the Language Understanding (LUIS) Runtime API client
      */
-    public static LuisRuntimeAPI authenticate(String baseUrl, final String subscriptionKey) {
+    public static LuisRuntimeAPI authenticate(String baseUrl, final String key) {
         ServiceClientCredentials serviceClientCredentials = new ServiceClientCredentials() {
             @Override
             public void applyCredentialsFilter(OkHttpClient.Builder builder) {
@@ -49,24 +52,34 @@ public class LuisRuntimeManager {
                                 Request original = chain.request();
                                 // Request customization: add request headers
                                 Request.Builder requestBuilder = original.newBuilder()
-                                        .addHeader("Ocp-Apim-Subscription-Key", subscriptionKey);
+                                        .addHeader("Ocp-Apim-Subscription-Key", key);
                                 request = requestBuilder.build();
                                 return chain.proceed(request);
                             }
                         });
             }
         };
-        return authenticate(baseUrl, serviceClientCredentials);
+        String endpointAPI = null;
+        try {
+            URI uri = new URI(baseUrl);
+            endpointAPI = uri.getHost();
+        } catch (Exception e) {
+            endpointAPI = EndpointAPI.US_WEST.toString();
+        }
+        return authenticate(baseUrl, serviceClientCredentials)
+            .withEndpoint(endpointAPI);
     }
 
     /**
      * Initializes an instance of Language Understanding (LUIS) Runtime API client.
      *
+     * @param endpointAPI the endpoint API
      * @param credentials the management credentials for Azure
      * @return the Language Understanding (LUIS) Runtime API client
      */
-    public static LuisRuntimeAPI authenticate(ServiceClientCredentials credentials) {
-        return authenticate("https://api.cognitive.microsoft.com/luis/v2.0/", credentials);
+    public static LuisRuntimeAPI authenticate(EndpointAPI endpointAPI, ServiceClientCredentials credentials) {
+        return authenticate(String.format("https://%s/luis/api/v2.0/", endpointAPI), credentials)
+            .withEndpoint(endpointAPI.toString());
     }
 
     /**
@@ -77,7 +90,15 @@ public class LuisRuntimeManager {
      * @return the Language Understanding (LUIS) Runtime API client
      */
     public static LuisRuntimeAPI authenticate(String baseUrl, ServiceClientCredentials credentials) {
-        return new LuisRuntimeAPIImpl(baseUrl, credentials);
+        String endpointAPI = null;
+        try {
+            URI uri = new URI(baseUrl);
+            endpointAPI = uri.getHost();
+        } catch (Exception e) {
+            endpointAPI = EndpointAPI.US_WEST.toString();
+        }
+        return new LuisRuntimeAPIImpl(baseUrl, credentials)
+            .withEndpoint(endpointAPI);
     }
 
     /**
