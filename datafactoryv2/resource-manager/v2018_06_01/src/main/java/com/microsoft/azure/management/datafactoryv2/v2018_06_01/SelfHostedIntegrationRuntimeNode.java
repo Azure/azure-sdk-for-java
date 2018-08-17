@@ -9,9 +9,9 @@
 package com.microsoft.azure.management.datafactoryv2.v2018_06_01;
 
 import com.microsoft.azure.arm.model.HasInner;
+import com.microsoft.azure.management.datafactoryv2.v2018_06_01.implementation.SelfHostedIntegrationRuntimeNodeInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.implementation.DataFactoryManager;
-import com.microsoft.azure.management.datafactoryv2.v2018_06_01.implementation.SelfHostedIntegrationRuntimeNodeInner;
 import java.util.Map;
 import org.joda.time.DateTime;
 

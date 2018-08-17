@@ -42,6 +42,18 @@ public interface IntegrationRuntimeNodes extends HasInner<IntegrationRuntimeNode
     Observable<IntegrationRuntimeNodeIpAddress> getIpAddressAsync(String resourceGroupName, String factoryName, String integrationRuntimeName, String nodeName);
 
     /**
+     * Gets a self-hosted integration runtime node.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param integrationRuntimeName The integration runtime name.
+     * @param nodeName The integration runtime node name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<SelfHostedIntegrationRuntimeNode> getAsync(String resourceGroupName, String factoryName, String integrationRuntimeName, String nodeName);
+
+    /**
      * Deletes a self-hosted integration runtime node.
      *
      * @param resourceGroupName The resource group name.
