@@ -118,7 +118,7 @@ public final class AccountSASSignatureValues {
 
         return new SASQueryParameters(this.version, this.services, resourceTypes,
                 this.protocol, this.startTime, this.expiryTime, this.ipRange, null,
-                null, this.permissions, signature);
+                null, this.permissions, signature, null, null, null, null, null);
     }
 
     private String stringToSign(final SharedKeyCredentials sharedKeyCredentials) {

@@ -158,7 +158,8 @@ public final class ServiceSASSignatureValues {
 
         return new SASQueryParameters(this.version, null, null,
                 this.protocol, this.startTime, this.expiryTime, this.ipRange, this.identifier, resource,
-                this.permissions, signature);
+                this.permissions, signature, this.cacheControl, this.contentDisposition, this.contentEncoding,
+                this.contentLanguage, this.contentType);
     }
 
     private String getCanonicalName(String accountName) {
