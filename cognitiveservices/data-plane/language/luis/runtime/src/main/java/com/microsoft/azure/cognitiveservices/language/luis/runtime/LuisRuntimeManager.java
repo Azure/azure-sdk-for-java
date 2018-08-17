@@ -25,11 +25,11 @@ public class LuisRuntimeManager {
      * Initializes an instance of Language Understanding (LUIS) Runtime API client.
      *
      * @param endpointAPI the endpoint API
-     * @param key the Language Understanding (LUIS) Runtime API key
+     * @param luisAuthoringKey the Language Understanding (LUIS) Authoring API key (see https://www.luis.ai)
      * @return the Language Understanding Runtime API client
      */
-    public static LuisRuntimeAPI authenticate(EndpointAPI endpointAPI, String key) {
-        return authenticate(String.format("https://%s/luis/api/v2.0/", endpointAPI), key)
+    public static LuisRuntimeAPI authenticate(EndpointAPI endpointAPI, String luisAuthoringKey) {
+        return authenticate(String.format("https://%s/luis/v2.0/", endpointAPI.toString()), luisAuthoringKey)
             .withEndpoint(endpointAPI.toString());
     }
 
@@ -37,10 +37,10 @@ public class LuisRuntimeManager {
      * Initializes an instance of Language Understanding (LUIS) Runtime API client.
      *
      * @param baseUrl the base URL of the service
-     * @param key the Language Understanding (LUIS) Runtime API key
+     * @param luisAuthoringKey the Language Understanding (LUIS) Authoring API key (see https://www.luis.ai)
      * @return the Language Understanding (LUIS) Runtime API client
      */
-    public static LuisRuntimeAPI authenticate(String baseUrl, final String key) {
+    public static LuisRuntimeAPI authenticate(String baseUrl, final String luisAuthoringKey) {
         ServiceClientCredentials serviceClientCredentials = new ServiceClientCredentials() {
             @Override
             public void applyCredentialsFilter(OkHttpClient.Builder builder) {
@@ -52,7 +52,7 @@ public class LuisRuntimeManager {
                                 Request original = chain.request();
                                 // Request customization: add request headers
                                 Request.Builder requestBuilder = original.newBuilder()
-                                        .addHeader("Ocp-Apim-Subscription-Key", key);
+                                        .addHeader("Ocp-Apim-Subscription-Key", luisAuthoringKey);
                                 request = requestBuilder.build();
                                 return chain.proceed(request);
                             }
@@ -78,7 +78,7 @@ public class LuisRuntimeManager {
      * @return the Language Understanding (LUIS) Runtime API client
      */
     public static LuisRuntimeAPI authenticate(EndpointAPI endpointAPI, ServiceClientCredentials credentials) {
-        return authenticate(String.format("https://%s/luis/api/v2.0/", endpointAPI), credentials)
+        return authenticate(String.format("https://%s/luis/v2.0/", endpointAPI.toString()), credentials)
             .withEndpoint(endpointAPI.toString());
     }
 

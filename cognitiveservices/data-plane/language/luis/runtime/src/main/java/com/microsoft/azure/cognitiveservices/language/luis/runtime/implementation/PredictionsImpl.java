@@ -163,7 +163,7 @@ public class PredictionsImpl implements Predictions {
         if (query == null) {
             throw new IllegalArgumentException("Parameter query is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        String parameterizedHost = Joiner.on(", ").join("{endpoint}", this.client.endpoint());
         return service.resolve(appId, query, timezoneOffset, verbose, staging, spellCheck, bingSpellCheckSubscriptionKey, log, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<LuisResult>>>() {
                 @Override
