@@ -40,6 +40,11 @@ public interface HostingEnvironmentAppServicePlan extends HasInner<AppServicePla
     HostingEnvironmentProfile hostingEnvironmentProfile();
 
     /**
+     * @return the hyperV value.
+     */
+    Boolean hyperV();
+
+    /**
      * @return the id value.
      */
     String id();

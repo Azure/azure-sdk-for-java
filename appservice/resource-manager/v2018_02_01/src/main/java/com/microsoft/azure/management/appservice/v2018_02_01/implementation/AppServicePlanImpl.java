@@ -90,6 +90,11 @@ class AppServicePlanImpl extends GroupableResourceCoreImpl<AppServicePlan, AppSe
     }
 
     @Override
+    public Boolean hyperV() {
+        return this.inner().hyperV();
+    }
+
+    @Override
     public Boolean isSpot() {
         return this.inner().isSpot();
     }
@@ -201,6 +206,16 @@ class AppServicePlanImpl extends GroupableResourceCoreImpl<AppServicePlan, AppSe
             this.inner().withHostingEnvironmentProfile(hostingEnvironmentProfile);
         } else {
             this.updateParameter.withHostingEnvironmentProfile(hostingEnvironmentProfile);
+        }
+        return this;
+    }
+
+    @Override
+    public AppServicePlanImpl withHyperV(Boolean hyperV) {
+        if (isInCreateMode()) {
+            this.inner().withHyperV(hyperV);
+        } else {
+            this.updateParameter.withHyperV(hyperV);
         }
         return this;
     }
