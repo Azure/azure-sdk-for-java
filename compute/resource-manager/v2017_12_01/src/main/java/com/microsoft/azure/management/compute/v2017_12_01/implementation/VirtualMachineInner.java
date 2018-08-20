@@ -96,7 +96,7 @@ public class VirtualMachineInner extends Resource {
      * The virtual machine instance view.
      */
     @JsonProperty(value = "properties.instanceView", access = JsonProperty.Access.WRITE_ONLY)
-    private VirtualMachineScaleSetVMInstanceViewInner instanceView;
+    private VirtualMachineInstanceViewInner instanceView;
 
     /**
      * Specifies that the image or disk that is being used was licensed
@@ -293,7 +293,7 @@ public class VirtualMachineInner extends Resource {
      *
      * @return the instanceView value
      */
-    public VirtualMachineScaleSetVMInstanceViewInner instanceView() {
+    public VirtualMachineInstanceViewInner instanceView() {
         return this.instanceView;
     }
 
