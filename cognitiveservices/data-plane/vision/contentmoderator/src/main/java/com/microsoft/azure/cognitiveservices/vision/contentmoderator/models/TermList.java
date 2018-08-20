@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
+import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -36,7 +37,7 @@ public class TermList {
      * Term list metadata.
      */
     @JsonProperty(value = "Metadata")
-    private TermListMetadata metadata;
+    private Map<String, Object> metadata;
 
     /**
      * Get term list Id.
@@ -103,7 +104,7 @@ public class TermList {
      *
      * @return the metadata value
      */
-    public TermListMetadata metadata() {
+    public Map<String, Object> metadata() {
         return this.metadata;
     }
 
@@ -113,7 +114,7 @@ public class TermList {
      * @param metadata the metadata value to set
      * @return the TermList object itself.
      */
-    public TermList withMetadata(TermListMetadata metadata) {
+    public TermList withMetadata(Map<String, Object> metadata) {
         this.metadata = metadata;
         return this;
     }
