@@ -42,7 +42,7 @@ public interface VirtualNetworkGateways extends SupportsCreating<VirtualNetworkG
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable resetvpnclientsharedkeyAsync(String resourceGroupName, String virtualNetworkGatewayName);
+    Completable resetVpnClientSharedKeyAsync(String resourceGroupName, String virtualNetworkGatewayName);
 
     /**
      * Generates VPN client package for P2S client of the virtual network gateway in the specified resource group.

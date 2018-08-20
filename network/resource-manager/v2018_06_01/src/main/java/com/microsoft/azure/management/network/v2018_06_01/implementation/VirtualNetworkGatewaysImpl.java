@@ -120,9 +120,9 @@ class VirtualNetworkGatewaysImpl extends GroupableResourcesCoreImpl<VirtualNetwo
     }
 
     @Override
-    public Completable resetvpnclientsharedkeyAsync(String resourceGroupName, String virtualNetworkGatewayName) {
+    public Completable resetVpnClientSharedKeyAsync(String resourceGroupName, String virtualNetworkGatewayName) {
         VirtualNetworkGatewaysInner client = this.inner();
-        return client.resetvpnclientsharedkeyAsync(resourceGroupName, virtualNetworkGatewayName).toCompletable();
+        return client.resetVpnClientSharedKeyAsync(resourceGroupName, virtualNetworkGatewayName).toCompletable();
     }
 
     @Override
