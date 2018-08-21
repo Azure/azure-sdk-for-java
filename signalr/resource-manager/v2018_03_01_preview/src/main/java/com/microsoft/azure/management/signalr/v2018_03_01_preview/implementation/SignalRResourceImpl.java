@@ -86,4 +86,9 @@ class SignalRResourceImpl extends WrapperImpl<SignalRResourceInner> implements S
         return this.inner().type();
     }
 
+    @Override
+    public String version() {
+        return this.inner().version();
+    }
+
 }

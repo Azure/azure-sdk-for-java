@@ -70,6 +70,13 @@ public class SignalRResourceInner extends Resource {
     private Integer serverPort;
 
     /**
+     * Version of the SignalR resource. Probably you need the same or higher
+     * version of client SDKs.
+     */
+    @JsonProperty(value = "properties.version")
+    private String version;
+
+    /**
      * Get sKU of the service.
      *
      * @return the sku value
@@ -154,6 +161,26 @@ public class SignalRResourceInner extends Resource {
      */
     public Integer serverPort() {
         return this.serverPort;
+    }
+
+    /**
+     * Get version of the SignalR resource. Probably you need the same or higher version of client SDKs.
+     *
+     * @return the version value
+     */
+    public String version() {
+        return this.version;
+    }
+
+    /**
+     * Set version of the SignalR resource. Probably you need the same or higher version of client SDKs.
+     *
+     * @param version the version value to set
+     * @return the SignalRResourceInner object itself.
+     */
+    public SignalRResourceInner withVersion(String version) {
+        this.version = version;
+        return this;
     }
 
 }

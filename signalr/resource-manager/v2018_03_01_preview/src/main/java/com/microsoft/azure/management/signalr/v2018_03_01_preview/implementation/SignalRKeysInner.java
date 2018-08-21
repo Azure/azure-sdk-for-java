@@ -27,6 +27,18 @@ public class SignalRKeysInner {
     private String secondaryKey;
 
     /**
+     * SignalR connection string constructed via the primaryKey.
+     */
+    @JsonProperty(value = "primaryConnectionString")
+    private String primaryConnectionString;
+
+    /**
+     * SignalR connection string constructed via the secondaryKey.
+     */
+    @JsonProperty(value = "secondaryConnectionString")
+    private String secondaryConnectionString;
+
+    /**
      * Get the primary access key.
      *
      * @return the primaryKey value
@@ -63,6 +75,46 @@ public class SignalRKeysInner {
      */
     public SignalRKeysInner withSecondaryKey(String secondaryKey) {
         this.secondaryKey = secondaryKey;
+        return this;
+    }
+
+    /**
+     * Get signalR connection string constructed via the primaryKey.
+     *
+     * @return the primaryConnectionString value
+     */
+    public String primaryConnectionString() {
+        return this.primaryConnectionString;
+    }
+
+    /**
+     * Set signalR connection string constructed via the primaryKey.
+     *
+     * @param primaryConnectionString the primaryConnectionString value to set
+     * @return the SignalRKeysInner object itself.
+     */
+    public SignalRKeysInner withPrimaryConnectionString(String primaryConnectionString) {
+        this.primaryConnectionString = primaryConnectionString;
+        return this;
+    }
+
+    /**
+     * Get signalR connection string constructed via the secondaryKey.
+     *
+     * @return the secondaryConnectionString value
+     */
+    public String secondaryConnectionString() {
+        return this.secondaryConnectionString;
+    }
+
+    /**
+     * Set signalR connection string constructed via the secondaryKey.
+     *
+     * @param secondaryConnectionString the secondaryConnectionString value to set
+     * @return the SignalRKeysInner object itself.
+     */
+    public SignalRKeysInner withSecondaryConnectionString(String secondaryConnectionString) {
+        this.secondaryConnectionString = secondaryConnectionString;
         return this;
     }
 
