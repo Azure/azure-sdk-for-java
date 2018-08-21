@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.signalr.v2018_03_01_preview;
 
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -62,6 +63,12 @@ public class MetricSpecification {
      */
     @JsonProperty(value = "category")
     private String category;
+
+    /**
+     * The dimensions of the metrics.
+     */
+    @JsonProperty(value = "dimensions")
+    private List<Dimension> dimensions;
 
     /**
      * Get name of the metric.
@@ -204,6 +211,26 @@ public class MetricSpecification {
      */
     public MetricSpecification withCategory(String category) {
         this.category = category;
+        return this;
+    }
+
+    /**
+     * Get the dimensions of the metrics.
+     *
+     * @return the dimensions value
+     */
+    public List<Dimension> dimensions() {
+        return this.dimensions;
+    }
+
+    /**
+     * Set the dimensions of the metrics.
+     *
+     * @param dimensions the dimensions value to set
+     * @return the MetricSpecification object itself.
+     */
+    public MetricSpecification withDimensions(List<Dimension> dimensions) {
+        this.dimensions = dimensions;
         return this;
     }
 

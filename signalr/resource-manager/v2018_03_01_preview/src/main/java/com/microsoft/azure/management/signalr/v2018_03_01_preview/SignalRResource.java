@@ -78,4 +78,9 @@ public interface SignalRResource extends HasInner<SignalRResourceInner>, HasMana
      */
     String type();
 
+    /**
+     * @return the version value.
+     */
+    String version();
+
 }

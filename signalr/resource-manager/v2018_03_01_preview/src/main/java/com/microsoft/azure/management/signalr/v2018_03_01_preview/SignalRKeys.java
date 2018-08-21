@@ -18,9 +18,19 @@ import com.microsoft.azure.management.signalr.v2018_03_01_preview.implementation
  */
 public interface SignalRKeys extends HasInner<SignalRKeysInner>, HasManager<SignalRServiceManager> {
     /**
+     * @return the primaryConnectionString value.
+     */
+    String primaryConnectionString();
+
+    /**
      * @return the primaryKey value.
      */
     String primaryKey();
+
+    /**
+     * @return the secondaryConnectionString value.
+     */
+    String secondaryConnectionString();
 
     /**
      * @return the secondaryKey value.

@@ -24,8 +24,18 @@ class SignalRKeysImpl extends WrapperImpl<SignalRKeysInner> implements SignalRKe
     }
 
     @Override
+    public String primaryConnectionString() {
+        return this.inner().primaryConnectionString();
+    }
+
+    @Override
     public String primaryKey() {
         return this.inner().primaryKey();
+    }
+
+    @Override
+    public String secondaryConnectionString() {
+        return this.inner().secondaryConnectionString();
     }
 
     @Override
