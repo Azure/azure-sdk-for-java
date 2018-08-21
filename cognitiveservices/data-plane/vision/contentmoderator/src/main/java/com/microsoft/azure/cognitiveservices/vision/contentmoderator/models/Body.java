@@ -31,7 +31,7 @@ public class Body {
      * Metadata of the list.
      */
     @JsonProperty(value = "Metadata")
-    private Map<String, Object> metadata;
+    private Map<String, String> metadata;
 
     /**
      * Get name of the list.
@@ -78,7 +78,7 @@ public class Body {
      *
      * @return the metadata value
      */
-    public Map<String, Object> metadata() {
+    public Map<String, String> metadata() {
         return this.metadata;
     }
 
@@ -88,7 +88,7 @@ public class Body {
      * @param metadata the metadata value to set
      * @return the Body object itself.
      */
-    public Body withMetadata(Map<String, Object> metadata) {
+    public Body withMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
     }

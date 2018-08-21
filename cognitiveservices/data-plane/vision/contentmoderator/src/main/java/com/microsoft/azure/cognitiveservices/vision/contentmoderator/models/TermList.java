@@ -37,7 +37,7 @@ public class TermList {
      * Term list metadata.
      */
     @JsonProperty(value = "Metadata")
-    private Map<String, Object> metadata;
+    private Map<String, String> metadata;
 
     /**
      * Get term list Id.
@@ -104,7 +104,7 @@ public class TermList {
      *
      * @return the metadata value
      */
-    public Map<String, Object> metadata() {
+    public Map<String, String> metadata() {
         return this.metadata;
     }
 
@@ -114,7 +114,7 @@ public class TermList {
      * @param metadata the metadata value to set
      * @return the TermList object itself.
      */
-    public TermList withMetadata(Map<String, Object> metadata) {
+    public TermList withMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
     }

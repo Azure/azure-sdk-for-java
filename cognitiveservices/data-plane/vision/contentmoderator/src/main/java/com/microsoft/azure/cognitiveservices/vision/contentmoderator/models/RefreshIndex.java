@@ -32,7 +32,7 @@ public class RefreshIndex {
      * Advanced info list.
      */
     @JsonProperty(value = "AdvancedInfo")
-    private List<Map<String, Object>> advancedInfo;
+    private List<Map<String, String>> advancedInfo;
 
     /**
      * Refresh index status.
@@ -91,7 +91,7 @@ public class RefreshIndex {
      *
      * @return the advancedInfo value
      */
-    public List<Map<String, Object>> advancedInfo() {
+    public List<Map<String, String>> advancedInfo() {
         return this.advancedInfo;
     }
 
@@ -101,7 +101,7 @@ public class RefreshIndex {
      * @param advancedInfo the advancedInfo value to set
      * @return the RefreshIndex object itself.
      */
-    public RefreshIndex withAdvancedInfo(List<Map<String, Object>> advancedInfo) {
+    public RefreshIndex withAdvancedInfo(List<Map<String, String>> advancedInfo) {
         this.advancedInfo = advancedInfo;
         return this;
     }
