@@ -9,6 +9,7 @@
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
 import java.util.List;
+import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -31,7 +32,7 @@ public class RefreshIndex {
      * Advanced info list.
      */
     @JsonProperty(value = "AdvancedInfo")
-    private List<RefreshIndexAdvancedInfoItem> advancedInfo;
+    private List<Map<String, String>> advancedInfo;
 
     /**
      * Refresh index status.
@@ -90,7 +91,7 @@ public class RefreshIndex {
      *
      * @return the advancedInfo value
      */
-    public List<RefreshIndexAdvancedInfoItem> advancedInfo() {
+    public List<Map<String, String>> advancedInfo() {
         return this.advancedInfo;
     }
 
@@ -100,7 +101,7 @@ public class RefreshIndex {
      * @param advancedInfo the advancedInfo value to set
      * @return the RefreshIndex object itself.
      */
-    public RefreshIndex withAdvancedInfo(List<RefreshIndexAdvancedInfoItem> advancedInfo) {
+    public RefreshIndex withAdvancedInfo(List<Map<String, String>> advancedInfo) {
         this.advancedInfo = advancedInfo;
         return this;
     }

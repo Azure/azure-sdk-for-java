@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
+import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -36,7 +37,7 @@ public class ImageList {
      * Image List Metadata.
      */
     @JsonProperty(value = "Metadata")
-    private ImageListMetadata metadata;
+    private Map<String, String> metadata;
 
     /**
      * Get image List Id.
@@ -103,7 +104,7 @@ public class ImageList {
      *
      * @return the metadata value
      */
-    public ImageListMetadata metadata() {
+    public Map<String, String> metadata() {
         return this.metadata;
     }
 
@@ -113,7 +114,7 @@ public class ImageList {
      * @param metadata the metadata value to set
      * @return the ImageList object itself.
      */
-    public ImageList withMetadata(ImageListMetadata metadata) {
+    public ImageList withMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
     }
