@@ -336,6 +336,19 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The ResourceHealthMetadatasInner object to access its operations.
+     */
+    private ResourceHealthMetadatasInner resourceHealthMetadatas;
+
+    /**
+     * Gets the ResourceHealthMetadatasInner object to access its operations.
+     * @return the ResourceHealthMetadatasInner object.
+     */
+    public ResourceHealthMetadatasInner resourceHealthMetadatas() {
+        return this.resourceHealthMetadatas;
+    }
+
+    /**
      * Initializes an instance of WebSiteManagementClient client.
      *
      * @param credentials the management credentials for Azure
@@ -383,6 +396,7 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
         this.webApps = new WebAppsInner(restClient().retrofit(), this);
         this.appServiceEnvironments = new AppServiceEnvironmentsInner(restClient().retrofit(), this);
         this.appServicePlans = new AppServicePlansInner(restClient().retrofit(), this);
+        this.resourceHealthMetadatas = new ResourceHealthMetadatasInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
         initializeService();
     }
