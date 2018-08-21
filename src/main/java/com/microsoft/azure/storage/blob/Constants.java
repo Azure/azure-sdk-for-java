@@ -174,6 +174,12 @@ final class Constants {
     static final String SNAPSHOT_QUERY_PARAMETER = "snapshot";
 
     /**
+     * The default amount of parallelism for TransferManager operations.
+     */
+    // We chose this to match Go, which followed AWS' default.
+    static final int TRANSFER_MANAGER_DEFAULT_PARALLELISM = 5;
+
+    /**
      * Private Default Ctor
      */
     private Constants() {

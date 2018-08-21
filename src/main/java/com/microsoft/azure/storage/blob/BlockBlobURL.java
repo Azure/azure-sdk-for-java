@@ -40,7 +40,7 @@ public final class BlockBlobURL extends BlobURL {
     /**
      * Indicates the maximum number of bytes that can be sent in a call to upload.
      */
-    public static final int MAX_PUT_BLOB_BYTES = 256 * Constants.MB;
+    public static final int MAX_UPLOAD_BLOB_BYTES = 256 * Constants.MB;
 
     /**
      * Indicates the maximum number of bytes that can be sent in a call to stageBlock.

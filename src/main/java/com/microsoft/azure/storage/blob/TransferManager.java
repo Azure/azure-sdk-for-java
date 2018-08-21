@@ -15,8 +15,8 @@
 
 package com.microsoft.azure.storage.blob;
 
+import com.microsoft.azure.storage.blob.models.BlobDownloadHeaders;
 import com.microsoft.rest.v2.util.FlowableUtil;
-import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
@@ -24,9 +24,7 @@ import javafx.util.Pair;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.MappedByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
-import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.UUID;
@@ -60,10 +58,10 @@ public class TransferManager {
      *         Points to the blob to which the data should be uploaded.
      * @param blockLength
      *         If the data must be broken up into blocks, this value determines what size those blocks will be. This
-     *         will affect the total number of service requests made. This value will be ignored if the data can be
-     *         uploaded in a single put-blob operation. Must be between 1 and {@link BlockBlobURL#MAX_STAGE_BLOCK_BYTES}.
-     *         Note as well that {@code fileLength/blockLength} must be less than or equal to {@link
-     *         BlockBlobURL#MAX_BLOCKS}.
+     *         will affect the total number of service requests made as each REST request uploads exactly one block in
+     *         full. This value will be ignored if the data can be uploaded in a single put-blob operation. Must be
+     *         between 1 and {@link BlockBlobURL#MAX_STAGE_BLOCK_BYTES}. Note as well that
+     *         {@code fileLength/blockLength} must be less than or equal to {@link BlockBlobURL#MAX_BLOCKS}.
      * @param options
      *         {@link UploadToBlockBlobOptions}
      * @return Emits the successful response.
@@ -78,7 +76,7 @@ public class TransferManager {
 
 
         // If the size of the file can fit in a single upload, do it this way.
-        if (file.size() < BlockBlobURL.MAX_PUT_BLOB_BYTES) {
+        if (file.size() < BlockBlobURL.MAX_UPLOAD_BLOB_BYTES) {
             if (optionsReal.progressReceiver != null) {
                 // TODO: Wrap in a progress stream once progress is written.
             }
@@ -147,7 +145,7 @@ public class TransferManager {
                 .map(CommonRestResponse::createFromPutBlockListResponse);
     }
 
-    private static int calculateNumBlocks(long dataSize, int blockLength) {
+    private static int calculateNumBlocks(long dataSize, long blockLength) {
         // Can successfully cast to an int because MaxBlockSize is an int, which this expression must be less than.
         int numBlocks = toIntExact(dataSize / blockLength);
         // Include an extra block for trailing data.
@@ -174,8 +172,8 @@ public class TransferManager {
      *         {@link DownloadFromBlobOptions}
      * @return A {@code Completable} that will signal when the download is complete.
      */
-    public static Completable downloadBlobToFile(AsynchronousFileChannel file, BlobURL blobURL, BlobRange range,
-            DownloadFromBlobOptions options) {
+    public static Single<BlobDownloadHeaders> downloadBlobToFile(AsynchronousFileChannel file, BlobURL blobURL,
+            BlobRange range, DownloadFromBlobOptions options) {
         BlobRange r = range == null ? BlobRange.DEFAULT : range;
         DownloadFromBlobOptions o = options == null ? DownloadFromBlobOptions.DEFAULT : options;
         Utility.assertNotNull("blobURL", blobURL);
@@ -184,7 +182,7 @@ public class TransferManager {
         // Get the size of the data and etag if not specified by the user.
         Single<Pair<Long, BlobAccessConditions>> setupSingle = getSetupSingle(blobURL, r, o);
 
-        return setupSingle.flatMapCompletable(setupPair -> {
+        return setupSingle.flatMap(setupPair -> {
             Long dataSize = setupPair.getKey();
             BlobAccessConditions realConditions = setupPair.getValue();
 
@@ -207,12 +205,13 @@ public class TransferManager {
                                                 i * o.chunkSize)
                                                 /*
                                                 Satisfy the return type. Observable required for flatmap to accept
-                                                maxConcurrency
+                                                maxConcurrency. We want to eventually give the user back the headers.
                                                  */
+                                                .andThen(Single.just(response.headers()))
                                                 .toObservable());
                     }, o.parallelism)
-                    // We don't care for any return values, so we transform to a Completable.
-                    .ignoreElements();
+                    // All the headers will be the same, so we just pick the last one.
+                    .lastOrError();
         });
     }
 
@@ -302,7 +301,7 @@ public class TransferManager {
         public UploadToBlockBlobOptions(IProgressReceiver progressReceiver, BlobHTTPHeaders httpHeaders,
                 Metadata metadata, BlobAccessConditions accessConditions, Integer parallelism) {
             if (parallelism == null) {
-                this.parallelism = 5;
+                this.parallelism = Constants.TRANSFER_MANAGER_DEFAULT_PARALLELISM;
             } else if (parallelism <= 0) {
                 throw new IllegalArgumentException("Parallelism must be > 0");
             } else {
@@ -339,9 +338,10 @@ public class TransferManager {
          * Returns an object that configures the parallel download behavior for methods on the {@code TransferManager}.
          *
          * @param chunkSize
-         *         The size of the chunk into which large download operations will be broken into. Note that if the chunkSize is large, fewer but larger requests
-         *         will be made and it may be halpful to configure the {@code retryReaderOptions} to allow more
-         *         retries.
+         *         The size of the chunk into which large download operations will be broken into. Note that if the
+         *         chunkSize is large, fewer but larger requests will be made as each REST request will download a
+         *         single chunk in full. For larger chunk sizes, it may be helpful to configure the
+         *         {@code retryReaderOptions} to allow more retries.
          * @param progressReceiver
          *         {@link IProgressReceiver}
          * @param accessConditions
@@ -365,8 +365,7 @@ public class TransferManager {
                 Utility.assertInBounds("parallelism", parallelism, 1, Integer.MAX_VALUE);
                 this.parallelism = parallelism;
             } else {
-                // We chose this to match Go, which followed AWS' default.
-                this.parallelism = 5;
+                this.parallelism = Constants.TRANSFER_MANAGER_DEFAULT_PARALLELISM;
             }
 
             this.accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;

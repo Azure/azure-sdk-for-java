@@ -1411,12 +1411,12 @@ public class Samples {
                                 BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null),
                         AsynchronousFileChannel::close)
                 )
-                .flatMapCompletable(response -> Completable.using(
+                .flatMap(response -> Single.using(
                         () -> AsynchronousFileChannel.open(tempFile.toPath(), StandardOpenOption.WRITE),
                         channel -> TransferManager.downloadBlobToFile(channel, blobURL, null, null),
                         AsynchronousFileChannel::close)
                 )
-                .andThen(
+                .flatMap(response ->
                         // Delete the container.
                         containerURL.delete(null))
                 /*
@@ -2154,12 +2154,12 @@ public class Samples {
                                 BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null),
                         AsynchronousFileChannel::close)
                 )
-                .flatMapCompletable(response -> Completable.using(
+                .flatMap(response -> Single.using(
                         () -> AsynchronousFileChannel.open(tempFile.toPath(), StandardOpenOption.WRITE),
                         channel -> TransferManager.downloadBlobToFile(channel, blobURL, null, null),
                         AsynchronousFileChannel::close)
                 )
-                .andThen(
+                .flatMap(response ->
                         // Delete the container.
                         containerURL.delete(null));
         // </tm_file>
