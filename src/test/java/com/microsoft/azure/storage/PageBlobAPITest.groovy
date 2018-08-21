@@ -175,13 +175,14 @@ class PageBlobAPITest extends APISpec {
                 null).blockingGet()
 
         then:
-        thrown(IllegalArgumentException)
+        def e = thrown(Exception)
+        exceptionType.isInstance(e)
 
         where:
-        data                                                     | _
-        null                                                     | _
-        Flowable.just(getRandomData(PageBlobURL.PAGE_BYTES))     | _
-        Flowable.just(getRandomData(PageBlobURL.PAGE_BYTES * 3)) | _
+        data                                                     | exceptionType
+        null                                                     | IllegalArgumentException
+        Flowable.just(getRandomData(PageBlobURL.PAGE_BYTES))     | IllegalStateException
+        Flowable.just(getRandomData(PageBlobURL.PAGE_BYTES * 3)) | IllegalStateException
     }
 
     @Unroll
@@ -537,8 +538,8 @@ class PageBlobAPITest extends APISpec {
         thrown(IllegalArgumentException)
 
         where:
-        start | end
-        1 | 1
+        start                      | end
+        1                          | 1
         -PageBlobURL.PAGE_BYTES    | PageBlobURL.PAGE_BYTES - 1
         0                          | 0
         1                          | PageBlobURL.PAGE_BYTES - 1

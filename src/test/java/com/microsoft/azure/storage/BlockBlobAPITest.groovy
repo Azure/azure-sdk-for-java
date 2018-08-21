@@ -15,27 +15,9 @@
 
 package com.microsoft.azure.storage
 
-import com.microsoft.azure.storage.blob.BlobAccessConditions
 
-import com.microsoft.azure.storage.blob.BlobRange
-import com.microsoft.azure.storage.blob.BlockBlobURL
-
-import com.microsoft.azure.storage.blob.Metadata
-import com.microsoft.azure.storage.blob.StorageException
-import com.microsoft.azure.storage.blob.models.BlobGetPropertiesResponse
-import com.microsoft.azure.storage.blob.models.BlobHTTPHeaders
-import com.microsoft.azure.storage.blob.models.BlockBlobCommitBlockListHeaders
-import com.microsoft.azure.storage.blob.models.BlockBlobCommitBlockListResponse
-import com.microsoft.azure.storage.blob.models.BlockBlobGetBlockListResponse
-import com.microsoft.azure.storage.blob.models.BlockBlobStageBlockHeaders
-import com.microsoft.azure.storage.blob.models.BlockBlobStageBlockResponse
-import com.microsoft.azure.storage.blob.models.BlockBlobUploadHeaders
-import com.microsoft.azure.storage.blob.models.BlockBlobUploadResponse
-import com.microsoft.azure.storage.blob.models.BlockListType
-import com.microsoft.azure.storage.blob.models.LeaseAccessConditions
-import com.microsoft.azure.storage.blob.models.ModifiedAccessConditions
-import com.microsoft.azure.storage.blob.models.PublicAccessType
-import com.microsoft.azure.storage.blob.models.StorageErrorCode
+import com.microsoft.azure.storage.blob.*
+import com.microsoft.azure.storage.blob.models.*
 import com.microsoft.rest.v2.util.FlowableUtil
 import io.reactivex.Flowable
 import spock.lang.Unroll
@@ -77,15 +59,15 @@ class BlockBlobAPITest extends APISpec {
         bu.stageBlock(blockID, data, dataSize, null).blockingGet()
 
         then:
-        def e = thrown(IllegalArgumentException)
-        System.out.println(e.toString())
+        def e = thrown(Exception)
+        exceptionType.isInstance(e)
 
         where:
-        blockID      | data            | dataSize
-        null         | defaultFlowable | defaultDataSize
-        getBlockID() | null            | defaultDataSize
-        getBlockID() | defaultFlowable | defaultDataSize + 1
-        getBlockID() | defaultFlowable | defaultDataSize - 1
+        blockID      | data            | dataSize            | exceptionType
+        null         | defaultFlowable | defaultDataSize     | IllegalArgumentException
+        getBlockID() | null            | defaultDataSize     | IllegalArgumentException
+        getBlockID() | defaultFlowable | defaultDataSize + 1 | IllegalStateException
+        getBlockID() | defaultFlowable | defaultDataSize - 1 | IllegalStateException
     }
 
     def "Stage block empty body"() {
@@ -175,8 +157,8 @@ class BlockBlobAPITest extends APISpec {
         thrown(IllegalArgumentException)
 
         where:
-        blockID | sourceURL
-        null | new URL("http://www.example.com")
+        blockID      | sourceURL
+        null         | new URL("http://www.example.com")
         getBlockID() | null
     }
 
@@ -201,7 +183,7 @@ class BlockBlobAPITest extends APISpec {
 
         when:
         destURL.stageBlockFromURL(getBlockID(), bu.toURL(), null,
-                MessageDigest.getInstance("MD5").digest(defaultData.array()),null)
+                MessageDigest.getInstance("MD5").digest(defaultData.array()), null)
                 .blockingGet()
 
         then:
@@ -405,7 +387,7 @@ class BlockBlobAPITest extends APISpec {
     def "Get block list"() {
         setup:
         String blockID = getBlockID()
-        bu.stageBlock(blockID, defaultFlowable, defaultDataSize,null).blockingGet()
+        bu.stageBlock(blockID, defaultFlowable, defaultDataSize, null).blockingGet()
         bu.commitBlockList(Arrays.asList(blockID), null, null, null).blockingGet()
         String blockID2 = getBlockID()
         bu.stageBlock(blockID2, defaultFlowable, defaultDataSize, null).blockingGet()
@@ -515,13 +497,14 @@ class BlockBlobAPITest extends APISpec {
         bu.upload(data, dataSize, null, null, null).blockingGet()
 
         then:
-        thrown(IllegalArgumentException)
+        def e = thrown(Exception)
+        exceptionType.isInstance(e)
 
         where:
-        data            | dataSize
-        null            | defaultDataSize
-        defaultFlowable | defaultDataSize + 1
-        defaultFlowable | defaultDataSize - 1
+        data            | dataSize            | exceptionType
+        null            | defaultDataSize     | IllegalArgumentException
+        defaultFlowable | defaultDataSize + 1 | IllegalStateException
+        defaultFlowable | defaultDataSize - 1 | IllegalStateException
     }
 
     def "Upload empty body"() {

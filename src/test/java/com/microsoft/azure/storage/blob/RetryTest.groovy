@@ -21,6 +21,7 @@ import com.microsoft.rest.v2.http.HttpMethod
 import com.microsoft.rest.v2.http.HttpPipeline
 import com.microsoft.rest.v2.http.HttpRequest
 import com.microsoft.rest.v2.http.HttpResponse
+import com.microsoft.rest.v2.http.UnexpectedLengthException
 import io.reactivex.Flowable
 
 import spock.lang.Unroll
@@ -176,9 +177,9 @@ class RetryTest extends APISpec {
                 null)).blockingGet()
 
         then:
-        def e = thrown(IllegalArgumentException)
+        def e = thrown(IllegalStateException)
         e.getMessage().startsWith("The request failed because")
-        e.getCause().getMessage().startsWith("Flowable<ByteBuffer>")
+        e.getCause() instanceof UnexpectedLengthException
     }
 
     @Unroll

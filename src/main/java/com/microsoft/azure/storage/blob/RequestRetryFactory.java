@@ -194,14 +194,12 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
                         data. We cannot enforce the desired Flowable behavior, so we provide a hint when this is likely
                         the root cause.
                          */
-                        if (throwable instanceof IllegalArgumentException && attempt > 1) {
-                            if (throwable.getMessage().startsWith("Flowable<ByteBuffer> emmitted")) {
-                                return Single.error(new IllegalArgumentException("The request failed because the " +
+                        if (throwable instanceof UnexpectedLengthException && attempt > 1) {
+                                return Single.error(new IllegalStateException("The request failed because the " +
                                         "size of the contents of the provided Flowable did not match the provided " +
                                         "data size upon attempting to retry. This is likely caused by the Flowable " +
                                         "not being replayable. To support retries, all Flowables must produce the " +
                                         "same data for each subscriber. Please ensure this behavior.", throwable));
-                            }
                         }
                         String action;
                         /*

@@ -16,10 +16,7 @@
 package com.microsoft.azure.storage.blob;
 
 import com.microsoft.azure.storage.blob.models.StorageErrorException;
-import com.microsoft.rest.v2.http.HttpHeaders;
-import com.microsoft.rest.v2.http.HttpRequest;
-import com.microsoft.rest.v2.http.HttpResponse;
-import com.microsoft.rest.v2.http.UrlBuilder;
+import com.microsoft.rest.v2.http.*;
 import com.microsoft.rest.v2.policy.RequestPolicy;
 import com.microsoft.rest.v2.policy.RequestPolicyFactory;
 import com.microsoft.rest.v2.policy.RequestPolicyOptions;
@@ -314,8 +311,7 @@ public class RequestRetryTestFactory implements RequestPolicyFactory {
                         case 1:
                             return RETRY_TEST_TEMPORARY_ERROR_RESPONSE;
                         case 2:
-                            return Single.error(new IllegalArgumentException("Flowable<ByteBuffer> emmitted 6 bytes " +
-                                    "instead of 7"));
+                            return Single.error(new UnexpectedLengthException("Unexpected length", 5, 6));
                         default:
                             throw new IllegalArgumentException("Retries continued on non retryable error.");
                     }

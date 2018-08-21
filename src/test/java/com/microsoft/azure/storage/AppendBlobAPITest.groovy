@@ -179,13 +179,14 @@ public class AppendBlobAPITest extends APISpec {
         bu.appendBlock(data, dataSize, null).blockingGet()
 
         then:
-        thrown(IllegalArgumentException)
+        def e = thrown(Exception)
+        exceptionType.isInstance(e)
 
         where:
-        data            | dataSize
-        null            | defaultDataSize
-        defaultFlowable | defaultDataSize + 1
-        defaultFlowable | defaultDataSize - 1
+        data            | dataSize            | exceptionType
+        null            | defaultDataSize     | IllegalArgumentException
+        defaultFlowable | defaultDataSize + 1 | IllegalStateException
+        defaultFlowable | defaultDataSize - 1 | IllegalStateException
     }
 
     def "Append block empty body"() {
