@@ -16,18 +16,13 @@ package com.microsoft.azure.storage.blob;
 
 import com.microsoft.azure.storage.GeneratedStorageClient;
 import com.microsoft.rest.v2.http.HttpPipeline;
-import com.microsoft.rest.v2.http.HttpRequest;
-import com.microsoft.rest.v2.http.HttpResponse;
+import com.microsoft.rest.v2.http.HttpPipelineOptions;
 import com.microsoft.rest.v2.http.UrlBuilder;
 import com.microsoft.rest.v2.policy.DecodingPolicyFactory;
-import com.microsoft.rest.v2.policy.RequestPolicy;
 import com.microsoft.rest.v2.policy.RequestPolicyFactory;
-import com.microsoft.rest.v2.policy.RequestPolicyOptions;
-import io.reactivex.Single;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 
 /**
@@ -135,7 +130,8 @@ public abstract class StorageURL {
         factories.add(new DecodingPolicyFactory());
         factories.add(new LoggingFactory(pipelineOptions.loggingOptions));
 
-        return HttpPipeline.build(pipelineOptions.client,
+        return HttpPipeline.build(new HttpPipelineOptions().withHttpClient(pipelineOptions.client)
+                        .withLogger(pipelineOptions.logger),
                 factories.toArray(new RequestPolicyFactory[factories.size()]));
     }
 }
