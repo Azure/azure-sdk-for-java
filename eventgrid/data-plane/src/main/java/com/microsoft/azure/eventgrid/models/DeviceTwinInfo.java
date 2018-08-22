@@ -11,7 +11,7 @@ package com.microsoft.azure.eventgrid.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Information about the device twin, which is the cloud represenation of
+ * Information about the device twin, which is the cloud representation of
  * application device metadata.
  */
 public class DeviceTwinInfo {
