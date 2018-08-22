@@ -188,6 +188,9 @@ public class TransferManager {
 
             int numChunks = calculateNumBlocks(dataSize, o.chunkSize);
 
+            // In case it is an empty blob, this ensures we still actually perform a download operation.
+            numChunks = numChunks == 0 ? 1 : numChunks;
+
             return Observable.range(0, numChunks)
                     .flatMap(i -> {
                         // Calculate whether we need a full chunk or something smaller because we are at the end.

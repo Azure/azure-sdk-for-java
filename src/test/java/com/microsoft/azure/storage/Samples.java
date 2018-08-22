@@ -1087,6 +1087,9 @@ public class Samples {
                          to include blocks that have been staged but not committed.
                          */
                         blobURL.getBlockList(BlockListType.ALL, null))
+                .flatMap(response ->
+                        // Delete the container
+                        containerURL.delete(null))
                 /*
                 This will synchronize all the above operations. This is strongly discouraged for use in production as
                 it eliminates the benefits of asynchronous IO. We use it here to enable the sample to complete and
@@ -1469,6 +1472,7 @@ public class Samples {
                 .lastOrError() // Place holder for processing all the intermediary data.
                 // After the last piece of data, clean up by deleting the container and all its contents.
                 .flatMap(buffer ->
+                        // Delete the container
                         containerURL.delete(null))
                 /*
                 This will synchronize all the above operations. This is strongly discouraged for use in production as

@@ -297,13 +297,17 @@ class TransferManagerTest extends APISpec {
         def testPipeline = HttpPipeline.build(new RequestRetryFactory(new RequestRetryOptions(null, 3, null, null, null,
                 null)), mockFactory)
         bu = bu.withPipeline(testPipeline)
+        def channel = AsynchronousFileChannel.open(file.toPath())
 
         when:
-        TransferManager.uploadFileToBlockBlob(AsynchronousFileChannel.open(file.toPath()), bu, 50, null).blockingGet()
+        TransferManager.uploadFileToBlockBlob(channel, bu, 50, null).blockingGet()
 
         then:
         def e = thrown(StorageException)
         e.statusCode() == 500
+
+        cleanup:
+        channel.close()
     }
 
     def "Upload options fail"() {
@@ -340,8 +344,8 @@ class TransferManagerTest extends APISpec {
         getRandomFile(20)                      | _ // small file
         getRandomFile(16 * 1024 * 1024)        | _ // medium file in several chunks
         getRandomFile(8L * 1026 * 1024 + 10)   | _ // medium file not aligned to block
-        getRandomFile(5L * 1024 * 1024 * 1024) | _ // file size exceeds max int
         getRandomFile(0)                       | _ // empty file
+        getRandomFile(5L * 1024 * 1024 * 1024) | _ // file size exceeds max int
     }
 
     def compareFiles(AsynchronousFileChannel channel1, long offset, long count, AsynchronousFileChannel channel2) {

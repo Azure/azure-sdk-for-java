@@ -1,4 +1,4 @@
-﻿XXXX.XX.XX Version X.X.X
+﻿2018.08.22 Version 10.0.4-rc
 * Changed BlobURL.startCopy sourceAccessConditions parameter to be HTTPAccessConditions as lease is not actually supported.
 * UploadFromFile now takes an AsynchronousFileChannel.
 * UploadByteBuffersToBlockBlob, UploadByteBufferToBlockBlob, and DownloadToBuffer have been removed.
