@@ -7,8 +7,14 @@ import com.microsoft.azure.storage.blob.models.BlobType
 import com.microsoft.azure.storage.blob.models.BlockBlobCommitBlockListResponse
 import com.microsoft.azure.storage.blob.models.BlockBlobUploadResponse
 import com.microsoft.azure.storage.blob.models.StorageErrorCode
+import com.microsoft.rest.v2.http.HttpPipeline
+import com.microsoft.rest.v2.http.HttpRequest
+import com.microsoft.rest.v2.http.HttpResponse
+import com.microsoft.rest.v2.policy.RequestPolicy
+import com.microsoft.rest.v2.policy.RequestPolicyFactory
 import com.microsoft.rest.v2.util.FlowableUtil
 import io.reactivex.Flowable
+import io.reactivex.Single
 import io.reactivex.functions.Consumer
 import spock.lang.Unroll
 
@@ -251,6 +257,53 @@ class TransferManagerTest extends APISpec {
         BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null    | null    | garbageEtag | null         | null
         BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null    | null    | null        | receivedEtag | null
         BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null    | null    | null        | null         | garbageLeaseID
+    }
+
+    /*
+    We require that any Flowable passed as a request body be replayable to support retries. This test ensures that
+    whatever means of getting data from a file we use produces a replayable Flowable so that we abide by our own
+    contract.
+     */
+    def "Upload replayable flowable"() {
+        setup:
+        // Write default data to a file
+        File file = File.createTempFile(UUID.randomUUID().toString(), ".txt");
+        file.deleteOnExit();
+        FileOutputStream fos = new FileOutputStream(file);
+        fos.write(defaultData.array())
+
+        // Mock a response that will always be retried.
+        def mockHttpResponse = Mock(HttpResponse) {
+            statusCode() >> 500
+            bodyAsString() >> Single.just("")
+        }
+
+        // Mock a policy that will always then check that the data is still the same and return a retryable error.
+        def mockPolicy = Mock(RequestPolicy) {
+            sendAsync(_) >> { HttpRequest request ->
+                if (!(FlowableUtil.collectBytesInBuffer(request.body()).blockingGet() == defaultData)) {
+                    throw new IllegalArgumentException()
+                }
+                return Single.just(mockHttpResponse)
+            }
+        }
+
+        // Mock a factory that always returns our mock policy.
+        def mockFactory = Mock(RequestPolicyFactory) {
+            create(*_) >> mockPolicy
+        }
+
+        // Build the pipeline
+        def testPipeline = HttpPipeline.build(new RequestRetryFactory(new RequestRetryOptions(null, 3, null, null, null,
+                null)), mockFactory)
+        bu = bu.withPipeline(testPipeline)
+
+        when:
+        TransferManager.uploadFileToBlockBlob(AsynchronousFileChannel.open(file.toPath()), bu, 50, null).blockingGet()
+
+        then:
+        def e = thrown(StorageException)
+        e.statusCode() == 500
     }
 
     def "Upload options fail"() {
