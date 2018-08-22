@@ -55,7 +55,7 @@ public class ServerUpdateParameters {
     private Map<String, String> tags;
 
     /**
-     * Get the sku value.
+     * Get the SKU (pricing tier) of the server.
      *
      * @return the sku value
      */
@@ -64,7 +64,7 @@ public class ServerUpdateParameters {
     }
 
     /**
-     * Set the sku value.
+     * Set the SKU (pricing tier) of the server.
      *
      * @param sku the sku value to set
      * @return the ServerUpdateParameters object itself.
@@ -75,7 +75,7 @@ public class ServerUpdateParameters {
     }
 
     /**
-     * Get the storageProfile value.
+     * Get storage profile of a server.
      *
      * @return the storageProfile value
      */
@@ -84,7 +84,7 @@ public class ServerUpdateParameters {
     }
 
     /**
-     * Set the storageProfile value.
+     * Set storage profile of a server.
      *
      * @param storageProfile the storageProfile value to set
      * @return the ServerUpdateParameters object itself.
@@ -95,7 +95,7 @@ public class ServerUpdateParameters {
     }
 
     /**
-     * Get the administratorLoginPassword value.
+     * Get the password of the administrator login.
      *
      * @return the administratorLoginPassword value
      */
@@ -104,7 +104,7 @@ public class ServerUpdateParameters {
     }
 
     /**
-     * Set the administratorLoginPassword value.
+     * Set the password of the administrator login.
      *
      * @param administratorLoginPassword the administratorLoginPassword value to set
      * @return the ServerUpdateParameters object itself.
@@ -115,7 +115,7 @@ public class ServerUpdateParameters {
     }
 
     /**
-     * Get the version value.
+     * Get the version of a server. Possible values include: '5.6', '5.7'.
      *
      * @return the version value
      */
@@ -124,7 +124,7 @@ public class ServerUpdateParameters {
     }
 
     /**
-     * Set the version value.
+     * Set the version of a server. Possible values include: '5.6', '5.7'.
      *
      * @param version the version value to set
      * @return the ServerUpdateParameters object itself.
@@ -135,7 +135,7 @@ public class ServerUpdateParameters {
     }
 
     /**
-     * Get the sslEnforcement value.
+     * Get enable ssl enforcement or not when connect to server. Possible values include: 'Enabled', 'Disabled'.
      *
      * @return the sslEnforcement value
      */
@@ -144,7 +144,7 @@ public class ServerUpdateParameters {
     }
 
     /**
-     * Set the sslEnforcement value.
+     * Set enable ssl enforcement or not when connect to server. Possible values include: 'Enabled', 'Disabled'.
      *
      * @param sslEnforcement the sslEnforcement value to set
      * @return the ServerUpdateParameters object itself.
@@ -155,7 +155,7 @@ public class ServerUpdateParameters {
     }
 
     /**
-     * Get the tags value.
+     * Get application-specific metadata in the form of key-value pairs.
      *
      * @return the tags value
      */
@@ -164,7 +164,7 @@ public class ServerUpdateParameters {
     }
 
     /**
-     * Set the tags value.
+     * Set application-specific metadata in the form of key-value pairs.
      *
      * @param tags the tags value to set
      * @return the ServerUpdateParameters object itself.

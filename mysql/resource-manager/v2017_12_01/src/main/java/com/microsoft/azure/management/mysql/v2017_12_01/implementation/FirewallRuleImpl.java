@@ -13,12 +13,12 @@ import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 
 class FirewallRuleImpl extends CreatableUpdatableImpl<FirewallRule, FirewallRuleInner, FirewallRuleImpl> implements FirewallRule, FirewallRule.Definition, FirewallRule.Update {
-    private final MySQLManager manager;
+    private final DBforMySQLManager manager;
     private String resourceGroupName;
     private String serverName;
     private String firewallRuleName;
 
-    FirewallRuleImpl(String name, MySQLManager manager) {
+    FirewallRuleImpl(String name, DBforMySQLManager manager) {
         super(name, new FirewallRuleInner());
         this.manager = manager;
         // Set resource name
@@ -26,7 +26,7 @@ class FirewallRuleImpl extends CreatableUpdatableImpl<FirewallRule, FirewallRule
         //
     }
 
-    FirewallRuleImpl(FirewallRuleInner inner, MySQLManager manager) {
+    FirewallRuleImpl(FirewallRuleInner inner, DBforMySQLManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -39,7 +39,7 @@ class FirewallRuleImpl extends CreatableUpdatableImpl<FirewallRule, FirewallRule
     }
 
     @Override
-    public MySQLManager manager() {
+    public DBforMySQLManager manager() {
         return this.manager;
     }
 
