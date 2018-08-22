@@ -21,21 +21,22 @@ public class CreateLinkedIntegrationRuntimeRequest {
     private String name;
 
     /**
-     * The subscription ID for which the linked integration runtime belong to.
+     * The ID of the subscription that the linked integration runtime belongs
+     * to.
      */
     @JsonProperty(value = "subscriptionId")
     private String subscriptionId;
 
     /**
-     * The name of the data factory for which the linked integration runtime
-     * belong to.
+     * The name of the data factory that the linked integration runtime belongs
+     * to.
      */
     @JsonProperty(value = "dataFactoryName")
     private String dataFactoryName;
 
     /**
-     * The location of the data factory for which the linked integration
-     * runtime belong to.
+     * The location of the data factory that the linked integration runtime
+     * belongs to.
      */
     @JsonProperty(value = "dataFactoryLocation")
     private String dataFactoryLocation;
@@ -61,7 +62,7 @@ public class CreateLinkedIntegrationRuntimeRequest {
     }
 
     /**
-     * Get the subscription ID for which the linked integration runtime belong to.
+     * Get the ID of the subscription that the linked integration runtime belongs to.
      *
      * @return the subscriptionId value
      */
@@ -70,7 +71,7 @@ public class CreateLinkedIntegrationRuntimeRequest {
     }
 
     /**
-     * Set the subscription ID for which the linked integration runtime belong to.
+     * Set the ID of the subscription that the linked integration runtime belongs to.
      *
      * @param subscriptionId the subscriptionId value to set
      * @return the CreateLinkedIntegrationRuntimeRequest object itself.
@@ -81,7 +82,7 @@ public class CreateLinkedIntegrationRuntimeRequest {
     }
 
     /**
-     * Get the name of the data factory for which the linked integration runtime belong to.
+     * Get the name of the data factory that the linked integration runtime belongs to.
      *
      * @return the dataFactoryName value
      */
@@ -90,7 +91,7 @@ public class CreateLinkedIntegrationRuntimeRequest {
     }
 
     /**
-     * Set the name of the data factory for which the linked integration runtime belong to.
+     * Set the name of the data factory that the linked integration runtime belongs to.
      *
      * @param dataFactoryName the dataFactoryName value to set
      * @return the CreateLinkedIntegrationRuntimeRequest object itself.
@@ -101,7 +102,7 @@ public class CreateLinkedIntegrationRuntimeRequest {
     }
 
     /**
-     * Get the location of the data factory for which the linked integration runtime belong to.
+     * Get the location of the data factory that the linked integration runtime belongs to.
      *
      * @return the dataFactoryLocation value
      */
@@ -110,7 +111,7 @@ public class CreateLinkedIntegrationRuntimeRequest {
     }
 
     /**
-     * Set the location of the data factory for which the linked integration runtime belong to.
+     * Set the location of the data factory that the linked integration runtime belongs to.
      *
      * @param dataFactoryLocation the dataFactoryLocation value to set
      * @return the CreateLinkedIntegrationRuntimeRequest object itself.
