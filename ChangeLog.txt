@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 XXXX.XX.XX Version XX.X.X
 * Support for the 2017-11-09 REST version. Please see our REST api documentation and blogs for information about the related added features.
 * Support for 2018-03-28 REST version. Please see our REST api documentation and blogs for information about the related added features.
@@ -9,6 +8,8 @@ XXXX.XX.XX Version XX.X.X
 * UploadFromFile now takes an AsynchronousFileChannel.
 * UploadByteBuffersToBlockBlob, UploadByteBufferToBlockBlob, and DownloadToBuffer have been removed.
 * IPRange fields are now strings.
+* Fixed retry policy.
+* Fixed logging policy.
 
 2018.08.08 Version 10.0.3-Preview
 * Resolved dependency issues
