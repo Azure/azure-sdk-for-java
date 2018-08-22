@@ -18,6 +18,7 @@ import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.HTTP;
@@ -55,6 +56,10 @@ public class IntegrationRuntimeNodesInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface IntegrationRuntimeNodesService {
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datafactoryv2.v2018_06_01.IntegrationRuntimeNodes get" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/nodes/{nodeName}")
+        Observable<Response<ResponseBody>> get(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("factoryName") String factoryName, @Path("integrationRuntimeName") String integrationRuntimeName, @Path("nodeName") String nodeName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datafactoryv2.v2018_06_01.IntegrationRuntimeNodes delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/nodes/{nodeName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("factoryName") String factoryName, @Path("integrationRuntimeName") String integrationRuntimeName, @Path("nodeName") String nodeName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -67,6 +72,106 @@ public class IntegrationRuntimeNodesInner {
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/nodes/{nodeName}/ipAddress")
         Observable<Response<ResponseBody>> getIpAddress(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("factoryName") String factoryName, @Path("integrationRuntimeName") String integrationRuntimeName, @Path("nodeName") String nodeName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+    }
+
+    /**
+     * Gets a self-hosted integration runtime node.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param integrationRuntimeName The integration runtime name.
+     * @param nodeName The integration runtime node name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SelfHostedIntegrationRuntimeNodeInner object if successful.
+     */
+    public SelfHostedIntegrationRuntimeNodeInner get(String resourceGroupName, String factoryName, String integrationRuntimeName, String nodeName) {
+        return getWithServiceResponseAsync(resourceGroupName, factoryName, integrationRuntimeName, nodeName).toBlocking().single().body();
+    }
+
+    /**
+     * Gets a self-hosted integration runtime node.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param integrationRuntimeName The integration runtime name.
+     * @param nodeName The integration runtime node name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<SelfHostedIntegrationRuntimeNodeInner> getAsync(String resourceGroupName, String factoryName, String integrationRuntimeName, String nodeName, final ServiceCallback<SelfHostedIntegrationRuntimeNodeInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, factoryName, integrationRuntimeName, nodeName), serviceCallback);
+    }
+
+    /**
+     * Gets a self-hosted integration runtime node.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param integrationRuntimeName The integration runtime name.
+     * @param nodeName The integration runtime node name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SelfHostedIntegrationRuntimeNodeInner object
+     */
+    public Observable<SelfHostedIntegrationRuntimeNodeInner> getAsync(String resourceGroupName, String factoryName, String integrationRuntimeName, String nodeName) {
+        return getWithServiceResponseAsync(resourceGroupName, factoryName, integrationRuntimeName, nodeName).map(new Func1<ServiceResponse<SelfHostedIntegrationRuntimeNodeInner>, SelfHostedIntegrationRuntimeNodeInner>() {
+            @Override
+            public SelfHostedIntegrationRuntimeNodeInner call(ServiceResponse<SelfHostedIntegrationRuntimeNodeInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets a self-hosted integration runtime node.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param integrationRuntimeName The integration runtime name.
+     * @param nodeName The integration runtime node name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SelfHostedIntegrationRuntimeNodeInner object
+     */
+    public Observable<ServiceResponse<SelfHostedIntegrationRuntimeNodeInner>> getWithServiceResponseAsync(String resourceGroupName, String factoryName, String integrationRuntimeName, String nodeName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (factoryName == null) {
+            throw new IllegalArgumentException("Parameter factoryName is required and cannot be null.");
+        }
+        if (integrationRuntimeName == null) {
+            throw new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null.");
+        }
+        if (nodeName == null) {
+            throw new IllegalArgumentException("Parameter nodeName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.get(this.client.subscriptionId(), resourceGroupName, factoryName, integrationRuntimeName, nodeName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SelfHostedIntegrationRuntimeNodeInner>>>() {
+                @Override
+                public Observable<ServiceResponse<SelfHostedIntegrationRuntimeNodeInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<SelfHostedIntegrationRuntimeNodeInner> clientResponse = getDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<SelfHostedIntegrationRuntimeNodeInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SelfHostedIntegrationRuntimeNodeInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SelfHostedIntegrationRuntimeNodeInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
     }
 
     /**

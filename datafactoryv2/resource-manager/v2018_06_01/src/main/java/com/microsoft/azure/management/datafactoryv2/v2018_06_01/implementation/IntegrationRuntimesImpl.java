@@ -19,6 +19,7 @@ import com.microsoft.azure.management.datafactoryv2.v2018_06_01.IntegrationRunti
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.IntegrationRuntimeConnectionInfo;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.IntegrationRuntimeAuthKeys;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.IntegrationRuntimeMonitoringData;
+import com.microsoft.azure.management.datafactoryv2.v2018_06_01.CreateLinkedIntegrationRuntimeRequest;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.IntegrationRuntimeResource;
 
 class IntegrationRuntimesImpl extends WrapperImpl<IntegrationRuntimesInner> implements IntegrationRuntimes {
@@ -140,6 +141,18 @@ class IntegrationRuntimesImpl extends WrapperImpl<IntegrationRuntimesInner> impl
     public Completable removeLinksAsync(String resourceGroupName, String factoryName, String integrationRuntimeName, String linkedFactoryName) {
         IntegrationRuntimesInner client = this.inner();
         return client.removeLinksAsync(resourceGroupName, factoryName, integrationRuntimeName, linkedFactoryName).toCompletable();
+    }
+
+    @Override
+    public Observable<IntegrationRuntimeStatusResponse> createLinkedIntegrationRuntimeAsync(String resourceGroupName, String factoryName, String integrationRuntimeName, CreateLinkedIntegrationRuntimeRequest createLinkedIntegrationRuntimeRequest) {
+        IntegrationRuntimesInner client = this.inner();
+        return client.createLinkedIntegrationRuntimeAsync(resourceGroupName, factoryName, integrationRuntimeName, createLinkedIntegrationRuntimeRequest)
+        .map(new Func1<IntegrationRuntimeStatusResponseInner, IntegrationRuntimeStatusResponse>() {
+            @Override
+            public IntegrationRuntimeStatusResponse call(IntegrationRuntimeStatusResponseInner inner) {
+                return new IntegrationRuntimeStatusResponseImpl(inner, manager());
+            }
+        });
     }
 
     @Override

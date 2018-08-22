@@ -123,6 +123,13 @@ public class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntimeStatus
     private String latestVersion;
 
     /**
+     * The estimated time when the self-hosted integration runtime will be
+     * updated.
+     */
+    @JsonProperty(value = "typeProperties.autoUpdateETA", access = JsonProperty.Access.WRITE_ONLY)
+    private DateTime autoUpdateETA;
+
+    /**
      * Get the time at which the integration runtime was created, in ISO8601 format.
      *
      * @return the createTime value
@@ -277,6 +284,15 @@ public class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntimeStatus
      */
     public String latestVersion() {
         return this.latestVersion;
+    }
+
+    /**
+     * Get the estimated time when the self-hosted integration runtime will be updated.
+     *
+     * @return the autoUpdateETA value
+     */
+    public DateTime autoUpdateETA() {
+        return this.autoUpdateETA;
     }
 
 }

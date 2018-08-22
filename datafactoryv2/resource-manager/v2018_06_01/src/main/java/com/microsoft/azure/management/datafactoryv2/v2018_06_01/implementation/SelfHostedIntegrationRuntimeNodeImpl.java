@@ -10,6 +10,7 @@ package com.microsoft.azure.management.datafactoryv2.v2018_06_01.implementation;
 
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.SelfHostedIntegrationRuntimeNode;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
+import rx.Observable;
 import java.util.Map;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.IntegrationRuntimeUpdateResult;
@@ -17,7 +18,12 @@ import com.microsoft.azure.management.datafactoryv2.v2018_06_01.SelfHostedIntegr
 
 class SelfHostedIntegrationRuntimeNodeImpl extends WrapperImpl<SelfHostedIntegrationRuntimeNodeInner> implements SelfHostedIntegrationRuntimeNode {
     private final DataFactoryManager manager;
-    SelfHostedIntegrationRuntimeNodeImpl(SelfHostedIntegrationRuntimeNodeInner inner, DataFactoryManager manager) {
+    private String resourceGroupName;
+    private String factoryName;
+    private String integrationRuntimeName;
+    private String nodeName;
+
+    SelfHostedIntegrationRuntimeNodeImpl(SelfHostedIntegrationRuntimeNodeInner inner,  DataFactoryManager manager) {
         super(inner);
         this.manager = manager;
     }
@@ -26,6 +32,8 @@ class SelfHostedIntegrationRuntimeNodeImpl extends WrapperImpl<SelfHostedIntegra
     public DataFactoryManager manager() {
         return this.manager;
     }
+
+
 
     @Override
     public Map<String, String> capabilities() {

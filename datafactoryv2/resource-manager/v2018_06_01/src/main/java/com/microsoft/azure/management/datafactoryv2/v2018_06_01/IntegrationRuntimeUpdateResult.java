@@ -16,6 +16,9 @@ import com.microsoft.rest.ExpandableStringEnum;
  * Defines values for IntegrationRuntimeUpdateResult.
  */
 public final class IntegrationRuntimeUpdateResult extends ExpandableStringEnum<IntegrationRuntimeUpdateResult> {
+    /** Static value None for IntegrationRuntimeUpdateResult. */
+    public static final IntegrationRuntimeUpdateResult NONE = fromString("None");
+
     /** Static value Succeed for IntegrationRuntimeUpdateResult. */
     public static final IntegrationRuntimeUpdateResult SUCCEED = fromString("Succeed");
 
