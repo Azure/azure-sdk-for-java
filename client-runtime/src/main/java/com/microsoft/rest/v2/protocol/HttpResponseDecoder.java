@@ -7,7 +7,6 @@
 package com.microsoft.rest.v2.protocol;
 
 import com.fasterxml.jackson.core.JsonParseException;
-import com.google.common.reflect.TypeToken;
 import com.microsoft.rest.v2.Base64Url;
 import com.microsoft.rest.v2.DateTimeRfc1123;
 import com.microsoft.rest.v2.RestException;
@@ -20,6 +19,7 @@ import com.microsoft.rest.v2.http.HttpHeaders;
 import com.microsoft.rest.v2.http.HttpMethod;
 import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.util.FlowableUtil;
+import com.microsoft.rest.v2.util.TypeUtil;
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
 import io.reactivex.Observable;
@@ -70,13 +70,13 @@ public final class HttpResponseDecoder {
 
         final Type returnValueWireType = methodParser.returnValueWireType();
 
-        final TypeToken entityTypeToken = getEntityType();
+        final Type entityType = getEntityType();
 
         boolean isSerializableBody = methodParser.httpMethod() != HttpMethod.HEAD
-            && !FlowableUtil.isFlowableByteBuffer(entityTypeToken)
-            && !entityTypeToken.isSubtypeOf(Completable.class)
-            && !entityTypeToken.isSubtypeOf(byte[].class)
-            && !entityTypeToken.isSubtypeOf(Void.TYPE) && !entityTypeToken.isSubtypeOf(Void.class);
+            && !FlowableUtil.isFlowableByteBuffer(entityType)
+            && !TypeUtil.isTypeOrSubTypeOf(entityType, Completable.class)
+            && !TypeUtil.isTypeOrSubTypeOf(entityType, byte[].class)
+            && !TypeUtil.isTypeOrSubTypeOf(entityType, Void.TYPE) && !TypeUtil.isTypeOrSubTypeOf(entityType, Void.class);
 
         int[] expectedStatuses = methodParser.expectedStatusCodes();
         boolean isErrorStatus = true;
@@ -116,7 +116,7 @@ public final class HttpResponseDecoder {
                 @Override
                 public HttpResponse apply(String bodyString) throws Exception {
                     try {
-                        Object body = deserializeBody(bodyString, getEntityType().getType(), returnValueWireType, SerializerEncoding.fromHeaders(response.headers()));
+                        Object body = deserializeBody(bodyString, getEntityType(), returnValueWireType, SerializerEncoding.fromHeaders(response.headers()));
                         return bufferedResponse
                                 .withDeserializedHeaders(deserializedHeaders)
                                 .withDeserializedBody(body);
@@ -147,14 +147,6 @@ public final class HttpResponseDecoder {
         return result;
     }
 
-    private static Type[] getTypeArguments(Type type) {
-        return ((ParameterizedType) type).getActualTypeArguments();
-    }
-
-    private static Type getTypeArgument(Type type) {
-        return getTypeArguments(type)[0];
-    }
-
     private Type constructWireResponseType(Type resultType, Type wireType) {
         Type wireResponseType = resultType;
 
@@ -172,21 +164,20 @@ public final class HttpResponseDecoder {
             }
         }
         else {
-            final TypeToken resultTypeToken = TypeToken.of(resultType);
-            if (resultTypeToken.isSubtypeOf(List.class)) {
-                final Type resultElementType = getTypeArgument(resultType);
+            if (TypeUtil.isTypeOrSubTypeOf(resultType, List.class)) {
+                final Type resultElementType = TypeUtil.getTypeArgument(resultType);
                 final Type wireResponseElementType = constructWireResponseType(resultElementType, wireType);
 
-                final TypeFactory typeFactory = serializer.getTypeFactory();
-                wireResponseType = typeFactory.create((ParameterizedType) resultType, wireResponseElementType);
+                wireResponseType = TypeUtil.createParameterizedType(
+                        (Class<?>) ((ParameterizedType) resultType).getRawType(), wireResponseElementType);
             }
-            else if (resultTypeToken.isSubtypeOf(Map.class) || resultTypeToken.isSubtypeOf(RestResponse.class)) {
-                Type[] typeArguments = getTypeArguments(resultType);
+            else if (TypeUtil.isTypeOrSubTypeOf(resultType, Map.class) || TypeUtil.isTypeOrSubTypeOf(resultType, RestResponse.class)) {
+                Type[] typeArguments = TypeUtil.getTypeArguments(resultType);
                 final Type resultValueType = typeArguments[1];
                 final Type wireResponseValueType = constructWireResponseType(resultValueType, wireType);
 
-                final TypeFactory typeFactory = serializer.getTypeFactory();
-                wireResponseType = typeFactory.create((ParameterizedType) resultType, new Type[] {typeArguments[0], wireResponseValueType});
+                wireResponseType = TypeUtil.createParameterizedType(
+                        (Class<?>) ((ParameterizedType) resultType).getRawType(), typeArguments[0], wireResponseValueType);
             }
         }
         return wireResponseType;
@@ -207,9 +198,8 @@ public final class HttpResponseDecoder {
                     result = ((UnixTime) wireResponse).dateTime();
                 }
             } else {
-                final TypeToken resultTypeToken = TypeToken.of(resultType);
-                if (resultTypeToken.isSubtypeOf(List.class)) {
-                    final Type resultElementType = getTypeArgument(resultType);
+                if (TypeUtil.isTypeOrSubTypeOf(resultType, List.class)) {
+                    final Type resultElementType = TypeUtil.getTypeArgument(resultType);
 
                     final List<Object> wireResponseList = (List<Object>) wireResponse;
 
@@ -224,8 +214,8 @@ public final class HttpResponseDecoder {
 
                     result = wireResponseList;
                 }
-                else if (resultTypeToken.isSubtypeOf(Map.class)) {
-                    final Type resultValueType = getTypeArguments(resultType)[1];
+                else if (TypeUtil.isTypeOrSubTypeOf(resultType, Map.class)) {
+                    final Type resultValueType = TypeUtil.getTypeArguments(resultType)[1];
 
                     final Map<String, Object> wireResponseMap = (Map<String, Object>) wireResponse;
 
@@ -237,12 +227,12 @@ public final class HttpResponseDecoder {
                             wireResponseMap.put(wireResponseKey, resultValue);
                         }
                     }
-                } else if (resultTypeToken.isSubtypeOf(RestResponse.class)) {
+                } else if (TypeUtil.isTypeOrSubTypeOf(resultType, RestResponse.class)) {
                     RestResponse<?, ?> restResponse = (RestResponse<?, ?>) wireResponse;
                     Object wireResponseBody = restResponse.body();
 
                     // FIXME: RestProxy is always in charge of creating RestResponse--so this doesn't seem right
-                    Object resultBody = convertToResultType(wireResponseBody, getTypeArguments(resultType)[1], wireType);
+                    Object resultBody = convertToResultType(wireResponseBody, TypeUtil.getTypeArguments(resultType)[1], wireType);
                     if (wireResponseBody != resultBody) {
                         result = new RestResponse<>(restResponse.request(), restResponse.statusCode(), restResponse.headers(), restResponse.rawHeaders(), resultBody);
                     } else {
@@ -255,22 +245,22 @@ public final class HttpResponseDecoder {
         return result;
     }
 
-    private TypeToken getEntityType() {
-        TypeToken token = TypeToken.of(methodParser.returnType());
+    private Type getEntityType() {
+        Type token = methodParser.returnType();
 
-        if (token.isSubtypeOf(Single.class) || token.isSubtypeOf(Maybe.class) || token.isSubtypeOf(Observable.class)) {
-            token = TypeToken.of(getTypeArgument(token.getType()));
+        if (TypeUtil.isTypeOrSubTypeOf(token, Single.class) || TypeUtil.isTypeOrSubTypeOf(token, Maybe.class) || TypeUtil.isTypeOrSubTypeOf(token, Observable.class)) {
+            token = TypeUtil.getTypeArgument(token);
         }
 
-        if (token.isSubtypeOf(RestResponse.class)) {
-            token = token.getSupertype(RestResponse.class);
-            token = TypeToken.of(getTypeArguments(token.getType())[1]);
+        if (TypeUtil.isTypeOrSubTypeOf(token, RestResponse.class)) {
+            token = TypeUtil.getSuperType(token, RestResponse.class);
+            token = TypeUtil.getTypeArguments(token)[1];
         }
 
         // TODO: unwrap OperationStatus a different way?
         try {
-            if (token.isSubtypeOf(Class.forName("com.microsoft.azure.v2.OperationStatus"))) {
-                token = TypeToken.of(getTypeArgument(token.getType()));
+            if (TypeUtil.isTypeOrSubTypeOf(token, Class.forName("com.microsoft.azure.v2.OperationStatus"))) {
+                token = TypeUtil.getTypeArgument(token);
             }
         } catch (Exception ignored) {
         }
@@ -279,68 +269,67 @@ public final class HttpResponseDecoder {
     }
 
     private Type getHeadersType() {
-        TypeToken token = TypeToken.of(methodParser.returnType());
+        Type token = methodParser.returnType();
         Type headersType = null;
 
-        if (token.isSubtypeOf(Single.class)) {
-            token = TypeToken.of(getTypeArgument(token.getType()));
+        if (TypeUtil.isTypeOrSubTypeOf(token, Single.class)) {
+            token = TypeUtil.getTypeArgument(token);
         }
 
-        if (token.isSubtypeOf(RestResponse.class)) {
-            token = token.getSupertype(RestResponse.class);
-            headersType = getTypeArguments(token.getType())[0];
+        if (TypeUtil.isTypeOrSubTypeOf(token, RestResponse.class)) {
+            headersType = TypeUtil.getTypeArguments(TypeUtil.getSuperType(token, RestResponse.class))[0];
         }
 
         return headersType;
     }
 
     private Object deserializeHeaders(HttpHeaders headers) throws IOException {
-            final Type deserializedHeadersType = getHeadersType();
-            if (deserializedHeadersType == null) {
-                return null;
-            } else {
-                final String headersJsonString = serializer.serialize(headers, SerializerEncoding.JSON);
-                Object deserializedHeaders = serializer.deserialize(headersJsonString, deserializedHeadersType, SerializerEncoding.JSON);
+        final Type deserializedHeadersType = getHeadersType();
+        if (deserializedHeadersType == null) {
+            return null;
+        } else {
+            final String headersJsonString = serializer.serialize(headers, SerializerEncoding.JSON);
+            Object deserializedHeaders = serializer.deserialize(headersJsonString, deserializedHeadersType, SerializerEncoding.JSON);
 
-                final Class<?> deserializedHeadersClass = TypeToken.of(deserializedHeadersType).getRawType();
-                final Field[] declaredFields = deserializedHeadersClass.getDeclaredFields();
-                for (final Field declaredField : declaredFields) {
-                    if (declaredField.isAnnotationPresent(HeaderCollection.class)) {
-                        final Type declaredFieldType = declaredField.getGenericType();
-                        if (TypeToken.of(declaredField.getType()).isSubtypeOf(Map.class)) {
-                            final Type[] mapTypeArguments = getTypeArguments(declaredFieldType);
-                            if (mapTypeArguments.length == 2 && mapTypeArguments[0] == String.class && mapTypeArguments[1] == String.class) {
-                                final HeaderCollection headerCollectionAnnotation = declaredField.getAnnotation(HeaderCollection.class);
-                                final String headerCollectionPrefix = headerCollectionAnnotation.value().toLowerCase();
-                                final int headerCollectionPrefixLength = headerCollectionPrefix.length();
-                                if (headerCollectionPrefixLength > 0) {
-                                    final Map<String, String> headerCollection = new HashMap<>();
-                                    for (final HttpHeader header : headers) {
-                                        final String headerName = header.name();
-                                        if (headerName.toLowerCase().startsWith(headerCollectionPrefix)) {
-                                            headerCollection.put(headerName.substring(headerCollectionPrefixLength), header.value());
-                                        }
+            final Class<?> deserializedHeadersClass = TypeUtil.getRawClass(deserializedHeadersType);
+            final Field[] declaredFields = deserializedHeadersClass.getDeclaredFields();
+            for (final Field declaredField : declaredFields) {
+                if (declaredField.isAnnotationPresent(HeaderCollection.class)) {
+                    final Type declaredFieldType = declaredField.getGenericType();
+                    if (TypeUtil.isTypeOrSubTypeOf(declaredField.getType(), Map.class)) {
+                        final Type[] mapTypeArguments = TypeUtil.getTypeArguments(declaredFieldType);
+                        if (mapTypeArguments.length == 2 && mapTypeArguments[0] == String.class && mapTypeArguments[1] == String.class) {
+                            final HeaderCollection headerCollectionAnnotation = declaredField.getAnnotation(HeaderCollection.class);
+                            final String headerCollectionPrefix = headerCollectionAnnotation.value().toLowerCase();
+                            final int headerCollectionPrefixLength = headerCollectionPrefix.length();
+                            if (headerCollectionPrefixLength > 0) {
+                                final Map<String, String> headerCollection = new HashMap<>();
+                                for (final HttpHeader header : headers) {
+                                    final String headerName = header.name();
+                                    if (headerName.toLowerCase().startsWith(headerCollectionPrefix)) {
+                                        headerCollection.put(headerName.substring(headerCollectionPrefixLength), header.value());
                                     }
+                                }
 
-                                    final boolean declaredFieldAccessibleBackup = declaredField.isAccessible();
-                                    try {
-                                        if (!declaredFieldAccessibleBackup) {
-                                            declaredField.setAccessible(true);
-                                        }
-                                        declaredField.set(deserializedHeaders, headerCollection);
-                                    } catch (IllegalAccessException ignored) {
-                                    } finally {
-                                        if (!declaredFieldAccessibleBackup) {
-                                            declaredField.setAccessible(declaredFieldAccessibleBackup);
-                                        }
+                                final boolean declaredFieldAccessibleBackup = declaredField.isAccessible();
+                                try {
+                                    if (!declaredFieldAccessibleBackup) {
+                                        declaredField.setAccessible(true);
+                                    }
+                                    declaredField.set(deserializedHeaders, headerCollection);
+                                } catch (IllegalAccessException ignored) {
+                                } finally {
+                                    if (!declaredFieldAccessibleBackup) {
+                                        declaredField.setAccessible(declaredFieldAccessibleBackup);
                                     }
                                 }
                             }
                         }
                     }
                 }
-
-                return deserializedHeaders;
             }
+
+            return deserializedHeaders;
+        }
     }
 }

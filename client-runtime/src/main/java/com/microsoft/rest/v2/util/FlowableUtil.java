@@ -6,8 +6,6 @@
 
 package com.microsoft.rest.v2.util;
 
-import com.google.common.reflect.TypeToken;
-
 import com.microsoft.rest.v2.http.UnexpectedLengthException;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -23,7 +21,6 @@ import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
 import java.io.IOException;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
@@ -39,14 +36,13 @@ public final class FlowableUtil {
     /**
      * Checks if a type is Flowable&lt;ByteBuffer&gt;.
      *
-     * @param entityTypeToken the type to check
+     * @param entityType the type to check
      * @return whether the type represents a Flowable that emits byte arrays
      */
-    public static boolean isFlowableByteBuffer(TypeToken entityTypeToken) {
-        if (entityTypeToken.isSubtypeOf(Flowable.class)) {
-            final Type innerType = ((ParameterizedType) entityTypeToken.getType()).getActualTypeArguments()[0];
-            final TypeToken innerTypeToken = TypeToken.of(innerType);
-            if (innerTypeToken.isSubtypeOf(ByteBuffer.class)) {
+    public static boolean isFlowableByteBuffer(Type entityType) {
+        if (TypeUtil.isTypeOrSubTypeOf(entityType, Flowable.class)) {
+            final Type innerType = TypeUtil.getTypeArguments(entityType)[0];
+            if (TypeUtil.isTypeOrSubTypeOf(innerType, ByteBuffer.class)) {
                 return true;
             }
         }

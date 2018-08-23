@@ -6,9 +6,6 @@
 
 package com.microsoft.rest.v2.http;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Sets;
-
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -127,12 +124,13 @@ public class ConcurrentMultiHashMap<K, V> {
      * @return the set of keys with which there are values associated
      */
     public Set<K> keys() {
-        return Sets.filter(data.keySet(), new Predicate<K>() {
-            @Override
-            public boolean apply(K input) {
-                return data.get(input).size() > 0;
+        Set<K> keys = new HashSet<>();
+        for (K key : data.keySet()) {
+            if (data.get(key).size() > 0) {
+                keys.add(key);
             }
-        });
+        }
+        return keys;
     }
 
     /**

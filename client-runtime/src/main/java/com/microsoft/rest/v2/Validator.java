@@ -7,8 +7,7 @@
 package com.microsoft.rest.v2;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.primitives.Primitives;
-import com.google.common.reflect.TypeToken;
+import com.microsoft.rest.v2.util.TypeUtil;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -40,23 +39,29 @@ public final class Validator {
             return;
         }
 
-        Class parameterType = parameter.getClass();
-        TypeToken<?> parameterToken = TypeToken.of(parameterType);
-        if (Primitives.isWrapperType(parameterType)) {
-            parameterToken = parameterToken.unwrap();
+        Class<?> type = parameter.getClass();
+        if (type == Double.class
+                || type == Float.class
+                || type == Long.class
+                || type == Integer.class
+                || type == Short.class
+                || type == Character.class
+                || type == Byte.class
+                || type == Boolean.class) {
+            type = wrapperToPrimitive(type);
         }
-        if (parameterToken.isPrimitive()
-                || parameterType.isEnum()
-                || parameterType == Class.class
-                || parameterToken.isSupertypeOf(LocalDate.class)
-                || parameterToken.isSupertypeOf(OffsetDateTime.class)
-                || parameterToken.isSupertypeOf(String.class)
-                || parameterToken.isSupertypeOf(DateTimeRfc1123.class)
-                || parameterToken.isSupertypeOf(Duration.class)) {
+        if (type.isPrimitive()
+                || type.isEnum()
+                || type.isAssignableFrom(Class.class)
+                || type.isAssignableFrom(LocalDate.class)
+                || type.isAssignableFrom(OffsetDateTime.class)
+                || type.isAssignableFrom(String.class)
+                || type.isAssignableFrom(DateTimeRfc1123.class)
+                || type.isAssignableFrom(Duration.class)) {
             return;
         }
 
-        for (Class<?> c : parameterToken.getTypes().classes().rawTypes()) {
+        for (Class<?> c : TypeUtil.getAllClasses(type)) {
             // Ignore checks for Object type.
             if (c.isAssignableFrom(Object.class)) {
                 continue;
@@ -86,20 +91,20 @@ public final class Validator {
                 } else {
                     try {
                         Class<?> propertyType = property.getClass();
-                        if (TypeToken.of(List.class).isSupertypeOf(propertyType)) {
+                        if (List.class.isAssignableFrom(propertyType)) {
                             List<?> items = (List<?>) property;
                             for (Object item : items) {
                                 Validator.validate(item);
                             }
                         }
-                        else if (TypeToken.of(Map.class).isSupertypeOf(propertyType)) {
+                        else if (Map.class.isAssignableFrom(propertyType)) {
                             Map<?, ?> entries = (Map<?, ?>) property;
                             for (Map.Entry<?, ?> entry : entries.entrySet()) {
                                 Validator.validate(entry.getKey());
                                 Validator.validate(entry.getValue());
                             }
                         }
-                        else if (parameterType != propertyType) {
+                        else if (type != propertyType) {
                             Validator.validate(property);
                         }
                     } catch (IllegalArgumentException ex) {
@@ -113,5 +118,33 @@ public final class Validator {
                 }
             }
         }
+    }
+
+    private static Class<?> wrapperToPrimitive(Class<?> clazz) {
+        if (!clazz.isPrimitive()) {
+            return clazz;
+        }
+
+        if (clazz == Integer.class) {
+            return Integer.TYPE;
+        } else if (clazz == Long.class) {
+            return Long.TYPE;
+        } else if (clazz == Boolean.class) {
+            return Boolean.TYPE;
+        } else if (clazz == Byte.class) {
+            return Byte.TYPE;
+        } else if (clazz == Character.class) {
+            return Character.TYPE;
+        } else if (clazz == Float.class) {
+            return Float.TYPE;
+        } else if (clazz == Double.class) {
+            return Double.TYPE;
+        } else if (clazz == Short.class) {
+            return Short.TYPE;
+        } else if (clazz == Void.class) {
+            return Void.TYPE;
+        }
+
+        return clazz;
     }
 }

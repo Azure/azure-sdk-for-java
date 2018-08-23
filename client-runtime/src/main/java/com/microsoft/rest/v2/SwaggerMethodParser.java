@@ -8,12 +8,9 @@ package com.microsoft.rest.v2;
 
 import com.google.common.escape.Escaper;
 import com.google.common.net.UrlEscapers;
-import com.google.common.reflect.TypeToken;
 import com.microsoft.rest.v2.annotations.BodyParam;
 import com.microsoft.rest.v2.annotations.DELETE;
 import com.microsoft.rest.v2.annotations.ExpectedResponses;
-import com.microsoft.rest.v2.annotations.ReturnValueWireType;
-import com.microsoft.rest.v2.annotations.UnexpectedResponseExceptionType;
 import com.microsoft.rest.v2.annotations.GET;
 import com.microsoft.rest.v2.annotations.HEAD;
 import com.microsoft.rest.v2.annotations.HeaderParam;
@@ -24,10 +21,13 @@ import com.microsoft.rest.v2.annotations.POST;
 import com.microsoft.rest.v2.annotations.PUT;
 import com.microsoft.rest.v2.annotations.PathParam;
 import com.microsoft.rest.v2.annotations.QueryParam;
+import com.microsoft.rest.v2.annotations.ReturnValueWireType;
+import com.microsoft.rest.v2.annotations.UnexpectedResponseExceptionType;
 import com.microsoft.rest.v2.http.HttpHeader;
 import com.microsoft.rest.v2.http.HttpHeaders;
 import com.microsoft.rest.v2.http.HttpMethod;
 import com.microsoft.rest.v2.protocol.SerializerAdapter;
+import com.microsoft.rest.v2.util.TypeUtil;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 
@@ -116,8 +116,7 @@ public class SwaggerMethodParser {
                 this.returnValueWireType = returnValueWireType;
             }
             else {
-                final TypeToken wireTypeToken = TypeToken.of(returnValueWireType);
-                if (wireTypeToken.isSubtypeOf(List.class)) {
+                if (TypeUtil.isTypeOrSubTypeOf(returnValueWireType, List.class)) {
                     this.returnValueWireType = returnValueWireType.getGenericInterfaces()[0];
                 }
             }
@@ -441,21 +440,19 @@ public class SwaggerMethodParser {
     public boolean expectsResponseBody() {
         boolean result = true;
 
-        final TypeToken returnTypeToken = TypeToken.of(returnType);
-        if (returnTypeToken.isSubtypeOf(Void.class)) {
+        if (TypeUtil.isTypeOrSubTypeOf(returnType, Void.class)) {
             result = false;
         }
-        else if (returnTypeToken.isSubtypeOf(Single.class) || returnTypeToken.isSubtypeOf(Observable.class)) {
+        else if (TypeUtil.isTypeOrSubTypeOf(returnType, Single.class) || TypeUtil.isTypeOrSubTypeOf(returnType, Observable.class)) {
             final ParameterizedType asyncReturnType = (ParameterizedType) returnType;
             final Type syncReturnType = asyncReturnType.getActualTypeArguments()[0];
-            final TypeToken syncReturnTypeToken = TypeToken.of(syncReturnType);
-            if (syncReturnTypeToken.isSubtypeOf(Void.class)) {
+            if (TypeUtil.isTypeOrSubTypeOf(syncReturnType, Void.class)) {
                 result = false;
-            } else if (syncReturnTypeToken.isSubtypeOf(RestResponse.class)) {
-                result = restResponseTypeExpectsBody((ParameterizedType) syncReturnTypeToken.getSupertype(RestResponse.class).getType());
+            } else if (TypeUtil.isTypeOrSubTypeOf(syncReturnType, RestResponse.class)) {
+                result = restResponseTypeExpectsBody((ParameterizedType) TypeUtil.getSuperType(syncReturnType, RestResponse.class));
             }
-        } else if (returnTypeToken.isSubtypeOf(RestResponse.class)) {
-            result = restResponseTypeExpectsBody((ParameterizedType) returnTypeToken.getSupertype(RestResponse.class).getType());
+        } else if (TypeUtil.isTypeOrSubTypeOf(returnType, RestResponse.class)) {
+            result = restResponseTypeExpectsBody((ParameterizedType) TypeUtil.getSuperType(returnType, RestResponse.class));
         }
 
         return result;

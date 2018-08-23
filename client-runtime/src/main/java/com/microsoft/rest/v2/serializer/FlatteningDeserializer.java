@@ -21,7 +21,7 @@ import com.fasterxml.jackson.databind.deser.ResolvableDeserializer;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.google.common.reflect.TypeToken;
+import com.microsoft.rest.v2.util.TypeUtil;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -80,7 +80,7 @@ public final class FlatteningDeserializer extends StdDeserializer<Object> implem
     public Object deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
         JsonNode root = mapper.readTree(jp);
         final Class<?> tClass = this.defaultDeserializer.handledType();
-        for (Class<?> c : TypeToken.of(tClass).getTypes().classes().rawTypes()) {
+        for (Class<?> c : TypeUtil.getAllClasses(tClass)) {
             // Ignore checks for Object type.
             if (c.isAssignableFrom(Object.class)) {
                 continue;

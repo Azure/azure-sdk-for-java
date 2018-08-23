@@ -6,22 +6,7 @@
 
 package com.microsoft.rest.v2.http;
 
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.atomic.AtomicReference;
-
 import com.microsoft.rest.v2.util.FlowableUtil;
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Preconditions;
-
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -54,8 +39,21 @@ import io.reactivex.internal.queue.SpscLinkedArrayQueue;
 import io.reactivex.internal.subscriptions.SubscriptionHelper;
 import io.reactivex.internal.util.BackpressureHelper;
 import io.reactivex.plugins.RxJavaPlugins;
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.microsoft.rest.v2.util.FlowableUtil.ensureLength;
+
 
 /**
  * An HttpClient that is implemented using Netty.
@@ -869,7 +867,7 @@ public final class NettyClient extends HttpClient {
 
         @Override
         public void request(long n) {
-            Preconditions.checkArgument(n == 1, "requests must be one at a time!");
+            assert n == 1 : "requests must be one at a time!";
             Channel c = channel.get();
             if (c != null) {
                 c.read();

@@ -92,10 +92,4 @@ public interface SerializerAdapter<T> {
      * @throws IOException exception in deserialization
      */
     <U> U deserialize(String value, Type type, SerializerEncoding encoding) throws IOException;
-
-    /**
-     * Get the TypeFactory for this SerializerAdapter.
-     * @return The TypeFactory for this SerializerAdapter.
-     */
-    TypeFactory getTypeFactory();
 }

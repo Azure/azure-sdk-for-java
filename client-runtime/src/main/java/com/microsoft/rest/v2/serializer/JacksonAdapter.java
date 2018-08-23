@@ -15,14 +15,13 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.google.common.base.CharMatcher;
-import com.google.common.base.Joiner;
 import com.microsoft.rest.v2.CollectionFormat;
 import com.microsoft.rest.v2.protocol.SerializerAdapter;
 import com.microsoft.rest.v2.protocol.SerializerEncoding;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -96,7 +95,7 @@ public class JacksonAdapter implements SerializerAdapter<ObjectMapper> {
             return null;
         }
         try {
-            return CharMatcher.is('"').trimFrom(serialize(object));
+            return serialize(object).replaceAll("^\"*", "").replaceAll("\"*$", "");
         } catch (IOException ex) {
             return null;
         }
@@ -112,12 +111,7 @@ public class JacksonAdapter implements SerializerAdapter<ObjectMapper> {
             String raw = serializeRaw(element);
             serialized.add(raw != null ? raw : "");
         }
-        return Joiner.on(format.getDelimiter()).join(serialized);
-    }
-
-    @Override
-    public JacksonTypeFactory getTypeFactory() {
-        return new JacksonTypeFactory(mapper.getTypeFactory());
+        return String.join(format.getDelimiter(), serialized);
     }
 
     @Override
@@ -127,8 +121,7 @@ public class JacksonAdapter implements SerializerAdapter<ObjectMapper> {
             return null;
         }
 
-        final JacksonTypeFactory typeFactory = getTypeFactory();
-        final JavaType javaType = typeFactory.create(type);
+        final JavaType javaType = createJavaType(type);
         if (encoding == SerializerEncoding.XML) {
             return (T) xmlMapper.readValue(value, javaType);
         } else {
@@ -168,4 +161,28 @@ public class JacksonAdapter implements SerializerAdapter<ObjectMapper> {
                 .withIsGetterVisibility(JsonAutoDetect.Visibility.NONE));
         return mapper;
     }
+
+    private JavaType createJavaType(Type type) {
+        JavaType result;
+        if (type == null) {
+            result = null;
+        }
+        else if (type instanceof JavaType) {
+            result = (JavaType) type;
+        }
+        else if (type instanceof ParameterizedType) {
+            final ParameterizedType parameterizedType = (ParameterizedType) type;
+            final Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
+            JavaType[] javaTypeArguments = new JavaType[actualTypeArguments.length];
+            for (int i = 0; i != actualTypeArguments.length; i++) {
+                javaTypeArguments[i] = createJavaType(actualTypeArguments[i]);
+            }
+            result = mapper.getTypeFactory().constructParametricType((Class<?>) parameterizedType.getRawType(), javaTypeArguments);
+        }
+        else {
+            result = mapper.getTypeFactory().constructType(type);
+        }
+        return result;
+    }
+
 }

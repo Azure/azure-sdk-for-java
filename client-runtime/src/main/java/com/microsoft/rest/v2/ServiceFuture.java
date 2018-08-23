@@ -6,13 +6,14 @@
 
 package com.microsoft.rest.v2;
 
-import com.google.common.util.concurrent.AbstractFuture;
-import io.reactivex.Maybe;
 import io.reactivex.Completable;
+import io.reactivex.Maybe;
 import io.reactivex.Single;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
+
+import java.util.concurrent.CompletableFuture;
 
 /**
  * An instance of this class provides access to the underlying REST call invocation.
@@ -21,7 +22,7 @@ import io.reactivex.functions.Consumer;
  *
  * @param <T> the type of the returning object
  */
-public class ServiceFuture<T> extends AbstractFuture<T> {
+public class ServiceFuture<T> extends CompletableFuture<T> {
     /**
      * The Retrofit method invocation.
      */
@@ -47,7 +48,7 @@ public class ServiceFuture<T> extends AbstractFuture<T> {
                         if (callback != null) {
                             callback.success(t);
                         }
-                        serviceFuture.set(t);
+                        serviceFuture.complete(t);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -55,7 +56,7 @@ public class ServiceFuture<T> extends AbstractFuture<T> {
                         if (callback != null) {
                             callback.failure(throwable);
                         }
-                        serviceFuture.setException(throwable);
+                        serviceFuture.completeExceptionally(throwable);
                     }
                 });
         return serviceFuture;
@@ -78,7 +79,7 @@ public class ServiceFuture<T> extends AbstractFuture<T> {
                         if (callback != null) {
                             callback.success(t);
                         }
-                        serviceFuture.set(t);
+                        serviceFuture.complete(t);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -86,7 +87,7 @@ public class ServiceFuture<T> extends AbstractFuture<T> {
                         if (callback != null) {
                             callback.failure(throwable);
                         }
-                        serviceFuture.setException(throwable);
+                        serviceFuture.completeExceptionally(throwable);
                     }
                 }, new Action() {
                     @Override
@@ -94,7 +95,7 @@ public class ServiceFuture<T> extends AbstractFuture<T> {
                         if (callback != null) {
                             callback.success(null);
                         }
-                        serviceFuture.set(null);
+                        serviceFuture.complete(null);
                     }
                 });
         return serviceFuture;
@@ -116,7 +117,7 @@ public class ServiceFuture<T> extends AbstractFuture<T> {
                 if (callback != null) {
                     callback.success(value);
                 }
-                serviceFuture.set(value);
+                serviceFuture.complete(value);
             }
         }, new Consumer<Throwable>() {
             @Override
@@ -124,7 +125,7 @@ public class ServiceFuture<T> extends AbstractFuture<T> {
                 if (callback != null) {
                     callback.failure(throwable);
                 }
-                serviceFuture.setException(throwable);
+                serviceFuture.completeExceptionally(throwable);
             }
         });
         return serviceFuture;
@@ -139,17 +140,6 @@ public class ServiceFuture<T> extends AbstractFuture<T> {
 
     protected void setSubscription(Disposable subscription) {
         this.subscription = subscription;
-    }
-
-    /**
-     * Invoke this method to report completed, allowing
-     * {@link AbstractFuture#get()} to be unblocked.
-     *
-     * @param result the service response returned.
-     * @return true if successfully reported; false otherwise.
-     */
-    public boolean success(T result) {
-        return set(result);
     }
 
     @Override
