@@ -91,6 +91,11 @@ public interface ServerfarmSite extends HasInner<SiteInner>, HasManager<Certific
     Boolean httpsOnly();
 
     /**
+     * @return the hyperV value.
+     */
+    Boolean hyperV();
+
+    /**
      * @return the id value.
      */
     String id();

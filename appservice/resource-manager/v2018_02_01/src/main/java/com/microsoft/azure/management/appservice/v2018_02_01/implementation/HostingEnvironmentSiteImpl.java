@@ -109,6 +109,11 @@ class HostingEnvironmentSiteImpl extends WrapperImpl<SiteInner> implements Hosti
     }
 
     @Override
+    public Boolean hyperV() {
+        return this.inner().hyperV();
+    }
+
+    @Override
     public String id() {
         return this.inner().id();
     }

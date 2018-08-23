@@ -145,6 +145,11 @@ class SitesImpl extends GroupableResourceCoreImpl<Sites, SiteInner, SitesImpl, C
     }
 
     @Override
+    public Boolean hyperV() {
+        return this.inner().hyperV();
+    }
+
+    @Override
     public ManagedServiceIdentity identity() {
         return this.inner().identity();
     }
@@ -346,6 +351,16 @@ class SitesImpl extends GroupableResourceCoreImpl<Sites, SiteInner, SitesImpl, C
             this.inner().withHttpsOnly(httpsOnly);
         } else {
             this.updateParameter.withHttpsOnly(httpsOnly);
+        }
+        return this;
+    }
+
+    @Override
+    public SitesImpl withHyperV(Boolean hyperV) {
+        if (isInCreateMode()) {
+            this.inner().withHyperV(hyperV);
+        } else {
+            this.updateParameter.withHyperV(hyperV);
         }
         return this;
     }
