@@ -14,8 +14,8 @@ import rx.Observable;
 import com.microsoft.azure.management.iothub.v2018_04_01.IotHubProperties;
 import com.microsoft.azure.management.iothub.v2018_04_01.IotHubSkuInfo;
 
-class IotHubDescriptionImpl extends GroupableResourceCoreImpl<IotHubDescription, IotHubDescriptionInner, IotHubDescriptionImpl, IoTHubManager> implements IotHubDescription, IotHubDescription.Definition, IotHubDescription.Update {
-    IotHubDescriptionImpl(String name, IotHubDescriptionInner inner, IoTHubManager manager) {
+class IotHubDescriptionImpl extends GroupableResourceCoreImpl<IotHubDescription, IotHubDescriptionInner, IotHubDescriptionImpl, DevicesManager> implements IotHubDescription, IotHubDescription.Definition, IotHubDescription.Update {
+    IotHubDescriptionImpl(String name, IotHubDescriptionInner inner, DevicesManager manager) {
         super(name, inner, manager);
     }
 
@@ -29,7 +29,7 @@ class IotHubDescriptionImpl extends GroupableResourceCoreImpl<IotHubDescription,
     @Override
     public Observable<IotHubDescription> updateResourceAsync() {
         IotHubResourcesInner client = this.manager().inner().iotHubResources();
-        return client.updateAsync(this.resourceGroupName(), this.name())
+        return client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
             .map(innerToFluentMap(this));
     }
 

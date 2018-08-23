@@ -27,7 +27,7 @@ public class RouteErrorPosition {
     private Integer column;
 
     /**
-     * Get the line value.
+     * Get line where the route error happened.
      *
      * @return the line value
      */
@@ -36,7 +36,7 @@ public class RouteErrorPosition {
     }
 
     /**
-     * Set the line value.
+     * Set line where the route error happened.
      *
      * @param line the line value to set
      * @return the RouteErrorPosition object itself.
@@ -47,7 +47,7 @@ public class RouteErrorPosition {
     }
 
     /**
-     * Get the column value.
+     * Get column where the route error happened.
      *
      * @return the column value
      */
@@ -56,7 +56,7 @@ public class RouteErrorPosition {
     }
 
     /**
-     * Set the column value.
+     * Set column where the route error happened.
      *
      * @param column the column value to set
      * @return the RouteErrorPosition object itself.

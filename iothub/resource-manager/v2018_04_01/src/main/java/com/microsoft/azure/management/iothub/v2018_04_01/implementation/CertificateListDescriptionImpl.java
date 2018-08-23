@@ -13,14 +13,14 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import java.util.List;
 
 class CertificateListDescriptionImpl extends WrapperImpl<CertificateListDescriptionInner> implements CertificateListDescription {
-    private final IoTHubManager manager;
-    CertificateListDescriptionImpl(CertificateListDescriptionInner inner, IoTHubManager manager) {
+    private final DevicesManager manager;
+    CertificateListDescriptionImpl(CertificateListDescriptionInner inner, DevicesManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public IoTHubManager manager() {
+    public DevicesManager manager() {
         return this.manager;
     }
 

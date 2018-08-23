@@ -113,7 +113,7 @@ public class IotHubProperties {
     private Capabilities features;
 
     /**
-     * Get the authorizationPolicies value.
+     * Get the shared access policies you can use to secure a connection to the IoT hub.
      *
      * @return the authorizationPolicies value
      */
@@ -122,7 +122,7 @@ public class IotHubProperties {
     }
 
     /**
-     * Set the authorizationPolicies value.
+     * Set the shared access policies you can use to secure a connection to the IoT hub.
      *
      * @param authorizationPolicies the authorizationPolicies value to set
      * @return the IotHubProperties object itself.
@@ -133,7 +133,7 @@ public class IotHubProperties {
     }
 
     /**
-     * Get the ipFilterRules value.
+     * Get the IP filter rules.
      *
      * @return the ipFilterRules value
      */
@@ -142,7 +142,7 @@ public class IotHubProperties {
     }
 
     /**
-     * Set the ipFilterRules value.
+     * Set the IP filter rules.
      *
      * @param ipFilterRules the ipFilterRules value to set
      * @return the IotHubProperties object itself.
@@ -153,7 +153,7 @@ public class IotHubProperties {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get the provisioning state.
      *
      * @return the provisioningState value
      */
@@ -162,7 +162,7 @@ public class IotHubProperties {
     }
 
     /**
-     * Get the state value.
+     * Get thehub state state.
      *
      * @return the state value
      */
@@ -171,7 +171,7 @@ public class IotHubProperties {
     }
 
     /**
-     * Get the hostName value.
+     * Get the name of the host.
      *
      * @return the hostName value
      */
@@ -180,7 +180,7 @@ public class IotHubProperties {
     }
 
     /**
-     * Get the eventHubEndpoints value.
+     * Get the Event Hub-compatible endpoint properties. The possible keys to this dictionary are events and operationsMonitoringEvents. Both of these keys have to be present in the dictionary while making create or update calls for the IoT hub.
      *
      * @return the eventHubEndpoints value
      */
@@ -189,7 +189,7 @@ public class IotHubProperties {
     }
 
     /**
-     * Set the eventHubEndpoints value.
+     * Set the Event Hub-compatible endpoint properties. The possible keys to this dictionary are events and operationsMonitoringEvents. Both of these keys have to be present in the dictionary while making create or update calls for the IoT hub.
      *
      * @param eventHubEndpoints the eventHubEndpoints value to set
      * @return the IotHubProperties object itself.
@@ -220,7 +220,7 @@ public class IotHubProperties {
     }
 
     /**
-     * Get the storageEndpoints value.
+     * Get the list of Azure Storage endpoints where you can upload files. Currently you can configure only one Azure Storage account and that MUST have its key as $default. Specifying more than one storage account causes an error to be thrown. Not specifying a value for this property when the enableFileUploadNotifications property is set to True, causes an error to be thrown.
      *
      * @return the storageEndpoints value
      */
@@ -229,7 +229,7 @@ public class IotHubProperties {
     }
 
     /**
-     * Set the storageEndpoints value.
+     * Set the list of Azure Storage endpoints where you can upload files. Currently you can configure only one Azure Storage account and that MUST have its key as $default. Specifying more than one storage account causes an error to be thrown. Not specifying a value for this property when the enableFileUploadNotifications property is set to True, causes an error to be thrown.
      *
      * @param storageEndpoints the storageEndpoints value to set
      * @return the IotHubProperties object itself.
@@ -240,7 +240,7 @@ public class IotHubProperties {
     }
 
     /**
-     * Get the messagingEndpoints value.
+     * Get the messaging endpoint properties for the file upload notification queue.
      *
      * @return the messagingEndpoints value
      */
@@ -249,7 +249,7 @@ public class IotHubProperties {
     }
 
     /**
-     * Set the messagingEndpoints value.
+     * Set the messaging endpoint properties for the file upload notification queue.
      *
      * @param messagingEndpoints the messagingEndpoints value to set
      * @return the IotHubProperties object itself.
@@ -260,7 +260,7 @@ public class IotHubProperties {
     }
 
     /**
-     * Get the enableFileUploadNotifications value.
+     * Get if True, file upload notifications are enabled.
      *
      * @return the enableFileUploadNotifications value
      */
@@ -269,7 +269,7 @@ public class IotHubProperties {
     }
 
     /**
-     * Set the enableFileUploadNotifications value.
+     * Set if True, file upload notifications are enabled.
      *
      * @param enableFileUploadNotifications the enableFileUploadNotifications value to set
      * @return the IotHubProperties object itself.
@@ -300,7 +300,7 @@ public class IotHubProperties {
     }
 
     /**
-     * Get the comments value.
+     * Get ioT hub comments.
      *
      * @return the comments value
      */
@@ -309,7 +309,7 @@ public class IotHubProperties {
     }
 
     /**
-     * Set the comments value.
+     * Set ioT hub comments.
      *
      * @param comments the comments value to set
      * @return the IotHubProperties object itself.
@@ -340,7 +340,7 @@ public class IotHubProperties {
     }
 
     /**
-     * Get the features value.
+     * Get the capabilities and features enabled for the IoT hub. Possible values include: 'None', 'DeviceManagement'.
      *
      * @return the features value
      */
@@ -349,7 +349,7 @@ public class IotHubProperties {
     }
 
     /**
-     * Set the features value.
+     * Set the capabilities and features enabled for the IoT hub. Possible values include: 'None', 'DeviceManagement'.
      *
      * @param features the features value to set
      * @return the IotHubProperties object itself.

@@ -79,7 +79,7 @@ public class RoutingStorageContainerProperties {
     private String encoding;
 
     /**
-     * Get the connectionString value.
+     * Get the connection string of the storage account.
      *
      * @return the connectionString value
      */
@@ -88,7 +88,7 @@ public class RoutingStorageContainerProperties {
     }
 
     /**
-     * Set the connectionString value.
+     * Set the connection string of the storage account.
      *
      * @param connectionString the connectionString value to set
      * @return the RoutingStorageContainerProperties object itself.
@@ -99,7 +99,7 @@ public class RoutingStorageContainerProperties {
     }
 
     /**
-     * Get the name value.
+     * Get the name that identifies this endpoint. The name can only include alphanumeric characters, periods, underscores, hyphens and has a maximum length of 64 characters. The following names are reserved:  events, operationsMonitoringEvents, fileNotifications, $default. Endpoint names must be unique across endpoint types.
      *
      * @return the name value
      */
@@ -108,7 +108,7 @@ public class RoutingStorageContainerProperties {
     }
 
     /**
-     * Set the name value.
+     * Set the name that identifies this endpoint. The name can only include alphanumeric characters, periods, underscores, hyphens and has a maximum length of 64 characters. The following names are reserved:  events, operationsMonitoringEvents, fileNotifications, $default. Endpoint names must be unique across endpoint types.
      *
      * @param name the name value to set
      * @return the RoutingStorageContainerProperties object itself.
@@ -119,7 +119,7 @@ public class RoutingStorageContainerProperties {
     }
 
     /**
-     * Get the subscriptionId value.
+     * Get the subscription identifier of the storage account.
      *
      * @return the subscriptionId value
      */
@@ -128,7 +128,7 @@ public class RoutingStorageContainerProperties {
     }
 
     /**
-     * Set the subscriptionId value.
+     * Set the subscription identifier of the storage account.
      *
      * @param subscriptionId the subscriptionId value to set
      * @return the RoutingStorageContainerProperties object itself.
@@ -139,7 +139,7 @@ public class RoutingStorageContainerProperties {
     }
 
     /**
-     * Get the resourceGroup value.
+     * Get the name of the resource group of the storage account.
      *
      * @return the resourceGroup value
      */
@@ -148,7 +148,7 @@ public class RoutingStorageContainerProperties {
     }
 
     /**
-     * Set the resourceGroup value.
+     * Set the name of the resource group of the storage account.
      *
      * @param resourceGroup the resourceGroup value to set
      * @return the RoutingStorageContainerProperties object itself.
@@ -159,7 +159,7 @@ public class RoutingStorageContainerProperties {
     }
 
     /**
-     * Get the containerName value.
+     * Get the name of storage container in the storage account.
      *
      * @return the containerName value
      */
@@ -168,7 +168,7 @@ public class RoutingStorageContainerProperties {
     }
 
     /**
-     * Set the containerName value.
+     * Set the name of storage container in the storage account.
      *
      * @param containerName the containerName value to set
      * @return the RoutingStorageContainerProperties object itself.
@@ -179,7 +179,7 @@ public class RoutingStorageContainerProperties {
     }
 
     /**
-     * Get the fileNameFormat value.
+     * Get file name format for the blob. Default format is {iothub}/{partition}/{YYYY}/{MM}/{DD}/{HH}/{mm}. All parameters are mandatory but can be reordered.
      *
      * @return the fileNameFormat value
      */
@@ -188,7 +188,7 @@ public class RoutingStorageContainerProperties {
     }
 
     /**
-     * Set the fileNameFormat value.
+     * Set file name format for the blob. Default format is {iothub}/{partition}/{YYYY}/{MM}/{DD}/{HH}/{mm}. All parameters are mandatory but can be reordered.
      *
      * @param fileNameFormat the fileNameFormat value to set
      * @return the RoutingStorageContainerProperties object itself.
@@ -199,7 +199,7 @@ public class RoutingStorageContainerProperties {
     }
 
     /**
-     * Get the batchFrequencyInSeconds value.
+     * Get time interval at which blobs are written to storage. Value should be between 60 and 720 seconds. Default value is 300 seconds.
      *
      * @return the batchFrequencyInSeconds value
      */
@@ -208,7 +208,7 @@ public class RoutingStorageContainerProperties {
     }
 
     /**
-     * Set the batchFrequencyInSeconds value.
+     * Set time interval at which blobs are written to storage. Value should be between 60 and 720 seconds. Default value is 300 seconds.
      *
      * @param batchFrequencyInSeconds the batchFrequencyInSeconds value to set
      * @return the RoutingStorageContainerProperties object itself.
@@ -219,7 +219,7 @@ public class RoutingStorageContainerProperties {
     }
 
     /**
-     * Get the maxChunkSizeInBytes value.
+     * Get maximum number of bytes for each blob written to storage. Value should be between 10485760(10MB) and 524288000(500MB). Default value is 314572800(300MB).
      *
      * @return the maxChunkSizeInBytes value
      */
@@ -228,7 +228,7 @@ public class RoutingStorageContainerProperties {
     }
 
     /**
-     * Set the maxChunkSizeInBytes value.
+     * Set maximum number of bytes for each blob written to storage. Value should be between 10485760(10MB) and 524288000(500MB). Default value is 314572800(300MB).
      *
      * @param maxChunkSizeInBytes the maxChunkSizeInBytes value to set
      * @return the RoutingStorageContainerProperties object itself.
@@ -239,7 +239,7 @@ public class RoutingStorageContainerProperties {
     }
 
     /**
-     * Get the encoding value.
+     * Get encoding that is used to serialize messages to blobs. Supported values are 'avro' and 'avrodeflate'. Default value is 'avro'.
      *
      * @return the encoding value
      */
@@ -248,7 +248,7 @@ public class RoutingStorageContainerProperties {
     }
 
     /**
-     * Set the encoding value.
+     * Set encoding that is used to serialize messages to blobs. Supported values are 'avro' and 'avrodeflate'. Default value is 'avro'.
      *
      * @param encoding the encoding value to set
      * @return the RoutingStorageContainerProperties object itself.
