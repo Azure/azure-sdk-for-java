@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.batch;
 
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.batch.protocol.models.*;
 
 import java.io.IOException;
@@ -129,7 +130,7 @@ public class JobOperations implements IInheritedBehaviors {
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
-    public List<CloudJob> listJobs() throws BatchErrorException, IOException {
+    public PagedList<CloudJob> listJobs() throws BatchErrorException, IOException {
         return listJobs(null, (Iterable<BatchClientBehavior>) null);
     }
 
@@ -141,7 +142,7 @@ public class JobOperations implements IInheritedBehaviors {
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
-    public List<CloudJob> listJobs(DetailLevel detailLevel) throws BatchErrorException, IOException {
+    public PagedList<CloudJob> listJobs(DetailLevel detailLevel) throws BatchErrorException, IOException {
         return listJobs(detailLevel, null);
     }
 
@@ -154,7 +155,7 @@ public class JobOperations implements IInheritedBehaviors {
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
-    public List<CloudJob> listJobs(DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+    public PagedList<CloudJob> listJobs(DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         JobListOptions jobListOptions = new JobListOptions();
 
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
@@ -172,7 +173,7 @@ public class JobOperations implements IInheritedBehaviors {
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
-    public List<CloudJob> listJobs(String jobScheduleId) throws BatchErrorException, IOException {
+    public PagedList<CloudJob> listJobs(String jobScheduleId) throws BatchErrorException, IOException {
         return listJobs(jobScheduleId, null, null);
     }
 
@@ -185,7 +186,7 @@ public class JobOperations implements IInheritedBehaviors {
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
-    public List<CloudJob> listJobs(String jobScheduleId, DetailLevel detailLevel) throws BatchErrorException, IOException {
+    public PagedList<CloudJob> listJobs(String jobScheduleId, DetailLevel detailLevel) throws BatchErrorException, IOException {
         return listJobs(jobScheduleId, detailLevel, null);
     }
 
@@ -199,7 +200,7 @@ public class JobOperations implements IInheritedBehaviors {
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
-    public List<CloudJob> listJobs(String jobScheduleId, DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+    public PagedList<CloudJob> listJobs(String jobScheduleId, DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         JobListFromJobScheduleOptions jobListOptions = new JobListFromJobScheduleOptions();
 
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
@@ -217,7 +218,7 @@ public class JobOperations implements IInheritedBehaviors {
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
-    public List<JobPreparationAndReleaseTaskExecutionInformation> listPreparationAndReleaseTaskStatus(String jobId) throws BatchErrorException, IOException {
+    public PagedList<JobPreparationAndReleaseTaskExecutionInformation> listPreparationAndReleaseTaskStatus(String jobId) throws BatchErrorException, IOException {
         return listPreparationAndReleaseTaskStatus(jobId, null);
     }
 
@@ -230,7 +231,7 @@ public class JobOperations implements IInheritedBehaviors {
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
-    public List<JobPreparationAndReleaseTaskExecutionInformation> listPreparationAndReleaseTaskStatus(String jobId, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+    public PagedList<JobPreparationAndReleaseTaskExecutionInformation> listPreparationAndReleaseTaskStatus(String jobId, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         JobListPreparationAndReleaseTaskStatusOptions jobListOptions = new JobListPreparationAndReleaseTaskStatusOptions();
 
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
@@ -569,7 +570,7 @@ public class JobOperations implements IInheritedBehaviors {
 
     /**
      * Gets the task counts for the specified job.
-     * Task counts provide a count of the tasks by active, running or completed task state, and a count of tasks which succeeded or failed. Tasks in the preparing state are counted as running. If the validationStatus is unvalidated, then the Batch service has not been able to check state counts against the task states as reported in the List Tasks API. The validationStatus may be unvalidated if the job contains more than 200,000 tasks.
+     * Task counts provide a count of the tasks by active, running or completed task state, and a count of tasks which succeeded or failed. Tasks in the preparing state are counted as running.
      *
      * @param jobId The ID of the job.
      * @throws BatchErrorException thrown if the request is rejected by server
@@ -582,7 +583,7 @@ public class JobOperations implements IInheritedBehaviors {
 
     /**
      * Gets the task counts for the specified job.
-     * Task counts provide a count of the tasks by active, running or completed task state, and a count of tasks which succeeded or failed. Tasks in the preparing state are counted as running. If the validationStatus is unvalidated, then the Batch service has not been able to check state counts against the task states as reported in the List Tasks API. The validationStatus may be unvalidated if the job contains more than 200,000 tasks.
+     * Task counts provide a count of the tasks by active, running or completed task state, and a count of tasks which succeeded or failed. Tasks in the preparing state are counted as running.
      *
      * @param jobId The ID of the job.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.

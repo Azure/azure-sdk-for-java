@@ -6,11 +6,11 @@
 
 package com.microsoft.azure.batch;
 
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.batch.protocol.models.*;
 
 import java.io.IOException;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Performs account-related operations on an Azure Batch account.
@@ -57,7 +57,7 @@ public class AccountOperations implements IInheritedBehaviors {
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException         Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
-    public List<NodeAgentSku> listNodeAgentSkus() throws BatchErrorException, IOException {
+    public PagedList<NodeAgentSku> listNodeAgentSkus() throws BatchErrorException, IOException {
         return listNodeAgentSkus(null, null);
     }
 
@@ -69,7 +69,7 @@ public class AccountOperations implements IInheritedBehaviors {
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException         Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
-    public List<NodeAgentSku> listNodeAgentSkus(DetailLevel detailLevel) throws BatchErrorException, IOException {
+    public PagedList<NodeAgentSku> listNodeAgentSkus(DetailLevel detailLevel) throws BatchErrorException, IOException {
         return listNodeAgentSkus(detailLevel, null);
     }
 
@@ -82,7 +82,7 @@ public class AccountOperations implements IInheritedBehaviors {
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException         Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
-    public List<NodeAgentSku> listNodeAgentSkus(DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+    public PagedList<NodeAgentSku> listNodeAgentSkus(DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         AccountListNodeAgentSkusOptions options = new AccountListNodeAgentSkusOptions();
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
@@ -98,7 +98,7 @@ public class AccountOperations implements IInheritedBehaviors {
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException         Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
-    public List<PoolNodeCounts> listPoolNodeCounts() throws BatchErrorException, IOException {
+    public PagedList<PoolNodeCounts> listPoolNodeCounts() throws BatchErrorException, IOException {
         return listPoolNodeCounts(null, null);
     }
 
@@ -111,7 +111,7 @@ public class AccountOperations implements IInheritedBehaviors {
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException         Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
-    public List<PoolNodeCounts> listPoolNodeCounts(DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+    public PagedList<PoolNodeCounts> listPoolNodeCounts(DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         AccountListPoolNodeCountsOptions options = new AccountListPoolNodeCountsOptions();
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);

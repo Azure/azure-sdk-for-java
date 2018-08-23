@@ -152,9 +152,6 @@ class BatchSharedKeyCredentialsInterceptor implements Interceptor {
         signature = signature + "/"
                 + credentials.accountName().toLowerCase() + "/"
                 + request.url().uri().getRawPath().replaceAll("^[/]+", "");
-        // We temporary change client side auth code generator to bypass server
-        // bug 4092533
-        signature = signature.replace("%5C", "/").replace("%2F", "/");
 
         String query = request.url().query();
         if (query != null) {

@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.batch;
 
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.batch.protocol.models.*;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
@@ -59,7 +60,7 @@ public class PoolOperations implements IInheritedBehaviors {
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
-    public List<CloudPool> listPools() throws BatchErrorException, IOException {
+    public PagedList<CloudPool> listPools() throws BatchErrorException, IOException {
         return listPools(null, null);
     }
 
@@ -71,7 +72,7 @@ public class PoolOperations implements IInheritedBehaviors {
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
-    public List<CloudPool> listPools(DetailLevel detailLevel) throws BatchErrorException, IOException {
+    public PagedList<CloudPool> listPools(DetailLevel detailLevel) throws BatchErrorException, IOException {
         return listPools(detailLevel, null);
     }
 
@@ -84,7 +85,7 @@ public class PoolOperations implements IInheritedBehaviors {
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
-    public List<CloudPool> listPools(DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+    public PagedList<CloudPool> listPools(DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         PoolListOptions options = new PoolListOptions();
 
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
@@ -793,7 +794,7 @@ public class PoolOperations implements IInheritedBehaviors {
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
-    public List<PoolUsageMetrics> listPoolUsageMetrics(DateTime startTime, DateTime endTime) throws BatchErrorException, IOException {
+    public PagedList<PoolUsageMetrics> listPoolUsageMetrics(DateTime startTime, DateTime endTime) throws BatchErrorException, IOException {
         return listPoolUsageMetrics(startTime, endTime, null, null);
     }
 
@@ -807,7 +808,7 @@ public class PoolOperations implements IInheritedBehaviors {
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
-    public List<PoolUsageMetrics> listPoolUsageMetrics(DateTime startTime, DateTime endTime, DetailLevel detailLevel) throws BatchErrorException, IOException {
+    public PagedList<PoolUsageMetrics> listPoolUsageMetrics(DateTime startTime, DateTime endTime, DetailLevel detailLevel) throws BatchErrorException, IOException {
         return listPoolUsageMetrics(startTime, endTime, detailLevel, null);
     }
 
@@ -822,7 +823,7 @@ public class PoolOperations implements IInheritedBehaviors {
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
-    public List<PoolUsageMetrics> listPoolUsageMetrics(DateTime startTime, DateTime endTime, DetailLevel detailLevel,
+    public PagedList<PoolUsageMetrics> listPoolUsageMetrics(DateTime startTime, DateTime endTime, DetailLevel detailLevel,
                                                        Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         PoolListUsageMetricsOptions options = new PoolListUsageMetricsOptions()
                 .withStartTime(startTime)

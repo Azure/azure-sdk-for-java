@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.batch;
 
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.batch.protocol.models.*;
 import org.joda.time.DateTime;
 
@@ -485,7 +486,7 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
-    public List<ComputeNode> listComputeNodes(String poolId) throws BatchErrorException, IOException {
+    public PagedList<ComputeNode> listComputeNodes(String poolId) throws BatchErrorException, IOException {
         return listComputeNodes(poolId, null, null);
     }
 
@@ -498,7 +499,7 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
-    public List<ComputeNode> listComputeNodes(String poolId, DetailLevel detailLevel) throws BatchErrorException, IOException {
+    public PagedList<ComputeNode> listComputeNodes(String poolId, DetailLevel detailLevel) throws BatchErrorException, IOException {
         return listComputeNodes(poolId, detailLevel, null);
     }
 
@@ -512,7 +513,7 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
-    public List<ComputeNode> listComputeNodes(String poolId, DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+    public PagedList<ComputeNode> listComputeNodes(String poolId, DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         ComputeNodeListOptions options = new ComputeNodeListOptions();
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);

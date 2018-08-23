@@ -1,5 +1,16 @@
 # Azure Batch SDK for Java release notes
 
+## Changes in 4.0.0
+### Features
+ - Added the functionality to get which version of the Azure Batch Node Agent(https://github.com/Azure/Batch/blob/master/changelogs/nodeagent/CHANGELOG.md) is running on nodes via the NodeAgentInformation property of ComputeNode.
+ - Added additional error handling to task add operations to prevent deadlock scenarios.
+ - Removed validation status from count operations.
+ - Updated adal, azure-client-runtime, and commons-codec dependencies.
+ - Update 'List' methods to return the lower layer PagedList object instead of the standard List.
+
+### REST API version
+This version of the Batch Java client library targets version 2018-08-01.7.1 of the Azure Batch REST API. See this [document](https://docs.microsoft.com/en-us/rest/api/batchservice/batch-service-rest-api-versioning#latest-version-2018-08-0171) for detail.
+
 ## Changes in 3.3.0
 ### Features
  - `createTasks` rethrow `RuntimeException` catched by internal threads. 

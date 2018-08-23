@@ -37,7 +37,7 @@ public class TaskTests  extends BatchTestBase {
     @AfterClass
     public static void cleanup() throws Exception {
         try {
-            //batchClient.poolOperations().deletePool(livePool.id());
+            // batchClient.poolOperations().deletePool(livePool.id());
         } catch (Exception e) {
             // ignore any clean up exception
         }
@@ -54,10 +54,10 @@ public class TaskTests  extends BatchTestBase {
         bw.write("This is an example");
         bw.close();
         temp.deleteOnExit();
-        String jobId = getStringWithUserNamePrefix("-Job-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
+        String jobId = getStringWithUserNamePrefix("-canCRUDTest-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
 
         PoolInformation poolInfo = new PoolInformation();
-        poolInfo.withPoolId(livePool.id());
+        poolInfo.withPoolId(liveIaaSPool.id());
         batchClient.jobOperations().createJob(jobId, poolInfo);
 
         String storageAccountName = System.getenv("STORAGE_ACCOUNT_NAME");
@@ -77,7 +77,7 @@ public class TaskTests  extends BatchTestBase {
 
             // CREATE
             TaskAddParameter taskToAdd = new TaskAddParameter();
-            taskToAdd.withId(taskId).withCommandLine(String.format("cmd /c type %s", BLOB_FILE_NAME)).withResourceFiles(files);
+            taskToAdd.withId(taskId).withCommandLine(String.format("/bin/bash -c 'set -e; set -o pipefail; cat %s'", BLOB_FILE_NAME)).withResourceFiles(files);
 
             batchClient.taskOperations().createTask(jobId, taskToAdd);
 
@@ -119,10 +119,10 @@ public class TaskTests  extends BatchTestBase {
 
                 // UPLOAD LOG
                 String outputSas = generateContainerSasToken(container);
-                UploadBatchServiceLogsResult uploadBatchServiceLogsResult = batchClient.computeNodeOperations().uploadBatchServiceLogs(livePool.id(), task.nodeInfo().nodeId(), outputSas, DateTime.now().minusMinutes(-10));
+                UploadBatchServiceLogsResult uploadBatchServiceLogsResult = batchClient.computeNodeOperations().uploadBatchServiceLogs(liveIaaSPool.id(), task.nodeInfo().nodeId(), outputSas, DateTime.now().minusMinutes(-10));
                 Assert.assertNotNull(uploadBatchServiceLogsResult);
                 Assert.assertTrue(uploadBatchServiceLogsResult.numberOfFilesUploaded() > 0);
-                Assert.assertTrue(uploadBatchServiceLogsResult.virtualDirectoryName().contains(livePool.id()));
+                Assert.assertTrue(uploadBatchServiceLogsResult.virtualDirectoryName().contains(liveIaaSPool.id()));
             }
 
             // DELETE
@@ -146,7 +146,7 @@ public class TaskTests  extends BatchTestBase {
 
     @Test
     public void testJobUser() throws Exception {
-        String jobId = getStringWithUserNamePrefix("-Job-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
+        String jobId = getStringWithUserNamePrefix("-testJobUser-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
         String taskId = "mytask";
 
         PoolInformation poolInfo = new PoolInformation();
@@ -185,7 +185,7 @@ public class TaskTests  extends BatchTestBase {
     @Test
     public void testOutputFiles() throws Exception {
         int TASK_COMPLETE_TIMEOUT_IN_SECONDS = 60; // 60 seconds timeout
-        String jobId = getStringWithUserNamePrefix("-Job1-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
+        String jobId = getStringWithUserNamePrefix("-testOutputFiles-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
         String taskId = "mytask";
         String badTaskId = "mytask1";
         String storageAccountName = System.getenv("STORAGE_ACCOUNT_NAME");
@@ -266,7 +266,7 @@ public class TaskTests  extends BatchTestBase {
 
     @Test
     public void testAddMultiTasks() throws Exception {
-        String jobId = getStringWithUserNamePrefix("-Job1-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
+        String jobId = getStringWithUserNamePrefix("-testAddMultiTasks-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
 
         PoolInformation poolInfo = new PoolInformation();
         poolInfo.withPoolId(livePool.id());
@@ -312,7 +312,7 @@ public class TaskTests  extends BatchTestBase {
                 System.getenv("AZURE_BATCH_ACCESS_KEY"));
         BatchClient testBatchClient = BatchClient.open(noExistCredentials1);
 
-        String jobId = getStringWithUserNamePrefix("-Job1-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
+        String jobId = getStringWithUserNamePrefix("-testAddMultiTasksWithError-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
 
         int TASK_COUNT=1000;
 
@@ -337,7 +337,7 @@ public class TaskTests  extends BatchTestBase {
 
     @Test
     public void testGetTaskCounts() throws Exception {
-        String jobId = getStringWithUserNamePrefix("-Job1-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
+        String jobId = getStringWithUserNamePrefix("-testGetTaskCounts-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
 
         PoolInformation poolInfo = new PoolInformation();
         poolInfo.withPoolId(livePool.id());
@@ -350,7 +350,6 @@ public class TaskTests  extends BatchTestBase {
             // Test Job count
             TaskCounts counts = batchClient.jobOperations().getTaskCounts(jobId);
             int all = counts.active() + counts.completed() + counts.running();
-            Assert.assertEquals(TaskCountValidationStatus.VALIDATED, counts.validationStatus());
             Assert.assertEquals(0, all);
 
             // CREATE
@@ -371,7 +370,6 @@ public class TaskTests  extends BatchTestBase {
             // Test Job count
             counts = batchClient.jobOperations().getTaskCounts(jobId);
             all = counts.active() + counts.completed() + counts.running();
-            Assert.assertEquals(TaskCountValidationStatus.VALIDATED, counts.validationStatus());
             Assert.assertEquals(TASK_COUNT, all);
         } finally {
             try {
@@ -384,7 +382,7 @@ public class TaskTests  extends BatchTestBase {
 
     @Test
     public void failCreateContainerTaskWithRegularPool() throws Exception {
-        String jobId = getStringWithUserNamePrefix("-Job-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
+        String jobId = getStringWithUserNamePrefix("-failCreateContainerRegPool-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
         String taskId = "mytask";
 
         PoolInformation poolInfo = new PoolInformation();
@@ -427,7 +425,7 @@ public class TaskTests  extends BatchTestBase {
     
     @Test
     public void failIfPoisonTaskTooLarge() throws Exception {
-        String jobId = getStringWithUserNamePrefix("-Job-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
+        String jobId = getStringWithUserNamePrefix("-failIfPoisonTaskTooLarge-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
         String taskId = "mytask";
 
         PoolInformation poolInfo = new PoolInformation();
@@ -476,7 +474,7 @@ public class TaskTests  extends BatchTestBase {
 
     @Test
     public void succeedWithRetry() throws Exception {
-        String jobId = getStringWithUserNamePrefix("-Job-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
+        String jobId = getStringWithUserNamePrefix("-succeedWithRetry-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
         String taskId = "mytask";
 
         PoolInformation poolInfo = new PoolInformation();

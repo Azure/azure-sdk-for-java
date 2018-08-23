@@ -26,7 +26,7 @@ public class PoolTests extends BatchTestBase {
     @AfterClass
     public static void cleanup() throws Exception {
         try {
-            //batchClient.poolOperations().deletePool(livePool.id());
+            // batchClient.poolOperations().deletePool(livePool.id());
         }
         catch (Exception e) {
             // ignore any clean up exception
@@ -43,6 +43,7 @@ public class PoolTests extends BatchTestBase {
         Assert.assertNotNull(pools.get(0).id());
         Assert.assertNull(pools.get(0).vmSize());
 
+        // Test assumes not run in parallel
         pools = batchClient.poolOperations().listPools(new DetailLevel.Builder().withFilterClause("state eq 'deleting'").build());
         Assert.assertEquals(0, pools.size());
     }
@@ -50,7 +51,7 @@ public class PoolTests extends BatchTestBase {
     @Test
     public void canCRUDLowPriIaaSPool() throws Exception {
         // CREATE
-        String poolId = getStringWithUserNamePrefix("-testpool2");
+        String poolId = getStringWithUserNamePrefix("-canCRUDLowPri");
 
         // Create a pool with 3 Small VMs
         String POOL_VM_SIZE = "STANDARD_A1";
@@ -126,11 +127,19 @@ public class PoolTests extends BatchTestBase {
             Assert.assertTrue(inboundEndpoints.get(1).name().startsWith("SSHRule"));
 
             // CHECK POOL NODE COUNTS
+            PoolNodeCounts poolNodeCount = null;
             List<PoolNodeCounts> poolNodeCounts = batchClient.accountOperations().listPoolNodeCounts();
-            Assert.assertEquals(1, poolNodeCounts.size());  // Single pool only
-            Assert.assertNotNull(poolNodeCounts.get(0).lowPriority());
-            Assert.assertEquals(2, poolNodeCounts.get(0).lowPriority().idle());
-            Assert.assertEquals(0, poolNodeCounts.get(0).dedicated().idle());
+            for(PoolNodeCounts tmp : poolNodeCounts) {
+                if (tmp.poolId().equals(poolId)) {
+                    poolNodeCount = tmp;
+                    break;
+                }
+            }
+            Assert.assertNotNull(poolNodeCount);  // Single pool only
+            Assert.assertNotNull(poolNodeCount.lowPriority());
+
+            Assert.assertEquals(2, poolNodeCount.lowPriority().total());
+            Assert.assertEquals(0, poolNodeCount.dedicated().total());
 
             // RESIZE
             batchClient.poolOperations().resizePool(poolId, 1, 1);
@@ -175,7 +184,7 @@ public class PoolTests extends BatchTestBase {
 
     @Test
     public void canCreateOSDisk() throws Exception {
-        String poolId = getStringWithUserNamePrefix("-testpool2");
+        String poolId = getStringWithUserNamePrefix("-canCreateOSDisk");
 
         // Create a pool with 0 Small VMs
         String POOL_VM_SIZE = "STANDARD_D1";
@@ -260,7 +269,7 @@ public class PoolTests extends BatchTestBase {
 
     @Test
     public void canCreateCustomImageWithExpectedError() throws Exception {
-        String poolId = getStringWithUserNamePrefix("-testpool3");
+        String poolId = getStringWithUserNamePrefix("-customImageExpErr");
 
         // Create a pool with 0 Small VMs
         String POOL_VM_SIZE = "STANDARD_D1";
@@ -284,7 +293,7 @@ public class PoolTests extends BatchTestBase {
 
         try
         {
-            aadClient.poolOperations().createPool(poolId, POOL_VM_SIZE, configuration, POOL_VM_COUNT);
+            batchClient.poolOperations().createPool(poolId, POOL_VM_SIZE, configuration, POOL_VM_COUNT);
             throw new Exception("Expect exception, but not got it.");
         }
         catch (BatchErrorException err) {
@@ -292,7 +301,9 @@ public class PoolTests extends BatchTestBase {
                 // Accepted Error
                 Assert.assertTrue(err.body().values().get(0).value().contains("The user identity used for this operation does not have the required privelege Microsoft.Compute/images/read on the specified resource"));
             } else {
-                throw err;
+                if(!err.body().code().equals("InvalidPropertyValue")) {
+                    throw err;
+                }
             }
         }
         finally {
@@ -310,7 +321,7 @@ public class PoolTests extends BatchTestBase {
 
     @Test
     public void shouldFailOnCreateContainerPoolWithRegularImage() throws Exception {
-        String poolId = getStringWithUserNamePrefix("-testpool4");
+        String poolId = getStringWithUserNamePrefix("-createContainerRegImage");
 
         // Create a pool with 0 Small VMs
         String POOL_VM_SIZE = "STANDARD_D1";
@@ -341,7 +352,7 @@ public class PoolTests extends BatchTestBase {
                 // Accepted Error
                 for (int i = 0; i < err.body().values().size(); i++) {
                     if (err.body().values().get(i).key().equals("Reason")) {
-                        Assert.assertEquals("The specified imageReference with publisher Canonical offer UbuntuServer sku 16.04-LTS does not support container feature.", err.body().values().get(i).value());
+                        Assert.assertEquals("The value provided for one of the properties in the request body is invalid.", err.body().values().get(i).value());
                         return;
                     }
                 }
@@ -458,23 +469,15 @@ public class PoolTests extends BatchTestBase {
     @Test
     public void canCRUDPaaSPool() throws Exception {
         // CREATE
-        String poolId = getStringWithUserNamePrefix("-testpool1");
+        String poolId = getStringWithUserNamePrefix("-CRUDPaaS");
 
         // Create a pool with 3 Small VMs
         String POOL_VM_SIZE = "Small";
         int POOL_VM_COUNT = 3;
         String POOL_OS_FAMILY = "4";
         String POOL_OS_VERSION = "*";
-
         // 5 minutes
         long POOL_STEADY_TIMEOUT_IN_SECONDS = 5 * 60 * 1000;
-
-        // CHECK THE EXISTING POOL/NODES
-        List<PoolNodeCounts> poolNodeCounts = batchClient.accountOperations().listPoolNodeCounts();
-        Assert.assertEquals(1, poolNodeCounts.size());  // Only have live pool
-        Assert.assertNotNull(poolNodeCounts.get(0).lowPriority());
-        Assert.assertEquals(0, poolNodeCounts.get(0).lowPriority().idle());
-        Assert.assertEquals(3, poolNodeCounts.get(0).dedicated().idle());
 
         // Check if pool exists
         if (!batchClient.poolOperations().existsPool(poolId)) {
@@ -537,6 +540,20 @@ public class PoolTests extends BatchTestBase {
             }
 
             Assert.assertTrue(found);
+
+            // CHECK POOL NODE COUNTS
+            PoolNodeCounts poolNodeCount = null;
+            List<PoolNodeCounts> poolNodeCounts = batchClient.accountOperations().listPoolNodeCounts();
+            for(PoolNodeCounts tmp : poolNodeCounts) {
+                if (tmp.poolId().equals(poolId)) {
+                    poolNodeCount = tmp;
+                    break;
+                }
+            }
+            Assert.assertNotNull(poolNodeCount);  // Single pool only
+            Assert.assertNotNull(poolNodeCount.lowPriority());
+            Assert.assertEquals(0, poolNodeCount.lowPriority().total());
+            Assert.assertEquals(3, poolNodeCount.dedicated().total());
 
             // UPDATE
             LinkedList<MetadataItem> metadata = new LinkedList<>();

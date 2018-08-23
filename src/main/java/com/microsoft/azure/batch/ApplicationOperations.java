@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.batch;
 
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.batch.protocol.models.ApplicationGetOptions;
 import com.microsoft.azure.batch.protocol.models.ApplicationListOptions;
 import com.microsoft.azure.batch.protocol.models.ApplicationSummary;
@@ -60,7 +61,7 @@ public class ApplicationOperations implements IInheritedBehaviors {
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
-    public List<ApplicationSummary> listApplications() throws BatchErrorException, IOException {
+    public PagedList<ApplicationSummary> listApplications() throws BatchErrorException, IOException {
         return listApplications(null);
     }
 
@@ -72,7 +73,7 @@ public class ApplicationOperations implements IInheritedBehaviors {
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
-    public List<ApplicationSummary> listApplications(Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+    public PagedList<ApplicationSummary> listApplications(Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         ApplicationListOptions options = new ApplicationListOptions();
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);

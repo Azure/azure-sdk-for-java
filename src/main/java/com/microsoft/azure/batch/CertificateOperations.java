@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.batch;
 
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.batch.protocol.models.BatchErrorException;
 import com.microsoft.azure.batch.protocol.models.Certificate;
 import com.microsoft.azure.batch.protocol.models.CertificateAddOptions;
@@ -289,7 +290,7 @@ public class CertificateOperations implements IInheritedBehaviors {
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
-    public List<Certificate> listCertificates() throws BatchErrorException, IOException {
+    public PagedList<Certificate> listCertificates() throws BatchErrorException, IOException {
         return listCertificates(null, null);
     }
 
@@ -301,7 +302,7 @@ public class CertificateOperations implements IInheritedBehaviors {
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
-    public List<Certificate> listCertificates(DetailLevel detailLevel) throws BatchErrorException, IOException {
+    public PagedList<Certificate> listCertificates(DetailLevel detailLevel) throws BatchErrorException, IOException {
         return listCertificates(detailLevel, null);
     }
 
@@ -314,7 +315,7 @@ public class CertificateOperations implements IInheritedBehaviors {
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
-    public List<Certificate> listCertificates(DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+    public PagedList<Certificate> listCertificates(DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
 
         CertificateListOptions certificateListOptions = new CertificateListOptions();
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
