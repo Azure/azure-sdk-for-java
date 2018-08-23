@@ -19,12 +19,16 @@ import com.microsoft.rest.v2.http.*;
 import com.microsoft.rest.v2.policy.RequestPolicy;
 import com.microsoft.rest.v2.policy.RequestPolicyFactory;
 import com.microsoft.rest.v2.policy.RequestPolicyOptions;
+import io.netty.channel.ChannelException;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.nio.ByteBuffer;
+import java.nio.channels.ClosedChannelException;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -124,7 +128,7 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
              simply call httpRequest.buffer() because although the body will start emitting from the beginning of the
              stream, the buffers that were emitted will have already been consumed (their position set to their limit),
              so it is not a true reset. By adding the map function, we ensure that anything which consumes the
-             ByteBuffers downstream will only actually consume a duplicate so the orignal is preserved. This only
+             ByteBuffers downstream will only actually consume a duplicate so the original is preserved. This only
              duplicates the ByteBuffer object, not the underlying data.
              */
             HttpHeaders bufferedHeaders = new HttpHeaders(httpRequest.headers());
@@ -151,38 +155,56 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
             return this.nextPolicy.sendAsync(requestCopy)
                     .timeout(this.requestRetryOptions.getTryTimeout(), TimeUnit.SECONDS)
                     .delaySubscription(delayMs, TimeUnit.MILLISECONDS)
-                    /*
-                    We must only consider errors here. All successful responses with expected status codes can
-                    pass freely back to the higher layers. Any errors or responses with unexpected status codes
-                    are returned as exceptions and will be considered below.
-                     */
-                    .onErrorResumeNext(throwable -> {
+                    .flatMap(response -> {
                         boolean newConsiderSecondary = considerSecondary;
                         String action;
+                        int statusCode = response.statusCode();
+
                         /*
-                        An IOException is a network error. A Timeout Exception is a client-side timeout coming
-                        from Rx. A StorageErrorException is returned by the HttpClient when a response is
-                        completed but the status code does not indicate success.
+                        If attempt was against the secondary & it returned a StatusNotFound (404), then the
+                        resource was not found. This may be due to replication delay. So, in this case,
+                        we'll never try the secondary again for this operation.
                          */
-                        if (throwable instanceof IOException) {
+                        if (!tryingPrimary && statusCode == 404) {
+                            newConsiderSecondary = false;
+                            action = "Retry: Secondary URL returned 404";
+                        } else if (statusCode == 503 || statusCode == 500) {
+                            action = "Retry: Temporary error or server timeout";
+                        } else {
+                            action = "NoRetry: Successful HTTP request";
+                        }
+                        logf("Action=%s\n", action);
+                        if (action.charAt(0) == 'R' && attempt < requestRetryOptions.getMaxTries()) {
+                            /*
+                            We increment primaryTry if we are about to try the primary again (which is when we
+                            consider the secondary and tried the secondary this time (tryingPrimary==false) or
+                            we do not consider the secondary at all (considerSecondary==false)). This will
+                            ensure primaryTry is correct when passed to calculate the delay.
+                             */
+                            int newPrimaryTry = !tryingPrimary || !considerSecondary ?
+                                    primaryTry + 1 : primaryTry;
+                            return attemptAsync(httpRequest, newPrimaryTry, newConsiderSecondary,
+                                    attempt + 1);
+                        }
+                        return Single.just(response);
+                    })
+                    .onErrorResumeNext(throwable -> {
+                        String action;
+                        /*
+                        ChannelException: A RuntimeException which is thrown when an I/O operation fails.
+                        ClosedChannelException: Thrown when an attempt is made to invoke or complete an I/O operation
+                        upon channel that is closed.
+                        SocketException: Thrown to indicate that there is an error creating or accessing a Socket.
+                        SocketTimeoutException: Signals that a timeout has occurred on a socket read or accept.
+                        A Timeout Exception is a client-side timeout coming from Rx.
+                         */
+                        if (throwable instanceof ChannelException ||
+                                throwable instanceof ClosedChannelException ||
+                                throwable instanceof SocketException ||
+                                throwable instanceof SocketTimeoutException) {
                             action = "Retry: Network error";
                         } else if (throwable instanceof TimeoutException) {
                             action = "Retry: Client timeout";
-                        } else if (throwable instanceof StorageErrorException) {
-                            int statusCode = ((StorageErrorException) throwable).response().statusCode();
-                            /*
-                            If attempt was against the secondary & it returned a StatusNotFound (404), then the
-                            resource was not found. This may be due to replication delay. So, in this case,
-                            we'll never try the secondary again for this operation.
-                             */
-                            if (!tryingPrimary && statusCode == 404) {
-                                newConsiderSecondary = false;
-                                action = "Retry: Secondary URL returned 404";
-                            } else if (statusCode == 503 || statusCode == 500) {
-                                action = "Retry: Temporary error or server timeout";
-                            } else {
-                                action = "NoRetry: Successful HTTP request";
-                            }
                         } else {
                             action = "NoRetry: Unknown error";
                         }
@@ -197,7 +219,7 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
                              */
                             int newPrimaryTry = !tryingPrimary || !considerSecondary ?
                                     primaryTry + 1 : primaryTry;
-                            return attemptAsync(httpRequest, newPrimaryTry, newConsiderSecondary,
+                            return attemptAsync(httpRequest, newPrimaryTry, considerSecondary,
                                             attempt + 1);
 
                         }

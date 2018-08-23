@@ -27,6 +27,7 @@ import io.reactivex.Single
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
+import java.nio.channels.ClosedChannelException
 import java.util.function.Function
 
 class RetryReaderTest extends APISpec {
@@ -124,7 +125,7 @@ class RetryReaderTest extends APISpec {
 
         then:
         def e = thrown(Throwable) // Blocking subscribe will wrap the IOException in a RuntimeException.
-        exceptionType.isInstance(e.getCause()) // The exception we throw is the cause of the RuntimeException
+        exceptionType.isInstance(e.getCause()) // The exception we throw is the cause of the RuntimeException.
         flowable.getTryNumber() == tryNumber
 
         /*
@@ -132,11 +133,11 @@ class RetryReaderTest extends APISpec {
         which is when retryCount=6 and therefore tryNumber=6
          */
         where:
-        scenario                                                      | exceptionType | tryNumber
-        RetryReaderMockFlowable.RR_TEST_SCENARIO_MAX_RETRIES_EXCEEDED | IOException   | 7
-        RetryReaderMockFlowable.RR_TEST_SCENARIO_NON_RETRYABLE_ERROR  | Exception     | 1
-        RetryReaderMockFlowable.RR_TEST_SCENARIO_ERROR_GETTER_INITIAL | IOException   | 1
-        RetryReaderMockFlowable.RR_TEST_SCENARIO_ERROR_GETTER_MIDDLE  | RestException | 2
+        scenario                                                      | exceptionType          | tryNumber
+        RetryReaderMockFlowable.RR_TEST_SCENARIO_MAX_RETRIES_EXCEEDED | SocketTimeoutException | 7
+        RetryReaderMockFlowable.RR_TEST_SCENARIO_NON_RETRYABLE_ERROR  | Exception              | 1
+        RetryReaderMockFlowable.RR_TEST_SCENARIO_ERROR_GETTER_INITIAL | ClosedChannelException | 1
+        RetryReaderMockFlowable.RR_TEST_SCENARIO_ERROR_GETTER_MIDDLE  | RestException          | 2
     }
 
     @Unroll

@@ -36,7 +36,7 @@ import java.time.OffsetDateTime;
  * @apiNote
  * ## Sample Code \n
  * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=account_sas "Sample code for AccountSASSignatureValues")] \n
- * For more samples, please see the [Samples file](https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+ * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
  */
 public final class AccountSASSignatureValues {
 
@@ -104,6 +104,7 @@ public final class AccountSASSignatureValues {
         Utility.assertNotNull("resourceTypes", this.resourceTypes);
         Utility.assertNotNull("expiryTime", this.expiryTime);
         Utility.assertNotNull("permissions", this.permissions);
+        Utility.assertNotNull("version", this.version);
 
         // Signature is generated on the un-url-encoded values.
         final String stringToSign = stringToSign(sharedKeyCredentials);
@@ -117,7 +118,7 @@ public final class AccountSASSignatureValues {
 
         return new SASQueryParameters(this.version, this.services, resourceTypes,
                 this.protocol, this.startTime, this.expiryTime, this.ipRange, null,
-                null, this.permissions, signature);
+                null, this.permissions, signature, null, null, null, null, null);
     }
 
     private String stringToSign(final SharedKeyCredentials sharedKeyCredentials) {
@@ -127,7 +128,7 @@ public final class AccountSASSignatureValues {
                 this.services,
                 resourceTypes,
                 this.startTime == null ? "" : Utility.ISO8601UTCDateFormatter.format(this.startTime),
-                this.expiryTime == null ? "" : Utility.ISO8601UTCDateFormatter.format(this.expiryTime),
+                Utility.ISO8601UTCDateFormatter.format(this.expiryTime),
                 this.ipRange == null ? IPRange.DEFAULT.toString() : this.ipRange.toString(),
                 this.protocol == null ? "" : this.protocol.toString(),
                 this.version,

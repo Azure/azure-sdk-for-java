@@ -24,13 +24,16 @@ import com.microsoft.rest.v2.policy.RequestPolicy;
 import com.microsoft.rest.v2.policy.RequestPolicyFactory;
 import com.microsoft.rest.v2.policy.RequestPolicyOptions;
 import com.microsoft.rest.v2.util.FlowableUtil;
+import io.netty.channel.ChannelException;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.SingleObserver;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.nio.ByteBuffer;
+import java.nio.channels.ClosedChannelException;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.concurrent.TimeUnit;
@@ -75,16 +78,16 @@ public class RequestRetryTestFactory implements RequestPolicyFactory {
     that is not an expected response is wrapped in a StorageErrorException.
      */
     private static final Single<HttpResponse> RETRY_TEST_TEMPORARY_ERROR_RESPONSE =
-            Single.error(new StorageErrorException("Temporary", new RetryTestResponse(503)));
+            Single.just(new RetryTestResponse(503));
 
     private static final Single<HttpResponse> RETRY_TEST_TIMEOUT_ERROR_RESPONSE =
-            Single.error(new StorageErrorException("Timeout", new RetryTestResponse(500)));
+            Single.just(new RetryTestResponse(500));
 
     private static final Single<HttpResponse> RETRY_TEST_NON_RETRYABLE_ERROR =
-            Single.error(new StorageErrorException("Bad request", new RetryTestResponse(400)));
+            Single.just(new RetryTestResponse(400));
 
     private static final Single<HttpResponse> RETRY_TEST_NOT_FOUND_RESPONSE =
-            Single.error(new StorageErrorException("Not found", new RetryTestResponse(404)));
+            Single.just(new RetryTestResponse(404));
 
     private int retryTestScenario;
 
@@ -232,8 +235,14 @@ public class RequestRetryTestFactory implements RequestPolicyFactory {
                 case RETRY_TEST_SCENARIO_NETWORK_ERROR:
                     switch (this.factory.tryNumber) {
                         case 1:
-                            return Single.error(new IOException());
+                            return Single.error(new ChannelException());
                         case 2:
+                            return Single.error(new ClosedChannelException());
+                        case 3:
+                            return Single.error(new SocketException());
+                        case 4:
+                            return Single.error(new SocketTimeoutException());
+                        case 5:
                             return RETRY_TEST_OK_RESPONSE;
                         default:
                             throw new IllegalArgumentException("Continued retrying after success.");

@@ -53,6 +53,16 @@ public final class SASQueryParameters {
 
     private final String signature;
 
+    private final String cacheControl;
+
+    private final String contentDisposition;
+
+    private final String contentEncoding;
+
+    private final String contentLanguage;
+
+    private final String contentType;
+
     /**
      * @return
      *      The storage version
@@ -72,8 +82,8 @@ public final class SASQueryParameters {
 
     /**
      * @return
-     *      The storage resource types being accessed (only for Account SAS). Please refer to {@link AccountSASResourceType}
-     *      for more details.
+     *      The storage resource types being accessed (only for Account SAS). Please refer to
+     *      {@link AccountSASResourceType} for more details.
      */
     public String getResourceTypes() {
         return resourceTypes;
@@ -131,8 +141,8 @@ public final class SASQueryParameters {
 
     /**
      * @return
-     *      Please refer to {@link AccountSASPermission}, {@link BlobSASPermission}, or {@link ContainerSASPermission} for
-     *      more details.
+     *      Please refer to {@link AccountSASPermission}, {@link BlobSASPermission}, or {@link ContainerSASPermission}
+     *      for more details.
      */
     public String getPermissions() {
         return permissions;
@@ -144,6 +154,46 @@ public final class SASQueryParameters {
      */
     public String getSignature() {
         return signature;
+    }
+
+    /**
+     * @return
+     *      The Cache-Control header value when a client accesses the resource with this sas token.
+     */
+    public String getCacheControl() {
+        return cacheControl;
+    }
+
+    /**
+     * @return
+     *      The Content-Disposition header value when a client accesses the resource with this sas token.
+     */
+    public String getContentDisposition() {
+        return contentDisposition;
+    }
+
+    /**
+     * @return
+     *      The Content-Encoding header value when a client accesses the resource with this sas token.
+     */
+    public String getContentEncoding() {
+        return contentEncoding;
+    }
+
+    /**
+     * @return
+     *      The Content-Language header value when a client accesses the resource with this sas token.
+     */
+    public String getContentLanguage() {
+        return contentLanguage;
+    }
+
+    /**
+     * @return
+     *      The Content-Type header value when a client accesses the resource with this sas token.
+     */
+    public String getContentType() {
+        return contentType;
     }
 
     /**
@@ -277,6 +327,61 @@ public final class SASQueryParameters {
         else {
             this.signature = null;
         }
+
+        queryValue = queryParamsMap.get("rscc");
+        if (queryValue != null) {
+            this.cacheControl = queryValue[0];
+            if (removeSASParametersFromMap) {
+                queryParamsMap.remove("rscc");
+            }
+        }
+        else {
+            this.cacheControl = null;
+        }
+
+        queryValue = queryParamsMap.get("rscd");
+        if (queryValue != null) {
+            this.contentDisposition = queryValue[0];
+            if (removeSASParametersFromMap) {
+                queryParamsMap.remove("rscd");
+            }
+        }
+        else {
+            this.contentDisposition = null;
+        }
+
+        queryValue = queryParamsMap.get("rsce");
+        if (queryValue != null) {
+            this.contentEncoding = queryValue[0];
+            if (removeSASParametersFromMap) {
+                queryParamsMap.remove("rsce");
+            }
+        }
+        else {
+            this.contentEncoding = null;
+        }
+
+        queryValue = queryParamsMap.get("rscl");
+        if (queryValue != null) {
+            this.contentLanguage = queryValue[0];
+            if (removeSASParametersFromMap) {
+                queryParamsMap.remove("rscl");
+            }
+        }
+        else {
+            this.contentLanguage = null;
+        }
+
+        queryValue = queryParamsMap.get("rsct");
+        if (queryValue != null) {
+            this.contentType = queryValue[0];
+            if (removeSASParametersFromMap) {
+                queryParamsMap.remove("rsct");
+            }
+        }
+        else {
+            this.contentType = null;
+        }
     }
 
     /**
@@ -307,8 +412,9 @@ public final class SASQueryParameters {
      *      A {@code String} representing the signature for the SAS token.
      */
      SASQueryParameters(String version, String services, String resourceTypes, SASProtocol protocol,
-                        OffsetDateTime startTime, OffsetDateTime expiryTime, IPRange ipRange, String identifier,
-                        String resource, String permissions, String signature) {
+             OffsetDateTime startTime, OffsetDateTime expiryTime, IPRange ipRange, String identifier,
+             String resource, String permissions, String signature, String cacheControl, String contentDisposition,
+             String contentEncoding, String contentLanguage, String contentType) {
 
         this.version = version;
         this.services = services;
@@ -321,6 +427,11 @@ public final class SASQueryParameters {
         this.resource = resource;
         this.permissions = permissions;
         this.signature = signature;
+        this.cacheControl = cacheControl;
+        this.contentDisposition = contentDisposition;
+        this.contentEncoding = contentEncoding;
+        this.contentLanguage = contentLanguage;
+        this.contentType = contentType;
     }
 
     private void tryAppendQueryParameter(StringBuilder sb, String param, Object value) {
@@ -345,7 +456,8 @@ public final class SASQueryParameters {
          We should be url-encoding each key and each value, but because we know all the keys and values will encode to
          themselves, we cheat except for the signature value.
          */
-        String[] params = {"sv", "ss", "srt", "spr", "st", "se", "sip", "si", "sr", "sp", "sig"};
+        String[] params = {"sv", "ss", "srt", "spr", "st", "se", "sip", "si", "sr", "sp", "sig", "rscc", "rscd", "rsce",
+                "rscl", "rsct"};
         StringBuilder sb = new StringBuilder();
         for (String param : params) {
             switch (param) {
@@ -383,6 +495,21 @@ public final class SASQueryParameters {
                     break;
                 case "sig":
                     tryAppendQueryParameter(sb, param, this.signature);
+                    break;
+                case "rscc":
+                    tryAppendQueryParameter(sb, param, this.cacheControl);
+                    break;
+                case "rscd":
+                    tryAppendQueryParameter(sb, param, this.contentDisposition);
+                    break;
+                case "rsce":
+                    tryAppendQueryParameter(sb, param, this.contentEncoding);
+                    break;
+                case "rscl":
+                    tryAppendQueryParameter(sb, param, this.contentLanguage);
+                    break;
+                case "rsct":
+                    tryAppendQueryParameter(sb, param, this.contentType);
                     break;
             }
         }

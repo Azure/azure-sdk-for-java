@@ -17,13 +17,18 @@ package com.microsoft.azure.storage.blob;
 
 import com.microsoft.rest.v2.RestResponse;
 import com.microsoft.rest.v2.http.HttpPipeline;
+import io.netty.channel.ChannelException;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 import org.reactivestreams.Subscriber;
 
 import java.io.IOException;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.nio.ByteBuffer;
 
+import java.nio.channels.ClosedChannelException;
+import java.util.concurrent.TimeoutException;
 import java.util.function.Function;
 
 /**
@@ -119,10 +124,18 @@ public final class RetryReader extends Flowable<ByteBuffer> {
                         return Flowable.empty();
                     }
                     /*
-                    We are unable to get more specific information as to the nature of the error from the protocol
-                    layer when reading the stream, so we optimistically assume that an IOException is retryable.
-                    */
-                    else if (throwable instanceof IOException) {
+                        ChannelException: A RuntimeException which is thrown when an I/O operation fails.
+                        ClosedChannelException: Thrown when an attempt is made to invoke or complete an I/O operation
+                        upon channel that is closed.
+                        SocketException: Thrown to indicate that there is an error creating or accessing a Socket.
+                        SocketTimeoutException: Signals that a timeout has occurred on a socket read or accept.
+                        A Timeout Exception is a client-side timeout coming from Rx.
+                         */
+                    else if (throwable instanceof ChannelException ||
+                            throwable instanceof ClosedChannelException ||
+                            throwable instanceof SocketException ||
+                            throwable instanceof SocketTimeoutException ||
+                            throwable instanceof TimeoutException) {
                         // Get a new response to try reading from.
                         Single<? extends RestResponse<?, Flowable<ByteBuffer>>> newResponse;
                         try {

@@ -40,7 +40,7 @@ public final class BlockBlobURL extends BlobURL {
     /**
      * Indicates the maximum number of bytes that can be sent in a call to upload.
      */
-    public static final int MAX_PUT_BLOB_BYTES = 256 * Constants.MB;
+    public static final int MAX_UPLOAD_BLOB_BYTES = 256 * Constants.MB;
 
     /**
      * Indicates the maximum number of bytes that can be sent in a call to stageBlock.
@@ -53,12 +53,14 @@ public final class BlockBlobURL extends BlobURL {
     public static final int MAX_BLOCKS = 50000;
 
     /**
-     * Creates a new {@link BlockBlobURL} object.
+     * Creates a {@code BlockBlobURL} object pointing to the account specified by the URL and using the provided
+     * pipeline to make HTTP requests.
      *
      * @param url
-     *      A {@code java.net.URL} to a block blob.
+     *      A {@code URL} to an Azure Storage block blob.
      * @param pipeline
-     *      An {@link HttpPipeline} for sending requests.
+     *      A {@code HttpPipeline} which configures the behavior of HTTP exchanges. Please refer to the createPipeline
+     *      method on {@link StorageURL} for more information.
      */
     public BlockBlobURL(URL url, HttpPipeline pipeline) {
         super(url, pipeline);
@@ -108,7 +110,7 @@ public final class BlockBlobURL extends BlobURL {
      * @apiNote
      * ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=upload_download "Sample code for BlockBlobURL.upload")] \n
-     * For more samples, please see the [Samples file](https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      *
      * @param data
      *      The data to write to the blob.
@@ -155,7 +157,7 @@ public final class BlockBlobURL extends BlobURL {
      * @apiNote
      * ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blocks "Sample code for BlockBlobURL.stageBlock")] \n
-     * For more samples, please see the [Samples file](https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      *
      * @param base64BlockID
      *      A Base64 encoded {@code String} that specifies the ID for this block. Note that all block ids for a given
@@ -223,7 +225,7 @@ public final class BlockBlobURL extends BlobURL {
      * @apiNote
      * ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blocks "Sample code for BlockBlobURL.getBlockList")] \n
-     * For more samples, please see the [Samples file](https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      *
      * @param listType
      *      Specifies which type of blocks to return.
@@ -254,7 +256,7 @@ public final class BlockBlobURL extends BlobURL {
      * @apiNote
      * ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blocks "Sample code for BlockBlobURL.commitBlockList")] \n
-     * For more samples, please see the [Samples file](https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      *
      * @param base64BlockIDs
      *      A list of base64 encode {@code String}s that specifies the block IDs to be committed.

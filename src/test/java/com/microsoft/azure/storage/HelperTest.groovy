@@ -15,33 +15,23 @@
 
 package com.microsoft.azure.storage
 
+import com.microsoft.azure.storage.blob.BlobRange
 import com.microsoft.azure.storage.blob.AccountSASResourceType
 import com.microsoft.azure.storage.blob.AccountSASService
 import com.microsoft.azure.storage.blob.AccountSASSignatureValues
 import com.microsoft.azure.storage.blob.BlobSASPermission
 import com.microsoft.azure.storage.blob.ContainerSASPermission
 import com.microsoft.azure.storage.blob.IPRange
-import com.microsoft.azure.storage.blob.RequestRetryFactory
-import com.microsoft.azure.storage.blob.RequestRetryOptions
-import com.microsoft.azure.storage.blob.RequestRetryTestFactory
-import com.microsoft.azure.storage.blob.RetryPolicyType
 import com.microsoft.azure.storage.blob.SASProtocol
 import com.microsoft.azure.storage.blob.ServiceSASSignatureValues
 import com.microsoft.azure.storage.blob.StorageException
 import com.microsoft.azure.storage.blob.Utility
 import com.microsoft.azure.storage.blob.models.StorageErrorCode
-import com.microsoft.azure.storage.blob.models.StorageErrorException
-import com.microsoft.rest.v2.http.HttpHeaders
-import com.microsoft.rest.v2.http.HttpMethod
-import com.microsoft.rest.v2.http.HttpPipeline
-import com.microsoft.rest.v2.http.HttpRequest
-import com.microsoft.rest.v2.http.HttpResponse
-import io.reactivex.Flowable
 import spock.lang.Unroll
 
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
-import java.time.ZonedDateTime
+
 
 class HelperTest extends APISpec {
 
@@ -55,6 +45,31 @@ class HelperTest extends APISpec {
         e.statusCode() == 400
         e.message().contains("Value for one of the query parameters specified in the request URI is invalid.")
         e.getMessage().contains("<?xml") // Ensure that the details in the payload are printable
+    }
+    
+    @Unroll
+    def "Blob range"() {
+        expect:
+        new BlobRange(offset, count).toString() == result
+
+        where:
+        offset | count || result
+        0      | null  || "bytes=0-"
+        0      | 5     || "bytes=0-4"
+    }
+
+    @Unroll
+    def "Blob range IA"() {
+        when:
+        new BlobRange(offset, count)
+
+        then:
+        thrown(IllegalArgumentException)
+
+        where:
+        offset | count
+        -1     | 5
+        0      | -1
     }
 
     def "serviceSasSignatures"() {
@@ -98,6 +113,4 @@ class HelperTest extends APISpec {
         token.signature == primaryCreds.computeHmac256(expectedStringToSign)
 
     }
-
-
 }

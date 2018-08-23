@@ -15,6 +15,7 @@
 
 package com.microsoft.azure.storage
 
+import com.microsoft.azure.storage.blob.AnonymousCredentials
 import com.microsoft.azure.storage.blob.BlobURLParts
 import com.microsoft.azure.storage.blob.ContainerListingDetails
 import com.microsoft.azure.storage.blob.ContainerURL
@@ -33,27 +34,60 @@ import com.microsoft.azure.storage.blob.models.RetentionPolicy
 import com.microsoft.azure.storage.blob.models.ServiceGetStatisticsResponse
 import com.microsoft.azure.storage.blob.models.ServiceListContainersSegmentResponse
 import com.microsoft.azure.storage.blob.models.ServiceSetPropertiesHeaders
+import com.microsoft.azure.storage.blob.models.StaticWebsite
 import com.microsoft.azure.storage.blob.models.StorageServiceProperties
 import spock.lang.Unroll
 
 import java.lang.annotation.Retention
 
 class ServiceAPITest extends APISpec {
-    StorageServiceProperties originalProps = primaryServiceURL.getProperties().blockingGet().body()
+    def setup() {
+        RetentionPolicy disabled = new RetentionPolicy().withEnabled(false)
+        primaryServiceURL.setProperties(new StorageServiceProperties()
+                .withStaticWebsite(new StaticWebsite().withEnabled(false))
+                .withDeleteRetentionPolicy(disabled)
+                .withCors(null)
+                .withHourMetrics(new Metrics().withVersion("1.0").withEnabled(false)
+                .withRetentionPolicy(disabled))
+                .withMinuteMetrics(new Metrics().withVersion("1.0").withEnabled(false)
+                .withRetentionPolicy(disabled))
+                .withLogging(new Logging().withVersion("1.0")
+                .withRetentionPolicy(disabled))
+                .withDefaultServiceVersion("2018-03-28")).blockingGet()
+    }
 
     def cleanup() {
-        primaryServiceURL.setProperties(originalProps).blockingGet()
+        RetentionPolicy disabled = new RetentionPolicy().withEnabled(false)
+        primaryServiceURL.setProperties(new StorageServiceProperties()
+                .withStaticWebsite(new StaticWebsite().withEnabled(false))
+                .withDeleteRetentionPolicy(disabled)
+                .withCors(null)
+                .withHourMetrics(new Metrics().withVersion("1.0").withEnabled(false)
+                .withRetentionPolicy(disabled))
+                .withMinuteMetrics(new Metrics().withVersion("1.0").withEnabled(false)
+                .withRetentionPolicy(disabled))
+                .withLogging(new Logging().withVersion("1.0")
+                .withRetentionPolicy(disabled))
+                .withDefaultServiceVersion("2018-03-28")).blockingGet()
     }
 
     def "List containers"() {
-        setup:
+        when:
         ServiceListContainersSegmentResponse response =
                 primaryServiceURL.listContainersSegment(null, new ListContainersOptions(null,
                         containerPrefix, null)).blockingGet()
 
-        expect:
+        then:
         for (ContainerItem c : response.body().containerItems()) {
-            c.name().startsWith(containerPrefix)
+            assert c.name().startsWith(containerPrefix)
+            assert c.properties().lastModified() != null
+            assert c.properties().etag() != null
+            assert c.properties().leaseStatus() != null
+            assert c.properties().leaseState() != null
+            assert c.properties().leaseDuration() == null
+            assert c.properties().publicAccess() == null
+            assert !c.properties().hasLegalHold()
+            assert !c.properties().hasImmutabilityPolicy()
         }
         response.headers().requestId() != null
         response.headers().version() != null
@@ -89,7 +123,7 @@ class ServiceAPITest extends APISpec {
         expect:
         primaryServiceURL.listContainersSegment(null,
                 new ListContainersOptions(new ContainerListingDetails(true),
-                        "aaa"+containerPrefix, null)).blockingGet().body().containerItems()
+                        "aaa" + containerPrefix, null)).blockingGet().body().containerItems()
                 .get(0).metadata() == metadata
         // Container with prefix "aaa" will not be cleaned up by normal test cleanup.
         cu.delete(null).blockingGet().statusCode() == 202
@@ -97,7 +131,7 @@ class ServiceAPITest extends APISpec {
 
     def "List containers maxResults"() {
         setup:
-        for (int i=0; i<11; i++) {
+        for (int i = 0; i < 11; i++) {
             primaryServiceURL.createContainerURL(generateContainerName()).create(null, null)
                     .blockingGet()
         }
@@ -115,40 +149,41 @@ class ServiceAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    def validatePropsSet(ServiceSetPropertiesHeaders headers, StorageServiceProperties receivedProperties) {
-        return headers.requestId() != null &&
-                headers.version() != null &&
+    def validatePropsSet(StorageServiceProperties sent, StorageServiceProperties received) {
+        return received.logging().read() == sent.logging().read() &&
+                received.logging().delete() == sent.logging().delete() &&
+                received.logging().write() == sent.logging().write() &&
+                received.logging().version() == sent.logging().version() &&
+                received.logging().retentionPolicy().days() == sent.logging().retentionPolicy().days() &&
+                received.logging().retentionPolicy().enabled() == sent.logging().retentionPolicy().enabled() &&
 
-                receivedProperties.logging().read() &&
-                !receivedProperties.logging().delete() &&
-                !receivedProperties.logging().write() &&
-                receivedProperties.logging().version() == "1.0" &&
-                receivedProperties.logging().retentionPolicy().days() == 5 &&
-                receivedProperties.logging().retentionPolicy().enabled() &&
+                received.cors().size() == sent.cors().size() &&
+                received.cors().get(0).allowedMethods() == sent.cors().get(0).allowedMethods() &&
+                received.cors().get(0).allowedHeaders() == sent.cors().get(0).allowedHeaders() &&
+                received.cors().get(0).allowedOrigins() == sent.cors().get(0).allowedOrigins() &&
+                received.cors().get(0).exposedHeaders() == sent.cors().get(0).exposedHeaders() &&
+                received.cors().get(0).maxAgeInSeconds() == sent.cors().get(0).maxAgeInSeconds() &&
 
-                receivedProperties.cors().size() == 1 &&
-                receivedProperties.cors().get(0).allowedMethods() == "GET,PUT,HEAD" &&
-                receivedProperties.cors().get(0).allowedHeaders() == "x-ms-version" &&
-                receivedProperties.cors().get(0).allowedOrigins() == "*" &&
-                receivedProperties.cors().get(0).exposedHeaders() == "x-ms-client-request-id" &&
-                receivedProperties.cors().get(0).maxAgeInSeconds() == 10 &&
+                received.defaultServiceVersion() == sent.defaultServiceVersion() &&
 
-                receivedProperties.defaultServiceVersion() == "2016-05-31" &&
+                received.hourMetrics().enabled() == sent.hourMetrics().enabled() &&
+                received.hourMetrics().includeAPIs() == sent.hourMetrics().includeAPIs() &&
+                received.hourMetrics().retentionPolicy().enabled() == sent.hourMetrics().retentionPolicy().enabled() &&
+                received.hourMetrics().retentionPolicy().days() == sent.hourMetrics().retentionPolicy().days() &&
+                received.hourMetrics().version() == sent.hourMetrics().version() &&
 
-                receivedProperties.hourMetrics().enabled() &&
-                receivedProperties.hourMetrics().includeAPIs() &&
-                receivedProperties.hourMetrics().retentionPolicy().enabled() &&
-                receivedProperties.hourMetrics().retentionPolicy().days() == 5 &&
-                receivedProperties.hourMetrics().version() == "1.0" &&
+                received.minuteMetrics().enabled() == sent.minuteMetrics().enabled() &&
+                received.minuteMetrics().includeAPIs() == sent.minuteMetrics().includeAPIs() &&
+                received.minuteMetrics().retentionPolicy().enabled() == sent.minuteMetrics().retentionPolicy().enabled() &&
+                received.minuteMetrics().retentionPolicy().days() == sent.minuteMetrics().retentionPolicy().days() &&
+                received.minuteMetrics().version() == sent.minuteMetrics().version() &&
 
-                receivedProperties.minuteMetrics().enabled() &&
-                receivedProperties.minuteMetrics().includeAPIs() &&
-                receivedProperties.minuteMetrics().retentionPolicy().enabled() &&
-                receivedProperties.minuteMetrics().retentionPolicy().days() == 5 &&
-                receivedProperties.minuteMetrics().version() == "1.0" &&
+                received.deleteRetentionPolicy().enabled() == sent.deleteRetentionPolicy().enabled() &&
+                received.deleteRetentionPolicy().days() == sent.deleteRetentionPolicy().days() &&
 
-                receivedProperties.deleteRetentionPolicy().enabled() &&
-                receivedProperties.deleteRetentionPolicy().days() == 5
+                received.staticWebsite().enabled() == sent.staticWebsite().enabled() &&
+                received.staticWebsite().indexDocument() == sent.staticWebsite().indexDocument() &&
+                received.staticWebsite().errorDocument404Path() == sent.staticWebsite().errorDocument404Path()
     }
 
     def "Set get properties"() {
@@ -167,24 +202,32 @@ class ServiceAPITest extends APISpec {
                 .withRetentionPolicy(retentionPolicy).withIncludeAPIs(true)
         Metrics minuteMetrics = new Metrics().withEnabled(true).withVersion("1.0")
                 .withRetentionPolicy(retentionPolicy).withIncludeAPIs(true)
+        StaticWebsite website = new StaticWebsite().withEnabled(true)
+                .withIndexDocument("myIndex.html")
+                .withErrorDocument404Path("custom/error/path.html")
 
-
-        ServiceSetPropertiesHeaders headers = primaryServiceURL.setProperties(new StorageServiceProperties()
+        StorageServiceProperties sentProperties = new StorageServiceProperties()
                 .withLogging(logging).withCors(corsRules).withDefaultServiceVersion(defaultServiceVersion)
                 .withMinuteMetrics(minuteMetrics).withHourMetrics(hourMetrics)
-                .withDeleteRetentionPolicy(retentionPolicy)).blockingGet().headers()
+                .withDeleteRetentionPolicy(retentionPolicy)
+                .withStaticWebsite(website)
+
+        ServiceSetPropertiesHeaders headers = primaryServiceURL.setProperties(sentProperties)
+                .blockingGet().headers()
+
+        // Service properties may take up to 30s to take effect. If they weren't already in place, wait.
+        sleep(30 * 1000)
+
         StorageServiceProperties receivedProperties = primaryServiceURL.getProperties()
                 .blockingGet().body()
 
         then:
-        if (!validatePropsSet(headers, receivedProperties)) {
-            // Service properties may take up to 30s to take effect. If they weren't already in place, wait.
-            sleep(30 * 1000)
-            validatePropsSet(headers, receivedProperties)
-        }
+        headers.requestId() != null
+        headers.version() != null
+        validatePropsSet(sentProperties, receivedProperties)
     }
 
-   // In java, we don't have support from the validator for checking the bounds on days. The service will catch these.
+    // In java, we don't have support from the validator for checking the bounds on days. The service will catch these.
 
     def "Set props error"() {
         when:
@@ -224,6 +267,28 @@ class ServiceAPITest extends APISpec {
     def "Get stats error"() {
         when:
         primaryServiceURL.getStatistics().blockingGet()
+
+        then:
+        thrown(StorageException)
+    }
+
+    def "Get account info"() {
+        when:
+        def response = primaryServiceURL.getAccountInfo().blockingGet()
+
+        then:
+        response.headers().date() != null
+        response.headers().version() != null
+        response.headers().requestId() != null
+        response.headers().accountKind() != null
+        response.headers().skuName() != null
+    }
+
+    def "Get account info error"() {
+        when:
+        ServiceURL serviceURL = new ServiceURL(primaryServiceURL.toURL(),
+                StorageURL.createPipeline(new AnonymousCredentials(), new PipelineOptions()))
+        serviceURL.getAccountInfo().blockingGet()
 
         then:
         thrown(StorageException)

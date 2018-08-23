@@ -33,7 +33,7 @@ import java.time.OffsetDateTime;
  * @apiNote
  * ## Sample Code \n
  * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_sas "Sample code for ServiceSASSignatureValues")] \n
- * For more samples, please see the [Samples file](https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+ * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
  */
 public final class ServiceSASSignatureValues {
 
@@ -127,18 +127,22 @@ public final class ServiceSASSignatureValues {
      *      {@link SASQueryParameters}
      */
     public SASQueryParameters generateSASQueryParameters(SharedKeyCredentials sharedKeyCredentials) {
-        if (sharedKeyCredentials == null) {
-            throw new IllegalArgumentException("SharedKeyCredentials cannot be null.");
-        }
+        Utility.assertNotNull("sharedKeyCredentials", sharedKeyCredentials);
+        Utility.assertNotNull("version", this.version);
+        Utility.assertNotNull("containerName", this.containerName);
 
         String resource = "c";
-        String verifiedPermissions;
+        String verifiedPermissions = null;
         // Calling parse and toString guarantees the proper ordering and throws on invalid characters.
         if (Utility.isNullOrEmpty(this.blobName)) {
-            verifiedPermissions = ContainerSASPermission.parse(this.permissions).toString();
+            if (this.permissions != null) {
+                verifiedPermissions = ContainerSASPermission.parse(this.permissions).toString();
+            }
         }
         else {
-            verifiedPermissions = BlobSASPermission.parse(this.permissions).toString();
+            if (this.permissions != null) {
+                verifiedPermissions = BlobSASPermission.parse(this.permissions).toString();
+            }
             resource = "b";
         }
 
@@ -154,7 +158,8 @@ public final class ServiceSASSignatureValues {
 
         return new SASQueryParameters(this.version, null, null,
                 this.protocol, this.startTime, this.expiryTime, this.ipRange, this.identifier, resource,
-                this.permissions, signature);
+                this.permissions, signature, this.cacheControl, this.contentDisposition, this.contentEncoding,
+                this.contentLanguage, this.contentType);
     }
 
     private String getCanonicalName(String accountName) {
@@ -173,7 +178,7 @@ public final class ServiceSASSignatureValues {
     private String stringToSign(final String verifiedPermissions,
                                 final SharedKeyCredentials sharedKeyCredentials) {
         return String.join("\n",
-                verifiedPermissions,
+                verifiedPermissions == null ? "" : verifiedPermissions,
                 this.startTime == null ? "" : Utility.ISO8601UTCDateFormatter.format(this.startTime),
                 this.expiryTime == null ? "" : Utility.ISO8601UTCDateFormatter.format(this.expiryTime),
                 getCanonicalName(sharedKeyCredentials.getAccountName()),

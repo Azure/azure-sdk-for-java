@@ -57,12 +57,12 @@ class RetryTest extends APISpec {
         HttpPipeline pipeline = HttpPipeline.build(new RequestRetryFactory(retryTestOptions), retryTestFactory)
 
         when:
-        pipeline.sendRequestAsync(new HttpRequest(null, HttpMethod.GET, retryTestURL, new HttpHeaders(),
-                Flowable.just(RequestRetryTestFactory.RETRY_TEST_DEFAULT_DATA), null)).blockingGet()
+        HttpResponse response = pipeline.sendRequestAsync(new HttpRequest(null, HttpMethod.GET,
+                retryTestURL, new HttpHeaders(), Flowable.just(RequestRetryTestFactory.RETRY_TEST_DEFAULT_DATA),
+                null)).blockingGet()
 
         then:
-        def e = thrown(StorageErrorException)
-        e.response().statusCode() == 503
+        response.statusCode() == 503
         retryTestFactory.tryNumber == retryTestOptions.maxTries
     }
 
@@ -73,12 +73,12 @@ class RetryTest extends APISpec {
         HttpPipeline pipeline = HttpPipeline.build(new RequestRetryFactory(retryTestOptions), retryTestFactory)
 
         when:
-        pipeline.sendRequestAsync(new HttpRequest(null, HttpMethod.GET, retryTestURL, new HttpHeaders(),
-                Flowable.just(RequestRetryTestFactory.RETRY_TEST_DEFAULT_DATA), null)).blockingGet()
+       HttpResponse response = pipeline.sendRequestAsync(new HttpRequest(null, HttpMethod.GET, retryTestURL,
+               new HttpHeaders(), Flowable.just(RequestRetryTestFactory.RETRY_TEST_DEFAULT_DATA), null))
+               .blockingGet()
 
         then:
-        def e = thrown(StorageErrorException)
-        e.response().statusCode() == 400
+        response.statusCode() == 400
         retryTestFactory.tryNumber == 1
     }
 
@@ -89,12 +89,12 @@ class RetryTest extends APISpec {
         HttpPipeline pipeline = HttpPipeline.build(new RequestRetryFactory(retryTestOptions), retryTestFactory)
 
         when:
-        pipeline.sendRequestAsync(new HttpRequest(null, HttpMethod.GET, retryTestURL, new HttpHeaders(),
-                Flowable.just(RequestRetryTestFactory.RETRY_TEST_DEFAULT_DATA), null)).blockingGet()
+        HttpResponse response = pipeline.sendRequestAsync(new HttpRequest(null, HttpMethod.GET,
+                retryTestURL, new HttpHeaders(), Flowable.just(RequestRetryTestFactory.RETRY_TEST_DEFAULT_DATA),
+                null)).blockingGet()
 
         then:
-        def e = thrown(StorageErrorException)
-        e.response().statusCode() == 400
+        response.statusCode() == 400
         retryTestFactory.tryNumber == 2
     }
 
@@ -112,7 +112,7 @@ class RetryTest extends APISpec {
 
         then:
         response.statusCode() == 200
-        retryTestFactory.tryNumber == 2
+        retryTestFactory.tryNumber == 5
     }
 
     def "Retries try timeout"() {

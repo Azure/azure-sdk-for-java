@@ -110,7 +110,7 @@ public final class BlobSASPermission {
                     permissions.read = true;
                     break;
                 case 'a':
-                    permissions.read = true;
+                    permissions.add = true;
                     break;
                 case 'c':
                     permissions.create = true;
