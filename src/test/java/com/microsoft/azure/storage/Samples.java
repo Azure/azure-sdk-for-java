@@ -23,8 +23,10 @@ import com.microsoft.rest.v2.http.HttpPipelineLogLevel;
 import com.microsoft.rest.v2.http.HttpPipelineLogger;
 import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.util.FlowableUtil;
-import io.reactivex.*;
+import io.reactivex.Completable;
+import io.reactivex.Flowable;
 import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.reactivex.functions.BiConsumer;
 import org.junit.Test;
 
@@ -35,8 +37,6 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
-import java.nio.channels.FileChannel;
-import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.security.InvalidKeyException;
 import java.time.OffsetDateTime;
@@ -46,6 +46,56 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Samples {
+    public static Single<Boolean> createContainerIfNotExists(ContainerURL containerURL) {
+        return containerURL.create(null, null).map((r) -> true).onErrorResumeNext((e) -> {
+            if (e instanceof RestException) {
+                RestException re = (RestException) e;
+                if (re.getMessage().contains("ContainerAlreadyExists")) {
+                    return Single.just(false);
+                }
+            }
+
+            return Single.error(e);
+        });
+    }
+
+    public static Single<Boolean> deleteContainerIfExists(ContainerURL containerURL) {
+        return containerURL.delete(null).map((r) -> true).onErrorResumeNext((e) -> {
+            if (e instanceof RestException) {
+                RestException re = (RestException) e;
+                if (re.getMessage().contains("ContainerNotFound")) {
+                    return Single.just(false);
+                }
+            }
+
+            return Single.error(e);
+        });
+    }
+
+    public static Observable<BlobItem> listBlobsLazy(ContainerURL containerURL, ListBlobsOptions listBlobsOptions) {
+        return containerURL.listBlobsFlatSegment(null, listBlobsOptions)
+                .flatMapObservable((r) -> listContainersResultToContainerObservable(containerURL, listBlobsOptions, r));
+    }
+
+    private static Observable<BlobItem> listContainersResultToContainerObservable(
+            ContainerURL containerURL, ListBlobsOptions listBlobsOptions,
+            ContainerListBlobFlatSegmentResponse response) {
+        Observable<BlobItem> result = Observable.fromIterable(response.body().segment().blobItems());
+
+        System.out.println("!!! count: " + response.body().segment().blobItems());
+
+        if (response.body().nextMarker() != null) {
+            System.out.println("Hit continuation in listing at " + response.body().segment().blobItems().get(
+                    response.body().segment().blobItems().size() - 1).name());
+            // Recursively add the continuation items to the observable.
+            result = result.concatWith(containerURL.listBlobsFlatSegment(response.body().nextMarker(), listBlobsOptions)
+                    .flatMapObservable((r) ->
+                            listContainersResultToContainerObservable(containerURL, listBlobsOptions, r)));
+        }
+
+        return result;
+    }
+
     private String getAccountName() {
         return System.getenv("ACCOUNT_NAME");
     }
@@ -115,13 +165,13 @@ public class Samples {
                         // Download the blob's content.
                         blobURL.download(null, null, false))
                 .flatMap(blobDownloadResponse ->
-                // Verify that the blob data round-tripped correctly.
-                FlowableUtil.collectBytesInBuffer(blobDownloadResponse.body())
-                        .doOnSuccess(byteBuffer -> {
-                            if (byteBuffer.compareTo(ByteBuffer.wrap(data.getBytes())) != 0) {
-                                throw new Exception("The downloaded data does not match the uploaded data.");
-                            }
-                        }))
+                        // Verify that the blob data round-tripped correctly.
+                        FlowableUtil.collectBytesInBuffer(blobDownloadResponse.body())
+                                .doOnSuccess(byteBuffer -> {
+                                    if (byteBuffer.compareTo(ByteBuffer.wrap(data.getBytes())) != 0) {
+                                        throw new Exception("The downloaded data does not match the uploaded data.");
+                                    }
+                                }))
                 .flatMap(byteBuffer ->
                         /*
                          List the blob(s) in our container; since a container may hold millions of blobs, this is done
@@ -220,7 +270,7 @@ public class Samples {
             listBlobsHierarchySegment and pass the result through this helper function.
              */
             return containerURL.listBlobsHierarchySegment(nextMarker, response.body().delimiter(),
-                    new ListBlobsOptions(null, null,1))
+                    new ListBlobsOptions(null, null, 1))
                     .flatMap(containersListBlobHierarchySegmentResponse ->
                             listBlobsHierarchyHelper(containerURL, containersListBlobHierarchySegmentResponse));
         }
@@ -392,16 +442,14 @@ public class Samples {
 
                             // Examine the raw response.
                             HttpResponse response = exception.response();
-                        }
-                        else if (exception.errorCode()
+                        } else if (exception.errorCode()
                                 == StorageErrorCode.CONTAINER_ALREADY_EXISTS) {
                             // Process the error
                         }
                     }
                     // We just fake a successful response to prevent the example from crashing.
                     return Single.just(
-                            new ContainerCreateResponse(null,200, null, null,
-                                    null));
+                            new ContainerCreateResponse(null,200, null, null, null));
                 })
                 /*
                 This will synchronize all the above operations. This is strongly discouraged for use in production as
@@ -634,7 +682,7 @@ public class Samples {
                 .delay(31, TimeUnit.SECONDS)
                 // Now this will work.
                 .andThen(anonymousURL.download(null, null,
-                                false))
+                        false))
                 .flatMap(blobDownloadResponse ->
                         // Delete the container and the blob within in.
                         containerURL.delete(null))
@@ -998,8 +1046,10 @@ public class Samples {
         containerURL.create(null, null)
                 .flatMapObservable(response ->
                         // Create an Observable that will yield each of the Strings one at a time.
-                        Observable.fromIterable(Arrays.asList(data)))
-                .concatMap(block -> {
+                        Observable.fromIterable(Arrays.asList(data))
+                )
+                // Items emitted by an Observable that results from a concatMap call will preserve the original order.
+                .concatMapEager(block -> {
                     /*
                      Generate a base64 encoded blockID. Note that all blockIDs must be the same length. It is generally
                      considered best practice to use UUIDs for the blockID.
@@ -1037,6 +1087,9 @@ public class Samples {
                          to include blocks that have been staged but not committed.
                          */
                         blobURL.getBlockList(BlockListType.ALL, null))
+                .flatMap(response ->
+                        // Delete the container
+                        containerURL.delete(null))
                 /*
                 This will synchronize all the above operations. This is strongly discouraged for use in production as
                 it eliminates the benefits of asynchronous IO. We use it here to enable the sample to complete and
@@ -1270,6 +1323,9 @@ public class Samples {
         // TODO:
     }
 
+    // TODO: Lease? Root container?
+    // TODO: Advanced pipeline configuration
+
     // This example shows how to copy a source document on the Internet to a blob.
     @Test
     public void exampleBlobURL_startCopy() throws MalformedURLException, InvalidKeyException {
@@ -1319,14 +1375,17 @@ public class Samples {
         Thread.sleep(2000);
         return blobURL.getProperties(null)
                 .flatMap(response1 ->
-                    waitForCopyHelper(blobURL, response1));
+                        waitForCopyHelper(blobURL, response1));
 
     }
     // </start_copy_helper>
 
-    // This example shows how to copy a large file in blocks (chunks) to a block blob.
+    /*
+    This example shows how to copy a large file in blocks (chunks) to a block blob and then download it from the blob
+    back to a file.
+     */
     @Test
-    public void exampleUploadFileToBlockBlob() throws IOException, InvalidKeyException {
+    public void exampleFileTransfer() throws IOException, InvalidKeyException {
         // From the Azure portal, get your Storage account's name and account key.
         String accountName = getAccountName();
         String accountKey = getAccountKey();
@@ -1343,25 +1402,22 @@ public class Samples {
 
         // Create the container.
         containerURL.create(null, null)
-                .flatMap(response -> {
-                    AsynchronousFileChannel channel =
-                            AsynchronousFileChannel.open(tempFile.toPath(), StandardOpenOption.WRITE);
-                    return Single.fromFuture(channel.write(ByteBuffer.wrap("Big data".getBytes()), 0))
-                            .doAfterTerminate(channel::close);
-                })
-                .flatMap(response -> {
-                    FileChannel channel = FileChannel.open(tempFile.toPath(), StandardOpenOption.READ);
-                    return TransferManager.uploadFileToBlockBlob(channel, blobURL,
-                            BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null)
-                            .doAfterTerminate(channel::close);
-                })
-                .flatMap(response ->
-                        blobURL.download(null, null, false))
-                .flatMap(response ->
-                        // Print out the data.
-                        FlowableUtil.collectBytesInBuffer(response.body())
-                                .doOnSuccess(bytes ->
-                                        System.out.println(new String(bytes.array())))
+                .flatMap(response -> Single.using(
+                        () -> AsynchronousFileChannel.open(tempFile.toPath(), StandardOpenOption.WRITE),
+                        channel -> Single.fromFuture(channel
+                                .write(ByteBuffer.wrap("Big data".getBytes()), 0)),
+                        AsynchronousFileChannel::close
+                ))
+                .flatMap(response -> Single.using(
+                        () -> AsynchronousFileChannel.open(tempFile.toPath(), StandardOpenOption.READ),
+                        channel -> TransferManager.uploadFileToBlockBlob(channel, blobURL,
+                                BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null),
+                        AsynchronousFileChannel::close)
+                )
+                .flatMap(response -> Single.using(
+                        () -> AsynchronousFileChannel.open(tempFile.toPath(), StandardOpenOption.WRITE),
+                        channel -> TransferManager.downloadBlobToFile(channel, blobURL, null, null),
+                        AsynchronousFileChannel::close)
                 )
                 .flatMap(response ->
                         // Delete the container.
@@ -1380,7 +1436,7 @@ public class Samples {
     byte successfully read before the failure.
      */
     @Test
-    public void exampleDownloadStream() throws MalformedURLException, InvalidKeyException {
+    public void exampleReliableDownloadStream() throws IOException, InvalidKeyException {
         // From the Azure portal, get your Storage account's name and account key.
         String accountName = getAccountName();
         String accountKey = getAccountKey();
@@ -1395,6 +1451,9 @@ public class Samples {
         RetryReaderOptions options = new RetryReaderOptions();
         options.maxRetryRequests = 5;
 
+        File file = File.createTempFile("tempfile", "txt");
+        file.deleteOnExit();
+
         /*
         Passing RetryReaderOptions to a call to body() will ensure the download stream is intelligently retried in case
         of failures. The returned body is still a Flowable<ByteBuffer> and may be used as a normal download stream.
@@ -1402,8 +1461,10 @@ public class Samples {
         containerURL.create(null, null)
                 .flatMap(response ->
                         // Upload some data to a blob
-                        TransferManager.uploadByteBufferToBlockBlob(ByteBuffer.wrap("Data".getBytes()), blobURL,
-                                BlockBlobURL.MAX_STAGE_BLOCK_BYTES, TransferManager.UploadToBlockBlobOptions.DEFAULT))
+                        Single.using(() -> AsynchronousFileChannel.open(file.toPath()),
+                                fileChannel -> TransferManager.uploadFileToBlockBlob(fileChannel, blobURL,
+                                BlockBlobURL.MAX_STAGE_BLOCK_BYTES, TransferManager.UploadToBlockBlobOptions.DEFAULT),
+                                AsynchronousFileChannel::close))
                 .flatMap(response ->
                         blobURL.download(null, null, false))
                 .flatMapPublisher(response ->
@@ -1411,6 +1472,7 @@ public class Samples {
                 .lastOrError() // Place holder for processing all the intermediary data.
                 // After the last piece of data, clean up by deleting the container and all its contents.
                 .flatMap(buffer ->
+                        // Delete the container
                         containerURL.delete(null))
                 /*
                 This will synchronize all the above operations. This is strongly discouraged for use in production as
@@ -1420,9 +1482,6 @@ public class Samples {
                 .blockingGet();
 
     }
-
-    // TODO: Lease? Root container?
-    // TODO: Advanced pipeline configuration
 
     /*
     This example demonstrates two common patterns: 1. Creating a container if it does not exist and continuing normally
@@ -1462,36 +1521,6 @@ public class Samples {
                 .blockingGet();
     }
 
-    public static Single<Boolean> createContainerIfNotExists(ContainerURL containerURL)
-    {
-        return containerURL.create(null, null).map((r) -> true).onErrorResumeNext((e) -> {
-            if (e instanceof RestException) {
-                RestException re = (RestException)e;
-                if (re.getMessage().contains("ContainerAlreadyExists")) {
-                    return Single.just(false);
-                }
-            }
-
-            return Single.error(e);
-        });
-    }
-
-    public static Single<Boolean> deleteContainerIfExists(ContainerURL containerURL)
-    {
-        return containerURL.delete(null).map((r) -> true).onErrorResumeNext((e) -> {
-            if (e instanceof RestException)
-            {
-                RestException re = (RestException)e;
-                if (re.getMessage().contains("ContainerNotFound"))
-                {
-                    return Single.just(false);
-                }
-            }
-
-            return Single.error(e);
-        });
-    }
-
     /*
     The following example demonstrates a useful scenario in which it is desirable to receive listed elements as
     individual items in an observable rather than a seqeuence of lists.
@@ -1525,33 +1554,6 @@ public class Samples {
                 demonstrate its effectiveness.
                  */
                 .blockingGet();
-    }
-
-    public static Observable<BlobItem> listBlobsLazy(ContainerURL containerURL, ListBlobsOptions listBlobsOptions)
-    {
-        return containerURL.listBlobsFlatSegment(null, listBlobsOptions)
-                .flatMapObservable((r) -> listContainersResultToContainerObservable(containerURL, listBlobsOptions, r));
-    }
-
-    private static Observable<BlobItem> listContainersResultToContainerObservable(
-            ContainerURL containerURL, ListBlobsOptions listBlobsOptions,
-            ContainerListBlobFlatSegmentResponse response)
-    {
-        Observable<BlobItem> result = Observable.fromIterable(response.body().segment().blobItems());
-
-        System.out.println("!!! count: " + response.body().segment().blobItems());
-
-        if (response.body().nextMarker() != null)
-        {
-            System.out.println("Hit continuation in listing at " + response.body().segment().blobItems().get(
-                    response.body().segment().blobItems().size()-1).name());
-            // Recursively add the continuation items to the observable.
-            result = result.concatWith(containerURL.listBlobsFlatSegment(response.body().nextMarker(), listBlobsOptions)
-                    .flatMapObservable((r) ->
-                            listContainersResultToContainerObservable(containerURL, listBlobsOptions, r)));
-        }
-
-        return result;
     }
 
     /*
@@ -1641,16 +1643,14 @@ public class Samples {
 
                             // Examine the raw response.
                             HttpResponse response = exception.response();
-                        }
-                        else if (exception.errorCode()
+                        } else if (exception.errorCode()
                                 == StorageErrorCode.CONTAINER_ALREADY_EXISTS) {
                             // Process the error
                         }
                     }
                     // We just fake a successful response to prevent the example from crashing.
                     return Single.just(
-                            new ContainerCreateResponse(null,200, null, null,
-                                    null));
+                            new ContainerCreateResponse(null,200, null, null, null));
                 }).subscribe();
         // </exception>
 
@@ -1814,7 +1814,7 @@ public class Samples {
                         Observable.fromIterable(Arrays.asList(blockData))
                 )
                 // Items emitted by an Observable that results from a concatMap call will preserve the original order.
-                .concatMap(block -> {
+                .concatMapEager(block -> {
                     /*
                      Generate a base64 encoded blockID. Note that all blockIDs must be the same length. It is generally
                      considered best practice to use UUIDs for the blockID.
@@ -1873,14 +1873,13 @@ public class Samples {
                 .flatMap(response ->
                         // Create the append blob. This creates a zero-length blob that we can now append to.
                         appendBlobURL.create(null, null, null))
-                .toObservable()
-                .flatMap(response ->
+                .flatMapObservable(response ->
                         // This range will act as our for loop to create 5 blocks
                         Observable.range(0, 5))
-                .concatMapCompletable(i -> {
+                .concatMapEager(i -> {
                     String text = String.format(Locale.ROOT, "Appending block #%d\n", i);
                     return appendBlobURL.appendBlock(Flowable.just(ByteBuffer.wrap(text.getBytes())), text.length(),
-                            null).toCompletable();
+                            null).toObservable();
                 }).subscribe();
         // </append_blob>
 
@@ -1962,7 +1961,7 @@ public class Samples {
                                 null, null, null))
                 .flatMap(response ->
                         blobURL.getProperties(null))
-                .flatMap(response-> {
+                .flatMap(response -> {
                     Metadata newMetadata = new Metadata(response.headers().metadata());
                     // If one of the HTTP properties is set, all must be set again or they will be cleared.
                     BlobHTTPHeaders newHeaders = new BlobHTTPHeaders(response.headers().cacheControl(),
@@ -2017,7 +2016,7 @@ public class Samples {
 
         // <list_blobs_hierarchy>
         containerURL.listBlobsHierarchySegment(null, "my_delimiter",
-                new ListBlobsOptions(null, null,1))
+                new ListBlobsOptions(null, null, 1))
                 .flatMap(containersListBlobHierarchySegmentResponse ->
                         // The asynchronous requests require we use recursion to continue our listing.
                         listBlobsHierarchyHelper(containerURL, containersListBlobHierarchySegmentResponse))
@@ -2142,25 +2141,31 @@ public class Samples {
                 .subscribe();
         // </container_lease>
 
-        // <tm_buffers>
-        List<ByteBuffer> dataList =
-                Arrays.asList(ByteBuffer.wrap("Data1".getBytes()), ByteBuffer.wrap("Data2".getBytes()));
-        TransferManager.uploadByteBuffersToBlockBlob(dataList, blockBlobURL, null)
-                .subscribe();
-        // </tm_buffers>
-
-        // <tm_buffer>
         ByteBuffer largeData = ByteBuffer.wrap("LargeData".getBytes());
-        TransferManager.uploadByteBufferToBlockBlob(largeData, blockBlobURL, BlockBlobURL.MAX_STAGE_BLOCK_BYTES,
-                null)
-                .subscribe();
-        // </tm_buffer>
 
+        ByteBuffer largeBuffer = ByteBuffer.allocate(10*1024);
+
+        File tempFile = File.createTempFile("BigFile", ".bin");
+        tempFile.deleteOnExit();
         // <tm_file>
-        FileChannel fileChannel = FileChannel.open(Paths.get("file\\path"), StandardOpenOption.READ);
-        TransferManager.uploadFileToBlockBlob(fileChannel, blockBlobURL, BlockBlobURL.MAX_STAGE_BLOCK_BYTES,
-                null)
-                .subscribe();
+        Single.using(
+                () -> AsynchronousFileChannel.open(tempFile.toPath(), StandardOpenOption.WRITE),
+                channel -> Single.fromFuture(channel
+                        .write(ByteBuffer.wrap("Big data".getBytes()), 0)), AsynchronousFileChannel::close)
+                .flatMap(response -> Single.using(
+                        () -> AsynchronousFileChannel.open(tempFile.toPath(), StandardOpenOption.READ),
+                        channel -> TransferManager.uploadFileToBlockBlob(channel, blobURL,
+                                BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null),
+                        AsynchronousFileChannel::close)
+                )
+                .flatMap(response -> Single.using(
+                        () -> AsynchronousFileChannel.open(tempFile.toPath(), StandardOpenOption.WRITE),
+                        channel -> TransferManager.downloadBlobToFile(channel, blobURL, null, null),
+                        AsynchronousFileChannel::close)
+                )
+                .flatMap(response ->
+                        // Delete the container.
+                        containerURL.delete(null));
         // </tm_file>
 
         // <service_getsetprops>
@@ -2188,6 +2193,15 @@ public class Samples {
                         listContainersHelper(serviceURL, listContainersSegmentResponse))
                 .subscribe();
         // </service_list>
+
+        // <account_info>
+        serviceURL.getAccountInfo()
+                .subscribe();
+        containerURL.getAccountInfo()
+                .subscribe();
+        blobURL.getAccountInfo()
+                .subscribe();
+        // </account_info>
     }
 }
 

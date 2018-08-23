@@ -22,7 +22,6 @@ import com.microsoft.rest.v2.policy.RequestPolicy;
 import com.microsoft.rest.v2.policy.RequestPolicyFactory;
 import com.microsoft.rest.v2.policy.RequestPolicyOptions;
 import io.reactivex.Single;
-import io.reactivex.functions.Consumer;
 
 import java.net.HttpURLConnection;
 import java.util.Locale;
@@ -98,78 +97,73 @@ public final class LoggingFactory implements RequestPolicyFactory {
 
             if (this.options.shouldLog(HttpPipelineLogLevel.INFO)) {
                 this.options.log(HttpPipelineLogLevel.INFO,
-                        "'%s'==> OUTGOING REQUEST (Try number='%d')%n", request.url(), this.tryCount);
+                        String.format("'%s'==> OUTGOING REQUEST (Try number='%d')%n", request.url(), this.tryCount));
             }
 
             // TODO: Need to change logic slightly when support for writing to event log/sys log support is added
             return nextPolicy.sendAsync(request)
-                    .doOnError(new Consumer<Throwable>() {
-                        @Override
-                        public void accept(Throwable throwable) {
-                            if (options.shouldLog(HttpPipelineLogLevel.ERROR)) {
-                                options.log(HttpPipelineLogLevel.ERROR,
-                                        "Unexpected failure attempting to make request.%nError message:'%s'%n",
-                                        throwable.getMessage());
-                            }
+                    .doOnError(throwable -> {
+                        if (options.shouldLog(HttpPipelineLogLevel.ERROR)) {
+                            options.log(HttpPipelineLogLevel.ERROR,
+                                    String.format(
+                                            "Unexpected failure attempting to make request.%nError message:'%s'%n",
+                                            throwable.getMessage()));
                         }
                     })
-                    .doOnSuccess(new Consumer<HttpResponse>() {
-                        @Override
-                        public void accept(HttpResponse response) {
-                            long requestEndTime = System.currentTimeMillis();
-                            long requestCompletionTime = requestEndTime - requestStartTime;
-                            long operationDuration = requestEndTime - operationStartTime;
-                            HttpPipelineLogLevel currentLevel = HttpPipelineLogLevel.INFO;
-                            // Check if error should be logged since there is nothing of higher priority.
-                            if (!options.shouldLog(HttpPipelineLogLevel.ERROR)) {
-                                return;
+                    .doOnSuccess(response -> {
+                        long requestEndTime = System.currentTimeMillis();
+                        long requestCompletionTime = requestEndTime - requestStartTime;
+                        long operationDuration = requestEndTime - operationStartTime;
+                        HttpPipelineLogLevel currentLevel = HttpPipelineLogLevel.INFO;
+                        // Check if error should be logged since there is nothing of higher priority.
+                        if (!options.shouldLog(HttpPipelineLogLevel.ERROR)) {
+                            return;
+                        }
+
+                        String logMessage = Constants.EMPTY_STRING;
+                        if (options.shouldLog(HttpPipelineLogLevel.INFO)) {
+                            // Assume success and default to informational logging.
+                            logMessage = "Successfully Received Response" + System.lineSeparator();
+                        }
+
+                        // If the response took too long, we'll upgrade to warning.
+                        if (requestCompletionTime >=
+                                factory.loggingOptions.getMinDurationToLogSlowRequestsInMs()) {
+                            // Log a warning if the try duration exceeded the specified threshold.
+                            if (options.shouldLog(HttpPipelineLogLevel.WARNING)) {
+                                currentLevel = HttpPipelineLogLevel.WARNING;
+                                logMessage = String.format(Locale.ROOT,
+                                        "SLOW OPERATION. Duration > %d ms.%n",
+                                        factory.loggingOptions.getMinDurationToLogSlowRequestsInMs());
+                            }
+                        }
+
+                        if (((response.statusCode() >= 400 && response.statusCode() <= 499) &&
+                                (response.statusCode() != HttpURLConnection.HTTP_NOT_FOUND &&
+                                        response.statusCode() != HttpURLConnection.HTTP_CONFLICT &&
+                                        response.statusCode() != HttpURLConnection.HTTP_PRECON_FAILED &&
+                                        response.statusCode() != 416)) ||
+                                        /* 416 is missing from the Enum but it is Range Not Satisfiable */
+                                (response.statusCode() >= 500 && response.statusCode() <= 509)) {
+                            String errorString = String.format(Locale.ROOT,
+                                    "REQUEST ERROR%nHTTP request failed with status code:'%d'%n",
+                                    response.statusCode());
+                            if (currentLevel == HttpPipelineLogLevel.WARNING) {
+                                logMessage += errorString;
+                            }
+                            else {
+                                logMessage = errorString;
                             }
 
-                            String logMessage = Constants.EMPTY_STRING;
-                            if (options.shouldLog(HttpPipelineLogLevel.INFO)) {
-                                // Assume success and default to informational logging.
-                                logMessage = "Successfully Received Response" + System.lineSeparator();
-                            }
+                            currentLevel = HttpPipelineLogLevel.ERROR;
+                            // TODO: LOG THIS TO WINDOWS EVENT LOG/SYS LOG
+                        }
 
-                            // If the response took too long, we'll upgrade to warning.
-                            if (requestCompletionTime >=
-                                    factory.loggingOptions.getMinDurationToLogSlowRequestsInMs()) {
-                                // Log a warning if the try duration exceeded the specified threshold.
-                                if (options.shouldLog(HttpPipelineLogLevel.WARNING)) {
-                                    currentLevel = HttpPipelineLogLevel.WARNING;
-                                    logMessage = String.format(Locale.ROOT,
-                                            "SLOW OPERATION. Duration > %d ms.%n",
-                                            factory.loggingOptions.getMinDurationToLogSlowRequestsInMs());
-                                }
-                            }
-
-                            if (response.statusCode() >= HttpURLConnection.HTTP_INTERNAL_ERROR ||
-                                    (response.statusCode() >= HttpURLConnection.HTTP_BAD_REQUEST &&
-                                            response.statusCode() != HttpURLConnection.HTTP_NOT_FOUND &&
-                                            response.statusCode() != HttpURLConnection.HTTP_CONFLICT &&
-                                            response.statusCode() != HttpURLConnection.HTTP_PRECON_FAILED &&
-                                            response.statusCode() != 416
-                                            /* 416 is missing from the Enum but it is Range Not Satisfiable */)) {
-                                String errorString = String.format(Locale.ROOT,
-                                        "REQUEST ERROR%nHTTP request failed with status code:'%d'%n",
-                                        response.statusCode());
-                                if (currentLevel == HttpPipelineLogLevel.WARNING) {
-                                    logMessage += errorString;
-                                }
-                                else {
-                                    logMessage = errorString;
-                                }
-
-                                currentLevel = HttpPipelineLogLevel.ERROR;
-                                // TODO: LOG THIS TO WINDOWS EVENT LOG/SYS LOG
-                            }
-
-                            if (options.shouldLog(currentLevel)) {
-                                String messageInfo = String.format(Locale.ROOT,
-                                        "Request try:'%d', request duration:'%d' ms, operation duration:'%d' ms%n",
-                                        tryCount, requestCompletionTime, operationDuration);
-                                options.log(HttpPipelineLogLevel.INFO, logMessage + messageInfo);
-                            }
+                        if (options.shouldLog(currentLevel)) {
+                            String messageInfo = String.format(Locale.ROOT,
+                                    "Request try:'%d', request duration:'%d' ms, operation duration:'%d' ms%n",
+                                    tryCount, requestCompletionTime, operationDuration);
+                            options.log(currentLevel, logMessage + messageInfo);
                         }
                     });
         }

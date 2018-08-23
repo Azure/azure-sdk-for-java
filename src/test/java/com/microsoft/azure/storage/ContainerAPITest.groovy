@@ -15,6 +15,7 @@
 
 package com.microsoft.azure.storage
 
+import com.microsoft.azure.storage.blob.AnonymousCredentials
 import com.microsoft.azure.storage.blob.AppendBlobURL
 import com.microsoft.azure.storage.blob.BlobURL
 import com.microsoft.azure.storage.blob.BlobListingDetails
@@ -27,9 +28,11 @@ import com.microsoft.azure.storage.blob.ListBlobsOptions
 import com.microsoft.azure.storage.blob.Metadata
 import com.microsoft.azure.storage.blob.PageBlobURL
 import com.microsoft.azure.storage.blob.PipelineOptions
+import com.microsoft.azure.storage.blob.ServiceURL
 import com.microsoft.azure.storage.blob.StorageException
 import com.microsoft.azure.storage.blob.StorageURL
 import com.microsoft.azure.storage.blob.models.AccessPolicy
+import com.microsoft.azure.storage.blob.models.AccessTier
 import com.microsoft.azure.storage.blob.models.AppendBlobCreateResponse
 import com.microsoft.azure.storage.blob.models.BlobGetPropertiesResponse
 import com.microsoft.azure.storage.blob.models.BlobItem
@@ -154,6 +157,8 @@ class ContainerAPITest extends APISpec {
         headers.leaseState() == LeaseStateType.AVAILABLE
         headers.leaseStatus() == LeaseStatusType.UNLOCKED
         headers.metadata().size() == 0
+        !headers.hasImmutabilityPolicy()
+        !headers.hasLegalHold()
     }
 
     def "Get properties lease"() {
@@ -553,6 +558,31 @@ class ContainerAPITest extends APISpec {
         headers.date() != null
         blobs.size() == 1
         blobs.get(0).name() == name
+        blobs.get(0).properties().blobType() == BlobType.PAGE_BLOB
+        blobs.get(0).properties().copyCompletionTime() == null
+        blobs.get(0).properties().copyStatusDescription() == null
+        blobs.get(0).properties().copyId() == null
+        blobs.get(0).properties().copyProgress() == null
+        blobs.get(0).properties().copySource() == null
+        blobs.get(0).properties().copyStatus() == null
+        blobs.get(0).properties().incrementalCopy() == null
+        blobs.get(0).properties().destinationSnapshot() == null
+        blobs.get(0).properties().leaseDuration() == null
+        blobs.get(0).properties().leaseState() == LeaseStateType.AVAILABLE
+        blobs.get(0).properties().leaseStatus() == LeaseStatusType.UNLOCKED
+        blobs.get(0).properties().contentLength() != null
+        blobs.get(0).properties().contentType() != null
+        blobs.get(0).properties().contentMD5() == null
+        blobs.get(0).properties().contentEncoding() == null
+        blobs.get(0).properties().contentDisposition() == null
+        blobs.get(0).properties().contentLanguage() == null
+        blobs.get(0).properties().cacheControl() == null
+        blobs.get(0).properties().blobSequenceNumber() == 0
+        blobs.get(0).properties().serverEncrypted()
+        blobs.get(0).properties().accessTierInferred()
+        blobs.get(0).properties().accessTier() == AccessTier.HOT
+        blobs.get(0).properties().archiveStatus() == null
+        blobs.get(0).properties().creationTime() != null
     }
 
     def setupListBlobsTest(String normalName, String copyName, String metadataName, String uncommittedName) {
@@ -1439,6 +1469,18 @@ class ContainerAPITest extends APISpec {
         propsResponse.headers().blobType() == BlobType.APPEND_BLOB
     }
 
+    def "Web container"() {
+        setup:
+        def webContainer = primaryServiceURL.createContainerURL(ContainerURL.STATIC_WEBSITE_CONTAINER_NAME)
+
+        when:
+        // Validate some basic operation.
+        webContainer.setAccessPolicy(null, null, null).blockingGet()
+
+        then:
+        notThrown(StorageException)
+    }
+
     def "With pipeline"() {
         setup:
         ContainerURL withPipeline = cu.withPipeline(HttpPipeline.build(new RequestPolicyFactory() {
@@ -1459,5 +1501,27 @@ class ContainerAPITest extends APISpec {
         then:
         def e = thrown(Exception)
         e.getMessage().contains("Expected error")
+    }
+
+    def "Get account info"() {
+        when:
+        def response = primaryServiceURL.getAccountInfo().blockingGet()
+
+        then:
+        response.headers().date() != null
+        response.headers().version() != null
+        response.headers().requestId() != null
+        response.headers().accountKind() != null
+        response.headers().skuName() != null
+    }
+
+    def "Get account info error"() {
+        when:
+        ServiceURL serviceURL = new ServiceURL(primaryServiceURL.toURL(),
+                StorageURL.createPipeline(new AnonymousCredentials(), new PipelineOptions()))
+        serviceURL.createContainerURL(generateContainerName()).getAccountInfo().blockingGet()
+
+        then:
+        thrown(StorageException)
     }
 }

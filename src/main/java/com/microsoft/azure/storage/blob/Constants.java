@@ -121,7 +121,7 @@ final class Constants {
         /**
          * Specifies the value to use for UserAgent header.
          */
-        static final String USER_AGENT_VERSION = "10.0.3-Preview";
+        static final String USER_AGENT_VERSION = "10.0.4-rc";
 
         private HeaderConstants() {
             // Private to prevent construction.
@@ -172,6 +172,12 @@ final class Constants {
      * The query parameter for snapshots.
      */
     static final String SNAPSHOT_QUERY_PARAMETER = "snapshot";
+
+    /**
+     * The default amount of parallelism for TransferManager operations.
+     */
+    // We chose this to match Go, which followed AWS' default.
+    static final int TRANSFER_MANAGER_DEFAULT_PARALLELISM = 5;
 
     /**
      * Private Default Ctor

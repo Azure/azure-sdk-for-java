@@ -14,6 +14,11 @@
  */
 package com.microsoft.azure.storage.blob;
 
+/**
+ * An {@code IProgressReceiver} is an object that can be used to report progress on network transfers. When specified on
+ * transfer operations, the {@code reportProgress} method will be called periodically with the total number of bytes
+ * transferred. The user may configure this method to report progress in whatever format desired.
+ */
 public interface IProgressReceiver {
 
     /**

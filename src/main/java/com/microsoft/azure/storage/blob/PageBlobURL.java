@@ -48,12 +48,14 @@ public final class PageBlobURL extends BlobURL {
     public static final int MAX_PUT_PAGES_BYTES = 4 * Constants.MB;
 
     /**
-     * Creates a new {@link PageBlobURL} object.
+     * Creates a {@code PageBlobURL} object pointing to the account specified by the URL and using the provided
+     * pipeline to make HTTP requests.
      *
      * @param url
-     *      A {@code java.net.URL} to a page blob.
+     *      A {@code URL} to an Azure Storage page blob.
      * @param pipeline
-     *      A {@link HttpPipeline} for sending requests.
+     *      A {@code HttpPipeline} which configures the behavior of HTTP exchanges. Please refer to the createPipeline
+     *      method on {@link StorageURL} for more information.
      */
     public PageBlobURL(URL url, HttpPipeline pipeline) {
         super( url, pipeline);
@@ -98,7 +100,7 @@ public final class PageBlobURL extends BlobURL {
      * @apiNote
      * ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobURL.create")] \n
-     * For more samples, please see the [Samples file](https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      *
      * @param size
      *      Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
@@ -158,7 +160,7 @@ public final class PageBlobURL extends BlobURL {
      * @apiNote
      * ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobURL.uploadPages")] \n
-     * For more samples, please see the [Samples file](https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      *
      * @param pageRange
      *      A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start offset must
@@ -201,7 +203,7 @@ public final class PageBlobURL extends BlobURL {
      * @apiNote
      * ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobURL.clearPages")] \n
-     * For more samples, please see the [Samples file](https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      *
      * @param pageRange
      *      A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start offset must
@@ -241,7 +243,7 @@ public final class PageBlobURL extends BlobURL {
      * @apiNote
      * ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobURL.getPageRanges")] \n
-     * For more samples, please see the [Samples file](https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      *
      * @param blobRange
      *      {@link BlobRange}
@@ -272,7 +274,7 @@ public final class PageBlobURL extends BlobURL {
      * @apiNote
      * ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_diff "Sample code for PageBlobURL.getPageRangesDiff")] \n
-     * For more samples, please see the [Samples file](https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      *
      * @param blobRange
      *     {@link BlobRange}
@@ -311,7 +313,7 @@ public final class PageBlobURL extends BlobURL {
      * @apiNote
      * ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobURL.resize")] \n
-     * For more samples, please see the [Samples file](https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      *
      * @param size
      *      Resizes a page blob to the specified size. If the specified value is less than the current size of the
@@ -347,7 +349,7 @@ public final class PageBlobURL extends BlobURL {
      * @apiNote
      * ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobURL.updateSequenceNumber")] \n
-     * For more samples, please see the [Samples file](https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      *
      * @param action
      *      Indicates how the service should modify the blob's sequence number.
@@ -394,14 +396,14 @@ public final class PageBlobURL extends BlobURL {
      *      The source page blob.
      * @param snapshot
      *      The snapshot on the copy source.
-     * @param accessConditions
+     * @param httpAccessConditions
      *      {@link BlobAccessConditions}
      * @return
      *      Emits the successful response.
      */
     public Single<PageBlobCopyIncrementalResponse> copyIncremental(
-            URL source, String snapshot, BlobAccessConditions accessConditions) {
-        accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
+            URL source, String snapshot, HTTPAccessConditions httpAccessConditions) {
+        httpAccessConditions = httpAccessConditions == null ? HTTPAccessConditions.NONE : httpAccessConditions;
 
         UrlBuilder builder = UrlBuilder.parse(source);
         builder.setQueryParameter(Constants.SNAPSHOT_QUERY_PARAMETER, snapshot);
@@ -411,12 +413,12 @@ public final class PageBlobURL extends BlobURL {
             // We are parsing a valid url and adding a query parameter. If this fails, we can't recover.
             throw new Error(e);
         }
-        return addErrorWrappingToSingle(this.storageClient.generatedPageBlobs().copyIncrementalWithRestResponseAsync(source,
-                null, null,
-                accessConditions.getHttpAccessConditions().getIfModifiedSince(),
-                accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
-                accessConditions.getHttpAccessConditions().getIfMatch().toString(),
-                accessConditions.getHttpAccessConditions().getIfNoneMatch().toString(), null));
+        return addErrorWrappingToSingle(this.storageClient.generatedPageBlobs().copyIncrementalWithRestResponseAsync(
+                source, null, null,
+                httpAccessConditions.getIfModifiedSince(),
+                httpAccessConditions.getIfUnmodifiedSince(),
+                httpAccessConditions.getIfMatch().toString(),
+                httpAccessConditions.getIfNoneMatch().toString(), null));
     }
 
     private static String pageRangeToString(PageRange pageRange) {

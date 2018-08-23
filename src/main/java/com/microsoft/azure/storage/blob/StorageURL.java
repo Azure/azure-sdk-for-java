@@ -16,18 +16,13 @@ package com.microsoft.azure.storage.blob;
 
 import com.microsoft.azure.storage.GeneratedStorageClient;
 import com.microsoft.rest.v2.http.HttpPipeline;
-import com.microsoft.rest.v2.http.HttpRequest;
-import com.microsoft.rest.v2.http.HttpResponse;
+import com.microsoft.rest.v2.http.HttpPipelineOptions;
 import com.microsoft.rest.v2.http.UrlBuilder;
 import com.microsoft.rest.v2.policy.DecodingPolicyFactory;
-import com.microsoft.rest.v2.policy.RequestPolicy;
 import com.microsoft.rest.v2.policy.RequestPolicyFactory;
-import com.microsoft.rest.v2.policy.RequestPolicyOptions;
-import io.reactivex.Single;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 
 /**
@@ -43,7 +38,8 @@ public abstract class StorageURL {
             throw new IllegalArgumentException("url cannot be null.");
         }
         if (pipeline == null) {
-            throw new IllegalArgumentException("pipeline cannot be null.");
+            throw new IllegalArgumentException("Pipeline cannot be null. Create a pipeline by calling" +
+                    " StorageURL.createPipeline.");
         }
 
         this.storageClient = new GeneratedStorageClient(pipeline)
@@ -100,7 +96,7 @@ public abstract class StorageURL {
      * @apiNote
      * ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_url "Sample code for StorageURL.createPipeline")] \n
-     * For more samples, please see the [Samples file](https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      *
      * @param credentials
      *      The credentials the pipeline will use to authenticate the requests.
@@ -134,7 +130,8 @@ public abstract class StorageURL {
         factories.add(new DecodingPolicyFactory());
         factories.add(new LoggingFactory(pipelineOptions.loggingOptions));
 
-        return HttpPipeline.build(pipelineOptions.client,
+        return HttpPipeline.build(new HttpPipelineOptions().withHttpClient(pipelineOptions.client)
+                        .withLogger(pipelineOptions.logger),
                 factories.toArray(new RequestPolicyFactory[factories.size()]));
     }
 }
