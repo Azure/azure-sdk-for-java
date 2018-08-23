@@ -1180,7 +1180,7 @@ public abstract class RestProxyTests {
         final HttpBinHeaders headers = response.headers();
         assertNotNull(headers);
         assertEquals(true, headers.accessControlAllowCredentials);
-        assertEquals("keep-alive", headers.connection);
+        assertEquals("keep-alive", headers.connection.toLowerCase());
         assertNotNull(headers.date);
         assertEquals("1.1 vegur", headers.via);
         assertNotEquals(0, headers.xProcessedTime);
@@ -1236,7 +1236,7 @@ public abstract class RestProxyTests {
         final HttpBinHeaders headers = response.headers();
         assertNotNull(headers);
         assertEquals(true, headers.accessControlAllowCredentials);
-        assertEquals("keep-alive", headers.connection);
+        assertEquals("keep-alive", headers.connection.toLowerCase());
         assertNotNull(headers.date);
         assertEquals("1.1 vegur", headers.via);
         assertNotEquals(0, headers.xProcessedTime);
@@ -1258,7 +1258,7 @@ public abstract class RestProxyTests {
         final HttpBinHeaders headers = response.headers();
         assertNotNull(headers);
         assertEquals(true, headers.accessControlAllowCredentials);
-        assertEquals("keep-alive", headers.connection);
+        assertEquals("keep-alive", headers.connection.toLowerCase());
         assertNotNull(headers.date);
         assertEquals("1.1 vegur", headers.via);
         assertNotEquals(0, headers.xProcessedTime);

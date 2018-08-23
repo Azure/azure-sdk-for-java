@@ -7,10 +7,6 @@
 package com.microsoft.rest.v2.http;
 
 import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.Proxy;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
@@ -43,8 +39,6 @@ import io.netty.handler.codec.http.DefaultLastHttpContent;
 import io.netty.handler.codec.http.HttpClientCodec;
 import io.netty.handler.codec.http.HttpContent;
 import io.netty.handler.codec.http.HttpMethod;
-import io.netty.handler.codec.http.HttpRequestEncoder;
-import io.netty.handler.codec.http.HttpResponseDecoder;
 import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.codec.http.LastHttpContent;
 import io.netty.util.concurrent.DefaultThreadFactory;
@@ -80,7 +74,7 @@ public final class NettyClient extends HttpClient {
      */
     private NettyClient(HttpClientConfiguration configuration, NettyAdapter adapter) {
         this.adapter = adapter;
-        this.configuration = configuration != null ? configuration : new HttpClientConfiguration(null, false);
+        this.configuration = configuration != null ? configuration : new HttpClientConfiguration(null);
     }
 
     @Override
@@ -168,8 +162,7 @@ public final class NettyClient extends HttpClient {
                 public synchronized void channelCreated(Channel ch) throws Exception {
                     // Why is it necessary to have "synchronized" to prevent NRE in pipeline().get(Class<T>)?
                     // Is channelCreated not run on the eventLoop assigned to the channel?
-                    ch.pipeline().addLast("HttpResponseDecoder", new HttpResponseDecoder());
-                    ch.pipeline().addLast("HttpRequestEncoder", new HttpRequestEncoder());
+                    ch.pipeline().addLast("HttpClientCodec", new HttpClientCodec());
                     ch.pipeline().addLast("HttpClientInboundHandler", new HttpClientInboundHandler());
                 }
             }, poolSize);
@@ -188,19 +181,13 @@ public final class NettyClient extends HttpClient {
         }
 
         private Single<HttpResponse> sendRequestInternalAsync(final HttpRequest request, final HttpClientConfiguration configuration) {
-            final URI channelAddress;
-            try {
-                channelAddress = getChannelAddress(request, configuration);
-            } catch (URISyntaxException e) {
-                return Single.error(e);
-            }
             addHeaders(request);
 
             // Creates cold observable from an emitter
             return Single.create((SingleEmitter<HttpResponse> responseEmitter) -> {
                 AcquisitionListener listener = new AcquisitionListener(channelPool, request, responseEmitter);
                 responseEmitter.setDisposable(listener);
-                channelPool.acquire(channelAddress).addListener(listener);
+                channelPool.acquire(request.url().toURI(), configuration.proxy()).addListener(listener);
             });
         }
     }
@@ -209,21 +196,6 @@ public final class NettyClient extends HttpClient {
         request.withHeader(io.netty.handler.codec.http.HttpHeaderNames.HOST.toString(), request.url().getHost())
                .withHeader(io.netty.handler.codec.http.HttpHeaderNames.CONNECTION.toString(),
                         io.netty.handler.codec.http.HttpHeaderValues.KEEP_ALIVE.toString());
-    }
-
-    private static URI getChannelAddress(final HttpRequest request, final HttpClientConfiguration configuration) throws URISyntaxException {
-        final Proxy proxy = configuration.proxy();
-        if (proxy == null) {
-            return request.url().toURI();
-        } else if (proxy.address() instanceof InetSocketAddress) {
-            InetSocketAddress address = (InetSocketAddress) proxy.address();
-            String scheme = configuration.isProxyHTTPS() ? "https" : "http";
-            String channelAddressString = scheme + "://" + address.getHostString() + ":" + address.getPort();
-            return new URI(channelAddressString);
-        } else {
-            throw new IllegalArgumentException(
-                    "SocketAddress on java.net.Proxy must be an InetSocketAddress. Found proxy: " + proxy);
-        }
     }
 
     private static final class AcquisitionListener
@@ -256,7 +228,9 @@ public final class NettyClient extends HttpClient {
         private volatile boolean finishedWritingRequestBody;
         private volatile RequestSubscriber requestSubscriber;
 
-        AcquisitionListener(SharedChannelPool channelPool, final HttpRequest request,
+        AcquisitionListener(
+                SharedChannelPool channelPool,
+                HttpRequest request,
                 SingleEmitter<HttpResponse> responseEmitter) {
             this.channelPool = channelPool;
             this.request = request;
@@ -292,7 +266,6 @@ public final class NettyClient extends HttpClient {
             //TODO do we need a memory barrier here to ensure vis of responseEmitter in other threads?
 
             try {
-                configurePipeline(channel, request);
 
                 final DefaultHttpRequest raw = createDefaultHttpRequest(request);
 
@@ -647,22 +620,6 @@ public final class NettyClient extends HttpClient {
             }
         }
 
-    }
-
-    private static void configurePipeline(Channel channel, HttpRequest request) {
-        if (request.httpMethod() == com.microsoft.rest.v2.http.HttpMethod.HEAD) {
-            // Use HttpClientCodec for HEAD operations
-            if (channel.pipeline().get("HttpClientCodec") == null) {
-                channel.pipeline().remove(HttpRequestEncoder.class);
-                channel.pipeline().replace(HttpResponseDecoder.class, "HttpClientCodec", new HttpClientCodec());
-            }
-        } else {
-            // Use HttpResponseDecoder for other operations
-            if (channel.pipeline().get("HttpResponseDecoder") == null) {
-                channel.pipeline().replace(HttpClientCodec.class, "HttpResponseDecoder", new HttpResponseDecoder());
-                channel.pipeline().addAfter("HttpResponseDecoder", "HttpRequestEncoder", new HttpRequestEncoder());
-            }
-        }
     }
 
     private static DefaultHttpRequest createDefaultHttpRequest(HttpRequest request) {

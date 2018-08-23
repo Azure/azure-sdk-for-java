@@ -9,6 +9,6 @@ public class AzureProxyToRestProxyWithNettyTests extends AzureProxyToRestProxyTe
 
     @Override
     protected HttpClient createHttpClient() {
-        return nettyClientFactory.create(new HttpClientConfiguration(null, false));
+        return nettyClientFactory.create(new HttpClientConfiguration(null));
     }
 }

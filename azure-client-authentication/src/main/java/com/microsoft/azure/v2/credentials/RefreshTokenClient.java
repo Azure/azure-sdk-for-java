@@ -48,7 +48,7 @@ final class RefreshTokenClient {
 
     private static HttpClient createHttpClient(Proxy proxy) {
         return new NettyClient.Factory()
-                .create(new HttpClientConfiguration(proxy, false));
+                .create(new HttpClientConfiguration(proxy));
     }
 
     AuthenticationResult refreshToken(String tenant, String clientId, String resource, String refreshToken, boolean isMultipleResoureRefreshToken) {
