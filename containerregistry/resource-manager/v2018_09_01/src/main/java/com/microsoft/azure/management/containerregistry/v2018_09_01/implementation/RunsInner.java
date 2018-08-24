@@ -63,7 +63,7 @@ public class RunsInner {
     interface RunsService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.containerregistry.v2018_09_01.Runs list" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/runs")
-        Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("registryName") String registryName, @Query("api-version") String apiVersion, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skipToken") String skipToken, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("registryName") String registryName, @Query("api-version") String apiVersion, @Query("$filter") String filter, @Query("$top") Integer top, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.containerregistry.v2018_09_01.Runs get" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/runs/{runId}")
@@ -77,9 +77,9 @@ public class RunsInner {
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/runs/{runId}")
         Observable<Response<ResponseBody>> beginUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("registryName") String registryName, @Path("runId") String runId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body RunUpdateParameters runUpdateParameters, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.containerregistry.v2018_09_01.Runs listLogSasUrl" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.containerregistry.v2018_09_01.Runs getLogSasUrl" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/runs/{runId}/listLogSasUrl")
-        Observable<Response<ResponseBody>> listLogSasUrl(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("registryName") String registryName, @Path("runId") String runId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getLogSasUrl(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("registryName") String registryName, @Path("runId") String runId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.containerregistry.v2018_09_01.Runs cancel" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/runs/{runId}/cancel")
@@ -197,8 +197,7 @@ public class RunsInner {
         final String apiVersion = "2018-09-01";
         final String filter = null;
         final Integer top = null;
-        final String skipToken = null;
-        return service.list(this.client.subscriptionId(), resourceGroupName, registryName, apiVersion, filter, top, skipToken, this.client.acceptLanguage(), this.client.userAgent())
+        return service.list(this.client.subscriptionId(), resourceGroupName, registryName, apiVersion, filter, top, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RunInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RunInner>>> call(Response<ResponseBody> response) {
@@ -219,14 +218,13 @@ public class RunsInner {
      * @param registryName The name of the container registry.
      * @param filter The runs filter to apply on the operation. Arithmetic operators are not supported. The allowed string function is 'contains'. All logical operators except 'Not', 'Has', 'All' are allowed.
      * @param top $top is supported for get list of runs, which limits the maximum number of runs to return.
-     * @param skipToken $skipToken is supported on get list of runs, which provides the next page in the list of runs.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;RunInner&gt; object if successful.
      */
-    public PagedList<RunInner> list(final String resourceGroupName, final String registryName, final String filter, final Integer top, final String skipToken) {
-        ServiceResponse<Page<RunInner>> response = listSinglePageAsync(resourceGroupName, registryName, filter, top, skipToken).toBlocking().single();
+    public PagedList<RunInner> list(final String resourceGroupName, final String registryName, final String filter, final Integer top) {
+        ServiceResponse<Page<RunInner>> response = listSinglePageAsync(resourceGroupName, registryName, filter, top).toBlocking().single();
         return new PagedList<RunInner>(response.body()) {
             @Override
             public Page<RunInner> nextPage(String nextPageLink) {
@@ -242,14 +240,13 @@ public class RunsInner {
      * @param registryName The name of the container registry.
      * @param filter The runs filter to apply on the operation. Arithmetic operators are not supported. The allowed string function is 'contains'. All logical operators except 'Not', 'Has', 'All' are allowed.
      * @param top $top is supported for get list of runs, which limits the maximum number of runs to return.
-     * @param skipToken $skipToken is supported on get list of runs, which provides the next page in the list of runs.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<RunInner>> listAsync(final String resourceGroupName, final String registryName, final String filter, final Integer top, final String skipToken, final ListOperationCallback<RunInner> serviceCallback) {
+    public ServiceFuture<List<RunInner>> listAsync(final String resourceGroupName, final String registryName, final String filter, final Integer top, final ListOperationCallback<RunInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listSinglePageAsync(resourceGroupName, registryName, filter, top, skipToken),
+            listSinglePageAsync(resourceGroupName, registryName, filter, top),
             new Func1<String, Observable<ServiceResponse<Page<RunInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RunInner>>> call(String nextPageLink) {
@@ -266,12 +263,11 @@ public class RunsInner {
      * @param registryName The name of the container registry.
      * @param filter The runs filter to apply on the operation. Arithmetic operators are not supported. The allowed string function is 'contains'. All logical operators except 'Not', 'Has', 'All' are allowed.
      * @param top $top is supported for get list of runs, which limits the maximum number of runs to return.
-     * @param skipToken $skipToken is supported on get list of runs, which provides the next page in the list of runs.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;RunInner&gt; object
      */
-    public Observable<Page<RunInner>> listAsync(final String resourceGroupName, final String registryName, final String filter, final Integer top, final String skipToken) {
-        return listWithServiceResponseAsync(resourceGroupName, registryName, filter, top, skipToken)
+    public Observable<Page<RunInner>> listAsync(final String resourceGroupName, final String registryName, final String filter, final Integer top) {
+        return listWithServiceResponseAsync(resourceGroupName, registryName, filter, top)
             .map(new Func1<ServiceResponse<Page<RunInner>>, Page<RunInner>>() {
                 @Override
                 public Page<RunInner> call(ServiceResponse<Page<RunInner>> response) {
@@ -287,12 +283,11 @@ public class RunsInner {
      * @param registryName The name of the container registry.
      * @param filter The runs filter to apply on the operation. Arithmetic operators are not supported. The allowed string function is 'contains'. All logical operators except 'Not', 'Has', 'All' are allowed.
      * @param top $top is supported for get list of runs, which limits the maximum number of runs to return.
-     * @param skipToken $skipToken is supported on get list of runs, which provides the next page in the list of runs.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;RunInner&gt; object
      */
-    public Observable<ServiceResponse<Page<RunInner>>> listWithServiceResponseAsync(final String resourceGroupName, final String registryName, final String filter, final Integer top, final String skipToken) {
-        return listSinglePageAsync(resourceGroupName, registryName, filter, top, skipToken)
+    public Observable<ServiceResponse<Page<RunInner>>> listWithServiceResponseAsync(final String resourceGroupName, final String registryName, final String filter, final Integer top) {
+        return listSinglePageAsync(resourceGroupName, registryName, filter, top)
             .concatMap(new Func1<ServiceResponse<Page<RunInner>>, Observable<ServiceResponse<Page<RunInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RunInner>>> call(ServiceResponse<Page<RunInner>> page) {
@@ -312,11 +307,10 @@ public class RunsInner {
     ServiceResponse<PageImpl<RunInner>> * @param registryName The name of the container registry.
     ServiceResponse<PageImpl<RunInner>> * @param filter The runs filter to apply on the operation. Arithmetic operators are not supported. The allowed string function is 'contains'. All logical operators except 'Not', 'Has', 'All' are allowed.
     ServiceResponse<PageImpl<RunInner>> * @param top $top is supported for get list of runs, which limits the maximum number of runs to return.
-    ServiceResponse<PageImpl<RunInner>> * @param skipToken $skipToken is supported on get list of runs, which provides the next page in the list of runs.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;RunInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<RunInner>>> listSinglePageAsync(final String resourceGroupName, final String registryName, final String filter, final Integer top, final String skipToken) {
+    public Observable<ServiceResponse<Page<RunInner>>> listSinglePageAsync(final String resourceGroupName, final String registryName, final String filter, final Integer top) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -327,7 +321,7 @@ public class RunsInner {
             throw new IllegalArgumentException("Parameter registryName is required and cannot be null.");
         }
         final String apiVersion = "2018-09-01";
-        return service.list(this.client.subscriptionId(), resourceGroupName, registryName, apiVersion, filter, top, skipToken, this.client.acceptLanguage(), this.client.userAgent())
+        return service.list(this.client.subscriptionId(), resourceGroupName, registryName, apiVersion, filter, top, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RunInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RunInner>>> call(Response<ResponseBody> response) {
@@ -791,8 +785,8 @@ public class RunsInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RunGetLogResultInner object if successful.
      */
-    public RunGetLogResultInner listLogSasUrl(String resourceGroupName, String registryName, String runId) {
-        return listLogSasUrlWithServiceResponseAsync(resourceGroupName, registryName, runId).toBlocking().single().body();
+    public RunGetLogResultInner getLogSasUrl(String resourceGroupName, String registryName, String runId) {
+        return getLogSasUrlWithServiceResponseAsync(resourceGroupName, registryName, runId).toBlocking().single().body();
     }
 
     /**
@@ -805,8 +799,8 @@ public class RunsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<RunGetLogResultInner> listLogSasUrlAsync(String resourceGroupName, String registryName, String runId, final ServiceCallback<RunGetLogResultInner> serviceCallback) {
-        return ServiceFuture.fromResponse(listLogSasUrlWithServiceResponseAsync(resourceGroupName, registryName, runId), serviceCallback);
+    public ServiceFuture<RunGetLogResultInner> getLogSasUrlAsync(String resourceGroupName, String registryName, String runId, final ServiceCallback<RunGetLogResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getLogSasUrlWithServiceResponseAsync(resourceGroupName, registryName, runId), serviceCallback);
     }
 
     /**
@@ -818,8 +812,8 @@ public class RunsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RunGetLogResultInner object
      */
-    public Observable<RunGetLogResultInner> listLogSasUrlAsync(String resourceGroupName, String registryName, String runId) {
-        return listLogSasUrlWithServiceResponseAsync(resourceGroupName, registryName, runId).map(new Func1<ServiceResponse<RunGetLogResultInner>, RunGetLogResultInner>() {
+    public Observable<RunGetLogResultInner> getLogSasUrlAsync(String resourceGroupName, String registryName, String runId) {
+        return getLogSasUrlWithServiceResponseAsync(resourceGroupName, registryName, runId).map(new Func1<ServiceResponse<RunGetLogResultInner>, RunGetLogResultInner>() {
             @Override
             public RunGetLogResultInner call(ServiceResponse<RunGetLogResultInner> response) {
                 return response.body();
@@ -836,7 +830,7 @@ public class RunsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RunGetLogResultInner object
      */
-    public Observable<ServiceResponse<RunGetLogResultInner>> listLogSasUrlWithServiceResponseAsync(String resourceGroupName, String registryName, String runId) {
+    public Observable<ServiceResponse<RunGetLogResultInner>> getLogSasUrlWithServiceResponseAsync(String resourceGroupName, String registryName, String runId) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -850,12 +844,12 @@ public class RunsInner {
             throw new IllegalArgumentException("Parameter runId is required and cannot be null.");
         }
         final String apiVersion = "2018-09-01";
-        return service.listLogSasUrl(this.client.subscriptionId(), resourceGroupName, registryName, runId, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.getLogSasUrl(this.client.subscriptionId(), resourceGroupName, registryName, runId, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RunGetLogResultInner>>>() {
                 @Override
                 public Observable<ServiceResponse<RunGetLogResultInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<RunGetLogResultInner> clientResponse = listLogSasUrlDelegate(response);
+                        ServiceResponse<RunGetLogResultInner> clientResponse = getLogSasUrlDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -864,7 +858,7 @@ public class RunsInner {
             });
     }
 
-    private ServiceResponse<RunGetLogResultInner> listLogSasUrlDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<RunGetLogResultInner> getLogSasUrlDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<RunGetLogResultInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<RunGetLogResultInner>() { }.getType())
                 .registerError(CloudException.class)

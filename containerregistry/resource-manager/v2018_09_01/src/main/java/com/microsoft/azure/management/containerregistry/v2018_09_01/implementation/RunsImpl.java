@@ -35,9 +35,9 @@ class RunsImpl extends WrapperImpl<RunsInner> implements Runs {
     }
 
     @Override
-    public Observable<RunGetLogResult> listLogSasUrlAsync(String resourceGroupName, String registryName, String runId) {
+    public Observable<RunGetLogResult> getLogSasUrlAsync(String resourceGroupName, String registryName, String runId) {
         RunsInner client = this.inner();
-        return client.listLogSasUrlAsync(resourceGroupName, registryName, runId)
+        return client.getLogSasUrlAsync(resourceGroupName, registryName, runId)
         .map(new Func1<RunGetLogResultInner, RunGetLogResult>() {
             @Override
             public RunGetLogResult call(RunGetLogResultInner inner) {

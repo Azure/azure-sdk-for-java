@@ -27,7 +27,7 @@ public interface Tasks extends SupportsCreating<Task.DefinitionStages.Blank>, Ha
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<Task> listDetailsAsync(String resourceGroupName, String registryName, String taskName);
+    Observable<Task> getDetailsAsync(String resourceGroupName, String registryName, String taskName);
 
     /**
      * Get the properties of a specified task.

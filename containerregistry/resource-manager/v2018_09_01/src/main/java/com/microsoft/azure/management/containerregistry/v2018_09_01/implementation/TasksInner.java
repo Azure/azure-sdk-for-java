@@ -96,9 +96,9 @@ public class TasksInner {
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/tasks/{taskName}")
         Observable<Response<ResponseBody>> beginUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("registryName") String registryName, @Path("taskName") String taskName, @Query("api-version") String apiVersion, @Body TaskUpdateParameters taskUpdateParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.containerregistry.v2018_09_01.Tasks listDetails" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.containerregistry.v2018_09_01.Tasks getDetails" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/tasks/{taskName}/listDetails")
-        Observable<Response<ResponseBody>> listDetails(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("registryName") String registryName, @Path("taskName") String taskName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getDetails(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("registryName") String registryName, @Path("taskName") String taskName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.containerregistry.v2018_09_01.Tasks listNext" })
         @GET
@@ -858,8 +858,8 @@ public class TasksInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TaskInner object if successful.
      */
-    public TaskInner listDetails(String resourceGroupName, String registryName, String taskName) {
-        return listDetailsWithServiceResponseAsync(resourceGroupName, registryName, taskName).toBlocking().single().body();
+    public TaskInner getDetails(String resourceGroupName, String registryName, String taskName) {
+        return getDetailsWithServiceResponseAsync(resourceGroupName, registryName, taskName).toBlocking().single().body();
     }
 
     /**
@@ -872,8 +872,8 @@ public class TasksInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<TaskInner> listDetailsAsync(String resourceGroupName, String registryName, String taskName, final ServiceCallback<TaskInner> serviceCallback) {
-        return ServiceFuture.fromResponse(listDetailsWithServiceResponseAsync(resourceGroupName, registryName, taskName), serviceCallback);
+    public ServiceFuture<TaskInner> getDetailsAsync(String resourceGroupName, String registryName, String taskName, final ServiceCallback<TaskInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getDetailsWithServiceResponseAsync(resourceGroupName, registryName, taskName), serviceCallback);
     }
 
     /**
@@ -885,8 +885,8 @@ public class TasksInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TaskInner object
      */
-    public Observable<TaskInner> listDetailsAsync(String resourceGroupName, String registryName, String taskName) {
-        return listDetailsWithServiceResponseAsync(resourceGroupName, registryName, taskName).map(new Func1<ServiceResponse<TaskInner>, TaskInner>() {
+    public Observable<TaskInner> getDetailsAsync(String resourceGroupName, String registryName, String taskName) {
+        return getDetailsWithServiceResponseAsync(resourceGroupName, registryName, taskName).map(new Func1<ServiceResponse<TaskInner>, TaskInner>() {
             @Override
             public TaskInner call(ServiceResponse<TaskInner> response) {
                 return response.body();
@@ -903,7 +903,7 @@ public class TasksInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TaskInner object
      */
-    public Observable<ServiceResponse<TaskInner>> listDetailsWithServiceResponseAsync(String resourceGroupName, String registryName, String taskName) {
+    public Observable<ServiceResponse<TaskInner>> getDetailsWithServiceResponseAsync(String resourceGroupName, String registryName, String taskName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -917,12 +917,12 @@ public class TasksInner {
             throw new IllegalArgumentException("Parameter taskName is required and cannot be null.");
         }
         final String apiVersion = "2018-09-01";
-        return service.listDetails(this.client.subscriptionId(), resourceGroupName, registryName, taskName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.getDetails(this.client.subscriptionId(), resourceGroupName, registryName, taskName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TaskInner>>>() {
                 @Override
                 public Observable<ServiceResponse<TaskInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<TaskInner> clientResponse = listDetailsDelegate(response);
+                        ServiceResponse<TaskInner> clientResponse = getDetailsDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -931,7 +931,7 @@ public class TasksInner {
             });
     }
 
-    private ServiceResponse<TaskInner> listDetailsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<TaskInner> getDetailsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<TaskInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<TaskInner>() { }.getType())
                 .registerError(CloudException.class)

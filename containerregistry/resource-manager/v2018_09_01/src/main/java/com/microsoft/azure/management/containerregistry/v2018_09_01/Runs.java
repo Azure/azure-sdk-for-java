@@ -26,7 +26,7 @@ public interface Runs extends HasInner<RunsInner> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<RunGetLogResult> listLogSasUrlAsync(String resourceGroupName, String registryName, String runId);
+    Observable<RunGetLogResult> getLogSasUrlAsync(String resourceGroupName, String registryName, String runId);
 
     /**
      * Cancel an existing run.

@@ -86,7 +86,7 @@ public interface Registries extends SupportsCreating<Registry.DefinitionStages.B
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<SourceUploadDefinition> listBuildSourceUploadUrlAsync(String resourceGroupName, String registryName);
+    Observable<SourceUploadDefinition> getBuildSourceUploadUrlAsync(String resourceGroupName, String registryName);
 
     /**
      * Checks whether the container registry name is available for use. The name must contain only alphanumeric characters, be globally unique, and between 5 and 50 characters in length.

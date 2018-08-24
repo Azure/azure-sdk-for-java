@@ -152,9 +152,9 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/scheduleRun")
         Observable<Response<ResponseBody>> beginScheduleRun(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("registryName") String registryName, @Query("api-version") String apiVersion, @Body RunRequest runRequest, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.containerregistry.v2018_09_01.Registries listBuildSourceUploadUrl" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.containerregistry.v2018_09_01.Registries getBuildSourceUploadUrl" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/listBuildSourceUploadUrl")
-        Observable<Response<ResponseBody>> listBuildSourceUploadUrl(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("registryName") String registryName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getBuildSourceUploadUrl(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("registryName") String registryName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.containerregistry.v2018_09_01.Registries listByResourceGroupNext" })
         @GET
@@ -1891,8 +1891,8 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SourceUploadDefinitionInner object if successful.
      */
-    public SourceUploadDefinitionInner listBuildSourceUploadUrl(String resourceGroupName, String registryName) {
-        return listBuildSourceUploadUrlWithServiceResponseAsync(resourceGroupName, registryName).toBlocking().single().body();
+    public SourceUploadDefinitionInner getBuildSourceUploadUrl(String resourceGroupName, String registryName) {
+        return getBuildSourceUploadUrlWithServiceResponseAsync(resourceGroupName, registryName).toBlocking().single().body();
     }
 
     /**
@@ -1904,8 +1904,8 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<SourceUploadDefinitionInner> listBuildSourceUploadUrlAsync(String resourceGroupName, String registryName, final ServiceCallback<SourceUploadDefinitionInner> serviceCallback) {
-        return ServiceFuture.fromResponse(listBuildSourceUploadUrlWithServiceResponseAsync(resourceGroupName, registryName), serviceCallback);
+    public ServiceFuture<SourceUploadDefinitionInner> getBuildSourceUploadUrlAsync(String resourceGroupName, String registryName, final ServiceCallback<SourceUploadDefinitionInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getBuildSourceUploadUrlWithServiceResponseAsync(resourceGroupName, registryName), serviceCallback);
     }
 
     /**
@@ -1916,8 +1916,8 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SourceUploadDefinitionInner object
      */
-    public Observable<SourceUploadDefinitionInner> listBuildSourceUploadUrlAsync(String resourceGroupName, String registryName) {
-        return listBuildSourceUploadUrlWithServiceResponseAsync(resourceGroupName, registryName).map(new Func1<ServiceResponse<SourceUploadDefinitionInner>, SourceUploadDefinitionInner>() {
+    public Observable<SourceUploadDefinitionInner> getBuildSourceUploadUrlAsync(String resourceGroupName, String registryName) {
+        return getBuildSourceUploadUrlWithServiceResponseAsync(resourceGroupName, registryName).map(new Func1<ServiceResponse<SourceUploadDefinitionInner>, SourceUploadDefinitionInner>() {
             @Override
             public SourceUploadDefinitionInner call(ServiceResponse<SourceUploadDefinitionInner> response) {
                 return response.body();
@@ -1933,7 +1933,7 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SourceUploadDefinitionInner object
      */
-    public Observable<ServiceResponse<SourceUploadDefinitionInner>> listBuildSourceUploadUrlWithServiceResponseAsync(String resourceGroupName, String registryName) {
+    public Observable<ServiceResponse<SourceUploadDefinitionInner>> getBuildSourceUploadUrlWithServiceResponseAsync(String resourceGroupName, String registryName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -1944,12 +1944,12 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
             throw new IllegalArgumentException("Parameter registryName is required and cannot be null.");
         }
         final String apiVersion = "2018-09-01";
-        return service.listBuildSourceUploadUrl(this.client.subscriptionId(), resourceGroupName, registryName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.getBuildSourceUploadUrl(this.client.subscriptionId(), resourceGroupName, registryName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SourceUploadDefinitionInner>>>() {
                 @Override
                 public Observable<ServiceResponse<SourceUploadDefinitionInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<SourceUploadDefinitionInner> clientResponse = listBuildSourceUploadUrlDelegate(response);
+                        ServiceResponse<SourceUploadDefinitionInner> clientResponse = getBuildSourceUploadUrlDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1958,7 +1958,7 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
             });
     }
 
-    private ServiceResponse<SourceUploadDefinitionInner> listBuildSourceUploadUrlDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<SourceUploadDefinitionInner> getBuildSourceUploadUrlDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<SourceUploadDefinitionInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SourceUploadDefinitionInner>() { }.getType())
                 .registerError(CloudException.class)

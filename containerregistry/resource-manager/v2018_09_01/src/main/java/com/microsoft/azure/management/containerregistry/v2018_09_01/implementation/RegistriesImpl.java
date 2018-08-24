@@ -189,9 +189,9 @@ class RegistriesImpl extends GroupableResourcesCoreImpl<Registry, RegistryImpl, 
     }
 
     @Override
-    public Observable<SourceUploadDefinition> listBuildSourceUploadUrlAsync(String resourceGroupName, String registryName) {
+    public Observable<SourceUploadDefinition> getBuildSourceUploadUrlAsync(String resourceGroupName, String registryName) {
         RegistriesInner client = this.inner();
-        return client.listBuildSourceUploadUrlAsync(resourceGroupName, registryName)
+        return client.getBuildSourceUploadUrlAsync(resourceGroupName, registryName)
         .map(new Func1<SourceUploadDefinitionInner, SourceUploadDefinition>() {
             @Override
             public SourceUploadDefinition call(SourceUploadDefinitionInner inner) {
