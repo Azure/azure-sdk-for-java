@@ -1,7 +1,5 @@
 package com.microsoft.azure.servicebus.management;
 
-import com.sun.org.apache.xpath.internal.Arg;
-
 /**
  * This class can be used to format the path for different Service Bus entity types.
  */
