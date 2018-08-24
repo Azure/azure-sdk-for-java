@@ -591,7 +591,7 @@ class ContainerAPITest extends APISpec {
 
         PageBlobURL copyBlob = cu.createPageBlobURL(copyName)
         waitForCopy(copyBlob, copyBlob.startCopyFromURL(normal.toURL(),
-                null, null, null).blockingGet())
+                null, null, null).blockingGet().headers().copyStatus())
 
         PageBlobURL metadataBlob = cu.createPageBlobURL(metadataName)
         Metadata values = new Metadata()

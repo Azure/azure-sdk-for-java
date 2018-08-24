@@ -678,6 +678,7 @@ class PageBlobAPITest extends APISpec {
         String snapshot = bu.createSnapshot(null, null).blockingGet().headers().snapshot()
         PageBlobCopyIncrementalHeaders headers = bu2.copyIncremental(bu.toURL(), snapshot, null)
                 .blockingGet().headers()
+        waitForCopy(bu2, headers.copyStatus())
 
         expect:
         bu2.getProperties(null).blockingGet().headers().isIncrementalCopy()
@@ -693,7 +694,8 @@ class PageBlobAPITest extends APISpec {
         cu.setAccessPolicy(PublicAccessType.BLOB, null, null).blockingGet()
         PageBlobURL bu2 = cu.createPageBlobURL(generateBlobName())
         String snapshot = bu.createSnapshot(null, null).blockingGet().headers().snapshot()
-        bu2.copyIncremental(bu.toURL(), snapshot, null).blockingGet()
+        def response = bu2.copyIncremental(bu.toURL(), snapshot, null).blockingGet()
+        waitForCopy(bu2, response.headers().copyStatus())
         snapshot = bu.createSnapshot(null, null).blockingGet().headers().snapshot()
         match = setupBlobMatchCondition(bu2, match)
         def hac = new HTTPAccessConditions(modified, unmodified, match, noneMatch)

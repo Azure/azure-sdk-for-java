@@ -888,7 +888,7 @@ class BlobAPITest extends APISpec {
         BlobStartCopyFromURLResponse response =
                 bu2.startCopyFromURL(bu.toURL(), metadata, null, null)
                         .blockingGet()
-        waitForCopy(bu2, response)
+        waitForCopy(bu2, response.headers().copyStatus())
 
         expect:
         bu2.getProperties(null).blockingGet().headers().metadata() == metadata

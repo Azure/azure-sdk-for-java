@@ -25,8 +25,6 @@ import com.microsoft.azure.storage.blob.SharedKeyCredentials
 import com.microsoft.azure.storage.blob.StorageURL
 import com.microsoft.azure.storage.blob.models.BlobAcquireLeaseHeaders
 import com.microsoft.azure.storage.blob.models.BlobGetPropertiesHeaders
-import com.microsoft.azure.storage.blob.models.BlobStartCopyFromURLResponse
-import com.microsoft.azure.storage.blob.models.ContainerItem
 import com.microsoft.azure.storage.blob.models.ContainerAcquireLeaseHeaders
 import com.microsoft.azure.storage.blob.models.ContainerGetPropertiesHeaders
 import com.microsoft.azure.storage.blob.models.ContainerItem
@@ -317,9 +315,7 @@ class APISpec extends Specification {
         }
     }
 
-    def waitForCopy(BlobURL bu, BlobStartCopyFromURLResponse response) {
-        CopyStatusType status = response.headers().copyStatus()
-
+    def waitForCopy(BlobURL bu, CopyStatusType status) {
         OffsetDateTime start = OffsetDateTime.now()
         while (status != CopyStatusType.SUCCESS) {
             status = bu.getProperties(null).blockingGet().headers().copyStatus()
