@@ -6,8 +6,8 @@
 
 package com.microsoft.azure.v2.credentials;
 
-import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.v2.serializer.AzureJacksonAdapter;
+import com.microsoft.rest.v2.annotations.Beta;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -11,8 +11,7 @@ import com.google.common.io.Files;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.v2.AzureEnvironment;
 import com.microsoft.azure.v2.AzureEnvironment.Endpoint;
-import com.microsoft.azure.management.apigeneration.Beta;
-import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
+import com.microsoft.rest.v2.annotations.Beta;
 import com.microsoft.rest.v2.serializer.JacksonAdapter;
 
 import java.io.File;
@@ -26,7 +25,7 @@ import java.util.Properties;
 /**
  * This class describes the information from a .azureauth file.
  */
-@Beta(SinceVersion.V1_1_0)
+@Beta(since = "v1.1.0")
 final class AuthFile {
 
     private String clientId;

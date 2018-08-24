@@ -8,7 +8,7 @@ package com.microsoft.azure.v2.credentials;
 
 import com.microsoft.aad.adal4j.AuthenticationResult;
 import com.microsoft.azure.v2.AzureEnvironment;
-import com.microsoft.azure.management.apigeneration.Beta;
+import com.microsoft.rest.v2.annotations.Beta;
 
 import java.io.IOException;
 import java.util.ArrayList;

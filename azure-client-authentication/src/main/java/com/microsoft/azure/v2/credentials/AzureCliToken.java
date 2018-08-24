@@ -8,7 +8,7 @@ package com.microsoft.azure.v2.credentials;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.aad.adal4j.AuthenticationResult;
-import com.microsoft.azure.management.apigeneration.Beta;
+import com.microsoft.rest.v2.annotations.Beta;
 
 import java.time.Instant;
 import java.util.Date;
