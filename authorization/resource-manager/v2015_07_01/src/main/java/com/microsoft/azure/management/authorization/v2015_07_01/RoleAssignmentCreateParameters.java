@@ -21,7 +21,7 @@ public class RoleAssignmentCreateParameters {
     private RoleAssignmentProperties properties;
 
     /**
-     * Get the properties value.
+     * Get role assignment properties.
      *
      * @return the properties value
      */
@@ -30,7 +30,7 @@ public class RoleAssignmentCreateParameters {
     }
 
     /**
-     * Set the properties value.
+     * Set role assignment properties.
      *
      * @param properties the properties value to set
      * @return the RoleAssignmentCreateParameters object itself.
