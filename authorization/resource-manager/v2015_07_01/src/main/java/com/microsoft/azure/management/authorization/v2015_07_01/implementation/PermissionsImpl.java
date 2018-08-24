@@ -37,7 +37,8 @@ class PermissionsImpl extends WrapperImpl<PermissionsInner> implements Permissio
             public Iterable<PermissionInner> call(Page<PermissionInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<PermissionInner, Permission>() {
+        })
+        .map(new Func1<PermissionInner, Permission>() {
             @Override
             public Permission call(PermissionInner inner) {
                 return new PermissionImpl(inner, manager());
@@ -54,7 +55,8 @@ class PermissionsImpl extends WrapperImpl<PermissionsInner> implements Permissio
             public Iterable<PermissionInner> call(Page<PermissionInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<PermissionInner, Permission>() {
+        })
+        .map(new Func1<PermissionInner, Permission>() {
             @Override
             public Permission call(PermissionInner inner) {
                 return new PermissionImpl(inner, manager());
