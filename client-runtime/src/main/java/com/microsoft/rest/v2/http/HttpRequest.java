@@ -6,6 +6,7 @@
 
 package com.microsoft.rest.v2.http;
 
+import com.microsoft.rest.v2.Context;
 import com.microsoft.rest.v2.protocol.HttpResponseDecoder;
 import io.reactivex.Flowable;
 
@@ -22,6 +23,7 @@ public class HttpRequest {
     private URL url;
     private HttpHeaders headers;
     private Flowable<ByteBuffer> body;
+    private Context context;
     private final HttpResponseDecoder responseDecoder;
 
     /**
@@ -188,6 +190,22 @@ public class HttpRequest {
      */
     public HttpRequest withBody(Flowable<ByteBuffer> body) {
         this.body = body;
+        return this;
+    }
+
+    /**
+     * @return the {@link Context} associated with this HttpRequest
+     */
+    public Context context() {
+        return context;
+    }
+
+    /**
+     * @param context the context to associate with this HttpRequest
+     * @return This HttpRequest so that multiple operations can be chained together.
+     */
+    public HttpRequest withContext(Context context) {
+        this.context = context;
         return this;
     }
 

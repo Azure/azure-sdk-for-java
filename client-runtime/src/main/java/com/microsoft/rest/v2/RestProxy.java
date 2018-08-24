@@ -173,6 +173,7 @@ public class RestProxy implements InvocationHandler {
 
         final URL url = urlBuilder.toURL();
         final HttpRequest request = new HttpRequest(methodParser.fullyQualifiedMethodName(), methodParser.httpMethod(), url, new HttpResponseDecoder(methodParser, serializer));
+        request.withContext(methodParser.context(args));
 
         final Object bodyContentObject = methodParser.body(args);
         if (bodyContentObject == null) {

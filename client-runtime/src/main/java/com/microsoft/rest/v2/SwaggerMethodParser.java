@@ -313,6 +313,20 @@ public class SwaggerMethodParser {
     }
 
     /**
+     * Get the {@link Context} passed into the proxy method.
+     * @param swaggerMethodArguments the arguments passed to the proxy method
+     * @return the Context, or null if no Context was provided
+     */
+    public Context context(Object[] swaggerMethodArguments) {
+        Object firstArg = swaggerMethodArguments != null && swaggerMethodArguments.length > 0 ? swaggerMethodArguments[0] : null;
+        if (firstArg instanceof Context) {
+            return (Context) firstArg;
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * Get whether or not the provided response status code is one of the expected status codes for
      * this Swagger method.
      * @param responseStatusCode The status code that was returned in the HTTP response.
