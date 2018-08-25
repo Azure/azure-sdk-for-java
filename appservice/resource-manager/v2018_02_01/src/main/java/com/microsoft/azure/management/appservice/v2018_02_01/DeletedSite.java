@@ -23,6 +23,11 @@ public interface DeletedSite extends HasInner<DeletedSiteInner>, HasManager<Cert
     Integer deletedSiteId();
 
     /**
+     * @return the deletedSiteKind value.
+     */
+    String deletedSiteKind();
+
+    /**
      * @return the deletedSiteName value.
      */
     String deletedSiteName();
@@ -31,6 +36,21 @@ public interface DeletedSite extends HasInner<DeletedSiteInner>, HasManager<Cert
      * @return the deletedTimestamp value.
      */
     String deletedTimestamp();
+
+    /**
+     * @return the id value.
+     */
+    String id();
+
+    /**
+     * @return the kind value.
+     */
+    String kind();
+
+    /**
+     * @return the name value.
+     */
+    String name();
 
     /**
      * @return the resourceGroup value.
@@ -46,5 +66,10 @@ public interface DeletedSite extends HasInner<DeletedSiteInner>, HasManager<Cert
      * @return the subscription value.
      */
     String subscription();
+
+    /**
+     * @return the type value.
+     */
+    String type();
 
 }

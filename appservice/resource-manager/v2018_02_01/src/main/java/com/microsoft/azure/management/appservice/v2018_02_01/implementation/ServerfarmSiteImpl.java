@@ -109,6 +109,11 @@ class ServerfarmSiteImpl extends WrapperImpl<SiteInner> implements ServerfarmSit
     }
 
     @Override
+    public Boolean hyperV() {
+        return this.inner().hyperV();
+    }
+
+    @Override
     public String id() {
         return this.inner().id();
     }

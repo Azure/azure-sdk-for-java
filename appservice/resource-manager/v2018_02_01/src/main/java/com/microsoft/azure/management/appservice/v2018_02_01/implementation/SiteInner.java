@@ -97,10 +97,16 @@ public class SiteInner extends Resource {
     private Boolean reserved;
 
     /**
-     * Hyper-V sandbox.
+     * Obsolete: Hyper-V sandbox.
      */
     @JsonProperty(value = "properties.isXenon")
     private Boolean isXenon;
+
+    /**
+     * Hyper-V sandbox.
+     */
+    @JsonProperty(value = "properties.hyperV")
+    private Boolean hyperV;
 
     /**
      * Last time the app was modified, in UTC. Read-only.
@@ -395,7 +401,7 @@ public class SiteInner extends Resource {
     }
 
     /**
-     * Get hyper-V sandbox.
+     * Get obsolete: Hyper-V sandbox.
      *
      * @return the isXenon value
      */
@@ -404,13 +410,33 @@ public class SiteInner extends Resource {
     }
 
     /**
-     * Set hyper-V sandbox.
+     * Set obsolete: Hyper-V sandbox.
      *
      * @param isXenon the isXenon value to set
      * @return the SiteInner object itself.
      */
     public SiteInner withIsXenon(Boolean isXenon) {
         this.isXenon = isXenon;
+        return this;
+    }
+
+    /**
+     * Get hyper-V sandbox.
+     *
+     * @return the hyperV value
+     */
+    public Boolean hyperV() {
+        return this.hyperV;
+    }
+
+    /**
+     * Set hyper-V sandbox.
+     *
+     * @param hyperV the hyperV value to set
+     * @return the SiteInner object itself.
+     */
+    public SiteInner withHyperV(Boolean hyperV) {
+        this.hyperV = hyperV;
         return this;
     }
 
