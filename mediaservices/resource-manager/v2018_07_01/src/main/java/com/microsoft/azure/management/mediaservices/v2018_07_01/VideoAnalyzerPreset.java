@@ -20,28 +20,31 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("#Microsoft.Media.VideoAnalyzerPreset")
 public class VideoAnalyzerPreset extends AudioAnalyzerPreset {
     /**
-     * Whether to only extract audio insights when processing a video file.
+     * The type of insights to be extracted. If not set then based on the
+     * content the type will selected.  If the content is audi only then only
+     * audio insights are extraced and if it is video only. Possible values
+     * include: 'AudioInsightsOnly', 'VideoInsightsOnly', 'AllInsights'.
      */
-    @JsonProperty(value = "audioInsightsOnly")
-    private Boolean audioInsightsOnly;
+    @JsonProperty(value = "insightsToExtract")
+    private InsightsType insightsToExtract;
 
     /**
-     * Get whether to only extract audio insights when processing a video file.
+     * Get the type of insights to be extracted. If not set then based on the content the type will selected.  If the content is audi only then only audio insights are extraced and if it is video only. Possible values include: 'AudioInsightsOnly', 'VideoInsightsOnly', 'AllInsights'.
      *
-     * @return the audioInsightsOnly value
+     * @return the insightsToExtract value
      */
-    public Boolean audioInsightsOnly() {
-        return this.audioInsightsOnly;
+    public InsightsType insightsToExtract() {
+        return this.insightsToExtract;
     }
 
     /**
-     * Set whether to only extract audio insights when processing a video file.
+     * Set the type of insights to be extracted. If not set then based on the content the type will selected.  If the content is audi only then only audio insights are extraced and if it is video only. Possible values include: 'AudioInsightsOnly', 'VideoInsightsOnly', 'AllInsights'.
      *
-     * @param audioInsightsOnly the audioInsightsOnly value to set
+     * @param insightsToExtract the insightsToExtract value to set
      * @return the VideoAnalyzerPreset object itself.
      */
-    public VideoAnalyzerPreset withAudioInsightsOnly(Boolean audioInsightsOnly) {
-        this.audioInsightsOnly = audioInsightsOnly;
+    public VideoAnalyzerPreset withInsightsToExtract(InsightsType insightsToExtract) {
+        this.insightsToExtract = insightsToExtract;
         return this;
     }
 

@@ -30,10 +30,10 @@ public class StreamingLocatorContentKey {
     private StreamingLocatorContentKeyType type;
 
     /**
-     * Label of Content Key.
+     * Label of Content Key as specified in the Streaming Policy.
      */
-    @JsonProperty(value = "label")
-    private String label;
+    @JsonProperty(value = "labelReferenceInStreamingPolicy")
+    private String labelReferenceInStreamingPolicy;
 
     /**
      * Value of  of Content Key.
@@ -83,22 +83,22 @@ public class StreamingLocatorContentKey {
     }
 
     /**
-     * Get label of Content Key.
+     * Get label of Content Key as specified in the Streaming Policy.
      *
-     * @return the label value
+     * @return the labelReferenceInStreamingPolicy value
      */
-    public String label() {
-        return this.label;
+    public String labelReferenceInStreamingPolicy() {
+        return this.labelReferenceInStreamingPolicy;
     }
 
     /**
-     * Set label of Content Key.
+     * Set label of Content Key as specified in the Streaming Policy.
      *
-     * @param label the label value to set
+     * @param labelReferenceInStreamingPolicy the labelReferenceInStreamingPolicy value to set
      * @return the StreamingLocatorContentKey object itself.
      */
-    public StreamingLocatorContentKey withLabel(String label) {
-        this.label = label;
+    public StreamingLocatorContentKey withLabelReferenceInStreamingPolicy(String labelReferenceInStreamingPolicy) {
+        this.labelReferenceInStreamingPolicy = labelReferenceInStreamingPolicy;
         return this;
     }
 

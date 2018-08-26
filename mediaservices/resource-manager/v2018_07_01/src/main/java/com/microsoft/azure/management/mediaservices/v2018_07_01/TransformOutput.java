@@ -18,8 +18,10 @@ public class TransformOutput {
     /**
      * A Transform can define more than one outputs. This property defines what
      * the service should do when one output fails - either continue to produce
-     * other outputs, or, stop the other outputs. The default is stop. Possible
-     * values include: 'StopProcessingJob', 'ContinueJob'.
+     * other outputs, or, stop the other outputs. The overall Job state will
+     * not reflect failures of outputs that are specified with 'ContinueJob'.
+     * The default is 'StopProcessingJob'. Possible values include:
+     * 'StopProcessingJob', 'ContinueJob'.
      */
     @JsonProperty(value = "onError")
     private OnErrorType onError;
@@ -42,7 +44,7 @@ public class TransformOutput {
     private Preset preset;
 
     /**
-     * Get a Transform can define more than one outputs. This property defines what the service should do when one output fails - either continue to produce other outputs, or, stop the other outputs. The default is stop. Possible values include: 'StopProcessingJob', 'ContinueJob'.
+     * Get a Transform can define more than one outputs. This property defines what the service should do when one output fails - either continue to produce other outputs, or, stop the other outputs. The overall Job state will not reflect failures of outputs that are specified with 'ContinueJob'. The default is 'StopProcessingJob'. Possible values include: 'StopProcessingJob', 'ContinueJob'.
      *
      * @return the onError value
      */
@@ -51,7 +53,7 @@ public class TransformOutput {
     }
 
     /**
-     * Set a Transform can define more than one outputs. This property defines what the service should do when one output fails - either continue to produce other outputs, or, stop the other outputs. The default is stop. Possible values include: 'StopProcessingJob', 'ContinueJob'.
+     * Set a Transform can define more than one outputs. This property defines what the service should do when one output fails - either continue to produce other outputs, or, stop the other outputs. The overall Job state will not reflect failures of outputs that are specified with 'ContinueJob'. The default is 'StopProcessingJob'. Possible values include: 'StopProcessingJob', 'ContinueJob'.
      *
      * @param onError the onError value to set
      * @return the TransformOutput object itself.

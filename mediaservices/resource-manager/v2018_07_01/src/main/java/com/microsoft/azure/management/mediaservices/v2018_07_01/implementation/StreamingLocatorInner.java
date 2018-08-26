@@ -57,8 +57,7 @@ public class StreamingLocatorInner extends ProxyResource {
      * streaming polices. The predefined streaming policies available are:
      * 'Predefined_DownloadOnly', 'Predefined_ClearStreamingOnly',
      * 'Predefined_DownloadAndClearStreaming', 'Predefined_ClearKey',
-     * 'Predefined_SecureStreaming' and
-     * 'Predefined_SecureStreamingWithFairPlay'.
+     * 'Predefined_MultiDrmCencStreaming' and 'Predefined_MultiDrmStreaming'.
      */
     @JsonProperty(value = "properties.streamingPolicyName", required = true)
     private String streamingPolicyName;
@@ -176,7 +175,7 @@ public class StreamingLocatorInner extends ProxyResource {
     }
 
     /**
-     * Get streaming policy name used by this streaming locator. Either specify the name of streaming policy you created or use one of the predefined streaming polices. The predefined streaming policies available are: 'Predefined_DownloadOnly', 'Predefined_ClearStreamingOnly', 'Predefined_DownloadAndClearStreaming', 'Predefined_ClearKey', 'Predefined_SecureStreaming' and 'Predefined_SecureStreamingWithFairPlay'.
+     * Get streaming policy name used by this streaming locator. Either specify the name of streaming policy you created or use one of the predefined streaming polices. The predefined streaming policies available are: 'Predefined_DownloadOnly', 'Predefined_ClearStreamingOnly', 'Predefined_DownloadAndClearStreaming', 'Predefined_ClearKey', 'Predefined_MultiDrmCencStreaming' and 'Predefined_MultiDrmStreaming'.
      *
      * @return the streamingPolicyName value
      */
@@ -185,7 +184,7 @@ public class StreamingLocatorInner extends ProxyResource {
     }
 
     /**
-     * Set streaming policy name used by this streaming locator. Either specify the name of streaming policy you created or use one of the predefined streaming polices. The predefined streaming policies available are: 'Predefined_DownloadOnly', 'Predefined_ClearStreamingOnly', 'Predefined_DownloadAndClearStreaming', 'Predefined_ClearKey', 'Predefined_SecureStreaming' and 'Predefined_SecureStreamingWithFairPlay'.
+     * Set streaming policy name used by this streaming locator. Either specify the name of streaming policy you created or use one of the predefined streaming polices. The predefined streaming policies available are: 'Predefined_DownloadOnly', 'Predefined_ClearStreamingOnly', 'Predefined_DownloadAndClearStreaming', 'Predefined_ClearKey', 'Predefined_MultiDrmCencStreaming' and 'Predefined_MultiDrmStreaming'.
      *
      * @param streamingPolicyName the streamingPolicyName value to set
      * @return the StreamingLocatorInner object itself.
