@@ -62,7 +62,7 @@ public class RoutingProperties {
     }
 
     /**
-     * Get the routes value.
+     * Get the list of user-provided routing rules that the IoT hub uses to route messages to built-in and custom endpoints. A maximum of 100 routing rules are allowed for paid hubs and a maximum of 5 routing rules are allowed for free hubs.
      *
      * @return the routes value
      */
@@ -71,7 +71,7 @@ public class RoutingProperties {
     }
 
     /**
-     * Set the routes value.
+     * Set the list of user-provided routing rules that the IoT hub uses to route messages to built-in and custom endpoints. A maximum of 100 routing rules are allowed for paid hubs and a maximum of 5 routing rules are allowed for free hubs.
      *
      * @param routes the routes value to set
      * @return the RoutingProperties object itself.
@@ -82,7 +82,7 @@ public class RoutingProperties {
     }
 
     /**
-     * Get the fallbackRoute value.
+     * Get the properties of the route that is used as a fall-back route when none of the conditions specified in the 'routes' section are met. This is an optional parameter. When this property is not set, the messages which do not meet any of the conditions specified in the 'routes' section get routed to the built-in eventhub endpoint.
      *
      * @return the fallbackRoute value
      */
@@ -91,7 +91,7 @@ public class RoutingProperties {
     }
 
     /**
-     * Set the fallbackRoute value.
+     * Set the properties of the route that is used as a fall-back route when none of the conditions specified in the 'routes' section are met. This is an optional parameter. When this property is not set, the messages which do not meet any of the conditions specified in the 'routes' section get routed to the built-in eventhub endpoint.
      *
      * @param fallbackRoute the fallbackRoute value to set
      * @return the RoutingProperties object itself.

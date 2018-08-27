@@ -38,7 +38,7 @@ public class IotHubDescriptionInner extends Resource {
     private IotHubSkuInfo sku;
 
     /**
-     * Get the etag value.
+     * Get the Etag field is *not* required. If it is provided in the response body, it must also be provided as a header per the normal ETag convention.
      *
      * @return the etag value
      */
@@ -47,7 +47,7 @@ public class IotHubDescriptionInner extends Resource {
     }
 
     /**
-     * Set the etag value.
+     * Set the Etag field is *not* required. If it is provided in the response body, it must also be provided as a header per the normal ETag convention.
      *
      * @param etag the etag value to set
      * @return the IotHubDescriptionInner object itself.
@@ -58,7 +58,7 @@ public class IotHubDescriptionInner extends Resource {
     }
 
     /**
-     * Get the properties value.
+     * Get iotHub properties.
      *
      * @return the properties value
      */
@@ -67,7 +67,7 @@ public class IotHubDescriptionInner extends Resource {
     }
 
     /**
-     * Set the properties value.
+     * Set iotHub properties.
      *
      * @param properties the properties value to set
      * @return the IotHubDescriptionInner object itself.
@@ -78,7 +78,7 @@ public class IotHubDescriptionInner extends Resource {
     }
 
     /**
-     * Get the sku value.
+     * Get iotHub SKU info.
      *
      * @return the sku value
      */
@@ -87,7 +87,7 @@ public class IotHubDescriptionInner extends Resource {
     }
 
     /**
-     * Set the sku value.
+     * Set iotHub SKU info.
      *
      * @param sku the sku value to set
      * @return the IotHubDescriptionInner object itself.

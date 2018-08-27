@@ -28,7 +28,7 @@ public class TestAllRoutesInput {
     private RoutingMessage message;
 
     /**
-     * Get the routingSource value.
+     * Get routing source. Possible values include: 'Invalid', 'DeviceMessages', 'TwinChangeEvents', 'DeviceLifecycleEvents', 'DeviceJobLifecycleEvents'.
      *
      * @return the routingSource value
      */
@@ -37,7 +37,7 @@ public class TestAllRoutesInput {
     }
 
     /**
-     * Set the routingSource value.
+     * Set routing source. Possible values include: 'Invalid', 'DeviceMessages', 'TwinChangeEvents', 'DeviceLifecycleEvents', 'DeviceJobLifecycleEvents'.
      *
      * @param routingSource the routingSource value to set
      * @return the TestAllRoutesInput object itself.
@@ -48,7 +48,7 @@ public class TestAllRoutesInput {
     }
 
     /**
-     * Get the message value.
+     * Get routing message.
      *
      * @return the message value
      */
@@ -57,7 +57,7 @@ public class TestAllRoutesInput {
     }
 
     /**
-     * Set the message value.
+     * Set routing message.
      *
      * @param message the message value to set
      * @return the TestAllRoutesInput object itself.

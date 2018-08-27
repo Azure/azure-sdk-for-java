@@ -55,13 +55,15 @@ public class FallbackRouteProperties {
 
     /**
      * Creates an instance of FallbackRouteProperties class.
+     * @param endpointNames the list of endpoints to which the messages that satisfy the condition are routed to. Currently only 1 endpoint is allowed.
+     * @param isEnabled used to specify whether the fallback route is enabled.
      */
     public FallbackRouteProperties() {
         source = "DeviceMessages";
     }
 
     /**
-     * Get the name value.
+     * Get the name of the route. The name can only include alphanumeric characters, periods, underscores, hyphens, has a maximum length of 64 characters, and must be unique.
      *
      * @return the name value
      */
@@ -70,7 +72,7 @@ public class FallbackRouteProperties {
     }
 
     /**
-     * Set the name value.
+     * Set the name of the route. The name can only include alphanumeric characters, periods, underscores, hyphens, has a maximum length of 64 characters, and must be unique.
      *
      * @param name the name value to set
      * @return the FallbackRouteProperties object itself.
@@ -81,7 +83,7 @@ public class FallbackRouteProperties {
     }
 
     /**
-     * Get the source value.
+     * Get the source to which the routing rule is to be applied to. For example, DeviceMessages.
      *
      * @return the source value
      */
@@ -90,7 +92,7 @@ public class FallbackRouteProperties {
     }
 
     /**
-     * Set the source value.
+     * Set the source to which the routing rule is to be applied to. For example, DeviceMessages.
      *
      * @param source the source value to set
      * @return the FallbackRouteProperties object itself.
@@ -101,7 +103,7 @@ public class FallbackRouteProperties {
     }
 
     /**
-     * Get the condition value.
+     * Get the condition which is evaluated in order to apply the fallback route. If the condition is not provided it will evaluate to true by default. For grammar, See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-query-language.
      *
      * @return the condition value
      */
@@ -110,7 +112,7 @@ public class FallbackRouteProperties {
     }
 
     /**
-     * Set the condition value.
+     * Set the condition which is evaluated in order to apply the fallback route. If the condition is not provided it will evaluate to true by default. For grammar, See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-query-language.
      *
      * @param condition the condition value to set
      * @return the FallbackRouteProperties object itself.
@@ -121,7 +123,7 @@ public class FallbackRouteProperties {
     }
 
     /**
-     * Get the endpointNames value.
+     * Get the list of endpoints to which the messages that satisfy the condition are routed to. Currently only 1 endpoint is allowed.
      *
      * @return the endpointNames value
      */
@@ -130,7 +132,7 @@ public class FallbackRouteProperties {
     }
 
     /**
-     * Set the endpointNames value.
+     * Set the list of endpoints to which the messages that satisfy the condition are routed to. Currently only 1 endpoint is allowed.
      *
      * @param endpointNames the endpointNames value to set
      * @return the FallbackRouteProperties object itself.
@@ -141,7 +143,7 @@ public class FallbackRouteProperties {
     }
 
     /**
-     * Get the isEnabled value.
+     * Get used to specify whether the fallback route is enabled.
      *
      * @return the isEnabled value
      */
@@ -150,7 +152,7 @@ public class FallbackRouteProperties {
     }
 
     /**
-     * Set the isEnabled value.
+     * Set used to specify whether the fallback route is enabled.
      *
      * @param isEnabled the isEnabled value to set
      * @return the FallbackRouteProperties object itself.

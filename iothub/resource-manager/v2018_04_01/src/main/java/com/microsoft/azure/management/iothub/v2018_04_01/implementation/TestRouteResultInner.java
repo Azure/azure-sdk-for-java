@@ -30,7 +30,7 @@ public class TestRouteResultInner {
     private TestRouteResultDetails details;
 
     /**
-     * Get the result value.
+     * Get result of testing route. Possible values include: 'undefined', 'false', 'true'.
      *
      * @return the result value
      */
@@ -39,7 +39,7 @@ public class TestRouteResultInner {
     }
 
     /**
-     * Set the result value.
+     * Set result of testing route. Possible values include: 'undefined', 'false', 'true'.
      *
      * @param result the result value to set
      * @return the TestRouteResultInner object itself.
@@ -50,7 +50,7 @@ public class TestRouteResultInner {
     }
 
     /**
-     * Get the details value.
+     * Get detailed result of testing route.
      *
      * @return the details value
      */
@@ -59,7 +59,7 @@ public class TestRouteResultInner {
     }
 
     /**
-     * Set the details value.
+     * Set detailed result of testing route.
      *
      * @param details the details value to set
      * @return the TestRouteResultInner object itself.

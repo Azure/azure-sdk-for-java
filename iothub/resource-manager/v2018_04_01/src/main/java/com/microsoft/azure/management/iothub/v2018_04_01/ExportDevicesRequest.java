@@ -28,7 +28,7 @@ public class ExportDevicesRequest {
     private boolean excludeKeys;
 
     /**
-     * Get the exportBlobContainerUri value.
+     * Get the export blob container URI.
      *
      * @return the exportBlobContainerUri value
      */
@@ -37,7 +37,7 @@ public class ExportDevicesRequest {
     }
 
     /**
-     * Set the exportBlobContainerUri value.
+     * Set the export blob container URI.
      *
      * @param exportBlobContainerUri the exportBlobContainerUri value to set
      * @return the ExportDevicesRequest object itself.
@@ -48,7 +48,7 @@ public class ExportDevicesRequest {
     }
 
     /**
-     * Get the excludeKeys value.
+     * Get the value indicating whether keys should be excluded during export.
      *
      * @return the excludeKeys value
      */
@@ -57,7 +57,7 @@ public class ExportDevicesRequest {
     }
 
     /**
-     * Set the excludeKeys value.
+     * Set the value indicating whether keys should be excluded during export.
      *
      * @param excludeKeys the excludeKeys value to set
      * @return the ExportDevicesRequest object itself.

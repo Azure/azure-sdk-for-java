@@ -20,8 +20,18 @@ import com.microsoft.azure.management.iothub.v2018_04_01.IotHubQuotaMetricInfo;
  * Type representing IotHubResources.
  */
 public interface IotHubResources {
+    /**
+     * Begins definition for a new IotHub resource.
+     * @param name resource name.
+     * @return the first stage of the new IotHub definition.
+     */
     IotHubDescription.DefinitionStages.Blank defineIotHub(String name);
 
+    /**
+     * Begins definition for a new ConsumerGroup resource.
+     * @param name resource name.
+     * @return the first stage of the new ConsumerGroup definition.
+     */
     EventHubConsumerGroupInfo.DefinitionStages.Blank defineConsumerGroup(String name);
 
     /**
