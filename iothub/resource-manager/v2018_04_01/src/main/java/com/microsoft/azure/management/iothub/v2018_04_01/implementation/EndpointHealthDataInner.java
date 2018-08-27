@@ -29,7 +29,7 @@ public class EndpointHealthDataInner {
     private EndpointHealthStatus healthStatus;
 
     /**
-     * Get the endpointId value.
+     * Get id of the endpoint.
      *
      * @return the endpointId value
      */
@@ -38,7 +38,7 @@ public class EndpointHealthDataInner {
     }
 
     /**
-     * Set the endpointId value.
+     * Set id of the endpoint.
      *
      * @param endpointId the endpointId value to set
      * @return the EndpointHealthDataInner object itself.
@@ -49,7 +49,7 @@ public class EndpointHealthDataInner {
     }
 
     /**
-     * Get the healthStatus value.
+     * Get health status. Possible values include: 'unknown', 'healthy', 'unhealthy', 'dead'.
      *
      * @return the healthStatus value
      */
@@ -58,7 +58,7 @@ public class EndpointHealthDataInner {
     }
 
     /**
-     * Set the healthStatus value.
+     * Set health status. Possible values include: 'unknown', 'healthy', 'unhealthy', 'dead'.
      *
      * @param healthStatus the healthStatus value to set
      * @return the EndpointHealthDataInner object itself.

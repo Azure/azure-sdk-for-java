@@ -27,7 +27,7 @@ public class Name {
     private String localizedValue;
 
     /**
-     * Get the value value.
+     * Get iotHub type.
      *
      * @return the value value
      */
@@ -36,7 +36,7 @@ public class Name {
     }
 
     /**
-     * Set the value value.
+     * Set iotHub type.
      *
      * @param value the value value to set
      * @return the Name object itself.
@@ -47,7 +47,7 @@ public class Name {
     }
 
     /**
-     * Get the localizedValue value.
+     * Get localized value of name.
      *
      * @return the localizedValue value
      */
@@ -56,7 +56,7 @@ public class Name {
     }
 
     /**
-     * Set the localizedValue value.
+     * Set localized value of name.
      *
      * @param localizedValue the localizedValue value to set
      * @return the Name object itself.

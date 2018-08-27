@@ -29,7 +29,7 @@ public class EventHubConsumerGroupInfoInner extends ProxyResource {
     private String etag;
 
     /**
-     * Get the properties value.
+     * Get the tags.
      *
      * @return the properties value
      */
@@ -38,7 +38,7 @@ public class EventHubConsumerGroupInfoInner extends ProxyResource {
     }
 
     /**
-     * Set the properties value.
+     * Set the tags.
      *
      * @param properties the properties value to set
      * @return the EventHubConsumerGroupInfoInner object itself.
@@ -49,7 +49,7 @@ public class EventHubConsumerGroupInfoInner extends ProxyResource {
     }
 
     /**
-     * Get the etag value.
+     * Get the etag.
      *
      * @return the etag value
      */
