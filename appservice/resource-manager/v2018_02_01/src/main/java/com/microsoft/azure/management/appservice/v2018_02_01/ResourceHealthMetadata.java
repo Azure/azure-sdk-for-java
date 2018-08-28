@@ -11,31 +11,16 @@ package com.microsoft.azure.management.appservice.v2018_02_01;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.DeletedSiteInner;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.ResourceHealthMetadataInner;
 
 /**
- * Type representing DeletedSite.
+ * Type representing ResourceHealthMetadata.
  */
-public interface DeletedSite extends HasInner<DeletedSiteInner>, HasManager<CertificateRegistrationManager> {
+public interface ResourceHealthMetadata extends HasInner<ResourceHealthMetadataInner>, HasManager<CertificateRegistrationManager> {
     /**
-     * @return the deletedSiteId value.
+     * @return the category value.
      */
-    Integer deletedSiteId();
-
-    /**
-     * @return the deletedSiteKind value.
-     */
-    String deletedSiteKind();
-
-    /**
-     * @return the deletedSiteName value.
-     */
-    String deletedSiteName();
-
-    /**
-     * @return the deletedTimestamp value.
-     */
-    String deletedTimestamp();
+    String category();
 
     /**
      * @return the id value.
@@ -53,19 +38,9 @@ public interface DeletedSite extends HasInner<DeletedSiteInner>, HasManager<Cert
     String name();
 
     /**
-     * @return the resourceGroup value.
+     * @return the signalAvailability value.
      */
-    String resourceGroup();
-
-    /**
-     * @return the slot value.
-     */
-    String slot();
-
-    /**
-     * @return the subscription value.
-     */
-    String subscription();
+    Boolean signalAvailability();
 
     /**
      * @return the type value.

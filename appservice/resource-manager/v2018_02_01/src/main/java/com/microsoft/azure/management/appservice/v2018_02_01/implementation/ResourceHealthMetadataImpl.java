@@ -8,12 +8,12 @@
 
 package com.microsoft.azure.management.appservice.v2018_02_01.implementation;
 
-import com.microsoft.azure.management.appservice.v2018_02_01.DeletedSite;
+import com.microsoft.azure.management.appservice.v2018_02_01.ResourceHealthMetadata;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 
-class DeletedSiteImpl extends WrapperImpl<DeletedSiteInner> implements DeletedSite {
+class ResourceHealthMetadataImpl extends WrapperImpl<ResourceHealthMetadataInner> implements ResourceHealthMetadata {
     private final CertificateRegistrationManager manager;
-    DeletedSiteImpl(DeletedSiteInner inner, CertificateRegistrationManager manager) {
+    ResourceHealthMetadataImpl(ResourceHealthMetadataInner inner, CertificateRegistrationManager manager) {
         super(inner);
         this.manager = manager;
     }
@@ -24,23 +24,8 @@ class DeletedSiteImpl extends WrapperImpl<DeletedSiteInner> implements DeletedSi
     }
 
     @Override
-    public Integer deletedSiteId() {
-        return this.inner().deletedSiteId();
-    }
-
-    @Override
-    public String deletedSiteKind() {
-        return this.inner().deletedSiteKind();
-    }
-
-    @Override
-    public String deletedSiteName() {
-        return this.inner().deletedSiteName();
-    }
-
-    @Override
-    public String deletedTimestamp() {
-        return this.inner().deletedTimestamp();
+    public String category() {
+        return this.inner().category();
     }
 
     @Override
@@ -59,18 +44,8 @@ class DeletedSiteImpl extends WrapperImpl<DeletedSiteInner> implements DeletedSi
     }
 
     @Override
-    public String resourceGroup() {
-        return this.inner().resourceGroup();
-    }
-
-    @Override
-    public String slot() {
-        return this.inner().slot();
-    }
-
-    @Override
-    public String subscription() {
-        return this.inner().subscription();
+    public Boolean signalAvailability() {
+        return this.inner().signalAvailability();
     }
 
     @Override
