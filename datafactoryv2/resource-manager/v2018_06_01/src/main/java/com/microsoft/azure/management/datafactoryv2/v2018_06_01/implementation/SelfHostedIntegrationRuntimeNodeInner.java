@@ -96,7 +96,7 @@ public class SelfHostedIntegrationRuntimeNodeInner {
 
     /**
      * The result of the last integration runtime node update. Possible values
-     * include: 'Succeed', 'Fail'.
+     * include: 'None', 'Succeed', 'Fail'.
      */
     @JsonProperty(value = "lastUpdateResult", access = JsonProperty.Access.WRITE_ONLY)
     private IntegrationRuntimeUpdateResult lastUpdateResult;
@@ -241,7 +241,7 @@ public class SelfHostedIntegrationRuntimeNodeInner {
     }
 
     /**
-     * Get the result of the last integration runtime node update. Possible values include: 'Succeed', 'Fail'.
+     * Get the result of the last integration runtime node update. Possible values include: 'None', 'Succeed', 'Fail'.
      *
      * @return the lastUpdateResult value
      */

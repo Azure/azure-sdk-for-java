@@ -15,12 +15,12 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.implementation.LinkedServiceInner;
 
 /**
- * The storage account linked service.
+ * The azure table storage linked service.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("AzureStorage")
+@JsonTypeName("AzureTableStorage")
 @JsonFlatten
-public class AzureStorageLinkedService extends LinkedServiceInner {
+public class AzureTableStorageLinkedService extends LinkedServiceInner {
     /**
      * The connection string. It is mutually exclusive with sasUri property.
      * Type: string, SecureString or AzureKeyVaultSecretReference.
@@ -56,9 +56,9 @@ public class AzureStorageLinkedService extends LinkedServiceInner {
      * Set the connection string. It is mutually exclusive with sasUri property. Type: string, SecureString or AzureKeyVaultSecretReference.
      *
      * @param connectionString the connectionString value to set
-     * @return the AzureStorageLinkedService object itself.
+     * @return the AzureTableStorageLinkedService object itself.
      */
-    public AzureStorageLinkedService withConnectionString(Object connectionString) {
+    public AzureTableStorageLinkedService withConnectionString(Object connectionString) {
         this.connectionString = connectionString;
         return this;
     }
@@ -76,9 +76,9 @@ public class AzureStorageLinkedService extends LinkedServiceInner {
      * Set sAS URI of the Azure Storage resource. It is mutually exclusive with connectionString property.
      *
      * @param sasUri the sasUri value to set
-     * @return the AzureStorageLinkedService object itself.
+     * @return the AzureTableStorageLinkedService object itself.
      */
-    public AzureStorageLinkedService withSasUri(SecretBase sasUri) {
+    public AzureTableStorageLinkedService withSasUri(SecretBase sasUri) {
         this.sasUri = sasUri;
         return this;
     }
@@ -96,9 +96,9 @@ public class AzureStorageLinkedService extends LinkedServiceInner {
      * Set the encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
      *
      * @param encryptedCredential the encryptedCredential value to set
-     * @return the AzureStorageLinkedService object itself.
+     * @return the AzureTableStorageLinkedService object itself.
      */
-    public AzureStorageLinkedService withEncryptedCredential(String encryptedCredential) {
+    public AzureTableStorageLinkedService withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }

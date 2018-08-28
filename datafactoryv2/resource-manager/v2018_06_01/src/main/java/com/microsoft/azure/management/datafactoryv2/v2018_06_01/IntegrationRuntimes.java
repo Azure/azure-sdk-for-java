@@ -130,6 +130,18 @@ public interface IntegrationRuntimes extends SupportsCreating<IntegrationRuntime
     Completable removeLinksAsync(String resourceGroupName, String factoryName, String integrationRuntimeName, String linkedFactoryName);
 
     /**
+     * Create a linked integration runtime entry in a shared integration runtime.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param integrationRuntimeName The integration runtime name.
+     * @param createLinkedIntegrationRuntimeRequest The linked integration runtime properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<IntegrationRuntimeStatusResponse> createLinkedIntegrationRuntimeAsync(String resourceGroupName, String factoryName, String integrationRuntimeName, CreateLinkedIntegrationRuntimeRequest createLinkedIntegrationRuntimeRequest);
+
+    /**
      * Gets an integration runtime.
      *
      * @param resourceGroupName The resource group name.

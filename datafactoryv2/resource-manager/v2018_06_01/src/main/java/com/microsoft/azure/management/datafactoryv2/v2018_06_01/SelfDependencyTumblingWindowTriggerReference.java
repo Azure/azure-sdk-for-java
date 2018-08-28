@@ -20,20 +20,20 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 public class SelfDependencyTumblingWindowTriggerReference extends DependencyReference {
     /**
      * Timespan applied to the start time of a tumbling window when evaluating
-     * dependency, .Net timespan format.
+     * dependency.
      */
     @JsonProperty(value = "offset", required = true)
     private String offset;
 
     /**
      * The size of the window when evaluating the dependency. If undefined the
-     * frequency of the tumbling window will be used, .Net timespan format.
+     * frequency of the tumbling window will be used.
      */
     @JsonProperty(value = "size")
     private String size;
 
     /**
-     * Get timespan applied to the start time of a tumbling window when evaluating dependency, .Net timespan format.
+     * Get timespan applied to the start time of a tumbling window when evaluating dependency.
      *
      * @return the offset value
      */
@@ -42,7 +42,7 @@ public class SelfDependencyTumblingWindowTriggerReference extends DependencyRefe
     }
 
     /**
-     * Set timespan applied to the start time of a tumbling window when evaluating dependency, .Net timespan format.
+     * Set timespan applied to the start time of a tumbling window when evaluating dependency.
      *
      * @param offset the offset value to set
      * @return the SelfDependencyTumblingWindowTriggerReference object itself.
@@ -53,7 +53,7 @@ public class SelfDependencyTumblingWindowTriggerReference extends DependencyRefe
     }
 
     /**
-     * Get the size of the window when evaluating the dependency. If undefined the frequency of the tumbling window will be used, .Net timespan format.
+     * Get the size of the window when evaluating the dependency. If undefined the frequency of the tumbling window will be used.
      *
      * @return the size value
      */
@@ -62,7 +62,7 @@ public class SelfDependencyTumblingWindowTriggerReference extends DependencyRefe
     }
 
     /**
-     * Set the size of the window when evaluating the dependency. If undefined the frequency of the tumbling window will be used, .Net timespan format.
+     * Set the size of the window when evaluating the dependency. If undefined the frequency of the tumbling window will be used.
      *
      * @param size the size value to set
      * @return the SelfDependencyTumblingWindowTriggerReference object itself.

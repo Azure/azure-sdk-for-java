@@ -12,6 +12,7 @@ import java.util.Map;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.LinkedServiceReference;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.ParameterSpecification;
 import java.util.List;
+import com.microsoft.azure.management.datafactoryv2.v2018_06_01.DatasetFolder;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -115,6 +116,13 @@ public class DatasetInner {
      */
     @JsonProperty(value = "annotations")
     private List<Object> annotations;
+
+    /**
+     * The folder that this Dataset is in. If not specified, Dataset will
+     * appear at the root level.
+     */
+    @JsonProperty(value = "folder")
+    private DatasetFolder folder;
 
     /**
      * Get unmatched properties from the message are deserialized this collection.
@@ -233,6 +241,26 @@ public class DatasetInner {
      */
     public DatasetInner withAnnotations(List<Object> annotations) {
         this.annotations = annotations;
+        return this;
+    }
+
+    /**
+     * Get the folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+     *
+     * @return the folder value
+     */
+    public DatasetFolder folder() {
+        return this.folder;
+    }
+
+    /**
+     * Set the folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+     *
+     * @param folder the folder value to set
+     * @return the DatasetInner object itself.
+     */
+    public DatasetInner withFolder(DatasetFolder folder) {
+        this.folder = folder;
         return this;
     }
 
