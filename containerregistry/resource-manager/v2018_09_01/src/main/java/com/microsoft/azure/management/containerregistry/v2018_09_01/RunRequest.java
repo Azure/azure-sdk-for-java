@@ -20,9 +20,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 @JsonTypeName("RunRequest")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "DockerBuildRequest", value = DockerBuildRequest.class),
-    @JsonSubTypes.Type(name = "BuildTaskRequest", value = BuildTaskRequest.class),
+    @JsonSubTypes.Type(name = "FileTaskRunRequest", value = FileTaskRunRequest.class),
     @JsonSubTypes.Type(name = "TaskRunRequest", value = TaskRunRequest.class),
-    @JsonSubTypes.Type(name = "QuickTaskRunRequest", value = QuickTaskRunRequest.class)
+    @JsonSubTypes.Type(name = "EncodedTaskRunRequest", value = EncodedTaskRunRequest.class)
 })
 public class RunRequest {
     /**

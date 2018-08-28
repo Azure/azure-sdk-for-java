@@ -24,7 +24,7 @@ public class PlatformProperties {
     /**
      * The OS architecture. Possible values include: 'amd64', 'x86', 'arm'.
      */
-    @JsonProperty(value = "architecture", required = true)
+    @JsonProperty(value = "architecture")
     private Architecture architecture;
 
     /**

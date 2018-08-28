@@ -19,8 +19,8 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 @JsonTypeName("TaskStepUpdateParameters")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Docker", value = DockerBuildStepUpdateParameters.class),
-    @JsonSubTypes.Type(name = "BuildTask", value = BuildTaskStepUpdateParameters.class),
-    @JsonSubTypes.Type(name = "RunTask", value = RunTaskStepUpdateParameters.class)
+    @JsonSubTypes.Type(name = "FileTask", value = FileTaskStepUpdateParameters.class),
+    @JsonSubTypes.Type(name = "EncodedTask", value = EncodedTaskStepUpdateParameters.class)
 })
 public class TaskStepUpdateParameters {
 }
