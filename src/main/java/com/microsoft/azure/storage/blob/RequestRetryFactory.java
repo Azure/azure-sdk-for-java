@@ -14,7 +14,6 @@
  */
 package com.microsoft.azure.storage.blob;
 
-import com.microsoft.azure.storage.blob.models.StorageErrorException;
 import com.microsoft.rest.v2.http.*;
 import com.microsoft.rest.v2.policy.RequestPolicy;
 import com.microsoft.rest.v2.policy.RequestPolicyFactory;
@@ -23,7 +22,6 @@ import io.netty.channel.ChannelException;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
@@ -72,7 +70,7 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
         public Single<HttpResponse> sendAsync(HttpRequest httpRequest) {
             boolean considerSecondary = (httpRequest.httpMethod().equals(HttpMethod.GET) ||
                     httpRequest.httpMethod().equals(HttpMethod.HEAD))
-                    && (this.requestRetryOptions.getSecondaryHost() != null);
+                    && (this.requestRetryOptions.secondaryHost() != null);
 
             return this.attemptAsync(httpRequest, 1, considerSecondary, 1);
         }
@@ -138,7 +136,7 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
                     httpRequest.url(), bufferedHeaders, bufferedBody, httpRequest.responseDecoder());
             if (!tryingPrimary) {
                 UrlBuilder builder = UrlBuilder.parse(requestCopy.url());
-                builder.withHost(this.requestRetryOptions.getSecondaryHost());
+                builder.withHost(this.requestRetryOptions.secondaryHost());
                 try {
                     requestCopy.withUrl(builder.toURL());
                 } catch (MalformedURLException e) {
@@ -153,7 +151,7 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
              until after the retry backoff delay, so we call delaySubscription.
              */
             return this.nextPolicy.sendAsync(requestCopy)
-                    .timeout(this.requestRetryOptions.getTryTimeout(), TimeUnit.SECONDS)
+                    .timeout(this.requestRetryOptions.tryTimeout(), TimeUnit.SECONDS)
                     .delaySubscription(delayMs, TimeUnit.MILLISECONDS)
                     .flatMap(response -> {
                         boolean newConsiderSecondary = considerSecondary;
@@ -174,7 +172,7 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
                             action = "NoRetry: Successful HTTP request";
                         }
                         logf("Action=%s\n", action);
-                        if (action.charAt(0) == 'R' && attempt < requestRetryOptions.getMaxTries()) {
+                        if (action.charAt(0) == 'R' && attempt < requestRetryOptions.maxTries()) {
                             /*
                             We increment primaryTry if we are about to try the primary again (which is when we
                             consider the secondary and tried the secondary this time (tryingPrimary==false) or
@@ -210,7 +208,7 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
                         }
 
                         logf("Action=%s\n", action);
-                        if (action.charAt(0) == 'R' && attempt < requestRetryOptions.getMaxTries()) {
+                        if (action.charAt(0) == 'R' && attempt < requestRetryOptions.maxTries()) {
                             /*
                             We increment primaryTry if we are about to try the primary again (which is when we
                             consider the secondary and tried the secondary this time (tryingPrimary==false) or

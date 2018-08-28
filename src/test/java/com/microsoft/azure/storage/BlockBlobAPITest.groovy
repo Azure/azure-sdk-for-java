@@ -183,7 +183,7 @@ class BlockBlobAPITest extends APISpec {
         def destURL = cu.createBlockBlobURL(generateBlobName())
 
         when:
-        destURL.stageBlockFromURL(getBlockID(), bu.toURL(), new BlobRange(2, 3), null,
+        destURL.stageBlockFromURL(getBlockID(), bu.toURL(), new BlobRange().withOffset(2).withCount(3), null,
                 null).blockingGet()
 
         then:

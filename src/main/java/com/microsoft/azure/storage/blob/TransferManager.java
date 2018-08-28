@@ -115,7 +115,7 @@ public class TransferManager {
                     concatMapEager.
                      */
                     return blockBlobURL.stageBlock(blockId, data,
-                            count, optionsReal.accessConditions.getLeaseAccessConditions())
+                            count, optionsReal.accessConditions.leaseAccessConditions())
                             .map(x -> blockId).toObservable();
 
                     /*
@@ -196,8 +196,9 @@ public class TransferManager {
                         // Calculate whether we need a full chunk or something smaller because we are at the end.
                         long chunkSizeActual = Math.min(o.chunkSize,
                                 dataSize - (i * o.chunkSize));
-                        BlobRange chunkRange = new BlobRange(r.getOffset() + (i * o.chunkSize),
-                                chunkSizeActual);
+                        BlobRange chunkRange = new BlobRange().withOffset(r.offset() + (i * o.chunkSize))
+                                .withCount(chunkSizeActual);
+
 
                         // Make the download call.
                         return blobURL.download(chunkRange, realConditions, false)
@@ -227,20 +228,20 @@ public class TransferManager {
         if one was not specified. We use a single for this because we may have to make a REST call to get the length to
         calculate the count and we need to maintain asynchronicity.
          */
-        if (r.getCount() == null || o.accessConditions.getHttpAccessConditions().getIfMatch() == ETag.NONE) {
+        if (r.count() == null || o.accessConditions.httpAccessConditions().getIfMatch() == ETag.NONE) {
             return blobURL.getProperties(o.accessConditions)
                     .map(response -> {
                         BlobAccessConditions newConditions;
-                        if (o.accessConditions.getHttpAccessConditions().getIfMatch() == ETag.NONE) {
+                        if (o.accessConditions.httpAccessConditions().getIfMatch() == ETag.NONE) {
                             newConditions = new BlobAccessConditions(
                                     new HTTPAccessConditions(
-                                            o.accessConditions.getHttpAccessConditions().getIfModifiedSince(),
-                                            o.accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
+                                            o.accessConditions.httpAccessConditions().getIfModifiedSince(),
+                                            o.accessConditions.httpAccessConditions().getIfUnmodifiedSince(),
                                             new ETag(response.headers().eTag()),
-                                            o.accessConditions.getHttpAccessConditions().getIfNoneMatch()),
-                                    o.accessConditions.getLeaseAccessConditions(),
-                                    o.accessConditions.getAppendBlobAccessConditions(),
-                                    o.accessConditions.getPageBlobAccessConditions());
+                                            o.accessConditions.httpAccessConditions().getIfNoneMatch()),
+                                    o.accessConditions.leaseAccessConditions(),
+                                    o.accessConditions.appendBlobAccessConditions(),
+                                    o.accessConditions.pageBlobAccessConditions());
                         } else {
                             newConditions = o.accessConditions;
                         }
@@ -250,15 +251,15 @@ public class TransferManager {
                         remaining data, take the size of the remaining data. This is to prevent the case where the count
                         is much much larger than the size of the blob and we could try to download at an invalid offset.
                          */
-                        if (r.getCount() == null || r.getCount() > response.headers().contentLength() - r.getOffset()) {
-                            newCount = response.headers().contentLength() - r.getOffset();
+                        if (r.count() == null || r.count() > response.headers().contentLength() - r.offset()) {
+                            newCount = response.headers().contentLength() - r.offset();
                         } else {
-                            newCount = r.getCount();
+                            newCount = r.count();
                         }
                         return new Pair<>(newCount, newConditions);
                     });
         } else {
-            return Single.just(new Pair<>(r.getCount(), o.accessConditions));
+            return Single.just(new Pair<>(r.count(), o.accessConditions));
         }
     }
 

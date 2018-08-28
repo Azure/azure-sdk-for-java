@@ -74,8 +74,8 @@ class ServiceAPITest extends APISpec {
     def "List containers"() {
         when:
         ServiceListContainersSegmentResponse response =
-                primaryServiceURL.listContainersSegment(null, new ListContainersOptions(null,
-                        containerPrefix, null)).blockingGet()
+                primaryServiceURL.listContainersSegment(null, new ListContainersOptions().withPrefix(containerPrefix))
+                        .blockingGet()
 
         then:
         for (ContainerItem c : response.body().containerItems()) {
@@ -102,11 +102,11 @@ class ServiceAPITest extends APISpec {
 
         ServiceListContainersSegmentResponse response =
                 primaryServiceURL.listContainersSegment(null,
-                        new ListContainersOptions(null, null, 5)).blockingGet()
+                        new ListContainersOptions().withMaxResults(5)).blockingGet()
         String marker = response.body().nextMarker()
         String firstContainerName = response.body().containerItems().get(0).name()
         response = primaryServiceURL.listContainersSegment(marker,
-                new ListContainersOptions(null, null, 5)).blockingGet()
+                new ListContainersOptions().withMaxResults(5)).blockingGet()
 
         expect:
         // Assert that the second segment is indeed after the first alphabetically
@@ -122,8 +122,8 @@ class ServiceAPITest extends APISpec {
 
         expect:
         primaryServiceURL.listContainersSegment(null,
-                new ListContainersOptions(new ContainerListingDetails(true),
-                        "aaa" + containerPrefix, null)).blockingGet().body().containerItems()
+                new ListContainersOptions().withDetails(new ContainerListingDetails().withMetadata(true))
+                        .withPrefix("aaa" + containerPrefix)).blockingGet().body().containerItems()
                 .get(0).metadata() == metadata
         // Container with prefix "aaa" will not be cleaned up by normal test cleanup.
         cu.delete(null).blockingGet().statusCode() == 202
@@ -137,7 +137,7 @@ class ServiceAPITest extends APISpec {
         }
         expect:
         primaryServiceURL.listContainersSegment(null,
-                new ListContainersOptions(null, null, 10))
+                new ListContainersOptions().withMaxResults(10))
                 .blockingGet().body().containerItems().size() == 10
     }
 

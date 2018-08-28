@@ -31,6 +31,7 @@ import io.reactivex.functions.BiConsumer;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -177,8 +178,7 @@ public class Samples {
                          List the blob(s) in our container; since a container may hold millions of blobs, this is done
                          one segment at a time.
                          */
-                        containerURL.listBlobsFlatSegment(null, new ListBlobsOptions(null, null,
-                                1)))
+                        containerURL.listBlobsFlatSegment(null, new ListBlobsOptions().withMaxResults(1)))
                 .flatMap(containerListBlobFlatSegmentResponse ->
                         // The asynchronous requests require we use recursion to continue our listing.
                         listBlobsFlatHelper(containerURL, containerListBlobFlatSegmentResponse))
@@ -225,8 +225,7 @@ public class Samples {
             The presence of the marker indicates that there are more blobs to list, so we make another call to
             listBlobsFlatSegment and pass the result through this helper function.
              */
-            return containerURL.listBlobsFlatSegment(nextMarker, new ListBlobsOptions(null, null,
-                    1))
+            return containerURL.listBlobsFlatSegment(nextMarker, new ListBlobsOptions().withMaxResults(1))
                     .flatMap(containersListBlobFlatSegmentResponse ->
                             listBlobsFlatHelper(containerURL, containersListBlobFlatSegmentResponse));
         }
@@ -270,7 +269,7 @@ public class Samples {
             listBlobsHierarchySegment and pass the result through this helper function.
              */
             return containerURL.listBlobsHierarchySegment(nextMarker, response.body().delimiter(),
-                    new ListBlobsOptions(null, null, 1))
+                    new ListBlobsOptions().withMaxResults(1))
                     .flatMap(containersListBlobHierarchySegmentResponse ->
                             listBlobsHierarchyHelper(containerURL, containersListBlobHierarchySegmentResponse));
         }
@@ -332,17 +331,17 @@ public class Samples {
         - Maximum delay between retries is 3 seconds.
         - We will not retry against a secondary host.
          */
-        po.requestRetryOptions = new RequestRetryOptions(RetryPolicyType.EXPONENTIAL, 3, 3,
-                1000L, 3000L, null);
+        po.withRequestRetryOptions(new RequestRetryOptions(RetryPolicyType.EXPONENTIAL, 3, 3,
+                1000L, 3000L, null));
 
         /*
          Set LoggingOptions to control how each HTTP request and its response is logged. A successful response taking
          more than 200ms will be logged as a warning.
          */
-        po.loggingOptions = new LoggingOptions(200);
+        po.withLoggingOptions(new LoggingOptions(200));
 
         // Set LogOptions to control what & where all pipeline log events go.
-        po.logger = new HttpPipelineLogger() {
+        po.withLogger(new HttpPipelineLogger() {
             @Override
             public HttpPipelineLogLevel minimumLogLevel() {
                 // Log all events from informational to more severe.
@@ -364,7 +363,7 @@ public class Samples {
                 }
                 logger.log(level, s);
             }
-        };
+        });
 
         /*
         Create a request pipeline object configured with credentials and with pipeline options. Once created, a
@@ -405,8 +404,8 @@ public class Samples {
         - Maximum delay between retries is 10 seconds.
         - We will not retry against a secondary host.
          */
-        po.requestRetryOptions = new RequestRetryOptions(RetryPolicyType.EXPONENTIAL, 4, 60,
-                5000L, 10000L, null);
+        po.withRequestRetryOptions(new RequestRetryOptions(RetryPolicyType.EXPONENTIAL, 4, 60,
+                5000L, 10000L, null));
         ContainerURL newContainerURL = containerURL.withPipeline(
                 ServiceURL.createPipeline(new AnonymousCredentials(), po));
 
@@ -480,28 +479,28 @@ public class Samples {
 
         // Now, we access the parts (this example prints them).
         System.out.println(String.join("\n",
-                parts.host,
-                parts.containerName,
-                parts.blobName,
-                parts.snapshot));
+                parts.host(),
+                parts.containerName(),
+                parts.blobName(),
+                parts.snapshot()));
         System.out.println("");
-        SASQueryParameters sas = parts.sasQueryParameters;
+        SASQueryParameters sas = parts.sasQueryParameters();
         System.out.println(String.join("\n",
-                sas.getVersion(),
-                sas.getResource(),
-                sas.getStartTime().toString(),
-                sas.getExpiryTime().toString(),
-                sas.getPermissions(),
-                sas.getIpRange().toString(),
-                sas.getProtocol().toString(),
-                sas.getIdentifier(),
-                sas.getServices(),
-                sas.getSignature()));
+                sas.version(),
+                sas.resource(),
+                sas.startTime().toString(),
+                sas.expiryTime().toString(),
+                sas.permissions(),
+                sas.ipRange().toString(),
+                sas.protocol().toString(),
+                sas.identifier(),
+                sas.services(),
+                sas.signature()));
 
         // You can then change some of the fields and construct a new URL.
-        parts.sasQueryParameters = null; // Remove the SAS query parameters.
-        parts.snapshot = null; // Remove the snapshot timestamp.
-        parts.containerName = "othercontainer"; // Change the container name.
+        parts.withSasQueryParameters(null) // Remove the SAS query parameters.
+        .withSnapshot(null) // Remove the snapshot timestamp.
+        .withContainerName("othercontainer"); // Change the container name.
         // In this example, we'll keep the blob name as it is.
 
         // Construct a new URL from the parts:
@@ -525,22 +524,22 @@ public class Samples {
         parameters.
          */
         AccountSASSignatureValues values = new AccountSASSignatureValues();
-        values.protocol = SASProtocol.HTTPS_ONLY; // Users MUST use HTTPS (not HTTP).
-        values.expiryTime = OffsetDateTime.now().plusDays(2); // 2 days before expiration.
+        values.withProtocol(SASProtocol.HTTPS_ONLY) // Users MUST use HTTPS (not HTTP).
+        .withExpiryTime(OffsetDateTime.now().plusDays(2)); // 2 days before expiration.
 
-        AccountSASPermission permission = new AccountSASPermission();
-        permission.read = true;
-        permission.list = true;
-        values.permissions = permission.toString();
+        AccountSASPermission permission = new AccountSASPermission()
+        .withRead(true)
+        .withList(true);
+        values.withPermissions(permission.toString());
 
-        AccountSASService service = new AccountSASService();
-        service.blob = true;
-        values.services = service.toString();
+        AccountSASService service = new AccountSASService()
+        .withBlob(true);
+        values.withServices(service.toString());
 
-        AccountSASResourceType resourceType = new AccountSASResourceType();
-        resourceType.container = true;
-        resourceType.object = true;
-        values.resourceTypes = resourceType.toString();
+        AccountSASResourceType resourceType = new AccountSASResourceType()
+        .withContainer(true)
+        .withObject(true);
+        values.withResourceTypes(resourceType.toString());
 
         SASQueryParameters params = values.generateSASQueryParameters(credential);
 
@@ -583,21 +582,21 @@ public class Samples {
         Set the desired SAS signature values and sign them with the shared key credentials to get the SAS query
         parameters.
          */
-        ServiceSASSignatureValues values = new ServiceSASSignatureValues();
-        values.protocol = SASProtocol.HTTPS_ONLY; // Users MUST use HTTPS (not HTTP).
-        values.expiryTime = OffsetDateTime.now().plusDays(2); // 2 days before expiration.
-        values.containerName = containerName;
-        values.blobName = blobName;
+        ServiceSASSignatureValues values = new ServiceSASSignatureValues()
+        .withProtocol(SASProtocol.HTTPS_ONLY) // Users MUST use HTTPS (not HTTP).
+        .withExpiryTime(OffsetDateTime.now().plusDays(2)) // 2 days before expiration.
+        .withContainerName(containerName)
+        .withBlobName(blobName);
 
         /*
         To produce a container SAS (as opposed to a blob SAS), assign to Permissions using ContainerSASPermissions, and
         make sure the blobName field is null (the default).
          */
-        BlobSASPermission permission = new BlobSASPermission();
-        permission.read = true;
-        permission.add = true;
-        permission.write = true;
-        values.permissions = permission.toString();
+        BlobSASPermission permission = new BlobSASPermission()
+        .withRead(true)
+        .withAdd(true)
+        .withWrite(true);
+        values.withPermissions(permission.toString());
 
         SASQueryParameters params = values.generateSASQueryParameters(credential);
 
@@ -1295,8 +1294,7 @@ public class Samples {
                                                     a time.
                                                     */
                                                     containerURL.listBlobsFlatSegment(null,
-                                                            new ListBlobsOptions(null, null,
-                                                                    1)))
+                                                            new ListBlobsOptions().withMaxResults(1)))
                                             .flatMap(response2 ->
                                                     /*
                                                      The asynchronous requests require we use recursion to continue our
@@ -1452,6 +1450,8 @@ public class Samples {
         options.maxRetryRequests = 5;
 
         File file = File.createTempFile("tempfile", "txt");
+        FileOutputStream fos = new FileOutputStream(file);
+        fos.write(5);
         file.deleteOnExit();
 
         /*
@@ -1590,9 +1590,9 @@ public class Samples {
         LoggingOptions loggingOptions = new LoggingOptions(2000);
         RequestRetryOptions requestRetryOptions = new RequestRetryOptions(RetryPolicyType.EXPONENTIAL, 5,
                 4, 1000L, 10000L, "secondary-host");
-        PipelineOptions customOptions = new PipelineOptions();
-        customOptions.loggingOptions = loggingOptions;
-        customOptions.requestRetryOptions = requestRetryOptions;
+        PipelineOptions customOptions = new PipelineOptions()
+        .withLoggingOptions(loggingOptions)
+        .withRequestRetryOptions(requestRetryOptions);
         StorageURL.createPipeline(new AnonymousCredentials(), customOptions);
         // </pipeline_options>
 
@@ -1670,28 +1670,28 @@ public class Samples {
 
         // Now, we access the parts (this example prints them).
         System.out.println(String.join("\n",
-                parts.host,
-                parts.containerName,
-                parts.blobName,
-                parts.snapshot));
+                parts.host(),
+                parts.containerName(),
+                parts.blobName(),
+                parts.snapshot()));
         System.out.println("");
-        SASQueryParameters sas = parts.sasQueryParameters;
+        SASQueryParameters sas = parts.sasQueryParameters();
         System.out.println(String.join("\n",
-                sas.getVersion(),
-                sas.getResource(),
-                sas.getStartTime().toString(),
-                sas.getExpiryTime().toString(),
-                sas.getPermissions(),
-                sas.getIpRange().toString(),
-                sas.getProtocol().toString(),
-                sas.getIdentifier(),
-                sas.getServices(),
-                sas.getSignature()));
+                sas.version(),
+                sas.resource(),
+                sas.startTime().toString(),
+                sas.expiryTime().toString(),
+                sas.permissions(),
+                sas.ipRange().toString(),
+                sas.protocol().toString(),
+                sas.identifier(),
+                sas.services(),
+                sas.signature()));
 
         // You can then change some of the fields and construct a new URL.
-        parts.sasQueryParameters = null; // Remove the SAS query parameters.
-        parts.snapshot = null; // Remove the snapshot timestamp.
-        parts.containerName = "othercontainer"; // Change the container name.
+        parts.withSasQueryParameters(null) // Remove the SAS query parameters.
+                .withSnapshot(null) // Remove the snapshot timestamp.
+                .withContainerName("othercontainer"); // Change the container name.
         // In this example, we'll keep the blob name as it is.
 
         // Construct a new URL from the parts:
@@ -1709,22 +1709,22 @@ public class Samples {
         parameters.
          */
         AccountSASSignatureValues values = new AccountSASSignatureValues();
-        values.protocol = SASProtocol.HTTPS_ONLY; // Users MUST use HTTPS (not HTTP).
-        values.expiryTime = OffsetDateTime.now().plusDays(2); // 2 days before expiration.
+        values.withProtocol(SASProtocol.HTTPS_ONLY) // Users MUST use HTTPS (not HTTP).
+                .withExpiryTime(OffsetDateTime.now().plusDays(2)); // 2 days before expiration.
 
-        AccountSASPermission permission = new AccountSASPermission();
-        permission.read = true;
-        permission.list = true;
-        values.permissions = permission.toString();
+        AccountSASPermission permission = new AccountSASPermission()
+                .withRead(true)
+                .withList(true);
+        values.withPermissions(permission.toString());
 
-        AccountSASService service = new AccountSASService();
-        service.blob = true;
-        values.services = service.toString();
+        AccountSASService service = new AccountSASService()
+                .withBlob(true);
+        values.withServices(service.toString());
 
-        AccountSASResourceType resourceType = new AccountSASResourceType();
-        resourceType.container = true;
-        resourceType.object = true;
-        values.resourceTypes = resourceType.toString();
+        AccountSASResourceType resourceType = new AccountSASResourceType()
+                .withContainer(true)
+                .withObject(true);
+        values.withResourceTypes(resourceType.toString());
 
         SASQueryParameters params = values.generateSASQueryParameters(credential);
 
@@ -1761,21 +1761,21 @@ public class Samples {
         Set the desired SAS signature values and sign them with the shared key credentials to get the SAS query
         parameters.
          */
-        ServiceSASSignatureValues blobValues = new ServiceSASSignatureValues();
-        blobValues.protocol = SASProtocol.HTTPS_ONLY; // Users MUST use HTTPS (not HTTP).
-        blobValues.expiryTime = OffsetDateTime.now().plusDays(2); // 2 days before expiration.
-        blobValues.containerName = containerName;
-        blobValues.blobName = blobName;
+        ServiceSASSignatureValues blobValues = new ServiceSASSignatureValues()
+                .withProtocol(SASProtocol.HTTPS_ONLY) // Users MUST use HTTPS (not HTTP).
+                .withExpiryTime(OffsetDateTime.now().plusDays(2)) // 2 days before expiration.
+                .withContainerName(containerName)
+                .withBlobName(blobName);
 
         /*
         To produce a container SAS (as opposed to a blob SAS), assign to Permissions using ContainerSASPermissions, and
         make sure the blobName field is null (the default).
          */
-        BlobSASPermission blobPermission = new BlobSASPermission();
-        blobPermission.read = true;
-        blobPermission.add = true;
-        blobPermission.write = true;
-        values.permissions = blobPermission.toString();
+        BlobSASPermission blobPermission = new BlobSASPermission()
+                .withRead(true)
+                .withAdd(true)
+                .withWrite(true);
+        values.withPermissions(permission.toString());
 
         SASQueryParameters serviceParams = values.generateSASQueryParameters(credential);
 
@@ -1994,8 +1994,8 @@ public class Samples {
                     Create a SignedIdentifier that gives read permissions and expires one day for now. This means that
                     any SAS associated with this policy has these properties.
                      */
-                    BlobSASPermission perms = new BlobSASPermission();
-                    perms.read = true;
+                    BlobSASPermission perms = new BlobSASPermission()
+                            .withRead(true);
                     SignedIdentifier id = new SignedIdentifier().withId("policy1").withAccessPolicy(
                             new AccessPolicy().withPermission(perms.toString()).withExpiry(OffsetDateTime.now()
                                     .plusDays(1)));
@@ -2006,8 +2006,7 @@ public class Samples {
         // </container_policy>
 
         // <list_blobs_flat>
-        containerURL.listBlobsFlatSegment(null, new ListBlobsOptions(null, null,
-                1))
+        containerURL.listBlobsFlatSegment(null, new ListBlobsOptions().withMaxResults(1))
                 .flatMap(containersListBlobFlatSegmentResponse ->
                         // The asynchronous requests require we use recursion to continue our listing.
                         listBlobsFlatHelper(containerURL, containersListBlobFlatSegmentResponse))
@@ -2016,7 +2015,7 @@ public class Samples {
 
         // <list_blobs_hierarchy>
         containerURL.listBlobsHierarchySegment(null, "my_delimiter",
-                new ListBlobsOptions(null, null, 1))
+                new ListBlobsOptions().withMaxResults(1))
                 .flatMap(containersListBlobHierarchySegmentResponse ->
                         // The asynchronous requests require we use recursion to continue our listing.
                         listBlobsHierarchyHelper(containerURL, containersListBlobHierarchySegmentResponse))

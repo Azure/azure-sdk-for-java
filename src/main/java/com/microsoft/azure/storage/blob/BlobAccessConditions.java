@@ -30,16 +30,16 @@ public final class BlobAccessConditions {
                     null);
 
     // Optional standard HTTP access conditions which are optionally set
-    private final HTTPAccessConditions httpAccessConditions;
+    private HTTPAccessConditions httpAccessConditions;
 
     // Optional access conditions for a lease on a container or blob
-    private final LeaseAccessConditions leaseAccessConditions;
+    private LeaseAccessConditions leaseAccessConditions;
 
     // Optional access conditions which are specific to append blobs
-    private final AppendBlobAccessConditions appendBlobAccessConditions;
+    private AppendBlobAccessConditions appendBlobAccessConditions;
 
     // Optional access conditions which are specific to page blobs
-    private final PageBlobAccessConditions pageBlobAccessConditions;
+    private PageBlobAccessConditions pageBlobAccessConditions;
 
     /**
      * Access conditions which are specific to blobs.
@@ -69,10 +69,9 @@ public final class BlobAccessConditions {
     }
 
     /**
-     * @return
-     *      The HttpAccessConditions.
+     * The HttpAccessConditions.
      */
-    HTTPAccessConditions getHttpAccessConditions() {
+    HTTPAccessConditions httpAccessConditions() {
         return httpAccessConditions;
     }
 
@@ -80,7 +79,7 @@ public final class BlobAccessConditions {
      * @return
      *      The LeaseAccessConditions.
      */
-    LeaseAccessConditions getLeaseAccessConditions() {
+    LeaseAccessConditions leaseAccessConditions() {
         return leaseAccessConditions;
     }
 
@@ -88,7 +87,7 @@ public final class BlobAccessConditions {
      * @return
      *      The AppendBlobAccessConditions.
      */
-    AppendBlobAccessConditions getAppendBlobAccessConditions() {
+    AppendBlobAccessConditions appendBlobAccessConditions() {
         return appendBlobAccessConditions;
     }
 
@@ -96,7 +95,7 @@ public final class BlobAccessConditions {
      * @return
      *      The PageBlobAccessConditions.
      */
-    PageBlobAccessConditions getPageBlobAccessConditions() {
+    PageBlobAccessConditions pageBlobAccessConditions() {
         return pageBlobAccessConditions;
     }
 

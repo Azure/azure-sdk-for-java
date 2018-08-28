@@ -103,8 +103,8 @@ public final class ServiceURL extends StorageURL {
             String marker, ListContainersOptions options) {
         options = options == null ? ListContainersOptions.DEFAULT : options;
         return addErrorWrappingToSingle(
-                this.storageClient.generatedServices().listContainersSegmentWithRestResponseAsync(options.getPrefix(),
-                marker, options.getMaxResults(), options.getDetails().toIncludeType(), null, null));
+                this.storageClient.generatedServices().listContainersSegmentWithRestResponseAsync(options.prefix(),
+                marker, options.maxResults(), options.details().toIncludeType(), null, null));
     }
 
     /**

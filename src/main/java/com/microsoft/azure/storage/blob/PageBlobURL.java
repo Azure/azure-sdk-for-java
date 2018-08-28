@@ -88,7 +88,7 @@ public final class PageBlobURL extends BlobURL {
      */
     public PageBlobURL withSnapshot(String snapshot) throws MalformedURLException, UnknownHostException {
         BlobURLParts blobURLParts = URLParser.parse(new URL(this.storageClient.url()));
-        blobURLParts.snapshot = snapshot;
+        blobURLParts.withSnapshot(snapshot);
         return new PageBlobURL(blobURLParts.toURL(), super.storageClient.httpPipeline());
     }
 
@@ -143,12 +143,12 @@ public final class PageBlobURL extends BlobURL {
                 headers.getContentMD5(),
                 headers.getCacheControl(),
                 metadata,
-                accessConditions.getLeaseAccessConditions().getLeaseId(),
+                accessConditions.leaseAccessConditions().getLeaseId(),
                 headers.getContentDisposition(),
-                accessConditions.getHttpAccessConditions().getIfModifiedSince(),
-                accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
-                accessConditions.getHttpAccessConditions().getIfMatch().toString(),
-                accessConditions.getHttpAccessConditions().getIfNoneMatch().toString(),
+                accessConditions.httpAccessConditions().getIfModifiedSince(),
+                accessConditions.httpAccessConditions().getIfUnmodifiedSince(),
+                accessConditions.httpAccessConditions().getIfMatch().toString(),
+                accessConditions.httpAccessConditions().getIfNoneMatch().toString(),
                 sequenceNumber, null));
     }
 
@@ -185,14 +185,14 @@ public final class PageBlobURL extends BlobURL {
 
         return addErrorWrappingToSingle(this.storageClient.generatedPageBlobs().uploadPagesWithRestResponseAsync(
                  body, pageRange.end()-pageRange.start()+1, null, pageRangeStr,
-                accessConditions.getLeaseAccessConditions().getLeaseId(),
-                accessConditions.getPageBlobAccessConditions().getIfSequenceNumberLessThanOrEqual(),
-                accessConditions.getPageBlobAccessConditions().getIfSequenceNumberLessThan(),
-                accessConditions.getPageBlobAccessConditions().getIfSequenceNumberEqual(),
-                accessConditions.getHttpAccessConditions().getIfModifiedSince(),
-                accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
-                accessConditions.getHttpAccessConditions().getIfMatch().toString(),
-                accessConditions.getHttpAccessConditions().getIfNoneMatch().toString(), null));
+                accessConditions.leaseAccessConditions().getLeaseId(),
+                accessConditions.pageBlobAccessConditions().getIfSequenceNumberLessThanOrEqual(),
+                accessConditions.pageBlobAccessConditions().getIfSequenceNumberLessThan(),
+                accessConditions.pageBlobAccessConditions().getIfSequenceNumberEqual(),
+                accessConditions.httpAccessConditions().getIfModifiedSince(),
+                accessConditions.httpAccessConditions().getIfUnmodifiedSince(),
+                accessConditions.httpAccessConditions().getIfMatch().toString(),
+                accessConditions.httpAccessConditions().getIfNoneMatch().toString(), null));
     }
 
     /**
@@ -226,14 +226,14 @@ public final class PageBlobURL extends BlobURL {
 
          return addErrorWrappingToSingle(this.storageClient.generatedPageBlobs().clearPagesWithRestResponseAsync(
                  0,null, pageRangeStr,
-                 accessConditions.getLeaseAccessConditions().getLeaseId(),
-                 accessConditions.getPageBlobAccessConditions().getIfSequenceNumberLessThanOrEqual(),
-                 accessConditions.getPageBlobAccessConditions().getIfSequenceNumberLessThan(),
-                 accessConditions.getPageBlobAccessConditions().getIfSequenceNumberEqual(),
-                 accessConditions.getHttpAccessConditions().getIfModifiedSince(),
-                 accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
-                 accessConditions.getHttpAccessConditions().getIfMatch().toString(),
-                 accessConditions.getHttpAccessConditions().getIfNoneMatch().toString(), null));
+                 accessConditions.leaseAccessConditions().getLeaseId(),
+                 accessConditions.pageBlobAccessConditions().getIfSequenceNumberLessThanOrEqual(),
+                 accessConditions.pageBlobAccessConditions().getIfSequenceNumberLessThan(),
+                 accessConditions.pageBlobAccessConditions().getIfSequenceNumberEqual(),
+                 accessConditions.httpAccessConditions().getIfModifiedSince(),
+                 accessConditions.httpAccessConditions().getIfUnmodifiedSince(),
+                 accessConditions.httpAccessConditions().getIfMatch().toString(),
+                 accessConditions.httpAccessConditions().getIfNoneMatch().toString(), null));
     }
 
     /**
@@ -259,11 +259,11 @@ public final class PageBlobURL extends BlobURL {
 
         return addErrorWrappingToSingle(this.storageClient.generatedPageBlobs().getPageRangesWithRestResponseAsync(
                 null, null, blobRange.toString(),
-                accessConditions.getLeaseAccessConditions().getLeaseId(),
-                accessConditions.getHttpAccessConditions().getIfModifiedSince(),
-                accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
-                accessConditions.getHttpAccessConditions().getIfMatch().toString(),
-                accessConditions.getHttpAccessConditions().getIfNoneMatch().toString(),
+                accessConditions.leaseAccessConditions().getLeaseId(),
+                accessConditions.httpAccessConditions().getIfModifiedSince(),
+                accessConditions.httpAccessConditions().getIfUnmodifiedSince(),
+                accessConditions.httpAccessConditions().getIfMatch().toString(),
+                accessConditions.httpAccessConditions().getIfNoneMatch().toString(),
                 null));
     }
 
@@ -298,11 +298,11 @@ public final class PageBlobURL extends BlobURL {
 
         return addErrorWrappingToSingle(this.storageClient.generatedPageBlobs().getPageRangesDiffWithRestResponseAsync(
                 null,null, prevSnapshot, blobRange.toString(),
-                accessConditions.getLeaseAccessConditions().getLeaseId(),
-                accessConditions.getHttpAccessConditions().getIfModifiedSince(),
-                accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
-                accessConditions.getHttpAccessConditions().getIfMatch().toString(),
-                accessConditions.getHttpAccessConditions().getIfNoneMatch().toString(),
+                accessConditions.leaseAccessConditions().getLeaseId(),
+                accessConditions.httpAccessConditions().getIfModifiedSince(),
+                accessConditions.httpAccessConditions().getIfUnmodifiedSince(),
+                accessConditions.httpAccessConditions().getIfMatch().toString(),
+                accessConditions.httpAccessConditions().getIfNoneMatch().toString(),
                 null));
     }
 
@@ -334,11 +334,11 @@ public final class PageBlobURL extends BlobURL {
 
         return addErrorWrappingToSingle(this.storageClient.generatedPageBlobs().resizeWithRestResponseAsync(
                 size,null,
-                accessConditions.getLeaseAccessConditions().getLeaseId(),
-                accessConditions.getHttpAccessConditions().getIfModifiedSince(),
-                accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
-                accessConditions.getHttpAccessConditions().getIfMatch().toString(),
-                accessConditions.getHttpAccessConditions().getIfNoneMatch().toString(),
+                accessConditions.leaseAccessConditions().getLeaseId(),
+                accessConditions.httpAccessConditions().getIfModifiedSince(),
+                accessConditions.httpAccessConditions().getIfUnmodifiedSince(),
+                accessConditions.httpAccessConditions().getIfMatch().toString(),
+                accessConditions.httpAccessConditions().getIfNoneMatch().toString(),
                 null));
     }
 
@@ -376,11 +376,11 @@ public final class PageBlobURL extends BlobURL {
         return addErrorWrappingToSingle(
                 this.storageClient.generatedPageBlobs().updateSequenceNumberWithRestResponseAsync(
                 action, null,
-                accessConditions.getLeaseAccessConditions().getLeaseId(),
-                accessConditions.getHttpAccessConditions().getIfModifiedSince(),
-                accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
-                accessConditions.getHttpAccessConditions().getIfMatch().toString(),
-                accessConditions.getHttpAccessConditions().getIfNoneMatch().toString(),
+                accessConditions.leaseAccessConditions().getLeaseId(),
+                accessConditions.httpAccessConditions().getIfModifiedSince(),
+                accessConditions.httpAccessConditions().getIfUnmodifiedSince(),
+                accessConditions.httpAccessConditions().getIfMatch().toString(),
+                accessConditions.httpAccessConditions().getIfNoneMatch().toString(),
                 sequenceNumber,null));
     }
 

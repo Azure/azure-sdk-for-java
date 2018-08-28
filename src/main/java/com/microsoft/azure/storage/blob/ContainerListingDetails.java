@@ -27,26 +27,27 @@ public final class ContainerListingDetails {
     /**
      * An object indicating that no extra details should be returned.
      */
-    public static final ContainerListingDetails NONE = new ContainerListingDetails(false);
+    public static final ContainerListingDetails NONE = new ContainerListingDetails();
 
-    private final boolean metadata;
+    private boolean metadata;
 
-    /**
-     * A {@link ContainerListingDetails} object.
-     *
-     * @param metadata
-     *      Whether metadata should be returned.
-     */
-    public ContainerListingDetails(boolean metadata) {
-        this.metadata = metadata;
+    public ContainerListingDetails() {
+
     }
 
     /**
-     * @return
-     *      Whether metadata should be returned.
+     * Whether metadata should be returned.
      */
-    public boolean getMetadata() {
+    public boolean metadata() {
         return this.metadata;
+    }
+
+    /**
+     * Whether metadata should be returned.
+     */
+    public ContainerListingDetails withMetadata(boolean metadata) {
+        this.metadata = metadata;
+        return this;
     }
 
     /*

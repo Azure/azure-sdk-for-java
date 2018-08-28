@@ -26,5 +26,14 @@ public final class RetryReaderOptions {
      *  is the default and means that no additional HTTP requests will be made once the initial request has been made or
      *  provided.
      */
-    public int maxRetryRequests = 0;
+    private int maxRetryRequests = 0;
+
+    public int maxRetryRequests() {
+        return maxRetryRequests;
+    }
+
+    public RetryReaderOptions withMaxRetryRequests(int maxRetryRequests) {
+        this.maxRetryRequests = maxRetryRequests;
+        return this;
+    }
 }

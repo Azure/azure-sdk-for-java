@@ -28,45 +28,51 @@ public final class AppendBlobAccessConditions {
     /**
      * An object representing no access conditions.
      */
-    public static final AppendBlobAccessConditions NONE =
-            new AppendBlobAccessConditions(null, null);
+    public static final AppendBlobAccessConditions NONE = new AppendBlobAccessConditions();
 
-    private final Long ifAppendPositionEquals;
+    private Long ifAppendPositionEquals;
 
-    private final Long ifMaxSizeLessThanOrEqual;
+    private Long ifMaxSizeLessThanOrEqual;
 
-    /**
-     * Creates a {@code AppendBlobAccessConditions} object.
-     *
-     * @param ifAppendPositionEquals
-     *      Ensures that the AppendBlock operation succeeds only if the append position is equal to a value.
-     * @param ifMaxSizeLessThanOrEqual
-     *      Ensures that the AppendBlock operation succeeds only if the append blob's size is less than or
-     *      equal to a value.
-     */
-    public AppendBlobAccessConditions(Long ifAppendPositionEquals, Long ifMaxSizeLessThanOrEqual) {
-        if ((ifAppendPositionEquals != null && ifAppendPositionEquals < -1) ||
-                (ifMaxSizeLessThanOrEqual != null && ifMaxSizeLessThanOrEqual < -1)) {
-            throw new IllegalArgumentException("Append blob access conditions can't be less than -1.");
-        }
-        this.ifAppendPositionEquals = ifAppendPositionEquals;
-        this.ifMaxSizeLessThanOrEqual = ifMaxSizeLessThanOrEqual;
+    public AppendBlobAccessConditions() {
+
     }
 
     /**
-     * @return
-     *      Ensures that the AppendBlock operation succeeds only if the append position is equal to the value.
+     * Ensures that the AppendBlock operation succeeds only if the append position is equal to the value.
      */
-    public Long getIfAppendPositionEquals() {
+    public Long ifAppendPositionEquals() {
         return ifAppendPositionEquals;
     }
 
     /**
-     * @return
-     *      Ensures that the AppendBlock operation succeeds only if the append blob's size is less than or equal to the
-     *      value.
+     * Ensures that the AppendBlock operation succeeds only if the append position is equal to the value.
      */
-    public Long getIfMaxSizeLessThanOrEqual() {
+    public AppendBlobAccessConditions withIfAppendPositionEquals(Long ifAppendPositionEquals) {
+        if(ifAppendPositionEquals != null && ifAppendPositionEquals < 0) {
+            throw new IllegalArgumentException("Append blob access conditions can't be less than -1");
+        }
+        this.ifAppendPositionEquals = ifAppendPositionEquals;
+        return this;
+    }
+
+    /**
+     * Ensures that the AppendBlock operation succeeds only if the append blob's size is less than or equal to the
+     * value.
+     */
+    public Long ifMaxSizeLessThanOrEqual() {
         return ifMaxSizeLessThanOrEqual;
+    }
+
+    /**
+     * Ensures that the AppendBlock operation succeeds only if the append blob's size is less than or equal to the
+     * value.
+     */
+    public AppendBlobAccessConditions withIfMaxSizeLessThanOrEqual(Long ifMaxSizeLessThanOrEqual) {
+        if (ifMaxSizeLessThanOrEqual != null && ifMaxSizeLessThanOrEqual < 0) {
+            throw new IllegalArgumentException("Append blob access conditions cannot be less than -1");
+        }
+        this.ifMaxSizeLessThanOrEqual = ifMaxSizeLessThanOrEqual;
+        return this;
     }
 }

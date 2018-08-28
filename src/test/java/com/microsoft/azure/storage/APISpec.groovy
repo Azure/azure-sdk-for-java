@@ -187,7 +187,7 @@ class APISpec extends Specification {
 
     static ServiceURL getGenericServiceURL(SharedKeyCredentials creds) {
         PipelineOptions po = new PipelineOptions()
-        po.client = getHttpClient()
+        po.withClient(getHttpClient())
 
         HttpPipeline pipeline = StorageURL.createPipeline(creds, po)
 
@@ -203,7 +203,7 @@ class APISpec extends Specification {
                 new URL("http://" + System.getenv().get("ACCOUNT_NAME") + ".blob.core.windows.net"), pipeline)
         // There should not be more than 5000 containers from these tests
         for (ContainerItem c : serviceURL.listContainersSegment(null,
-                new ListContainersOptions(null, containerPrefix, null)).blockingGet()
+                new ListContainersOptions().withPrefix(containerPrefix)).blockingGet()
                 .body().containerItems()) {
             ContainerURL containerURL = serviceURL.createContainerURL(c.name())
             if (c.properties().leaseState().equals(LeaseStateType.LEASED)) {
@@ -221,11 +221,11 @@ class APISpec extends Specification {
     }
 
     static File getRandomFile(long size) {
-        File file = File.createTempFile(UUID.randomUUID().toString(), ".txt");
-        file.deleteOnExit();
-        FileOutputStream fos = new FileOutputStream(file);
+        File file = File.createTempFile(UUID.randomUUID().toString(), ".txt")
+        file.deleteOnExit()
+        FileOutputStream fos = new FileOutputStream(file)
         fos.write(getRandomData(size).array())
-        fos.close();
+        fos.close()
         return file
     }
 

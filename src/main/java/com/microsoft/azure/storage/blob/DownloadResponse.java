@@ -55,13 +55,14 @@ public class DownloadResponse extends RestResponse<BlobDownloadHeaders, Flowable
      */
     public Flowable<ByteBuffer> body(RetryReaderOptions options) {
         options = options == null ? new RetryReaderOptions() : options;
-        if (options.maxRetryRequests == 0) {
+        if (options.maxRetryRequests() == 0) {
             return super.body();
         }
         return new RetryReader(Single.just(this), this.info, options,
-                newInfo -> this.blobURL.download(new BlobRange(newInfo.offset, newInfo.count), new BlobAccessConditions(
-                        new HTTPAccessConditions(null, null, info.eTag, null),
-                        null, null, null),
+                newInfo -> this.blobURL.download(new BlobRange().withOffset(newInfo.offset).withCount(newInfo.count),
+                        new BlobAccessConditions(
+                                new HTTPAccessConditions(null, null, info.eTag, null),
+                                null, null, null),
                         false));
     }
 

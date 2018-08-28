@@ -245,7 +245,7 @@ class LoggingTest extends APISpec {
         setup:
         def logger = getMockLogger(HttpPipelineLogLevel.INFO)
         def po = new PipelineOptions()
-        po.logger = logger
+        po.withLogger(logger)
 
         cu = primaryServiceURL.createContainerURL(generateContainerName())
         cu = new ContainerURL(cu.toURL(), StorageURL.createPipeline(primaryCreds, po))

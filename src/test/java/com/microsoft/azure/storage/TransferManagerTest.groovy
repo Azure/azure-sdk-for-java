@@ -1,12 +1,7 @@
 package com.microsoft.azure.storage
 
 import com.microsoft.azure.storage.blob.*
-import com.microsoft.azure.storage.blob.models.BlobDownloadHeaders
-import com.microsoft.azure.storage.blob.models.BlobGetPropertiesResponse
-import com.microsoft.azure.storage.blob.models.BlobType
-import com.microsoft.azure.storage.blob.models.BlockBlobCommitBlockListResponse
-import com.microsoft.azure.storage.blob.models.BlockBlobUploadResponse
-import com.microsoft.azure.storage.blob.models.StorageErrorCode
+import com.microsoft.azure.storage.blob.models.*
 import com.microsoft.rest.v2.http.HttpPipeline
 import com.microsoft.rest.v2.http.HttpRequest
 import com.microsoft.rest.v2.http.HttpResponse
@@ -205,19 +200,19 @@ class TransferManagerTest extends APISpec {
         channel.close()
 
         where:
-        dataSize                             | modified | unmodified | match        | noneMatch   | leaseID
-        10                                   | null     | null       | null         | null        | null
-        10                                      | oldDate | null    | null         | null        | null
-        10                                      | null    | newDate | null         | null        | null
-        10                                      | null    | null    | receivedEtag | null        | null
-        10                                      | null    | null    | null         | garbageEtag | null
-        10                                      | null    | null    | null         | null        | receivedLeaseID
-        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null    | null    | null         | null        | null
-        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | oldDate | null    | null         | null        | null
-        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null    | newDate | null         | null        | null
-        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null    | null    | receivedEtag | null        | null
-        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null    | null    | null         | garbageEtag | null
-        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null    | null    | null         | null        | receivedLeaseID
+        dataSize                                | modified | unmodified | match        | noneMatch   | leaseID
+        10                                      | null     | null       | null         | null        | null
+        10                                      | oldDate  | null       | null         | null        | null
+        10                                      | null     | newDate    | null         | null        | null
+        10                                      | null     | null       | receivedEtag | null        | null
+        10                                      | null     | null       | null         | garbageEtag | null
+        10                                      | null     | null       | null         | null        | receivedLeaseID
+        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null     | null       | null         | null        | null
+        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | oldDate  | null       | null         | null        | null
+        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null     | newDate    | null         | null        | null
+        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null     | null       | receivedEtag | null        | null
+        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null     | null       | null         | garbageEtag | null
+        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null     | null       | null         | null        | receivedLeaseID
     }
 
     @Unroll
@@ -246,17 +241,17 @@ class TransferManagerTest extends APISpec {
         channel.close()
 
         where:
-        dataSize                             | modified | unmodified | match       | noneMatch    | leaseID
-        10                                      | newDate | null    | null        | null         | null
-        10                                      | null    | oldDate | null        | null         | null
-        10                                      | null    | null    | garbageEtag | null         | null
-        10                                      | null    | null    | null        | receivedEtag | null
-        10                                      | null    | null    | null        | null         | garbageLeaseID
-        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | newDate | null    | null        | null         | null
-        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null    | oldDate | null        | null         | null
-        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null    | null    | garbageEtag | null         | null
-        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null    | null    | null        | receivedEtag | null
-        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null    | null    | null        | null         | garbageLeaseID
+        dataSize                                | modified | unmodified | match       | noneMatch    | leaseID
+        10                                      | newDate  | null       | null        | null         | null
+        10                                      | null     | oldDate    | null        | null         | null
+        10                                      | null     | null       | garbageEtag | null         | null
+        10                                      | null     | null       | null        | receivedEtag | null
+        10                                      | null     | null       | null        | null         | garbageLeaseID
+        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | newDate  | null       | null        | null         | null
+        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null     | oldDate    | null        | null         | null
+        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null     | null       | garbageEtag | null         | null
+        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null     | null       | null        | receivedEtag | null
+        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null     | null       | null        | null         | garbageLeaseID
     }
 
     /*
@@ -264,12 +259,13 @@ class TransferManagerTest extends APISpec {
     whatever means of getting data from a file we use produces a replayable Flowable so that we abide by our own
     contract.
      */
+
     def "Upload replayable flowable"() {
         setup:
         // Write default data to a file
-        File file = File.createTempFile(UUID.randomUUID().toString(), ".txt");
-        file.deleteOnExit();
-        FileOutputStream fos = new FileOutputStream(file);
+        File file = File.createTempFile(UUID.randomUUID().toString(), ".txt")
+        file.deleteOnExit()
+        FileOutputStream fos = new FileOutputStream(file)
         fos.write(defaultData.array())
 
         // Mock a response that will always be retried.
@@ -387,18 +383,18 @@ class TransferManagerTest extends APISpec {
         TransferManager.downloadBlobToFile(outChannel, bu, range, null).blockingGet()
 
         then:
-        compareFiles(channel, range.getOffset(), range.getCount(), outChannel)
+        compareFiles(channel, range.offset(), range.count(), outChannel)
 
         cleanup:
         channel.close()
         outChannel.close()
 
         where:
-        file                           | range                                      | dataSize
-        getRandomFile(defaultDataSize) | new BlobRange(0, defaultDataSize)          | defaultDataSize
-        getRandomFile(defaultDataSize) | new BlobRange(1, defaultDataSize - 1)      | defaultDataSize - 1
-        getRandomFile(defaultDataSize) | new BlobRange(0, defaultDataSize - 1)      | defaultDataSize - 1
-        getRandomFile(defaultDataSize) | new BlobRange(0, 10L * 1024 * 1024 * 1024) | defaultDataSize
+        file                           | range                                                        | dataSize
+        getRandomFile(defaultDataSize) | new BlobRange().withCount(defaultDataSize)                   | defaultDataSize
+        getRandomFile(defaultDataSize) | new BlobRange().withOffset(1).withCount(defaultDataSize - 1) | defaultDataSize - 1
+        getRandomFile(defaultDataSize) | new BlobRange().withCount(defaultDataSize - 1)               | defaultDataSize - 1
+        getRandomFile(defaultDataSize) | new BlobRange().withCount(10L * 1024 * 1024 * 1024)          | defaultDataSize
     }
 
     def "Download file count null"() {
@@ -409,7 +405,7 @@ class TransferManagerTest extends APISpec {
                 StandardOpenOption.READ)
 
         when:
-        TransferManager.downloadBlobToFile(outChannel, bu, new BlobRange(0, null), null)
+        TransferManager.downloadBlobToFile(outChannel, bu, new BlobRange(), null)
                 .blockingGet()
 
         then:

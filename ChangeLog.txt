@@ -1,3 +1,6 @@
+XXXX.XX.XX Version XX.X.X
+* Interfaces for helper types updated to be more consistent throughout the library. All types, with the exception of the options for pipeline factories, use a fluent pattern.
+
 2018.08.22 Version 10.0.4-rc
 * Support for the 2017-11-09 REST version. Please see our REST api documentation and blogs for information about the related added features.
 * Support for 2018-03-28 REST version. Please see our REST api documentation and blogs for information about the related added features.

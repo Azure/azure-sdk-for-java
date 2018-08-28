@@ -67,7 +67,7 @@ public final class SASQueryParameters {
      * @return
      *      The storage version
      */
-    public String getVersion() {
+    public String version() {
         return version;
     }
 
@@ -76,7 +76,7 @@ public final class SASQueryParameters {
      *      The storage services being accessed (only for Account SAS). Please refer to {@link AccountSASService} for
      *      more details.
      */
-    public String getServices() {
+    public String services() {
         return services;
     }
 
@@ -85,7 +85,7 @@ public final class SASQueryParameters {
      *      The storage resource types being accessed (only for Account SAS). Please refer to
      *      {@link AccountSASResourceType} for more details.
      */
-    public String getResourceTypes() {
+    public String resourceTypes() {
         return resourceTypes;
     }
 
@@ -93,7 +93,7 @@ public final class SASQueryParameters {
      * @return
      *      The allowed HTTP protocol(s) or {@code null}. Please refer to {@link SASProtocol} for more details.
      */
-    public SASProtocol getProtocol() {
+    public SASProtocol protocol() {
         return protocol;
     }
 
@@ -101,7 +101,7 @@ public final class SASQueryParameters {
      * @return
      *      The start time for this SAS token or {@code null}.
      */
-    public OffsetDateTime getStartTime() {
+    public OffsetDateTime startTime() {
         return startTime;
     }
 
@@ -109,7 +109,7 @@ public final class SASQueryParameters {
      * @return
      *      The expiry time for this SAS token.
      */
-    public OffsetDateTime getExpiryTime() {
+    public OffsetDateTime expiryTime() {
         return expiryTime;
     }
 
@@ -117,7 +117,7 @@ public final class SASQueryParameters {
      * @return
      *      {@link IPRange}
      */
-    public IPRange getIpRange() {
+    public IPRange ipRange() {
         return ipRange;
     }
 
@@ -127,7 +127,7 @@ public final class SASQueryParameters {
      *      <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
      *      for more information.
      */
-    public String getIdentifier() {
+    public String identifier() {
         return identifier;
     }
 
@@ -135,7 +135,7 @@ public final class SASQueryParameters {
      * @return
      *      The storage container or blob (only for {@link ServiceSASSignatureValues}).
      */
-    public String getResource() {
+    public String resource() {
         return resource;
     }
 
@@ -144,7 +144,7 @@ public final class SASQueryParameters {
      *      Please refer to {@link AccountSASPermission}, {@link BlobSASPermission}, or {@link ContainerSASPermission}
      *      for more details.
      */
-    public String getPermissions() {
+    public String permissions() {
         return permissions;
     }
 
@@ -152,7 +152,7 @@ public final class SASQueryParameters {
      * @return
      *      The signature for the SAS token.
      */
-    public String getSignature() {
+    public String signature() {
         return signature;
     }
 
@@ -160,7 +160,7 @@ public final class SASQueryParameters {
      * @return
      *      The Cache-Control header value when a client accesses the resource with this sas token.
      */
-    public String getCacheControl() {
+    public String cacheControl() {
         return cacheControl;
     }
 
@@ -168,7 +168,7 @@ public final class SASQueryParameters {
      * @return
      *      The Content-Disposition header value when a client accesses the resource with this sas token.
      */
-    public String getContentDisposition() {
+    public String contentDisposition() {
         return contentDisposition;
     }
 
@@ -176,7 +176,7 @@ public final class SASQueryParameters {
      * @return
      *      The Content-Encoding header value when a client accesses the resource with this sas token.
      */
-    public String getContentEncoding() {
+    public String contentEncoding() {
         return contentEncoding;
     }
 
@@ -184,7 +184,7 @@ public final class SASQueryParameters {
      * @return
      *      The Content-Language header value when a client accesses the resource with this sas token.
      */
-    public String getContentLanguage() {
+    public String contentLanguage() {
         return contentLanguage;
     }
 
@@ -192,7 +192,7 @@ public final class SASQueryParameters {
      * @return
      *      The Content-Type header value when a client accesses the resource with this sas token.
      */
-    public String getContentType() {
+    public String contentType() {
         return contentType;
     }
 

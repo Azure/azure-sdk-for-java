@@ -73,7 +73,7 @@ class BlobAPITest extends APISpec {
     @Unroll
     def "Download range"() {
         setup:
-        BlobRange range = new BlobRange(offset, count)
+        BlobRange range = new BlobRange().withOffset(offset).withCount(count)
 
         when:
         ByteBuffer body = FlowableUtil.collectBytesInBuffer(
@@ -138,7 +138,7 @@ class BlobAPITest extends APISpec {
 
     def "Download md5"() {
         expect:
-        bu.download(new BlobRange(0, 3), null, true).blockingGet()
+        bu.download(new BlobRange().withOffset(0).withCount(3), null, true).blockingGet()
                 .headers().contentMD5() ==
                 MessageDigest.getInstance("MD5").digest(defaultText.substring(0, 3).getBytes())
     }

@@ -126,7 +126,7 @@ public class RequestRetryTestFactory implements RequestPolicyFactory {
         @Override
         public Single<HttpResponse> sendAsync(HttpRequest request) {
             this.factory.tryNumber++;
-            if (this.factory.tryNumber > this.factory.options.getMaxTries()) {
+            if (this.factory.tryNumber > this.factory.options.maxTries()) {
                 throw new IllegalArgumentException("Try number has exceeded max tries");
             }
 
@@ -251,11 +251,11 @@ public class RequestRetryTestFactory implements RequestPolicyFactory {
                 case RETRY_TEST_SCENARIO_TRY_TIMEOUT:
                     switch (this.factory.tryNumber) {
                         case 1:
-                            return RETRY_TEST_OK_RESPONSE.delay(options.getTryTimeout() + 1, TimeUnit.SECONDS);
+                            return RETRY_TEST_OK_RESPONSE.delay(options.tryTimeout() + 1, TimeUnit.SECONDS);
                         case 2:
-                            return RETRY_TEST_OK_RESPONSE.delay(options.getTryTimeout() + 1, TimeUnit.SECONDS);
+                            return RETRY_TEST_OK_RESPONSE.delay(options.tryTimeout() + 1, TimeUnit.SECONDS);
                         case 3:
-                            return RETRY_TEST_OK_RESPONSE.delay(options.getTryTimeout() - 1, TimeUnit.SECONDS);
+                            return RETRY_TEST_OK_RESPONSE.delay(options.tryTimeout() - 1, TimeUnit.SECONDS);
                         default:
                             throw new IllegalArgumentException("Continued retrying after success");
                     }
@@ -321,9 +321,9 @@ public class RequestRetryTestFactory implements RequestPolicyFactory {
             switch (this.factory.retryTestScenario) {
                 case RETRY_TEST_SCENARIO_EXPONENTIAL_TIMING:
                     return (long) Math.ceil(
-                            ((pow(2L, tryNumber - 1) - 1L) * this.factory.options.getRetryDelayInMs()) / 1000);
+                            ((pow(2L, tryNumber - 1) - 1L) * this.factory.options.retryDelayInMs()) / 1000);
                 case RETRY_TEST_SCENARIO_FIXED_TIMING:
-                    return (long) Math.ceil(this.factory.options.getRetryDelayInMs() / 1000);
+                    return (long) Math.ceil(this.factory.options.retryDelayInMs() / 1000);
                 default:
                     throw new IllegalArgumentException("Invalid test scenario");
             }
@@ -382,10 +382,10 @@ public class RequestRetryTestFactory implements RequestPolicyFactory {
                 protected void subscribeActual(SingleObserver<? super HttpResponse> observer) {
                     try {
                         if (OffsetDateTime.now().isAfter(factory.time.plusSeconds(
-                                (long) Math.ceil((factory.options.getMaxRetryDelayInMs() / 1000) + 1)))) {
+                                (long) Math.ceil((factory.options.maxRetryDelayInMs() / 1000) + 1)))) {
                             throw new IllegalArgumentException("Max retry delay exceeded");
                         } else if (OffsetDateTime.now().isBefore(factory.time.plusSeconds(
-                                (long) Math.ceil((factory.options.getMaxRetryDelayInMs() / 1000) - 1)))) {
+                                (long) Math.ceil((factory.options.maxRetryDelayInMs() / 1000) - 1)))) {
                             throw new IllegalArgumentException("Retry did not delay long enough");
                         }
 

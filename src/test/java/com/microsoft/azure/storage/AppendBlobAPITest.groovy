@@ -203,7 +203,8 @@ public class AppendBlobAPITest extends APISpec {
         leaseID = setupBlobLeaseCondition(bu, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions(
                 new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
-                new AppendBlobAccessConditions(appendPosE, maxSizeLTE), null)
+                new AppendBlobAccessConditions().withIfAppendPositionEquals(appendPosE)
+                        .withIfMaxSizeLessThanOrEqual(maxSizeLTE), null)
 
         expect:
         bu.appendBlock(defaultFlowable, defaultDataSize, bac)
@@ -228,7 +229,8 @@ public class AppendBlobAPITest extends APISpec {
         setupBlobLeaseCondition(bu, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions(
                 new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
-                new AppendBlobAccessConditions(appendPosE, maxSizeLTE), null)
+                new AppendBlobAccessConditions().withIfAppendPositionEquals(appendPosE)
+                        .withIfMaxSizeLessThanOrEqual(maxSizeLTE), null)
 
         when:
         bu.appendBlock(defaultFlowable, defaultDataSize, bac)

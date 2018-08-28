@@ -93,7 +93,7 @@ public final class BlockBlobURL extends BlobURL {
      */
     public BlockBlobURL withSnapshot(String snapshot) throws MalformedURLException, UnknownHostException {
         BlobURLParts blobURLParts = URLParser.parse(new URL(this.storageClient.url()));
-        blobURLParts.snapshot = snapshot;
+        blobURLParts.withSnapshot(snapshot);
         return new BlockBlobURL(blobURLParts.toURL(), super.storageClient.httpPipeline());
     }
 
@@ -140,12 +140,12 @@ public final class BlockBlobURL extends BlobURL {
                 headers.getContentMD5(),
                 headers.getCacheControl(),
                 metadata,
-                accessConditions.getLeaseAccessConditions().getLeaseId(),
+                accessConditions.leaseAccessConditions().getLeaseId(),
                 headers.getContentDisposition(),
-                accessConditions.getHttpAccessConditions().getIfModifiedSince(),
-                accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
-                accessConditions.getHttpAccessConditions().getIfMatch().toString(),
-                accessConditions.getHttpAccessConditions().getIfNoneMatch().toString(),
+                accessConditions.httpAccessConditions().getIfModifiedSince(),
+                accessConditions.httpAccessConditions().getIfUnmodifiedSince(),
+                accessConditions.httpAccessConditions().getIfMatch().toString(),
+                accessConditions.httpAccessConditions().getIfNoneMatch().toString(),
                 null));
     }
 
@@ -283,12 +283,12 @@ public final class BlockBlobURL extends BlobURL {
                 headers.getContentLanguage(),
                 headers.getContentMD5(),
                 metadata,
-                accessConditions.getLeaseAccessConditions().getLeaseId(),
+                accessConditions.leaseAccessConditions().getLeaseId(),
                 headers.getContentDisposition(),
-                accessConditions.getHttpAccessConditions().getIfModifiedSince(),
-                accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
-                accessConditions.getHttpAccessConditions().getIfMatch().toString(),
-                accessConditions.getHttpAccessConditions().getIfNoneMatch().toString(), null));
+                accessConditions.httpAccessConditions().getIfModifiedSince(),
+                accessConditions.httpAccessConditions().getIfUnmodifiedSince(),
+                accessConditions.httpAccessConditions().getIfMatch().toString(),
+                accessConditions.httpAccessConditions().getIfNoneMatch().toString(), null));
     }
 
     //TODO: stageBlockFromURL

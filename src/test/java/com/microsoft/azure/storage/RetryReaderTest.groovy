@@ -57,7 +57,8 @@ class RetryReaderTest extends APISpec {
         FlowableUtil.collectBytesInBuffer(new RetryReader(bu.download(null, null, false), info, options, new Function<RetryReader.HTTPGetterInfo, Single<? extends RestResponse<?, Flowable<ByteBuffer>>>>() {
             @Override
             Single<? extends RestResponse<?, Flowable<ByteBuffer>>> apply(RetryReader.HTTPGetterInfo httpGetterInfo) {
-                bu.download(new BlobRange(httpGetterInfo.offset, httpGetterInfo.count), null, false)
+                bu.download(new BlobRange().withOffset(httpGetterInfo.offset).withCount(httpGetterInfo.count), null,
+                        false)
             }
         })).blockingGet() == defaultData
 

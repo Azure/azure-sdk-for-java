@@ -16,15 +16,12 @@
 package com.microsoft.azure.storage.blob
 
 import com.microsoft.azure.storage.APISpec
-import com.microsoft.azure.storage.blob.models.StorageErrorCode
-import com.microsoft.azure.storage.blob.models.StorageErrorException
 import com.microsoft.rest.v2.http.HttpHeaders
 import com.microsoft.rest.v2.http.HttpMethod
 import com.microsoft.rest.v2.http.HttpPipeline
 import com.microsoft.rest.v2.http.HttpRequest
 import com.microsoft.rest.v2.http.HttpResponse
 import io.reactivex.Flowable
-import spock.lang.Specification
 import spock.lang.Unroll
 
 // Tests for package-private functionality.

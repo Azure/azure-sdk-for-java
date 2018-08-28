@@ -19,7 +19,6 @@ import com.microsoft.azure.storage.APISpec
 import com.microsoft.azure.storage.blob.models.AccessPolicy
 import com.microsoft.azure.storage.blob.models.SignedIdentifier
 import com.microsoft.azure.storage.blob.models.StorageErrorCode
-import com.microsoft.azure.storage.blob.models.StorageServiceProperties
 import spock.lang.Unroll
 
 import java.time.OffsetDateTime
@@ -42,7 +41,7 @@ class HelperTest extends APISpec {
     @Unroll
     def "Blob range"() {
         expect:
-        new BlobRange(offset, count).toString() == result
+        new BlobRange().withOffset(offset).withCount(count).toString() == result
 
         where:
         offset | count || result
@@ -53,7 +52,7 @@ class HelperTest extends APISpec {
     @Unroll
     def "Blob range IA"() {
         when:
-        new BlobRange(offset, count)
+        new BlobRange().withOffset(offset).withCount(count)
 
         then:
         thrown(IllegalArgumentException)
@@ -73,31 +72,30 @@ class HelperTest extends APISpec {
 
         def v = new ServiceSASSignatureValues()
         def p = new BlobSASPermission()
-        p.read = true
-        p.write = true
-        p.create = true
-        p.delete = true
-        p.add = true
-        v.permissions = p.toString();
-        v.startTime = OffsetDateTime.now().minusDays(1)
-        v.expiryTime = OffsetDateTime.now().plusDays(1)
-        v.containerName = containerName
-        v.blobName = blobName
+                .withRead(true)
+                .withWrite(true)
+                .withCreate(true)
+                .withDelete(true)
+                .withAdd(true)
+        v.withPermissions(p.toString())
+                .withStartTime(OffsetDateTime.now().minusDays(1))
+                .withExpiryTime(OffsetDateTime.now().plusDays(1))
+                .withContainerName(containerName)
+                .withBlobName(blobName)
         def ipR = new IPRange()
-        ipR.ipMin = "0.0.0.0"
-        ipR.ipMax = "255.255.255.255"
-        v.ipRange = ipR
-        v.protocol = SASProtocol.HTTPS_ONLY
-        v.cacheControl = "cache"
-        v.contentDisposition = "disposition"
-        v.contentEncoding = "encoding"
-        v.contentLanguage = "language"
-        v.contentType = "type"
+                .withIpMin("0.0.0.0")
+                .withIpMax("255.255.255.255")
+        v.withIpRange(ipR)
+                .withProtocol(SASProtocol.HTTPS_ONLY)
+                .withCacheControl("cache")
+                .withContentDisposition("disposition")
+                .withContentEncoding("encoding")
+                .withContentLanguage("language")
+                .withContentType("type")
 
         when:
         def parts = URLParser.parse(cu.createBlobURL(blobName).toURL())
-        parts.sasQueryParameters = v.generateSASQueryParameters(primaryCreds)
-        parts.scheme = "https"
+        parts.withSasQueryParameters(v.generateSASQueryParameters(primaryCreds)).withScheme("https")
         def bu = new AppendBlobURL(parts.toURL(), StorageURL.createPipeline(new AnonymousCredentials(),
                 new PipelineOptions()))
 
@@ -115,7 +113,7 @@ class HelperTest extends APISpec {
         properties.contentType() == "type"
     }
 
-    def "serviceSASSignatureValues network test container"(){
+    def "serviceSASSignatureValues network test container"() {
         setup:
         def containerName = generateContainerName()
         def cu = primaryServiceURL.createContainerURL(containerName)
@@ -126,31 +124,31 @@ class HelperTest extends APISpec {
 
         // Check id field
         def v = new ServiceSASSignatureValues()
-        v.identifier = "0000"
-        v.containerName = containerName
-        v.protocol = SASProtocol.HTTPS_ONLY
+                .withIdentifier("0000")
+                .withContainerName(containerName)
+                .withProtocol(SASProtocol.HTTPS_ONLY)
 
         // Check containerSASPermissions
         def v2 = new ServiceSASSignatureValues()
         def p = new ContainerSASPermission()
-        p.read = true
-        p.write = true
-        p.create = true
-        p.delete = true
-        p.add = true
-        p.list = true
-        v2.permissions = p.toString();
-        v2.expiryTime = OffsetDateTime.now().plusDays(1)
-        v2.containerName = containerName
+                .withRead(true)
+                .withWrite(true)
+                .withCreate(true)
+                .withDelete(true)
+                .withAdd(true)
+                .withList(true)
+        v2.withPermissions(p.toString())
+                .withExpiryTime(OffsetDateTime.now().plusDays(1))
+                .withContainerName(containerName)
 
         when:
         def parts = URLParser.parse(cu.toURL())
-        parts.sasQueryParameters = v.generateSASQueryParameters(primaryCreds)
-        parts.scheme = "https"
+                .withSasQueryParameters(v.generateSASQueryParameters(primaryCreds))
+                .withScheme("https")
         def cuSAS = new ContainerURL(parts.toURL(), StorageURL.createPipeline(new AnonymousCredentials(),
                 new PipelineOptions()))
 
-        parts.sasQueryParameters = v2.generateSASQueryParameters(primaryCreds)
+        parts.withSasQueryParameters(v2.generateSASQueryParameters(primaryCreds))
         def cuSAS2 = new ContainerURL(parts.toURL(), StorageURL.createPipeline(new AnonymousCredentials(),
                 new PipelineOptions()))
 
@@ -165,35 +163,36 @@ class HelperTest extends APISpec {
      values are handled correctly. We will validate the whole SAS with service calls as well as correct serialization of
      individual parts later.
      */
+
     @Unroll
     def "serviceSasSignatures string to sign"() {
         when:
         def v = new ServiceSASSignatureValues()
         if (permissions != null) {
             def p = new BlobSASPermission()
-            p.read = true
-            v.permissions = p.toString();
+            p.withRead(true)
+            v.withPermissions(p.toString())
         }
-        v.startTime = startTime
-        v.expiryTime = expiryTime
-        v.containerName = "c"
+        v.withStartTime(startTime)
+                .withExpiryTime(expiryTime)
+                .withContainerName("c")
         if (ipRange != null) {
             def ipR = new IPRange()
-            ipR.ipMin = "ip"
-            v.ipRange = ipR
+            ipR.withIpMin("ip")
+            v.withIpRange(ipR)
         }
-        v.identifier = identifier
-        v.protocol = protocol
-        v.cacheControl = cacheControl
-        v.contentDisposition = disposition
-        v.contentEncoding = encoding
-        v.contentLanguage = language
-        v.contentType = type
+        v.withIdentifier(identifier)
+                .withProtocol(protocol)
+                .withCacheControl(cacheControl)
+                .withContentDisposition(disposition)
+                .withContentEncoding(encoding)
+                .withContentLanguage(language)
+                .withContentType(type)
 
         def token = v.generateSASQueryParameters(primaryCreds)
 
         then:
-        token.signature == primaryCreds.computeHmac256(expectedStringToSign)
+        token.signature() == primaryCreds.computeHmac256(expectedStringToSign)
 
         /*
         We don't test the blob or containerName properties because canonicalized resource is always added as at least
@@ -219,15 +218,15 @@ class HelperTest extends APISpec {
     def "serviceSASSignatureValues canonicalizedResource"() {
         setup:
         def v = new ServiceSASSignatureValues()
-        v.containerName = containerName
-        v.blobName = blobName
+                .withContainerName(containerName)
+                .withBlobName(blobName)
 
         when:
         def token = v.generateSASQueryParameters(primaryCreds)
 
         then:
-        token.signature == primaryCreds.computeHmac256(expectedStringToSign)
-        token.getResource() == expectedResource
+        token.signature() == primaryCreds.computeHmac256(expectedStringToSign)
+        token.resource() == expectedResource
 
         where:
         containerName | blobName || expectedResource | expectedStringToSign
@@ -240,8 +239,8 @@ class HelperTest extends APISpec {
     def "serviceSasSignatureValues IA"() {
         setup:
         def v = new ServiceSASSignatureValues()
-        v.containerName = containerName
-        v.version = version
+                .withContainerName(containerName)
+                .withVersion(version)
 
         when:
         v.generateSASQueryParameters(creds)
@@ -261,11 +260,11 @@ class HelperTest extends APISpec {
     def "BlobSASPermissions toString"() {
         setup:
         def perms = new BlobSASPermission()
-        perms.read = read
-        perms.write = write
-        perms.delete = delete
-        perms.create = create
-        perms.add = add
+                .withRead(read)
+                .withWrite(write)
+                .withDelete(delete)
+                .withCreate(create)
+                .withAdd(add)
 
         expect:
         perms.toString() == expectedString
@@ -286,11 +285,11 @@ class HelperTest extends APISpec {
         def perms = BlobSASPermission.parse(permString)
 
         then:
-        perms.read == read
-        perms.write == write
-        perms.delete == delete
-        perms.create == create
-        perms.add == add
+        perms.read() == read
+        perms.write() == write
+        perms.delete() == delete
+        perms.create() == create
+        perms.add() == add
 
         where:
         permString || read  | write | delete | create | add
@@ -315,12 +314,12 @@ class HelperTest extends APISpec {
     def "ContainerSASPermissions toString"() {
         setup:
         def perms = new ContainerSASPermission()
-        perms.read = read
-        perms.write = write
-        perms.delete = delete
-        perms.create = create
-        perms.add = add
-        perms.list = list
+                .withRead(read)
+                .withWrite(write)
+                .withDelete(delete)
+                .withCreate(create)
+                .withAdd(add)
+                .withList(list)
 
         expect:
         perms.toString() == expectedString
@@ -342,12 +341,12 @@ class HelperTest extends APISpec {
         def perms = ContainerSASPermission.parse(permString)
 
         then:
-        perms.read == read
-        perms.write == write
-        perms.delete == delete
-        perms.create == create
-        perms.add == add
-        perms.list == list
+        perms.read() == read
+        perms.write() == write
+        perms.delete() == delete
+        perms.create() == create
+        perms.add() == add
+        perms.list() == list
 
         where:
         permString || read  | write | delete | create | add   | list
@@ -373,8 +372,8 @@ class HelperTest extends APISpec {
     def "IPRange toString"() {
         setup:
         def ip = new IPRange()
-        ip.ipMin = min
-        ip.ipMax = max
+                .withIpMin(min)
+                .withIpMax(max)
 
         expect:
         ip.toString() == expectedString
@@ -392,8 +391,8 @@ class HelperTest extends APISpec {
         def ip = IPRange.parse(rangeStr)
 
         then:
-        ip.ipMin == min
-        ip.ipMax == max
+        ip.ipMin() == min
+        ip.ipMax() == max
 
         where:
         rangeStr || min | max
@@ -424,23 +423,23 @@ class HelperTest extends APISpec {
         when:
         def v = new AccountSASSignatureValues()
         def p = new AccountSASPermission()
-        p.read = true
-        v.permissions = p.toString();
-        v.services = "b"
-        v.resourceTypes = "o"
-        v.startTime = startTime
-        v.expiryTime = OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)
+                .withRead(true)
+        v.withPermissions(p.toString())
+                .withServices("b")
+                .withResourceTypes("o")
+                .withStartTime(startTime)
+                .withExpiryTime(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
         if (ipRange != null) {
             def ipR = new IPRange()
-            ipR.ipMin = "ip"
-            v.ipRange = ipR
+            ipR.withIpMin("ip")
+            v.withIpRange(ipR)
         }
-        v.protocol = protocol
+        v.withProtocol(protocol)
 
         def token = v.generateSASQueryParameters(primaryCreds)
 
         then:
-        token.signature == primaryCreds.computeHmac256(expectedStringToSign)
+        token.signature() == primaryCreds.computeHmac256(expectedStringToSign)
 
         where:
         startTime                                                 | ipRange       | protocol               || expectedStringToSign
@@ -453,11 +452,11 @@ class HelperTest extends APISpec {
     def "accountSasSignatureValues IA"() {
         setup:
         def v = new AccountSASSignatureValues()
-        v.permissions = permissions
-        v.services = service
-        v.resourceTypes = resourceType
-        v.expiryTime = expiryTime
-        v.version = version
+                .withPermissions(permissions)
+                .withServices(service)
+                .withResourceTypes(resourceType)
+                .withExpiryTime(expiryTime)
+                .withVersion(version)
 
         when:
         v.generateSASQueryParameters(creds)
@@ -480,14 +479,14 @@ class HelperTest extends APISpec {
     def "AccountSASPermissions toString"() {
         setup:
         def perms = new AccountSASPermission()
-        perms.read = read
-        perms.write = write
-        perms.delete = delete
-        perms.list = list
-        perms.add = add
-        perms.create = create
-        perms.update = update
-        perms.processMessages = process
+        perms.withRead(read)
+                .withWrite(write)
+                .withDelete(delete)
+                .withList(list)
+                .withAdd(add)
+                .withCreate(create)
+                .withUpdate(update)
+                .withProcessMessages(process)
 
         expect:
         perms.toString() == expectedString
@@ -511,14 +510,14 @@ class HelperTest extends APISpec {
         def perms = AccountSASPermission.parse(permString)
 
         then:
-        perms.read == read
-        perms.write == write
-        perms.delete == delete
-        perms.list == list
-        perms.add == add
-        perms.create == create
-        perms.update == update
-        perms.processMessages == process
+        perms.read() == read
+        perms.write() == write
+        perms.delete() == delete
+        perms.list() == list
+        perms.add() == add
+        perms.create() == create
+        perms.update() == update
+        perms.processMessages() == process
 
         where:
         permString || read  | write | delete | list  | add   | create | update | process
@@ -546,9 +545,9 @@ class HelperTest extends APISpec {
     def "AccountSASResourceType toString"() {
         setup:
         def resourceTypes = new AccountSASResourceType()
-        resourceTypes.service = service
-        resourceTypes.container = container
-        resourceTypes.object = object
+                .withService(service)
+                .withContainer(container)
+                .withObject(object)
 
         expect:
         resourceTypes.toString() == expectedString
@@ -567,9 +566,9 @@ class HelperTest extends APISpec {
         def resourceTypes = AccountSASResourceType.parse(resourceTypeString)
 
         then:
-        resourceTypes.service == service
-        resourceTypes.container == container
-        resourceTypes.object == object
+        resourceTypes.service() == service
+        resourceTypes.container() == container
+        resourceTypes.object() == object
 
         where:
         resourceTypeString || service | container | object
@@ -591,15 +590,15 @@ class HelperTest extends APISpec {
     def "BlobURLParts"() {
         setup:
         def parts = new BlobURLParts()
-        parts.scheme = "http"
-        parts.host = "host"
-        parts.containerName = "container"
-        parts.blobName = "blob"
-        parts.snapshot = "snapshot"
+        parts.withScheme("http")
+                .withHost("host")
+                .withContainerName("container")
+                .withBlobName("blob")
+                .withSnapshot("snapshot")
         def sasValues = new ServiceSASSignatureValues()
-        sasValues.permissions = "r"
-        sasValues.containerName = "container"
-        parts.sasQueryParameters = sasValues.generateSASQueryParameters(primaryCreds)
+                .withPermissions("r")
+                .withContainerName("container")
+        parts.withSasQueryParameters(sasValues.generateSASQueryParameters(primaryCreds))
 
         when:
         def splitParts = parts.toURL().toString().split("\\?")
@@ -618,15 +617,15 @@ class HelperTest extends APISpec {
         def parts = URLParser.parse(new URL("http://host/container/blob?snapshot=snapshot&sv=2018-03-28&sr=c&sp=r&sig=Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D"))
 
         then:
-        parts.scheme == "http"
-        parts.host == "host"
-        parts.containerName == "container"
-        parts.blobName == "blob"
-        parts.snapshot == "snapshot"
-        parts.sasQueryParameters.getPermissions() == "r"
-        parts.sasQueryParameters.getVersion() == Constants.HeaderConstants.TARGET_STORAGE_VERSION
-        parts.sasQueryParameters.getResource() == "c"
-        parts.sasQueryParameters.getSignature() ==
+        parts.scheme() == "http"
+        parts.host() == "host"
+        parts.containerName() == "container"
+        parts.blobName() == "blob"
+        parts.snapshot() == "snapshot"
+        parts.sasQueryParameters().permissions() == "r"
+        parts.sasQueryParameters().version() == Constants.HeaderConstants.TARGET_STORAGE_VERSION
+        parts.sasQueryParameters().resource() == "c"
+        parts.sasQueryParameters().signature() ==
                 Utility.safeURLDecode("Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D")
     }
 }

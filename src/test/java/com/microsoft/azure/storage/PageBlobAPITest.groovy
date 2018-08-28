@@ -347,7 +347,7 @@ class PageBlobAPITest extends APISpec {
 
         when:
         PageBlobGetPageRangesResponse response =
-                bu.getPageRanges(new BlobRange(0, PageBlobURL.PAGE_BYTES), null).blockingGet()
+                bu.getPageRanges(new BlobRange().withCount(PageBlobURL.PAGE_BYTES), null).blockingGet()
         PageBlobGetPageRangesHeaders headers = response.headers()
 
         then:
@@ -367,7 +367,7 @@ class PageBlobAPITest extends APISpec {
                 null, null)
 
         expect:
-        bu.getPageRanges(new BlobRange(0, PageBlobURL.PAGE_BYTES), bac).blockingGet().statusCode() == 200
+        bu.getPageRanges(new BlobRange().withCount(PageBlobURL.PAGE_BYTES), bac).blockingGet().statusCode() == 200
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -389,7 +389,7 @@ class PageBlobAPITest extends APISpec {
                 null, null)
 
         when:
-        bu.getPageRanges(new BlobRange(0, PageBlobURL.PAGE_BYTES), bac).blockingGet().statusCode()
+        bu.getPageRanges(new BlobRange().withCount(PageBlobURL.PAGE_BYTES), bac).blockingGet().statusCode()
 
         then:
         thrown(StorageException)
@@ -429,7 +429,7 @@ class PageBlobAPITest extends APISpec {
 
         when:
         PageBlobGetPageRangesDiffResponse response =
-                bu.getPageRangesDiff(new BlobRange(0, PageBlobURL.PAGE_BYTES * 2), snapshot,
+                bu.getPageRangesDiff(new BlobRange().withCount(PageBlobURL.PAGE_BYTES * 2), snapshot,
                         null).blockingGet()
         PageBlobGetPageRangesDiffHeaders headers = response.headers()
 
@@ -455,7 +455,7 @@ class PageBlobAPITest extends APISpec {
                 null, null)
 
         expect:
-        bu.getPageRangesDiff(new BlobRange(0, PageBlobURL.PAGE_BYTES), snapshot, bac)
+        bu.getPageRangesDiff(new BlobRange().withCount(PageBlobURL.PAGE_BYTES), snapshot, bac)
                 .blockingGet().statusCode() == 200
 
         where:
@@ -479,7 +479,7 @@ class PageBlobAPITest extends APISpec {
                 null, null)
 
         when:
-        bu.getPageRangesDiff(new BlobRange(0, PageBlobURL.PAGE_BYTES), snapshot, bac).blockingGet()
+        bu.getPageRangesDiff(new BlobRange().withCount(PageBlobURL.PAGE_BYTES), snapshot, bac).blockingGet()
 
         then:
         thrown(StorageException)

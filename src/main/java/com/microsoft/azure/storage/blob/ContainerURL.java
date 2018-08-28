@@ -573,8 +573,8 @@ public final class ContainerURL extends StorageURL {
 
         return addErrorWrappingToSingle(this.storageClient.generatedContainers()
                 .listBlobFlatSegmentWithRestResponseAsync(
-                options.getPrefix(), marker, options.getMaxResults(),
-                options.getDetails().toList(), null, null));
+                options.prefix(), marker, options.maxResults(),
+                options.details().toList(), null, null));
     }
 
     /**
@@ -606,14 +606,14 @@ public final class ContainerURL extends StorageURL {
     public Single<ContainerListBlobHierarchySegmentResponse> listBlobsHierarchySegment(
             String marker, String delimiter, ListBlobsOptions options) {
         options = options == null ? ListBlobsOptions.DEFAULT : options;
-        if (options.getDetails().getSnapshots()) {
+        if (options.details().snapshots()) {
             throw new IllegalArgumentException("Including snapshots in a hierarchical listing is not supported.");
         }
 
         return addErrorWrappingToSingle(this.storageClient.generatedContainers()
                 .listBlobHierarchySegmentWithRestResponseAsync(
-                delimiter, options.getPrefix(), marker, options.getMaxResults(),
-                options.getDetails().toList(), null, null));
+                delimiter, options.prefix(), marker, options.maxResults(),
+                options.details().toList(), null, null));
     }
 
     /**

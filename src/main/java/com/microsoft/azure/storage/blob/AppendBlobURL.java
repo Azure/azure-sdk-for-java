@@ -87,7 +87,7 @@ public final class AppendBlobURL extends BlobURL {
      */
     public AppendBlobURL withSnapshot(String snapshot) throws MalformedURLException, UnknownHostException {
         BlobURLParts blobURLParts = URLParser.parse(new URL(this.storageClient.url()));
-        blobURLParts.snapshot = snapshot;
+        blobURLParts.withSnapshot(snapshot);
         return new AppendBlobURL(blobURLParts.toURL(), super.storageClient.httpPipeline());
     }
 
@@ -123,12 +123,12 @@ public final class AppendBlobURL extends BlobURL {
                 headers.getContentMD5(),
                 headers.getCacheControl(),
                 metadata,
-                accessConditions.getLeaseAccessConditions().getLeaseId(),
+                accessConditions.leaseAccessConditions().getLeaseId(),
                 headers.getContentDisposition(),
-                accessConditions.getHttpAccessConditions().getIfModifiedSince(),
-                accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
-                accessConditions.getHttpAccessConditions().getIfMatch().toString(),
-                accessConditions.getHttpAccessConditions().getIfNoneMatch().toString(),
+                accessConditions.httpAccessConditions().getIfModifiedSince(),
+                accessConditions.httpAccessConditions().getIfUnmodifiedSince(),
+                accessConditions.httpAccessConditions().getIfMatch().toString(),
+                accessConditions.httpAccessConditions().getIfNoneMatch().toString(),
                 null));
     }
 
@@ -157,13 +157,13 @@ public final class AppendBlobURL extends BlobURL {
 
         return addErrorWrappingToSingle(this.storageClient.generatedAppendBlobs().appendBlockWithRestResponseAsync(
                 data, length, null,
-                accessConditions.getLeaseAccessConditions().getLeaseId(),
-                accessConditions.getAppendBlobAccessConditions().getIfMaxSizeLessThanOrEqual(),
-                accessConditions.getAppendBlobAccessConditions().getIfAppendPositionEquals(),
-                accessConditions.getHttpAccessConditions().getIfModifiedSince(),
-                accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
-                accessConditions.getHttpAccessConditions().getIfMatch().toString(),
-                accessConditions.getHttpAccessConditions().getIfNoneMatch().toString(),
+                accessConditions.leaseAccessConditions().getLeaseId(),
+                accessConditions.appendBlobAccessConditions().ifMaxSizeLessThanOrEqual(),
+                accessConditions.appendBlobAccessConditions().ifAppendPositionEquals(),
+                accessConditions.httpAccessConditions().getIfModifiedSince(),
+                accessConditions.httpAccessConditions().getIfUnmodifiedSince(),
+                accessConditions.httpAccessConditions().getIfMatch().toString(),
+                accessConditions.httpAccessConditions().getIfNoneMatch().toString(),
                 null));
     }
 }
