@@ -97,10 +97,7 @@ public final class RetryReader extends Flowable<ByteBuffer> {
     private Flowable<ByteBuffer> readActual(Subscriber<? super ByteBuffer> s,
             Single<? extends RestResponse<?, Flowable<ByteBuffer>>> response, int retryCount) {
         return response.flatMapPublisher(RestResponse::body)
-                /*
-                Update how much data we have received in case we need to retry and propagate to the user the data we
-                have received.
-                 */
+
                 .doOnNext(buffer -> {
                     this.info.offset += buffer.remaining();
                     if (info.count != null) {

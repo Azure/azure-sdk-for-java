@@ -16,13 +16,14 @@
 package com.microsoft.azure.storage.blob;
 
 import com.microsoft.azure.storage.blob.models.BlobDownloadHeaders;
-import com.microsoft.rest.v2.RestResponse;
-import com.microsoft.rest.v2.http.HttpRequest;
+import com.microsoft.azure.storage.blob.models.BlobDownloadResponse;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
+import io.reactivex.functions.Function;
 import io.reactivex.internal.functions.Functions;
+import org.reactivestreams.Publisher;
 
-import java.io.Closeable;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Map;
 
@@ -30,16 +31,24 @@ import java.util.Map;
  * {@code DownloadResponse} wraps the protocol-layer response from {@link BlobURL#download(BlobRange,
  * BlobAccessConditions, boolean)} to help provide information for retrying.
  */
-public class DownloadResponse extends RestResponse<BlobDownloadHeaders, Flowable<ByteBuffer>> implements Closeable {
+public class DownloadResponse  {
     private BlobURL blobURL;
 
     private RetryReader.HTTPGetterInfo info;
 
-    DownloadResponse(HttpRequest request, BlobURL blobURL, RetryReader.HTTPGetterInfo info, int statusCode,
-                    BlobDownloadHeaders blobsDownloadHeaders, Map<String, String> rawHeaders,
-                    Flowable<ByteBuffer> byteBufferFlowable) {
-        super(request, statusCode, blobsDownloadHeaders, rawHeaders, byteBufferFlowable);
+    private BlobDownloadResponse rawResponse;
 
+    private final Function<RetryReader.HTTPGetterInfo, Single<DownloadResponse>> getter = newInfo ->
+            this.blobURL.download(new BlobRange().withOffset(newInfo.offset).withCount(newInfo.count),
+                    new BlobAccessConditions(new HTTPAccessConditions(null, null, info.eTag, null),
+                            null, null, null), false);
+
+    DownloadResponse(BlobDownloadResponse response, BlobURL blobURL, RetryReader.HTTPGetterInfo info) {
+        info = info == null ? new RetryReader.HTTPGetterInfo() : info;
+        if (info.count != null) {
+            Utility.assertInBounds("info.count", info.count, 0, Integer.MAX_VALUE);
+        }
+        this.rawResponse = response;
         this.blobURL = blobURL;
         this.info = info;
     }
@@ -54,37 +63,73 @@ public class DownloadResponse extends RestResponse<BlobDownloadHeaders, Flowable
      * @return A {@code Flowable} which emits the data as {@code ByteBuffer}s.
      */
     public Flowable<ByteBuffer> body(RetryReaderOptions options) {
-        options = options == null ? new RetryReaderOptions() : options;
-        if (options.maxRetryRequests() == 0) {
-            return super.body();
+        RetryReaderOptions optionsReal = options == null ? new RetryReaderOptions() : options;
+        Utility.assertInBounds("options.maxRetryRequests", optionsReal.maxRetryRequests(), 0, Integer.MAX_VALUE);
+        if (optionsReal.maxRetryRequests() == 0) {
+            return this.rawResponse.body();
         }
-        return new RetryReader(Single.just(this), this.info, options,
-                newInfo -> this.blobURL.download(new BlobRange().withOffset(newInfo.offset).withCount(newInfo.count),
-                        new BlobAccessConditions(
-                                new HTTPAccessConditions(null, null, info.eTag, null),
-                                null, null, null),
-                        false));
+
+        return this.rawResponse.body()
+                /*
+                Update how much data we have received in case we need to retry and propagate to the user the data we
+                have received.
+                 */
+                .doOnNext(buffer -> {
+                    this.info.offset += buffer.remaining();
+                    if (info.count != null) {
+                        this.info.count -= buffer.remaining();
+                    }
+                })
+                .onErrorResumeNext(throwable -> {
+                    return tryContinueFlowable(throwable, 1, optionsReal);
+                });
+
+
+        /*return new RetryReader(Single.just(this), this.info, options,
+                newInfo -> this.blobURL.download(new BlobRange(newInfo.offset, newInfo.count), new BlobAccessConditions(
+                        new HTTPAccessConditions(null, null, info.eTag, null),
+                        null, null, null),
+                        false));*/
     }
 
-    @Override
+    private Flowable<ByteBuffer> tryContinueFlowable(Throwable t, int retryCount, RetryReaderOptions options) {
+        // If all the errors are exhausted, return this error to the user.
+        if (retryCount > options.maxRetryRequests() || !(t instanceof IOException)) {
+            return Flowable.error(t);
+        }
+        else {
+            try {
+                // Get a new response and try reading from it.
+                return getter.apply(this.info)
+                        .flatMapPublisher(response ->
+                            // Do not compound the number of retries.
+                            response.body()
+                                    .onErrorResumeNext(t2 -> {
+                                        // Increment the retry count and try again with the new exception.
+                                        return tryContinueFlowable(t2, retryCount + 1, options);
+                                    }));
+            } catch (Exception e) {
+                // If the getter fails, return the getter failure to the user.
+                return Flowable.error(e);
+            }
+        }
+    }
+
     public int statusCode() {
-        return super.statusCode();
+        return this.rawResponse.statusCode();
     }
 
-    @Override
     public BlobDownloadHeaders headers() {
-        return super.headers();
+        return this.rawResponse.headers();
     }
 
-    @Override
     public Map<String, String> rawHeaders() {
-        return super.rawHeaders();
+        return this.rawResponse.rawHeaders();
     }
 
     /**
      * Equivalent to calling {@link #body(RetryReaderOptions)} with {@code null}.
      */
-    @Override
     public Flowable<ByteBuffer> body() {
         return this.body(null);
     }
@@ -92,9 +137,8 @@ public class DownloadResponse extends RestResponse<BlobDownloadHeaders, Flowable
     /**
      * Disposes of the connection associated with this stream response.
      */
-    @Override
     public void close() {
         // Taken from BlobsDownloadResponse.
-        body().subscribe(Functions.emptyConsumer(), Functions.<Throwable>emptyConsumer()).dispose();
+        this.rawResponse.body().subscribe(Functions.emptyConsumer(), Functions.<Throwable>emptyConsumer()).dispose();
     }
 }

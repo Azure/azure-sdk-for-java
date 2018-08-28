@@ -72,6 +72,8 @@ class RetryReaderTest extends APISpec {
 
     @Unroll
     def "Successful"() {
+        // I think I can mock a BlobsDownloadResponse to be body >> mockFlowable.
+        // Maybe want to make getter a parameter instead of a final field so I can inject the mock.
         setup:
         RetryReaderMockFlowable flowable = new RetryReaderMockFlowable(scenario)
         def info = new RetryReader.HTTPGetterInfo()

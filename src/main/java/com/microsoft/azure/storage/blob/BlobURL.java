@@ -243,9 +243,11 @@ public class BlobURL extends StorageURL {
                 accessConditions.httpAccessConditions().getIfMatch().toString(),
                 accessConditions.httpAccessConditions().getIfNoneMatch().toString(),
                 null))
-                .map(response ->
-                        new DownloadResponse(response.request(), this, info, response.statusCode(),
-                                response.headers(), response.rawHeaders(), response.body()));
+                .map(response -> {
+                    // If there wasn't an etag originally specified, lock on the one returned.
+                    info.eTag = new ETag(response.headers().eTag());
+                        return new DownloadResponse(response, this, info);
+                });
 
     }
 
