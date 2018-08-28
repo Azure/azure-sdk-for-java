@@ -19,6 +19,7 @@ import okhttp3.ResponseBody;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
+import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.Response;
 import rx.functions.Func1;
@@ -52,45 +53,48 @@ public class DeletedApplicationsInner {
     interface DeletedApplicationsService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.graphrbac.DeletedApplications restore" })
         @POST("{tenantID}/deletedApplications/{objectId}/restore")
-        Observable<Response<ResponseBody>> restore(@Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> restore(@Path("objectId") String objectId, @Path("tenantID") String tenantID, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.graphrbac.DeletedApplications get" })
         @GET("{tenantID}/deletedApplications")
-        Observable<Response<ResponseBody>> get(@Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> get(@Path("tenantID") String tenantID, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
     /**
      * Restores the deleted application in the directory.
      *
+     * @param objectId Application object ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws GraphErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ApplicationInner object if successful.
      */
-    public ApplicationInner restore() {
-        return restoreWithServiceResponseAsync().toBlocking().single().body();
+    public ApplicationInner restore(String objectId) {
+        return restoreWithServiceResponseAsync(objectId).toBlocking().single().body();
     }
 
     /**
      * Restores the deleted application in the directory.
      *
+     * @param objectId Application object ID.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ApplicationInner> restoreAsync(final ServiceCallback<ApplicationInner> serviceCallback) {
-        return ServiceFuture.fromResponse(restoreWithServiceResponseAsync(), serviceCallback);
+    public ServiceFuture<ApplicationInner> restoreAsync(String objectId, final ServiceCallback<ApplicationInner> serviceCallback) {
+        return ServiceFuture.fromResponse(restoreWithServiceResponseAsync(objectId), serviceCallback);
     }
 
     /**
      * Restores the deleted application in the directory.
      *
+     * @param objectId Application object ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ApplicationInner object
      */
-    public Observable<ApplicationInner> restoreAsync() {
-        return restoreWithServiceResponseAsync().map(new Func1<ServiceResponse<ApplicationInner>, ApplicationInner>() {
+    public Observable<ApplicationInner> restoreAsync(String objectId) {
+        return restoreWithServiceResponseAsync(objectId).map(new Func1<ServiceResponse<ApplicationInner>, ApplicationInner>() {
             @Override
             public ApplicationInner call(ServiceResponse<ApplicationInner> response) {
                 return response.body();
@@ -101,11 +105,18 @@ public class DeletedApplicationsInner {
     /**
      * Restores the deleted application in the directory.
      *
+     * @param objectId Application object ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ApplicationInner object
      */
-    public Observable<ServiceResponse<ApplicationInner>> restoreWithServiceResponseAsync() {
-        return service.restore(this.client.acceptLanguage(), this.client.userAgent())
+    public Observable<ServiceResponse<ApplicationInner>> restoreWithServiceResponseAsync(String objectId) {
+        if (objectId == null) {
+            throw new IllegalArgumentException("Parameter objectId is required and cannot be null.");
+        }
+        if (this.client.tenantID() == null) {
+            throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
+        }
+        return service.restore(objectId, this.client.tenantID(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ApplicationInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ApplicationInner>> call(Response<ResponseBody> response) {
@@ -119,7 +130,7 @@ public class DeletedApplicationsInner {
             });
     }
 
-    private ServiceResponse<ApplicationInner> restoreDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException {
+    private ServiceResponse<ApplicationInner> restoreDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<ApplicationInner, GraphErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ApplicationInner>() { }.getType())
                 .registerError(GraphErrorException.class)
@@ -171,7 +182,10 @@ public class DeletedApplicationsInner {
      * @return the observable to the ApplicationListResultInner object
      */
     public Observable<ServiceResponse<ApplicationListResultInner>> getWithServiceResponseAsync() {
-        return service.get(this.client.acceptLanguage(), this.client.userAgent())
+        if (this.client.tenantID() == null) {
+            throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
+        }
+        return service.get(this.client.tenantID(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ApplicationListResultInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ApplicationListResultInner>> call(Response<ResponseBody> response) {
@@ -185,7 +199,7 @@ public class DeletedApplicationsInner {
             });
     }
 
-    private ServiceResponse<ApplicationListResultInner> getDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException {
+    private ServiceResponse<ApplicationListResultInner> getDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<ApplicationListResultInner, GraphErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ApplicationListResultInner>() { }.getType())
                 .registerError(GraphErrorException.class)

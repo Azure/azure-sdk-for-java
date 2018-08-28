@@ -75,6 +75,10 @@ public class ApplicationsInner {
         @GET("{tenantID}/applications")
         Observable<Response<ResponseBody>> list(@Path("tenantID") String tenantID, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.graphrbac.Applications hardDelete" })
+        @HTTP(path = "{tenantID}/deletedApplications/{applicationObjectId}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> hardDelete(@Path("applicationObjectId") String applicationObjectId, @Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.graphrbac.Applications delete" })
         @HTTP(path = "{tenantID}/applications/{applicationObjectId}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("applicationObjectId") String applicationObjectId, @Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -406,6 +410,84 @@ public class ApplicationsInner {
     private ServiceResponse<PageImpl<ApplicationInner>> listDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<ApplicationInner>, GraphErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ApplicationInner>>() { }.getType())
+                .registerError(GraphErrorException.class)
+                .build(response);
+    }
+
+    /**
+     * Hard-delete an application.
+     *
+     * @param applicationObjectId Application object ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws GraphErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void hardDelete(String applicationObjectId) {
+        hardDeleteWithServiceResponseAsync(applicationObjectId).toBlocking().single().body();
+    }
+
+    /**
+     * Hard-delete an application.
+     *
+     * @param applicationObjectId Application object ID.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> hardDeleteAsync(String applicationObjectId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(hardDeleteWithServiceResponseAsync(applicationObjectId), serviceCallback);
+    }
+
+    /**
+     * Hard-delete an application.
+     *
+     * @param applicationObjectId Application object ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> hardDeleteAsync(String applicationObjectId) {
+        return hardDeleteWithServiceResponseAsync(applicationObjectId).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Hard-delete an application.
+     *
+     * @param applicationObjectId Application object ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> hardDeleteWithServiceResponseAsync(String applicationObjectId) {
+        if (applicationObjectId == null) {
+            throw new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null.");
+        }
+        if (this.client.tenantID() == null) {
+            throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.hardDelete(applicationObjectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = hardDeleteDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> hardDeleteDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, GraphErrorException>newInstance(this.client.serializerAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
                 .registerError(GraphErrorException.class)
                 .build(response);
     }

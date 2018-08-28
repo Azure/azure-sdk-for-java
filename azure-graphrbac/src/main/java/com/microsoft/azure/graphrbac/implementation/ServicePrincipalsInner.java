@@ -479,7 +479,7 @@ public class ServicePrincipalsInner {
     }
 
     /**
-     * Gets service principal information from the directory.
+     * Gets service principal information from the directory. Query by objectId or pass a filter to query by appId.
      *
      * @param objectId The object ID of the service principal to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -492,7 +492,7 @@ public class ServicePrincipalsInner {
     }
 
     /**
-     * Gets service principal information from the directory.
+     * Gets service principal information from the directory. Query by objectId or pass a filter to query by appId.
      *
      * @param objectId The object ID of the service principal to get.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -504,7 +504,7 @@ public class ServicePrincipalsInner {
     }
 
     /**
-     * Gets service principal information from the directory.
+     * Gets service principal information from the directory. Query by objectId or pass a filter to query by appId.
      *
      * @param objectId The object ID of the service principal to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -520,7 +520,7 @@ public class ServicePrincipalsInner {
     }
 
     /**
-     * Gets service principal information from the directory.
+     * Gets service principal information from the directory. Query by objectId or pass a filter to query by appId.
      *
      * @param objectId The object ID of the service principal to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation
