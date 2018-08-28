@@ -4,7 +4,7 @@
  */
 package com.microsoft.azure.eventhubs.impl;
 
-import com.microsoft.azure.eventhubs.OperationCancelledException;
+import com.microsoft.azure.eventhubs.EventHubException;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.UnsignedLong;
 import org.apache.qpid.proton.amqp.messaging.Source;
@@ -241,8 +241,10 @@ public class RequestResponseChannel implements IOObject {
         public void onClose(ErrorCondition condition) {
 
             if (condition == null || condition.getCondition() == null) {
-                this.cancelPendingRequests(new OperationCancelledException(
-                        "Operation cancelled as the underlying request-response link closed"));
+                this.cancelPendingRequests(
+                        new EventHubException(
+                                ClientConstants.DEFAULT_IS_TRANSIENT,
+                                "The underlying request-response channel closed, recreate the channel and retry the request."));
 
                 if (onClose != null)
                     onLinkCloseComplete(null);
