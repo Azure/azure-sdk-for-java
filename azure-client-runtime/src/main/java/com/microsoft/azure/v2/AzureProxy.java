@@ -6,15 +6,13 @@
 
 package com.microsoft.azure.v2;
 
-import com.google.common.hash.Hashing;
-import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.v2.annotations.AzureHost;
 import com.microsoft.azure.v2.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.v2.InvalidReturnTypeException;
+import com.microsoft.rest.v2.OperationDescription;
 import com.microsoft.rest.v2.RestProxy;
 import com.microsoft.rest.v2.SwaggerInterfaceParser;
 import com.microsoft.rest.v2.SwaggerMethodParser;
-import com.microsoft.rest.v2.OperationDescription;
 import com.microsoft.rest.v2.credentials.ServiceClientCredentials;
 import com.microsoft.rest.v2.http.HttpClient;
 import com.microsoft.rest.v2.http.HttpMethod;
@@ -30,6 +28,7 @@ import com.microsoft.rest.v2.policy.RequestPolicyFactory;
 import com.microsoft.rest.v2.policy.RetryPolicyFactory;
 import com.microsoft.rest.v2.protocol.SerializerAdapter;
 import com.microsoft.rest.v2.protocol.SerializerEncoding;
+import com.microsoft.rest.v2.util.TypeUtil;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.Single;
@@ -42,6 +41,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
 import java.net.NetworkInterface;
+import java.security.MessageDigest;
 import java.util.Enumeration;
 import java.util.concurrent.Callable;
 
@@ -109,15 +109,22 @@ public final class AzureProxy extends RestProxy {
                         break;
                     }
                 }
+
+                MessageDigest digest = MessageDigest.getInstance("SHA-256");
+                byte[] hash = digest.digest(macBytes);
+                StringBuffer builder = new StringBuffer();
+                for (int i = 0; i < hash.length; i++) {
+                    builder.append(String.format("%02x", hash[i]));
+                }
+                macAddressHash = builder.toString();
             } catch (Throwable t) {
                 // It's okay ignore mac address hash telemetry
             }
 
             if (macBytes == null) {
-                macBytes = "Unknown".getBytes();
+                macAddressHash = "Unknown";
             }
 
-            macAddressHash = Hashing.sha256().hashBytes(macBytes).toString();
         }
         return macAddressHash;
     }
@@ -242,12 +249,9 @@ public final class AzureProxy extends RestProxy {
     protected Object handleAsyncHttpResponse(final HttpRequest httpRequest, Single<HttpResponse> asyncHttpResponse, final SwaggerMethodParser methodParser, Type returnType) {
         Object result;
 
-        final TypeToken returnTypeToken = TypeToken.of(returnType);
-
-        if (returnTypeToken.isSubtypeOf(Observable.class)) {
+        if (TypeUtil.isTypeOrSubTypeOf(returnType, Observable.class)) {
             final Type operationStatusType = ((ParameterizedType) returnType).getActualTypeArguments()[0];
-            final TypeToken operationStatusTypeToken = TypeToken.of(operationStatusType);
-            if (!operationStatusTypeToken.isSubtypeOf(OperationStatus.class)) {
+            if (!TypeUtil.isTypeOrSubTypeOf(operationStatusType, OperationStatus.class)) {
                 throw new InvalidReturnTypeException("AzureProxy only supports swagger interface methods that return Observable (such as " + methodParser.fullyQualifiedMethodName() + "()) if the Observable's inner type that is OperationStatus (not " + returnType.toString() + ").");
             }
             else {
@@ -301,8 +305,7 @@ public final class AzureProxy extends RestProxy {
                                            Type returnType)
             throws Exception {
         final Type operationStatusType = ((ParameterizedType) returnType).getActualTypeArguments()[0];
-        final TypeToken operationStatusTypeToken = TypeToken.of(operationStatusType);
-        if (!operationStatusTypeToken.isSubtypeOf(OperationStatus.class)) {
+        if (!TypeUtil.isTypeOrSubTypeOf(operationStatusType, OperationStatus.class)) {
             throw new InvalidReturnTypeException("AzureProxy only supports swagger interface methods that return Observable (such as " + methodParser.fullyQualifiedMethodName() + "()) if the Observable's inner type that is OperationStatus (not " + returnType.toString() + ").");
         }
 

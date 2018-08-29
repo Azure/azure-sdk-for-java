@@ -6,8 +6,6 @@
 
 package com.microsoft.rest.v2;
 
-import com.google.common.escape.Escaper;
-import com.google.common.net.UrlEscapers;
 import com.microsoft.rest.v2.annotations.BodyParam;
 import com.microsoft.rest.v2.annotations.DELETE;
 import com.microsoft.rest.v2.annotations.ExpectedResponses;
@@ -28,6 +26,8 @@ import com.microsoft.rest.v2.http.HttpHeaders;
 import com.microsoft.rest.v2.http.HttpMethod;
 import com.microsoft.rest.v2.protocol.SerializerAdapter;
 import com.microsoft.rest.v2.util.TypeUtil;
+import com.microsoft.rest.v2.util.escapers.PercentEscaper;
+import com.microsoft.rest.v2.util.escapers.UrlEscapers;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 
@@ -224,7 +224,7 @@ public class SwaggerMethodParser {
      * @return The final host to use for HTTP requests for this Swagger method.
      */
     public String scheme(Object[] swaggerMethodArguments) {
-        final String substitutedHost = applySubstitutions(rawHost, hostSubstitutions, swaggerMethodArguments, UrlEscapers.urlPathSegmentEscaper());
+        final String substitutedHost = applySubstitutions(rawHost, hostSubstitutions, swaggerMethodArguments, UrlEscapers.PATH_ESCAPER);
         final String[] substitutedHostParts = substitutedHost.split("://");
         return substitutedHostParts.length < 1 ? null : substitutedHostParts[0];
     }
@@ -235,7 +235,7 @@ public class SwaggerMethodParser {
      * @return The final host to use for HTTP requests for this Swagger method.
      */
     public String host(Object[] swaggerMethodArguments) {
-        final String substitutedHost = applySubstitutions(rawHost, hostSubstitutions, swaggerMethodArguments, UrlEscapers.urlPathSegmentEscaper());
+        final String substitutedHost = applySubstitutions(rawHost, hostSubstitutions, swaggerMethodArguments, UrlEscapers.PATH_ESCAPER);
         final String[] substitutedHostParts = substitutedHost.split("://");
         return substitutedHostParts.length < 2 ? substitutedHost : substitutedHost.split("://")[1];
     }
@@ -246,7 +246,7 @@ public class SwaggerMethodParser {
      * @return The path value with its placeholders replaced by the matching substitutions.
      */
     public String path(Object[] methodArguments) {
-        return applySubstitutions(relativePath, pathSubstitutions, methodArguments, UrlEscapers.urlPathSegmentEscaper());
+        return applySubstitutions(relativePath, pathSubstitutions, methodArguments, UrlEscapers.PATH_ESCAPER);
     }
 
     /**
@@ -259,7 +259,7 @@ public class SwaggerMethodParser {
     public Iterable<EncodedParameter> encodedQueryParameters(Object[] swaggerMethodArguments) {
         final List<EncodedParameter> result = new ArrayList<>();
         if (querySubstitutions != null) {
-            final Escaper escaper = UrlEscapers.urlFormParameterEscaper();
+            final PercentEscaper escaper = UrlEscapers.QUERY_ESCAPER;
 
             for (Substitution querySubstitution : querySubstitutions) {
                 final int parameterIndex = querySubstitution.methodParameterIndex();
@@ -509,7 +509,7 @@ public class SwaggerMethodParser {
         return result;
     }
 
-    private String applySubstitutions(String originalValue, Iterable<Substitution> substitutions, Object[] methodArguments, Escaper escaper) {
+    private String applySubstitutions(String originalValue, Iterable<Substitution> substitutions, Object[] methodArguments, PercentEscaper escaper) {
         String result = originalValue;
 
         if (methodArguments != null) {

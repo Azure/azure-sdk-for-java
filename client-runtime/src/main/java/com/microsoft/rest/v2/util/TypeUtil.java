@@ -33,11 +33,11 @@ public class TypeUtil {
     /**
      * Get the generic arguments for a type.
      * @param type the type to get arguments
-     * @return the generic arguments, null if type is not parametrized
+     * @return the generic arguments, empty if type is not parametrized
      */
     public static Type[] getTypeArguments(Type type) {
         if (!(type instanceof ParameterizedType)) {
-            return null;
+            return new Type[0];
         }
         return ((ParameterizedType) type).getActualTypeArguments();
     }

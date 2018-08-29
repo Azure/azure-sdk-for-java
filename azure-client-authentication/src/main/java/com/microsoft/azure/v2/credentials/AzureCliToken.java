@@ -10,8 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.aad.adal4j.AuthenticationResult;
 import com.microsoft.rest.v2.annotations.Beta;
 
-import java.time.Instant;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
 /**
  * An instance of this class represents an entry in accessTokens.json.
@@ -25,7 +26,7 @@ final class AzureCliToken implements Cloneable {
     private String tokenType;
     private long expiresIn;
     private String expiresOn;
-    private Date expiresOnDate;
+    private LocalDateTime expiresOnDate;
     private String oid;
     private String userId;
     private String servicePrincipalId;
@@ -62,16 +63,20 @@ final class AzureCliToken implements Cloneable {
     }
 
     boolean expired() {
-        return expiresOn != null && expiresOn().before(new Date());
+        return expiresOn != null && expiresOn().isBefore(LocalDateTime.now());
     }
 
     String accessToken() {
         return accessToken;
     }
 
-    Date expiresOn() {
+    LocalDateTime expiresOn() {
         if (expiresOnDate == null) {
-            expiresOnDate = Date.from(Instant.parse(expiresOn));
+            try {
+                expiresOnDate = LocalDateTime.parse(expiresOn, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"));
+            } catch (IllegalArgumentException e) {
+                expiresOnDate = LocalDateTime.parse(expiresOn);
+            }
         }
         return expiresOnDate;
     }
@@ -80,7 +85,7 @@ final class AzureCliToken implements Cloneable {
         this.accessToken = result.getAccessToken();
         this.refreshToken = result.getRefreshToken();
         this.expiresIn = result.getExpiresAfter();
-        this.expiresOnDate = result.getExpiresOnDate();
+        this.expiresOnDate = LocalDateTime.ofInstant(result.getExpiresOnDate().toInstant(), ZoneId.systemDefault());
         return this;
     }
 
@@ -121,7 +126,7 @@ final class AzureCliToken implements Cloneable {
 
     public AzureCliToken clone() throws CloneNotSupportedException {
         AzureCliToken token = (AzureCliToken) super.clone();
-        token.expiresOnDate = (Date) expiresOn().clone();
+        token.expiresOnDate = LocalDateTime.from(expiresOn());
         return token;
     }
 }

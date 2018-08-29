@@ -1,9 +1,9 @@
 package com.microsoft.rest.v2.util;
 
-import static com.microsoft.rest.v2.util.FlowableUtil.ensureLength;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import com.microsoft.rest.v2.http.UnexpectedLengthException;
+import io.reactivex.Flowable;
+import io.reactivex.schedulers.Schedulers;
+import org.junit.Test;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
@@ -19,13 +19,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.TimeUnit;
 
-import com.microsoft.rest.v2.http.UnexpectedLengthException;
-import io.reactivex.Flowable;
-import org.junit.Test;
-
-import com.google.common.io.Files;
-
-import io.reactivex.schedulers.Schedulers;
+import static com.microsoft.rest.v2.util.FlowableUtil.ensureLength;
+import static org.junit.Assert.*;
 
 public class FlowableUtilTests {
     @Test
@@ -65,7 +60,8 @@ public class FlowableUtilTests {
     @Test
     public void testCanReadSlice() throws IOException {
         File file = new File("target/test1");
-        Files.write("hello there".getBytes(StandardCharsets.UTF_8), file);
+        FileOutputStream stream = new FileOutputStream(file);
+        stream.write("hello there".getBytes(StandardCharsets.UTF_8));
         try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ)) {
             byte[] bytes = FlowableUtil.readFile(channel, 1, 3) //
                     .map(bb -> toBytes(bb)) //
@@ -92,7 +88,8 @@ public class FlowableUtilTests {
     @Test
     public void testAsynchronyShortInput() throws IOException {
         File file = new File("target/test3");
-        Files.write("hello there".getBytes(StandardCharsets.UTF_8), file);
+        FileOutputStream stream = new FileOutputStream(file);
+        stream.write("hello there".getBytes(StandardCharsets.UTF_8));
         try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ)) {
             byte[] bytes = FlowableUtil.readFile(channel) //
                     .map(bb -> toBytes(bb)) //

@@ -7,8 +7,7 @@
 package com.microsoft.azure.v2.credentials;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.google.common.io.Files;
-import com.google.common.reflect.TypeToken;
+import com.google.gson.reflect.TypeToken;
 import com.microsoft.azure.v2.AzureEnvironment;
 import com.microsoft.azure.v2.AzureEnvironment.Endpoint;
 import com.microsoft.rest.v2.annotations.Beta;
@@ -18,6 +17,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -54,7 +55,7 @@ final class AuthFile {
      * @throws IOException thrown when the auth file or the certificate file cannot be read or parsed
      */
     static AuthFile parse(File file) throws IOException {
-        String content = Files.toString(file, StandardCharsets.UTF_8).trim();
+        String content = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
 
         AuthFile authFile;
         if (isJsonBased(content)) {
@@ -110,9 +111,9 @@ final class AuthFile {
         } else if (clientCertificate != null) {
             byte[] certData;
             if (new File(clientCertificate).exists()) {
-                certData = Files.toByteArray(new File(clientCertificate));
+                certData = Files.readAllBytes(Paths.get(clientCertificate));
             } else {
-                certData = Files.toByteArray(new File(authFilePath, clientCertificate));
+                certData = Files.readAllBytes(Paths.get(authFilePath, clientCertificate));
             }
 
             return (ApplicationTokenCredentials) new ApplicationTokenCredentials(
