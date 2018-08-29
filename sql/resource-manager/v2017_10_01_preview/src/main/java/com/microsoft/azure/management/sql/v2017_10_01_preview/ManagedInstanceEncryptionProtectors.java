@@ -25,7 +25,7 @@ public interface ManagedInstanceEncryptionProtectors extends HasInner<ManagedIns
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<ManagedInstanceEncryptionProtector> listByServerAsync(final String resourceGroupName, final String managedInstanceName);
+    Observable<ManagedInstanceEncryptionProtector> listByInstanceAsync(final String resourceGroupName, final String managedInstanceName);
 
     /**
      * Gets a managed instance encryption protector.

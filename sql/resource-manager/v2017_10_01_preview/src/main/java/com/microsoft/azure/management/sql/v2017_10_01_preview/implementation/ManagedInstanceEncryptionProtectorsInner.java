@@ -60,9 +60,9 @@ public class ManagedInstanceEncryptionProtectorsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface ManagedInstanceEncryptionProtectorsService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2017_10_01_preview.ManagedInstanceEncryptionProtectors listByServer" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2017_10_01_preview.ManagedInstanceEncryptionProtectors listByInstance" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/encryptionProtector")
-        Observable<Response<ResponseBody>> listByServer(@Path("resourceGroupName") String resourceGroupName, @Path("managedInstanceName") String managedInstanceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listByInstance(@Path("resourceGroupName") String resourceGroupName, @Path("managedInstanceName") String managedInstanceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2017_10_01_preview.ManagedInstanceEncryptionProtectors get" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/encryptionProtector/{encryptionProtectorName}")
@@ -76,9 +76,9 @@ public class ManagedInstanceEncryptionProtectorsInner {
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/encryptionProtector/{encryptionProtectorName}")
         Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("managedInstanceName") String managedInstanceName, @Path("encryptionProtectorName") String encryptionProtectorName, @Path("subscriptionId") String subscriptionId, @Body ManagedInstanceEncryptionProtectorInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2017_10_01_preview.ManagedInstanceEncryptionProtectors listByServerNext" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2017_10_01_preview.ManagedInstanceEncryptionProtectors listByInstanceNext" })
         @GET
-        Observable<Response<ResponseBody>> listByServerNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listByInstanceNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -92,12 +92,12 @@ public class ManagedInstanceEncryptionProtectorsInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ManagedInstanceEncryptionProtectorInner&gt; object if successful.
      */
-    public PagedList<ManagedInstanceEncryptionProtectorInner> listByServer(final String resourceGroupName, final String managedInstanceName) {
-        ServiceResponse<Page<ManagedInstanceEncryptionProtectorInner>> response = listByServerSinglePageAsync(resourceGroupName, managedInstanceName).toBlocking().single();
+    public PagedList<ManagedInstanceEncryptionProtectorInner> listByInstance(final String resourceGroupName, final String managedInstanceName) {
+        ServiceResponse<Page<ManagedInstanceEncryptionProtectorInner>> response = listByInstanceSinglePageAsync(resourceGroupName, managedInstanceName).toBlocking().single();
         return new PagedList<ManagedInstanceEncryptionProtectorInner>(response.body()) {
             @Override
             public Page<ManagedInstanceEncryptionProtectorInner> nextPage(String nextPageLink) {
-                return listByServerNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+                return listByInstanceNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -111,13 +111,13 @@ public class ManagedInstanceEncryptionProtectorsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<ManagedInstanceEncryptionProtectorInner>> listByServerAsync(final String resourceGroupName, final String managedInstanceName, final ListOperationCallback<ManagedInstanceEncryptionProtectorInner> serviceCallback) {
+    public ServiceFuture<List<ManagedInstanceEncryptionProtectorInner>> listByInstanceAsync(final String resourceGroupName, final String managedInstanceName, final ListOperationCallback<ManagedInstanceEncryptionProtectorInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listByServerSinglePageAsync(resourceGroupName, managedInstanceName),
+            listByInstanceSinglePageAsync(resourceGroupName, managedInstanceName),
             new Func1<String, Observable<ServiceResponse<Page<ManagedInstanceEncryptionProtectorInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ManagedInstanceEncryptionProtectorInner>>> call(String nextPageLink) {
-                    return listByServerNextSinglePageAsync(nextPageLink);
+                    return listByInstanceNextSinglePageAsync(nextPageLink);
                 }
             },
             serviceCallback);
@@ -131,8 +131,8 @@ public class ManagedInstanceEncryptionProtectorsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ManagedInstanceEncryptionProtectorInner&gt; object
      */
-    public Observable<Page<ManagedInstanceEncryptionProtectorInner>> listByServerAsync(final String resourceGroupName, final String managedInstanceName) {
-        return listByServerWithServiceResponseAsync(resourceGroupName, managedInstanceName)
+    public Observable<Page<ManagedInstanceEncryptionProtectorInner>> listByInstanceAsync(final String resourceGroupName, final String managedInstanceName) {
+        return listByInstanceWithServiceResponseAsync(resourceGroupName, managedInstanceName)
             .map(new Func1<ServiceResponse<Page<ManagedInstanceEncryptionProtectorInner>>, Page<ManagedInstanceEncryptionProtectorInner>>() {
                 @Override
                 public Page<ManagedInstanceEncryptionProtectorInner> call(ServiceResponse<Page<ManagedInstanceEncryptionProtectorInner>> response) {
@@ -149,8 +149,8 @@ public class ManagedInstanceEncryptionProtectorsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ManagedInstanceEncryptionProtectorInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ManagedInstanceEncryptionProtectorInner>>> listByServerWithServiceResponseAsync(final String resourceGroupName, final String managedInstanceName) {
-        return listByServerSinglePageAsync(resourceGroupName, managedInstanceName)
+    public Observable<ServiceResponse<Page<ManagedInstanceEncryptionProtectorInner>>> listByInstanceWithServiceResponseAsync(final String resourceGroupName, final String managedInstanceName) {
+        return listByInstanceSinglePageAsync(resourceGroupName, managedInstanceName)
             .concatMap(new Func1<ServiceResponse<Page<ManagedInstanceEncryptionProtectorInner>>, Observable<ServiceResponse<Page<ManagedInstanceEncryptionProtectorInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ManagedInstanceEncryptionProtectorInner>>> call(ServiceResponse<Page<ManagedInstanceEncryptionProtectorInner>> page) {
@@ -158,7 +158,7 @@ public class ManagedInstanceEncryptionProtectorsInner {
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listByServerNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listByInstanceNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -171,7 +171,7 @@ public class ManagedInstanceEncryptionProtectorsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ManagedInstanceEncryptionProtectorInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<ManagedInstanceEncryptionProtectorInner>>> listByServerSinglePageAsync(final String resourceGroupName, final String managedInstanceName) {
+    public Observable<ServiceResponse<Page<ManagedInstanceEncryptionProtectorInner>>> listByInstanceSinglePageAsync(final String resourceGroupName, final String managedInstanceName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -184,12 +184,12 @@ public class ManagedInstanceEncryptionProtectorsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.listByServer(resourceGroupName, managedInstanceName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.listByInstance(resourceGroupName, managedInstanceName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ManagedInstanceEncryptionProtectorInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ManagedInstanceEncryptionProtectorInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<ManagedInstanceEncryptionProtectorInner>> result = listByServerDelegate(response);
+                        ServiceResponse<PageImpl<ManagedInstanceEncryptionProtectorInner>> result = listByInstanceDelegate(response);
                         return Observable.just(new ServiceResponse<Page<ManagedInstanceEncryptionProtectorInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -198,7 +198,7 @@ public class ManagedInstanceEncryptionProtectorsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<ManagedInstanceEncryptionProtectorInner>> listByServerDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<ManagedInstanceEncryptionProtectorInner>> listByInstanceDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<ManagedInstanceEncryptionProtectorInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ManagedInstanceEncryptionProtectorInner>>() { }.getType())
                 .registerError(CloudException.class)
@@ -475,12 +475,12 @@ public class ManagedInstanceEncryptionProtectorsInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ManagedInstanceEncryptionProtectorInner&gt; object if successful.
      */
-    public PagedList<ManagedInstanceEncryptionProtectorInner> listByServerNext(final String nextPageLink) {
-        ServiceResponse<Page<ManagedInstanceEncryptionProtectorInner>> response = listByServerNextSinglePageAsync(nextPageLink).toBlocking().single();
+    public PagedList<ManagedInstanceEncryptionProtectorInner> listByInstanceNext(final String nextPageLink) {
+        ServiceResponse<Page<ManagedInstanceEncryptionProtectorInner>> response = listByInstanceNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<ManagedInstanceEncryptionProtectorInner>(response.body()) {
             @Override
             public Page<ManagedInstanceEncryptionProtectorInner> nextPage(String nextPageLink) {
-                return listByServerNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+                return listByInstanceNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -494,13 +494,13 @@ public class ManagedInstanceEncryptionProtectorsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<ManagedInstanceEncryptionProtectorInner>> listByServerNextAsync(final String nextPageLink, final ServiceFuture<List<ManagedInstanceEncryptionProtectorInner>> serviceFuture, final ListOperationCallback<ManagedInstanceEncryptionProtectorInner> serviceCallback) {
+    public ServiceFuture<List<ManagedInstanceEncryptionProtectorInner>> listByInstanceNextAsync(final String nextPageLink, final ServiceFuture<List<ManagedInstanceEncryptionProtectorInner>> serviceFuture, final ListOperationCallback<ManagedInstanceEncryptionProtectorInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listByServerNextSinglePageAsync(nextPageLink),
+            listByInstanceNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ManagedInstanceEncryptionProtectorInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ManagedInstanceEncryptionProtectorInner>>> call(String nextPageLink) {
-                    return listByServerNextSinglePageAsync(nextPageLink);
+                    return listByInstanceNextSinglePageAsync(nextPageLink);
                 }
             },
             serviceCallback);
@@ -513,8 +513,8 @@ public class ManagedInstanceEncryptionProtectorsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ManagedInstanceEncryptionProtectorInner&gt; object
      */
-    public Observable<Page<ManagedInstanceEncryptionProtectorInner>> listByServerNextAsync(final String nextPageLink) {
-        return listByServerNextWithServiceResponseAsync(nextPageLink)
+    public Observable<Page<ManagedInstanceEncryptionProtectorInner>> listByInstanceNextAsync(final String nextPageLink) {
+        return listByInstanceNextWithServiceResponseAsync(nextPageLink)
             .map(new Func1<ServiceResponse<Page<ManagedInstanceEncryptionProtectorInner>>, Page<ManagedInstanceEncryptionProtectorInner>>() {
                 @Override
                 public Page<ManagedInstanceEncryptionProtectorInner> call(ServiceResponse<Page<ManagedInstanceEncryptionProtectorInner>> response) {
@@ -530,8 +530,8 @@ public class ManagedInstanceEncryptionProtectorsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ManagedInstanceEncryptionProtectorInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ManagedInstanceEncryptionProtectorInner>>> listByServerNextWithServiceResponseAsync(final String nextPageLink) {
-        return listByServerNextSinglePageAsync(nextPageLink)
+    public Observable<ServiceResponse<Page<ManagedInstanceEncryptionProtectorInner>>> listByInstanceNextWithServiceResponseAsync(final String nextPageLink) {
+        return listByInstanceNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<ManagedInstanceEncryptionProtectorInner>>, Observable<ServiceResponse<Page<ManagedInstanceEncryptionProtectorInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ManagedInstanceEncryptionProtectorInner>>> call(ServiceResponse<Page<ManagedInstanceEncryptionProtectorInner>> page) {
@@ -539,7 +539,7 @@ public class ManagedInstanceEncryptionProtectorsInner {
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listByServerNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listByInstanceNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -551,17 +551,17 @@ public class ManagedInstanceEncryptionProtectorsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ManagedInstanceEncryptionProtectorInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<ManagedInstanceEncryptionProtectorInner>>> listByServerNextSinglePageAsync(final String nextPageLink) {
+    public Observable<ServiceResponse<Page<ManagedInstanceEncryptionProtectorInner>>> listByInstanceNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         String nextUrl = String.format("%s", nextPageLink);
-        return service.listByServerNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+        return service.listByInstanceNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ManagedInstanceEncryptionProtectorInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ManagedInstanceEncryptionProtectorInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<ManagedInstanceEncryptionProtectorInner>> result = listByServerNextDelegate(response);
+                        ServiceResponse<PageImpl<ManagedInstanceEncryptionProtectorInner>> result = listByInstanceNextDelegate(response);
                         return Observable.just(new ServiceResponse<Page<ManagedInstanceEncryptionProtectorInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -570,7 +570,7 @@ public class ManagedInstanceEncryptionProtectorsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<ManagedInstanceEncryptionProtectorInner>> listByServerNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<ManagedInstanceEncryptionProtectorInner>> listByInstanceNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<ManagedInstanceEncryptionProtectorInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ManagedInstanceEncryptionProtectorInner>>() { }.getType())
                 .registerError(CloudException.class)

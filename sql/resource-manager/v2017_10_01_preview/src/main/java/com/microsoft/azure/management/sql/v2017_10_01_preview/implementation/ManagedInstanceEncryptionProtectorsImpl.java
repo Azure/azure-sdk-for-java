@@ -29,9 +29,9 @@ class ManagedInstanceEncryptionProtectorsImpl extends WrapperImpl<ManagedInstanc
     }
 
     @Override
-    public Observable<ManagedInstanceEncryptionProtector> listByServerAsync(final String resourceGroupName, final String managedInstanceName) {
+    public Observable<ManagedInstanceEncryptionProtector> listByInstanceAsync(final String resourceGroupName, final String managedInstanceName) {
         ManagedInstanceEncryptionProtectorsInner client = this.inner();
-        return client.listByServerAsync(resourceGroupName, managedInstanceName)
+        return client.listByInstanceAsync(resourceGroupName, managedInstanceName)
         .flatMapIterable(new Func1<Page<ManagedInstanceEncryptionProtectorInner>, Iterable<ManagedInstanceEncryptionProtectorInner>>() {
             @Override
             public Iterable<ManagedInstanceEncryptionProtectorInner> call(Page<ManagedInstanceEncryptionProtectorInner> page) {
