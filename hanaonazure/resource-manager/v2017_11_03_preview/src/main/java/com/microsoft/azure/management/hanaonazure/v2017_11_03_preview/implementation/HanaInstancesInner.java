@@ -13,6 +13,7 @@ import com.microsoft.azure.arm.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.ErrorResponseException;
 import com.microsoft.azure.Page;
@@ -27,6 +28,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.Path;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 import retrofit2.Response;
@@ -70,6 +72,10 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.HanaInstances getByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HanaOnAzure/hanaInstances/{hanaInstanceName}")
         Observable<Response<ResponseBody>> getByResourceGroup(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("hanaInstanceName") String hanaInstanceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.HanaInstances restart" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HanaOnAzure/hanaInstances/{hanaInstanceName}/restart")
+        Observable<Response<ResponseBody>> restart(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("hanaInstanceName") String hanaInstanceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.HanaInstances listNext" })
         @GET
@@ -400,6 +406,91 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
         return this.client.restClient().responseBuilderFactory().<HanaInstanceInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<HanaInstanceInner>() { }.getType())
                 .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * The operation to restart a SAP HANA instance.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void restart(String resourceGroupName, String hanaInstanceName) {
+        restartWithServiceResponseAsync(resourceGroupName, hanaInstanceName).toBlocking().single().body();
+    }
+
+    /**
+     * The operation to restart a SAP HANA instance.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> restartAsync(String resourceGroupName, String hanaInstanceName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(restartWithServiceResponseAsync(resourceGroupName, hanaInstanceName), serviceCallback);
+    }
+
+    /**
+     * The operation to restart a SAP HANA instance.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> restartAsync(String resourceGroupName, String hanaInstanceName) {
+        return restartWithServiceResponseAsync(resourceGroupName, hanaInstanceName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * The operation to restart a SAP HANA instance.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> restartWithServiceResponseAsync(String resourceGroupName, String hanaInstanceName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (hanaInstanceName == null) {
+            throw new IllegalArgumentException("Parameter hanaInstanceName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.restart(this.client.subscriptionId(), resourceGroupName, hanaInstanceName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = restartDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> restartDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
