@@ -15,6 +15,7 @@ import java.util.Map;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.LinkedServiceReference;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.ParameterSpecification;
 import java.util.List;
+import com.microsoft.azure.management.datafactoryv2.v2018_06_01.DatasetFolder;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.;
 import rx.functions.Func1;
 
