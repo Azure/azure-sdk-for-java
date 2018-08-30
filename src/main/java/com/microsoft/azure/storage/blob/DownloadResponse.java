@@ -17,6 +17,7 @@ package com.microsoft.azure.storage.blob;
 
 import com.microsoft.azure.storage.blob.models.BlobDownloadHeaders;
 import com.microsoft.azure.storage.blob.models.BlobDownloadResponse;
+import com.microsoft.rest.v2.RestResponse;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.functions.Function;
@@ -31,26 +32,20 @@ import java.util.Map;
  * {@code DownloadResponse} wraps the protocol-layer response from {@link BlobURL#download(BlobRange,
  * BlobAccessConditions, boolean)} to help provide information for retrying.
  */
-public class DownloadResponse  {
-    private BlobURL blobURL;
+public final class DownloadResponse {
+    private final RetryReader.HTTPGetterInfo info;
 
-    private RetryReader.HTTPGetterInfo info;
+    private final RestResponse<BlobDownloadHeaders, Flowable<ByteBuffer>> rawResponse;
 
-    private BlobDownloadResponse rawResponse;
+    private final Function<RetryReader.HTTPGetterInfo, Single<DownloadResponse>> getter;
 
-    private final Function<RetryReader.HTTPGetterInfo, Single<DownloadResponse>> getter = newInfo ->
-            this.blobURL.download(new BlobRange().withOffset(newInfo.offset).withCount(newInfo.count),
-                    new BlobAccessConditions(new HTTPAccessConditions(null, null, info.eTag, null),
-                            null, null, null), false);
-
-    DownloadResponse(BlobDownloadResponse response, BlobURL blobURL, RetryReader.HTTPGetterInfo info) {
+    public DownloadResponse(RestResponse<BlobDownloadHeaders, Flowable<ByteBuffer>> response,
+            RetryReader.HTTPGetterInfo info, Function<RetryReader.HTTPGetterInfo, Single<DownloadResponse>> getter) {
+        Utility.assertNotNull("getter", getter);
         info = info == null ? new RetryReader.HTTPGetterInfo() : info;
-        if (info.count != null) {
-            Utility.assertInBounds("info.count", info.count, 0, Integer.MAX_VALUE);
-        }
         this.rawResponse = response;
-        this.blobURL = blobURL;
         this.info = info;
+        this.getter = getter;
     }
 
     /**
@@ -75,13 +70,14 @@ public class DownloadResponse  {
                 have received.
                  */
                 .doOnNext(buffer -> {
-                    this.info.offset += buffer.remaining();
-                    if (info.count != null) {
-                        this.info.count -= buffer.remaining();
+                    this.info.withOffset(this.info.offset() + buffer.remaining());
+                    if (info.count() != null) {
+                        this.info.withCount(this.info.count() - buffer.remaining());
                     }
                 })
                 .onErrorResumeNext(throwable -> {
-                    return tryContinueFlowable(throwable, 1, optionsReal);
+                    // So far we have tried once but retried zero times.
+                    return tryContinueFlowable(throwable, 0, optionsReal);
                 });
 
 
@@ -101,13 +97,23 @@ public class DownloadResponse  {
             try {
                 // Get a new response and try reading from it.
                 return getter.apply(this.info)
-                        .flatMapPublisher(response ->
-                            // Do not compound the number of retries.
-                            response.body()
+                        .flatMapPublisher(response ->{
+                            // Do not compound the number of retries; just get the raw body.
+                            RetryReaderOptions newOptions = new RetryReaderOptions();
+                            newOptions.withMaxRetryRequests(0);
+
+                            return response.body(newOptions)
+                                    .doOnNext(buffer -> {
+                                        this.info.withOffset(this.info.offset() + buffer.remaining());
+                                        if (info.count() != null) {
+                                            this.info.withCount(this.info.count() - buffer.remaining());
+                                        }
+                                    })
                                     .onErrorResumeNext(t2 -> {
                                         // Increment the retry count and try again with the new exception.
                                         return tryContinueFlowable(t2, retryCount + 1, options);
-                                    }));
+                                    });
+                        });
             } catch (Exception e) {
                 // If the getter fails, return the getter failure to the user.
                 return Flowable.error(e);
@@ -127,18 +133,7 @@ public class DownloadResponse  {
         return this.rawResponse.rawHeaders();
     }
 
-    /**
-     * Equivalent to calling {@link #body(RetryReaderOptions)} with {@code null}.
-     */
-    public Flowable<ByteBuffer> body() {
-        return this.body(null);
-    }
-
-    /**
-     * Disposes of the connection associated with this stream response.
-     */
-    public void close() {
-        // Taken from BlobsDownloadResponse.
-        this.rawResponse.body().subscribe(Functions.emptyConsumer(), Functions.<Throwable>emptyConsumer()).dispose();
+    public RestResponse<BlobDownloadHeaders, Flowable<ByteBuffer>> rawResponse() {
+        return this.rawResponse;
     }
 }

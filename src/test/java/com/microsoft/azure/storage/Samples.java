@@ -167,7 +167,7 @@ public class Samples {
                         blobURL.download(null, null, false))
                 .flatMap(blobDownloadResponse ->
                         // Verify that the blob data round-tripped correctly.
-                        FlowableUtil.collectBytesInBuffer(blobDownloadResponse.body())
+                        FlowableUtil.collectBytesInBuffer(blobDownloadResponse.body(null))
                                 .doOnSuccess(byteBuffer -> {
                                     if (byteBuffer.compareTo(ByteBuffer.wrap(data.getBytes())) != 0) {
                                         throw new Exception("The downloaded data does not match the uploaded data.");
@@ -1134,7 +1134,7 @@ public class Samples {
                 .andThen(blobURL.download(null, null, false))
                 .flatMap(response ->
                         // Print out the data.
-                        FlowableUtil.collectBytesInBuffer(response.body())
+                        FlowableUtil.collectBytesInBuffer(response.body(null))
                                 .doOnSuccess(bytes ->
                                         System.out.println(new String(bytes.array())))
                 )
@@ -1223,7 +1223,7 @@ public class Samples {
                 })
                 .flatMap(response ->
                         // Print the received content.
-                        FlowableUtil.collectBytesInBuffer(response.body())
+                        FlowableUtil.collectBytesInBuffer(response.body(null))
                                 .doOnSuccess(data ->
                                         System.out.println(new String(data.array())))
                                 .flatMap(data ->
@@ -1272,7 +1272,7 @@ public class Samples {
                                         blobURL.download(null, null, false))
                                 .flatMap(response1 ->
                                         // Print the received content.
-                                        FlowableUtil.collectBytesInBuffer(response1.body())
+                                        FlowableUtil.collectBytesInBuffer(response1.body(null))
                                                 .doOnSuccess(data ->
                                                         System.out.println(new String(data.array()))))
                                 .flatMap(response1 -> {
@@ -1447,7 +1447,7 @@ public class Samples {
         BlockBlobURL blobURL = containerURL.createBlockBlobURL("Data.txt");
 
         RetryReaderOptions options = new RetryReaderOptions();
-        options.maxRetryRequests = 5;
+        options.withMaxRetryRequests(5);
 
         File file = File.createTempFile("tempfile", "txt");
         FileOutputStream fos = new FileOutputStream(file);
@@ -1619,7 +1619,7 @@ public class Samples {
                         blobURL.download(null, null, false));
         downloadResponse.flatMap(blobDownloadResponse ->
                 // Verify that the blob data round-tripped correctly.
-                FlowableUtil.collectBytesInBuffer(blobDownloadResponse.body())
+                FlowableUtil.collectBytesInBuffer(blobDownloadResponse.body(null))
                         .doOnSuccess(byteBuffer -> {
                             if (byteBuffer.compareTo(ByteBuffer.wrap(data.getBytes())) != 0) {
                                 throw new Exception("The downloaded data does not match the uploaded data.");

@@ -65,7 +65,7 @@ public final class RetryReader extends Flowable<ByteBuffer> {
             Utility.assertInBounds("info.count", info.count, 0, Integer.MAX_VALUE);
         }
         options = options == null ? new RetryReaderOptions() : options;
-        Utility.assertInBounds("options.maxRetryRequests", options.maxRetryRequests, 0, Integer.MAX_VALUE);
+        Utility.assertInBounds("options.maxRetryRequests", options.maxRetryRequests(), 0, Integer.MAX_VALUE);
 
         this.response = initialResponse;
         this.info = info;
@@ -116,7 +116,7 @@ public final class RetryReader extends Flowable<ByteBuffer> {
                  */
                 .onErrorResumeNext(throwable -> {
                     // If all the retries are exhausted, report it to the user and error out.
-                    if (retryCount > options.maxRetryRequests) {
+                    if (retryCount > options.maxRetryRequests()) {
                         s.onError(throwable);
                         return Flowable.empty();
                     }
@@ -156,22 +156,64 @@ public final class RetryReader extends Flowable<ByteBuffer> {
      * request.
      */
     public static class HTTPGetterInfo {
+        private long offset = 0;
+
+        private Long count = null;
+
+        private ETag eTag = null;
+
         /**
          * The start offset that should be used when creating the HTTP GET request's Range header. Defaults to 0.
          */
-        public long offset = 0;
+        public long offset() {
+            return offset;
+        }
+
+        /**
+         * The start offset that should be used when creating the HTTP GET request's Range header. Defaults to 0.
+         */
+        public HTTPGetterInfo withOffset(long offset) {
+            this.offset = offset;
+            return this;
+        }
 
         /**
          * The count of bytes that should be used to calculate the end offset when creating the HTTP GET request's Range
          * header. {@code} null is the default and indicates that the entire rest of the blob should be retrieved.
          */
-        public Long count = null;
+        public Long count() {
+            return count;
+        }
+
+        /**
+         * The count of bytes that should be used to calculate the end offset when creating the HTTP GET request's Range
+         * header. {@code} null is the default and indicates that the entire rest of the blob should be retrieved.
+         */
+        public HTTPGetterInfo withCount(Long count) {
+            if (count != null) {
+                Utility.assertInBounds("count", count, 0, Integer.MAX_VALUE);
+            }
+            this.count = count;
+            return this;
+        }
 
         /**
          * The resource's etag that should be used when creating the HTTP GET request's If-Match header. Note that the
          * Etag is returned with any operation that modifies the resource and by a call to {@link
          * BlobURL#getProperties(BlobAccessConditions)}. Defaults to null.
          */
-        public ETag eTag = null;
+        public ETag eTag() {
+            return eTag;
+        }
+
+        /**
+         * The resource's etag that should be used when creating the HTTP GET request's If-Match header. Note that the
+         * Etag is returned with any operation that modifies the resource and by a call to {@link
+         * BlobURL#getProperties(BlobAccessConditions)}. Defaults to null.
+         */
+        public HTTPGetterInfo witheTag(ETag eTag) {
+            this.eTag = eTag;
+            return this;
+        }
     }
 }

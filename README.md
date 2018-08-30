@@ -131,7 +131,7 @@ public class Sample {
                         blobURL.download(null, null, false))
                 .flatMap(blobsDownloadResponse ->
                         // Verify that the blob data round-tripped correctly.
-                        FlowableUtil.collectBytesInBuffer(blobsDownloadResponse.body())
+                        FlowableUtil.collectBytesInBuffer(blobsDownloadResponse.body(null))
                                 .doOnSuccess(byteBuffer -> {
                                     if (byteBuffer.compareTo(ByteBuffer.wrap(data.getBytes())) != 0) {
                                         throw new Exception("The downloaded data does not match the uploaded data.");

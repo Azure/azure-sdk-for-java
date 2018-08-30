@@ -1,5 +1,6 @@
 ﻿XXXX.XX.XX Version XX.X.X
 * Interfaces for helper types updated to be more consistent throughout the library. All types, with the exception of the options for pipeline factories, use a fluent pattern.
+* Removed RetryReader type as it's functionality was moved to be built into the DownloadResponse. RetryReaderOptions are now named ReliableDownloadOptions.
 
 2018.08.22 Version 10.0.4-rc
 * Changed BlobURL.startCopy sourceAccessConditions parameter to be HTTPAccessConditions as lease is not actually supported.

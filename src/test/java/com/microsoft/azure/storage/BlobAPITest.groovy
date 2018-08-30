@@ -38,7 +38,7 @@ class BlobAPITest extends APISpec {
         when:
         DownloadResponse response = bu.download(null, null, false)
                 .blockingGet()
-        ByteBuffer body = FlowableUtil.collectBytesInBuffer(response.body()).blockingGet()
+        ByteBuffer body = FlowableUtil.collectBytesInBuffer(response.body(null)).blockingGet()
         BlobDownloadHeaders headers = response.headers()
 
         then:
@@ -77,7 +77,7 @@ class BlobAPITest extends APISpec {
 
         when:
         ByteBuffer body = FlowableUtil.collectBytesInBuffer(
-                bu.download(range, null, false).blockingGet().body()).blockingGet()
+                bu.download(range, null, false).blockingGet().body(null)).blockingGet()
         String bodyStr = new String(body.array())
 
         then:

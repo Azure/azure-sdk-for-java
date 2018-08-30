@@ -19,18 +19,25 @@ package com.microsoft.azure.storage.blob;
  * {@code RetryReaderOptions} contains properties which help a {@link RetryReader} determine when to retry.
  */
 public final class RetryReaderOptions {
+
+    private int maxRetryRequests = 0;
+
     /**
      * Specifies the maximum number of additional HTTP Get requests that will be made while reading the data from a
      * {@link RetryReader}. Note that if no initial response is provided, the {@code RetryReader} will call the getter
      * to obtain an initial response to read from; this initial response does not count as a retry. A value of {@code 0}
      *  means that no additional HTTP requests will be made once the initial request has been made or provided.
      */
-    private int maxRetryRequests = 0;
-
     public int maxRetryRequests() {
         return maxRetryRequests;
     }
 
+    /**
+     * Specifies the maximum number of additional HTTP Get requests that will be made while reading the data from a
+     * {@link RetryReader}. Note that if no initial response is provided, the {@code RetryReader} will call the getter
+     * to obtain an initial response to read from; this initial response does not count as a retry. A value of {@code 0}
+     *  means that no additional HTTP requests will be made once the initial request has been made or provided.
+     */
     public RetryReaderOptions withMaxRetryRequests(int maxRetryRequests) {
         this.maxRetryRequests = maxRetryRequests;
         return this;

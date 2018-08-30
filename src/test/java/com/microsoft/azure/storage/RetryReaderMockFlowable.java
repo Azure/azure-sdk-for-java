@@ -15,9 +15,11 @@
 
 package com.microsoft.azure.storage;
 
+import com.microsoft.azure.storage.blob.DownloadResponse;
 import com.microsoft.azure.storage.blob.ETag;
 import com.microsoft.azure.storage.blob.RetryReader;
 import com.microsoft.azure.storage.blob.models.BlobDownloadHeaders;
+import com.microsoft.azure.storage.blob.models.BlobDownloadResponse;
 import com.microsoft.azure.storage.blob.models.StorageErrorException;
 import com.microsoft.rest.v2.RestResponse;
 import com.microsoft.rest.v2.http.HttpHeaders;
@@ -27,6 +29,7 @@ import io.reactivex.Flowable;
 import io.reactivex.Single;
 import org.reactivestreams.Subscriber;
 
+import java.io.IOException;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.nio.ByteBuffer;
@@ -46,11 +49,7 @@ public class RetryReaderMockFlowable extends Flowable<ByteBuffer> {
 
     public static final int RR_TEST_SCENARIO_NON_RETRYABLE_ERROR = 4;
 
-    public static final int RR_TEST_SCENARIO_ERROR_GETTER_INITIAL = 5;
-
     public static final int RR_TEST_SCENARIO_ERROR_GETTER_MIDDLE = 6;
-
-    public static final int RR_TEST_SCENARIO_SUCCESSFUL_INITIAL_RESPONSE = 7;
 
     public static final int RR_TEST_SCENARIO_INFO_TEST = 8;
 
@@ -79,8 +78,6 @@ public class RetryReaderMockFlowable extends Flowable<ByteBuffer> {
             case RR_TEST_SCENARIO_SUCCESSFUL_MULTI_CHUNK:
                 // Fall through
             case RR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES:
-                // Fall through
-            case RR_TEST_SCENARIO_SUCCESSFUL_INITIAL_RESPONSE:
                 this.scenarioData = APISpec.getRandomData(1024);
         }
     }
@@ -106,8 +103,8 @@ public class RetryReaderMockFlowable extends Flowable<ByteBuffer> {
             case RR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES:
                 if (this.tryNumber <= 3) {
                     // tryNumber is 1 indexed, so we have to sub 1.
-                    if (this.info.offset != (this.tryNumber-1)*256 ||
-                            this.info.count != this.scenarioData.remaining() - (this.tryNumber-1) * 256) {
+                    if (this.info.offset() != (this.tryNumber-1)*256 ||
+                            this.info.count() != this.scenarioData.remaining() - (this.tryNumber-1) * 256) {
                         s.onError(new IllegalArgumentException("Info values are incorrect."));
                         return;
                     }
@@ -115,11 +112,11 @@ public class RetryReaderMockFlowable extends Flowable<ByteBuffer> {
                     toSend.position((this.tryNumber-1)*256);
                     toSend.limit(this.tryNumber*256);
                     s.onNext(toSend);
-                    s.onError(new ChannelException());
+                    s.onError(new IOException());
                     break;
                 }
-                if (this.info.offset != (this.tryNumber-1)*256 ||
-                        this.info.count != this.scenarioData.remaining() - (this.tryNumber-1) * 256) {
+                if (this.info.offset() != (this.tryNumber-1)*256 ||
+                        this.info.count() != this.scenarioData.remaining() - (this.tryNumber-1) * 256) {
                     s.onError(new IllegalArgumentException("Info values are incorrect."));
                     return;
                 }
@@ -131,7 +128,7 @@ public class RetryReaderMockFlowable extends Flowable<ByteBuffer> {
                 break;
 
             case RR_TEST_SCENARIO_MAX_RETRIES_EXCEEDED:
-                s.onError(new SocketTimeoutException());
+                s.onError(new IOException());
                 break;
 
             case RR_TEST_SCENARIO_NON_RETRYABLE_ERROR:
@@ -139,27 +136,28 @@ public class RetryReaderMockFlowable extends Flowable<ByteBuffer> {
                 break;
 
             case RR_TEST_SCENARIO_ERROR_GETTER_MIDDLE:
-                /*
-                We return a retryable error here so we have to invoke the getter, which will throw an error in this
-                case.
-                 */
-                s.onError(new ChannelException());
-                break;
-
-            case RR_TEST_SCENARIO_SUCCESSFUL_INITIAL_RESPONSE:
-                s.onNext(this.scenarioData.duplicate());
-                s.onComplete();
+                switch (this.tryNumber) {
+                    case 1:
+                        /*
+                         We return a retryable error here so we have to invoke the getter, which will throw an error in
+                         this case.
+                         */
+                        s.onError(new IOException());
+                        break;
+                    default:
+                        s.onError(new IllegalArgumentException("Retried after getter error."));
+                }
                 break;
 
             case RR_TEST_SCENARIO_INFO_TEST:
                 switch (this.tryNumber) {
                     case 1:
                         // Test the value of info when getting the initial response.
-                        s.onError(new TimeoutException());
+                        s.onError(new IOException());
                         break;
                     case 2:
                         // Test the value of info when getting an intermediate response.
-                        s.onError(new SocketException());
+                        s.onError(new IOException());
                         break;
                     case 3:
                         // All calls to getter checked. Exit. This test does not check for data.
@@ -173,23 +171,23 @@ public class RetryReaderMockFlowable extends Flowable<ByteBuffer> {
         }
     }
 
-    public Single<? extends RestResponse<?, Flowable<ByteBuffer>>> getter(RetryReader.HTTPGetterInfo info) {
+    public Single<DownloadResponse> getter(RetryReader.HTTPGetterInfo info) {
         this.tryNumber++;
         this.info = info;
-        RestResponse<BlobDownloadHeaders, Flowable<ByteBuffer>> response =
-                new RestResponse<>(null,200, new BlobDownloadHeaders(), new HashMap<>(), this);
+        BlobDownloadResponse rawResponse =
+                new BlobDownloadResponse(null, 200, new BlobDownloadHeaders(), new HashMap<>(), this);
+        DownloadResponse response = new DownloadResponse(rawResponse, info, this::getter);
 
         switch(this.scenario) {
-            case RR_TEST_SCENARIO_ERROR_GETTER_INITIAL:
-                throw new Error("Getter error", new ClosedChannelException());
             case RR_TEST_SCENARIO_ERROR_GETTER_MIDDLE:
                 switch (this.tryNumber) {
                     case 1:
                         return Single.just(response);
                     case 2:
-                        // This validates that we don't retry in the getter even if it's an error from the service.
-                        throw new Error("GetterError",
-                                new StorageErrorException("Message", new HttpResponse() {
+                        /*
+                         This validates that we don't retry in the getter even if it's an error from the service.
+                         */
+                        throw new StorageErrorException("Message", new HttpResponse() {
                             @Override
                             public int statusCode() {
                                 return 0;
@@ -219,13 +217,13 @@ public class RetryReaderMockFlowable extends Flowable<ByteBuffer> {
                             public Single<String> bodyAsString() {
                                 return null;
                             }
-                        }));
+                        });
                     default:
                         throw new IllegalArgumentException("Retried after error in getter");
                 }
             case RR_TEST_SCENARIO_INFO_TEST:
                 // We also test that the info is updated in RR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES.
-                if (info.count != 10 || info.offset != 20 || !info.eTag.equals(new ETag("etag"))) {
+                if (info.count() != 10 || info.offset() != 20 || !info.eTag().equals(new ETag("etag"))) {
                     throw new IllegalArgumentException("Info values incorrect");
                 }
                 return Single.just(response);

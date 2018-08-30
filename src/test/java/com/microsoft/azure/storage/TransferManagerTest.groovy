@@ -39,7 +39,7 @@ class TransferManagerTest extends APISpec {
         then:
         responseType.isInstance(response.response()) // Ensure we did the correct type of operation.
         validateBasicHeaders(response)
-        compareDataToFile(bu.download(null, null, false).blockingGet().body(),
+        compareDataToFile(bu.download(null, null, false).blockingGet().body(null),
                 file)
 
         cleanup:
