@@ -69,6 +69,9 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
     private int prefetchCount;
     private Exception lastKnownLinkError;
 
+    // TestHooks for code injection
+    private static volatile Consumer<MessageReceiver> onOpenRetry = null;
+
     private MessageReceiver(final MessagingFactory factory,
                             final String name,
                             final String recvPath,
@@ -279,7 +282,6 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
 
         if (exception == null) {
             if (this.getIsClosingOrClosed()) {
-
                 this.receiveLink.close();
                 return;
             }
@@ -304,17 +306,50 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                         this.receivePath, this.receiveLink.getName(), this.receiveLink.getCredit(), this.prefetchCount));
             }
         } else {
-            if (this.linkOpen != null && !this.linkOpen.getWork().isDone()) {
-                this.setClosed();
-                ExceptionUtil.completeExceptionally(this.linkOpen.getWork(), exception, this);
-                if (this.openTimer != null)
-                    this.openTimer.cancel(false);
-            }
-
             synchronized (this.errorConditionLock) {
                 this.lastKnownLinkError = exception;
             }
+
+            if (this.linkOpen != null && !this.linkOpen.getWork().isDone()) {
+                final Duration nextRetryInterval = this.underlyingFactory.getRetryPolicy().getNextRetryInterval(
+                        this.getClientId(), exception, this.linkOpen.getTimeoutTracker().remaining());
+                if (nextRetryInterval != null) {
+                    if (onOpenRetry != null) {
+                        onOpenRetry.accept(this);
+                    }
+
+                    try {
+                        this.underlyingFactory.scheduleOnReactorThread((int) nextRetryInterval.toMillis(), new DispatchHandler() {
+                            @Override
+                            public void onEvent() {
+                                if (!MessageReceiver.this.getIsClosingOrClosed()
+                                        && (receiveLink == null || receiveLink.getLocalState() == EndpointState.CLOSED || receiveLink.getRemoteState() == EndpointState.CLOSED)) {
+                                    createReceiveLink();
+                                    underlyingFactory.getRetryPolicy().incrementRetryCount(getClientId());
+                                }
+                            }
+                        });
+                    } catch (IOException | RejectedExecutionException schedulerException) {
+                        if (TRACE_LOGGER.isWarnEnabled()) {
+                            TRACE_LOGGER.warn(
+                                    String.format(Locale.US, "receiverPath[%s], scheduling createLink encountered error: %s",
+                                            this.receivePath, schedulerException.getLocalizedMessage()));
+                        }
+
+                        this.cancelOpen(schedulerException);
+                    }
+                } else if (exception instanceof EventHubException && !((EventHubException) exception).getIsTransient()) {
+                    this.cancelOpen(exception);
+                }
+            }
         }
+    }
+
+    private void cancelOpen(final Exception completionException) {
+        this.setClosed();
+        ExceptionUtil.completeExceptionally(this.linkOpen.getWork(), completionException, this);
+        if (this.openTimer != null)
+            this.openTimer.cancel(false);
     }
 
     @Override
@@ -554,15 +589,17 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                             }
 
                             final Exception operationTimedout = new TimeoutException(
-                                    String.format(Locale.US, "%s operation on ReceiveLink(%s) to path(%s) timed out at %s.", "Open", link.getName(), MessageReceiver.this.receivePath, ZonedDateTime.now()),
+                                    String.format(Locale.US, "Open operation on entity(%s) timed out at %s.",
+                                            MessageReceiver.this.receivePath, ZonedDateTime.now()),
                                     lastReportedLinkError);
                             if (TRACE_LOGGER.isWarnEnabled()) {
                                 TRACE_LOGGER.warn(
-                                        String.format(Locale.US, "receiverPath[%s], linkName[%s], %s call timedout", MessageReceiver.this.receivePath, link.getName(), "Open"),
+                                        String.format(Locale.US, "receiverPath[%s], Open call timedout", MessageReceiver.this.receivePath),
                                         operationTimedout);
                             }
 
                             ExceptionUtil.completeExceptionally(linkOpen.getWork(), operationTimedout, MessageReceiver.this);
+                            setClosed();
                         }
                     }
                 }

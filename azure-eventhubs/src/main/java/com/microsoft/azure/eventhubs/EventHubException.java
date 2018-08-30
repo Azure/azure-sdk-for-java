@@ -14,7 +14,7 @@ import java.util.Locale;
 public class EventHubException extends Exception {
     private static final long serialVersionUID = -3654294093967132325L;
 
-    private boolean isTransient;
+    private final boolean isTransient;
     private ErrorContext errorContext;
 
     EventHubException(final boolean isTransient) {

@@ -66,6 +66,9 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
     private Exception lastKnownLinkError;
     private Instant lastKnownErrorReportedAt;
 
+    // TestHooks for code injection
+    private static volatile Consumer<MessageSender> onOpenRetry = null;
+
     private MessageSender(final MessagingFactory factory, final String sendLinkName, final String senderPath) {
         super(sendLinkName, factory, factory.executor);
 
@@ -356,12 +359,46 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
             }
         } else {
             if (!this.linkFirstOpen.isDone()) {
-                this.setClosed();
-                ExceptionUtil.completeExceptionally(this.linkFirstOpen, completionException, this);
-                if (this.openTimer != null)
-                    this.openTimer.cancel(false);
+                final Duration nextRetryInterval = this.retryPolicy.getNextRetryInterval(
+                        this.getClientId(), completionException, this.openLinkTracker.remaining());
+
+                if (nextRetryInterval != null) {
+                    if (onOpenRetry != null) {
+                        onOpenRetry.accept(this);
+                    }
+
+                    try {
+                        this.underlyingFactory.scheduleOnReactorThread((int) nextRetryInterval.toMillis(), new DispatchHandler() {
+                            @Override
+                            public void onEvent() {
+                                if (!MessageSender.this.getIsClosingOrClosed()
+                                        && (sendLink == null || sendLink.getLocalState() == EndpointState.CLOSED || sendLink.getRemoteState() == EndpointState.CLOSED)) {
+                                    recreateSendLink();
+                                }
+                            }
+                        });
+                    } catch (IOException | RejectedExecutionException schedulerException) {
+                        if (TRACE_LOGGER.isWarnEnabled()) {
+                            TRACE_LOGGER.warn(
+                                    String.format(Locale.US, "senderPath[%s], scheduling createLink encountered error: %s",
+                                            this.sendPath, schedulerException.getLocalizedMessage()));
+                        }
+
+                        this.cancelOpen(schedulerException);
+                    }
+                } else if (completionException instanceof EventHubException
+                        && !((EventHubException) completionException).getIsTransient()){
+                    this.cancelOpen(completionException);
+                }
             }
         }
+    }
+
+    private void cancelOpen(final Exception completionException) {
+        this.setClosed();
+        ExceptionUtil.completeExceptionally(this.linkFirstOpen, completionException, this);
+        if (this.openTimer != null)
+            this.openTimer.cancel(false);
     }
 
     @Override
@@ -620,25 +657,25 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
                     public void run() {
                         if (!MessageSender.this.linkFirstOpen.isDone()) {
                             final Exception lastReportedError;
-                            final Instant lastErrorReportedAt;
                             final Sender link;
                             synchronized (MessageSender.this.errorConditionLock) {
                                 lastReportedError = MessageSender.this.lastKnownLinkError;
-                                lastErrorReportedAt = MessageSender.this.lastKnownErrorReportedAt;
                                 link = MessageSender.this.sendLink;
                             }
 
                             final Exception operationTimedout = new TimeoutException(
-                                    String.format(Locale.US, "Open operation on SendLink(%s) on Entity(%s) timed out at %s.", link.getName(), MessageSender.this.getSendPath(), ZonedDateTime.now().toString()),
-                                    lastErrorReportedAt.isAfter(Instant.now().minusSeconds(ClientConstants.SERVER_BUSY_BASE_SLEEP_TIME_IN_SECS)) ? lastReportedError : null);
+                                    String.format(Locale.US, "Open operation on entity(%s) timed out at %s.",
+                                            MessageSender.this.getSendPath(), ZonedDateTime.now().toString()),
+                                    lastReportedError);
 
                             if (TRACE_LOGGER.isWarnEnabled()) {
                                 TRACE_LOGGER.warn(
-                                        String.format(Locale.US, "path[%s], linkName[%s], open call timedout", MessageSender.this.sendPath, MessageSender.this.sendLink.getName()),
+                                        String.format(Locale.US, "path[%s], open call timedout", MessageSender.this.sendPath),
                                         operationTimedout);
                             }
 
                             ExceptionUtil.completeExceptionally(MessageSender.this.linkFirstOpen, operationTimedout, MessageSender.this);
+                            setClosed();
                         }
                     }
                 }
