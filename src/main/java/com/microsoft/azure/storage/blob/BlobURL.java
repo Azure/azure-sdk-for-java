@@ -192,10 +192,8 @@ public class BlobURL extends StorageURL {
      * Reads a range of bytes from a blob. The response also includes the blob's properties and metadata. For more
      * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a>.
      * <p>
-     * Please consider using the {@link RetryReader} in conjunction with this method to achieve more reliable downloads
-     * that are resilient to transient network failures. A convenient way to do this is to simply pass non-null options
-     * to {@link DownloadResponse#body(RetryReaderOptions)}, and a RetryReader will be applied to the body
-     * automatically.
+     * Note that the response body has reliable download functionality built in, meaning that a failed download stream
+     * will be automatically retried. This behavior may be configured with {@link ReliableDownloadOptions}.
      *
      * @param range
      *         {@link BlobRange}
@@ -214,8 +212,9 @@ public class BlobURL extends StorageURL {
         Boolean getMD5 = rangeGetContentMD5 ? rangeGetContentMD5 : null;
         range = range == null ? BlobRange.DEFAULT : range;
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
-        RetryReader.HTTPGetterInfo info = new RetryReader.HTTPGetterInfo()
-                .withOffset(range.offset())
+
+        HTTPGetterInfo info = new HTTPGetterInfo()
+                .withCount(range.offset())
                 .withCount(range.count())
                 .witheTag(accessConditions.httpAccessConditions().getIfMatch());
 
@@ -228,16 +227,18 @@ public class BlobURL extends StorageURL {
                 accessConditions.httpAccessConditions().getIfMatch().toString(),
                 accessConditions.httpAccessConditions().getIfNoneMatch().toString(),
                 null))
+                // Convert the autorest response to a DownloadResponse, which enable reliable download.
                 .map(response -> {
                     // If there wasn't an etag originally specified, lock on the one returned.
                     info.witheTag(new ETag(response.headers().eTag()));
                     return new DownloadResponse(response, info,
+                            // In the event of a stream failure, make a new request to pick up where we left off.
                             newInfo ->
                                     this.download(new BlobRange().withOffset(newInfo.offset())
                                                     .withCount(newInfo.count()),
                                             new BlobAccessConditions(
-                                            new HTTPAccessConditions(null, null, info.eTag(), null),
-                                            null, null, null), false));
+                                                    new HTTPAccessConditions(null, null, info.eTag(), null),
+                                                    null, null, null), false));
                 });
 
     }

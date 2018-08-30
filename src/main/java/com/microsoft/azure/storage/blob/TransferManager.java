@@ -205,7 +205,7 @@ public class TransferManager {
                                 // Extract the body.
                                 .flatMapObservable(response ->
                                         // Write to the file.
-                                        FlowableUtil.writeFile(response.body(o.retryReaderOptionsPerBlock), file,
+                                        FlowableUtil.writeFile(response.body(o.reliableDownloadOptionsPerBlock), file,
                                                 i * o.chunkSize)
                                                 /*
                                                 Satisfy the return type. Observable required for flatmap to accept
@@ -334,7 +334,7 @@ public class TransferManager {
 
         private final IProgressReceiver progressReceiver;
         private final int parallelism;
-        private final RetryReaderOptions retryReaderOptionsPerBlock;
+        private final ReliableDownloadOptions reliableDownloadOptionsPerBlock;
         // Cannot be final because we may have to set this property in order to lock on the etag.
         private BlobAccessConditions accessConditions;
 
@@ -345,7 +345,7 @@ public class TransferManager {
          *         The size of the chunk into which large download operations will be broken into. Note that if the
          *         chunkSize is large, fewer but larger requests will be made as each REST request will download a
          *         single chunk in full. For larger chunk sizes, it may be helpful to configure the
-         *         {@code retryReaderOptions} to allow more retries.
+         *         {@code reliableDownloadOptions} to allow more retries.
          * @param progressReceiver
          *         {@link IProgressReceiver}
          * @param accessConditions
@@ -353,11 +353,11 @@ public class TransferManager {
          * @param parallelism
          *         A {@code int} that indicates the maximum number of chunks to download in parallel. Must be greater
          *         than 0. May be null to accept default behavior.
-         * @param retryReaderOptions
-         *         {@link RetryReaderOptions}
+         * @param reliableDownloadOptions
+         *         {@link ReliableDownloadOptions}
          */
         public DownloadFromBlobOptions(Long chunkSize, IProgressReceiver progressReceiver,
-                BlobAccessConditions accessConditions, Integer parallelism, RetryReaderOptions retryReaderOptions) {
+                BlobAccessConditions accessConditions, Integer parallelism, ReliableDownloadOptions reliableDownloadOptions) {
             if (chunkSize != null) {
                 Utility.assertInBounds("chunkSize", chunkSize, 1, Long.MAX_VALUE);
                 this.chunkSize = chunkSize;
@@ -374,8 +374,8 @@ public class TransferManager {
 
             this.accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
             this.progressReceiver = progressReceiver;
-            this.retryReaderOptionsPerBlock = retryReaderOptions == null ?
-                    new RetryReaderOptions() : retryReaderOptions;
+            this.reliableDownloadOptionsPerBlock = reliableDownloadOptions == null ?
+                    new ReliableDownloadOptions() : reliableDownloadOptions;
         }
     }
 }

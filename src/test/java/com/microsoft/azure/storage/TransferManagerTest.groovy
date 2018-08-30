@@ -544,7 +544,7 @@ class TransferManagerTest extends APISpec {
                 .blockingGet()
         def outChannel = AsynchronousFileChannel.open(getRandomFile(0).toPath(), StandardOpenOption.WRITE,
                 StandardOpenOption.READ)
-        def retryReaderOptions = new RetryReaderOptions()
+        def retryReaderOptions = new ReliableDownloadOptions()
         retryReaderOptions.maxRetryRequests = retries
 
         when:

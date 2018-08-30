@@ -357,8 +357,8 @@ public class RequestRetryTestFactory implements RequestPolicyFactory {
                 @Override
                 protected void subscribeActual(SingleObserver<? super HttpResponse> observer) {
                     try {
-                        if (OffsetDateTime.now().isAfter(calcUpperBound(factory.time, primaryTryNumber, tryingPrimary)) ||
-                                OffsetDateTime.now()
+                        if (OffsetDateTime.now().isAfter(calcUpperBound(factory.time, primaryTryNumber, tryingPrimary))
+                                || OffsetDateTime.now()
                                         .isBefore(calcLowerBound(factory.time, primaryTryNumber, tryingPrimary))) {
                             throw new IllegalArgumentException("Delay was not within jitter bounds");
                         }

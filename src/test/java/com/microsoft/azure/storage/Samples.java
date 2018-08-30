@@ -1446,7 +1446,7 @@ public class Samples {
         ContainerURL containerURL = s.createContainerURL("myjavacontainerretrystream");
         BlockBlobURL blobURL = containerURL.createBlockBlobURL("Data.txt");
 
-        RetryReaderOptions options = new RetryReaderOptions();
+        ReliableDownloadOptions options = new ReliableDownloadOptions();
         options.withMaxRetryRequests(5);
 
         File file = File.createTempFile("tempfile", "txt");
@@ -1455,7 +1455,7 @@ public class Samples {
         file.deleteOnExit();
 
         /*
-        Passing RetryReaderOptions to a call to body() will ensure the download stream is intelligently retried in case
+        Passing ReliableDownloadOptions to a call to body() will ensure the download stream is intelligently retried in case
         of failures. The returned body is still a Flowable<ByteBuffer> and may be used as a normal download stream.
          */
         containerURL.create(null, null)

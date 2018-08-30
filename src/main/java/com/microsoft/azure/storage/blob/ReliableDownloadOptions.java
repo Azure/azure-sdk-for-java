@@ -16,17 +16,16 @@
 package com.microsoft.azure.storage.blob;
 
 /**
- * {@code RetryReaderOptions} contains properties which help a {@link RetryReader} determine when to retry.
+ * {@code ReliableDownloadOptions} contains properties which help the {@code Flowable} returned from
+ * {@link DownloadResponse#body(ReliableDownloadOptions)} determine when to retry.
  */
-public final class RetryReaderOptions {
+public final class ReliableDownloadOptions {
 
     private int maxRetryRequests = 0;
 
     /**
      * Specifies the maximum number of additional HTTP Get requests that will be made while reading the data from a
-     * {@link RetryReader}. Note that if no initial response is provided, the {@code RetryReader} will call the getter
-     * to obtain an initial response to read from; this initial response does not count as a retry. A value of {@code 0}
-     *  means that no additional HTTP requests will be made once the initial request has been made or provided.
+     * response body.
      */
     public int maxRetryRequests() {
         return maxRetryRequests;
@@ -34,11 +33,10 @@ public final class RetryReaderOptions {
 
     /**
      * Specifies the maximum number of additional HTTP Get requests that will be made while reading the data from a
-     * {@link RetryReader}. Note that if no initial response is provided, the {@code RetryReader} will call the getter
-     * to obtain an initial response to read from; this initial response does not count as a retry. A value of {@code 0}
-     *  means that no additional HTTP requests will be made once the initial request has been made or provided.
+     * response body.
      */
-    public RetryReaderOptions withMaxRetryRequests(int maxRetryRequests) {
+    public ReliableDownloadOptions withMaxRetryRequests(int maxRetryRequests) {
+        Utility.assertInBounds("options.maxRetryRequests", maxRetryRequests, 0, Integer.MAX_VALUE);
         this.maxRetryRequests = maxRetryRequests;
         return this;
     }

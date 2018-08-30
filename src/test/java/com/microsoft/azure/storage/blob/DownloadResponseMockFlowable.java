@@ -13,31 +13,25 @@
  * limitations under the License.
  */
 
-package com.microsoft.azure.storage;
+package com.microsoft.azure.storage.blob;
 
+import com.microsoft.azure.storage.APISpec;
 import com.microsoft.azure.storage.blob.DownloadResponse;
 import com.microsoft.azure.storage.blob.ETag;
-import com.microsoft.azure.storage.blob.RetryReader;
 import com.microsoft.azure.storage.blob.models.BlobDownloadHeaders;
 import com.microsoft.azure.storage.blob.models.BlobDownloadResponse;
 import com.microsoft.azure.storage.blob.models.StorageErrorException;
-import com.microsoft.rest.v2.RestResponse;
 import com.microsoft.rest.v2.http.HttpHeaders;
 import com.microsoft.rest.v2.http.HttpResponse;
-import io.netty.channel.ChannelException;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 import org.reactivestreams.Subscriber;
 
 import java.io.IOException;
-import java.net.SocketException;
-import java.net.SocketTimeoutException;
 import java.nio.ByteBuffer;
-import java.nio.channels.ClosedChannelException;
 import java.util.HashMap;
-import java.util.concurrent.TimeoutException;
 
-public class RetryReaderMockFlowable extends Flowable<ByteBuffer> {
+public class DownloadResponseMockFlowable extends Flowable<ByteBuffer> {
 
     public static final int RR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK = 0;
 
@@ -57,7 +51,7 @@ public class RetryReaderMockFlowable extends Flowable<ByteBuffer> {
 
     private int tryNumber;
 
-    private RetryReader.HTTPGetterInfo info;
+    private HTTPGetterInfo info;
 
     private ByteBuffer scenarioData;
 
@@ -69,7 +63,7 @@ public class RetryReaderMockFlowable extends Flowable<ByteBuffer> {
         return this.tryNumber;
     }
 
-    public RetryReaderMockFlowable(int scenario) {
+    public DownloadResponseMockFlowable(int scenario) {
         this.scenario = scenario;
         switch(this.scenario) {
             case RR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK:
@@ -171,7 +165,7 @@ public class RetryReaderMockFlowable extends Flowable<ByteBuffer> {
         }
     }
 
-    public Single<DownloadResponse> getter(RetryReader.HTTPGetterInfo info) {
+    public Single<DownloadResponse> getter(HTTPGetterInfo info) {
         this.tryNumber++;
         this.info = info;
         BlobDownloadResponse rawResponse =
@@ -185,12 +179,13 @@ public class RetryReaderMockFlowable extends Flowable<ByteBuffer> {
                         return Single.just(response);
                     case 2:
                         /*
-                         This validates that we don't retry in the getter even if it's an error from the service.
+                         This validates that we don't retry in the getter even if it's a retryable error from the
+                         service.
                          */
                         throw new StorageErrorException("Message", new HttpResponse() {
                             @Override
                             public int statusCode() {
-                                return 0;
+                                return 500;
                             }
 
                             @Override
