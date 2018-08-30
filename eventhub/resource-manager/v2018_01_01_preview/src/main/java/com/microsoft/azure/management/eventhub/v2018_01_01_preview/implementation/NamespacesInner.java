@@ -1298,13 +1298,13 @@ public class NamespacesInner implements InnerSupportsGet<EHNamespaceInner>, Inne
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PagedList&lt;IpFilterRuleInner&gt; object if successful.
+     * @return the PagedList&lt;VirtualNetworkRuleInner&gt; object if successful.
      */
-    public PagedList<IpFilterRuleInner> listVirtualNetworkRules(final String resourceGroupName, final String namespaceName) {
-        ServiceResponse<Page<IpFilterRuleInner>> response = listVirtualNetworkRulesSinglePageAsync(resourceGroupName, namespaceName).toBlocking().single();
-        return new PagedList<IpFilterRuleInner>(response.body()) {
+    public PagedList<VirtualNetworkRuleInner> listVirtualNetworkRules(final String resourceGroupName, final String namespaceName) {
+        ServiceResponse<Page<VirtualNetworkRuleInner>> response = listVirtualNetworkRulesSinglePageAsync(resourceGroupName, namespaceName).toBlocking().single();
+        return new PagedList<VirtualNetworkRuleInner>(response.body()) {
             @Override
-            public Page<IpFilterRuleInner> nextPage(String nextPageLink) {
+            public Page<VirtualNetworkRuleInner> nextPage(String nextPageLink) {
                 return listVirtualNetworkRulesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
@@ -1319,12 +1319,12 @@ public class NamespacesInner implements InnerSupportsGet<EHNamespaceInner>, Inne
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<IpFilterRuleInner>> listVirtualNetworkRulesAsync(final String resourceGroupName, final String namespaceName, final ListOperationCallback<IpFilterRuleInner> serviceCallback) {
+    public ServiceFuture<List<VirtualNetworkRuleInner>> listVirtualNetworkRulesAsync(final String resourceGroupName, final String namespaceName, final ListOperationCallback<VirtualNetworkRuleInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
             listVirtualNetworkRulesSinglePageAsync(resourceGroupName, namespaceName),
-            new Func1<String, Observable<ServiceResponse<Page<IpFilterRuleInner>>>>() {
+            new Func1<String, Observable<ServiceResponse<Page<VirtualNetworkRuleInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<IpFilterRuleInner>>> call(String nextPageLink) {
+                public Observable<ServiceResponse<Page<VirtualNetworkRuleInner>>> call(String nextPageLink) {
                     return listVirtualNetworkRulesNextSinglePageAsync(nextPageLink);
                 }
             },
@@ -1337,13 +1337,13 @@ public class NamespacesInner implements InnerSupportsGet<EHNamespaceInner>, Inne
      * @param resourceGroupName Name of the resource group within the Azure subscription.
      * @param namespaceName The Namespace name
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;IpFilterRuleInner&gt; object
+     * @return the observable to the PagedList&lt;VirtualNetworkRuleInner&gt; object
      */
-    public Observable<Page<IpFilterRuleInner>> listVirtualNetworkRulesAsync(final String resourceGroupName, final String namespaceName) {
+    public Observable<Page<VirtualNetworkRuleInner>> listVirtualNetworkRulesAsync(final String resourceGroupName, final String namespaceName) {
         return listVirtualNetworkRulesWithServiceResponseAsync(resourceGroupName, namespaceName)
-            .map(new Func1<ServiceResponse<Page<IpFilterRuleInner>>, Page<IpFilterRuleInner>>() {
+            .map(new Func1<ServiceResponse<Page<VirtualNetworkRuleInner>>, Page<VirtualNetworkRuleInner>>() {
                 @Override
-                public Page<IpFilterRuleInner> call(ServiceResponse<Page<IpFilterRuleInner>> response) {
+                public Page<VirtualNetworkRuleInner> call(ServiceResponse<Page<VirtualNetworkRuleInner>> response) {
                     return response.body();
                 }
             });
@@ -1355,13 +1355,13 @@ public class NamespacesInner implements InnerSupportsGet<EHNamespaceInner>, Inne
      * @param resourceGroupName Name of the resource group within the Azure subscription.
      * @param namespaceName The Namespace name
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;IpFilterRuleInner&gt; object
+     * @return the observable to the PagedList&lt;VirtualNetworkRuleInner&gt; object
      */
-    public Observable<ServiceResponse<Page<IpFilterRuleInner>>> listVirtualNetworkRulesWithServiceResponseAsync(final String resourceGroupName, final String namespaceName) {
+    public Observable<ServiceResponse<Page<VirtualNetworkRuleInner>>> listVirtualNetworkRulesWithServiceResponseAsync(final String resourceGroupName, final String namespaceName) {
         return listVirtualNetworkRulesSinglePageAsync(resourceGroupName, namespaceName)
-            .concatMap(new Func1<ServiceResponse<Page<IpFilterRuleInner>>, Observable<ServiceResponse<Page<IpFilterRuleInner>>>>() {
+            .concatMap(new Func1<ServiceResponse<Page<VirtualNetworkRuleInner>>, Observable<ServiceResponse<Page<VirtualNetworkRuleInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<IpFilterRuleInner>>> call(ServiceResponse<Page<IpFilterRuleInner>> page) {
+                public Observable<ServiceResponse<Page<VirtualNetworkRuleInner>>> call(ServiceResponse<Page<VirtualNetworkRuleInner>> page) {
                     String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
@@ -1374,12 +1374,12 @@ public class NamespacesInner implements InnerSupportsGet<EHNamespaceInner>, Inne
     /**
      * Gets a list of VirtualNetwork rules for a Namespace.
      *
-    ServiceResponse<PageImpl<IpFilterRuleInner>> * @param resourceGroupName Name of the resource group within the Azure subscription.
-    ServiceResponse<PageImpl<IpFilterRuleInner>> * @param namespaceName The Namespace name
+    ServiceResponse<PageImpl<VirtualNetworkRuleInner>> * @param resourceGroupName Name of the resource group within the Azure subscription.
+    ServiceResponse<PageImpl<VirtualNetworkRuleInner>> * @param namespaceName The Namespace name
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;IpFilterRuleInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;VirtualNetworkRuleInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<IpFilterRuleInner>>> listVirtualNetworkRulesSinglePageAsync(final String resourceGroupName, final String namespaceName) {
+    public Observable<ServiceResponse<Page<VirtualNetworkRuleInner>>> listVirtualNetworkRulesSinglePageAsync(final String resourceGroupName, final String namespaceName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1393,12 +1393,12 @@ public class NamespacesInner implements InnerSupportsGet<EHNamespaceInner>, Inne
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.listVirtualNetworkRules(resourceGroupName, namespaceName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<IpFilterRuleInner>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<VirtualNetworkRuleInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<IpFilterRuleInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<VirtualNetworkRuleInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<IpFilterRuleInner>> result = listVirtualNetworkRulesDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<IpFilterRuleInner>>(result.body(), result.response()));
+                        ServiceResponse<PageImpl<VirtualNetworkRuleInner>> result = listVirtualNetworkRulesDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<VirtualNetworkRuleInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1406,9 +1406,9 @@ public class NamespacesInner implements InnerSupportsGet<EHNamespaceInner>, Inne
             });
     }
 
-    private ServiceResponse<PageImpl<IpFilterRuleInner>> listVirtualNetworkRulesDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<IpFilterRuleInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<IpFilterRuleInner>>() { }.getType())
+    private ServiceResponse<PageImpl<VirtualNetworkRuleInner>> listVirtualNetworkRulesDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<VirtualNetworkRuleInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<VirtualNetworkRuleInner>>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }
@@ -2127,13 +2127,13 @@ public class NamespacesInner implements InnerSupportsGet<EHNamespaceInner>, Inne
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PagedList&lt;IpFilterRuleInner&gt; object if successful.
+     * @return the PagedList&lt;VirtualNetworkRuleInner&gt; object if successful.
      */
-    public PagedList<IpFilterRuleInner> listVirtualNetworkRulesNext(final String nextPageLink) {
-        ServiceResponse<Page<IpFilterRuleInner>> response = listVirtualNetworkRulesNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<IpFilterRuleInner>(response.body()) {
+    public PagedList<VirtualNetworkRuleInner> listVirtualNetworkRulesNext(final String nextPageLink) {
+        ServiceResponse<Page<VirtualNetworkRuleInner>> response = listVirtualNetworkRulesNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<VirtualNetworkRuleInner>(response.body()) {
             @Override
-            public Page<IpFilterRuleInner> nextPage(String nextPageLink) {
+            public Page<VirtualNetworkRuleInner> nextPage(String nextPageLink) {
                 return listVirtualNetworkRulesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
@@ -2148,12 +2148,12 @@ public class NamespacesInner implements InnerSupportsGet<EHNamespaceInner>, Inne
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<IpFilterRuleInner>> listVirtualNetworkRulesNextAsync(final String nextPageLink, final ServiceFuture<List<IpFilterRuleInner>> serviceFuture, final ListOperationCallback<IpFilterRuleInner> serviceCallback) {
+    public ServiceFuture<List<VirtualNetworkRuleInner>> listVirtualNetworkRulesNextAsync(final String nextPageLink, final ServiceFuture<List<VirtualNetworkRuleInner>> serviceFuture, final ListOperationCallback<VirtualNetworkRuleInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
             listVirtualNetworkRulesNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponse<Page<IpFilterRuleInner>>>>() {
+            new Func1<String, Observable<ServiceResponse<Page<VirtualNetworkRuleInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<IpFilterRuleInner>>> call(String nextPageLink) {
+                public Observable<ServiceResponse<Page<VirtualNetworkRuleInner>>> call(String nextPageLink) {
                     return listVirtualNetworkRulesNextSinglePageAsync(nextPageLink);
                 }
             },
@@ -2165,13 +2165,13 @@ public class NamespacesInner implements InnerSupportsGet<EHNamespaceInner>, Inne
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;IpFilterRuleInner&gt; object
+     * @return the observable to the PagedList&lt;VirtualNetworkRuleInner&gt; object
      */
-    public Observable<Page<IpFilterRuleInner>> listVirtualNetworkRulesNextAsync(final String nextPageLink) {
+    public Observable<Page<VirtualNetworkRuleInner>> listVirtualNetworkRulesNextAsync(final String nextPageLink) {
         return listVirtualNetworkRulesNextWithServiceResponseAsync(nextPageLink)
-            .map(new Func1<ServiceResponse<Page<IpFilterRuleInner>>, Page<IpFilterRuleInner>>() {
+            .map(new Func1<ServiceResponse<Page<VirtualNetworkRuleInner>>, Page<VirtualNetworkRuleInner>>() {
                 @Override
-                public Page<IpFilterRuleInner> call(ServiceResponse<Page<IpFilterRuleInner>> response) {
+                public Page<VirtualNetworkRuleInner> call(ServiceResponse<Page<VirtualNetworkRuleInner>> response) {
                     return response.body();
                 }
             });
@@ -2182,13 +2182,13 @@ public class NamespacesInner implements InnerSupportsGet<EHNamespaceInner>, Inne
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;IpFilterRuleInner&gt; object
+     * @return the observable to the PagedList&lt;VirtualNetworkRuleInner&gt; object
      */
-    public Observable<ServiceResponse<Page<IpFilterRuleInner>>> listVirtualNetworkRulesNextWithServiceResponseAsync(final String nextPageLink) {
+    public Observable<ServiceResponse<Page<VirtualNetworkRuleInner>>> listVirtualNetworkRulesNextWithServiceResponseAsync(final String nextPageLink) {
         return listVirtualNetworkRulesNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponse<Page<IpFilterRuleInner>>, Observable<ServiceResponse<Page<IpFilterRuleInner>>>>() {
+            .concatMap(new Func1<ServiceResponse<Page<VirtualNetworkRuleInner>>, Observable<ServiceResponse<Page<VirtualNetworkRuleInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<IpFilterRuleInner>>> call(ServiceResponse<Page<IpFilterRuleInner>> page) {
+                public Observable<ServiceResponse<Page<VirtualNetworkRuleInner>>> call(ServiceResponse<Page<VirtualNetworkRuleInner>> page) {
                     String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
@@ -2201,22 +2201,22 @@ public class NamespacesInner implements InnerSupportsGet<EHNamespaceInner>, Inne
     /**
      * Gets a list of VirtualNetwork rules for a Namespace.
      *
-    ServiceResponse<PageImpl<IpFilterRuleInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<VirtualNetworkRuleInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;IpFilterRuleInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;VirtualNetworkRuleInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<IpFilterRuleInner>>> listVirtualNetworkRulesNextSinglePageAsync(final String nextPageLink) {
+    public Observable<ServiceResponse<Page<VirtualNetworkRuleInner>>> listVirtualNetworkRulesNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         String nextUrl = String.format("%s", nextPageLink);
         return service.listVirtualNetworkRulesNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<IpFilterRuleInner>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<VirtualNetworkRuleInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<IpFilterRuleInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<VirtualNetworkRuleInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<IpFilterRuleInner>> result = listVirtualNetworkRulesNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<IpFilterRuleInner>>(result.body(), result.response()));
+                        ServiceResponse<PageImpl<VirtualNetworkRuleInner>> result = listVirtualNetworkRulesNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<VirtualNetworkRuleInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -2224,9 +2224,9 @@ public class NamespacesInner implements InnerSupportsGet<EHNamespaceInner>, Inne
             });
     }
 
-    private ServiceResponse<PageImpl<IpFilterRuleInner>> listVirtualNetworkRulesNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<IpFilterRuleInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<IpFilterRuleInner>>() { }.getType())
+    private ServiceResponse<PageImpl<VirtualNetworkRuleInner>> listVirtualNetworkRulesNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<VirtualNetworkRuleInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<VirtualNetworkRuleInner>>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }
