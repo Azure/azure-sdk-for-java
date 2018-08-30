@@ -159,6 +159,19 @@ public class GraphRbacManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The DeletedApplicationsInner object to access its operations.
+     */
+    private DeletedApplicationsInner deletedApplications;
+
+    /**
+     * Gets the DeletedApplicationsInner object to access its operations.
+     * @return the DeletedApplicationsInner object.
+     */
+    public DeletedApplicationsInner deletedApplications() {
+        return this.deletedApplications;
+    }
+
+    /**
      * The GroupsInner object to access its operations.
      */
     private GroupsInner groups;
@@ -260,6 +273,7 @@ public class GraphRbacManagementClientImpl extends AzureServiceClient {
         this.generateClientRequestId = true;
         this.objects = new ObjectsInner(restClient().retrofit(), this);
         this.applications = new ApplicationsInner(restClient().retrofit(), this);
+        this.deletedApplications = new DeletedApplicationsInner(restClient().retrofit(), this);
         this.groups = new GroupsInner(restClient().retrofit(), this);
         this.servicePrincipals = new ServicePrincipalsInner(restClient().retrofit(), this);
         this.users = new UsersInner(restClient().retrofit(), this);
