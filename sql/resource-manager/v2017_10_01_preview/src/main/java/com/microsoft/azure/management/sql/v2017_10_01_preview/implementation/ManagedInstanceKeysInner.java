@@ -61,9 +61,9 @@ public class ManagedInstanceKeysInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface ManagedInstanceKeysService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2017_10_01_preview.ManagedInstanceKeys listByServer" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2017_10_01_preview.ManagedInstanceKeys listByInstance" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/keys")
-        Observable<Response<ResponseBody>> listByServer(@Path("resourceGroupName") String resourceGroupName, @Path("managedInstanceName") String managedInstanceName, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listByInstance(@Path("resourceGroupName") String resourceGroupName, @Path("managedInstanceName") String managedInstanceName, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2017_10_01_preview.ManagedInstanceKeys get" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/keys/{keyName}")
@@ -85,9 +85,9 @@ public class ManagedInstanceKeysInner {
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/keys/{keyName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("managedInstanceName") String managedInstanceName, @Path("keyName") String keyName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2017_10_01_preview.ManagedInstanceKeys listByServerNext" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2017_10_01_preview.ManagedInstanceKeys listByInstanceNext" })
         @GET
-        Observable<Response<ResponseBody>> listByServerNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listByInstanceNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -101,12 +101,12 @@ public class ManagedInstanceKeysInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ManagedInstanceKeyInner&gt; object if successful.
      */
-    public PagedList<ManagedInstanceKeyInner> listByServer(final String resourceGroupName, final String managedInstanceName) {
-        ServiceResponse<Page<ManagedInstanceKeyInner>> response = listByServerSinglePageAsync(resourceGroupName, managedInstanceName).toBlocking().single();
+    public PagedList<ManagedInstanceKeyInner> listByInstance(final String resourceGroupName, final String managedInstanceName) {
+        ServiceResponse<Page<ManagedInstanceKeyInner>> response = listByInstanceSinglePageAsync(resourceGroupName, managedInstanceName).toBlocking().single();
         return new PagedList<ManagedInstanceKeyInner>(response.body()) {
             @Override
             public Page<ManagedInstanceKeyInner> nextPage(String nextPageLink) {
-                return listByServerNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+                return listByInstanceNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -120,13 +120,13 @@ public class ManagedInstanceKeysInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<ManagedInstanceKeyInner>> listByServerAsync(final String resourceGroupName, final String managedInstanceName, final ListOperationCallback<ManagedInstanceKeyInner> serviceCallback) {
+    public ServiceFuture<List<ManagedInstanceKeyInner>> listByInstanceAsync(final String resourceGroupName, final String managedInstanceName, final ListOperationCallback<ManagedInstanceKeyInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listByServerSinglePageAsync(resourceGroupName, managedInstanceName),
+            listByInstanceSinglePageAsync(resourceGroupName, managedInstanceName),
             new Func1<String, Observable<ServiceResponse<Page<ManagedInstanceKeyInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ManagedInstanceKeyInner>>> call(String nextPageLink) {
-                    return listByServerNextSinglePageAsync(nextPageLink);
+                    return listByInstanceNextSinglePageAsync(nextPageLink);
                 }
             },
             serviceCallback);
@@ -140,8 +140,8 @@ public class ManagedInstanceKeysInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ManagedInstanceKeyInner&gt; object
      */
-    public Observable<Page<ManagedInstanceKeyInner>> listByServerAsync(final String resourceGroupName, final String managedInstanceName) {
-        return listByServerWithServiceResponseAsync(resourceGroupName, managedInstanceName)
+    public Observable<Page<ManagedInstanceKeyInner>> listByInstanceAsync(final String resourceGroupName, final String managedInstanceName) {
+        return listByInstanceWithServiceResponseAsync(resourceGroupName, managedInstanceName)
             .map(new Func1<ServiceResponse<Page<ManagedInstanceKeyInner>>, Page<ManagedInstanceKeyInner>>() {
                 @Override
                 public Page<ManagedInstanceKeyInner> call(ServiceResponse<Page<ManagedInstanceKeyInner>> response) {
@@ -158,8 +158,8 @@ public class ManagedInstanceKeysInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ManagedInstanceKeyInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ManagedInstanceKeyInner>>> listByServerWithServiceResponseAsync(final String resourceGroupName, final String managedInstanceName) {
-        return listByServerSinglePageAsync(resourceGroupName, managedInstanceName)
+    public Observable<ServiceResponse<Page<ManagedInstanceKeyInner>>> listByInstanceWithServiceResponseAsync(final String resourceGroupName, final String managedInstanceName) {
+        return listByInstanceSinglePageAsync(resourceGroupName, managedInstanceName)
             .concatMap(new Func1<ServiceResponse<Page<ManagedInstanceKeyInner>>, Observable<ServiceResponse<Page<ManagedInstanceKeyInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ManagedInstanceKeyInner>>> call(ServiceResponse<Page<ManagedInstanceKeyInner>> page) {
@@ -167,7 +167,7 @@ public class ManagedInstanceKeysInner {
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listByServerNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listByInstanceNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -180,7 +180,7 @@ public class ManagedInstanceKeysInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ManagedInstanceKeyInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<ManagedInstanceKeyInner>>> listByServerSinglePageAsync(final String resourceGroupName, final String managedInstanceName) {
+    public Observable<ServiceResponse<Page<ManagedInstanceKeyInner>>> listByInstanceSinglePageAsync(final String resourceGroupName, final String managedInstanceName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -194,12 +194,12 @@ public class ManagedInstanceKeysInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String filter = null;
-        return service.listByServer(resourceGroupName, managedInstanceName, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.listByInstance(resourceGroupName, managedInstanceName, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ManagedInstanceKeyInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ManagedInstanceKeyInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<ManagedInstanceKeyInner>> result = listByServerDelegate(response);
+                        ServiceResponse<PageImpl<ManagedInstanceKeyInner>> result = listByInstanceDelegate(response);
                         return Observable.just(new ServiceResponse<Page<ManagedInstanceKeyInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -219,12 +219,12 @@ public class ManagedInstanceKeysInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ManagedInstanceKeyInner&gt; object if successful.
      */
-    public PagedList<ManagedInstanceKeyInner> listByServer(final String resourceGroupName, final String managedInstanceName, final String filter) {
-        ServiceResponse<Page<ManagedInstanceKeyInner>> response = listByServerSinglePageAsync(resourceGroupName, managedInstanceName, filter).toBlocking().single();
+    public PagedList<ManagedInstanceKeyInner> listByInstance(final String resourceGroupName, final String managedInstanceName, final String filter) {
+        ServiceResponse<Page<ManagedInstanceKeyInner>> response = listByInstanceSinglePageAsync(resourceGroupName, managedInstanceName, filter).toBlocking().single();
         return new PagedList<ManagedInstanceKeyInner>(response.body()) {
             @Override
             public Page<ManagedInstanceKeyInner> nextPage(String nextPageLink) {
-                return listByServerNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+                return listByInstanceNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -239,13 +239,13 @@ public class ManagedInstanceKeysInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<ManagedInstanceKeyInner>> listByServerAsync(final String resourceGroupName, final String managedInstanceName, final String filter, final ListOperationCallback<ManagedInstanceKeyInner> serviceCallback) {
+    public ServiceFuture<List<ManagedInstanceKeyInner>> listByInstanceAsync(final String resourceGroupName, final String managedInstanceName, final String filter, final ListOperationCallback<ManagedInstanceKeyInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listByServerSinglePageAsync(resourceGroupName, managedInstanceName, filter),
+            listByInstanceSinglePageAsync(resourceGroupName, managedInstanceName, filter),
             new Func1<String, Observable<ServiceResponse<Page<ManagedInstanceKeyInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ManagedInstanceKeyInner>>> call(String nextPageLink) {
-                    return listByServerNextSinglePageAsync(nextPageLink);
+                    return listByInstanceNextSinglePageAsync(nextPageLink);
                 }
             },
             serviceCallback);
@@ -260,8 +260,8 @@ public class ManagedInstanceKeysInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ManagedInstanceKeyInner&gt; object
      */
-    public Observable<Page<ManagedInstanceKeyInner>> listByServerAsync(final String resourceGroupName, final String managedInstanceName, final String filter) {
-        return listByServerWithServiceResponseAsync(resourceGroupName, managedInstanceName, filter)
+    public Observable<Page<ManagedInstanceKeyInner>> listByInstanceAsync(final String resourceGroupName, final String managedInstanceName, final String filter) {
+        return listByInstanceWithServiceResponseAsync(resourceGroupName, managedInstanceName, filter)
             .map(new Func1<ServiceResponse<Page<ManagedInstanceKeyInner>>, Page<ManagedInstanceKeyInner>>() {
                 @Override
                 public Page<ManagedInstanceKeyInner> call(ServiceResponse<Page<ManagedInstanceKeyInner>> response) {
@@ -279,8 +279,8 @@ public class ManagedInstanceKeysInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ManagedInstanceKeyInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ManagedInstanceKeyInner>>> listByServerWithServiceResponseAsync(final String resourceGroupName, final String managedInstanceName, final String filter) {
-        return listByServerSinglePageAsync(resourceGroupName, managedInstanceName, filter)
+    public Observable<ServiceResponse<Page<ManagedInstanceKeyInner>>> listByInstanceWithServiceResponseAsync(final String resourceGroupName, final String managedInstanceName, final String filter) {
+        return listByInstanceSinglePageAsync(resourceGroupName, managedInstanceName, filter)
             .concatMap(new Func1<ServiceResponse<Page<ManagedInstanceKeyInner>>, Observable<ServiceResponse<Page<ManagedInstanceKeyInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ManagedInstanceKeyInner>>> call(ServiceResponse<Page<ManagedInstanceKeyInner>> page) {
@@ -288,7 +288,7 @@ public class ManagedInstanceKeysInner {
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listByServerNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listByInstanceNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -302,7 +302,7 @@ public class ManagedInstanceKeysInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ManagedInstanceKeyInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<ManagedInstanceKeyInner>>> listByServerSinglePageAsync(final String resourceGroupName, final String managedInstanceName, final String filter) {
+    public Observable<ServiceResponse<Page<ManagedInstanceKeyInner>>> listByInstanceSinglePageAsync(final String resourceGroupName, final String managedInstanceName, final String filter) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -315,12 +315,12 @@ public class ManagedInstanceKeysInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.listByServer(resourceGroupName, managedInstanceName, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.listByInstance(resourceGroupName, managedInstanceName, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ManagedInstanceKeyInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ManagedInstanceKeyInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<ManagedInstanceKeyInner>> result = listByServerDelegate(response);
+                        ServiceResponse<PageImpl<ManagedInstanceKeyInner>> result = listByInstanceDelegate(response);
                         return Observable.just(new ServiceResponse<Page<ManagedInstanceKeyInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -329,7 +329,7 @@ public class ManagedInstanceKeysInner {
             });
     }
 
-    private ServiceResponse<PageImpl<ManagedInstanceKeyInner>> listByServerDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<ManagedInstanceKeyInner>> listByInstanceDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<ManagedInstanceKeyInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ManagedInstanceKeyInner>>() { }.getType())
                 .registerError(CloudException.class)
@@ -794,12 +794,12 @@ public class ManagedInstanceKeysInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ManagedInstanceKeyInner&gt; object if successful.
      */
-    public PagedList<ManagedInstanceKeyInner> listByServerNext(final String nextPageLink) {
-        ServiceResponse<Page<ManagedInstanceKeyInner>> response = listByServerNextSinglePageAsync(nextPageLink).toBlocking().single();
+    public PagedList<ManagedInstanceKeyInner> listByInstanceNext(final String nextPageLink) {
+        ServiceResponse<Page<ManagedInstanceKeyInner>> response = listByInstanceNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<ManagedInstanceKeyInner>(response.body()) {
             @Override
             public Page<ManagedInstanceKeyInner> nextPage(String nextPageLink) {
-                return listByServerNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+                return listByInstanceNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -813,13 +813,13 @@ public class ManagedInstanceKeysInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<ManagedInstanceKeyInner>> listByServerNextAsync(final String nextPageLink, final ServiceFuture<List<ManagedInstanceKeyInner>> serviceFuture, final ListOperationCallback<ManagedInstanceKeyInner> serviceCallback) {
+    public ServiceFuture<List<ManagedInstanceKeyInner>> listByInstanceNextAsync(final String nextPageLink, final ServiceFuture<List<ManagedInstanceKeyInner>> serviceFuture, final ListOperationCallback<ManagedInstanceKeyInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listByServerNextSinglePageAsync(nextPageLink),
+            listByInstanceNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ManagedInstanceKeyInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ManagedInstanceKeyInner>>> call(String nextPageLink) {
-                    return listByServerNextSinglePageAsync(nextPageLink);
+                    return listByInstanceNextSinglePageAsync(nextPageLink);
                 }
             },
             serviceCallback);
@@ -832,8 +832,8 @@ public class ManagedInstanceKeysInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ManagedInstanceKeyInner&gt; object
      */
-    public Observable<Page<ManagedInstanceKeyInner>> listByServerNextAsync(final String nextPageLink) {
-        return listByServerNextWithServiceResponseAsync(nextPageLink)
+    public Observable<Page<ManagedInstanceKeyInner>> listByInstanceNextAsync(final String nextPageLink) {
+        return listByInstanceNextWithServiceResponseAsync(nextPageLink)
             .map(new Func1<ServiceResponse<Page<ManagedInstanceKeyInner>>, Page<ManagedInstanceKeyInner>>() {
                 @Override
                 public Page<ManagedInstanceKeyInner> call(ServiceResponse<Page<ManagedInstanceKeyInner>> response) {
@@ -849,8 +849,8 @@ public class ManagedInstanceKeysInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ManagedInstanceKeyInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ManagedInstanceKeyInner>>> listByServerNextWithServiceResponseAsync(final String nextPageLink) {
-        return listByServerNextSinglePageAsync(nextPageLink)
+    public Observable<ServiceResponse<Page<ManagedInstanceKeyInner>>> listByInstanceNextWithServiceResponseAsync(final String nextPageLink) {
+        return listByInstanceNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<ManagedInstanceKeyInner>>, Observable<ServiceResponse<Page<ManagedInstanceKeyInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ManagedInstanceKeyInner>>> call(ServiceResponse<Page<ManagedInstanceKeyInner>> page) {
@@ -858,7 +858,7 @@ public class ManagedInstanceKeysInner {
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listByServerNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listByInstanceNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -870,17 +870,17 @@ public class ManagedInstanceKeysInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ManagedInstanceKeyInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<ManagedInstanceKeyInner>>> listByServerNextSinglePageAsync(final String nextPageLink) {
+    public Observable<ServiceResponse<Page<ManagedInstanceKeyInner>>> listByInstanceNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         String nextUrl = String.format("%s", nextPageLink);
-        return service.listByServerNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+        return service.listByInstanceNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ManagedInstanceKeyInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ManagedInstanceKeyInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<ManagedInstanceKeyInner>> result = listByServerNextDelegate(response);
+                        ServiceResponse<PageImpl<ManagedInstanceKeyInner>> result = listByInstanceNextDelegate(response);
                         return Observable.just(new ServiceResponse<Page<ManagedInstanceKeyInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -889,7 +889,7 @@ public class ManagedInstanceKeysInner {
             });
     }
 
-    private ServiceResponse<PageImpl<ManagedInstanceKeyInner>> listByServerNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<ManagedInstanceKeyInner>> listByInstanceNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<ManagedInstanceKeyInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ManagedInstanceKeyInner>>() { }.getType())
                 .registerError(CloudException.class)

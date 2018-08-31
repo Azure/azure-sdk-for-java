@@ -37,7 +37,7 @@ public interface ManagedInstanceKeys extends SupportsCreating<ManagedInstanceKey
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<ManagedInstanceKey> listByServerAsync(final String resourceGroupName, final String managedInstanceName);
+    Observable<ManagedInstanceKey> listByInstanceAsync(final String resourceGroupName, final String managedInstanceName);
 
     /**
      * Deletes the managed instance key with the given name.

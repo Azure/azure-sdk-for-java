@@ -43,9 +43,9 @@ class ManagedInstanceKeysImpl extends WrapperImpl<ManagedInstanceKeysInner> impl
     }
 
     @Override
-    public Observable<ManagedInstanceKey> listByServerAsync(final String resourceGroupName, final String managedInstanceName) {
+    public Observable<ManagedInstanceKey> listByInstanceAsync(final String resourceGroupName, final String managedInstanceName) {
         ManagedInstanceKeysInner client = this.inner();
-        return client.listByServerAsync(resourceGroupName, managedInstanceName)
+        return client.listByInstanceAsync(resourceGroupName, managedInstanceName)
         .flatMapIterable(new Func1<Page<ManagedInstanceKeyInner>, Iterable<ManagedInstanceKeyInner>>() {
             @Override
             public Iterable<ManagedInstanceKeyInner> call(Page<ManagedInstanceKeyInner> page) {
