@@ -11,6 +11,7 @@ package com.microsoft.azure.graphrbac.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
+import com.microsoft.azure.graphrbac.AddOwnerParameters;
 import com.microsoft.azure.graphrbac.CheckGroupMembershipParameters;
 import com.microsoft.azure.graphrbac.GraphErrorException;
 import com.microsoft.azure.graphrbac.GroupAddMemberParameters;
@@ -100,6 +101,14 @@ public class GroupsInner {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.graphrbac.Groups getMemberGroups" })
         @POST("{tenantID}/groups/{objectId}/getMemberGroups")
         Observable<Response<ResponseBody>> getMemberGroups(@Path("objectId") String objectId, @Path("tenantID") String tenantID, @Body GroupGetMemberGroupsParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.graphrbac.Groups listOwners" })
+        @GET("{tenantID}/groups/{objectId}/owners")
+        Observable<Response<ResponseBody>> listOwners(@Path("objectId") String objectId, @Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.graphrbac.Groups addOwner" })
+        @POST("{tenantID}/groups/{objectId}/$links/owners")
+        Observable<Response<ResponseBody>> addOwner(@Path("objectId") String objectId, @Path("tenantID") String tenantID, @Body AddOwnerParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.graphrbac.Groups listNext" })
         @GET
@@ -1015,6 +1024,180 @@ public class GroupsInner {
     private ServiceResponse<PageImpl1<String>> getMemberGroupsDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl1<String>, GraphErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl1<String>>() { }.getType())
+                .registerError(GraphErrorException.class)
+                .build(response);
+    }
+
+    /**
+     * Directory objects that are owners of the group.
+     * The owners are a set of non-admin users who are allowed to modify this object.
+     *
+     * @param objectId The object ID of the group for which to get owners.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws GraphErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;DirectoryObjectInner&gt; object if successful.
+     */
+    public List<DirectoryObjectInner> listOwners(String objectId) {
+        return listOwnersWithServiceResponseAsync(objectId).toBlocking().single().body();
+    }
+
+    /**
+     * Directory objects that are owners of the group.
+     * The owners are a set of non-admin users who are allowed to modify this object.
+     *
+     * @param objectId The object ID of the group for which to get owners.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<DirectoryObjectInner>> listOwnersAsync(String objectId, final ServiceCallback<List<DirectoryObjectInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listOwnersWithServiceResponseAsync(objectId), serviceCallback);
+    }
+
+    /**
+     * Directory objects that are owners of the group.
+     * The owners are a set of non-admin users who are allowed to modify this object.
+     *
+     * @param objectId The object ID of the group for which to get owners.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;DirectoryObjectInner&gt; object
+     */
+    public Observable<List<DirectoryObjectInner>> listOwnersAsync(String objectId) {
+        return listOwnersWithServiceResponseAsync(objectId).map(new Func1<ServiceResponse<List<DirectoryObjectInner>>, List<DirectoryObjectInner>>() {
+            @Override
+            public List<DirectoryObjectInner> call(ServiceResponse<List<DirectoryObjectInner>> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Directory objects that are owners of the group.
+     * The owners are a set of non-admin users who are allowed to modify this object.
+     *
+     * @param objectId The object ID of the group for which to get owners.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;DirectoryObjectInner&gt; object
+     */
+    public Observable<ServiceResponse<List<DirectoryObjectInner>>> listOwnersWithServiceResponseAsync(String objectId) {
+        if (objectId == null) {
+            throw new IllegalArgumentException("Parameter objectId is required and cannot be null.");
+        }
+        if (this.client.tenantID() == null) {
+            throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listOwners(objectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<DirectoryObjectInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<DirectoryObjectInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl1<DirectoryObjectInner>> result = listOwnersDelegate(response);
+                        List<DirectoryObjectInner> items = null;
+                        if (result.body() != null) {
+                            items = result.body().items();
+                        }
+                        ServiceResponse<List<DirectoryObjectInner>> clientResponse = new ServiceResponse<List<DirectoryObjectInner>>(items, result.response());
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl1<DirectoryObjectInner>> listOwnersDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<DirectoryObjectInner>, GraphErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl1<DirectoryObjectInner>>() { }.getType())
+                .registerError(GraphErrorException.class)
+                .build(response);
+    }
+
+    /**
+     * Add an owner to a group.
+     *
+     * @param objectId The object ID of the application to which to add the owner.
+     * @param parameters The URL of the owner object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws GraphErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void addOwner(String objectId, AddOwnerParameters parameters) {
+        addOwnerWithServiceResponseAsync(objectId, parameters).toBlocking().single().body();
+    }
+
+    /**
+     * Add an owner to a group.
+     *
+     * @param objectId The object ID of the application to which to add the owner.
+     * @param parameters The URL of the owner object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> addOwnerAsync(String objectId, AddOwnerParameters parameters, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(addOwnerWithServiceResponseAsync(objectId, parameters), serviceCallback);
+    }
+
+    /**
+     * Add an owner to a group.
+     *
+     * @param objectId The object ID of the application to which to add the owner.
+     * @param parameters The URL of the owner object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> addOwnerAsync(String objectId, AddOwnerParameters parameters) {
+        return addOwnerWithServiceResponseAsync(objectId, parameters).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Add an owner to a group.
+     *
+     * @param objectId The object ID of the application to which to add the owner.
+     * @param parameters The URL of the owner object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> addOwnerWithServiceResponseAsync(String objectId, AddOwnerParameters parameters) {
+        if (objectId == null) {
+            throw new IllegalArgumentException("Parameter objectId is required and cannot be null.");
+        }
+        if (this.client.tenantID() == null) {
+            throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
+        }
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(parameters);
+        return service.addOwner(objectId, this.client.tenantID(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = addOwnerDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> addOwnerDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, GraphErrorException>newInstance(this.client.serializerAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
                 .registerError(GraphErrorException.class)
                 .build(response);
     }

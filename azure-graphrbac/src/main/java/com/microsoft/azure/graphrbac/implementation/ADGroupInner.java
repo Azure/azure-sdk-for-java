@@ -25,6 +25,19 @@ public class ADGroupInner extends DirectoryObjectInner {
     private String displayName;
 
     /**
+     * Whether the group is mail-enabled. Must be false. This is because only
+     * pure security groups can be created using the Graph API.
+     */
+    @JsonProperty(value = "mailEnabled")
+    private Boolean mailEnabled;
+
+    /**
+     * The mail alias for the group.
+     */
+    @JsonProperty(value = "mailNickname")
+    private String mailNickname;
+
+    /**
      * Whether the group is security-enable.
      */
     @JsonProperty(value = "securityEnabled")
@@ -53,6 +66,46 @@ public class ADGroupInner extends DirectoryObjectInner {
      */
     public ADGroupInner withDisplayName(String displayName) {
         this.displayName = displayName;
+        return this;
+    }
+
+    /**
+     * Get whether the group is mail-enabled. Must be false. This is because only pure security groups can be created using the Graph API.
+     *
+     * @return the mailEnabled value
+     */
+    public Boolean mailEnabled() {
+        return this.mailEnabled;
+    }
+
+    /**
+     * Set whether the group is mail-enabled. Must be false. This is because only pure security groups can be created using the Graph API.
+     *
+     * @param mailEnabled the mailEnabled value to set
+     * @return the ADGroupInner object itself.
+     */
+    public ADGroupInner withMailEnabled(Boolean mailEnabled) {
+        this.mailEnabled = mailEnabled;
+        return this;
+    }
+
+    /**
+     * Get the mail alias for the group.
+     *
+     * @return the mailNickname value
+     */
+    public String mailNickname() {
+        return this.mailNickname;
+    }
+
+    /**
+     * Set the mail alias for the group.
+     *
+     * @param mailNickname the mailNickname value to set
+     * @return the ADGroupInner object itself.
+     */
+    public ADGroupInner withMailNickname(String mailNickname) {
+        this.mailNickname = mailNickname;
         return this;
     }
 
