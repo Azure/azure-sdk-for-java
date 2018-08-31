@@ -231,16 +231,10 @@ class NamespacesImpl extends GroupableResourcesCoreImpl<EHNamespace, EHNamespace
     public Observable<VirtualNetworkRule> listVirtualNetworkRulesAsync(final String resourceGroupName, final String namespaceName) {
         NamespacesInner client = this.inner();
         return client.listVirtualNetworkRulesAsync(resourceGroupName, namespaceName)
-        .flatMapIterable(new Func1<Page<IpFilterRuleInner>, Iterable<IpFilterRuleInner>>() {
+        .flatMapIterable(new Func1<Page<VirtualNetworkRuleInner>, Iterable<VirtualNetworkRuleInner>>() {
             @Override
-            public Iterable<IpFilterRuleInner> call(Page<IpFilterRuleInner> page) {
+            public Iterable<VirtualNetworkRuleInner> call(Page<VirtualNetworkRuleInner> page) {
                 return page.items();
-            }
-        })
-        .flatMap(new Func1<IpFilterRuleInner, Observable<VirtualNetworkRuleInner>>() {
-            @Override
-            public Observable<VirtualNetworkRuleInner> call(IpFilterRuleInner inner) {
-                return getVirtualNetworkRuleInnerUsingNamespacesInnerAsync(inner.id());
             }
         })
         .map(new Func1<VirtualNetworkRuleInner, VirtualNetworkRule>() {
