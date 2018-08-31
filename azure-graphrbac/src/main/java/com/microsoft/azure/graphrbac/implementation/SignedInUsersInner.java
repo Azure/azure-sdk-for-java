@@ -10,17 +10,23 @@ package com.microsoft.azure.graphrbac.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.graphrbac.GraphErrorException;
+import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -58,6 +64,10 @@ public class SignedInUsersInner {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.graphrbac.SignedInUsers listOwnedObjects" })
         @GET("{tenantID}/me/ownedObjects")
         Observable<Response<ResponseBody>> listOwnedObjects(@Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.graphrbac.SignedInUsers listOwnedObjectsNext" })
+        @GET
+        Observable<Response<ResponseBody>> listOwnedObjectsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -139,10 +149,16 @@ public class SignedInUsersInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws GraphErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the DirectoryObjectListResultInner object if successful.
+     * @return the PagedList&lt;DirectoryObjectInner&gt; object if successful.
      */
-    public DirectoryObjectListResultInner listOwnedObjects() {
-        return listOwnedObjectsWithServiceResponseAsync().toBlocking().single().body();
+    public PagedList<DirectoryObjectInner> listOwnedObjects() {
+        ServiceResponse<Page<DirectoryObjectInner>> response = listOwnedObjectsSinglePageAsync().toBlocking().single();
+        return new PagedList<DirectoryObjectInner>(response.body()) {
+            @Override
+            public Page<DirectoryObjectInner> nextPage(String nextPageLink) {
+                return listOwnedObjectsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
     }
 
     /**
@@ -152,32 +168,61 @@ public class SignedInUsersInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<DirectoryObjectListResultInner> listOwnedObjectsAsync(final ServiceCallback<DirectoryObjectListResultInner> serviceCallback) {
-        return ServiceFuture.fromResponse(listOwnedObjectsWithServiceResponseAsync(), serviceCallback);
+    public ServiceFuture<List<DirectoryObjectInner>> listOwnedObjectsAsync(final ListOperationCallback<DirectoryObjectInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listOwnedObjectsSinglePageAsync(),
+            new Func1<String, Observable<ServiceResponse<Page<DirectoryObjectInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<DirectoryObjectInner>>> call(String nextPageLink) {
+                    return listOwnedObjectsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
     }
 
     /**
      * Get the list of directory objects that are owned by the user.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the DirectoryObjectListResultInner object
+     * @return the observable to the PagedList&lt;DirectoryObjectInner&gt; object
      */
-    public Observable<DirectoryObjectListResultInner> listOwnedObjectsAsync() {
-        return listOwnedObjectsWithServiceResponseAsync().map(new Func1<ServiceResponse<DirectoryObjectListResultInner>, DirectoryObjectListResultInner>() {
-            @Override
-            public DirectoryObjectListResultInner call(ServiceResponse<DirectoryObjectListResultInner> response) {
-                return response.body();
-            }
-        });
+    public Observable<Page<DirectoryObjectInner>> listOwnedObjectsAsync() {
+        return listOwnedObjectsWithServiceResponseAsync()
+            .map(new Func1<ServiceResponse<Page<DirectoryObjectInner>>, Page<DirectoryObjectInner>>() {
+                @Override
+                public Page<DirectoryObjectInner> call(ServiceResponse<Page<DirectoryObjectInner>> response) {
+                    return response.body();
+                }
+            });
     }
 
     /**
      * Get the list of directory objects that are owned by the user.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the DirectoryObjectListResultInner object
+     * @return the observable to the PagedList&lt;DirectoryObjectInner&gt; object
      */
-    public Observable<ServiceResponse<DirectoryObjectListResultInner>> listOwnedObjectsWithServiceResponseAsync() {
+    public Observable<ServiceResponse<Page<DirectoryObjectInner>>> listOwnedObjectsWithServiceResponseAsync() {
+        return listOwnedObjectsSinglePageAsync()
+            .concatMap(new Func1<ServiceResponse<Page<DirectoryObjectInner>>, Observable<ServiceResponse<Page<DirectoryObjectInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<DirectoryObjectInner>>> call(ServiceResponse<Page<DirectoryObjectInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listOwnedObjectsNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Get the list of directory objects that are owned by the user.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;DirectoryObjectInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<DirectoryObjectInner>>> listOwnedObjectsSinglePageAsync() {
         if (this.client.tenantID() == null) {
             throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
         }
@@ -185,12 +230,12 @@ public class SignedInUsersInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.listOwnedObjects(this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DirectoryObjectListResultInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<DirectoryObjectInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<DirectoryObjectListResultInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<DirectoryObjectInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<DirectoryObjectListResultInner> clientResponse = listOwnedObjectsDelegate(response);
-                        return Observable.just(clientResponse);
+                        ServiceResponse<PageImpl<DirectoryObjectInner>> result = listOwnedObjectsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<DirectoryObjectInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -198,9 +243,120 @@ public class SignedInUsersInner {
             });
     }
 
-    private ServiceResponse<DirectoryObjectListResultInner> listOwnedObjectsDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<DirectoryObjectListResultInner, GraphErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<DirectoryObjectListResultInner>() { }.getType())
+    private ServiceResponse<PageImpl<DirectoryObjectInner>> listOwnedObjectsDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<DirectoryObjectInner>, GraphErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<DirectoryObjectInner>>() { }.getType())
+                .registerError(GraphErrorException.class)
+                .build(response);
+    }
+
+    /**
+     * Get the list of directory objects that are owned by the user.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws GraphErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;DirectoryObjectInner&gt; object if successful.
+     */
+    public PagedList<DirectoryObjectInner> listOwnedObjectsNext(final String nextPageLink) {
+        ServiceResponse<Page<DirectoryObjectInner>> response = listOwnedObjectsNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<DirectoryObjectInner>(response.body()) {
+            @Override
+            public Page<DirectoryObjectInner> nextPage(String nextPageLink) {
+                return listOwnedObjectsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Get the list of directory objects that are owned by the user.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<DirectoryObjectInner>> listOwnedObjectsNextAsync(final String nextPageLink, final ServiceFuture<List<DirectoryObjectInner>> serviceFuture, final ListOperationCallback<DirectoryObjectInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listOwnedObjectsNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<DirectoryObjectInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<DirectoryObjectInner>>> call(String nextPageLink) {
+                    return listOwnedObjectsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get the list of directory objects that are owned by the user.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;DirectoryObjectInner&gt; object
+     */
+    public Observable<Page<DirectoryObjectInner>> listOwnedObjectsNextAsync(final String nextPageLink) {
+        return listOwnedObjectsNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<DirectoryObjectInner>>, Page<DirectoryObjectInner>>() {
+                @Override
+                public Page<DirectoryObjectInner> call(ServiceResponse<Page<DirectoryObjectInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Get the list of directory objects that are owned by the user.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;DirectoryObjectInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<DirectoryObjectInner>>> listOwnedObjectsNextWithServiceResponseAsync(final String nextPageLink) {
+        return listOwnedObjectsNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<DirectoryObjectInner>>, Observable<ServiceResponse<Page<DirectoryObjectInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<DirectoryObjectInner>>> call(ServiceResponse<Page<DirectoryObjectInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listOwnedObjectsNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Get the list of directory objects that are owned by the user.
+     *
+    ServiceResponse<PageImpl<DirectoryObjectInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;DirectoryObjectInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<DirectoryObjectInner>>> listOwnedObjectsNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listOwnedObjectsNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<DirectoryObjectInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<DirectoryObjectInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<DirectoryObjectInner>> result = listOwnedObjectsNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<DirectoryObjectInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<DirectoryObjectInner>> listOwnedObjectsNextDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<DirectoryObjectInner>, GraphErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<DirectoryObjectInner>>() { }.getType())
                 .registerError(GraphErrorException.class)
                 .build(response);
     }
