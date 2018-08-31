@@ -31,8 +31,6 @@ public class UserTokenCredentials extends AzureTokenCredentials {
     /** The password for the Organization Id account. */
     private String password;
 
-    private RefreshTokenClient refreshTokenClient;
-
     /**
      * Initializes a new instance of the UserTokenCredentials.
      *
@@ -49,7 +47,6 @@ public class UserTokenCredentials extends AzureTokenCredentials {
         this.username = username;
         this.password = password;
         this.tokens = new ConcurrentHashMap<>();
-        this.refreshTokenClient = new RefreshTokenClient(environment.activeDirectoryEndpoint(), proxy());
     }
 
     /**
@@ -120,11 +117,16 @@ public class UserTokenCredentials extends AzureTokenCredentials {
 
     // Refresh tokens are currently not used since we don't know if the refresh token has expired
     AuthenticationResult acquireAccessTokenFromRefreshToken(String resource, String refreshToken, boolean isMultipleResourceRefreshToken) throws IOException {
+        String authorityUrl = this.environment().activeDirectoryEndpoint() + this.domain();
         ExecutorService executor = Executors.newSingleThreadExecutor();
+        AuthenticationContext context = new AuthenticationContext(authorityUrl, false, executor);
+        if (proxy() != null) {
+            context.setProxy(proxy());
+        }
         try {
-            return refreshTokenClient.refreshToken(domain(), clientId(), resource, refreshToken, isMultipleResourceRefreshToken);
+            return context.acquireTokenByRefreshToken(refreshToken, clientId(), resource, null).get();
         } catch (Exception e) {
-            return null;
+            throw new IOException(e.getMessage(), e);
         } finally {
             executor.shutdown();
         }

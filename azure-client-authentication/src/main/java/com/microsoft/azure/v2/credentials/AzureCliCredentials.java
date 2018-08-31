@@ -25,7 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Beta
 public final class AzureCliCredentials extends AzureTokenCredentials {
-    private static final ObjectMapper MAPPER = new JacksonAdapter().serializer().setDateFormat(new SimpleDateFormat("yyyy-MM-dd hh:mm:ssssss"));
+    private static final ObjectMapper MAPPER = new JacksonAdapter().serializer().setDateFormat(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSSSSS"));
     /** A mapping from resource endpoint to its cached access token. */
     private Map<String, AzureCliSubscription> subscriptions;
     private File azureProfile;
