@@ -14,10 +14,13 @@
  */
 package com.microsoft.azure.storage.blob;
 
+import com.microsoft.azure.storage.blob.models.AppendPositionAccessConditions;
+import com.microsoft.azure.storage.blob.models.LeaseAccessConditions;
+import com.microsoft.azure.storage.blob.models.ModifiedAccessConditions;
+
 /**
  * This class contains values that restrict the successful completion of AppendBlock operations to certain conditions.
- * An instance of this class is set as a member of {@link BlobAccessConditions} when needed. Any field may be set to
- * null if no access conditions are desired.
+ * Any field may be set to null if no access conditions are desired.
  *
  * Please refer to the request header section
  * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/append-block>here</a> for more conceptual
@@ -28,51 +31,64 @@ public final class AppendBlobAccessConditions {
     /**
      * An object representing no access conditions.
      */
-    public static final AppendBlobAccessConditions NONE = new AppendBlobAccessConditions();
+    public static final AppendBlobAccessConditions NONE =
+            new AppendBlobAccessConditions();
 
-    private Long ifAppendPositionEquals;
+    private AppendPositionAccessConditions appendPositionAccessConditions;
 
-    private Long ifMaxSizeLessThanOrEqual;
+    private ModifiedAccessConditions modifiedAccessConditions;
+
+    private LeaseAccessConditions leaseAccessConditions;
+
+    /**
+     * {@link AppendPositionAccessConditions}
+     */
+    public AppendPositionAccessConditions appendPositionAccessConditions() {
+        return appendPositionAccessConditions;
+    }
+
+    /**
+     * {@link AppendPositionAccessConditions}
+     */
+    public AppendBlobAccessConditions withAppendPositionAccessConditions(
+            AppendPositionAccessConditions appendPositionAccessConditions) {
+        this.appendPositionAccessConditions = appendPositionAccessConditions;
+        return this;
+    }
+
+    /**
+     * {@link ModifiedAccessConditions}
+     */
+    public ModifiedAccessConditions modifiedAccessConditions() {
+        return modifiedAccessConditions;
+    }
+
+    /**
+     * {@link ModifiedAccessConditions}
+     */
+    public AppendBlobAccessConditions withModifiedAccessConditions(ModifiedAccessConditions modifiedAccessConditions) {
+        this.modifiedAccessConditions = modifiedAccessConditions;
+        return this;
+    }
+
+    /**
+     * {@link LeaseAccessConditions}
+     */
+    public LeaseAccessConditions leaseAccessConditions() {
+        return leaseAccessConditions;
+    }
+
+    /**
+     * {@link LeaseAccessConditions}
+     */
+    public AppendBlobAccessConditions withLeaseAccessConditions(LeaseAccessConditions leaseAccessConditions) {
+        this.leaseAccessConditions = leaseAccessConditions;
+        return this;
+    }
 
     public AppendBlobAccessConditions() {
-
-    }
-
-    /**
-     * Ensures that the AppendBlock operation succeeds only if the append position is equal to the value.
-     */
-    public Long ifAppendPositionEquals() {
-        return ifAppendPositionEquals;
-    }
-
-    /**
-     * Ensures that the AppendBlock operation succeeds only if the append position is equal to the value.
-     */
-    public AppendBlobAccessConditions withIfAppendPositionEquals(Long ifAppendPositionEquals) {
-        if(ifAppendPositionEquals != null && ifAppendPositionEquals < 0) {
-            throw new IllegalArgumentException("Append blob access conditions can't be less than -1");
-        }
-        this.ifAppendPositionEquals = ifAppendPositionEquals;
-        return this;
-    }
-
-    /**
-     * Ensures that the AppendBlock operation succeeds only if the append blob's size is less than or equal to the
-     * value.
-     */
-    public Long ifMaxSizeLessThanOrEqual() {
-        return ifMaxSizeLessThanOrEqual;
-    }
-
-    /**
-     * Ensures that the AppendBlock operation succeeds only if the append blob's size is less than or equal to the
-     * value.
-     */
-    public AppendBlobAccessConditions withIfMaxSizeLessThanOrEqual(Long ifMaxSizeLessThanOrEqual) {
-        if (ifMaxSizeLessThanOrEqual != null && ifMaxSizeLessThanOrEqual < 0) {
-            throw new IllegalArgumentException("Append blob access conditions cannot be less than -1");
-        }
-        this.ifMaxSizeLessThanOrEqual = ifMaxSizeLessThanOrEqual;
-        return this;
-    }
+        appendPositionAccessConditions = new AppendPositionAccessConditions();
+        modifiedAccessConditions = new ModifiedAccessConditions();
+        leaseAccessConditions = new LeaseAccessConditions();
+   }
 }

@@ -59,7 +59,7 @@ public final class ListContainersSegmentResponse {
     /**
      * The containerItems property.
      */
-    @JsonProperty(value = "Containers")
+    @JsonProperty(value = "Containers", required = true)
     private ContainersWrapper containerItems;
 
     /**

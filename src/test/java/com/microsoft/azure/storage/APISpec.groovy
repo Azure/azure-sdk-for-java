@@ -82,9 +82,9 @@ class APISpec extends Specification {
     Note that this value is only used to check if we are depending on the received etag. This value will not actually
     be used.
      */
-    static final ETag receivedEtag = new ETag("received")
+    static final String receivedEtag = "received"
 
-    static final ETag garbageEtag = new ETag("garbage")
+    static final String garbageEtag = "garbage"
 
     /*
     Note that this value is only used to check if we are depending on the received etag. This value will not actually
@@ -262,10 +262,10 @@ class APISpec extends Specification {
      * @return
      *      The appropriate etag value to run the current test.
      */
-    def setupBlobMatchCondition(BlobURL bu, ETag match) {
+    def setupBlobMatchCondition(BlobURL bu, String match) {
         if (match == receivedEtag) {
             BlobGetPropertiesHeaders headers = bu.getProperties(null).blockingGet().headers()
-            return new ETag(headers.eTag())
+            return headers.eTag()
         } else {
             return match
         }
@@ -282,7 +282,7 @@ class APISpec extends Specification {
      * @param leaseID
      *      The signalID. Values should only ever be {@code receivedLeaseID}, {@code garbageLeaseID}, or {@code null}.
      * @return
-     *      The actual leaseID of the blob if recievedLeaseID is passed, otherwise whatever was passed will be returned.
+     *      The actual leaseAccessConditions of the blob if recievedLeaseID is passed, otherwise whatever was passed will be returned.
      */
     def setupBlobLeaseCondition(BlobURL bu, String leaseID) {
         BlobAcquireLeaseHeaders headers = null
@@ -296,10 +296,10 @@ class APISpec extends Specification {
         }
     }
 
-    def setupContainerMatchCondition(ContainerURL cu, ETag match) {
+    def setupContainerMatchCondition(ContainerURL cu, String match) {
         if (match == receivedEtag) {
             ContainerGetPropertiesHeaders headers = cu.getProperties(null).blockingGet().headers()
-            return new ETag(headers.eTag())
+            return headers.eTag()
         } else {
             return match
         }

@@ -22,6 +22,7 @@ import com.microsoft.rest.v2.http.HttpPipeline
 import com.microsoft.rest.v2.http.HttpRequest
 import com.microsoft.rest.v2.http.HttpResponse
 import io.reactivex.Flowable
+
 import spock.lang.Unroll
 
 // Tests for package-private functionality.

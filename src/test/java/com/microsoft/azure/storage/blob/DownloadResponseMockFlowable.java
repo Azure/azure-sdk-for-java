@@ -15,9 +15,10 @@
 
 package com.microsoft.azure.storage.blob;
 
+import java.io.IOException;
+import java.nio.ByteBuffer;
+
 import com.microsoft.azure.storage.APISpec;
-import com.microsoft.azure.storage.blob.DownloadResponse;
-import com.microsoft.azure.storage.blob.ETag;
 import com.microsoft.azure.storage.blob.models.BlobDownloadHeaders;
 import com.microsoft.azure.storage.blob.models.BlobDownloadResponse;
 import com.microsoft.azure.storage.blob.models.StorageErrorException;
@@ -27,8 +28,6 @@ import io.reactivex.Flowable;
 import io.reactivex.Single;
 import org.reactivestreams.Subscriber;
 
-import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.util.HashMap;
 
 public class DownloadResponseMockFlowable extends Flowable<ByteBuffer> {
@@ -218,7 +217,7 @@ public class DownloadResponseMockFlowable extends Flowable<ByteBuffer> {
                 }
             case RR_TEST_SCENARIO_INFO_TEST:
                 // We also test that the info is updated in RR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES.
-                if (info.count() != 10 || info.offset() != 20 || !info.eTag().equals(new ETag("etag"))) {
+                if (info.count() != 10 || info.offset() != 20 || !info.eTag().equals("etag")) {
                     throw new IllegalArgumentException("Info values incorrect");
                 }
                 return Single.just(response);

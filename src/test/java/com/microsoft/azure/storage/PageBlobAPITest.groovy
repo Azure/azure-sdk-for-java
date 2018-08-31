@@ -58,8 +58,12 @@ class PageBlobAPITest extends APISpec {
     @Unroll
     def "Create headers"() {
         setup:
-        BlobHTTPHeaders headers = new BlobHTTPHeaders(cacheControl, contentDisposition, contentEncoding,
-                contentLanguage, contentMD5, contentType)
+        BlobHTTPHeaders headers = new BlobHTTPHeaders().withBlobCacheControl(cacheControl)
+                .withBlobContentDisposition(contentDisposition)
+                .withBlobContentEncoding(contentEncoding)
+                .withBlobContentLanguage(contentLanguage)
+                .withBlobContentMD5(contentMD5)
+                .withBlobContentType(contentType)
 
         when:
         bu.create(PageBlobURL.PAGE_BYTES, null, headers, null, null)
@@ -108,9 +112,10 @@ class PageBlobAPITest extends APISpec {
         setup:
         match = setupBlobMatchCondition(bu, match)
         leaseID = setupBlobLeaseCondition(bu, leaseID)
-        BlobAccessConditions bac = new BlobAccessConditions(
-                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
-                null, null)
+        BlobAccessConditions bac = new BlobAccessConditions().withModifiedAccessConditions(
+                new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
+                        .withIfMatch(match).withIfNoneMatch(noneMatch))
+                .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
 
 
         expect:
@@ -141,9 +146,8 @@ class PageBlobAPITest extends APISpec {
 
     def "Create error"() {
         when:
-        bu.create(PageBlobURL.PAGE_BYTES, null, null, null,
-                new BlobAccessConditions(null, new LeaseAccessConditions("id"),
-                        null, null)).blockingGet()
+        bu.create(PageBlobURL.PAGE_BYTES, null, null, null, new BlobAccessConditions().withLeaseAccessConditions(
+                new LeaseAccessConditions().withLeaseId("id"))).blockingGet()
 
         then:
         thrown(StorageException)
@@ -185,14 +189,17 @@ class PageBlobAPITest extends APISpec {
         setup:
         match = setupBlobMatchCondition(bu, match)
         leaseID = setupBlobLeaseCondition(bu, leaseID)
-        BlobAccessConditions bac = new BlobAccessConditions(
-                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
-                null,
-                new PageBlobAccessConditions(sequenceNumberLT, sequenceNumberLTE, sequenceNumberEqual))
+        PageBlobAccessConditions pac = new PageBlobAccessConditions().withModifiedAccessConditions(
+                new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
+                        .withIfMatch(match).withIfNoneMatch(noneMatch))
+                .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
+                .withSequenceNumberAccessConditions(new SequenceNumberAccessConditions()
+                .withIfSequenceNumberLessThan(sequenceNumberLT).withIfSequenceNumberLessThanOrEqualTo(sequenceNumberLTE)
+                .withIfSequenceNumberEqualTo(sequenceNumberEqual))
 
         expect:
         bu.uploadPages(new PageRange().withStart(0).withEnd(PageBlobURL.PAGE_BYTES - 1),
-                Flowable.just(getRandomData(PageBlobURL.PAGE_BYTES)), bac).blockingGet().statusCode() == 201
+                Flowable.just(getRandomData(PageBlobURL.PAGE_BYTES)), pac).blockingGet().statusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID         | sequenceNumberLT | sequenceNumberLTE | sequenceNumberEqual
@@ -212,14 +219,17 @@ class PageBlobAPITest extends APISpec {
         setup:
         noneMatch = setupBlobMatchCondition(bu, noneMatch)
         setupBlobLeaseCondition(bu, leaseID)
-        BlobAccessConditions bac = new BlobAccessConditions(
-                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
-                null,
-                new PageBlobAccessConditions(sequenceNumberLT, sequenceNumberLTE, sequenceNumberEqual))
+        PageBlobAccessConditions pac = new PageBlobAccessConditions().withModifiedAccessConditions(
+                new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
+                        .withIfMatch(match).withIfNoneMatch(noneMatch))
+                .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
+                .withSequenceNumberAccessConditions(new SequenceNumberAccessConditions()
+                .withIfSequenceNumberLessThan(sequenceNumberLT).withIfSequenceNumberLessThanOrEqualTo(sequenceNumberLTE)
+                .withIfSequenceNumberEqualTo(sequenceNumberEqual))
 
         when:
         bu.uploadPages(new PageRange().withStart(0).withEnd(PageBlobURL.PAGE_BYTES - 1),
-                Flowable.just(getRandomData(PageBlobURL.PAGE_BYTES)), bac).blockingGet()
+                Flowable.just(getRandomData(PageBlobURL.PAGE_BYTES)), pac).blockingGet()
 
         then:
         thrown(StorageException)
@@ -243,8 +253,7 @@ class PageBlobAPITest extends APISpec {
         when:
         bu.uploadPages(new PageRange().withStart(0).withEnd(PageBlobURL.PAGE_BYTES - 1),
                 Flowable.just(getRandomData(PageBlobURL.PAGE_BYTES)),
-                new BlobAccessConditions(null, new LeaseAccessConditions("id"),
-                        null, null))
+                new PageBlobAccessConditions().withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId("id")))
                 .blockingGet()
 
         then:
@@ -276,13 +285,16 @@ class PageBlobAPITest extends APISpec {
                 Flowable.just(getRandomData(PageBlobURL.PAGE_BYTES)), null).blockingGet()
         match = setupBlobMatchCondition(bu, match)
         leaseID = setupBlobLeaseCondition(bu, leaseID)
-        BlobAccessConditions bac = new BlobAccessConditions(
-                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
-                null,
-                new PageBlobAccessConditions(sequenceNumberLT, sequenceNumberLTE, sequenceNumberEqual))
+        PageBlobAccessConditions pac = new PageBlobAccessConditions().withModifiedAccessConditions(
+                new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
+                        .withIfMatch(match).withIfNoneMatch(noneMatch))
+                .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
+                .withSequenceNumberAccessConditions(new SequenceNumberAccessConditions()
+                .withIfSequenceNumberLessThan(sequenceNumberLT).withIfSequenceNumberLessThanOrEqualTo(sequenceNumberLTE)
+                .withIfSequenceNumberEqualTo(sequenceNumberEqual))
 
         expect:
-        bu.clearPages(new PageRange().withStart(0).withEnd(PageBlobURL.PAGE_BYTES - 1), bac).blockingGet()
+        bu.clearPages(new PageRange().withStart(0).withEnd(PageBlobURL.PAGE_BYTES - 1), pac).blockingGet()
                 .statusCode() == 201
 
         where:
@@ -305,13 +317,17 @@ class PageBlobAPITest extends APISpec {
                 Flowable.just(getRandomData(PageBlobURL.PAGE_BYTES)), null).blockingGet()
         noneMatch = setupBlobMatchCondition(bu, noneMatch)
         setupBlobLeaseCondition(bu, leaseID)
-        BlobAccessConditions bac = new BlobAccessConditions(
-                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
-                null,
-                new PageBlobAccessConditions(sequenceNumberLT, sequenceNumberLTE, sequenceNumberEqual))
+        PageBlobAccessConditions pac = new PageBlobAccessConditions().withModifiedAccessConditions(
+                new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
+                        .withIfMatch(match).withIfNoneMatch(noneMatch))
+                .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
+                .withSequenceNumberAccessConditions(new SequenceNumberAccessConditions()
+                .withIfSequenceNumberLessThan(sequenceNumberLT).withIfSequenceNumberLessThanOrEqualTo(sequenceNumberLTE)
+                .withIfSequenceNumberEqualTo(sequenceNumberEqual))
+
 
         when:
-        bu.clearPages(new PageRange().withStart(0).withEnd(PageBlobURL.PAGE_BYTES - 1), bac).blockingGet()
+        bu.clearPages(new PageRange().withStart(0).withEnd(PageBlobURL.PAGE_BYTES - 1), pac).blockingGet()
 
         then:
         thrown(StorageException)
@@ -354,7 +370,7 @@ class PageBlobAPITest extends APISpec {
         response.statusCode() == 200
         response.body().pageRange().size() == 1
         validateBasicHeaders(headers)
-        headers.blobContentLength() == PageBlobURL.PAGE_BYTES
+        headers.blobContentLength() == (long)PageBlobURL.PAGE_BYTES
     }
 
     @Unroll
@@ -362,9 +378,10 @@ class PageBlobAPITest extends APISpec {
         setup:
         match = setupBlobMatchCondition(bu, match)
         leaseID = setupBlobLeaseCondition(bu, leaseID)
-        BlobAccessConditions bac = new BlobAccessConditions(
-                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
-                null, null)
+        BlobAccessConditions bac = new BlobAccessConditions().withModifiedAccessConditions(
+                new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
+                        .withIfMatch(match).withIfNoneMatch(noneMatch))
+                .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
 
         expect:
         bu.getPageRanges(new BlobRange().withCount(PageBlobURL.PAGE_BYTES), bac).blockingGet().statusCode() == 200
@@ -384,9 +401,10 @@ class PageBlobAPITest extends APISpec {
         setup:
         noneMatch = setupBlobMatchCondition(bu, noneMatch)
         setupBlobLeaseCondition(bu, leaseID)
-        BlobAccessConditions bac = new BlobAccessConditions(
-                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
-                null, null)
+        BlobAccessConditions bac = new BlobAccessConditions().withModifiedAccessConditions(
+                new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
+                        .withIfMatch(match).withIfNoneMatch(noneMatch))
+                .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
 
         when:
         bu.getPageRanges(new BlobRange().withCount(PageBlobURL.PAGE_BYTES), bac).blockingGet().statusCode()
@@ -450,9 +468,10 @@ class PageBlobAPITest extends APISpec {
         String snapshot = bu.createSnapshot(null, null).blockingGet().headers().snapshot()
         match = setupBlobMatchCondition(bu, match)
         leaseID = setupBlobLeaseCondition(bu, leaseID)
-        BlobAccessConditions bac = new BlobAccessConditions(
-                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
-                null, null)
+        BlobAccessConditions bac = new BlobAccessConditions().withModifiedAccessConditions(
+                new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
+                        .withIfMatch(match).withIfNoneMatch(noneMatch))
+                .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
 
         expect:
         bu.getPageRangesDiff(new BlobRange().withCount(PageBlobURL.PAGE_BYTES), snapshot, bac)
@@ -474,9 +493,10 @@ class PageBlobAPITest extends APISpec {
         String snapshot = bu.createSnapshot(null, null).blockingGet().headers().snapshot()
         noneMatch = setupBlobMatchCondition(bu, noneMatch)
         setupBlobLeaseCondition(bu, leaseID)
-        BlobAccessConditions bac = new BlobAccessConditions(
-                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
-                null, null)
+        BlobAccessConditions bac = new BlobAccessConditions().withModifiedAccessConditions(
+                new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
+                        .withIfMatch(match).withIfNoneMatch(noneMatch))
+                .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
 
         when:
         bu.getPageRangesDiff(new BlobRange().withCount(PageBlobURL.PAGE_BYTES), snapshot, bac).blockingGet()
@@ -542,9 +562,10 @@ class PageBlobAPITest extends APISpec {
         setup:
         match = setupBlobMatchCondition(bu, match)
         leaseID = setupBlobLeaseCondition(bu, leaseID)
-        BlobAccessConditions bac = new BlobAccessConditions(
-                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
-                null, null)
+        BlobAccessConditions bac = new BlobAccessConditions().withModifiedAccessConditions(
+                new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
+                        .withIfMatch(match).withIfNoneMatch(noneMatch))
+                .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
 
         expect:
         bu.resize(PageBlobURL.PAGE_BYTES * 2, bac).blockingGet().statusCode() == 200
@@ -564,9 +585,10 @@ class PageBlobAPITest extends APISpec {
         setup:
         noneMatch = setupBlobMatchCondition(bu, noneMatch)
         setupBlobLeaseCondition(bu, leaseID)
-        BlobAccessConditions bac = new BlobAccessConditions(
-                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
-                null, null)
+        BlobAccessConditions bac = new BlobAccessConditions().withModifiedAccessConditions(
+                new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
+                        .withIfMatch(match).withIfNoneMatch(noneMatch))
+                .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
 
         when:
         bu.resize(PageBlobURL.PAGE_BYTES * 2, bac).blockingGet()
@@ -618,9 +640,10 @@ class PageBlobAPITest extends APISpec {
         setup:
         match = setupBlobMatchCondition(bu, match)
         leaseID = setupBlobLeaseCondition(bu, leaseID)
-        BlobAccessConditions bac = new BlobAccessConditions(
-                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
-                null, null)
+        BlobAccessConditions bac = new BlobAccessConditions().withModifiedAccessConditions(
+                new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
+                        .withIfMatch(match).withIfNoneMatch(noneMatch))
+                .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
 
         expect:
         bu.updateSequenceNumber(SequenceNumberActionType.UPDATE, 1, bac).blockingGet()
@@ -641,9 +664,10 @@ class PageBlobAPITest extends APISpec {
         setup:
         noneMatch = setupBlobMatchCondition(bu, noneMatch)
         setupBlobLeaseCondition(bu, leaseID)
-        BlobAccessConditions bac = new BlobAccessConditions(
-                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
-                null, null)
+        BlobAccessConditions bac = new BlobAccessConditions().withModifiedAccessConditions(
+                new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
+                        .withIfMatch(match).withIfNoneMatch(noneMatch))
+                .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
 
         when:
         bu.updateSequenceNumber(SequenceNumberActionType.UPDATE, 1, bac).blockingGet()
@@ -676,7 +700,7 @@ class PageBlobAPITest extends APISpec {
         cu.setAccessPolicy(PublicAccessType.BLOB, null, null).blockingGet()
         PageBlobURL bu2 = cu.createPageBlobURL(generateBlobName())
         String snapshot = bu.createSnapshot(null, null).blockingGet().headers().snapshot()
-        PageBlobCopyIncrementalHeaders headers = bu2.copyIncremental(bu.toURL(), snapshot, null)
+        PageBlobCopyIncrementalHeaders headers = bu2.copyIncremental(bu.toURL(), snapshot, null, null)
                 .blockingGet().headers()
         waitForCopy(bu2, headers.copyStatus())
 
@@ -688,20 +712,49 @@ class PageBlobAPITest extends APISpec {
         headers.copyStatus() != null
     }
 
+    def "Start incremental copy metadata"() {
+        setup:
+        Metadata metadata = new Metadata()
+        if (key1 != null) {
+            metadata.put(key1, value1)
+        }
+        if (key2 != null) {
+            metadata.put(key2, value2)
+        }
+
+        cu.setAccessPolicy(PublicAccessType.BLOB, null, null).blockingGet()
+        PageBlobURL bu2 = cu.createPageBlobURL(generateBlobName())
+        String snapshot = bu.createSnapshot(null, null).blockingGet().headers().snapshot()
+
+        when:
+        bu2.copyIncremental(bu.toURL(), snapshot, metadata, null).blockingGet().headers()
+        BlobGetPropertiesResponse response = bu.getProperties(null).blockingGet()
+
+        then:
+        response.statusCode() == 200
+        response.headers().metadata() == metadata
+
+        where:
+        key1  | value1 | key2   | value2
+        null  | null   | null   | null
+        "foo" | "bar"  | "fizz" | "buzz"
+    }
+
     @Unroll
     def "Start incremental copy AC"() {
         setup:
         cu.setAccessPolicy(PublicAccessType.BLOB, null, null).blockingGet()
         PageBlobURL bu2 = cu.createPageBlobURL(generateBlobName())
         String snapshot = bu.createSnapshot(null, null).blockingGet().headers().snapshot()
-        def response = bu2.copyIncremental(bu.toURL(), snapshot, null).blockingGet()
+        def response = bu2.copyIncremental(bu.toURL(), snapshot, null, null).blockingGet()
         waitForCopy(bu2, response.headers().copyStatus())
         snapshot = bu.createSnapshot(null, null).blockingGet().headers().snapshot()
         match = setupBlobMatchCondition(bu2, match)
-        def hac = new HTTPAccessConditions(modified, unmodified, match, noneMatch)
+        def mac = new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
+                .withIfMatch(match).withIfNoneMatch(noneMatch)
 
         expect:
-        bu2.copyIncremental(bu.toURL(), snapshot, hac).blockingGet().statusCode() == 202
+        bu2.copyIncremental(bu.toURL(), snapshot, null, mac).blockingGet().statusCode() == 202
 
         where:
         modified | unmodified | match        | noneMatch
@@ -718,13 +771,14 @@ class PageBlobAPITest extends APISpec {
         cu.setAccessPolicy(PublicAccessType.BLOB, null, null).blockingGet()
         PageBlobURL bu2 = cu.createPageBlobURL(generateBlobName())
         String snapshot = bu.createSnapshot(null, null).blockingGet().headers().snapshot()
-        bu2.copyIncremental(bu.toURL(), snapshot, null).blockingGet()
+        bu2.copyIncremental(bu.toURL(), snapshot, null, null).blockingGet()
         snapshot = bu.createSnapshot(null, null).blockingGet().headers().snapshot()
         noneMatch = setupBlobMatchCondition(bu2, noneMatch)
-        def hac = new HTTPAccessConditions(modified, unmodified, match, noneMatch)
+        def mac = new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
+                .withIfMatch(match).withIfNoneMatch(noneMatch)
 
         when:
-        bu2.copyIncremental(bu.toURL(), snapshot, hac).blockingGet().statusCode()
+        bu2.copyIncremental(bu.toURL(), snapshot, null, mac).blockingGet().statusCode()
 
         then:
         thrown(StorageException)
@@ -742,7 +796,7 @@ class PageBlobAPITest extends APISpec {
         bu = cu.createPageBlobURL(generateBlobName())
 
         when:
-        bu.copyIncremental(new URL("https://www.error.com"), "snapshot", null)
+        bu.copyIncremental(new URL("https://www.error.com"), "snapshot", null, null)
                 .blockingGet()
 
         then:

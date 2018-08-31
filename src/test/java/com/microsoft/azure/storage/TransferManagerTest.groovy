@@ -1,7 +1,15 @@
 package com.microsoft.azure.storage
 
 import com.microsoft.azure.storage.blob.*
-import com.microsoft.azure.storage.blob.models.*
+import com.microsoft.azure.storage.blob.models.BlobDownloadHeaders
+import com.microsoft.azure.storage.blob.models.BlobGetPropertiesResponse
+import com.microsoft.azure.storage.blob.models.BlobHTTPHeaders
+import com.microsoft.azure.storage.blob.models.BlobType
+import com.microsoft.azure.storage.blob.models.BlockBlobCommitBlockListResponse
+import com.microsoft.azure.storage.blob.models.BlockBlobUploadResponse
+import com.microsoft.azure.storage.blob.models.LeaseAccessConditions
+import com.microsoft.azure.storage.blob.models.ModifiedAccessConditions
+import com.microsoft.azure.storage.blob.models.StorageErrorCode
 import com.microsoft.rest.v2.http.HttpPipeline
 import com.microsoft.rest.v2.http.HttpRequest
 import com.microsoft.rest.v2.http.HttpResponse
@@ -121,8 +129,10 @@ class TransferManagerTest extends APISpec {
 
         when:
         TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES,
-                new TransferManager.UploadToBlockBlobOptions(null, new BlobHTTPHeaders(cacheControl,
-                        contentDisposition, contentEncoding, contentLanguage, contentMD5, contentType), null,
+                new TransferManager.UploadToBlockBlobOptions(null, new BlobHTTPHeaders()
+                        .withBlobCacheControl(cacheControl).withBlobContentDisposition(contentDisposition)
+                        .withBlobContentEncoding(contentEncoding).withBlobContentLanguage(contentLanguage)
+                        .withBlobContentMD5(contentMD5).withBlobContentType(contentType), null,
                         null, null)).blockingGet()
 
         BlobGetPropertiesResponse response = bu.getProperties(null).blockingGet()
@@ -185,9 +195,10 @@ class TransferManagerTest extends APISpec {
         bu.upload(defaultFlowable, defaultDataSize, null, null, null).blockingGet()
         match = setupBlobMatchCondition(bu, match)
         leaseID = setupBlobLeaseCondition(bu, leaseID)
-        BlobAccessConditions bac = new BlobAccessConditions(
-                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
-                null, null)
+        BlobAccessConditions bac = new BlobAccessConditions().withModifiedAccessConditions(
+                new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
+                        .withIfMatch(match).withIfNoneMatch(noneMatch))
+                .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
         def channel = AsynchronousFileChannel.open(getRandomFile(dataSize).toPath())
 
         expect:
@@ -221,9 +232,10 @@ class TransferManagerTest extends APISpec {
         bu.upload(defaultFlowable, defaultDataSize, null, null, null).blockingGet()
         noneMatch = setupBlobMatchCondition(bu, noneMatch)
         setupBlobLeaseCondition(bu, leaseID)
-        BlobAccessConditions bac = new BlobAccessConditions(
-                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
-                null, null)
+        BlobAccessConditions bac = new BlobAccessConditions().withModifiedAccessConditions(
+                new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
+                        .withIfMatch(match).withIfNoneMatch(noneMatch))
+                .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
         def channel = AsynchronousFileChannel.open(getRandomFile(dataSize).toPath())
 
         when:
@@ -427,9 +439,10 @@ class TransferManagerTest extends APISpec {
 
         match = setupBlobMatchCondition(bu, match)
         leaseID = setupBlobLeaseCondition(bu, leaseID)
-        BlobAccessConditions bac = new BlobAccessConditions(
-                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
-                null, null)
+        BlobAccessConditions bac = new BlobAccessConditions().withModifiedAccessConditions(
+                new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
+                        .withIfMatch(match).withIfNoneMatch(noneMatch))
+                .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
 
         when:
         TransferManager.downloadBlobToFile(outChannel, bu, null, new TransferManager.DownloadFromBlobOptions(
@@ -464,9 +477,10 @@ class TransferManagerTest extends APISpec {
 
         noneMatch = setupBlobMatchCondition(bu, noneMatch)
         setupBlobLeaseCondition(bu, leaseID)
-        BlobAccessConditions bac = new BlobAccessConditions(
-                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
-                null, null)
+        BlobAccessConditions bac = new BlobAccessConditions().withModifiedAccessConditions(
+                new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
+                        .withIfMatch(match).withIfNoneMatch(noneMatch))
+                .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
 
         when:
         TransferManager.downloadBlobToFile(outChannel, bu, null,

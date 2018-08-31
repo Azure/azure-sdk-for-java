@@ -718,15 +718,10 @@ public class Samples {
 
                     // Download blob content if the blob has been modified since we uploaded it (fails).
                     return blobURL.download(null,
-                            new BlobAccessConditions(
-                                    new HTTPAccessConditions(
-                                            blockBlobUploadResponse.headers().lastModified(),
-                                            null,
-                                            null,
-                                            null),
-                                    null,
-                                    null,
-                                    null),
+                            new BlobAccessConditions().withModifiedAccessConditions(
+                                    new ModifiedAccessConditions().withIfModifiedSince(
+                                            blockBlobUploadResponse.headers().lastModified())),
+
                             false);
                 })
                 .onErrorResumeNext(throwable -> {
@@ -737,15 +732,9 @@ public class Samples {
                     }
                     // Download the blob content if the blob hasn't been modified in the last 24 hours (fails):
                     return blobURL.download(null,
-                            new BlobAccessConditions(
-                                    new HTTPAccessConditions(
-                                            null,
-                                            OffsetDateTime.now().minusDays(1),
-                                            null,
-                                            null),
-                                    null,
-                                    null,
-                                    null),
+                            new BlobAccessConditions().withModifiedAccessConditions(
+                                    new ModifiedAccessConditions().withIfUnmodifiedSince(
+                                            OffsetDateTime.now().minusDays(1))),
                             false);
                 })
                 /*
@@ -753,7 +742,7 @@ public class Samples {
                  means we will get a different return type and cannot directly recover from the error. To solve this,
                  we go through a completable which will give us more flexibility with types.
                  */
-                .toCompletable()
+                .ignoreElement()
                 .onErrorResumeNext(throwable -> {
                     if (throwable instanceof RestException) {
                         System.out.println("Failure: " + ((RestException) throwable).response().statusCode());
@@ -772,34 +761,21 @@ public class Samples {
                          */
                         blobURL.upload(Flowable.just(ByteBuffer.wrap("Text-2".getBytes())), "Text-2".length(),
                                 null, null,
-                                new BlobAccessConditions(
-                                        new HTTPAccessConditions(
-                                                null,
-                                                null,
-                                                new ETag(getPropertiesResponse.headers().eTag()),
-                                                null),
-                                        null,
-                                        null,
-                                        null))
+                                new BlobAccessConditions().withModifiedAccessConditions(
+                                        new ModifiedAccessConditions().withIfMatch(
+                                                getPropertiesResponse.headers().eTag()))
+
                 )
                 .flatMap(blockBlobUploadResponse -> {
                     System.out.println("Success: " + blockBlobUploadResponse.statusCode());
 
                     // Download content if it has changed since the version identified by ETag (fails):
                     return blobURL.download(null,
-                            new BlobAccessConditions(
-                                    new HTTPAccessConditions(
-                                            null,
-                                            null,
-                                            null,
-                                            new ETag(blockBlobUploadResponse.headers().eTag())
-                                    ),
-                                    null,
-                                    null,
-                                    null
-                            ), false);
+                            new BlobAccessConditions().withModifiedAccessConditions(
+                                    new ModifiedAccessConditions().withIfNoneMatch(
+                                            blockBlobUploadResponse.headers().eTag())), false);
                 })
-                .toCompletable()
+                .ignoreElement()
                 .onErrorResumeNext(throwable -> {
                     if (throwable instanceof RestException) {
                         System.out.println("Failure: " + ((RestException) throwable).response().statusCode());
@@ -811,17 +787,9 @@ public class Samples {
                 }).andThen(
                 // Delete the blob if it exists (succeeds).
                 blobURL.delete(DeleteSnapshotsOptionType.INCLUDE,
-                        new BlobAccessConditions(
-                                new HTTPAccessConditions(
-                                        null,
-                                        null,
-                                        ETag.ANY,
-                                        null),
-                                null,
-                                null,
-                                null)
+                        new BlobAccessConditions().withModifiedAccessConditions(
+                                new ModifiedAccessConditions().withIfMatch(ETag.ANY))))
                 )
-        )
                 .flatMap(blobDeleteResponse -> {
                     System.out.println("Success: " + blobDeleteResponse.statusCode());
                     return containerURL.delete(null);
@@ -965,13 +933,8 @@ public class Samples {
                     /*
                     Create the blob with HTTP headers.
                      */
-                    BlobHTTPHeaders headers = new BlobHTTPHeaders(
-                            null,
-                            "attachment",
-                            null,
-                            null,
-                            null,
-                            "text/html; charset=utf-8");
+                    BlobHTTPHeaders headers = new BlobHTTPHeaders().withBlobContentDisposition("attachment")
+                            .withBlobContentType("text/html; charset=utf-8");
                     return blobURL.upload(Flowable.just(ByteBuffer.wrap("Text-1".getBytes())), "Text-1".length(),
                             headers, null, null);
                 })
@@ -994,14 +957,7 @@ public class Samples {
                      will be cleared. In order to preserve the existing HTTP properties, they must be re-set along with
                      the added or updated properties.
                      */
-                    BlobHTTPHeaders headers = new BlobHTTPHeaders(
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            "text/plain"
-                    );
+                    BlobHTTPHeaders headers = new BlobHTTPHeaders().withBlobContentType("text/plain");
                     return blobURL.setHTTPHeaders(headers, null);
                 })
                 .flatMap(response ->
@@ -1944,9 +1900,9 @@ public class Samples {
 
         // <tier>
         // BlockBlobs and PageBlobs have different sets of tiers.
-        blockBlobURL.setTier(AccessTier.HOT)
+        blockBlobURL.setTier(AccessTier.HOT, null)
                 .subscribe();
-        pageBlobURL.setTier(AccessTier.P6)
+        pageBlobURL.setTier(AccessTier.P6, null)
                 .subscribe();
         // </tier>
 
@@ -1964,9 +1920,13 @@ public class Samples {
                 .flatMap(response -> {
                     Metadata newMetadata = new Metadata(response.headers().metadata());
                     // If one of the HTTP properties is set, all must be set again or they will be cleared.
-                    BlobHTTPHeaders newHeaders = new BlobHTTPHeaders(response.headers().cacheControl(),
-                            response.headers().contentDisposition(), response.headers().contentEncoding(),
-                            "new language", response.headers().contentMD5(), "new content");
+                    BlobHTTPHeaders newHeaders = new BlobHTTPHeaders()
+                            .withBlobCacheControl(response.headers().cacheControl())
+                            .withBlobContentDisposition(response.headers().contentDisposition())
+                            .withBlobContentEncoding(response.headers().contentEncoding())
+                            .withBlobContentLanguage("new language")
+                            .withBlobContentMD5(response.headers().contentMD5())
+                            .withBlobContentType("new content");
                     return blobURL.setMetadata(newMetadata, null)
                             .flatMap(nextResponse -> blobURL.setHTTPHeaders(newHeaders, null));
                 })
@@ -2091,7 +2051,7 @@ public class Samples {
         PageBlobURL incrementalCopy = containerURL.createPageBlobURL("incremental");
         pageBlobURL.createSnapshot(null, null)
                 .flatMap(response ->
-                        incrementalCopy.copyIncremental(pageBlobURL.toURL(), response.headers().snapshot(),
+                        incrementalCopy.copyIncremental(pageBlobURL.toURL(), response.headers().snapshot(), null,
                                 null))
                 .flatMap(response -> {
                     byte[] pageData = new byte[PageBlobURL.PAGE_BYTES];
@@ -2104,7 +2064,7 @@ public class Samples {
                 .flatMap(response ->
                         pageBlobURL.createSnapshot(null, null))
                 .flatMap(response ->
-                        incrementalCopy.copyIncremental(pageBlobURL.toURL(), response.headers().snapshot(),
+                        incrementalCopy.copyIncremental(pageBlobURL.toURL(), response.headers().snapshot(), null,
                                 null))
                 .subscribe();
         /*

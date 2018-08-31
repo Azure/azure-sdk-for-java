@@ -207,19 +207,15 @@ public final class ContainerURL extends StorageURL {
             ContainerAccessConditions accessConditions) {
         accessConditions = accessConditions == null ? ContainerAccessConditions.NONE : accessConditions;
 
-        if (!accessConditions.getHttpAccessConditions().getIfMatch().equals(ETag.NONE) ||
-                !accessConditions.getHttpAccessConditions().getIfNoneMatch().equals(ETag.NONE)) {
+        if (!validateNoEtag(accessConditions.modifiedAccessConditions())) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
             throw new IllegalArgumentException("ETag access conditions are not supported for this API.");
         }
 
         return addErrorWrappingToSingle(this.storageClient.generatedContainers()
-                .deleteWithRestResponseAsync(null,
-                accessConditions.getLeaseAccessConditions().getLeaseId(),
-                accessConditions.getHttpAccessConditions().getIfModifiedSince(),
-                accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
-                null));
+                .deleteWithRestResponseAsync(null, null, accessConditions.leaseAccessConditions(),
+                        accessConditions.modifiedAccessConditions()));
     }
 
     /**
@@ -238,11 +234,9 @@ public final class ContainerURL extends StorageURL {
      */
     public Single<ContainerGetPropertiesResponse> getProperties(
             LeaseAccessConditions leaseAccessConditions) {
-        leaseAccessConditions = leaseAccessConditions == null ? LeaseAccessConditions.NONE : leaseAccessConditions;
 
         return addErrorWrappingToSingle(this.storageClient.generatedContainers()
-                .getPropertiesWithRestResponseAsync(null,
-                leaseAccessConditions.getLeaseId(), null));
+                .getPropertiesWithRestResponseAsync(null, null, leaseAccessConditions));
     }
 
     /**
@@ -265,9 +259,8 @@ public final class ContainerURL extends StorageURL {
             Metadata metadata, ContainerAccessConditions accessConditions) {
         metadata = metadata == null ? Metadata.NONE : metadata;
         accessConditions = accessConditions == null ? ContainerAccessConditions.NONE : accessConditions;
-        if (accessConditions.getHttpAccessConditions().getIfMatch() != ETag.NONE ||
-                accessConditions.getHttpAccessConditions().getIfNoneMatch() != ETag.NONE ||
-                accessConditions.getHttpAccessConditions().getIfUnmodifiedSince() != null) {
+        if (!validateNoEtag(accessConditions.modifiedAccessConditions()) ||
+                accessConditions.modifiedAccessConditions().ifUnmodifiedSince() != null) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
             throw new IllegalArgumentException(
@@ -275,9 +268,8 @@ public final class ContainerURL extends StorageURL {
         }
 
         return addErrorWrappingToSingle(this.storageClient.generatedContainers()
-                .setMetadataWithRestResponseAsync(null,
-                accessConditions.getLeaseAccessConditions().getLeaseId(), metadata,
-                accessConditions.getHttpAccessConditions().getIfModifiedSince(),null));
+                .setMetadataWithRestResponseAsync(null, metadata, null, accessConditions.leaseAccessConditions(),
+                        accessConditions.modifiedAccessConditions()));
     }
 
     /**
@@ -297,10 +289,9 @@ public final class ContainerURL extends StorageURL {
      */
     public Single<ContainerGetAccessPolicyResponse> getAccessPolicy(
             LeaseAccessConditions leaseAccessConditions) {
-        leaseAccessConditions = leaseAccessConditions == null ? LeaseAccessConditions.NONE : leaseAccessConditions;
 
         return addErrorWrappingToSingle(this.storageClient.generatedContainers().getAccessPolicyWithRestResponseAsync(
-                null, leaseAccessConditions.getLeaseId(), null));
+                null, null, leaseAccessConditions));
     }
 
     /**
@@ -331,8 +322,7 @@ public final class ContainerURL extends StorageURL {
             ContainerAccessConditions accessConditions) {
         accessConditions = accessConditions == null ? ContainerAccessConditions.NONE : accessConditions;
 
-        if (!accessConditions.getHttpAccessConditions().getIfMatch().equals(ETag.NONE) ||
-                !accessConditions.getHttpAccessConditions().getIfNoneMatch().equals(ETag.NONE)) {
+        if (!validateNoEtag(accessConditions.modifiedAccessConditions())) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
             throw new IllegalArgumentException("ETag access conditions are not supported for this API.");
@@ -359,16 +349,16 @@ public final class ContainerURL extends StorageURL {
 
         // TODO: validate that empty list clears permissions and null list does not change list. Document behavior.
         return addErrorWrappingToSingle(this.storageClient.generatedContainers()
-                .setAccessPolicyWithRestResponseAsync(identifiers, null,
-                accessConditions.getLeaseAccessConditions().getLeaseId(), accessType,
-                accessConditions.getHttpAccessConditions().getIfModifiedSince(),
-                accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
-                null));
+                .setAccessPolicyWithRestResponseAsync(identifiers, null, accessType, null,
+                        accessConditions.leaseAccessConditions(), accessConditions.modifiedAccessConditions()));
     }
 
-    private boolean validateLeaseOperationAccessConditions(HTTPAccessConditions httpAccessConditions) {
-        return (httpAccessConditions.getIfMatch() == ETag.NONE &&
-                httpAccessConditions.getIfNoneMatch() == ETag.NONE);
+    private boolean validateNoEtag(ModifiedAccessConditions modifiedAccessConditions) {
+        if (modifiedAccessConditions == null) {
+            return true;
+        }
+        return modifiedAccessConditions.ifMatch().equals(ETag.NONE) &&
+                modifiedAccessConditions.ifNoneMatch().equals(ETag.NONE);
     }
 
     /**
@@ -386,15 +376,14 @@ public final class ContainerURL extends StorageURL {
      * @param duration
      *      The duration of the lease, in seconds, or negative one (-1) for a lease that never expires.
      *      A non-infinite lease can be between 15 and 60 seconds.
-     * @param httpAccessConditions
-     *      {@link HTTPAccessConditions}
+     * @param modifiedAccessConditions
+     *      {@link ModifiedAccessConditions}
      * @return
      *      Emits the successful response.
      */
     public Single<ContainerAcquireLeaseResponse> acquireLease(
-            String proposedID, int duration, HTTPAccessConditions httpAccessConditions) {
-        httpAccessConditions = httpAccessConditions == null ? HTTPAccessConditions.NONE : httpAccessConditions;
-        if (!this.validateLeaseOperationAccessConditions(httpAccessConditions)){
+            String proposedID, int duration, ModifiedAccessConditions modifiedAccessConditions) {
+        if (!this.validateNoEtag(modifiedAccessConditions)){
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
             throw new IllegalArgumentException(
@@ -402,10 +391,7 @@ public final class ContainerURL extends StorageURL {
         }
 
         return addErrorWrappingToSingle(this.storageClient.generatedContainers().acquireLeaseWithRestResponseAsync(
-                null,  duration, proposedID,
-                httpAccessConditions.getIfModifiedSince(),
-                httpAccessConditions.getIfUnmodifiedSince(),
-                null));
+                null,  duration, proposedID, null, modifiedAccessConditions));
     }
 
     /**
@@ -419,15 +405,14 @@ public final class ContainerURL extends StorageURL {
      *
      * @param leaseID
      *      The leaseId of the active lease on the container.
-     * @param httpAccessConditions
-     *      {@link HTTPAccessConditions}
+     * @param modifiedAccessConditions
+     *      {@link ModifiedAccessConditions}
      * @return
      *      Emits the successful response.
      */
     public Single<ContainerRenewLeaseResponse> renewLease(
-            String leaseID, HTTPAccessConditions httpAccessConditions) {
-        httpAccessConditions = httpAccessConditions == null ? HTTPAccessConditions.NONE : httpAccessConditions;
-        if (!this.validateLeaseOperationAccessConditions(httpAccessConditions)) {
+            String leaseID, ModifiedAccessConditions modifiedAccessConditions) {
+        if (!this.validateNoEtag(modifiedAccessConditions)) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
             throw new IllegalArgumentException(
@@ -435,10 +420,7 @@ public final class ContainerURL extends StorageURL {
         }
 
         return addErrorWrappingToSingle(this.storageClient.generatedContainers().renewLeaseWithRestResponseAsync(
-                leaseID, null,
-                httpAccessConditions.getIfModifiedSince(),
-                httpAccessConditions.getIfUnmodifiedSince(),
-                null));
+                leaseID, null, null, modifiedAccessConditions));
     }
 
     /**
@@ -452,15 +434,14 @@ public final class ContainerURL extends StorageURL {
      *
      * @param leaseID
      *      The leaseId of the active lease on the container.
-     * @param httpAccessConditions
-     *      {@link HTTPAccessConditions}
+     * @param modifiedAccessConditions
+     *      {@link ModifiedAccessConditions}
      * @return
      *      Emits the successful response.
      */
     public Single<ContainerReleaseLeaseResponse> releaseLease(
-            String leaseID, HTTPAccessConditions httpAccessConditions) {
-        httpAccessConditions = httpAccessConditions == null ? HTTPAccessConditions.NONE : httpAccessConditions;
-        if (!this.validateLeaseOperationAccessConditions(httpAccessConditions)) {
+            String leaseID, ModifiedAccessConditions modifiedAccessConditions) {
+        if (!this.validateNoEtag(modifiedAccessConditions)) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
             throw new IllegalArgumentException(
@@ -468,10 +449,7 @@ public final class ContainerURL extends StorageURL {
         }
 
         return addErrorWrappingToSingle(this.storageClient.generatedContainers().releaseLeaseWithRestResponseAsync(
-                leaseID, null,
-                httpAccessConditions.getIfModifiedSince(),
-                httpAccessConditions.getIfUnmodifiedSince(),
-                null));
+                leaseID, null, null, modifiedAccessConditions));
     }
 
     /**
@@ -488,15 +466,14 @@ public final class ContainerURL extends StorageURL {
      *      before it is broken, between 0 and 60 seconds. This break period is only used if it is shorter than the time
      *      remaining on the lease. If longer, the time remaining on the lease is used. A new lease will not be
      *      available before the break period has expired, but the lease may be held for longer than the break period.
-     * @param httpAccessConditions
-     *      {@link HTTPAccessConditions}
+     * @param modifiedAccessConditions
+     *      {@link ModifiedAccessConditions}
      * @return
      *      Emits the successful response.
      */
     public Single<ContainerBreakLeaseResponse> breakLease(
-            Integer breakPeriodInSeconds, HTTPAccessConditions httpAccessConditions) {
-        httpAccessConditions = httpAccessConditions == null ? HTTPAccessConditions.NONE : httpAccessConditions;
-        if (!this.validateLeaseOperationAccessConditions(httpAccessConditions)) {
+            Integer breakPeriodInSeconds, ModifiedAccessConditions modifiedAccessConditions) {
+        if (!this.validateNoEtag(modifiedAccessConditions)) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
             throw new IllegalArgumentException(
@@ -504,14 +481,11 @@ public final class ContainerURL extends StorageURL {
         }
 
         return addErrorWrappingToSingle(this.storageClient.generatedContainers().breakLeaseWithRestResponseAsync(
-                null, breakPeriodInSeconds,
-                httpAccessConditions.getIfModifiedSince(),
-                httpAccessConditions.getIfUnmodifiedSince(),
-                null));
+                null, breakPeriodInSeconds, null, modifiedAccessConditions));
     }
 
     /**
-     * Changes the container's leaseID. For more information, see the
+     * Changes the container's leaseAccessConditions. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-container">Azure Docs</a>.
      *
      * @apiNote
@@ -523,15 +497,14 @@ public final class ContainerURL extends StorageURL {
      *      The leaseId of the active lease on the container.
      * @param proposedID
      *      A {@code String} in any valid GUID format.
-     * @param httpAccessConditions
-     *      {@link HTTPAccessConditions}
+     * @param modifiedAccessConditions
+     *      {@link ModifiedAccessConditions}
      * @return
      *      Emits the successful response.
      */
     public Single<ContainerChangeLeaseResponse> changeLease(
-            String leaseID, String proposedID, HTTPAccessConditions httpAccessConditions) {
-        httpAccessConditions = httpAccessConditions == null ? HTTPAccessConditions.NONE : httpAccessConditions;
-        if (!this.validateLeaseOperationAccessConditions(httpAccessConditions)) {
+            String leaseID, String proposedID, ModifiedAccessConditions modifiedAccessConditions) {
+        if (!this.validateNoEtag(modifiedAccessConditions)) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
             throw new IllegalArgumentException(
@@ -539,10 +512,7 @@ public final class ContainerURL extends StorageURL {
         }
 
         return addErrorWrappingToSingle(this.storageClient.generatedContainers().changeLeaseWithRestResponseAsync(
-                leaseID, proposedID, null,
-                httpAccessConditions.getIfModifiedSince(),
-                httpAccessConditions.getIfUnmodifiedSince(),
-                null));
+                leaseID, proposedID, null, null, modifiedAccessConditions));
     }
 
     /**

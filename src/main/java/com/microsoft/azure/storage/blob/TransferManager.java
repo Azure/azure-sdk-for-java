@@ -16,6 +16,8 @@
 package com.microsoft.azure.storage.blob;
 
 import com.microsoft.azure.storage.blob.models.BlobDownloadHeaders;
+import com.microsoft.azure.storage.blob.models.BlobHTTPHeaders;
+import com.microsoft.azure.storage.blob.models.ModifiedAccessConditions;
 import com.microsoft.rest.v2.util.FlowableUtil;
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
@@ -228,20 +230,21 @@ public final class TransferManager {
         if one was not specified. We use a single for this because we may have to make a REST call to get the length to
         calculate the count and we need to maintain asynchronicity.
          */
-        if (r.count() == null || o.accessConditions.httpAccessConditions().getIfMatch() == ETag.NONE) {
+        if (r.count() == null || o.accessConditions.modifiedAccessConditions().ifMatch().equals(ETag.NONE)) {
             return blobURL.getProperties(o.accessConditions)
                     .map(response -> {
                         BlobAccessConditions newConditions;
-                        if (o.accessConditions.httpAccessConditions().getIfMatch() == ETag.NONE) {
-                            newConditions = new BlobAccessConditions(
-                                    new HTTPAccessConditions(
-                                            o.accessConditions.httpAccessConditions().getIfModifiedSince(),
-                                            o.accessConditions.httpAccessConditions().getIfUnmodifiedSince(),
-                                            new ETag(response.headers().eTag()),
-                                            o.accessConditions.httpAccessConditions().getIfNoneMatch()),
-                                    o.accessConditions.leaseAccessConditions(),
-                                    o.accessConditions.appendBlobAccessConditions(),
-                                    o.accessConditions.pageBlobAccessConditions());
+                        if (o.accessConditions.modifiedAccessConditions().ifMatch() == null) {
+                            newConditions = new BlobAccessConditions()
+                                    .withModifiedAccessConditions(new ModifiedAccessConditions()
+                                            .withIfModifiedSince(
+                                                    o.accessConditions.modifiedAccessConditions().ifModifiedSince())
+                                            .withIfUnmodifiedSince(
+                                                    o.accessConditions.modifiedAccessConditions().ifUnmodifiedSince())
+                                            .withIfMatch(response.headers().eTag())
+                                            .withIfNoneMatch(
+                                                    o.accessConditions.modifiedAccessConditions().ifNoneMatch()))
+                                    .withLeaseAccessConditions(o.accessConditions.leaseAccessConditions());
                         } else {
                             newConditions = o.accessConditions;
                         }
@@ -293,7 +296,9 @@ public final class TransferManager {
          *         as bytes are sent in a PutBlock call to the BlockBlobURL. May be null if no progress reports are
          *         desired.
          * @param httpHeaders
-         *         {@link BlobHTTPHeaders}
+         *         Most often used when creating a blob or setting its properties, this class contains fields for typical HTTP
+         *         properties, which, if specified, will be attached to the target blob. Null may be passed to any API which takes this
+         *         type to indicate that no properties should be set.
          * @param metadata
          *         {@link Metadata}
          * @param accessConditions

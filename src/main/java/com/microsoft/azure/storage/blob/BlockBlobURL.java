@@ -118,7 +118,9 @@ public final class BlockBlobURL extends BlobURL {
      *      The exact length of the data. It is important that this value match precisely the length of the data
      *      emitted by the {@code Flowable}.
      * @param headers
-     *      {@link BlobHTTPHeaders}
+     *      Most often used when creating a blob or setting its properties, this class contains fields for typical HTTP
+     *      properties, which, if specified, will be attached to the target blob. Null may be passed to any API which takes this
+     *      type to indicate that no properties should be set.
      * @param metadata
      *      {@link Metadata}
      * @param accessConditions
@@ -129,24 +131,11 @@ public final class BlockBlobURL extends BlobURL {
     public Single<BlockBlobUploadResponse> upload(
             Flowable<ByteBuffer> data, long length, BlobHTTPHeaders headers, Metadata metadata,
             BlobAccessConditions accessConditions) {
-        headers = headers == null ? BlobHTTPHeaders.NONE : headers;
         metadata = metadata == null ? Metadata.NONE : metadata;
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
         return addErrorWrappingToSingle(this.storageClient.generatedBlockBlobs().uploadWithRestResponseAsync(
-                data, length, null,
-                headers.getContentType(),
-                headers.getContentEncoding(),
-                headers.getContentLanguage(),
-                headers.getContentMD5(),
-                headers.getCacheControl(),
-                metadata,
-                accessConditions.leaseAccessConditions().getLeaseId(),
-                headers.getContentDisposition(),
-                accessConditions.httpAccessConditions().getIfModifiedSince(),
-                accessConditions.httpAccessConditions().getIfUnmodifiedSince(),
-                accessConditions.httpAccessConditions().getIfMatch().toString(),
-                accessConditions.httpAccessConditions().getIfNoneMatch().toString(),
-                null));
+                data, length, null, metadata, null, headers, accessConditions.leaseAccessConditions(),
+                accessConditions.modifiedAccessConditions()));
     }
 
     /**
@@ -174,10 +163,9 @@ public final class BlockBlobURL extends BlobURL {
      */
     public Single<BlockBlobStageBlockResponse> stageBlock(
             String base64BlockID, Flowable<ByteBuffer> data, long length, LeaseAccessConditions leaseAccessConditions) {
-        leaseAccessConditions = leaseAccessConditions == null ? LeaseAccessConditions.NONE : leaseAccessConditions;
 
         return addErrorWrappingToSingle(this.storageClient.generatedBlockBlobs().stageBlockWithRestResponseAsync(
-                base64BlockID, length, data,null, leaseAccessConditions.getLeaseId(), null));
+                base64BlockID, length, data, null, null, null, leaseAccessConditions));
     }
 
     /**
@@ -208,13 +196,12 @@ public final class BlockBlobURL extends BlobURL {
     public Single<BlockBlobStageBlockFromURLResponse> stageBlockFromURL(
             String base64BlockID, URL sourceURL, BlobRange sourceRange, byte[] sourceContentMD5,
             LeaseAccessConditions leaseAccessConditions) {
-        leaseAccessConditions = leaseAccessConditions == null ? LeaseAccessConditions.NONE : leaseAccessConditions;
         sourceRange = sourceRange == null ? BlobRange.DEFAULT : sourceRange;
 
         return addErrorWrappingToSingle(
                 this.storageClient.generatedBlockBlobs().stageBlockFromURLWithRestResponseAsync(
                         base64BlockID, 0, sourceURL, sourceRange.toString(), sourceContentMD5,
-                        null, leaseAccessConditions.getLeaseId(), null));
+                        null, null, leaseAccessConditions));
     }
 
     /**
@@ -236,10 +223,9 @@ public final class BlockBlobURL extends BlobURL {
      */
     public Single<BlockBlobGetBlockListResponse> getBlockList(
             BlockListType listType, LeaseAccessConditions leaseAccessConditions) {
-        leaseAccessConditions = leaseAccessConditions == null ? LeaseAccessConditions.NONE : leaseAccessConditions;
 
         return addErrorWrappingToSingle(this.storageClient.generatedBlockBlobs().getBlockListWithRestResponseAsync(
-                listType, null, null, leaseAccessConditions.getLeaseId(), null));
+                listType, null, null, null, leaseAccessConditions));
     }
 
     /**
@@ -272,23 +258,13 @@ public final class BlockBlobURL extends BlobURL {
     public Single<BlockBlobCommitBlockListResponse> commitBlockList(
             List<String> base64BlockIDs, BlobHTTPHeaders headers, Metadata metadata,
             BlobAccessConditions accessConditions) {
-        headers = headers == null ? BlobHTTPHeaders.NONE : headers;
         metadata = metadata == null ? Metadata.NONE : metadata;
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
         return addErrorWrappingToSingle(this.storageClient.generatedBlockBlobs().commitBlockListWithRestResponseAsync(
                 new BlockLookupList().withLatest(base64BlockIDs), null,
-                headers.getCacheControl(),
-                headers.getContentType(),
-                headers.getContentEncoding(),
-                headers.getContentLanguage(),
-                headers.getContentMD5(),
-                metadata,
-                accessConditions.leaseAccessConditions().getLeaseId(),
-                headers.getContentDisposition(),
-                accessConditions.httpAccessConditions().getIfModifiedSince(),
-                accessConditions.httpAccessConditions().getIfUnmodifiedSince(),
-                accessConditions.httpAccessConditions().getIfMatch().toString(),
-                accessConditions.httpAccessConditions().getIfNoneMatch().toString(), null));
+                metadata, null, headers, accessConditions.leaseAccessConditions(),
+                accessConditions.modifiedAccessConditions()));
+
     }
 
     //TODO: stageBlockFromURL

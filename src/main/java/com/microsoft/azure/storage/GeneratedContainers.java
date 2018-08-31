@@ -25,9 +25,11 @@ import com.microsoft.azure.storage.blob.models.ContainerReleaseLeaseResponse;
 import com.microsoft.azure.storage.blob.models.ContainerRenewLeaseResponse;
 import com.microsoft.azure.storage.blob.models.ContainerSetAccessPolicyResponse;
 import com.microsoft.azure.storage.blob.models.ContainerSetMetadataResponse;
+import com.microsoft.azure.storage.blob.models.LeaseAccessConditions;
 import com.microsoft.azure.storage.blob.models.ListBlobsFlatSegmentResponse;
 import com.microsoft.azure.storage.blob.models.ListBlobsHierarchySegmentResponse;
 import com.microsoft.azure.storage.blob.models.ListBlobsIncludeItem;
+import com.microsoft.azure.storage.blob.models.ModifiedAccessConditions;
 import com.microsoft.azure.storage.blob.models.PublicAccessType;
 import com.microsoft.azure.storage.blob.models.SignedIdentifier;
 import com.microsoft.azure.storage.blob.models.StorageErrorException;
@@ -51,6 +53,7 @@ import io.reactivex.Completable;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
 import io.reactivex.annotations.NonNull;
+
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -96,52 +99,52 @@ public final class GeneratedContainers {
         @GET("{containerName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Single<ContainerGetPropertiesResponse> getProperties(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype);
+        Single<ContainerGetPropertiesResponse> getProperties(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, @HeaderParam("x-ms-lease-id") String leaseId);
 
         @DELETE("{containerName}")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Single<ContainerDeleteResponse> delete(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype);
+        Single<ContainerDeleteResponse> delete(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince);
 
         @PUT("{containerName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Single<ContainerSetMetadataResponse> setMetadata(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, @QueryParam("comp") String comp);
+        Single<ContainerSetMetadataResponse> setMetadata(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince);
 
         @GET("{containerName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Single<ContainerGetAccessPolicyResponse> getAccessPolicy(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, @QueryParam("comp") String comp);
+        Single<ContainerGetAccessPolicyResponse> getAccessPolicy(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-id") String leaseId);
 
         @PUT("{containerName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Single<ContainerSetAccessPolicyResponse> setAccessPolicy(@HostParam("url") String url, @BodyParam("application/xml; charset=utf-8") SignedIdentifiersWrapper containerAcl, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-blob-public-access") PublicAccessType access, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, @QueryParam("comp") String comp);
+        Single<ContainerSetAccessPolicyResponse> setAccessPolicy(@HostParam("url") String url, @BodyParam("application/xml; charset=utf-8") SignedIdentifiersWrapper containerAcl, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-blob-public-access") PublicAccessType access, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince);
 
         @PUT("{containerName}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Single<ContainerAcquireLeaseResponse> acquireLease(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-duration") Integer duration, @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @QueryParam("restype") String restype, @HeaderParam("x-ms-lease-action") String action);
+        Single<ContainerAcquireLeaseResponse> acquireLease(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-duration") Integer duration, @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @QueryParam("restype") String restype, @HeaderParam("x-ms-lease-action") String action, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince);
 
         @PUT("{containerName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Single<ContainerReleaseLeaseResponse> releaseLease(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @QueryParam("restype") String restype, @HeaderParam("x-ms-lease-action") String action);
+        Single<ContainerReleaseLeaseResponse> releaseLease(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @QueryParam("restype") String restype, @HeaderParam("x-ms-lease-action") String action, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince);
 
         @PUT("{containerName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Single<ContainerRenewLeaseResponse> renewLease(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @QueryParam("restype") String restype, @HeaderParam("x-ms-lease-action") String action);
+        Single<ContainerRenewLeaseResponse> renewLease(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @QueryParam("restype") String restype, @HeaderParam("x-ms-lease-action") String action, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince);
 
         @PUT("{containerName}")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Single<ContainerBreakLeaseResponse> breakLease(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-break-period") Integer breakPeriod, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @QueryParam("restype") String restype, @HeaderParam("x-ms-lease-action") String action);
+        Single<ContainerBreakLeaseResponse> breakLease(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-break-period") Integer breakPeriod, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @QueryParam("restype") String restype, @HeaderParam("x-ms-lease-action") String action, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince);
 
         @PUT("{containerName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Single<ContainerChangeLeaseResponse> changeLease(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @QueryParam("restype") String restype, @HeaderParam("x-ms-lease-action") String action);
+        Single<ContainerChangeLeaseResponse> changeLease(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @QueryParam("restype") String restype, @HeaderParam("x-ms-lease-action") String action, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince);
 
         @GET("{containerName}")
         @ExpectedResponses({200})
@@ -230,61 +233,66 @@ public final class GeneratedContainers {
      * returns all user-defined metadata and system properties for the specified container. The data returned does not include the container's list of blobs.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param leaseId If specified, the operation only succeeds if the container's lease is active and matches this ID.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param leaseAccessConditions Additional parameters for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    public void getProperties(Integer timeout, String leaseId, String requestId) {
-        getPropertiesAsync(timeout, leaseId, requestId).blockingAwait();
+    public void getProperties(Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions) {
+        getPropertiesAsync(timeout, requestId, leaseAccessConditions).blockingAwait();
     }
 
     /**
      * returns all user-defined metadata and system properties for the specified container. The data returned does not include the container's list of blobs.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param leaseId If specified, the operation only succeeds if the container's lease is active and matches this ID.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param leaseAccessConditions Additional parameters for the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a ServiceFuture which will be completed with the result of the network request.
      */
-    public ServiceFuture<Void> getPropertiesAsync(Integer timeout, String leaseId, String requestId, ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromBody(getPropertiesAsync(timeout, leaseId, requestId), serviceCallback);
+    public ServiceFuture<Void> getPropertiesAsync(Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions, ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromBody(getPropertiesAsync(timeout, requestId, leaseAccessConditions), serviceCallback);
     }
 
     /**
      * returns all user-defined metadata and system properties for the specified container. The data returned does not include the container's list of blobs.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param leaseId If specified, the operation only succeeds if the container's lease is active and matches this ID.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param leaseAccessConditions Additional parameters for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Single which performs the network request upon subscription.
      */
-    public Single<ContainerGetPropertiesResponse> getPropertiesWithRestResponseAsync(Integer timeout, String leaseId, String requestId) {
+    public Single<ContainerGetPropertiesResponse> getPropertiesWithRestResponseAsync(Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions) {
         if (this.client.url() == null) {
             throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
         }
         if (this.client.version() == null) {
             throw new IllegalArgumentException("Parameter this.client.version() is required and cannot be null.");
         }
+        Validator.validate(leaseAccessConditions);
         final String restype = "container";
-        return service.getProperties(this.client.url(), timeout, leaseId, this.client.version(), requestId, restype);
+        String leaseId = null;
+        if (leaseAccessConditions != null) {
+            leaseId = leaseAccessConditions.leaseId();
+        }
+        return service.getProperties(this.client.url(), timeout, this.client.version(), requestId, restype, leaseId);
     }
 
     /**
      * returns all user-defined metadata and system properties for the specified container. The data returned does not include the container's list of blobs.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param leaseId If specified, the operation only succeeds if the container's lease is active and matches this ID.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param leaseAccessConditions Additional parameters for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Single which performs the network request upon subscription.
      */
-    public Completable getPropertiesAsync(Integer timeout, String leaseId, String requestId) {
-        return getPropertiesWithRestResponseAsync(timeout, leaseId, requestId)
+    public Completable getPropertiesAsync(Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions) {
+        return getPropertiesWithRestResponseAsync(timeout, requestId, leaseAccessConditions)
             .toCompletable();
     }
 
@@ -292,53 +300,64 @@ public final class GeneratedContainers {
      * operation marks the specified container for deletion. The container and any blobs contained within it are later deleted during garbage collection.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param leaseId If specified, the operation only succeeds if the container's lease is active and matches this ID.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param leaseAccessConditions Additional parameters for the operation.
+     * @param modifiedAccessConditions Additional parameters for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    public void delete(Integer timeout, String leaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId) {
-        deleteAsync(timeout, leaseId, ifModifiedSince, ifUnmodifiedSince, requestId).blockingAwait();
+    public void delete(Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
+        deleteAsync(timeout, requestId, leaseAccessConditions, modifiedAccessConditions).blockingAwait();
     }
 
     /**
      * operation marks the specified container for deletion. The container and any blobs contained within it are later deleted during garbage collection.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param leaseId If specified, the operation only succeeds if the container's lease is active and matches this ID.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param leaseAccessConditions Additional parameters for the operation.
+     * @param modifiedAccessConditions Additional parameters for the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a ServiceFuture which will be completed with the result of the network request.
      */
-    public ServiceFuture<Void> deleteAsync(Integer timeout, String leaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId, ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromBody(deleteAsync(timeout, leaseId, ifModifiedSince, ifUnmodifiedSince, requestId), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromBody(deleteAsync(timeout, requestId, leaseAccessConditions, modifiedAccessConditions), serviceCallback);
     }
 
     /**
      * operation marks the specified container for deletion. The container and any blobs contained within it are later deleted during garbage collection.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param leaseId If specified, the operation only succeeds if the container's lease is active and matches this ID.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param leaseAccessConditions Additional parameters for the operation.
+     * @param modifiedAccessConditions Additional parameters for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Single which performs the network request upon subscription.
      */
-    public Single<ContainerDeleteResponse> deleteWithRestResponseAsync(Integer timeout, String leaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId) {
+    public Single<ContainerDeleteResponse> deleteWithRestResponseAsync(Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
         if (this.client.url() == null) {
             throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
         }
         if (this.client.version() == null) {
             throw new IllegalArgumentException("Parameter this.client.version() is required and cannot be null.");
         }
+        Validator.validate(leaseAccessConditions);
+        Validator.validate(modifiedAccessConditions);
         final String restype = "container";
+        String leaseId = null;
+        if (leaseAccessConditions != null) {
+            leaseId = leaseAccessConditions.leaseId();
+        }
+        OffsetDateTime ifModifiedSince = null;
+        if (modifiedAccessConditions != null) {
+            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+        }
+        OffsetDateTime ifUnmodifiedSince = null;
+        if (modifiedAccessConditions != null) {
+            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+        }
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         if (ifModifiedSince != null) {
             ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
@@ -347,22 +366,21 @@ public final class GeneratedContainers {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.delete(this.client.url(), timeout, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.version(), requestId, restype);
+        return service.delete(this.client.url(), timeout, this.client.version(), requestId, restype, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
     }
 
     /**
      * operation marks the specified container for deletion. The container and any blobs contained within it are later deleted during garbage collection.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param leaseId If specified, the operation only succeeds if the container's lease is active and matches this ID.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param leaseAccessConditions Additional parameters for the operation.
+     * @param modifiedAccessConditions Additional parameters for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Single which performs the network request upon subscription.
      */
-    public Completable deleteAsync(Integer timeout, String leaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId) {
-        return deleteWithRestResponseAsync(timeout, leaseId, ifModifiedSince, ifUnmodifiedSince, requestId)
+    public Completable deleteAsync(Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
+        return deleteWithRestResponseAsync(timeout, requestId, leaseAccessConditions, modifiedAccessConditions)
             .toCompletable();
     }
 
@@ -370,46 +388,46 @@ public final class GeneratedContainers {
      * operation sets one or more user-defined name-value pairs for the specified container.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param leaseId If specified, the operation only succeeds if the container's lease is active and matches this ID.
      * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the operation will copy the metadata from the source blob or file to the destination blob. If one or more name-value pairs are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers. See Naming and Referencing Containers, Blobs, and Metadata for more information.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the specified date/time.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param leaseAccessConditions Additional parameters for the operation.
+     * @param modifiedAccessConditions Additional parameters for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    public void setMetadata(Integer timeout, String leaseId, Map<String, String> metadata, OffsetDateTime ifModifiedSince, String requestId) {
-        setMetadataAsync(timeout, leaseId, metadata, ifModifiedSince, requestId).blockingAwait();
+    public void setMetadata(Integer timeout, Map<String, String> metadata, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
+        setMetadataAsync(timeout, metadata, requestId, leaseAccessConditions, modifiedAccessConditions).blockingAwait();
     }
 
     /**
      * operation sets one or more user-defined name-value pairs for the specified container.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param leaseId If specified, the operation only succeeds if the container's lease is active and matches this ID.
      * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the operation will copy the metadata from the source blob or file to the destination blob. If one or more name-value pairs are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers. See Naming and Referencing Containers, Blobs, and Metadata for more information.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the specified date/time.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param leaseAccessConditions Additional parameters for the operation.
+     * @param modifiedAccessConditions Additional parameters for the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a ServiceFuture which will be completed with the result of the network request.
      */
-    public ServiceFuture<Void> setMetadataAsync(Integer timeout, String leaseId, Map<String, String> metadata, OffsetDateTime ifModifiedSince, String requestId, ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromBody(setMetadataAsync(timeout, leaseId, metadata, ifModifiedSince, requestId), serviceCallback);
+    public ServiceFuture<Void> setMetadataAsync(Integer timeout, Map<String, String> metadata, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromBody(setMetadataAsync(timeout, metadata, requestId, leaseAccessConditions, modifiedAccessConditions), serviceCallback);
     }
 
     /**
      * operation sets one or more user-defined name-value pairs for the specified container.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param leaseId If specified, the operation only succeeds if the container's lease is active and matches this ID.
      * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the operation will copy the metadata from the source blob or file to the destination blob. If one or more name-value pairs are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers. See Naming and Referencing Containers, Blobs, and Metadata for more information.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the specified date/time.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param leaseAccessConditions Additional parameters for the operation.
+     * @param modifiedAccessConditions Additional parameters for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Single which performs the network request upon subscription.
      */
-    public Single<ContainerSetMetadataResponse> setMetadataWithRestResponseAsync(Integer timeout, String leaseId, Map<String, String> metadata, OffsetDateTime ifModifiedSince, String requestId) {
+    public Single<ContainerSetMetadataResponse> setMetadataWithRestResponseAsync(Integer timeout, Map<String, String> metadata, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
         if (this.client.url() == null) {
             throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
         }
@@ -417,28 +435,38 @@ public final class GeneratedContainers {
             throw new IllegalArgumentException("Parameter this.client.version() is required and cannot be null.");
         }
         Validator.validate(metadata);
+        Validator.validate(leaseAccessConditions);
+        Validator.validate(modifiedAccessConditions);
         final String restype = "container";
         final String comp = "metadata";
+        String leaseId = null;
+        if (leaseAccessConditions != null) {
+            leaseId = leaseAccessConditions.leaseId();
+        }
+        OffsetDateTime ifModifiedSince = null;
+        if (modifiedAccessConditions != null) {
+            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+        }
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         if (ifModifiedSince != null) {
             ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
         }
-        return service.setMetadata(this.client.url(), timeout, leaseId, metadata, ifModifiedSinceConverted, this.client.version(), requestId, restype, comp);
+        return service.setMetadata(this.client.url(), timeout, metadata, this.client.version(), requestId, restype, comp, leaseId, ifModifiedSinceConverted);
     }
 
     /**
      * operation sets one or more user-defined name-value pairs for the specified container.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param leaseId If specified, the operation only succeeds if the container's lease is active and matches this ID.
      * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the operation will copy the metadata from the source blob or file to the destination blob. If one or more name-value pairs are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers. See Naming and Referencing Containers, Blobs, and Metadata for more information.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the specified date/time.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param leaseAccessConditions Additional parameters for the operation.
+     * @param modifiedAccessConditions Additional parameters for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Single which performs the network request upon subscription.
      */
-    public Completable setMetadataAsync(Integer timeout, String leaseId, Map<String, String> metadata, OffsetDateTime ifModifiedSince, String requestId) {
-        return setMetadataWithRestResponseAsync(timeout, leaseId, metadata, ifModifiedSince, requestId)
+    public Completable setMetadataAsync(Integer timeout, Map<String, String> metadata, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
+        return setMetadataWithRestResponseAsync(timeout, metadata, requestId, leaseAccessConditions, modifiedAccessConditions)
             .toCompletable();
     }
 
@@ -446,63 +474,68 @@ public final class GeneratedContainers {
      * gets the permissions for the specified container. The permissions indicate whether container data may be accessed publicly.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param leaseId If specified, the operation only succeeds if the container's lease is active and matches this ID.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param leaseAccessConditions Additional parameters for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List&lt;SignedIdentifier&gt; object if successful.
      */
-    public List<SignedIdentifier> getAccessPolicy(Integer timeout, String leaseId, String requestId) {
-        return getAccessPolicyAsync(timeout, leaseId, requestId).blockingGet();
+    public List<SignedIdentifier> getAccessPolicy(Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions) {
+        return getAccessPolicyAsync(timeout, requestId, leaseAccessConditions).blockingGet();
     }
 
     /**
      * gets the permissions for the specified container. The permissions indicate whether container data may be accessed publicly.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param leaseId If specified, the operation only succeeds if the container's lease is active and matches this ID.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param leaseAccessConditions Additional parameters for the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a ServiceFuture which will be completed with the result of the network request.
      */
-    public ServiceFuture<List<SignedIdentifier>> getAccessPolicyAsync(Integer timeout, String leaseId, String requestId, ServiceCallback<List<SignedIdentifier>> serviceCallback) {
-        return ServiceFuture.fromBody(getAccessPolicyAsync(timeout, leaseId, requestId), serviceCallback);
+    public ServiceFuture<List<SignedIdentifier>> getAccessPolicyAsync(Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions, ServiceCallback<List<SignedIdentifier>> serviceCallback) {
+        return ServiceFuture.fromBody(getAccessPolicyAsync(timeout, requestId, leaseAccessConditions), serviceCallback);
     }
 
     /**
      * gets the permissions for the specified container. The permissions indicate whether container data may be accessed publicly.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param leaseId If specified, the operation only succeeds if the container's lease is active and matches this ID.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param leaseAccessConditions Additional parameters for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Single which performs the network request upon subscription.
      */
-    public Single<ContainerGetAccessPolicyResponse> getAccessPolicyWithRestResponseAsync(Integer timeout, String leaseId, String requestId) {
+    public Single<ContainerGetAccessPolicyResponse> getAccessPolicyWithRestResponseAsync(Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions) {
         if (this.client.url() == null) {
             throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
         }
         if (this.client.version() == null) {
             throw new IllegalArgumentException("Parameter this.client.version() is required and cannot be null.");
         }
+        Validator.validate(leaseAccessConditions);
         final String restype = "container";
         final String comp = "acl";
-        return service.getAccessPolicy(this.client.url(), timeout, leaseId, this.client.version(), requestId, restype, comp);
+        String leaseId = null;
+        if (leaseAccessConditions != null) {
+            leaseId = leaseAccessConditions.leaseId();
+        }
+        return service.getAccessPolicy(this.client.url(), timeout, this.client.version(), requestId, restype, comp, leaseId);
     }
 
     /**
      * gets the permissions for the specified container. The permissions indicate whether container data may be accessed publicly.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param leaseId If specified, the operation only succeeds if the container's lease is active and matches this ID.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param leaseAccessConditions Additional parameters for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Single which performs the network request upon subscription.
      */
-    public Maybe<List<SignedIdentifier>> getAccessPolicyAsync(Integer timeout, String leaseId, String requestId) {
-        return getAccessPolicyWithRestResponseAsync(timeout, leaseId, requestId)
+    public Maybe<List<SignedIdentifier>> getAccessPolicyAsync(Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions) {
+        return getAccessPolicyWithRestResponseAsync(timeout, requestId, leaseAccessConditions)
             .flatMapMaybe((ContainerGetAccessPolicyResponse res) -> res.body() == null ? Maybe.empty() : Maybe.just(res.body()));
     }
 
@@ -511,17 +544,16 @@ public final class GeneratedContainers {
      *
      * @param containerAcl the acls for the container.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param leaseId If specified, the operation only succeeds if the container's lease is active and matches this ID.
      * @param access Specifies whether data in the container may be accessed publicly and the level of access. Possible values include: 'container', 'blob'.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param leaseAccessConditions Additional parameters for the operation.
+     * @param modifiedAccessConditions Additional parameters for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    public void setAccessPolicy(List<SignedIdentifier> containerAcl, Integer timeout, String leaseId, PublicAccessType access, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId) {
-        setAccessPolicyAsync(containerAcl, timeout, leaseId, access, ifModifiedSince, ifUnmodifiedSince, requestId).blockingAwait();
+    public void setAccessPolicy(List<SignedIdentifier> containerAcl, Integer timeout, PublicAccessType access, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
+        setAccessPolicyAsync(containerAcl, timeout, access, requestId, leaseAccessConditions, modifiedAccessConditions).blockingAwait();
     }
 
     /**
@@ -529,17 +561,16 @@ public final class GeneratedContainers {
      *
      * @param containerAcl the acls for the container.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param leaseId If specified, the operation only succeeds if the container's lease is active and matches this ID.
      * @param access Specifies whether data in the container may be accessed publicly and the level of access. Possible values include: 'container', 'blob'.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param leaseAccessConditions Additional parameters for the operation.
+     * @param modifiedAccessConditions Additional parameters for the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a ServiceFuture which will be completed with the result of the network request.
      */
-    public ServiceFuture<Void> setAccessPolicyAsync(List<SignedIdentifier> containerAcl, Integer timeout, String leaseId, PublicAccessType access, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId, ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromBody(setAccessPolicyAsync(containerAcl, timeout, leaseId, access, ifModifiedSince, ifUnmodifiedSince, requestId), serviceCallback);
+    public ServiceFuture<Void> setAccessPolicyAsync(List<SignedIdentifier> containerAcl, Integer timeout, PublicAccessType access, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromBody(setAccessPolicyAsync(containerAcl, timeout, access, requestId, leaseAccessConditions, modifiedAccessConditions), serviceCallback);
     }
 
     /**
@@ -547,15 +578,14 @@ public final class GeneratedContainers {
      *
      * @param containerAcl the acls for the container.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param leaseId If specified, the operation only succeeds if the container's lease is active and matches this ID.
      * @param access Specifies whether data in the container may be accessed publicly and the level of access. Possible values include: 'container', 'blob'.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param leaseAccessConditions Additional parameters for the operation.
+     * @param modifiedAccessConditions Additional parameters for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Single which performs the network request upon subscription.
      */
-    public Single<ContainerSetAccessPolicyResponse> setAccessPolicyWithRestResponseAsync(List<SignedIdentifier> containerAcl, Integer timeout, String leaseId, PublicAccessType access, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId) {
+    public Single<ContainerSetAccessPolicyResponse> setAccessPolicyWithRestResponseAsync(List<SignedIdentifier> containerAcl, Integer timeout, PublicAccessType access, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
         if (this.client.url() == null) {
             throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
         }
@@ -563,8 +593,22 @@ public final class GeneratedContainers {
             throw new IllegalArgumentException("Parameter this.client.version() is required and cannot be null.");
         }
         Validator.validate(containerAcl);
+        Validator.validate(leaseAccessConditions);
+        Validator.validate(modifiedAccessConditions);
         final String restype = "container";
         final String comp = "acl";
+        String leaseId = null;
+        if (leaseAccessConditions != null) {
+            leaseId = leaseAccessConditions.leaseId();
+        }
+        OffsetDateTime ifModifiedSince = null;
+        if (modifiedAccessConditions != null) {
+            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+        }
+        OffsetDateTime ifUnmodifiedSince = null;
+        if (modifiedAccessConditions != null) {
+            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+        }
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         if (ifModifiedSince != null) {
             ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
@@ -573,7 +617,7 @@ public final class GeneratedContainers {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.setAccessPolicy(this.client.url(), new SignedIdentifiersWrapper(containerAcl), timeout, leaseId, access, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.version(), requestId, restype, comp);
+        return service.setAccessPolicy(this.client.url(), new SignedIdentifiersWrapper(containerAcl), timeout, access, this.client.version(), requestId, restype, comp, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
     }
 
     /**
@@ -581,16 +625,15 @@ public final class GeneratedContainers {
      *
      * @param containerAcl the acls for the container.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param leaseId If specified, the operation only succeeds if the container's lease is active and matches this ID.
      * @param access Specifies whether data in the container may be accessed publicly and the level of access. Possible values include: 'container', 'blob'.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param leaseAccessConditions Additional parameters for the operation.
+     * @param modifiedAccessConditions Additional parameters for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Single which performs the network request upon subscription.
      */
-    public Completable setAccessPolicyAsync(List<SignedIdentifier> containerAcl, Integer timeout, String leaseId, PublicAccessType access, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId) {
-        return setAccessPolicyWithRestResponseAsync(containerAcl, timeout, leaseId, access, ifModifiedSince, ifUnmodifiedSince, requestId)
+    public Completable setAccessPolicyAsync(List<SignedIdentifier> containerAcl, Integer timeout, PublicAccessType access, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
+        return setAccessPolicyWithRestResponseAsync(containerAcl, timeout, access, requestId, leaseAccessConditions, modifiedAccessConditions)
             .toCompletable();
     }
 
@@ -600,15 +643,14 @@ public final class GeneratedContainers {
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param duration Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite lease can be between 15 and 60 seconds. A lease duration cannot be changed using renew or change.
      * @param proposedLeaseId Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request) if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID string formats.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param modifiedAccessConditions Additional parameters for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    public void acquireLease(Integer timeout, Integer duration, String proposedLeaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId) {
-        acquireLeaseAsync(timeout, duration, proposedLeaseId, ifModifiedSince, ifUnmodifiedSince, requestId).blockingAwait();
+    public void acquireLease(Integer timeout, Integer duration, String proposedLeaseId, String requestId, ModifiedAccessConditions modifiedAccessConditions) {
+        acquireLeaseAsync(timeout, duration, proposedLeaseId, requestId, modifiedAccessConditions).blockingAwait();
     }
 
     /**
@@ -617,15 +659,14 @@ public final class GeneratedContainers {
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param duration Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite lease can be between 15 and 60 seconds. A lease duration cannot be changed using renew or change.
      * @param proposedLeaseId Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request) if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID string formats.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param modifiedAccessConditions Additional parameters for the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a ServiceFuture which will be completed with the result of the network request.
      */
-    public ServiceFuture<Void> acquireLeaseAsync(Integer timeout, Integer duration, String proposedLeaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId, ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromBody(acquireLeaseAsync(timeout, duration, proposedLeaseId, ifModifiedSince, ifUnmodifiedSince, requestId), serviceCallback);
+    public ServiceFuture<Void> acquireLeaseAsync(Integer timeout, Integer duration, String proposedLeaseId, String requestId, ModifiedAccessConditions modifiedAccessConditions, ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromBody(acquireLeaseAsync(timeout, duration, proposedLeaseId, requestId, modifiedAccessConditions), serviceCallback);
     }
 
     /**
@@ -634,22 +675,30 @@ public final class GeneratedContainers {
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param duration Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite lease can be between 15 and 60 seconds. A lease duration cannot be changed using renew or change.
      * @param proposedLeaseId Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request) if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID string formats.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param modifiedAccessConditions Additional parameters for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Single which performs the network request upon subscription.
      */
-    public Single<ContainerAcquireLeaseResponse> acquireLeaseWithRestResponseAsync(Integer timeout, Integer duration, String proposedLeaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId) {
+    public Single<ContainerAcquireLeaseResponse> acquireLeaseWithRestResponseAsync(Integer timeout, Integer duration, String proposedLeaseId, String requestId, ModifiedAccessConditions modifiedAccessConditions) {
         if (this.client.url() == null) {
             throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
         }
         if (this.client.version() == null) {
             throw new IllegalArgumentException("Parameter this.client.version() is required and cannot be null.");
         }
+        Validator.validate(modifiedAccessConditions);
         final String comp = "lease";
         final String restype = "container";
         final String action = "acquire";
+        OffsetDateTime ifModifiedSince = null;
+        if (modifiedAccessConditions != null) {
+            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+        }
+        OffsetDateTime ifUnmodifiedSince = null;
+        if (modifiedAccessConditions != null) {
+            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+        }
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         if (ifModifiedSince != null) {
             ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
@@ -658,7 +707,7 @@ public final class GeneratedContainers {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.acquireLease(this.client.url(), timeout, duration, proposedLeaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.version(), requestId, comp, restype, action);
+        return service.acquireLease(this.client.url(), timeout, duration, proposedLeaseId, this.client.version(), requestId, comp, restype, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
     }
 
     /**
@@ -667,14 +716,13 @@ public final class GeneratedContainers {
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param duration Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite lease can be between 15 and 60 seconds. A lease duration cannot be changed using renew or change.
      * @param proposedLeaseId Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request) if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID string formats.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param modifiedAccessConditions Additional parameters for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Single which performs the network request upon subscription.
      */
-    public Completable acquireLeaseAsync(Integer timeout, Integer duration, String proposedLeaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId) {
-        return acquireLeaseWithRestResponseAsync(timeout, duration, proposedLeaseId, ifModifiedSince, ifUnmodifiedSince, requestId)
+    public Completable acquireLeaseAsync(Integer timeout, Integer duration, String proposedLeaseId, String requestId, ModifiedAccessConditions modifiedAccessConditions) {
+        return acquireLeaseWithRestResponseAsync(timeout, duration, proposedLeaseId, requestId, modifiedAccessConditions)
             .toCompletable();
     }
 
@@ -683,15 +731,14 @@ public final class GeneratedContainers {
      *
      * @param leaseId If specified, the operation only succeeds if the container's lease is active and matches this ID.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param modifiedAccessConditions Additional parameters for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    public void releaseLease(@NonNull String leaseId, Integer timeout, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId) {
-        releaseLeaseAsync(leaseId, timeout, ifModifiedSince, ifUnmodifiedSince, requestId).blockingAwait();
+    public void releaseLease(@NonNull String leaseId, Integer timeout, String requestId, ModifiedAccessConditions modifiedAccessConditions) {
+        releaseLeaseAsync(leaseId, timeout, requestId, modifiedAccessConditions).blockingAwait();
     }
 
     /**
@@ -699,15 +746,14 @@ public final class GeneratedContainers {
      *
      * @param leaseId If specified, the operation only succeeds if the container's lease is active and matches this ID.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param modifiedAccessConditions Additional parameters for the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a ServiceFuture which will be completed with the result of the network request.
      */
-    public ServiceFuture<Void> releaseLeaseAsync(@NonNull String leaseId, Integer timeout, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId, ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromBody(releaseLeaseAsync(leaseId, timeout, ifModifiedSince, ifUnmodifiedSince, requestId), serviceCallback);
+    public ServiceFuture<Void> releaseLeaseAsync(@NonNull String leaseId, Integer timeout, String requestId, ModifiedAccessConditions modifiedAccessConditions, ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromBody(releaseLeaseAsync(leaseId, timeout, requestId, modifiedAccessConditions), serviceCallback);
     }
 
     /**
@@ -715,13 +761,12 @@ public final class GeneratedContainers {
      *
      * @param leaseId If specified, the operation only succeeds if the container's lease is active and matches this ID.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param modifiedAccessConditions Additional parameters for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Single which performs the network request upon subscription.
      */
-    public Single<ContainerReleaseLeaseResponse> releaseLeaseWithRestResponseAsync(@NonNull String leaseId, Integer timeout, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId) {
+    public Single<ContainerReleaseLeaseResponse> releaseLeaseWithRestResponseAsync(@NonNull String leaseId, Integer timeout, String requestId, ModifiedAccessConditions modifiedAccessConditions) {
         if (this.client.url() == null) {
             throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
         }
@@ -731,9 +776,18 @@ public final class GeneratedContainers {
         if (this.client.version() == null) {
             throw new IllegalArgumentException("Parameter this.client.version() is required and cannot be null.");
         }
+        Validator.validate(modifiedAccessConditions);
         final String comp = "lease";
         final String restype = "container";
         final String action = "release";
+        OffsetDateTime ifModifiedSince = null;
+        if (modifiedAccessConditions != null) {
+            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+        }
+        OffsetDateTime ifUnmodifiedSince = null;
+        if (modifiedAccessConditions != null) {
+            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+        }
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         if (ifModifiedSince != null) {
             ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
@@ -742,7 +796,7 @@ public final class GeneratedContainers {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.releaseLease(this.client.url(), timeout, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.version(), requestId, comp, restype, action);
+        return service.releaseLease(this.client.url(), timeout, leaseId, this.client.version(), requestId, comp, restype, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
     }
 
     /**
@@ -750,14 +804,13 @@ public final class GeneratedContainers {
      *
      * @param leaseId If specified, the operation only succeeds if the container's lease is active and matches this ID.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param modifiedAccessConditions Additional parameters for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Single which performs the network request upon subscription.
      */
-    public Completable releaseLeaseAsync(@NonNull String leaseId, Integer timeout, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId) {
-        return releaseLeaseWithRestResponseAsync(leaseId, timeout, ifModifiedSince, ifUnmodifiedSince, requestId)
+    public Completable releaseLeaseAsync(@NonNull String leaseId, Integer timeout, String requestId, ModifiedAccessConditions modifiedAccessConditions) {
+        return releaseLeaseWithRestResponseAsync(leaseId, timeout, requestId, modifiedAccessConditions)
             .toCompletable();
     }
 
@@ -766,15 +819,14 @@ public final class GeneratedContainers {
      *
      * @param leaseId If specified, the operation only succeeds if the container's lease is active and matches this ID.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param modifiedAccessConditions Additional parameters for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    public void renewLease(@NonNull String leaseId, Integer timeout, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId) {
-        renewLeaseAsync(leaseId, timeout, ifModifiedSince, ifUnmodifiedSince, requestId).blockingAwait();
+    public void renewLease(@NonNull String leaseId, Integer timeout, String requestId, ModifiedAccessConditions modifiedAccessConditions) {
+        renewLeaseAsync(leaseId, timeout, requestId, modifiedAccessConditions).blockingAwait();
     }
 
     /**
@@ -782,15 +834,14 @@ public final class GeneratedContainers {
      *
      * @param leaseId If specified, the operation only succeeds if the container's lease is active and matches this ID.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param modifiedAccessConditions Additional parameters for the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a ServiceFuture which will be completed with the result of the network request.
      */
-    public ServiceFuture<Void> renewLeaseAsync(@NonNull String leaseId, Integer timeout, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId, ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromBody(renewLeaseAsync(leaseId, timeout, ifModifiedSince, ifUnmodifiedSince, requestId), serviceCallback);
+    public ServiceFuture<Void> renewLeaseAsync(@NonNull String leaseId, Integer timeout, String requestId, ModifiedAccessConditions modifiedAccessConditions, ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromBody(renewLeaseAsync(leaseId, timeout, requestId, modifiedAccessConditions), serviceCallback);
     }
 
     /**
@@ -798,13 +849,12 @@ public final class GeneratedContainers {
      *
      * @param leaseId If specified, the operation only succeeds if the container's lease is active and matches this ID.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param modifiedAccessConditions Additional parameters for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Single which performs the network request upon subscription.
      */
-    public Single<ContainerRenewLeaseResponse> renewLeaseWithRestResponseAsync(@NonNull String leaseId, Integer timeout, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId) {
+    public Single<ContainerRenewLeaseResponse> renewLeaseWithRestResponseAsync(@NonNull String leaseId, Integer timeout, String requestId, ModifiedAccessConditions modifiedAccessConditions) {
         if (this.client.url() == null) {
             throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
         }
@@ -814,9 +864,18 @@ public final class GeneratedContainers {
         if (this.client.version() == null) {
             throw new IllegalArgumentException("Parameter this.client.version() is required and cannot be null.");
         }
+        Validator.validate(modifiedAccessConditions);
         final String comp = "lease";
         final String restype = "container";
         final String action = "renew";
+        OffsetDateTime ifModifiedSince = null;
+        if (modifiedAccessConditions != null) {
+            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+        }
+        OffsetDateTime ifUnmodifiedSince = null;
+        if (modifiedAccessConditions != null) {
+            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+        }
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         if (ifModifiedSince != null) {
             ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
@@ -825,7 +884,7 @@ public final class GeneratedContainers {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.renewLease(this.client.url(), timeout, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.version(), requestId, comp, restype, action);
+        return service.renewLease(this.client.url(), timeout, leaseId, this.client.version(), requestId, comp, restype, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
     }
 
     /**
@@ -833,14 +892,13 @@ public final class GeneratedContainers {
      *
      * @param leaseId If specified, the operation only succeeds if the container's lease is active and matches this ID.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param modifiedAccessConditions Additional parameters for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Single which performs the network request upon subscription.
      */
-    public Completable renewLeaseAsync(@NonNull String leaseId, Integer timeout, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId) {
-        return renewLeaseWithRestResponseAsync(leaseId, timeout, ifModifiedSince, ifUnmodifiedSince, requestId)
+    public Completable renewLeaseAsync(@NonNull String leaseId, Integer timeout, String requestId, ModifiedAccessConditions modifiedAccessConditions) {
+        return renewLeaseWithRestResponseAsync(leaseId, timeout, requestId, modifiedAccessConditions)
             .toCompletable();
     }
 
@@ -849,15 +907,14 @@ public final class GeneratedContainers {
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param breakPeriod For a break operation, proposed duration the lease should continue before it is broken, in seconds, between 0 and 60. This break period is only used if it is shorter than the time remaining on the lease. If longer, the time remaining on the lease is used. A new lease will not be available before the break period has expired, but the lease may be held for longer than the break period. If this header does not appear with a break operation, a fixed-duration lease breaks after the remaining lease period elapses, and an infinite lease breaks immediately.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param modifiedAccessConditions Additional parameters for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    public void breakLease(Integer timeout, Integer breakPeriod, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId) {
-        breakLeaseAsync(timeout, breakPeriod, ifModifiedSince, ifUnmodifiedSince, requestId).blockingAwait();
+    public void breakLease(Integer timeout, Integer breakPeriod, String requestId, ModifiedAccessConditions modifiedAccessConditions) {
+        breakLeaseAsync(timeout, breakPeriod, requestId, modifiedAccessConditions).blockingAwait();
     }
 
     /**
@@ -865,15 +922,14 @@ public final class GeneratedContainers {
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param breakPeriod For a break operation, proposed duration the lease should continue before it is broken, in seconds, between 0 and 60. This break period is only used if it is shorter than the time remaining on the lease. If longer, the time remaining on the lease is used. A new lease will not be available before the break period has expired, but the lease may be held for longer than the break period. If this header does not appear with a break operation, a fixed-duration lease breaks after the remaining lease period elapses, and an infinite lease breaks immediately.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param modifiedAccessConditions Additional parameters for the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a ServiceFuture which will be completed with the result of the network request.
      */
-    public ServiceFuture<Void> breakLeaseAsync(Integer timeout, Integer breakPeriod, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId, ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromBody(breakLeaseAsync(timeout, breakPeriod, ifModifiedSince, ifUnmodifiedSince, requestId), serviceCallback);
+    public ServiceFuture<Void> breakLeaseAsync(Integer timeout, Integer breakPeriod, String requestId, ModifiedAccessConditions modifiedAccessConditions, ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromBody(breakLeaseAsync(timeout, breakPeriod, requestId, modifiedAccessConditions), serviceCallback);
     }
 
     /**
@@ -881,22 +937,30 @@ public final class GeneratedContainers {
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param breakPeriod For a break operation, proposed duration the lease should continue before it is broken, in seconds, between 0 and 60. This break period is only used if it is shorter than the time remaining on the lease. If longer, the time remaining on the lease is used. A new lease will not be available before the break period has expired, but the lease may be held for longer than the break period. If this header does not appear with a break operation, a fixed-duration lease breaks after the remaining lease period elapses, and an infinite lease breaks immediately.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param modifiedAccessConditions Additional parameters for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Single which performs the network request upon subscription.
      */
-    public Single<ContainerBreakLeaseResponse> breakLeaseWithRestResponseAsync(Integer timeout, Integer breakPeriod, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId) {
+    public Single<ContainerBreakLeaseResponse> breakLeaseWithRestResponseAsync(Integer timeout, Integer breakPeriod, String requestId, ModifiedAccessConditions modifiedAccessConditions) {
         if (this.client.url() == null) {
             throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
         }
         if (this.client.version() == null) {
             throw new IllegalArgumentException("Parameter this.client.version() is required and cannot be null.");
         }
+        Validator.validate(modifiedAccessConditions);
         final String comp = "lease";
         final String restype = "container";
         final String action = "break";
+        OffsetDateTime ifModifiedSince = null;
+        if (modifiedAccessConditions != null) {
+            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+        }
+        OffsetDateTime ifUnmodifiedSince = null;
+        if (modifiedAccessConditions != null) {
+            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+        }
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         if (ifModifiedSince != null) {
             ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
@@ -905,7 +969,7 @@ public final class GeneratedContainers {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.breakLease(this.client.url(), timeout, breakPeriod, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.version(), requestId, comp, restype, action);
+        return service.breakLease(this.client.url(), timeout, breakPeriod, this.client.version(), requestId, comp, restype, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
     }
 
     /**
@@ -913,14 +977,13 @@ public final class GeneratedContainers {
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param breakPeriod For a break operation, proposed duration the lease should continue before it is broken, in seconds, between 0 and 60. This break period is only used if it is shorter than the time remaining on the lease. If longer, the time remaining on the lease is used. A new lease will not be available before the break period has expired, but the lease may be held for longer than the break period. If this header does not appear with a break operation, a fixed-duration lease breaks after the remaining lease period elapses, and an infinite lease breaks immediately.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param modifiedAccessConditions Additional parameters for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Single which performs the network request upon subscription.
      */
-    public Completable breakLeaseAsync(Integer timeout, Integer breakPeriod, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId) {
-        return breakLeaseWithRestResponseAsync(timeout, breakPeriod, ifModifiedSince, ifUnmodifiedSince, requestId)
+    public Completable breakLeaseAsync(Integer timeout, Integer breakPeriod, String requestId, ModifiedAccessConditions modifiedAccessConditions) {
+        return breakLeaseWithRestResponseAsync(timeout, breakPeriod, requestId, modifiedAccessConditions)
             .toCompletable();
     }
 
@@ -930,15 +993,14 @@ public final class GeneratedContainers {
      * @param leaseId If specified, the operation only succeeds if the container's lease is active and matches this ID.
      * @param proposedLeaseId Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request) if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID string formats.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param modifiedAccessConditions Additional parameters for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws StorageErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    public void changeLease(@NonNull String leaseId, @NonNull String proposedLeaseId, Integer timeout, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId) {
-        changeLeaseAsync(leaseId, proposedLeaseId, timeout, ifModifiedSince, ifUnmodifiedSince, requestId).blockingAwait();
+    public void changeLease(@NonNull String leaseId, @NonNull String proposedLeaseId, Integer timeout, String requestId, ModifiedAccessConditions modifiedAccessConditions) {
+        changeLeaseAsync(leaseId, proposedLeaseId, timeout, requestId, modifiedAccessConditions).blockingAwait();
     }
 
     /**
@@ -947,15 +1009,14 @@ public final class GeneratedContainers {
      * @param leaseId If specified, the operation only succeeds if the container's lease is active and matches this ID.
      * @param proposedLeaseId Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request) if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID string formats.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param modifiedAccessConditions Additional parameters for the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a ServiceFuture which will be completed with the result of the network request.
      */
-    public ServiceFuture<Void> changeLeaseAsync(@NonNull String leaseId, @NonNull String proposedLeaseId, Integer timeout, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId, ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromBody(changeLeaseAsync(leaseId, proposedLeaseId, timeout, ifModifiedSince, ifUnmodifiedSince, requestId), serviceCallback);
+    public ServiceFuture<Void> changeLeaseAsync(@NonNull String leaseId, @NonNull String proposedLeaseId, Integer timeout, String requestId, ModifiedAccessConditions modifiedAccessConditions, ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromBody(changeLeaseAsync(leaseId, proposedLeaseId, timeout, requestId, modifiedAccessConditions), serviceCallback);
     }
 
     /**
@@ -964,13 +1025,12 @@ public final class GeneratedContainers {
      * @param leaseId If specified, the operation only succeeds if the container's lease is active and matches this ID.
      * @param proposedLeaseId Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request) if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID string formats.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param modifiedAccessConditions Additional parameters for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Single which performs the network request upon subscription.
      */
-    public Single<ContainerChangeLeaseResponse> changeLeaseWithRestResponseAsync(@NonNull String leaseId, @NonNull String proposedLeaseId, Integer timeout, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId) {
+    public Single<ContainerChangeLeaseResponse> changeLeaseWithRestResponseAsync(@NonNull String leaseId, @NonNull String proposedLeaseId, Integer timeout, String requestId, ModifiedAccessConditions modifiedAccessConditions) {
         if (this.client.url() == null) {
             throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
         }
@@ -983,9 +1043,18 @@ public final class GeneratedContainers {
         if (this.client.version() == null) {
             throw new IllegalArgumentException("Parameter this.client.version() is required and cannot be null.");
         }
+        Validator.validate(modifiedAccessConditions);
         final String comp = "lease";
         final String restype = "container";
         final String action = "change";
+        OffsetDateTime ifModifiedSince = null;
+        if (modifiedAccessConditions != null) {
+            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+        }
+        OffsetDateTime ifUnmodifiedSince = null;
+        if (modifiedAccessConditions != null) {
+            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+        }
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         if (ifModifiedSince != null) {
             ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
@@ -994,7 +1063,7 @@ public final class GeneratedContainers {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.changeLease(this.client.url(), timeout, leaseId, proposedLeaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.version(), requestId, comp, restype, action);
+        return service.changeLease(this.client.url(), timeout, leaseId, proposedLeaseId, this.client.version(), requestId, comp, restype, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
     }
 
     /**
@@ -1003,14 +1072,13 @@ public final class GeneratedContainers {
      * @param leaseId If specified, the operation only succeeds if the container's lease is active and matches this ID.
      * @param proposedLeaseId Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request) if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID string formats.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param modifiedAccessConditions Additional parameters for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Single which performs the network request upon subscription.
      */
-    public Completable changeLeaseAsync(@NonNull String leaseId, @NonNull String proposedLeaseId, Integer timeout, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId) {
-        return changeLeaseWithRestResponseAsync(leaseId, proposedLeaseId, timeout, ifModifiedSince, ifUnmodifiedSince, requestId)
+    public Completable changeLeaseAsync(@NonNull String leaseId, @NonNull String proposedLeaseId, Integer timeout, String requestId, ModifiedAccessConditions modifiedAccessConditions) {
+        return changeLeaseWithRestResponseAsync(leaseId, proposedLeaseId, timeout, requestId, modifiedAccessConditions)
             .toCompletable();
     }
 

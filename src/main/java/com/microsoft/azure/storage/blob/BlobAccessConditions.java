@@ -14,6 +14,9 @@
  */
 package com.microsoft.azure.storage.blob;
 
+import com.microsoft.azure.storage.blob.models.ModifiedAccessConditions;
+import com.microsoft.azure.storage.blob.models.LeaseAccessConditions;
+
 /**
  * This class contains values which will restrict the successful operation of a variety of requests to the conditions
  * present. These conditions are entirely optional. The entire object or any of its properties may be set to null when
@@ -22,81 +25,62 @@ package com.microsoft.azure.storage.blob;
  */
 public final class BlobAccessConditions {
 
-    /**
-     * An object representing no access conditions.
-     */
     public static final BlobAccessConditions NONE =
-            new BlobAccessConditions(null, null, null,
-                    null);
+            new BlobAccessConditions();
 
-    // Optional standard HTTP access conditions which are optionally set
-    private HTTPAccessConditions httpAccessConditions;
+    private ModifiedAccessConditions modifiedAccessConditions;
 
-    // Optional access conditions for a lease on a container or blob
     private LeaseAccessConditions leaseAccessConditions;
 
-    // Optional access conditions which are specific to append blobs
-    private AppendBlobAccessConditions appendBlobAccessConditions;
-
-    // Optional access conditions which are specific to page blobs
-    private PageBlobAccessConditions pageBlobAccessConditions;
-
     /**
-     * Access conditions which are specific to blobs.
-     *
-     * @param httpAccessConditions
-     *      {@link HTTPAccessConditions}
-     * @param leaseAccessConditions
-     *      {@link LeaseAccessConditions}
-     * @param appendBlobAccessConditions
-     *      {@link AppendBlobAccessConditions}
-     * @param pageBlobAccessConditions
-     *      {@link PageBlobAccessConditions}
+     * This type contains standard HTTP Access Conditions related to modification of the source. Specifying these
+     * conditions is entirely optional, and null may be passed for this structure or any individual field to indicate
+     * that none of the conditions should be set. Please refer to the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Specifying-Conditional-Headers-for-Blob-Service-Operations?redirectedfrom=MSDN">Azure Docs</a>
+     * for more information.
      */
-    public BlobAccessConditions(
-            HTTPAccessConditions httpAccessConditions,
-            LeaseAccessConditions leaseAccessConditions,
-            AppendBlobAccessConditions appendBlobAccessConditions,
-            PageBlobAccessConditions pageBlobAccessConditions) {
-        this.httpAccessConditions = httpAccessConditions == null ?
-                HTTPAccessConditions.NONE : httpAccessConditions;
-        this.leaseAccessConditions = leaseAccessConditions == null ?
-                LeaseAccessConditions.NONE : leaseAccessConditions;
-        this.appendBlobAccessConditions = appendBlobAccessConditions == null ?
-                AppendBlobAccessConditions.NONE : appendBlobAccessConditions;
-        this.pageBlobAccessConditions = pageBlobAccessConditions == null ?
-                PageBlobAccessConditions.NONE : pageBlobAccessConditions;
+    public ModifiedAccessConditions modifiedAccessConditions() {
+        return modifiedAccessConditions;
+    }
+
+
+    /*
+     * This type contains standard HTTP Access Conditions related to modification of the source. Specifying these
+     * conditions is entirely optional, and null may be passed for this structure or any individual field to indicate
+     * that none of the conditions should be set. Please refer to the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Specifying-Conditional-Headers-for-Blob-Service-Operations?redirectedfrom=MSDN">Azure Docs</a>
+     * for more information.
+     */
+    public BlobAccessConditions withModifiedAccessConditions(ModifiedAccessConditions modifiedAccessConditions) {
+        this.modifiedAccessConditions = modifiedAccessConditions;
+        return this;
     }
 
     /**
-     * The HttpAccessConditions.
+     * By specifying a leaseAccessConditions, operations on storage resources will only succeed if the active lease on the blob
+     * matches the specified lease. Specifying these conditions is entirely optional, and null may be passed for this
+     * structure or any individual field to indicate that none of the conditions should be set. Please refer to the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">Azure Docs</a>
+     * for more information.
      */
-    HTTPAccessConditions httpAccessConditions() {
-        return httpAccessConditions;
-    }
-
-    /**
-     * @return
-     *      The LeaseAccessConditions.
-     */
-    LeaseAccessConditions leaseAccessConditions() {
+    public LeaseAccessConditions leaseAccessConditions() {
         return leaseAccessConditions;
     }
 
     /**
-     * @return
-     *      The AppendBlobAccessConditions.
+     * By specifying a leaseAccessConditions, operations on storage resources will only succeed if the active lease on the blob
+     * matches the specified lease. Specifying these conditions is entirely optional, and null may be passed for this
+     * structure or any individual field to indicate that none of the conditions should be set. Please refer to the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">Azure Docs</a>
+     * for more information.
      */
-    AppendBlobAccessConditions appendBlobAccessConditions() {
-        return appendBlobAccessConditions;
+    public BlobAccessConditions withLeaseAccessConditions(LeaseAccessConditions leaseAccessConditions) {
+        this.leaseAccessConditions = leaseAccessConditions;
+        return this;
     }
 
-    /**
-     * @return
-     *      The PageBlobAccessConditions.
-     */
-    PageBlobAccessConditions pageBlobAccessConditions() {
-        return pageBlobAccessConditions;
+    public BlobAccessConditions() {
+        modifiedAccessConditions = new ModifiedAccessConditions();
+        leaseAccessConditions = new LeaseAccessConditions();
     }
-
 }

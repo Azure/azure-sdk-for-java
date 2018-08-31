@@ -22,8 +22,7 @@ import com.microsoft.azure.storage.blob.BlobListingDetails
 import com.microsoft.azure.storage.blob.BlockBlobURL
 import com.microsoft.azure.storage.blob.ContainerAccessConditions
 import com.microsoft.azure.storage.blob.ContainerURL
-import com.microsoft.azure.storage.blob.HTTPAccessConditions
-import com.microsoft.azure.storage.blob.LeaseAccessConditions
+
 import com.microsoft.azure.storage.blob.ListBlobsOptions
 import com.microsoft.azure.storage.blob.Metadata
 import com.microsoft.azure.storage.blob.PageBlobURL
@@ -54,9 +53,11 @@ import com.microsoft.azure.storage.blob.models.ContainerRenewLeaseHeaders
 import com.microsoft.azure.storage.blob.models.ContainerSetAccessPolicyResponse
 import com.microsoft.azure.storage.blob.models.ContainerSetMetadataResponse
 import com.microsoft.azure.storage.blob.models.CopyStatusType
+import com.microsoft.azure.storage.blob.models.LeaseAccessConditions
 import com.microsoft.azure.storage.blob.models.LeaseDurationType
 import com.microsoft.azure.storage.blob.models.LeaseStateType
 import com.microsoft.azure.storage.blob.models.LeaseStatusType
+import com.microsoft.azure.storage.blob.models.ModifiedAccessConditions
 import com.microsoft.azure.storage.blob.models.PublicAccessType
 import com.microsoft.azure.storage.blob.models.SignedIdentifier
 import com.microsoft.azure.storage.blob.models.StorageErrorCode
@@ -166,12 +167,12 @@ class ContainerAPITest extends APISpec {
         String leaseID = setupContainerLeaseCondition(cu, receivedLeaseID)
 
         expect:
-        cu.getProperties(new LeaseAccessConditions(leaseID)).blockingGet().statusCode() == 200
+        cu.getProperties(new LeaseAccessConditions().withLeaseId(leaseID)).blockingGet().statusCode() == 200
     }
 
     def "Get properties lease fail"() {
         when:
-        cu.getProperties(new LeaseAccessConditions("garbage")).blockingGet()
+        cu.getProperties(new LeaseAccessConditions().withLeaseId("garbage")).blockingGet()
 
         then:
         thrown(StorageException)
@@ -228,9 +229,9 @@ class ContainerAPITest extends APISpec {
     def "Set metadata AC"() {
         setup:
         leaseID = setupContainerLeaseCondition(cu, leaseID)
-        ContainerAccessConditions cac = new ContainerAccessConditions(
-                new HTTPAccessConditions(modified, null, null, null),
-                new LeaseAccessConditions(leaseID))
+        ContainerAccessConditions cac = new ContainerAccessConditions().withModifiedAccessConditions(
+                new ModifiedAccessConditions().withIfModifiedSince(modified))
+                .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
 
         expect:
         cu.setMetadata(null, cac).blockingGet().statusCode() == 200
@@ -245,9 +246,9 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Set metadata AC fail"() {
         setup:
-        ContainerAccessConditions cac = new ContainerAccessConditions(
-                new HTTPAccessConditions(modified, null, null, null),
-                new LeaseAccessConditions(leaseID))
+        ContainerAccessConditions cac = new ContainerAccessConditions().withModifiedAccessConditions(
+                new ModifiedAccessConditions().withIfModifiedSince(modified))
+                .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
 
         when:
         cu.setMetadata(null, cac).blockingGet()
@@ -264,10 +265,11 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Set metadata AC illegal"() {
         setup:
-        HTTPAccessConditions hac = new HTTPAccessConditions(null, unmodified, match, noneMatch)
+        ModifiedAccessConditions mac = new ModifiedAccessConditions().withIfUnmodifiedSince(unmodified)
+                .withIfMatch(match).withIfNoneMatch(noneMatch)
 
         when:
-        cu.setMetadata(null, new ContainerAccessConditions(hac, null))
+        cu.setMetadata(null, new ContainerAccessConditions().withModifiedAccessConditions(mac))
 
         then:
         thrown(IllegalArgumentException)
@@ -347,9 +349,9 @@ class ContainerAPITest extends APISpec {
     def "Set access policy AC"() {
         setup:
         leaseID = setupContainerLeaseCondition(cu, leaseID)
-        ContainerAccessConditions cac = new ContainerAccessConditions(
-                new HTTPAccessConditions(modified, unmodified, null, null),
-                new LeaseAccessConditions(leaseID))
+        ContainerAccessConditions cac = new ContainerAccessConditions().withModifiedAccessConditions(
+                new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified))
+                .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
 
         expect:
         cu.setAccessPolicy(null, null, cac).blockingGet().statusCode() == 200
@@ -365,9 +367,9 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Set access policy AC fail"() {
         setup:
-        ContainerAccessConditions cac = new ContainerAccessConditions(
-                new HTTPAccessConditions(modified, unmodified, null, null),
-                new LeaseAccessConditions(leaseID))
+        ContainerAccessConditions cac = new ContainerAccessConditions().withModifiedAccessConditions(
+                new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified))
+                .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
 
         when:
         cu.setAccessPolicy(null, null, cac).blockingGet()
@@ -385,10 +387,10 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Set access policy AC illegal"() {
         setup:
-        HTTPAccessConditions hac = new HTTPAccessConditions(null, null, match, noneMatch)
+        ModifiedAccessConditions mac = new ModifiedAccessConditions().withIfMatch(match).withIfNoneMatch(noneMatch)
 
         when:
-        cu.setAccessPolicy(null, null, new ContainerAccessConditions(hac, null))
+        cu.setAccessPolicy(null, null, new ContainerAccessConditions().withModifiedAccessConditions(mac))
 
         then:
         thrown(IllegalArgumentException)
@@ -438,12 +440,12 @@ class ContainerAPITest extends APISpec {
         String leaseID = setupContainerLeaseCondition(cu, receivedLeaseID)
 
         expect:
-        cu.getAccessPolicy(new LeaseAccessConditions(leaseID)).blockingGet().statusCode() == 200
+        cu.getAccessPolicy(new LeaseAccessConditions().withLeaseId(leaseID)).blockingGet().statusCode() == 200
     }
 
     def "Get access policy lease fail"() {
         when:
-        cu.getAccessPolicy(new LeaseAccessConditions(garbageLeaseID)).blockingGet()
+        cu.getAccessPolicy(new LeaseAccessConditions().withLeaseId(garbageLeaseID)).blockingGet()
 
         then:
         thrown(StorageException)
@@ -475,9 +477,10 @@ class ContainerAPITest extends APISpec {
     def "Delete AC"() {
         setup:
         leaseID = setupContainerLeaseCondition(cu, leaseID)
-        ContainerAccessConditions cac = new ContainerAccessConditions(
-                new HTTPAccessConditions(modified, unmodified, null, null),
-                new LeaseAccessConditions(leaseID))
+        ContainerAccessConditions cac = new ContainerAccessConditions().withModifiedAccessConditions(
+                new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified))
+                .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
+
 
         expect:
         cu.delete(cac).blockingGet().statusCode() == 202
@@ -493,9 +496,9 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Delete AC fail"() {
         setup:
-        ContainerAccessConditions cac = new ContainerAccessConditions(
-                new HTTPAccessConditions(modified, unmodified, null, null),
-                new LeaseAccessConditions(leaseID))
+        ContainerAccessConditions cac = new ContainerAccessConditions().withModifiedAccessConditions(
+                new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified))
+                .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
 
         when:
         cu.delete(cac).blockingGet()
@@ -513,10 +516,10 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Delete AC illegal"() {
         setup:
-        HTTPAccessConditions hac = new HTTPAccessConditions(null, null, match, noneMatch)
+        ModifiedAccessConditions mac = new ModifiedAccessConditions().withIfMatch(match).withIfNoneMatch(noneMatch)
 
         when:
-        cu.delete(new ContainerAccessConditions(hac, null))
+        cu.delete(new ContainerAccessConditions().withModifiedAccessConditions(mac))
 
         then:
         thrown(IllegalArgumentException)
@@ -1022,10 +1025,10 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Acquire lease AC"() {
         setup:
-        HTTPAccessConditions hac = new HTTPAccessConditions(modified, unmodified, null, null)
+        def mac = new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
 
         expect:
-        cu.acquireLease(null, -1, hac).blockingGet().statusCode() == 201
+        cu.acquireLease(null, -1, mac).blockingGet().statusCode() == 201
 
         where:
         modified | unmodified
@@ -1037,10 +1040,10 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Acquire lease AC fail"() {
         setup:
-        HTTPAccessConditions hac = new HTTPAccessConditions(modified, unmodified, null, null)
+        def mac = new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
 
         when:
-        cu.acquireLease(null, -1, hac).blockingGet()
+        cu.acquireLease(null, -1, mac).blockingGet()
 
         then:
         thrown(StorageException)
@@ -1054,10 +1057,10 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Acquire lease AC illegal"() {
         setup:
-        HTTPAccessConditions hac = new HTTPAccessConditions(null, null, match, noneMatch)
+        ModifiedAccessConditions mac = new ModifiedAccessConditions().withIfMatch(match).withIfNoneMatch(noneMatch)
 
         when:
-        cu.acquireLease(null, -1, hac).blockingGet()
+        cu.acquireLease(null, -1, mac).blockingGet()
 
         then:
         thrown(IllegalArgumentException)
@@ -1096,10 +1099,10 @@ class ContainerAPITest extends APISpec {
     def "Renew lease AC"() {
         setup:
         String leaseID = setupContainerLeaseCondition(cu, receivedLeaseID)
-        HTTPAccessConditions hac = new HTTPAccessConditions(modified, unmodified, null, null)
+        def mac = new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
 
         expect:
-        cu.renewLease(leaseID, hac).blockingGet().statusCode() == 200
+        cu.renewLease(leaseID, mac).blockingGet().statusCode() == 200
 
         where:
         modified | unmodified
@@ -1112,10 +1115,10 @@ class ContainerAPITest extends APISpec {
     def "Renew lease AC fail"() {
         setup:
         String leaseID = setupContainerLeaseCondition(cu, receivedLeaseID)
-        HTTPAccessConditions hac = new HTTPAccessConditions(modified, unmodified, null, null)
+        def mac = new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
 
         when:
-        cu.renewLease(leaseID, hac).blockingGet()
+        cu.renewLease(leaseID, mac).blockingGet()
 
         then:
         thrown(StorageException)
@@ -1129,10 +1132,10 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Renew lease AC illegal"() {
         setup:
-        HTTPAccessConditions hac = new HTTPAccessConditions(null, null, match, noneMatch)
+        ModifiedAccessConditions mac = new ModifiedAccessConditions().withIfMatch(match).withIfNoneMatch(noneMatch)
 
         when:
-        cu.renewLease(receivedLeaseID, hac).blockingGet()
+        cu.renewLease(receivedLeaseID, mac).blockingGet()
 
         then:
         thrown(IllegalArgumentException)
@@ -1169,10 +1172,10 @@ class ContainerAPITest extends APISpec {
     def "Release lease AC"() {
         setup:
         String leaseID = setupContainerLeaseCondition(cu, receivedLeaseID)
-        HTTPAccessConditions hac = new HTTPAccessConditions(modified, unmodified, null, null)
+        def mac = new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
 
         expect:
-        cu.releaseLease(leaseID, hac).blockingGet().statusCode() == 200
+        cu.releaseLease(leaseID, mac).blockingGet().statusCode() == 200
 
         where:
         modified | unmodified
@@ -1185,10 +1188,10 @@ class ContainerAPITest extends APISpec {
     def "Release lease AC fail"() {
         setup:
         String leaseID = setupContainerLeaseCondition(cu, receivedLeaseID)
-        HTTPAccessConditions hac = new HTTPAccessConditions(modified, unmodified, null, null)
+        def mac = new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
 
         when:
-        cu.releaseLease(leaseID, hac).blockingGet()
+        cu.releaseLease(leaseID, mac).blockingGet()
 
         then:
         thrown(StorageException)
@@ -1202,10 +1205,10 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Release lease AC illegal"() {
         setup:
-        HTTPAccessConditions hac = new HTTPAccessConditions(null, null, match, noneMatch)
+        ModifiedAccessConditions mac = new ModifiedAccessConditions().withIfMatch(match).withIfNoneMatch(noneMatch)
 
         when:
-        cu.releaseLease(receivedLeaseID, hac).blockingGet()
+        cu.releaseLease(receivedLeaseID, mac).blockingGet()
 
         then:
         thrown(IllegalArgumentException)
@@ -1256,10 +1259,10 @@ class ContainerAPITest extends APISpec {
     def "Break lease AC"() {
         setup:
         setupContainerLeaseCondition(cu, receivedLeaseID)
-        HTTPAccessConditions hac = new HTTPAccessConditions(modified, unmodified, null, null)
+        def mac = new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
 
         expect:
-        cu.breakLease(null, hac).blockingGet().statusCode() == 202
+        cu.breakLease(null, mac).blockingGet().statusCode() == 202
 
         where:
         modified | unmodified
@@ -1272,10 +1275,10 @@ class ContainerAPITest extends APISpec {
     def "Break lease AC fail"() {
         setup:
         setupContainerLeaseCondition(cu, receivedLeaseID)
-        HTTPAccessConditions hac = new HTTPAccessConditions(modified, unmodified, null, null)
+        def mac = new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
 
         when:
-        cu.breakLease(null, hac).blockingGet()
+        cu.breakLease(null, mac).blockingGet()
 
         then:
         thrown(StorageException)
@@ -1289,10 +1292,10 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Break lease AC illegal"() {
         setup:
-        HTTPAccessConditions hac = new HTTPAccessConditions(null, null, match, noneMatch)
+        ModifiedAccessConditions mac = new ModifiedAccessConditions().withIfMatch(match).withIfNoneMatch(noneMatch)
 
         when:
-        cu.breakLease(null, hac).blockingGet()
+        cu.breakLease(null, mac).blockingGet()
 
         then:
         thrown(IllegalArgumentException)
@@ -1331,10 +1334,10 @@ class ContainerAPITest extends APISpec {
     def "Change lease AC"() {
         setup:
         String leaseID = setupContainerLeaseCondition(cu, receivedLeaseID)
-        HTTPAccessConditions hac = new HTTPAccessConditions(modified, unmodified, null, null)
+        def mac = new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
 
         expect:
-        cu.changeLease(leaseID, UUID.randomUUID().toString(), hac).blockingGet().statusCode() == 200
+        cu.changeLease(leaseID, UUID.randomUUID().toString(), mac).blockingGet().statusCode() == 200
 
         where:
         modified | unmodified
@@ -1347,10 +1350,10 @@ class ContainerAPITest extends APISpec {
     def "Change lease AC fail"() {
         setup:
         String leaseID = setupContainerLeaseCondition(cu, receivedLeaseID)
-        HTTPAccessConditions hac = new HTTPAccessConditions(modified, unmodified, null, null)
+        def mac = new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
 
         when:
-        cu.changeLease(leaseID, UUID.randomUUID().toString(), hac).blockingGet()
+        cu.changeLease(leaseID, UUID.randomUUID().toString(), mac).blockingGet()
 
         then:
         thrown(StorageException)
@@ -1364,10 +1367,10 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Change lease AC illegal"() {
         setup:
-        HTTPAccessConditions hac = new HTTPAccessConditions(null, null, match, noneMatch)
+        ModifiedAccessConditions mac = new ModifiedAccessConditions().withIfMatch(match).withIfNoneMatch(noneMatch)
 
         when:
-        cu.changeLease(receivedLeaseID, garbageLeaseID, hac).blockingGet()
+        cu.changeLease(receivedLeaseID, garbageLeaseID, mac).blockingGet()
 
         then:
         thrown(IllegalArgumentException)

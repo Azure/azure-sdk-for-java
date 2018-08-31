@@ -18,7 +18,11 @@ package com.microsoft.azure.storage
 import com.microsoft.azure.storage.blob.*
 import com.microsoft.azure.storage.blob.models.AppendBlobAppendBlockHeaders
 import com.microsoft.azure.storage.blob.models.AppendBlobCreateResponse
+import com.microsoft.azure.storage.blob.models.AppendPositionAccessConditions
 import com.microsoft.azure.storage.blob.models.BlobGetPropertiesResponse
+import com.microsoft.azure.storage.blob.models.BlobHTTPHeaders
+import com.microsoft.azure.storage.blob.models.LeaseAccessConditions
+import com.microsoft.azure.storage.blob.models.ModifiedAccessConditions
 import com.microsoft.rest.v2.util.FlowableUtil
 import io.reactivex.Flowable
 import spock.lang.Unroll
@@ -48,10 +52,8 @@ public class AppendBlobAPITest extends APISpec {
 
     def "Create error"() {
         when:
-        bu.create(null, null, new BlobAccessConditions(
-                new HTTPAccessConditions(null, null,
-                        new ETag("garbage"), null),
-                null, null, null)).blockingGet()
+        bu.create(null, null, new BlobAccessConditions().withModifiedAccessConditions(new ModifiedAccessConditions()
+                .withIfMatch("garbage"))).blockingGet()
 
         then:
         thrown(StorageException)
@@ -60,8 +62,12 @@ public class AppendBlobAPITest extends APISpec {
     @Unroll
     def "Create headers"() {
         setup:
-        BlobHTTPHeaders headers = new BlobHTTPHeaders(cacheControl, contentDisposition, contentEncoding,
-                contentLanguage, contentMD5, contentType)
+        BlobHTTPHeaders headers = new BlobHTTPHeaders().withBlobCacheControl(cacheControl)
+                .withBlobContentDisposition(contentDisposition)
+                .withBlobContentEncoding(contentEncoding)
+                .withBlobContentLanguage(contentLanguage)
+                .withBlobContentMD5(contentMD5)
+                .withBlobContentType(contentType)
 
         when:
         bu.create(headers, null, null).blockingGet()
@@ -107,9 +113,10 @@ public class AppendBlobAPITest extends APISpec {
         setup:
         match = setupBlobMatchCondition(bu, match)
         leaseID = setupBlobLeaseCondition(bu, leaseID)
-        BlobAccessConditions bac = new BlobAccessConditions(
-                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
-                null, null)
+        BlobAccessConditions bac = new BlobAccessConditions().withModifiedAccessConditions(
+                new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
+                        .withIfMatch(match).withIfNoneMatch(noneMatch))
+                .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
 
 
         expect:
@@ -130,9 +137,10 @@ public class AppendBlobAPITest extends APISpec {
         setup:
         noneMatch = setupBlobMatchCondition(bu, noneMatch)
         setupBlobLeaseCondition(bu, leaseID)
-        BlobAccessConditions bac = new BlobAccessConditions(
-                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
-                null, null)
+        BlobAccessConditions bac = new BlobAccessConditions().withModifiedAccessConditions(
+                new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
+                        .withIfMatch(match).withIfNoneMatch(noneMatch))
+                .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
 
         when:
         bu.create(null, null, bac).blockingGet()
@@ -201,10 +209,12 @@ public class AppendBlobAPITest extends APISpec {
         setup:
         match = setupBlobMatchCondition(bu, match)
         leaseID = setupBlobLeaseCondition(bu, leaseID)
-        BlobAccessConditions bac = new BlobAccessConditions(
-                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
-                new AppendBlobAccessConditions().withIfAppendPositionEquals(appendPosE)
-                        .withIfMaxSizeLessThanOrEqual(maxSizeLTE), null)
+        AppendBlobAccessConditions bac = new AppendBlobAccessConditions()
+                .withModifiedAccessConditions(new ModifiedAccessConditions().withIfModifiedSince(modified)
+                .withIfUnmodifiedSince(unmodified).withIfMatch(match).withIfNoneMatch(noneMatch))
+                .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
+                .withAppendPositionAccessConditions(new AppendPositionAccessConditions()
+                .withAppendPosition(appendPosE).withMaxSize(maxSizeLTE))
 
         expect:
         bu.appendBlock(defaultFlowable, defaultDataSize, bac)
@@ -227,10 +237,13 @@ public class AppendBlobAPITest extends APISpec {
         setup:
         noneMatch = setupBlobMatchCondition(bu, noneMatch)
         setupBlobLeaseCondition(bu, leaseID)
-        BlobAccessConditions bac = new BlobAccessConditions(
-                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
-                new AppendBlobAccessConditions().withIfAppendPositionEquals(appendPosE)
-                        .withIfMaxSizeLessThanOrEqual(maxSizeLTE), null)
+
+        AppendBlobAccessConditions bac = new AppendBlobAccessConditions()
+                .withModifiedAccessConditions(new ModifiedAccessConditions().withIfModifiedSince(modified)
+                .withIfUnmodifiedSince(unmodified).withIfMatch(match).withIfNoneMatch(noneMatch))
+                .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
+                .withAppendPositionAccessConditions(new AppendPositionAccessConditions()
+                .withAppendPosition(appendPosE).withMaxSize(maxSizeLTE))
 
         when:
         bu.appendBlock(defaultFlowable, defaultDataSize, bac)

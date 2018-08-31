@@ -14,53 +14,22 @@
  */
 package com.microsoft.azure.storage.blob;
 
+import com.microsoft.azure.storage.blob.models.ModifiedAccessConditions;
+
 /**
- * An HTTP ETag. An object of this type may be set as a field on an {@link HTTPAccessConditions} object to specify that
- * a request should use ETag conditions. Null may be passed if no ETag condition is required.
+ * Constants for common values of HTTP Etags to be used in conjunction with {@link ModifiedAccessConditions}
  */
 public final class ETag {
-
-    private final String eTagString;
 
     /**
      * Used for matching with no ETag.
      */
-    public static final ETag NONE = new ETag(null);
+    //TODO: Validate that this should not be null. Whatever it is should not set the header.
+    public static final String NONE = "";
 
     /**
      * Used for matching with any ETag.
      */
-    public static final ETag ANY = new ETag("*");
+    public static final String ANY = "*";
 
-    /**
-     * Creates a {@link ETag} object.
-     *
-     * @param eTagString
-     *      The {@code String} to convert to an ETag.
-     */
-    public ETag(String eTagString) {
-        this.eTagString = eTagString;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof ETag)) {
-            return false;
-        }
-        if (this.eTagString == null) {
-            return ((ETag) obj).eTagString == null;
-        }
-        return this.eTagString.equals(((ETag)obj).eTagString);
-    }
-
-    @Override
-    public String toString() {
-        if (this.equals(ETag.NONE)) {
-            return null;
-        }
-        return this.eTagString;
-    }
 }

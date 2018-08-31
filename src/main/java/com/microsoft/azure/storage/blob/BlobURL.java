@@ -132,9 +132,9 @@ public class BlobURL extends StorageURL {
      * @param sourceURL
      *         The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      * @param metadata
-     *         {@link Metadata}
-     * @param sourceHttpAccessConditions
-     *         {@link HTTPAccessConditions} against the source.
+     *      {@link Metadata}
+     * @param sourceModifiedAccessConditions
+     *      {@link ModifiedAccessConditions} against the source.
      * @param destAccessConditions
      *         {@link BlobAccessConditions} against the destination.
      * @return Emits the successful response.
@@ -144,25 +144,23 @@ public class BlobURL extends StorageURL {
      * file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<BlobStartCopyFromURLResponse> startCopyFromURL(
-            URL sourceURL, Metadata metadata, HTTPAccessConditions sourceHttpAccessConditions,
+            URL sourceURL, Metadata metadata, ModifiedAccessConditions sourceModifiedAccessConditions,
             BlobAccessConditions destAccessConditions) {
         metadata = metadata == null ? Metadata.NONE : metadata;
-        sourceHttpAccessConditions = sourceHttpAccessConditions == null ?
-                HTTPAccessConditions.NONE : sourceHttpAccessConditions;
+        sourceModifiedAccessConditions = sourceModifiedAccessConditions == null ?
+                new ModifiedAccessConditions() : sourceModifiedAccessConditions;
         destAccessConditions = destAccessConditions == null ? BlobAccessConditions.NONE : destAccessConditions;
 
+        // We want to hide the SourceAccessConditions type from the user for consistency's sake, so we convert here.
+        SourceModifiedAccessConditions sourceConditions = new SourceModifiedAccessConditions()
+                .withSourceIfModifiedSince(sourceModifiedAccessConditions.ifModifiedSince())
+                .withSourceIfUnmodifiedSince(sourceModifiedAccessConditions.ifUnmodifiedSince())
+                .withSourceIfMatch(sourceModifiedAccessConditions.ifMatch())
+                .withSourceIfNoneMatch(sourceModifiedAccessConditions.ifNoneMatch());
+
         return addErrorWrappingToSingle(this.storageClient.generatedBlobs().startCopyFromURLWithRestResponseAsync(
-                sourceURL, null, metadata,
-                sourceHttpAccessConditions.getIfModifiedSince(),
-                sourceHttpAccessConditions.getIfUnmodifiedSince(),
-                sourceHttpAccessConditions.getIfMatch().toString(),
-                sourceHttpAccessConditions.getIfNoneMatch().toString(),
-                destAccessConditions.httpAccessConditions().getIfModifiedSince(),
-                destAccessConditions.httpAccessConditions().getIfUnmodifiedSince(),
-                destAccessConditions.httpAccessConditions().getIfMatch().toString(),
-                destAccessConditions.httpAccessConditions().getIfNoneMatch().toString(),
-                destAccessConditions.leaseAccessConditions().getLeaseId(),
-                null));
+               sourceURL, null, metadata, null, sourceConditions, destAccessConditions.modifiedAccessConditions(),
+                destAccessConditions.leaseAccessConditions()));
     }
 
     /**
@@ -182,10 +180,9 @@ public class BlobURL extends StorageURL {
      */
     public Single<BlobAbortCopyFromURLResponse> abortCopyFromURL(
             String copyId, LeaseAccessConditions leaseAccessConditions) {
-        leaseAccessConditions = leaseAccessConditions == null ? LeaseAccessConditions.NONE : leaseAccessConditions;
 
         return addErrorWrappingToSingle(this.storageClient.generatedBlobs().abortCopyFromURLWithRestResponseAsync(
-                copyId, null, leaseAccessConditions.getLeaseId(), null));
+                copyId, null, null, leaseAccessConditions));
     }
 
     /**
@@ -219,28 +216,21 @@ public class BlobURL extends StorageURL {
                 .withETag(accessConditions.httpAccessConditions().getIfMatch());
 
         return addErrorWrappingToSingle(this.storageClient.generatedBlobs().downloadWithRestResponseAsync(
-                null, null, range.toString(),
-                accessConditions.leaseAccessConditions().getLeaseId(),
-                getMD5,
-                accessConditions.httpAccessConditions().getIfModifiedSince(),
-                accessConditions.httpAccessConditions().getIfUnmodifiedSince(),
-                accessConditions.httpAccessConditions().getIfMatch().toString(),
-                accessConditions.httpAccessConditions().getIfNoneMatch().toString(),
-                null))
+                null, null, range.toString(), getMD5, null,
+                accessConditions.leaseAccessConditions(),
+                accessConditions.modifiedAccessConditions()))
                 // Convert the autorest response to a DownloadResponse, which enable reliable download.
                 .map(response -> {
                     // If there wasn't an etag originally specified, lock on the one returned.
-                    info.withETag(new ETag(response.headers().eTag()));
+                    info.withETag(response.headers().eTag());
                     return new DownloadResponse(response, info,
                             // In the event of a stream failure, make a new request to pick up where we left off.
                             newInfo ->
                                     this.download(new BlobRange().withOffset(newInfo.offset())
                                                     .withCount(newInfo.count()),
-                                            new BlobAccessConditions(
-                                                    new HTTPAccessConditions(null, null, info.eTag(), null),
-                                                    null, null, null), false));
+                                            new BlobAccessConditions().withModifiedAccessConditions(
+                                                    new ModifiedAccessConditions().withETag(info.eTag())), false));
                 });
-
     }
 
     /**
@@ -263,14 +253,8 @@ public class BlobURL extends StorageURL {
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
 
         return addErrorWrappingToSingle(this.storageClient.generatedBlobs().deleteWithRestResponseAsync(
-                null, null,
-                accessConditions.leaseAccessConditions().getLeaseId(),
-                deleteBlobSnapshotOptions,
-                accessConditions.httpAccessConditions().getIfModifiedSince(),
-                accessConditions.httpAccessConditions().getIfUnmodifiedSince(),
-                accessConditions.httpAccessConditions().getIfMatch().toString(),
-                accessConditions.httpAccessConditions().getIfNoneMatch().toString(),
-                null));
+                null, null, deleteBlobSnapshotOptions, null, accessConditions.leaseAccessConditions(),
+                accessConditions.modifiedAccessConditions()));
     }
 
     /**
@@ -289,13 +273,8 @@ public class BlobURL extends StorageURL {
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
 
         return addErrorWrappingToSingle(this.storageClient.generatedBlobs().getPropertiesWithRestResponseAsync(
-                null, null,
-                accessConditions.leaseAccessConditions().getLeaseId(),
-                accessConditions.httpAccessConditions().getIfModifiedSince(),
-                accessConditions.httpAccessConditions().getIfUnmodifiedSince(),
-                accessConditions.httpAccessConditions().getIfMatch().toString(),
-                accessConditions.httpAccessConditions().getIfNoneMatch().toString(),
-                null));
+                null, null, null, accessConditions.leaseAccessConditions(),
+                accessConditions.modifiedAccessConditions()));
     }
 
     /**
@@ -313,23 +292,11 @@ public class BlobURL extends StorageURL {
      */
     public Single<BlobSetHTTPHeadersResponse> setHTTPHeaders(
             BlobHTTPHeaders headers, BlobAccessConditions accessConditions) {
-        headers = headers == null ? BlobHTTPHeaders.NONE : headers;
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
 
         return addErrorWrappingToSingle(this.storageClient.generatedBlobs().setHTTPHeadersWithRestResponseAsync(
-                null,
-                headers.getCacheControl(),
-                headers.getContentType(),
-                headers.getContentMD5(),
-                headers.getContentEncoding(),
-                headers.getContentLanguage(),
-                accessConditions.leaseAccessConditions().getLeaseId(),
-                accessConditions.httpAccessConditions().getIfModifiedSince(),
-                accessConditions.httpAccessConditions().getIfUnmodifiedSince(),
-                accessConditions.httpAccessConditions().getIfMatch().toString(),
-                accessConditions.httpAccessConditions().getIfNoneMatch().toString(),
-                headers.getContentDisposition(),
-                null));
+                null, null, headers, accessConditions.leaseAccessConditions(),
+                accessConditions.modifiedAccessConditions()));
     }
 
     /**
@@ -351,13 +318,8 @@ public class BlobURL extends StorageURL {
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
 
         return addErrorWrappingToSingle(this.storageClient.generatedBlobs().setMetadataWithRestResponseAsync(
-                null, metadata,
-                accessConditions.leaseAccessConditions().getLeaseId(),
-                accessConditions.httpAccessConditions().getIfModifiedSince(),
-                accessConditions.httpAccessConditions().getIfUnmodifiedSince(),
-                accessConditions.httpAccessConditions().getIfMatch().toString(),
-                accessConditions.httpAccessConditions().getIfNoneMatch().toString(),
-                null));
+                null, metadata, null, accessConditions.leaseAccessConditions(),
+                accessConditions.modifiedAccessConditions()));
     }
 
     /**
@@ -379,33 +341,34 @@ public class BlobURL extends StorageURL {
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
 
         return addErrorWrappingToSingle(this.storageClient.generatedBlobs().createSnapshotWithRestResponseAsync(
-                null, metadata,
-                accessConditions.httpAccessConditions().getIfModifiedSince(),
-                accessConditions.httpAccessConditions().getIfUnmodifiedSince(),
-                accessConditions.httpAccessConditions().getIfMatch().toString(),
-                accessConditions.httpAccessConditions().getIfNoneMatch().toString(),
-                accessConditions.leaseAccessConditions().getLeaseId(),
-                null));
+                null, metadata, null, accessConditions.modifiedAccessConditions(),
+                accessConditions.leaseAccessConditions()));
     }
 
     /**
      * Sets the tier on a blob. The operation is allowed on a page blob in a premium storage account or a block blob in
      * a blob storage or GPV2 account. A premium page blob's tier determines the allowed size, IOPS, and bandwidth of
      * the blob. A block blob's tier determines the Hot/Cool/Archive storage type. This does not update the blob's etag.
-     * For detailed information about block blob level tiering see the <a href="https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blob-storage-tiers.">Azure
-     * Docs</a>.
+
+     * For detailed information about block blob level tiering see the <a href="https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blob-storage-tiers.">Azure Docs</a>.
+     *
+     * @apiNote
+     * ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=tier "Sample code for BlobURL.setTier")] \n
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      *
      * @param tier
-     *         The new tier for the blob.
-     * @return Emits the successful response.
-     * @apiNote [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=tier
-     * "Sample code for BlobURL.setTier")]
+     *      The new tier for the blob.
+     * @param leaseAccessConditions
+     *      {@link LeaseAccessConditions}
+     * @return
+     *      Emits the successful response.
      */
-    public Single<BlobSetTierResponse> setTier(AccessTier tier) {
+    public Single<BlobSetTierResponse> setTier(AccessTier tier, LeaseAccessConditions leaseAccessConditions) {
         Utility.assertNotNull("tier", tier);
 
         return addErrorWrappingToSingle(this.storageClient.generatedBlobs().setTierWithRestResponseAsync(tier,
-                null, null));
+                null, null, leaseAccessConditions));
     }
 
 
@@ -414,9 +377,13 @@ public class BlobURL extends StorageURL {
      * For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/undelete-blob">Azure
      * Docs</a>.
      *
-     * @return Emits the successful response.
-     * @apiNote [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=undelete
-     * "Sample code for BlobURL.undelete")]
+     * @apiNote
+     * ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=undelete "Sample code for BlobURL.undelete")] \n
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     *
+     * @return
+     *      Emits the successful response.
      */
     public Single<BlobUndeleteResponse> undelete() {
         return addErrorWrappingToSingle(this.storageClient.generatedBlobs().undeleteWithRestResponseAsync(null,
@@ -431,31 +398,23 @@ public class BlobURL extends StorageURL {
      * @param proposedID
      *         A {@code String} in any valid GUID format. May be null.
      * @param duration
-     *         The  duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A
-     *         non-infinite lease can be between 15 and 60 seconds.
-     * @param httpAccessConditions
-     *         {@link HTTPAccessConditions}
-     * @return Emits the successful response.
-     * @apiNote ## Sample Code \n [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blob_lease
-     * "Sample code for BlobURL.acquireLease")]\n For more samples, please see the [Samples
-     * file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     *      The  duration of the lease, in seconds, or negative one (-1) for a lease that
+     *      never expires. A non-infinite lease can be between 15 and 60 seconds.
+     * @param modifiedAccessConditions
+     *      {@link ModifiedAccessConditions}
+     * @return
+     *      Emits the successful response.
      */
     public Single<BlobAcquireLeaseResponse> acquireLease(
-            String proposedID, int duration, HTTPAccessConditions httpAccessConditions) {
-        httpAccessConditions = httpAccessConditions == null ? HTTPAccessConditions.NONE : httpAccessConditions;
-        if (!(duration == -1 || (duration >= 15 && duration <= 60))) {
+            String proposedID, int duration, ModifiedAccessConditions modifiedAccessConditions) {
+        if (!(duration == -1 || (duration >= 15 && duration <=60))) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
             throw new IllegalArgumentException("Duration must be -1 or between 15 and 60.");
         }
 
         return addErrorWrappingToSingle(this.storageClient.generatedBlobs().acquireLeaseWithRestResponseAsync(
-                null, duration, proposedID,
-                httpAccessConditions.getIfModifiedSince(),
-                httpAccessConditions.getIfUnmodifiedSince(),
-                httpAccessConditions.getIfMatch().toString(),
-                httpAccessConditions.getIfNoneMatch().toString(),
-                null));
+                null, duration, proposedID, null, modifiedAccessConditions));
     }
 
     /**
@@ -463,25 +422,17 @@ public class BlobURL extends StorageURL {
      * href="https://docs.microsoft.com/rest/api/storageservices/lease-blob">Azure Docs</a>.
      *
      * @param leaseID
-     *         The leaseId of the active lease on the blob.
-     * @param httpAccessConditions
-     *         {@link HTTPAccessConditions}
-     * @return Emits the successful response.
-     * @apiNote ## Sample Code \n [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blob_lease
-     * "Sample code for BlobURL.renewLease")] \n For more samples, please see the [Samples
-     * file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     *      The leaseId of the active lease on the blob.
+     * @param modifiedAccessConditions
+     *      {@link ModifiedAccessConditions}
+     * @return
+     *      Emits the successful response.
      */
     public Single<BlobRenewLeaseResponse> renewLease(
-            String leaseID, HTTPAccessConditions httpAccessConditions) {
-        httpAccessConditions = httpAccessConditions == null ? HTTPAccessConditions.NONE : httpAccessConditions;
+            String leaseID, ModifiedAccessConditions modifiedAccessConditions) {
 
         return addErrorWrappingToSingle(this.storageClient.generatedBlobs().renewLeaseWithRestResponseAsync(
-                leaseID, null,
-                httpAccessConditions.getIfModifiedSince(),
-                httpAccessConditions.getIfUnmodifiedSince(),
-                httpAccessConditions.getIfMatch().toString(),
-                httpAccessConditions.getIfNoneMatch().toString(),
-                null));
+                leaseID, null, null, modifiedAccessConditions));
     }
 
     /**
@@ -490,24 +441,20 @@ public class BlobURL extends StorageURL {
      *
      * @param leaseID
      *         The leaseId of the active lease on the blob.
-     * @param httpAccessConditions
-     *         {@link HTTPAccessConditions}
-     * @return Emits the successful response.
+     * @param modifiedAccessConditions
+     *      {@link ModifiedAccessConditions}
+     *
      * @apiNote ## Sample Code \n [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blob_lease
      * "Sample code for BlobURL.releaseLease")] \n For more samples, please see the [Samples
      * file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      Emits the successful response.
      */
     public Single<BlobReleaseLeaseResponse> releaseLease(
-            String leaseID, HTTPAccessConditions httpAccessConditions) {
-        httpAccessConditions = httpAccessConditions == null ? HTTPAccessConditions.NONE : httpAccessConditions;
+            String leaseID, ModifiedAccessConditions modifiedAccessConditions) {
 
         return addErrorWrappingToSingle(this.storageClient.generatedBlobs().releaseLeaseWithRestResponseAsync(
-                leaseID, null,
-                httpAccessConditions.getIfModifiedSince(),
-                httpAccessConditions.getIfUnmodifiedSince(),
-                httpAccessConditions.getIfMatch().toString(),
-                httpAccessConditions.getIfNoneMatch().toString(),
-                null));
+                leaseID, null, null, modifiedAccessConditions));
     }
 
     /**
@@ -516,29 +463,25 @@ public class BlobURL extends StorageURL {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-blob">Azure Docs</a>.
      *
      * @param breakPeriodInSeconds
-     *         An optional {@code Integer} representing the proposed duration of seconds that the lease should continue
-     *         before it is broken, between 0 and 60 seconds. This break period is only used if it is shorter than the
-     *         time remaining on the lease. If longer, the time remaining on the lease is used. A new lease will not be
-     *         available before the break period has expired, but the lease may be held for longer than the break
-     *         period.
-     * @param httpAccessConditions
-     *         {@link HTTPAccessConditions}
-     * @return Emits the successful response.
-     * @apiNote ## Sample Code \n [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blob_lease
-     * "Sample code for BlobURL.breakLease")] \n For more samples, please see the [Samples
-     * file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     *      An optional {@code Integer} representing the proposed duration of seconds that the lease should continue
+     *      before it is broken, between 0 and 60 seconds. This break period is only used if it is shorter than the time
+     *      remaining on the lease. If longer, the time remaining on the lease is used. A new lease will not be
+     *      available before the break period has expired, but the lease may be held for longer than the break period.
+     * @param modifiedAccessConditions
+     *      {@link ModifiedAccessConditions}
+     *
+     * @apiNote ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blob_lease "Sample code for BlobURL.breakLease")] \n
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     *
+     * @return
+     *      Emits the successful response.
      */
     public Single<BlobBreakLeaseResponse> breakLease(
-            Integer breakPeriodInSeconds, HTTPAccessConditions httpAccessConditions) {
-        httpAccessConditions = httpAccessConditions == null ? HTTPAccessConditions.NONE : httpAccessConditions;
+            Integer breakPeriodInSeconds, ModifiedAccessConditions modifiedAccessConditions) {
 
         return addErrorWrappingToSingle(this.storageClient.generatedBlobs().breakLeaseWithRestResponseAsync(
-                null, breakPeriodInSeconds,
-                httpAccessConditions.getIfModifiedSince(),
-                httpAccessConditions.getIfUnmodifiedSince(),
-                httpAccessConditions.getIfMatch().toString(),
-                httpAccessConditions.getIfNoneMatch().toString(),
-                null));
+                null, breakPeriodInSeconds, null, modifiedAccessConditions));
     }
 
     /**
@@ -549,23 +492,20 @@ public class BlobURL extends StorageURL {
      *         The leaseId of the active lease on the blob.
      * @param proposedID
      *         A {@code String} in any valid GUID format.
-     * @param httpAccessConditions
-     *         {@link HTTPAccessConditions}
-     * @return Emits the successful response.
+     * @param modifiedAccessConditions
+     *      {@link ModifiedAccessConditions}
+     *
      * @apiNote ## Sample Code \n [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blob_lease
      * "Sample code for BlobURL.changeLease")] \n For more samples, please see the [Samples
      * file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      Emits the successful response.
      */
     public Single<BlobChangeLeaseResponse> changeLease(
-            String leaseId, String proposedID, HTTPAccessConditions httpAccessConditions) {
-        httpAccessConditions = httpAccessConditions == null ? HTTPAccessConditions.NONE : httpAccessConditions;
+            String leaseId, String proposedID, ModifiedAccessConditions modifiedAccessConditions) {
 
         return addErrorWrappingToSingle(this.storageClient.generatedBlobs().changeLeaseWithRestResponseAsync(
-                leaseId, proposedID, null,
-                httpAccessConditions.getIfModifiedSince(),
-                httpAccessConditions.getIfUnmodifiedSince(),
-                httpAccessConditions.getIfMatch().toString(), httpAccessConditions.getIfNoneMatch().toString(),
-                null));
+                leaseId, proposedID, null, null, modifiedAccessConditions));
     }
 
     /**

@@ -101,7 +101,9 @@ public final class AppendBlobURL extends BlobURL {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      *
      * @param headers
-     *      {@link BlobHTTPHeaders}
+     *      Most often used when creating a blob or setting its properties, this class contains fields for typical HTTP
+     *      properties, which, if specified, will be attached to the target blob. Null may be passed to any API which takes this
+     *      type to indicate that no properties should be set.
      * @param metadata
      *      {@link Metadata}
      * @param accessConditions
@@ -111,25 +113,12 @@ public final class AppendBlobURL extends BlobURL {
      */
     public Single<AppendBlobCreateResponse> create(
             BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions) {
-        headers = headers == null ? BlobHTTPHeaders.NONE : headers;
-        metadata = metadata == null ? Metadata.NONE : metadata;
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
+        metadata = metadata == null ? Metadata.NONE : metadata;
 
         return addErrorWrappingToSingle(this.storageClient.generatedAppendBlobs().createWithRestResponseAsync(
-                0, null,
-                headers.getContentType(),
-                headers.getContentEncoding(),
-                headers.getContentLanguage(),
-                headers.getContentMD5(),
-                headers.getCacheControl(),
-                metadata,
-                accessConditions.leaseAccessConditions().getLeaseId(),
-                headers.getContentDisposition(),
-                accessConditions.httpAccessConditions().getIfModifiedSince(),
-                accessConditions.httpAccessConditions().getIfUnmodifiedSince(),
-                accessConditions.httpAccessConditions().getIfMatch().toString(),
-                accessConditions.httpAccessConditions().getIfNoneMatch().toString(),
-                null));
+                0, null, metadata, null, headers, accessConditions.leaseAccessConditions(),
+                accessConditions.modifiedAccessConditions()));
     }
 
     /**
@@ -146,24 +135,19 @@ public final class AppendBlobURL extends BlobURL {
      * @param length
      *      The exact length of the data. It is important that this value match precisely the length of the data
      *      emitted by the {@code Flowable}.
-     * @param accessConditions
-     *      {@link BlobAccessConditions}
+     * @param appendBlobAccessConditions
+     *      {@link AppendBlobAccessConditions}
      * @return
      *      Emits the successful response.
      */
     public Single<AppendBlobAppendBlockResponse> appendBlock(
-            Flowable<ByteBuffer> data, long length, BlobAccessConditions accessConditions) {
-        accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
+            Flowable<ByteBuffer> data, long length, AppendBlobAccessConditions appendBlobAccessConditions) {
+        appendBlobAccessConditions = appendBlobAccessConditions == null ? AppendBlobAccessConditions.NONE :
+                appendBlobAccessConditions;
 
         return addErrorWrappingToSingle(this.storageClient.generatedAppendBlobs().appendBlockWithRestResponseAsync(
-                data, length, null,
-                accessConditions.leaseAccessConditions().getLeaseId(),
-                accessConditions.appendBlobAccessConditions().ifMaxSizeLessThanOrEqual(),
-                accessConditions.appendBlobAccessConditions().ifAppendPositionEquals(),
-                accessConditions.httpAccessConditions().getIfModifiedSince(),
-                accessConditions.httpAccessConditions().getIfUnmodifiedSince(),
-                accessConditions.httpAccessConditions().getIfMatch().toString(),
-                accessConditions.httpAccessConditions().getIfNoneMatch().toString(),
-                null));
+                data, length, null, null, null, appendBlobAccessConditions.leaseAccessConditions(),
+                appendBlobAccessConditions.appendPositionAccessConditions(),
+                appendBlobAccessConditions.modifiedAccessConditions()));
     }
 }

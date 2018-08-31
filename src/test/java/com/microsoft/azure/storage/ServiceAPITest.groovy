@@ -36,9 +36,6 @@ import com.microsoft.azure.storage.blob.models.ServiceListContainersSegmentRespo
 import com.microsoft.azure.storage.blob.models.ServiceSetPropertiesHeaders
 import com.microsoft.azure.storage.blob.models.StaticWebsite
 import com.microsoft.azure.storage.blob.models.StorageServiceProperties
-import spock.lang.Unroll
-
-import java.lang.annotation.Retention
 
 class ServiceAPITest extends APISpec {
     def setup() {
