@@ -1,5 +1,9 @@
 # Azure Batch SDK for Java release notes
 
+## Changes in 4.0.1
+### Fixes
+  - Fix missing signing of 4.0.0 Java SDK binary
+
 ## Changes in 4.0.0
 ### Features
  - Added the functionality to get which version of the Azure Batch Node Agent(https://github.com/Azure/Batch/blob/master/changelogs/nodeagent/CHANGELOG.md) is running on nodes via the NodeAgentInformation property of ComputeNode.
