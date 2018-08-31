@@ -8,46 +8,58 @@
 
 package com.microsoft.azure.management.logic.v2018_07_01_preview;
 
-import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.microsoft.rest.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
  * Defines values for EventLevel.
  */
-public final class EventLevel extends ExpandableStringEnum<EventLevel> {
-    /** Static value LogAlways for EventLevel. */
-    public static final EventLevel LOG_ALWAYS = fromString("LogAlways");
+public enum EventLevel {
+    /** Enum value LogAlways. */
+    LOG_ALWAYS("LogAlways"),
 
-    /** Static value Critical for EventLevel. */
-    public static final EventLevel CRITICAL = fromString("Critical");
+    /** Enum value Critical. */
+    CRITICAL("Critical"),
 
-    /** Static value Error for EventLevel. */
-    public static final EventLevel ERROR = fromString("Error");
+    /** Enum value Error. */
+    ERROR("Error"),
 
-    /** Static value Warning for EventLevel. */
-    public static final EventLevel WARNING = fromString("Warning");
+    /** Enum value Warning. */
+    WARNING("Warning"),
 
-    /** Static value Informational for EventLevel. */
-    public static final EventLevel INFORMATIONAL = fromString("Informational");
+    /** Enum value Informational. */
+    INFORMATIONAL("Informational"),
 
-    /** Static value Verbose for EventLevel. */
-    public static final EventLevel VERBOSE = fromString("Verbose");
+    /** Enum value Verbose. */
+    VERBOSE("Verbose");
 
-    /**
-     * Creates or finds a EventLevel from its string representation.
-     * @param name a name to look for
-     * @return the corresponding EventLevel
-     */
-    @JsonCreator
-    public static EventLevel fromString(String name) {
-        return fromString(name, EventLevel.class);
+    /** The actual serialized value for a EventLevel instance. */
+    private String value;
+
+    EventLevel(String value) {
+        this.value = value;
     }
 
     /**
-     * @return known EventLevel values
+     * Parses a serialized value to a EventLevel instance.
+     *
+     * @param value the serialized value to parse.
+     * @return the parsed EventLevel object, or null if unable to parse.
      */
-    public static Collection<EventLevel> values() {
-        return values(EventLevel.class);
+    @JsonCreator
+    public static EventLevel fromString(String value) {
+        EventLevel[] items = EventLevel.values();
+        for (EventLevel item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return this.value;
     }
 }

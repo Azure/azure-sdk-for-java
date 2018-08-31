@@ -8,43 +8,55 @@
 
 package com.microsoft.azure.management.logic.v2018_07_01_preview;
 
-import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.microsoft.rest.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
  * Defines values for SegmentTerminatorSuffix.
  */
-public final class SegmentTerminatorSuffix extends ExpandableStringEnum<SegmentTerminatorSuffix> {
-    /** Static value NotSpecified for SegmentTerminatorSuffix. */
-    public static final SegmentTerminatorSuffix NOT_SPECIFIED = fromString("NotSpecified");
+public enum SegmentTerminatorSuffix {
+    /** Enum value NotSpecified. */
+    NOT_SPECIFIED("NotSpecified"),
 
-    /** Static value None for SegmentTerminatorSuffix. */
-    public static final SegmentTerminatorSuffix NONE = fromString("None");
+    /** Enum value None. */
+    NONE("None"),
 
-    /** Static value CR for SegmentTerminatorSuffix. */
-    public static final SegmentTerminatorSuffix CR = fromString("CR");
+    /** Enum value CR. */
+    CR("CR"),
 
-    /** Static value LF for SegmentTerminatorSuffix. */
-    public static final SegmentTerminatorSuffix LF = fromString("LF");
+    /** Enum value LF. */
+    LF("LF"),
 
-    /** Static value CRLF for SegmentTerminatorSuffix. */
-    public static final SegmentTerminatorSuffix CRLF = fromString("CRLF");
+    /** Enum value CRLF. */
+    CRLF("CRLF");
 
-    /**
-     * Creates or finds a SegmentTerminatorSuffix from its string representation.
-     * @param name a name to look for
-     * @return the corresponding SegmentTerminatorSuffix
-     */
-    @JsonCreator
-    public static SegmentTerminatorSuffix fromString(String name) {
-        return fromString(name, SegmentTerminatorSuffix.class);
+    /** The actual serialized value for a SegmentTerminatorSuffix instance. */
+    private String value;
+
+    SegmentTerminatorSuffix(String value) {
+        this.value = value;
     }
 
     /**
-     * @return known SegmentTerminatorSuffix values
+     * Parses a serialized value to a SegmentTerminatorSuffix instance.
+     *
+     * @param value the serialized value to parse.
+     * @return the parsed SegmentTerminatorSuffix object, or null if unable to parse.
      */
-    public static Collection<SegmentTerminatorSuffix> values() {
-        return values(SegmentTerminatorSuffix.class);
+    @JsonCreator
+    public static SegmentTerminatorSuffix fromString(String value) {
+        SegmentTerminatorSuffix[] items = SegmentTerminatorSuffix.values();
+        for (SegmentTerminatorSuffix item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return this.value;
     }
 }

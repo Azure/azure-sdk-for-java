@@ -25,8 +25,8 @@ public final class AgreementType extends ExpandableStringEnum<AgreementType> {
     /** Static value X12 for AgreementType. */
     public static final AgreementType X12 = fromString("X12");
 
-    /** Static value Edifact for AgreementType. */
-    public static final AgreementType EDIFACT = fromString("Edifact");
+    /** Static value EDIFACT for AgreementType. */
+    public static final AgreementType EDIFACT = fromString("EDIFACT");
 
     /**
      * Creates or finds a AgreementType from its string representation.

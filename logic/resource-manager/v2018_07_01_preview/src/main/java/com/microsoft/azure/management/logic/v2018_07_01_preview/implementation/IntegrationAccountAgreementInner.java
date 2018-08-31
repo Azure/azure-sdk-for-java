@@ -43,7 +43,7 @@ public class IntegrationAccountAgreementInner extends Resource {
 
     /**
      * The agreement type. Possible values include: 'NotSpecified', 'AS2',
-     * 'X12', 'Edifact'.
+     * 'X12', 'EDIFACT'.
      */
     @JsonProperty(value = "properties.agreementType", required = true)
     private AgreementType agreementType;
@@ -119,7 +119,7 @@ public class IntegrationAccountAgreementInner extends Resource {
     }
 
     /**
-     * Get the agreement type. Possible values include: 'NotSpecified', 'AS2', 'X12', 'Edifact'.
+     * Get the agreement type. Possible values include: 'NotSpecified', 'AS2', 'X12', 'EDIFACT'.
      *
      * @return the agreementType value
      */
@@ -128,7 +128,7 @@ public class IntegrationAccountAgreementInner extends Resource {
     }
 
     /**
-     * Set the agreement type. Possible values include: 'NotSpecified', 'AS2', 'X12', 'Edifact'.
+     * Set the agreement type. Possible values include: 'NotSpecified', 'AS2', 'X12', 'EDIFACT'.
      *
      * @param agreementType the agreementType value to set
      * @return the IntegrationAccountAgreementInner object itself.

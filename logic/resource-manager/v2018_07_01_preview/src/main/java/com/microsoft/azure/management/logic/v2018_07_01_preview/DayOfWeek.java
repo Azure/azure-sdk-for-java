@@ -8,49 +8,61 @@
 
 package com.microsoft.azure.management.logic.v2018_07_01_preview;
 
-import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.microsoft.rest.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
  * Defines values for DayOfWeek.
  */
-public final class DayOfWeek extends ExpandableStringEnum<DayOfWeek> {
-    /** Static value Sunday for DayOfWeek. */
-    public static final DayOfWeek SUNDAY = fromString("Sunday");
+public enum DayOfWeek {
+    /** Enum value Sunday. */
+    SUNDAY("Sunday"),
 
-    /** Static value Monday for DayOfWeek. */
-    public static final DayOfWeek MONDAY = fromString("Monday");
+    /** Enum value Monday. */
+    MONDAY("Monday"),
 
-    /** Static value Tuesday for DayOfWeek. */
-    public static final DayOfWeek TUESDAY = fromString("Tuesday");
+    /** Enum value Tuesday. */
+    TUESDAY("Tuesday"),
 
-    /** Static value Wednesday for DayOfWeek. */
-    public static final DayOfWeek WEDNESDAY = fromString("Wednesday");
+    /** Enum value Wednesday. */
+    WEDNESDAY("Wednesday"),
 
-    /** Static value Thursday for DayOfWeek. */
-    public static final DayOfWeek THURSDAY = fromString("Thursday");
+    /** Enum value Thursday. */
+    THURSDAY("Thursday"),
 
-    /** Static value Friday for DayOfWeek. */
-    public static final DayOfWeek FRIDAY = fromString("Friday");
+    /** Enum value Friday. */
+    FRIDAY("Friday"),
 
-    /** Static value Saturday for DayOfWeek. */
-    public static final DayOfWeek SATURDAY = fromString("Saturday");
+    /** Enum value Saturday. */
+    SATURDAY("Saturday");
 
-    /**
-     * Creates or finds a DayOfWeek from its string representation.
-     * @param name a name to look for
-     * @return the corresponding DayOfWeek
-     */
-    @JsonCreator
-    public static DayOfWeek fromString(String name) {
-        return fromString(name, DayOfWeek.class);
+    /** The actual serialized value for a DayOfWeek instance. */
+    private String value;
+
+    DayOfWeek(String value) {
+        this.value = value;
     }
 
     /**
-     * @return known DayOfWeek values
+     * Parses a serialized value to a DayOfWeek instance.
+     *
+     * @param value the serialized value to parse.
+     * @return the parsed DayOfWeek object, or null if unable to parse.
      */
-    public static Collection<DayOfWeek> values() {
-        return values(DayOfWeek.class);
+    @JsonCreator
+    public static DayOfWeek fromString(String value) {
+        DayOfWeek[] items = DayOfWeek.values();
+        for (DayOfWeek item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return this.value;
     }
 }
