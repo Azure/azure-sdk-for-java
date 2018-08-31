@@ -16,6 +16,7 @@ import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.arm.resources.AzureConfigurable;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
+import com.microsoft.azure.management.eventhub.v2018_01_01_preview.Operations;
 import com.microsoft.azure.management.eventhub.v2018_01_01_preview.Clusters;
 import com.microsoft.azure.management.eventhub.v2018_01_01_preview.Configurations;
 import com.microsoft.azure.management.eventhub.v2018_01_01_preview.Namespaces;
@@ -26,6 +27,7 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
  * Entry point to Azure EventHub resource management.
  */
 public final class EventHubManager extends ManagerCore<EventHubManager, EventHub2018PreviewManagementClientImpl> {
+    private Operations operations;
     private Clusters clusters;
     private Configurations configurations;
     private Namespaces namespaces;
@@ -74,6 +76,16 @@ public final class EventHubManager extends ManagerCore<EventHubManager, EventHub
         * @return the interface exposing EventHub management API entry points that work across subscriptions
         */
         EventHubManager authenticate(AzureTokenCredentials credentials, String subscriptionId);
+    }
+
+    /**
+     * @return Entry point to manage Operations.
+     */
+    public Operations operations() {
+        if (this.operations == null) {
+            this.operations = new OperationsImpl(this);
+        }
+        return this.operations;
     }
 
     /**
