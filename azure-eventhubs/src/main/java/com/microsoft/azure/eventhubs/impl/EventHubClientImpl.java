@@ -393,22 +393,30 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
                         completeWith = error;
                     }
 
-                    final Duration waitTime = ManagementRetry.this.mf.getRetryPolicy().getNextRetryInterval(
-                            ManagementRetry.this.mf.getClientId(), lastException, this.timeoutTracker.remaining());
-                    if (waitTime == null) {
-                        // Do not retry again, give up and report error.
-                        if (completeWith == null) {
-                            ManagementRetry.this.finalFuture.complete(null);
+                    if (ManagementRetry.this.mf.getIsClosingOrClosed()) {
+                        ManagementRetry.this.finalFuture.completeExceptionally(
+                                new OperationCancelledException(
+                                        "OperationCancelled as the underlying client instance was closed.",
+                                        lastException));
+                    }
+                    else {
+                        final Duration waitTime = ManagementRetry.this.mf.getRetryPolicy().getNextRetryInterval(
+                                ManagementRetry.this.mf.getClientId(), lastException, this.timeoutTracker.remaining());
+                        if (waitTime == null) {
+                            // Do not retry again, give up and report error.
+                            if (completeWith == null) {
+                                ManagementRetry.this.finalFuture.complete(null);
+                            } else {
+                                ManagementRetry.this.finalFuture.completeExceptionally(completeWith);
+                            }
                         } else {
-                            ManagementRetry.this.finalFuture.completeExceptionally(completeWith);
+                            // The only thing needed here is to schedule a new attempt. Even if the RequestResponseChannel has croaked,
+                            // ManagementChannel uses FaultTolerantObject, so the underlying RequestResponseChannel will be recreated
+                            // the next time it is needed.
+                            final ManagementRetry retrier = new ManagementRetry(ManagementRetry.this.finalFuture, ManagementRetry.this.timeoutTracker,
+                                    ManagementRetry.this.mf, ManagementRetry.this.request);
+                            EventHubClientImpl.this.timer.schedule(retrier, waitTime);
                         }
-                    } else {
-                        // The only thing needed here is to schedule a new attempt. Even if the RequestResponseChannel has croaked,
-                        // ManagementChannel uses FaultTolerantObject, so the underlying RequestResponseChannel will be recreated
-                        // the next time it is needed.
-                        final ManagementRetry retrier = new ManagementRetry(ManagementRetry.this.finalFuture, ManagementRetry.this.timeoutTracker,
-                                ManagementRetry.this.mf, ManagementRetry.this.request);
-                        EventHubClientImpl.this.timer.schedule(retrier, waitTime);
                     }
                 }
             });

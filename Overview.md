@@ -31,19 +31,29 @@ which is quite simple in a Maven build [as we explain in the guide](PublishingEv
  
 ```Java
     import com.microsoft.azure.eventhubs.*;
-```        
+```
+
+Event Hubs client library uses qpid proton reactor framework which exposes AMQP connection and message delivery related 
+state transitions as reactive events. In the process,
+the library will need to run many asynchronous tasks while sending and receiving messages to Event Hubs.
+So, `EventHubClient` requires an instance of `Executor`, where all these tasks are run.
+
+
+```Java
+    ExecutorService executor = Executors.newCachedThreadPool();
+```
 
 Using an Event Hub connection string, which holds all required connection information, including an authorization key or token, 
 you then create an *EventHubClient* instance, which manages a secure AMQP 1.0 connection to the Event Hub.   
    
 ```Java
-    final String namespaceName = "----ServiceBusNamespaceName-----";
-    final String eventHubName = "----EventHubName-----";
-    final String sasKeyName = "-----SharedAccessSignatureKeyName-----";
-    final String sasKey = "---SharedAccessSignatureKey----";
-    ConnectionStringBuilder connStr = new ConnectionStringBuilder(namespaceName, eventHubName, sasKeyName, sasKey);
-		
-    EventHubClient ehClient = EventHubClient.createFromConnectionStringSync(connStr.toString());
+    ConnectionStringBuilder connStr = new ConnectionStringBuilder()
+                .setNamespaceName("----ServiceBusNamespaceName-----")
+                .setEventHubName("----EventHubName-----")
+                .setSasKeyName("-----SharedAccessSignatureKeyName-----")
+                .setSasKey("---SharedAccessSignatureKey----");	
+	
+    EventHubClient ehClient = EventHubClient.createSync(connStr.toString(), executor);
 ```
 
 Once you have the client in hands, you can package any arbitrary payload as a plain array of bytes and send it. 
@@ -69,40 +79,29 @@ of partitions like lanes on a highway. The more events the Event Hub needs to ha
 to add. Each partition can handle at most the equivalent of 1 "throughput unit", equivalent to at most 1000 events per 
 second and at most 1 Megabyte per second.
 
-Consuming messages is also quite different compared to typical messaging infrastuctures like queues or topic 
+Consuming messages is also quite different compared to typical messaging infrastucture like queues or topic 
 subscriptions, where the consumer simply fetches the "next" message. Azure Event Hubs puts the consumer in control of 
 the offset from which the log shall be read, and the consumer can repeatedly pick a different or the same offset and read 
 the event stream from chosen offsets while the events are being retained. Each partition is therefore loosely analogous 
 to a tape drive that you can wind back to a particular mark and then play back to the freshest data available.         
    
-Just like the sender, the receiver code imports the package and creates an *EventHubClient* from a given connecting string
-      
-```Java
-    final String namespaceName = "----ServiceBusNamespaceName-----";
-    final String eventHubName = "----EventHubName-----";
-    final String sasKeyName = "-----SharedAccessSignatureKeyName-----";
-    final String sasKey = "---SharedAccessSignatureKey----";
-    ConnectionStringBuilder connStr = new ConnectionStringBuilder(namespaceName, eventHubName, sasKeyName, sasKey);
-		
-    EventHubClient ehClient = EventHubClient.createFromConnectionStringSync(connStr.toString());
-```           
-
+Just like the sender, the receiver code imports the package and creates an *EventHubClient* from a given connecting string.
 The receiver code then creates (at least) one *PartitionReceiver* that will receive the data. The receiver is seeded with 
 an offset, in the snippet below it's simply the start of the log.    
 		
 ```Java
 		String partitionId = "0";
 		PartitionReceiver receiver = ehClient.createReceiverSync(
-				EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, 
-				partitionId, 
-				PartitionReceiver.START_OF_STREAM,
-				false);
+                	EventHubClient.DEFAULT_CONSUMER_GROUP_NAME,
+                	partitionId,
+                	EventPosition.fromStartOfStream());
 
 		receiver.setReceiveTimeout(Duration.ofSeconds(20));
 ``` 
 
 Once the receiver is initialized, getting events is just a matter of calling the *receive()* method in a loop. Each call 
-to *receive()* will fetch an enumerable batch of events to process.    		
+to *receive()* will fetch an enumerable batch of events to process. 
+Simply put, create a receiver from a specific offset and from then on, the log can be read only in one direction (oldest to latest event).	
         
 ```Java        
 		Iterable<EventData> receivedEvents = receiver.receiveSync(maxEventsCount);         

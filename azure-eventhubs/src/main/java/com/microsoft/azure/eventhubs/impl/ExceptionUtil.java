@@ -14,6 +14,8 @@ import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public final class ExceptionUtil {
     static Exception toException(ErrorCondition errorCondition) {
@@ -26,7 +28,7 @@ public final class ExceptionUtil {
         } else if (errorCondition.getCondition() == ClientConstants.SERVER_BUSY_ERROR) {
             return new ServerBusyException(errorCondition.getDescription());
         } else if (errorCondition.getCondition() == AmqpErrorCode.NotFound) {
-            return new IllegalEntityException(errorCondition.getDescription());
+        	return ExceptionUtil.distinguishNotFound(errorCondition.getDescription());
         } else if (errorCondition.getCondition() == ClientConstants.ENTITY_DISABLED_ERROR) {
             return new IllegalEntityException(errorCondition.getDescription());
         } else if (errorCondition.getCondition() == AmqpErrorCode.Stolen) {
@@ -67,7 +69,7 @@ public final class ExceptionUtil {
             case BAD_REQUEST:
                 return new IllegalArgumentException(String.format(ClientConstants.AMQP_REQUEST_FAILED_ERROR, statusCode, statusDescription));
             case NOT_FOUND:
-                return new IllegalEntityException(statusDescription);
+                return ExceptionUtil.distinguishNotFound(statusDescription);
             case FORBIDDEN:
                 return new QuotaExceededException(String.format(ClientConstants.AMQP_REQUEST_FAILED_ERROR, statusCode, statusDescription));
             case UNAUTHORIZED:
@@ -75,6 +77,16 @@ public final class ExceptionUtil {
             default:
                 return new EventHubException(true, String.format(ClientConstants.AMQP_REQUEST_FAILED_ERROR, statusCode, statusDescription));
         }
+    }
+    
+    static Exception distinguishNotFound(final String message) {
+        Pattern p = Pattern.compile("The messaging entity .* could not be found");
+        Matcher m = p.matcher(message);
+    	if (m.find()) {
+    		return new IllegalEntityException(message);
+    	} else {
+    		return new EventHubException(true, String.format(ClientConstants.AMQP_REQUEST_FAILED_ERROR, AmqpResponseCode.NOT_FOUND, message));
+    	}
     }
 
     static <T> void completeExceptionally(CompletableFuture<T> future, Exception exception, ErrorContextProvider contextProvider) {

@@ -1,0 +1,50 @@
+/*
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project root for full license information.
+ */
+package com.microsoft.azure.eventhubs.impl;
+
+import com.microsoft.azure.proton.transport.ws.impl.WebSocketImpl;
+import org.apache.qpid.proton.engine.Event;
+import org.apache.qpid.proton.engine.impl.TransportInternal;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class WebSocketConnectionHandler extends ConnectionHandler {
+    private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(ConnectionHandler.class);
+
+    public WebSocketConnectionHandler(AmqpConnection messagingFactory) {
+        super(messagingFactory);
+    }
+
+    @Override
+    protected void addTransportLayers(final Event event, final TransportInternal transport) {
+        final WebSocketImpl webSocket = new WebSocketImpl();
+        webSocket.configure(
+                event.getConnection().getHostname(),
+                "/$servicebus/websocket",
+                null,
+                0,
+                "AMQPWSB10",
+                null,
+                null);
+
+        transport.addTransportLayer(webSocket);
+
+        if (TRACE_LOGGER.isInfoEnabled()) {
+            TRACE_LOGGER.info("addWebsocketHandshake: hostname[" + event.getConnection().getHostname() +"]");
+        }
+    }
+
+    @Override
+    protected int getPort() {
+        return ClientConstants.HTTPS_PORT;
+    }
+
+    @Override
+    protected int getMaxFrameSize() {
+        // This is the current limitation of https://github.com/Azure/qpid-proton-j-extensions
+        // once, this library enables larger frames - this property can be removed.
+        return 4 * 1024;
+    }
+}

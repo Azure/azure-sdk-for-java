@@ -47,6 +47,7 @@ import java.util.regex.Pattern;
  * </ul>
  */
 public final class ConnectionStringBuilder {
+
     final static String endpointFormat = "sb://%s.%s";
     final static String hostnameFormat = "sb://%s";
     final static String defaultDomainName = "servicebus.windows.net";
@@ -60,10 +61,11 @@ public final class ConnectionStringBuilder {
     final static String SharedAccessKeyNameConfigName = "SharedAccessKeyName";  // We use a (KeyName, Key) pair OR the SAS token - never both.
     final static String SharedAccessKeyConfigName = "SharedAccessKey";
     final static String SharedAccessSignatureConfigName = "SharedAccessSignature";
+    final static String TransportTypeConfigName = "TransportType";
 
     private static final String AllKeyEnumerateRegex = "(" + HostnameConfigName + "|" + EndpointConfigName + "|" + SharedAccessKeyNameConfigName
             + "|" + SharedAccessKeyConfigName + "|" + SharedAccessSignatureConfigName + "|" + EntityPathConfigName + "|" + OperationTimeoutConfigName
-            + "|" + ")";
+            + "|" + TransportTypeConfigName + ")";
 
     private static final String KeysWithDelimitersRegex = KeyValuePairDelimiter + AllKeyEnumerateRegex
             + KeyValueSeparator;
@@ -74,6 +76,7 @@ public final class ConnectionStringBuilder {
     private String sharedAccessKey;
     private String sharedAccessSignature;
     private Duration operationTimeout;
+    private TransportType transportType;
 
     /**
      * Creates an empty {@link ConnectionStringBuilder}. At minimum, a namespace name, an entity path, SAS key name, and SAS key
@@ -257,6 +260,27 @@ public final class ConnectionStringBuilder {
     }
 
     /**
+     * TransportType on which all the communication for the EventHub objects created using this ConnectionString.
+     * Default value is {@link TransportType#AMQP}.
+     *
+     * @return transportType
+     */
+    public TransportType getTransportType() {
+        return (this.transportType == null ? TransportType.AMQP : transportType);
+    }
+
+    /**
+     * Set the TransportType value in the Connection String. If no TransportType is set, this defaults to {@link TransportType#AMQP}.
+     *
+     * @param transportType Transport Type
+     * @return the {@link ConnectionStringBuilder} instance being set.
+     */
+    public ConnectionStringBuilder setTransportType(final TransportType transportType) {
+        this.transportType = transportType;
+        return this;
+    }
+
+    /**
      * Returns an inter-operable connection string that can be used to connect to EventHubs instances.
      *
      * @return connection string
@@ -292,6 +316,11 @@ public final class ConnectionStringBuilder {
         if (this.operationTimeout != null) {
             connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", OperationTimeoutConfigName,
                     KeyValueSeparator, this.operationTimeout.toString(), KeyValuePairDelimiter));
+        }
+
+        if (this.transportType != null) {
+            connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", TransportTypeConfigName,
+                    KeyValueSeparator, this.transportType.toString(), KeyValuePairDelimiter));
         }
 
         connectionStringBuilder.deleteCharAt(connectionStringBuilder.length() - 1);
@@ -372,6 +401,14 @@ public final class ConnectionStringBuilder {
                     this.operationTimeout = Duration.parse(values[valueIndex]);
                 } catch (DateTimeParseException exception) {
                     throw new IllegalConnectionStringFormatException("Invalid value specified for property 'Duration' in the ConnectionString.", exception);
+                }
+            } else if (key.equalsIgnoreCase(TransportTypeConfigName)) {
+                try {
+                    this.transportType = TransportType.fromString(values[valueIndex]);
+                } catch (IllegalArgumentException exception) {
+                    throw new IllegalConnectionStringFormatException(
+                            String.format("Invalid value specified for property '%s' in the ConnectionString.", TransportTypeConfigName),
+                            exception);
                 }
             } else {
                 throw new IllegalConnectionStringFormatException(

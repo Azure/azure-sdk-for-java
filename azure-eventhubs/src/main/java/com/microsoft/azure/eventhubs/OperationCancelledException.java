@@ -5,7 +5,7 @@
 package com.microsoft.azure.eventhubs;
 
 /**
- * This exception is thrown when the underlying Amqp layer encounter an abnormal link abort or disconnect of connection in an unexpected fashion.
+ * This exception is thrown when the underlying AMQP layer encounter an abnormal link abort or disconnect of connection in an unexpected fashion.
  */
 public class OperationCancelledException extends EventHubException {
     private static final long serialVersionUID = 1L;

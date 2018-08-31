@@ -112,9 +112,7 @@ public interface PartitionSender {
      *         PayloadEvent payload = new PayloadEvent(count);
      *         byte[] payloadBytes = gson.toJson(payload).getBytes(Charset.defaultCharset());
      *         EventData sendEvent = EventData.create(payloadBytes);
-     *         Map{@literal<}String, String{@literal>} applicationProperties = new HashMap{@literal<}String, String{@literal>}();
-     *         applicationProperties.put("from", "javaClient");
-     *         sendEvent.setProperties(applicationProperties);
+     *         sendEvent.getProperties().put("from", "javaClient");
      *         events.add(sendEvent);
      *     }
      *
