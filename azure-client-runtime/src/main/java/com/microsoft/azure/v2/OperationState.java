@@ -36,7 +36,9 @@ public final class OperationState {
      * @return Whether or not the provided operation state represents a completed state.
      */
     public static boolean isCompleted(String operationState) {
-        return SUCCEEDED.equalsIgnoreCase(operationState)
+        return operationState == null
+                || operationState.length() == 0
+                || SUCCEEDED.equalsIgnoreCase(operationState)
                 || isFailedOrCanceled(operationState);
     }
 
