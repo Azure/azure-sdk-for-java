@@ -25,6 +25,13 @@ public class ApplicationCreateParameters {
     private Map<String, Object> additionalProperties;
 
     /**
+     * The collection of application roles that an application may declare.
+     * These roles can be assigned to users, groups or service principals.
+     */
+    @JsonProperty(value = "appRoles")
+    private List<AppRole> appRoles;
+
+    /**
      * Whether the application is available to other tenants.
      */
     @JsonProperty(value = "availableToOtherTenants", required = true)
@@ -98,6 +105,26 @@ public class ApplicationCreateParameters {
      */
     public ApplicationCreateParameters withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+        return this;
+    }
+
+    /**
+     * Get the collection of application roles that an application may declare. These roles can be assigned to users, groups or service principals.
+     *
+     * @return the appRoles value
+     */
+    public List<AppRole> appRoles() {
+        return this.appRoles;
+    }
+
+    /**
+     * Set the collection of application roles that an application may declare. These roles can be assigned to users, groups or service principals.
+     *
+     * @param appRoles the appRoles value to set
+     * @return the ApplicationCreateParameters object itself.
+     */
+    public ApplicationCreateParameters withAppRoles(List<AppRole> appRoles) {
+        this.appRoles = appRoles;
         return this;
     }
 

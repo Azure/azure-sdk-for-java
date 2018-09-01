@@ -10,11 +10,16 @@ package com.microsoft.azure.graphrbac.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.graphrbac.GraphErrorException;
+import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -23,6 +28,7 @@ import retrofit2.http.HTTP;
 import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -57,13 +63,17 @@ public class DeletedApplicationsInner {
         @POST("{tenantID}/deletedApplications/{objectId}/restore")
         Observable<Response<ResponseBody>> restore(@Path("objectId") String objectId, @Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.graphrbac.DeletedApplications get" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.graphrbac.DeletedApplications list" })
         @GET("{tenantID}/deletedApplications")
-        Observable<Response<ResponseBody>> get(@Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Path("tenantID") String tenantID, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.graphrbac.DeletedApplications hardDelete" })
         @HTTP(path = "{tenantID}/deletedApplications/{applicationObjectId}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> hardDelete(@Path("applicationObjectId") String applicationObjectId, @Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.graphrbac.DeletedApplications listNext" })
+        @GET
+        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -152,10 +162,16 @@ public class DeletedApplicationsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws GraphErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the ApplicationListResultInner object if successful.
+     * @return the PagedList&lt;ApplicationInner&gt; object if successful.
      */
-    public ApplicationListResultInner get() {
-        return getWithServiceResponseAsync().toBlocking().single().body();
+    public PagedList<ApplicationInner> list() {
+        ServiceResponse<Page<ApplicationInner>> response = listSinglePageAsync().toBlocking().single();
+        return new PagedList<ApplicationInner>(response.body()) {
+            @Override
+            public Page<ApplicationInner> nextPage(String nextLink) {
+                return listNextSinglePageAsync(nextLink).toBlocking().single().body();
+            }
+        };
     }
 
     /**
@@ -165,45 +181,75 @@ public class DeletedApplicationsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ApplicationListResultInner> getAsync(final ServiceCallback<ApplicationListResultInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(), serviceCallback);
+    public ServiceFuture<List<ApplicationInner>> listAsync(final ListOperationCallback<ApplicationInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listSinglePageAsync(),
+            new Func1<String, Observable<ServiceResponse<Page<ApplicationInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ApplicationInner>>> call(String nextLink) {
+                    return listNextSinglePageAsync(nextLink);
+                }
+            },
+            serviceCallback);
     }
 
     /**
      * Gets a list of deleted applications in the directory.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ApplicationListResultInner object
+     * @return the observable to the PagedList&lt;ApplicationInner&gt; object
      */
-    public Observable<ApplicationListResultInner> getAsync() {
-        return getWithServiceResponseAsync().map(new Func1<ServiceResponse<ApplicationListResultInner>, ApplicationListResultInner>() {
-            @Override
-            public ApplicationListResultInner call(ServiceResponse<ApplicationListResultInner> response) {
-                return response.body();
-            }
-        });
+    public Observable<Page<ApplicationInner>> listAsync() {
+        return listWithServiceResponseAsync()
+            .map(new Func1<ServiceResponse<Page<ApplicationInner>>, Page<ApplicationInner>>() {
+                @Override
+                public Page<ApplicationInner> call(ServiceResponse<Page<ApplicationInner>> response) {
+                    return response.body();
+                }
+            });
     }
 
     /**
      * Gets a list of deleted applications in the directory.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ApplicationListResultInner object
+     * @return the observable to the PagedList&lt;ApplicationInner&gt; object
      */
-    public Observable<ServiceResponse<ApplicationListResultInner>> getWithServiceResponseAsync() {
+    public Observable<ServiceResponse<Page<ApplicationInner>>> listWithServiceResponseAsync() {
+        return listSinglePageAsync()
+            .concatMap(new Func1<ServiceResponse<Page<ApplicationInner>>, Observable<ServiceResponse<Page<ApplicationInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ApplicationInner>>> call(ServiceResponse<Page<ApplicationInner>> page) {
+                    String nextLink = page.body().nextPageLink();
+                    if (nextLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextLink));
+                }
+            });
+    }
+
+    /**
+     * Gets a list of deleted applications in the directory.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;ApplicationInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ApplicationInner>>> listSinglePageAsync() {
         if (this.client.tenantID() == null) {
             throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.get(this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ApplicationListResultInner>>>() {
+        final String filter = null;
+        return service.list(this.client.tenantID(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ApplicationInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<ApplicationListResultInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<ApplicationInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<ApplicationListResultInner> clientResponse = getDelegate(response);
-                        return Observable.just(clientResponse);
+                        ServiceResponse<PageImpl<ApplicationInner>> result = listDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ApplicationInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -211,9 +257,114 @@ public class DeletedApplicationsInner {
             });
     }
 
-    private ServiceResponse<ApplicationListResultInner> getDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ApplicationListResultInner, GraphErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<ApplicationListResultInner>() { }.getType())
+    /**
+     * Gets a list of deleted applications in the directory.
+     *
+     * @param filter The filter to apply to the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws GraphErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;ApplicationInner&gt; object if successful.
+     */
+    public PagedList<ApplicationInner> list(final String filter) {
+        ServiceResponse<Page<ApplicationInner>> response = listSinglePageAsync(filter).toBlocking().single();
+        return new PagedList<ApplicationInner>(response.body()) {
+            @Override
+            public Page<ApplicationInner> nextPage(String nextLink) {
+                return listNextSinglePageAsync(nextLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Gets a list of deleted applications in the directory.
+     *
+     * @param filter The filter to apply to the operation.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<ApplicationInner>> listAsync(final String filter, final ListOperationCallback<ApplicationInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listSinglePageAsync(filter),
+            new Func1<String, Observable<ServiceResponse<Page<ApplicationInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ApplicationInner>>> call(String nextLink) {
+                    return listNextSinglePageAsync(nextLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets a list of deleted applications in the directory.
+     *
+     * @param filter The filter to apply to the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;ApplicationInner&gt; object
+     */
+    public Observable<Page<ApplicationInner>> listAsync(final String filter) {
+        return listWithServiceResponseAsync(filter)
+            .map(new Func1<ServiceResponse<Page<ApplicationInner>>, Page<ApplicationInner>>() {
+                @Override
+                public Page<ApplicationInner> call(ServiceResponse<Page<ApplicationInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Gets a list of deleted applications in the directory.
+     *
+     * @param filter The filter to apply to the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;ApplicationInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ApplicationInner>>> listWithServiceResponseAsync(final String filter) {
+        return listSinglePageAsync(filter)
+            .concatMap(new Func1<ServiceResponse<Page<ApplicationInner>>, Observable<ServiceResponse<Page<ApplicationInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ApplicationInner>>> call(ServiceResponse<Page<ApplicationInner>> page) {
+                    String nextLink = page.body().nextPageLink();
+                    if (nextLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextLink));
+                }
+            });
+    }
+
+    /**
+     * Gets a list of deleted applications in the directory.
+     *
+    ServiceResponse<PageImpl<ApplicationInner>> * @param filter The filter to apply to the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;ApplicationInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ApplicationInner>>> listSinglePageAsync(final String filter) {
+        if (this.client.tenantID() == null) {
+            throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.list(this.client.tenantID(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ApplicationInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ApplicationInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ApplicationInner>> result = listDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ApplicationInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<ApplicationInner>> listDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ApplicationInner>, GraphErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<ApplicationInner>>() { }.getType())
                 .registerError(GraphErrorException.class)
                 .build(response);
     }
@@ -292,6 +443,123 @@ public class DeletedApplicationsInner {
     private ServiceResponse<Void> hardDeleteDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, GraphErrorException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(GraphErrorException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets a list of deleted applications in the directory.
+     *
+     * @param nextLink Next link for the list operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws GraphErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;ApplicationInner&gt; object if successful.
+     */
+    public PagedList<ApplicationInner> listNext(final String nextLink) {
+        ServiceResponse<Page<ApplicationInner>> response = listNextSinglePageAsync(nextLink).toBlocking().single();
+        return new PagedList<ApplicationInner>(response.body()) {
+            @Override
+            public Page<ApplicationInner> nextPage(String nextLink) {
+                return listNextSinglePageAsync(nextLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Gets a list of deleted applications in the directory.
+     *
+     * @param nextLink Next link for the list operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<ApplicationInner>> listNextAsync(final String nextLink, final ServiceFuture<List<ApplicationInner>> serviceFuture, final ListOperationCallback<ApplicationInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listNextSinglePageAsync(nextLink),
+            new Func1<String, Observable<ServiceResponse<Page<ApplicationInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ApplicationInner>>> call(String nextLink) {
+                    return listNextSinglePageAsync(nextLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets a list of deleted applications in the directory.
+     *
+     * @param nextLink Next link for the list operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;ApplicationInner&gt; object
+     */
+    public Observable<Page<ApplicationInner>> listNextAsync(final String nextLink) {
+        return listNextWithServiceResponseAsync(nextLink)
+            .map(new Func1<ServiceResponse<Page<ApplicationInner>>, Page<ApplicationInner>>() {
+                @Override
+                public Page<ApplicationInner> call(ServiceResponse<Page<ApplicationInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Gets a list of deleted applications in the directory.
+     *
+     * @param nextLink Next link for the list operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;ApplicationInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ApplicationInner>>> listNextWithServiceResponseAsync(final String nextLink) {
+        return listNextSinglePageAsync(nextLink)
+            .concatMap(new Func1<ServiceResponse<Page<ApplicationInner>>, Observable<ServiceResponse<Page<ApplicationInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ApplicationInner>>> call(ServiceResponse<Page<ApplicationInner>> page) {
+                    String nextLink = page.body().nextPageLink();
+                    if (nextLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextLink));
+                }
+            });
+    }
+
+    /**
+     * Gets a list of deleted applications in the directory.
+     *
+    ServiceResponse<PageImpl<ApplicationInner>> * @param nextLink Next link for the list operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;ApplicationInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ApplicationInner>>> listNextSinglePageAsync(final String nextLink) {
+        if (nextLink == null) {
+            throw new IllegalArgumentException("Parameter nextLink is required and cannot be null.");
+        }
+        if (this.client.tenantID() == null) {
+            throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s/%s", this.client.tenantID(), nextLink);
+        return service.listNext(nextUrl, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ApplicationInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ApplicationInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ApplicationInner>> result = listNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ApplicationInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<ApplicationInner>> listNextDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ApplicationInner>, GraphErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<ApplicationInner>>() { }.getType())
                 .registerError(GraphErrorException.class)
                 .build(response);
     }
