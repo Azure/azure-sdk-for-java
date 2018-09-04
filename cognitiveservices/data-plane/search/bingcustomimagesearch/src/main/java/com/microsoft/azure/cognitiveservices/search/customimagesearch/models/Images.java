@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Defines an image answer.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = Images.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("Images")
 public class Images extends SearchResultsAnswer {
     /**
@@ -34,7 +34,7 @@ public class Images extends SearchResultsAnswer {
     private List<ImageObject> value;
 
     /**
-     * Get the nextOffset value.
+     * Get used as part of deduping. Tells client the next offset that client should use in the next pagination request.
      *
      * @return the nextOffset value
      */
@@ -43,7 +43,7 @@ public class Images extends SearchResultsAnswer {
     }
 
     /**
-     * Get the value value.
+     * Get a list of image objects that are relevant to the query. If there are no results, the List is empty.
      *
      * @return the value value
      */
@@ -52,7 +52,7 @@ public class Images extends SearchResultsAnswer {
     }
 
     /**
-     * Set the value value.
+     * Set a list of image objects that are relevant to the query. If there are no results, the List is empty.
      *
      * @param value the value value to set
      * @return the Images object itself.

@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Defines an image.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = ImageObject.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("ImageObject")
 public class ImageObject extends MediaObject {
     /**
@@ -53,7 +53,7 @@ public class ImageObject extends MediaObject {
     private String visualWords;
 
     /**
-     * Get the thumbnail value.
+     * Get the URL to a thumbnail of the image.
      *
      * @return the thumbnail value
      */
@@ -62,7 +62,7 @@ public class ImageObject extends MediaObject {
     }
 
     /**
-     * Get the imageInsightsToken value.
+     * Get the token that you use in a subsequent call to the Image Search API to get additional information about the image. For information about using this token, see the insightsToken query parameter.
      *
      * @return the imageInsightsToken value
      */
@@ -71,7 +71,7 @@ public class ImageObject extends MediaObject {
     }
 
     /**
-     * Get the imageId value.
+     * Get unique Id for the image.
      *
      * @return the imageId value
      */
@@ -80,7 +80,7 @@ public class ImageObject extends MediaObject {
     }
 
     /**
-     * Get the accentColor value.
+     * Get a three-byte hexadecimal number that represents the color that dominates the image. Use the color as the temporary background in your client until the image is loaded.
      *
      * @return the accentColor value
      */
@@ -89,7 +89,7 @@ public class ImageObject extends MediaObject {
     }
 
     /**
-     * Get the visualWords value.
+     * Get visual representation of the image. Used for getting more sizes.
      *
      * @return the visualWords value
      */

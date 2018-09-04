@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * Defines a media object.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = MediaObject.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("MediaObject")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "ImageObject", value = ImageObject.class)
@@ -66,7 +66,7 @@ public class MediaObject extends CreativeWork {
     private Integer height;
 
     /**
-     * Get the contentUrl value.
+     * Get original URL to retrieve the source (file) for the media object (e.g the source URL for the image).
      *
      * @return the contentUrl value
      */
@@ -75,7 +75,7 @@ public class MediaObject extends CreativeWork {
     }
 
     /**
-     * Get the hostPageUrl value.
+     * Get uRL of the page that hosts the media object.
      *
      * @return the hostPageUrl value
      */
@@ -84,7 +84,7 @@ public class MediaObject extends CreativeWork {
     }
 
     /**
-     * Get the contentSize value.
+     * Get size of the media object content (use format "value unit" e.g "1024 B").
      *
      * @return the contentSize value
      */
@@ -93,7 +93,7 @@ public class MediaObject extends CreativeWork {
     }
 
     /**
-     * Get the encodingFormat value.
+     * Get encoding format (e.g mp3, mp4, jpeg, etc).
      *
      * @return the encodingFormat value
      */
@@ -102,7 +102,7 @@ public class MediaObject extends CreativeWork {
     }
 
     /**
-     * Get the hostPageDisplayUrl value.
+     * Get display URL of the page that hosts the media object.
      *
      * @return the hostPageDisplayUrl value
      */
@@ -111,7 +111,7 @@ public class MediaObject extends CreativeWork {
     }
 
     /**
-     * Get the width value.
+     * Get the width of the media object, in pixels.
      *
      * @return the width value
      */
@@ -120,7 +120,7 @@ public class MediaObject extends CreativeWork {
     }
 
     /**
-     * Get the height value.
+     * Get the height of the media object, in pixels.
      *
      * @return the height value
      */

@@ -57,7 +57,7 @@ public class Error {
     private String value;
 
     /**
-     * Get the code value.
+     * Get the error code that identifies the category of error. Possible values include: 'None', 'ServerError', 'InvalidRequest', 'RateLimitExceeded', 'InvalidAuthorization', 'InsufficientAuthorization'.
      *
      * @return the code value
      */
@@ -66,7 +66,7 @@ public class Error {
     }
 
     /**
-     * Set the code value.
+     * Set the error code that identifies the category of error. Possible values include: 'None', 'ServerError', 'InvalidRequest', 'RateLimitExceeded', 'InvalidAuthorization', 'InsufficientAuthorization'.
      *
      * @param code the code value to set
      * @return the Error object itself.
@@ -77,7 +77,7 @@ public class Error {
     }
 
     /**
-     * Get the subCode value.
+     * Get the error code that further helps to identify the error. Possible values include: 'UnexpectedError', 'ResourceError', 'NotImplemented', 'ParameterMissing', 'ParameterInvalidValue', 'HttpNotAllowed', 'Blocked', 'AuthorizationMissing', 'AuthorizationRedundancy', 'AuthorizationDisabled', 'AuthorizationExpired'.
      *
      * @return the subCode value
      */
@@ -86,7 +86,7 @@ public class Error {
     }
 
     /**
-     * Get the message value.
+     * Get a description of the error.
      *
      * @return the message value
      */
@@ -95,7 +95,7 @@ public class Error {
     }
 
     /**
-     * Set the message value.
+     * Set a description of the error.
      *
      * @param message the message value to set
      * @return the Error object itself.
@@ -106,7 +106,7 @@ public class Error {
     }
 
     /**
-     * Get the moreDetails value.
+     * Get a description that provides additional information about the error.
      *
      * @return the moreDetails value
      */
@@ -115,7 +115,7 @@ public class Error {
     }
 
     /**
-     * Get the parameter value.
+     * Get the parameter in the request that caused the error.
      *
      * @return the parameter value
      */
@@ -124,7 +124,7 @@ public class Error {
     }
 
     /**
-     * Get the value value.
+     * Get the parameter's value in the request that was not valid.
      *
      * @return the value value
      */
