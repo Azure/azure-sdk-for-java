@@ -142,7 +142,7 @@ public class Samples {
         ContainerURL object that wraps the container's URL and a request pipeline (inherited from serviceURL).
         Note that container names require lowercase.
          */
-        ContainerURL containerURL = serviceURL.createContainerURL("myjavacontainerbasic");
+        ContainerURL containerURL = serviceURL.createContainerURL("myjavacontainerbasic" + System.currentTimeMillis());
 
         /*
         Create a URL that references a to-be-created blob in your Azure Storage account's container.
@@ -632,8 +632,8 @@ public class Samples {
         SharedKeyCredentials credential = new SharedKeyCredentials(accountName, accountKey);
 
         // Create a containerURL object that wraps the container's URL and a default pipeline.
-        URL u = new URL(String.format(Locale.ROOT, "https://%s.blob.core.windows.net/myjavacontainerpermissions",
-                accountName));
+        URL u = new URL(String.format(Locale.ROOT, "https://%s.blob.core.windows.net/myjavacontainerpermissions" +
+                        System.currentTimeMillis(), accountName));
         ContainerURL containerURL = new ContainerURL(u, StorageURL.createPipeline(credential, new PipelineOptions()));
 
         /*
@@ -704,7 +704,8 @@ public class Samples {
         URL u = new URL(String.format(Locale.ROOT, "https://%s.blob.core.windows.net/", accountName));
         ServiceURL s = new ServiceURL(u,
                 StorageURL.createPipeline(new SharedKeyCredentials(accountName, accountKey), new PipelineOptions()));
-        ContainerURL containerURL = s.createContainerURL("myjavacontaineraccessconditions");
+        ContainerURL containerURL = s.createContainerURL("myjavacontaineraccessconditions" +
+                System.currentTimeMillis());
         BlockBlobURL blobURL = containerURL.createBlockBlobURL("Data.txt");
 
         // Create the container (unconditionally; succeeds)
@@ -788,7 +789,8 @@ public class Samples {
                 // Delete the blob if it exists (succeeds).
                 blobURL.delete(DeleteSnapshotsOptionType.INCLUDE,
                         new BlobAccessConditions().withModifiedAccessConditions(
-                                new ModifiedAccessConditions().withIfMatch(ETag.ANY))))
+                                // Wildcard will match any etag.
+                                new ModifiedAccessConditions().withIfMatch("*"))))
                 )
                 .flatMap(blobDeleteResponse -> {
                     System.out.println("Success: " + blobDeleteResponse.statusCode());
@@ -813,7 +815,8 @@ public class Samples {
         URL u = new URL(String.format(Locale.ROOT, "https://%s.blob.core.windows.net/", accountName));
         ServiceURL s = new ServiceURL(u,
                 StorageURL.createPipeline(new SharedKeyCredentials(accountName, accountKey), new PipelineOptions()));
-        ContainerURL containerURL = s.createContainerURL("myjavacontainercontainermetadata");
+        ContainerURL containerURL = s.createContainerURL("myjavacontainercontainermetadata" +
+                System.currentTimeMillis());
 
         /*
          Create a container with some metadata (string key/value pairs).
@@ -863,7 +866,7 @@ public class Samples {
         URL u = new URL(String.format(Locale.ROOT, "https://%s.blob.core.windows.net/", accountName));
         ServiceURL s = new ServiceURL(u,
                 StorageURL.createPipeline(new SharedKeyCredentials(accountName, accountKey), new PipelineOptions()));
-        ContainerURL containerURL = s.createContainerURL("myjavacontainerblobmetadata");
+        ContainerURL containerURL = s.createContainerURL("myjavacontainerblobmetadata" + System.currentTimeMillis());
         BlockBlobURL blobURL = containerURL.createBlockBlobURL("Data.txt");
 
         // Create the container.
@@ -924,7 +927,7 @@ public class Samples {
         ServiceURL s = new ServiceURL(u,
                 StorageURL.createPipeline(new SharedKeyCredentials(accountName, accountKey), new PipelineOptions()));
 
-        ContainerURL containerURL = s.createContainerURL("myjavacontainerheaders");
+        ContainerURL containerURL = s.createContainerURL("myjavacontainerheaders" + System.currentTimeMillis());
         BlockBlobURL blobURL = containerURL.createBlockBlobURL("Data.txt");
 
         // Create the container.
@@ -992,7 +995,7 @@ public class Samples {
         ServiceURL s = new ServiceURL(u,
                 StorageURL.createPipeline(new SharedKeyCredentials(accountName, accountKey), new PipelineOptions()));
 
-        ContainerURL containerURL = s.createContainerURL("myjavacontainerblock");
+        ContainerURL containerURL = s.createContainerURL("myjavacontainerblock" + System.currentTimeMillis());
         BlockBlobURL blobURL = containerURL.createBlockBlobURL("Data.txt");
 
         String[] data = {"Michael", "Gabriel", "Raphael", "John"};
@@ -1069,7 +1072,7 @@ public class Samples {
         ServiceURL s = new ServiceURL(u,
                 StorageURL.createPipeline(new SharedKeyCredentials(accountName, accountKey), new PipelineOptions()));
 
-        ContainerURL containerURL = s.createContainerURL("myjavacontainerappend");
+        ContainerURL containerURL = s.createContainerURL("myjavacontainerappend" + System.currentTimeMillis());
         AppendBlobURL blobURL = containerURL.createAppendBlobURL("Data.txt");
 
         // Create the container.
@@ -1118,7 +1121,7 @@ public class Samples {
         URL u = new URL(String.format(Locale.ROOT, "https://%s.blob.core.windows.net/", accountName));
         ServiceURL s = new ServiceURL(u,
                 StorageURL.createPipeline(new SharedKeyCredentials(accountName, accountKey), new PipelineOptions()));
-        ContainerURL containerURL = s.createContainerURL("myjavacontainerpage");
+        ContainerURL containerURL = s.createContainerURL("myjavacontainerpage" + System.currentTimeMillis());
         PageBlobURL blobURL = containerURL.createPageBlobURL("Data.txt");
 
         // Create the container.
@@ -1209,7 +1212,7 @@ public class Samples {
         ServiceURL s = new ServiceURL(u,
                 StorageURL.createPipeline(new SharedKeyCredentials(accountName, accountKey), new PipelineOptions()));
 
-        ContainerURL containerURL = s.createContainerURL("myjavacontainersnapshot");
+        ContainerURL containerURL = s.createContainerURL("myjavacontainersnapshot" + System.currentTimeMillis());
         BlockBlobURL blobURL = containerURL.createBlockBlobURL("Original.txt");
 
         // Create the container.
@@ -1292,7 +1295,7 @@ public class Samples {
         ServiceURL s = new ServiceURL(u,
                 StorageURL.createPipeline(new SharedKeyCredentials(accountName, accountKey), new PipelineOptions()));
 
-        ContainerURL containerURL = s.createContainerURL("myjavacontainercopy");
+        ContainerURL containerURL = s.createContainerURL("myjavacontainercopy" + System.currentTimeMillis());
         BlockBlobURL blobURL = containerURL.createBlockBlobURL("CopiedBlob.bin");
 
         // Create the container.
@@ -1348,7 +1351,7 @@ public class Samples {
         URL u = new URL(String.format(Locale.ROOT, "https://%s.blob.core.windows.net/", accountName));
         ServiceURL s = new ServiceURL(u,
                 StorageURL.createPipeline(new SharedKeyCredentials(accountName, accountKey), new PipelineOptions()));
-        ContainerURL containerURL = s.createContainerURL("myjavacontainerparallelupload");
+        ContainerURL containerURL = s.createContainerURL("myjavacontainerparallelupload" + System.currentTimeMillis());
         String filename = "BigFile.bin";
         BlockBlobURL blobURL = containerURL.createBlockBlobURL(filename);
         File tempFile = File.createTempFile("BigFile", ".bin");
@@ -1399,7 +1402,7 @@ public class Samples {
         URL u = new URL(String.format(Locale.ROOT, "https://%s.blob.core.windows.net/", accountName));
         ServiceURL s = new ServiceURL(u,
                 StorageURL.createPipeline(new SharedKeyCredentials(accountName, accountKey), new PipelineOptions()));
-        ContainerURL containerURL = s.createContainerURL("myjavacontainerretrystream");
+        ContainerURL containerURL = s.createContainerURL("myjavacontainerretrystream" + System.currentTimeMillis());
         BlockBlobURL blobURL = containerURL.createBlockBlobURL("Data.txt");
 
         ReliableDownloadOptions options = new ReliableDownloadOptions();
@@ -2051,8 +2054,7 @@ public class Samples {
         PageBlobURL incrementalCopy = containerURL.createPageBlobURL("incremental");
         pageBlobURL.createSnapshot(null, null)
                 .flatMap(response ->
-                        incrementalCopy.copyIncremental(pageBlobURL.toURL(), response.headers().snapshot(), null,
-                                null))
+                        incrementalCopy.copyIncremental(pageBlobURL.toURL(), response.headers().snapshot(), null))
                 .flatMap(response -> {
                     byte[] pageData = new byte[PageBlobURL.PAGE_BYTES];
                     for (int i = 0; i < PageBlobURL.PAGE_BYTES; i++) {
@@ -2064,8 +2066,7 @@ public class Samples {
                 .flatMap(response ->
                         pageBlobURL.createSnapshot(null, null))
                 .flatMap(response ->
-                        incrementalCopy.copyIncremental(pageBlobURL.toURL(), response.headers().snapshot(), null,
-                                null))
+                        incrementalCopy.copyIncremental(pageBlobURL.toURL(), response.headers().snapshot(), null))
                 .subscribe();
         /*
         The result is a new blob with two new snapshots that correspond to the source blob snapshots but with different

@@ -17,7 +17,7 @@ package com.microsoft.azure.storage
 
 import com.microsoft.azure.storage.blob.BlobURL
 import com.microsoft.azure.storage.blob.ContainerURL
-import com.microsoft.azure.storage.blob.ETag
+
 import com.microsoft.azure.storage.blob.ListContainersOptions
 import com.microsoft.azure.storage.blob.PipelineOptions
 import com.microsoft.azure.storage.blob.ServiceURL

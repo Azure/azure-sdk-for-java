@@ -700,7 +700,7 @@ class PageBlobAPITest extends APISpec {
         cu.setAccessPolicy(PublicAccessType.BLOB, null, null).blockingGet()
         PageBlobURL bu2 = cu.createPageBlobURL(generateBlobName())
         String snapshot = bu.createSnapshot(null, null).blockingGet().headers().snapshot()
-        PageBlobCopyIncrementalHeaders headers = bu2.copyIncremental(bu.toURL(), snapshot, null, null)
+        PageBlobCopyIncrementalHeaders headers = bu2.copyIncremental(bu.toURL(), snapshot, null)
                 .blockingGet().headers()
         waitForCopy(bu2, headers.copyStatus())
 
@@ -712,41 +712,13 @@ class PageBlobAPITest extends APISpec {
         headers.copyStatus() != null
     }
 
-    def "Start incremental copy metadata"() {
-        setup:
-        Metadata metadata = new Metadata()
-        if (key1 != null) {
-            metadata.put(key1, value1)
-        }
-        if (key2 != null) {
-            metadata.put(key2, value2)
-        }
-
-        cu.setAccessPolicy(PublicAccessType.BLOB, null, null).blockingGet()
-        PageBlobURL bu2 = cu.createPageBlobURL(generateBlobName())
-        String snapshot = bu.createSnapshot(null, null).blockingGet().headers().snapshot()
-
-        when:
-        bu2.copyIncremental(bu.toURL(), snapshot, metadata, null).blockingGet().headers()
-        BlobGetPropertiesResponse response = bu.getProperties(null).blockingGet()
-
-        then:
-        response.statusCode() == 200
-        response.headers().metadata() == metadata
-
-        where:
-        key1  | value1 | key2   | value2
-        null  | null   | null   | null
-        "foo" | "bar"  | "fizz" | "buzz"
-    }
-
     @Unroll
     def "Start incremental copy AC"() {
         setup:
         cu.setAccessPolicy(PublicAccessType.BLOB, null, null).blockingGet()
         PageBlobURL bu2 = cu.createPageBlobURL(generateBlobName())
         String snapshot = bu.createSnapshot(null, null).blockingGet().headers().snapshot()
-        def response = bu2.copyIncremental(bu.toURL(), snapshot, null, null).blockingGet()
+        def response = bu2.copyIncremental(bu.toURL(), snapshot, null).blockingGet()
         waitForCopy(bu2, response.headers().copyStatus())
         snapshot = bu.createSnapshot(null, null).blockingGet().headers().snapshot()
         match = setupBlobMatchCondition(bu2, match)
@@ -754,7 +726,7 @@ class PageBlobAPITest extends APISpec {
                 .withIfMatch(match).withIfNoneMatch(noneMatch)
 
         expect:
-        bu2.copyIncremental(bu.toURL(), snapshot, null, mac).blockingGet().statusCode() == 202
+        bu2.copyIncremental(bu.toURL(), snapshot, mac).blockingGet().statusCode() == 202
 
         where:
         modified | unmodified | match        | noneMatch
@@ -771,14 +743,14 @@ class PageBlobAPITest extends APISpec {
         cu.setAccessPolicy(PublicAccessType.BLOB, null, null).blockingGet()
         PageBlobURL bu2 = cu.createPageBlobURL(generateBlobName())
         String snapshot = bu.createSnapshot(null, null).blockingGet().headers().snapshot()
-        bu2.copyIncremental(bu.toURL(), snapshot, null, null).blockingGet()
+        bu2.copyIncremental(bu.toURL(), snapshot, null).blockingGet()
         snapshot = bu.createSnapshot(null, null).blockingGet().headers().snapshot()
         noneMatch = setupBlobMatchCondition(bu2, noneMatch)
         def mac = new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
                 .withIfMatch(match).withIfNoneMatch(noneMatch)
 
         when:
-        bu2.copyIncremental(bu.toURL(), snapshot, null, mac).blockingGet().statusCode()
+        bu2.copyIncremental(bu.toURL(), snapshot, mac).blockingGet().statusCode()
 
         then:
         thrown(StorageException)
@@ -796,7 +768,7 @@ class PageBlobAPITest extends APISpec {
         bu = cu.createPageBlobURL(generateBlobName())
 
         when:
-        bu.copyIncremental(new URL("https://www.error.com"), "snapshot", null, null)
+        bu.copyIncremental(new URL("https://www.error.com"), "snapshot", null)
                 .blockingGet()
 
         then:

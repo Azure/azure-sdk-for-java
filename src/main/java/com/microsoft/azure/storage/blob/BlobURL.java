@@ -213,7 +213,7 @@ public class BlobURL extends StorageURL {
         HTTPGetterInfo info = new HTTPGetterInfo()
                 .withCount(range.offset())
                 .withCount(range.count())
-                .withETag(accessConditions.httpAccessConditions().getIfMatch());
+                .withETag(accessConditions.modifiedAccessConditions().ifMatch());
 
         return addErrorWrappingToSingle(this.storageClient.generatedBlobs().downloadWithRestResponseAsync(
                 null, null, range.toString(), getMD5, null,
@@ -229,7 +229,7 @@ public class BlobURL extends StorageURL {
                                     this.download(new BlobRange().withOffset(newInfo.offset())
                                                     .withCount(newInfo.count()),
                                             new BlobAccessConditions().withModifiedAccessConditions(
-                                                    new ModifiedAccessConditions().withETag(info.eTag())), false));
+                                                    new ModifiedAccessConditions().withIfMatch(info.eTag())), false));
                 });
     }
 
@@ -282,7 +282,7 @@ public class BlobURL extends StorageURL {
      * Docs</a>.
      *
      * @param headers
-     *         {@link BlobHTTPHeaders}
+     *      {@link BlobHTTPHeaders}
      * @param accessConditions
      *         {@link BlobAccessConditions}
      * @return Emits the successful response.

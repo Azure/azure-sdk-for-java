@@ -101,9 +101,7 @@ public final class AppendBlobURL extends BlobURL {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      *
      * @param headers
-     *      Most often used when creating a blob or setting its properties, this class contains fields for typical HTTP
-     *      properties, which, if specified, will be attached to the target blob. Null may be passed to any API which takes this
-     *      type to indicate that no properties should be set.
+     *      {@link BlobHTTPHeaders}
      * @param metadata
      *      {@link Metadata}
      * @param accessConditions

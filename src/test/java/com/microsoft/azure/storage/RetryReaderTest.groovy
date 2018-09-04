@@ -16,6 +16,8 @@ package com.microsoft.azure.storage
 
 import com.microsoft.azure.storage.blob.*
 import com.microsoft.azure.storage.blob.models.StorageErrorException
+import com.microsoft.azure.storage.blob.BlockBlobURL
+
 import com.microsoft.rest.v2.util.FlowableUtil
 import io.reactivex.Flowable
 import spock.lang.Unroll
@@ -164,7 +166,7 @@ class RetryReaderTest extends APISpec {
         def info = new HTTPGetterInfo()
         .withOffset(20)
         .withCount(10)
-        .withETag(new ETag("etag"))
+        .withETag("etag")
         def options = new ReliableDownloadOptions()
         options.withMaxRetryRequests(5)
 

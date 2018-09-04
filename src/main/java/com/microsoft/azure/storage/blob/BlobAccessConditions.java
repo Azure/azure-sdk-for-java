@@ -33,23 +33,14 @@ public final class BlobAccessConditions {
     private LeaseAccessConditions leaseAccessConditions;
 
     /**
-     * This type contains standard HTTP Access Conditions related to modification of the source. Specifying these
-     * conditions is entirely optional, and null may be passed for this structure or any individual field to indicate
-     * that none of the conditions should be set. Please refer to the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Specifying-Conditional-Headers-for-Blob-Service-Operations?redirectedfrom=MSDN">Azure Docs</a>
-     * for more information.
+     * {@link ModifiedAccessConditions}
      */
     public ModifiedAccessConditions modifiedAccessConditions() {
         return modifiedAccessConditions;
     }
 
-
-    /*
-     * This type contains standard HTTP Access Conditions related to modification of the source. Specifying these
-     * conditions is entirely optional, and null may be passed for this structure or any individual field to indicate
-     * that none of the conditions should be set. Please refer to the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Specifying-Conditional-Headers-for-Blob-Service-Operations?redirectedfrom=MSDN">Azure Docs</a>
-     * for more information.
+    /**
+     * {@link ModifiedAccessConditions}
      */
     public BlobAccessConditions withModifiedAccessConditions(ModifiedAccessConditions modifiedAccessConditions) {
         this.modifiedAccessConditions = modifiedAccessConditions;
@@ -57,22 +48,14 @@ public final class BlobAccessConditions {
     }
 
     /**
-     * By specifying a leaseAccessConditions, operations on storage resources will only succeed if the active lease on the blob
-     * matches the specified lease. Specifying these conditions is entirely optional, and null may be passed for this
-     * structure or any individual field to indicate that none of the conditions should be set. Please refer to the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">Azure Docs</a>
-     * for more information.
+     * {@link LeaseAccessConditions}
      */
     public LeaseAccessConditions leaseAccessConditions() {
         return leaseAccessConditions;
     }
 
     /**
-     * By specifying a leaseAccessConditions, operations on storage resources will only succeed if the active lease on the blob
-     * matches the specified lease. Specifying these conditions is entirely optional, and null may be passed for this
-     * structure or any individual field to indicate that none of the conditions should be set. Please refer to the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">Azure Docs</a>
-     * for more information.
+     * {@link LeaseAccessConditions}
      */
     public BlobAccessConditions withLeaseAccessConditions(LeaseAccessConditions leaseAccessConditions) {
         this.leaseAccessConditions = leaseAccessConditions;

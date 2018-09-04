@@ -24,7 +24,7 @@ public final class HTTPGetterInfo {
 
     private Long count = null;
 
-    private ETag eTag = null;
+    private String eTag = null;
 
     /**
      * The start offset that should be used when creating the HTTP GET request's Range header. Defaults to 0.
@@ -66,7 +66,7 @@ public final class HTTPGetterInfo {
      * Etag is returned with any operation that modifies the resource and by a call to {@link
      * BlobURL#getProperties(BlobAccessConditions)}. Defaults to null.
      */
-    public ETag eTag() {
+    public String eTag() {
         return eTag;
     }
 
@@ -75,7 +75,7 @@ public final class HTTPGetterInfo {
      * Etag is returned with any operation that modifies the resource and by a call to {@link
      * BlobURL#getProperties(BlobAccessConditions)}. Defaults to null.
      */
-    public HTTPGetterInfo withETag(ETag eTag) {
+    public HTTPGetterInfo withETag(String eTag) {
         this.eTag = eTag;
         return this;
     }

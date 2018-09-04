@@ -109,9 +109,7 @@ public final class PageBlobURL extends BlobURL {
      *      A user-controlled value that you can use to track requests. The value of the sequence number must be
      *      between 0 and 2^63 - 1.The default value is 0.
      * @param headers
-     *      Most often used when creating a blob or setting its properties, this class contains fields for typical HTTP
-     *      properties, which, if specified, will be attached to the target blob. Null may be passed to any API which takes this
-     *      type to indicate that no properties should be set.
+     *      {@link BlobHTTPHeaders}
      * @param metadata
      *      {@link Metadata}
      * @param accessConditions
@@ -166,7 +164,7 @@ public final class PageBlobURL extends BlobURL {
             PageRange pageRange, Flowable<ByteBuffer> body, PageBlobAccessConditions pageBlobAccessConditions) {
         pageBlobAccessConditions = pageBlobAccessConditions == null ? PageBlobAccessConditions.NONE :
                 pageBlobAccessConditions;
-        validateSequenceNumberAccessConditions(pageBlobAccessConditions.sequenceNumberAccessConditions());
+
         if (pageRange == null) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
@@ -204,7 +202,7 @@ public final class PageBlobURL extends BlobURL {
             PageRange pageRange, PageBlobAccessConditions pageBlobAccessConditions) {
         pageBlobAccessConditions = pageBlobAccessConditions == null ? PageBlobAccessConditions.NONE :
                 pageBlobAccessConditions;
-        validateSequenceNumberAccessConditions(pageBlobAccessConditions.sequenceNumberAccessConditions());
+
         if (pageRange == null) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
@@ -358,15 +356,13 @@ public final class PageBlobURL extends BlobURL {
      *      The source page blob.
      * @param snapshot
      *      The snapshot on the copy source.
-     * @param metadata
-     *      {@link Metadata}
      * @param modifiedAccessConditions
      *      {@link ModifiedAccessConditions}
      * @return
      *      Emits the successful response.
      */
     public Single<PageBlobCopyIncrementalResponse> copyIncremental(URL source, String snapshot,
-            Metadata metadata, ModifiedAccessConditions modifiedAccessConditions) {
+            ModifiedAccessConditions modifiedAccessConditions) {
         UrlBuilder builder = UrlBuilder.parse(source);
         builder.setQueryParameter(Constants.SNAPSHOT_QUERY_PARAMETER, snapshot);
         try {
@@ -376,7 +372,7 @@ public final class PageBlobURL extends BlobURL {
             throw new Error(e);
         }
         return addErrorWrappingToSingle(this.storageClient.generatedPageBlobs().copyIncrementalWithRestResponseAsync(
-                source, null, metadata, null, modifiedAccessConditions));
+                source, null, null, null, modifiedAccessConditions));
     }
 
     private static String pageRangeToString(PageRange pageRange) {
@@ -394,16 +390,5 @@ public final class PageBlobURL extends BlobURL {
             throw new IllegalArgumentException("PageRange's End value must be after the start.");
         }
         return new StringBuilder("bytes=").append(pageRange.start()).append('-').append(pageRange.end()).toString();
-    }
-
-    private static void validateSequenceNumberAccessConditions(SequenceNumberAccessConditions conditions) {
-        if (conditions == null) {
-            return;
-        }
-        if ((conditions.ifSequenceNumberEqualTo() != null && conditions.ifSequenceNumberEqualTo() < 0) ||
-                (conditions.ifSequenceNumberLessThanOrEqualTo() != null && conditions.ifSequenceNumberLessThanOrEqualTo() < 0) ||
-                (conditions.ifSequenceNumberLessThan() != null && conditions.ifSequenceNumberLessThan() < 0)) {
-            throw new IllegalArgumentException("Sequence number access conditions cannot be less than -1");
-        }
     }
 }

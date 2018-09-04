@@ -230,7 +230,8 @@ public final class TransferManager {
         if one was not specified. We use a single for this because we may have to make a REST call to get the length to
         calculate the count and we need to maintain asynchronicity.
          */
-        if (r.count() == null || o.accessConditions.modifiedAccessConditions().ifMatch().equals(ETag.NONE)) {
+
+        if (r.count() == null || o.accessConditions.modifiedAccessConditions().ifMatch() == null) {
             return blobURL.getProperties(o.accessConditions)
                     .map(response -> {
                         BlobAccessConditions newConditions;

@@ -357,8 +357,7 @@ public final class ContainerURL extends StorageURL {
         if (modifiedAccessConditions == null) {
             return true;
         }
-        return modifiedAccessConditions.ifMatch().equals(ETag.NONE) &&
-                modifiedAccessConditions.ifNoneMatch().equals(ETag.NONE);
+        return modifiedAccessConditions.ifMatch() == null && modifiedAccessConditions.ifNoneMatch() == null;
     }
 
     /**

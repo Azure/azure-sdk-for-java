@@ -118,9 +118,7 @@ public final class BlockBlobURL extends BlobURL {
      *      The exact length of the data. It is important that this value match precisely the length of the data
      *      emitted by the {@code Flowable}.
      * @param headers
-     *      Most often used when creating a blob or setting its properties, this class contains fields for typical HTTP
-     *      properties, which, if specified, will be attached to the target blob. Null may be passed to any API which takes this
-     *      type to indicate that no properties should be set.
+     *      {@link BlobHTTPHeaders}
      * @param metadata
      *      {@link Metadata}
      * @param accessConditions
