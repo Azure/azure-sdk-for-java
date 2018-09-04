@@ -39,7 +39,7 @@ public interface RoleAssignments extends SupportsCreating<RoleAssignment.Definit
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable deleteAsync(String scope, String roleAssignmentName);
+    Observable<RoleAssignment> deleteAsync(String scope, String roleAssignmentName);
 
     /**
      * Get the specified role assignment.
@@ -58,7 +58,7 @@ public interface RoleAssignments extends SupportsCreating<RoleAssignment.Definit
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable deleteByIdAsync(String roleAssignmentId);
+    Observable<RoleAssignment> deleteByIdAsync(String roleAssignmentId);
 
     /**
      * Creates a role assignment by ID.

@@ -27,7 +27,7 @@ public class ClassicAdministratorProperties {
     private String role;
 
     /**
-     * Get the emailAddress value.
+     * Get the email address of the administrator.
      *
      * @return the emailAddress value
      */
@@ -36,7 +36,7 @@ public class ClassicAdministratorProperties {
     }
 
     /**
-     * Set the emailAddress value.
+     * Set the email address of the administrator.
      *
      * @param emailAddress the emailAddress value to set
      * @return the ClassicAdministratorProperties object itself.
@@ -47,7 +47,7 @@ public class ClassicAdministratorProperties {
     }
 
     /**
-     * Get the role value.
+     * Get the role of the administrator.
      *
      * @return the role value
      */
@@ -56,7 +56,7 @@ public class ClassicAdministratorProperties {
     }
 
     /**
-     * Set the role value.
+     * Set the role of the administrator.
      *
      * @param role the role value to set
      * @return the ClassicAdministratorProperties object itself.
