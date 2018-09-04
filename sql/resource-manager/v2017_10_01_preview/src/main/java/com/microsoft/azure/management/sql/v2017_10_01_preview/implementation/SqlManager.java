@@ -26,6 +26,8 @@ import com.microsoft.azure.management.sql.v2017_10_01_preview.InstanceFailoverGr
 import com.microsoft.azure.management.sql.v2017_10_01_preview.BackupShortTermRetentionPolicies;
 import com.microsoft.azure.management.sql.v2017_10_01_preview.TdeCertificates;
 import com.microsoft.azure.management.sql.v2017_10_01_preview.ManagedInstanceTdeCertificates;
+import com.microsoft.azure.management.sql.v2017_10_01_preview.ManagedInstanceKeys;
+import com.microsoft.azure.management.sql.v2017_10_01_preview.ManagedInstanceEncryptionProtectors;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -43,6 +45,8 @@ public final class SqlManager extends ManagerCore<SqlManager, SqlManagementClien
     private BackupShortTermRetentionPolicies backupShortTermRetentionPolicies;
     private TdeCertificates tdeCertificates;
     private ManagedInstanceTdeCertificates managedInstanceTdeCertificates;
+    private ManagedInstanceKeys managedInstanceKeys;
+    private ManagedInstanceEncryptionProtectors managedInstanceEncryptionProtectors;
     /**
     * Get a Configurable instance that can be used to create SqlManager with optional configuration.
     *
@@ -188,6 +192,26 @@ public final class SqlManager extends ManagerCore<SqlManager, SqlManagementClien
             this.managedInstanceTdeCertificates = new ManagedInstanceTdeCertificatesImpl(this);
         }
         return this.managedInstanceTdeCertificates;
+    }
+
+    /**
+     * @return Entry point to manage ManagedInstanceKeys.
+     */
+    public ManagedInstanceKeys managedInstanceKeys() {
+        if (this.managedInstanceKeys == null) {
+            this.managedInstanceKeys = new ManagedInstanceKeysImpl(this);
+        }
+        return this.managedInstanceKeys;
+    }
+
+    /**
+     * @return Entry point to manage ManagedInstanceEncryptionProtectors.
+     */
+    public ManagedInstanceEncryptionProtectors managedInstanceEncryptionProtectors() {
+        if (this.managedInstanceEncryptionProtectors == null) {
+            this.managedInstanceEncryptionProtectors = new ManagedInstanceEncryptionProtectorsImpl(this);
+        }
+        return this.managedInstanceEncryptionProtectors;
     }
 
     /**
