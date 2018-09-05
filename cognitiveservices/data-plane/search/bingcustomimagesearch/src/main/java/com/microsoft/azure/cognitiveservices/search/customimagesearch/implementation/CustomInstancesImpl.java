@@ -42,7 +42,7 @@ public class CustomInstancesImpl implements CustomInstances {
     /** The Retrofit service to perform REST calls. */
     private CustomInstancesService service;
     /** The service client containing this operation class. */
-    private CustomImageSearchAPIImpl client;
+    private CustomImageSearchClientImpl client;
 
     /**
      * Initializes an instance of CustomInstancesImpl.
@@ -50,7 +50,7 @@ public class CustomInstancesImpl implements CustomInstances {
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public CustomInstancesImpl(Retrofit retrofit, CustomImageSearchAPIImpl client) {
+    public CustomInstancesImpl(Retrofit retrofit, CustomImageSearchClientImpl client) {
         this.service = retrofit.create(CustomInstancesService.class);
         this.client = client;
     }
