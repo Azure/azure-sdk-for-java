@@ -28,6 +28,7 @@ import java.nio.ByteBuffer;
 import java.util.Map;
 
 /**
+<<<<<<< HEAD
  * {@code DownloadResponse} wraps the protocol-layer response from {@link BlobURL#download(BlobRange,
  * BlobAccessConditions, boolean)} to automatically retry failed reads from the body as appropriate. If the
  * download is interrupted, the {@code DownloadResponse} will make a request to resume the download from where it left
@@ -40,6 +41,9 @@ import java.util.Map;
  * an underlying pipeline may issue several retries as a part of that request. Furthermore, this reader only retries on
  * network errors; timeouts and unexpected status codes are not retried. Therefore, the behavior of this reader is
  * entirely independent of and in no way coupled to an {@link HttpPipeline}'s retry mechanism.
+=======
+ * {@code DownloadResponse} wraps the protocol-layer response from {@link BlobURL#download(BlobRange, BlobAccessConditions, boolean, com.microsoft.rest.v2.Context)} to help provide information for retrying.
+>>>>>>> Generated with context feature
  */
 public final class DownloadResponse {
     private final HTTPGetterInfo info;

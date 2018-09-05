@@ -15,6 +15,7 @@
 package com.microsoft.azure.storage.blob;
 
 import com.microsoft.azure.storage.blob.models.*;
+import com.microsoft.rest.v2.Context;
 import com.microsoft.rest.v2.http.HttpPipeline;
 import io.reactivex.Single;
 
@@ -136,16 +137,16 @@ public class BlobURL extends StorageURL {
      * @param sourceModifiedAccessConditions
      *      {@link ModifiedAccessConditions} against the source.
      * @param destAccessConditions
-     *         {@link BlobAccessConditions} against the destination.
+     *      {@link BlobAccessConditions} against the destination.
      * @return Emits the successful response.
      * @apiNote ## Sample Code \n [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=start_copy
      * "Sample code for BlobURL.startCopyFromURL")] \n [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=start_copy_helper
      * "Helper for start_copy sample.")] \n For more samples, please see the [Samples
      * file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Single<BlobStartCopyFromURLResponse> startCopyFromURL(
-            URL sourceURL, Metadata metadata, ModifiedAccessConditions sourceModifiedAccessConditions,
-            BlobAccessConditions destAccessConditions) {
+    public Single<BlobStartCopyFromURLResponse> startCopyFromURL(URL sourceURL, Metadata metadata,
+            ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions,
+            Context context) {
         metadata = metadata == null ? Metadata.NONE : metadata;
         sourceModifiedAccessConditions = sourceModifiedAccessConditions == null ?
                 new ModifiedAccessConditions() : sourceModifiedAccessConditions;
@@ -159,8 +160,8 @@ public class BlobURL extends StorageURL {
                 .withSourceIfNoneMatch(sourceModifiedAccessConditions.ifNoneMatch());
 
         return addErrorWrappingToSingle(this.storageClient.generatedBlobs().startCopyFromURLWithRestResponseAsync(
-               sourceURL, null, metadata, null, sourceConditions, destAccessConditions.modifiedAccessConditions(),
-                destAccessConditions.leaseAccessConditions()));
+               context, sourceURL, null, metadata, null, sourceConditions,
+                destAccessConditions.modifiedAccessConditions(), destAccessConditions.leaseAccessConditions()));
     }
 
     /**
@@ -169,20 +170,20 @@ public class BlobURL extends StorageURL {
      * Docs</a>.
      *
      * @param copyId
-     *         The id of the copy operation to abort. Returned as the {@code copyId} field on the {@link
-     *         BlobStartCopyFromURLHeaders} object.
+     *      The id of the copy operation to abort. Returned as the {@code copyId} field on the {@link
+     *      BlobStartCopyFromURLHeaders} object.
      * @param leaseAccessConditions
-     *         {@link LeaseAccessConditions}
+     *      {@link LeaseAccessConditions}
      * @return Emits the successful response.
      * @apiNote ## Sample Code \n [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=abort_copy
      * "Sample code for BlobURL.abortCopyFromURL")] \n For more samples, please see the [Samples
      * file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Single<BlobAbortCopyFromURLResponse> abortCopyFromURL(
-            String copyId, LeaseAccessConditions leaseAccessConditions) {
+    public Single<BlobAbortCopyFromURLResponse> abortCopyFromURL(String copyId,
+            LeaseAccessConditions leaseAccessConditions, Context context) {
 
         return addErrorWrappingToSingle(this.storageClient.generatedBlobs().abortCopyFromURLWithRestResponseAsync(
-                copyId, null, null, leaseAccessConditions));
+                context, copyId, null, null, leaseAccessConditions));
     }
 
     /**
@@ -201,11 +202,10 @@ public class BlobURL extends StorageURL {
      * @return Emits the successful response.
      * @apiNote ## Sample Code \n [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=upload_download
      * "Sample code for BlobURL.download")] \n For more samples, please see the [Samples
-     * file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)>>>>>>> Generated with context feature
      */
-    public Single<DownloadResponse> download(
-            BlobRange range, BlobAccessConditions accessConditions, boolean rangeGetContentMD5) {
-
+    public Single<DownloadResponse> download(BlobRange range, BlobAccessConditions accessConditions,
+            boolean rangeGetContentMD5, Context context) {
         Boolean getMD5 = rangeGetContentMD5 ? rangeGetContentMD5 : null;
         range = range == null ? BlobRange.DEFAULT : range;
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
@@ -215,8 +215,9 @@ public class BlobURL extends StorageURL {
                 .withCount(range.count())
                 .withETag(accessConditions.modifiedAccessConditions().ifMatch());
 
+
         return addErrorWrappingToSingle(this.storageClient.generatedBlobs().downloadWithRestResponseAsync(
-                null, null, range.toString(), getMD5, null,
+                context, null, null, range.toString(), getMD5, null,
                 accessConditions.leaseAccessConditions(),
                 accessConditions.modifiedAccessConditions()))
                 // Convert the autorest response to a DownloadResponse, which enable reliable download.
@@ -229,7 +230,8 @@ public class BlobURL extends StorageURL {
                                     this.download(new BlobRange().withOffset(newInfo.offset())
                                                     .withCount(newInfo.count()),
                                             new BlobAccessConditions().withModifiedAccessConditions(
-                                                    new ModifiedAccessConditions().withIfMatch(info.eTag())), false));
+                                                    new ModifiedAccessConditions().withIfMatch(info.eTag())), false,
+                                            context));
                 });
     }
 

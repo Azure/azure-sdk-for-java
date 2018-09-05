@@ -44,7 +44,7 @@ public final class BlobDownloadHeaders {
     private Long contentLength;
 
     /**
-     * The content type specified for the blob. The default content type is
+     * The media type of the body of the response. For Download Blob this is
      * 'application/octet-stream'.
      */
     @JsonProperty(value = "Content-Type")

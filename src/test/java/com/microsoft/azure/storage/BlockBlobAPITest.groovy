@@ -144,7 +144,7 @@ class BlockBlobAPITest extends APISpec {
         listResponse.body().uncommittedBlocks().get(0).name() == blockID
         listResponse.body().uncommittedBlocks().size() == 1
 
-        FlowableUtil.collectBytesInBuffer(bu2.download(null, null, false)
+        FlowableUtil.collectBytesInBuffer(bu2.download(null, null, false, null)
                 .blockingGet().body()).blockingGet() == defaultData
     }
 
@@ -485,7 +485,7 @@ class BlockBlobAPITest extends APISpec {
         then:
         response.statusCode() == 201
         FlowableUtil.collectBytesInBuffer(
-                bu.download(null, null, false).blockingGet().body())
+                bu.download(null, null, false, null).blockingGet().body())
                 .blockingGet() == defaultData
         validateBasicHeaders(headers)
         headers.contentMD5() != null

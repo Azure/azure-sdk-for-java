@@ -165,7 +165,7 @@ public class AppendBlobAPITest extends APISpec {
                         null).blockingGet().headers()
 
         expect:
-        FlowableUtil.collectBytesInBuffer(bu.download(null, null, false)
+        FlowableUtil.collectBytesInBuffer(bu.download(null, null, false, null)
                 .blockingGet().body()).blockingGet().compareTo(defaultData) == 0
         validateBasicHeaders(headers)
         headers.contentMD5() != null

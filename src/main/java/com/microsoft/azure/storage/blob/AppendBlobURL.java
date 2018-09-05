@@ -15,6 +15,7 @@
 package com.microsoft.azure.storage.blob;
 
 import com.microsoft.azure.storage.blob.models.*;
+import com.microsoft.rest.v2.Context;
 import com.microsoft.rest.v2.http.HttpPipeline;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
@@ -109,12 +110,13 @@ public final class AppendBlobURL extends BlobURL {
      * @return
      *      Emits the successful response.
      */
-    public Single<AppendBlobCreateResponse> create(
-            BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions) {
+    public Single<AppendBlobCreateResponse> create(BlobHTTPHeaders headers, Metadata metadata,
+            BlobAccessConditions accessConditions, Context context) {
+        metadata = metadata == null ? Metadata.NONE : metadata;
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
         metadata = metadata == null ? Metadata.NONE : metadata;
 
-        return addErrorWrappingToSingle(this.storageClient.generatedAppendBlobs().createWithRestResponseAsync(
+        return addErrorWrappingToSingle(this.storageClient.generatedAppendBlobs().createWithRestResponseAsync(context,
                 0, null, metadata, null, headers, accessConditions.leaseAccessConditions(),
                 accessConditions.modifiedAccessConditions()));
     }
@@ -142,13 +144,13 @@ public final class AppendBlobURL extends BlobURL {
      * @return
      *      Emits the successful response.
      */
-    public Single<AppendBlobAppendBlockResponse> appendBlock(
-            Flowable<ByteBuffer> data, long length, AppendBlobAccessConditions appendBlobAccessConditions) {
+    public Single<AppendBlobAppendBlockResponse> appendBlock(Flowable<ByteBuffer> data, long length,
+            AppendBlobAccessConditions appendBlobAccessConditions, Context context) {
         appendBlobAccessConditions = appendBlobAccessConditions == null ? AppendBlobAccessConditions.NONE :
                 appendBlobAccessConditions;
 
         return addErrorWrappingToSingle(this.storageClient.generatedAppendBlobs().appendBlockWithRestResponseAsync(
-                data, length, null, null, null, appendBlobAccessConditions.leaseAccessConditions(),
+                context, data, length, null, null, null, appendBlobAccessConditions.leaseAccessConditions(),
                 appendBlobAccessConditions.appendPositionAccessConditions(),
                 appendBlobAccessConditions.modifiedAccessConditions()));
     }

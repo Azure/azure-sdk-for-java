@@ -202,7 +202,7 @@ public final class TransferManager {
 
 
                         // Make the download call.
-                        return blobURL.download(chunkRange, realConditions, false)
+                        return blobURL.download(chunkRange, realConditions, false, null)
                                 // Extract the body.
                                 .flatMapObservable(response ->
                                         // Write to the file.

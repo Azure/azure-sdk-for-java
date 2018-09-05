@@ -36,7 +36,7 @@ class BlobAPITest extends APISpec {
 
     def "Download all null"() {
         when:
-        DownloadResponse response = bu.download(null, null, false)
+        DownloadResponse response = bu.download(null, null, false, null)
                 .blockingGet()
         ByteBuffer body = FlowableUtil.collectBytesInBuffer(response.body(null)).blockingGet()
         BlobDownloadHeaders headers = response.headers()
@@ -77,7 +77,7 @@ class BlobAPITest extends APISpec {
 
         when:
         ByteBuffer body = FlowableUtil.collectBytesInBuffer(
-                bu.download(range, null, false).blockingGet().body(null)).blockingGet()
+                bu.download(range, null, false, null).blockingGet().body(null)).blockingGet()
         String bodyStr = new String(body.array())
 
         then:
@@ -101,7 +101,7 @@ class BlobAPITest extends APISpec {
                 .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
 
         expect:
-        bu.download(null, bac, false).blockingGet().statusCode() == 206
+        bu.download(null, bac, false, null).blockingGet().statusCode() == 206
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -124,7 +124,7 @@ class BlobAPITest extends APISpec {
                 .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
 
         when:
-        bu.download(null, bac, false).blockingGet().statusCode() == 206
+        bu.download(null, bac, false, null).blockingGet().statusCode() == 206
 
         then:
         thrown(StorageException)
@@ -140,7 +140,7 @@ class BlobAPITest extends APISpec {
 
     def "Download md5"() {
         expect:
-        bu.download(new BlobRange().withOffset(0).withCount(3), null, true).blockingGet()
+        bu.download(new BlobRange().withOffset(0).withCount(3), null, true, null).blockingGet()
                 .headers().contentMD5() ==
                 MessageDigest.getInstance("MD5").digest(defaultText.substring(0, 3).getBytes())
     }
@@ -150,7 +150,7 @@ class BlobAPITest extends APISpec {
         bu = cu.createBlockBlobURL(generateBlobName())
 
         when:
-        bu.download(null, null, false).blockingGet()
+        bu.download(null, null, false, null).blockingGet()
 
         then:
         thrown(StorageException)
@@ -1049,7 +1049,7 @@ class BlobAPITest extends APISpec {
         String copyID =
                 bu2.startCopyFromURL(bu.toURL(), null, null, null)
                         .blockingGet().headers().copyId()
-        BlobAbortCopyFromURLResponse response = bu2.abortCopyFromURL(copyID, null).blockingGet()
+        BlobAbortCopyFromURLResponse response = bu2.abortCopyFromURL(copyID, null, null).blockingGet()
         BlobAbortCopyFromURLHeaders headers = response.headers()
 
         then:
@@ -1086,7 +1086,7 @@ class BlobAPITest extends APISpec {
                         .blockingGet().headers().copyId()
 
         then:
-        bu2.abortCopyFromURL(copyID, new LeaseAccessConditions().withLeaseId(leaseID))
+        bu2.abortCopyFromURL(copyID, new LeaseAccessConditions().withLeaseId(leaseID), null)
                 .blockingGet().statusCode() == 204
         // Normal test cleanup will not clean up containers in the alternate account.
         cu2.delete(null).blockingGet()
@@ -1112,9 +1112,9 @@ class BlobAPITest extends APISpec {
         String copyID =
                 bu2.startCopyFromURL(bu.toURL(), null, null,
                         new BlobAccessConditions().withLeaseAccessConditions(new LeaseAccessConditions()
-                                .withLeaseId(leaseID)))
+                                .withLeaseId(leaseID)), null)
                         .blockingGet().headers().copyId()
-        bu2.abortCopyFromURL(copyID, new LeaseAccessConditions().withLeaseId(garbageLeaseID)).blockingGet()
+        bu2.abortCopyFromURL(copyID, new LeaseAccessConditions().withLeaseId(garbageLeaseID), null).blockingGet()
 
         then:
         def e = thrown(StorageException)
@@ -1127,7 +1127,7 @@ class BlobAPITest extends APISpec {
         bu = cu.createBlockBlobURL(generateBlobName())
 
         when:
-        bu.abortCopyFromURL("id", null).blockingGet()
+        bu.abortCopyFromURL("id", null, null).blockingGet()
 
         then:
         thrown(StorageException)

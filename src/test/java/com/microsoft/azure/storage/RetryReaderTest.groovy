@@ -37,8 +37,24 @@ class RetryReaderTest extends APISpec {
      */
     def "Network call"() {
         expect:
+<<<<<<< HEAD
         FlowableUtil.collectBytesInBuffer(bu.download(null, null, false).blockingGet().body(null))
                 .blockingGet() == defaultData
+=======
+        FlowableUtil.collectBytesInBuffer(new RetryReader(bu.download(null, null, false, null), info, options, new Function<RetryReader.HTTPGetterInfo, Single<? extends RestResponse<?, Flowable<ByteBuffer>>>>() {
+            @Override
+            Single<? extends RestResponse<?, Flowable<ByteBuffer>>> apply(RetryReader.HTTPGetterInfo httpGetterInfo) {
+                bu.download(new BlobRange(httpGetterInfo.offset, httpGetterInfo.count), null, false, null)
+            }
+        })).blockingGet() == defaultData
+
+        // Go DownloadResponse, Download, DownloadResponse.body
+
+        // Test with the different kinds of errors that are retryable: Timeout, IOException, 500, 503--assert that the data at the end is still the same - Use the RetryTestFactory (or similar)
+        // Another policy which returns a custom flowable that injects an error after a certain amount of data.
+        // Different values of options. Valid and invalid. See Adam's comment on CR about count and offset.
+        // Null options and info parameters and null internal fields (null count)
+>>>>>>> Generated with context feature
     }
 
     @Unroll

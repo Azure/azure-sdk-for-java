@@ -166,7 +166,7 @@ public class Samples {
                                 null, null, null))
                 .flatMap(blobUploadResponse ->
                         // Download the blob's content.
-                        blobURL.download(null, null, false))
+                        blobURL.download(null, null, false, null))
                 .flatMap(blobDownloadResponse ->
                         // Verify that the blob data round-tripped correctly.
                         FlowableUtil.collectBytesInBuffer(blobDownloadResponse.body(null))
@@ -658,7 +658,7 @@ public class Samples {
                 )
                 .flatMap(blockBlobUploadResponse ->
                         // Attempt to read the blob with anonymous credentials.
-                        anonymousURL.download(null, null, false)
+                        anonymousURL.download(null, null, false, null)
                 )
                 .toCompletable()
                 .onErrorResumeNext(throwable -> {
@@ -683,7 +683,7 @@ public class Samples {
                 .delay(31, TimeUnit.SECONDS)
                 // Now this will work.
                 .andThen(anonymousURL.download(null, null,
-                        false))
+                        false, null))
                 .flatMap(blobDownloadResponse ->
                         // Delete the container and the blob within in.
                         containerURL.delete(null))
@@ -725,7 +725,7 @@ public class Samples {
                                     new ModifiedAccessConditions().withIfModifiedSince(
                                             blockBlobUploadResponse.headers().lastModified())),
 
-                            false);
+                            false, null);
                 })
                 .onErrorResumeNext(throwable -> {
                     if (throwable instanceof RestException) {
@@ -738,7 +738,7 @@ public class Samples {
                             new BlobAccessConditions().withModifiedAccessConditions(
                                     new ModifiedAccessConditions().withIfUnmodifiedSince(
                                             OffsetDateTime.now().minusDays(1))),
-                            false);
+                            false, null);
                 })
                 /*
                  onErrorResume next expects to return a Single of the same type. Here, we are changing operations, which
@@ -776,7 +776,7 @@ public class Samples {
                     return blobURL.download(null,
                             new BlobAccessConditions().withModifiedAccessConditions(
                                     new ModifiedAccessConditions().withIfNoneMatch(
-                                            blockBlobUploadResponse.headers().eTag())), false);
+                                            blockBlobUploadResponse.headers().eTag())), false, null);
                 })
                 .ignoreElement()
                 .onErrorResumeNext(throwable -> {
@@ -1083,7 +1083,7 @@ public class Samples {
         containerURL.create(null, null)
                 .flatMap(response ->
                         // Create the append blob. This creates a zero-length blob that we can now append to.
-                        blobURL.create(null, null, null))
+                        blobURL.create(null, null, null, null))
                 .toObservable()
                 .flatMap(response ->
                         // This range will act as our for loop to create 5 blocks
@@ -1094,11 +1094,11 @@ public class Samples {
                     NOTE: The Flowable containing the data must be replayable to support retries. That is, it must
                     yield the same data every time it is subscribed to.
                      */
-                    return blobURL.appendBlock(Flowable.just(ByteBuffer.wrap(text.getBytes())), text.length(),
+                    return blobURL.appendBlock(Flowable.just(ByteBuffer.wrap(text.getBytes())), text.length(), null,
                             null).ignoreElement();
                 })
                 // Download the blob.
-                .andThen(blobURL.download(null, null, false))
+                .andThen(blobURL.download(null, null, false, null))
                 .flatMap(response ->
                         // Print out the data.
                         FlowableUtil.collectBytesInBuffer(response.body(null))
@@ -1190,7 +1190,7 @@ public class Samples {
                     }
 
                     // Get the content of the whole blob.
-                    return blobURL.download(null, null, false);
+                    return blobURL.download(null, null, false, null);
                 })
                 .flatMap(response ->
                         // Print the received content.
@@ -1240,7 +1240,7 @@ public class Samples {
                         blobURL.upload(Flowable.just(ByteBuffer.wrap("New text".getBytes())), "New text".length(),
                                 null, null, null)
                                 .flatMap(response1 ->
-                                        blobURL.download(null, null, false))
+                                        blobURL.download(null, null, false, null))
                                 .flatMap(response1 ->
                                         // Print the received content.
                                         FlowableUtil.collectBytesInBuffer(response1.body(null))
@@ -1257,7 +1257,7 @@ public class Samples {
                                     BlockBlobURL baseBlob = snapshotURL.withSnapshot(null);
 
                                     return snapshotURL
-                                            .download(null, null, false)
+                                            .download(null, null, false, null)
                                             .flatMap(response2 ->
                                                     /*
                                                     List the blob(s) in our container, including their snapshots; since
@@ -1437,7 +1437,7 @@ public class Samples {
                                 BlockBlobURL.MAX_STAGE_BLOCK_BYTES, TransferManagerUploadToBlockBlobOptions.DEFAULT),
                                 AsynchronousFileChannel::close))
                 .flatMap(response ->
-                        blobURL.download(null, null, false))
+                        blobURL.download(null, null, false, null))
                 .flatMapPublisher(response ->
                         response.body(options))
                 .lastOrError() // Place holder for processing all the intermediary data.
@@ -1587,7 +1587,7 @@ public class Samples {
                                 null, null, null))
                 .flatMap(blobUploadResponse ->
                         // Download the blob's content.
-                        blobURL.download(null, null, false));
+                        blobURL.download(null, null, false, null));
         downloadResponse.flatMap(blobDownloadResponse ->
                 // Verify that the blob data round-tripped correctly.
                 FlowableUtil.collectBytesInBuffer(blobDownloadResponse.body(null))
@@ -1896,7 +1896,7 @@ public class Samples {
                 .flatMap(response ->
                         blobURL.getProperties(null))
                 .flatMap(response ->
-                        blobURL.abortCopyFromURL(response.headers().copyId(), null))
+                        blobURL.abortCopyFromURL(response.headers().copyId(), null, null))
                 .subscribe();
         // </abort_copy>
 
