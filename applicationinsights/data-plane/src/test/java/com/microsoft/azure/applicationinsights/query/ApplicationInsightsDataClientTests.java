@@ -100,11 +100,4 @@ public class ApplicationInsightsDataClientTests extends TestBase {
         EventsResults eventsResult = applicationInsightsClient.events().get(appId, EventType.AVAILABILITY_RESULTS, eventId);
         Assert.assertNotNull(eventsResult.value().get(0).id());
     }
-
-    @Test
-    public void canGetEventsOdataMetadata() {
-        Object metadata = applicationInsightsClient.events().getOdataMetadata(appId);
-        // Sanity check
-        Assert.assertNotNull(metadata);
-    }   
 }

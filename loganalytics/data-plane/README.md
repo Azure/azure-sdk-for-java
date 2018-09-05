@@ -62,7 +62,7 @@ public class LogAnalyticsClientExample
 
 ## Download
 
-### Latest stable release
+### Latest release
 
 To get the binaries of the official Microsoft Azure Log Analytics SDK as distributed by Microsoft, reade for use within your project, you can use Maven.
 
