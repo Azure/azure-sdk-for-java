@@ -141,6 +141,9 @@
                     <include>**/*Tests.java</include>
                     <include>**/*TestCase.java</include>
                 </includes>
+                <excludes>
+                    <exclude>**/LogAnalyticsDataClientTests.java</exclude>
+                </excludes>
                 <environmentVariables>
                     <test.mode>${testMode}</test.mode>
                 </environmentVariables>
