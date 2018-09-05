@@ -15,6 +15,7 @@ import com.microsoft.azure.graphrbac.GraphErrorException;
 import com.microsoft.azure.graphrbac.KeyCredentialsUpdateParameters;
 import com.microsoft.azure.graphrbac.PasswordCredentialsUpdateParameters;
 import com.microsoft.azure.graphrbac.ServicePrincipalCreateParameters;
+import com.microsoft.azure.graphrbac.ServicePrincipalUpdateParameters;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
@@ -68,6 +69,10 @@ public class ServicePrincipalsInner {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.graphrbac.ServicePrincipals create" })
         @POST("{tenantID}/servicePrincipals")
         Observable<Response<ResponseBody>> create(@Path("tenantID") String tenantID, @Body ServicePrincipalCreateParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.graphrbac.ServicePrincipals update" })
+        @PATCH("{tenantID}/servicePrincipals")
+        Observable<Response<ResponseBody>> update(@Path("tenantID") String tenantID, @Body ServicePrincipalUpdateParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.graphrbac.ServicePrincipals list" })
         @GET("{tenantID}/servicePrincipals")
@@ -185,6 +190,86 @@ public class ServicePrincipalsInner {
     }
 
     private ServiceResponse<ServicePrincipalInner> createDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ServicePrincipalInner, GraphErrorException>newInstance(this.client.serializerAdapter())
+                .register(201, new TypeToken<ServicePrincipalInner>() { }.getType())
+                .registerError(GraphErrorException.class)
+                .build(response);
+    }
+
+    /**
+     * Updates a service principal in the directory.
+     *
+     * @param parameters Parameters to update a service principal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws GraphErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ServicePrincipalInner object if successful.
+     */
+    public ServicePrincipalInner update(ServicePrincipalUpdateParameters parameters) {
+        return updateWithServiceResponseAsync(parameters).toBlocking().single().body();
+    }
+
+    /**
+     * Updates a service principal in the directory.
+     *
+     * @param parameters Parameters to update a service principal.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ServicePrincipalInner> updateAsync(ServicePrincipalUpdateParameters parameters, final ServiceCallback<ServicePrincipalInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(parameters), serviceCallback);
+    }
+
+    /**
+     * Updates a service principal in the directory.
+     *
+     * @param parameters Parameters to update a service principal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ServicePrincipalInner object
+     */
+    public Observable<ServicePrincipalInner> updateAsync(ServicePrincipalUpdateParameters parameters) {
+        return updateWithServiceResponseAsync(parameters).map(new Func1<ServiceResponse<ServicePrincipalInner>, ServicePrincipalInner>() {
+            @Override
+            public ServicePrincipalInner call(ServiceResponse<ServicePrincipalInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Updates a service principal in the directory.
+     *
+     * @param parameters Parameters to update a service principal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ServicePrincipalInner object
+     */
+    public Observable<ServiceResponse<ServicePrincipalInner>> updateWithServiceResponseAsync(ServicePrincipalUpdateParameters parameters) {
+        if (this.client.tenantID() == null) {
+            throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
+        }
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(parameters);
+        return service.update(this.client.tenantID(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ServicePrincipalInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ServicePrincipalInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ServicePrincipalInner> clientResponse = updateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ServicePrincipalInner> updateDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<ServicePrincipalInner, GraphErrorException>newInstance(this.client.serializerAdapter())
                 .register(201, new TypeToken<ServicePrincipalInner>() { }.getType())
                 .registerError(GraphErrorException.class)
