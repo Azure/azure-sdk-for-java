@@ -417,10 +417,9 @@ public class ServicePrincipalsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws GraphErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the ServicePrincipalInner object if successful.
      */
-    public ServicePrincipalInner update(String objectId, ServicePrincipalUpdateParameters parameters) {
-        return updateWithServiceResponseAsync(objectId, parameters).toBlocking().single().body();
+    public void update(String objectId, ServicePrincipalUpdateParameters parameters) {
+        updateWithServiceResponseAsync(objectId, parameters).toBlocking().single().body();
     }
 
     /**
@@ -432,7 +431,7 @@ public class ServicePrincipalsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ServicePrincipalInner> updateAsync(String objectId, ServicePrincipalUpdateParameters parameters, final ServiceCallback<ServicePrincipalInner> serviceCallback) {
+    public ServiceFuture<Void> updateAsync(String objectId, ServicePrincipalUpdateParameters parameters, final ServiceCallback<Void> serviceCallback) {
         return ServiceFuture.fromResponse(updateWithServiceResponseAsync(objectId, parameters), serviceCallback);
     }
 
@@ -442,12 +441,12 @@ public class ServicePrincipalsInner {
      * @param objectId The object ID of the service principal to delete.
      * @param parameters Parameters to update a service principal.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ServicePrincipalInner object
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServicePrincipalInner> updateAsync(String objectId, ServicePrincipalUpdateParameters parameters) {
-        return updateWithServiceResponseAsync(objectId, parameters).map(new Func1<ServiceResponse<ServicePrincipalInner>, ServicePrincipalInner>() {
+    public Observable<Void> updateAsync(String objectId, ServicePrincipalUpdateParameters parameters) {
+        return updateWithServiceResponseAsync(objectId, parameters).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
-            public ServicePrincipalInner call(ServiceResponse<ServicePrincipalInner> response) {
+            public Void call(ServiceResponse<Void> response) {
                 return response.body();
             }
         });
@@ -459,9 +458,9 @@ public class ServicePrincipalsInner {
      * @param objectId The object ID of the service principal to delete.
      * @param parameters Parameters to update a service principal.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ServicePrincipalInner object
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<ServicePrincipalInner>> updateWithServiceResponseAsync(String objectId, ServicePrincipalUpdateParameters parameters) {
+    public Observable<ServiceResponse<Void>> updateWithServiceResponseAsync(String objectId, ServicePrincipalUpdateParameters parameters) {
         if (objectId == null) {
             throw new IllegalArgumentException("Parameter objectId is required and cannot be null.");
         }
@@ -476,11 +475,11 @@ public class ServicePrincipalsInner {
         }
         Validator.validate(parameters);
         return service.update(objectId, this.client.tenantID(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ServicePrincipalInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
-                public Observable<ServiceResponse<ServicePrincipalInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<ServicePrincipalInner> clientResponse = updateDelegate(response);
+                        ServiceResponse<Void> clientResponse = updateDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -489,9 +488,9 @@ public class ServicePrincipalsInner {
             });
     }
 
-    private ServiceResponse<ServicePrincipalInner> updateDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ServicePrincipalInner, GraphErrorException>newInstance(this.client.serializerAdapter())
-                .register(201, new TypeToken<ServicePrincipalInner>() { }.getType())
+    private ServiceResponse<Void> updateDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, GraphErrorException>newInstance(this.client.serializerAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
                 .registerError(GraphErrorException.class)
                 .build(response);
     }
