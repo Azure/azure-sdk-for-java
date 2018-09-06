@@ -16,19 +16,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class MetricNamespaceInner {
     /**
-     * the id of the metricNamespace.
+     * The ID of the metricNamespace.
      */
     @JsonProperty(value = "id")
     private String id;
 
     /**
-     * the type of the namespace.
+     * The type of the namespace.
      */
     @JsonProperty(value = "type")
     private String type;
 
     /**
-     * the name of the namespace.
+     * The name of the namespace.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -40,7 +40,7 @@ public class MetricNamespaceInner {
     private MetricNamespaceName properties;
 
     /**
-     * Get the id of the metricNamespace.
+     * Get the ID of the metricNamespace.
      *
      * @return the id value
      */
@@ -49,7 +49,7 @@ public class MetricNamespaceInner {
     }
 
     /**
-     * Set the id of the metricNamespace.
+     * Set the ID of the metricNamespace.
      *
      * @param id the id value to set
      * @return the MetricNamespaceInner object itself.

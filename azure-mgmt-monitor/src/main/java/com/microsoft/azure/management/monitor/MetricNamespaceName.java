@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class MetricNamespaceName {
     /**
-     * the metric namespace name.
+     * The metric namespace name.
      */
     @JsonProperty(value = "metricNamespaceName")
     private String metricNamespaceName;
