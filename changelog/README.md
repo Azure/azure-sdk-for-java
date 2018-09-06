@@ -1,5 +1,12 @@
 ## Changelog
 
+### 2.1.0
+* Added support for Proxy.
+* Added support for resource token authorization.
+* Fixed a bug in handling large partition keys ([github #63](https://github.com/Azure/azure-cosmosdb-java/issues/63)).
+* Documentatoin improved.
+* SDK restructured into more granular modules.
+
 ### 2.0.1
 - Fixed a bug for non-english locales ([github #51](https://github.com/Azure/azure-cosmosdb-java/issues/51)).
 - Added helper methods for Conflict resource.
