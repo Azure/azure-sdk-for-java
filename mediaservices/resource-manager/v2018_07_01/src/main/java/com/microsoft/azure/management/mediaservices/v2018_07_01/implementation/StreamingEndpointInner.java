@@ -31,13 +31,16 @@ public class StreamingEndpointInner extends Resource {
     private String description;
 
     /**
-     * The number of scale units.
+     * The number of scale units.  Use the Scale operation to adjust this
+     * value.
      */
     @JsonProperty(value = "properties.scaleUnits", required = true)
     private int scaleUnits;
 
     /**
-     * AvailabilitySet name.
+     * The name of the AvailabilitySet used with this StreamingEndpoint for
+     * high availability streaming.  This value can only be set at creation
+     * time.
      */
     @JsonProperty(value = "properties.availabilitySetName")
     private String availabilitySetName;
@@ -142,7 +145,7 @@ public class StreamingEndpointInner extends Resource {
     }
 
     /**
-     * Get the number of scale units.
+     * Get the number of scale units.  Use the Scale operation to adjust this value.
      *
      * @return the scaleUnits value
      */
@@ -151,7 +154,7 @@ public class StreamingEndpointInner extends Resource {
     }
 
     /**
-     * Set the number of scale units.
+     * Set the number of scale units.  Use the Scale operation to adjust this value.
      *
      * @param scaleUnits the scaleUnits value to set
      * @return the StreamingEndpointInner object itself.
@@ -162,7 +165,7 @@ public class StreamingEndpointInner extends Resource {
     }
 
     /**
-     * Get availabilitySet name.
+     * Get the name of the AvailabilitySet used with this StreamingEndpoint for high availability streaming.  This value can only be set at creation time.
      *
      * @return the availabilitySetName value
      */
@@ -171,7 +174,7 @@ public class StreamingEndpointInner extends Resource {
     }
 
     /**
-     * Set availabilitySet name.
+     * Set the name of the AvailabilitySet used with this StreamingEndpoint for high availability streaming.  This value can only be set at creation time.
      *
      * @param availabilitySetName the availabilitySetName value to set
      * @return the StreamingEndpointInner object itself.

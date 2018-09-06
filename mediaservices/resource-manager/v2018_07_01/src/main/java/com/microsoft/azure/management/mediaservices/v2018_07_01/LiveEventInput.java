@@ -16,11 +16,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class LiveEventInput {
     /**
-     * The streaming protocol for the Live Event. Possible values include:
+     * The streaming protocol for the Live Event.  This is specified at
+     * creation time and cannot be updated. Possible values include:
      * 'FragmentedMP4', 'RTMP'.
      */
     @JsonProperty(value = "streamingProtocol", required = true)
     private LiveEventInputProtocol streamingProtocol;
+
+    /**
+     * The access control for LiveEvent Input.
+     */
+    @JsonProperty(value = "accessControl")
+    private LiveEventInputAccessControl accessControl;
 
     /**
      * ISO 8601 timespan duration of the key frame interval duration.
@@ -29,7 +36,9 @@ public class LiveEventInput {
     private String keyFrameIntervalDuration;
 
     /**
-     * The access token.
+     * A unique identifier for a stream.  This can be specified at creation
+     * time but cannot be updated.  If omitted, the service will generate a
+     * unique value.
      */
     @JsonProperty(value = "accessToken")
     private String accessToken;
@@ -41,7 +50,7 @@ public class LiveEventInput {
     private List<LiveEventEndpoint> endpoints;
 
     /**
-     * Get the streaming protocol for the Live Event. Possible values include: 'FragmentedMP4', 'RTMP'.
+     * Get the streaming protocol for the Live Event.  This is specified at creation time and cannot be updated. Possible values include: 'FragmentedMP4', 'RTMP'.
      *
      * @return the streamingProtocol value
      */
@@ -50,13 +59,33 @@ public class LiveEventInput {
     }
 
     /**
-     * Set the streaming protocol for the Live Event. Possible values include: 'FragmentedMP4', 'RTMP'.
+     * Set the streaming protocol for the Live Event.  This is specified at creation time and cannot be updated. Possible values include: 'FragmentedMP4', 'RTMP'.
      *
      * @param streamingProtocol the streamingProtocol value to set
      * @return the LiveEventInput object itself.
      */
     public LiveEventInput withStreamingProtocol(LiveEventInputProtocol streamingProtocol) {
         this.streamingProtocol = streamingProtocol;
+        return this;
+    }
+
+    /**
+     * Get the access control for LiveEvent Input.
+     *
+     * @return the accessControl value
+     */
+    public LiveEventInputAccessControl accessControl() {
+        return this.accessControl;
+    }
+
+    /**
+     * Set the access control for LiveEvent Input.
+     *
+     * @param accessControl the accessControl value to set
+     * @return the LiveEventInput object itself.
+     */
+    public LiveEventInput withAccessControl(LiveEventInputAccessControl accessControl) {
+        this.accessControl = accessControl;
         return this;
     }
 
@@ -81,7 +110,7 @@ public class LiveEventInput {
     }
 
     /**
-     * Get the access token.
+     * Get a unique identifier for a stream.  This can be specified at creation time but cannot be updated.  If omitted, the service will generate a unique value.
      *
      * @return the accessToken value
      */
@@ -90,7 +119,7 @@ public class LiveEventInput {
     }
 
     /**
-     * Set the access token.
+     * Set a unique identifier for a stream.  This can be specified at creation time but cannot be updated.  If omitted, the service will generate a unique value.
      *
      * @param accessToken the accessToken value to set
      * @return the LiveEventInput object itself.

@@ -15,7 +15,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class StreamingEntityScaleUnit {
     /**
-     * ScaleUnit.
      * The scale unit number of the StreamingEndpoint.
      */
     @JsonProperty(value = "scaleUnit")

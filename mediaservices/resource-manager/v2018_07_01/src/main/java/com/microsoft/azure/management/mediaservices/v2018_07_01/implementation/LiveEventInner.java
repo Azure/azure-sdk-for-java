@@ -71,13 +71,15 @@ public class LiveEventInner extends Resource {
     private CrossSiteAccessPolicies crossSiteAccessPolicies;
 
     /**
-     * The Live Event vanity URL flag.
+     * Specifies whether to use a vanity url with the Live Event.  This value
+     * is specified at creation time and cannot be updated.
      */
     @JsonProperty(value = "properties.vanityUrl")
     private Boolean vanityUrl;
 
     /**
-     * The stream options.
+     * The options to use for the LiveEvent.  This value is specified at
+     * creation time and cannot be updated.
      */
     @JsonProperty(value = "properties.streamOptions")
     private List<StreamOptionsFlag> streamOptions;
@@ -213,7 +215,7 @@ public class LiveEventInner extends Resource {
     }
 
     /**
-     * Get the Live Event vanity URL flag.
+     * Get specifies whether to use a vanity url with the Live Event.  This value is specified at creation time and cannot be updated.
      *
      * @return the vanityUrl value
      */
@@ -222,7 +224,7 @@ public class LiveEventInner extends Resource {
     }
 
     /**
-     * Set the Live Event vanity URL flag.
+     * Set specifies whether to use a vanity url with the Live Event.  This value is specified at creation time and cannot be updated.
      *
      * @param vanityUrl the vanityUrl value to set
      * @return the LiveEventInner object itself.
@@ -233,7 +235,7 @@ public class LiveEventInner extends Resource {
     }
 
     /**
-     * Get the stream options.
+     * Get the options to use for the LiveEvent.  This value is specified at creation time and cannot be updated.
      *
      * @return the streamOptions value
      */
@@ -242,7 +244,7 @@ public class LiveEventInner extends Resource {
     }
 
     /**
-     * Set the stream options.
+     * Set the options to use for the LiveEvent.  This value is specified at creation time and cannot be updated.
      *
      * @param streamOptions the streamOptions value to set
      * @return the LiveEventInner object itself.

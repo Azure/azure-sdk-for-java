@@ -41,7 +41,8 @@ public class LiveOutputInner extends ProxyResource {
     private Period archiveWindowLength;
 
     /**
-     * The manifest file name.
+     * The manifest file name.  If not provided, the service will generate one
+     * automatically.
      */
     @JsonProperty(value = "properties.manifestName")
     private String manifestName;
@@ -144,7 +145,7 @@ public class LiveOutputInner extends ProxyResource {
     }
 
     /**
-     * Get the manifest file name.
+     * Get the manifest file name.  If not provided, the service will generate one automatically.
      *
      * @return the manifestName value
      */
@@ -153,7 +154,7 @@ public class LiveOutputInner extends ProxyResource {
     }
 
     /**
-     * Set the manifest file name.
+     * Set the manifest file name.  If not provided, the service will generate one automatically.
      *
      * @param manifestName the manifestName value to set
      * @return the LiveOutputInner object itself.

@@ -28,7 +28,7 @@ public class AkamaiSignatureHeaderAuthenticationKey {
     private String base64Key;
 
     /**
-     * The exact time the authentication key.
+     * The expiration time of the authentication key.
      */
     @JsonProperty(value = "expiration")
     private DateTime expiration;
@@ -74,7 +74,7 @@ public class AkamaiSignatureHeaderAuthenticationKey {
     }
 
     /**
-     * Get the exact time the authentication key.
+     * Get the expiration time of the authentication key.
      *
      * @return the expiration value
      */
@@ -83,7 +83,7 @@ public class AkamaiSignatureHeaderAuthenticationKey {
     }
 
     /**
-     * Set the exact time the authentication key.
+     * Set the expiration time of the authentication key.
      *
      * @param expiration the expiration value to set
      * @return the AkamaiSignatureHeaderAuthenticationKey object itself.

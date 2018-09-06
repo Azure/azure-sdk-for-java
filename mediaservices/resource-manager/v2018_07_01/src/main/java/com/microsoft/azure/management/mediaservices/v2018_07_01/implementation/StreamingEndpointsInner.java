@@ -1552,7 +1552,7 @@ public class StreamingEndpointsInner {
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the StreamingEndpoint.
-     * @param scaleUnit ScaleUnit The scale unit number of the StreamingEndpoint.
+     * @param scaleUnit The scale unit number of the StreamingEndpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ApiErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -1568,7 +1568,7 @@ public class StreamingEndpointsInner {
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the StreamingEndpoint.
-     * @param scaleUnit ScaleUnit The scale unit number of the StreamingEndpoint.
+     * @param scaleUnit The scale unit number of the StreamingEndpoint.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -1584,7 +1584,7 @@ public class StreamingEndpointsInner {
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the StreamingEndpoint.
-     * @param scaleUnit ScaleUnit The scale unit number of the StreamingEndpoint.
+     * @param scaleUnit The scale unit number of the StreamingEndpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -1604,7 +1604,7 @@ public class StreamingEndpointsInner {
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the StreamingEndpoint.
-     * @param scaleUnit ScaleUnit The scale unit number of the StreamingEndpoint.
+     * @param scaleUnit The scale unit number of the StreamingEndpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -1729,7 +1729,7 @@ public class StreamingEndpointsInner {
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the StreamingEndpoint.
-     * @param scaleUnit ScaleUnit The scale unit number of the StreamingEndpoint.
+     * @param scaleUnit The scale unit number of the StreamingEndpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ApiErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -1745,7 +1745,7 @@ public class StreamingEndpointsInner {
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the StreamingEndpoint.
-     * @param scaleUnit ScaleUnit The scale unit number of the StreamingEndpoint.
+     * @param scaleUnit The scale unit number of the StreamingEndpoint.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -1761,7 +1761,7 @@ public class StreamingEndpointsInner {
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the StreamingEndpoint.
-     * @param scaleUnit ScaleUnit The scale unit number of the StreamingEndpoint.
+     * @param scaleUnit The scale unit number of the StreamingEndpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
@@ -1781,7 +1781,7 @@ public class StreamingEndpointsInner {
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the StreamingEndpoint.
-     * @param scaleUnit ScaleUnit The scale unit number of the StreamingEndpoint.
+     * @param scaleUnit The scale unit number of the StreamingEndpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
