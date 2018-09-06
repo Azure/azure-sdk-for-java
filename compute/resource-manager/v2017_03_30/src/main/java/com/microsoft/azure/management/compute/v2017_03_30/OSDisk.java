@@ -80,7 +80,7 @@ public class OSDisk {
 
     /**
      * Specifies the size of an empty data disk in gigabytes. This element can
-     * be used to overwrite the name of the disk in a virtual machine image.
+     * be used to overwrite the size of the disk in a virtual machine image.
      * &lt;br&gt;&lt;br&gt; This value cannot be larger than 1023 GB.
      */
     @JsonProperty(value = "diskSizeGB")
@@ -233,7 +233,7 @@ public class OSDisk {
     }
 
     /**
-     * Get specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the name of the disk in a virtual machine image. &lt;br&gt;&lt;br&gt; This value cannot be larger than 1023 GB.
+     * Get specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the size of the disk in a virtual machine image. &lt;br&gt;&lt;br&gt; This value cannot be larger than 1023 GB.
      *
      * @return the diskSizeGB value
      */
@@ -242,7 +242,7 @@ public class OSDisk {
     }
 
     /**
-     * Set specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the name of the disk in a virtual machine image. &lt;br&gt;&lt;br&gt; This value cannot be larger than 1023 GB.
+     * Set specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the size of the disk in a virtual machine image. &lt;br&gt;&lt;br&gt; This value cannot be larger than 1023 GB.
      *
      * @param diskSizeGB the diskSizeGB value to set
      * @return the OSDisk object itself.
