@@ -23,25 +23,27 @@
 
 package com.microsoft.azure.cosmosdb.rx.internal.query;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
 import com.microsoft.azure.cosmosdb.ChangeFeedOptions;
 import com.microsoft.azure.cosmosdb.Document;
 import com.microsoft.azure.cosmosdb.FeedOptions;
 import com.microsoft.azure.cosmosdb.FeedOptionsBase;
 import com.microsoft.azure.cosmosdb.FeedResponse;
 import com.microsoft.azure.cosmosdb.rx.internal.RxDocumentServiceRequest;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+
 import rx.Observable;
 import rx.functions.Func1;
 import rx.functions.Func2;
 import rx.observers.TestSubscriber;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 
 public class FetcherTest {
 
@@ -75,7 +77,7 @@ public class FetcherTest {
                 { options4, top4 }};
     }
 
-    @Test(dataProvider = "queryParams")
+    @Test(groups = { "unit" }, dataProvider = "queryParams")
     public void query(FeedOptions options, int top) {
 
         FeedResponse<Document> fp1 = FeedResponseBuilder.queryFeedResponseBuilder(Document.class)
@@ -139,7 +141,7 @@ public class FetcherTest {
         assertThat(fetcher.shouldFetchMore()).describedAs("should not fetch more pages").isFalse();
     }
 
-    @Test
+    @Test(groups = { "unit" })
     public void changeFeed() {
 
         ChangeFeedOptions options = new ChangeFeedOptions();

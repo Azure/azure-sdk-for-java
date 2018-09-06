@@ -40,10 +40,8 @@ import com.microsoft.azure.cosmosdb.internal.ResourceType;
 import com.microsoft.azure.cosmosdb.internal.routing.CollectionRoutingMap;
 import com.microsoft.azure.cosmosdb.internal.routing.InMemoryCollectionRoutingMap;
 import com.microsoft.azure.cosmosdb.internal.routing.Range;
+import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
 import com.microsoft.azure.cosmosdb.rx.internal.Exceptions;
-import com.microsoft.azure.cosmosdb.rx.internal.ICollectionRoutingMapCache;
-import com.microsoft.azure.cosmosdb.rx.internal.IRoutingMapProvider;
-import com.microsoft.azure.cosmosdb.rx.internal.RxDocumentClientImpl;
 import com.microsoft.azure.cosmosdb.rx.internal.RxDocumentServiceRequest;
 import com.microsoft.azure.cosmosdb.rx.internal.Utils;
 
@@ -54,21 +52,24 @@ import rx.Single;
  * While this class is public, but it is not part of our published public APIs.
  * This is meant to be internally used only by our sdk.
  **/
-public class RxPartitionKeyRangeCache implements IRoutingMapProvider, ICollectionRoutingMapCache {
+public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
 
     private final Logger logger = LoggerFactory.getLogger(RxPartitionKeyRangeCache.class);
 
     private final AsyncCache<String, CollectionRoutingMap> routingMapCache;
-    private final RxDocumentClientImpl client;
+    private final AsyncDocumentClient client;
 
     private final RxCollectionCache collectionCache;
 
-    public RxPartitionKeyRangeCache(RxDocumentClientImpl client, RxCollectionCache collectionCache) {
+    public RxPartitionKeyRangeCache(AsyncDocumentClient client, RxCollectionCache collectionCache) {
         this.routingMapCache = new AsyncCache<>();
         this.client = client;
         this.collectionCache = collectionCache;
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.azure.cosmosdb.rx.internal.caches.IPartitionKeyRangeCache#tryLookupAsync(java.lang.String, com.microsoft.azure.cosmosdb.internal.routing.CollectionRoutingMap)
+     */
     @Override
     public Single<CollectionRoutingMap> tryLookupAsync(String collectionRid, CollectionRoutingMap previousValue) {
         return routingMapCache.getAsync(
@@ -86,6 +87,9 @@ public class RxPartitionKeyRangeCache implements IRoutingMapProvider, ICollectio
                 });
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.azure.cosmosdb.rx.internal.caches.IPartitionKeyRangeCache#tryGetOverlappingRangesAsync(java.lang.String, com.microsoft.azure.cosmosdb.internal.routing.Range, boolean)
+     */
     @Override
     public Single<List<PartitionKeyRange>> tryGetOverlappingRangesAsync(String collectionRid,
             Range<String> range, boolean forceRefresh) {
@@ -112,6 +116,9 @@ public class RxPartitionKeyRangeCache implements IRoutingMapProvider, ICollectio
         });
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.azure.cosmosdb.rx.internal.caches.IPartitionKeyRangeCache#tryGetPartitionKeyRangeByIdAsync(java.lang.String, java.lang.String, boolean)
+     */
     @Override
     public Single<PartitionKeyRange> tryGetPartitionKeyRangeByIdAsync(String collectionResourceId,
             String partitionKeyRangeId, boolean forceRefresh) {
@@ -135,6 +142,10 @@ public class RxPartitionKeyRangeCache implements IRoutingMapProvider, ICollectio
         });
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.azure.cosmosdb.rx.internal.caches.IPartitionKeyRangeCache#tryGetRangeByPartitionKeyRangeId(java.lang.String, java.lang.String)
+     */
+    @Override
     public Single<PartitionKeyRange> tryGetRangeByPartitionKeyRangeId(String collectionRid, String partitionKeyRangeId) {
         Single<CollectionRoutingMap> routingMapObs = routingMapCache.getAsync(
                 collectionRid,
@@ -188,7 +199,7 @@ public class RxPartitionKeyRangeCache implements IRoutingMapProvider, ICollectio
                 // TODOAuthorizationTokenType.Invalid)
                 ); //this request doesn't actually go to server
 
-        request.setResolvedCollectionRid(collectionRid);
+        request.requestContext.resolvedCollectionRid = collectionRid;
         Single<DocumentCollection> collectionObs = collectionCache.resolveCollectionAsync(request);
 
         return collectionObs.flatMap(coll -> {

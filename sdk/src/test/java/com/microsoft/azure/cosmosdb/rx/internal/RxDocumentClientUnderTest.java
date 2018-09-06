@@ -24,9 +24,10 @@ package com.microsoft.azure.cosmosdb.rx.internal;
 
 import com.microsoft.azure.cosmosdb.ConnectionPolicy;
 import com.microsoft.azure.cosmosdb.ConsistencyLevel;
-import com.microsoft.azure.cosmosdb.internal.EndpointManager;
 import com.microsoft.azure.cosmosdb.internal.QueryCompatibilityMode;
 import com.microsoft.azure.cosmosdb.internal.UserAgentContainer;
+import com.microsoft.azure.cosmosdb.internal.routing.PartitionKeyAndResourceTokenPair;
+
 import io.netty.buffer.ByteBuf;
 import io.reactivex.netty.client.RxClient;
 import io.reactivex.netty.protocol.http.client.CompositeHttpClient;
@@ -69,9 +70,9 @@ public class RxDocumentClientUnderTest extends RxDocumentClientImpl {
             ConnectionPolicy connectionPolicy,
             ConsistencyLevel consistencyLevel,
             QueryCompatibilityMode queryCompatibilityMode,
-            String masterKey, Map<String, String> resourceTokens,
+            String masterKey,Map<String, List<PartitionKeyAndResourceTokenPair>> resourceTokensMap,
             UserAgentContainer userAgentContainer,
-            EndpointManager globalEndpointManager,
+            GlobalEndpointManager globalEndpointManager,
             CompositeHttpClient<ByteBuf, ByteBuf> rxOrigClient) {
 
         origHttpClient = rxOrigClient;
@@ -98,7 +99,7 @@ public class RxDocumentClientUnderTest extends RxDocumentClientImpl {
                 consistencyLevel,
                 queryCompatibilityMode,
                 masterKey,
-                resourceTokens,
+                resourceTokensMap,
                 userAgentContainer,
                 globalEndpointManager,
                 spyHttpClient);

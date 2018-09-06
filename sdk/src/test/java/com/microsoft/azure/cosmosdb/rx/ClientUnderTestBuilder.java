@@ -31,7 +31,7 @@ public class ClientUnderTestBuilder extends Builder {
         this.connectionPolicy = builder.connectionPolicy;
         this.desiredConsistencyLevel = builder.desiredConsistencyLevel;
         this.eventLoopSize = builder.eventLoopSize;
-        this.masterKey = builder.masterKey;
+        this.masterKeyOrResourceToken = builder.masterKeyOrResourceToken;
         this.serviceEndpoint = builder.serviceEndpoint;
     }
 
@@ -39,7 +39,7 @@ public class ClientUnderTestBuilder extends Builder {
     public RxDocumentClientUnderTest build() {
         return new RxDocumentClientUnderTest(
                 serviceEndpoint,
-                masterKey,
+                masterKeyOrResourceToken,
                 connectionPolicy,
                 desiredConsistencyLevel,
                 eventLoopSize);

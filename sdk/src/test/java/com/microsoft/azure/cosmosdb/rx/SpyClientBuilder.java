@@ -30,14 +30,14 @@ public class SpyClientBuilder extends AsyncDocumentClient.Builder {
         super();
         super.connectionPolicy = builder.connectionPolicy;
         super.desiredConsistencyLevel = builder.desiredConsistencyLevel;
-        super.masterKey = builder.masterKey;
+        super.masterKeyOrResourceToken = builder.masterKeyOrResourceToken;
         super.serviceEndpoint = builder.serviceEndpoint;
     }
 
     public SpyClientUnderTestFactory.ClientUnderTest build() {
         return SpyClientUnderTestFactory.createClientUnderTest(
                 serviceEndpoint,
-                masterKey,
+                masterKeyOrResourceToken,
                 connectionPolicy,
                 desiredConsistencyLevel);
     }

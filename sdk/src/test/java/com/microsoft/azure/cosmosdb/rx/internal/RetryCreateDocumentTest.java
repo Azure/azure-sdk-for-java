@@ -33,7 +33,6 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.microsoft.azure.cosmosdb.internal.OperationType;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -52,16 +51,13 @@ import com.microsoft.azure.cosmosdb.DocumentCollection;
 import com.microsoft.azure.cosmosdb.Error;
 import com.microsoft.azure.cosmosdb.ResourceResponse;
 import com.microsoft.azure.cosmosdb.internal.HttpConstants;
+import com.microsoft.azure.cosmosdb.internal.OperationType;
 import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
 import com.microsoft.azure.cosmosdb.rx.FailureValidator;
 import com.microsoft.azure.cosmosdb.rx.ResourceResponseValidator;
 import com.microsoft.azure.cosmosdb.rx.TestConfigurations;
 import com.microsoft.azure.cosmosdb.rx.TestSuiteBase;
 import com.microsoft.azure.cosmosdb.rx.Utils;
-import com.microsoft.azure.cosmosdb.rx.internal.RxDocumentClientImpl;
-import com.microsoft.azure.cosmosdb.rx.internal.RxDocumentServiceRequest;
-import com.microsoft.azure.cosmosdb.rx.internal.RxDocumentServiceResponse;
-import com.microsoft.azure.cosmosdb.rx.internal.RxGatewayStoreModel;
 
 import rx.Observable;
 
@@ -206,8 +202,8 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
             fail("failed to register spy proxy due to " + e.getMessage());
         }
     }
-
-    @BeforeMethod
+    
+    @BeforeMethod(groups = { "internal" })
     public void beforeMethod() {
         Mockito.reset(this.spyGateway);
     }

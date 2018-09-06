@@ -96,6 +96,47 @@ public class DocumentCrudTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void createDocumentWithVeryLargePartitionKey() throws Exception {
+        Document docDefinition = getDocumentDefinition();
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < 100; i++) {
+            sb.append(i).append("x");
+        }
+        docDefinition.set("mypk", sb.toString());
+
+        Observable<ResourceResponse<Document>> createObservable = client
+                .createDocument(getCollectionLink(), docDefinition, null, false);
+
+        ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
+                .withId(docDefinition.getId())
+                .withProperty("mypk", sb.toString())
+                .build();
+        validateSuccess(createObservable, validator);
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void readDocumentWithVeryLargePartitionKey() throws Exception {
+        Document docDefinition = getDocumentDefinition();
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < 100; i++) {
+            sb.append(i).append("x");
+        }
+        docDefinition.set("mypk", sb.toString());
+
+        Document createdDocument = TestSuiteBase.createDocument(client, createdDatabase.getId(), createdCollection.getId(), docDefinition);
+
+        RequestOptions options = new RequestOptions();
+        options.setPartitionKey(new PartitionKey(sb.toString()));
+        Observable<ResourceResponse<Document>> readObservable = client.readDocument(createdDocument.getSelfLink(), options);
+
+        ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
+                .withId(docDefinition.getId())
+                .withProperty("mypk", sb.toString())
+                .build();
+        validateSuccess(readObservable, validator);
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void createDocument_AlreadyExists() throws Exception {
         Document docDefinition = getDocumentDefinition();
 
@@ -297,7 +338,9 @@ public class DocumentCrudTest extends TestSuiteBase {
         Database d = new Database();
         d.setId(DATABASE_ID);
         createdDatabase = safeCreateDatabase(client, d);
-        createdCollection = createCollection(client, createdDatabase.getId(), getCollectionDefinition());
+        RequestOptions options = new RequestOptions();
+        options.setOfferThroughput(10100);
+        createdCollection = createCollection(client, createdDatabase.getId(), getCollectionDefinition(), options);
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

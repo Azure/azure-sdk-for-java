@@ -58,10 +58,6 @@ import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
 import com.microsoft.azure.cosmosdb.rx.ResourceResponseValidator;
 import com.microsoft.azure.cosmosdb.rx.TestConfigurations;
 import com.microsoft.azure.cosmosdb.rx.TestSuiteBase;
-import com.microsoft.azure.cosmosdb.rx.internal.RxDocumentClientImpl;
-import com.microsoft.azure.cosmosdb.rx.internal.RxDocumentServiceRequest;
-import com.microsoft.azure.cosmosdb.rx.internal.RxDocumentServiceResponse;
-import com.microsoft.azure.cosmosdb.rx.internal.RxGatewayStoreModel;
 
 import rx.Observable;
 
@@ -164,7 +160,7 @@ public class RetryThrottleTest extends TestSuiteBase {
         validateSuccess(createObservable, validator, TIMEOUT);
     }
 
-    @AfterMethod
+    @AfterMethod(groups = { "internal" })
     private void afterMethod() {
         safeClose(client);
     }

@@ -25,10 +25,15 @@ package com.microsoft.azure.cosmosdb.rx;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.microsoft.azure.cosmosdb.SqlParameter;
+import com.microsoft.azure.cosmosdb.SqlParameterCollection;
+import com.microsoft.azure.cosmosdb.SqlQuerySpec;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -86,6 +91,60 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
                 .queryDocuments(getCollectionLink(), query, options);
 
         List<Document> expectedDocs = createdDocuments.stream().filter(d -> 99 == d.getInt("prop") ).collect(Collectors.toList());
+        assertThat(expectedDocs).isNotEmpty();
+
+        int expectedPageSize = (expectedDocs.size() + options.getMaxItemCount() - 1) / options.getMaxItemCount();
+
+        FeedResponseListValidator<Document> validator = new FeedResponseListValidator.Builder<Document>()
+                .totalSize(expectedDocs.size())
+                .exactlyContainsInAnyOrder(expectedDocs.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
+                .numberOfPages(expectedPageSize)
+                .pageSatisfy(0, new FeedResponseValidator.Builder<Document>()
+                        .requestChargeGreaterThanOrEqualTo(1.0).build())
+                .build();
+
+        validateQuerySuccess(queryObservable, validator, 10000);
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void queryDocuments_ParameterizedQueryWithInClause() throws Exception {
+        String query = "SELECT * from c where c.prop IN (@param1, @param2)";
+        SqlParameterCollection params = new SqlParameterCollection(new SqlParameter("@param1", 3), new SqlParameter("@param2", 4));
+        SqlQuerySpec sqs = new SqlQuerySpec(query, params);
+        
+        FeedOptions options = new FeedOptions();
+        options.setMaxItemCount(5);
+        Observable<FeedResponse<Document>> queryObservable = client
+                .queryDocuments(getCollectionLink(), sqs, options);
+
+        List<Document> expectedDocs = createdDocuments.stream().filter(d -> (3 == d.getInt("prop") || 4 == d.getInt("prop"))).collect(Collectors.toList());
+        assertThat(expectedDocs).isNotEmpty();
+
+        int expectedPageSize = (expectedDocs.size() + options.getMaxItemCount() - 1) / options.getMaxItemCount();
+
+        FeedResponseListValidator<Document> validator = new FeedResponseListValidator.Builder<Document>()
+                .totalSize(expectedDocs.size())
+                .exactlyContainsInAnyOrder(expectedDocs.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
+                .numberOfPages(expectedPageSize)
+                .pageSatisfy(0, new FeedResponseValidator.Builder<Document>()
+                        .requestChargeGreaterThanOrEqualTo(1.0).build())
+                .build();
+
+        validateQuerySuccess(queryObservable, validator, 10000);
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void queryDocuments_ParameterizedQuery() throws Exception {
+        String query = "SELECT * from c where c.prop = @param";
+        SqlParameterCollection params = new SqlParameterCollection(new SqlParameter("@param", 3));
+        SqlQuerySpec sqs = new SqlQuerySpec(query, params);
+
+        FeedOptions options = new FeedOptions();
+        options.setMaxItemCount(5);
+        Observable<FeedResponse<Document>> queryObservable = client
+                .queryDocuments(getCollectionLink(), sqs, options);
+
+        List<Document> expectedDocs = createdDocuments.stream().filter(d -> 3 == d.getInt("prop")).collect(Collectors.toList());
         assertThat(expectedDocs).isNotEmpty();
 
         int expectedPageSize = (expectedDocs.size() + options.getMaxItemCount() - 1) / options.getMaxItemCount();
