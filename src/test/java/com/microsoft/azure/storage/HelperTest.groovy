@@ -37,7 +37,7 @@ class HelperTest extends APISpec {
 
     def "responseError"() {
         when:
-        cu.listBlobsFlatSegment("garbage", null).blockingGet()
+        cu.listBlobsFlatSegment("garbage", null, null).blockingGet()
 
         then:
         def e = thrown(StorageException)

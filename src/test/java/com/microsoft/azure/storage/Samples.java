@@ -48,7 +48,7 @@ import java.util.logging.Logger;
 
 public class Samples {
     public static Single<Boolean> createContainerIfNotExists(ContainerURL containerURL) {
-        return containerURL.create(null, null).map((r) -> true).onErrorResumeNext((e) -> {
+        return containerURL.create(null, null, null).map((r) -> true).onErrorResumeNext((e) -> {
             if (e instanceof RestException) {
                 RestException re = (RestException) e;
                 if (re.getMessage().contains("ContainerAlreadyExists")) {
@@ -61,7 +61,7 @@ public class Samples {
     }
 
     public static Single<Boolean> deleteContainerIfExists(ContainerURL containerURL) {
-        return containerURL.delete(null).map((r) -> true).onErrorResumeNext((e) -> {
+        return containerURL.delete(null, null).map((r) -> true).onErrorResumeNext((e) -> {
             if (e instanceof RestException) {
                 RestException re = (RestException) e;
                 if (re.getMessage().contains("ContainerNotFound")) {
@@ -74,7 +74,7 @@ public class Samples {
     }
 
     public static Observable<BlobItem> listBlobsLazy(ContainerURL containerURL, ListBlobsOptions listBlobsOptions) {
-        return containerURL.listBlobsFlatSegment(null, listBlobsOptions)
+        return containerURL.listBlobsFlatSegment(null, listBlobsOptions, null)
                 .flatMapObservable((r) -> listContainersResultToContainerObservable(containerURL, listBlobsOptions, r));
     }
 
@@ -89,7 +89,7 @@ public class Samples {
             System.out.println("Hit continuation in listing at " + response.body().segment().blobItems().get(
                     response.body().segment().blobItems().size() - 1).name());
             // Recursively add the continuation items to the observable.
-            result = result.concatWith(containerURL.listBlobsFlatSegment(response.body().nextMarker(), listBlobsOptions)
+            result = result.concatWith(containerURL.listBlobsFlatSegment(response.body().nextMarker(), listBlobsOptions, null)
                     .flatMapObservable((r) ->
                             listContainersResultToContainerObservable(containerURL, listBlobsOptions, r)));
         }
@@ -154,7 +154,7 @@ public class Samples {
         String data = "Hello world!";
 
         // Create the container on the service (with no metadata and no public access)
-        containerURL.create(null, null)
+        containerURL.create(null, null, null)
                 .flatMap(containerCreateResponse ->
                         /*
                          Create the blob with string (plain text) content.
@@ -163,7 +163,7 @@ public class Samples {
                          NOTE: If the provided length does not match the actual length, this method will throw.
                          */
                         blobURL.upload(Flowable.just(ByteBuffer.wrap(data.getBytes())), data.length(),
-                                null, null, null))
+                                null, null, null, null))
                 .flatMap(blobUploadResponse ->
                         // Download the blob's content.
                         blobURL.download(null, null, false, null))
@@ -180,16 +180,21 @@ public class Samples {
                          List the blob(s) in our container; since a container may hold millions of blobs, this is done
                          one segment at a time.
                          */
+<<<<<<< HEAD
                         containerURL.listBlobsFlatSegment(null, new ListBlobsOptions().withMaxResults(1)))
+=======
+                        containerURL.listBlobsFlatSegment(null, new ListBlobsOptions(null, null,
+                                1), null))
+>>>>>>> Added context parameter. need to add tests
                 .flatMap(containerListBlobFlatSegmentResponse ->
                         // The asynchronous requests require we use recursion to continue our listing.
                         listBlobsFlatHelper(containerURL, containerListBlobFlatSegmentResponse))
                 .flatMap(containerListBlobFlatSegmentResponse ->
                         // Delete the blob we created earlier.
-                        blobURL.delete(null, null))
+                        blobURL.delete(null, null, null))
                 .flatMap(blobDeleteResponse ->
                         // Delete the container we created earlier.
-                        containerURL.delete(null))
+                        containerURL.delete(null, null))
                 /*
                 This will synchronize all the above operations. This is strongly discouraged for use in production as
                 it eliminates the benefits of asynchronous IO. We use it here to enable the sample to complete and
@@ -227,7 +232,12 @@ public class Samples {
             The presence of the marker indicates that there are more blobs to list, so we make another call to
             listBlobsFlatSegment and pass the result through this helper function.
              */
+<<<<<<< HEAD
             return containerURL.listBlobsFlatSegment(nextMarker, new ListBlobsOptions().withMaxResults(1))
+=======
+            return containerURL.listBlobsFlatSegment(nextMarker, new ListBlobsOptions(null, null,
+                    1), null)
+>>>>>>> Added context parameter. need to add tests
                     .flatMap(containersListBlobFlatSegmentResponse ->
                             listBlobsFlatHelper(containerURL, containersListBlobFlatSegmentResponse));
         }
@@ -271,7 +281,11 @@ public class Samples {
             listBlobsHierarchySegment and pass the result through this helper function.
              */
             return containerURL.listBlobsHierarchySegment(nextMarker, response.body().delimiter(),
+<<<<<<< HEAD
                     new ListBlobsOptions().withMaxResults(1))
+=======
+                    new ListBlobsOptions(null, null, 1), null)
+>>>>>>> Added context parameter. need to add tests
                     .flatMap(containersListBlobHierarchySegmentResponse ->
                             listBlobsHierarchyHelper(containerURL, containersListBlobHierarchySegmentResponse));
         }
@@ -304,7 +318,7 @@ public class Samples {
             The presence of the marker indicates that there are more blobs to list, so we make another call to
             listContainersSegment and pass the result through this helper function.
              */
-            return serviceURL.listContainersSegment(nextMarker, ListContainersOptions.DEFAULT)
+            return serviceURL.listContainersSegment(nextMarker, ListContainersOptions.DEFAULT, null)
                     .flatMap(containersListBlobHierarchySegmentResponse ->
                             listContainersHelper(serviceURL, response));
         }
@@ -429,7 +443,7 @@ public class Samples {
         ContainerURL containerURL = new ContainerURL(new URL("http://myaccount.blob.core.windows.net/mycontainer"),
                 StorageURL.createPipeline(new AnonymousCredentials(), new PipelineOptions()));
 
-        containerURL.create(null, null)
+        containerURL.create(null, null, null)
                 // An error occurred.
                 .onErrorResumeNext(throwable -> {
                     // Check if this error is from the service.
@@ -651,10 +665,10 @@ public class Samples {
         String data = "Hello World!";
 
         // Create the container (with no metadata and no public access)
-        containerURL.create(null, null)
+        containerURL.create(null, null, null)
                 .flatMap(containersCreateResponse ->
                         blobURL.upload(Flowable.just(ByteBuffer.wrap(data.getBytes())), data.length(),
-                                null, null, null)
+                                null, null, null, null)
                 )
                 .flatMap(blockBlobUploadResponse ->
                         // Attempt to read the blob with anonymous credentials.
@@ -669,7 +683,7 @@ public class Samples {
                     if (throwable instanceof RestException &&
                             ((RestException) throwable).response().statusCode() == 404) {
                         // This is how we change the container's permission to allow public/anonymous access.
-                        return containerURL.setAccessPolicy(PublicAccessType.BLOB, null, null)
+                        return containerURL.setAccessPolicy(PublicAccessType.BLOB, null, null, null)
                                 .toCompletable();
                     } else {
                         return Completable.error(throwable);
@@ -686,7 +700,7 @@ public class Samples {
                         false, null))
                 .flatMap(blobDownloadResponse ->
                         // Delete the container and the blob within in.
-                        containerURL.delete(null))
+                        containerURL.delete(null, null))
                 /*
                 This will synchronize all the above operations. This is strongly discouraged for use in production as
                 it eliminates the benefits of asynchronous IO. We use it here to enable the sample to complete and
@@ -711,11 +725,11 @@ public class Samples {
         BlockBlobURL blobURL = containerURL.createBlockBlobURL("Data.txt");
 
         // Create the container (unconditionally; succeeds)
-        containerURL.create(null, null)
+        containerURL.create(null, null, null)
                 .flatMap(containersCreateResponse ->
                         // Create the blob (unconditionally; succeeds)
                         blobURL.upload(Flowable.just(ByteBuffer.wrap("Text-1".getBytes())), "Text-1".length(),
-                                null, null, null))
+                                null, null, null, null))
                 .flatMap(blockBlobUploadResponse -> {
                     System.out.println("Success: " + blockBlobUploadResponse.statusCode());
 
@@ -756,7 +770,7 @@ public class Samples {
                     return Completable.complete();
                 })
                 // Get the blob properties to retrieve the current ETag.
-                .andThen(blobURL.getProperties(null))
+                .andThen(blobURL.getProperties(null, null))
                 .flatMap(getPropertiesResponse ->
                         /*
                          Upload new content if the blob hasn't changed since the version identified by the ETag
@@ -764,10 +778,22 @@ public class Samples {
                          */
                         blobURL.upload(Flowable.just(ByteBuffer.wrap("Text-2".getBytes())), "Text-2".length(),
                                 null, null,
+<<<<<<< HEAD
                                 new BlobAccessConditions().withModifiedAccessConditions(
                                         new ModifiedAccessConditions().withIfMatch(
                                                 getPropertiesResponse.headers().eTag()))
 
+=======
+                                new BlobAccessConditions(
+                                        new HTTPAccessConditions(
+                                                null,
+                                                null,
+                                                new ETag(getPropertiesResponse.headers().eTag()),
+                                                null),
+                                        null,
+                                        null,
+                                        null), null)
+>>>>>>> Added context parameter. need to add tests
                 )
                 .flatMap(blockBlobUploadResponse -> {
                     System.out.println("Success: " + blockBlobUploadResponse.statusCode());
@@ -790,13 +816,27 @@ public class Samples {
                 }).andThen(
                 // Delete the blob if it exists (succeeds).
                 blobURL.delete(DeleteSnapshotsOptionType.INCLUDE,
+<<<<<<< HEAD
                         new BlobAccessConditions().withModifiedAccessConditions(
                                 // Wildcard will match any etag.
                                 new ModifiedAccessConditions().withIfMatch("*"))))
                 )
+=======
+                        new BlobAccessConditions(
+                                new HTTPAccessConditions(
+                                        null,
+                                        null,
+                                        ETag.ANY,
+                                        null),
+                                null,
+                                null,
+                                null),
+                        null)
+        )
+>>>>>>> Added context parameter. need to add tests
                 .flatMap(blobDeleteResponse -> {
                     System.out.println("Success: " + blobDeleteResponse.statusCode());
-                    return containerURL.delete(null);
+                    return containerURL.delete(null, null);
                 })
                 /*
                 This will synchronize all the above operations. This is strongly discouraged for use in production as
@@ -828,10 +868,10 @@ public class Samples {
         Metadata metadata = new Metadata();
         metadata.put("createdby", "Rick");
         metadata.put("createdon", "4/13/18");
-        containerURL.create(metadata, null)
+        containerURL.create(metadata, null, null)
                 .flatMap(containersCreateResponse ->
                         // Query the container's metadata.
-                        containerURL.getProperties(null)
+                        containerURL.getProperties(null, null)
                 )
                 .flatMap(containersGetPropertiesResponse -> {
                     Metadata receivedMetadata = new Metadata(containersGetPropertiesResponse.headers().metadata());
@@ -841,9 +881,9 @@ public class Samples {
 
                     // Update the metadata and write it back to the container.
                     receivedMetadata.put("createdby", "Mary"); // NOTE: The keyname is in all lowercase.
-                    return containerURL.setMetadata(receivedMetadata, null);
+                    return containerURL.setMetadata(receivedMetadata, null, null);
                 })
-                .flatMap(response -> containerURL.delete(null))
+                .flatMap(response -> containerURL.delete(null, null))
                 /*
                 This will synchronize all the above operations. This is strongly discouraged for use in production as
                 it eliminates the benefits of asynchronous IO. We use it here to enable the sample to complete and
@@ -872,7 +912,7 @@ public class Samples {
         BlockBlobURL blobURL = containerURL.createBlockBlobURL("Data.txt");
 
         // Create the container.
-        containerURL.create(null, null)
+        containerURL.create(null, null, null)
                 .flatMap(containersCreateResponse -> {
                     /*
                     Create the blob with metadata (string key/value pairs).
@@ -884,11 +924,11 @@ public class Samples {
                     metadata.put("createdby", "Rick");
                     metadata.put("createdon", "4/13/18");
                     return blobURL.upload(Flowable.just(ByteBuffer.wrap("Text-1".getBytes())), "Text-1".length(),
-                            null, metadata, null);
+                            null, metadata, null, null);
                 })
                 .flatMap(response ->
                         // Query the blob's properties and metadata.
-                        blobURL.getProperties(null))
+                        blobURL.getProperties(null, null))
                 .flatMap(response -> {
                     // Show some of the blob's read-only properties.
                     System.out.println(response.headers().blobType());
@@ -901,11 +941,11 @@ public class Samples {
                     // Update the blob's metadata and write it back to the blob.
                     Metadata receivedMetadata = new Metadata(response.headers().metadata());
                     receivedMetadata.put("createdby", "Joseph");
-                    return blobURL.setMetadata(receivedMetadata, null);
+                    return blobURL.setMetadata(receivedMetadata, null, null);
                 })
                 .flatMap(response ->
                         // Delete the container.
-                        containerURL.delete(null)
+                        containerURL.delete(null, null)
                 )
                  /*
                 This will synchronize all the above operations. This is strongly discouraged for use in production as
@@ -933,7 +973,7 @@ public class Samples {
         BlockBlobURL blobURL = containerURL.createBlockBlobURL("Data.txt");
 
         // Create the container.
-        containerURL.create(null, null)
+        containerURL.create(null, null, null)
                 .flatMap(containersCreateResponse -> {
                     /*
                     Create the blob with HTTP headers.
@@ -941,11 +981,11 @@ public class Samples {
                     BlobHTTPHeaders headers = new BlobHTTPHeaders().withBlobContentDisposition("attachment")
                             .withBlobContentType("text/html; charset=utf-8");
                     return blobURL.upload(Flowable.just(ByteBuffer.wrap("Text-1".getBytes())), "Text-1".length(),
-                            headers, null, null);
+                            headers, null, null, null);
                 })
                 .flatMap(response ->
                         // Query the blob's properties and metadata.
-                        blobURL.getProperties(null))
+                        blobURL.getProperties(null, null))
                 .flatMap(response -> {
                     // Show some of the blob's read-only properties.
                     System.out.println(response.headers().blobType());
@@ -962,12 +1002,24 @@ public class Samples {
                      will be cleared. In order to preserve the existing HTTP properties, they must be re-set along with
                      the added or updated properties.
                      */
+<<<<<<< HEAD
                     BlobHTTPHeaders headers = new BlobHTTPHeaders().withBlobContentType("text/plain");
                     return blobURL.setHTTPHeaders(headers, null);
+=======
+                    BlobHTTPHeaders headers = new BlobHTTPHeaders(
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            "text/plain"
+                    );
+                    return blobURL.setHTTPHeaders(headers, null, null);
+>>>>>>> Added context parameter. need to add tests
                 })
                 .flatMap(response ->
                         // Delete the container.
-                        containerURL.delete(null)
+                        containerURL.delete(null, null)
                 )
                  /*
                 This will synchronize all the above operations. This is strongly discouraged for use in production as
@@ -1003,7 +1055,7 @@ public class Samples {
         String[] data = {"Michael", "Gabriel", "Raphael", "John"};
 
         // Create the container. We convert to an Observable to be able to work with the block list effectively.
-        containerURL.create(null, null)
+        containerURL.create(null, null, null)
                 .flatMapObservable(response ->
                         // Create an Observable that will yield each of the Strings one at a time.
                         Observable.fromIterable(Arrays.asList(data))
@@ -1025,7 +1077,7 @@ public class Samples {
                      NOTE: It is imperative that the provided length match the actual length of the data exactly.
                      */
                     return blobURL.stageBlock(blockId, Flowable.just(ByteBuffer.wrap(block.getBytes())),
-                            block.length(), null)
+                            block.length(), null, null)
                             /*
                              We do not care for any data on the response object, but we do want to keep track of the
                              ID.
@@ -1041,17 +1093,17 @@ public class Samples {
                         NOTE: The block list order need not match the order in which the blocks were uploaded. The order
                         of IDs in the commitBlockList call will determine the structure of the blob.
                          */
-                    return blobURL.commitBlockList(idList, null, null, null);
+                    return blobURL.commitBlockList(idList, null, null, null, null);
                 })
                 .flatMap(response ->
                         /*
                          For the blob, show each block (ID and size) that is a committed part of it. It is also possible
                          to include blocks that have been staged but not committed.
                          */
-                        blobURL.getBlockList(BlockListType.ALL, null))
+                        blobURL.getBlockList(BlockListType.ALL, null, null))
                 .flatMap(response ->
                         // Delete the container
-                        containerURL.delete(null))
+                        containerURL.delete(null, null))
                 /*
                 This will synchronize all the above operations. This is strongly discouraged for use in production as
                 it eliminates the benefits of asynchronous IO. We use it here to enable the sample to complete and
@@ -1080,7 +1132,7 @@ public class Samples {
         AppendBlobURL blobURL = containerURL.createAppendBlobURL("Data.txt");
 
         // Create the container.
-        containerURL.create(null, null)
+        containerURL.create(null, null, null)
                 .flatMap(response ->
                         // Create the append blob. This creates a zero-length blob that we can now append to.
                         blobURL.create(null, null, null, null))
@@ -1090,12 +1142,17 @@ public class Samples {
                         Observable.range(0, 5))
                 .concatMapCompletable(i -> {
                     String text = String.format(Locale.ROOT, "Appending block #%d\n", i);
+<<<<<<< HEAD
                     /*
                     NOTE: The Flowable containing the data must be replayable to support retries. That is, it must
                     yield the same data every time it is subscribed to.
                      */
                     return blobURL.appendBlock(Flowable.just(ByteBuffer.wrap(text.getBytes())), text.length(), null,
                             null).ignoreElement();
+=======
+                    return blobURL.appendBlock(Flowable.just(ByteBuffer.wrap(text.getBytes())), text.length(),
+                            null, null).toCompletable();
+>>>>>>> Added context parameter. need to add tests
                 })
                 // Download the blob.
                 .andThen(blobURL.download(null, null, false, null))
@@ -1107,7 +1164,7 @@ public class Samples {
                 )
                 .flatMap(response ->
                         // Delete the container.
-                        containerURL.delete(null)
+                        containerURL.delete(null, null)
                 )
                  /*
                 This will synchronize all the above operations. This is strongly discouraged for use in production as
@@ -1133,11 +1190,11 @@ public class Samples {
         PageBlobURL blobURL = containerURL.createPageBlobURL("Data.txt");
 
         // Create the container.
-        containerURL.create(null, null)
+        containerURL.create(null, null, null)
                 .flatMap(response ->
                         // Create the page blob with 4 512-byte pages.
                         blobURL.create(4 * PageBlobURL.PAGE_BYTES, null, null,
-                                null, null))
+                                null, null, null))
                 .flatMap(response -> {
                     /*
                      Upload data to a page.
@@ -1153,7 +1210,7 @@ public class Samples {
                     yield the same data every time it is subscribed to.
                      */
                     return blobURL.uploadPages(new PageRange().withStart(0).withEnd(PageBlobURL.PAGE_BYTES - 1),
-                            Flowable.just(ByteBuffer.wrap(data)), null);
+                            Flowable.just(ByteBuffer.wrap(data)), null, null);
                 })
                 .flatMap(response -> {
                     // Upload data to the third page in the blob.
@@ -1163,11 +1220,11 @@ public class Samples {
                     }
                     return blobURL.uploadPages(new PageRange().withStart(2 * PageBlobURL.PAGE_BYTES)
                                     .withEnd(3 * PageBlobURL.PAGE_BYTES - 1),
-                            Flowable.just(ByteBuffer.wrap(data)), null);
+                            Flowable.just(ByteBuffer.wrap(data)), null, null);
                 })
                 .flatMap(response ->
                         // Get the page ranges which have valid data.
-                        blobURL.getPageRanges(null, null))
+                        blobURL.getPageRanges(null, null, null))
                 .flatMap(response -> {
                     // Print the pages that are valid.
                     for (PageRange range : response.body().pageRange()) {
@@ -1177,11 +1234,11 @@ public class Samples {
 
                     // Clear and invalidate the first range.
                     return blobURL.clearPages(new PageRange().withStart(0).withEnd(PageBlobURL.PAGE_BYTES - 1),
-                            null);
+                            null, null);
                 })
                 .flatMap(response ->
                         // Get the page ranges which have valid data.
-                        blobURL.getPageRanges(null, null))
+                        blobURL.getPageRanges(null, null, null))
                 .flatMap(response -> {
                     // Print the pages that are valid.
                     for (PageRange range : response.body().pageRange()) {
@@ -1199,7 +1256,7 @@ public class Samples {
                                         System.out.println(new String(data.array())))
                                 .flatMap(data ->
                                         // Delete the container.
-                                        containerURL.delete(null))
+                                        containerURL.delete(null, null))
                 )
                  /*
                 This will synchronize all the above operations. This is strongly discouraged for use in production as
@@ -1228,17 +1285,17 @@ public class Samples {
         BlockBlobURL blobURL = containerURL.createBlockBlobURL("Original.txt");
 
         // Create the container.
-        containerURL.create(null, null)
+        containerURL.create(null, null, null)
                 .flatMap(response ->
                         // Create the original blob.
                         blobURL.upload(Flowable.just(ByteBuffer.wrap("Some text".getBytes())), "Some text".length(),
-                                null, null, null))
+                                null, null, null, null))
                 .flatMap(response ->
                         // Create a snapshot of the original blob.
-                        blobURL.createSnapshot(null, null))
+                        blobURL.createSnapshot(null, null, null))
                 .flatMap(response ->
                         blobURL.upload(Flowable.just(ByteBuffer.wrap("New text".getBytes())), "New text".length(),
-                                null, null, null)
+                                null, null, null, null)
                                 .flatMap(response1 ->
                                         blobURL.download(null, null, false, null))
                                 .flatMap(response1 ->
@@ -1265,7 +1322,12 @@ public class Samples {
                                                     a time.
                                                     */
                                                     containerURL.listBlobsFlatSegment(null,
+<<<<<<< HEAD
                                                             new ListBlobsOptions().withMaxResults(1)))
+=======
+                                                            new ListBlobsOptions(null, null,
+                                                                    1), null))
+>>>>>>> Added context parameter. need to add tests
                                             .flatMap(response2 ->
                                                     /*
                                                      The asynchronous requests require we use recursion to continue our
@@ -1274,11 +1336,11 @@ public class Samples {
                                                     listBlobsFlatHelper(containerURL, response2))
                                             .flatMap(response2 ->
                                                     blobURL.startCopyFromURL(snapshotURL.toURL(), null,
-                                                            null, null));
+                                                            null, null, null));
                                 }))
                 .flatMap(response ->
                         // Delete the container.
-                        containerURL.delete(null)
+                        containerURL.delete(null, null)
                 )
                  /*
                 This will synchronize all the above operations. This is strongly discouraged for use in production as
@@ -1311,19 +1373,19 @@ public class Samples {
         BlockBlobURL blobURL = containerURL.createBlockBlobURL("CopiedBlob.bin");
 
         // Create the container.
-        containerURL.create(null, null)
+        containerURL.create(null, null, null)
                 .flatMap(response ->
                         // Start the copy from the source url to the destination, which is the url pointed to by blobURL
                         blobURL.startCopyFromURL(
                                 new URL("https://cdn2.auth0.com/docs/media/addons/azure_blob.svg"),
-                                null, null, null))
+                                null, null, null, null))
                 .flatMap(response ->
-                        blobURL.getProperties(null))
+                        blobURL.getProperties(null, null))
                 .flatMap(response ->
                         waitForCopyHelper(blobURL, response))
                 .flatMap(response ->
                         // Delete the container we created earlier.
-                        containerURL.delete(null))
+                        containerURL.delete(null, null))
                 /*
                 This will synchronize all the above operations. This is strongly discouraged for use in production as
                 it eliminates the benefits of asynchronous IO. We use it here to enable the sample to complete and
@@ -1342,7 +1404,7 @@ public class Samples {
         }
 
         Thread.sleep(2000);
-        return blobURL.getProperties(null)
+        return blobURL.getProperties(null, null)
                 .flatMap(response1 ->
                         waitForCopyHelper(blobURL, response1));
 
@@ -1370,7 +1432,7 @@ public class Samples {
         tempFile.deleteOnExit();
 
         // Create the container.
-        containerURL.create(null, null)
+        containerURL.create(null, null, null)
                 .flatMap(response -> Single.using(
                         () -> AsynchronousFileChannel.open(tempFile.toPath(), StandardOpenOption.WRITE),
                         channel -> Single.fromFuture(channel
@@ -1390,7 +1452,7 @@ public class Samples {
                 )
                 .flatMap(response ->
                         // Delete the container.
-                        containerURL.delete(null))
+                        containerURL.delete(null, null))
                 /*
                 This will synchronize all the above operations. This is strongly discouraged for use in production as
                 it eliminates the benefits of asynchronous IO. We use it here to enable the sample to complete and
@@ -1429,7 +1491,7 @@ public class Samples {
         Passing ReliableDownloadOptions to a call to body() will ensure the download stream is intelligently retried in case
         of failures. The returned body is still a Flowable<ByteBuffer> and may be used as a normal download stream.
          */
-        containerURL.create(null, null)
+        containerURL.create(null, null, null)
                 .flatMap(response ->
                         // Upload some data to a blob
                         Single.using(() -> AsynchronousFileChannel.open(file.toPath()),
@@ -1444,7 +1506,7 @@ public class Samples {
                 // After the last piece of data, clean up by deleting the container and all its contents.
                 .flatMap(buffer ->
                         // Delete the container
-                        containerURL.delete(null))
+                        containerURL.delete(null, null))
                 /*
                 This will synchronize all the above operations. This is strongly discouraged for use in production as
                 it eliminates the benefits of asynchronous IO. We use it here to enable the sample to complete and
@@ -1508,17 +1570,17 @@ public class Samples {
                 StorageURL.createPipeline(new SharedKeyCredentials(accountName, accountKey), new PipelineOptions()));
         ContainerURL containerURL = s.createContainerURL("myjavacontainerlistlazy");
 
-        containerURL.create(null, null).toCompletable()
+        containerURL.create(null, null, null).toCompletable()
                 .andThen(Observable.range(0, 5))
                 .flatMap(integer -> {
                     AppendBlobURL bu = containerURL.createAppendBlobURL(integer.toString());
-                    return bu.create(null, null, null).toObservable();
+                    return bu.create(null, null, null, null).toObservable();
                 })
                 .ignoreElements()
                 .andThen(listBlobsLazy(containerURL, null))
                 .doOnNext(b -> System.out.println("Blob: " + b.name()))
                 .ignoreElements()
-                .andThen(containerURL.delete(null))
+                .andThen(containerURL.delete(null, null))
                 /*
                 This will synchronize all the above operations. This is strongly discouraged for use in production as
                 it eliminates the benefits of asynchronous IO. We use it here to enable the sample to complete and
@@ -1577,14 +1639,14 @@ public class Samples {
         String data = "Hello world!";
 
         // Create the container on the service (with no metadata and no public access)
-        Single<DownloadResponse> downloadResponse = containerURL.create(null, null)
+        Single<DownloadResponse> downloadResponse = containerURL.create(null, null, null)
                 .flatMap(containersCreateResponse ->
                         /*
                          Create the blob with string (plain text) content.
                          NOTE: It is imperative that the provided length matches the actual length exactly.
                          */
                         blobURL.upload(Flowable.just(ByteBuffer.wrap(data.getBytes())), data.length(),
-                                null, null, null))
+                                null, null, null, null))
                 .flatMap(blobUploadResponse ->
                         // Download the blob's content.
                         blobURL.download(null, null, false, null));
@@ -1600,7 +1662,7 @@ public class Samples {
         // </upload_download>
 
         // <exception>
-        containerURL.create(null, null)
+        containerURL.create(null, null, null)
                 // An error occurred.
                 .onErrorResumeNext(throwable -> {
                     // Check if this error is from the service.
@@ -1779,7 +1841,7 @@ public class Samples {
                 UUID.randomUUID().toString().getBytes());
 
         // Create the container. We convert to an Observable to be able to work with the block list effectively.
-        containerURL.create(null, null)
+        containerURL.create(null, null, null)
                 .flatMapObservable(response ->
                         // Create an Observable that will yield each of the Strings one at a time.
                         Observable.fromIterable(Arrays.asList(blockData))
@@ -1799,7 +1861,7 @@ public class Samples {
                      NOTE: It is imperative that the provided length match the actual length of the data exactly.
                      */
                     return blockBlobURL.stageBlock(blockId, Flowable.just(ByteBuffer.wrap(block.getBytes())),
-                            block.length(), null)
+                            block.length(), null, null)
                             /*
                              We do not care for any data on the response object, but we do want to keep track of the
                              ID.
@@ -1816,100 +1878,100 @@ public class Samples {
                         of IDs in the commitBlockList call will determine the structure of the blob.
                          */
                     idList.add(0, initialBlockID);
-                    return blockBlobURL.commitBlockList(idList, null, null, null);
+                    return blockBlobURL.commitBlockList(idList, null, null, null, null);
                 })
                 .flatMap(response ->
                         /*
                          For the blob, show each block (ID and size) that is a committed part of it. It is also possible
                          to include blocks that have been staged but not committed.
                          */
-                        blockBlobURL.getBlockList(BlockListType.ALL, null))
+                        blockBlobURL.getBlockList(BlockListType.ALL, null, null))
                 .subscribe();
         // </blocks>
 
         // <block_from_url>
         String blockID = Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes());
         blockBlobURL.stageBlockFromURL(blockID, blobURL.toURL(), null, null,
-                null)
+                null, null)
                 .flatMap(response ->
                         blockBlobURL.commitBlockList(Arrays.asList(blockID), null, null,
-                                null))
+                                null, null))
                 .subscribe();
         // </block_from_url>
 
         // <append_blob>
 
         // Create the container.
-        containerURL.create(null, null)
+        containerURL.create(null, null, null)
                 .flatMap(response ->
                         // Create the append blob. This creates a zero-length blob that we can now append to.
-                        appendBlobURL.create(null, null, null))
+                        appendBlobURL.create(null, null, null, null))
                 .flatMapObservable(response ->
                         // This range will act as our for loop to create 5 blocks
                         Observable.range(0, 5))
                 .concatMapEager(i -> {
                     String text = String.format(Locale.ROOT, "Appending block #%d\n", i);
                     return appendBlobURL.appendBlock(Flowable.just(ByteBuffer.wrap(text.getBytes())), text.length(),
-                            null).toObservable();
+                            null, null).toObservable();
                 }).subscribe();
         // </append_blob>
 
 
         // <snapshot>
         // Create the container.
-        containerURL.create(null, null)
+        containerURL.create(null, null, null)
                 .flatMap(response ->
                         // Create the original blob.
                         blobURL.upload(Flowable.just(ByteBuffer.wrap("Some text".getBytes())), "Some text".length(),
-                                null, null, null))
+                                null, null, null, null))
                 .flatMap(response ->
                         // Create a snapshot of the original blob.
-                        blobURL.createSnapshot(null, null))
+                        blobURL.createSnapshot(null, null, null))
                 .flatMap(response -> {
                     BlobURL snapshotURL = blobURL.withSnapshot(response.headers().snapshot());
-                    return snapshotURL.getProperties(null);
+                    return snapshotURL.getProperties(null, null);
                 }).subscribe();
         // </snapshot>
 
         // <start_copy>
         // Create the container.
-        containerURL.create(null, null)
+        containerURL.create(null, null, null)
                 .flatMap(response ->
                         // Start the copy from the source url to the destination, which is the url pointed to by blobURL
                         blobURL.startCopyFromURL(
                                 new URL("https://cdn2.auth0.com/docs/media/addons/azure_blob.svg"),
-                                null, null, null))
+                                null, null, null, null))
                 .flatMap(response ->
-                        blobURL.getProperties(null))
+                        blobURL.getProperties(null, null))
                 .flatMap(response ->
                         waitForCopyHelper(blobURL, response))
                 .subscribe();
         // </start_copy>
 
         // <abort_copy>
-        containerURL.create(null, null)
+        containerURL.create(null, null, null)
                 .flatMap(response ->
                         // Start the copy from the source url to the destination, which is the url pointed to by blobURL
                         blobURL.startCopyFromURL(
                                 new URL("https://cdn2.auth0.com/docs/media/addons/azure_blob.svg"),
-                                null, null, null))
+                                null, null, null, null))
                 .flatMap(response ->
-                        blobURL.getProperties(null))
+                        blobURL.getProperties(null, null))
                 .flatMap(response ->
                         blobURL.abortCopyFromURL(response.headers().copyId(), null, null))
                 .subscribe();
         // </abort_copy>
 
         // <blob_delete>
-        blobURL.delete(null, null)
+        blobURL.delete(null, null, null)
                 .subscribe();
         // </blob_delete>
 
         // <undelete>
         // This sample assumes that the account has a delete retention policy set.
-        blobURL.delete(null, null)
+        blobURL.delete(null, null, null)
                 .flatMap(response ->
-                        blobURL.undelete())
+                        blobURL.undelete(null))
                 .subscribe();
         // </undelete>
 
@@ -1922,19 +1984,20 @@ public class Samples {
         // </tier>
 
         // <properties_metadata>
-        containerURL.create(null, null)
+        containerURL.create(null, null, null)
                 .flatMap(containersCreateResponse ->
                         /*
                          Create the blob with string (plain text) content.
                          NOTE: It is imperative that the provided length matches the actual length exactly.
                          */
                         blobURL.upload(Flowable.just(ByteBuffer.wrap(data.getBytes())), data.length(),
-                                null, null, null))
+                                null, null, null, null))
                 .flatMap(response ->
-                        blobURL.getProperties(null))
+                        blobURL.getProperties(null, null))
                 .flatMap(response -> {
                     Metadata newMetadata = new Metadata(response.headers().metadata());
                     // If one of the HTTP properties is set, all must be set again or they will be cleared.
+<<<<<<< HEAD
                     BlobHTTPHeaders newHeaders = new BlobHTTPHeaders()
                             .withBlobCacheControl(response.headers().cacheControl())
                             .withBlobContentDisposition(response.headers().contentDisposition())
@@ -1944,26 +2007,33 @@ public class Samples {
                             .withBlobContentType("new content");
                     return blobURL.setMetadata(newMetadata, null)
                             .flatMap(nextResponse -> blobURL.setHTTPHeaders(newHeaders, null));
+=======
+                    BlobHTTPHeaders newHeaders = new BlobHTTPHeaders(response.headers().cacheControl(),
+                            response.headers().contentDisposition(), response.headers().contentEncoding(),
+                            "new language", response.headers().contentMD5(), "new content");
+                    return blobURL.setMetadata(newMetadata, null, null)
+                            .flatMap(nextResponse -> blobURL.setHTTPHeaders(newHeaders, null, null));
+>>>>>>> Added context parameter. need to add tests
                 })
                 .subscribe();
         // </properties_metadata>
 
         // <container_basic>
-        containerURL.create(null, null)
+        containerURL.create(null, null, null)
                 .flatMap(response ->
-                        containerURL.getProperties(null))
+                        containerURL.getProperties(null, null))
                 .flatMap(response -> {
                     Metadata metadata = new Metadata();
                     metadata.put("key", "value");
-                    return containerURL.setMetadata(metadata, null);
+                    return containerURL.setMetadata(metadata, null, null);
                 })
                 .flatMap(response ->
-                        containerURL.delete(null))
+                        containerURL.delete(null, null))
                 .subscribe();
         // </container_basic>
 
         // <container_policy>
-        containerURL.create(null, null)
+        containerURL.create(null, null, null)
                 .flatMap(response -> {
                     /*
                     Create a SignedIdentifier that gives read permissions and expires one day for now. This means that
@@ -1975,13 +2045,18 @@ public class Samples {
                             new AccessPolicy().withPermission(perms.toString()).withExpiry(OffsetDateTime.now()
                                     .plusDays(1)));
                     // Give public access to the blobs in this container and apply the SignedIdentifier.
-                    return containerURL.setAccessPolicy(PublicAccessType.BLOB, Arrays.asList(id), null);
+                    return containerURL.setAccessPolicy(PublicAccessType.BLOB, Arrays.asList(id), null, null);
                 })
                 .subscribe();
         // </container_policy>
 
         // <list_blobs_flat>
+<<<<<<< HEAD
         containerURL.listBlobsFlatSegment(null, new ListBlobsOptions().withMaxResults(1))
+=======
+        containerURL.listBlobsFlatSegment(null, new ListBlobsOptions(null, null,
+                1), null)
+>>>>>>> Added context parameter. need to add tests
                 .flatMap(containersListBlobFlatSegmentResponse ->
                         // The asynchronous requests require we use recursion to continue our listing.
                         listBlobsFlatHelper(containerURL, containersListBlobFlatSegmentResponse))
@@ -1990,7 +2065,11 @@ public class Samples {
 
         // <list_blobs_hierarchy>
         containerURL.listBlobsHierarchySegment(null, "my_delimiter",
+<<<<<<< HEAD
                 new ListBlobsOptions().withMaxResults(1))
+=======
+                new ListBlobsOptions(null, null, 1), null)
+>>>>>>> Added context parameter. need to add tests
                 .flatMap(containersListBlobHierarchySegmentResponse ->
                         // The asynchronous requests require we use recursion to continue our listing.
                         listBlobsHierarchyHelper(containerURL, containersListBlobHierarchySegmentResponse))
@@ -1998,11 +2077,11 @@ public class Samples {
         // </list_blobs_hierarchy>
 
         // <page_blob_basic>
-        containerURL.create(null, null)
+        containerURL.create(null, null, null)
                 .flatMap(response ->
                         // Create the page blob with 4 512-byte pages.
                         pageBlobURL.create(4 * PageBlobURL.PAGE_BYTES, null, null,
-                                null, null))
+                                null, null, null))
                 .flatMap(response -> {
                     /*
                      Upload data to a page.
@@ -2014,11 +2093,11 @@ public class Samples {
                         pageData[i] = 'a';
                     }
                     return pageBlobURL.uploadPages(new PageRange().withStart(0).withEnd(PageBlobURL.PAGE_BYTES - 1),
-                            Flowable.just(ByteBuffer.wrap(pageData)), null);
+                            Flowable.just(ByteBuffer.wrap(pageData)), null, null);
                 })
                 .flatMap(response ->
                         // Get the page ranges which have valid data.
-                        pageBlobURL.getPageRanges(null, null))
+                        pageBlobURL.getPageRanges(null, null, null))
                 .flatMap(response -> {
                     // Print the pages that are valid.
                     for (PageRange range : response.body().pageRange()) {
@@ -2028,21 +2107,21 @@ public class Samples {
 
                     // Clear and invalidate the first range.
                     return pageBlobURL.clearPages(new PageRange().withStart(0).withEnd(PageBlobURL.PAGE_BYTES - 1),
-                            null);
+                            null, null);
                 })
                 .flatMap(response ->
-                        pageBlobURL.resize(1024, null))
+                        pageBlobURL.resize(1024, null, null))
                 .flatMap(rsponse ->
                         pageBlobURL.updateSequenceNumber(SequenceNumberActionType.INCREMENT, null,
-                                null))
+                                null, null))
                 .subscribe();
         // </page_blob_basic>
 
         // <page_diff>
         pageBlobURL.create(4 * PageBlobURL.PAGE_BYTES, null, null,
-                null, null)
+                null, null, null)
                 .flatMap(response ->
-                        pageBlobURL.createSnapshot(null, null))
+                        pageBlobURL.createSnapshot(null, null, null))
                 .flatMap(response -> {
                     /*
                      Upload data to a page.
@@ -2054,31 +2133,41 @@ public class Samples {
                         pageData[i] = 'a';
                     }
                     return pageBlobURL.uploadPages(new PageRange().withStart(0).withEnd(PageBlobURL.PAGE_BYTES - 1),
-                            Flowable.just(ByteBuffer.wrap(pageData)), null)
+                            Flowable.just(ByteBuffer.wrap(pageData)), null, null)
                             // We still need access to the snapshotResponse.
                             .flatMap(uploadResponse ->
                                     pageBlobURL.getPageRangesDiff(null, response.headers().snapshot(),
-                                            null));
+                                            null, null));
                 });
         // </page_diff>
 
         // <incremental_copy>
         PageBlobURL incrementalCopy = containerURL.createPageBlobURL("incremental");
-        pageBlobURL.createSnapshot(null, null)
+        pageBlobURL.createSnapshot(null, null, null)
                 .flatMap(response ->
+<<<<<<< HEAD
                         incrementalCopy.copyIncremental(pageBlobURL.toURL(), response.headers().snapshot(), null))
+=======
+                        incrementalCopy.copyIncremental(pageBlobURL.toURL(), response.headers().snapshot(),
+                                null, null))
+>>>>>>> Added context parameter. need to add tests
                 .flatMap(response -> {
                     byte[] pageData = new byte[PageBlobURL.PAGE_BYTES];
                     for (int i = 0; i < PageBlobURL.PAGE_BYTES; i++) {
                         pageData[i] = 'a';
                     }
                     return pageBlobURL.uploadPages(new PageRange().withStart(0).withEnd(PageBlobURL.PAGE_BYTES - 1),
-                            Flowable.just(ByteBuffer.wrap(pageData)), null);
+                            Flowable.just(ByteBuffer.wrap(pageData)), null, null);
                 })
                 .flatMap(response ->
-                        pageBlobURL.createSnapshot(null, null))
+                        pageBlobURL.createSnapshot(null, null, null))
                 .flatMap(response ->
+<<<<<<< HEAD
                         incrementalCopy.copyIncremental(pageBlobURL.toURL(), response.headers().snapshot(), null))
+=======
+                        incrementalCopy.copyIncremental(pageBlobURL.toURL(), response.headers().snapshot(),
+                                null, null))
+>>>>>>> Added context parameter. need to add tests
                 .subscribe();
         /*
         The result is a new blob with two new snapshots that correspond to the source blob snapshots but with different
@@ -2087,29 +2176,29 @@ public class Samples {
         // </incremental_copy>
 
         // <blob_lease>
-        blobURL.acquireLease(null, 20, null)
+        blobURL.acquireLease(null, 20, null, null)
                 .flatMap(response ->
-                        blobURL.changeLease(response.headers().leaseId(), "proposed", null))
+                        blobURL.changeLease(response.headers().leaseId(), "proposed", null, null))
                 .flatMap(response ->
-                        blobURL.renewLease(response.headers().leaseId(), null))
+                        blobURL.renewLease(response.headers().leaseId(), null, null))
                 .flatMap(response ->
-                        blobURL.breakLease(null, null)
+                        blobURL.breakLease(null, null, null)
                                 .flatMap(breakResponse ->
-                                        blobURL.releaseLease(response.headers().leaseId(), null)))
+                                        blobURL.releaseLease(response.headers().leaseId(), null, null)))
                 .subscribe();
         // </blob_lease>
 
         // <container_lease>
-        containerURL.acquireLease(null, 20, null)
+        containerURL.acquireLease(null, 20, null, null)
                 .flatMap(response ->
                         containerURL.changeLease(response.headers().leaseId(), "proposed",
-                                null))
+                                null, null))
                 .flatMap(response ->
-                        containerURL.renewLease(response.headers().leaseId(), null))
+                        containerURL.renewLease(response.headers().leaseId(), null, null))
                 .flatMap(response ->
-                        containerURL.breakLease(null, null)
+                        containerURL.breakLease(null, null, null)
                                 .flatMap(breakResponse ->
-                                        containerURL.releaseLease(response.headers().leaseId(), null)))
+                                        containerURL.releaseLease(response.headers().leaseId(), null, null)))
                 .subscribe();
         // </container_lease>
 
@@ -2137,29 +2226,29 @@ public class Samples {
                 )
                 .flatMap(response ->
                         // Delete the container.
-                        containerURL.delete(null));
+                        containerURL.delete(null, null));
         // </tm_file>
 
         // <service_getsetprops>
-        serviceURL.getProperties()
+        serviceURL.getProperties(null)
                 .flatMap(response -> {
                     StorageServiceProperties newProps = response.body();
 
                     // Remove the delete retention policy to disable soft delete.
                     newProps.withDeleteRetentionPolicy(null);
 
-                    return serviceURL.setProperties(newProps);
+                    return serviceURL.setProperties(newProps, null);
                 })
                 .subscribe();
         // </service_getsetprops>
 
         // <service_stats>
-        serviceURL.getStatistics()
+        serviceURL.getStatistics(null)
                 .subscribe();
         // </service_stats>
 
         // <service_list>
-        serviceURL.listContainersSegment(null, ListContainersOptions.DEFAULT)
+        serviceURL.listContainersSegment(null, ListContainersOptions.DEFAULT, null)
                 .flatMap(listContainersSegmentResponse ->
                         // The asynchronous requests require we use recursion to continue our listing.
                         listContainersHelper(serviceURL, listContainersSegmentResponse))
@@ -2167,11 +2256,11 @@ public class Samples {
         // </service_list>
 
         // <account_info>
-        serviceURL.getAccountInfo()
+        serviceURL.getAccountInfo(null)
                 .subscribe();
-        containerURL.getAccountInfo()
+        containerURL.getAccountInfo(null)
                 .subscribe();
-        blobURL.getAccountInfo()
+        blobURL.getAccountInfo(null)
                 .subscribe();
         // </account_info>
     }

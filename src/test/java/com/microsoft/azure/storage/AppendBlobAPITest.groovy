@@ -36,13 +36,13 @@ public class AppendBlobAPITest extends APISpec {
 
     def setup() {
         bu = cu.createAppendBlobURL(generateBlobName())
-        bu.create(null, null, null).blockingGet()
+        bu.create(null, null, null, null).blockingGet()
     }
 
     def "Create defaults"() {
         when:
         AppendBlobCreateResponse createResponse =
-                bu.create(null, null, null).blockingGet()
+                bu.create(null, null, null, null).blockingGet()
 
         then:
         createResponse.statusCode() == 201
@@ -54,7 +54,7 @@ public class AppendBlobAPITest extends APISpec {
     def "Create error"() {
         when:
         bu.create(null, null, new BlobAccessConditions().withModifiedAccessConditions(new ModifiedAccessConditions()
-                .withIfMatch("garbage"))).blockingGet()
+                .withIfMatch("garbage")), null).blockingGet()
 
         then:
         thrown(StorageException)
@@ -71,8 +71,8 @@ public class AppendBlobAPITest extends APISpec {
                 .withBlobContentType(contentType)
 
         when:
-        bu.create(headers, null, null).blockingGet()
-        BlobGetPropertiesResponse response = bu.getProperties(null).blockingGet()
+        bu.create(headers, null, null, null).blockingGet()
+        BlobGetPropertiesResponse response = bu.getProperties(null, null).blockingGet()
 
         then:
         validateBlobHeaders(response.headers(), cacheControl, contentDisposition, contentEncoding, contentLanguage,
@@ -97,8 +97,8 @@ public class AppendBlobAPITest extends APISpec {
         }
 
         when:
-        bu.create(null, metadata, null).blockingGet()
-        BlobGetPropertiesResponse response = bu.getProperties(null).blockingGet()
+        bu.create(null, metadata, null, null).blockingGet()
+        BlobGetPropertiesResponse response = bu.getProperties(null, null).blockingGet()
 
         then:
         response.headers().metadata() == metadata
@@ -121,7 +121,7 @@ public class AppendBlobAPITest extends APISpec {
 
 
         expect:
-        bu.create(null, null, bac).blockingGet().statusCode() == 201
+        bu.create(null, null, bac, null).blockingGet().statusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -144,7 +144,7 @@ public class AppendBlobAPITest extends APISpec {
                 .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
 
         when:
-        bu.create(null, null, bac).blockingGet()
+        bu.create(null, null, bac, null).blockingGet()
 
         then:
         thrown(StorageException)
@@ -162,22 +162,22 @@ public class AppendBlobAPITest extends APISpec {
         setup:
         AppendBlobAppendBlockHeaders headers =
                 bu.appendBlock(defaultFlowable, defaultDataSize,
-                        null).blockingGet().headers()
+                        null, null).blockingGet().headers()
 
         expect:
         FlowableUtil.collectBytesInBuffer(bu.download(null, null, false, null)
-                .blockingGet().body()).blockingGet().compareTo(defaultData) == 0
+                .blockingGet().body(null)).blockingGet().compareTo(defaultData) == 0
         validateBasicHeaders(headers)
         headers.contentMD5() != null
         headers.blobAppendOffset() != null
         headers.blobCommittedBlockCount() != null
-        bu.getProperties(null).blockingGet().headers().blobCommittedBlockCount() == 1
+        bu.getProperties(null, null).blockingGet().headers().blobCommittedBlockCount() == 1
     }
 
     @Unroll
     def "Append block IA"() {
         when:
-        bu.appendBlock(data, dataSize, null).blockingGet()
+        bu.appendBlock(data, dataSize, null, null).blockingGet()
 
         then:
         def e = thrown(Exception)
@@ -192,7 +192,7 @@ public class AppendBlobAPITest extends APISpec {
 
     def "Append block empty body"() {
         when:
-        bu.appendBlock(Flowable.just(ByteBuffer.wrap(new byte[0])), 0, null).blockingGet()
+        bu.appendBlock(Flowable.just(ByteBuffer.wrap(new byte[0])), 0, null, null).blockingGet()
 
         then:
         thrown(StorageException)
@@ -200,7 +200,7 @@ public class AppendBlobAPITest extends APISpec {
 
     def "Append block null body"() {
         when:
-        bu.appendBlock(Flowable.just(null), 0, null).blockingGet()
+        bu.appendBlock(Flowable.just(null), 0, null, null).blockingGet()
 
         then:
         thrown(NullPointerException) // Thrown by Flowable.
@@ -219,7 +219,7 @@ public class AppendBlobAPITest extends APISpec {
                 .withAppendPosition(appendPosE).withMaxSize(maxSizeLTE))
 
         expect:
-        bu.appendBlock(defaultFlowable, defaultDataSize, bac)
+        bu.appendBlock(defaultFlowable, defaultDataSize, bac, null)
                 .blockingGet().statusCode() == 201
 
         where:
@@ -248,7 +248,7 @@ public class AppendBlobAPITest extends APISpec {
                 .withAppendPosition(appendPosE).withMaxSize(maxSizeLTE))
 
         when:
-        bu.appendBlock(defaultFlowable, defaultDataSize, bac)
+        bu.appendBlock(defaultFlowable, defaultDataSize, bac, null)
                 .blockingGet().statusCode()
 
         then:
@@ -270,7 +270,7 @@ public class AppendBlobAPITest extends APISpec {
         bu = cu.createAppendBlobURL(generateBlobName())
 
         when:
-        bu.appendBlock(defaultFlowable, defaultDataSize, null).blockingGet()
+        bu.appendBlock(defaultFlowable, defaultDataSize, null, null).blockingGet()
 
         then:
         thrown(StorageException)

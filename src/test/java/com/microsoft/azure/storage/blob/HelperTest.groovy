@@ -28,7 +28,7 @@ class HelperTest extends APISpec {
 
     def "responseError"() {
         when:
-        cu.listBlobsFlatSegment("garbage", null).blockingGet()
+        cu.listBlobsFlatSegment("garbage", null, null).blockingGet()
 
         then:
         def e = thrown(StorageException)
@@ -68,7 +68,7 @@ class HelperTest extends APISpec {
         def containerName = generateContainerName()
         def blobName = generateBlobName()
         def cu = primaryServiceURL.createContainerURL(containerName)
-        cu.create(null, null).blockingGet()
+        cu.create(null, null, null).blockingGet()
 
         def v = new ServiceSASSignatureValues()
         def p = new BlobSASPermission()
@@ -100,10 +100,10 @@ class HelperTest extends APISpec {
                 new PipelineOptions()))
 
         then:
-        bu.create(null, null, null).blockingGet()
+        bu.create(null, null, null, null).blockingGet()
 
         and:
-        def properties = bu.getProperties(null).blockingGet().headers()
+        def properties = bu.getProperties(null, null).blockingGet().headers()
 
         then:
         properties.cacheControl() == "cache"
@@ -117,10 +117,10 @@ class HelperTest extends APISpec {
         setup:
         def containerName = generateContainerName()
         def cu = primaryServiceURL.createContainerURL(containerName)
-        cu.create(null, null).blockingGet()
+        cu.create(null, null, null).blockingGet()
         def id = new SignedIdentifier().withId("0000").withAccessPolicy(new AccessPolicy().withPermission("racwdl")
                 .withExpiry(OffsetDateTime.now().plusDays(1)))
-        cu.setAccessPolicy(null, Arrays.asList(id), null).blockingGet()
+        cu.setAccessPolicy(null, Arrays.asList(id), null, null).blockingGet()
 
         // Check id field
         def v = new ServiceSASSignatureValues()
@@ -153,8 +153,8 @@ class HelperTest extends APISpec {
                 new PipelineOptions()))
 
         then:
-        cuSAS.listBlobsFlatSegment(null, null).blockingGet()
-        cuSAS2.listBlobsFlatSegment(null, null).blockingGet()
+        cuSAS.listBlobsFlatSegment(null, null, null).blockingGet()
+        cuSAS2.listBlobsFlatSegment(null, null, null).blockingGet()
         notThrown(StorageException)
     }
 

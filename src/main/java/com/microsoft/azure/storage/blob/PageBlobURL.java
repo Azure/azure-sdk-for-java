@@ -15,6 +15,7 @@
 package com.microsoft.azure.storage.blob;
 
 import com.microsoft.azure.storage.blob.models.*;
+import com.microsoft.rest.v2.Context;
 import com.microsoft.rest.v2.http.HttpPipeline;
 import com.microsoft.rest.v2.http.UrlBuilder;
 import io.reactivex.Flowable;
@@ -114,13 +115,19 @@ public final class PageBlobURL extends BlobURL {
      *      {@link Metadata}
      * @param accessConditions
      *      {@link BlobAccessConditions}
+     * @param context
+     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *      parent, forming a linked list.
      * @return
      *       Emits the successful response.
      */
-    public Single<PageBlobCreateResponse> create(
-            long size, Long sequenceNumber, BlobHTTPHeaders headers, Metadata metadata,
-            BlobAccessConditions accessConditions) {
+    public Single<PageBlobCreateResponse> create(long size, Long sequenceNumber, BlobHTTPHeaders headers,
+            Metadata metadata, BlobAccessConditions accessConditions, Context context) {
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
+
         if (size%PageBlobURL.PAGE_BYTES != 0) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
@@ -135,7 +142,7 @@ public final class PageBlobURL extends BlobURL {
 
         // TODO: What if you pass 0 for pageblob size? Validate?
         return addErrorWrappingToSingle(this.storageClient.generatedPageBlobs().createWithRestResponseAsync(
-                0, size, null, metadata, sequenceNumber, null, headers, accessConditions.leaseAccessConditions(),
+                context, 0, size, null, metadata, sequenceNumber, null, headers, accessConditions.leaseAccessConditions(),
                 accessConditions.modifiedAccessConditions()));
     }
 
@@ -161,11 +168,17 @@ public final class PageBlobURL extends BlobURL {
      *      (the default). In other words, the Flowable must produce the same data each time it is subscribed to.
      * @param pageBlobAccessConditions
      *      {@link PageBlobAccessConditions}
+     * @param context
+     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *      parent, forming a linked list.
      * @return
      *      Emits the successful response.
      */
-    public Single<PageBlobUploadPagesResponse> uploadPages(
-            PageRange pageRange, Flowable<ByteBuffer> body, PageBlobAccessConditions pageBlobAccessConditions) {
+    public Single<PageBlobUploadPagesResponse> uploadPages(PageRange pageRange, Flowable<ByteBuffer> body,
+            PageBlobAccessConditions pageBlobAccessConditions, Context context) {
         pageBlobAccessConditions = pageBlobAccessConditions == null ? PageBlobAccessConditions.NONE :
                 pageBlobAccessConditions;
 
@@ -177,7 +190,7 @@ public final class PageBlobURL extends BlobURL {
         String pageRangeStr = pageRangeToString(pageRange);
 
         return addErrorWrappingToSingle(this.storageClient.generatedPageBlobs().uploadPagesWithRestResponseAsync(
-                body, pageRange.end()-pageRange.start()+1, null, null, pageRangeStr, null,
+                context, body, pageRange.end()-pageRange.start()+1, null, null, pageRangeStr, null,
                 pageBlobAccessConditions.leaseAccessConditions(),
                 pageBlobAccessConditions.sequenceNumberAccessConditions(),
                 pageBlobAccessConditions.modifiedAccessConditions()));
@@ -197,16 +210,21 @@ public final class PageBlobURL extends BlobURL {
      *      A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start offset must
      *      be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges are
      *      0-511, 512-1023, etc.
+     * @param context
+     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *      parent, forming a linked list.
      * @param pageBlobAccessConditions
      *      {@link PageBlobAccessConditions}
      * @return
      *      Emits the successful response.
      */
-    public Single<PageBlobClearPagesResponse> clearPages(
-            PageRange pageRange, PageBlobAccessConditions pageBlobAccessConditions) {
+    public Single<PageBlobClearPagesResponse> clearPages(PageRange pageRange,
+            PageBlobAccessConditions pageBlobAccessConditions, Context context) {
         pageBlobAccessConditions = pageBlobAccessConditions == null ? PageBlobAccessConditions.NONE :
                 pageBlobAccessConditions;
-
         if (pageRange == null) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
@@ -215,7 +233,7 @@ public final class PageBlobURL extends BlobURL {
         String pageRangeStr = pageRangeToString(pageRange);
 
          return addErrorWrappingToSingle(this.storageClient.generatedPageBlobs().clearPagesWithRestResponseAsync(
-                 0, null, pageRangeStr, null, pageBlobAccessConditions.leaseAccessConditions(),
+                 context, 0, null, pageRangeStr, null, pageBlobAccessConditions.leaseAccessConditions(),
                  pageBlobAccessConditions.sequenceNumberAccessConditions(),
                  pageBlobAccessConditions.modifiedAccessConditions()));
     }
@@ -233,16 +251,22 @@ public final class PageBlobURL extends BlobURL {
      *      {@link BlobRange}
      * @param accessConditions
      *      {@link BlobAccessConditions}
+     * @param context
+     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *      parent, forming a linked list.
      * @return
      *      Emits the successful response.
      */
-    public Single<PageBlobGetPageRangesResponse> getPageRanges(
-            BlobRange blobRange, BlobAccessConditions accessConditions) {
+    public Single<PageBlobGetPageRangesResponse> getPageRanges(BlobRange blobRange,
+            BlobAccessConditions accessConditions, Context context) {
         blobRange = blobRange == null ? BlobRange.DEFAULT : blobRange;
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
 
         return addErrorWrappingToSingle(this.storageClient.generatedPageBlobs().getPageRangesWithRestResponseAsync(
-                null, null, blobRange.toString(), null, accessConditions.leaseAccessConditions(),
+                context, null, null, blobRange.toString(), null, accessConditions.leaseAccessConditions(),
                 accessConditions.modifiedAccessConditions()));
     }
 
@@ -263,11 +287,17 @@ public final class PageBlobURL extends BlobURL {
      *     blob may be a snapshot, as long as the snapshot specified by prevsnapshot is the older of the two.
      * @param accessConditions
      *     {@link BlobAccessConditions}
+     * @param context
+     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *      parent, forming a linked list.
      * @return
      *      Emits the successful response.
      */
-    public Single<PageBlobGetPageRangesDiffResponse> getPageRangesDiff(
-            BlobRange blobRange, String prevSnapshot, BlobAccessConditions accessConditions) {
+    public Single<PageBlobGetPageRangesDiffResponse> getPageRangesDiff(BlobRange blobRange, String prevSnapshot,
+            BlobAccessConditions accessConditions, Context context) {
         blobRange = blobRange == null ? BlobRange.DEFAULT : blobRange;
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
 
@@ -276,7 +306,7 @@ public final class PageBlobURL extends BlobURL {
         }
 
         return addErrorWrappingToSingle(this.storageClient.generatedPageBlobs().getPageRangesDiffWithRestResponseAsync(
-                null,null, prevSnapshot, blobRange.toString(), null, accessConditions.leaseAccessConditions(),
+                context, null, null, prevSnapshot, blobRange.toString(), null, accessConditions.leaseAccessConditions(),
                 accessConditions.modifiedAccessConditions()));
     }
 
@@ -294,11 +324,16 @@ public final class PageBlobURL extends BlobURL {
      *      blob, then all pages above the specified value are cleared.
      * @param accessConditions
      *      {@link BlobAccessConditions}
+     * @param context
+     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *      parent, forming a linked list.
      * @return
      *      Emits the successful response.
      */
-    public Single<PageBlobResizeResponse> resize(
-            long size, BlobAccessConditions accessConditions) {
+    public Single<PageBlobResizeResponse> resize(long size, BlobAccessConditions accessConditions, Context context) {
         if (size%PageBlobURL.PAGE_BYTES != 0) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
@@ -307,7 +342,7 @@ public final class PageBlobURL extends BlobURL {
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
 
         return addErrorWrappingToSingle(this.storageClient.generatedPageBlobs().resizeWithRestResponseAsync(
-                size, null, null, accessConditions.leaseAccessConditions(),
+                context, size, null, null, accessConditions.leaseAccessConditions(),
                 accessConditions.modifiedAccessConditions()));
     }
 
@@ -327,11 +362,17 @@ public final class PageBlobURL extends BlobURL {
      *      requests and manage concurrency issues.
      * @param accessConditions
      *      {@link BlobAccessConditions}
+     * @param context
+     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *      parent, forming a linked list.
      * @return
      *      Emits the successful response.
      */
-    public Single<PageBlobUpdateSequenceNumberResponse> updateSequenceNumber(
-            SequenceNumberActionType action, Long sequenceNumber, BlobAccessConditions accessConditions) {
+    public Single<PageBlobUpdateSequenceNumberResponse> updateSequenceNumber(SequenceNumberActionType action,
+            Long sequenceNumber, BlobAccessConditions accessConditions, Context context) {
         if (sequenceNumber != null && sequenceNumber < 0) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
@@ -343,7 +384,7 @@ public final class PageBlobURL extends BlobURL {
         }
 
         return addErrorWrappingToSingle(
-                this.storageClient.generatedPageBlobs().updateSequenceNumberWithRestResponseAsync(
+                this.storageClient.generatedPageBlobs().updateSequenceNumberWithRestResponseAsync(context,
                 action, null, sequenceNumber, null, accessConditions.leaseAccessConditions(),
                         accessConditions.modifiedAccessConditions()));
     }
@@ -362,11 +403,17 @@ public final class PageBlobURL extends BlobURL {
      *      The snapshot on the copy source.
      * @param modifiedAccessConditions
      *      {@link ModifiedAccessConditions}
+     * @param context
+     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *      parent, forming a linked list.
      * @return
      *      Emits the successful response.
      */
     public Single<PageBlobCopyIncrementalResponse> copyIncremental(URL source, String snapshot,
-            ModifiedAccessConditions modifiedAccessConditions) {
+            ModifiedAccessConditions modifiedAccessConditions, Context context) {
         UrlBuilder builder = UrlBuilder.parse(source);
         builder.setQueryParameter(Constants.SNAPSHOT_QUERY_PARAMETER, snapshot);
         try {
@@ -376,7 +423,7 @@ public final class PageBlobURL extends BlobURL {
             throw new Error(e);
         }
         return addErrorWrappingToSingle(this.storageClient.generatedPageBlobs().copyIncrementalWithRestResponseAsync(
-                source, null, null, null, modifiedAccessConditions));
+                context, source, null, null, modifiedAccessConditions));
     }
 
     private static String pageRangeToString(PageRange pageRange) {

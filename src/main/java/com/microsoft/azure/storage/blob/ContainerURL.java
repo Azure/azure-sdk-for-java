@@ -15,6 +15,7 @@
 package com.microsoft.azure.storage.blob;
 
 import com.microsoft.azure.storage.blob.models.*;
+import com.microsoft.rest.v2.Context;
 import com.microsoft.rest.v2.http.HttpPipeline;
 import io.reactivex.Single;
 
@@ -177,14 +178,19 @@ public final class ContainerURL extends StorageURL {
      * @param accessType
      *      Specifies how the data in this container is available to the public. See the x-ms-blob-public-access header
      *      in the Azure Docs for more information. Pass null for no public access.
+     * @param context
+     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *      parent, forming a linked list.
      * @return
      *      Emits the successful response.
      */
-    public Single<ContainerCreateResponse> create(
-            Metadata metadata, PublicAccessType accessType) {
+    public Single<ContainerCreateResponse> create(Metadata metadata, PublicAccessType accessType, Context context) {
         metadata = metadata == null ? Metadata.NONE : metadata;
             return addErrorWrappingToSingle(this.storageClient.generatedContainers().createWithRestResponseAsync(
-                    null, metadata, accessType, null));
+                    context, null, metadata, accessType, null));
 
     }
 
@@ -200,11 +206,16 @@ public final class ContainerURL extends StorageURL {
      *
      * @param accessConditions
      *      {@link ContainerAccessConditions}
+     * @param context
+     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *      parent, forming a linked list.
      * @return
      *      Emits the successful response.
      */
-    public Single<ContainerDeleteResponse> delete(
-            ContainerAccessConditions accessConditions) {
+    public Single<ContainerDeleteResponse> delete(ContainerAccessConditions accessConditions, Context context) {
         accessConditions = accessConditions == null ? ContainerAccessConditions.NONE : accessConditions;
 
         if (!validateNoEtag(accessConditions.modifiedAccessConditions())) {
@@ -214,7 +225,7 @@ public final class ContainerURL extends StorageURL {
         }
 
         return addErrorWrappingToSingle(this.storageClient.generatedContainers()
-                .deleteWithRestResponseAsync(null, null, accessConditions.leaseAccessConditions(),
+                .deleteWithRestResponseAsync(context, null, null, accessConditions.leaseAccessConditions(),
                         accessConditions.modifiedAccessConditions()));
     }
 
@@ -229,14 +240,20 @@ public final class ContainerURL extends StorageURL {
      *
      * @param leaseAccessConditions
      *      {@link LeaseAccessConditions}
+     * @param context
+     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *      parent, forming a linked list.
      * @return
      *      Emits the successful response.
      */
-    public Single<ContainerGetPropertiesResponse> getProperties(
-            LeaseAccessConditions leaseAccessConditions) {
+    public Single<ContainerGetPropertiesResponse> getProperties(LeaseAccessConditions leaseAccessConditions,
+            Context context) {
 
         return addErrorWrappingToSingle(this.storageClient.generatedContainers()
-                .getPropertiesWithRestResponseAsync(null, null, leaseAccessConditions));
+                .getPropertiesWithRestResponseAsync(context, null, null, leaseAccessConditions));
     }
 
     /**
@@ -252,11 +269,17 @@ public final class ContainerURL extends StorageURL {
      *      {@link Metadata}
      * @param accessConditions
      *      {@link ContainerAccessConditions}
+     * @param context
+     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *      parent, forming a linked list.
      * @return
      *      Emits the successful response.
      */
-    public Single<ContainerSetMetadataResponse> setMetadata(
-            Metadata metadata, ContainerAccessConditions accessConditions) {
+    public Single<ContainerSetMetadataResponse> setMetadata(Metadata metadata,
+            ContainerAccessConditions accessConditions, Context context) {
         metadata = metadata == null ? Metadata.NONE : metadata;
         accessConditions = accessConditions == null ? ContainerAccessConditions.NONE : accessConditions;
         if (!validateNoEtag(accessConditions.modifiedAccessConditions()) ||
@@ -268,8 +291,8 @@ public final class ContainerURL extends StorageURL {
         }
 
         return addErrorWrappingToSingle(this.storageClient.generatedContainers()
-                .setMetadataWithRestResponseAsync(null, metadata, null, accessConditions.leaseAccessConditions(),
-                        accessConditions.modifiedAccessConditions()));
+                .setMetadataWithRestResponseAsync(context, null, metadata, null,
+                        accessConditions.leaseAccessConditions(), accessConditions.modifiedAccessConditions()));
     }
 
     /**
@@ -284,14 +307,20 @@ public final class ContainerURL extends StorageURL {
      *
      * @param leaseAccessConditions
      *      {@link LeaseAccessConditions}
+     * @param context
+     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *      parent, forming a linked list.
      * @return
      *      Emits the successful response.
      */
-    public Single<ContainerGetAccessPolicyResponse> getAccessPolicy(
-            LeaseAccessConditions leaseAccessConditions) {
+    public Single<ContainerGetAccessPolicyResponse> getAccessPolicy(LeaseAccessConditions leaseAccessConditions,
+            Context context) {
 
         return addErrorWrappingToSingle(this.storageClient.generatedContainers().getAccessPolicyWithRestResponseAsync(
-                null, null, leaseAccessConditions));
+                context, null, null, leaseAccessConditions));
     }
 
     /**
@@ -314,12 +343,17 @@ public final class ContainerURL extends StorageURL {
      *      for more information. Passing null will clear all access policies.
      * @param accessConditions
      *      {@link ContainerAccessConditions}
+     * @param context
+     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *      parent, forming a linked list.
      * @return
      *      Emits the successful response.
      */
-    public Single<ContainerSetAccessPolicyResponse> setAccessPolicy(
-            PublicAccessType accessType, List<SignedIdentifier> identifiers,
-            ContainerAccessConditions accessConditions) {
+    public Single<ContainerSetAccessPolicyResponse> setAccessPolicy(PublicAccessType accessType,
+            List<SignedIdentifier> identifiers, ContainerAccessConditions accessConditions, Context context) {
         accessConditions = accessConditions == null ? ContainerAccessConditions.NONE : accessConditions;
 
         if (!validateNoEtag(accessConditions.modifiedAccessConditions())) {
@@ -349,7 +383,7 @@ public final class ContainerURL extends StorageURL {
 
         // TODO: validate that empty list clears permissions and null list does not change list. Document behavior.
         return addErrorWrappingToSingle(this.storageClient.generatedContainers()
-                .setAccessPolicyWithRestResponseAsync(identifiers, null, accessType, null,
+                .setAccessPolicyWithRestResponseAsync(context, identifiers, null, accessType, null,
                         accessConditions.leaseAccessConditions(), accessConditions.modifiedAccessConditions()));
     }
 
@@ -377,11 +411,18 @@ public final class ContainerURL extends StorageURL {
      *      A non-infinite lease can be between 15 and 60 seconds.
      * @param modifiedAccessConditions
      *      {@link ModifiedAccessConditions}
+     * @param context
+     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *      parent, forming a linked list.
+     *
      * @return
      *      Emits the successful response.
      */
-    public Single<ContainerAcquireLeaseResponse> acquireLease(
-            String proposedID, int duration, ModifiedAccessConditions modifiedAccessConditions) {
+    public Single<ContainerAcquireLeaseResponse> acquireLease(String proposedID, int duration,
+            ModifiedAccessConditions modifiedAccessConditions, Context context) {
         if (!this.validateNoEtag(modifiedAccessConditions)){
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
@@ -390,7 +431,7 @@ public final class ContainerURL extends StorageURL {
         }
 
         return addErrorWrappingToSingle(this.storageClient.generatedContainers().acquireLeaseWithRestResponseAsync(
-                null,  duration, proposedID, null, modifiedAccessConditions));
+                context, null, duration, proposedID, null, modifiedAccessConditions));
     }
 
     /**
@@ -406,11 +447,17 @@ public final class ContainerURL extends StorageURL {
      *      The leaseId of the active lease on the container.
      * @param modifiedAccessConditions
      *      {@link ModifiedAccessConditions}
+     * @param context
+     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *      parent, forming a linked list.
      * @return
      *      Emits the successful response.
      */
-    public Single<ContainerRenewLeaseResponse> renewLease(
-            String leaseID, ModifiedAccessConditions modifiedAccessConditions) {
+    public Single<ContainerRenewLeaseResponse> renewLease(String leaseID,
+            ModifiedAccessConditions modifiedAccessConditions, Context context) {
         if (!this.validateNoEtag(modifiedAccessConditions)) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
@@ -419,7 +466,7 @@ public final class ContainerURL extends StorageURL {
         }
 
         return addErrorWrappingToSingle(this.storageClient.generatedContainers().renewLeaseWithRestResponseAsync(
-                leaseID, null, null, modifiedAccessConditions));
+                context, leaseID, null, null, modifiedAccessConditions));
     }
 
     /**
@@ -435,11 +482,17 @@ public final class ContainerURL extends StorageURL {
      *      The leaseId of the active lease on the container.
      * @param modifiedAccessConditions
      *      {@link ModifiedAccessConditions}
+     * @param context
+     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *      parent, forming a linked list.
      * @return
      *      Emits the successful response.
      */
-    public Single<ContainerReleaseLeaseResponse> releaseLease(
-            String leaseID, ModifiedAccessConditions modifiedAccessConditions) {
+    public Single<ContainerReleaseLeaseResponse> releaseLease(String leaseID,
+            ModifiedAccessConditions modifiedAccessConditions, Context context) {
         if (!this.validateNoEtag(modifiedAccessConditions)) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
@@ -448,7 +501,7 @@ public final class ContainerURL extends StorageURL {
         }
 
         return addErrorWrappingToSingle(this.storageClient.generatedContainers().releaseLeaseWithRestResponseAsync(
-                leaseID, null, null, modifiedAccessConditions));
+                context, leaseID, null, null, modifiedAccessConditions));
     }
 
     /**
@@ -465,13 +518,19 @@ public final class ContainerURL extends StorageURL {
      *      before it is broken, between 0 and 60 seconds. This break period is only used if it is shorter than the time
      *      remaining on the lease. If longer, the time remaining on the lease is used. A new lease will not be
      *      available before the break period has expired, but the lease may be held for longer than the break period.
+     * @param context
+     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *      parent, forming a linked list.
      * @param modifiedAccessConditions
      *      {@link ModifiedAccessConditions}
      * @return
      *      Emits the successful response.
      */
-    public Single<ContainerBreakLeaseResponse> breakLease(
-            Integer breakPeriodInSeconds, ModifiedAccessConditions modifiedAccessConditions) {
+    public Single<ContainerBreakLeaseResponse> breakLease(Integer breakPeriodInSeconds,
+            ModifiedAccessConditions modifiedAccessConditions, Context context) {
         if (!this.validateNoEtag(modifiedAccessConditions)) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
@@ -480,7 +539,7 @@ public final class ContainerURL extends StorageURL {
         }
 
         return addErrorWrappingToSingle(this.storageClient.generatedContainers().breakLeaseWithRestResponseAsync(
-                null, breakPeriodInSeconds, null, modifiedAccessConditions));
+                context, null, breakPeriodInSeconds, null, modifiedAccessConditions));
     }
 
     /**
@@ -498,11 +557,18 @@ public final class ContainerURL extends StorageURL {
      *      A {@code String} in any valid GUID format.
      * @param modifiedAccessConditions
      *      {@link ModifiedAccessConditions}
+     * @param context
+     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *      parent, forming a linked list.
+     *
      * @return
      *      Emits the successful response.
      */
-    public Single<ContainerChangeLeaseResponse> changeLease(
-            String leaseID, String proposedID, ModifiedAccessConditions modifiedAccessConditions) {
+    public Single<ContainerChangeLeaseResponse> changeLease(String leaseID, String proposedID,
+            ModifiedAccessConditions modifiedAccessConditions, Context context) {
         if (!this.validateNoEtag(modifiedAccessConditions)) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
@@ -511,7 +577,7 @@ public final class ContainerURL extends StorageURL {
         }
 
         return addErrorWrappingToSingle(this.storageClient.generatedContainers().changeLeaseWithRestResponseAsync(
-                leaseID, proposedID, null, null, modifiedAccessConditions));
+                context, leaseID, proposedID, null, null, modifiedAccessConditions));
     }
 
     /**
@@ -533,15 +599,20 @@ public final class ContainerURL extends StorageURL {
      *      ListBlobsFlatSegmentResponse.body().nextMarker(). Set to null to list the first segment.
      * @param options
      *      {@link ListBlobsOptions}
+     * @param context
+     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *      parent, forming a linked list.
      * @return
      *      Emits the successful response.
      */
-    public Single<ContainerListBlobFlatSegmentResponse> listBlobsFlatSegment(
-            String marker, ListBlobsOptions options) {
+    public Single<ContainerListBlobFlatSegmentResponse> listBlobsFlatSegment(String marker, ListBlobsOptions options, Context context) {
         options = options == null ? ListBlobsOptions.DEFAULT : options;
 
         return addErrorWrappingToSingle(this.storageClient.generatedContainers()
-                .listBlobFlatSegmentWithRestResponseAsync(
+                .listBlobFlatSegmentWithRestResponseAsync(context,
                 options.prefix(), marker, options.maxResults(),
                 options.details().toList(), null, null));
     }
@@ -569,11 +640,17 @@ public final class ContainerURL extends StorageURL {
      *      be a single character or a string.
      * @param options
      *      {@link ListBlobsOptions}
+     * @param context
+     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *      parent, forming a linked list.
      * @return
      *      Emits the successful response.
      */
-    public Single<ContainerListBlobHierarchySegmentResponse> listBlobsHierarchySegment(
-            String marker, String delimiter, ListBlobsOptions options) {
+    public Single<ContainerListBlobHierarchySegmentResponse> listBlobsHierarchySegment(String marker, String delimiter,
+            ListBlobsOptions options, Context context) {
         options = options == null ? ListBlobsOptions.DEFAULT : options;
         if (options.details().snapshots()) {
             throw new IllegalArgumentException("Including snapshots in a hierarchical listing is not supported.");
@@ -581,7 +658,7 @@ public final class ContainerURL extends StorageURL {
 
         return addErrorWrappingToSingle(this.storageClient.generatedContainers()
                 .listBlobHierarchySegmentWithRestResponseAsync(
-                delimiter, options.prefix(), marker, options.maxResults(),
+                context, delimiter, options.prefix(), marker, options.maxResults(),
                 options.details().toList(), null, null));
     }
 
@@ -594,11 +671,17 @@ public final class ContainerURL extends StorageURL {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=account_info "Sample code for ContainerURL.getAccountInfo")] \n
      * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      *
+     * @param context
+     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *      parent, forming a linked list.
      * @return
      *      Emits the successful response.
      */
-    public Single<ContainerGetAccountInfoResponse> getAccountInfo() {
+    public Single<ContainerGetAccountInfoResponse> getAccountInfo(Context context) {
         return addErrorWrappingToSingle(
-                this.storageClient.generatedContainers().getAccountInfoWithRestResponseAsync());
+                this.storageClient.generatedContainers().getAccountInfoWithRestResponseAsync(context));
     }
 }

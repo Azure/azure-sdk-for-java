@@ -138,6 +138,12 @@ public class BlobURL extends StorageURL {
      *      {@link ModifiedAccessConditions} against the source.
      * @param destAccessConditions
      *      {@link BlobAccessConditions} against the destination.
+     * @param context
+     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *      parent, forming a linked list.
      * @return Emits the successful response.
      * @apiNote ## Sample Code \n [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=start_copy
      * "Sample code for BlobURL.startCopyFromURL")] \n [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=start_copy_helper
@@ -174,6 +180,12 @@ public class BlobURL extends StorageURL {
      *      BlobStartCopyFromURLHeaders} object.
      * @param leaseAccessConditions
      *      {@link LeaseAccessConditions}
+     * @param context
+     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *      parent, forming a linked list.
      * @return Emits the successful response.
      * @apiNote ## Sample Code \n [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=abort_copy
      * "Sample code for BlobURL.abortCopyFromURL")] \n For more samples, please see the [Samples
@@ -199,6 +211,13 @@ public class BlobURL extends StorageURL {
      *         {@link BlobAccessConditions}
      * @param rangeGetContentMD5
      *         Whether the contentMD5 for the specified blob range should be returned.
+     * @param context
+     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *      parent, forming a linked list.
+     *
      * @return Emits the successful response.
      * @apiNote ## Sample Code \n [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=upload_download
      * "Sample code for BlobURL.download")] \n For more samples, please see the [Samples
@@ -245,17 +264,23 @@ public class BlobURL extends StorageURL {
      *         pass null.
      * @param accessConditions
      *         {@link BlobAccessConditions}
+     * @param context
+     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *      parent, forming a linked list.
      * @return Emits the successful response.
      * @apiNote ## Sample Code \n [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blob_delete
      * "Sample code for BlobURL.delete")] \n For more samples, please see the [Samples
      * file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Single<BlobDeleteResponse> delete(
-            DeleteSnapshotsOptionType deleteBlobSnapshotOptions, BlobAccessConditions accessConditions) {
+    public Single<BlobDeleteResponse> delete(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
+            BlobAccessConditions accessConditions, Context context) {
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
 
         return addErrorWrappingToSingle(this.storageClient.generatedBlobs().deleteWithRestResponseAsync(
-                null, null, deleteBlobSnapshotOptions, null, accessConditions.leaseAccessConditions(),
+                context, null, null, deleteBlobSnapshotOptions, null, accessConditions.leaseAccessConditions(),
                 accessConditions.modifiedAccessConditions()));
     }
 
@@ -265,17 +290,22 @@ public class BlobURL extends StorageURL {
      *
      * @param accessConditions
      *         {@link BlobAccessConditions}
+     * @param context
+     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *      parent, forming a linked list.
      * @return Emits the successful response.
      * @apiNote ## Sample Code \n [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=properties_metadata
      * "Sample code for BlobURL.getProperties")] \n For more samples, please see the [Samples
      * file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Single<BlobGetPropertiesResponse> getProperties(
-            BlobAccessConditions accessConditions) {
+    public Single<BlobGetPropertiesResponse> getProperties(BlobAccessConditions accessConditions, Context context) {
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
 
         return addErrorWrappingToSingle(this.storageClient.generatedBlobs().getPropertiesWithRestResponseAsync(
-                null, null, null, accessConditions.leaseAccessConditions(),
+                context, null, null, null, accessConditions.leaseAccessConditions(),
                 accessConditions.modifiedAccessConditions()));
     }
 
@@ -287,17 +317,23 @@ public class BlobURL extends StorageURL {
      *      {@link BlobHTTPHeaders}
      * @param accessConditions
      *         {@link BlobAccessConditions}
+     * @param context
+     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *      parent, forming a linked list.
      * @return Emits the successful response.
      * @apiNote ## Sample Code \n [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=properties_metadata
      * "Sample code for BlobURL.setHTTPHeaders")] \n For more samples, please see the [Samples
      * file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Single<BlobSetHTTPHeadersResponse> setHTTPHeaders(
-            BlobHTTPHeaders headers, BlobAccessConditions accessConditions) {
+    public Single<BlobSetHTTPHeadersResponse> setHTTPHeaders(BlobHTTPHeaders headers,
+            BlobAccessConditions accessConditions, Context context) {
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
 
         return addErrorWrappingToSingle(this.storageClient.generatedBlobs().setHTTPHeadersWithRestResponseAsync(
-                null, null, headers, accessConditions.leaseAccessConditions(),
+                context, null, null, headers, accessConditions.leaseAccessConditions(),
                 accessConditions.modifiedAccessConditions()));
     }
 
@@ -309,18 +345,24 @@ public class BlobURL extends StorageURL {
      *         {@link Metadata}
      * @param accessConditions
      *         {@link BlobAccessConditions}
+     * @param context
+     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *      parent, forming a linked list.
      * @return Emits the successful response.
      * @apiNote ## Sample Code \n [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=properties_metadata
      * "Sample code for BlobURL.setMetadata")] \n For more samples, please see the [Samples
      * file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Single<BlobSetMetadataResponse> setMetadata(
-            Metadata metadata, BlobAccessConditions accessConditions) {
+    public Single<BlobSetMetadataResponse> setMetadata(Metadata metadata, BlobAccessConditions accessConditions,
+            Context context) {
         metadata = metadata == null ? Metadata.NONE : metadata;
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
 
         return addErrorWrappingToSingle(this.storageClient.generatedBlobs().setMetadataWithRestResponseAsync(
-                null, metadata, null, accessConditions.leaseAccessConditions(),
+                context, null, metadata, null, accessConditions.leaseAccessConditions(),
                 accessConditions.modifiedAccessConditions()));
     }
 
@@ -332,18 +374,24 @@ public class BlobURL extends StorageURL {
      *         {@link Metadata}
      * @param accessConditions
      *         {@link BlobAccessConditions}
+     * @param context
+     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *      parent, forming a linked list.
      * @return Emits the successful response.
      * @apiNote ## Sample Code \n [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=snapshot
      * "Sample code for BlobURL.createSnapshot")] \n For more samples, please see the [Samples
      * file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Single<BlobCreateSnapshotResponse> createSnapshot(
-            Metadata metadata, BlobAccessConditions accessConditions) {
+    public Single<BlobCreateSnapshotResponse> createSnapshot(Metadata metadata, BlobAccessConditions accessConditions,
+            Context context) {
         metadata = metadata == null ? Metadata.NONE : metadata;
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
 
         return addErrorWrappingToSingle(this.storageClient.generatedBlobs().createSnapshotWithRestResponseAsync(
-                null, metadata, null, accessConditions.modifiedAccessConditions(),
+                context, null, metadata, null, accessConditions.modifiedAccessConditions(),
                 accessConditions.leaseAccessConditions()));
     }
 
@@ -363,13 +411,20 @@ public class BlobURL extends StorageURL {
      *      The new tier for the blob.
      * @param leaseAccessConditions
      *      {@link LeaseAccessConditions}
+     * @param context
+     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *      parent, forming a linked list.
      * @return
      *      Emits the successful response.
      */
-    public Single<BlobSetTierResponse> setTier(AccessTier tier, LeaseAccessConditions leaseAccessConditions) {
+    public Single<BlobSetTierResponse> setTier(AccessTier tier, LeaseAccessConditions leaseAccessConditions,
+            Context context) {
         Utility.assertNotNull("tier", tier);
 
-        return addErrorWrappingToSingle(this.storageClient.generatedBlobs().setTierWithRestResponseAsync(tier,
+        return addErrorWrappingToSingle(this.storageClient.generatedBlobs().setTierWithRestResponseAsync(context, tier,
                 null, null, leaseAccessConditions));
     }
 
@@ -386,9 +441,15 @@ public class BlobURL extends StorageURL {
      *
      * @return
      *      Emits the successful response.
+     * @param context
+     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *      parent, forming a linked list.
      */
-    public Single<BlobUndeleteResponse> undelete() {
-        return addErrorWrappingToSingle(this.storageClient.generatedBlobs().undeleteWithRestResponseAsync(null,
+    public Single<BlobUndeleteResponse> undelete(Context context) {
+        return addErrorWrappingToSingle(this.storageClient.generatedBlobs().undeleteWithRestResponseAsync(context, null,
                 null));
     }
 
@@ -404,18 +465,24 @@ public class BlobURL extends StorageURL {
      *      never expires. A non-infinite lease can be between 15 and 60 seconds.
      * @param modifiedAccessConditions
      *      {@link ModifiedAccessConditions}
+     * @param context
+     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *      parent, forming a linked list.
      * @return
      *      Emits the successful response.
      */
-    public Single<BlobAcquireLeaseResponse> acquireLease(
-            String proposedID, int duration, ModifiedAccessConditions modifiedAccessConditions) {
+    public Single<BlobAcquireLeaseResponse> acquireLease(String proposedID, int duration,
+            ModifiedAccessConditions modifiedAccessConditions, Context context) {
         if (!(duration == -1 || (duration >= 15 && duration <=60))) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
             throw new IllegalArgumentException("Duration must be -1 or between 15 and 60.");
         }
 
-        return addErrorWrappingToSingle(this.storageClient.generatedBlobs().acquireLeaseWithRestResponseAsync(
+        return addErrorWrappingToSingle(this.storageClient.generatedBlobs().acquireLeaseWithRestResponseAsync(context,
                 null, duration, proposedID, null, modifiedAccessConditions));
     }
 
@@ -427,13 +494,19 @@ public class BlobURL extends StorageURL {
      *      The leaseId of the active lease on the blob.
      * @param modifiedAccessConditions
      *      {@link ModifiedAccessConditions}
+     * @param context
+     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *      parent, forming a linked list.
      * @return
      *      Emits the successful response.
      */
-    public Single<BlobRenewLeaseResponse> renewLease(
-            String leaseID, ModifiedAccessConditions modifiedAccessConditions) {
+    public Single<BlobRenewLeaseResponse> renewLease(String leaseID, ModifiedAccessConditions modifiedAccessConditions,
+            Context context) {
 
-        return addErrorWrappingToSingle(this.storageClient.generatedBlobs().renewLeaseWithRestResponseAsync(
+        return addErrorWrappingToSingle(this.storageClient.generatedBlobs().renewLeaseWithRestResponseAsync(context,
                 leaseID, null, null, modifiedAccessConditions));
     }
 
@@ -445,17 +518,22 @@ public class BlobURL extends StorageURL {
      *         The leaseId of the active lease on the blob.
      * @param modifiedAccessConditions
      *      {@link ModifiedAccessConditions}
-     *
+     *@param context
+     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *      parent, forming a linked list.
      * @apiNote ## Sample Code \n [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blob_lease
      * "Sample code for BlobURL.releaseLease")] \n For more samples, please see the [Samples
      * file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      * @return
      *      Emits the successful response.
      */
-    public Single<BlobReleaseLeaseResponse> releaseLease(
-            String leaseID, ModifiedAccessConditions modifiedAccessConditions) {
+    public Single<BlobReleaseLeaseResponse> releaseLease(String leaseID,
+            ModifiedAccessConditions modifiedAccessConditions, Context context) {
 
-        return addErrorWrappingToSingle(this.storageClient.generatedBlobs().releaseLeaseWithRestResponseAsync(
+        return addErrorWrappingToSingle(this.storageClient.generatedBlobs().releaseLeaseWithRestResponseAsync(context,
                 leaseID, null, null, modifiedAccessConditions));
     }
 
@@ -471,6 +549,12 @@ public class BlobURL extends StorageURL {
      *      available before the break period has expired, but the lease may be held for longer than the break period.
      * @param modifiedAccessConditions
      *      {@link ModifiedAccessConditions}
+     *@param context
+     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *      parent, forming a linked list.
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blob_lease "Sample code for BlobURL.breakLease")] \n
@@ -479,10 +563,10 @@ public class BlobURL extends StorageURL {
      * @return
      *      Emits the successful response.
      */
-    public Single<BlobBreakLeaseResponse> breakLease(
-            Integer breakPeriodInSeconds, ModifiedAccessConditions modifiedAccessConditions) {
+    public Single<BlobBreakLeaseResponse> breakLease(Integer breakPeriodInSeconds,
+            ModifiedAccessConditions modifiedAccessConditions, Context context) {
 
-        return addErrorWrappingToSingle(this.storageClient.generatedBlobs().breakLeaseWithRestResponseAsync(
+        return addErrorWrappingToSingle(this.storageClient.generatedBlobs().breakLeaseWithRestResponseAsync(context,
                 null, breakPeriodInSeconds, null, modifiedAccessConditions));
     }
 
@@ -496,6 +580,12 @@ public class BlobURL extends StorageURL {
      *         A {@code String} in any valid GUID format.
      * @param modifiedAccessConditions
      *      {@link ModifiedAccessConditions}
+     *@param context
+     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *      parent, forming a linked list.
      *
      * @apiNote ## Sample Code \n [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blob_lease
      * "Sample code for BlobURL.changeLease")] \n For more samples, please see the [Samples
@@ -503,10 +593,10 @@ public class BlobURL extends StorageURL {
      * @return
      *      Emits the successful response.
      */
-    public Single<BlobChangeLeaseResponse> changeLease(
-            String leaseId, String proposedID, ModifiedAccessConditions modifiedAccessConditions) {
+    public Single<BlobChangeLeaseResponse> changeLease(String leaseId, String proposedID,
+            ModifiedAccessConditions modifiedAccessConditions, Context context) {
 
-        return addErrorWrappingToSingle(this.storageClient.generatedBlobs().changeLeaseWithRestResponseAsync(
+        return addErrorWrappingToSingle(this.storageClient.generatedBlobs().changeLeaseWithRestResponseAsync(context,
                 leaseId, proposedID, null, null, modifiedAccessConditions));
     }
 
@@ -514,14 +604,21 @@ public class BlobURL extends StorageURL {
      * Returns the sku name and account kind for the account. For more information, please see the <a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a>.
      *
+     * @param context
+     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *      parent, forming a linked list.
+     *
      * @return Emits the successful response.
      * @apiNote ## Sample code \n [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=account_info
      * "Sample code for BlobURL.getAccountInfo")] \n For more samples, please see the [Samples file]
      * (https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Single<BlobGetAccountInfoResponse> getAccountInfo() {
+    public Single<BlobGetAccountInfoResponse> getAccountInfo(Context context) {
         return addErrorWrappingToSingle(
-                this.storageClient.generatedBlobs().getAccountInfoWithRestResponseAsync());
+                this.storageClient.generatedBlobs().getAccountInfoWithRestResponseAsync(context));
     }
 
     // TODO: Update links

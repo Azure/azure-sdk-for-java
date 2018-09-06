@@ -178,8 +178,7 @@ class APISpec extends Specification {
     static HttpClient getHttpClient() {
         if (enableDebugging) {
             HttpClientConfiguration configuration = new HttpClientConfiguration(
-                    new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)),
-                    false)
+                    new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)))
             return HttpClient.createDefault(configuration)
         }
         else return HttpClient.createDefault()
@@ -203,13 +202,13 @@ class APISpec extends Specification {
                 new URL("http://" + System.getenv().get("ACCOUNT_NAME") + ".blob.core.windows.net"), pipeline)
         // There should not be more than 5000 containers from these tests
         for (ContainerItem c : serviceURL.listContainersSegment(null,
-                new ListContainersOptions().withPrefix(containerPrefix)).blockingGet()
+                new ListContainersOptions().withPrefix(containerPrefix), null).blockingGet()
                 .body().containerItems()) {
             ContainerURL containerURL = serviceURL.createContainerURL(c.name())
             if (c.properties().leaseState().equals(LeaseStateType.LEASED)) {
-                containerURL.breakLease(0, null).blockingGet()
+                containerURL.breakLease(0, null, null).blockingGet()
             }
-            containerURL.delete(null).blockingGet()
+            containerURL.delete(null, null).blockingGet()
         }
     }
 
@@ -242,7 +241,7 @@ class APISpec extends Specification {
 
     def setup() {
         cu = primaryServiceURL.createContainerURL(generateContainerName())
-        cu.create(null, null).blockingGet()
+        cu.create(null, null, null).blockingGet()
     }
 
     def cleanup() {
@@ -264,7 +263,7 @@ class APISpec extends Specification {
      */
     def setupBlobMatchCondition(BlobURL bu, String match) {
         if (match == receivedEtag) {
-            BlobGetPropertiesHeaders headers = bu.getProperties(null).blockingGet().headers()
+            BlobGetPropertiesHeaders headers = bu.getProperties(null, null).blockingGet().headers()
             return headers.eTag()
         } else {
             return match
@@ -287,7 +286,7 @@ class APISpec extends Specification {
     def setupBlobLeaseCondition(BlobURL bu, String leaseID) {
         BlobAcquireLeaseHeaders headers = null
         if (leaseID == receivedLeaseID || leaseID == garbageLeaseID) {
-            headers = bu.acquireLease(null, -1, null).blockingGet().headers()
+            headers = bu.acquireLease(null, -1, null, null).blockingGet().headers()
         }
         if (leaseID == receivedLeaseID) {
             return headers.leaseId()
@@ -298,7 +297,7 @@ class APISpec extends Specification {
 
     def setupContainerMatchCondition(ContainerURL cu, String match) {
         if (match == receivedEtag) {
-            ContainerGetPropertiesHeaders headers = cu.getProperties(null).blockingGet().headers()
+            ContainerGetPropertiesHeaders headers = cu.getProperties(null, null).blockingGet().headers()
             return headers.eTag()
         } else {
             return match
@@ -308,7 +307,7 @@ class APISpec extends Specification {
     def setupContainerLeaseCondition(ContainerURL cu, String leaseID) {
         if (leaseID == receivedLeaseID) {
             ContainerAcquireLeaseHeaders headers =
-                    cu.acquireLease(null, -1, null).blockingGet().headers()
+                    cu.acquireLease(null, -1, null, null).blockingGet().headers()
             return headers.leaseId()
         } else {
             return leaseID
@@ -318,7 +317,7 @@ class APISpec extends Specification {
     def waitForCopy(BlobURL bu, CopyStatusType status) {
         OffsetDateTime start = OffsetDateTime.now()
         while (status != CopyStatusType.SUCCESS) {
-            status = bu.getProperties(null).blockingGet().headers().copyStatus()
+            status = bu.getProperties(null, null).blockingGet().headers().copyStatus()
             OffsetDateTime currentTime = OffsetDateTime.now()
             if (status == CopyStatusType.FAILED || currentTime.minusMinutes(1) == start) {
                 throw new Exception("Copy failed or took too long")
@@ -356,14 +355,14 @@ class APISpec extends Specification {
 
     def enableSoftDelete() {
         primaryServiceURL.setProperties(new StorageServiceProperties()
-                .withDeleteRetentionPolicy(new RetentionPolicy().withEnabled(true).withDays(2)))
+                .withDeleteRetentionPolicy(new RetentionPolicy().withEnabled(true).withDays(2)), null)
                 .blockingGet()
         sleep(30000) // Wait for the policy to take effect.
     }
 
     def disableSoftDelete() {
         primaryServiceURL.setProperties(new StorageServiceProperties()
-                .withDeleteRetentionPolicy(new RetentionPolicy().withEnabled(false))).blockingGet()
+                .withDeleteRetentionPolicy(new RetentionPolicy().withEnabled(false)), null).blockingGet()
 
         sleep(30000) // Wait for the policy to take effect.
     }

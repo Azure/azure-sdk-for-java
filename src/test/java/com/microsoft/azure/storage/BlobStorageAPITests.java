@@ -67,7 +67,7 @@ public class BlobStorageAPITests {
         // Currently only the default PipelineOptions are supported.
         PipelineOptions po = new PipelineOptions();
         HttpClientConfiguration configuration = new HttpClientConfiguration(
-                new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)), false);
+                new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)));
         po.client = HttpClient.createDefault();//configuration);
         HttpPipeline pipeline = StorageURL.createPipeline(creds, po);
 
@@ -92,11 +92,11 @@ public class BlobStorageAPITests {
 
             // Create the container. NOTE: Metadata is not currently supported on any resource.
 
-            cu.create(null, PublicAccessType.BLOB).blockingGet();
+            cu.create(null, PublicAccessType.BLOB, null).blockingGet();
 
             // Create the blob with a single put. See below for the stageBlock(List) scenario.
             bu.upload(Flowable.just(ByteBuffer.wrap(new byte[]{0, 0, 0})), 3, null,
-                    null, null).blockingGet();
+                    null, null, null).blockingGet();
 
             // Download the blob contents.
             Flowable<ByteBuffer> data;
@@ -159,9 +159,9 @@ public class BlobStorageAPITests {
             // Delete the blob and container. Deleting a container does not require deleting the blobs first.
             // This is just for demonstration purposes.
             try {
-                bu.delete(DeleteSnapshotsOptionType.INCLUDE, null).blockingGet();
+                bu.delete(DeleteSnapshotsOptionType.INCLUDE, null, null).blockingGet();
             } finally {
-                cu.delete(null).blockingGet();
+                cu.delete(null, null).blockingGet();
             }
         }
     }

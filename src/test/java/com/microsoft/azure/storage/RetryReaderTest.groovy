@@ -28,7 +28,7 @@ class RetryReaderTest extends APISpec {
     def setup() {
         bu = cu.createBlockBlobURL(generateBlobName())
         bu.upload(Flowable.just(defaultData), defaultText.length(), null, null,
-                null).blockingGet()
+                null, null).blockingGet()
     }
 
     /*

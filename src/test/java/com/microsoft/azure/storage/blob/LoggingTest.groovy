@@ -251,7 +251,7 @@ class LoggingTest extends APISpec {
         cu = new ContainerURL(cu.toURL(), StorageURL.createPipeline(primaryCreds, po))
 
         when:
-        cu.create(null, null).blockingGet()
+        cu.create(null, null, null).blockingGet()
 
         then:
         2 * logger.log(*_)
