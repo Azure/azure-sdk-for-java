@@ -27,15 +27,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
 
+import com.microsoft.azure.cosmosdb.BridgeInternal;
 import org.mockito.Mockito;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
-import com.microsoft.azure.cosmosdb.BridgeInternal;
+import com.microsoft.azure.cosmosdb.BridgeUtils;
 import com.microsoft.azure.cosmosdb.Database;
 import com.microsoft.azure.cosmosdb.DocumentClientException;
 import com.microsoft.azure.cosmosdb.FeedResponse;
-import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -70,11 +71,12 @@ public class ReadFeedExceptionHandlingTest extends TestSuiteBase {
         }
     }
 
+    private AsyncDocumentClient.Builder clientBuilder;
     private AsyncDocumentClient client;
 
     @Factory(dataProvider = "clientBuilders")
     public ReadFeedExceptionHandlingTest(AsyncDocumentClient.Builder clientBuilder) {
-        client = clientBuilder.build();
+        this.clientBuilder = clientBuilder;
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -98,5 +100,10 @@ public class ReadFeedExceptionHandlingTest extends TestSuiteBase {
         mockClient.readDatabases(null).subscribe(subscriber);
         subscriber.latch.await();
         assertThat(subscriber.onNextCount).isEqualTo(2);
+    }
+    
+    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    public void beforeClass() throws DocumentClientException {
+        client = clientBuilder.build();
     }
 }

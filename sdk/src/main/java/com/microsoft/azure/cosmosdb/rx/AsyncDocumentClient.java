@@ -25,6 +25,7 @@ package com.microsoft.azure.cosmosdb.rx;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 import com.microsoft.azure.cosmosdb.Attachment;
 import com.microsoft.azure.cosmosdb.ChangeFeedOptions;
@@ -91,7 +92,7 @@ public interface AsyncDocumentClient {
      * {@code
      *   AsyncDocumentClient client = new AsyncDocumentClient.Builder()
      *           .withServiceEndpoint(serviceEndpoint)
-     *           .withMasterKey(masterKey)
+     *           .withMasterKeyOrResourceToken(masterKeyOrResourceToken)
      *           .withConnectionPolicy(ConnectionPolicy.GetDefault())
      *           .withConsistencyLevel(ConsistencyLevel.Session)
      *           .build();
@@ -100,10 +101,11 @@ public interface AsyncDocumentClient {
      */
     class Builder {
 
-        String masterKey;
+        String masterKeyOrResourceToken;
         ConnectionPolicy connectionPolicy;
         ConsistencyLevel desiredConsistencyLevel;
         URI serviceEndpoint;
+        List<Permission> permissionFeed;
         int eventLoopSize = -1;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
@@ -114,9 +116,44 @@ public interface AsyncDocumentClient {
             }
             return this;
         }
+        /**
+         * New method withMasterKeyOrResourceToken will take either master key or resource token
+         * and perform authentication for accessing resource.
+         *
+         * @deprecated use {@link #withMasterKeyOrResourceToken(String)} instead.
+         *
+         * @param masterKeyOrResourceToken
+         *            MasterKey or resourceToken for authentication .
+         * @return current Builder.
+         */
+        @Deprecated
+        public Builder withMasterKey(String masterKeyOrResourceToken) {
+            this.masterKeyOrResourceToken = masterKeyOrResourceToken;
+            return this;
+        }
 
-        public Builder withMasterKey(String masterKey) {
-            this.masterKey = masterKey;
+        /**
+         * This method will accept the master key , additionally it can also consume
+         * resource token too for authentication.
+         * 
+         * @param masterKeyOrResourceToken
+         *            MasterKey or resourceToken for authentication .
+         * @return current Builder.
+         */
+        public Builder withMasterKeyOrResourceToken(String masterKeyOrResourceToken) {
+            this.masterKeyOrResourceToken = masterKeyOrResourceToken;
+            return this;
+        }
+        /**
+         * This method will accept the permission list , which contains the
+         * resource tokens needed to access resources.
+         * 
+         * @param permissionFeed
+         *            Permission list for authentication.
+         * @return current Builder.
+         */
+        public Builder withPermissionFeed(List<Permission> permissionFeed) {
+            this.permissionFeed = permissionFeed;
             return this;
         }
 
@@ -130,7 +167,7 @@ public interface AsyncDocumentClient {
          * If sets, modifies the event loop size and the computation pool size.
          * 
          * @param eventLoopSize the size of the event loop (the number of event loop threads).
-         * @return Builder
+         * @return current Builder.
          */
         Builder withWorkers(int eventLoopSize) {
             ifThrowIllegalArgException(eventLoopSize <= 0, "invalid event loop size");
@@ -152,9 +189,11 @@ public interface AsyncDocumentClient {
         public AsyncDocumentClient build() {
             
             ifThrowIllegalArgException(this.serviceEndpoint == null, "cannot build client without service endpoint");
-            ifThrowIllegalArgException(this.masterKey == null, "cannot build client without masterKey");
+            ifThrowIllegalArgException(
+                    this.masterKeyOrResourceToken == null && (permissionFeed == null || permissionFeed.isEmpty()),
+                    "cannot build client without masterKey or resource token");
 
-            return new RxDocumentClientImpl(serviceEndpoint, masterKey, connectionPolicy, desiredConsistencyLevel,
+            return new RxDocumentClientImpl(serviceEndpoint, masterKeyOrResourceToken, permissionFeed, connectionPolicy, desiredConsistencyLevel,
                     eventLoopSize);
         }
     }

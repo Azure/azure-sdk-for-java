@@ -24,6 +24,7 @@
 package com.microsoft.azure.cosmosdb.rx.internal.query;
 
 import com.microsoft.azure.cosmosdb.BridgeInternal;
+import com.microsoft.azure.cosmosdb.BridgeUtils;
 import com.microsoft.azure.cosmosdb.FeedResponse;
 import com.microsoft.azure.cosmosdb.Resource;
 import com.microsoft.azure.cosmosdb.internal.HttpConstants;

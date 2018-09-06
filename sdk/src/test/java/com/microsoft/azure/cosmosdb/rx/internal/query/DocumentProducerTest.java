@@ -33,7 +33,6 @@ import com.microsoft.azure.cosmosdb.DocumentClientException;
 import com.microsoft.azure.cosmosdb.Error;
 import com.microsoft.azure.cosmosdb.FeedResponse;
 import com.microsoft.azure.cosmosdb.PartitionKeyRange;
-import com.microsoft.azure.cosmosdb.internal.EndpointManager;
 import com.microsoft.azure.cosmosdb.internal.HttpConstants;
 import com.microsoft.azure.cosmosdb.internal.query.QueryItem;
 import com.microsoft.azure.cosmosdb.internal.query.SortOrder;
@@ -41,6 +40,7 @@ import com.microsoft.azure.cosmosdb.internal.query.orderbyquery.OrderByRowResult
 import com.microsoft.azure.cosmosdb.internal.query.orderbyquery.OrderbyRowComparer;
 import com.microsoft.azure.cosmosdb.internal.routing.PartitionKeyRangeIdentity;
 import com.microsoft.azure.cosmosdb.internal.routing.Range;
+import com.microsoft.azure.cosmosdb.rx.internal.GlobalEndpointManager;
 import com.microsoft.azure.cosmosdb.rx.TestSuiteBase;
 import com.microsoft.azure.cosmosdb.rx.internal.IRetryPolicyFactory;
 import com.microsoft.azure.cosmosdb.rx.internal.RetryPolicy;
@@ -113,7 +113,7 @@ public class DocumentProducerTest extends TestSuiteBase {
     }
 
     private IRetryPolicyFactory mockDocumentClientIRetryPolicyFactory() {
-        EndpointManager endpointManager = mock(EndpointManager.class);
+        GlobalEndpointManager endpointManager = mock(GlobalEndpointManager.class);
         doReturn(false).when(endpointManager).isClosed();
         return new RetryPolicy(endpointManager, ConnectionPolicy.GetDefault());
     }

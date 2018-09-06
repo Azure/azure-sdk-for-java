@@ -22,13 +22,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-cosmosdb-parent</artifactId>
-    <version>2.0.2-SNAPSHOT</version>
+    <version>2.1.0</version>
   </parent>
   <artifactId>azure-cosmosdb</artifactId>
   <name>Async SDK for SQL API of Azure Cosmos DB Service</name>
@@ -93,31 +92,19 @@ SOFTWARE.
           </execution>
         </executions>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.0.1</version>
-        <configuration>
-          <links>
-            <link>http://reactivex.io/RxJava/javadoc/</link>
-          </links>
-          <sourceFileExcludes>
-            <sourceFileExclude>**/internal/**/*.java</sourceFileExclude>
-            <sourceFileExclude>**/*Internal.java</sourceFileExclude>
-          </sourceFileExcludes>
-        </configuration>
-        <executions>
-          <execution>
-            <id>attach-javadocs</id>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
   </build>
   <profiles>
+    <profile>
+      <id>unit</id>
+      <properties>
+        <env>default</env>
+        <test.groups>unit</test.groups>
+      </properties>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+    </profile>
     <profile>
       <id>default</id>
       <properties>
@@ -132,7 +119,7 @@ SOFTWARE.
       <id>fast</id>
       <properties>
         <env>default</env>
-        <test.groups>unit,simple</test.groups>
+        <test.groups>simple</test.groups>
       </properties>
     </profile>
     <profile>
@@ -143,7 +130,6 @@ SOFTWARE.
       </properties>
     </profile>
   </profiles>
-
   <reporting>
     <plugins>
       <plugin>
@@ -165,19 +151,36 @@ SOFTWARE.
   </reporting>
   <dependencies>
     <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-cosmosdb-commons</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-cosmosdb-gateway</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-cosmosdb-direct</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-cosmosdb-commons-test-utils</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>2.9.5</version>
+      <version>${jackson-databind.version}</version>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.uuid</groupId>
       <artifactId>java-uuid-generator</artifactId>
-      <version>3.1.4</version>
+      <version>${java-uuid-generator.version}</version>
     </dependency>
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
-      <version>2.5</version>
+      <version>${commons-io.version}</version>
     </dependency>
     <dependency>
       <groupId>com.github.davidmoten</groupId>
@@ -192,7 +195,7 @@ SOFTWARE.
     <dependency>
       <groupId>io.reactivex</groupId>
       <artifactId>rxjava-string</artifactId>
-      <version>1.1.1</version>
+      <version>${rxjava-string.version}</version>
     </dependency>
     <dependency>
       <groupId>io.reactivex</groupId>
@@ -221,6 +224,11 @@ SOFTWARE.
       <version>${netty.version}</version>
     </dependency>
     <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-handler-proxy</artifactId>
+      <version>${netty.version}</version>
+    </dependency>
+    <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
       <version>${slf4j.version}</version>
@@ -228,7 +236,7 @@ SOFTWARE.
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.5</version>
+      <version>${commons-lang3.version}</version>
     </dependency>
     <dependency>
       <groupId>org.testng</groupId>
@@ -263,7 +271,7 @@ SOFTWARE.
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>19.0</version>
+      <version>${guava.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

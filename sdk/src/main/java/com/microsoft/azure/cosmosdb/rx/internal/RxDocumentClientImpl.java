@@ -32,10 +32,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -70,6 +73,7 @@ import com.microsoft.azure.cosmosdb.MediaOptions;
 import com.microsoft.azure.cosmosdb.MediaReadMode;
 import com.microsoft.azure.cosmosdb.MediaResponse;
 import com.microsoft.azure.cosmosdb.Offer;
+import com.microsoft.azure.cosmosdb.PartitionKey;
 import com.microsoft.azure.cosmosdb.PartitionKeyDefinition;
 import com.microsoft.azure.cosmosdb.PartitionKeyRange;
 import com.microsoft.azure.cosmosdb.Permission;
@@ -83,18 +87,22 @@ import com.microsoft.azure.cosmosdb.Trigger;
 import com.microsoft.azure.cosmosdb.Undefined;
 import com.microsoft.azure.cosmosdb.User;
 import com.microsoft.azure.cosmosdb.UserDefinedFunction;
+import com.microsoft.azure.cosmosdb.internal.ResourceTokenAuthorizationHelper;
 import com.microsoft.azure.cosmosdb.internal.BaseAuthorizationTokenProvider;
-import com.microsoft.azure.cosmosdb.internal.EndpointManager;
+import com.microsoft.azure.cosmosdb.internal.Constants;
 import com.microsoft.azure.cosmosdb.internal.HttpConstants;
 import com.microsoft.azure.cosmosdb.internal.OperationType;
+import com.microsoft.azure.cosmosdb.internal.PathInfo;
 import com.microsoft.azure.cosmosdb.internal.PathParser;
 import com.microsoft.azure.cosmosdb.internal.Paths;
+import com.microsoft.azure.cosmosdb.internal.PathsHelper;
 import com.microsoft.azure.cosmosdb.internal.QueryCompatibilityMode;
 import com.microsoft.azure.cosmosdb.internal.ResourceType;
 import com.microsoft.azure.cosmosdb.internal.RuntimeConstants;
 import com.microsoft.azure.cosmosdb.internal.SessionContainer;
 import com.microsoft.azure.cosmosdb.internal.UserAgentContainer;
 import com.microsoft.azure.cosmosdb.internal.Utils;
+import com.microsoft.azure.cosmosdb.internal.routing.PartitionKeyAndResourceTokenPair;
 import com.microsoft.azure.cosmosdb.internal.routing.PartitionKeyInternal;
 import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
 import com.microsoft.azure.cosmosdb.rx.internal.caches.RxClientCollectionCache;
@@ -107,8 +115,11 @@ import com.microsoft.azure.cosmosdb.rx.internal.query.Paginator;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
+import io.netty.channel.ChannelPipeline;
+import io.netty.handler.proxy.HttpProxyHandler;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
+import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.ssl.SslProvider;
 import io.reactivex.netty.RxNetty;
 import io.reactivex.netty.channel.RxEventLoopProvider;
@@ -117,10 +128,13 @@ import io.reactivex.netty.client.RxClient;
 import io.reactivex.netty.pipeline.PipelineConfigurator;
 import io.reactivex.netty.pipeline.PipelineConfiguratorComposite;
 import io.reactivex.netty.pipeline.ssl.SSLEngineFactory;
+import io.reactivex.netty.pipeline.ssl.SslCompletionHandler;
 import io.reactivex.netty.protocol.http.HttpObjectAggregationConfigurator;
 import io.reactivex.netty.protocol.http.client.CompositeHttpClient;
 import io.reactivex.netty.protocol.http.client.CompositeHttpClientBuilder;
 import io.reactivex.netty.protocol.http.client.HttpClientPipelineConfigurator;
+import io.reactivex.netty.protocol.http.client.HttpClientRequest;
+import io.reactivex.netty.protocol.http.client.HttpClientResponse;
 import rx.Observable;
 import rx.Single;
 import rx.functions.Func1;
@@ -132,7 +146,7 @@ import rx.functions.Func2;
  */
 public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorizationTokenProvider {
     private final Logger logger = LoggerFactory.getLogger(RxDocumentClientImpl.class);
-    private final String masterKey;
+    private final String masterKeyOrResourceToken;
     private final URI serviceEndpoint;
     private final ConnectionPolicy connectionPolicy;
     private final SessionContainer sessionContainer;
@@ -141,7 +155,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final RxClientCollectionCache collectionCache;
     private final RxStoreModel gatewayProxy;
     private final RxPartitionKeyRangeCache partitionKeyRangeCache;
-    private Map<String, String> resourceTokens;
+    private Map<String, List<PartitionKeyAndResourceTokenPair>> resourceTokensMap;
+    private final boolean hasAuthKeyResourceToken;
     /**
      * Compatibility mode: Allows to specify compatibility mode used by client when
      * making query requests. Should be removed when application/sql is no longer
@@ -149,13 +164,59 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
      */
     private final QueryCompatibilityMode queryCompatibilityMode = QueryCompatibilityMode.Default;
     private final CompositeHttpClient<ByteBuf, ByteBuf> rxClient;
-    private final EndpointManager globalEndpointManager;
+    private final GlobalEndpointManager globalEndpointManager;
     private final RetryPolicy retryPolicy;
     private static final ObjectMapper mapper = Utils.getSimpleObjectMapper();
+    private Configs config = Configs.getInstance();
 
-    private Configs config = new Configs();
+    public RxDocumentClientImpl(URI serviceEndpoint,
+                                String masterKeyOrResourceToken,
+                                List<Permission> permissionFeed,
+                                ConnectionPolicy connectionPolicy,
+                                ConsistencyLevel consistencyLevel,
+                                int eventLoopSize) {
+        this(serviceEndpoint, masterKeyOrResourceToken, connectionPolicy, consistencyLevel, eventLoopSize);
+        if (permissionFeed != null && permissionFeed.size() > 0) {
+            this.resourceTokensMap = new HashMap<>();
+            for (Permission permission : permissionFeed) {
+                String[] segments = StringUtils.split(permission.getResourceLink(),
+                        Constants.Properties.PATH_SEPARATOR.charAt(0));
 
-    public RxDocumentClientImpl(URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy,
+                if (segments.length <= 0) {
+                    throw new IllegalArgumentException("resourceLink");
+                }
+
+                List<PartitionKeyAndResourceTokenPair> partitionKeyAndResourceTokenPairs = null;
+                PathInfo pathInfo = new PathInfo(false, StringUtils.EMPTY, StringUtils.EMPTY, false);
+                if (!PathsHelper.tryParsePathSegments(permission.getResourceLink(), pathInfo, null)) {
+                    throw new IllegalArgumentException(permission.getResourceLink());
+                }
+
+                String key;
+                if (permission.getResourceLink().charAt(
+                        permission.getResourceLink().length() - 1) == Constants.Properties.PATH_SEPARATOR.charAt(0)) {
+                    key = permission.getResourceLink().substring(0, permission.getResourceLink().length() - 1);
+                } else {
+                    key = permission.getResourceLink();
+                }
+                partitionKeyAndResourceTokenPairs = resourceTokensMap.get(key);
+                if (partitionKeyAndResourceTokenPairs == null) {
+                    partitionKeyAndResourceTokenPairs = new ArrayList<>();
+                    this.resourceTokensMap.put(key, partitionKeyAndResourceTokenPairs);
+                }
+
+                PartitionKey partitionKey = permission.getResourcePartitionKey();
+                partitionKeyAndResourceTokenPairs.add(new PartitionKeyAndResourceTokenPair(
+                        partitionKey != null ? partitionKey.getInternalPartitionKey(): PartitionKeyInternal.Empty,
+                        permission.getToken()));
+                logger.debug("Initializing resource token map  , with map key [{}] , partition key [{}] and resource token",
+                        key, partitionKey != null ? partitionKey.toString() : null, permission.getToken());
+
+            }
+        }
+    }
+
+    public RxDocumentClientImpl(URI serviceEndpoint, String masterKeyOrResourceToken, ConnectionPolicy connectionPolicy,
             ConsistencyLevel consistencyLevel, int eventLoopSize) {
 
         logger.info(
@@ -163,8 +224,19 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         + " serviceEndpoint [{}], ConnectionPolicy [{}], ConsistencyLevel [{}]",
                         serviceEndpoint, connectionPolicy, consistencyLevel);
 
-        this.masterKey = masterKey;
+        this.masterKeyOrResourceToken = masterKeyOrResourceToken;
         this.serviceEndpoint = serviceEndpoint;
+
+        if (masterKeyOrResourceToken != null && ResourceTokenAuthorizationHelper.isResourceToken(masterKeyOrResourceToken)) {
+            this.authorizationTokenProvider = null;
+            hasAuthKeyResourceToken = true;
+        } else if(masterKeyOrResourceToken != null && !ResourceTokenAuthorizationHelper.isResourceToken(masterKeyOrResourceToken)){
+            hasAuthKeyResourceToken = false;
+            this.authorizationTokenProvider = new BaseAuthorizationTokenProvider(this.masterKeyOrResourceToken);
+        } else {
+            hasAuthKeyResourceToken = false;
+            this.authorizationTokenProvider = null;
+        }
 
         if (connectionPolicy != null) {
             this.connectionPolicy = connectionPolicy;
@@ -199,14 +271,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             RxNetty.useEventLoopProvider(oldEventLoopProvider);
         }
 
-        this.authorizationTokenProvider = new BaseAuthorizationTokenProvider(this.masterKey);
-
-        this.globalEndpointManager = new GlobalEndpointManager(this);
+        this.globalEndpointManager = new GlobalEndpointManager(asDatabaseAccountManagerInternal(), this.connectionPolicy, config);
 
         this.retryPolicy = new RetryPolicy(this.globalEndpointManager, this.connectionPolicy);
 
         this.gatewayProxy = createRxGatewayProxy(this.connectionPolicy, consistencyLevel, this.queryCompatibilityMode,
-                this.masterKey, this.resourceTokens, userAgentContainer, this.globalEndpointManager, this.rxClient);
+                this.masterKeyOrResourceToken, this.resourceTokensMap, userAgentContainer, this.globalEndpointManager, this.rxClient);
 
         this.collectionCache = new RxClientCollectionCache(this.gatewayProxy, this, this.retryPolicy);
 
@@ -219,17 +289,38 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }   
     }
 
+    DatabaseAccountManagerInternal asDatabaseAccountManagerInternal() {
+        return new DatabaseAccountManagerInternal() {
+
+            @Override
+            public URI getServiceEndpoint() {
+                return RxDocumentClientImpl.this.getServiceEndpoint();
+            }
+
+            @Override
+            public rx.Observable<DatabaseAccount> getDatabaseAccountFromEndpoint(URI endpoint) {
+                logger.info("Getting database account endpoint from {}", endpoint);
+                return RxDocumentClientImpl.this.getDatabaseAccountFromEndpoint(endpoint);
+            }
+
+            @Override
+            public ConnectionPolicy getConnectionPolicy() {
+                return RxDocumentClientImpl.this.getConnectionPolicy();
+            }
+        };
+    }
+
     RxGatewayStoreModel createRxGatewayProxy(ConnectionPolicy connectionPolicy,
                                              ConsistencyLevel consistencyLevel,
                                              QueryCompatibilityMode queryCompatibilityMode,
-                                             String masterKey,
-                                             Map<String, String> resourceTokens,
+                                             String masterKeyOrResourceToken,
+                                             Map<String, List<PartitionKeyAndResourceTokenPair>> resourceTokensMap,
                                              UserAgentContainer userAgentContainer,
-                                             EndpointManager globalEndpointManager,
+                                             GlobalEndpointManager globalEndpointManager,
                                              CompositeHttpClient<ByteBuf, ByteBuf> rxClient) {
         return new RxGatewayStoreModel(connectionPolicy,
-                consistencyLevel, queryCompatibilityMode, masterKey,
-                resourceTokens, userAgentContainer, globalEndpointManager, rxClient);
+                consistencyLevel, queryCompatibilityMode, masterKeyOrResourceToken,
+                resourceTokensMap, userAgentContainer, globalEndpointManager, rxClient);
     }
 
     private CompositeHttpClientBuilder<ByteBuf, ByteBuf> httpClientBuilder() {
@@ -251,12 +342,38 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
         }
 
+        class SslPipelineConfiguratorUsedWithProxy<I, O> implements PipelineConfigurator<I, O> {
+
+            private final SSLEngineFactory sslEngineFactory;
+
+            private SslPipelineConfiguratorUsedWithProxy(SSLEngineFactory sslEngineFactory) {
+                this.sslEngineFactory = sslEngineFactory;
+            }
+
+            @Override
+            public void configureNewPipeline(ChannelPipeline pipeline) {
+                final SslHandler sslHandler = new SslHandler(sslEngineFactory.createSSLEngine(pipeline.channel().alloc()));
+                if(connectionPolicy.getProxy() != null) {
+                    pipeline.addAfter(Constants.Properties.HTTP_PROXY_HANDLER_NAME,Constants.Properties.SSL_HANDLER_NAME, sslHandler);
+                } else {
+                    pipeline.addFirst(Constants.Properties.SSL_HANDLER_NAME, sslHandler);
+                }
+                pipeline.addAfter(Constants.Properties.SSL_HANDLER_NAME, Constants.Properties.SSL_COMPLETION_HANDLER_NAME,
+                                  new SslCompletionHandler(sslHandler.handshakeFuture()));
+            }
+        }
+
+        DefaultSSLEngineFactory defaultSSLEngineFactory = new DefaultSSLEngineFactory();
         CompositeHttpClientBuilder<ByteBuf, ByteBuf> builder = new CompositeHttpClientBuilder<ByteBuf, ByteBuf>()
-                .withSslEngineFactory(new DefaultSSLEngineFactory())
                 .withMaxConnections(connectionPolicy.getMaxPoolSize())
                 .withIdleConnectionsTimeoutMillis(this.connectionPolicy.getIdleConnectionTimeoutInMillis())
-                .pipelineConfigurator(createClientPipelineConfigurator());
-
+                .pipelineConfigurator(pipeline -> {
+                    if(connectionPolicy.getProxy() != null) {
+                        pipeline.addFirst(Constants.Properties.HTTP_PROXY_HANDLER_NAME, new HttpProxyHandler(connectionPolicy.getProxy()));
+                    }
+                })
+                .appendPipelineConfigurator(new SslPipelineConfiguratorUsedWithProxy<HttpClientResponse<ByteBuf>,HttpClientRequest<ByteBuf>>(defaultSSLEngineFactory))
+                .appendPipelineConfigurator(createClientPipelineConfigurator());
 
         RxClient.ClientConfig config = new RxClient.ClientConfig.Builder()
                 .readTimeout(connectionPolicy.getRequestTimeoutInMillis(), TimeUnit.MILLISECONDS).build();
@@ -281,12 +398,24 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public URI getWriteEndpoint() {
-        return this.globalEndpointManager.getWriteEndpoint();
+        return globalEndpointManager.getWriteEndpoints().stream().findFirst().map(loc -> {
+            try {
+                return loc.toURI();
+            } catch (URISyntaxException e) {
+                throw new IllegalStateException(e);
+            }
+        }).orElse(null);
     }
 
     @Override
     public URI getReadEndpoint() {
-        return this.globalEndpointManager.getReadEndpoint();
+        return globalEndpointManager.getReadEndpoints().stream().findFirst().map(loc -> {
+            try {
+                return loc.toURI();
+            } catch (URISyntaxException e) {
+                throw new IllegalStateException(e);
+            }
+        }).orElse(null);
     }
 
     @Override
@@ -852,16 +981,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private void populateHeaders(RxDocumentServiceRequest request, String httpMethod) {
-        if (this.masterKey != null) {     
+        if (this.masterKeyOrResourceToken != null) {
             request.getHeaders().put(HttpConstants.HttpHeaders.X_DATE, Utils.nowAsRFC1123());
         }
 
-        if (this.masterKey != null || this.resourceTokens != null) {
+        if (this.masterKeyOrResourceToken != null || this.resourceTokensMap != null) {
             String resourceName = request.getResourceFullName();
 
             String authorization = this.getUserAuthorizationToken(
                     resourceName, request.getResourceType(), httpMethod,
-                    request.getHeaders(), AuthorizationTokenType.PrimaryMasterKey);
+                    request.getHeaders(), AuthorizationTokenType.PrimaryMasterKey, request.getPath());
             try {
                 authorization = URLEncoder.encode(authorization, "UTF-8");
             } catch (UnsupportedEncodingException e) {
@@ -881,15 +1010,21 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public String getUserAuthorizationToken(String resourceAddress, ResourceType resourceType, String requestVerb,
-            Map<String, String> headers, AuthorizationTokenType tokenType) {
-        if (masterKey != null) {
-            return this.authorizationTokenProvider.generateKeyAuthorizationSignature(requestVerb, resourceAddress,
+    public String getUserAuthorizationToken(String resourceName,
+                                            ResourceType resourceType,
+                                            String requestVerb,
+                                            Map<String, String> headers,
+                                            AuthorizationTokenType tokenType,
+                                            String resourcePath) {
+        if (masterKeyOrResourceToken != null && !hasAuthKeyResourceToken) {
+            return this.authorizationTokenProvider.generateKeyAuthorizationSignature(requestVerb, resourceName,
                     resourceType, headers);
+        } else if (masterKeyOrResourceToken != null && hasAuthKeyResourceToken && resourceTokensMap == null) {
+            return masterKeyOrResourceToken;
         } else {
-            assert resourceTokens != null;
-            return this.authorizationTokenProvider.getAuthorizationTokenUsingResourceTokens(resourceTokens, resourceAddress,
-                    resourceAddress);
+            assert resourceTokensMap != null;
+            return ResourceTokenAuthorizationHelper.getAuthorizationTokenUsingResourceTokens(resourceTokensMap,
+                    resourcePath, requestVerb, resourceName, headers);
         }
     }
 
