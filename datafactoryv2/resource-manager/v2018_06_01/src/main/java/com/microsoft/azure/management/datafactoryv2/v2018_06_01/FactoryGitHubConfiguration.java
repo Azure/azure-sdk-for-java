@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * Factory's GitHub repo information.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("FactoryGithubConfiguration")
+@JsonTypeName("FactoryGitHubConfiguration")
 public class FactoryGitHubConfiguration extends FactoryRepoConfiguration {
     /**
      * GitHub Enterprise host name. For example: https://github.mydomain.com.

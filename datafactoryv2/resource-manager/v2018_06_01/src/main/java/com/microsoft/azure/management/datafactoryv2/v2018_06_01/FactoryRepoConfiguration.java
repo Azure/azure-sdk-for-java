@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 @JsonTypeName("FactoryRepoConfiguration")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "FactoryVSTSConfiguration", value = FactoryVSTSConfiguration.class),
-    @JsonSubTypes.Type(name = "FactoryGithubConfiguration", value = FactoryGitHubConfiguration.class)
+    @JsonSubTypes.Type(name = "FactoryGitHubConfiguration", value = FactoryGitHubConfiguration.class)
 })
 public class FactoryRepoConfiguration {
     /**
