@@ -68,13 +68,13 @@ public class AzureDatabricksLinkedService extends LinkedServiceInner {
     private Object newClusterNodeType;
 
     /**
-     * a set of optional, user-specified Spark configuration key-value pairs.
+     * A set of optional, user-specified Spark configuration key-value pairs.
      */
     @JsonProperty(value = "typeProperties.newClusterSparkConf")
     private Map<String, Object> newClusterSparkConf;
 
     /**
-     * a set of optional, user-specified Spark environment variables key-value
+     * A set of optional, user-specified Spark environment variables key-value
      * pairs.
      */
     @JsonProperty(value = "typeProperties.newClusterSparkEnvVars")
