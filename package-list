@@ -5,15 +5,6 @@ com.microsoft.azure.batch.interceptor
 com.microsoft.azure.batch.protocol
 com.microsoft.azure.batch.protocol.models
 com.microsoft.azure.credentials
-com.microsoft.azure.documentdb
-com.microsoft.azure.documentdb.internal
-com.microsoft.azure.documentdb.internal.directconnectivity
-com.microsoft.azure.documentdb.internal.query
-com.microsoft.azure.documentdb.internal.query.aggregation
-com.microsoft.azure.documentdb.internal.query.executioncomponent
-com.microsoft.azure.documentdb.internal.query.funcs
-com.microsoft.azure.documentdb.internal.query.orderbyquery
-com.microsoft.azure.documentdb.internal.routing
 com.microsoft.azure.management
 com.microsoft.azure.management.appservice
 com.microsoft.azure.management.batch
