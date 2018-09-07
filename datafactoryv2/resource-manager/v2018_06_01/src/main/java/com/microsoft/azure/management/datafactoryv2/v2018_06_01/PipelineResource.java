@@ -80,6 +80,11 @@ public interface PipelineResource extends HasInner<PipelineResourceInner>, Index
     String type();
 
     /**
+     * @return the variables value.
+     */
+    Map<String, VariableSpecification> variables();
+
+    /**
      * The entirety of the PipelineResource definition.
      */
     interface Definition extends DefinitionStages.Blank, DefinitionStages.WithFactory, DefinitionStages.WithCreate {
@@ -176,17 +181,27 @@ public interface PipelineResource extends HasInner<PipelineResourceInner>, Index
         }
 
         /**
+         * The stage of the pipelineresource definition allowing to specify Variables.
+         */
+        interface WithVariables {
+            /**
+             * Specifies variables.
+             */
+            WithCreate withVariables(Map<String, VariableSpecification> variables);
+        }
+
+        /**
          * The stage of the definition which contains all the minimum required inputs for
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<PipelineResource>, DefinitionStages.WithActivities, DefinitionStages.WithAdditionalProperties, DefinitionStages.WithAnnotations, DefinitionStages.WithConcurrency, DefinitionStages.WithDescription, DefinitionStages.WithFolder, DefinitionStages.WithParameters {
+        interface WithCreate extends Creatable<PipelineResource>, DefinitionStages.WithActivities, DefinitionStages.WithAdditionalProperties, DefinitionStages.WithAnnotations, DefinitionStages.WithConcurrency, DefinitionStages.WithDescription, DefinitionStages.WithFolder, DefinitionStages.WithParameters, DefinitionStages.WithVariables {
         }
     }
     /**
      * The template for a PipelineResource update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<PipelineResource>, UpdateStages.WithActivities, UpdateStages.WithAdditionalProperties, UpdateStages.WithAnnotations, UpdateStages.WithConcurrency, UpdateStages.WithDescription, UpdateStages.WithFolder, UpdateStages.WithParameters {
+    interface Update extends Appliable<PipelineResource>, UpdateStages.WithActivities, UpdateStages.WithAdditionalProperties, UpdateStages.WithAnnotations, UpdateStages.WithConcurrency, UpdateStages.WithDescription, UpdateStages.WithFolder, UpdateStages.WithParameters, UpdateStages.WithVariables {
     }
 
     /**
@@ -261,6 +276,16 @@ public interface PipelineResource extends HasInner<PipelineResourceInner>, Index
              * Specifies parameters.
              */
             Update withParameters(Map<String, ParameterSpecification> parameters);
+        }
+
+        /**
+         * The stage of the pipelineresource update allowing to specify Variables.
+         */
+        interface WithVariables {
+            /**
+             * Specifies variables.
+             */
+            Update withVariables(Map<String, VariableSpecification> variables);
         }
 
     }

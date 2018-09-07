@@ -65,7 +65,7 @@ public class PipelineRunsInner {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datafactoryv2.v2018_06_01.PipelineRuns cancel" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/pipelineruns/{runId}/cancel")
-        Observable<Response<ResponseBody>> cancel(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("factoryName") String factoryName, @Path("runId") String runId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> cancel(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("factoryName") String factoryName, @Path("runId") String runId, @Query("isRecursive") Boolean isRecursive, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -327,7 +327,97 @@ public class PipelineRunsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.cancel(this.client.subscriptionId(), resourceGroupName, factoryName, runId, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final Boolean isRecursive = null;
+        return service.cancel(this.client.subscriptionId(), resourceGroupName, factoryName, runId, isRecursive, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = cancelDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Cancel a pipeline run by its run ID.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param runId The pipeline run identifier.
+     * @param isRecursive If true, cancel all the Child pipelines that are triggered by the current pipeline.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void cancel(String resourceGroupName, String factoryName, String runId, Boolean isRecursive) {
+        cancelWithServiceResponseAsync(resourceGroupName, factoryName, runId, isRecursive).toBlocking().single().body();
+    }
+
+    /**
+     * Cancel a pipeline run by its run ID.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param runId The pipeline run identifier.
+     * @param isRecursive If true, cancel all the Child pipelines that are triggered by the current pipeline.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> cancelAsync(String resourceGroupName, String factoryName, String runId, Boolean isRecursive, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(cancelWithServiceResponseAsync(resourceGroupName, factoryName, runId, isRecursive), serviceCallback);
+    }
+
+    /**
+     * Cancel a pipeline run by its run ID.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param runId The pipeline run identifier.
+     * @param isRecursive If true, cancel all the Child pipelines that are triggered by the current pipeline.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> cancelAsync(String resourceGroupName, String factoryName, String runId, Boolean isRecursive) {
+        return cancelWithServiceResponseAsync(resourceGroupName, factoryName, runId, isRecursive).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Cancel a pipeline run by its run ID.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param runId The pipeline run identifier.
+     * @param isRecursive If true, cancel all the Child pipelines that are triggered by the current pipeline.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> cancelWithServiceResponseAsync(String resourceGroupName, String factoryName, String runId, Boolean isRecursive) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (factoryName == null) {
+            throw new IllegalArgumentException("Parameter factoryName is required and cannot be null.");
+        }
+        if (runId == null) {
+            throw new IllegalArgumentException("Parameter runId is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.cancel(this.client.subscriptionId(), resourceGroupName, factoryName, runId, isRecursive, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
