@@ -21,6 +21,11 @@ package com.microsoft.azure.storage.blob;
  */
 public final class ReliableDownloadOptions {
 
+    /*
+    We use "retry" here because by the time the user passes this type, the initial request, or try, has already been
+    issued and returned. This is in contrast to the retry policy options, which includes the initial try in its count,
+    thus the difference in verbiage.
+     */
     private int maxRetryRequests = 0;
 
     /**
