@@ -34,16 +34,18 @@ public class MetricCriteria {
     private String metricNamespace;
 
     /**
-     * the criteria operator.
+     * the criteria operator. Possible values include: 'Equals', 'NotEquals',
+     * 'GreaterThan', 'GreaterThanOrEqual', 'LessThan', 'LessThanOrEqual'.
      */
     @JsonProperty(value = "operator", required = true)
-    private Object operator;
+    private MetricAlertRuleCondition operator;
 
     /**
-     * the criteria time aggregation types.
+     * the criteria time aggregation types. Possible values include: 'Average',
+     * 'Minimum', 'Maximum', 'Total'.
      */
     @JsonProperty(value = "timeAggregation", required = true)
-    private Object timeAggregation;
+    private MetricAlertRuleTimeAggregation timeAggregation;
 
     /**
      * the criteria threshold value that activates the alert.
@@ -118,41 +120,41 @@ public class MetricCriteria {
     }
 
     /**
-     * Get the criteria operator.
+     * Get the criteria operator. Possible values include: 'Equals', 'NotEquals', 'GreaterThan', 'GreaterThanOrEqual', 'LessThan', 'LessThanOrEqual'.
      *
      * @return the operator value
      */
-    public Object operator() {
+    public MetricAlertRuleCondition operator() {
         return this.operator;
     }
 
     /**
-     * Set the criteria operator.
+     * Set the criteria operator. Possible values include: 'Equals', 'NotEquals', 'GreaterThan', 'GreaterThanOrEqual', 'LessThan', 'LessThanOrEqual'.
      *
      * @param operator the operator value to set
      * @return the MetricCriteria object itself.
      */
-    public MetricCriteria withOperator(Object operator) {
+    public MetricCriteria withOperator(MetricAlertRuleCondition operator) {
         this.operator = operator;
         return this;
     }
 
     /**
-     * Get the criteria time aggregation types.
+     * Get the criteria time aggregation types. Possible values include: 'Average', 'Minimum', 'Maximum', 'Total'.
      *
      * @return the timeAggregation value
      */
-    public Object timeAggregation() {
+    public MetricAlertRuleTimeAggregation timeAggregation() {
         return this.timeAggregation;
     }
 
     /**
-     * Set the criteria time aggregation types.
+     * Set the criteria time aggregation types. Possible values include: 'Average', 'Minimum', 'Maximum', 'Total'.
      *
      * @param timeAggregation the timeAggregation value to set
      * @return the MetricCriteria object itself.
      */
-    public MetricCriteria withTimeAggregation(Object timeAggregation) {
+    public MetricCriteria withTimeAggregation(MetricAlertRuleTimeAggregation timeAggregation) {
         this.timeAggregation = timeAggregation;
         return this;
     }
