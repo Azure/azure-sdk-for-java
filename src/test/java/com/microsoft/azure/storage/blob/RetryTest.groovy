@@ -60,7 +60,7 @@ class RetryTest extends APISpec {
 
         then:
         response.statusCode() == 503
-        retryTestFactory.tryNumber == retryTestOptions.maxTries
+        retryTestFactory.tryNumber == retryTestOptions.maxTries()
     }
 
     def "Retries non retryable"() {
@@ -109,7 +109,7 @@ class RetryTest extends APISpec {
 
         then:
         response.statusCode() == 200
-        retryTestFactory.tryNumber == 5
+        retryTestFactory.tryNumber == 3
     }
 
     def "Retries try timeout"() {

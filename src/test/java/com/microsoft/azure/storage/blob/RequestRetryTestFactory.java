@@ -29,6 +29,7 @@ import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.SingleObserver;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
@@ -235,14 +236,10 @@ public class RequestRetryTestFactory implements RequestPolicyFactory {
                 case RETRY_TEST_SCENARIO_NETWORK_ERROR:
                     switch (this.factory.tryNumber) {
                         case 1:
-                            return Single.error(new ChannelException());
+                            // fall through
                         case 2:
-                            return Single.error(new ClosedChannelException());
+                            return Single.error(new IOException());
                         case 3:
-                            return Single.error(new SocketException());
-                        case 4:
-                            return Single.error(new SocketTimeoutException());
-                        case 5:
                             return RETRY_TEST_OK_RESPONSE;
                         default:
                             throw new IllegalArgumentException("Continued retrying after success.");

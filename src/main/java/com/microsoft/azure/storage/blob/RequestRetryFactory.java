@@ -22,6 +22,7 @@ import io.netty.channel.ChannelException;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
@@ -189,17 +190,12 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
                     .onErrorResumeNext(throwable -> {
                         String action;
                         /*
-                        ChannelException: A RuntimeException which is thrown when an I/O operation fails.
-                        ClosedChannelException: Thrown when an attempt is made to invoke or complete an I/O operation
-                        upon channel that is closed.
-                        SocketException: Thrown to indicate that there is an error creating or accessing a Socket.
-                        SocketTimeoutException: Signals that a timeout has occurred on a socket read or accept.
+                        IOException is a catch-all for IO related errors. Technically it includes many types which may
+                        not be network exceptions, but we should not hit those unless there is a bug in our logic. In
+                        either case, it is better to optimistically retry instead of failing too soon.
                         A Timeout Exception is a client-side timeout coming from Rx.
                          */
-                        if (throwable instanceof ChannelException ||
-                                throwable instanceof ClosedChannelException ||
-                                throwable instanceof SocketException ||
-                                throwable instanceof SocketTimeoutException) {
+                        if (throwable instanceof IOException) {
                             action = "Retry: Network error";
                         } else if (throwable instanceof TimeoutException) {
                             action = "Retry: Client timeout";
