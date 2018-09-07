@@ -45,7 +45,7 @@ public class LogFileInner extends ProxyResource {
     /**
      * The url to download the log file from.
      */
-    @JsonProperty(value = "properties.url")
+    @JsonProperty(value = "properties.url", access = JsonProperty.Access.WRITE_ONLY)
     private String url;
 
     /**
@@ -113,17 +113,6 @@ public class LogFileInner extends ProxyResource {
      */
     public String url() {
         return this.url;
-    }
-
-    /**
-     * Set the url to download the log file from.
-     *
-     * @param url the url value to set
-     * @return the LogFileInner object itself.
-     */
-    public LogFileInner withUrl(String url) {
-        this.url = url;
-        return this;
     }
 
 }
