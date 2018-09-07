@@ -100,8 +100,8 @@ public final class DownloadResponse {
                 return getter.apply(this.info)
                         .flatMapPublisher(response ->{
                             // Do not compound the number of retries; just get the raw body.
-                            ReliableDownloadOptions newOptions = new ReliableDownloadOptions();
-                            newOptions.withMaxRetryRequests(0);
+                            ReliableDownloadOptions newOptions = new ReliableDownloadOptions()
+                                    .withMaxRetryRequests(0);
 
                             return response.body(newOptions)
                                     .doOnNext(buffer -> {

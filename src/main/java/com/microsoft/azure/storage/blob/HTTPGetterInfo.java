@@ -19,7 +19,7 @@ package com.microsoft.azure.storage.blob;
  * HTTPGetterInfo is a passed to the getter function of a reliable download to specify parameters needed for the GET
  * request.
  */
-class HTTPGetterInfo {
+public final class HTTPGetterInfo {
     private long offset = 0;
 
     private Long count = null;
@@ -75,7 +75,7 @@ class HTTPGetterInfo {
      * Etag is returned with any operation that modifies the resource and by a call to {@link
      * BlobURL#getProperties(BlobAccessConditions)}. Defaults to null.
      */
-    public HTTPGetterInfo witheTag(ETag eTag) {
+    public HTTPGetterInfo withETag(ETag eTag) {
         this.eTag = eTag;
         return this;
     }

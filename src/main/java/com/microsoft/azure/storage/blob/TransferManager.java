@@ -38,7 +38,7 @@ import static java.lang.StrictMath.toIntExact;
  * operations. Further, we will make our own assumptions and optimizations for common cases that may not be ideal for
  * rarer cases.
  */
-public class TransferManager {
+public final class TransferManager {
 
     /**
      * The default size of a download chunk for download large blobs.

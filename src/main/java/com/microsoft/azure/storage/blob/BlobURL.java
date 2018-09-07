@@ -216,7 +216,7 @@ public class BlobURL extends StorageURL {
         HTTPGetterInfo info = new HTTPGetterInfo()
                 .withCount(range.offset())
                 .withCount(range.count())
-                .witheTag(accessConditions.httpAccessConditions().getIfMatch());
+                .withETag(accessConditions.httpAccessConditions().getIfMatch());
 
         return addErrorWrappingToSingle(this.storageClient.generatedBlobs().downloadWithRestResponseAsync(
                 null, null, range.toString(),
@@ -230,7 +230,7 @@ public class BlobURL extends StorageURL {
                 // Convert the autorest response to a DownloadResponse, which enable reliable download.
                 .map(response -> {
                     // If there wasn't an etag originally specified, lock on the one returned.
-                    info.witheTag(new ETag(response.headers().eTag()));
+                    info.withETag(new ETag(response.headers().eTag()));
                     return new DownloadResponse(response, info,
                             // In the event of a stream failure, make a new request to pick up where we left off.
                             newInfo ->

@@ -16,15 +16,9 @@ package com.microsoft.azure.storage
 
 import com.microsoft.azure.storage.blob.*
 import com.microsoft.azure.storage.blob.models.StorageErrorException
-import com.microsoft.rest.v2.RestResponse
 import com.microsoft.rest.v2.util.FlowableUtil
 import io.reactivex.Flowable
-import io.reactivex.Single
-import io.reactivex.annotations.NonNull
 import spock.lang.Unroll
-
-import java.nio.ByteBuffer
-import java.util.function.Function
 
 class RetryReaderTest extends APISpec {
     BlockBlobURL bu
@@ -39,48 +33,27 @@ class RetryReaderTest extends APISpec {
     This shouldn't really be different from anything else we're doing in the other tests. Just a sanity check against
     a real use case.
      */
-
     def "Network call"() {
-        setup:
-        def info = new RetryReader.HTTPGetterInfo()
-        info.offset = 0
-        info.count = defaultData.remaining()
-
-        def options = new RetryReaderOptions()
-        options.maxRetryRequests = 5
-
         expect:
-        FlowableUtil.collectBytesInBuffer(new RetryReader(bu.download(null, null, false), info, options, new Function<RetryReader.HTTPGetterInfo, Single<? extends RestResponse<?, Flowable<ByteBuffer>>>>() {
-            @Override
-            Single<? extends RestResponse<?, Flowable<ByteBuffer>>> apply(RetryReader.HTTPGetterInfo httpGetterInfo) {
-                bu.download(new BlobRange().withOffset(httpGetterInfo.offset).withCount(httpGetterInfo.count), null,
-                        false)
-            }
-        })).blockingGet() == defaultData
-
-        // Go DownloadResponse, Download, DownloadResponse.body
-
-        // Test with the different kinds of errors that are retryable: Timeout, IOException, 500, 503--assert that the data at the end is still the same - Use the RetryTestFactory (or similar)
-        // Another policy which returns a custom flowable that injects an error after a certain amount of data.
-        // Different values of options. Valid and invalid. See Adam's comment on CR about count and offset.
-        // Null options and info parameters and null internal fields (null count)
+        FlowableUtil.collectBytesInBuffer(bu.download(null, null, false).blockingGet().body(null))
+                .blockingGet() == defaultData
     }
 
     @Unroll
     def "Successful"() {
         setup:
-        RetryReaderMockFlowable flowable = new RetryReaderMockFlowable(scenario)
-        def info = new RetryReader.HTTPGetterInfo()
-        info.offset = 0
-        info.count = flowable.getScenarioData().remaining()
+        def flowable = new DownloadResponseMockFlowable(scenario)
+        def info = new HTTPGetterInfo()
+                .withOffset(0)
+                .withCount(flowable.getScenarioData().remaining())
 
-        def options = new RetryReaderOptions()
-        options.maxRetryRequests = 5
+        def options = new ReliableDownloadOptions()
+        .withMaxRetryRequests(5)
 
         def mockRawResponse = flowable.getter(info).blockingGet().rawResponse()
 
         when:
-        DownloadResponse response = new DownloadResponse(mockRawResponse, info, { RetryReader.HTTPGetterInfo newInfo ->
+        DownloadResponse response = new DownloadResponse(mockRawResponse, info, { HTTPGetterInfo newInfo ->
             flowable.getter(newInfo)
         })
 
@@ -91,23 +64,23 @@ class RetryReaderTest extends APISpec {
 
         where:
         scenario                                                            | tryNumber | provideInitialResponse
-        RetryReaderMockFlowable.RR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK       | 1         | false
-        RetryReaderMockFlowable.RR_TEST_SCENARIO_SUCCESSFUL_MULTI_CHUNK     | 1         | false
-        RetryReaderMockFlowable.RR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES | 4         | false
+        DownloadResponseMockFlowable.RR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK       | 1         | false
+        DownloadResponseMockFlowable.RR_TEST_SCENARIO_SUCCESSFUL_MULTI_CHUNK     | 1         | false
+        DownloadResponseMockFlowable.RR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES | 4         | false
     }
 
     @Unroll
     def "Failure"() {
         setup:
-        def flowable = new RetryReaderMockFlowable(scenario)
+        def flowable = new DownloadResponseMockFlowable(scenario)
 
-        def options = new RetryReaderOptions()
-        options.maxRetryRequests = 5
+        def options = new ReliableDownloadOptions()
+        .withMaxRetryRequests(5)
 
         def mockRawResponse = flowable.getter(null).blockingGet().rawResponse()
 
         when:
-        DownloadResponse response = new DownloadResponse(mockRawResponse, null, { RetryReader.HTTPGetterInfo newInfo ->
+        DownloadResponse response = new DownloadResponse(mockRawResponse, null, { HTTPGetterInfo newInfo ->
             flowable.getter(newInfo)
         })
         response.body(options).blockingSubscribe()
@@ -126,48 +99,43 @@ class RetryReaderTest extends APISpec {
          */
         where:
         scenario                                                      | exceptionType         | tryNumber
-        RetryReaderMockFlowable.RR_TEST_SCENARIO_MAX_RETRIES_EXCEEDED | IOException           | 7
-        RetryReaderMockFlowable.RR_TEST_SCENARIO_NON_RETRYABLE_ERROR  | Exception             | 1
-        RetryReaderMockFlowable.RR_TEST_SCENARIO_ERROR_GETTER_MIDDLE  | StorageErrorException | 2
+        DownloadResponseMockFlowable.RR_TEST_SCENARIO_MAX_RETRIES_EXCEEDED | IOException           | 7
+        DownloadResponseMockFlowable.RR_TEST_SCENARIO_NON_RETRYABLE_ERROR  | Exception             | 1
+        DownloadResponseMockFlowable.RR_TEST_SCENARIO_ERROR_GETTER_MIDDLE  | StorageErrorException | 2
     }
 
     @Unroll
-    def "Nulls"() {
+    def "Info null IA"() {
         setup:
-        def flowable = new RetryReaderMockFlowable(RetryReaderMockFlowable.RR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK)
+        def flowable = new DownloadResponseMockFlowable(
+                DownloadResponseMockFlowable.RR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK)
 
         when:
-        def response = new DownloadResponse(flowable.getter(info), info, )
-
-        RetryReader reader = new RetryReader(null, null, options,
-                new Function<RetryReader.HTTPGetterInfo, Single<? extends RestResponse<?, Flowable<ByteBuffer>>>>() {
-                    @Override
-                    Single<? extends RestResponse<?, Flowable<ByteBuffer>>> apply(RetryReader.HTTPGetterInfo i) {
-                        flowable.getter(i)
-                    }
+        new DownloadResponse(flowable.getter(info).blockingGet().rawResponse(), info,
+                { HTTPGetterInfo newInfo ->
+                    flowable.getter(newInfo)
                 })
-        reader.blockingSubscribe()
+
 
         then:
-        FlowableUtil.collectBytesInBuffer(reader).blockingGet() == flowable.getScenarioData()
-        flowable.getTryNumber() == tryNumber
+        thrown(IllegalArgumentException)
 
         where:
-        info                             | options                  | tryNumber
-        null                             | new RetryReaderOptions() | 1
-        new RetryReader.HTTPGetterInfo() | null                     | 1
+        info                                | _
+        null                                | _
+        new HTTPGetterInfo().withETag(null) | _
     }
 
     def "Options IA"() {
         setup:
-        def flowable = new RetryReaderMockFlowable(RetryReaderMockFlowable.RR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK)
+        def flowable = new DownloadResponseMockFlowable(DownloadResponseMockFlowable.RR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK)
 
-        def options = new RetryReaderOptions()
-        options.maxRetryRequests = -1
+        def options = new ReliableDownloadOptions()
+        .withMaxRetryRequests(-1)
 
         when:
-        def response = new DownloadResponse(flowable.getter(new RetryReader.HTTPGetterInfo()).blockingGet()
-                .rawResponse(), new RetryReader.HTTPGetterInfo(), { RetryReader.HTTPGetterInfo info ->
+        def response = new DownloadResponse(flowable.getter(new HTTPGetterInfo()).blockingGet()
+                .rawResponse(), new HTTPGetterInfo(), { HTTPGetterInfo info ->
             flowable.getter(info)
         })
 
@@ -179,11 +147,11 @@ class RetryReaderTest extends APISpec {
 
     def "Getter IA"() {
         setup:
-        def flowable = new RetryReaderMockFlowable(RetryReaderMockFlowable.RR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK)
+        def flowable = new DownloadResponseMockFlowable(DownloadResponseMockFlowable.RR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK)
 
         when:
-        def response = new DownloadResponse(flowable.getter(new RetryReader.HTTPGetterInfo()).blockingGet()
-                .rawResponse(), new RetryReader.HTTPGetterInfo(), null)
+        def response = new DownloadResponse(flowable.getter(new HTTPGetterInfo()).blockingGet()
+                .rawResponse(), new HTTPGetterInfo(), null)
         response.body(null).blockingSubscribe()
 
         then:
@@ -192,17 +160,17 @@ class RetryReaderTest extends APISpec {
 
     def "Info"() {
         setup:
-        def flowable = new RetryReaderMockFlowable(RetryReaderMockFlowable.RR_TEST_SCENARIO_INFO_TEST)
-        def info = new RetryReader.HTTPGetterInfo()
-        info.offset = 20
-        info.count = 10
-        info.eTag = new ETag("etag")
-        def options = new RetryReaderOptions()
+        def flowable = new DownloadResponseMockFlowable(DownloadResponseMockFlowable.RR_TEST_SCENARIO_INFO_TEST)
+        def info = new HTTPGetterInfo()
+        .withOffset(20)
+        .withCount(10)
+        .withETag(new ETag("etag"))
+        def options = new ReliableDownloadOptions()
         options.withMaxRetryRequests(5)
 
         when:
         def response = new DownloadResponse(flowable.getter(info).blockingGet().rawResponse(), info,
-                { RetryReader.HTTPGetterInfo newInfo ->
+                { HTTPGetterInfo newInfo ->
                     return flowable.getter(newInfo)
                 })
         response.body(options).blockingSubscribe()
@@ -213,7 +181,7 @@ class RetryReaderTest extends APISpec {
 
     def "Info IA"() {
         when:
-        def info = new RetryReader.HTTPGetterInfo().withCount(-1)
+        def info = new HTTPGetterInfo().withCount(-1)
 
         then:
         thrown(IllegalArgumentException)
