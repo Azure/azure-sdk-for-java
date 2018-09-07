@@ -11,6 +11,6 @@ sudo: false
 env:
 - TERM=dumb # Makes Gradle use plain console output
 script:
-- mvn clean install
-- mvn checkstyle:check
+- mvn clean install -B -Dstyle.color=always
+- mvn checkstyle:check -B -Dstyle.color=always
 - cd ./azure-android-client-authentication && ./gradlew check

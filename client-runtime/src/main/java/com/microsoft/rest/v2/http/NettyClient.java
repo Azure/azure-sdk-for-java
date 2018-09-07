@@ -301,19 +301,6 @@ public final class NettyClient extends HttpClient {
 
             private final HttpClientInboundHandler inboundHandler;
 
-            /**
-             * Ensures that requests are only made of upstream once the last write has completed
-             * and the channel can be written to synchronously (when isWritable is false writes
-             * are buffered).
-             */
-            private final AtomicInteger writing = new AtomicInteger();
-
-            //states for `writing`
-            private static final int WRITE_COMPLETED_WRITABLE = 0;
-            private static final int WRITING_WRITABLE = 1;
-            private static final int WRITE_COMPLETED_NOT_WRITABLE = 2;
-            private static final int WRITING_NOT_WRITABLE = 3;
-
             RequestSubscriber(HttpClientInboundHandler inboundHandler) {
                 this.inboundHandler = inboundHandler;
             }
@@ -332,22 +319,20 @@ public final class NettyClient extends HttpClient {
                 }
 
                 try {
-                    writing();
                     // Always dispatching writes on the event loop prevents data corruption on macOS.
                     // Since channel.write always dispatches to the event loop itself if needed internally,
                     // it seems fine to do it here.
                     channel.eventLoop().execute(() -> {
                         try {
-                            channel
-                                    .write(Unpooled.wrappedBuffer(buf))
-                                    .addListener(this);
+                            channel.write(Unpooled.wrappedBuffer(buf)).addListener(this);
+                            if (channel.isWritable()) {
+                                subscription.request(1);
+                            } else {
+                                channel.flush();
+                            }
                         } catch (Exception e) {
                             subscription.cancel();
                             onError(e);
-                        }
-                        writeComplete();
-                        if (writing.get() == WRITE_COMPLETED_NOT_WRITABLE) {
-                            channel.flush();
                         }
                     });
                 } catch (Exception e) {
@@ -389,70 +374,9 @@ public final class NettyClient extends HttpClient {
                 }
             }
 
-            private void writing() {
-                while (true) {
-                    int s = writing.get();
-                    if (s == WRITE_COMPLETED_NOT_WRITABLE) {
-                        if (writing.compareAndSet(s, WRITING_NOT_WRITABLE)) {
-                            break;
-                        }
-                    } else if (s == WRITE_COMPLETED_WRITABLE) {
-                        if (writing.compareAndSet(s, WRITING_WRITABLE)) {
-                            break;
-                        }
-                    } else {
-                        throw new RuntimeException("unexpected!");
-                    }
-                }
-            }
-
-            private void writeComplete() {
-                while (true) {
-                    int s = writing.get();
-                    if (s == WRITING_NOT_WRITABLE) {
-                        if (writing.compareAndSet(s, WRITE_COMPLETED_NOT_WRITABLE)) {
-                            break;
-                        }
-                    } else if (s == WRITING_WRITABLE) {
-                        if (writing.compareAndSet(s, WRITE_COMPLETED_WRITABLE)) {
-                            subscription.request(1);
-                            break;
-                        }
-                    } else {
-                        break;
-                    }
-                }
-            }
-
             void channelWritable(boolean writable) {
-                while (true) {
-                    int s = writing.get();
-                    if (writable) {
-                        if (s == WRITE_COMPLETED_NOT_WRITABLE) {
-                            if (writing.compareAndSet(s, WRITE_COMPLETED_WRITABLE)) {
-                                subscription.request(1);
-                                break;
-                            }
-                        } else if (s == WRITING_NOT_WRITABLE) {
-                            if (writing.compareAndSet(s, WRITING_WRITABLE)) {
-                                break;
-                            }
-                        } else {
-                            break;
-                        }
-                    } else {
-                        if (s == WRITE_COMPLETED_WRITABLE) {
-                            if (writing.compareAndSet(s, WRITE_COMPLETED_NOT_WRITABLE)) {
-                                break;
-                            }
-                        } else if (s == WRITING_WRITABLE) {
-                            if (writing.compareAndSet(s, WRITING_NOT_WRITABLE)) {
-                                break;
-                            }
-                        } else {
-                            break;
-                        }
-                    }
+                if (writable) {
+                    subscription.request(1);
                 }
             }
 
