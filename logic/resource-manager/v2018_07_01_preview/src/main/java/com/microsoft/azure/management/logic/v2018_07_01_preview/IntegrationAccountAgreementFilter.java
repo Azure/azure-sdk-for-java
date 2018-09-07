@@ -16,13 +16,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class IntegrationAccountAgreementFilter {
     /**
      * The agreement type of integration account agreement. Possible values
-     * include: 'NotSpecified', 'AS2', 'X12', 'EDIFACT'.
+     * include: 'NotSpecified', 'AS2', 'X12', 'Edifact'.
      */
     @JsonProperty(value = "agreementType", required = true)
     private AgreementType agreementType;
 
     /**
-     * Get the agreement type of integration account agreement. Possible values include: 'NotSpecified', 'AS2', 'X12', 'EDIFACT'.
+     * Get the agreement type of integration account agreement. Possible values include: 'NotSpecified', 'AS2', 'X12', 'Edifact'.
      *
      * @return the agreementType value
      */
@@ -31,7 +31,7 @@ public class IntegrationAccountAgreementFilter {
     }
 
     /**
-     * Set the agreement type of integration account agreement. Possible values include: 'NotSpecified', 'AS2', 'X12', 'EDIFACT'.
+     * Set the agreement type of integration account agreement. Possible values include: 'NotSpecified', 'AS2', 'X12', 'Edifact'.
      *
      * @param agreementType the agreementType value to set
      * @return the IntegrationAccountAgreementFilter object itself.
