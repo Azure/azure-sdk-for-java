@@ -120,7 +120,7 @@ public final class AppendBlobURL extends BlobURL {
             BlobAccessConditions accessConditions, Context context) {
         metadata = metadata == null ? Metadata.NONE : metadata;
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
-        metadata = metadata == null ? Metadata.NONE : metadata;
+        context = context == null ? Context.NONE : context;
 
         return addErrorWrappingToSingle(this.storageClient.generatedAppendBlobs().createWithRestResponseAsync(context,
                 0, null, metadata, null, headers, accessConditions.leaseAccessConditions(),

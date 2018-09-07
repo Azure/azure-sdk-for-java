@@ -158,6 +158,37 @@ public class AppendBlobAPITest extends APISpec {
         null     | null       | null        | null         | garbageLeaseID
     }
 
+    /*
+    def "Create context"() {
+        setup:
+        def context = new Context("Key", "Value")
+
+        def stubPolicy = Mock(RequestPolicy) {
+            sendAsync(_) >> {HttpRequest request ->
+                if (!request.context().getData("Key").isPresent()) {
+                    return Single.error(new RuntimeException("Context key not present."))
+                }
+                else {
+                    return Single.just(getStubResponse(201))
+                }
+            }
+        }
+
+        def stubFactory = Mock(RequestPolicyFactory) {
+            create(*_) >> stubPolicy
+        }
+
+        def pipeline = HttpPipeline.build(stubFactory)
+
+        bu = bu.withPipeline(pipeline)
+
+        when:
+        bu.create(null, null, null, context).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
+    }*/
+
     def "Append block defaults"() {
         setup:
         AppendBlobAppendBlockHeaders headers =

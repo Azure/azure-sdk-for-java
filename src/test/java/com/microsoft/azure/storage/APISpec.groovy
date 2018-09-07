@@ -32,10 +32,15 @@ import com.microsoft.azure.storage.blob.models.CopyStatusType
 import com.microsoft.azure.storage.blob.models.LeaseStateType
 import com.microsoft.azure.storage.blob.models.RetentionPolicy
 import com.microsoft.azure.storage.blob.models.StorageServiceProperties
+import com.microsoft.rest.v2.RestResponse
 import com.microsoft.rest.v2.http.HttpClient
 import com.microsoft.rest.v2.http.HttpClientConfiguration
+import com.microsoft.rest.v2.http.HttpHeaders
 import com.microsoft.rest.v2.http.HttpPipeline
+import com.microsoft.rest.v2.http.HttpRequest
+import com.microsoft.rest.v2.http.HttpResponse
 import io.reactivex.Flowable
+import io.reactivex.Single
 import org.spockframework.lang.ISpecificationContext
 import spock.lang.Shared
 import spock.lang.Specification
@@ -365,5 +370,20 @@ class APISpec extends Specification {
                 .withDeleteRetentionPolicy(new RetentionPolicy().withEnabled(false)), null).blockingGet()
 
         sleep(30000) // Wait for the policy to take effect.
+    }
+
+    /*
+    This method returns a stub of an HttpResponse. We know that the logger only looks at the status code, so we stub
+    a response that always returns a given value for the status code. We never care about the number or nature of
+    interactions with this stub.
+     */
+    def getStubResponse(int code) {
+        return Stub(HttpResponse) {
+            statusCode() >> code
+            body() >> Flowable.empty()
+            request() >> new HttpRequest(null, null, null, null)
+            headers() >> new HttpHeaders()
+            deserializeHeaders() >> new Object()
+        }
     }
 }
