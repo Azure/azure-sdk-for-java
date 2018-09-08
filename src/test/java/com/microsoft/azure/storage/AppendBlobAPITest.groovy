@@ -291,7 +291,7 @@ public class AppendBlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    def "AppendBlock context"() {
+    def "Append block context"() {
         setup:
         def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(201, AppendBlobAppendBlockHeaders)))
 

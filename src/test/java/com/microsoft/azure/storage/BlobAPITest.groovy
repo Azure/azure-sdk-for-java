@@ -17,7 +17,7 @@ package com.microsoft.azure.storage
 
 import com.microsoft.azure.storage.blob.*
 import com.microsoft.azure.storage.blob.models.*
-
+import com.microsoft.rest.v2.http.HttpPipeline
 import com.microsoft.rest.v2.util.FlowableUtil
 import io.reactivex.Flowable
 import spock.lang.Unroll
@@ -156,6 +156,19 @@ class BlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
+    def "Download context"() {
+        setup:
+        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(206, BlobDownloadHeaders)))
+
+        bu = bu.withPipeline(pipeline)
+
+        when:
+        bu.download(null, null, false, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
+    }
+
     def "Get properties all null"() {
         when:
         BlobGetPropertiesHeaders headers = bu.getProperties(null, null).blockingGet().headers()
@@ -250,6 +263,19 @@ class BlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
+    def "Get properties context"() {
+        setup:
+        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(200, BlobGetPropertiesHeaders)))
+
+        bu = bu.withPipeline(pipeline)
+
+        when:
+        bu.getProperties(null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
+    }
+
     def "Set HTTP headers null"() {
         setup:
         BlobSetHTTPHeadersResponse response = bu.setHTTPHeaders(null, null, null).blockingGet()
@@ -284,6 +310,8 @@ class BlobAPITest extends APISpec {
         "control"    | "disposition"      | "encoding"      | "language"      | Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(defaultData.array())) | "type"
 
     }
+
+
 
     @Unroll
     def "Set HTTP headers AC"() {
@@ -342,6 +370,19 @@ class BlobAPITest extends APISpec {
 
         then:
         thrown(StorageException)
+    }
+
+    def "Set HTTP headers context"() {
+        setup:
+        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(200, BlobSetHTTPHeadersHeaders)))
+
+        bu = bu.withPipeline(pipeline)
+
+        when:
+        bu.setHTTPHeaders(null, null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
     }
 
     def "Set metadata all null"() {
@@ -436,6 +477,19 @@ class BlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
+    def "Set metadata context"() {
+        setup:
+        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(200, BlobSetMetadataHeaders)))
+
+        bu = bu.withPipeline(pipeline)
+
+        when:
+        bu.setMetadata(null, null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
+    }
+
     @Unroll
     def "Acquire lease"() {
         setup:
@@ -511,6 +565,19 @@ class BlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
+    def "Acquire lease context"() {
+        setup:
+        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(201, BlobAcquireLeaseHeaders)))
+
+        bu = bu.withPipeline(pipeline)
+
+        when:
+        bu.acquireLease(null, 20, null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
+    }
+
     def "Renew lease"() {
         setup:
         String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
@@ -577,6 +644,20 @@ class BlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
+    def "Renew lease context"() {
+        setup:
+        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(200, BlobRenewLeaseHeaders)))
+
+        bu = bu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        bu.renewLease("id", null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
+    }
+
     def "Release lease"() {
         setup:
         String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
@@ -641,6 +722,20 @@ class BlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
+    def "Release lease context"() {
+        setup:
+        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(200, BlobReleaseLeaseHeaders)))
+
+        bu = bu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        bu.releaseLease("id", null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
+    }
+
     @Unroll
     def "Break lease"() {
         setup:
@@ -659,7 +754,6 @@ class BlobAPITest extends APISpec {
         -1        | null        | 0
         -1        | 20          | 25
         20        | 15          | 16
-
     }
 
     @Unroll
@@ -713,6 +807,20 @@ class BlobAPITest extends APISpec {
 
         then:
         thrown(StorageException)
+    }
+
+    def "Break lease context"() {
+        setup:
+        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(202, BlobBreakLeaseHeaders)))
+
+        bu = bu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        bu.breakLease(18, null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
     }
 
     def "Change lease"() {
@@ -780,6 +888,20 @@ class BlobAPITest extends APISpec {
 
         then:
         thrown(StorageException)
+    }
+
+    def "Change lease context"() {
+        setup:
+        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(200, BlobChangeLeaseHeaders)))
+
+        bu = bu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        bu.changeLease("id", "newId", null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
     }
 
     def "Snapshot"() {
@@ -873,6 +995,20 @@ class BlobAPITest extends APISpec {
 
         then:
         thrown(StorageException)
+    }
+
+    def "Snapshot context"() {
+        setup:
+        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(201, BlobCreateSnapshotHeaders)))
+
+        bu = bu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        bu.createSnapshot(null, null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
     }
 
     def "Copy"() {
@@ -1032,6 +1168,20 @@ class BlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
+    def "Copy context"() {
+        setup:
+        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(202, BlobStartCopyFromURLHeaders)))
+
+        bu = bu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        bu.startCopyFromURL(new URL("http://www.example.com"), null, null, null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
+    }
+
     def "Abort copy"() {
         setup:
         // Data has to be large enough and copied between accounts to give us enough time to abort
@@ -1134,6 +1284,20 @@ class BlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
+    def "Abort copy context"() {
+        setup:
+        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(204, BlobAbortCopyFromURLHeaders)))
+
+        bu = bu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        bu.abortCopyFromURL("id", null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
+    }
+
     def "Delete"() {
         when:
         BlobDeleteResponse response = bu.delete(null, null, null).blockingGet()
@@ -1225,6 +1389,20 @@ class BlobAPITest extends APISpec {
 
         then:
         thrown(StorageException)
+    }
+
+    def "Delete context"() {
+        setup:
+        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(202, BlobDeleteHeaders)))
+
+        bu = bu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        bu.delete(null, null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
     }
 
     @Unroll
@@ -1383,6 +1561,20 @@ class BlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
+    def "Set tier context"() {
+        setup:
+        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(202, BlobSetTierHeaders)))
+
+        bu = bu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        bu.setTier(AccessTier.HOT, null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
+    }
+
     def "Undelete"() {
         setup:
         enableSoftDelete()
@@ -1411,6 +1603,20 @@ class BlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
+    def "Undelete context"() {
+        setup:
+        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(200, BlobUndeleteHeaders)))
+
+        bu = bu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        bu.undelete(defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
+    }
+
     def "Get account info"() {
         when:
         def response = primaryServiceURL.getAccountInfo(null).blockingGet()
@@ -1432,5 +1638,19 @@ class BlobAPITest extends APISpec {
 
         then:
         thrown(StorageException)
+    }
+
+    def "Get account info context"() {
+        setup:
+        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(200, BlobGetAccountInfoHeaders)))
+
+        bu = bu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        bu.getAccountInfo(defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
     }
 }

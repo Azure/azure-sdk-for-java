@@ -33,14 +33,18 @@ import com.microsoft.azure.storage.blob.StorageURL
 import com.microsoft.azure.storage.blob.models.AccessPolicy
 import com.microsoft.azure.storage.blob.models.AccessTier
 import com.microsoft.azure.storage.blob.models.AppendBlobCreateResponse
+import com.microsoft.azure.storage.blob.models.BlobGetAccountInfoHeaders
 import com.microsoft.azure.storage.blob.models.BlobGetPropertiesResponse
 import com.microsoft.azure.storage.blob.models.BlobItem
 import com.microsoft.azure.storage.blob.models.BlobType
 import com.microsoft.azure.storage.blob.models.ContainerAcquireLeaseHeaders
 import com.microsoft.azure.storage.blob.models.ContainerBreakLeaseHeaders
 import com.microsoft.azure.storage.blob.models.ContainerChangeLeaseHeaders
+import com.microsoft.azure.storage.blob.models.ContainerCreateHeaders
 import com.microsoft.azure.storage.blob.models.ContainerCreateResponse
+import com.microsoft.azure.storage.blob.models.ContainerDeleteHeaders
 import com.microsoft.azure.storage.blob.models.ContainerDeleteResponse
+import com.microsoft.azure.storage.blob.models.ContainerGetAccessPolicyHeaders
 import com.microsoft.azure.storage.blob.models.ContainerGetAccessPolicyResponse
 import com.microsoft.azure.storage.blob.models.ContainerGetPropertiesHeaders
 import com.microsoft.azure.storage.blob.models.ContainerGetPropertiesResponse
@@ -50,7 +54,9 @@ import com.microsoft.azure.storage.blob.models.ContainerListBlobHierarchySegment
 import com.microsoft.azure.storage.blob.models.ContainerListBlobHierarchySegmentResponse
 import com.microsoft.azure.storage.blob.models.ContainerReleaseLeaseHeaders
 import com.microsoft.azure.storage.blob.models.ContainerRenewLeaseHeaders
+import com.microsoft.azure.storage.blob.models.ContainerSetAccessPolicyHeaders
 import com.microsoft.azure.storage.blob.models.ContainerSetAccessPolicyResponse
+import com.microsoft.azure.storage.blob.models.ContainerSetMetadataHeaders
 import com.microsoft.azure.storage.blob.models.ContainerSetMetadataResponse
 import com.microsoft.azure.storage.blob.models.CopyStatusType
 import com.microsoft.azure.storage.blob.models.LeaseAccessConditions
@@ -135,7 +141,7 @@ class ContainerAPITest extends APISpec {
         null                       | _
     }
 
-    def "Create exception"() {
+    def "Create error"() {
         when:
         cu.create(null, null, null).blockingGet()
 
@@ -144,6 +150,20 @@ class ContainerAPITest extends APISpec {
         e.response().statusCode() == 409
         e.errorCode() == StorageErrorCode.CONTAINER_ALREADY_EXISTS
         e.message().contains("The specified container already exists.")
+    }
+
+    def "Create context"() {
+        setup:
+        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(201, ContainerCreateHeaders)))
+
+        cu = cu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        cu.create(null, null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
     }
 
     def "Get properties null"() {
@@ -187,6 +207,20 @@ class ContainerAPITest extends APISpec {
 
         then:
         thrown(StorageException)
+    }
+
+    def "Get properties context"() {
+        setup:
+        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(200, ContainerGetPropertiesHeaders)))
+
+        cu = cu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        cu.getProperties(null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
     }
 
     def "Set metadata"() {
@@ -290,6 +324,20 @@ class ContainerAPITest extends APISpec {
 
         then:
         thrown(StorageException)
+    }
+
+    def "Set metadata context"() {
+        setup:
+        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(200, ContainerSetMetadataHeaders)))
+
+        cu = cu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        cu.setMetadata(null, null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
     }
 
     @Unroll
@@ -412,6 +460,20 @@ class ContainerAPITest extends APISpec {
         thrown(StorageException)
     }
 
+    def "Set access policy context"() {
+        setup:
+        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(200, ContainerSetAccessPolicyHeaders)))
+
+        cu = cu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        cu.setAccessPolicy(null, null, null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
+    }
+
     def "Get access policy"() {
         setup:
         SignedIdentifier identifier = new SignedIdentifier()
@@ -460,6 +522,20 @@ class ContainerAPITest extends APISpec {
 
         then:
         thrown(StorageException)
+    }
+
+    def "Get access policy context"() {
+        setup:
+        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(200, ContainerGetAccessPolicyHeaders)))
+
+        cu = cu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        cu.getAccessPolicy(null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
     }
 
     def "Delete"() {
@@ -539,6 +615,20 @@ class ContainerAPITest extends APISpec {
 
         then:
         thrown(StorageException)
+    }
+
+    def "Delete context"() {
+        setup:
+        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(202, ContainerDeleteHeaders)))
+
+        cu = cu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        cu.delete(null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
     }
 
     def "List blobs flat"() {

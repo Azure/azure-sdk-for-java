@@ -16,9 +16,27 @@
 package com.microsoft.azure.storage
 
 
-import com.microsoft.azure.storage.blob.*
 import com.microsoft.azure.storage.blob.models.*
 import com.microsoft.rest.v2.http.UnexpectedLengthException
+import com.microsoft.azure.storage.blob.BlobAccessConditions
+import com.microsoft.azure.storage.blob.BlobRange
+import com.microsoft.azure.storage.blob.BlockBlobURL
+import com.microsoft.azure.storage.blob.Metadata
+import com.microsoft.azure.storage.blob.StorageException
+import com.microsoft.azure.storage.blob.models.BlobGetPropertiesResponse
+import com.microsoft.azure.storage.blob.models.BlockBlobCommitBlockListHeaders
+import com.microsoft.azure.storage.blob.models.BlockBlobCommitBlockListResponse
+import com.microsoft.azure.storage.blob.models.BlockBlobGetBlockListHeaders
+import com.microsoft.azure.storage.blob.models.BlockBlobGetBlockListResponse
+import com.microsoft.azure.storage.blob.models.BlockBlobStageBlockFromURLHeaders
+import com.microsoft.azure.storage.blob.models.BlockBlobStageBlockHeaders
+import com.microsoft.azure.storage.blob.models.BlockBlobStageBlockResponse
+import com.microsoft.azure.storage.blob.models.BlockBlobUploadHeaders
+import com.microsoft.azure.storage.blob.models.BlockBlobUploadResponse
+import com.microsoft.azure.storage.blob.models.BlockListType
+import com.microsoft.azure.storage.blob.models.PublicAccessType
+import com.microsoft.azure.storage.blob.models.StorageErrorCode
+import com.microsoft.rest.v2.http.HttpPipeline
 import com.microsoft.rest.v2.util.FlowableUtil
 import io.reactivex.Flowable
 import spock.lang.Unroll
@@ -120,6 +138,20 @@ class BlockBlobAPITest extends APISpec {
 
         then:
         thrown(StorageException)
+    }
+
+    def "Stage block context"() {
+        setup:
+        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(201, BlockBlobStageBlockHeaders)))
+
+        bu = bu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        bu.stageBlock("id", defaultFlowable, defaultDataSize, null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
     }
 
     def "Stage block from url"() {
@@ -238,6 +270,20 @@ class BlockBlobAPITest extends APISpec {
 
         then:
         thrown(StorageException)
+    }
+
+    def "Stage block from URL context"() {
+        setup:
+        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(201, BlockBlobStageBlockFromURLHeaders)))
+
+        bu = bu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        bu.stageBlockFromURL("id", bu.toURL(), null, null, null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
     }
 
     def "Commit block list"() {
@@ -384,6 +430,20 @@ class BlockBlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
+    def "Commit block list info context"() {
+        setup:
+        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(201, BlockBlobCommitBlockListHeaders)))
+
+        bu = bu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        bu.commitBlockList(new ArrayList<String>(), null, null, null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
+    }
+
     def "Get block list"() {
         setup:
         String blockID = getBlockID()
@@ -473,6 +533,20 @@ class BlockBlobAPITest extends APISpec {
 
         then:
         thrown(StorageException)
+    }
+
+    def "Get block list context"() {
+        setup:
+        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(200, BlockBlobGetBlockListHeaders)))
+
+        bu = bu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        bu.getBlockList(BlockListType.ALL, null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
     }
 
     def "Upload"() {
@@ -637,5 +711,19 @@ class BlockBlobAPITest extends APISpec {
 
         then:
         thrown(StorageException)
+    }
+
+    def "Upload context"() {
+        setup:
+        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(201, BlockBlobUploadHeaders)))
+
+        bu = bu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        bu.upload(defaultFlowable, defaultDataSize, null, null, null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
     }
 }
