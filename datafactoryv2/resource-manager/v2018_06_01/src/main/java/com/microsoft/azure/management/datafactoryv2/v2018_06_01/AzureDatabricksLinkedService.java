@@ -68,10 +68,17 @@ public class AzureDatabricksLinkedService extends LinkedServiceInner {
     private Object newClusterNodeType;
 
     /**
-     * a set of optional, user-specified Spark configuration key-value pairs.
+     * A set of optional, user-specified Spark configuration key-value pairs.
      */
     @JsonProperty(value = "typeProperties.newClusterSparkConf")
     private Map<String, Object> newClusterSparkConf;
+
+    /**
+     * A set of optional, user-specified Spark environment variables key-value
+     * pairs.
+     */
+    @JsonProperty(value = "typeProperties.newClusterSparkEnvVars")
+    private Map<String, Object> newClusterSparkEnvVars;
 
     /**
      * Additional tags for cluster resources.
@@ -224,6 +231,26 @@ public class AzureDatabricksLinkedService extends LinkedServiceInner {
      */
     public AzureDatabricksLinkedService withNewClusterSparkConf(Map<String, Object> newClusterSparkConf) {
         this.newClusterSparkConf = newClusterSparkConf;
+        return this;
+    }
+
+    /**
+     * Get a set of optional, user-specified Spark environment variables key-value pairs.
+     *
+     * @return the newClusterSparkEnvVars value
+     */
+    public Map<String, Object> newClusterSparkEnvVars() {
+        return this.newClusterSparkEnvVars;
+    }
+
+    /**
+     * Set a set of optional, user-specified Spark environment variables key-value pairs.
+     *
+     * @param newClusterSparkEnvVars the newClusterSparkEnvVars value to set
+     * @return the AzureDatabricksLinkedService object itself.
+     */
+    public AzureDatabricksLinkedService withNewClusterSparkEnvVars(Map<String, Object> newClusterSparkEnvVars) {
+        this.newClusterSparkEnvVars = newClusterSparkEnvVars;
         return this;
     }
 
