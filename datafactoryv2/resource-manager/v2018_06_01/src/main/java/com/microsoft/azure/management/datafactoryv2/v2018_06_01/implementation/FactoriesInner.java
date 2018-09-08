@@ -18,6 +18,7 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.FactoryRepoUpdate;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.FactoryUpdateParameters;
+import com.microsoft.azure.management.datafactoryv2.v2018_06_01.GitHubAccessTokenRequest;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
@@ -95,6 +96,10 @@ public class FactoriesInner implements InnerSupportsGet<FactoryInner>, InnerSupp
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datafactoryv2.v2018_06_01.Factories delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("factoryName") String factoryName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datafactoryv2.v2018_06_01.Factories getGitHubAccessToken" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/getGitHubAccessToken")
+        Observable<Response<ResponseBody>> getGitHubAccessToken(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("factoryName") String factoryName, @Query("api-version") String apiVersion, @Body GitHubAccessTokenRequest gitHubAccessTokenRequest, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datafactoryv2.v2018_06_01.Factories listNext" })
         @GET
@@ -948,6 +953,100 @@ public class FactoriesInner implements InnerSupportsGet<FactoryInner>, InnerSupp
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Get GitHub Access Token.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param gitHubAccessTokenRequest Get GitHub access token request definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the GitHubAccessTokenResponseInner object if successful.
+     */
+    public GitHubAccessTokenResponseInner getGitHubAccessToken(String resourceGroupName, String factoryName, GitHubAccessTokenRequest gitHubAccessTokenRequest) {
+        return getGitHubAccessTokenWithServiceResponseAsync(resourceGroupName, factoryName, gitHubAccessTokenRequest).toBlocking().single().body();
+    }
+
+    /**
+     * Get GitHub Access Token.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param gitHubAccessTokenRequest Get GitHub access token request definition.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<GitHubAccessTokenResponseInner> getGitHubAccessTokenAsync(String resourceGroupName, String factoryName, GitHubAccessTokenRequest gitHubAccessTokenRequest, final ServiceCallback<GitHubAccessTokenResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getGitHubAccessTokenWithServiceResponseAsync(resourceGroupName, factoryName, gitHubAccessTokenRequest), serviceCallback);
+    }
+
+    /**
+     * Get GitHub Access Token.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param gitHubAccessTokenRequest Get GitHub access token request definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the GitHubAccessTokenResponseInner object
+     */
+    public Observable<GitHubAccessTokenResponseInner> getGitHubAccessTokenAsync(String resourceGroupName, String factoryName, GitHubAccessTokenRequest gitHubAccessTokenRequest) {
+        return getGitHubAccessTokenWithServiceResponseAsync(resourceGroupName, factoryName, gitHubAccessTokenRequest).map(new Func1<ServiceResponse<GitHubAccessTokenResponseInner>, GitHubAccessTokenResponseInner>() {
+            @Override
+            public GitHubAccessTokenResponseInner call(ServiceResponse<GitHubAccessTokenResponseInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Get GitHub Access Token.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param gitHubAccessTokenRequest Get GitHub access token request definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the GitHubAccessTokenResponseInner object
+     */
+    public Observable<ServiceResponse<GitHubAccessTokenResponseInner>> getGitHubAccessTokenWithServiceResponseAsync(String resourceGroupName, String factoryName, GitHubAccessTokenRequest gitHubAccessTokenRequest) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (factoryName == null) {
+            throw new IllegalArgumentException("Parameter factoryName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (gitHubAccessTokenRequest == null) {
+            throw new IllegalArgumentException("Parameter gitHubAccessTokenRequest is required and cannot be null.");
+        }
+        Validator.validate(gitHubAccessTokenRequest);
+        return service.getGitHubAccessToken(this.client.subscriptionId(), resourceGroupName, factoryName, this.client.apiVersion(), gitHubAccessTokenRequest, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<GitHubAccessTokenResponseInner>>>() {
+                @Override
+                public Observable<ServiceResponse<GitHubAccessTokenResponseInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<GitHubAccessTokenResponseInner> clientResponse = getGitHubAccessTokenDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<GitHubAccessTokenResponseInner> getGitHubAccessTokenDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<GitHubAccessTokenResponseInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<GitHubAccessTokenResponseInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

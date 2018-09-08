@@ -23,6 +23,17 @@ import com.microsoft.azure.arm.model.HasInner;
  */
 public interface Factories extends SupportsCreating<Factory.DefinitionStages.Blank>, SupportsDeletingByResourceGroup, SupportsBatchDeletion, SupportsGettingByResourceGroup<Factory>, SupportsListingByResourceGroup<Factory>, SupportsListing<Factory>, HasInner<FactoriesInner> {
     /**
+     * Get GitHub Access Token.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param gitHubAccessTokenRequest Get GitHub access token request definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<GitHubAccessTokenResponse> getGitHubAccessTokenAsync(String resourceGroupName, String factoryName, GitHubAccessTokenRequest gitHubAccessTokenRequest);
+
+    /**
      * Updates a factory's repo information.
      *
      * @param locationId The location identifier.
