@@ -17,6 +17,8 @@ package com.microsoft.azure.storage
 
 import com.microsoft.azure.storage.blob.*
 import com.microsoft.azure.storage.blob.models.AppendBlobAppendBlockHeaders
+import com.microsoft.azure.storage.blob.models.AppendBlobAppendBlockResponse
+import com.microsoft.azure.storage.blob.models.AppendBlobCreateHeaders
 import com.microsoft.azure.storage.blob.models.AppendBlobCreateResponse
 import com.microsoft.azure.storage.blob.models.AppendPositionAccessConditions
 import com.microsoft.azure.storage.blob.models.BlobGetPropertiesResponse
@@ -158,36 +160,18 @@ public class AppendBlobAPITest extends APISpec {
         null     | null       | null        | null         | garbageLeaseID
     }
 
-    /*
     def "Create context"() {
         setup:
-        def context = new Context("Key", "Value")
-
-        def stubPolicy = Mock(RequestPolicy) {
-            sendAsync(_) >> {HttpRequest request ->
-                if (!request.context().getData("Key").isPresent()) {
-                    return Single.error(new RuntimeException("Context key not present."))
-                }
-                else {
-                    return Single.just(getStubResponse(201))
-                }
-            }
-        }
-
-        def stubFactory = Mock(RequestPolicyFactory) {
-            create(*_) >> stubPolicy
-        }
-
-        def pipeline = HttpPipeline.build(stubFactory)
+        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(201, AppendBlobCreateHeaders)))
 
         bu = bu.withPipeline(pipeline)
 
         when:
-        bu.create(null, null, null, context).blockingGet()
+        bu.create(null, null, null, defaultContext).blockingGet()
 
         then:
         notThrown(RuntimeException)
-    }*/
+    }
 
     def "Append block defaults"() {
         setup:
@@ -305,5 +289,18 @@ public class AppendBlobAPITest extends APISpec {
 
         then:
         thrown(StorageException)
+    }
+
+    def "AppendBlock context"() {
+        setup:
+        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(201, AppendBlobAppendBlockHeaders)))
+
+        bu = bu.withPipeline(pipeline)
+
+        when:
+        bu.appendBlock(defaultFlowable, defaultDataSize, null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
     }
 }

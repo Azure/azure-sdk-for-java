@@ -23,6 +23,7 @@ import com.microsoft.azure.storage.blob.PipelineOptions
 import com.microsoft.azure.storage.blob.ServiceURL
 import com.microsoft.azure.storage.blob.SharedKeyCredentials
 import com.microsoft.azure.storage.blob.StorageURL
+import com.microsoft.azure.storage.blob.models.AppendBlobCreateHeaders
 import com.microsoft.azure.storage.blob.models.BlobAcquireLeaseHeaders
 import com.microsoft.azure.storage.blob.models.BlobGetPropertiesHeaders
 import com.microsoft.azure.storage.blob.models.ContainerAcquireLeaseHeaders
@@ -32,13 +33,15 @@ import com.microsoft.azure.storage.blob.models.CopyStatusType
 import com.microsoft.azure.storage.blob.models.LeaseStateType
 import com.microsoft.azure.storage.blob.models.RetentionPolicy
 import com.microsoft.azure.storage.blob.models.StorageServiceProperties
-import com.microsoft.rest.v2.RestResponse
+import com.microsoft.rest.v2.Context
 import com.microsoft.rest.v2.http.HttpClient
 import com.microsoft.rest.v2.http.HttpClientConfiguration
 import com.microsoft.rest.v2.http.HttpHeaders
 import com.microsoft.rest.v2.http.HttpPipeline
 import com.microsoft.rest.v2.http.HttpRequest
 import com.microsoft.rest.v2.http.HttpResponse
+import com.microsoft.rest.v2.policy.RequestPolicy
+import com.microsoft.rest.v2.policy.RequestPolicyFactory
 import io.reactivex.Flowable
 import io.reactivex.Single
 import org.spockframework.lang.ISpecificationContext
@@ -57,24 +60,22 @@ class APISpec extends Specification {
     @Shared
     ContainerURL cu
 
-    @Shared
-    String defaultText = "default"
+    // Fields used for conveniently creating blobs with data.
+    static final String defaultText = "default"
 
-    @Shared
-    ByteBuffer defaultData = ByteBuffer.wrap(defaultText.bytes)
+    static final ByteBuffer defaultData = ByteBuffer.wrap(defaultText.bytes)
 
-    @Shared
-    Flowable<ByteBuffer> defaultFlowable = Flowable.just(defaultData)
+    static final Flowable<ByteBuffer> defaultFlowable = Flowable.just(defaultData)
 
-    @Shared
-    int defaultDataSize = defaultData.remaining()
+    static defaultDataSize = defaultData.remaining()
 
     // If debugging is enabled, recordings cannot run as there can only be one proxy at a time.
-    static final boolean enableDebugging = false
+    static boolean enableDebugging = false
 
-    static final String containerPrefix = "jtc" // java test container
+    // Prefixes for blobs and containers
+    static String containerPrefix = "jtc" // java test container
 
-    static final String blobPrefix = "javablob"
+    static String blobPrefix = "javablob"
 
     /*
     The values below are used to create data-driven tests for access conditions.
@@ -99,17 +100,32 @@ class APISpec extends Specification {
 
     static final String garbageLeaseID = UUID.randomUUID().toString()
 
+    /*
+    Credentials for various kinds of accounts.
+     */
     static SharedKeyCredentials primaryCreds = getGenericCreds("")
 
     static ServiceURL primaryServiceURL = getGenericServiceURL(primaryCreds)
 
     static SharedKeyCredentials alternateCreds = getGenericCreds("SECONDARY_")
 
+    /*
+    URLs to various kinds of accounts.
+     */
     static ServiceURL alternateServiceURL = getGenericServiceURL(alternateCreds)
 
     static ServiceURL blobStorageServiceURL = getGenericServiceURL(getGenericCreds("BLOB_STORAGE_"))
 
     static ServiceURL premiumServiceURL = getGenericServiceURL(getGenericCreds("PREMIUM_"))
+
+    /*
+    Constants for testing that the context parameter is properly passed to the pipeline.
+     */
+    static final String defaultContextKey = "Key"
+
+    static final String defaultContextValue = "Value"
+
+    static final Context defaultContext = new Context(defaultContextKey, defaultContextValue)
 
     static String getTestName(ISpecificationContext ctx) {
         return ctx.getCurrentFeature().name.replace(' ', '').toLowerCase()
@@ -373,17 +389,82 @@ class APISpec extends Specification {
     }
 
     /*
-    This method returns a stub of an HttpResponse. We know that the logger only looks at the status code, so we stub
-    a response that always returns a given value for the status code. We never care about the number or nature of
-    interactions with this stub.
+    This method returns a stub of an HttpResponse. This is for when we want to test policies in isolation but don't care
+     about the status code, so we stub a response that always returns a given value for the status code. We never care
+     about the number or nature of interactions with this stub.
      */
     def getStubResponse(int code) {
         return Stub(HttpResponse) {
             statusCode() >> code
-            body() >> Flowable.empty()
-            request() >> new HttpRequest(null, null, null, null)
-            headers() >> new HttpHeaders()
-            deserializeHeaders() >> new Object()
+        }
+    }
+
+    /*
+    This is for stubbing responses that will actually go through the pipeline and autorest code. Autorest does not seem
+    to play too nicely with mocked objects and the complex reflection stuff on both ends made it more difficult to work
+    with than was worth it.
+     */
+    def getStubResponse(int code, Class responseHeadersType) {
+        return new HttpResponse() {
+
+            @Override
+            int statusCode() {
+                return code
+            }
+
+            @Override
+            String headerValue(String s) {
+                return null
+            }
+
+            @Override
+            HttpHeaders headers() {
+                return new HttpHeaders()
+            }
+
+            @Override
+            Flowable<ByteBuffer> body() {
+                return Flowable.empty()
+            }
+
+            @Override
+            Single<byte[]> bodyAsByteArray() {
+                return null
+            }
+
+            @Override
+            Single<String> bodyAsString() {
+                return null
+            }
+
+            @Override
+            Object deserializedHeaders() {
+                return responseHeadersType.getConstructor().newInstance()
+            }
+
+            @Override
+            boolean isDecoded() {
+                return true
+            }
+        }
+    }
+
+    def getContextStubPolicy(int successCode, Class responseHeadersType) {
+        return Mock(RequestPolicy) {
+            sendAsync(_) >> { HttpRequest request ->
+                if (!request.context().getData(defaultContextKey).isPresent()) {
+                    return Single.error(new RuntimeException("Context key not present."))
+                }
+                else {
+                    return Single.just(getStubResponse(successCode, responseHeadersType))
+                }
+            }
+        }
+    }
+
+    def getStubFactory(RequestPolicy policy) {
+        return Mock(RequestPolicyFactory) {
+            create(*_) >> policy
         }
     }
 }
