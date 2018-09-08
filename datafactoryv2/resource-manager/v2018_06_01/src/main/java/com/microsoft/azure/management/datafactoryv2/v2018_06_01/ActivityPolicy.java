@@ -43,6 +43,13 @@ public class ActivityPolicy {
     private Integer retryIntervalInSeconds;
 
     /**
+     * When set to true, input from activity is considered as secure and will
+     * not be logged to monitoring.
+     */
+    @JsonProperty(value = "secureInput")
+    private Boolean secureInput;
+
+    /**
      * When set to true, Output from activity is considered as secure and will
      * not be logged to monitoring.
      */
@@ -126,6 +133,26 @@ public class ActivityPolicy {
      */
     public ActivityPolicy withRetryIntervalInSeconds(Integer retryIntervalInSeconds) {
         this.retryIntervalInSeconds = retryIntervalInSeconds;
+        return this;
+    }
+
+    /**
+     * Get when set to true, input from activity is considered as secure and will not be logged to monitoring.
+     *
+     * @return the secureInput value
+     */
+    public Boolean secureInput() {
+        return this.secureInput;
+    }
+
+    /**
+     * Set when set to true, input from activity is considered as secure and will not be logged to monitoring.
+     *
+     * @param secureInput the secureInput value to set
+     * @return the ActivityPolicy object itself.
+     */
+    public ActivityPolicy withSecureInput(Boolean secureInput) {
+        this.secureInput = secureInput;
         return this;
     }
 
