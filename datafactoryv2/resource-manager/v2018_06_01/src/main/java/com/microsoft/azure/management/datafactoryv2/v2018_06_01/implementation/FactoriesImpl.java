@@ -22,6 +22,8 @@ import com.microsoft.azure.arm.utils.RXMapper;
 import rx.functions.Func1;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
+import com.microsoft.azure.management.datafactoryv2.v2018_06_01.GitHubAccessTokenResponse;
+import com.microsoft.azure.management.datafactoryv2.v2018_06_01.GitHubAccessTokenRequest;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.FactoryRepoUpdate;
 
 class FactoriesImpl extends GroupableResourcesCoreImpl<Factory, FactoryImpl, FactoryInner, FactoriesInner, DataFactoryManager>  implements Factories {
@@ -124,6 +126,18 @@ class FactoriesImpl extends GroupableResourcesCoreImpl<Factory, FactoryImpl, Fac
     @Override
     public FactoryImpl define(String name) {
         return wrapModel(name);
+    }
+
+    @Override
+    public Observable<GitHubAccessTokenResponse> getGitHubAccessTokenAsync(String resourceGroupName, String factoryName, GitHubAccessTokenRequest gitHubAccessTokenRequest) {
+        FactoriesInner client = this.inner();
+        return client.getGitHubAccessTokenAsync(resourceGroupName, factoryName, gitHubAccessTokenRequest)
+        .map(new Func1<GitHubAccessTokenResponseInner, GitHubAccessTokenResponse>() {
+            @Override
+            public GitHubAccessTokenResponse call(GitHubAccessTokenResponseInner inner) {
+                return new GitHubAccessTokenResponseImpl(inner, manager());
+            }
+        });
     }
 
     @Override
