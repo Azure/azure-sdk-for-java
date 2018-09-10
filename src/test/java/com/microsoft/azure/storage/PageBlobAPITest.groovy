@@ -17,6 +17,7 @@ package com.microsoft.azure.storage
 
 import com.microsoft.azure.storage.blob.*
 import com.microsoft.azure.storage.blob.models.*
+import com.microsoft.rest.v2.http.UnexpectedLengthException
 import io.reactivex.Flowable
 import spock.lang.Unroll
 
@@ -181,8 +182,8 @@ class PageBlobAPITest extends APISpec {
         where:
         data                                                     | exceptionType
         null                                                     | IllegalArgumentException
-        Flowable.just(getRandomData(PageBlobURL.PAGE_BYTES))     | IllegalStateException
-        Flowable.just(getRandomData(PageBlobURL.PAGE_BYTES * 3)) | IllegalStateException
+        Flowable.just(getRandomData(PageBlobURL.PAGE_BYTES))     | UnexpectedLengthException
+        Flowable.just(getRandomData(PageBlobURL.PAGE_BYTES * 3)) | UnexpectedLengthException
     }
 
     @Unroll

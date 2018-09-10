@@ -23,6 +23,7 @@ import com.microsoft.azure.storage.blob.models.BlobGetPropertiesResponse
 import com.microsoft.azure.storage.blob.models.BlobHTTPHeaders
 import com.microsoft.azure.storage.blob.models.LeaseAccessConditions
 import com.microsoft.azure.storage.blob.models.ModifiedAccessConditions
+import com.microsoft.rest.v2.http.UnexpectedLengthException
 import com.microsoft.rest.v2.util.FlowableUtil
 import io.reactivex.Flowable
 import spock.lang.Unroll
@@ -185,8 +186,8 @@ public class AppendBlobAPITest extends APISpec {
         where:
         data            | dataSize            | exceptionType
         null            | defaultDataSize     | IllegalArgumentException
-        defaultFlowable | defaultDataSize + 1 | IllegalStateException
-        defaultFlowable | defaultDataSize - 1 | IllegalStateException
+        defaultFlowable | defaultDataSize + 1 | UnexpectedLengthException
+        defaultFlowable | defaultDataSize - 1 | UnexpectedLengthException
     }
 
     def "Append block empty body"() {

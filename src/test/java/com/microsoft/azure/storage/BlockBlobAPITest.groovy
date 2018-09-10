@@ -18,6 +18,7 @@ package com.microsoft.azure.storage
 
 import com.microsoft.azure.storage.blob.*
 import com.microsoft.azure.storage.blob.models.*
+import com.microsoft.rest.v2.http.UnexpectedLengthException
 import com.microsoft.rest.v2.util.FlowableUtil
 import io.reactivex.Flowable
 import spock.lang.Unroll
@@ -66,8 +67,8 @@ class BlockBlobAPITest extends APISpec {
         blockID      | data            | dataSize            | exceptionType
         null         | defaultFlowable | defaultDataSize     | IllegalArgumentException
         getBlockID() | null            | defaultDataSize     | IllegalArgumentException
-        getBlockID() | defaultFlowable | defaultDataSize + 1 | IllegalStateException
-        getBlockID() | defaultFlowable | defaultDataSize - 1 | IllegalStateException
+        getBlockID() | defaultFlowable | defaultDataSize + 1 | UnexpectedLengthException
+        getBlockID() | defaultFlowable | defaultDataSize - 1 | UnexpectedLengthException
     }
 
     def "Stage block empty body"() {
@@ -503,8 +504,8 @@ class BlockBlobAPITest extends APISpec {
         where:
         data            | dataSize            | exceptionType
         null            | defaultDataSize     | IllegalArgumentException
-        defaultFlowable | defaultDataSize + 1 | IllegalStateException
-        defaultFlowable | defaultDataSize - 1 | IllegalStateException
+        defaultFlowable | defaultDataSize + 1 | UnexpectedLengthException
+        defaultFlowable | defaultDataSize - 1 | UnexpectedLengthException
     }
 
     def "Upload empty body"() {
