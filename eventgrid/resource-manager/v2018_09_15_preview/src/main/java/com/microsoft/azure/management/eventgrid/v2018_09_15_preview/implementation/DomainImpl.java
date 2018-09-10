@@ -67,12 +67,6 @@ class DomainImpl extends GroupableResourceCoreImpl<Domain, DomainInner, DomainIm
     }
 
     @Override
-    public DomainImpl withEndpoint(String endpoint) {
-        this.inner().withEndpoint(endpoint);
-        return this;
-    }
-
-    @Override
     public DomainImpl withInputSchema(InputSchema inputSchema) {
         this.inner().withInputSchema(inputSchema);
         return this;
@@ -81,12 +75,6 @@ class DomainImpl extends GroupableResourceCoreImpl<Domain, DomainInner, DomainIm
     @Override
     public DomainImpl withInputSchemaMapping(InputSchemaMapping inputSchemaMapping) {
         this.inner().withInputSchemaMapping(inputSchemaMapping);
-        return this;
-    }
-
-    @Override
-    public DomainImpl withProvisioningState(DomainProvisioningState provisioningState) {
-        this.inner().withProvisioningState(provisioningState);
         return this;
     }
 

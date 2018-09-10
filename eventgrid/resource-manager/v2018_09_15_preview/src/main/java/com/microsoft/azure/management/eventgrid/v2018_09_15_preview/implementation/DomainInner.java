@@ -24,13 +24,13 @@ public class DomainInner extends Resource {
      * Provisioning state of the domain. Possible values include: 'Creating',
      * 'Updating', 'Deleting', 'Succeeded', 'Canceled', 'Failed'.
      */
-    @JsonProperty(value = "properties.provisioningState")
+    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private DomainProvisioningState provisioningState;
 
     /**
      * Endpoint for the domain.
      */
-    @JsonProperty(value = "properties.endpoint")
+    @JsonProperty(value = "properties.endpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String endpoint;
 
     /**
@@ -58,34 +58,12 @@ public class DomainInner extends Resource {
     }
 
     /**
-     * Set provisioning state of the domain. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Canceled', 'Failed'.
-     *
-     * @param provisioningState the provisioningState value to set
-     * @return the DomainInner object itself.
-     */
-    public DomainInner withProvisioningState(DomainProvisioningState provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
-    }
-
-    /**
      * Get endpoint for the domain.
      *
      * @return the endpoint value
      */
     public String endpoint() {
         return this.endpoint;
-    }
-
-    /**
-     * Set endpoint for the domain.
-     *
-     * @param endpoint the endpoint value to set
-     * @return the DomainInner object itself.
-     */
-    public DomainInner withEndpoint(String endpoint) {
-        this.endpoint = endpoint;
-        return this;
     }
 
     /**

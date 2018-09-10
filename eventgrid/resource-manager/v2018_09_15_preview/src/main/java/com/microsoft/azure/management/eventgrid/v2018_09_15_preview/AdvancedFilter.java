@@ -21,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 @JsonTypeName("AdvancedFilter")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "NumberIn", value = NumberInAdvancedFilter.class),
+    @JsonSubTypes.Type(name = "NumberNotIn", value = NumberNotInAdvancedFilter.class),
     @JsonSubTypes.Type(name = "NumberLessThan", value = NumberLessThanAdvancedFilter.class),
     @JsonSubTypes.Type(name = "NumberGreaterThan", value = NumberGreaterThanAdvancedFilter.class),
     @JsonSubTypes.Type(name = "NumberLessThanOrEquals", value = NumberLessThanOrEqualsAdvancedFilter.class),
@@ -29,7 +30,8 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
     @JsonSubTypes.Type(name = "StringIn", value = StringInAdvancedFilter.class),
     @JsonSubTypes.Type(name = "StringNotIn", value = StringNotInAdvancedFilter.class),
     @JsonSubTypes.Type(name = "StringBeginsWith", value = StringBeginsWithAdvancedFilter.class),
-    @JsonSubTypes.Type(name = "StringEndsWith", value = StringEndsWithAdvancedFilter.class)
+    @JsonSubTypes.Type(name = "StringEndsWith", value = StringEndsWithAdvancedFilter.class),
+    @JsonSubTypes.Type(name = "StringContains", value = StringContainsAdvancedFilter.class)
 })
 public class AdvancedFilter {
     /**

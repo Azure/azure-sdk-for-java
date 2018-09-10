@@ -67,16 +67,6 @@ public interface Domain extends HasInner<DomainInner>, Resource, GroupableResour
         }
 
         /**
-         * The stage of the domain update allowing to specify Endpoint.
-         */
-        interface WithEndpoint {
-            /**
-             * Specifies endpoint.
-             */
-            WithCreate withEndpoint(String endpoint);
-        }
-
-        /**
          * The stage of the domain update allowing to specify InputSchema.
          */
         interface WithInputSchema {
@@ -97,43 +87,23 @@ public interface Domain extends HasInner<DomainInner>, Resource, GroupableResour
         }
 
         /**
-         * The stage of the domain update allowing to specify ProvisioningState.
-         */
-        interface WithProvisioningState {
-            /**
-             * Specifies provisioningState.
-             */
-            WithCreate withProvisioningState(DomainProvisioningState provisioningState);
-        }
-
-        /**
          * The stage of the definition which contains all the minimum required inputs for
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<Domain>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithEndpoint, DefinitionStages.WithInputSchema, DefinitionStages.WithInputSchemaMapping, DefinitionStages.WithProvisioningState {
+        interface WithCreate extends Creatable<Domain>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithInputSchema, DefinitionStages.WithInputSchemaMapping {
         }
     }
     /**
      * The template for a Domain update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<Domain>, Resource.UpdateWithTags<Update>, UpdateStages.WithEndpoint, UpdateStages.WithInputSchema, UpdateStages.WithInputSchemaMapping, UpdateStages.WithProvisioningState {
+    interface Update extends Appliable<Domain>, Resource.UpdateWithTags<Update>, UpdateStages.WithInputSchema, UpdateStages.WithInputSchemaMapping {
     }
 
     /**
      * Grouping of Domain update stages.
      */
     interface UpdateStages {
-        /**
-         * The stage of the domain {0} allowing to specify Endpoint.
-         */
-        interface WithEndpoint {
-            /**
-             * Specifies endpoint.
-             */
-            Update withEndpoint(String endpoint);
-        }
-
         /**
          * The stage of the domain {0} allowing to specify InputSchema.
          */
@@ -152,16 +122,6 @@ public interface Domain extends HasInner<DomainInner>, Resource, GroupableResour
              * Specifies inputSchemaMapping.
              */
             Update withInputSchemaMapping(InputSchemaMapping inputSchemaMapping);
-        }
-
-        /**
-         * The stage of the domain {0} allowing to specify ProvisioningState.
-         */
-        interface WithProvisioningState {
-            /**
-             * Specifies provisioningState.
-             */
-            Update withProvisioningState(DomainProvisioningState provisioningState);
         }
 
     }
