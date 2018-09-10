@@ -17,7 +17,7 @@ public class RoleAssignmentProperties {
     /**
      * The role definition ID used in the role assignment.
      */
-    @JsonProperty(value = "roleDefinitionId")
+    @JsonProperty(value = "roleDefinitionId", required = true)
     private String roleDefinitionId;
 
     /**
@@ -25,7 +25,7 @@ public class RoleAssignmentProperties {
      * Active Directory. It can point to a user, service principal, or security
      * group.
      */
-    @JsonProperty(value = "principalId")
+    @JsonProperty(value = "principalId", required = true)
     private String principalId;
 
     /**

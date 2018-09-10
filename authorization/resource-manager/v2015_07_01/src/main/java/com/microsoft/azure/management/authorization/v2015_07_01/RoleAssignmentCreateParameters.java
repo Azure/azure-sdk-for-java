@@ -17,7 +17,7 @@ public class RoleAssignmentCreateParameters {
     /**
      * Role assignment properties.
      */
-    @JsonProperty(value = "properties")
+    @JsonProperty(value = "properties", required = true)
     private RoleAssignmentProperties properties;
 
     /**

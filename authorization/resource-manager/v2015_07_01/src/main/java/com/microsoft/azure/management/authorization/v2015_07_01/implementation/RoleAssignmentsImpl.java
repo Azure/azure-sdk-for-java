@@ -15,6 +15,7 @@ import rx.functions.Func1;
 import rx.Observable;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.management.authorization.v2015_07_01.RoleAssignment;
+import com.microsoft.azure.management.authorization.v2015_07_01.RoleAssignmentProperties;
 
 class RoleAssignmentsImpl extends WrapperImpl<RoleAssignmentsInner> implements RoleAssignments {
     private final AuthorizationManager manager;
@@ -96,9 +97,9 @@ class RoleAssignmentsImpl extends WrapperImpl<RoleAssignmentsInner> implements R
     }
 
     @Override
-    public Observable<RoleAssignment> createByIdAsync(String roleAssignmentId) {
+    public Observable<RoleAssignment> createByIdAsync(String roleAssignmentId, RoleAssignmentProperties properties) {
         RoleAssignmentsInner client = this.inner();
-        return client.createByIdAsync(roleAssignmentId)
+        return client.createByIdAsync(roleAssignmentId, properties)
         .map(new Func1<RoleAssignmentInner, RoleAssignment>() {
             @Override
             public RoleAssignment call(RoleAssignmentInner inner) {

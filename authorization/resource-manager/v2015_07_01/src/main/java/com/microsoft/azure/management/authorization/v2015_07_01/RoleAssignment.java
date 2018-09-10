@@ -44,7 +44,7 @@ public interface RoleAssignment extends HasInner<RoleAssignmentInner>, Indexable
     /**
      * The entirety of the RoleAssignment definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithProvider, DefinitionStages.WithScope, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithProvider, DefinitionStages.WithScope, DefinitionStages.WithProperties, DefinitionStages.WithCreate {
     }
 
     /**
@@ -74,7 +74,17 @@ public interface RoleAssignment extends HasInner<RoleAssignmentInner>, Indexable
            /**
             * Specifies scope.
             */
-            WithCreate withScope(String scope);
+            WithProperties withScope(String scope);
+        }
+
+        /**
+         * The stage of the roleassignment definition allowing to specify Properties.
+         */
+        interface WithProperties {
+           /**
+            * Specifies properties.
+            */
+            WithCreate withProperties(RoleAssignmentProperties properties);
         }
 
         /**
@@ -88,12 +98,22 @@ public interface RoleAssignment extends HasInner<RoleAssignmentInner>, Indexable
     /**
      * The template for a RoleAssignment update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<RoleAssignment> {
+    interface Update extends Appliable<RoleAssignment>, UpdateStages.WithProperties {
     }
 
     /**
      * Grouping of RoleAssignment update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the roleassignment update allowing to specify Properties.
+         */
+        interface WithProperties {
+            /**
+             * Specifies properties.
+             */
+            Update withProperties(RoleAssignmentProperties properties);
+        }
+
     }
 }
