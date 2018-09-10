@@ -1422,7 +1422,7 @@ public class Samples {
                         // Upload some data to a blob
                         Single.using(() -> AsynchronousFileChannel.open(file.toPath()),
                                 fileChannel -> TransferManager.uploadFileToBlockBlob(fileChannel, blobURL,
-                                BlockBlobURL.MAX_STAGE_BLOCK_BYTES, TransferManager.UploadToBlockBlobOptions.DEFAULT),
+                                BlockBlobURL.MAX_STAGE_BLOCK_BYTES, TransferManagerUploadToBlockBlobOptions.DEFAULT),
                                 AsynchronousFileChannel::close))
                 .flatMap(response ->
                         blobURL.download(null, null, false))

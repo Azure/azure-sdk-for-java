@@ -16,7 +16,6 @@
 package com.microsoft.azure.storage.blob;
 
 import com.microsoft.azure.storage.blob.models.BlobDownloadHeaders;
-import com.microsoft.azure.storage.blob.models.BlobHTTPHeaders;
 import com.microsoft.azure.storage.blob.models.ModifiedAccessConditions;
 import com.microsoft.rest.v2.util.FlowableUtil;
 import io.reactivex.Flowable;
@@ -65,27 +64,27 @@ public final class TransferManager {
      *         between 1 and {@link BlockBlobURL#MAX_STAGE_BLOCK_BYTES}. Note as well that
      *         {@code fileLength/blockLength} must be less than or equal to {@link BlockBlobURL#MAX_BLOCKS}.
      * @param options
-     *         {@link UploadToBlockBlobOptions}
+     *         {@link TransferManagerUploadToBlockBlobOptions}
      * @return Emits the successful response.
      */
     public static Single<CommonRestResponse> uploadFileToBlockBlob(
             final AsynchronousFileChannel file, final BlockBlobURL blockBlobURL, final int blockLength,
-            final UploadToBlockBlobOptions options) throws IOException {
+            final TransferManagerUploadToBlockBlobOptions options) throws IOException {
         Utility.assertNotNull("file", file);
         Utility.assertNotNull("blockBlobURL", blockBlobURL);
         Utility.assertInBounds("blockLength", blockLength, 1, BlockBlobURL.MAX_STAGE_BLOCK_BYTES);
-        UploadToBlockBlobOptions optionsReal = options == null ? UploadToBlockBlobOptions.DEFAULT : options;
+        TransferManagerUploadToBlockBlobOptions optionsReal = options == null ? TransferManagerUploadToBlockBlobOptions.DEFAULT : options;
 
 
         // If the size of the file can fit in a single upload, do it this way.
         if (file.size() < BlockBlobURL.MAX_UPLOAD_BLOB_BYTES) {
-            if (optionsReal.progressReceiver != null) {
+            if (optionsReal.progressReceiver() != null) {
                 // TODO: Wrap in a progress stream once progress is written.
             }
 
             // Transform the specific RestResponse into a CommonRestResponse.
-            return blockBlobURL.upload(FlowableUtil.readFile(file), file.size(), optionsReal.httpHeaders,
-                    optionsReal.metadata, optionsReal.accessConditions)
+            return blockBlobURL.upload(FlowableUtil.readFile(file), file.size(), optionsReal.httpHeaders(),
+                    optionsReal.metadata(), optionsReal.accessConditions())
                     .map(CommonRestResponse::createFromPutBlobResponse);
         }
 
@@ -117,7 +116,7 @@ public final class TransferManager {
                     concatMapEager.
                      */
                     return blockBlobURL.stageBlock(blockId, data,
-                            count, optionsReal.accessConditions.leaseAccessConditions())
+                            count, optionsReal.accessConditions().leaseAccessConditions())
                             .map(x -> blockId).toObservable();
 
                     /*
@@ -128,7 +127,7 @@ public final class TransferManager {
                     stageBlock is finished. Prefetch is a hint that each of the Observables emitted by the source
                     will emit only one value, which is true here because we have converted from a Single.
                      */
-                }, optionsReal.parallelism, 1)
+                }, optionsReal.parallelism(), 1)
                 /*
                 collectInto will gather each of the emitted blockIds into a list. Because we used concatMap, the Ids
                 will be emitted according to their block number, which means the list generated here will be
@@ -141,8 +140,8 @@ public final class TransferManager {
                 can "map" it into a call to commitBlockList.
                 */
                 .flatMap(ids ->
-                        blockBlobURL.commitBlockList(ids, optionsReal.httpHeaders, optionsReal.metadata,
-                                optionsReal.accessConditions))
+                        blockBlobURL.commitBlockList(ids, optionsReal.httpHeaders(), optionsReal.metadata(),
+                                optionsReal.accessConditions()))
                 // Finally, we must turn the specific response type into a CommonRestResponse by mapping.
                 .map(CommonRestResponse::createFromPutBlockListResponse);
     }
@@ -171,13 +170,13 @@ public final class TransferManager {
      * @param range
      *         {@link BlobRange}
      * @param options
-     *         {@link DownloadFromBlobOptions}
+     *         {@link TransferManagerDownloadFromBlobOptions}
      * @return A {@code Completable} that will signal when the download is complete.
      */
     public static Single<BlobDownloadHeaders> downloadBlobToFile(AsynchronousFileChannel file, BlobURL blobURL,
-            BlobRange range, DownloadFromBlobOptions options) {
+            BlobRange range, TransferManagerDownloadFromBlobOptions options) {
         BlobRange r = range == null ? BlobRange.DEFAULT : range;
-        DownloadFromBlobOptions o = options == null ? DownloadFromBlobOptions.DEFAULT : options;
+        TransferManagerDownloadFromBlobOptions o = options == null ? TransferManagerDownloadFromBlobOptions.DEFAULT : options;
         Utility.assertNotNull("blobURL", blobURL);
         Utility.assertNotNull("file", file);
 
@@ -188,7 +187,7 @@ public final class TransferManager {
             Long dataSize = setupPair.getKey();
             BlobAccessConditions realConditions = setupPair.getValue();
 
-            int numChunks = calculateNumBlocks(dataSize, o.chunkSize);
+            int numChunks = calculateNumBlocks(dataSize, o.chunkSize());
 
             // In case it is an empty blob, this ensures we still actually perform a download operation.
             numChunks = numChunks == 0 ? 1 : numChunks;
@@ -196,9 +195,9 @@ public final class TransferManager {
             return Observable.range(0, numChunks)
                     .flatMap(i -> {
                         // Calculate whether we need a full chunk or something smaller because we are at the end.
-                        long chunkSizeActual = Math.min(o.chunkSize,
-                                dataSize - (i * o.chunkSize));
-                        BlobRange chunkRange = new BlobRange().withOffset(r.offset() + (i * o.chunkSize))
+                        long chunkSizeActual = Math.min(o.chunkSize(),
+                                dataSize - (i * o.chunkSize()));
+                        BlobRange chunkRange = new BlobRange().withOffset(r.offset() + (i * o.chunkSize()))
                                 .withCount(chunkSizeActual);
 
 
@@ -207,15 +206,15 @@ public final class TransferManager {
                                 // Extract the body.
                                 .flatMapObservable(response ->
                                         // Write to the file.
-                                        FlowableUtil.writeFile(response.body(o.reliableDownloadOptionsPerBlock), file,
-                                                i * o.chunkSize)
+                                        FlowableUtil.writeFile(response.body(o.reliableDownloadOptionsPerBlock()), file,
+                                                i * o.chunkSize())
                                                 /*
                                                 Satisfy the return type. Observable required for flatmap to accept
                                                 maxConcurrency. We want to eventually give the user back the headers.
                                                  */
                                                 .andThen(Single.just(response.headers()))
                                                 .toObservable());
-                    }, o.parallelism)
+                    }, o.parallelism())
                     // All the headers will be the same, so we just pick the last one.
                     .lastOrError();
         });
@@ -224,30 +223,30 @@ public final class TransferManager {
 
 
     private static Single<Pair<Long, BlobAccessConditions>> getSetupSingle(BlobURL blobURL, BlobRange r,
-            DownloadFromBlobOptions o) {
+            TransferManagerDownloadFromBlobOptions o) {
         /*
         Construct a Single which will emit the total count of bytes to be downloaded and retrieve an etag to lock on to
         if one was not specified. We use a single for this because we may have to make a REST call to get the length to
         calculate the count and we need to maintain asynchronicity.
          */
 
-        if (r.count() == null || o.accessConditions.modifiedAccessConditions().ifMatch() == null) {
-            return blobURL.getProperties(o.accessConditions)
+        if (r.count() == null || o.accessConditions().modifiedAccessConditions().ifMatch() == null) {
+            return blobURL.getProperties(o.accessConditions())
                     .map(response -> {
                         BlobAccessConditions newConditions;
-                        if (o.accessConditions.modifiedAccessConditions().ifMatch() == null) {
+                        if (o.accessConditions().modifiedAccessConditions().ifMatch() == null) {
                             newConditions = new BlobAccessConditions()
                                     .withModifiedAccessConditions(new ModifiedAccessConditions()
                                             .withIfModifiedSince(
-                                                    o.accessConditions.modifiedAccessConditions().ifModifiedSince())
+                                                    o.accessConditions().modifiedAccessConditions().ifModifiedSince())
                                             .withIfUnmodifiedSince(
-                                                    o.accessConditions.modifiedAccessConditions().ifUnmodifiedSince())
+                                                    o.accessConditions().modifiedAccessConditions().ifUnmodifiedSince())
                                             .withIfMatch(response.headers().eTag())
                                             .withIfNoneMatch(
-                                                    o.accessConditions.modifiedAccessConditions().ifNoneMatch()))
-                                    .withLeaseAccessConditions(o.accessConditions.leaseAccessConditions());
+                                                    o.accessConditions().modifiedAccessConditions().ifNoneMatch()))
+                                    .withLeaseAccessConditions(o.accessConditions().leaseAccessConditions());
                         } else {
-                            newConditions = o.accessConditions;
+                            newConditions = o.accessConditions();
                         }
                         long newCount;
                         /*
@@ -263,125 +262,8 @@ public final class TransferManager {
                         return new Pair<>(newCount, newConditions);
                     });
         } else {
-            return Single.just(new Pair<>(r.count(), o.accessConditions));
+            return Single.just(new Pair<>(r.count(), o.accessConditions()));
         }
     }
 
-    /**
-     * Configures the parallel upload behavior for methods on the {@code TransferManager}.
-     */
-    public static class UploadToBlockBlobOptions {
-
-        /**
-         * An object which represents the default parallel upload options.
-         */
-        public static final UploadToBlockBlobOptions DEFAULT = new UploadToBlockBlobOptions(null,
-                null, null, null, null);
-
-        private final IProgressReceiver progressReceiver;
-
-        private final BlobHTTPHeaders httpHeaders;
-
-        private final Metadata metadata;
-
-        private final BlobAccessConditions accessConditions;
-
-        private final int parallelism;
-
-        /**
-         * Creates a new object that configures the parallel upload behavior. Null may be passed to accept the default
-         * behavior.
-         *
-         * @param progressReceiver
-         *         An object that implements the {@link IProgressReceiver} interface which will be invoked periodically
-         *         as bytes are sent in a PutBlock call to the BlockBlobURL. May be null if no progress reports are
-         *         desired.
-         * @param httpHeaders
-         *         Most often used when creating a blob or setting its properties, this class contains fields for typical HTTP
-         *         properties, which, if specified, will be attached to the target blob. Null may be passed to any API which takes this
-         *         type to indicate that no properties should be set.
-         * @param metadata
-         *         {@link Metadata}
-         * @param accessConditions
-         *         {@link BlobAccessConditions}
-         * @param parallelism
-         *         A {@code int} that indicates the maximum number of blocks to upload in parallel. Must be greater than
-         *         0. May be null to accept default behavior.
-         */
-        public UploadToBlockBlobOptions(IProgressReceiver progressReceiver, BlobHTTPHeaders httpHeaders,
-                Metadata metadata, BlobAccessConditions accessConditions, Integer parallelism) {
-            if (parallelism == null) {
-                this.parallelism = Constants.TRANSFER_MANAGER_DEFAULT_PARALLELISM;
-            } else if (parallelism <= 0) {
-                throw new IllegalArgumentException("Parallelism must be > 0");
-            } else {
-                this.parallelism = parallelism;
-            }
-
-            this.progressReceiver = progressReceiver;
-            this.httpHeaders = httpHeaders;
-            this.metadata = metadata;
-            this.accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
-        }
-    }
-
-    /**
-     * Configures the parallel download behavior for methods on the {@code TransferManager}.
-     */
-    public static final class DownloadFromBlobOptions {
-
-        /**
-         * The default download options.
-         */
-        public static final DownloadFromBlobOptions DEFAULT = new DownloadFromBlobOptions(null,
-                null, null, null, null);
-
-        private final long chunkSize;
-
-        private final IProgressReceiver progressReceiver;
-        private final int parallelism;
-        private final ReliableDownloadOptions reliableDownloadOptionsPerBlock;
-        // Cannot be final because we may have to set this property in order to lock on the etag.
-        private BlobAccessConditions accessConditions;
-
-        /**
-         * Returns an object that configures the parallel download behavior for methods on the {@code TransferManager}.
-         *
-         * @param chunkSize
-         *         The size of the chunk into which large download operations will be broken into. Note that if the
-         *         chunkSize is large, fewer but larger requests will be made as each REST request will download a
-         *         single chunk in full. For larger chunk sizes, it may be helpful to configure the
-         *         {@code reliableDownloadOptions} to allow more retries.
-         * @param progressReceiver
-         *         {@link IProgressReceiver}
-         * @param accessConditions
-         *         {@link BlobAccessConditions}
-         * @param parallelism
-         *         A {@code int} that indicates the maximum number of chunks to download in parallel. Must be greater
-         *         than 0. May be null to accept default behavior.
-         * @param reliableDownloadOptions
-         *         {@link ReliableDownloadOptions}
-         */
-        public DownloadFromBlobOptions(Long chunkSize, IProgressReceiver progressReceiver,
-                BlobAccessConditions accessConditions, Integer parallelism, ReliableDownloadOptions reliableDownloadOptions) {
-            if (chunkSize != null) {
-                Utility.assertInBounds("chunkSize", chunkSize, 1, Long.MAX_VALUE);
-                this.chunkSize = chunkSize;
-            } else {
-                this.chunkSize = TransferManager.BLOB_DEFAULT_DOWNLOAD_BLOCK_SIZE;
-            }
-
-            if (parallelism != null) {
-                Utility.assertInBounds("parallelism", parallelism, 1, Integer.MAX_VALUE);
-                this.parallelism = parallelism;
-            } else {
-                this.parallelism = Constants.TRANSFER_MANAGER_DEFAULT_PARALLELISM;
-            }
-
-            this.accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
-            this.progressReceiver = progressReceiver;
-            this.reliableDownloadOptionsPerBlock = reliableDownloadOptions == null ?
-                    new ReliableDownloadOptions() : reliableDownloadOptions;
-        }
-    }
 }
