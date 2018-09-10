@@ -6,7 +6,7 @@ Azure Log Analytics provides agents for telemtry collection and enables deep ana
 
 ## Examples
 
-Please see [here] for code examples using this SDK. (https://github.com/Azure/azure-sdk-for-java/tree/master/loganalytics/data-plane/src/main/java/com/microsoft/azure/loganalytics/samples)
+Please see [here](https://github.com/Azure/azure-sdk-for-java/tree/master/loganalytics/data-plane/src/main/java/com/microsoft/azure/loganalytics/samples) for code examples using this SDK. 
 
 
 ## Download

@@ -6,7 +6,7 @@ Azure Application Insights provides SDKs for telemtry collection and enables dee
 
 ## Examples
 
-Please see [here] for code examples using this SDK. (https://github.com/Azure/azure-sdk-for-java/tree/master/applicationinsights/data-plane/src/main/java/com/microsoft/azure/applicationinsights/query/samples)
+Please see [here](https://github.com/Azure/azure-sdk-for-java/tree/master/applicationinsights/data-plane/src/main/java/com/microsoft/azure/applicationinsights/query/samples) for code examples using this SDK. 
 
 ## Download
 
