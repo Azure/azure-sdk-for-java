@@ -8,37 +8,49 @@
 
 package com.microsoft.azure.management.logic.v2018_07_01_preview;
 
-import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.microsoft.rest.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
  * Defines values for EdifactDecimalIndicator.
  */
-public final class EdifactDecimalIndicator extends ExpandableStringEnum<EdifactDecimalIndicator> {
-    /** Static value NotSpecified for EdifactDecimalIndicator. */
-    public static final EdifactDecimalIndicator NOT_SPECIFIED = fromString("NotSpecified");
+public enum EdifactDecimalIndicator {
+    /** Enum value NotSpecified. */
+    NOT_SPECIFIED("NotSpecified"),
 
-    /** Static value Comma for EdifactDecimalIndicator. */
-    public static final EdifactDecimalIndicator COMMA = fromString("Comma");
+    /** Enum value Comma. */
+    COMMA("Comma"),
 
-    /** Static value Decimal for EdifactDecimalIndicator. */
-    public static final EdifactDecimalIndicator DECIMAL = fromString("Decimal");
+    /** Enum value Decimal. */
+    DECIMAL("Decimal");
 
-    /**
-     * Creates or finds a EdifactDecimalIndicator from its string representation.
-     * @param name a name to look for
-     * @return the corresponding EdifactDecimalIndicator
-     */
-    @JsonCreator
-    public static EdifactDecimalIndicator fromString(String name) {
-        return fromString(name, EdifactDecimalIndicator.class);
+    /** The actual serialized value for a EdifactDecimalIndicator instance. */
+    private String value;
+
+    EdifactDecimalIndicator(String value) {
+        this.value = value;
     }
 
     /**
-     * @return known EdifactDecimalIndicator values
+     * Parses a serialized value to a EdifactDecimalIndicator instance.
+     *
+     * @param value the serialized value to parse.
+     * @return the parsed EdifactDecimalIndicator object, or null if unable to parse.
      */
-    public static Collection<EdifactDecimalIndicator> values() {
-        return values(EdifactDecimalIndicator.class);
+    @JsonCreator
+    public static EdifactDecimalIndicator fromString(String value) {
+        EdifactDecimalIndicator[] items = EdifactDecimalIndicator.values();
+        for (EdifactDecimalIndicator item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return this.value;
     }
 }

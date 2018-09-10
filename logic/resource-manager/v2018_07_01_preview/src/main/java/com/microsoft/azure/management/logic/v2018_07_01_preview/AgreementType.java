@@ -8,40 +8,52 @@
 
 package com.microsoft.azure.management.logic.v2018_07_01_preview;
 
-import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.microsoft.rest.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
  * Defines values for AgreementType.
  */
-public final class AgreementType extends ExpandableStringEnum<AgreementType> {
-    /** Static value NotSpecified for AgreementType. */
-    public static final AgreementType NOT_SPECIFIED = fromString("NotSpecified");
+public enum AgreementType {
+    /** Enum value NotSpecified. */
+    NOT_SPECIFIED("NotSpecified"),
 
-    /** Static value AS2 for AgreementType. */
-    public static final AgreementType AS2 = fromString("AS2");
+    /** Enum value AS2. */
+    AS2("AS2"),
 
-    /** Static value X12 for AgreementType. */
-    public static final AgreementType X12 = fromString("X12");
+    /** Enum value X12. */
+    X12("X12"),
 
-    /** Static value Edifact for AgreementType. */
-    public static final AgreementType EDIFACT = fromString("Edifact");
+    /** Enum value Edifact. */
+    EDIFACT("Edifact");
 
-    /**
-     * Creates or finds a AgreementType from its string representation.
-     * @param name a name to look for
-     * @return the corresponding AgreementType
-     */
-    @JsonCreator
-    public static AgreementType fromString(String name) {
-        return fromString(name, AgreementType.class);
+    /** The actual serialized value for a AgreementType instance. */
+    private String value;
+
+    AgreementType(String value) {
+        this.value = value;
     }
 
     /**
-     * @return known AgreementType values
+     * Parses a serialized value to a AgreementType instance.
+     *
+     * @param value the serialized value to parse.
+     * @return the parsed AgreementType object, or null if unable to parse.
      */
-    public static Collection<AgreementType> values() {
-        return values(AgreementType.class);
+    @JsonCreator
+    public static AgreementType fromString(String value) {
+        AgreementType[] items = AgreementType.values();
+        for (AgreementType item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return this.value;
     }
 }

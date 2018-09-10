@@ -11,6 +11,7 @@ package com.microsoft.azure.management.logic.v2018_07_01_preview.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.logic.v2018_07_01_preview.ErrorResponseException;
 import com.microsoft.azure.Page;
@@ -536,7 +537,7 @@ public class IntegrationAccountSessionsInner {
      * @param integrationAccountName The integration account name.
      * @param sessionName The integration account session name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String integrationAccountName, String sessionName) {
@@ -614,11 +615,11 @@ public class IntegrationAccountSessionsInner {
             });
     }
 
-    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, ErrorResponseException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
-                .registerError(ErrorResponseException.class)
+                .registerError(CloudException.class)
                 .build(response);
     }
 
