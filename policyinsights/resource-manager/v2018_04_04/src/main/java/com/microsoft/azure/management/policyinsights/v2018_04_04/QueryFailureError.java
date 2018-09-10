@@ -28,7 +28,7 @@ public class QueryFailureError {
     private String message;
 
     /**
-     * Get the code value.
+     * Get service specific error code which serves as the substatus for the HTTP error code.
      *
      * @return the code value
      */
@@ -37,7 +37,7 @@ public class QueryFailureError {
     }
 
     /**
-     * Set the code value.
+     * Set service specific error code which serves as the substatus for the HTTP error code.
      *
      * @param code the code value to set
      * @return the QueryFailureError object itself.
@@ -48,7 +48,7 @@ public class QueryFailureError {
     }
 
     /**
-     * Get the message value.
+     * Get description of the error.
      *
      * @return the message value
      */
@@ -57,7 +57,7 @@ public class QueryFailureError {
     }
 
     /**
-     * Set the message value.
+     * Set description of the error.
      *
      * @param message the message value to set
      * @return the QueryFailureError object itself.
