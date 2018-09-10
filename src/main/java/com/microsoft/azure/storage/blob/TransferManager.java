@@ -83,13 +83,8 @@ public final class TransferManager {
             }
 
             // Transform the specific RestResponse into a CommonRestResponse.
-<<<<<<< HEAD
             return blockBlobURL.upload(FlowableUtil.readFile(file), file.size(), optionsReal.httpHeaders(),
-                    optionsReal.metadata(), optionsReal.accessConditions())
-=======
-            return blockBlobURL.upload(FlowableUtil.readFile(file), file.size(), optionsReal.httpHeaders,
-                    optionsReal.metadata, optionsReal.accessConditions, null)
->>>>>>> Added context parameter. need to add tests
+                    optionsReal.metadata(), optionsReal.accessConditions(), null)
                     .map(CommonRestResponse::createFromPutBlobResponse);
         }
 
@@ -121,11 +116,7 @@ public final class TransferManager {
                     concatMapEager.
                      */
                     return blockBlobURL.stageBlock(blockId, data,
-<<<<<<< HEAD
-                            count, optionsReal.accessConditions().leaseAccessConditions())
-=======
-                            count, optionsReal.accessConditions.getLeaseAccessConditions(), null)
->>>>>>> Added context parameter. need to add tests
+                            count, optionsReal.accessConditions().leaseAccessConditions(), null)
                             .map(x -> blockId).toObservable();
 
                     /*
@@ -149,13 +140,9 @@ public final class TransferManager {
                 can "map" it into a call to commitBlockList.
                 */
                 .flatMap(ids ->
-<<<<<<< HEAD
                         blockBlobURL.commitBlockList(ids, optionsReal.httpHeaders(), optionsReal.metadata(),
-                                optionsReal.accessConditions()))
-=======
-                        blockBlobURL.commitBlockList(ids, optionsReal.httpHeaders, optionsReal.metadata,
-                                optionsReal.accessConditions, null))
->>>>>>> Added context parameter. need to add tests
+                                optionsReal.accessConditions(), null))
+
                 // Finally, we must turn the specific response type into a CommonRestResponse by mapping.
                 .map(CommonRestResponse::createFromPutBlockListResponse);
     }
@@ -243,14 +230,8 @@ public final class TransferManager {
         if one was not specified. We use a single for this because we may have to make a REST call to get the length to
         calculate the count and we need to maintain asynchronicity.
          */
-<<<<<<< HEAD
-
         if (r.count() == null || o.accessConditions().modifiedAccessConditions().ifMatch() == null) {
-            return blobURL.getProperties(o.accessConditions())
-=======
-        if (r.getCount() == null || o.accessConditions.getHttpAccessConditions().getIfMatch() == ETag.NONE) {
-            return blobURL.getProperties(o.accessConditions, null)
->>>>>>> Added context parameter. need to add tests
+            return blobURL.getProperties(o.accessConditions(), null)
                     .map(response -> {
                         BlobAccessConditions newConditions;
                         if (o.accessConditions().modifiedAccessConditions().ifMatch() == null) {

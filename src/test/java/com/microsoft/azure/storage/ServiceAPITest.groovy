@@ -30,12 +30,18 @@ import com.microsoft.azure.storage.blob.models.ContainerItem
 import com.microsoft.azure.storage.blob.models.CorsRule
 import com.microsoft.azure.storage.blob.models.Logging
 import com.microsoft.azure.storage.blob.models.Metrics
+import com.microsoft.azure.storage.blob.models.PageBlobCopyIncrementalHeaders
 import com.microsoft.azure.storage.blob.models.RetentionPolicy
+import com.microsoft.azure.storage.blob.models.ServiceGetAccountInfoHeaders
+import com.microsoft.azure.storage.blob.models.ServiceGetPropertiesHeaders
+import com.microsoft.azure.storage.blob.models.ServiceGetStatisticsHeaders
 import com.microsoft.azure.storage.blob.models.ServiceGetStatisticsResponse
+import com.microsoft.azure.storage.blob.models.ServiceListContainersSegmentHeaders
 import com.microsoft.azure.storage.blob.models.ServiceListContainersSegmentResponse
 import com.microsoft.azure.storage.blob.models.ServiceSetPropertiesHeaders
 import com.microsoft.azure.storage.blob.models.StaticWebsite
 import com.microsoft.azure.storage.blob.models.StorageServiceProperties
+import com.microsoft.rest.v2.http.HttpPipeline
 
 class ServiceAPITest extends APISpec {
     def setup() {
@@ -146,6 +152,21 @@ class ServiceAPITest extends APISpec {
         thrown(StorageException)
     }
 
+    def "List containers context"() {
+        setup:
+        def pipeline =
+                HttpPipeline.build(getStubFactory(getContextStubPolicy(200, ServiceListContainersSegmentHeaders)))
+
+        def su = primaryServiceURL.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        su.listContainersSegment(null, null, defaultContext)
+
+        then:
+        notThrown(RuntimeException)
+    }
+
     def validatePropsSet(StorageServiceProperties sent, StorageServiceProperties received) {
         return received.logging().read() == sent.logging().read() &&
                 received.logging().delete() == sent.logging().delete() &&
@@ -236,6 +257,21 @@ class ServiceAPITest extends APISpec {
         thrown(StorageException)
     }
 
+    def "Set props context"() {
+        setup:
+        def pipeline =
+                HttpPipeline.build(getStubFactory(getContextStubPolicy(200, ServiceSetPropertiesHeaders)))
+
+        def su = primaryServiceURL.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        su.setProperties(new StorageServiceProperties(), defaultContext)
+
+        then:
+        notThrown(RuntimeException)
+    }
+
     def "Get props error"() {
         when:
         new ServiceURL(new URL("https://error.blob.core.windows.net"),
@@ -243,6 +279,21 @@ class ServiceAPITest extends APISpec {
 
         then:
         thrown(StorageException)
+    }
+
+    def "Get props context"() {
+        setup:
+        def pipeline =
+                HttpPipeline.build(getStubFactory(getContextStubPolicy(200, ServiceGetPropertiesHeaders)))
+
+        def su = primaryServiceURL.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        su.getProperties(defaultContext)
+
+        then:
+        notThrown(RuntimeException)
     }
 
     def "Get stats"() {
@@ -269,6 +320,21 @@ class ServiceAPITest extends APISpec {
         thrown(StorageException)
     }
 
+    def "Get stats context"() {
+        setup:
+        def pipeline =
+                HttpPipeline.build(getStubFactory(getContextStubPolicy(200, ServiceGetStatisticsHeaders)))
+
+        def su = primaryServiceURL.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        su.getStatistics(defaultContext)
+
+        then:
+        notThrown(RuntimeException)
+    }
+
     def "Get account info"() {
         when:
         def response = primaryServiceURL.getAccountInfo(null).blockingGet()
@@ -289,5 +355,20 @@ class ServiceAPITest extends APISpec {
 
         then:
         thrown(StorageException)
+    }
+
+    def "Get account info context"() {
+        setup:
+        def pipeline =
+                HttpPipeline.build(getStubFactory(getContextStubPolicy(200, ServiceGetAccountInfoHeaders)))
+
+        def su = primaryServiceURL.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        su.getAccountInfo(defaultContext)
+
+        then:
+        notThrown(RuntimeException)
     }
 }

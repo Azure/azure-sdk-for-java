@@ -18,6 +18,7 @@ package com.microsoft.azure.storage
 import com.microsoft.azure.storage.blob.*
 import com.microsoft.azure.storage.blob.models.*
 import com.microsoft.rest.v2.http.UnexpectedLengthException
+import com.microsoft.rest.v2.http.HttpPipeline
 import io.reactivex.Flowable
 import spock.lang.Unroll
 
@@ -155,6 +156,22 @@ class PageBlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
+    def "Create context"() {
+        setup:
+        def pipeline =
+                HttpPipeline.build(getStubFactory(getContextStubPolicy(201, PageBlobCreateHeaders)))
+
+        bu = bu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        bu.create(512, null, null, null, null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
+    }
+
+
     def "Upload page"() {
         when:
         PageBlobUploadPagesResponse response = bu.uploadPages(
@@ -263,6 +280,21 @@ class PageBlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
+    def "Upload page context"() {
+        setup:
+        def pipeline =
+                HttpPipeline.build(getStubFactory(getContextStubPolicy(201, PageBlobUploadPagesHeaders)))
+
+        bu = bu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        bu.uploadPages(new PageRange().withStart(0).withEnd(511), defaultFlowable, null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
+    }
+
     def "Clear page"() {
         setup:
         bu.uploadPages(new PageRange().withStart(0).withEnd(PageBlobURL.PAGE_BYTES - 1),
@@ -359,6 +391,22 @@ class PageBlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
+    def "Clear page context"() {
+        setup:
+        def pipeline =
+                HttpPipeline.build(getStubFactory(getContextStubPolicy(201, PageBlobClearPagesHeaders)))
+
+        bu = bu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        bu.clearPages(new PageRange().withStart(0).withEnd(511), null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
+    }
+
+
     def "Get page ranges"() {
         setup:
         bu.uploadPages(new PageRange().withStart(0).withEnd(PageBlobURL.PAGE_BYTES - 1),
@@ -433,6 +481,21 @@ class PageBlobAPITest extends APISpec {
 
         then:
         thrown(StorageException)
+    }
+
+    def "Get page ranges context"() {
+        setup:
+        def pipeline =
+                HttpPipeline.build(getStubFactory(getContextStubPolicy(200, PageBlobGetPageRangesHeaders)))
+
+        bu = bu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        bu.getPageRanges(null, null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
     }
 
     def "Get page ranges diff"() {
@@ -527,6 +590,21 @@ class PageBlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
+    def "Get page ranges diff context"() {
+        setup:
+        def pipeline =
+                HttpPipeline.build(getStubFactory(getContextStubPolicy(200, PageBlobGetPageRangesDiffHeaders)))
+
+        bu = bu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        bu.getPageRangesDiff(null, "snapshot", null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
+    }
+
     // Test the serialization of PageRange with illegal bounds
     @Unroll
     def "PageRange IA"() {
@@ -619,6 +697,21 @@ class PageBlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
+    def "Resize context"() {
+        setup:
+        def pipeline =
+                HttpPipeline.build(getStubFactory(getContextStubPolicy(200, PageBlobResizeHeaders)))
+
+        bu = bu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        bu.resize(512, null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
+    }
+
     @Unroll
     def "Sequence number"() {
         setup:
@@ -696,6 +789,21 @@ class PageBlobAPITest extends APISpec {
 
         then:
         thrown(StorageException)
+    }
+
+    def "Sequence number context"() {
+        setup:
+        def pipeline =
+                HttpPipeline.build(getStubFactory(getContextStubPolicy(200, PageBlobUpdateSequenceNumberHeaders)))
+
+        bu = bu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        bu.updateSequenceNumber(SequenceNumberActionType.UPDATE, 3, null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
     }
 
     def "Start incremental copy"() {
@@ -776,5 +884,20 @@ class PageBlobAPITest extends APISpec {
 
         then:
         thrown(StorageException)
+    }
+
+    def "Start incremental copy context"() {
+        setup:
+        def pipeline =
+                HttpPipeline.build(getStubFactory(getContextStubPolicy(202, PageBlobCopyIncrementalHeaders)))
+
+        bu = bu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        bu.copyIncremental(bu.toURL(), "snapshot", null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
     }
 }

@@ -142,6 +142,8 @@ public final class BlockBlobURL extends BlobURL {
             BlobAccessConditions accessConditions, Context context) {
         metadata = metadata == null ? Metadata.NONE : metadata;
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
+        context = context == null ? Context.NONE : context;
+
         return addErrorWrappingToSingle(this.storageClient.generatedBlockBlobs().uploadWithRestResponseAsync(context,
                 data, length, null, metadata, null, headers, accessConditions.leaseAccessConditions(),
                 accessConditions.modifiedAccessConditions()));
@@ -182,6 +184,7 @@ public final class BlockBlobURL extends BlobURL {
      */
     public Single<BlockBlobStageBlockResponse> stageBlock(String base64BlockID, Flowable<ByteBuffer> data, long length,
             LeaseAccessConditions leaseAccessConditions, Context context) {
+        context = context == null ? Context.NONE : context;
 
         return addErrorWrappingToSingle(this.storageClient.generatedBlockBlobs().stageBlockWithRestResponseAsync(
                 context, base64BlockID, length, data, null, null, null, leaseAccessConditions));
@@ -222,6 +225,7 @@ public final class BlockBlobURL extends BlobURL {
             BlobRange sourceRange, byte[] sourceContentMD5, LeaseAccessConditions leaseAccessConditions,
             Context context) {
         sourceRange = sourceRange == null ? BlobRange.DEFAULT : sourceRange;
+        context = context == null ? Context.NONE : context;
 
         return addErrorWrappingToSingle(
                 this.storageClient.generatedBlockBlobs().stageBlockFromURLWithRestResponseAsync(context,
@@ -254,6 +258,7 @@ public final class BlockBlobURL extends BlobURL {
      */
     public Single<BlockBlobGetBlockListResponse> getBlockList(BlockListType listType,
             LeaseAccessConditions leaseAccessConditions, Context context) {
+        context = context == null ? Context.NONE : context;
 
         return addErrorWrappingToSingle(this.storageClient.generatedBlockBlobs().getBlockListWithRestResponseAsync(
                 context, listType, null, null, null, leaseAccessConditions));
@@ -296,6 +301,8 @@ public final class BlockBlobURL extends BlobURL {
             BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions, Context context) {
         metadata = metadata == null ? Metadata.NONE : metadata;
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
+        context = context == null ? Context.NONE : context;
+
         return addErrorWrappingToSingle(this.storageClient.generatedBlockBlobs().commitBlockListWithRestResponseAsync(
                 context, new BlockLookupList().withLatest(base64BlockIDs), null,
                 metadata, null, headers, accessConditions.leaseAccessConditions(),

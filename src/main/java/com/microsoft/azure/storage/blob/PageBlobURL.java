@@ -139,6 +139,7 @@ public final class PageBlobURL extends BlobURL {
             throw new IllegalArgumentException("SequenceNumber must be greater than or equal to 0.");
         }
         metadata = metadata == null ? Metadata.NONE : metadata;
+        context = context == null ? Context.NONE : context;
 
         // TODO: What if you pass 0 for pageblob size? Validate?
         return addErrorWrappingToSingle(this.storageClient.generatedPageBlobs().createWithRestResponseAsync(
@@ -188,6 +189,7 @@ public final class PageBlobURL extends BlobURL {
             throw new IllegalArgumentException("pageRange cannot be null.");
         }
         String pageRangeStr = pageRangeToString(pageRange);
+        context = context == null ? Context.NONE : context;
 
         return addErrorWrappingToSingle(this.storageClient.generatedPageBlobs().uploadPagesWithRestResponseAsync(
                 context, body, pageRange.end()-pageRange.start()+1, null, null, pageRangeStr, null,
@@ -231,6 +233,7 @@ public final class PageBlobURL extends BlobURL {
             throw new IllegalArgumentException("pageRange cannot be null.");
         }
         String pageRangeStr = pageRangeToString(pageRange);
+        context = context == null ? Context.NONE : context;
 
          return addErrorWrappingToSingle(this.storageClient.generatedPageBlobs().clearPagesWithRestResponseAsync(
                  context, 0, null, pageRangeStr, null, pageBlobAccessConditions.leaseAccessConditions(),
@@ -264,6 +267,7 @@ public final class PageBlobURL extends BlobURL {
             BlobAccessConditions accessConditions, Context context) {
         blobRange = blobRange == null ? BlobRange.DEFAULT : blobRange;
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
+        context = context == null ? Context.NONE : context;
 
         return addErrorWrappingToSingle(this.storageClient.generatedPageBlobs().getPageRangesWithRestResponseAsync(
                 context, null, null, blobRange.toString(), null, accessConditions.leaseAccessConditions(),
@@ -300,6 +304,7 @@ public final class PageBlobURL extends BlobURL {
             BlobAccessConditions accessConditions, Context context) {
         blobRange = blobRange == null ? BlobRange.DEFAULT : blobRange;
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
+        context = context == null ? Context.NONE : context;
 
         if (prevSnapshot == null) {
             throw new IllegalArgumentException("prevSnapshot cannot be null");
@@ -340,6 +345,7 @@ public final class PageBlobURL extends BlobURL {
             throw new IllegalArgumentException("size must be a multiple of PageBlobURL.PAGE_BYTES.");
         }
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
+        context = context == null ? Context.NONE : context;
 
         return addErrorWrappingToSingle(this.storageClient.generatedPageBlobs().resizeWithRestResponseAsync(
                 context, size, null, null, accessConditions.leaseAccessConditions(),
@@ -379,9 +385,8 @@ public final class PageBlobURL extends BlobURL {
             throw new IllegalArgumentException("SequenceNumber must be greater than or equal to 0.");
         }
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
-        if(action == SequenceNumberActionType.INCREMENT) {
-           sequenceNumber = null;
-        }
+        sequenceNumber = action == SequenceNumberActionType.INCREMENT ? null : sequenceNumber;
+        context = context == null ? Context.NONE : context;
 
         return addErrorWrappingToSingle(
                 this.storageClient.generatedPageBlobs().updateSequenceNumberWithRestResponseAsync(context,
@@ -414,6 +419,8 @@ public final class PageBlobURL extends BlobURL {
      */
     public Single<PageBlobCopyIncrementalResponse> copyIncremental(URL source, String snapshot,
             ModifiedAccessConditions modifiedAccessConditions, Context context) {
+        context = context == null ? Context.NONE : context;
+
         UrlBuilder builder = UrlBuilder.parse(source);
         builder.setQueryParameter(Constants.SNAPSHOT_QUERY_PARAMETER, snapshot);
         try {

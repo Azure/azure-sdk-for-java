@@ -109,6 +109,8 @@ public final class ServiceURL extends StorageURL {
     public Single<ServiceListContainersSegmentResponse> listContainersSegment(String marker,
             ListContainersOptions options, Context context) {
         options = options == null ? ListContainersOptions.DEFAULT : options;
+        context = context == null ? Context.NONE : context;
+
         return addErrorWrappingToSingle(
                 this.storageClient.generatedServices().listContainersSegmentWithRestResponseAsync(context,
                         options.prefix(), marker, options.maxResults(), options.details().toIncludeType(), null, null));
@@ -133,6 +135,8 @@ public final class ServiceURL extends StorageURL {
      *      parent, forming a linked list.
      */
     public Single<ServiceGetPropertiesResponse> getProperties(Context context) {
+        context = context == null ? Context.NONE : context;
+
         return addErrorWrappingToSingle(
                 this.storageClient.generatedServices().getPropertiesWithRestResponseAsync(context, null, null));
     }
@@ -160,6 +164,8 @@ public final class ServiceURL extends StorageURL {
      *      Emits the successful response.
      */
     public Single<ServiceSetPropertiesResponse> setProperties(StorageServiceProperties properties, Context context) {
+        context = context == null ? Context.NONE : context;
+
         return addErrorWrappingToSingle(
                 this.storageClient.generatedServices().setPropertiesWithRestResponseAsync(context, properties, null,
                 null));
@@ -186,6 +192,8 @@ public final class ServiceURL extends StorageURL {
      *      Emits the successful response.
      */
     public Single<ServiceGetStatisticsResponse> getStatistics(Context context) {
+        context = context == null ? Context.NONE : context;
+
         return addErrorWrappingToSingle(
                 this.storageClient.generatedServices().getStatisticsWithRestResponseAsync(context, null, null));
     }
@@ -209,6 +217,8 @@ public final class ServiceURL extends StorageURL {
      *      Emits the successful response.
      */
     public Single<ServiceGetAccountInfoResponse> getAccountInfo(Context context) {
+        context = context == null ? Context.NONE : context;
+
         return addErrorWrappingToSingle(
                 this.storageClient.generatedServices().getAccountInfoWithRestResponseAsync(context));
     }

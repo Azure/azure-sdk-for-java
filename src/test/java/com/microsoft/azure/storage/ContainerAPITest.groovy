@@ -33,7 +33,6 @@ import com.microsoft.azure.storage.blob.StorageURL
 import com.microsoft.azure.storage.blob.models.AccessPolicy
 import com.microsoft.azure.storage.blob.models.AccessTier
 import com.microsoft.azure.storage.blob.models.AppendBlobCreateResponse
-import com.microsoft.azure.storage.blob.models.BlobGetAccountInfoHeaders
 import com.microsoft.azure.storage.blob.models.BlobGetPropertiesResponse
 import com.microsoft.azure.storage.blob.models.BlobItem
 import com.microsoft.azure.storage.blob.models.BlobType
@@ -46,6 +45,7 @@ import com.microsoft.azure.storage.blob.models.ContainerDeleteHeaders
 import com.microsoft.azure.storage.blob.models.ContainerDeleteResponse
 import com.microsoft.azure.storage.blob.models.ContainerGetAccessPolicyHeaders
 import com.microsoft.azure.storage.blob.models.ContainerGetAccessPolicyResponse
+import com.microsoft.azure.storage.blob.models.ContainerGetAccountInfoHeaders
 import com.microsoft.azure.storage.blob.models.ContainerGetPropertiesHeaders
 import com.microsoft.azure.storage.blob.models.ContainerGetPropertiesResponse
 import com.microsoft.azure.storage.blob.models.ContainerListBlobFlatSegmentHeaders
@@ -877,6 +877,21 @@ class ContainerAPITest extends APISpec {
         thrown(StorageException)
     }
 
+    def "List blobs flat context"() {
+        setup:
+        def pipeline =
+                HttpPipeline.build(getStubFactory(getContextStubPolicy(200, ContainerListBlobFlatSegmentHeaders)))
+
+        cu = cu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        cu.listBlobsFlatSegment(null, null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
+    }
+
     def "List blobs hierarchy"() {
         setup:
         String name = generateBlobName()
@@ -1089,6 +1104,21 @@ class ContainerAPITest extends APISpec {
         thrown(StorageException)
     }
 
+    def "List blobs hier context"() {
+        setup:
+        def pipeline =
+                HttpPipeline.build(getStubFactory(getContextStubPolicy(200, ContainerListBlobHierarchySegmentHeaders)))
+
+        cu = cu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        cu.listBlobsHierarchySegment(null, "/", null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
+    }
+
     @Unroll
     def "Acquire lease"() {
         setup:
@@ -1172,6 +1202,21 @@ class ContainerAPITest extends APISpec {
         thrown(StorageException)
     }
 
+    def "Acquire lease context"() {
+        setup:
+        def pipeline =
+                HttpPipeline.build(getStubFactory(getContextStubPolicy(201, ContainerAcquireLeaseHeaders)))
+
+        cu = cu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        cu.acquireLease(null, 20, null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
+    }
+
     def "Renew lease"() {
         setup:
         String leaseID = setupContainerLeaseCondition(cu, receivedLeaseID)
@@ -1247,6 +1292,22 @@ class ContainerAPITest extends APISpec {
         thrown(StorageException)
     }
 
+    def "Renew lease context"() {
+        setup:
+        def pipeline =
+                HttpPipeline.build(getStubFactory(getContextStubPolicy(200, ContainerRenewLeaseHeaders)))
+
+        cu = cu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        cu.renewLease("id", null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
+    }
+
+
     def "Release lease"() {
         setup:
         String leaseID = setupContainerLeaseCondition(cu, receivedLeaseID)
@@ -1319,6 +1380,21 @@ class ContainerAPITest extends APISpec {
 
         then:
         thrown(StorageException)
+    }
+
+    def "Release lease context"() {
+        setup:
+        def pipeline =
+                HttpPipeline.build(getStubFactory(getContextStubPolicy(200, ContainerReleaseLeaseHeaders)))
+
+        cu = cu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        cu.releaseLease("id", null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
     }
 
     @Unroll
@@ -1407,6 +1483,21 @@ class ContainerAPITest extends APISpec {
         thrown(StorageException)
     }
 
+    def "Break lease context"() {
+        setup:
+        def pipeline =
+                HttpPipeline.build(getStubFactory(getContextStubPolicy(202, ContainerBreakLeaseHeaders)))
+
+        cu = cu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        cu.breakLease(20, null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
+    }
+
     def "Change lease"() {
         setup:
         String leaseID = setupContainerLeaseCondition(cu, receivedLeaseID)
@@ -1480,6 +1571,21 @@ class ContainerAPITest extends APISpec {
 
         then:
         thrown(StorageException)
+    }
+
+    def "Change lease context"() {
+        setup:
+        def pipeline =
+                HttpPipeline.build(getStubFactory(getContextStubPolicy(200, ContainerChangeLeaseHeaders)))
+
+        cu = cu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        cu.changeLease("id", "id", null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
     }
 
     @Unroll
@@ -1601,4 +1707,20 @@ class ContainerAPITest extends APISpec {
         then:
         thrown(StorageException)
     }
+
+    def "Get account info context"() {
+        setup:
+        def pipeline =
+                HttpPipeline.build(getStubFactory(getContextStubPolicy(200, ContainerGetAccountInfoHeaders)))
+
+        cu = cu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        cu.getAccountInfo(defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
+    }
+
 }

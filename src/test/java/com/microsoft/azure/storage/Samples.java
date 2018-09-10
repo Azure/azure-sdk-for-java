@@ -180,12 +180,7 @@ public class Samples {
                          List the blob(s) in our container; since a container may hold millions of blobs, this is done
                          one segment at a time.
                          */
-<<<<<<< HEAD
-                        containerURL.listBlobsFlatSegment(null, new ListBlobsOptions().withMaxResults(1)))
-=======
-                        containerURL.listBlobsFlatSegment(null, new ListBlobsOptions(null, null,
-                                1), null))
->>>>>>> Added context parameter. need to add tests
+                        containerURL.listBlobsFlatSegment(null, new ListBlobsOptions().withMaxResults(1), null))
                 .flatMap(containerListBlobFlatSegmentResponse ->
                         // The asynchronous requests require we use recursion to continue our listing.
                         listBlobsFlatHelper(containerURL, containerListBlobFlatSegmentResponse))
@@ -232,12 +227,7 @@ public class Samples {
             The presence of the marker indicates that there are more blobs to list, so we make another call to
             listBlobsFlatSegment and pass the result through this helper function.
              */
-<<<<<<< HEAD
-            return containerURL.listBlobsFlatSegment(nextMarker, new ListBlobsOptions().withMaxResults(1))
-=======
-            return containerURL.listBlobsFlatSegment(nextMarker, new ListBlobsOptions(null, null,
-                    1), null)
->>>>>>> Added context parameter. need to add tests
+            return containerURL.listBlobsFlatSegment(nextMarker, new ListBlobsOptions().withMaxResults(1), null)
                     .flatMap(containersListBlobFlatSegmentResponse ->
                             listBlobsFlatHelper(containerURL, containersListBlobFlatSegmentResponse));
         }
@@ -281,11 +271,7 @@ public class Samples {
             listBlobsHierarchySegment and pass the result through this helper function.
              */
             return containerURL.listBlobsHierarchySegment(nextMarker, response.body().delimiter(),
-<<<<<<< HEAD
-                    new ListBlobsOptions().withMaxResults(1))
-=======
-                    new ListBlobsOptions(null, null, 1), null)
->>>>>>> Added context parameter. need to add tests
+                    new ListBlobsOptions().withMaxResults(1), null)
                     .flatMap(containersListBlobHierarchySegmentResponse ->
                             listBlobsHierarchyHelper(containerURL, containersListBlobHierarchySegmentResponse));
         }
@@ -674,7 +660,7 @@ public class Samples {
                         // Attempt to read the blob with anonymous credentials.
                         anonymousURL.download(null, null, false, null)
                 )
-                .toCompletable()
+                .ignoreElement()
                 .onErrorResumeNext(throwable -> {
                     /*
                     We expected this error because the service returns an HTTP 404 status code when a blob exists but
@@ -684,7 +670,7 @@ public class Samples {
                             ((RestException) throwable).response().statusCode() == 404) {
                         // This is how we change the container's permission to allow public/anonymous access.
                         return containerURL.setAccessPolicy(PublicAccessType.BLOB, null, null, null)
-                                .toCompletable();
+                                .ignoreElement();
                     } else {
                         return Completable.error(throwable);
                     }
@@ -778,23 +764,9 @@ public class Samples {
                          */
                         blobURL.upload(Flowable.just(ByteBuffer.wrap("Text-2".getBytes())), "Text-2".length(),
                                 null, null,
-<<<<<<< HEAD
                                 new BlobAccessConditions().withModifiedAccessConditions(
                                         new ModifiedAccessConditions().withIfMatch(
-                                                getPropertiesResponse.headers().eTag()))
-
-=======
-                                new BlobAccessConditions(
-                                        new HTTPAccessConditions(
-                                                null,
-                                                null,
-                                                new ETag(getPropertiesResponse.headers().eTag()),
-                                                null),
-                                        null,
-                                        null,
-                                        null), null)
->>>>>>> Added context parameter. need to add tests
-                )
+                                                getPropertiesResponse.headers().eTag())), null))
                 .flatMap(blockBlobUploadResponse -> {
                     System.out.println("Success: " + blockBlobUploadResponse.statusCode());
 
@@ -815,25 +787,10 @@ public class Samples {
                     return Completable.complete();
                 }).andThen(
                 // Delete the blob if it exists (succeeds).
-                blobURL.delete(DeleteSnapshotsOptionType.INCLUDE,
-<<<<<<< HEAD
-                        new BlobAccessConditions().withModifiedAccessConditions(
-                                // Wildcard will match any etag.
-                                new ModifiedAccessConditions().withIfMatch("*"))))
-                )
-=======
-                        new BlobAccessConditions(
-                                new HTTPAccessConditions(
-                                        null,
-                                        null,
-                                        ETag.ANY,
-                                        null),
-                                null,
-                                null,
-                                null),
-                        null)
-        )
->>>>>>> Added context parameter. need to add tests
+                                blobURL.delete(DeleteSnapshotsOptionType.INCLUDE,
+                                        new BlobAccessConditions().withModifiedAccessConditions(
+                                                // Wildcard will match any etag.
+                                                new ModifiedAccessConditions().withIfMatch("*")), null))
                 .flatMap(blobDeleteResponse -> {
                     System.out.println("Success: " + blobDeleteResponse.statusCode());
                     return containerURL.delete(null, null);
@@ -1002,20 +959,8 @@ public class Samples {
                      will be cleared. In order to preserve the existing HTTP properties, they must be re-set along with
                      the added or updated properties.
                      */
-<<<<<<< HEAD
                     BlobHTTPHeaders headers = new BlobHTTPHeaders().withBlobContentType("text/plain");
-                    return blobURL.setHTTPHeaders(headers, null);
-=======
-                    BlobHTTPHeaders headers = new BlobHTTPHeaders(
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            "text/plain"
-                    );
                     return blobURL.setHTTPHeaders(headers, null, null);
->>>>>>> Added context parameter. need to add tests
                 })
                 .flatMap(response ->
                         // Delete the container.
@@ -1142,17 +1087,12 @@ public class Samples {
                         Observable.range(0, 5))
                 .concatMapCompletable(i -> {
                     String text = String.format(Locale.ROOT, "Appending block #%d\n", i);
-<<<<<<< HEAD
                     /*
                     NOTE: The Flowable containing the data must be replayable to support retries. That is, it must
                     yield the same data every time it is subscribed to.
                      */
                     return blobURL.appendBlock(Flowable.just(ByteBuffer.wrap(text.getBytes())), text.length(), null,
                             null).ignoreElement();
-=======
-                    return blobURL.appendBlock(Flowable.just(ByteBuffer.wrap(text.getBytes())), text.length(),
-                            null, null).toCompletable();
->>>>>>> Added context parameter. need to add tests
                 })
                 // Download the blob.
                 .andThen(blobURL.download(null, null, false, null))
@@ -1322,12 +1262,7 @@ public class Samples {
                                                     a time.
                                                     */
                                                     containerURL.listBlobsFlatSegment(null,
-<<<<<<< HEAD
-                                                            new ListBlobsOptions().withMaxResults(1)))
-=======
-                                                            new ListBlobsOptions(null, null,
-                                                                    1), null))
->>>>>>> Added context parameter. need to add tests
+                                                            new ListBlobsOptions().withMaxResults(1), null))
                                             .flatMap(response2 ->
                                                     /*
                                                      The asynchronous requests require we use recursion to continue our
@@ -1977,9 +1912,9 @@ public class Samples {
 
         // <tier>
         // BlockBlobs and PageBlobs have different sets of tiers.
-        blockBlobURL.setTier(AccessTier.HOT, null)
+        blockBlobURL.setTier(AccessTier.HOT, null, null)
                 .subscribe();
-        pageBlobURL.setTier(AccessTier.P6, null)
+        pageBlobURL.setTier(AccessTier.P6, null, null)
                 .subscribe();
         // </tier>
 
@@ -1997,7 +1932,6 @@ public class Samples {
                 .flatMap(response -> {
                     Metadata newMetadata = new Metadata(response.headers().metadata());
                     // If one of the HTTP properties is set, all must be set again or they will be cleared.
-<<<<<<< HEAD
                     BlobHTTPHeaders newHeaders = new BlobHTTPHeaders()
                             .withBlobCacheControl(response.headers().cacheControl())
                             .withBlobContentDisposition(response.headers().contentDisposition())
@@ -2005,15 +1939,8 @@ public class Samples {
                             .withBlobContentLanguage("new language")
                             .withBlobContentMD5(response.headers().contentMD5())
                             .withBlobContentType("new content");
-                    return blobURL.setMetadata(newMetadata, null)
-                            .flatMap(nextResponse -> blobURL.setHTTPHeaders(newHeaders, null));
-=======
-                    BlobHTTPHeaders newHeaders = new BlobHTTPHeaders(response.headers().cacheControl(),
-                            response.headers().contentDisposition(), response.headers().contentEncoding(),
-                            "new language", response.headers().contentMD5(), "new content");
                     return blobURL.setMetadata(newMetadata, null, null)
                             .flatMap(nextResponse -> blobURL.setHTTPHeaders(newHeaders, null, null));
->>>>>>> Added context parameter. need to add tests
                 })
                 .subscribe();
         // </properties_metadata>
@@ -2051,12 +1978,7 @@ public class Samples {
         // </container_policy>
 
         // <list_blobs_flat>
-<<<<<<< HEAD
-        containerURL.listBlobsFlatSegment(null, new ListBlobsOptions().withMaxResults(1))
-=======
-        containerURL.listBlobsFlatSegment(null, new ListBlobsOptions(null, null,
-                1), null)
->>>>>>> Added context parameter. need to add tests
+        containerURL.listBlobsFlatSegment(null, new ListBlobsOptions().withMaxResults(1), null)
                 .flatMap(containersListBlobFlatSegmentResponse ->
                         // The asynchronous requests require we use recursion to continue our listing.
                         listBlobsFlatHelper(containerURL, containersListBlobFlatSegmentResponse))
@@ -2064,12 +1986,7 @@ public class Samples {
         // </list_blobs_flat>
 
         // <list_blobs_hierarchy>
-        containerURL.listBlobsHierarchySegment(null, "my_delimiter",
-<<<<<<< HEAD
-                new ListBlobsOptions().withMaxResults(1))
-=======
-                new ListBlobsOptions(null, null, 1), null)
->>>>>>> Added context parameter. need to add tests
+        containerURL.listBlobsHierarchySegment(null, "my_delimiter", new ListBlobsOptions().withMaxResults(1), null)
                 .flatMap(containersListBlobHierarchySegmentResponse ->
                         // The asynchronous requests require we use recursion to continue our listing.
                         listBlobsHierarchyHelper(containerURL, containersListBlobHierarchySegmentResponse))
@@ -2145,12 +2062,7 @@ public class Samples {
         PageBlobURL incrementalCopy = containerURL.createPageBlobURL("incremental");
         pageBlobURL.createSnapshot(null, null, null)
                 .flatMap(response ->
-<<<<<<< HEAD
-                        incrementalCopy.copyIncremental(pageBlobURL.toURL(), response.headers().snapshot(), null))
-=======
-                        incrementalCopy.copyIncremental(pageBlobURL.toURL(), response.headers().snapshot(),
-                                null, null))
->>>>>>> Added context parameter. need to add tests
+                        incrementalCopy.copyIncremental(pageBlobURL.toURL(), response.headers().snapshot(), null, null))
                 .flatMap(response -> {
                     byte[] pageData = new byte[PageBlobURL.PAGE_BYTES];
                     for (int i = 0; i < PageBlobURL.PAGE_BYTES; i++) {
@@ -2162,12 +2074,7 @@ public class Samples {
                 .flatMap(response ->
                         pageBlobURL.createSnapshot(null, null, null))
                 .flatMap(response ->
-<<<<<<< HEAD
-                        incrementalCopy.copyIncremental(pageBlobURL.toURL(), response.headers().snapshot(), null))
-=======
-                        incrementalCopy.copyIncremental(pageBlobURL.toURL(), response.headers().snapshot(),
-                                null, null))
->>>>>>> Added context parameter. need to add tests
+                        incrementalCopy.copyIncremental(pageBlobURL.toURL(), response.headers().snapshot(), null, null))
                 .subscribe();
         /*
         The result is a new blob with two new snapshots that correspond to the source blob snapshots but with different

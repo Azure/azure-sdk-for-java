@@ -189,6 +189,8 @@ public final class ContainerURL extends StorageURL {
      */
     public Single<ContainerCreateResponse> create(Metadata metadata, PublicAccessType accessType, Context context) {
         metadata = metadata == null ? Metadata.NONE : metadata;
+        context = context == null ? Context.NONE : context;
+
             return addErrorWrappingToSingle(this.storageClient.generatedContainers().createWithRestResponseAsync(
                     context, null, metadata, accessType, null));
 
@@ -217,6 +219,7 @@ public final class ContainerURL extends StorageURL {
      */
     public Single<ContainerDeleteResponse> delete(ContainerAccessConditions accessConditions, Context context) {
         accessConditions = accessConditions == null ? ContainerAccessConditions.NONE : accessConditions;
+        context = context == null ? Context.NONE : context;
 
         if (!validateNoEtag(accessConditions.modifiedAccessConditions())) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
@@ -251,6 +254,7 @@ public final class ContainerURL extends StorageURL {
      */
     public Single<ContainerGetPropertiesResponse> getProperties(LeaseAccessConditions leaseAccessConditions,
             Context context) {
+        context = context == null ? Context.NONE : context;
 
         return addErrorWrappingToSingle(this.storageClient.generatedContainers()
                 .getPropertiesWithRestResponseAsync(context, null, null, leaseAccessConditions));
@@ -282,6 +286,7 @@ public final class ContainerURL extends StorageURL {
             ContainerAccessConditions accessConditions, Context context) {
         metadata = metadata == null ? Metadata.NONE : metadata;
         accessConditions = accessConditions == null ? ContainerAccessConditions.NONE : accessConditions;
+        context = context == null ? Context.NONE : context;
         if (!validateNoEtag(accessConditions.modifiedAccessConditions()) ||
                 accessConditions.modifiedAccessConditions().ifUnmodifiedSince() != null) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
@@ -318,6 +323,7 @@ public final class ContainerURL extends StorageURL {
      */
     public Single<ContainerGetAccessPolicyResponse> getAccessPolicy(LeaseAccessConditions leaseAccessConditions,
             Context context) {
+        context = context == null ? Context.NONE : context;
 
         return addErrorWrappingToSingle(this.storageClient.generatedContainers().getAccessPolicyWithRestResponseAsync(
                 context, null, null, leaseAccessConditions));
@@ -355,6 +361,7 @@ public final class ContainerURL extends StorageURL {
     public Single<ContainerSetAccessPolicyResponse> setAccessPolicy(PublicAccessType accessType,
             List<SignedIdentifier> identifiers, ContainerAccessConditions accessConditions, Context context) {
         accessConditions = accessConditions == null ? ContainerAccessConditions.NONE : accessConditions;
+        context = context == null ? Context.NONE : context;
 
         if (!validateNoEtag(accessConditions.modifiedAccessConditions())) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
@@ -429,6 +436,7 @@ public final class ContainerURL extends StorageURL {
             throw new IllegalArgumentException(
                     "ETag access conditions are not supported for this API.");
         }
+        context = context == null ? Context.NONE : context;
 
         return addErrorWrappingToSingle(this.storageClient.generatedContainers().acquireLeaseWithRestResponseAsync(
                 context, null, duration, proposedID, null, modifiedAccessConditions));
@@ -464,6 +472,7 @@ public final class ContainerURL extends StorageURL {
             throw new IllegalArgumentException(
                     "ETag access conditions are not supported for this API.");
         }
+        context = context == null ? Context.NONE : context;
 
         return addErrorWrappingToSingle(this.storageClient.generatedContainers().renewLeaseWithRestResponseAsync(
                 context, leaseID, null, null, modifiedAccessConditions));
@@ -499,6 +508,7 @@ public final class ContainerURL extends StorageURL {
             throw new IllegalArgumentException(
                     "ETag access conditions are not supported for this API.");
         }
+        context = context == null ? Context.NONE : context;
 
         return addErrorWrappingToSingle(this.storageClient.generatedContainers().releaseLeaseWithRestResponseAsync(
                 context, leaseID, null, null, modifiedAccessConditions));
@@ -537,6 +547,7 @@ public final class ContainerURL extends StorageURL {
             throw new IllegalArgumentException(
                     "ETag access conditions are not supported for this API.");
         }
+        context = context == null ? Context.NONE : context;
 
         return addErrorWrappingToSingle(this.storageClient.generatedContainers().breakLeaseWithRestResponseAsync(
                 context, null, breakPeriodInSeconds, null, modifiedAccessConditions));
@@ -575,6 +586,7 @@ public final class ContainerURL extends StorageURL {
             throw new IllegalArgumentException(
                     "ETag access conditions are not supported for this API.");
         }
+        context = context == null ? Context.NONE : context;
 
         return addErrorWrappingToSingle(this.storageClient.generatedContainers().changeLeaseWithRestResponseAsync(
                 context, leaseID, proposedID, null, null, modifiedAccessConditions));
@@ -608,8 +620,10 @@ public final class ContainerURL extends StorageURL {
      * @return
      *      Emits the successful response.
      */
-    public Single<ContainerListBlobFlatSegmentResponse> listBlobsFlatSegment(String marker, ListBlobsOptions options, Context context) {
+    public Single<ContainerListBlobFlatSegmentResponse> listBlobsFlatSegment(String marker, ListBlobsOptions options,
+            Context context) {
         options = options == null ? ListBlobsOptions.DEFAULT : options;
+        context = context == null ? Context.NONE : context;
 
         return addErrorWrappingToSingle(this.storageClient.generatedContainers()
                 .listBlobFlatSegmentWithRestResponseAsync(context,
@@ -655,6 +669,7 @@ public final class ContainerURL extends StorageURL {
         if (options.details().snapshots()) {
             throw new IllegalArgumentException("Including snapshots in a hierarchical listing is not supported.");
         }
+        context = context == null ? Context.NONE : context;
 
         return addErrorWrappingToSingle(this.storageClient.generatedContainers()
                 .listBlobHierarchySegmentWithRestResponseAsync(
@@ -681,6 +696,8 @@ public final class ContainerURL extends StorageURL {
      *      Emits the successful response.
      */
     public Single<ContainerGetAccountInfoResponse> getAccountInfo(Context context) {
+        context = context == null ? Context.NONE : context;
+
         return addErrorWrappingToSingle(
                 this.storageClient.generatedContainers().getAccountInfoWithRestResponseAsync(context));
     }
