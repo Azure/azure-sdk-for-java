@@ -4,61 +4,10 @@ This project provides client tools or utilities in Java that make it easy to que
 
 Azure Log Analytics provides agents for telemtry collection and enables deep analytics via a [rich query language](https://docs.loganalytics.io/index). This SDK provides query access to data already stored in Log Analytics. To start collecting data from different sources, take a look at these [quickstarts](https://docs.microsoft.com/en-us/azure/log-analytics/log-analytics-quick-collect-azurevm). 
 
-## Example
+## Examples
 
-```java
-import java.util.List;
-import java.util.stream.Collectors;
-import com.microsoft.azure.AzureEnvironment;
-import com.microsoft.azure.loganalytics.implementation.LogAnalyticsDataClientImpl;
-import com.microsoft.azure.loganalytics.models.QueryBody;
-import com.microsoft.azure.loganalytics.models.QueryResults;
-import com.microsoft.azure.credentials.ApplicationTokenCredentials;
+Please see [here] for code examples using this SDK. (https://github.com/Azure/azure-sdk-for-java/tree/master/loganalytics/data-plane/src/main/java/com/microsoft/azure/loganalytics/samples)
 
-/**
- * Basic query example
- *
- */
-public class LogAnalyticsClientExample 
-{
-    public static void main( String[] args )
-    {
-        // ApplicationTokenCredentials work well for service principal authentication
-        ApplicationTokenCredentials credentials = new ApplicationTokenCredentials(
-            "<clientId>",
-            "<tenantId>",
-            "<clientSecret>",
-            AzureEnvironment.AZURE
-        );
-        
-        // New up client. Accepts credentials, or a pre-authenticated restClient
-        LogAnalyticsDataClientImpl client = new LogAnalyticsDataClientImpl(credentials);
-        
-        // Prepare information for query
-        String query = "Heartbeat | take 1";
-        String workspaceId = "<logAnalyticsWorkspaceGUID>";
-        
-        // Execute!
-        QueryResults queryResults = client.query(workspaceId, new QueryBody().withQuery(query));
-        
-        // Process and print results
-        List<Object> row = queryResults.tables().get(0).rows().get(0);
-        List<String> columnNames = queryResults
-            .tables()
-            .get(0)
-            .columns()
-            .stream()
-            .map(elt -> elt.name())
-            .collect(Collectors.toList());
-
-        for (int i = 0; i < row.size(); i++){        
-            System.out.println("The value of " + columnNames.get(i) + " is " + row.get(i));
-        }
-        
-        return;
-    }
-}
-```
 
 ## Download
 
