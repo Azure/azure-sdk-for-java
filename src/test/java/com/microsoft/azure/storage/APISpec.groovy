@@ -17,16 +17,15 @@ package com.microsoft.azure.storage
 
 import com.microsoft.azure.storage.blob.BlobURL
 import com.microsoft.azure.storage.blob.ContainerURL
-import com.microsoft.azure.storage.blob.ETag
+
 import com.microsoft.azure.storage.blob.ListContainersOptions
 import com.microsoft.azure.storage.blob.PipelineOptions
 import com.microsoft.azure.storage.blob.ServiceURL
 import com.microsoft.azure.storage.blob.SharedKeyCredentials
 import com.microsoft.azure.storage.blob.StorageURL
+import com.microsoft.azure.storage.blob.models.AppendBlobCreateHeaders
 import com.microsoft.azure.storage.blob.models.BlobAcquireLeaseHeaders
 import com.microsoft.azure.storage.blob.models.BlobGetPropertiesHeaders
-import com.microsoft.azure.storage.blob.models.BlobStartCopyFromURLResponse
-import com.microsoft.azure.storage.blob.models.ContainerItem
 import com.microsoft.azure.storage.blob.models.ContainerAcquireLeaseHeaders
 import com.microsoft.azure.storage.blob.models.ContainerGetPropertiesHeaders
 import com.microsoft.azure.storage.blob.models.ContainerItem
@@ -34,10 +33,17 @@ import com.microsoft.azure.storage.blob.models.CopyStatusType
 import com.microsoft.azure.storage.blob.models.LeaseStateType
 import com.microsoft.azure.storage.blob.models.RetentionPolicy
 import com.microsoft.azure.storage.blob.models.StorageServiceProperties
+import com.microsoft.rest.v2.Context
 import com.microsoft.rest.v2.http.HttpClient
 import com.microsoft.rest.v2.http.HttpClientConfiguration
+import com.microsoft.rest.v2.http.HttpHeaders
 import com.microsoft.rest.v2.http.HttpPipeline
+import com.microsoft.rest.v2.http.HttpRequest
+import com.microsoft.rest.v2.http.HttpResponse
+import com.microsoft.rest.v2.policy.RequestPolicy
+import com.microsoft.rest.v2.policy.RequestPolicyFactory
 import io.reactivex.Flowable
+import io.reactivex.Single
 import org.spockframework.lang.ISpecificationContext
 import spock.lang.Shared
 import spock.lang.Specification
@@ -54,24 +60,22 @@ class APISpec extends Specification {
     @Shared
     ContainerURL cu
 
-    @Shared
-    String defaultText = "default"
+    // Fields used for conveniently creating blobs with data.
+    static final String defaultText = "default"
 
-    @Shared
-    ByteBuffer defaultData = ByteBuffer.wrap(defaultText.bytes)
+    static final ByteBuffer defaultData = ByteBuffer.wrap(defaultText.bytes)
 
-    @Shared
-    Flowable<ByteBuffer> defaultFlowable = Flowable.just(defaultData)
+    static final Flowable<ByteBuffer> defaultFlowable = Flowable.just(defaultData)
 
-    @Shared
-    int defaultDataSize = defaultData.remaining()
+    static defaultDataSize = defaultData.remaining()
 
     // If debugging is enabled, recordings cannot run as there can only be one proxy at a time.
-    static final boolean enableDebugging = false
+    static boolean enableDebugging = false
 
-    static final String containerPrefix = "jtc" // java test container
+    // Prefixes for blobs and containers
+    static String containerPrefix = "jtc" // java test container
 
-    static final String blobPrefix = "javablob"
+    static String blobPrefix = "javablob"
 
     /*
     The values below are used to create data-driven tests for access conditions.
@@ -84,9 +88,9 @@ class APISpec extends Specification {
     Note that this value is only used to check if we are depending on the received etag. This value will not actually
     be used.
      */
-    static final ETag receivedEtag = new ETag("received")
+    static final String receivedEtag = "received"
 
-    static final ETag garbageEtag = new ETag("garbage")
+    static final String garbageEtag = "garbage"
 
     /*
     Note that this value is only used to check if we are depending on the received etag. This value will not actually
@@ -96,17 +100,32 @@ class APISpec extends Specification {
 
     static final String garbageLeaseID = UUID.randomUUID().toString()
 
+    /*
+    Credentials for various kinds of accounts.
+     */
     static SharedKeyCredentials primaryCreds = getGenericCreds("")
 
     static ServiceURL primaryServiceURL = getGenericServiceURL(primaryCreds)
 
     static SharedKeyCredentials alternateCreds = getGenericCreds("SECONDARY_")
 
+    /*
+    URLs to various kinds of accounts.
+     */
     static ServiceURL alternateServiceURL = getGenericServiceURL(alternateCreds)
 
     static ServiceURL blobStorageServiceURL = getGenericServiceURL(getGenericCreds("BLOB_STORAGE_"))
 
     static ServiceURL premiumServiceURL = getGenericServiceURL(getGenericCreds("PREMIUM_"))
+
+    /*
+    Constants for testing that the context parameter is properly passed to the pipeline.
+     */
+    static final String defaultContextKey = "Key"
+
+    static final String defaultContextValue = "Value"
+
+    static final Context defaultContext = new Context(defaultContextKey, defaultContextValue)
 
     static String getTestName(ISpecificationContext ctx) {
         return ctx.getCurrentFeature().name.replace(' ', '').toLowerCase()
@@ -180,8 +199,7 @@ class APISpec extends Specification {
     static HttpClient getHttpClient() {
         if (enableDebugging) {
             HttpClientConfiguration configuration = new HttpClientConfiguration(
-                    new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)),
-                    false)
+                    new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)))
             return HttpClient.createDefault(configuration)
         }
         else return HttpClient.createDefault()
@@ -189,7 +207,7 @@ class APISpec extends Specification {
 
     static ServiceURL getGenericServiceURL(SharedKeyCredentials creds) {
         PipelineOptions po = new PipelineOptions()
-        po.client = getHttpClient()
+        po.withClient(getHttpClient())
 
         HttpPipeline pipeline = StorageURL.createPipeline(creds, po)
 
@@ -205,13 +223,13 @@ class APISpec extends Specification {
                 new URL("http://" + System.getenv().get("ACCOUNT_NAME") + ".blob.core.windows.net"), pipeline)
         // There should not be more than 5000 containers from these tests
         for (ContainerItem c : serviceURL.listContainersSegment(null,
-                new ListContainersOptions(null, containerPrefix, null)).blockingGet()
+                new ListContainersOptions().withPrefix(containerPrefix), null).blockingGet()
                 .body().containerItems()) {
             ContainerURL containerURL = serviceURL.createContainerURL(c.name())
             if (c.properties().leaseState().equals(LeaseStateType.LEASED)) {
-                containerURL.breakLease(0, null).blockingGet()
+                containerURL.breakLease(0, null, null).blockingGet()
             }
-            containerURL.delete(null).blockingGet()
+            containerURL.delete(null, null).blockingGet()
         }
     }
 
@@ -223,11 +241,11 @@ class APISpec extends Specification {
     }
 
     static File getRandomFile(long size) {
-        File file = File.createTempFile(UUID.randomUUID().toString(), ".txt");
-        file.deleteOnExit();
-        FileOutputStream fos = new FileOutputStream(file);
+        File file = File.createTempFile(UUID.randomUUID().toString(), ".txt")
+        file.deleteOnExit()
+        FileOutputStream fos = new FileOutputStream(file)
         fos.write(getRandomData(size).array())
-        fos.close();
+        fos.close()
         return file
     }
 
@@ -244,7 +262,7 @@ class APISpec extends Specification {
 
     def setup() {
         cu = primaryServiceURL.createContainerURL(generateContainerName())
-        cu.create(null, null).blockingGet()
+        cu.create(null, null, null).blockingGet()
     }
 
     def cleanup() {
@@ -264,10 +282,10 @@ class APISpec extends Specification {
      * @return
      *      The appropriate etag value to run the current test.
      */
-    def setupBlobMatchCondition(BlobURL bu, ETag match) {
+    def setupBlobMatchCondition(BlobURL bu, String match) {
         if (match == receivedEtag) {
-            BlobGetPropertiesHeaders headers = bu.getProperties(null).blockingGet().headers()
-            return new ETag(headers.eTag())
+            BlobGetPropertiesHeaders headers = bu.getProperties(null, null).blockingGet().headers()
+            return headers.eTag()
         } else {
             return match
         }
@@ -284,12 +302,12 @@ class APISpec extends Specification {
      * @param leaseID
      *      The signalID. Values should only ever be {@code receivedLeaseID}, {@code garbageLeaseID}, or {@code null}.
      * @return
-     *      The actual leaseID of the blob if recievedLeaseID is passed, otherwise whatever was passed will be returned.
+     *      The actual leaseAccessConditions of the blob if recievedLeaseID is passed, otherwise whatever was passed will be returned.
      */
     def setupBlobLeaseCondition(BlobURL bu, String leaseID) {
         BlobAcquireLeaseHeaders headers = null
         if (leaseID == receivedLeaseID || leaseID == garbageLeaseID) {
-            headers = bu.acquireLease(null, -1, null).blockingGet().headers()
+            headers = bu.acquireLease(null, -1, null, null).blockingGet().headers()
         }
         if (leaseID == receivedLeaseID) {
             return headers.leaseId()
@@ -298,10 +316,10 @@ class APISpec extends Specification {
         }
     }
 
-    def setupContainerMatchCondition(ContainerURL cu, ETag match) {
+    def setupContainerMatchCondition(ContainerURL cu, String match) {
         if (match == receivedEtag) {
-            ContainerGetPropertiesHeaders headers = cu.getProperties(null).blockingGet().headers()
-            return new ETag(headers.eTag())
+            ContainerGetPropertiesHeaders headers = cu.getProperties(null, null).blockingGet().headers()
+            return headers.eTag()
         } else {
             return match
         }
@@ -310,19 +328,17 @@ class APISpec extends Specification {
     def setupContainerLeaseCondition(ContainerURL cu, String leaseID) {
         if (leaseID == receivedLeaseID) {
             ContainerAcquireLeaseHeaders headers =
-                    cu.acquireLease(null, -1, null).blockingGet().headers()
+                    cu.acquireLease(null, -1, null, null).blockingGet().headers()
             return headers.leaseId()
         } else {
             return leaseID
         }
     }
 
-    def waitForCopy(BlobURL bu, BlobStartCopyFromURLResponse response) {
-        CopyStatusType status = response.headers().copyStatus()
-
+    def waitForCopy(BlobURL bu, CopyStatusType status) {
         OffsetDateTime start = OffsetDateTime.now()
         while (status != CopyStatusType.SUCCESS) {
-            status = bu.getProperties(null).blockingGet().headers().copyStatus()
+            status = bu.getProperties(null, null).blockingGet().headers().copyStatus()
             OffsetDateTime currentTime = OffsetDateTime.now()
             if (status == CopyStatusType.FAILED || currentTime.minusMinutes(1) == start) {
                 throw new Exception("Copy failed or took too long")
@@ -360,15 +376,95 @@ class APISpec extends Specification {
 
     def enableSoftDelete() {
         primaryServiceURL.setProperties(new StorageServiceProperties()
-                .withDeleteRetentionPolicy(new RetentionPolicy().withEnabled(true).withDays(2)))
+                .withDeleteRetentionPolicy(new RetentionPolicy().withEnabled(true).withDays(2)), null)
                 .blockingGet()
         sleep(30000) // Wait for the policy to take effect.
     }
 
     def disableSoftDelete() {
         primaryServiceURL.setProperties(new StorageServiceProperties()
-                .withDeleteRetentionPolicy(new RetentionPolicy().withEnabled(false))).blockingGet()
+                .withDeleteRetentionPolicy(new RetentionPolicy().withEnabled(false)), null).blockingGet()
 
         sleep(30000) // Wait for the policy to take effect.
+    }
+
+    /*
+    This method returns a stub of an HttpResponse. This is for when we want to test policies in isolation but don't care
+     about the status code, so we stub a response that always returns a given value for the status code. We never care
+     about the number or nature of interactions with this stub.
+     */
+    def getStubResponse(int code) {
+        return Stub(HttpResponse) {
+            statusCode() >> code
+        }
+    }
+
+    /*
+    This is for stubbing responses that will actually go through the pipeline and autorest code. Autorest does not seem
+    to play too nicely with mocked objects and the complex reflection stuff on both ends made it more difficult to work
+    with than was worth it.
+     */
+    def getStubResponse(int code, Class responseHeadersType) {
+        return new HttpResponse() {
+
+            @Override
+            int statusCode() {
+                return code
+            }
+
+            @Override
+            String headerValue(String s) {
+                return null
+            }
+
+            @Override
+            HttpHeaders headers() {
+                return new HttpHeaders()
+            }
+
+            @Override
+            Flowable<ByteBuffer> body() {
+                return Flowable.empty()
+            }
+
+            @Override
+            Single<byte[]> bodyAsByteArray() {
+                return null
+            }
+
+            @Override
+            Single<String> bodyAsString() {
+                return null
+            }
+
+            @Override
+            Object deserializedHeaders() {
+                return responseHeadersType.getConstructor().newInstance()
+            }
+
+            @Override
+            boolean isDecoded() {
+                return true
+            }
+        }
+    }
+
+    def getContextStubPolicy(int successCode, Class responseHeadersType) {
+        return Mock(RequestPolicy) {
+            sendAsync(_) >> { HttpRequest request ->
+                if (!request.context().getData(defaultContextKey).isPresent()) {
+                    return Single.error(new RuntimeException("Context key not present."))
+                }
+                else {
+                    return Single.just(getStubResponse(successCode, responseHeadersType))
+                }
+            }
+        }
+    }
+
+    def getStubFactory(RequestPolicy policy) {
+        return Mock(RequestPolicyFactory) {
+            create(*_) >> policy
+        }
     }
 }

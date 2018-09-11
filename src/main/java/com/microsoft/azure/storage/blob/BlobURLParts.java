@@ -34,43 +34,128 @@ import java.util.Map;
  */
 public final class BlobURLParts {
 
+    private String scheme;
+
+    private String host;
+
+    private String containerName;
+
+    private String blobName;
+
+    private String snapshot;
+
+    private SASQueryParameters sasQueryParameters;
+
+    private Map<String, String[]> unparsedParameters;
+
     /**
      * The scheme. Ex: "https://".
      */
-    public String scheme;
+    public String scheme() {
+        return scheme;
+    }
+
+    /**
+     * The scheme. Ex: "https://".
+     */
+    public BlobURLParts withScheme(String scheme) {
+        this.scheme = scheme;
+        return this;
+    }
 
     /**
      * The host. Ex: "account.blob.core.windows.net".
      */
-    public String host;
+    public String host() {
+        return host;
+    }
+
+    /**
+     * The host. Ex: "account.blob.core.windows.net".
+     */
+    public BlobURLParts withHost(String host) {
+        this.host = host;
+        return this;
+    }
 
     /**
      * The container name or {@code null} if a {@link ServiceURL} was parsed.
      */
-    public String containerName;
+    public String containerName() {
+        return containerName;
+    }
+
+    /**
+     * The container name or {@code null} if a {@link ServiceURL} was parsed.
+     */
+    public BlobURLParts withContainerName(String containerName) {
+        this.containerName = containerName;
+        return this;
+    }
 
     /**
      * The blob name or {@code null} if a {@link ServiceURL} or {@link ContainerURL} was parsed.
      */
-    public String blobName;
+    public String blobName() {
+        return blobName;
+    }
+
+    /**
+     * The blob name or {@code null} if a {@link ServiceURL} or {@link ContainerURL} was parsed.
+     */
+    public BlobURLParts withBlobName(String blobName) {
+        this.blobName = blobName;
+        return this;
+    }
 
     /**
      * The snapshot time or {@code null} if anything except a URL to a snapshot was parsed.
      */
-    public String snapshot;
+    public String snapshot() {
+        return snapshot;
+    }
+
+    /**
+     * The snapshot time or {@code null} if anything except a URL to a snapshot was parsed.
+     */
+    public BlobURLParts withSnapshot(String snapshot) {
+        this.snapshot = snapshot;
+        return this;
+    }
 
     /**
      * A {@link SASQueryParameters} representing the SAS query parameters or {@code null} if there were no such
      * parameters.
      */
-    public SASQueryParameters sasQueryParameters;
+    public SASQueryParameters sasQueryParameters() {
+        return sasQueryParameters;
+    }
+
+    /**
+     * A {@link SASQueryParameters} representing the SAS query parameters or {@code null} if there were no such
+     * parameters.
+     */
+    public BlobURLParts withSasQueryParameters(SASQueryParameters sasQueryParameters) {
+        this.sasQueryParameters = sasQueryParameters;
+        return this;
+    }
 
     /**
      * The query parameter key value pairs aside from SAS parameters and snapshot time or {@code null} if there were
      * no such parameters.
      */
-    public Map<String, String[]> unparsedParameters;
+    public Map<String, String[]> unparsedParameters() {
+        return unparsedParameters;
+    }
 
+    /**
+     * The query parameter key value pairs aside from SAS parameters and snapshot time or {@code null} if there were
+     * no such parameters.
+     */
+    public BlobURLParts withUnparsedParameters(Map<String, String[]> unparsedParameters) {
+        this.unparsedParameters = unparsedParameters;
+        return this;
+    }
 
     /**
      * Initializes a BlobURLParts object with all fields set to null, except unparsedParameters, which is an empty map.

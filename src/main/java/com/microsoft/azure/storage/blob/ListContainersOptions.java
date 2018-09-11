@@ -25,56 +25,65 @@ public final class ListContainersOptions {
      * An object representing the default options: no details or prefix and using the service's default for maxResults.
      */
     public static final ListContainersOptions DEFAULT =
-            new ListContainersOptions(new ContainerListingDetails(false),null, null);
+            new ListContainersOptions();
 
-    private final ContainerListingDetails details;
+    private ContainerListingDetails details;
 
-    private final String prefix;
+    private String prefix;
 
-    private final Integer maxResults;
+    private Integer maxResults;
 
     /**
-     * A {@link ListContainersOptions} object.
-     *
-     * @param details
-     *      {@link ContainerListingDetails}
-     * @param prefix
-     *      Filters the results to return only blobs whose names begin with the specified prefix.
-     * @param maxResults
-     *      Specifies the maximum number of blobs to return, including all BlobPrefix elements. If the request does not
-     *      specify maxResults or specifies a value greater than 5,000, the server will return up to 5,000 items.
+     * {@link ContainerListingDetails}
      */
-    public ListContainersOptions(ContainerListingDetails details, String prefix, Integer maxResults) {
+    public ContainerListingDetails details() {
+        return details;
+    }
+
+    /**
+     * {@link ContainerListingDetails}
+     */
+    public ListContainersOptions withDetails(ContainerListingDetails details) {
+        this.details = details;
+        return this;
+    }
+
+    /**
+     * Filters the results to return only blobs whose names begin with the specified prefix.     *
+     */
+    public String prefix() {
+        return prefix;
+    }
+
+    /**
+     * Filters the results to return only blobs whose names begin with the specified prefix.     *
+     */
+    public ListContainersOptions withPrefix(String prefix) {
+        this.prefix = prefix;
+        return this;
+    }
+
+    /**
+     * Specifies the maximum number of blobs to return, including all BlobPrefix elements. If the request does not
+     * specify maxResults or specifies a value greater than 5,000, the server will return up to 5,000 items.
+     */
+    public Integer maxResults() {
+        return maxResults;
+    }
+
+    /**
+     * Specifies the maximum number of blobs to return, including all BlobPrefix elements. If the request does not
+     * specify maxResults or specifies a value greater than 5,000, the server will return up to 5,000 items.
+     */
+    public ListContainersOptions withMaxResults(Integer maxResults) {
         if (maxResults != null && maxResults <= 0) {
             throw new IllegalArgumentException("MaxResults must be greater than 0.");
         }
-        this.details = details == null ? ContainerListingDetails.NONE : details;
-        this.prefix = prefix;
         this.maxResults = maxResults;
+        return this;
     }
 
-    /**
-     * @return
-     *      {@link ContainerListingDetails}
-     */
-    public ContainerListingDetails getDetails() {
-        return this.details;
-    }
-
-    /**
-     * @return
-     *      Filters the results to return only blobs whose names begin with the specified prefix.
-     */
-    public String getPrefix() {
-        return this.prefix;
-    }
-
-    /**
-     * @return
-     *      Specifies the maximum number of blobs to return, including all BlobPrefix elements. If the request does not
-     *      specify maxResults or specifies a value greater than 5,000, the server will return up to 5,000 items.
-     */
-    public Integer getMaxResults() {
-        return this.maxResults;
+    public ListContainersOptions() {
+        this.details = ContainerListingDetails.NONE;
     }
 }

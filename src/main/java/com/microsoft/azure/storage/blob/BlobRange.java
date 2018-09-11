@@ -26,50 +26,51 @@ public final class BlobRange {
     /**
      * An object which reflects the service's default range, which is the whole blob.
      */
-    public static final BlobRange DEFAULT = new BlobRange(0, null);
+    public static final BlobRange DEFAULT = new BlobRange();
 
-    private final long offset;
+    private long offset;
 
-    private final Long count;
+    private Long count;
 
-    /**
-     * A {@code BlobRange} object.
-     *
-     * @param offset
-     *      The start of the range. Must be greater than or equal to 0.
-     * @param count
-     *      How many bytes to include in the range. Must be greater than or equal to 0 if specified. If specified,
-     *      offset must also be specified.
-     */
-    public BlobRange(long offset, Long count) {
-        if (offset < 0) {
-            throw new IllegalArgumentException("BlobRange offset must be greater than or equal to 0.");
-        }
-        if (count != null && count < 0) {
-            throw new IllegalArgumentException(
-                    "BlobRange count must be greater than or equal to 0 if specified. Cannot be specified without an " +
-                            "offset.");
-        }
-        this.offset = offset;
-        this.count = count;
+    public BlobRange() {
     }
 
     /**
-     * @return
-     *      Indicates the start of the range.
+     * The start of the range. Must be greater than or equal to 0.
      */
-    public long getOffset() {
+    public long offset() {
         return offset;
     }
 
     /**
-     * @return
-     *      Indicates how many bytes to include in the range.
+     * The start of the range. Must be greater than or equal to 0.
      */
-    public Long getCount() {
+    public BlobRange withOffset(long offset) {
+        if (offset < 0) {
+            throw new IllegalArgumentException("BlobRange offset must be greater than or equal to 0.");
+        }
+        this.offset = offset;
+        return this;
+    }
+
+    /**
+     * How many bytes to include in the range. Must be greater than or equal to 0 if specified.
+     */
+    public Long count() {
         return count;
     }
 
+    /**
+     * How many bytes to include in the range. Must be greater than or equal to 0 if specified.
+     */
+    public BlobRange withCount(Long count) {
+        if (count != null && count < 0) {
+            throw new IllegalArgumentException(
+                    "BlobRange count must be greater than or equal to 0 if specified.");
+        }
+        this.count = count;
+        return this;
+    }
 
     /**
      * @return
@@ -77,8 +78,7 @@ public final class BlobRange {
      */
     @Override
     public String toString() {
-
-        if (count != null) {
+        if (this.count != null) {
             long rangeEnd = this.offset + this.count - 1;
             return String.format(
                     Locale.ROOT, Constants.HeaderConstants.RANGE_HEADER_FORMAT, this.offset, rangeEnd);

@@ -37,80 +37,251 @@ import java.time.OffsetDateTime;
  */
 public final class ServiceSASSignatureValues {
 
+    private String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
+
+    private SASProtocol protocol;
+
+    private OffsetDateTime startTime;
+
+    private OffsetDateTime expiryTime;
+
+    private String permissions;
+
+    private IPRange ipRange;
+
+    private String containerName;
+
+    private String blobName;
+
+    private String identifier;
+
+    private String cacheControl;
+
+    private String contentDisposition;
+
+    private String contentEncoding;
+
+    private String contentLanguage;
+
+    private String contentType;
+
     /**
      * The version of the service this SAS will target. If not specified, it will default to the version targeted by the
      * library.
      */
-    public String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
+    public String version() {
+        return version;
+    }
+
+    /**
+     * The version of the service this SAS will target. If not specified, it will default to the version targeted by the
+     * library.
+     */
+    public ServiceSASSignatureValues withVersion(String version) {
+        this.version = version;
+        return this;
+    }
 
     /**
      * {@link SASProtocol}
      */
-    public SASProtocol protocol;
+    public SASProtocol protocol() {
+        return protocol;
+    }
+
+    /**
+     * {@link SASProtocol}
+     */
+    public ServiceSASSignatureValues withProtocol(SASProtocol protocol) {
+        this.protocol = protocol;
+        return this;
+    }
 
     /**
      * When the SAS will take effect.
      */
-    public OffsetDateTime startTime;
+    public OffsetDateTime startTime() {
+        return startTime;
+    }
+
+    /**
+     * When the SAS will take effect.
+     */
+    public ServiceSASSignatureValues withStartTime(OffsetDateTime startTime) {
+        this.startTime = startTime;
+        return this;
+    }
 
     /**
      * The time after which the SAS will no longer work.
      */
-    public OffsetDateTime expiryTime;
+    public OffsetDateTime expiryTime() {
+        return expiryTime;
+    }
+
+    /**
+     * The time after which the SAS will no longer work.
+     */
+    public ServiceSASSignatureValues withExpiryTime(OffsetDateTime expiryTime) {
+        this.expiryTime = expiryTime;
+        return this;
+    }
 
     /**
      * Please refer to either {@link ContainerSASPermission} or {@link BlobSASPermission} depending on the resource
      * being accessed for help constructing the permissions string.
      */
-    public String permissions;
+    public String permissions() {
+        return permissions;
+    }
+
+    /**
+     * Please refer to either {@link ContainerSASPermission} or {@link BlobSASPermission} depending on the resource
+     * being accessed for help constructing the permissions string.
+     */
+    public ServiceSASSignatureValues withPermissions(String permissions) {
+        this.permissions = permissions;
+        return this;
+    }
 
     /**
      * {@link IPRange}
      */
-    public IPRange ipRange;
+    public IPRange ipRange() {
+        return ipRange;
+    }
+
+    /**
+     * {@link IPRange}
+     */
+    public ServiceSASSignatureValues withIpRange(IPRange ipRange) {
+        this.ipRange = ipRange;
+        return this;
+    }
 
     /**
      * The name of the container the SAS user may access.
      */
-    public String containerName;
+    public String containerName() {
+        return containerName;
+    }
 
     /**
      * The name of the container the SAS user may access.
      */
-    public String blobName;
+    public ServiceSASSignatureValues withContainerName(String containerName) {
+        this.containerName = containerName;
+        return this;
+    }
+
+    /**
+     * The name of the container the SAS user may access.
+     */
+    public String blobName() {
+        return blobName;
+    }
+
+    /**
+     * The name of the container the SAS user may access.
+     */
+    public ServiceSASSignatureValues withBlobName(String blobName) {
+        this.blobName = blobName;
+        return this;
+    }
 
     /**
      * The name of the access policy on the container this SAS references if any. Please see
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
      * for more information.
      */
-    public String identifier;
+    public String identifier() {
+        return identifier;
+    }
+
+    /**
+     * The name of the access policy on the container this SAS references if any. Please see
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
+     * for more information.
+     */
+    public ServiceSASSignatureValues withIdentifier(String identifier) {
+        this.identifier = identifier;
+        return this;
+    }
 
     /**
      * The cache-control header for the SAS.
      */
-    public String cacheControl;
+    public String cacheControl() {
+        return cacheControl;
+    }
+
+    /**
+     * The cache-control header for the SAS.
+     */
+    public ServiceSASSignatureValues withCacheControl(String cacheControl) {
+        this.cacheControl = cacheControl;
+        return this;
+    }
 
     /**
      * The content-disposition header for the SAS.
      */
-    public String contentDisposition;
+    public String contentDisposition() {
+        return contentDisposition;
+    }
+
+    /**
+     * The content-disposition header for the SAS.
+     */
+    public ServiceSASSignatureValues withContentDisposition(String contentDisposition) {
+        this.contentDisposition = contentDisposition;
+        return this;
+    }
 
     /**
      * The content-encoding header for the SAS.
-     *
      */
-    public String contentEncoding;
+    public String contentEncoding() {
+        return contentEncoding;
+    }
+
+    /**
+     * The content-encoding header for the SAS.
+     */
+    public ServiceSASSignatureValues withContentEncoding(String contentEncoding) {
+        this.contentEncoding = contentEncoding;
+        return this;
+    }
 
     /**
      * The content-language header for the SAS.
      */
-    public String contentLanguage;
+    public String contentLanguage() {
+        return contentLanguage;
+    }
+
+    /**
+     * The content-language header for the SAS.
+     */
+    public ServiceSASSignatureValues withContentLanguage(String contentLanguage) {
+        this.contentLanguage = contentLanguage;
+        return this;
+    }
 
     /**
      * The content-type header for the SAS.
      */
-    public String contentType;
+    public String contentType() {
+        return contentType;
+    }
+
+    /**
+     * The content-type header for the SAS.
+     */
+    public ServiceSASSignatureValues withContentType(String contentType) {
+        this.contentType = contentType;
+        return this;
+    }
 
     /**
      * Creates an object with empty values for all fields.

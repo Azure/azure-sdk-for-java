@@ -36,7 +36,7 @@ public final class TelemetryOptions {
      * @return
      *      The user agent prefix.
      */
-    public String getUserAgentPrefix() {
+    public String userAgentPrefix() {
         return this.userAgentPrefix;
     }
 }

@@ -24,30 +24,91 @@ import java.util.Locale;
  * the order of the permissions is particular and this class guarantees correctness.
  */
 public final class BlobSASPermission {
+
+    private boolean read;
+
+    private boolean add;
+
+    private boolean create;
+
+    private boolean write;
+
+    private boolean delete;
+
     /**
      * Specifies Read access granted.
      */
-    public boolean read;
+    public boolean read() {
+        return read;
+    }
+
+    /**
+     * Specifies Read access granted.
+     */
+    public BlobSASPermission withRead(boolean read) {
+        this.read = read;
+        return this;
+    }
 
     /**
      * Specifies Add access granted.
      */
-    public boolean add;
+    public boolean add() {
+        return add;
+    }
+
+    /**
+     * Specifies Add access granted.
+     */
+    public BlobSASPermission withAdd(boolean add) {
+        this.add = add;
+        return this;
+    }
 
     /**
      * Specifies Create access granted.
      */
-    public boolean create;
+    public boolean create() {
+        return create;
+    }
+
+    /**
+     * Specifies Create access granted.
+     */
+    public BlobSASPermission withCreate(boolean create) {
+        this.create = create;
+        return this;
+    }
 
     /**
      * Specifies Write access granted.
      */
-    public boolean write;
+    public boolean write() {
+        return write;
+    }
+
+    /**
+     * Specifies Write access granted.
+     */
+    public BlobSASPermission withWrite(boolean write) {
+        this.write = write;
+        return this;
+    }
 
     /**
      * Specifies Delete access granted.
      */
-    public boolean delete;
+    public boolean delete() {
+        return delete;
+    }
+
+    /**
+     * Specifies Delete access granted.
+     */
+    public BlobSASPermission withDelete(boolean delete) {
+        this.delete = delete;
+        return this;
+    }
 
     /**
      * Initializes a {@code BlobSASPermission} object with all fields set to false.

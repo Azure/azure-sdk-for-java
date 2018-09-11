@@ -3,9 +3,12 @@ package com.microsoft.azure.storage
 import com.microsoft.azure.storage.blob.*
 import com.microsoft.azure.storage.blob.models.BlobDownloadHeaders
 import com.microsoft.azure.storage.blob.models.BlobGetPropertiesResponse
+import com.microsoft.azure.storage.blob.models.BlobHTTPHeaders
 import com.microsoft.azure.storage.blob.models.BlobType
 import com.microsoft.azure.storage.blob.models.BlockBlobCommitBlockListResponse
 import com.microsoft.azure.storage.blob.models.BlockBlobUploadResponse
+import com.microsoft.azure.storage.blob.models.LeaseAccessConditions
+import com.microsoft.azure.storage.blob.models.ModifiedAccessConditions
 import com.microsoft.azure.storage.blob.models.StorageErrorCode
 import com.microsoft.rest.v2.http.HttpPipeline
 import com.microsoft.rest.v2.http.HttpRequest
@@ -38,14 +41,13 @@ class TransferManagerTest extends APISpec {
         // Block length will be ignored for single shot.
         CommonRestResponse response = TransferManager.uploadFileToBlockBlob(channel,
                 bu, (int) (BlockBlobURL.MAX_STAGE_BLOCK_BYTES / 10),
-                new TransferManager.UploadToBlockBlobOptions(null, null, null,
+                new TransferManagerUploadToBlockBlobOptions(null, null, null,
                         null, 20)).blockingGet()
 
         then:
         responseType.isInstance(response.response()) // Ensure we did the correct type of operation.
         validateBasicHeaders(response)
-        compareDataToFile(bu.download(null, null, false).blockingGet().body(),
-                file)
+        compareDataToFile(bu.download(null, null, false, null).blockingGet().body(null), file)
 
         cleanup:
         channel.close()
@@ -126,11 +128,13 @@ class TransferManagerTest extends APISpec {
 
         when:
         TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES,
-                new TransferManager.UploadToBlockBlobOptions(null, new BlobHTTPHeaders(cacheControl,
-                        contentDisposition, contentEncoding, contentLanguage, contentMD5, contentType), null,
+                new TransferManagerUploadToBlockBlobOptions(null, new BlobHTTPHeaders()
+                        .withBlobCacheControl(cacheControl).withBlobContentDisposition(contentDisposition)
+                        .withBlobContentEncoding(contentEncoding).withBlobContentLanguage(contentLanguage)
+                        .withBlobContentMD5(contentMD5).withBlobContentType(contentType), null,
                         null, null)).blockingGet()
 
-        BlobGetPropertiesResponse response = bu.getProperties(null).blockingGet()
+        BlobGetPropertiesResponse response = bu.getProperties(null, null).blockingGet()
 
         then:
         validateBlobHeaders(response.headers(), cacheControl, contentDisposition, contentEncoding, contentLanguage,
@@ -165,9 +169,9 @@ class TransferManagerTest extends APISpec {
 
         when:
         TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES,
-                new TransferManager.UploadToBlockBlobOptions(null, null, metadata,
+                new TransferManagerUploadToBlockBlobOptions(null, null, metadata,
                         null, null)).blockingGet()
-        BlobGetPropertiesResponse response = bu.getProperties(null).blockingGet()
+        BlobGetPropertiesResponse response = bu.getProperties(null, null).blockingGet()
 
         then:
         response.statusCode() == 200
@@ -187,17 +191,18 @@ class TransferManagerTest extends APISpec {
     @Unroll
     def "Upload file AC"() {
         setup:
-        bu.upload(defaultFlowable, defaultDataSize, null, null, null).blockingGet()
+        bu.upload(defaultFlowable, defaultDataSize, null, null, null, null).blockingGet()
         match = setupBlobMatchCondition(bu, match)
         leaseID = setupBlobLeaseCondition(bu, leaseID)
-        BlobAccessConditions bac = new BlobAccessConditions(
-                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
-                null, null)
+        BlobAccessConditions bac = new BlobAccessConditions().withModifiedAccessConditions(
+                new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
+                        .withIfMatch(match).withIfNoneMatch(noneMatch))
+                .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
         def channel = AsynchronousFileChannel.open(getRandomFile(dataSize).toPath())
 
         expect:
         TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES,
-                new TransferManager.UploadToBlockBlobOptions(null, null, null, bac,
+                new TransferManagerUploadToBlockBlobOptions(null, null, null, bac,
                         null))
                 .blockingGet().statusCode() == 201
 
@@ -205,35 +210,36 @@ class TransferManagerTest extends APISpec {
         channel.close()
 
         where:
-        dataSize                             | modified | unmodified | match        | noneMatch   | leaseID
-        10                                   | null     | null       | null         | null        | null
-        10                                      | oldDate | null    | null         | null        | null
-        10                                      | null    | newDate | null         | null        | null
-        10                                      | null    | null    | receivedEtag | null        | null
-        10                                      | null    | null    | null         | garbageEtag | null
-        10                                      | null    | null    | null         | null        | receivedLeaseID
-        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null    | null    | null         | null        | null
-        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | oldDate | null    | null         | null        | null
-        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null    | newDate | null         | null        | null
-        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null    | null    | receivedEtag | null        | null
-        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null    | null    | null         | garbageEtag | null
-        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null    | null    | null         | null        | receivedLeaseID
+        dataSize                                | modified | unmodified | match        | noneMatch   | leaseID
+        10                                      | null     | null       | null         | null        | null
+        10                                      | oldDate  | null       | null         | null        | null
+        10                                      | null     | newDate    | null         | null        | null
+        10                                      | null     | null       | receivedEtag | null        | null
+        10                                      | null     | null       | null         | garbageEtag | null
+        10                                      | null     | null       | null         | null        | receivedLeaseID
+        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null     | null       | null         | null        | null
+        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | oldDate  | null       | null         | null        | null
+        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null     | newDate    | null         | null        | null
+        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null     | null       | receivedEtag | null        | null
+        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null     | null       | null         | garbageEtag | null
+        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null     | null       | null         | null        | receivedLeaseID
     }
 
     @Unroll
     def "Upload file AC fail"() {
         setup:
-        bu.upload(defaultFlowable, defaultDataSize, null, null, null).blockingGet()
+        bu.upload(defaultFlowable, defaultDataSize, null, null, null, null).blockingGet()
         noneMatch = setupBlobMatchCondition(bu, noneMatch)
         setupBlobLeaseCondition(bu, leaseID)
-        BlobAccessConditions bac = new BlobAccessConditions(
-                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
-                null, null)
+        BlobAccessConditions bac = new BlobAccessConditions().withModifiedAccessConditions(
+                new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
+                        .withIfMatch(match).withIfNoneMatch(noneMatch))
+                .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
         def channel = AsynchronousFileChannel.open(getRandomFile(dataSize).toPath())
 
         when:
         TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES,
-                new TransferManager.UploadToBlockBlobOptions(null, null, null,
+                new TransferManagerUploadToBlockBlobOptions(null, null, null,
                         bac, null))
                 .blockingGet()
 
@@ -246,17 +252,17 @@ class TransferManagerTest extends APISpec {
         channel.close()
 
         where:
-        dataSize                             | modified | unmodified | match       | noneMatch    | leaseID
-        10                                      | newDate | null    | null        | null         | null
-        10                                      | null    | oldDate | null        | null         | null
-        10                                      | null    | null    | garbageEtag | null         | null
-        10                                      | null    | null    | null        | receivedEtag | null
-        10                                      | null    | null    | null        | null         | garbageLeaseID
-        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | newDate | null    | null        | null         | null
-        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null    | oldDate | null        | null         | null
-        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null    | null    | garbageEtag | null         | null
-        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null    | null    | null        | receivedEtag | null
-        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null    | null    | null        | null         | garbageLeaseID
+        dataSize                                | modified | unmodified | match       | noneMatch    | leaseID
+        10                                      | newDate  | null       | null        | null         | null
+        10                                      | null     | oldDate    | null        | null         | null
+        10                                      | null     | null       | garbageEtag | null         | null
+        10                                      | null     | null       | null        | receivedEtag | null
+        10                                      | null     | null       | null        | null         | garbageLeaseID
+        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | newDate  | null       | null        | null         | null
+        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null     | oldDate    | null        | null         | null
+        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null     | null       | garbageEtag | null         | null
+        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null     | null       | null        | receivedEtag | null
+        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null     | null       | null        | null         | garbageLeaseID
     }
 
     /*
@@ -264,12 +270,13 @@ class TransferManagerTest extends APISpec {
     whatever means of getting data from a file we use produces a replayable Flowable so that we abide by our own
     contract.
      */
+
     def "Upload replayable flowable"() {
         setup:
         // Write default data to a file
-        File file = File.createTempFile(UUID.randomUUID().toString(), ".txt");
-        file.deleteOnExit();
-        FileOutputStream fos = new FileOutputStream(file);
+        File file = File.createTempFile(UUID.randomUUID().toString(), ".txt")
+        file.deleteOnExit()
+        FileOutputStream fos = new FileOutputStream(file)
         fos.write(defaultData.array())
 
         // Mock a response that will always be retried.
@@ -312,7 +319,7 @@ class TransferManagerTest extends APISpec {
 
     def "Upload options fail"() {
         when:
-        new TransferManager.UploadToBlockBlobOptions(null, null, null,
+        new TransferManagerUploadToBlockBlobOptions(null, null, null,
                 null, -1)
 
         then:
@@ -387,29 +394,29 @@ class TransferManagerTest extends APISpec {
         TransferManager.downloadBlobToFile(outChannel, bu, range, null).blockingGet()
 
         then:
-        compareFiles(channel, range.getOffset(), range.getCount(), outChannel)
+        compareFiles(channel, range.offset(), range.count(), outChannel)
 
         cleanup:
         channel.close()
         outChannel.close()
 
         where:
-        file                           | range                                      | dataSize
-        getRandomFile(defaultDataSize) | new BlobRange(0, defaultDataSize)          | defaultDataSize
-        getRandomFile(defaultDataSize) | new BlobRange(1, defaultDataSize - 1)      | defaultDataSize - 1
-        getRandomFile(defaultDataSize) | new BlobRange(0, defaultDataSize - 1)      | defaultDataSize - 1
-        getRandomFile(defaultDataSize) | new BlobRange(0, 10L * 1024 * 1024 * 1024) | defaultDataSize
+        file                           | range                                                        | dataSize
+        getRandomFile(defaultDataSize) | new BlobRange().withCount(defaultDataSize)                   | defaultDataSize
+        getRandomFile(defaultDataSize) | new BlobRange().withOffset(1).withCount(defaultDataSize - 1) | defaultDataSize - 1
+        getRandomFile(defaultDataSize) | new BlobRange().withCount(defaultDataSize - 1)               | defaultDataSize - 1
+        getRandomFile(defaultDataSize) | new BlobRange().withCount(10L * 1024 * 1024 * 1024)          | defaultDataSize
     }
 
     def "Download file count null"() {
         setup:
-        bu.upload(defaultFlowable, defaultDataSize, null, null, null).blockingGet()
+        bu.upload(defaultFlowable, defaultDataSize, null, null, null, null).blockingGet()
         File outFile = getRandomFile(0)
         def outChannel = AsynchronousFileChannel.open(outFile.toPath(), StandardOpenOption.WRITE,
                 StandardOpenOption.READ)
 
         when:
-        TransferManager.downloadBlobToFile(outChannel, bu, new BlobRange(0, null), null)
+        TransferManager.downloadBlobToFile(outChannel, bu, new BlobRange(), null)
                 .blockingGet()
 
         then:
@@ -431,12 +438,13 @@ class TransferManagerTest extends APISpec {
 
         match = setupBlobMatchCondition(bu, match)
         leaseID = setupBlobLeaseCondition(bu, leaseID)
-        BlobAccessConditions bac = new BlobAccessConditions(
-                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
-                null, null)
+        BlobAccessConditions bac = new BlobAccessConditions().withModifiedAccessConditions(
+                new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
+                        .withIfMatch(match).withIfNoneMatch(noneMatch))
+                .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
 
         when:
-        TransferManager.downloadBlobToFile(outChannel, bu, null, new TransferManager.DownloadFromBlobOptions(
+        TransferManager.downloadBlobToFile(outChannel, bu, null, new TransferManagerDownloadFromBlobOptions(
                 null, null, bac, null, null)).blockingGet()
 
         then:
@@ -468,13 +476,14 @@ class TransferManagerTest extends APISpec {
 
         noneMatch = setupBlobMatchCondition(bu, noneMatch)
         setupBlobLeaseCondition(bu, leaseID)
-        BlobAccessConditions bac = new BlobAccessConditions(
-                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
-                null, null)
+        BlobAccessConditions bac = new BlobAccessConditions().withModifiedAccessConditions(
+                new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
+                        .withIfMatch(match).withIfNoneMatch(noneMatch))
+                .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
 
         when:
         TransferManager.downloadBlobToFile(outChannel, bu, null,
-                new TransferManager.DownloadFromBlobOptions(null, null, bac, null,
+                new TransferManagerDownloadFromBlobOptions(null, null, bac, null,
                         null)).blockingGet()
 
         then:
@@ -494,7 +503,7 @@ class TransferManagerTest extends APISpec {
     def "Download file etag lock"() {
         setup:
         bu.upload(Flowable.just(getRandomData(1 * 1024 * 1024)), 1 * 1024 * 1024, null, null,
-                null).blockingGet()
+                null, null).blockingGet()
         def outChannel = AsynchronousFileChannel.open(getRandomFile(0).toPath(), StandardOpenOption.WRITE,
                 StandardOpenOption.READ)
 
@@ -505,7 +514,7 @@ class TransferManagerTest extends APISpec {
          */
         def success = false
         TransferManager.downloadBlobToFile(outChannel, bu, null,
-                new TransferManager.DownloadFromBlobOptions(1024, null, null,
+                new TransferManagerDownloadFromBlobOptions(1024, null, null,
                         null, null))
                 .subscribe(
                 new Consumer<BlobDownloadHeaders>() {
@@ -528,7 +537,7 @@ class TransferManagerTest extends APISpec {
 
 
         sleep(500) // Give some time for the download request to start.
-        bu.upload(defaultFlowable, defaultDataSize, null, null, null).blockingGet()
+        bu.upload(defaultFlowable, defaultDataSize, null, null, null, null).blockingGet()
 
         sleep(1000) // Allow time for the upload operation
 
@@ -548,12 +557,12 @@ class TransferManagerTest extends APISpec {
                 .blockingGet()
         def outChannel = AsynchronousFileChannel.open(getRandomFile(0).toPath(), StandardOpenOption.WRITE,
                 StandardOpenOption.READ)
-        def retryReaderOptions = new RetryReaderOptions()
-        retryReaderOptions.maxRetryRequests = retries
+        def reliableDownloadOptions = new ReliableDownloadOptions()
+        reliableDownloadOptions.withMaxRetryRequests(retries)
 
         when:
-        TransferManager.downloadBlobToFile(outChannel, bu, null, new TransferManager.DownloadFromBlobOptions(
-                blockSize, null, null, parallelism, retryReaderOptions)).blockingGet()
+        TransferManager.downloadBlobToFile(outChannel, bu, null, new TransferManagerDownloadFromBlobOptions(
+                blockSize, null, null, parallelism, reliableDownloadOptions)).blockingGet()
 
         then:
         compareFiles(channel, 0, channel.size(), outChannel)
@@ -591,7 +600,7 @@ class TransferManagerTest extends APISpec {
     @Unroll
     def "Download options fail"() {
         when:
-        new TransferManager.DownloadFromBlobOptions(blockSize, null, null, parallelism,
+        new TransferManagerDownloadFromBlobOptions(blockSize, null, null, parallelism,
                 null)
 
         then:

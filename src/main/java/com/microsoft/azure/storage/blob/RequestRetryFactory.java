@@ -14,7 +14,6 @@
  */
 package com.microsoft.azure.storage.blob;
 
-import com.microsoft.azure.storage.blob.models.StorageErrorException;
 import com.microsoft.rest.v2.http.*;
 import com.microsoft.rest.v2.policy.RequestPolicy;
 import com.microsoft.rest.v2.policy.RequestPolicyFactory;
@@ -72,7 +71,7 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
         public Single<HttpResponse> sendAsync(HttpRequest httpRequest) {
             boolean considerSecondary = (httpRequest.httpMethod().equals(HttpMethod.GET) ||
                     httpRequest.httpMethod().equals(HttpMethod.HEAD))
-                    && (this.requestRetryOptions.getSecondaryHost() != null);
+                    && (this.requestRetryOptions.secondaryHost() != null);
 
             return this.attemptAsync(httpRequest, 1, considerSecondary, 1);
         }
@@ -138,7 +137,7 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
                     httpRequest.url(), bufferedHeaders, bufferedBody, httpRequest.responseDecoder());
             if (!tryingPrimary) {
                 UrlBuilder builder = UrlBuilder.parse(requestCopy.url());
-                builder.withHost(this.requestRetryOptions.getSecondaryHost());
+                builder.withHost(this.requestRetryOptions.secondaryHost());
                 try {
                     requestCopy.withUrl(builder.toURL());
                 } catch (MalformedURLException e) {
@@ -153,7 +152,7 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
              until after the retry backoff delay, so we call delaySubscription.
              */
             return this.nextPolicy.sendAsync(requestCopy)
-                    .timeout(this.requestRetryOptions.getTryTimeout(), TimeUnit.SECONDS)
+                    .timeout(this.requestRetryOptions.tryTimeout(), TimeUnit.SECONDS)
                     .delaySubscription(delayMs, TimeUnit.MILLISECONDS)
                     .flatMap(response -> {
                         boolean newConsiderSecondary = considerSecondary;
@@ -174,7 +173,7 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
                             action = "NoRetry: Successful HTTP request";
                         }
                         logf("Action=%s\n", action);
-                        if (action.charAt(0) == 'R' && attempt < requestRetryOptions.getMaxTries()) {
+                        if (action.charAt(0) == 'R' && attempt < requestRetryOptions.maxTries()) {
                             /*
                             We increment primaryTry if we are about to try the primary again (which is when we
                             consider the secondary and tried the secondary this time (tryingPrimary==false) or
@@ -189,19 +188,27 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
                         return Single.just(response);
                     })
                     .onErrorResumeNext(throwable -> {
+                        /*
+                        It is likely that many users will not realize that their Flowable must be replayable and
+                        get an error upon retries when the provided data length does not match the length of the exact
+                        data. We cannot enforce the desired Flowable behavior, so we provide a hint when this is likely
+                        the root cause.
+                         */
+                        if (throwable instanceof UnexpectedLengthException && attempt > 1) {
+                                return Single.error(new IllegalStateException("The request failed because the " +
+                                        "size of the contents of the provided Flowable did not match the provided " +
+                                        "data size upon attempting to retry. This is likely caused by the Flowable " +
+                                        "not being replayable. To support retries, all Flowables must produce the " +
+                                        "same data for each subscriber. Please ensure this behavior.", throwable));
+                        }
                         String action;
                         /*
-                        ChannelException: A RuntimeException which is thrown when an I/O operation fails.
-                        ClosedChannelException: Thrown when an attempt is made to invoke or complete an I/O operation
-                        upon channel that is closed.
-                        SocketException: Thrown to indicate that there is an error creating or accessing a Socket.
-                        SocketTimeoutException: Signals that a timeout has occurred on a socket read or accept.
+                        IOException is a catch-all for IO related errors. Technically it includes many types which may
+                        not be network exceptions, but we should not hit those unless there is a bug in our logic. In
+                        either case, it is better to optimistically retry instead of failing too soon.
                         A Timeout Exception is a client-side timeout coming from Rx.
                          */
-                        if (throwable instanceof ChannelException ||
-                                throwable instanceof ClosedChannelException ||
-                                throwable instanceof SocketException ||
-                                throwable instanceof SocketTimeoutException) {
+                        if (throwable instanceof IOException) {
                             action = "Retry: Network error";
                         } else if (throwable instanceof TimeoutException) {
                             action = "Retry: Client timeout";
@@ -210,7 +217,7 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
                         }
 
                         logf("Action=%s\n", action);
-                        if (action.charAt(0) == 'R' && attempt < requestRetryOptions.getMaxTries()) {
+                        if (action.charAt(0) == 'R' && attempt < requestRetryOptions.maxTries()) {
                             /*
                             We increment primaryTry if we are about to try the primary again (which is when we
                             consider the secondary and tried the secondary this time (tryingPrimary==false) or

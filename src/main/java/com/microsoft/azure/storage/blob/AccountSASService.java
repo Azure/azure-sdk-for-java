@@ -24,25 +24,74 @@ import java.util.Locale;
  * the order of the services is particular and this class guarantees correctness.
  */
 public final class AccountSASService {
+
+    private boolean blob;
+
+    private boolean file;
+
+    private boolean queue;
+
+    private boolean table;
+
     /**
      * Permission to access blob resources granted.
      */
-    public boolean blob;
+    public boolean blob() {
+        return blob;
+    }
+
+    /**
+     * Permission to access blob resources granted.
+     */
+    public AccountSASService withBlob(boolean blob) {
+        this.blob = blob;
+        return this;
+    }
 
     /**
      * Permission to access file resources granted.
      */
-    public boolean file;
+    public boolean file() {
+        return file;
+    }
+
+    /**
+     * Permission to access file resources granted.
+     */
+    public AccountSASService withFile(boolean file) {
+        this.file = file;
+        return this;
+    }
 
     /**
      * Permission to access queue resources granted.
      */
-    public boolean queue;
+    public boolean queue() {
+        return queue;
+    }
+
+    /**
+     * Permission to access queue resources granted.
+     */
+    public AccountSASService withQueue(boolean queue) {
+        this.queue = queue;
+        return this;
+    }
 
     /**
      * Permission to access table resources granted.
      */
-    public boolean table;
+    public boolean table() {
+        return table;
+    }
+
+    /**
+     * Permission to access table resources granted.
+     */
+    public AccountSASService withTable(boolean table) {
+        this.table = table;
+        return this;
+    }
 
     /**
      * Initializes an {@code AccountSASService} object with all fields set to false.

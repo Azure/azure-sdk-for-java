@@ -16,10 +16,7 @@
 package com.microsoft.azure.storage.blob;
 
 import com.microsoft.azure.storage.blob.models.StorageErrorException;
-import com.microsoft.rest.v2.http.HttpHeaders;
-import com.microsoft.rest.v2.http.HttpRequest;
-import com.microsoft.rest.v2.http.HttpResponse;
-import com.microsoft.rest.v2.http.UrlBuilder;
+import com.microsoft.rest.v2.http.*;
 import com.microsoft.rest.v2.policy.RequestPolicy;
 import com.microsoft.rest.v2.policy.RequestPolicyFactory;
 import com.microsoft.rest.v2.policy.RequestPolicyOptions;
@@ -29,6 +26,7 @@ import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.SingleObserver;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
@@ -57,6 +55,8 @@ public class RequestRetryTestFactory implements RequestPolicyFactory {
     public static final int RETRY_TEST_SCENARIO_FIXED_TIMING = 7;
 
     public static final int RETRY_TEST_SCENARIO_TRY_TIMEOUT = 8;
+
+    public static final int RETRY_TEST_SCENARIO_NON_REPLAYABLE_FLOWABLE = 9;
 
     // Cancelable
 
@@ -126,7 +126,7 @@ public class RequestRetryTestFactory implements RequestPolicyFactory {
         @Override
         public Single<HttpResponse> sendAsync(HttpRequest request) {
             this.factory.tryNumber++;
-            if (this.factory.tryNumber > this.factory.options.getMaxTries()) {
+            if (this.factory.tryNumber > this.factory.options.maxTries()) {
                 throw new IllegalArgumentException("Try number has exceeded max tries");
             }
 
@@ -235,14 +235,10 @@ public class RequestRetryTestFactory implements RequestPolicyFactory {
                 case RETRY_TEST_SCENARIO_NETWORK_ERROR:
                     switch (this.factory.tryNumber) {
                         case 1:
-                            return Single.error(new ChannelException());
+                            // fall through
                         case 2:
-                            return Single.error(new ClosedChannelException());
+                            return Single.error(new IOException());
                         case 3:
-                            return Single.error(new SocketException());
-                        case 4:
-                            return Single.error(new SocketTimeoutException());
-                        case 5:
                             return RETRY_TEST_OK_RESPONSE;
                         default:
                             throw new IllegalArgumentException("Continued retrying after success.");
@@ -251,11 +247,11 @@ public class RequestRetryTestFactory implements RequestPolicyFactory {
                 case RETRY_TEST_SCENARIO_TRY_TIMEOUT:
                     switch (this.factory.tryNumber) {
                         case 1:
-                            return RETRY_TEST_OK_RESPONSE.delay(options.getTryTimeout() + 1, TimeUnit.SECONDS);
+                            return RETRY_TEST_OK_RESPONSE.delay(options.tryTimeout() + 1, TimeUnit.SECONDS);
                         case 2:
-                            return RETRY_TEST_OK_RESPONSE.delay(options.getTryTimeout() + 1, TimeUnit.SECONDS);
+                            return RETRY_TEST_OK_RESPONSE.delay(options.tryTimeout() + 1, TimeUnit.SECONDS);
                         case 3:
-                            return RETRY_TEST_OK_RESPONSE.delay(options.getTryTimeout() - 1, TimeUnit.SECONDS);
+                            return RETRY_TEST_OK_RESPONSE.delay(options.tryTimeout() - 1, TimeUnit.SECONDS);
                         default:
                             throw new IllegalArgumentException("Continued retrying after success");
                     }
@@ -309,6 +305,16 @@ public class RequestRetryTestFactory implements RequestPolicyFactory {
                         default:
                             throw new IllegalArgumentException("Retries continued after success.");
                     }
+
+                case RETRY_TEST_SCENARIO_NON_REPLAYABLE_FLOWABLE:
+                    switch (this.factory.tryNumber) {
+                        case 1:
+                            return RETRY_TEST_TEMPORARY_ERROR_RESPONSE;
+                        case 2:
+                            return Single.error(new UnexpectedLengthException("Unexpected length", 5, 6));
+                        default:
+                            throw new IllegalArgumentException("Retries continued on non retryable error.");
+                    }
             }
             return Single.error(new IllegalArgumentException("Invalid scenario"));
         }
@@ -321,9 +327,9 @@ public class RequestRetryTestFactory implements RequestPolicyFactory {
             switch (this.factory.retryTestScenario) {
                 case RETRY_TEST_SCENARIO_EXPONENTIAL_TIMING:
                     return (long) Math.ceil(
-                            ((pow(2L, tryNumber - 1) - 1L) * this.factory.options.getRetryDelayInMs()) / 1000);
+                            ((pow(2L, tryNumber - 1) - 1L) * this.factory.options.retryDelayInMs()) / 1000);
                 case RETRY_TEST_SCENARIO_FIXED_TIMING:
-                    return (long) Math.ceil(this.factory.options.getRetryDelayInMs() / 1000);
+                    return (long) Math.ceil(this.factory.options.retryDelayInMs() / 1000);
                 default:
                     throw new IllegalArgumentException("Invalid test scenario");
             }
@@ -357,8 +363,8 @@ public class RequestRetryTestFactory implements RequestPolicyFactory {
                 @Override
                 protected void subscribeActual(SingleObserver<? super HttpResponse> observer) {
                     try {
-                        if (OffsetDateTime.now().isAfter(calcUpperBound(factory.time, primaryTryNumber, tryingPrimary)) ||
-                                OffsetDateTime.now()
+                        if (OffsetDateTime.now().isAfter(calcUpperBound(factory.time, primaryTryNumber, tryingPrimary))
+                                || OffsetDateTime.now()
                                         .isBefore(calcLowerBound(factory.time, primaryTryNumber, tryingPrimary))) {
                             throw new IllegalArgumentException("Delay was not within jitter bounds");
                         }
@@ -382,10 +388,10 @@ public class RequestRetryTestFactory implements RequestPolicyFactory {
                 protected void subscribeActual(SingleObserver<? super HttpResponse> observer) {
                     try {
                         if (OffsetDateTime.now().isAfter(factory.time.plusSeconds(
-                                (long) Math.ceil((factory.options.getMaxRetryDelayInMs() / 1000) + 1)))) {
+                                (long) Math.ceil((factory.options.maxRetryDelayInMs() / 1000) + 1)))) {
                             throw new IllegalArgumentException("Max retry delay exceeded");
                         } else if (OffsetDateTime.now().isBefore(factory.time.plusSeconds(
-                                (long) Math.ceil((factory.options.getMaxRetryDelayInMs() / 1000) - 1)))) {
+                                (long) Math.ceil((factory.options.maxRetryDelayInMs() / 1000) - 1)))) {
                             throw new IllegalArgumentException("Retry did not delay long enough");
                         }
 

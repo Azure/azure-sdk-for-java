@@ -126,23 +126,23 @@ public final class RequestRetryOptions {
         this.secondaryHost = secondaryHost;
     }
 
-    int getMaxTries() {
+    int maxTries() {
         return this.maxTries;
     }
 
-    int getTryTimeout() {
+    int tryTimeout() {
         return this.tryTimeout;
     }
 
-    String getSecondaryHost() {
+    String secondaryHost() {
         return this.secondaryHost;
     }
 
-    long getRetryDelayInMs() {
+    long retryDelayInMs() {
         return retryDelayInMs;
     }
 
-    long getMaxRetryDelayInMs() {
+    long maxRetryDelayInMs() {
         return maxRetryDelayInMs;
     }
 
