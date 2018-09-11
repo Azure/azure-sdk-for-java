@@ -557,12 +557,12 @@ class TransferManagerTest extends APISpec {
                 .blockingGet()
         def outChannel = AsynchronousFileChannel.open(getRandomFile(0).toPath(), StandardOpenOption.WRITE,
                 StandardOpenOption.READ)
-        def retryReaderOptions = new ReliableDownloadOptions()
-        retryReaderOptions.maxRetryRequests = retries
+        def reliableDownloadOptions = new ReliableDownloadOptions()
+        reliableDownloadOptions.withMaxRetryRequests(retries)
 
         when:
         TransferManager.downloadBlobToFile(outChannel, bu, null, new TransferManagerDownloadFromBlobOptions(
-                blockSize, null, null, parallelism, retryReaderOptions)).blockingGet()
+                blockSize, null, null, parallelism, reliableDownloadOptions)).blockingGet()
 
         then:
         compareFiles(channel, 0, channel.size(), outChannel)

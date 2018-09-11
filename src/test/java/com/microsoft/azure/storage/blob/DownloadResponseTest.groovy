@@ -25,8 +25,7 @@ class DownloadResponseTest extends APISpec {
 
     def setup() {
         bu = cu.createBlockBlobURL(generateBlobName())
-        bu.upload(Flowable.just(defaultData), defaultText.length(), null, null,
-                null).blockingGet()
+        bu.upload(Flowable.just(defaultData), defaultText.length(), null, null, null, null).blockingGet()
     }
 
     /*
@@ -36,7 +35,7 @@ class DownloadResponseTest extends APISpec {
 
     def "Network call"() {
         expect:
-        FlowableUtil.collectBytesInBuffer(bu.download(null, null, false).blockingGet().body(null))
+        FlowableUtil.collectBytesInBuffer(bu.download(null, null, false, null).blockingGet().body(null))
                 .blockingGet() == defaultData
     }
 
