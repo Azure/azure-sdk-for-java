@@ -166,7 +166,12 @@ class BlobAPITest extends APISpec {
         bu.download(null, null, false, defaultContext).blockingGet()
 
         then:
-        notThrown(RuntimeException)
+        /*
+        DownloadResponse requires that there be an etag present, but our mock response doesn't give back an etag. The
+        easiest way to validate this is to ensure the cause of the exception is in fact the absence of the etag.
+         */
+        def e = thrown(IllegalArgumentException)
+        e.getMessage().contains("eTag")
     }
 
     def "Get properties all null"() {

@@ -25,6 +25,7 @@ import com.microsoft.azure.storage.blob.models.BlobGetPropertiesResponse
 import com.microsoft.azure.storage.blob.models.BlobHTTPHeaders
 import com.microsoft.azure.storage.blob.models.LeaseAccessConditions
 import com.microsoft.azure.storage.blob.models.ModifiedAccessConditions
+import com.microsoft.rest.v2.http.HttpPipeline
 import com.microsoft.rest.v2.http.UnexpectedLengthException
 import com.microsoft.rest.v2.util.FlowableUtil
 import io.reactivex.Flowable
