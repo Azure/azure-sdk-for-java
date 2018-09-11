@@ -28,6 +28,7 @@ import com.microsoft.azure.management.sql.v2017_10_01_preview.TdeCertificates;
 import com.microsoft.azure.management.sql.v2017_10_01_preview.ManagedInstanceTdeCertificates;
 import com.microsoft.azure.management.sql.v2017_10_01_preview.ManagedInstanceKeys;
 import com.microsoft.azure.management.sql.v2017_10_01_preview.ManagedInstanceEncryptionProtectors;
+import com.microsoft.azure.management.sql.v2017_10_01_preview.InterfaceEndpointProfiles;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -47,6 +48,7 @@ public final class SqlManager extends ManagerCore<SqlManager, SqlManagementClien
     private ManagedInstanceTdeCertificates managedInstanceTdeCertificates;
     private ManagedInstanceKeys managedInstanceKeys;
     private ManagedInstanceEncryptionProtectors managedInstanceEncryptionProtectors;
+    private InterfaceEndpointProfiles interfaceEndpointProfiles;
     /**
     * Get a Configurable instance that can be used to create SqlManager with optional configuration.
     *
@@ -212,6 +214,16 @@ public final class SqlManager extends ManagerCore<SqlManager, SqlManagementClien
             this.managedInstanceEncryptionProtectors = new ManagedInstanceEncryptionProtectorsImpl(this);
         }
         return this.managedInstanceEncryptionProtectors;
+    }
+
+    /**
+     * @return Entry point to manage InterfaceEndpointProfiles.
+     */
+    public InterfaceEndpointProfiles interfaceEndpointProfiles() {
+        if (this.interfaceEndpointProfiles == null) {
+            this.interfaceEndpointProfiles = new InterfaceEndpointProfilesImpl(this);
+        }
+        return this.interfaceEndpointProfiles;
     }
 
     /**
