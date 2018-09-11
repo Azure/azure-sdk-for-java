@@ -13,7 +13,6 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
-import com.microsoft.azure.management.logic.v2018_07_01_preview.ErrorResponseException;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
@@ -90,7 +89,7 @@ public class IntegrationAccountSessionsInner {
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;IntegrationAccountSessionInner&gt; object if successful.
      */
@@ -210,7 +209,7 @@ public class IntegrationAccountSessionsInner {
      * @param top The number of items to be included in the result.
      * @param filter The filter to apply on the operation. Options for filters include: ChangedTime.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;IntegrationAccountSessionInner&gt; object if successful.
      */
@@ -328,10 +327,10 @@ public class IntegrationAccountSessionsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<IntegrationAccountSessionInner>> listDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<IntegrationAccountSessionInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<IntegrationAccountSessionInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<IntegrationAccountSessionInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<IntegrationAccountSessionInner>>() { }.getType())
-                .registerError(ErrorResponseException.class)
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -342,7 +341,7 @@ public class IntegrationAccountSessionsInner {
      * @param integrationAccountName The integration account name.
      * @param sessionName The integration account session name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the IntegrationAccountSessionInner object if successful.
      */
@@ -421,10 +420,10 @@ public class IntegrationAccountSessionsInner {
             });
     }
 
-    private ServiceResponse<IntegrationAccountSessionInner> getDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<IntegrationAccountSessionInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<IntegrationAccountSessionInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<IntegrationAccountSessionInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<IntegrationAccountSessionInner>() { }.getType())
-                .registerError(ErrorResponseException.class)
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -436,7 +435,7 @@ public class IntegrationAccountSessionsInner {
      * @param sessionName The integration account session name.
      * @param session The integration account session.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the IntegrationAccountSessionInner object if successful.
      */
@@ -522,11 +521,11 @@ public class IntegrationAccountSessionsInner {
             });
     }
 
-    private ServiceResponse<IntegrationAccountSessionInner> createOrUpdateDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<IntegrationAccountSessionInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<IntegrationAccountSessionInner> createOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<IntegrationAccountSessionInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<IntegrationAccountSessionInner>() { }.getType())
                 .register(201, new TypeToken<IntegrationAccountSessionInner>() { }.getType())
-                .registerError(ErrorResponseException.class)
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -628,7 +627,7 @@ public class IntegrationAccountSessionsInner {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;IntegrationAccountSessionInner&gt; object if successful.
      */
@@ -727,10 +726,10 @@ public class IntegrationAccountSessionsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<IntegrationAccountSessionInner>> listNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<IntegrationAccountSessionInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<IntegrationAccountSessionInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<IntegrationAccountSessionInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<IntegrationAccountSessionInner>>() { }.getType())
-                .registerError(ErrorResponseException.class)
+                .registerError(CloudException.class)
                 .build(response);
     }
 
