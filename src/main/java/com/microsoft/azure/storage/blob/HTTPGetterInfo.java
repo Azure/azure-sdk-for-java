@@ -64,7 +64,7 @@ public final class HTTPGetterInfo {
     /**
      * The resource's etag that should be used when creating the HTTP GET request's If-Match header. Note that the
      * Etag is returned with any operation that modifies the resource and by a call to {@link
-     * BlobURL#getProperties(BlobAccessConditions)}. Defaults to null.
+     * BlobURL#getProperties(BlobAccessConditions, com.microsoft.rest.v2.Context)}. Defaults to null.
      */
     public String eTag() {
         return eTag;
@@ -73,7 +73,7 @@ public final class HTTPGetterInfo {
     /**
      * The resource's etag that should be used when creating the HTTP GET request's If-Match header. Note that the
      * Etag is returned with any operation that modifies the resource and by a call to {@link
-     * BlobURL#getProperties(BlobAccessConditions)}. Defaults to null.
+     * BlobURL#getProperties(BlobAccessConditions, com.microsoft.rest.v2.Context)}. Defaults to null.
      */
     public HTTPGetterInfo withETag(String eTag) {
         this.eTag = eTag;

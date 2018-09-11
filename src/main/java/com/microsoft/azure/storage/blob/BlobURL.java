@@ -223,7 +223,7 @@ public class BlobURL extends StorageURL {
      * @return Emits the successful response.
      * @apiNote ## Sample Code \n [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=upload_download
      * "Sample code for BlobURL.download")] \n For more samples, please see the [Samples
-     * file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)>>>>>>> Generated with context feature
+     * file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<DownloadResponse> download(BlobRange range, BlobAccessConditions accessConditions,
             boolean rangeGetContentMD5, Context context) {

@@ -1,4 +1,4 @@
-﻿XXXX.XX.XX Version XX.X.X
+﻿2018.08.11 Version 10.1.0
 * Interfaces for helper types updated to be more consistent throughout the library. All types, with the exception of the options for pipeline factories, use a fluent pattern.
 * Removed RetryReader type as it's functionality was moved to be built into the DownloadResponse. RetryReaderOptions are now named ReliableDownloadOptions.
 * Restructured the access conditions to be more logically adhere to their respective functions.
