@@ -31,14 +31,16 @@ import com.microsoft.azure.storage.blob.models.CorsRule
 import com.microsoft.azure.storage.blob.models.Logging
 import com.microsoft.azure.storage.blob.models.Metrics
 import com.microsoft.azure.storage.blob.models.RetentionPolicy
+import com.microsoft.azure.storage.blob.models.ServiceGetAccountInfoHeaders
+import com.microsoft.azure.storage.blob.models.ServiceGetPropertiesHeaders
+import com.microsoft.azure.storage.blob.models.ServiceGetStatisticsHeaders
 import com.microsoft.azure.storage.blob.models.ServiceGetStatisticsResponse
+import com.microsoft.azure.storage.blob.models.ServiceListContainersSegmentHeaders
 import com.microsoft.azure.storage.blob.models.ServiceListContainersSegmentResponse
 import com.microsoft.azure.storage.blob.models.ServiceSetPropertiesHeaders
 import com.microsoft.azure.storage.blob.models.StaticWebsite
 import com.microsoft.azure.storage.blob.models.StorageServiceProperties
-import spock.lang.Unroll
-
-import java.lang.annotation.Retention
+import com.microsoft.rest.v2.http.HttpPipeline
 
 class ServiceAPITest extends APISpec {
     def setup() {
@@ -53,7 +55,7 @@ class ServiceAPITest extends APISpec {
                 .withRetentionPolicy(disabled))
                 .withLogging(new Logging().withVersion("1.0")
                 .withRetentionPolicy(disabled))
-                .withDefaultServiceVersion("2018-03-28")).blockingGet()
+                .withDefaultServiceVersion("2018-03-28"), null).blockingGet()
     }
 
     def cleanup() {
@@ -68,14 +70,14 @@ class ServiceAPITest extends APISpec {
                 .withRetentionPolicy(disabled))
                 .withLogging(new Logging().withVersion("1.0")
                 .withRetentionPolicy(disabled))
-                .withDefaultServiceVersion("2018-03-28")).blockingGet()
+                .withDefaultServiceVersion("2018-03-28"), null).blockingGet()
     }
 
     def "List containers"() {
         when:
         ServiceListContainersSegmentResponse response =
-                primaryServiceURL.listContainersSegment(null, new ListContainersOptions(null,
-                        containerPrefix, null)).blockingGet()
+                primaryServiceURL.listContainersSegment(null, new ListContainersOptions().withPrefix(containerPrefix),
+                        null).blockingGet()
 
         then:
         for (ContainerItem c : response.body().containerItems()) {
@@ -97,16 +99,16 @@ class ServiceAPITest extends APISpec {
         setup:
         for (int i = 0; i < 10; i++) {
             ContainerURL cu = primaryServiceURL.createContainerURL(generateContainerName())
-            cu.create(null, null).blockingGet()
+            cu.create(null, null, null).blockingGet()
         }
 
         ServiceListContainersSegmentResponse response =
                 primaryServiceURL.listContainersSegment(null,
-                        new ListContainersOptions(null, null, 5)).blockingGet()
+                        new ListContainersOptions().withMaxResults(5), null).blockingGet()
         String marker = response.body().nextMarker()
         String firstContainerName = response.body().containerItems().get(0).name()
         response = primaryServiceURL.listContainersSegment(marker,
-                new ListContainersOptions(null, null, 5)).blockingGet()
+                new ListContainersOptions().withMaxResults(5), null).blockingGet()
 
         expect:
         // Assert that the second segment is indeed after the first alphabetically
@@ -118,35 +120,50 @@ class ServiceAPITest extends APISpec {
         Metadata metadata = new Metadata()
         metadata.put("foo", "bar")
         cu = primaryServiceURL.createContainerURL("aaa" + generateContainerName())
-        cu.create(metadata, null).blockingGet()
+        cu.create(metadata, null, null).blockingGet()
 
         expect:
         primaryServiceURL.listContainersSegment(null,
-                new ListContainersOptions(new ContainerListingDetails(true),
-                        "aaa" + containerPrefix, null)).blockingGet().body().containerItems()
+                new ListContainersOptions().withDetails(new ContainerListingDetails().withMetadata(true))
+                        .withPrefix("aaa" + containerPrefix), null).blockingGet().body().containerItems()
                 .get(0).metadata() == metadata
         // Container with prefix "aaa" will not be cleaned up by normal test cleanup.
-        cu.delete(null).blockingGet().statusCode() == 202
+        cu.delete(null, null).blockingGet().statusCode() == 202
     }
 
     def "List containers maxResults"() {
         setup:
         for (int i = 0; i < 11; i++) {
-            primaryServiceURL.createContainerURL(generateContainerName()).create(null, null)
+            primaryServiceURL.createContainerURL(generateContainerName()).create(null, null, null)
                     .blockingGet()
         }
         expect:
         primaryServiceURL.listContainersSegment(null,
-                new ListContainersOptions(null, null, 10))
+                new ListContainersOptions().withMaxResults(10), null)
                 .blockingGet().body().containerItems().size() == 10
     }
 
     def "List containers error"() {
         when:
-        primaryServiceURL.listContainersSegment("garbage", null).blockingGet()
+        primaryServiceURL.listContainersSegment("garbage", null, null).blockingGet()
 
         then:
         thrown(StorageException)
+    }
+
+    def "List containers context"() {
+        setup:
+        def pipeline =
+                HttpPipeline.build(getStubFactory(getContextStubPolicy(200, ServiceListContainersSegmentHeaders)))
+
+        def su = primaryServiceURL.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        su.listContainersSegment(null, null, defaultContext)
+
+        then:
+        notThrown(RuntimeException)
     }
 
     def validatePropsSet(StorageServiceProperties sent, StorageServiceProperties received) {
@@ -212,13 +229,13 @@ class ServiceAPITest extends APISpec {
                 .withDeleteRetentionPolicy(retentionPolicy)
                 .withStaticWebsite(website)
 
-        ServiceSetPropertiesHeaders headers = primaryServiceURL.setProperties(sentProperties)
+        ServiceSetPropertiesHeaders headers = primaryServiceURL.setProperties(sentProperties, null)
                 .blockingGet().headers()
 
         // Service properties may take up to 30s to take effect. If they weren't already in place, wait.
         sleep(30 * 1000)
 
-        StorageServiceProperties receivedProperties = primaryServiceURL.getProperties()
+        StorageServiceProperties receivedProperties = primaryServiceURL.getProperties(null)
                 .blockingGet().body()
 
         then:
@@ -233,28 +250,58 @@ class ServiceAPITest extends APISpec {
         when:
         new ServiceURL(new URL("https://error.blob.core.windows.net"),
                 StorageURL.createPipeline(primaryCreds, new PipelineOptions()))
-                .setProperties(new StorageServiceProperties()).blockingGet()
+                .setProperties(new StorageServiceProperties(), null).blockingGet()
 
         then:
         thrown(StorageException)
+    }
+
+    def "Set props context"() {
+        setup:
+        def pipeline =
+                HttpPipeline.build(getStubFactory(getContextStubPolicy(200, ServiceSetPropertiesHeaders)))
+
+        def su = primaryServiceURL.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        su.setProperties(new StorageServiceProperties(), defaultContext)
+
+        then:
+        notThrown(RuntimeException)
     }
 
     def "Get props error"() {
         when:
         new ServiceURL(new URL("https://error.blob.core.windows.net"),
-                StorageURL.createPipeline(primaryCreds, new PipelineOptions())).getProperties().blockingGet()
+                StorageURL.createPipeline(primaryCreds, new PipelineOptions())).getProperties(null).blockingGet()
 
         then:
         thrown(StorageException)
     }
 
+    def "Get props context"() {
+        setup:
+        def pipeline =
+                HttpPipeline.build(getStubFactory(getContextStubPolicy(200, ServiceGetPropertiesHeaders)))
+
+        def su = primaryServiceURL.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        su.getProperties(defaultContext)
+
+        then:
+        notThrown(RuntimeException)
+    }
+
     def "Get stats"() {
         setup:
         BlobURLParts parts = URLParser.parse(primaryServiceURL.toURL())
-        parts.host = "xclientdev3-secondary.blob.core.windows.net"
+        parts.withHost("xclientdev3-secondary.blob.core.windows.net")
         ServiceURL secondary = new ServiceURL(parts.toURL(),
                 StorageURL.createPipeline(primaryCreds, new PipelineOptions()))
-        ServiceGetStatisticsResponse response = secondary.getStatistics().blockingGet()
+        ServiceGetStatisticsResponse response = secondary.getStatistics(null).blockingGet()
 
         expect:
         response.headers().version() != null
@@ -266,15 +313,30 @@ class ServiceAPITest extends APISpec {
 
     def "Get stats error"() {
         when:
-        primaryServiceURL.getStatistics().blockingGet()
+        primaryServiceURL.getStatistics(null).blockingGet()
 
         then:
         thrown(StorageException)
     }
 
+    def "Get stats context"() {
+        setup:
+        def pipeline =
+                HttpPipeline.build(getStubFactory(getContextStubPolicy(200, ServiceGetStatisticsHeaders)))
+
+        def su = primaryServiceURL.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        su.getStatistics(defaultContext)
+
+        then:
+        notThrown(RuntimeException)
+    }
+
     def "Get account info"() {
         when:
-        def response = primaryServiceURL.getAccountInfo().blockingGet()
+        def response = primaryServiceURL.getAccountInfo(null).blockingGet()
 
         then:
         response.headers().date() != null
@@ -288,9 +350,24 @@ class ServiceAPITest extends APISpec {
         when:
         ServiceURL serviceURL = new ServiceURL(primaryServiceURL.toURL(),
                 StorageURL.createPipeline(new AnonymousCredentials(), new PipelineOptions()))
-        serviceURL.getAccountInfo().blockingGet()
+        serviceURL.getAccountInfo(null).blockingGet()
 
         then:
         thrown(StorageException)
+    }
+
+    def "Get account info context"() {
+        setup:
+        def pipeline =
+                HttpPipeline.build(getStubFactory(getContextStubPolicy(200, ServiceGetAccountInfoHeaders)))
+
+        def su = primaryServiceURL.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        su.getAccountInfo(defaultContext)
+
+        then:
+        notThrown(RuntimeException)
     }
 }

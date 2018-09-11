@@ -38,8 +38,8 @@ public final class BlockBlobGetBlockListHeaders {
     private String eTag;
 
     /**
-     * The content type specified for the blob. The default content type is
-     * 'application/octet-stream'.
+     * The media type of the body of the response. For Get Block List this is
+     * 'application/xml'.
      */
     @JsonProperty(value = "Content-Type")
     private String contentType;

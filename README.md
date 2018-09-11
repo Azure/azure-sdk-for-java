@@ -31,7 +31,7 @@ To get the binaries of this library as distributed by Microsoft, ready for use w
 <dependency>
 	<groupId>com.microsoft.azure</groupId>
 	<artifactId>azure-storage-blob</artifactId>
-	<version>10.0.4-rc</version>
+	<version>10.1.0</version>
 </dependency>
 ```
 
@@ -131,7 +131,7 @@ public class Sample {
                         blobURL.download(null, null, false))
                 .flatMap(blobsDownloadResponse ->
                         // Verify that the blob data round-tripped correctly.
-                        FlowableUtil.collectBytesInBuffer(blobsDownloadResponse.body())
+                        FlowableUtil.collectBytesInBuffer(blobsDownloadResponse.body(null))
                                 .doOnSuccess(byteBuffer -> {
                                     if (byteBuffer.compareTo(ByteBuffer.wrap(data.getBytes())) != 0) {
                                         throw new Exception("The downloaded data does not match the uploaded data.");

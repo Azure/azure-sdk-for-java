@@ -14,6 +14,9 @@
  */
 package com.microsoft.azure.storage.blob;
 
+import com.microsoft.azure.storage.blob.models.LeaseAccessConditions;
+import com.microsoft.azure.storage.blob.models.ModifiedAccessConditions;
+
 /**
  * This class contains values which will restrict the successful operation of a variety of requests to the conditions
  * present. These conditions are entirely optional. The entire object or any of its properties may be set to null when
@@ -25,39 +28,44 @@ public final class ContainerAccessConditions {
     /**
      * An object representing no access conditions.
      */
-    public static final ContainerAccessConditions NONE = new ContainerAccessConditions(null,
-            null);
+    public static final ContainerAccessConditions NONE = new ContainerAccessConditions();
 
-    private final HTTPAccessConditions httpAccessConditions;
+    private ModifiedAccessConditions modifiedAccessConditions;
 
-    private final LeaseAccessConditions leaseID;
+    private LeaseAccessConditions leaseAccessConditions;
 
     /**
-     * Creates a {@link ContainerAccessConditions} object.
-     *
-     * @param httpAccessConditions
-     *      An {@link HTTPAccessConditions} object.
-     * @param leaseID
-     *      A {@link LeaseAccessConditions} object.
+     * {@link ModifiedAccessConditions}
      */
-    public ContainerAccessConditions(HTTPAccessConditions httpAccessConditions, LeaseAccessConditions leaseID) {
-        this.httpAccessConditions = httpAccessConditions == null ? HTTPAccessConditions.NONE : httpAccessConditions;
-        this.leaseID = leaseID == null ? LeaseAccessConditions.NONE : leaseID;
+    public ModifiedAccessConditions modifiedAccessConditions() {
+        return modifiedAccessConditions;
     }
 
     /**
-     * @return
-     *      A {@link HTTPAccessConditions} object
+     * {@link ModifiedAccessConditions}
      */
-    public HTTPAccessConditions getHttpAccessConditions() {
-        return httpAccessConditions;
+    public ContainerAccessConditions withModifiedAccessConditions(ModifiedAccessConditions modifiedAccessConditions) {
+        this.modifiedAccessConditions = modifiedAccessConditions;
+        return this;
     }
 
     /**
-     * @return
-     *      A {@link LeaseAccessConditions} object
+     * {@link LeaseAccessConditions}
      */
-    public LeaseAccessConditions getLeaseAccessConditions() {
-        return leaseID;
+    public LeaseAccessConditions leaseAccessConditions() {
+        return leaseAccessConditions;
+    }
+
+    /**
+     * {@link LeaseAccessConditions}
+     */
+    public ContainerAccessConditions withLeaseAccessConditions(LeaseAccessConditions leaseID) {
+        this.leaseAccessConditions = leaseID;
+        return this;
+    }
+
+    public ContainerAccessConditions() {
+        this.modifiedAccessConditions = new ModifiedAccessConditions();
+        this.leaseAccessConditions = new LeaseAccessConditions();
     }
 }

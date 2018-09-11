@@ -15,6 +15,7 @@
 package com.microsoft.azure.storage.blob;
 
 import com.microsoft.azure.storage.blob.models.*;
+import com.microsoft.rest.v2.Context;
 import com.microsoft.rest.v2.http.HttpPipeline;
 import io.reactivex.Single;
 
@@ -96,15 +97,23 @@ public final class ServiceURL extends StorageURL {
      *      ListContainersSegmentResponse.body().nextMarker(). Set to null to list the first segment.
      * @param options
      *      A {@link ListContainersOptions} which specifies what data should be returned by the service.
+     * @param context
+     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *      parent, forming a linked list.
      * @return
      *      Emits the successful response.
      */
-    public Single<ServiceListContainersSegmentResponse> listContainersSegment(
-            String marker, ListContainersOptions options) {
+    public Single<ServiceListContainersSegmentResponse> listContainersSegment(String marker,
+            ListContainersOptions options, Context context) {
         options = options == null ? ListContainersOptions.DEFAULT : options;
+        context = context == null ? Context.NONE : context;
+
         return addErrorWrappingToSingle(
-                this.storageClient.generatedServices().listContainersSegmentWithRestResponseAsync(options.getPrefix(),
-                marker, options.getMaxResults(), options.getDetails().toIncludeType(), null, null));
+                this.storageClient.generatedServices().listContainersSegmentWithRestResponseAsync(context,
+                        options.prefix(), marker, options.maxResults(), options.details().toIncludeType(), null, null));
     }
 
     /**
@@ -118,10 +127,18 @@ public final class ServiceURL extends StorageURL {
      *
      * @return
      *      Emits the successful response.
+     * @param context
+     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *      parent, forming a linked list.
      */
-    public Single<ServiceGetPropertiesResponse> getProperties() {
+    public Single<ServiceGetPropertiesResponse> getProperties(Context context) {
+        context = context == null ? Context.NONE : context;
+
         return addErrorWrappingToSingle(
-                this.storageClient.generatedServices().getPropertiesWithRestResponseAsync(null, null));
+                this.storageClient.generatedServices().getPropertiesWithRestResponseAsync(context, null, null));
     }
 
     /**
@@ -137,12 +154,20 @@ public final class ServiceURL extends StorageURL {
      *
      * @param properties
      *      Configures the service.
+     * @param context
+     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *      parent, forming a linked list.
      * @return
      *      Emits the successful response.
      */
-    public Single<ServiceSetPropertiesResponse> setProperties(StorageServiceProperties properties) {
+    public Single<ServiceSetPropertiesResponse> setProperties(StorageServiceProperties properties, Context context) {
+        context = context == null ? Context.NONE : context;
+
         return addErrorWrappingToSingle(
-                this.storageClient.generatedServices().setPropertiesWithRestResponseAsync(properties, null,
+                this.storageClient.generatedServices().setPropertiesWithRestResponseAsync(context, properties, null,
                 null));
     }
 
@@ -157,12 +182,20 @@ public final class ServiceURL extends StorageURL {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_stats "Sample code for ServiceURL.getStats")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      *
+     * @param context
+     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *      parent, forming a linked list.
      * @return
      *      Emits the successful response.
      */
-    public Single<ServiceGetStatisticsResponse> getStatistics() {
+    public Single<ServiceGetStatisticsResponse> getStatistics(Context context) {
+        context = context == null ? Context.NONE : context;
+
         return addErrorWrappingToSingle(
-                this.storageClient.generatedServices().getStatisticsWithRestResponseAsync(null, null));
+                this.storageClient.generatedServices().getStatisticsWithRestResponseAsync(context, null, null));
     }
 
     /**
@@ -174,11 +207,19 @@ public final class ServiceURL extends StorageURL {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=account_info "Sample code for ServiceURL.getAccountInfo")] \n
      * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      *
+     * @param context
+     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *      parent, forming a linked list.
      * @return
      *      Emits the successful response.
      */
-    public Single<ServiceGetAccountInfoResponse> getAccountInfo() {
+    public Single<ServiceGetAccountInfoResponse> getAccountInfo(Context context) {
+        context = context == null ? Context.NONE : context;
+
         return addErrorWrappingToSingle(
-                this.storageClient.generatedServices().getAccountInfoWithRestResponseAsync());
+                this.storageClient.generatedServices().getAccountInfoWithRestResponseAsync(context));
     }
 }

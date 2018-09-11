@@ -14,6 +14,9 @@
  */
 package com.microsoft.azure.storage.blob;
 
+import com.microsoft.azure.storage.blob.models.ModifiedAccessConditions;
+import com.microsoft.azure.storage.blob.models.LeaseAccessConditions;
+
 /**
  * This class contains values which will restrict the successful operation of a variety of requests to the conditions
  * present. These conditions are entirely optional. The entire object or any of its properties may be set to null when
@@ -22,82 +25,45 @@ package com.microsoft.azure.storage.blob;
  */
 public final class BlobAccessConditions {
 
-    /**
-     * An object representing no access conditions.
-     */
     public static final BlobAccessConditions NONE =
-            new BlobAccessConditions(null, null, null,
-                    null);
+            new BlobAccessConditions();
 
-    // Optional standard HTTP access conditions which are optionally set
-    private final HTTPAccessConditions httpAccessConditions;
+    private ModifiedAccessConditions modifiedAccessConditions;
 
-    // Optional access conditions for a lease on a container or blob
-    private final LeaseAccessConditions leaseAccessConditions;
-
-    // Optional access conditions which are specific to append blobs
-    private final AppendBlobAccessConditions appendBlobAccessConditions;
-
-    // Optional access conditions which are specific to page blobs
-    private final PageBlobAccessConditions pageBlobAccessConditions;
+    private LeaseAccessConditions leaseAccessConditions;
 
     /**
-     * Access conditions which are specific to blobs.
-     *
-     * @param httpAccessConditions
-     *      {@link HTTPAccessConditions}
-     * @param leaseAccessConditions
-     *      {@link LeaseAccessConditions}
-     * @param appendBlobAccessConditions
-     *      {@link AppendBlobAccessConditions}
-     * @param pageBlobAccessConditions
-     *      {@link PageBlobAccessConditions}
+     * {@link ModifiedAccessConditions}
      */
-    public BlobAccessConditions(
-            HTTPAccessConditions httpAccessConditions,
-            LeaseAccessConditions leaseAccessConditions,
-            AppendBlobAccessConditions appendBlobAccessConditions,
-            PageBlobAccessConditions pageBlobAccessConditions) {
-        this.httpAccessConditions = httpAccessConditions == null ?
-                HTTPAccessConditions.NONE : httpAccessConditions;
-        this.leaseAccessConditions = leaseAccessConditions == null ?
-                LeaseAccessConditions.NONE : leaseAccessConditions;
-        this.appendBlobAccessConditions = appendBlobAccessConditions == null ?
-                AppendBlobAccessConditions.NONE : appendBlobAccessConditions;
-        this.pageBlobAccessConditions = pageBlobAccessConditions == null ?
-                PageBlobAccessConditions.NONE : pageBlobAccessConditions;
+    public ModifiedAccessConditions modifiedAccessConditions() {
+        return modifiedAccessConditions;
     }
 
     /**
-     * @return
-     *      The HttpAccessConditions.
+     * {@link ModifiedAccessConditions}
      */
-    HTTPAccessConditions getHttpAccessConditions() {
-        return httpAccessConditions;
+    public BlobAccessConditions withModifiedAccessConditions(ModifiedAccessConditions modifiedAccessConditions) {
+        this.modifiedAccessConditions = modifiedAccessConditions;
+        return this;
     }
 
     /**
-     * @return
-     *      The LeaseAccessConditions.
+     * {@link LeaseAccessConditions}
      */
-    LeaseAccessConditions getLeaseAccessConditions() {
+    public LeaseAccessConditions leaseAccessConditions() {
         return leaseAccessConditions;
     }
 
     /**
-     * @return
-     *      The AppendBlobAccessConditions.
+     * {@link LeaseAccessConditions}
      */
-    AppendBlobAccessConditions getAppendBlobAccessConditions() {
-        return appendBlobAccessConditions;
+    public BlobAccessConditions withLeaseAccessConditions(LeaseAccessConditions leaseAccessConditions) {
+        this.leaseAccessConditions = leaseAccessConditions;
+        return this;
     }
 
-    /**
-     * @return
-     *      The PageBlobAccessConditions.
-     */
-    PageBlobAccessConditions getPageBlobAccessConditions() {
-        return pageBlobAccessConditions;
+    public BlobAccessConditions() {
+        modifiedAccessConditions = new ModifiedAccessConditions();
+        leaseAccessConditions = new LeaseAccessConditions();
     }
-
 }

@@ -14,10 +14,13 @@
  */
 package com.microsoft.azure.storage.blob;
 
+import com.microsoft.azure.storage.blob.models.LeaseAccessConditions;
+import com.microsoft.azure.storage.blob.models.ModifiedAccessConditions;
+import com.microsoft.azure.storage.blob.models.SequenceNumberAccessConditions;
+
 /**
  * This class contains values that restrict the successful completion of PageBlob operations to certain conditions.
- * An instance of this class is set as a member of {@link BlobAccessConditions} when needed. It may also be set to null
- * if no access conditions are desired.
+ * It may be set to null if no access conditions are desired.
  *
  * Please refer to the request header section
  * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/put-page>here</a> for more conceptual information.
@@ -27,47 +30,62 @@ public final class PageBlobAccessConditions {
     /**
      * An object representing no access conditions.
      */
-    public static final PageBlobAccessConditions NONE = new PageBlobAccessConditions(null,
-            null, null);
+    public static final PageBlobAccessConditions NONE = new PageBlobAccessConditions();
 
-    private final Long ifSequenceNumberLessThan;
+    private SequenceNumberAccessConditions sequenceNumberAccessConditions;
 
-    private final Long ifSequenceNumberLessThanOrEqual;
+    private ModifiedAccessConditions modifiedAccessConditions;
 
-    private final Long ifSequenceNumberEqual;
+    private LeaseAccessConditions leaseAccessConditions;
 
     /**
-     * Creates a set of conditions under which a request to a PageBlob will succeed.
-     *
-     * @param ifSequenceNumberLessThan
-     *      Ensures that the page blob operation succeeds only if the blob's sequence number is less than a value.
-     * @param ifSequenceNumberLessThanOrEqual
-     *      Ensures that the page blob operation succeeds only if the blob's sequence number is less than or equal to a
-     *      value.
-     * @param ifSequenceNumberEqual
-     *      Ensures that the page blob operation succeeds only if the blob's sequence number is equal to a value.
+     * {@link SequenceNumberAccessConditions}
      */
-    public PageBlobAccessConditions(Long ifSequenceNumberLessThan, Long ifSequenceNumberLessThanOrEqual,
-                                    Long ifSequenceNumberEqual) {
-        if ((ifSequenceNumberEqual != null && ifSequenceNumberEqual < -1) ||
-                (ifSequenceNumberLessThan != null && ifSequenceNumberLessThan < -1) ||
-                (ifSequenceNumberLessThanOrEqual != null && ifSequenceNumberLessThanOrEqual < -1)) {
-            throw new IllegalArgumentException("Sequence number access conditions cannot be less than -1");
-        }
-        this.ifSequenceNumberLessThan = ifSequenceNumberLessThan;
-        this.ifSequenceNumberLessThanOrEqual = ifSequenceNumberLessThanOrEqual;
-        this.ifSequenceNumberEqual = ifSequenceNumberEqual;
+    public SequenceNumberAccessConditions sequenceNumberAccessConditions() {
+        return sequenceNumberAccessConditions;
     }
 
-    public Long getIfSequenceNumberLessThan() {
-        return ifSequenceNumberLessThan;
+    /**
+     * {@link SequenceNumberAccessConditions}
+     */
+    public PageBlobAccessConditions withSequenceNumberAccessConditions(SequenceNumberAccessConditions sequenceNumberAccessConditions) {
+        this.sequenceNumberAccessConditions = sequenceNumberAccessConditions;
+        return this;
     }
 
-    public Long getIfSequenceNumberLessThanOrEqual() {
-        return ifSequenceNumberLessThanOrEqual;
+    /**
+     * {@link ModifiedAccessConditions}
+     */
+    public ModifiedAccessConditions modifiedAccessConditions() {
+        return modifiedAccessConditions;
     }
 
-    public Long getIfSequenceNumberEqual() {
-        return ifSequenceNumberEqual;
+    /**
+     * {@link ModifiedAccessConditions}
+     */
+    public PageBlobAccessConditions withModifiedAccessConditions(ModifiedAccessConditions modifiedAccessConditions) {
+        this.modifiedAccessConditions = modifiedAccessConditions;
+        return this;
+    }
+
+    /**
+     * {@link LeaseAccessConditions}
+     */
+    public LeaseAccessConditions leaseAccessConditions() {
+        return leaseAccessConditions;
+    }
+
+    /**
+     * {@link LeaseAccessConditions}
+     */
+    public PageBlobAccessConditions withLeaseAccessConditions(LeaseAccessConditions leaseAccessConditions) {
+        this.leaseAccessConditions = leaseAccessConditions;
+        return this;
+    }
+
+    public PageBlobAccessConditions() {
+        this.sequenceNumberAccessConditions = new SequenceNumberAccessConditions();
+        this.modifiedAccessConditions = new ModifiedAccessConditions();
+        this.leaseAccessConditions = new LeaseAccessConditions();
     }
 }

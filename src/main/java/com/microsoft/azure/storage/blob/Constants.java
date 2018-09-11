@@ -121,7 +121,7 @@ final class Constants {
         /**
          * Specifies the value to use for UserAgent header.
          */
-        static final String USER_AGENT_VERSION = "10.0.4-rc";
+        static final String USER_AGENT_VERSION = "10.1.0";
 
         private HeaderConstants() {
             // Private to prevent construction.

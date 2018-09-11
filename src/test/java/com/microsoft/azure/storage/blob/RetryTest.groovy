@@ -16,15 +16,14 @@
 package com.microsoft.azure.storage.blob
 
 import com.microsoft.azure.storage.APISpec
-import com.microsoft.azure.storage.blob.models.StorageErrorCode
-import com.microsoft.azure.storage.blob.models.StorageErrorException
 import com.microsoft.rest.v2.http.HttpHeaders
 import com.microsoft.rest.v2.http.HttpMethod
 import com.microsoft.rest.v2.http.HttpPipeline
 import com.microsoft.rest.v2.http.HttpRequest
 import com.microsoft.rest.v2.http.HttpResponse
+import com.microsoft.rest.v2.http.UnexpectedLengthException
 import io.reactivex.Flowable
-import spock.lang.Specification
+
 import spock.lang.Unroll
 
 // Tests for package-private functionality.
@@ -63,7 +62,7 @@ class RetryTest extends APISpec {
 
         then:
         response.statusCode() == 503
-        retryTestFactory.tryNumber == retryTestOptions.maxTries
+        retryTestFactory.tryNumber == retryTestOptions.maxTries()
     }
 
     def "Retries non retryable"() {
@@ -112,7 +111,7 @@ class RetryTest extends APISpec {
 
         then:
         response.statusCode() == 200
-        retryTestFactory.tryNumber == 5
+        retryTestFactory.tryNumber == 3
     }
 
     def "Retries try timeout"() {
@@ -164,6 +163,23 @@ class RetryTest extends APISpec {
         then:
         response.statusCode() == 200
         retryTestFactory.tryNumber == 4
+    }
+
+    def "Retries non replyable flowable"() {
+        setup:
+        RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(
+                RequestRetryTestFactory.RETRY_TEST_SCENARIO_NON_REPLAYABLE_FLOWABLE, retryTestOptions)
+        HttpPipeline pipeline = HttpPipeline.build(new RequestRetryFactory(retryTestOptions), retryTestFactory)
+
+        when:
+        pipeline.sendRequestAsync(new HttpRequest(null, HttpMethod.GET, retryTestURL,
+                new HttpHeaders(), Flowable.just(RequestRetryTestFactory.RETRY_TEST_DEFAULT_DATA),
+                null)).blockingGet()
+
+        then:
+        def e = thrown(IllegalStateException)
+        e.getMessage().startsWith("The request failed because")
+        e.getCause() instanceof UnexpectedLengthException
     }
 
     @Unroll

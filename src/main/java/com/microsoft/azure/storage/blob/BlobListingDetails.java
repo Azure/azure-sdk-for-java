@@ -29,87 +29,103 @@ public final class BlobListingDetails {
     /**
      * An object representing no listing details.
      */
-    public static final BlobListingDetails NONE = new BlobListingDetails(false, false, false,
-            false, false);
+    public static final BlobListingDetails NONE = new BlobListingDetails();
 
-    private final boolean copy;
+    private boolean copy;
 
-    private final boolean metadata;
+    private boolean metadata;
 
-    private final boolean snapshots;
+    private boolean snapshots;
 
-    private final boolean uncommittedBlobs;
+    private boolean uncommittedBlobs;
 
-    private final boolean deletedBlobs;
+    private boolean deletedBlobs;
+
+    public BlobListingDetails() {
+    }
 
     /**
-     * A {@link BlobListingDetails} object.
-     *
-     * @param copy
-     *      Whether blob metadata related to any current or previous Copy Blob operation should be included in the
-     *      response.
-     * @param metadata
-     *      Whether blob metadata should be returned.
-     * @param snapshots
-     *      Whether snapshots should be returned. Snapshots are listed from oldest to newest.
-     * @param uncommittedBlobs
-     *      Whether blobs for which blocks have been uploaded, but which have not been committed using Put Block List,
-     *      should be included in the response.
-     * @param deletedBlobs
-     *      Whether blobs which have been soft deleted should be returned.
+     * Whether blob metadata related to any current or previous Copy Blob operation should be included in the
+     * response.
      */
-    public BlobListingDetails(boolean copy, boolean metadata, boolean snapshots, boolean uncommittedBlobs,
-            boolean deletedBlobs) {
+    public boolean copy() {
+        return copy;
+    }
+
+    /**
+     * Whether blob metadata related to any current or previous Copy Blob operation should be included in the
+     * response.
+     */
+    public BlobListingDetails withCopy(boolean copy) {
         this.copy = copy;
+        return this;
+    }
+
+    /**
+     * Whether blob metadata should be returned.
+     */
+    public boolean metadata() {
+        return metadata;
+    }
+
+    /**
+     * Whether blob metadata should be returned.
+     */
+    public BlobListingDetails withMetadata(boolean metadata) {
         this.metadata = metadata;
+        return this;
+    }
+
+    /**
+     * Whether snapshots should be returned. Snapshots are listed from oldest to newest.
+     */
+    public boolean snapshots() {
+        return snapshots;
+    }
+
+    /**
+     * Whether snapshots should be returned. Snapshots are listed from oldest to newest.
+     */
+    public BlobListingDetails withSnapshots(boolean snapshots) {
         this.snapshots = snapshots;
+        return this;
+    }
+
+    /**
+     * Whether blobs for which blocks have been uploaded, but which have not been committed using Put Block List,
+     * should be included in the response.
+     */
+    public boolean uncommittedBlobs() {
+        return uncommittedBlobs;
+    }
+
+    /**
+     * Whether blobs for which blocks have been uploaded, but which have not been committed using Put Block List,
+     * should be included in the response.
+     */
+    public BlobListingDetails withUncommittedBlobs(boolean uncommittedBlobs) {
         this.uncommittedBlobs = uncommittedBlobs;
+        return this;
+    }
+
+    /**
+     * Whether blobs which have been soft deleted should be returned.
+     */
+    public boolean deletedBlobs() {
+        return deletedBlobs;
+    }
+
+    /**
+     * Whether blobs which have been soft deleted should be returned.
+     */
+    public BlobListingDetails withDeletedBlobs(boolean deletedBlobs) {
         this.deletedBlobs = deletedBlobs;
-    }
-
-    /**
-     * @return
-     *      Whether blob copies should be returned.
-     */
-    public boolean getCopy() {
-        return this.copy;
-    }
-
-    /**
-     * @return
-     *      Whether metadata should be returned.
-     */
-    public boolean getMetadata() {
-        return this.metadata;
-    }
-
-    /**
-     * @return
-     *      Whether snapshots should be returned.
-     */
-    public boolean getSnapshots() {
-        return this.snapshots;
-    }
-
-    /**
-     * @return
-     *      Whether uncommitted blobs should be returned.
-     */
-    public boolean getUncommittedBlobs() {
-        return this.uncommittedBlobs;
-    }
-
-    /**
-     * @return
-     *      Whether soft-deleted blobs should be returned.
-     */
-    public boolean getDeletedBlobs() {
-        return this.deletedBlobs;
+        return this;
     }
 
     /*
-     This is used internally to convert the details structure into a list to pass to the protocol layer. The customer
-     should never have need for this.
+    This is used internally to convert the details structure into a list to pass to the protocol layer. The customer
+    should never have need for this.
      */
     ArrayList<ListBlobsIncludeItem> toList() {
         ArrayList<ListBlobsIncludeItem> details = new ArrayList<ListBlobsIncludeItem>();

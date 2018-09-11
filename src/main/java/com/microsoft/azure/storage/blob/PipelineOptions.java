@@ -36,30 +36,90 @@ public final class PipelineOptions {
      must not be passed to anything with a longer lifetime.
      */
 
+    private HttpClient client;
+
+    private HttpPipelineLogger logger;
+
+    private RequestRetryOptions requestRetryOptions = RequestRetryOptions.DEFAULT;
+
+    private LoggingOptions loggingOptions = LoggingOptions.DEFAULT;
+
+    private TelemetryOptions telemetryOptions = TelemetryOptions.DEFAULT;
+
     /**
      * Specifies which HttpClient to use to send the requests.
      */
-    public HttpClient client;
+    public HttpClient client() {
+        return client;
+    }
+
+    /**
+     * Specifies which HttpClient to use to send the requests.
+     */
+    public PipelineOptions withClient(HttpClient client) {
+        this.client = client;
+        return this;
+    }
 
     /**
      * Specifies the logger for the pipeline.
      */
-    public HttpPipelineLogger logger;
+    public HttpPipelineLogger logger() {
+        return logger;
+    }
+
+    /**
+     * Specifies the logger for the pipeline.
+     */
+    public PipelineOptions withLogger(HttpPipelineLogger logger) {
+        this.logger = logger;
+        return this;
+    }
 
     /**
      * Configures the retry policy's behavior.
      */
-    public RequestRetryOptions requestRetryOptions = RequestRetryOptions.DEFAULT;
+    public RequestRetryOptions requestRetryOptions() {
+        return requestRetryOptions;
+    }
+
+    /**
+     * Configures the retry policy's behavior.
+     */
+    public PipelineOptions withRequestRetryOptions(RequestRetryOptions requestRetryOptions) {
+        this.requestRetryOptions = requestRetryOptions;
+        return this;
+    }
 
     /**
      * Configures the built-in request logging policy.
      */
-    public LoggingOptions loggingOptions = LoggingOptions.DEFAULT;
+    public LoggingOptions loggingOptions() {
+        return loggingOptions;
+    }
+
+    /**
+     * Configures the built-in request logging policy.
+     */
+    public PipelineOptions withLoggingOptions(LoggingOptions loggingOptions) {
+        this.loggingOptions = loggingOptions;
+        return this;
+    }
 
     /**
      * Configures the built-in telemetry policy behavior.
      */
-    public TelemetryOptions telemetryOptions = TelemetryOptions.DEFAULT;
+    public TelemetryOptions telemetryOptions() {
+        return telemetryOptions;
+    }
+
+    /**
+     * Configures the built-in telemetry policy behavior.
+     */
+    public PipelineOptions withTelemetryOptions(TelemetryOptions telemetryOptions) {
+        this.telemetryOptions = telemetryOptions;
+        return this;
+    }
 
     /**
      * Returns a {@code PipelineOptions} object with default values for each of the options fields. An

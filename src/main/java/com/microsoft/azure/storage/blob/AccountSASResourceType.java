@@ -24,20 +24,57 @@ import java.util.Locale;
  * the order of the resources is particular and this class guarantees correctness.
  */
 public final class AccountSASResourceType {
+
+    private boolean service;
+
+    private boolean container;
+
+    private boolean object;
+
     /**
      * Permission to access service level APIs granted.
      */
-    public boolean service;
+    public boolean service() {
+        return service;
+    }
+
+    /**
+     * Permission to access service level APIs granted.
+     */
+    public AccountSASResourceType withService(boolean service) {
+        this.service = service;
+        return this;
+    }
 
     /**
      * Permission to access container level APIs (Blob Containers, Tables, Queues, File Shares) granted.
      */
-    public boolean container;
+    public boolean container() {
+        return container;
+    }
+
+    /**
+     * Permission to access container level APIs (Blob Containers, Tables, Queues, File Shares) granted.
+     */
+    public AccountSASResourceType withContainer(boolean container) {
+        this.container = container;
+        return this;
+    }
 
     /**
      * Permission to access object level APIs (Blobs, Table Entities, Queue Messages, Files) granted.
      */
-    public boolean object;
+    public boolean object() {
+        return object;
+    }
+
+    /**
+     * Permission to access object level APIs (Blobs, Table Entities, Queue Messages, Files) granted.
+     */
+    public AccountSASResourceType withObject(boolean object) {
+        this.object = object;
+        return this;
+    }
 
     /**
      * Initializes an {@code AccountSASResourceType} object with all fields set to false.

@@ -26,18 +26,6 @@ import io.reactivex.Single
 import spock.lang.Unroll
 
 class LoggingTest extends APISpec {
-
-    /*
-    This method returns a stub of an HttpResponse. We know that the logger only looks at the status code, so we stub
-    a response that always returns a given value for the status code. We never care about the number or nature of
-    interactions with this stub.
-     */
-    def getStubResponse(int code) {
-        return Stub(HttpResponse) {
-            statusCode() >> code
-        }
-    }
-
     /*
     This method returns a mock of an HttpPipelineLogger. We always want to return the same value for a given run. A mock
     also allows for defining the number and kind of interactions that the unit under test has with this mocked object.
@@ -245,13 +233,13 @@ class LoggingTest extends APISpec {
         setup:
         def logger = getMockLogger(HttpPipelineLogLevel.INFO)
         def po = new PipelineOptions()
-        po.logger = logger
+        po.withLogger(logger)
 
         cu = primaryServiceURL.createContainerURL(generateContainerName())
         cu = new ContainerURL(cu.toURL(), StorageURL.createPipeline(primaryCreds, po))
 
         when:
-        cu.create(null, null).blockingGet()
+        cu.create(null, null, null).blockingGet()
 
         then:
         2 * logger.log(*_)

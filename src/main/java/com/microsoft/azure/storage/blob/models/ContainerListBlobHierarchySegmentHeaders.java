@@ -22,8 +22,8 @@ import java.time.OffsetDateTime;
 @JacksonXmlRootElement(localName = "Container-ListBlobHierarchySegment-Headers")
 public final class ContainerListBlobHierarchySegmentHeaders {
     /**
-     * The content type specified for the blob. The default content type is
-     * 'application/octet-stream'.
+     * The media type of the body of the response. For List Blobs this is
+     * 'application/xml'.
      */
     @JsonProperty(value = "Content-Type")
     private String contentType;

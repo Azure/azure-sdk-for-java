@@ -15,6 +15,7 @@
 package com.microsoft.azure.storage.blob;
 
 import com.microsoft.azure.storage.blob.models.*;
+import com.microsoft.rest.v2.Context;
 import com.microsoft.rest.v2.http.HttpPipeline;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
@@ -93,7 +94,7 @@ public final class BlockBlobURL extends BlobURL {
      */
     public BlockBlobURL withSnapshot(String snapshot) throws MalformedURLException, UnknownHostException {
         BlobURLParts blobURLParts = URLParser.parse(new URL(this.storageClient.url()));
-        blobURLParts.snapshot = snapshot;
+        blobURLParts.withSnapshot(snapshot);
         return new BlockBlobURL(blobURLParts.toURL(), super.storageClient.httpPipeline());
     }
 
@@ -105,6 +106,9 @@ public final class BlockBlobURL extends BlobURL {
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
      *
+     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
+     * {@code Flowable} must produce the same data each time it is subscribed to.
+     *
      * For more efficient bulk-upload scenarios, please refer to the {@link TransferManager} for convenience methods.
      *
      * @apiNote
@@ -113,7 +117,8 @@ public final class BlockBlobURL extends BlobURL {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      *
      * @param data
-     *      The data to write to the blob.
+     *      The data to write to the blob. Note that this {@code Flowable} must be replayable if retries are enabled
+     *      (the default). In other words, the Flowable must produce the same data each time it is subscribed to.
      * @param length
      *      The exact length of the data. It is important that this value match precisely the length of the data
      *      emitted by the {@code Flowable}.
@@ -123,36 +128,34 @@ public final class BlockBlobURL extends BlobURL {
      *      {@link Metadata}
      * @param accessConditions
      *      {@link BlobAccessConditions}
+     * @param context
+     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *      parent, forming a linked list.
      * @return
      *      Emits the successful response.
      */
     public Single<BlockBlobUploadResponse> upload(
             Flowable<ByteBuffer> data, long length, BlobHTTPHeaders headers, Metadata metadata,
-            BlobAccessConditions accessConditions) {
-        headers = headers == null ? BlobHTTPHeaders.NONE : headers;
+            BlobAccessConditions accessConditions, Context context) {
         metadata = metadata == null ? Metadata.NONE : metadata;
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
-        return addErrorWrappingToSingle(this.storageClient.generatedBlockBlobs().uploadWithRestResponseAsync(
-                data, length, null,
-                headers.getContentType(),
-                headers.getContentEncoding(),
-                headers.getContentLanguage(),
-                headers.getContentMD5(),
-                headers.getCacheControl(),
-                metadata,
-                accessConditions.getLeaseAccessConditions().getLeaseId(),
-                headers.getContentDisposition(),
-                accessConditions.getHttpAccessConditions().getIfModifiedSince(),
-                accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
-                accessConditions.getHttpAccessConditions().getIfMatch().toString(),
-                accessConditions.getHttpAccessConditions().getIfNoneMatch().toString(),
-                null));
+        context = context == null ? Context.NONE : context;
+
+        return addErrorWrappingToSingle(this.storageClient.generatedBlockBlobs().uploadWithRestResponseAsync(context,
+                data, length, null, metadata, null, headers, accessConditions.leaseAccessConditions(),
+                accessConditions.modifiedAccessConditions()));
     }
 
     /**
      * Uploads the specified block to the block blob's "staging area" to be later committed by a call to
      * commitBlockList. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs</a>.
+     *
+     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
+     * {@code Flowable} must produce the same data each time it is subscribed to.
      *
      * @apiNote
      * ## Sample Code \n
@@ -163,21 +166,28 @@ public final class BlockBlobURL extends BlobURL {
      *      A Base64 encoded {@code String} that specifies the ID for this block. Note that all block ids for a given
      *      blob must be the same length.
      * @param data
-     *      The data to write to the block.
+     *      The data to write to the block. Note that this {@code Flowable} must be replayable if retries are enabled
+     *      (the default). In other words, the Flowable must produce the same data each time it is subscribed to.
      * @param length
      *      The exact length of the data. It is important that this value match precisely the length of the data
      *      emitted by the {@code Flowable}.
      * @param leaseAccessConditions
      *      {@link LeaseAccessConditions}
+     * @param context
+     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *      parent, forming a linked list.
      * @return
      *      Emits the successful response.
      */
-    public Single<BlockBlobStageBlockResponse> stageBlock(
-            String base64BlockID, Flowable<ByteBuffer> data, long length, LeaseAccessConditions leaseAccessConditions) {
-        leaseAccessConditions = leaseAccessConditions == null ? LeaseAccessConditions.NONE : leaseAccessConditions;
+    public Single<BlockBlobStageBlockResponse> stageBlock(String base64BlockID, Flowable<ByteBuffer> data, long length,
+            LeaseAccessConditions leaseAccessConditions, Context context) {
+        context = context == null ? Context.NONE : context;
 
         return addErrorWrappingToSingle(this.storageClient.generatedBlockBlobs().stageBlockWithRestResponseAsync(
-                base64BlockID, length, data,null, leaseAccessConditions.getLeaseId(), null));
+                context, base64BlockID, length, data, null, null, null, leaseAccessConditions));
     }
 
     /**
@@ -202,19 +212,25 @@ public final class BlockBlobURL extends BlobURL {
      *      the received data and fail the request if it does not match the provided MD5.
      * @param leaseAccessConditions
      *      {@link LeaseAccessConditions}
+     * @param context
+     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *      parent, forming a linked list.
      * @return
      *      Emits the successful response.
      */
-    public Single<BlockBlobStageBlockFromURLResponse> stageBlockFromURL(
-            String base64BlockID, URL sourceURL, BlobRange sourceRange, byte[] sourceContentMD5,
-            LeaseAccessConditions leaseAccessConditions) {
-        leaseAccessConditions = leaseAccessConditions == null ? LeaseAccessConditions.NONE : leaseAccessConditions;
+    public Single<BlockBlobStageBlockFromURLResponse> stageBlockFromURL(String base64BlockID, URL sourceURL,
+            BlobRange sourceRange, byte[] sourceContentMD5, LeaseAccessConditions leaseAccessConditions,
+            Context context) {
         sourceRange = sourceRange == null ? BlobRange.DEFAULT : sourceRange;
+        context = context == null ? Context.NONE : context;
 
         return addErrorWrappingToSingle(
-                this.storageClient.generatedBlockBlobs().stageBlockFromURLWithRestResponseAsync(
+                this.storageClient.generatedBlockBlobs().stageBlockFromURLWithRestResponseAsync(context,
                         base64BlockID, 0, sourceURL, sourceRange.toString(), sourceContentMD5,
-                        null, leaseAccessConditions.getLeaseId(), null));
+                        null, null, leaseAccessConditions));
     }
 
     /**
@@ -231,15 +247,21 @@ public final class BlockBlobURL extends BlobURL {
      *      Specifies which type of blocks to return.
      * @param leaseAccessConditions
      *      {@link LeaseAccessConditions}
+     * @param context
+     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *      parent, forming a linked list.
      * @return
      *      Emits the successful response.
      */
-    public Single<BlockBlobGetBlockListResponse> getBlockList(
-            BlockListType listType, LeaseAccessConditions leaseAccessConditions) {
-        leaseAccessConditions = leaseAccessConditions == null ? LeaseAccessConditions.NONE : leaseAccessConditions;
+    public Single<BlockBlobGetBlockListResponse> getBlockList(BlockListType listType,
+            LeaseAccessConditions leaseAccessConditions, Context context) {
+        context = context == null ? Context.NONE : context;
 
         return addErrorWrappingToSingle(this.storageClient.generatedBlockBlobs().getBlockListWithRestResponseAsync(
-                listType, null, null, leaseAccessConditions.getLeaseId(), null));
+                context, listType, null, null, null, leaseAccessConditions));
     }
 
     /**
@@ -266,29 +288,25 @@ public final class BlockBlobURL extends BlobURL {
      *      {@link Metadata}
      * @param accessConditions
      *      {@link BlobAccessConditions}
+     * @param context
+     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
+     *      parent, forming a linked list.
      * @return
      *      Emits the successful response.
      */
-    public Single<BlockBlobCommitBlockListResponse> commitBlockList(
-            List<String> base64BlockIDs, BlobHTTPHeaders headers, Metadata metadata,
-            BlobAccessConditions accessConditions) {
-        headers = headers == null ? BlobHTTPHeaders.NONE : headers;
+    public Single<BlockBlobCommitBlockListResponse> commitBlockList(List<String> base64BlockIDs,
+            BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions, Context context) {
         metadata = metadata == null ? Metadata.NONE : metadata;
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
+        context = context == null ? Context.NONE : context;
+
         return addErrorWrappingToSingle(this.storageClient.generatedBlockBlobs().commitBlockListWithRestResponseAsync(
-                new BlockLookupList().withLatest(base64BlockIDs), null,
-                headers.getCacheControl(),
-                headers.getContentType(),
-                headers.getContentEncoding(),
-                headers.getContentLanguage(),
-                headers.getContentMD5(),
-                metadata,
-                accessConditions.getLeaseAccessConditions().getLeaseId(),
-                headers.getContentDisposition(),
-                accessConditions.getHttpAccessConditions().getIfModifiedSince(),
-                accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
-                accessConditions.getHttpAccessConditions().getIfMatch().toString(),
-                accessConditions.getHttpAccessConditions().getIfNoneMatch().toString(), null));
+                context, new BlockLookupList().withLatest(base64BlockIDs), null,
+                metadata, null, headers, accessConditions.leaseAccessConditions(),
+                accessConditions.modifiedAccessConditions()));
     }
 
     //TODO: stageBlockFromURL

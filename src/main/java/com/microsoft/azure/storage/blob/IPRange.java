@@ -26,15 +26,39 @@ public final class IPRange {
 
     public static final IPRange DEFAULT = new IPRange();
 
+    private String ipMin;
+
+    private String ipMax;
+
     /**
      * A {@link Inet4Address} representing the minimum IP address of the range.
      */
-    public String ipMin;
+    public String ipMin() {
+        return ipMin;
+    }
+
+    /**
+     * A {@link Inet4Address} representing the minimum IP address of the range.
+     */
+    public IPRange withIpMin(String ipMin) {
+        this.ipMin = ipMin;
+        return this;
+    }
 
     /**
      * A {@link Inet4Address} representing the maximum IP address of the range.
      */
-    public String ipMax;
+    public String ipMax() {
+        return ipMax;
+    }
+
+    /**
+     * A {@link Inet4Address} representing the maximum IP address of the range.
+     */
+    public IPRange withIpMax(String ipMax) {
+        this.ipMax = ipMax;
+        return this;
+    }
 
     public IPRange() { }
 

@@ -128,13 +128,13 @@ public final class LoggingFactory implements RequestPolicyFactory {
 
                         // If the response took too long, we'll upgrade to warning.
                         if (requestCompletionTime >=
-                                factory.loggingOptions.getMinDurationToLogSlowRequestsInMs()) {
+                                factory.loggingOptions.minDurationToLogSlowRequestsInMs()) {
                             // Log a warning if the try duration exceeded the specified threshold.
                             if (options.shouldLog(HttpPipelineLogLevel.WARNING)) {
                                 currentLevel = HttpPipelineLogLevel.WARNING;
                                 logMessage = String.format(Locale.ROOT,
                                         "SLOW OPERATION. Duration > %d ms.%n",
-                                        factory.loggingOptions.getMinDurationToLogSlowRequestsInMs());
+                                        factory.loggingOptions.minDurationToLogSlowRequestsInMs());
                             }
                         }
 

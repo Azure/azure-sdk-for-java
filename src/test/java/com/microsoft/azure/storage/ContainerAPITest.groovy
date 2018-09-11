@@ -22,8 +22,7 @@ import com.microsoft.azure.storage.blob.BlobListingDetails
 import com.microsoft.azure.storage.blob.BlockBlobURL
 import com.microsoft.azure.storage.blob.ContainerAccessConditions
 import com.microsoft.azure.storage.blob.ContainerURL
-import com.microsoft.azure.storage.blob.HTTPAccessConditions
-import com.microsoft.azure.storage.blob.LeaseAccessConditions
+
 import com.microsoft.azure.storage.blob.ListBlobsOptions
 import com.microsoft.azure.storage.blob.Metadata
 import com.microsoft.azure.storage.blob.PageBlobURL
@@ -40,9 +39,13 @@ import com.microsoft.azure.storage.blob.models.BlobType
 import com.microsoft.azure.storage.blob.models.ContainerAcquireLeaseHeaders
 import com.microsoft.azure.storage.blob.models.ContainerBreakLeaseHeaders
 import com.microsoft.azure.storage.blob.models.ContainerChangeLeaseHeaders
+import com.microsoft.azure.storage.blob.models.ContainerCreateHeaders
 import com.microsoft.azure.storage.blob.models.ContainerCreateResponse
+import com.microsoft.azure.storage.blob.models.ContainerDeleteHeaders
 import com.microsoft.azure.storage.blob.models.ContainerDeleteResponse
+import com.microsoft.azure.storage.blob.models.ContainerGetAccessPolicyHeaders
 import com.microsoft.azure.storage.blob.models.ContainerGetAccessPolicyResponse
+import com.microsoft.azure.storage.blob.models.ContainerGetAccountInfoHeaders
 import com.microsoft.azure.storage.blob.models.ContainerGetPropertiesHeaders
 import com.microsoft.azure.storage.blob.models.ContainerGetPropertiesResponse
 import com.microsoft.azure.storage.blob.models.ContainerListBlobFlatSegmentHeaders
@@ -51,12 +54,16 @@ import com.microsoft.azure.storage.blob.models.ContainerListBlobHierarchySegment
 import com.microsoft.azure.storage.blob.models.ContainerListBlobHierarchySegmentResponse
 import com.microsoft.azure.storage.blob.models.ContainerReleaseLeaseHeaders
 import com.microsoft.azure.storage.blob.models.ContainerRenewLeaseHeaders
+import com.microsoft.azure.storage.blob.models.ContainerSetAccessPolicyHeaders
 import com.microsoft.azure.storage.blob.models.ContainerSetAccessPolicyResponse
+import com.microsoft.azure.storage.blob.models.ContainerSetMetadataHeaders
 import com.microsoft.azure.storage.blob.models.ContainerSetMetadataResponse
 import com.microsoft.azure.storage.blob.models.CopyStatusType
+import com.microsoft.azure.storage.blob.models.LeaseAccessConditions
 import com.microsoft.azure.storage.blob.models.LeaseDurationType
 import com.microsoft.azure.storage.blob.models.LeaseStateType
 import com.microsoft.azure.storage.blob.models.LeaseStatusType
+import com.microsoft.azure.storage.blob.models.ModifiedAccessConditions
 import com.microsoft.azure.storage.blob.models.PublicAccessType
 import com.microsoft.azure.storage.blob.models.SignedIdentifier
 import com.microsoft.azure.storage.blob.models.StorageErrorCode
@@ -82,7 +89,7 @@ class ContainerAPITest extends APISpec {
         cu = primaryServiceURL.createContainerURL(generateContainerName())
 
         when:
-        ContainerCreateResponse response = cu.create(null, null).blockingGet()
+        ContainerCreateResponse response = cu.create(null, null, null).blockingGet()
 
         then:
         response.statusCode() == 201
@@ -102,8 +109,8 @@ class ContainerAPITest extends APISpec {
         }
 
         when:
-        cu.create(metadata, null).blockingGet()
-        ContainerGetPropertiesResponse response = cu.getProperties(null).blockingGet()
+        cu.create(metadata, null, null).blockingGet()
+        ContainerGetPropertiesResponse response = cu.getProperties(null, null).blockingGet()
 
         then:
         response.headers().metadata() == metadata
@@ -120,9 +127,9 @@ class ContainerAPITest extends APISpec {
         cu = primaryServiceURL.createContainerURL(generateContainerName())
 
         when:
-        cu.create(null, publicAccess).blockingGet()
+        cu.create(null, publicAccess, null).blockingGet()
         PublicAccessType access =
-                cu.getProperties(null).blockingGet().headers().blobPublicAccess()
+                cu.getProperties(null, null).blockingGet().headers().blobPublicAccess()
 
         then:
         access.toString() == publicAccess.toString()
@@ -134,9 +141,9 @@ class ContainerAPITest extends APISpec {
         null                       | _
     }
 
-    def "Create exception"() {
+    def "Create error"() {
         when:
-        cu.create(null, null).blockingGet()
+        cu.create(null, null, null).blockingGet()
 
         then:
         def e = thrown(StorageException)
@@ -145,10 +152,24 @@ class ContainerAPITest extends APISpec {
         e.message().contains("The specified container already exists.")
     }
 
+    def "Create context"() {
+        setup:
+        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(201, ContainerCreateHeaders)))
+
+        cu = cu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        cu.create(null, null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
+    }
+
     def "Get properties null"() {
         when:
         ContainerGetPropertiesHeaders headers =
-                cu.getProperties(null).blockingGet().headers()
+                cu.getProperties(null, null).blockingGet().headers()
 
         then:
         validateBasicHeaders(headers)
@@ -166,12 +187,12 @@ class ContainerAPITest extends APISpec {
         String leaseID = setupContainerLeaseCondition(cu, receivedLeaseID)
 
         expect:
-        cu.getProperties(new LeaseAccessConditions(leaseID)).blockingGet().statusCode() == 200
+        cu.getProperties(new LeaseAccessConditions().withLeaseId(leaseID), null).blockingGet().statusCode() == 200
     }
 
     def "Get properties lease fail"() {
         when:
-        cu.getProperties(new LeaseAccessConditions("garbage")).blockingGet()
+        cu.getProperties(new LeaseAccessConditions().withLeaseId("garbage"), null).blockingGet()
 
         then:
         thrown(StorageException)
@@ -182,10 +203,24 @@ class ContainerAPITest extends APISpec {
         cu = primaryServiceURL.createContainerURL(generateContainerName())
 
         when:
-        cu.getProperties(null).blockingGet()
+        cu.getProperties(null, null).blockingGet()
 
         then:
         thrown(StorageException)
+    }
+
+    def "Get properties context"() {
+        setup:
+        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(200, ContainerGetPropertiesHeaders)))
+
+        cu = cu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        cu.getProperties(null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
     }
 
     def "Set metadata"() {
@@ -193,13 +228,13 @@ class ContainerAPITest extends APISpec {
         cu = primaryServiceURL.createContainerURL(generateContainerName())
         Metadata metadata = new Metadata()
         metadata.put("key", "value")
-        cu.create(metadata, null).blockingGet()
-        ContainerSetMetadataResponse response = cu.setMetadata(null, null).blockingGet()
+        cu.create(metadata, null, null).blockingGet()
+        ContainerSetMetadataResponse response = cu.setMetadata(null, null, null).blockingGet()
 
         expect:
         response.statusCode() == 200
         validateBasicHeaders(response.headers())
-        cu.getProperties(null).blockingGet().headers().metadata().size() == 0
+        cu.getProperties(null, null).blockingGet().headers().metadata().size() == 0
     }
 
     @Unroll
@@ -214,8 +249,8 @@ class ContainerAPITest extends APISpec {
         }
 
         expect:
-        cu.setMetadata(metadata, null).blockingGet().statusCode() == 200
-        cu.getProperties(null).blockingGet().headers().metadata() == metadata
+        cu.setMetadata(metadata, null, null).blockingGet().statusCode() == 200
+        cu.getProperties(null, null).blockingGet().headers().metadata() == metadata
 
         where:
         key1  | value1 | key2   | value2
@@ -228,12 +263,12 @@ class ContainerAPITest extends APISpec {
     def "Set metadata AC"() {
         setup:
         leaseID = setupContainerLeaseCondition(cu, leaseID)
-        ContainerAccessConditions cac = new ContainerAccessConditions(
-                new HTTPAccessConditions(modified, null, null, null),
-                new LeaseAccessConditions(leaseID))
+        ContainerAccessConditions cac = new ContainerAccessConditions().withModifiedAccessConditions(
+                new ModifiedAccessConditions().withIfModifiedSince(modified))
+                .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
 
         expect:
-        cu.setMetadata(null, cac).blockingGet().statusCode() == 200
+        cu.setMetadata(null, cac, null).blockingGet().statusCode() == 200
 
         where:
         modified | leaseID
@@ -245,12 +280,12 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Set metadata AC fail"() {
         setup:
-        ContainerAccessConditions cac = new ContainerAccessConditions(
-                new HTTPAccessConditions(modified, null, null, null),
-                new LeaseAccessConditions(leaseID))
+        ContainerAccessConditions cac = new ContainerAccessConditions().withModifiedAccessConditions(
+                new ModifiedAccessConditions().withIfModifiedSince(modified))
+                .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
 
         when:
-        cu.setMetadata(null, cac).blockingGet()
+        cu.setMetadata(null, cac, null).blockingGet()
 
         then:
         thrown(StorageException)
@@ -264,10 +299,11 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Set metadata AC illegal"() {
         setup:
-        HTTPAccessConditions hac = new HTTPAccessConditions(null, unmodified, match, noneMatch)
+        ModifiedAccessConditions mac = new ModifiedAccessConditions().withIfUnmodifiedSince(unmodified)
+                .withIfMatch(match).withIfNoneMatch(noneMatch)
 
         when:
-        cu.setMetadata(null, new ContainerAccessConditions(hac, null))
+        cu.setMetadata(null, new ContainerAccessConditions().withModifiedAccessConditions(mac), null)
 
         then:
         thrown(IllegalArgumentException)
@@ -284,20 +320,34 @@ class ContainerAPITest extends APISpec {
         cu = primaryServiceURL.createContainerURL(generateContainerName())
 
         when:
-        cu.setMetadata(null, null).blockingGet()
+        cu.setMetadata(null, null, null).blockingGet()
 
         then:
         thrown(StorageException)
     }
 
+    def "Set metadata context"() {
+        setup:
+        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(200, ContainerSetMetadataHeaders)))
+
+        cu = cu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        cu.setMetadata(null, null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
+    }
+
     @Unroll
     def "Set access policy"() {
         setup:
-        def response = cu.setAccessPolicy(access, null, null).blockingGet()
+        def response = cu.setAccessPolicy(access, null, null, null).blockingGet()
 
         expect:
         validateBasicHeaders(response.headers())
-        cu.getProperties(null).blockingGet()
+        cu.getProperties(null, null).blockingGet()
                 .headers().blobPublicAccess() == access
 
         where:
@@ -329,8 +379,8 @@ class ContainerAPITest extends APISpec {
 
         when:
         ContainerSetAccessPolicyResponse response =
-                cu.setAccessPolicy(null, ids, null).blockingGet()
-        List<SignedIdentifier> receivedIdentifiers = cu.getAccessPolicy(null).blockingGet().body()
+                cu.setAccessPolicy(null, ids, null, null).blockingGet()
+        List<SignedIdentifier> receivedIdentifiers = cu.getAccessPolicy(null, null).blockingGet().body()
 
         then:
         response.statusCode() == 200
@@ -347,12 +397,12 @@ class ContainerAPITest extends APISpec {
     def "Set access policy AC"() {
         setup:
         leaseID = setupContainerLeaseCondition(cu, leaseID)
-        ContainerAccessConditions cac = new ContainerAccessConditions(
-                new HTTPAccessConditions(modified, unmodified, null, null),
-                new LeaseAccessConditions(leaseID))
+        ContainerAccessConditions cac = new ContainerAccessConditions().withModifiedAccessConditions(
+                new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified))
+                .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
 
         expect:
-        cu.setAccessPolicy(null, null, cac).blockingGet().statusCode() == 200
+        cu.setAccessPolicy(null, null, cac, null).blockingGet().statusCode() == 200
 
         where:
         modified | unmodified | leaseID
@@ -365,12 +415,12 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Set access policy AC fail"() {
         setup:
-        ContainerAccessConditions cac = new ContainerAccessConditions(
-                new HTTPAccessConditions(modified, unmodified, null, null),
-                new LeaseAccessConditions(leaseID))
+        ContainerAccessConditions cac = new ContainerAccessConditions().withModifiedAccessConditions(
+                new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified))
+                .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
 
         when:
-        cu.setAccessPolicy(null, null, cac).blockingGet()
+        cu.setAccessPolicy(null, null, cac, null).blockingGet()
 
         then:
         thrown(StorageException)
@@ -385,10 +435,10 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Set access policy AC illegal"() {
         setup:
-        HTTPAccessConditions hac = new HTTPAccessConditions(null, null, match, noneMatch)
+        ModifiedAccessConditions mac = new ModifiedAccessConditions().withIfMatch(match).withIfNoneMatch(noneMatch)
 
         when:
-        cu.setAccessPolicy(null, null, new ContainerAccessConditions(hac, null))
+        cu.setAccessPolicy(null, null, new ContainerAccessConditions().withModifiedAccessConditions(mac), null)
 
         then:
         thrown(IllegalArgumentException)
@@ -404,10 +454,24 @@ class ContainerAPITest extends APISpec {
         cu = primaryServiceURL.createContainerURL(generateContainerName())
 
         when:
-        cu.setAccessPolicy(null, null, null).blockingGet()
+        cu.setAccessPolicy(null, null, null, null).blockingGet()
 
         then:
         thrown(StorageException)
+    }
+
+    def "Set access policy context"() {
+        setup:
+        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(200, ContainerSetAccessPolicyHeaders)))
+
+        cu = cu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        cu.setAccessPolicy(null, null, null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
     }
 
     def "Get access policy"() {
@@ -421,8 +485,8 @@ class ContainerAPITest extends APISpec {
                 .withPermission("r"))
         List<SignedIdentifier> ids = new ArrayList<>()
         ids.push(identifier)
-        cu.setAccessPolicy(PublicAccessType.BLOB, ids, null).blockingGet()
-        ContainerGetAccessPolicyResponse response = cu.getAccessPolicy(null).blockingGet()
+        cu.setAccessPolicy(PublicAccessType.BLOB, ids, null, null).blockingGet()
+        ContainerGetAccessPolicyResponse response = cu.getAccessPolicy(null, null).blockingGet()
 
         expect:
         response.statusCode() == 200
@@ -438,12 +502,12 @@ class ContainerAPITest extends APISpec {
         String leaseID = setupContainerLeaseCondition(cu, receivedLeaseID)
 
         expect:
-        cu.getAccessPolicy(new LeaseAccessConditions(leaseID)).blockingGet().statusCode() == 200
+        cu.getAccessPolicy(new LeaseAccessConditions().withLeaseId(leaseID), null).blockingGet().statusCode() == 200
     }
 
     def "Get access policy lease fail"() {
         when:
-        cu.getAccessPolicy(new LeaseAccessConditions(garbageLeaseID)).blockingGet()
+        cu.getAccessPolicy(new LeaseAccessConditions().withLeaseId(garbageLeaseID), null).blockingGet()
 
         then:
         thrown(StorageException)
@@ -454,15 +518,29 @@ class ContainerAPITest extends APISpec {
         cu = primaryServiceURL.createContainerURL(generateContainerName())
 
         when:
-        cu.getAccessPolicy(null).blockingGet()
+        cu.getAccessPolicy(null, null).blockingGet()
 
         then:
         thrown(StorageException)
     }
 
+    def "Get access policy context"() {
+        setup:
+        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(200, ContainerGetAccessPolicyHeaders)))
+
+        cu = cu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        cu.getAccessPolicy(null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
+    }
+
     def "Delete"() {
         when:
-        ContainerDeleteResponse response = cu.delete(null).blockingGet()
+        ContainerDeleteResponse response = cu.delete(null, null).blockingGet()
 
         then:
         response.statusCode() == 202
@@ -475,12 +553,13 @@ class ContainerAPITest extends APISpec {
     def "Delete AC"() {
         setup:
         leaseID = setupContainerLeaseCondition(cu, leaseID)
-        ContainerAccessConditions cac = new ContainerAccessConditions(
-                new HTTPAccessConditions(modified, unmodified, null, null),
-                new LeaseAccessConditions(leaseID))
+        ContainerAccessConditions cac = new ContainerAccessConditions().withModifiedAccessConditions(
+                new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified))
+                .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
+
 
         expect:
-        cu.delete(cac).blockingGet().statusCode() == 202
+        cu.delete(cac, null).blockingGet().statusCode() == 202
 
         where:
         modified | unmodified | leaseID
@@ -493,12 +572,12 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Delete AC fail"() {
         setup:
-        ContainerAccessConditions cac = new ContainerAccessConditions(
-                new HTTPAccessConditions(modified, unmodified, null, null),
-                new LeaseAccessConditions(leaseID))
+        ContainerAccessConditions cac = new ContainerAccessConditions().withModifiedAccessConditions(
+                new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified))
+                .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
 
         when:
-        cu.delete(cac).blockingGet()
+        cu.delete(cac, null).blockingGet()
 
         then:
         thrown(StorageException)
@@ -513,10 +592,10 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Delete AC illegal"() {
         setup:
-        HTTPAccessConditions hac = new HTTPAccessConditions(null, null, match, noneMatch)
+        ModifiedAccessConditions mac = new ModifiedAccessConditions().withIfMatch(match).withIfNoneMatch(noneMatch)
 
         when:
-        cu.delete(new ContainerAccessConditions(hac, null))
+        cu.delete(new ContainerAccessConditions().withModifiedAccessConditions(mac), null)
 
         then:
         thrown(IllegalArgumentException)
@@ -532,20 +611,34 @@ class ContainerAPITest extends APISpec {
         cu = primaryServiceURL.createContainerURL(generateContainerName())
 
         when:
-        cu.delete(null).blockingGet()
+        cu.delete(null, null).blockingGet()
 
         then:
         thrown(StorageException)
+    }
+
+    def "Delete context"() {
+        setup:
+        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(202, ContainerDeleteHeaders)))
+
+        cu = cu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        cu.delete(null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
     }
 
     def "List blobs flat"() {
         setup:
         String name = generateBlobName()
         PageBlobURL bu = cu.createPageBlobURL(name)
-        bu.create(512, null, null, null, null).blockingGet()
+        bu.create(512, null, null, null, null, null).blockingGet()
 
         when:
-        ContainerListBlobFlatSegmentResponse response = cu.listBlobsFlatSegment(null, null)
+        ContainerListBlobFlatSegmentResponse response = cu.listBlobsFlatSegment(null, null, null)
                 .blockingGet()
         ContainerListBlobFlatSegmentHeaders headers = response.headers()
         List<BlobItem> blobs = response.body().segment().blobItems()
@@ -587,33 +680,31 @@ class ContainerAPITest extends APISpec {
 
     def setupListBlobsTest(String normalName, String copyName, String metadataName, String uncommittedName) {
         PageBlobURL normal = cu.createPageBlobURL(normalName)
-        normal.create(512, null, null, null, null).blockingGet()
+        normal.create(512, null, null, null, null, null).blockingGet()
 
         PageBlobURL copyBlob = cu.createPageBlobURL(copyName)
         waitForCopy(copyBlob, copyBlob.startCopyFromURL(normal.toURL(),
-                null, null, null).blockingGet())
+                null, null, null, null).blockingGet().headers().copyStatus())
 
         PageBlobURL metadataBlob = cu.createPageBlobURL(metadataName)
         Metadata values = new Metadata()
         values.put("foo", "bar")
-        metadataBlob.create(512, null, null, values, null).blockingGet()
+        metadataBlob.create(512, null, null, values, null, null).blockingGet()
 
-        String snapshotTime = normal.createSnapshot(null, null)
+        String snapshotTime = normal.createSnapshot(null, null, null)
                 .blockingGet().headers().snapshot()
 
         BlockBlobURL uncommittedBlob = cu.createBlockBlobURL(uncommittedName)
 
         uncommittedBlob.stageBlock("0000", Flowable.just(defaultData), defaultData.remaining(),
-                null).blockingGet()
+                null, null).blockingGet()
 
         return snapshotTime
     }
 
     def "List blobs flat options copy"() {
         setup:
-        ListBlobsOptions options = new ListBlobsOptions(new BlobListingDetails(
-                true, false, false, false, false),
-                null, null)
+        ListBlobsOptions options = new ListBlobsOptions().withDetails(new BlobListingDetails().withCopy(true))
         String normalName = "a" + generateBlobName()
         String copyName = "c" + generateBlobName()
         String metadataName = "m" + generateBlobName()
@@ -621,7 +712,7 @@ class ContainerAPITest extends APISpec {
         setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         when:
-        List<BlobItem> blobs = cu.listBlobsFlatSegment(null, options).blockingGet().body().segment().blobItems()
+        List<BlobItem> blobs = cu.listBlobsFlatSegment(null, options, null).blockingGet().body().segment().blobItems()
 
         then:
         blobs.get(0).name() == normalName
@@ -637,9 +728,7 @@ class ContainerAPITest extends APISpec {
 
     def "List blobs flat options metadata"() {
         setup:
-        ListBlobsOptions options = new ListBlobsOptions(new BlobListingDetails(
-                false, true, false, false, false),
-                null, null)
+        ListBlobsOptions options = new ListBlobsOptions().withDetails(new BlobListingDetails().withMetadata(true))
         String normalName = "a" + generateBlobName()
         String copyName = "c" + generateBlobName()
         String metadataName = "m" + generateBlobName()
@@ -647,7 +736,7 @@ class ContainerAPITest extends APISpec {
         setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         when:
-        List<BlobItem> blobs = cu.listBlobsFlatSegment(null, options).blockingGet().body().segment().blobItems()
+        List<BlobItem> blobs = cu.listBlobsFlatSegment(null, options, null).blockingGet().body().segment().blobItems()
 
         then:
         blobs.get(0).name() == normalName
@@ -660,9 +749,7 @@ class ContainerAPITest extends APISpec {
 
     def "List blobs flat options snapshots"() {
         setup:
-        ListBlobsOptions options = new ListBlobsOptions(new BlobListingDetails(
-                false, false, true, false, false),
-                null, null)
+        ListBlobsOptions options = new ListBlobsOptions().withDetails(new BlobListingDetails().withSnapshots(true))
         String normalName = "a" + generateBlobName()
         String copyName = "c" + generateBlobName()
         String metadataName = "m" + generateBlobName()
@@ -670,7 +757,7 @@ class ContainerAPITest extends APISpec {
         String snapshotTime = setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         when:
-        List<BlobItem> blobs = cu.listBlobsFlatSegment(null, options).blockingGet().body().segment().blobItems()
+        List<BlobItem> blobs = cu.listBlobsFlatSegment(null, options, null).blockingGet().body().segment().blobItems()
 
         then:
         blobs.get(0).name() == normalName
@@ -681,9 +768,8 @@ class ContainerAPITest extends APISpec {
 
     def "List blobs flat options uncommitted"() {
         setup:
-        ListBlobsOptions options = new ListBlobsOptions(new BlobListingDetails(
-                false, false, false, true, false),
-                null, null)
+        ListBlobsOptions options = new ListBlobsOptions().withDetails(new BlobListingDetails()
+                .withUncommittedBlobs(true))
         String normalName = "a" + generateBlobName()
         String copyName = "c" + generateBlobName()
         String metadataName = "m" + generateBlobName()
@@ -691,7 +777,7 @@ class ContainerAPITest extends APISpec {
         setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         when:
-        List<BlobItem> blobs = cu.listBlobsFlatSegment(null, options).blockingGet().body().segment().blobItems()
+        List<BlobItem> blobs = cu.listBlobsFlatSegment(null, options, null).blockingGet().body().segment().blobItems()
 
         then:
         blobs.get(0).name() == normalName
@@ -704,13 +790,12 @@ class ContainerAPITest extends APISpec {
         enableSoftDelete()
         String name = generateBlobName()
         AppendBlobURL bu = cu.createAppendBlobURL(name)
-        bu.create(null, null, null).blockingGet()
-        bu.delete(null, null).blockingGet()
+        bu.create(null, null, null, null).blockingGet()
+        bu.delete(null, null, null).blockingGet()
 
         when:
-        List<BlobItem> blobs = cu.listBlobsFlatSegment(null, new ListBlobsOptions(new BlobListingDetails(
-                false, false, false, false, true), null,
-                null)).blockingGet().body().segment().blobItems()
+        List<BlobItem> blobs = cu.listBlobsFlatSegment(null, new ListBlobsOptions().withDetails(new BlobListingDetails()
+                .withDeletedBlobs(true)), null).blockingGet().body().segment().blobItems()
 
         then:
         blobs.get(0).name() == name
@@ -721,7 +806,7 @@ class ContainerAPITest extends APISpec {
 
     def "List blobs flat options prefix"() {
         setup:
-        ListBlobsOptions options = new ListBlobsOptions(null, "a", null)
+        ListBlobsOptions options = new ListBlobsOptions().withPrefix("a")
         String normalName = "a" + generateBlobName()
         String copyName = "c" + generateBlobName()
         String metadataName = "m" + generateBlobName()
@@ -729,7 +814,7 @@ class ContainerAPITest extends APISpec {
         setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         when:
-        List<BlobItem> blobs = cu.listBlobsFlatSegment(null, options).blockingGet().body().segment().blobItems()
+        List<BlobItem> blobs = cu.listBlobsFlatSegment(null, options, null).blockingGet().body().segment().blobItems()
 
         then:
         blobs.get(0).name() == normalName
@@ -738,9 +823,8 @@ class ContainerAPITest extends APISpec {
 
     def "List blobs flat options maxResults"() {
         setup:
-        ListBlobsOptions options = new ListBlobsOptions(new BlobListingDetails(
-                true, false, true, true, false),
-                null, 2)
+        ListBlobsOptions options = new ListBlobsOptions().withDetails(new BlobListingDetails().withCopy(true)
+                .withSnapshots(true).withUncommittedBlobs(true)).withMaxResults(2)
         String normalName = "a" + generateBlobName()
         String copyName = "c" + generateBlobName()
         String metadataName = "m" + generateBlobName()
@@ -748,7 +832,7 @@ class ContainerAPITest extends APISpec {
         setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         when:
-        List<BlobItem> blobs = cu.listBlobsFlatSegment(null, options).blockingGet().body().segment().blobItems()
+        List<BlobItem> blobs = cu.listBlobsFlatSegment(null, options, null).blockingGet().body().segment().blobItems()
 
         then:
         blobs.size() == 2
@@ -756,7 +840,7 @@ class ContainerAPITest extends APISpec {
 
     def "List blobs flat options fail"() {
         when:
-        new ListBlobsOptions(null, null, 0)
+        new ListBlobsOptions().withMaxResults(0)
 
         then:
         thrown(IllegalArgumentException)
@@ -766,15 +850,15 @@ class ContainerAPITest extends APISpec {
         setup:
         for (int i = 0; i < 10; i++) {
             PageBlobURL bu = cu.createPageBlobURL(generateBlobName())
-            bu.create(512, null, null, null, null).blockingGet()
+            bu.create(512, null, null, null, null, null).blockingGet()
         }
 
         ContainerListBlobFlatSegmentResponse response = cu.listBlobsFlatSegment(null,
-                new ListBlobsOptions(null, null, 6))
+                new ListBlobsOptions().withMaxResults(6), null)
                 .blockingGet()
         String marker = response.body().nextMarker()
         int firstSegmentSize = response.body().segment().blobItems().size()
-        response = cu.listBlobsFlatSegment(marker, null).blockingGet()
+        response = cu.listBlobsFlatSegment(marker, null, null).blockingGet()
 
         expect:
         firstSegmentSize == 6
@@ -787,21 +871,36 @@ class ContainerAPITest extends APISpec {
         cu = primaryServiceURL.createContainerURL(generateContainerName())
 
         when:
-        cu.listBlobsFlatSegment(null, null).blockingGet()
+        cu.listBlobsFlatSegment(null, null, null).blockingGet()
 
         then:
         thrown(StorageException)
+    }
+
+    def "List blobs flat context"() {
+        setup:
+        def pipeline =
+                HttpPipeline.build(getStubFactory(getContextStubPolicy(200, ContainerListBlobFlatSegmentHeaders)))
+
+        cu = cu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        cu.listBlobsFlatSegment(null, null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
     }
 
     def "List blobs hierarchy"() {
         setup:
         String name = generateBlobName()
         PageBlobURL bu = cu.createPageBlobURL(name)
-        bu.create(512, null, null, null, null).blockingGet()
+        bu.create(512, null, null, null, null, null).blockingGet()
 
         when:
         ContainerListBlobHierarchySegmentResponse response =
-                cu.listBlobsHierarchySegment(null, "/", null)
+                cu.listBlobsHierarchySegment(null, "/", null, null)
                         .blockingGet()
         ContainerListBlobHierarchySegmentHeaders headers = response.headers()
         List<BlobItem> blobs = response.body().segment().blobItems()
@@ -818,9 +917,7 @@ class ContainerAPITest extends APISpec {
 
     def "List blobs hier options copy"() {
         setup:
-        ListBlobsOptions options = new ListBlobsOptions(new BlobListingDetails(
-                true, false, false, false, false),
-                null, null)
+        ListBlobsOptions options = new ListBlobsOptions().withDetails(new BlobListingDetails().withCopy(true))
         String normalName = "a" + generateBlobName()
         String copyName = "c" + generateBlobName()
         String metadataName = "m" + generateBlobName()
@@ -828,7 +925,7 @@ class ContainerAPITest extends APISpec {
         setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         when:
-        List<BlobItem> blobs = cu.listBlobsHierarchySegment(null, "", options).blockingGet().body().segment().blobItems()
+        List<BlobItem> blobs = cu.listBlobsHierarchySegment(null, "", options, null).blockingGet().body().segment().blobItems()
 
         then:
         blobs.get(0).name() == normalName
@@ -844,9 +941,7 @@ class ContainerAPITest extends APISpec {
 
     def "List blobs hier options metadata"() {
         setup:
-        ListBlobsOptions options = new ListBlobsOptions(new BlobListingDetails(
-                false, true, false, false, false),
-                null, null)
+        ListBlobsOptions options = new ListBlobsOptions().withDetails(new BlobListingDetails().withMetadata(true))
         String normalName = "a" + generateBlobName()
         String copyName = "c" + generateBlobName()
         String metadataName = "m" + generateBlobName()
@@ -854,7 +949,7 @@ class ContainerAPITest extends APISpec {
         setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         when:
-        List<BlobItem> blobs = cu.listBlobsHierarchySegment(null, "", options)
+        List<BlobItem> blobs = cu.listBlobsHierarchySegment(null, "", options, null)
                 .blockingGet().body().segment().blobItems()
 
         then:
@@ -868,9 +963,8 @@ class ContainerAPITest extends APISpec {
 
     def "List blobs hier options uncommitted"() {
         setup:
-        ListBlobsOptions options = new ListBlobsOptions(new BlobListingDetails(
-                false, false, false, true, false),
-                null, null)
+        ListBlobsOptions options = new ListBlobsOptions().withDetails(new BlobListingDetails()
+                .withUncommittedBlobs(true))
         String normalName = "a" + generateBlobName()
         String copyName = "c" + generateBlobName()
         String metadataName = "m" + generateBlobName()
@@ -878,7 +972,7 @@ class ContainerAPITest extends APISpec {
         setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         when:
-        List<BlobItem> blobs = cu.listBlobsHierarchySegment(null, "", options)
+        List<BlobItem> blobs = cu.listBlobsHierarchySegment(null, "", options, null)
                 .blockingGet().body().segment().blobItems()
 
         then:
@@ -892,13 +986,12 @@ class ContainerAPITest extends APISpec {
         enableSoftDelete()
         String name = generateBlobName()
         AppendBlobURL bu = cu.createAppendBlobURL(name)
-        bu.create(null, null, null).blockingGet()
-        bu.delete(null, null).blockingGet()
+        bu.create(null, null, null, null).blockingGet()
+        bu.delete(null, null, null).blockingGet()
 
         when:
         List<BlobItem> blobs = cu.listBlobsHierarchySegment(null, "",
-                new ListBlobsOptions(new BlobListingDetails(false, false, false,
-                        false, true), null, null)).blockingGet()
+                new ListBlobsOptions().withDetails(new BlobListingDetails().withDeletedBlobs(true)), null).blockingGet()
                 .body().segment().blobItems()
 
         then:
@@ -910,7 +1003,7 @@ class ContainerAPITest extends APISpec {
 
     def "List blobs hier options prefix"() {
         setup:
-        ListBlobsOptions options = new ListBlobsOptions(null, "a", null)
+        ListBlobsOptions options = new ListBlobsOptions().withPrefix("a")
         String normalName = "a" + generateBlobName()
         String copyName = "c" + generateBlobName()
         String metadataName = "m" + generateBlobName()
@@ -918,7 +1011,7 @@ class ContainerAPITest extends APISpec {
         setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         when:
-        List<BlobItem> blobs = cu.listBlobsHierarchySegment(null, "", options)
+        List<BlobItem> blobs = cu.listBlobsHierarchySegment(null, "", options, null)
                 .blockingGet().body().segment().blobItems()
 
         then:
@@ -928,9 +1021,8 @@ class ContainerAPITest extends APISpec {
 
     def "List blobs hier options maxResults"() {
         setup:
-        ListBlobsOptions options = new ListBlobsOptions(new BlobListingDetails(
-                true, false, false, true, false), null,
-                1)
+        ListBlobsOptions options = new ListBlobsOptions().withDetails(new BlobListingDetails().withCopy(true)
+                .withUncommittedBlobs(true)).withMaxResults(1)
         String normalName = "a" + generateBlobName()
         String copyName = "c" + generateBlobName()
         String metadataName = "m" + generateBlobName()
@@ -938,7 +1030,7 @@ class ContainerAPITest extends APISpec {
         setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         when:
-        List<BlobItem> blobs = cu.listBlobsHierarchySegment(null, "", options)
+        List<BlobItem> blobs = cu.listBlobsHierarchySegment(null, "", options, null)
                 .blockingGet().body().segment().blobItems()
 
         then:
@@ -948,9 +1040,9 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "List blobs hier options fail"() {
         when:
-        def options = new ListBlobsOptions(new BlobListingDetails(false, false, snapshots,
-                false, false), null, maxResults)
-        cu.listBlobsHierarchySegment(null, null, options)
+        def options = new ListBlobsOptions().withDetails(new BlobListingDetails().withSnapshots(snapshots))
+                .withMaxResults(maxResults)
+        cu.listBlobsHierarchySegment(null, null, options, null)
 
         then:
         thrown(IllegalArgumentException)
@@ -964,15 +1056,15 @@ class ContainerAPITest extends APISpec {
     def "List blobs hier delim"() {
         setup:
         AppendBlobURL blob = cu.createAppendBlobURL("a")
-        blob.create(null, null, null).blockingGet()
+        blob.create(null, null, null, null).blockingGet()
         AppendBlobURL dir = cu.createAppendBlobURL("b/")
-        dir.create(null, null, null).blockingGet()
+        dir.create(null, null, null, null).blockingGet()
         AppendBlobURL subBlob = cu.createAppendBlobURL("b/c")
-        subBlob.create(null, null, null).blockingGet()
+        subBlob.create(null, null, null, null).blockingGet()
 
         when:
         ContainerListBlobHierarchySegmentResponse response =
-                cu.listBlobsHierarchySegment(null, "/", null).blockingGet()
+                cu.listBlobsHierarchySegment(null, "/", null, null).blockingGet()
 
         then:
         response.body().segment().blobPrefixes().size() == 1
@@ -985,15 +1077,15 @@ class ContainerAPITest extends APISpec {
         setup:
         for (int i = 0; i < 10; i++) {
             PageBlobURL bu = cu.createPageBlobURL(generateBlobName())
-            bu.create(512, null, null, null, null).blockingGet()
+            bu.create(512, null, null, null, null, null).blockingGet()
         }
 
         ContainerListBlobHierarchySegmentResponse response = cu.listBlobsHierarchySegment(null, "/",
-                new ListBlobsOptions(null, null, 6))
+                new ListBlobsOptions().withMaxResults(6), null)
                 .blockingGet()
         String marker = response.body().nextMarker()
         int firstSegmentSize = response.body().segment().blobItems().size()
-        response = cu.listBlobsHierarchySegment(marker, "/", null).blockingGet()
+        response = cu.listBlobsHierarchySegment(marker, "/", null, null).blockingGet()
 
         expect:
         firstSegmentSize == 6
@@ -1006,20 +1098,35 @@ class ContainerAPITest extends APISpec {
         cu = primaryServiceURL.createContainerURL(generateContainerName())
 
         when:
-        cu.listBlobsHierarchySegment(null, ".", null).blockingGet()
+        cu.listBlobsHierarchySegment(null, ".", null, null).blockingGet()
 
         then:
         thrown(StorageException)
+    }
+
+    def "List blobs hier context"() {
+        setup:
+        def pipeline =
+                HttpPipeline.build(getStubFactory(getContextStubPolicy(200, ContainerListBlobHierarchySegmentHeaders)))
+
+        cu = cu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        cu.listBlobsHierarchySegment(null, "/", null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
     }
 
     @Unroll
     def "Acquire lease"() {
         setup:
         ContainerAcquireLeaseHeaders headers =
-                cu.acquireLease(proposedID, leaseTime, null).blockingGet().headers()
+                cu.acquireLease(proposedID, leaseTime, null, null).blockingGet().headers()
 
         when:
-        ContainerGetPropertiesHeaders properties = cu.getProperties(null).blockingGet()
+        ContainerGetPropertiesHeaders properties = cu.getProperties(null, null).blockingGet()
                 .headers()
 
         then:
@@ -1038,10 +1145,10 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Acquire lease AC"() {
         setup:
-        HTTPAccessConditions hac = new HTTPAccessConditions(modified, unmodified, null, null)
+        def mac = new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
 
         expect:
-        cu.acquireLease(null, -1, hac).blockingGet().statusCode() == 201
+        cu.acquireLease(null, -1, mac, null).blockingGet().statusCode() == 201
 
         where:
         modified | unmodified
@@ -1053,10 +1160,10 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Acquire lease AC fail"() {
         setup:
-        HTTPAccessConditions hac = new HTTPAccessConditions(modified, unmodified, null, null)
+        def mac = new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
 
         when:
-        cu.acquireLease(null, -1, hac).blockingGet()
+        cu.acquireLease(null, -1, mac, null).blockingGet()
 
         then:
         thrown(StorageException)
@@ -1070,10 +1177,10 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Acquire lease AC illegal"() {
         setup:
-        HTTPAccessConditions hac = new HTTPAccessConditions(null, null, match, noneMatch)
+        ModifiedAccessConditions mac = new ModifiedAccessConditions().withIfMatch(match).withIfNoneMatch(noneMatch)
 
         when:
-        cu.acquireLease(null, -1, hac).blockingGet()
+        cu.acquireLease(null, -1, mac, null).blockingGet()
 
         then:
         thrown(IllegalArgumentException)
@@ -1089,10 +1196,25 @@ class ContainerAPITest extends APISpec {
         cu = primaryServiceURL.createContainerURL(generateContainerName())
 
         when:
-        cu.acquireLease(null, 50, null).blockingGet()
+        cu.acquireLease(null, 50, null, null).blockingGet()
 
         then:
         thrown(StorageException)
+    }
+
+    def "Acquire lease context"() {
+        setup:
+        def pipeline =
+                HttpPipeline.build(getStubFactory(getContextStubPolicy(201, ContainerAcquireLeaseHeaders)))
+
+        cu = cu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        cu.acquireLease(null, 20, null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
     }
 
     def "Renew lease"() {
@@ -1100,10 +1222,10 @@ class ContainerAPITest extends APISpec {
         String leaseID = setupContainerLeaseCondition(cu, receivedLeaseID)
 
         Thread.sleep(16000) // Wait for the lease to expire to ensure we are actually renewing it
-        ContainerRenewLeaseHeaders headers = cu.renewLease(leaseID, null).blockingGet().headers()
+        ContainerRenewLeaseHeaders headers = cu.renewLease(leaseID, null, null).blockingGet().headers()
 
         expect:
-        cu.getProperties(null).blockingGet().headers().leaseState() == LeaseStateType.LEASED
+        cu.getProperties(null, null).blockingGet().headers().leaseState() == LeaseStateType.LEASED
         validateBasicHeaders(headers)
         headers.leaseId() != null
     }
@@ -1112,10 +1234,10 @@ class ContainerAPITest extends APISpec {
     def "Renew lease AC"() {
         setup:
         String leaseID = setupContainerLeaseCondition(cu, receivedLeaseID)
-        HTTPAccessConditions hac = new HTTPAccessConditions(modified, unmodified, null, null)
+        def mac = new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
 
         expect:
-        cu.renewLease(leaseID, hac).blockingGet().statusCode() == 200
+        cu.renewLease(leaseID, mac, null).blockingGet().statusCode() == 200
 
         where:
         modified | unmodified
@@ -1128,10 +1250,10 @@ class ContainerAPITest extends APISpec {
     def "Renew lease AC fail"() {
         setup:
         String leaseID = setupContainerLeaseCondition(cu, receivedLeaseID)
-        HTTPAccessConditions hac = new HTTPAccessConditions(modified, unmodified, null, null)
+        def mac = new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
 
         when:
-        cu.renewLease(leaseID, hac).blockingGet()
+        cu.renewLease(leaseID, mac, null).blockingGet()
 
         then:
         thrown(StorageException)
@@ -1145,10 +1267,10 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Renew lease AC illegal"() {
         setup:
-        HTTPAccessConditions hac = new HTTPAccessConditions(null, null, match, noneMatch)
+        ModifiedAccessConditions mac = new ModifiedAccessConditions().withIfMatch(match).withIfNoneMatch(noneMatch)
 
         when:
-        cu.renewLease(receivedLeaseID, hac).blockingGet()
+        cu.renewLease(receivedLeaseID, mac, null).blockingGet()
 
         then:
         thrown(IllegalArgumentException)
@@ -1164,20 +1286,36 @@ class ContainerAPITest extends APISpec {
         cu = primaryServiceURL.createContainerURL(generateContainerName())
 
         when:
-        cu.renewLease("id", null).blockingGet()
+        cu.renewLease("id", null, null).blockingGet()
 
         then:
         thrown(StorageException)
     }
 
+    def "Renew lease context"() {
+        setup:
+        def pipeline =
+                HttpPipeline.build(getStubFactory(getContextStubPolicy(200, ContainerRenewLeaseHeaders)))
+
+        cu = cu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        cu.renewLease("id", null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
+    }
+
+
     def "Release lease"() {
         setup:
         String leaseID = setupContainerLeaseCondition(cu, receivedLeaseID)
 
-        ContainerReleaseLeaseHeaders headers = cu.releaseLease(leaseID, null).blockingGet().headers()
+        ContainerReleaseLeaseHeaders headers = cu.releaseLease(leaseID, null, null).blockingGet().headers()
 
         expect:
-        cu.getProperties(null).blockingGet().headers().leaseState() == LeaseStateType.AVAILABLE
+        cu.getProperties(null, null).blockingGet().headers().leaseState() == LeaseStateType.AVAILABLE
         validateBasicHeaders(headers)
     }
 
@@ -1185,10 +1323,10 @@ class ContainerAPITest extends APISpec {
     def "Release lease AC"() {
         setup:
         String leaseID = setupContainerLeaseCondition(cu, receivedLeaseID)
-        HTTPAccessConditions hac = new HTTPAccessConditions(modified, unmodified, null, null)
+        def mac = new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
 
         expect:
-        cu.releaseLease(leaseID, hac).blockingGet().statusCode() == 200
+        cu.releaseLease(leaseID, mac, null).blockingGet().statusCode() == 200
 
         where:
         modified | unmodified
@@ -1201,10 +1339,10 @@ class ContainerAPITest extends APISpec {
     def "Release lease AC fail"() {
         setup:
         String leaseID = setupContainerLeaseCondition(cu, receivedLeaseID)
-        HTTPAccessConditions hac = new HTTPAccessConditions(modified, unmodified, null, null)
+        def mac = new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
 
         when:
-        cu.releaseLease(leaseID, hac).blockingGet()
+        cu.releaseLease(leaseID, mac, null).blockingGet()
 
         then:
         thrown(StorageException)
@@ -1218,10 +1356,10 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Release lease AC illegal"() {
         setup:
-        HTTPAccessConditions hac = new HTTPAccessConditions(null, null, match, noneMatch)
+        ModifiedAccessConditions mac = new ModifiedAccessConditions().withIfMatch(match).withIfNoneMatch(noneMatch)
 
         when:
-        cu.releaseLease(receivedLeaseID, hac).blockingGet()
+        cu.releaseLease(receivedLeaseID, mac, null).blockingGet()
 
         then:
         thrown(IllegalArgumentException)
@@ -1238,19 +1376,34 @@ class ContainerAPITest extends APISpec {
         cu = primaryServiceURL.createContainerURL(generateContainerName())
 
         when:
-        cu.releaseLease("id", null).blockingGet()
+        cu.releaseLease("id", null, null).blockingGet()
 
         then:
         thrown(StorageException)
     }
 
+    def "Release lease context"() {
+        setup:
+        def pipeline =
+                HttpPipeline.build(getStubFactory(getContextStubPolicy(200, ContainerReleaseLeaseHeaders)))
+
+        cu = cu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        cu.releaseLease("id", null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
+    }
+
     @Unroll
     def "Break lease"() {
         setup:
-        cu.acquireLease(UUID.randomUUID().toString(), leaseTime, null).blockingGet()
+        cu.acquireLease(UUID.randomUUID().toString(), leaseTime, null, null).blockingGet()
 
-        ContainerBreakLeaseHeaders headers = cu.breakLease(breakPeriod, null).blockingGet().headers()
-        LeaseStateType state = cu.getProperties(null).blockingGet().headers().leaseState()
+        ContainerBreakLeaseHeaders headers = cu.breakLease(breakPeriod, null, null).blockingGet().headers()
+        LeaseStateType state = cu.getProperties(null, null).blockingGet().headers().leaseState()
 
         expect:
         state == LeaseStateType.BROKEN || state == LeaseStateType.BREAKING
@@ -1272,10 +1425,10 @@ class ContainerAPITest extends APISpec {
     def "Break lease AC"() {
         setup:
         setupContainerLeaseCondition(cu, receivedLeaseID)
-        HTTPAccessConditions hac = new HTTPAccessConditions(modified, unmodified, null, null)
+        def mac = new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
 
         expect:
-        cu.breakLease(null, hac).blockingGet().statusCode() == 202
+        cu.breakLease(null, mac, null).blockingGet().statusCode() == 202
 
         where:
         modified | unmodified
@@ -1288,10 +1441,10 @@ class ContainerAPITest extends APISpec {
     def "Break lease AC fail"() {
         setup:
         setupContainerLeaseCondition(cu, receivedLeaseID)
-        HTTPAccessConditions hac = new HTTPAccessConditions(modified, unmodified, null, null)
+        def mac = new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
 
         when:
-        cu.breakLease(null, hac).blockingGet()
+        cu.breakLease(null, mac, null).blockingGet()
 
         then:
         thrown(StorageException)
@@ -1305,10 +1458,10 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Break lease AC illegal"() {
         setup:
-        HTTPAccessConditions hac = new HTTPAccessConditions(null, null, match, noneMatch)
+        ModifiedAccessConditions mac = new ModifiedAccessConditions().withIfMatch(match).withIfNoneMatch(noneMatch)
 
         when:
-        cu.breakLease(null, hac).blockingGet()
+        cu.breakLease(null, mac, null).blockingGet()
 
         then:
         thrown(IllegalArgumentException)
@@ -1324,22 +1477,37 @@ class ContainerAPITest extends APISpec {
         cu = primaryServiceURL.createContainerURL(generateContainerName())
 
         when:
-        cu.breakLease(null, null).blockingGet()
+        cu.breakLease(null, null, null).blockingGet()
 
         then:
         thrown(StorageException)
+    }
+
+    def "Break lease context"() {
+        setup:
+        def pipeline =
+                HttpPipeline.build(getStubFactory(getContextStubPolicy(202, ContainerBreakLeaseHeaders)))
+
+        cu = cu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        cu.breakLease(20, null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
     }
 
     def "Change lease"() {
         setup:
         String leaseID = setupContainerLeaseCondition(cu, receivedLeaseID)
         ContainerChangeLeaseHeaders headers =
-                cu.changeLease(leaseID, UUID.randomUUID().toString(), null)
+                cu.changeLease(leaseID, UUID.randomUUID().toString(), null, null)
                         .blockingGet().headers()
         leaseID = headers.leaseId()
 
         expect:
-        cu.releaseLease(leaseID, null).blockingGet().statusCode() == 200
+        cu.releaseLease(leaseID, null, null).blockingGet().statusCode() == 200
         validateBasicHeaders(headers)
     }
 
@@ -1347,10 +1515,10 @@ class ContainerAPITest extends APISpec {
     def "Change lease AC"() {
         setup:
         String leaseID = setupContainerLeaseCondition(cu, receivedLeaseID)
-        HTTPAccessConditions hac = new HTTPAccessConditions(modified, unmodified, null, null)
+        def mac = new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
 
         expect:
-        cu.changeLease(leaseID, UUID.randomUUID().toString(), hac).blockingGet().statusCode() == 200
+        cu.changeLease(leaseID, UUID.randomUUID().toString(), mac, null).blockingGet().statusCode() == 200
 
         where:
         modified | unmodified
@@ -1363,10 +1531,10 @@ class ContainerAPITest extends APISpec {
     def "Change lease AC fail"() {
         setup:
         String leaseID = setupContainerLeaseCondition(cu, receivedLeaseID)
-        HTTPAccessConditions hac = new HTTPAccessConditions(modified, unmodified, null, null)
+        def mac = new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
 
         when:
-        cu.changeLease(leaseID, UUID.randomUUID().toString(), hac).blockingGet()
+        cu.changeLease(leaseID, UUID.randomUUID().toString(), mac, null).blockingGet()
 
         then:
         thrown(StorageException)
@@ -1380,10 +1548,10 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Change lease AC illegal"() {
         setup:
-        HTTPAccessConditions hac = new HTTPAccessConditions(null, null, match, noneMatch)
+        ModifiedAccessConditions mac = new ModifiedAccessConditions().withIfMatch(match).withIfNoneMatch(noneMatch)
 
         when:
-        cu.changeLease(receivedLeaseID, garbageLeaseID, hac).blockingGet()
+        cu.changeLease(receivedLeaseID, garbageLeaseID, mac, null).blockingGet()
 
         then:
         thrown(IllegalArgumentException)
@@ -1399,10 +1567,25 @@ class ContainerAPITest extends APISpec {
         cu = primaryServiceURL.createContainerURL(generateContainerName())
 
         when:
-        cu.changeLease("id", "id", null).blockingGet()
+        cu.changeLease("id", "id", null, null).blockingGet()
 
         then:
         thrown(StorageException)
+    }
+
+    def "Change lease context"() {
+        setup:
+        def pipeline =
+                HttpPipeline.build(getStubFactory(getContextStubPolicy(200, ContainerChangeLeaseHeaders)))
+
+        cu = cu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        cu.changeLease("id", "id", null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
     }
 
     @Unroll
@@ -1415,15 +1598,15 @@ class ContainerAPITest extends APISpec {
         BlobURL bu5 = cu.createBlockBlobURL(name)
 
         expect:
-        bu2.create(null, null, null).blockingGet().statusCode() == 201
-        bu5.getProperties(null).blockingGet().statusCode() == 200
-        bu3.create(512, null, null, null, null).blockingGet()
+        bu2.create(null, null, null, null).blockingGet().statusCode() == 201
+        bu5.getProperties(null, null).blockingGet().statusCode() == 200
+        bu3.create(512, null, null, null, null, null).blockingGet()
                 .statusCode() == 201
         bu4.upload(defaultFlowable, defaultDataSize,
-                null, null, null).blockingGet().statusCode() == 201
+                null, null, null, null).blockingGet().statusCode() == 201
 
         when:
-        List<BlobItem> blobs = cu.listBlobsFlatSegment(null, null).blockingGet()
+        List<BlobItem> blobs = cu.listBlobsFlatSegment(null, null, null).blockingGet()
                 .body().segment().blobItems()
 
         then:
@@ -1447,21 +1630,21 @@ class ContainerAPITest extends APISpec {
         BlobURL bu = cu.createAppendBlobURL("rootblob")
 
         expect:
-        bu.create(null, null, null).blockingGet().statusCode() == 201
+        bu.create(null, null, null, null).blockingGet().statusCode() == 201
     }
 
     def "Root implicit"() {
         setup:
         PipelineOptions po = new PipelineOptions()
-        po.client = getHttpClient()
+        po.withClient(getHttpClient())
         HttpPipeline pipeline = StorageURL.createPipeline(primaryCreds, po)
         AppendBlobURL bu = new AppendBlobURL(new URL("http://xclientdev3.blob.core.windows.net/rootblob"),
                 pipeline)
 
         when:
-        AppendBlobCreateResponse createResponse = bu.create(null, null, null)
+        AppendBlobCreateResponse createResponse = bu.create(null, null, null, null)
                 .blockingGet()
-        BlobGetPropertiesResponse propsResponse = bu.getProperties(null).blockingGet()
+        BlobGetPropertiesResponse propsResponse = bu.getProperties(null, null).blockingGet()
 
         then:
         createResponse.statusCode() == 201
@@ -1475,7 +1658,7 @@ class ContainerAPITest extends APISpec {
 
         when:
         // Validate some basic operation.
-        webContainer.setAccessPolicy(null, null, null).blockingGet()
+        webContainer.setAccessPolicy(null, null, null, null).blockingGet()
 
         then:
         notThrown(StorageException)
@@ -1496,7 +1679,7 @@ class ContainerAPITest extends APISpec {
         }))
 
         when:
-        withPipeline.create(null, null).blockingGet()
+        withPipeline.create(null, null, null).blockingGet()
 
         then:
         def e = thrown(Exception)
@@ -1505,7 +1688,7 @@ class ContainerAPITest extends APISpec {
 
     def "Get account info"() {
         when:
-        def response = primaryServiceURL.getAccountInfo().blockingGet()
+        def response = primaryServiceURL.getAccountInfo(null).blockingGet()
 
         then:
         response.headers().date() != null
@@ -1519,9 +1702,25 @@ class ContainerAPITest extends APISpec {
         when:
         ServiceURL serviceURL = new ServiceURL(primaryServiceURL.toURL(),
                 StorageURL.createPipeline(new AnonymousCredentials(), new PipelineOptions()))
-        serviceURL.createContainerURL(generateContainerName()).getAccountInfo().blockingGet()
+        serviceURL.createContainerURL(generateContainerName()).getAccountInfo(null).blockingGet()
 
         then:
         thrown(StorageException)
     }
+
+    def "Get account info context"() {
+        setup:
+        def pipeline =
+                HttpPipeline.build(getStubFactory(getContextStubPolicy(200, ContainerGetAccountInfoHeaders)))
+
+        cu = cu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        cu.getAccountInfo(defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
+    }
+
 }

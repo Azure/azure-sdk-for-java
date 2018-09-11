@@ -40,48 +40,147 @@ import java.time.OffsetDateTime;
  */
 public final class AccountSASSignatureValues {
 
+    private String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
+
+    private SASProtocol protocol;
+
+    private OffsetDateTime startTime;
+
+    private OffsetDateTime expiryTime;
+
+    private String permissions;
+
+    private IPRange ipRange;
+
+    private String services;
+
+    private String resourceTypes;
+
     /**
      * If null or empty, this defaults to the service version targeted by this version of the library.
      */
-    public String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
+    public String version() {
+        return version;
+    }
+
+    /**
+     * If null or empty, this defaults to the service version targeted by this version of the library.
+     */
+    public AccountSASSignatureValues withVersion(String version) {
+        this.version = version;
+        return this;
+    }
 
     /**
      * {@link SASProtocol}
      */
-    public SASProtocol protocol;
+    public SASProtocol protocol() {
+        return protocol;
+    }
+
+    /**
+     * {@link SASProtocol}
+     */
+    public AccountSASSignatureValues withProtocol(SASProtocol protocol) {
+        this.protocol = protocol;
+        return this;
+    }
 
     /**
      * When the SAS will take effect.
      */
-    public OffsetDateTime startTime;
+    public OffsetDateTime startTime() {
+        return startTime;
+    }
+
+    /**
+     * When the SAS will take effect.
+     */
+    public AccountSASSignatureValues withStartTime(OffsetDateTime startTime) {
+        this.startTime = startTime;
+        return this;
+    }
 
     /**
      * The time after which the SAS will no longer work.
      */
-    public OffsetDateTime expiryTime;
+    public OffsetDateTime expiryTime() {
+        return expiryTime;
+    }
+
+    /**
+     * The time after which the SAS will no longer work.
+     */
+    public AccountSASSignatureValues withExpiryTime(OffsetDateTime expiryTime) {
+        this.expiryTime = expiryTime;
+        return this;
+    }
 
     /**
      * Specifies which operations the SAS user may perform. Please refer to {@link AccountSASPermission} for help
      * constructing the permissions string.
      */
-    public String permissions;
+    public String permissions() {
+        return permissions;
+    }
+
+    /**
+     * Specifies which operations the SAS user may perform. Please refer to {@link AccountSASPermission} for help
+     * constructing the permissions string.
+     */
+    public AccountSASSignatureValues withPermissions(String permissions) {
+        this.permissions = permissions;
+        return this;
+    }
 
     /**
      * {@link IPRange}
      */
-    public IPRange ipRange;
+    public IPRange ipRange() {
+        return ipRange;
+    }
+
+    /**
+     * {@link IPRange}
+     */
+    public AccountSASSignatureValues withIpRange(IPRange ipRange) {
+        this.ipRange = ipRange;
+        return this;
+    }
 
     /**
      * The values that indicate the services accessible with this SAS. Please refer to {@link AccountSASService} to
      * construct this value.
      */
-    public String services;
+    public String services() {
+        return services;
+    }
+
+    /**
+     * The values that indicate the services accessible with this SAS. Please refer to {@link AccountSASService} to
+     * construct this value.
+     */
+    public AccountSASSignatureValues withServices(String services) {
+        this.services = services;
+        return this;
+    }
 
     /**
      * The values that indicate the resource types accessible with this SAS. Please refer
      * to {@link AccountSASResourceType} to construct this value.
      */
-    public String resourceTypes;
+    public String resourceTypes() {
+        return resourceTypes;
+    }
+
+    /**
+     * The values that indicate the resource types accessible with this SAS. Please refer
+     * to {@link AccountSASResourceType} to construct this value.
+     */
+    public AccountSASSignatureValues withResourceTypes(String resourceTypes) {
+        this.resourceTypes = resourceTypes;
+        return this;
+    }
 
     /**
      * Initializes an {@code AccountSASSignatureValues} object with the version number set to the default and all
