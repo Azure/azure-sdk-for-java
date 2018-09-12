@@ -93,8 +93,8 @@ class ServerImpl extends GroupableResourceCoreImpl<Server, ServerInner, ServerIm
     }
 
     @Override
-    public String primaryServerId() {
-        return this.inner().primaryServerId();
+    public String masterServerId() {
+        return this.inner().masterServerId();
     }
 
     @Override

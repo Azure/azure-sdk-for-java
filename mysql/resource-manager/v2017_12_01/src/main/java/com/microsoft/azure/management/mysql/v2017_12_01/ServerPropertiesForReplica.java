@@ -19,13 +19,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Replica")
 public class ServerPropertiesForReplica extends ServerPropertiesForCreate {
     /**
-     * The primary server id to create replica from.
+     * The master server id to create replica from.
      */
     @JsonProperty(value = "sourceServerId", required = true)
     private String sourceServerId;
 
     /**
-     * Get the primary server id to create replica from.
+     * Get the master server id to create replica from.
      *
      * @return the sourceServerId value
      */
@@ -34,7 +34,7 @@ public class ServerPropertiesForReplica extends ServerPropertiesForCreate {
     }
 
     /**
-     * Set the primary server id to create replica from.
+     * Set the master server id to create replica from.
      *
      * @param sourceServerId the sourceServerId value to set
      * @return the ServerPropertiesForReplica object itself.

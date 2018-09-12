@@ -60,13 +60,13 @@ class ServerServerImpl extends WrapperImpl<ServerInner> implements ServerServer 
     }
 
     @Override
-    public String name() {
-        return this.inner().name();
+    public String masterServerId() {
+        return this.inner().masterServerId();
     }
 
     @Override
-    public String primaryServerId() {
-        return this.inner().primaryServerId();
+    public String name() {
+        return this.inner().name();
     }
 
     @Override

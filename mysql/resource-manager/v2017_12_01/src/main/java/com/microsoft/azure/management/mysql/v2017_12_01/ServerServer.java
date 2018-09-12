@@ -45,14 +45,14 @@ public interface ServerServer extends HasInner<ServerInner>, HasManager<DBforMyS
     String location();
 
     /**
+     * @return the masterServerId value.
+     */
+    String masterServerId();
+
+    /**
      * @return the name value.
      */
     String name();
-
-    /**
-     * @return the primaryServerId value.
-     */
-    String primaryServerId();
 
     /**
      * @return the replicaCapacity value.

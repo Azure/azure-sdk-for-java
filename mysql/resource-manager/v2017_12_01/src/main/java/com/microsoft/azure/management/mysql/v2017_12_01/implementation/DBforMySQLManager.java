@@ -25,6 +25,7 @@ import com.microsoft.azure.management.mysql.v2017_12_01.Configurations;
 import com.microsoft.azure.management.mysql.v2017_12_01.LogFiles;
 import com.microsoft.azure.management.mysql.v2017_12_01.LocationBasedPerformanceTiers;
 import com.microsoft.azure.management.mysql.v2017_12_01.CheckNameAvailabilitys;
+import com.microsoft.azure.management.mysql.v2017_12_01.ServerSecurityAlertPolicies;
 import com.microsoft.azure.management.mysql.v2017_12_01.Operations;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
@@ -42,6 +43,7 @@ public final class DBforMySQLManager extends ManagerCore<DBforMySQLManager, MySQ
     private LogFiles logFiles;
     private LocationBasedPerformanceTiers locationBasedPerformanceTiers;
     private CheckNameAvailabilitys checkNameAvailabilitys;
+    private ServerSecurityAlertPolicies serverSecurityAlertPolicies;
     private Operations operations;
     /**
     * Get a Configurable instance that can be used to create DBforMySQLManager with optional configuration.
@@ -178,6 +180,16 @@ public final class DBforMySQLManager extends ManagerCore<DBforMySQLManager, MySQ
             this.checkNameAvailabilitys = new CheckNameAvailabilitysImpl(this);
         }
         return this.checkNameAvailabilitys;
+    }
+
+    /**
+     * @return Entry point to manage ServerSecurityAlertPolicies.
+     */
+    public ServerSecurityAlertPolicies serverSecurityAlertPolicies() {
+        if (this.serverSecurityAlertPolicies == null) {
+            this.serverSecurityAlertPolicies = new ServerSecurityAlertPoliciesImpl(this);
+        }
+        return this.serverSecurityAlertPolicies;
     }
 
     /**

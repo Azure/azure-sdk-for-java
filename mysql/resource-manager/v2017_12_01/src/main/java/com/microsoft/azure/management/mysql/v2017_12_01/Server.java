@@ -41,9 +41,9 @@ public interface Server extends HasInner<ServerInner>, Resource, GroupableResour
     String fullyQualifiedDomainName();
 
     /**
-     * @return the primaryServerId value.
+     * @return the masterServerId value.
      */
-    String primaryServerId();
+    String masterServerId();
 
     /**
      * @return the replicaCapacity value.

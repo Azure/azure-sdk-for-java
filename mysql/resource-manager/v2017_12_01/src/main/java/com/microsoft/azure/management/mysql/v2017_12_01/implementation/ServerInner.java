@@ -81,13 +81,13 @@ public class ServerInner extends Resource {
     private String replicationRole;
 
     /**
-     * The primary server id of a relica server.
+     * The master server id of a relica server.
      */
-    @JsonProperty(value = "properties.primaryServerId")
-    private String primaryServerId;
+    @JsonProperty(value = "properties.masterServerId")
+    private String masterServerId;
 
     /**
-     * The maximum number of replicas that a primary server can have.
+     * The maximum number of replicas that a master server can have.
      */
     @JsonProperty(value = "properties.replicaCapacity")
     private Integer replicaCapacity;
@@ -273,27 +273,27 @@ public class ServerInner extends Resource {
     }
 
     /**
-     * Get the primary server id of a relica server.
+     * Get the master server id of a relica server.
      *
-     * @return the primaryServerId value
+     * @return the masterServerId value
      */
-    public String primaryServerId() {
-        return this.primaryServerId;
+    public String masterServerId() {
+        return this.masterServerId;
     }
 
     /**
-     * Set the primary server id of a relica server.
+     * Set the master server id of a relica server.
      *
-     * @param primaryServerId the primaryServerId value to set
+     * @param masterServerId the masterServerId value to set
      * @return the ServerInner object itself.
      */
-    public ServerInner withPrimaryServerId(String primaryServerId) {
-        this.primaryServerId = primaryServerId;
+    public ServerInner withMasterServerId(String masterServerId) {
+        this.masterServerId = masterServerId;
         return this;
     }
 
     /**
-     * Get the maximum number of replicas that a primary server can have.
+     * Get the maximum number of replicas that a master server can have.
      *
      * @return the replicaCapacity value
      */
@@ -302,7 +302,7 @@ public class ServerInner extends Resource {
     }
 
     /**
-     * Set the maximum number of replicas that a primary server can have.
+     * Set the maximum number of replicas that a master server can have.
      *
      * @param replicaCapacity the replicaCapacity value to set
      * @return the ServerInner object itself.
