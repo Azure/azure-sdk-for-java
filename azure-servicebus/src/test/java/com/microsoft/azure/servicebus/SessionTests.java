@@ -285,7 +285,7 @@ public abstract class SessionTests extends Tests {
 	{
 	    ClientSettings commonClientSettings = TestUtils.getClientSettings();
 	    // Timeout should be less than default session wait timeout on the service
-	    ClientSettings shortTimeoutClientSettings = new ClientSettings(commonClientSettings.getTokenProvider(), commonClientSettings.getRetryPolicy(), Duration.ofSeconds(10));
+	    ClientSettings shortTimeoutClientSettings = new ClientSettings(commonClientSettings.getTokenProvider(), commonClientSettings.getRetryPolicy(), Duration.ofSeconds(10), null);
 	    try
 	    {
 	        this.session = ClientFactory.acceptSessionFromEntityPath(TestUtils.getNamespaceEndpointURI(), this.receiveEntityPath, null, shortTimeoutClientSettings, ReceiveMode.PEEKLOCK);

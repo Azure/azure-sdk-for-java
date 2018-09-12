@@ -48,6 +48,7 @@ public class ConnectionStringBuilder
 	private final static String SHARED_ACCESS_KEY_CONFIG_NAME = "SharedAccessKey";
 	private final static String ALTERNATE_SHARED_ACCESS_SIGNATURE_TOKEN_CONFIG_NAME = "SharedAccessSignature";
 	private final static String SHARED_ACCESS_SIGNATURE_TOKEN_CONFIG_NAME = "SharedAccessSignatureToken";
+	private final static String TRANSPORT_TYPE_CONFIG_NAME = "TransportType";
 	private final static String ENTITY_PATH_CONFIG_NAME = "EntityPath";
 	private final static String OPERATION_TIMEOUT_CONFIG_NAME = "OperationTimeout";
 	private final static String RETRY_POLICY_CONFIG_NAME = "RetryPolicy";
@@ -56,7 +57,7 @@ public class ConnectionStringBuilder
 
 	private static final String ALL_KEY_ENUMERATE_REGEX = "(" + HOSTNAME_CONFIG_NAME + "|" +  ENDPOINT_CONFIG_NAME + "|" + SHARED_ACCESS_KEY_NAME_CONFIG_NAME
 			+ "|" + SHARED_ACCESS_KEY_CONFIG_NAME + "|"  + SHARED_ACCESS_SIGNATURE_TOKEN_CONFIG_NAME + "|" + ENTITY_PATH_CONFIG_NAME + "|" + OPERATION_TIMEOUT_CONFIG_NAME
-			+ "|" + RETRY_POLICY_CONFIG_NAME + "|" + ALTERNATE_SHARED_ACCESS_SIGNATURE_TOKEN_CONFIG_NAME + ")";
+			+ "|" + RETRY_POLICY_CONFIG_NAME + "|" + ALTERNATE_SHARED_ACCESS_SIGNATURE_TOKEN_CONFIG_NAME + "|" + TRANSPORT_TYPE_CONFIG_NAME + "|" +")";
 
 	private static final String KEYS_WITH_DELIMITERS_REGEX = KEY_VALUE_PAIR_DELIMITER + ALL_KEY_ENUMERATE_REGEX	+ KEY_VALUE_SEPARATOR;
 
@@ -69,6 +70,7 @@ public class ConnectionStringBuilder
 	private String entityPath;
 	private Duration operationTimeout;
 	private RetryPolicy retryPolicy;
+	private TransportType transportType;
 	
 	/**
 	 * Default operation timeout if timeout is not specified in the connection string. 30 seconds.
@@ -304,6 +306,30 @@ public class ConnectionStringBuilder
 		this.retryPolicy = retryPolicy;
 	}
 
+
+	/**
+	 * TransportType on which all the communication for the Service Bus created using this ConnectionString.
+	 * Default value is {@link TransportType#AMQP}.
+	 *
+	 * @return transportType
+	 */
+	public TransportType getTransportType()
+	{
+		return (this.transportType == null ? TransportType.AMQP : transportType);
+	}
+
+	/**
+	 * Set the TransportType value in the Connection String. If no TransportType is set, this defaults to {@link TransportType#AMQP}.
+	 *
+	 * @param transportType Transport Type
+	 * @return the {@link ConnectionStringBuilder} instance being set.
+	 */
+	public ConnectionStringBuilder setTransportType(final TransportType transportType)
+	{
+		this.transportType = transportType;
+		return this;
+	}
+
 	/**
 	 * Returns an inter-operable connection string that can be used to connect to ServiceBus Namespace
 	 * @return connection string
@@ -354,6 +380,12 @@ public class ConnectionStringBuilder
 			{
 				connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", KEY_VALUE_PAIR_DELIMITER, RETRY_POLICY_CONFIG_NAME,
 						KEY_VALUE_SEPARATOR, this.retryPolicy.toString()));
+			}
+
+			if (this.transportType != null)
+			{
+				connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", KEY_VALUE_PAIR_DELIMITER, TRANSPORT_TYPE_CONFIG_NAME,
+						KEY_VALUE_SEPARATOR, this.transportType.toString()));
 			}
 
 			this.connectionString = connectionStringBuilder.toString();
@@ -484,6 +516,18 @@ public class ConnectionStringBuilder
 							throw new IllegalConnectionStringFormatException(
 									String.format(Locale.US, "Connection string parameter '%s'='%s' is not recognized",
 											RETRY_POLICY_CONFIG_NAME, values[valueIndex]));
+			}
+			else if (key.equalsIgnoreCase(TRANSPORT_TYPE_CONFIG_NAME))
+			{
+				try
+				{
+					this.transportType = TransportType.fromString(values[valueIndex]);
+				} catch (IllegalArgumentException exception)
+				{
+					throw new IllegalConnectionStringFormatException(
+							String.format("Invalid value specified for property '%s' in the ConnectionString.", TRANSPORT_TYPE_CONFIG_NAME),
+							exception);
+				}
 			}
 			else
 			{

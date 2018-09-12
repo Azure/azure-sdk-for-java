@@ -18,6 +18,7 @@ import java.util.concurrent.ScheduledFuture;
 
 import com.microsoft.azure.servicebus.TransactionContext;
 import com.microsoft.azure.servicebus.Utils;
+import com.microsoft.azure.servicebus.amqp.*;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.BaseHandler;
@@ -34,13 +35,6 @@ import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 
 import com.microsoft.azure.servicebus.ClientSettings;
-import com.microsoft.azure.servicebus.amqp.BaseLinkHandler;
-import com.microsoft.azure.servicebus.amqp.ConnectionHandler;
-import com.microsoft.azure.servicebus.amqp.DispatchHandler;
-import com.microsoft.azure.servicebus.amqp.IAmqpConnection;
-import com.microsoft.azure.servicebus.amqp.ProtonUtil;
-import com.microsoft.azure.servicebus.amqp.ReactorDispatcher;
-import com.microsoft.azure.servicebus.amqp.ReactorHandler;
 import com.microsoft.azure.servicebus.security.SecurityToken;
 
 /**
@@ -87,7 +81,9 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
 	    this.registeredLinks = new LinkedList<Link>();
         this.connetionCloseFuture = new CompletableFuture<Void>();
         this.reactorLock = new Object();
-        this.connectionHandler = new ConnectionHandler(this);
+        this.connectionHandler =   clientSettings.getTransportType() == TransportType.AMQP
+				? new ConnectionHandler(this)
+				: new WebSocketConnectionHandler(this);
         this.factoryOpenFuture = new CompletableFuture<MessagingFactory>();
         this.cbsLinkCreationFuture = new CompletableFuture<Void>();
         this.managementLinksCache = new RequestResponseLinkCache(this);
@@ -99,8 +95,8 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
                 super.onReactorInit(e);
 
                 final Reactor r = e.getReactor();
-                TRACE_LOGGER.info("Creating connection to host '{}:{}'", hostName, ClientConstants.AMQPS_PORT);
-                connection = r.connectionToHost(hostName, ClientConstants.AMQPS_PORT, connectionHandler);
+                TRACE_LOGGER.info("Creating connection to host '{}:{}'", hostName, connectionHandler.getPort());
+                connection = r.connectionToHost(hostName, connectionHandler.getPort(), connectionHandler);
             }
         };
         Timer.register(this.getClientId());
@@ -203,7 +199,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
 	private void startReactor(ReactorHandler reactorHandler) throws IOException
 	{
 	    TRACE_LOGGER.info("Creating and starting reactor");
-		Reactor newReactor = ProtonUtil.reactor(reactorHandler);
+		Reactor newReactor = ProtonUtil.reactor(reactorHandler, this.connectionHandler.getMaxFrameSize());
 		synchronized (this.reactorLock)
 		{
 			this.reactor = newReactor;
@@ -221,7 +217,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
 		if (this.connection == null || this.connection.getLocalState() == EndpointState.CLOSED || this.connection.getRemoteState() == EndpointState.CLOSED)
 		{
 		    TRACE_LOGGER.info("Creating connection to host '{}:{}'", hostName, ClientConstants.AMQPS_PORT);
-			this.connection = this.getReactor().connectionToHost(this.hostName, ClientConstants.AMQPS_PORT, this.connectionHandler);
+			this.connection = this.getReactor().connectionToHost(this.hostName, connectionHandler.getPort(), this.connectionHandler);
 		}
 
 		return this.connection;
@@ -692,11 +688,11 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
         int renewInterval = Util.getTokenRenewIntervalInSeconds((int)Duration.between(Instant.now(), currentTokenValidUntil).getSeconds());
         return Timer.schedule(validityRenewer, Duration.ofSeconds(renewInterval), TimerType.OneTimeRun);
 	}
-	
+
 	CompletableFuture<RequestResponseLink> obtainRequestResponseLinkAsync(String entityPath, MessagingEntityType entityType)
 	{
-	    this.throwIfClosed(null);
-	    return this.managementLinksCache.obtainRequestResponseLinkAsync(entityPath, null, entityType);
+		this.throwIfClosed(null);
+		return this.managementLinksCache.obtainRequestResponseLinkAsync(entityPath, null, entityType);
 	}
 
     CompletableFuture<RequestResponseLink> obtainRequestResponseLinkAsync(String entityPath, String transferDestinationPath, MessagingEntityType entityType)
@@ -720,40 +716,40 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
             this.managementLinksCache.releaseRequestResponseLink(entityPath, transferDestinationPath);
         }
     }
-	
+
 	private CompletableFuture<Void> createCBSLinkAsync()
-    {
-	    if(++this.cbsLinkCreationAttempts > MAX_CBS_LINK_CREATION_ATTEMPTS )
-	    {
-	        Throwable completionEx = this.lastCBSLinkCreationException == null ? new Exception("CBS link creation failed multiple times.") : this.lastCBSLinkCreationException;
-	        this.cbsLinkCreationFuture.completeExceptionally(completionEx);
-	        return CompletableFuture.completedFuture(null);     
-	    }
-	    else
-	    {	        
-	        String requestResponseLinkPath = RequestResponseLink.getCBSNodeLinkPath();
-	        TRACE_LOGGER.info("Creating CBS link to {}", requestResponseLinkPath);
-	        CompletableFuture<Void> crateAndAssignRequestResponseLink =
-	                        RequestResponseLink.createAsync(this, this.getClientId() + "-cbs", requestResponseLinkPath, null, null, null, null)
-                                    .handleAsync((cbsLink, ex) ->
-	                        {
-	                            if(ex == null)
-	                            {
-	                                TRACE_LOGGER.info("Created CBS link to {}", requestResponseLinkPath);
-	                                this.cbsLink = cbsLink;	
-	                                this.cbsLinkCreationFuture.complete(null);
-	                            }
-	                            else
-	                            {
-	                                this.lastCBSLinkCreationException = ExceptionUtil.extractAsyncCompletionCause(ex);
-	                                TRACE_LOGGER.warn("Creating CBS link to {} failed. Attempts '{}'", requestResponseLinkPath, this.cbsLinkCreationAttempts);
-	                                this.createCBSLinkAsync();
-	                            }
-	                            return null;
-	                        });       
-	        return crateAndAssignRequestResponseLink;
-	    }	    
-    }
+	{
+		if(++this.cbsLinkCreationAttempts > MAX_CBS_LINK_CREATION_ATTEMPTS )
+		{
+			Throwable completionEx = this.lastCBSLinkCreationException == null ? new Exception("CBS link creation failed multiple times.") : this.lastCBSLinkCreationException;
+			this.cbsLinkCreationFuture.completeExceptionally(completionEx);
+			return CompletableFuture.completedFuture(null);
+		}
+		else
+		{
+			String requestResponseLinkPath = RequestResponseLink.getCBSNodeLinkPath();
+			TRACE_LOGGER.info("Creating CBS link to {}", requestResponseLinkPath);
+			CompletableFuture<Void> crateAndAssignRequestResponseLink =
+					RequestResponseLink.createAsync(this, this.getClientId() + "-cbs", requestResponseLinkPath, null, null, null, null)
+							.handleAsync((cbsLink, ex) ->
+							{
+								if(ex == null)
+								{
+									TRACE_LOGGER.info("Created CBS link to {}", requestResponseLinkPath);
+									this.cbsLink = cbsLink;
+									this.cbsLinkCreationFuture.complete(null);
+								}
+								else
+								{
+									this.lastCBSLinkCreationException = ExceptionUtil.extractAsyncCompletionCause(ex);
+									TRACE_LOGGER.warn("Creating CBS link to {} failed. Attempts '{}'", requestResponseLinkPath, this.cbsLinkCreationAttempts);
+									this.createCBSLinkAsync();
+								}
+								return null;
+							});
+			return crateAndAssignRequestResponseLink;
+		}
+	}
 	
 	private static <T> T completeFuture(CompletableFuture<T> future) throws InterruptedException, ServiceBusException {
         try {

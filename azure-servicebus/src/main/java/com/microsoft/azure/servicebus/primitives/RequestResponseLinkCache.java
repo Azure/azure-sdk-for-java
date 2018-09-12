@@ -12,17 +12,17 @@ import org.slf4j.LoggerFactory;
 class RequestResponseLinkCache
 {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(RequestResponseLinkCache.class);
-    
+
     private Object lock = new Object();
-    private final MessagingFactory underlyingFactory;    
+    private final MessagingFactory underlyingFactory;
     private HashMap<String, RequestResponseLinkWrapper> pathToRRLinkMap;
-    
+
     public RequestResponseLinkCache(MessagingFactory underlyingFactory)
     {
         this.underlyingFactory = underlyingFactory;
         this.pathToRRLinkMap = new HashMap<>();
     }
-    
+
     public CompletableFuture<RequestResponseLink> obtainRequestResponseLinkAsync(String entityPath, String transferEntityPath, MessagingEntityType entityType)
     {
         RequestResponseLinkWrapper wrapper;
@@ -35,7 +35,7 @@ class RequestResponseLinkCache
         {
             mapKey = entityPath;
         }
-        
+
         synchronized (lock)
         {
             wrapper = this.pathToRRLinkMap.get(mapKey);
@@ -47,7 +47,7 @@ class RequestResponseLinkCache
         }
         return wrapper.acquireReferenceAsync();
     }
-    
+
     public void releaseRequestResponseLink(String entityPath, String transferEntityPath)
     {
         String mapKey;
@@ -70,7 +70,7 @@ class RequestResponseLinkCache
             wrapper.releaseReference();
         }
     }
-    
+
     public CompletableFuture<Void> freeAsync()
     {
         TRACE_LOGGER.info("Closing all cached request-response links");
@@ -79,11 +79,11 @@ class RequestResponseLinkCache
         {
             closeFutures.add(wrapper.forceCloseAsync());
         }
-        
+
         this.pathToRRLinkMap.clear();
         return CompletableFuture.allOf(closeFutures.toArray(new CompletableFuture[0]));
     }
-    
+
     private void removeWrapperFromCache(String entityPath)
     {
         synchronized (lock)
@@ -91,7 +91,7 @@ class RequestResponseLinkCache
             this.pathToRRLinkMap.remove(entityPath);
         }
     }
-    
+
     private class RequestResponseLinkWrapper
     {
         private Object lock = new Object();
@@ -102,7 +102,7 @@ class RequestResponseLinkCache
         private RequestResponseLink requestResponseLink;
         private int referenceCount;
         private ArrayList<CompletableFuture<RequestResponseLink>> waiters;
-        
+
         public RequestResponseLinkWrapper(MessagingFactory underlyingFactory, String entityPath, String transferEntityPath, MessagingEntityType entityType)
         {
             this.underlyingFactory = underlyingFactory;
@@ -114,7 +114,7 @@ class RequestResponseLinkCache
             this.waiters = new ArrayList<>();
             this.createRequestResponseLinkAsync();
         }
-        
+
         private void createRequestResponseLinkAsync()
         {
             String requestResponseLinkPath = RequestResponseLink.getManagementNodeLinkPath(this.entityPath);
@@ -161,11 +161,11 @@ class RequestResponseLinkCache
                         }
                     }
                 }
-                
+
                 return null;
             });
         }
-        
+
         public CompletableFuture<RequestResponseLink> acquireReferenceAsync()
         {
             synchronized (this.lock)
@@ -183,9 +183,9 @@ class RequestResponseLinkCache
                 }
             }
         }
-        
+
         public void releaseReference()
-        {            
+        {
             synchronized (this.lock)
             {
                 if(--this.referenceCount == 0)
@@ -196,7 +196,7 @@ class RequestResponseLinkCache
                 }
             }
         }
-        
+
         public CompletableFuture<Void> forceCloseAsync()
         {
             TRACE_LOGGER.info("Force closing requestresponselink to '{}'", this.requestResponseLink.getLinkPath());

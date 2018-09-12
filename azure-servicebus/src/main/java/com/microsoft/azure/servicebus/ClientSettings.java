@@ -4,6 +4,7 @@ import java.time.Duration;
 
 import com.microsoft.azure.servicebus.primitives.ClientConstants;
 import com.microsoft.azure.servicebus.primitives.RetryPolicy;
+import com.microsoft.azure.servicebus.primitives.TransportType;
 import com.microsoft.azure.servicebus.security.TokenProvider;
 
 /**
@@ -16,6 +17,7 @@ public class ClientSettings {
     private TokenProvider tokenProvider;
     private RetryPolicy retryPolicy;
     private Duration operationTimeout;
+    private TransportType transportType;
     
     /**
      * Creates a new instance with the given token provider, default retry policy and default operation timeout.
@@ -25,7 +27,7 @@ public class ClientSettings {
      */
     public ClientSettings(TokenProvider tokenProvider)
     {
-        this(tokenProvider, RetryPolicy.getDefault(), Duration.ofSeconds(ClientConstants.DEFAULT_OPERATION_TIMEOUT_IN_SECONDS));
+        this(tokenProvider, RetryPolicy.getDefault(), Duration.ofSeconds(ClientConstants.DEFAULT_OPERATION_TIMEOUT_IN_SECONDS), TransportType.AMQP);
     }
     
     /**
@@ -34,11 +36,12 @@ public class ClientSettings {
      * @param retryPolicy {@link RetryPolicy} instance
      * @param operationTimeout default operation timeout to be used for all client operations. Client can override this value by explicitly specifying a timeout in the operation.
      */
-    public ClientSettings(TokenProvider tokenProvider, RetryPolicy retryPolicy, Duration operationTimeout)
+    public ClientSettings(TokenProvider tokenProvider, RetryPolicy retryPolicy, Duration operationTimeout, TransportType transportType)
     {
         this.tokenProvider = tokenProvider;
         this.retryPolicy = retryPolicy;
         this.operationTimeout = operationTimeout;
+        this.transportType = transportType;
     }
 
     /**
@@ -67,4 +70,6 @@ public class ClientSettings {
     {
         return operationTimeout;
     }
+
+    public TransportType getTransportType() { return transportType; }
 }

@@ -16,18 +16,18 @@ import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 
 public class ClientValidationTests
 {
-	
+
 	private static final String ENTITY_NAME_PREFIX = "ClientValidationTests";
-	
+
 	private static String queuePath;
 	private static String sessionfulQueuePath;
 	private static String topicPath;
 	private static String subscriptionPath;
 	private static String sessionfulSubscriptionPath;
 	private static ManagementClientAsync managementClient;
-	
+
 	@BeforeClass
-    public static void createEntities() throws ExecutionException, InterruptedException {
+	public static void createEntities() throws ExecutionException, InterruptedException {
 		// Create a queue, a topic and a subscription
 		queuePath = TestUtils.randomizeEntityName(ENTITY_NAME_PREFIX);
 		sessionfulQueuePath = TestUtils.randomizeEntityName(ENTITY_NAME_PREFIX);
@@ -39,23 +39,23 @@ public class ClientValidationTests
 		QueueDescription queueDescription = new QueueDescription(queuePath);
 		queueDescription.setEnablePartitioning(false);
 		managementClient.createQueueAsync(queueDescription).get();
-		
+
 		QueueDescription queueDescription2 = new QueueDescription(sessionfulQueuePath);
 		queueDescription2.setEnablePartitioning(false);
 		queueDescription2.setRequiresSession(true);
 		managementClient.createQueueAsync(queueDescription2).get();
-		
+
 		TopicDescription topicDescription = new TopicDescription(topicPath);
 		topicDescription.setEnablePartitioning(false);
 		managementClient.createTopicAsync(topicDescription).get();
 		SubscriptionDescription subDescription = new SubscriptionDescription(topicPath, TestUtils.FIRST_SUBSCRIPTION_NAME);
 		subscriptionPath = subDescription.getPath();
-        managementClient.createSubscriptionAsync(subDescription).get();
-        SubscriptionDescription subDescription2 = new SubscriptionDescription(topicPath, "subscription2");
-        subDescription2.setRequiresSession(true);
+		managementClient.createSubscriptionAsync(subDescription).get();
+		SubscriptionDescription subDescription2 = new SubscriptionDescription(topicPath, "subscription2");
+		subDescription2.setRequiresSession(true);
 		sessionfulSubscriptionPath = subDescription2.getPath();
-        managementClient.createSubscriptionAsync(subDescription2).get();
-    }
+		managementClient.createSubscriptionAsync(subDescription2).get();
+	}
 
 	@AfterClass
 	public static void deleteEntities() throws ExecutionException, InterruptedException, IOException {
@@ -67,7 +67,7 @@ public class ClientValidationTests
 
 	@Test
 	public void testTopicClientCreationToQueue() throws InterruptedException, ServiceBusException
-	{				
+	{
 		try
 		{
 			TopicClient tc = new TopicClient(TestUtils.getNamespaceEndpointURI(), queuePath, TestUtils.getManagementClientSettings());
@@ -80,15 +80,15 @@ public class ClientValidationTests
 			finally
 			{
 				tc.close();
-			}						
+			}
 		} catch (UnsupportedOperationException e) {
 			// Expected
 		}
 	}
-	
+
 	@Test
 	public void testQueueClientCreationToTopic() throws InterruptedException, ServiceBusException
-	{				
+	{
 		try {
 			QueueClient qc = new QueueClient(TestUtils.getNamespaceEndpointURI(), topicPath, TestUtils.getManagementClientSettings(), ReceiveMode.PEEKLOCK);
 			try {
@@ -98,27 +98,27 @@ public class ClientValidationTests
 			}
 			finally {
 				qc.close();
-			}			
+			}
 		} catch (UnsupportedOperationException e) {
 			// Expected
 		}
 	}
-	
+
 	@Test
 	public void testQueueClientCreationToSubscription() throws InterruptedException, ServiceBusException
-	{				
+	{
 		try {
 			QueueClient qc = new QueueClient(TestUtils.getNamespaceEndpointURI(), subscriptionPath, TestUtils.getManagementClientSettings(), ReceiveMode.PEEKLOCK);
 			try
 			{
-				qc.registerMessageHandler(new IMessageHandler() {				
+				qc.registerMessageHandler(new IMessageHandler() {
 					@Override
 					public CompletableFuture<Void> onMessageAsync(IMessage message) {
 						return CompletableFuture.completedFuture(null);
 					}
-					
+
 					@Override
-					public void notifyException(Throwable exception, ExceptionPhase phase) {					
+					public void notifyException(Throwable exception, ExceptionPhase phase) {
 					}
 				});
 				Assert.fail("QueueClient created to a subscription which shouldn't be allowed.");
@@ -126,37 +126,37 @@ public class ClientValidationTests
 			finally
 			{
 				qc.close();
-			}			
+			}
 		} catch (UnsupportedOperationException e) {
 			// Expected
 		}
 	}
-	
+
 	@Test
 	public void testSubscriptionClientCreationToQueue() throws InterruptedException, ServiceBusException
-	{				
+	{
 		try {
 			SubscriptionClient sc = new SubscriptionClient(TestUtils.getNamespaceEndpointURI(), queuePath, TestUtils.getManagementClientSettings(), ReceiveMode.PEEKLOCK);
 			try {
-				sc.registerMessageHandler(new IMessageHandler() {				
+				sc.registerMessageHandler(new IMessageHandler() {
 					@Override
 					public CompletableFuture<Void> onMessageAsync(IMessage message) {
 						return CompletableFuture.completedFuture(null);
 					}
-					
+
 					@Override
-					public void notifyException(Throwable exception, ExceptionPhase phase) {					
+					public void notifyException(Throwable exception, ExceptionPhase phase) {
 					}
 				});
 				Assert.fail("SubscriptionClient created to a queue which shouldn't be allowed.");
 			} finally {
 				sc.close();
-			}			
+			}
 		} catch (UnsupportedOperationException e) {
 			// Expected
 		}
 	}
-	
+
 	@Test
 	public void testQueueClientCreationToSessionfulSubscription() throws InterruptedException, ServiceBusException
 	{
@@ -165,12 +165,12 @@ public class ClientValidationTests
 			try {
 				final AtomicBoolean unsupportedExceptionOccured = new AtomicBoolean(false);
 				qc.registerSessionHandler(new ISessionHandler() {
-					
+
 					@Override
 					public CompletableFuture<Void> onMessageAsync(IMessageSession session, IMessage message) {
 						return CompletableFuture.completedFuture(null);
 					}
-					
+
 					@Override
 					public void notifyException(Throwable exception, ExceptionPhase phase) {
 						if(exception instanceof UnsupportedOperationException && phase == ExceptionPhase.ACCEPTSESSION)
@@ -178,23 +178,23 @@ public class ClientValidationTests
 							unsupportedExceptionOccured.set(true);
 						}
 					}
-					
+
 					@Override
 					public CompletableFuture<Void> OnCloseSessionAsync(IMessageSession session) {
 						return CompletableFuture.completedFuture(null);
 					}
 				});
-				
-				Thread.sleep(1000); // Sleep for a second for the exception				
+
+				Thread.sleep(1000); // Sleep for a second for the exception
 				Assert.assertTrue("QueueClient created to a subscription which shouldn't be allowed.", unsupportedExceptionOccured.get());
 			} finally {
 				qc.close();
-			}			
+			}
 		} catch (UnsupportedOperationException e) {
 			// Expected
 		}
 	}
-	
+
 	@Test
 	public void testSubscriptionClientCreationToSessionfulQueue() throws InterruptedException, ServiceBusException
 	{
@@ -203,12 +203,12 @@ public class ClientValidationTests
 			try {
 				final AtomicBoolean unsupportedExceptionOccured = new AtomicBoolean(false);
 				sc.registerSessionHandler(new ISessionHandler() {
-					
+
 					@Override
 					public CompletableFuture<Void> onMessageAsync(IMessageSession session, IMessage message) {
 						return CompletableFuture.completedFuture(null);
 					}
-					
+
 					@Override
 					public void notifyException(Throwable exception, ExceptionPhase phase) {
 						if(exception instanceof UnsupportedOperationException && phase == ExceptionPhase.ACCEPTSESSION)
@@ -216,22 +216,22 @@ public class ClientValidationTests
 							unsupportedExceptionOccured.set(true);
 						}
 					}
-					
+
 					@Override
 					public CompletableFuture<Void> OnCloseSessionAsync(IMessageSession session) {
 						return CompletableFuture.completedFuture(null);
 					}
 				});
-				
-				Thread.sleep(1000); // Sleep for a second for the exception				
+
+				Thread.sleep(1000); // Sleep for a second for the exception
 				Assert.assertTrue("SubscriptionClient created to a queue which shouldn't be allowed.", unsupportedExceptionOccured.get());
 			} finally {
 				sc.close();
 			}
-			
+
 		} catch (UnsupportedOperationException e) {
 			// Expected
 		}
 	}
-	
+
 }

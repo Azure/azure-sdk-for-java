@@ -29,7 +29,7 @@ public final class ClientFactory {
      * @return {@link IMessageSender} instance
      * @throws InterruptedException if the current thread was interrupted while waiting
      * @throws ServiceBusException  if the sender cannot be created
-     */    
+     */
     public static IMessageSender createMessageSenderFromConnectionString(String amqpConnectionString) throws InterruptedException, ServiceBusException {
         return Utils.completeFuture(createMessageSenderFromConnectionStringAsync(amqpConnectionString));
     }
@@ -48,11 +48,11 @@ public final class ClientFactory {
     public static IMessageSender createMessageSenderFromConnectionStringBuilder(ConnectionStringBuilder amqpConnectionStringBuilder) throws InterruptedException, ServiceBusException {
         return Utils.completeFuture(createMessageSenderFromConnectionStringBuilderAsync(amqpConnectionStringBuilder));
     }
-    
+
     static IMessageSender createMessageSenderFromConnectionStringBuilder(ConnectionStringBuilder amqpConnectionStringBuilder, MessagingEntityType entityType) throws InterruptedException, ServiceBusException {
         return Utils.completeFuture(createMessageSenderFromConnectionStringBuilderAsync(amqpConnectionStringBuilder, entityType));
     }
-    
+
     /**
      * Creates a message sender to the entity using the client settings.
      * @param namespaceName namespace of entity
@@ -65,7 +65,7 @@ public final class ClientFactory {
     public static IMessageSender createMessageSenderFromEntityPath(String namespaceName, String entityPath, ClientSettings clientSettings) throws InterruptedException, ServiceBusException {
         return Utils.completeFuture(createMessageSenderFromEntityPathAsync(namespaceName, entityPath, clientSettings));
     }
-    
+
     /**
      * Creates a message sender to the entity using the client settings.
      * @param namespaceEndpointURI endpoint uri of entity namespace
@@ -78,7 +78,7 @@ public final class ClientFactory {
     public static IMessageSender createMessageSenderFromEntityPath(URI namespaceEndpointURI, String entityPath, ClientSettings clientSettings) throws InterruptedException, ServiceBusException {
         return Utils.completeFuture(createMessageSenderFromEntityPathAsync(namespaceEndpointURI, entityPath, clientSettings));
     }
-    
+
     static IMessageSender createMessageSenderFromEntityPath(URI namespaceEndpointURI, String entityPath, MessagingEntityType entityType, ClientSettings clientSettings) throws InterruptedException, ServiceBusException {
         return Utils.completeFuture(createMessageSenderFromEntityPathAsync(namespaceEndpointURI, entityPath, entityType, clientSettings));
     }
@@ -94,7 +94,7 @@ public final class ClientFactory {
     public static IMessageSender createMessageSenderFromEntityPath(MessagingFactory messagingFactory, String entityPath) throws InterruptedException, ServiceBusException {
         return Utils.completeFuture(createMessageSenderFromEntityPathAsync(messagingFactory, entityPath));
     }
-    
+
     static IMessageSender createMessageSenderFromEntityPath(MessagingFactory messagingFactory, String entityPath, MessagingEntityType entityType) throws InterruptedException, ServiceBusException {
         return Utils.completeFuture(createMessageSenderFromEntityPathAsync(messagingFactory, entityPath, entityType));
     }
@@ -139,12 +139,12 @@ public final class ClientFactory {
         Utils.assertNonNull("amqpConnectionStringBuilder", amqpConnectionStringBuilder);
         return createMessageSenderFromEntityPathAsync(amqpConnectionStringBuilder.getEndpoint(), amqpConnectionStringBuilder.getEntityPath(),  Util.getClientSettingsFromConnectionStringBuilder(amqpConnectionStringBuilder));
     }
-    
+
     static CompletableFuture<IMessageSender> createMessageSenderFromConnectionStringBuilderAsync(ConnectionStringBuilder amqpConnectionStringBuilder, MessagingEntityType entityType) {
         Utils.assertNonNull("amqpConnectionStringBuilder", amqpConnectionStringBuilder);
         return createMessageSenderFromEntityPathAsync(amqpConnectionStringBuilder.getEndpoint(), amqpConnectionStringBuilder.getEntityPath(), entityType, Util.getClientSettingsFromConnectionStringBuilder(amqpConnectionStringBuilder));
     }
-    
+
     /**
      * Creates a message sender asynchronously to the entity using the client settings.
      * @param namespaceName namespace name of entity
@@ -158,7 +158,7 @@ public final class ClientFactory {
         Utils.assertNonNull("entityPath", entityPath);
         return createMessageSenderFromEntityPathAsync(Util.convertNamespaceToEndPointURI(namespaceName), entityPath, clientSettings);
     }
-    
+
     /**
      * Creates a message sender asynchronously to the entity using the client settings.
      * @param namespaceEndpointURI endpoint uri of entity namespace
@@ -170,7 +170,7 @@ public final class ClientFactory {
     {
         return createMessageSenderFromEntityPathAsync(namespaceEndpointURI, entityPath, null, clientSettings);
     }
-    
+
     static CompletableFuture<IMessageSender> createMessageSenderFromEntityPathAsync(URI namespaceEndpointURI, String entityPath, MessagingEntityType entityType, ClientSettings clientSettings)
     {
         Utils.assertNonNull("namespaceEndpointURI", namespaceEndpointURI);
@@ -187,7 +187,7 @@ public final class ClientFactory {
     public static CompletableFuture<IMessageSender> createMessageSenderFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath) {
         return createMessageSenderFromEntityPathAsync(messagingFactory, entityPath, null);
     }
-    
+
     static CompletableFuture<IMessageSender> createMessageSenderFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath, MessagingEntityType entityType) {
         Utils.assertNonNull("messagingFactory", messagingFactory);
         MessageSender sender = new MessageSender(messagingFactory, entityPath, entityType);
@@ -268,7 +268,7 @@ public final class ClientFactory {
     public static IMessageReceiver createMessageReceiverFromConnectionStringBuilder(ConnectionStringBuilder amqpConnectionStringBuilder, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException {
         return Utils.completeFuture(createMessageReceiverFromConnectionStringBuilderAsync(amqpConnectionStringBuilder, receiveMode));
     }
-    
+
     /**
      * Creates a message receiver to the entity using the client settings in PeekLock mode
      * @param namespaceName namespace of entity
@@ -281,7 +281,7 @@ public final class ClientFactory {
     public static IMessageReceiver createMessageReceiverFromEntityPath(String namespaceName, String entityPath, ClientSettings clientSettings) throws InterruptedException, ServiceBusException {
         return Utils.completeFuture(createMessageReceiverFromEntityPathAsync(namespaceName, entityPath, clientSettings));
     }
-    
+
     /**
      * Creates a message receiver to the entity using the client settings.
      * @param namespaceName namespace of entity
@@ -295,7 +295,7 @@ public final class ClientFactory {
     public static IMessageReceiver createMessageReceiverFromEntityPath(String namespaceName, String entityPath, ClientSettings clientSettings, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException {
         return Utils.completeFuture(createMessageReceiverFromEntityPathAsync(namespaceName, entityPath, clientSettings, receiveMode));
     }
-    
+
     /**
      * Creates a message receiver to the entity using the client settings in PeekLock mode
      * @param namespaceEndpointURI endpoint uri of entity namespace
@@ -308,7 +308,7 @@ public final class ClientFactory {
     public static IMessageReceiver createMessageReceiverFromEntityPath(URI namespaceEndpointURI, String entityPath, ClientSettings clientSettings) throws InterruptedException, ServiceBusException {
         return Utils.completeFuture(createMessageReceiverFromEntityPathAsync(namespaceEndpointURI, entityPath, clientSettings));
     }
-    
+
     /**
      * Creates a message receiver to the entity using the client settings.
      * @param namespaceEndpointURI endpoint uri of entity namespace
@@ -347,7 +347,7 @@ public final class ClientFactory {
     public static IMessageReceiver createMessageReceiverFromEntityPath(MessagingFactory messagingFactory, String entityPath, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException {
         return Utils.completeFuture(createMessageReceiverFromEntityPathAsync(messagingFactory, entityPath, receiveMode));
     }
-    
+
     static IMessageReceiver createMessageReceiverFromEntityPath(MessagingFactory messagingFactory, String entityPath, MessagingEntityType entityType, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException {
         return Utils.completeFuture(createMessageReceiverFromEntityPathAsync(messagingFactory, entityPath, entityType, receiveMode));
     }
@@ -395,7 +395,7 @@ public final class ClientFactory {
         Utils.assertNonNull("amqpConnectionStringBuilder", amqpConnectionStringBuilder);
         return createMessageReceiverFromEntityPathAsync(amqpConnectionStringBuilder.getEndpoint(), amqpConnectionStringBuilder.getEntityPath(), Util.getClientSettingsFromConnectionStringBuilder(amqpConnectionStringBuilder), receiveMode);
     }
-    
+
     /**
      * Asynchronously creates a message receiver to the entity using the client settings in PeekLock mode
      * @param namespaceName namespace of entity
@@ -406,7 +406,7 @@ public final class ClientFactory {
     public static CompletableFuture<IMessageReceiver> createMessageReceiverFromEntityPathAsync(String namespaceName, String entityPath, ClientSettings clientSettings) {
         return createMessageReceiverFromEntityPathAsync(namespaceName, entityPath, clientSettings, DEFAULTRECEIVEMODE);
     }
-    
+
     /**
      * Asynchronously creates a message receiver to the entity using the client settings
      * @param namespaceName namespace of entity
@@ -419,7 +419,7 @@ public final class ClientFactory {
         Utils.assertNonNull("namespaceName", namespaceName);
         return createMessageReceiverFromEntityPathAsync(Util.convertNamespaceToEndPointURI(namespaceName),entityPath, clientSettings, receiveMode);
     }
-    
+
     /**
      * Asynchronously creates a message receiver to the entity using the client settings in PeekLock mode
      * @param namespaceEndpointURI endpoint uri of entity namespace
@@ -430,7 +430,7 @@ public final class ClientFactory {
     public static CompletableFuture<IMessageReceiver> createMessageReceiverFromEntityPathAsync(URI namespaceEndpointURI, String entityPath, ClientSettings clientSettings) {
         return createMessageReceiverFromEntityPathAsync(namespaceEndpointURI, entityPath, clientSettings, DEFAULTRECEIVEMODE);
     }
-    
+
     /**
      * Asynchronously creates a message receiver to the entity using the client settings
      * @param namespaceEndpointURI endpoint uri of entity namespace
@@ -466,7 +466,7 @@ public final class ClientFactory {
     public static CompletableFuture<IMessageReceiver> createMessageReceiverFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath, ReceiveMode receiveMode) {
         return createMessageReceiverFromEntityPathAsync(messagingFactory, entityPath, null, receiveMode);
     }
-    
+
     static CompletableFuture<IMessageReceiver> createMessageReceiverFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath, MessagingEntityType entityType, ReceiveMode receiveMode) {
         Utils.assertNonNull("messagingFactory", messagingFactory);
         MessageReceiver receiver = new MessageReceiver(messagingFactory, entityPath, entityType, receiveMode);
@@ -526,7 +526,7 @@ public final class ClientFactory {
     public static IMessageSession acceptSessionFromConnectionStringBuilder(ConnectionStringBuilder amqpConnectionStringBuilder, String sessionId, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException {
         return Utils.completeFuture(acceptSessionFromConnectionStringBuilderAsync(amqpConnectionStringBuilder, sessionId, receiveMode));
     }
-    
+
     /**
      * Accept a {@link IMessageSession} from service bus using the client settings with specified session id in PeekLock mode. Session Id can be null, if null, service will return the first available session.
      * @param namespaceName namespace of entity
@@ -540,7 +540,7 @@ public final class ClientFactory {
     public static IMessageSession acceptSessionFromEntityPath(String namespaceName, String entityPath, String sessionId, ClientSettings clientSettings) throws InterruptedException, ServiceBusException {
         return Utils.completeFuture(acceptSessionFromEntityPathAsync(namespaceName, entityPath, sessionId, clientSettings));
     }
-    
+
     /**
      * Accept a {@link IMessageSession} from service bus using the client settings with specified session id. Session Id can be null, if null, service will return the first available session.
      * @param namespaceName namespace of entity
@@ -555,7 +555,7 @@ public final class ClientFactory {
     public static IMessageSession acceptSessionFromEntityPath(String namespaceName, String entityPath, String sessionId, ClientSettings clientSettings, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException {
         return Utils.completeFuture(acceptSessionFromEntityPathAsync(namespaceName, entityPath, sessionId, clientSettings, receiveMode));
     }
-    
+
     /**
      * Accept a {@link IMessageSession} from service bus using the client settings with specified session id in PeekLock mode. Session Id can be null, if null, service will return the first available session.
      * @param namespaceEndpointURI endpoint uri of entity namespace
@@ -569,7 +569,7 @@ public final class ClientFactory {
     public static IMessageSession acceptSessionFromEntityPath(URI namespaceEndpointURI, String entityPath, String sessionId, ClientSettings clientSettings) throws InterruptedException, ServiceBusException {
         return Utils.completeFuture(acceptSessionFromEntityPathAsync(namespaceEndpointURI, entityPath, sessionId, clientSettings));
     }
-    
+
     /**
      * Accept a {@link IMessageSession} from service bus using the client settings with specified session id. Session Id can be null, if null, service will return the first available session.
      * @param namespaceEndpointURI endpoint uri of entity namespace
@@ -659,7 +659,7 @@ public final class ClientFactory {
         Utils.assertNonNull("amqpConnectionStringBuilder", amqpConnectionStringBuilder);
         return acceptSessionFromEntityPathAsync(amqpConnectionStringBuilder.getEndpoint(), amqpConnectionStringBuilder.getEntityPath(), sessionId, Util.getClientSettingsFromConnectionStringBuilder(amqpConnectionStringBuilder), receiveMode);
     }
-    
+
     /**
      * Asynchronously accepts a session in PeekLock mode from service bus using the client settings. Session Id can be null, if null, service will return the first available session.
      * @param namespaceName namespace of entity
@@ -671,7 +671,7 @@ public final class ClientFactory {
     public static CompletableFuture<IMessageSession> acceptSessionFromEntityPathAsync(String namespaceName, String entityPath, String sessionId, ClientSettings clientSettings) {
         return acceptSessionFromEntityPathAsync(namespaceName, entityPath, sessionId, clientSettings, DEFAULTRECEIVEMODE);
     }
-    
+
     /**
      * Asynchronously accepts a session from service bus using the client settings. Session Id can be null, if null, service will return the first available session.
      * @param namespaceName namespace of entity
@@ -685,7 +685,7 @@ public final class ClientFactory {
         Utils.assertNonNull("namespaceName", namespaceName);
         return acceptSessionFromEntityPathAsync(Util.convertNamespaceToEndPointURI(namespaceName),entityPath, sessionId, clientSettings, receiveMode);
     }
-    
+
     /**
      * Asynchronously accepts a session in PeekLock mode from service bus using the client settings. Session Id can be null, if null, service will return the first available session.
      * @param namespaceEndpointURI endpoint uri of entity namespace
@@ -697,7 +697,7 @@ public final class ClientFactory {
     public static CompletableFuture<IMessageSession> acceptSessionFromEntityPathAsync(URI namespaceEndpointURI, String entityPath, String sessionId, ClientSettings clientSettings) {
         return acceptSessionFromEntityPathAsync(namespaceEndpointURI, entityPath, sessionId, clientSettings, DEFAULTRECEIVEMODE);
     }
-    
+
     /**
      * Asynchronously accepts a session from service bus using the client settings. Session Id can be null, if null, service will return the first available session.
      * @param namespaceEndpointURI endpoint uri of entity namespace
@@ -736,7 +736,7 @@ public final class ClientFactory {
     public static CompletableFuture<IMessageSession> acceptSessionFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath, String sessionId, ReceiveMode receiveMode) {
         return acceptSessionFromEntityPathAsync(messagingFactory, entityPath, null, sessionId, receiveMode);
     }
-    
+
     static CompletableFuture<IMessageSession> acceptSessionFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath, MessagingEntityType entityType, String sessionId, ReceiveMode receiveMode) {
         Utils.assertNonNull("messagingFactory", messagingFactory);
         MessageSession session = new MessageSession(messagingFactory, entityPath, entityType, sessionId, receiveMode);

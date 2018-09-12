@@ -42,6 +42,7 @@ public final class ClientConstants
 	public static final UUID ZEROLOCKTOKEN = new UUID(0l, 0l);	
 
 	public final static int AMQPS_PORT = 5671;
+	public final static int HTTPS_PORT = 443;
 	public final static int MAX_PARTITION_KEY_LENGTH = 128;
 
 	public final static Symbol SERVER_BUSY_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":server-busy");

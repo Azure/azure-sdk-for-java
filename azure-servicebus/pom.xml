@@ -51,6 +51,11 @@
 	 	    <artifactId>proton-j</artifactId>
 	 	    <version>${proton-j-version}</version>
 	 	</dependency>
+		 <dependency>
+			 <groupId>com.microsoft.azure</groupId>
+			 <artifactId>qpid-proton-j-extensions</artifactId>
+			 <version>${qpid-proton-j-extensions-version}</version>
+		 </dependency>
 	 	<dependency>
 	 	    <groupId>org.bouncycastle</groupId> 
 	 	    <artifactId>bcpkix-jdk15on</artifactId> 
@@ -92,5 +97,5 @@
 			 <artifactId>async-http-client</artifactId>
 			 <version>2.5.2</version>
 		 </dependency>
-	</dependencies>	 
+	</dependencies>
 </project>

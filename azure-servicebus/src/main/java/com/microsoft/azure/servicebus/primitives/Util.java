@@ -447,7 +447,7 @@ public class Util
             tokenProvider = new SharedAccessSignatureTokenProvider(builder.getSharedAccessSignatureToken(), Instant.now().plus(Duration.ofSeconds(SecurityConstants.DEFAULT_SAS_TOKEN_VALIDITY_IN_SECONDS)));
         }
         
-        return new ClientSettings(tokenProvider, builder.getRetryPolicy(), builder.getOperationTimeout());
+        return new ClientSettings(tokenProvider, builder.getRetryPolicy(), builder.getOperationTimeout(), builder.getTransportType());
     }
 
     static int getTokenRenewIntervalInSeconds(int tokenValidityInSeconds)
