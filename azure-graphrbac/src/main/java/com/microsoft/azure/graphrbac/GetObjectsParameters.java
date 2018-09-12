@@ -37,8 +37,8 @@ public class GetObjectsParameters {
     /**
      * If true, also searches for object IDs in the partner tenant.
      */
-    @JsonProperty(value = "includeDirectoryObjectReferences", required = true)
-    private boolean includeDirectoryObjectReferences;
+    @JsonProperty(value = "includeDirectoryObjectReferences")
+    private Boolean includeDirectoryObjectReferences;
 
     /**
      * Get unmatched properties from the message are deserialized this collection.
@@ -105,7 +105,7 @@ public class GetObjectsParameters {
      *
      * @return the includeDirectoryObjectReferences value
      */
-    public boolean includeDirectoryObjectReferences() {
+    public Boolean includeDirectoryObjectReferences() {
         return this.includeDirectoryObjectReferences;
     }
 
@@ -115,7 +115,7 @@ public class GetObjectsParameters {
      * @param includeDirectoryObjectReferences the includeDirectoryObjectReferences value to set
      * @return the GetObjectsParameters object itself.
      */
-    public GetObjectsParameters withIncludeDirectoryObjectReferences(boolean includeDirectoryObjectReferences) {
+    public GetObjectsParameters withIncludeDirectoryObjectReferences(Boolean includeDirectoryObjectReferences) {
         this.includeDirectoryObjectReferences = includeDirectoryObjectReferences;
         return this;
     }

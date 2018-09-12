@@ -13,11 +13,9 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.graphrbac.GetObjectsParameters;
-import com.microsoft.azure.graphrbac.GraphErrorException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
@@ -66,10 +64,6 @@ public class ObjectsInner {
         @POST("{tenantID}/getObjectsByObjectIds")
         Observable<Response<ResponseBody>> getObjectsByObjectIds(@Path("tenantID") String tenantID, @Body GetObjectsParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.graphrbac.Objects getCurrentUser" })
-        @GET("{tenantID}/me")
-        Observable<Response<ResponseBody>> getCurrentUser(@Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.graphrbac.Objects getObjectsByObjectIdsNext" })
         @GET
         Observable<Response<ResponseBody>> getObjectsByObjectIdsNext(@Url String nextUrl, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -77,38 +71,38 @@ public class ObjectsInner {
     }
 
     /**
-     * Gets AD group membership for the specified AD object IDs.
+     * Gets the directory objects specified in a list of object IDs. You can also specify which resource collections (users, groups, etc.) should be searched by specifying the optional types parameter.
      *
      * @param parameters Objects filtering parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PagedList&lt;AADObjectInner&gt; object if successful.
+     * @return the PagedList&lt;DirectoryObjectInner&gt; object if successful.
      */
-    public PagedList<AADObjectInner> getObjectsByObjectIds(final GetObjectsParameters parameters) {
-        ServiceResponse<Page<AADObjectInner>> response = getObjectsByObjectIdsSinglePageAsync(parameters).toBlocking().single();
-        return new PagedList<AADObjectInner>(response.body()) {
+    public PagedList<DirectoryObjectInner> getObjectsByObjectIds(final GetObjectsParameters parameters) {
+        ServiceResponse<Page<DirectoryObjectInner>> response = getObjectsByObjectIdsSinglePageAsync(parameters).toBlocking().single();
+        return new PagedList<DirectoryObjectInner>(response.body()) {
             @Override
-            public Page<AADObjectInner> nextPage(String nextLink) {
+            public Page<DirectoryObjectInner> nextPage(String nextLink) {
                 return getObjectsByObjectIdsNextSinglePageAsync(nextLink).toBlocking().single().body();
             }
         };
     }
 
     /**
-     * Gets AD group membership for the specified AD object IDs.
+     * Gets the directory objects specified in a list of object IDs. You can also specify which resource collections (users, groups, etc.) should be searched by specifying the optional types parameter.
      *
      * @param parameters Objects filtering parameters.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<AADObjectInner>> getObjectsByObjectIdsAsync(final GetObjectsParameters parameters, final ListOperationCallback<AADObjectInner> serviceCallback) {
+    public ServiceFuture<List<DirectoryObjectInner>> getObjectsByObjectIdsAsync(final GetObjectsParameters parameters, final ListOperationCallback<DirectoryObjectInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
             getObjectsByObjectIdsSinglePageAsync(parameters),
-            new Func1<String, Observable<ServiceResponse<Page<AADObjectInner>>>>() {
+            new Func1<String, Observable<ServiceResponse<Page<DirectoryObjectInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<AADObjectInner>>> call(String nextLink) {
+                public Observable<ServiceResponse<Page<DirectoryObjectInner>>> call(String nextLink) {
                     return getObjectsByObjectIdsNextSinglePageAsync(nextLink);
                 }
             },
@@ -116,34 +110,34 @@ public class ObjectsInner {
     }
 
     /**
-     * Gets AD group membership for the specified AD object IDs.
+     * Gets the directory objects specified in a list of object IDs. You can also specify which resource collections (users, groups, etc.) should be searched by specifying the optional types parameter.
      *
      * @param parameters Objects filtering parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;AADObjectInner&gt; object
+     * @return the observable to the PagedList&lt;DirectoryObjectInner&gt; object
      */
-    public Observable<Page<AADObjectInner>> getObjectsByObjectIdsAsync(final GetObjectsParameters parameters) {
+    public Observable<Page<DirectoryObjectInner>> getObjectsByObjectIdsAsync(final GetObjectsParameters parameters) {
         return getObjectsByObjectIdsWithServiceResponseAsync(parameters)
-            .map(new Func1<ServiceResponse<Page<AADObjectInner>>, Page<AADObjectInner>>() {
+            .map(new Func1<ServiceResponse<Page<DirectoryObjectInner>>, Page<DirectoryObjectInner>>() {
                 @Override
-                public Page<AADObjectInner> call(ServiceResponse<Page<AADObjectInner>> response) {
+                public Page<DirectoryObjectInner> call(ServiceResponse<Page<DirectoryObjectInner>> response) {
                     return response.body();
                 }
             });
     }
 
     /**
-     * Gets AD group membership for the specified AD object IDs.
+     * Gets the directory objects specified in a list of object IDs. You can also specify which resource collections (users, groups, etc.) should be searched by specifying the optional types parameter.
      *
      * @param parameters Objects filtering parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;AADObjectInner&gt; object
+     * @return the observable to the PagedList&lt;DirectoryObjectInner&gt; object
      */
-    public Observable<ServiceResponse<Page<AADObjectInner>>> getObjectsByObjectIdsWithServiceResponseAsync(final GetObjectsParameters parameters) {
+    public Observable<ServiceResponse<Page<DirectoryObjectInner>>> getObjectsByObjectIdsWithServiceResponseAsync(final GetObjectsParameters parameters) {
         return getObjectsByObjectIdsSinglePageAsync(parameters)
-            .concatMap(new Func1<ServiceResponse<Page<AADObjectInner>>, Observable<ServiceResponse<Page<AADObjectInner>>>>() {
+            .concatMap(new Func1<ServiceResponse<Page<DirectoryObjectInner>>, Observable<ServiceResponse<Page<DirectoryObjectInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<AADObjectInner>>> call(ServiceResponse<Page<AADObjectInner>> page) {
+                public Observable<ServiceResponse<Page<DirectoryObjectInner>>> call(ServiceResponse<Page<DirectoryObjectInner>> page) {
                     String nextLink = page.body().nextPageLink();
                     if (nextLink == null) {
                         return Observable.just(page);
@@ -154,13 +148,13 @@ public class ObjectsInner {
     }
 
     /**
-     * Gets AD group membership for the specified AD object IDs.
+     * Gets the directory objects specified in a list of object IDs. You can also specify which resource collections (users, groups, etc.) should be searched by specifying the optional types parameter.
      *
-    ServiceResponse<PageImpl<AADObjectInner>> * @param parameters Objects filtering parameters.
+    ServiceResponse<PageImpl<DirectoryObjectInner>> * @param parameters Objects filtering parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;AADObjectInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;DirectoryObjectInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<AADObjectInner>>> getObjectsByObjectIdsSinglePageAsync(final GetObjectsParameters parameters) {
+    public Observable<ServiceResponse<Page<DirectoryObjectInner>>> getObjectsByObjectIdsSinglePageAsync(final GetObjectsParameters parameters) {
         if (this.client.tenantID() == null) {
             throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
         }
@@ -172,12 +166,12 @@ public class ObjectsInner {
         }
         Validator.validate(parameters);
         return service.getObjectsByObjectIds(this.client.tenantID(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<AADObjectInner>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<DirectoryObjectInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<AADObjectInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<DirectoryObjectInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<AADObjectInner>> result = getObjectsByObjectIdsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<AADObjectInner>>(result.body(), result.response()));
+                        ServiceResponse<PageImpl<DirectoryObjectInner>> result = getObjectsByObjectIdsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<DirectoryObjectInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -185,82 +179,10 @@ public class ObjectsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<AADObjectInner>> getObjectsByObjectIdsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<AADObjectInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<AADObjectInner>>() { }.getType())
+    private ServiceResponse<PageImpl<DirectoryObjectInner>> getObjectsByObjectIdsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<DirectoryObjectInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<DirectoryObjectInner>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Gets the details for the currently logged-in user.
-     *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws GraphErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the AADObjectInner object if successful.
-     */
-    public AADObjectInner getCurrentUser() {
-        return getCurrentUserWithServiceResponseAsync().toBlocking().single().body();
-    }
-
-    /**
-     * Gets the details for the currently logged-in user.
-     *
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<AADObjectInner> getCurrentUserAsync(final ServiceCallback<AADObjectInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getCurrentUserWithServiceResponseAsync(), serviceCallback);
-    }
-
-    /**
-     * Gets the details for the currently logged-in user.
-     *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the AADObjectInner object
-     */
-    public Observable<AADObjectInner> getCurrentUserAsync() {
-        return getCurrentUserWithServiceResponseAsync().map(new Func1<ServiceResponse<AADObjectInner>, AADObjectInner>() {
-            @Override
-            public AADObjectInner call(ServiceResponse<AADObjectInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Gets the details for the currently logged-in user.
-     *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the AADObjectInner object
-     */
-    public Observable<ServiceResponse<AADObjectInner>> getCurrentUserWithServiceResponseAsync() {
-        if (this.client.tenantID() == null) {
-            throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.getCurrentUser(this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AADObjectInner>>>() {
-                @Override
-                public Observable<ServiceResponse<AADObjectInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<AADObjectInner> clientResponse = getCurrentUserDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<AADObjectInner> getCurrentUserDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<AADObjectInner, GraphErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<AADObjectInner>() { }.getType())
-                .registerError(GraphErrorException.class)
                 .build(response);
     }
 
@@ -271,13 +193,13 @@ public class ObjectsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PagedList&lt;AADObjectInner&gt; object if successful.
+     * @return the PagedList&lt;DirectoryObjectInner&gt; object if successful.
      */
-    public PagedList<AADObjectInner> getObjectsByObjectIdsNext(final String nextLink) {
-        ServiceResponse<Page<AADObjectInner>> response = getObjectsByObjectIdsNextSinglePageAsync(nextLink).toBlocking().single();
-        return new PagedList<AADObjectInner>(response.body()) {
+    public PagedList<DirectoryObjectInner> getObjectsByObjectIdsNext(final String nextLink) {
+        ServiceResponse<Page<DirectoryObjectInner>> response = getObjectsByObjectIdsNextSinglePageAsync(nextLink).toBlocking().single();
+        return new PagedList<DirectoryObjectInner>(response.body()) {
             @Override
-            public Page<AADObjectInner> nextPage(String nextLink) {
+            public Page<DirectoryObjectInner> nextPage(String nextLink) {
                 return getObjectsByObjectIdsNextSinglePageAsync(nextLink).toBlocking().single().body();
             }
         };
@@ -292,12 +214,12 @@ public class ObjectsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<AADObjectInner>> getObjectsByObjectIdsNextAsync(final String nextLink, final ServiceFuture<List<AADObjectInner>> serviceFuture, final ListOperationCallback<AADObjectInner> serviceCallback) {
+    public ServiceFuture<List<DirectoryObjectInner>> getObjectsByObjectIdsNextAsync(final String nextLink, final ServiceFuture<List<DirectoryObjectInner>> serviceFuture, final ListOperationCallback<DirectoryObjectInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
             getObjectsByObjectIdsNextSinglePageAsync(nextLink),
-            new Func1<String, Observable<ServiceResponse<Page<AADObjectInner>>>>() {
+            new Func1<String, Observable<ServiceResponse<Page<DirectoryObjectInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<AADObjectInner>>> call(String nextLink) {
+                public Observable<ServiceResponse<Page<DirectoryObjectInner>>> call(String nextLink) {
                     return getObjectsByObjectIdsNextSinglePageAsync(nextLink);
                 }
             },
@@ -309,13 +231,13 @@ public class ObjectsInner {
      *
      * @param nextLink Next link for the list operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;AADObjectInner&gt; object
+     * @return the observable to the PagedList&lt;DirectoryObjectInner&gt; object
      */
-    public Observable<Page<AADObjectInner>> getObjectsByObjectIdsNextAsync(final String nextLink) {
+    public Observable<Page<DirectoryObjectInner>> getObjectsByObjectIdsNextAsync(final String nextLink) {
         return getObjectsByObjectIdsNextWithServiceResponseAsync(nextLink)
-            .map(new Func1<ServiceResponse<Page<AADObjectInner>>, Page<AADObjectInner>>() {
+            .map(new Func1<ServiceResponse<Page<DirectoryObjectInner>>, Page<DirectoryObjectInner>>() {
                 @Override
-                public Page<AADObjectInner> call(ServiceResponse<Page<AADObjectInner>> response) {
+                public Page<DirectoryObjectInner> call(ServiceResponse<Page<DirectoryObjectInner>> response) {
                     return response.body();
                 }
             });
@@ -326,13 +248,13 @@ public class ObjectsInner {
      *
      * @param nextLink Next link for the list operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;AADObjectInner&gt; object
+     * @return the observable to the PagedList&lt;DirectoryObjectInner&gt; object
      */
-    public Observable<ServiceResponse<Page<AADObjectInner>>> getObjectsByObjectIdsNextWithServiceResponseAsync(final String nextLink) {
+    public Observable<ServiceResponse<Page<DirectoryObjectInner>>> getObjectsByObjectIdsNextWithServiceResponseAsync(final String nextLink) {
         return getObjectsByObjectIdsNextSinglePageAsync(nextLink)
-            .concatMap(new Func1<ServiceResponse<Page<AADObjectInner>>, Observable<ServiceResponse<Page<AADObjectInner>>>>() {
+            .concatMap(new Func1<ServiceResponse<Page<DirectoryObjectInner>>, Observable<ServiceResponse<Page<DirectoryObjectInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<AADObjectInner>>> call(ServiceResponse<Page<AADObjectInner>> page) {
+                public Observable<ServiceResponse<Page<DirectoryObjectInner>>> call(ServiceResponse<Page<DirectoryObjectInner>> page) {
                     String nextLink = page.body().nextPageLink();
                     if (nextLink == null) {
                         return Observable.just(page);
@@ -345,11 +267,11 @@ public class ObjectsInner {
     /**
      * Gets AD group membership for the specified AD object IDs.
      *
-    ServiceResponse<PageImpl<AADObjectInner>> * @param nextLink Next link for the list operation.
+    ServiceResponse<PageImpl<DirectoryObjectInner>> * @param nextLink Next link for the list operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;AADObjectInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;DirectoryObjectInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<AADObjectInner>>> getObjectsByObjectIdsNextSinglePageAsync(final String nextLink) {
+    public Observable<ServiceResponse<Page<DirectoryObjectInner>>> getObjectsByObjectIdsNextSinglePageAsync(final String nextLink) {
         if (nextLink == null) {
             throw new IllegalArgumentException("Parameter nextLink is required and cannot be null.");
         }
@@ -361,12 +283,12 @@ public class ObjectsInner {
         }
         String nextUrl = String.format("%s/%s", this.client.tenantID(), nextLink);
         return service.getObjectsByObjectIdsNext(nextUrl, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<AADObjectInner>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<DirectoryObjectInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<AADObjectInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<DirectoryObjectInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<AADObjectInner>> result = getObjectsByObjectIdsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<AADObjectInner>>(result.body(), result.response()));
+                        ServiceResponse<PageImpl<DirectoryObjectInner>> result = getObjectsByObjectIdsNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<DirectoryObjectInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -374,9 +296,9 @@ public class ObjectsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<AADObjectInner>> getObjectsByObjectIdsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<AADObjectInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<AADObjectInner>>() { }.getType())
+    private ServiceResponse<PageImpl<DirectoryObjectInner>> getObjectsByObjectIdsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<DirectoryObjectInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<DirectoryObjectInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

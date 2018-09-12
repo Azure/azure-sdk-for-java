@@ -11,7 +11,7 @@ package com.microsoft.azure.graphrbac.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
-import com.microsoft.azure.graphrbac.ApplicationAddOwnerParameters;
+import com.microsoft.azure.graphrbac.AddOwnerParameters;
 import com.microsoft.azure.graphrbac.ApplicationCreateParameters;
 import com.microsoft.azure.graphrbac.ApplicationUpdateParameters;
 import com.microsoft.azure.graphrbac.GraphErrorException;
@@ -93,7 +93,7 @@ public class ApplicationsInner {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.graphrbac.Applications addOwner" })
         @POST("{tenantID}/applications/{applicationObjectId}/$links/owners")
-        Observable<Response<ResponseBody>> addOwner(@Path("applicationObjectId") String applicationObjectId, @Path("tenantID") String tenantID, @Body ApplicationAddOwnerParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> addOwner(@Path("applicationObjectId") String applicationObjectId, @Path("tenantID") String tenantID, @Body AddOwnerParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.graphrbac.Applications listKeyCredentials" })
         @GET("{tenantID}/applications/{applicationObjectId}/keyCredentials")
@@ -786,7 +786,7 @@ public class ApplicationsInner {
      * @throws GraphErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void addOwner(String applicationObjectId, ApplicationAddOwnerParameters parameters) {
+    public void addOwner(String applicationObjectId, AddOwnerParameters parameters) {
         addOwnerWithServiceResponseAsync(applicationObjectId, parameters).toBlocking().single().body();
     }
 
@@ -799,7 +799,7 @@ public class ApplicationsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> addOwnerAsync(String applicationObjectId, ApplicationAddOwnerParameters parameters, final ServiceCallback<Void> serviceCallback) {
+    public ServiceFuture<Void> addOwnerAsync(String applicationObjectId, AddOwnerParameters parameters, final ServiceCallback<Void> serviceCallback) {
         return ServiceFuture.fromResponse(addOwnerWithServiceResponseAsync(applicationObjectId, parameters), serviceCallback);
     }
 
@@ -811,7 +811,7 @@ public class ApplicationsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> addOwnerAsync(String applicationObjectId, ApplicationAddOwnerParameters parameters) {
+    public Observable<Void> addOwnerAsync(String applicationObjectId, AddOwnerParameters parameters) {
         return addOwnerWithServiceResponseAsync(applicationObjectId, parameters).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
@@ -828,7 +828,7 @@ public class ApplicationsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> addOwnerWithServiceResponseAsync(String applicationObjectId, ApplicationAddOwnerParameters parameters) {
+    public Observable<ServiceResponse<Void>> addOwnerWithServiceResponseAsync(String applicationObjectId, AddOwnerParameters parameters) {
         if (applicationObjectId == null) {
             throw new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null.");
         }
