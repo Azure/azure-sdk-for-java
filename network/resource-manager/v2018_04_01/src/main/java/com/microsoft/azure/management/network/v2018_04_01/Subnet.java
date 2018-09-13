@@ -97,9 +97,6 @@ public interface Subnet extends HasInner<SubnetInner>, Indexable, Refreshable<Su
         interface WithVirtualNetwork {
            /**
             * Specifies resourceGroupName, virtualNetworkName.
-            * @param resourceGroupName The name of the resource group
-            * @param virtualNetworkName The name of the virtual network
-            * @return the next definition stage
             */
             WithCreate withExistingVirtualNetwork(String resourceGroupName, String virtualNetworkName);
         }
@@ -110,8 +107,6 @@ public interface Subnet extends HasInner<SubnetInner>, Indexable, Refreshable<Su
         interface WithAddressPrefix {
             /**
              * Specifies addressPrefix.
-             * @param addressPrefix The address prefix for the subnet
-             * @return the next definition stage
              */
             WithCreate withAddressPrefix(String addressPrefix);
         }
@@ -122,8 +117,6 @@ public interface Subnet extends HasInner<SubnetInner>, Indexable, Refreshable<Su
         interface WithEtag {
             /**
              * Specifies etag.
-             * @param etag A unique read-only string that changes whenever the resource is updated
-             * @return the next definition stage
              */
             WithCreate withEtag(String etag);
         }
@@ -134,8 +127,6 @@ public interface Subnet extends HasInner<SubnetInner>, Indexable, Refreshable<Su
         interface WithId {
             /**
              * Specifies id.
-             * @param id Resource ID
-             * @return the next definition stage
              */
             WithCreate withId(String id);
         }
@@ -146,8 +137,6 @@ public interface Subnet extends HasInner<SubnetInner>, Indexable, Refreshable<Su
         interface WithName {
             /**
              * Specifies name.
-             * @param name The name of the resource that is unique within a resource group. This name can be used to access the resource
-             * @return the next definition stage
              */
             WithCreate withName(String name);
         }
@@ -158,8 +147,6 @@ public interface Subnet extends HasInner<SubnetInner>, Indexable, Refreshable<Su
         interface WithNetworkSecurityGroup {
             /**
              * Specifies networkSecurityGroup.
-             * @param networkSecurityGroup The reference of the NetworkSecurityGroup resource
-             * @return the next definition stage
              */
             WithCreate withNetworkSecurityGroup(NetworkSecurityGroupInner networkSecurityGroup);
         }
@@ -170,8 +157,6 @@ public interface Subnet extends HasInner<SubnetInner>, Indexable, Refreshable<Su
         interface WithProvisioningState {
             /**
              * Specifies provisioningState.
-             * @param provisioningState The provisioning state of the resource
-             * @return the next definition stage
              */
             WithCreate withProvisioningState(String provisioningState);
         }
@@ -182,8 +167,6 @@ public interface Subnet extends HasInner<SubnetInner>, Indexable, Refreshable<Su
         interface WithResourceNavigationLinks {
             /**
              * Specifies resourceNavigationLinks.
-             * @param resourceNavigationLinks Gets an array of references to the external resources using subnet
-             * @return the next definition stage
              */
             WithCreate withResourceNavigationLinks(List<ResourceNavigationLink> resourceNavigationLinks);
         }
@@ -194,8 +177,6 @@ public interface Subnet extends HasInner<SubnetInner>, Indexable, Refreshable<Su
         interface WithRouteTable {
             /**
              * Specifies routeTable.
-             * @param routeTable The reference of the RouteTable resource
-             * @return the next definition stage
              */
             WithCreate withRouteTable(RouteTableInner routeTable);
         }
@@ -206,8 +187,6 @@ public interface Subnet extends HasInner<SubnetInner>, Indexable, Refreshable<Su
         interface WithServiceEndpoints {
             /**
              * Specifies serviceEndpoints.
-             * @param serviceEndpoints An array of service endpoints
-             * @return the next definition stage
              */
             WithCreate withServiceEndpoints(List<ServiceEndpointPropertiesFormat> serviceEndpoints);
         }
@@ -236,8 +215,6 @@ public interface Subnet extends HasInner<SubnetInner>, Indexable, Refreshable<Su
         interface WithAddressPrefix {
             /**
              * Specifies addressPrefix.
-             * @param addressPrefix The address prefix for the subnet
-             * @return the next update stage
              */
             Update withAddressPrefix(String addressPrefix);
         }
@@ -248,8 +225,6 @@ public interface Subnet extends HasInner<SubnetInner>, Indexable, Refreshable<Su
         interface WithEtag {
             /**
              * Specifies etag.
-             * @param etag A unique read-only string that changes whenever the resource is updated
-             * @return the next update stage
              */
             Update withEtag(String etag);
         }
@@ -260,8 +235,6 @@ public interface Subnet extends HasInner<SubnetInner>, Indexable, Refreshable<Su
         interface WithId {
             /**
              * Specifies id.
-             * @param id Resource ID
-             * @return the next update stage
              */
             Update withId(String id);
         }
@@ -272,8 +245,6 @@ public interface Subnet extends HasInner<SubnetInner>, Indexable, Refreshable<Su
         interface WithName {
             /**
              * Specifies name.
-             * @param name The name of the resource that is unique within a resource group. This name can be used to access the resource
-             * @return the next update stage
              */
             Update withName(String name);
         }
@@ -284,8 +255,6 @@ public interface Subnet extends HasInner<SubnetInner>, Indexable, Refreshable<Su
         interface WithNetworkSecurityGroup {
             /**
              * Specifies networkSecurityGroup.
-             * @param networkSecurityGroup The reference of the NetworkSecurityGroup resource
-             * @return the next update stage
              */
             Update withNetworkSecurityGroup(NetworkSecurityGroupInner networkSecurityGroup);
         }
@@ -296,8 +265,6 @@ public interface Subnet extends HasInner<SubnetInner>, Indexable, Refreshable<Su
         interface WithProvisioningState {
             /**
              * Specifies provisioningState.
-             * @param provisioningState The provisioning state of the resource
-             * @return the next update stage
              */
             Update withProvisioningState(String provisioningState);
         }
@@ -308,8 +275,6 @@ public interface Subnet extends HasInner<SubnetInner>, Indexable, Refreshable<Su
         interface WithResourceNavigationLinks {
             /**
              * Specifies resourceNavigationLinks.
-             * @param resourceNavigationLinks Gets an array of references to the external resources using subnet
-             * @return the next update stage
              */
             Update withResourceNavigationLinks(List<ResourceNavigationLink> resourceNavigationLinks);
         }
@@ -320,8 +285,6 @@ public interface Subnet extends HasInner<SubnetInner>, Indexable, Refreshable<Su
         interface WithRouteTable {
             /**
              * Specifies routeTable.
-             * @param routeTable The reference of the RouteTable resource
-             * @return the next update stage
              */
             Update withRouteTable(RouteTableInner routeTable);
         }
@@ -332,8 +295,6 @@ public interface Subnet extends HasInner<SubnetInner>, Indexable, Refreshable<Su
         interface WithServiceEndpoints {
             /**
              * Specifies serviceEndpoints.
-             * @param serviceEndpoints An array of service endpoints
-             * @return the next update stage
              */
             Update withServiceEndpoints(List<ServiceEndpointPropertiesFormat> serviceEndpoints);
         }

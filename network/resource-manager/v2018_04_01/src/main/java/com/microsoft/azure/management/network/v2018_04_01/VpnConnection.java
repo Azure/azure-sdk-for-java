@@ -127,9 +127,6 @@ public interface VpnConnection extends HasInner<VpnConnectionInner>, Indexable, 
         interface WithVpnGateway {
            /**
             * Specifies resourceGroupName, gatewayName.
-            * @param resourceGroupName The resource group name of the VpnGateway
-            * @param gatewayName The name of the gateway
-            * @return the next definition stage
             */
             WithCreate withExistingVpnGateway(String resourceGroupName, String gatewayName);
         }
@@ -140,8 +137,6 @@ public interface VpnConnection extends HasInner<VpnConnectionInner>, Indexable, 
         interface WithConnectionStatus {
             /**
              * Specifies connectionStatus.
-             * @param connectionStatus The connection status. Possible values include: 'Unknown', 'Connecting', 'Connected', 'NotConnected'
-             * @return the next definition stage
              */
             WithCreate withConnectionStatus(VpnConnectionStatus connectionStatus);
         }
@@ -152,8 +147,6 @@ public interface VpnConnection extends HasInner<VpnConnectionInner>, Indexable, 
         interface WithEnableBgp {
             /**
              * Specifies enableBgp.
-             * @param enableBgp EnableBgp flag
-             * @return the next definition stage
              */
             WithCreate withEnableBgp(Boolean enableBgp);
         }
@@ -164,8 +157,6 @@ public interface VpnConnection extends HasInner<VpnConnectionInner>, Indexable, 
         interface WithId {
             /**
              * Specifies id.
-             * @param id Resource ID
-             * @return the next definition stage
              */
             WithCreate withId(String id);
         }
@@ -176,8 +167,6 @@ public interface VpnConnection extends HasInner<VpnConnectionInner>, Indexable, 
         interface WithIpsecPolicies {
             /**
              * Specifies ipsecPolicies.
-             * @param ipsecPolicies The IPSec Policies to be considered by this connection
-             * @return the next definition stage
              */
             WithCreate withIpsecPolicies(List<IpsecPolicy> ipsecPolicies);
         }
@@ -188,8 +177,6 @@ public interface VpnConnection extends HasInner<VpnConnectionInner>, Indexable, 
         interface WithLocation {
             /**
              * Specifies location.
-             * @param location Resource location
-             * @return the next definition stage
              */
             WithCreate withLocation(String location);
         }
@@ -200,8 +187,6 @@ public interface VpnConnection extends HasInner<VpnConnectionInner>, Indexable, 
         interface WithProvisioningState {
             /**
              * Specifies provisioningState.
-             * @param provisioningState The provisioning state of the resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
-             * @return the next definition stage
              */
             WithCreate withProvisioningState(ProvisioningState provisioningState);
         }
@@ -212,8 +197,6 @@ public interface VpnConnection extends HasInner<VpnConnectionInner>, Indexable, 
         interface WithRemoteVpnSite {
             /**
              * Specifies remoteVpnSite.
-             * @param remoteVpnSite Id of the connected vpn site
-             * @return the next definition stage
              */
             WithCreate withRemoteVpnSite(SubResource remoteVpnSite);
         }
@@ -224,8 +207,6 @@ public interface VpnConnection extends HasInner<VpnConnectionInner>, Indexable, 
         interface WithRoutingWeight {
             /**
              * Specifies routingWeight.
-             * @param routingWeight routing weight for vpn connection
-             * @return the next definition stage
              */
             WithCreate withRoutingWeight(Integer routingWeight);
         }
@@ -236,8 +217,6 @@ public interface VpnConnection extends HasInner<VpnConnectionInner>, Indexable, 
         interface WithSharedKey {
             /**
              * Specifies sharedKey.
-             * @param sharedKey SharedKey for the vpn connection
-             * @return the next definition stage
              */
             WithCreate withSharedKey(String sharedKey);
         }
@@ -248,8 +227,6 @@ public interface VpnConnection extends HasInner<VpnConnectionInner>, Indexable, 
         interface WithTags {
             /**
              * Specifies tags.
-             * @param tags Resource tags
-             * @return the next definition stage
              */
             WithCreate withTags(Map<String, String> tags);
         }
@@ -278,8 +255,6 @@ public interface VpnConnection extends HasInner<VpnConnectionInner>, Indexable, 
         interface WithConnectionStatus {
             /**
              * Specifies connectionStatus.
-             * @param connectionStatus The connection status. Possible values include: 'Unknown', 'Connecting', 'Connected', 'NotConnected'
-             * @return the next update stage
              */
             Update withConnectionStatus(VpnConnectionStatus connectionStatus);
         }
@@ -290,8 +265,6 @@ public interface VpnConnection extends HasInner<VpnConnectionInner>, Indexable, 
         interface WithEnableBgp {
             /**
              * Specifies enableBgp.
-             * @param enableBgp EnableBgp flag
-             * @return the next update stage
              */
             Update withEnableBgp(Boolean enableBgp);
         }
@@ -302,8 +275,6 @@ public interface VpnConnection extends HasInner<VpnConnectionInner>, Indexable, 
         interface WithId {
             /**
              * Specifies id.
-             * @param id Resource ID
-             * @return the next update stage
              */
             Update withId(String id);
         }
@@ -314,8 +285,6 @@ public interface VpnConnection extends HasInner<VpnConnectionInner>, Indexable, 
         interface WithIpsecPolicies {
             /**
              * Specifies ipsecPolicies.
-             * @param ipsecPolicies The IPSec Policies to be considered by this connection
-             * @return the next update stage
              */
             Update withIpsecPolicies(List<IpsecPolicy> ipsecPolicies);
         }
@@ -326,8 +295,6 @@ public interface VpnConnection extends HasInner<VpnConnectionInner>, Indexable, 
         interface WithLocation {
             /**
              * Specifies location.
-             * @param location Resource location
-             * @return the next update stage
              */
             Update withLocation(String location);
         }
@@ -338,8 +305,6 @@ public interface VpnConnection extends HasInner<VpnConnectionInner>, Indexable, 
         interface WithProvisioningState {
             /**
              * Specifies provisioningState.
-             * @param provisioningState The provisioning state of the resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
-             * @return the next update stage
              */
             Update withProvisioningState(ProvisioningState provisioningState);
         }
@@ -350,8 +315,6 @@ public interface VpnConnection extends HasInner<VpnConnectionInner>, Indexable, 
         interface WithRemoteVpnSite {
             /**
              * Specifies remoteVpnSite.
-             * @param remoteVpnSite Id of the connected vpn site
-             * @return the next update stage
              */
             Update withRemoteVpnSite(SubResource remoteVpnSite);
         }
@@ -362,8 +325,6 @@ public interface VpnConnection extends HasInner<VpnConnectionInner>, Indexable, 
         interface WithRoutingWeight {
             /**
              * Specifies routingWeight.
-             * @param routingWeight routing weight for vpn connection
-             * @return the next update stage
              */
             Update withRoutingWeight(Integer routingWeight);
         }
@@ -374,8 +335,6 @@ public interface VpnConnection extends HasInner<VpnConnectionInner>, Indexable, 
         interface WithSharedKey {
             /**
              * Specifies sharedKey.
-             * @param sharedKey SharedKey for the vpn connection
-             * @return the next update stage
              */
             Update withSharedKey(String sharedKey);
         }
@@ -386,8 +345,6 @@ public interface VpnConnection extends HasInner<VpnConnectionInner>, Indexable, 
         interface WithTags {
             /**
              * Specifies tags.
-             * @param tags Resource tags
-             * @return the next update stage
              */
             Update withTags(Map<String, String> tags);
         }

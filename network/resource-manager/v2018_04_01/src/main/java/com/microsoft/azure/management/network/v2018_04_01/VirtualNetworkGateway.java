@@ -109,133 +109,111 @@ public interface VirtualNetworkGateway extends HasInner<VirtualNetworkGatewayInn
         }
 
         /**
-         * The stage of the virtualnetworkgateway definition allowing to specify ActiveActive.
+         * The stage of the virtualnetworkgateway update allowing to specify ActiveActive.
          */
         interface WithActiveActive {
             /**
              * Specifies activeActive.
-             * @param activeActive ActiveActive flag
-             * @return the next definition stage
              */
             WithCreate withActiveActive(Boolean activeActive);
         }
 
         /**
-         * The stage of the virtualnetworkgateway definition allowing to specify BgpSettings.
+         * The stage of the virtualnetworkgateway update allowing to specify BgpSettings.
          */
         interface WithBgpSettings {
             /**
              * Specifies bgpSettings.
-             * @param bgpSettings Virtual network gateway's BGP speaker settings
-             * @return the next definition stage
              */
             WithCreate withBgpSettings(BgpSettings bgpSettings);
         }
 
         /**
-         * The stage of the virtualnetworkgateway definition allowing to specify EnableBgp.
+         * The stage of the virtualnetworkgateway update allowing to specify EnableBgp.
          */
         interface WithEnableBgp {
             /**
              * Specifies enableBgp.
-             * @param enableBgp Whether BGP is enabled for this virtual network gateway or not
-             * @return the next definition stage
              */
             WithCreate withEnableBgp(Boolean enableBgp);
         }
 
         /**
-         * The stage of the virtualnetworkgateway definition allowing to specify Etag.
+         * The stage of the virtualnetworkgateway update allowing to specify Etag.
          */
         interface WithEtag {
             /**
              * Specifies etag.
-             * @param etag Gets a unique read-only string that changes whenever the resource is updated
-             * @return the next definition stage
              */
             WithCreate withEtag(String etag);
         }
 
         /**
-         * The stage of the virtualnetworkgateway definition allowing to specify GatewayDefaultSite.
+         * The stage of the virtualnetworkgateway update allowing to specify GatewayDefaultSite.
          */
         interface WithGatewayDefaultSite {
             /**
              * Specifies gatewayDefaultSite.
-             * @param gatewayDefaultSite The reference of the LocalNetworkGateway resource which represents local network site having default routes. Assign Null value in case of removing existing default site setting
-             * @return the next definition stage
              */
             WithCreate withGatewayDefaultSite(SubResource gatewayDefaultSite);
         }
 
         /**
-         * The stage of the virtualnetworkgateway definition allowing to specify GatewayType.
+         * The stage of the virtualnetworkgateway update allowing to specify GatewayType.
          */
         interface WithGatewayType {
             /**
              * Specifies gatewayType.
-             * @param gatewayType The type of this virtual network gateway. Possible values are: 'Vpn' and 'ExpressRoute'. Possible values include: 'Vpn', 'ExpressRoute'
-             * @return the next definition stage
              */
             WithCreate withGatewayType(VirtualNetworkGatewayType gatewayType);
         }
 
         /**
-         * The stage of the virtualnetworkgateway definition allowing to specify IpConfigurations.
+         * The stage of the virtualnetworkgateway update allowing to specify IpConfigurations.
          */
         interface WithIpConfigurations {
             /**
              * Specifies ipConfigurations.
-             * @param ipConfigurations IP configurations for virtual network gateway
-             * @return the next definition stage
              */
             WithCreate withIpConfigurations(List<VirtualNetworkGatewayIPConfiguration> ipConfigurations);
         }
 
         /**
-         * The stage of the virtualnetworkgateway definition allowing to specify ResourceGuid.
+         * The stage of the virtualnetworkgateway update allowing to specify ResourceGuid.
          */
         interface WithResourceGuid {
             /**
              * Specifies resourceGuid.
-             * @param resourceGuid The resource GUID property of the VirtualNetworkGateway resource
-             * @return the next definition stage
              */
             WithCreate withResourceGuid(String resourceGuid);
         }
 
         /**
-         * The stage of the virtualnetworkgateway definition allowing to specify Sku.
+         * The stage of the virtualnetworkgateway update allowing to specify Sku.
          */
         interface WithSku {
             /**
              * Specifies sku.
-             * @param sku The reference of the VirtualNetworkGatewaySku resource which represents the SKU selected for Virtual network gateway
-             * @return the next definition stage
              */
             WithCreate withSku(VirtualNetworkGatewaySku sku);
         }
 
         /**
-         * The stage of the virtualnetworkgateway definition allowing to specify VpnClientConfiguration.
+         * The stage of the virtualnetworkgateway update allowing to specify VpnClientConfiguration.
          */
         interface WithVpnClientConfiguration {
             /**
              * Specifies vpnClientConfiguration.
-             * @param vpnClientConfiguration The reference of the VpnClientConfiguration resource which represents the P2S VpnClient configurations
-             * @return the next definition stage
              */
             WithCreate withVpnClientConfiguration(VpnClientConfiguration vpnClientConfiguration);
         }
 
         /**
-         * The stage of the virtualnetworkgateway definition allowing to specify VpnType.
+         * The stage of the virtualnetworkgateway update allowing to specify VpnType.
          */
         interface WithVpnType {
             /**
              * Specifies vpnType.
-             * @param vpnType The type of this virtual network gateway. Possible values are: 'PolicyBased' and 'RouteBased'. Possible values include: 'PolicyBased', 'RouteBased'
-             * @return the next definition stage
              */
             WithCreate withVpnType(VpnType vpnType);
         }
@@ -259,133 +237,111 @@ public interface VirtualNetworkGateway extends HasInner<VirtualNetworkGatewayInn
      */
     interface UpdateStages {
         /**
-         * The stage of the virtualnetworkgateway update allowing to specify ActiveActive.
+         * The stage of the virtualnetworkgateway {0} allowing to specify ActiveActive.
          */
         interface WithActiveActive {
             /**
              * Specifies activeActive.
-             * @param activeActive ActiveActive flag
-             * @return the next update stage
              */
             Update withActiveActive(Boolean activeActive);
         }
 
         /**
-         * The stage of the virtualnetworkgateway update allowing to specify BgpSettings.
+         * The stage of the virtualnetworkgateway {0} allowing to specify BgpSettings.
          */
         interface WithBgpSettings {
             /**
              * Specifies bgpSettings.
-             * @param bgpSettings Virtual network gateway's BGP speaker settings
-             * @return the next update stage
              */
             Update withBgpSettings(BgpSettings bgpSettings);
         }
 
         /**
-         * The stage of the virtualnetworkgateway update allowing to specify EnableBgp.
+         * The stage of the virtualnetworkgateway {0} allowing to specify EnableBgp.
          */
         interface WithEnableBgp {
             /**
              * Specifies enableBgp.
-             * @param enableBgp Whether BGP is enabled for this virtual network gateway or not
-             * @return the next update stage
              */
             Update withEnableBgp(Boolean enableBgp);
         }
 
         /**
-         * The stage of the virtualnetworkgateway update allowing to specify Etag.
+         * The stage of the virtualnetworkgateway {0} allowing to specify Etag.
          */
         interface WithEtag {
             /**
              * Specifies etag.
-             * @param etag Gets a unique read-only string that changes whenever the resource is updated
-             * @return the next update stage
              */
             Update withEtag(String etag);
         }
 
         /**
-         * The stage of the virtualnetworkgateway update allowing to specify GatewayDefaultSite.
+         * The stage of the virtualnetworkgateway {0} allowing to specify GatewayDefaultSite.
          */
         interface WithGatewayDefaultSite {
             /**
              * Specifies gatewayDefaultSite.
-             * @param gatewayDefaultSite The reference of the LocalNetworkGateway resource which represents local network site having default routes. Assign Null value in case of removing existing default site setting
-             * @return the next update stage
              */
             Update withGatewayDefaultSite(SubResource gatewayDefaultSite);
         }
 
         /**
-         * The stage of the virtualnetworkgateway update allowing to specify GatewayType.
+         * The stage of the virtualnetworkgateway {0} allowing to specify GatewayType.
          */
         interface WithGatewayType {
             /**
              * Specifies gatewayType.
-             * @param gatewayType The type of this virtual network gateway. Possible values are: 'Vpn' and 'ExpressRoute'. Possible values include: 'Vpn', 'ExpressRoute'
-             * @return the next update stage
              */
             Update withGatewayType(VirtualNetworkGatewayType gatewayType);
         }
 
         /**
-         * The stage of the virtualnetworkgateway update allowing to specify IpConfigurations.
+         * The stage of the virtualnetworkgateway {0} allowing to specify IpConfigurations.
          */
         interface WithIpConfigurations {
             /**
              * Specifies ipConfigurations.
-             * @param ipConfigurations IP configurations for virtual network gateway
-             * @return the next update stage
              */
             Update withIpConfigurations(List<VirtualNetworkGatewayIPConfiguration> ipConfigurations);
         }
 
         /**
-         * The stage of the virtualnetworkgateway update allowing to specify ResourceGuid.
+         * The stage of the virtualnetworkgateway {0} allowing to specify ResourceGuid.
          */
         interface WithResourceGuid {
             /**
              * Specifies resourceGuid.
-             * @param resourceGuid The resource GUID property of the VirtualNetworkGateway resource
-             * @return the next update stage
              */
             Update withResourceGuid(String resourceGuid);
         }
 
         /**
-         * The stage of the virtualnetworkgateway update allowing to specify Sku.
+         * The stage of the virtualnetworkgateway {0} allowing to specify Sku.
          */
         interface WithSku {
             /**
              * Specifies sku.
-             * @param sku The reference of the VirtualNetworkGatewaySku resource which represents the SKU selected for Virtual network gateway
-             * @return the next update stage
              */
             Update withSku(VirtualNetworkGatewaySku sku);
         }
 
         /**
-         * The stage of the virtualnetworkgateway update allowing to specify VpnClientConfiguration.
+         * The stage of the virtualnetworkgateway {0} allowing to specify VpnClientConfiguration.
          */
         interface WithVpnClientConfiguration {
             /**
              * Specifies vpnClientConfiguration.
-             * @param vpnClientConfiguration The reference of the VpnClientConfiguration resource which represents the P2S VpnClient configurations
-             * @return the next update stage
              */
             Update withVpnClientConfiguration(VpnClientConfiguration vpnClientConfiguration);
         }
 
         /**
-         * The stage of the virtualnetworkgateway update allowing to specify VpnType.
+         * The stage of the virtualnetworkgateway {0} allowing to specify VpnType.
          */
         interface WithVpnType {
             /**
              * Specifies vpnType.
-             * @param vpnType The type of this virtual network gateway. Possible values are: 'PolicyBased' and 'RouteBased'. Possible values include: 'PolicyBased', 'RouteBased'
-             * @return the next update stage
              */
             Update withVpnType(VpnType vpnType);
         }
