@@ -17,7 +17,7 @@ public class MetricProperties {
     /**
      * The service specifications.
      */
-    @JsonProperty(value = "serviceSpecification")
+    @JsonProperty(value = "serviceSpecification", access = JsonProperty.Access.WRITE_ONLY)
     private ServiceSpecification serviceSpecification;
 
     /**
@@ -27,17 +27,6 @@ public class MetricProperties {
      */
     public ServiceSpecification serviceSpecification() {
         return this.serviceSpecification;
-    }
-
-    /**
-     * Set the service specifications.
-     *
-     * @param serviceSpecification the serviceSpecification value to set
-     * @return the MetricProperties object itself.
-     */
-    public MetricProperties withServiceSpecification(ServiceSpecification serviceSpecification) {
-        this.serviceSpecification = serviceSpecification;
-        return this;
     }
 
 }

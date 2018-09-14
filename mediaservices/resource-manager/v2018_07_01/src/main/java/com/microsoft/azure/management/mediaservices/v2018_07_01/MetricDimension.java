@@ -17,19 +17,19 @@ public class MetricDimension {
     /**
      * The metric dimension name.
      */
-    @JsonProperty(value = "name")
+    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /**
      * The display name for the dimension.
      */
-    @JsonProperty(value = "displayName")
+    @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
     /**
      * Whether to export metric to shoebox.
      */
-    @JsonProperty(value = "toBeExportedForShoebox", required = true)
+    @JsonProperty(value = "toBeExportedForShoebox", access = JsonProperty.Access.WRITE_ONLY)
     private boolean toBeExportedForShoebox;
 
     /**
@@ -42,17 +42,6 @@ public class MetricDimension {
     }
 
     /**
-     * Set the metric dimension name.
-     *
-     * @param name the name value to set
-     * @return the MetricDimension object itself.
-     */
-    public MetricDimension withName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    /**
      * Get the display name for the dimension.
      *
      * @return the displayName value
@@ -62,34 +51,12 @@ public class MetricDimension {
     }
 
     /**
-     * Set the display name for the dimension.
-     *
-     * @param displayName the displayName value to set
-     * @return the MetricDimension object itself.
-     */
-    public MetricDimension withDisplayName(String displayName) {
-        this.displayName = displayName;
-        return this;
-    }
-
-    /**
      * Get whether to export metric to shoebox.
      *
      * @return the toBeExportedForShoebox value
      */
     public boolean toBeExportedForShoebox() {
         return this.toBeExportedForShoebox;
-    }
-
-    /**
-     * Set whether to export metric to shoebox.
-     *
-     * @param toBeExportedForShoebox the toBeExportedForShoebox value to set
-     * @return the MetricDimension object itself.
-     */
-    public MetricDimension withToBeExportedForShoebox(boolean toBeExportedForShoebox) {
-        this.toBeExportedForShoebox = toBeExportedForShoebox;
-        return this;
     }
 
 }

@@ -13,13 +13,13 @@ import com.microsoft.azure.management.mediaservices.v2018_07_01.AssetStreamingLo
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The Streaming Locators associated with this asset.
+ * The Streaming Locators associated with this Asset.
  */
 public class ListStreamingLocatorsResponseInner {
     /**
      * The list of Streaming Locators.
      */
-    @JsonProperty(value = "streamingLocators")
+    @JsonProperty(value = "streamingLocators", access = JsonProperty.Access.WRITE_ONLY)
     private List<AssetStreamingLocator> streamingLocators;
 
     /**
@@ -29,17 +29,6 @@ public class ListStreamingLocatorsResponseInner {
      */
     public List<AssetStreamingLocator> streamingLocators() {
         return this.streamingLocators;
-    }
-
-    /**
-     * Set the list of Streaming Locators.
-     *
-     * @param streamingLocators the streamingLocators value to set
-     * @return the ListStreamingLocatorsResponseInner object itself.
-     */
-    public ListStreamingLocatorsResponseInner withStreamingLocators(List<AssetStreamingLocator> streamingLocators) {
-        this.streamingLocators = streamingLocators;
-        return this;
     }
 
 }

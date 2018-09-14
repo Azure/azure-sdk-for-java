@@ -13,55 +13,55 @@ import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Properties of Streaming Locator.
+ * Properties of the Streaming Locator.
  */
 public class AssetStreamingLocator {
     /**
      * Streaming Locator name.
      */
-    @JsonProperty(value = "name")
+    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /**
      * Asset Name.
      */
-    @JsonProperty(value = "assetName")
+    @JsonProperty(value = "assetName", access = JsonProperty.Access.WRITE_ONLY)
     private String assetName;
 
     /**
-     * Creation time of Streaming Locator.
+     * The creation time of the Streaming Locator.
      */
-    @JsonProperty(value = "created")
+    @JsonProperty(value = "created", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime created;
 
     /**
-     * StartTime of Streaming Locator.
+     * The start time of the Streaming Locator.
      */
-    @JsonProperty(value = "startTime")
+    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime startTime;
 
     /**
-     * EndTime of Streaming Locator.
+     * The end time of the Streaming Locator.
      */
-    @JsonProperty(value = "endTime")
+    @JsonProperty(value = "endTime", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime endTime;
 
     /**
-     * StreamingLocatorId of Streaming Locator.
+     * StreamingLocatorId of the Streaming Locator.
      */
-    @JsonProperty(value = "streamingLocatorId")
+    @JsonProperty(value = "streamingLocatorId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID streamingLocatorId;
 
     /**
-     * Streaming policy name used by this streaming locator.
+     * Name of the Streaming Policy used by this Streaming Locator.
      */
-    @JsonProperty(value = "streamingPolicyName")
+    @JsonProperty(value = "streamingPolicyName", access = JsonProperty.Access.WRITE_ONLY)
     private String streamingPolicyName;
 
     /**
-     * Default ContentKeyPolicy used by this Streaming Locator.
+     * Name of the default ContentKeyPolicy used by this Streaming Locator.
      */
-    @JsonProperty(value = "defaultContentKeyPolicyName")
+    @JsonProperty(value = "defaultContentKeyPolicyName", access = JsonProperty.Access.WRITE_ONLY)
     private String defaultContentKeyPolicyName;
 
     /**
@@ -74,17 +74,6 @@ public class AssetStreamingLocator {
     }
 
     /**
-     * Set streaming Locator name.
-     *
-     * @param name the name value to set
-     * @return the AssetStreamingLocator object itself.
-     */
-    public AssetStreamingLocator withName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    /**
      * Get asset Name.
      *
      * @return the assetName value
@@ -94,18 +83,7 @@ public class AssetStreamingLocator {
     }
 
     /**
-     * Set asset Name.
-     *
-     * @param assetName the assetName value to set
-     * @return the AssetStreamingLocator object itself.
-     */
-    public AssetStreamingLocator withAssetName(String assetName) {
-        this.assetName = assetName;
-        return this;
-    }
-
-    /**
-     * Get creation time of Streaming Locator.
+     * Get the creation time of the Streaming Locator.
      *
      * @return the created value
      */
@@ -114,18 +92,7 @@ public class AssetStreamingLocator {
     }
 
     /**
-     * Set creation time of Streaming Locator.
-     *
-     * @param created the created value to set
-     * @return the AssetStreamingLocator object itself.
-     */
-    public AssetStreamingLocator withCreated(DateTime created) {
-        this.created = created;
-        return this;
-    }
-
-    /**
-     * Get startTime of Streaming Locator.
+     * Get the start time of the Streaming Locator.
      *
      * @return the startTime value
      */
@@ -134,18 +101,7 @@ public class AssetStreamingLocator {
     }
 
     /**
-     * Set startTime of Streaming Locator.
-     *
-     * @param startTime the startTime value to set
-     * @return the AssetStreamingLocator object itself.
-     */
-    public AssetStreamingLocator withStartTime(DateTime startTime) {
-        this.startTime = startTime;
-        return this;
-    }
-
-    /**
-     * Get endTime of Streaming Locator.
+     * Get the end time of the Streaming Locator.
      *
      * @return the endTime value
      */
@@ -154,18 +110,7 @@ public class AssetStreamingLocator {
     }
 
     /**
-     * Set endTime of Streaming Locator.
-     *
-     * @param endTime the endTime value to set
-     * @return the AssetStreamingLocator object itself.
-     */
-    public AssetStreamingLocator withEndTime(DateTime endTime) {
-        this.endTime = endTime;
-        return this;
-    }
-
-    /**
-     * Get streamingLocatorId of Streaming Locator.
+     * Get streamingLocatorId of the Streaming Locator.
      *
      * @return the streamingLocatorId value
      */
@@ -174,18 +119,7 @@ public class AssetStreamingLocator {
     }
 
     /**
-     * Set streamingLocatorId of Streaming Locator.
-     *
-     * @param streamingLocatorId the streamingLocatorId value to set
-     * @return the AssetStreamingLocator object itself.
-     */
-    public AssetStreamingLocator withStreamingLocatorId(UUID streamingLocatorId) {
-        this.streamingLocatorId = streamingLocatorId;
-        return this;
-    }
-
-    /**
-     * Get streaming policy name used by this streaming locator.
+     * Get name of the Streaming Policy used by this Streaming Locator.
      *
      * @return the streamingPolicyName value
      */
@@ -194,34 +128,12 @@ public class AssetStreamingLocator {
     }
 
     /**
-     * Set streaming policy name used by this streaming locator.
-     *
-     * @param streamingPolicyName the streamingPolicyName value to set
-     * @return the AssetStreamingLocator object itself.
-     */
-    public AssetStreamingLocator withStreamingPolicyName(String streamingPolicyName) {
-        this.streamingPolicyName = streamingPolicyName;
-        return this;
-    }
-
-    /**
-     * Get default ContentKeyPolicy used by this Streaming Locator.
+     * Get name of the default ContentKeyPolicy used by this Streaming Locator.
      *
      * @return the defaultContentKeyPolicyName value
      */
     public String defaultContentKeyPolicyName() {
         return this.defaultContentKeyPolicyName;
-    }
-
-    /**
-     * Set default ContentKeyPolicy used by this Streaming Locator.
-     *
-     * @param defaultContentKeyPolicyName the defaultContentKeyPolicyName value to set
-     * @return the AssetStreamingLocator object itself.
-     */
-    public AssetStreamingLocator withDefaultContentKeyPolicyName(String defaultContentKeyPolicyName) {
-        this.defaultContentKeyPolicyName = defaultContentKeyPolicyName;
-        return this;
     }
 
 }

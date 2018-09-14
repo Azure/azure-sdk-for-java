@@ -18,39 +18,39 @@ public class Metric {
     /**
      * The metric name.
      */
-    @JsonProperty(value = "name")
+    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /**
      * The metric display name.
      */
-    @JsonProperty(value = "displayName")
+    @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
     /**
      * The metric display description.
      */
-    @JsonProperty(value = "displayDescription")
+    @JsonProperty(value = "displayDescription", access = JsonProperty.Access.WRITE_ONLY)
     private String displayDescription;
 
     /**
      * The metric unit. Possible values include: 'Bytes', 'Count',
      * 'Milliseconds'.
      */
-    @JsonProperty(value = "unit", required = true)
+    @JsonProperty(value = "unit", access = JsonProperty.Access.WRITE_ONLY)
     private MetricUnit unit;
 
     /**
      * The metric aggregation type. Possible values include: 'Average',
      * 'Count', 'Total'.
      */
-    @JsonProperty(value = "aggregationType", required = true)
+    @JsonProperty(value = "aggregationType", access = JsonProperty.Access.WRITE_ONLY)
     private MetricAggregationType aggregationType;
 
     /**
      * The metric dimensions.
      */
-    @JsonProperty(value = "dimensions")
+    @JsonProperty(value = "dimensions", access = JsonProperty.Access.WRITE_ONLY)
     private List<MetricDimension> dimensions;
 
     /**
@@ -63,34 +63,12 @@ public class Metric {
     }
 
     /**
-     * Set the metric name.
-     *
-     * @param name the name value to set
-     * @return the Metric object itself.
-     */
-    public Metric withName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    /**
      * Get the metric display name.
      *
      * @return the displayName value
      */
     public String displayName() {
         return this.displayName;
-    }
-
-    /**
-     * Set the metric display name.
-     *
-     * @param displayName the displayName value to set
-     * @return the Metric object itself.
-     */
-    public Metric withDisplayName(String displayName) {
-        this.displayName = displayName;
-        return this;
     }
 
     /**
@@ -103,34 +81,12 @@ public class Metric {
     }
 
     /**
-     * Set the metric display description.
-     *
-     * @param displayDescription the displayDescription value to set
-     * @return the Metric object itself.
-     */
-    public Metric withDisplayDescription(String displayDescription) {
-        this.displayDescription = displayDescription;
-        return this;
-    }
-
-    /**
      * Get the metric unit. Possible values include: 'Bytes', 'Count', 'Milliseconds'.
      *
      * @return the unit value
      */
     public MetricUnit unit() {
         return this.unit;
-    }
-
-    /**
-     * Set the metric unit. Possible values include: 'Bytes', 'Count', 'Milliseconds'.
-     *
-     * @param unit the unit value to set
-     * @return the Metric object itself.
-     */
-    public Metric withUnit(MetricUnit unit) {
-        this.unit = unit;
-        return this;
     }
 
     /**
@@ -143,34 +99,12 @@ public class Metric {
     }
 
     /**
-     * Set the metric aggregation type. Possible values include: 'Average', 'Count', 'Total'.
-     *
-     * @param aggregationType the aggregationType value to set
-     * @return the Metric object itself.
-     */
-    public Metric withAggregationType(MetricAggregationType aggregationType) {
-        this.aggregationType = aggregationType;
-        return this;
-    }
-
-    /**
      * Get the metric dimensions.
      *
      * @return the dimensions value
      */
     public List<MetricDimension> dimensions() {
         return this.dimensions;
-    }
-
-    /**
-     * Set the metric dimensions.
-     *
-     * @param dimensions the dimensions value to set
-     * @return the Metric object itself.
-     */
-    public Metric withDimensions(List<MetricDimension> dimensions) {
-        this.dimensions = dimensions;
-        return this;
     }
 
 }

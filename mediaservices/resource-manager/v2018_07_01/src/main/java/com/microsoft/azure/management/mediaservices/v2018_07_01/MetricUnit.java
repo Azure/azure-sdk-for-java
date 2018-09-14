@@ -15,13 +15,13 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for MetricUnit.
  */
 public enum MetricUnit {
-    /** Enum value Bytes. */
+    /** The number of bytes. */
     BYTES("Bytes"),
 
-    /** Enum value Count. */
+    /** The count. */
     COUNT("Count"),
 
-    /** Enum value Milliseconds. */
+    /** The number of milliseconds. */
     MILLISECONDS("Milliseconds");
 
     /** The actual serialized value for a MetricUnit instance. */

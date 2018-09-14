@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("#Microsoft.Media.ContentKeyPolicyFairPlayConfiguration")
 public class ContentKeyPolicyFairPlayConfiguration extends ContentKeyPolicyConfiguration {
     /**
-     * The key that must be used as FairPlay ASk.
+     * The key that must be used as FairPlay Application Secret key.
      */
     @JsonProperty(value = "ask", required = true)
     private byte[] ask;
@@ -51,7 +51,7 @@ public class ContentKeyPolicyFairPlayConfiguration extends ContentKeyPolicyConfi
     private long rentalDuration;
 
     /**
-     * Get the key that must be used as FairPlay ASk.
+     * Get the key that must be used as FairPlay Application Secret key.
      *
      * @return the ask value
      */
@@ -60,7 +60,7 @@ public class ContentKeyPolicyFairPlayConfiguration extends ContentKeyPolicyConfi
     }
 
     /**
-     * Set the key that must be used as FairPlay ASk.
+     * Set the key that must be used as FairPlay Application Secret key.
      *
      * @param ask the ask value to set
      * @return the ContentKeyPolicyFairPlayConfiguration object itself.

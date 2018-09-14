@@ -18,7 +18,7 @@ public class ServiceSpecification {
     /**
      * List of metric specifications.
      */
-    @JsonProperty(value = "metricSpecifications")
+    @JsonProperty(value = "metricSpecifications", access = JsonProperty.Access.WRITE_ONLY)
     private List<Metric> metricSpecifications;
 
     /**
@@ -28,17 +28,6 @@ public class ServiceSpecification {
      */
     public List<Metric> metricSpecifications() {
         return this.metricSpecifications;
-    }
-
-    /**
-     * Set list of metric specifications.
-     *
-     * @param metricSpecifications the metricSpecifications value to set
-     * @return the ServiceSpecification object itself.
-     */
-    public ServiceSpecification withMetricSpecifications(List<Metric> metricSpecifications) {
-        this.metricSpecifications = metricSpecifications;
-        return this;
     }
 
 }

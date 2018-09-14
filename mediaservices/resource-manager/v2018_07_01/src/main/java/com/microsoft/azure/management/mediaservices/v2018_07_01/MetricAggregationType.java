@@ -15,13 +15,13 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for MetricAggregationType.
  */
 public enum MetricAggregationType {
-    /** Enum value Average. */
+    /** The average. */
     AVERAGE("Average"),
 
-    /** Enum value Count. */
+    /** The count of a number of items, usually requests. */
     COUNT("Count"),
 
-    /** Enum value Total. */
+    /** The sum. */
     TOTAL("Total");
 
     /** The actual serialized value for a MetricAggregationType instance. */

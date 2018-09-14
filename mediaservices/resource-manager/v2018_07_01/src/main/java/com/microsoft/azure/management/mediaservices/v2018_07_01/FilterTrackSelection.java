@@ -19,7 +19,7 @@ public class FilterTrackSelection {
     /**
      * The track selections.
      */
-    @JsonProperty(value = "trackSelections")
+    @JsonProperty(value = "trackSelections", required = true)
     private List<FilterTrackPropertyCondition> trackSelections;
 
     /**

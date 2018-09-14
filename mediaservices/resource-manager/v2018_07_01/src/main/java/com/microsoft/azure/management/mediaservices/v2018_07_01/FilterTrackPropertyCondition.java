@@ -24,7 +24,7 @@ public class FilterTrackPropertyCondition {
     /**
      * The track proprty value.
      */
-    @JsonProperty(value = "value")
+    @JsonProperty(value = "value", required = true)
     private String value;
 
     /**
