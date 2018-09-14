@@ -8,34 +8,15 @@
 
 package com.microsoft.azure.monitor.implementation;
 
-import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
-import com.microsoft.azure.monitor.AzureMetricsDocument;
-import com.microsoft.azure.monitor.AzureMetricsResultInnerException;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.RestClient;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceFuture;
-import com.microsoft.rest.ServiceResponse;
-import com.microsoft.rest.Validator;
-import java.io.IOException;
-import okhttp3.ResponseBody;
-import retrofit2.http.Body;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.Path;
-import retrofit2.http.POST;
-import retrofit2.Response;
-import rx.functions.Func1;
-import rx.Observable;
 
 /**
  * Initializes a new instance of the AzureMetricsClientImpl class.
  */
 public class AzureMetricsClientImpl extends AzureServiceClient {
-    /** The Retrofit service to perform REST calls. */
-    private AzureMetricsClientService service;
     /** the {@link AzureClient} used for long running operations. */
     private AzureClient azureClient;
 
@@ -117,6 +98,19 @@ public class AzureMetricsClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The MetricsInner object to access its operations.
+     */
+    private MetricsInner metrics;
+
+    /**
+     * Gets the MetricsInner object to access its operations.
+     * @return the MetricsInner object.
+     */
+    public MetricsInner metrics() {
+        return this.metrics;
+    }
+
+    /**
      * Initializes an instance of AzureMetricsClient client.
      *
      * @param credentials the management credentials for Azure
@@ -150,8 +144,8 @@ public class AzureMetricsClientImpl extends AzureServiceClient {
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
+        this.metrics = new MetricsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
-        initializeService();
     }
 
     /**
@@ -163,281 +157,4 @@ public class AzureMetricsClientImpl extends AzureServiceClient {
     public String userAgent() {
         return String.format("%s (%s, %s)", super.userAgent(), "AzureMetricsClient", "2018-09-01-preview");
     }
-
-    private void initializeService() {
-        service = restClient().retrofit().create(AzureMetricsClientService.class);
-    }
-
-    /**
-     * The interface defining all the services for AzureMetricsClient to be
-     * used by Retrofit to perform actually REST calls.
-     */
-    interface AzureMetricsClientService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.monitor.AzureMetricsClient azureMonitorCustomMetricsIngestionApi" })
-        @POST("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProvider}/{resourceTypeName}/{resourceName}/metrics")
-        Observable<Response<ResponseBody>> azureMonitorCustomMetricsIngestionApi(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceProvider") String resourceProvider, @Path("resourceTypeName") String resourceTypeName, @Path("resourceName") String resourceName, @Header("Content-Type") String contentType, @Header("Content-Length") Integer contentLength, @Body AzureMetricsDocument body, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-    }
-
-    /**
-     * Ingestion API used by Azure custom metrics
-                 Responsible of below operation
-                 1. Authorize the request
-                 2. Deserialize payload request body
-                 3. Perform validation of the payload
-                 4. Commits the payload for metrics ingestion.
-     *
-     * @param subscriptionId The azure subscription id
-     * @param resourceGroupName The ARM resource group name
-     * @param resourceProvider The ARM resource provider name
-     * @param resourceTypeName The ARM resource type name
-     * @param resourceName The ARM resource name
-     * @param body The Azure metrics document json payload
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws AzureMetricsResultInnerException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the AzureMetricsResultInner object if successful.
-     */
-    public AzureMetricsResultInner azureMonitorCustomMetricsIngestionApi(String subscriptionId, String resourceGroupName, String resourceProvider, String resourceTypeName, String resourceName, AzureMetricsDocument body) {
-        return azureMonitorCustomMetricsIngestionApiWithServiceResponseAsync(subscriptionId, resourceGroupName, resourceProvider, resourceTypeName, resourceName, body).toBlocking().single().body();
-    }
-
-    /**
-     * Ingestion API used by Azure custom metrics
-                 Responsible of below operation
-                 1. Authorize the request
-                 2. Deserialize payload request body
-                 3. Perform validation of the payload
-                 4. Commits the payload for metrics ingestion.
-     *
-     * @param subscriptionId The azure subscription id
-     * @param resourceGroupName The ARM resource group name
-     * @param resourceProvider The ARM resource provider name
-     * @param resourceTypeName The ARM resource type name
-     * @param resourceName The ARM resource name
-     * @param body The Azure metrics document json payload
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<AzureMetricsResultInner> azureMonitorCustomMetricsIngestionApiAsync(String subscriptionId, String resourceGroupName, String resourceProvider, String resourceTypeName, String resourceName, AzureMetricsDocument body, final ServiceCallback<AzureMetricsResultInner> serviceCallback) {
-        return ServiceFuture.fromResponse(azureMonitorCustomMetricsIngestionApiWithServiceResponseAsync(subscriptionId, resourceGroupName, resourceProvider, resourceTypeName, resourceName, body), serviceCallback);
-    }
-
-    /**
-     * Ingestion API used by Azure custom metrics
-                 Responsible of below operation
-                 1. Authorize the request
-                 2. Deserialize payload request body
-                 3. Perform validation of the payload
-                 4. Commits the payload for metrics ingestion.
-     *
-     * @param subscriptionId The azure subscription id
-     * @param resourceGroupName The ARM resource group name
-     * @param resourceProvider The ARM resource provider name
-     * @param resourceTypeName The ARM resource type name
-     * @param resourceName The ARM resource name
-     * @param body The Azure metrics document json payload
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the AzureMetricsResultInner object
-     */
-    public Observable<AzureMetricsResultInner> azureMonitorCustomMetricsIngestionApiAsync(String subscriptionId, String resourceGroupName, String resourceProvider, String resourceTypeName, String resourceName, AzureMetricsDocument body) {
-        return azureMonitorCustomMetricsIngestionApiWithServiceResponseAsync(subscriptionId, resourceGroupName, resourceProvider, resourceTypeName, resourceName, body).map(new Func1<ServiceResponse<AzureMetricsResultInner>, AzureMetricsResultInner>() {
-            @Override
-            public AzureMetricsResultInner call(ServiceResponse<AzureMetricsResultInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Ingestion API used by Azure custom metrics
-                 Responsible of below operation
-                 1. Authorize the request
-                 2. Deserialize payload request body
-                 3. Perform validation of the payload
-                 4. Commits the payload for metrics ingestion.
-     *
-     * @param subscriptionId The azure subscription id
-     * @param resourceGroupName The ARM resource group name
-     * @param resourceProvider The ARM resource provider name
-     * @param resourceTypeName The ARM resource type name
-     * @param resourceName The ARM resource name
-     * @param body The Azure metrics document json payload
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the AzureMetricsResultInner object
-     */
-    public Observable<ServiceResponse<AzureMetricsResultInner>> azureMonitorCustomMetricsIngestionApiWithServiceResponseAsync(String subscriptionId, String resourceGroupName, String resourceProvider, String resourceTypeName, String resourceName, AzureMetricsDocument body) {
-        if (subscriptionId == null) {
-            throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (resourceProvider == null) {
-            throw new IllegalArgumentException("Parameter resourceProvider is required and cannot be null.");
-        }
-        if (resourceTypeName == null) {
-            throw new IllegalArgumentException("Parameter resourceTypeName is required and cannot be null.");
-        }
-        if (resourceName == null) {
-            throw new IllegalArgumentException("Parameter resourceName is required and cannot be null.");
-        }
-        if (body == null) {
-            throw new IllegalArgumentException("Parameter body is required and cannot be null.");
-        }
-        Validator.validate(body);
-        final String contentType = null;
-        final Integer contentLength = null;
-        return service.azureMonitorCustomMetricsIngestionApi(subscriptionId, resourceGroupName, resourceProvider, resourceTypeName, resourceName, contentType, contentLength, body, this.acceptLanguage(), this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AzureMetricsResultInner>>>() {
-                @Override
-                public Observable<ServiceResponse<AzureMetricsResultInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<AzureMetricsResultInner> clientResponse = azureMonitorCustomMetricsIngestionApiDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    /**
-     * Ingestion API used by Azure custom metrics
-                 Responsible of below operation
-                 1. Authorize the request
-                 2. Deserialize payload request body
-                 3. Perform validation of the payload
-                 4. Commits the payload for metrics ingestion.
-     *
-     * @param subscriptionId The azure subscription id
-     * @param resourceGroupName The ARM resource group name
-     * @param resourceProvider The ARM resource provider name
-     * @param resourceTypeName The ARM resource type name
-     * @param resourceName The ARM resource name
-     * @param body The Azure metrics document json payload
-     * @param contentType Supports application/json and application/x-ndjson
-     * @param contentLength Content length of the payload
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws AzureMetricsResultInnerException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the AzureMetricsResultInner object if successful.
-     */
-    public AzureMetricsResultInner azureMonitorCustomMetricsIngestionApi(String subscriptionId, String resourceGroupName, String resourceProvider, String resourceTypeName, String resourceName, AzureMetricsDocument body, String contentType, Integer contentLength) {
-        return azureMonitorCustomMetricsIngestionApiWithServiceResponseAsync(subscriptionId, resourceGroupName, resourceProvider, resourceTypeName, resourceName, body, contentType, contentLength).toBlocking().single().body();
-    }
-
-    /**
-     * Ingestion API used by Azure custom metrics
-                 Responsible of below operation
-                 1. Authorize the request
-                 2. Deserialize payload request body
-                 3. Perform validation of the payload
-                 4. Commits the payload for metrics ingestion.
-     *
-     * @param subscriptionId The azure subscription id
-     * @param resourceGroupName The ARM resource group name
-     * @param resourceProvider The ARM resource provider name
-     * @param resourceTypeName The ARM resource type name
-     * @param resourceName The ARM resource name
-     * @param body The Azure metrics document json payload
-     * @param contentType Supports application/json and application/x-ndjson
-     * @param contentLength Content length of the payload
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<AzureMetricsResultInner> azureMonitorCustomMetricsIngestionApiAsync(String subscriptionId, String resourceGroupName, String resourceProvider, String resourceTypeName, String resourceName, AzureMetricsDocument body, String contentType, Integer contentLength, final ServiceCallback<AzureMetricsResultInner> serviceCallback) {
-        return ServiceFuture.fromResponse(azureMonitorCustomMetricsIngestionApiWithServiceResponseAsync(subscriptionId, resourceGroupName, resourceProvider, resourceTypeName, resourceName, body, contentType, contentLength), serviceCallback);
-    }
-
-    /**
-     * Ingestion API used by Azure custom metrics
-                 Responsible of below operation
-                 1. Authorize the request
-                 2. Deserialize payload request body
-                 3. Perform validation of the payload
-                 4. Commits the payload for metrics ingestion.
-     *
-     * @param subscriptionId The azure subscription id
-     * @param resourceGroupName The ARM resource group name
-     * @param resourceProvider The ARM resource provider name
-     * @param resourceTypeName The ARM resource type name
-     * @param resourceName The ARM resource name
-     * @param body The Azure metrics document json payload
-     * @param contentType Supports application/json and application/x-ndjson
-     * @param contentLength Content length of the payload
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the AzureMetricsResultInner object
-     */
-    public Observable<AzureMetricsResultInner> azureMonitorCustomMetricsIngestionApiAsync(String subscriptionId, String resourceGroupName, String resourceProvider, String resourceTypeName, String resourceName, AzureMetricsDocument body, String contentType, Integer contentLength) {
-        return azureMonitorCustomMetricsIngestionApiWithServiceResponseAsync(subscriptionId, resourceGroupName, resourceProvider, resourceTypeName, resourceName, body, contentType, contentLength).map(new Func1<ServiceResponse<AzureMetricsResultInner>, AzureMetricsResultInner>() {
-            @Override
-            public AzureMetricsResultInner call(ServiceResponse<AzureMetricsResultInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Ingestion API used by Azure custom metrics
-                 Responsible of below operation
-                 1. Authorize the request
-                 2. Deserialize payload request body
-                 3. Perform validation of the payload
-                 4. Commits the payload for metrics ingestion.
-     *
-     * @param subscriptionId The azure subscription id
-     * @param resourceGroupName The ARM resource group name
-     * @param resourceProvider The ARM resource provider name
-     * @param resourceTypeName The ARM resource type name
-     * @param resourceName The ARM resource name
-     * @param body The Azure metrics document json payload
-     * @param contentType Supports application/json and application/x-ndjson
-     * @param contentLength Content length of the payload
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the AzureMetricsResultInner object
-     */
-    public Observable<ServiceResponse<AzureMetricsResultInner>> azureMonitorCustomMetricsIngestionApiWithServiceResponseAsync(String subscriptionId, String resourceGroupName, String resourceProvider, String resourceTypeName, String resourceName, AzureMetricsDocument body, String contentType, Integer contentLength) {
-        if (subscriptionId == null) {
-            throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (resourceProvider == null) {
-            throw new IllegalArgumentException("Parameter resourceProvider is required and cannot be null.");
-        }
-        if (resourceTypeName == null) {
-            throw new IllegalArgumentException("Parameter resourceTypeName is required and cannot be null.");
-        }
-        if (resourceName == null) {
-            throw new IllegalArgumentException("Parameter resourceName is required and cannot be null.");
-        }
-        if (body == null) {
-            throw new IllegalArgumentException("Parameter body is required and cannot be null.");
-        }
-        Validator.validate(body);
-        return service.azureMonitorCustomMetricsIngestionApi(subscriptionId, resourceGroupName, resourceProvider, resourceTypeName, resourceName, contentType, contentLength, body, this.acceptLanguage(), this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AzureMetricsResultInner>>>() {
-                @Override
-                public Observable<ServiceResponse<AzureMetricsResultInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<AzureMetricsResultInner> clientResponse = azureMonitorCustomMetricsIngestionApiDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<AzureMetricsResultInner> azureMonitorCustomMetricsIngestionApiDelegate(Response<ResponseBody> response) throws AzureMetricsResultInnerException, IOException, IllegalArgumentException {
-        return this.restClient().responseBuilderFactory().<AzureMetricsResultInner, AzureMetricsResultInnerException>newInstance(this.serializerAdapter())
-                .register(200, new TypeToken<AzureMetricsResultInner>() { }.getType())
-                .registerError(AzureMetricsResultInnerException.class)
-                .build(response);
-    }
-
 }
