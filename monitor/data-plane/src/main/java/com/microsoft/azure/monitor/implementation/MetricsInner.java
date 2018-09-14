@@ -53,9 +53,9 @@ public class MetricsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface MetricsService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.monitor.Metrics pOST" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.monitor.Metrics create" })
         @POST("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProvider}/{resourceTypeName}/{resourceName}/metrics")
-        Observable<Response<ResponseBody>> pOST(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceProvider") String resourceProvider, @Path("resourceTypeName") String resourceTypeName, @Path("resourceName") String resourceName, @Header("Content-Type") String contentType, @Header("Content-Length") Integer contentLength, @Body AzureMetricsDocument body, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> create(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceProvider") String resourceProvider, @Path("resourceTypeName") String resourceTypeName, @Path("resourceName") String resourceName, @Header("Content-Type") String contentType, @Header("Content-Length") Integer contentLength, @Body AzureMetricsDocument body, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -73,8 +73,8 @@ public class MetricsInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AzureMetricsResultInner object if successful.
      */
-    public AzureMetricsResultInner pOST(String subscriptionId, String resourceGroupName, String resourceProvider, String resourceTypeName, String resourceName, AzureMetricsDocument body) {
-        return pOSTWithServiceResponseAsync(subscriptionId, resourceGroupName, resourceProvider, resourceTypeName, resourceName, body).toBlocking().single().body();
+    public AzureMetricsResultInner create(String subscriptionId, String resourceGroupName, String resourceProvider, String resourceTypeName, String resourceName, AzureMetricsDocument body) {
+        return createWithServiceResponseAsync(subscriptionId, resourceGroupName, resourceProvider, resourceTypeName, resourceName, body).toBlocking().single().body();
     }
 
     /**
@@ -90,8 +90,8 @@ public class MetricsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<AzureMetricsResultInner> pOSTAsync(String subscriptionId, String resourceGroupName, String resourceProvider, String resourceTypeName, String resourceName, AzureMetricsDocument body, final ServiceCallback<AzureMetricsResultInner> serviceCallback) {
-        return ServiceFuture.fromResponse(pOSTWithServiceResponseAsync(subscriptionId, resourceGroupName, resourceProvider, resourceTypeName, resourceName, body), serviceCallback);
+    public ServiceFuture<AzureMetricsResultInner> createAsync(String subscriptionId, String resourceGroupName, String resourceProvider, String resourceTypeName, String resourceName, AzureMetricsDocument body, final ServiceCallback<AzureMetricsResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createWithServiceResponseAsync(subscriptionId, resourceGroupName, resourceProvider, resourceTypeName, resourceName, body), serviceCallback);
     }
 
     /**
@@ -106,8 +106,8 @@ public class MetricsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AzureMetricsResultInner object
      */
-    public Observable<AzureMetricsResultInner> pOSTAsync(String subscriptionId, String resourceGroupName, String resourceProvider, String resourceTypeName, String resourceName, AzureMetricsDocument body) {
-        return pOSTWithServiceResponseAsync(subscriptionId, resourceGroupName, resourceProvider, resourceTypeName, resourceName, body).map(new Func1<ServiceResponse<AzureMetricsResultInner>, AzureMetricsResultInner>() {
+    public Observable<AzureMetricsResultInner> createAsync(String subscriptionId, String resourceGroupName, String resourceProvider, String resourceTypeName, String resourceName, AzureMetricsDocument body) {
+        return createWithServiceResponseAsync(subscriptionId, resourceGroupName, resourceProvider, resourceTypeName, resourceName, body).map(new Func1<ServiceResponse<AzureMetricsResultInner>, AzureMetricsResultInner>() {
             @Override
             public AzureMetricsResultInner call(ServiceResponse<AzureMetricsResultInner> response) {
                 return response.body();
@@ -127,7 +127,7 @@ public class MetricsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AzureMetricsResultInner object
      */
-    public Observable<ServiceResponse<AzureMetricsResultInner>> pOSTWithServiceResponseAsync(String subscriptionId, String resourceGroupName, String resourceProvider, String resourceTypeName, String resourceName, AzureMetricsDocument body) {
+    public Observable<ServiceResponse<AzureMetricsResultInner>> createWithServiceResponseAsync(String subscriptionId, String resourceGroupName, String resourceProvider, String resourceTypeName, String resourceName, AzureMetricsDocument body) {
         if (subscriptionId == null) {
             throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
         }
@@ -149,12 +149,12 @@ public class MetricsInner {
         Validator.validate(body);
         final String contentType = null;
         final Integer contentLength = null;
-        return service.pOST(subscriptionId, resourceGroupName, resourceProvider, resourceTypeName, resourceName, contentType, contentLength, body, this.client.acceptLanguage(), this.client.userAgent())
+        return service.create(subscriptionId, resourceGroupName, resourceProvider, resourceTypeName, resourceName, contentType, contentLength, body, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AzureMetricsResultInner>>>() {
                 @Override
                 public Observable<ServiceResponse<AzureMetricsResultInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<AzureMetricsResultInner> clientResponse = pOSTDelegate(response);
+                        ServiceResponse<AzureMetricsResultInner> clientResponse = createDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -179,8 +179,8 @@ public class MetricsInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AzureMetricsResultInner object if successful.
      */
-    public AzureMetricsResultInner pOST(String subscriptionId, String resourceGroupName, String resourceProvider, String resourceTypeName, String resourceName, AzureMetricsDocument body, String contentType, Integer contentLength) {
-        return pOSTWithServiceResponseAsync(subscriptionId, resourceGroupName, resourceProvider, resourceTypeName, resourceName, body, contentType, contentLength).toBlocking().single().body();
+    public AzureMetricsResultInner create(String subscriptionId, String resourceGroupName, String resourceProvider, String resourceTypeName, String resourceName, AzureMetricsDocument body, String contentType, Integer contentLength) {
+        return createWithServiceResponseAsync(subscriptionId, resourceGroupName, resourceProvider, resourceTypeName, resourceName, body, contentType, contentLength).toBlocking().single().body();
     }
 
     /**
@@ -198,8 +198,8 @@ public class MetricsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<AzureMetricsResultInner> pOSTAsync(String subscriptionId, String resourceGroupName, String resourceProvider, String resourceTypeName, String resourceName, AzureMetricsDocument body, String contentType, Integer contentLength, final ServiceCallback<AzureMetricsResultInner> serviceCallback) {
-        return ServiceFuture.fromResponse(pOSTWithServiceResponseAsync(subscriptionId, resourceGroupName, resourceProvider, resourceTypeName, resourceName, body, contentType, contentLength), serviceCallback);
+    public ServiceFuture<AzureMetricsResultInner> createAsync(String subscriptionId, String resourceGroupName, String resourceProvider, String resourceTypeName, String resourceName, AzureMetricsDocument body, String contentType, Integer contentLength, final ServiceCallback<AzureMetricsResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createWithServiceResponseAsync(subscriptionId, resourceGroupName, resourceProvider, resourceTypeName, resourceName, body, contentType, contentLength), serviceCallback);
     }
 
     /**
@@ -216,8 +216,8 @@ public class MetricsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AzureMetricsResultInner object
      */
-    public Observable<AzureMetricsResultInner> pOSTAsync(String subscriptionId, String resourceGroupName, String resourceProvider, String resourceTypeName, String resourceName, AzureMetricsDocument body, String contentType, Integer contentLength) {
-        return pOSTWithServiceResponseAsync(subscriptionId, resourceGroupName, resourceProvider, resourceTypeName, resourceName, body, contentType, contentLength).map(new Func1<ServiceResponse<AzureMetricsResultInner>, AzureMetricsResultInner>() {
+    public Observable<AzureMetricsResultInner> createAsync(String subscriptionId, String resourceGroupName, String resourceProvider, String resourceTypeName, String resourceName, AzureMetricsDocument body, String contentType, Integer contentLength) {
+        return createWithServiceResponseAsync(subscriptionId, resourceGroupName, resourceProvider, resourceTypeName, resourceName, body, contentType, contentLength).map(new Func1<ServiceResponse<AzureMetricsResultInner>, AzureMetricsResultInner>() {
             @Override
             public AzureMetricsResultInner call(ServiceResponse<AzureMetricsResultInner> response) {
                 return response.body();
@@ -239,7 +239,7 @@ public class MetricsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AzureMetricsResultInner object
      */
-    public Observable<ServiceResponse<AzureMetricsResultInner>> pOSTWithServiceResponseAsync(String subscriptionId, String resourceGroupName, String resourceProvider, String resourceTypeName, String resourceName, AzureMetricsDocument body, String contentType, Integer contentLength) {
+    public Observable<ServiceResponse<AzureMetricsResultInner>> createWithServiceResponseAsync(String subscriptionId, String resourceGroupName, String resourceProvider, String resourceTypeName, String resourceName, AzureMetricsDocument body, String contentType, Integer contentLength) {
         if (subscriptionId == null) {
             throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
         }
@@ -259,12 +259,12 @@ public class MetricsInner {
             throw new IllegalArgumentException("Parameter body is required and cannot be null.");
         }
         Validator.validate(body);
-        return service.pOST(subscriptionId, resourceGroupName, resourceProvider, resourceTypeName, resourceName, contentType, contentLength, body, this.client.acceptLanguage(), this.client.userAgent())
+        return service.create(subscriptionId, resourceGroupName, resourceProvider, resourceTypeName, resourceName, contentType, contentLength, body, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AzureMetricsResultInner>>>() {
                 @Override
                 public Observable<ServiceResponse<AzureMetricsResultInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<AzureMetricsResultInner> clientResponse = pOSTDelegate(response);
+                        ServiceResponse<AzureMetricsResultInner> clientResponse = createDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -273,7 +273,7 @@ public class MetricsInner {
             });
     }
 
-    private ServiceResponse<AzureMetricsResultInner> pOSTDelegate(Response<ResponseBody> response) throws AzureMetricsResultInnerException, IOException, IllegalArgumentException {
+    private ServiceResponse<AzureMetricsResultInner> createDelegate(Response<ResponseBody> response) throws AzureMetricsResultInnerException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<AzureMetricsResultInner, AzureMetricsResultInnerException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<AzureMetricsResultInner>() { }.getType())
                 .registerError(AzureMetricsResultInnerException.class)
