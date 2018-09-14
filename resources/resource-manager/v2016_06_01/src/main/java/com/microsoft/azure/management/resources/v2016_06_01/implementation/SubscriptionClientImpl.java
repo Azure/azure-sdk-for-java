@@ -8,15 +8,36 @@
 
 package com.microsoft.azure.management.resources.v2016_06_01.implementation;
 
+import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
+import com.microsoft.azure.AzureServiceFuture;
+import com.microsoft.azure.CloudException;
+import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.RestClient;
+import com.microsoft.rest.ServiceFuture;
+import com.microsoft.rest.ServiceResponse;
+import java.io.IOException;
+import java.util.List;
+import okhttp3.ResponseBody;
+import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.Headers;
+import retrofit2.http.Query;
+import retrofit2.http.Url;
+import retrofit2.Response;
+import rx.functions.Func1;
+import rx.Observable;
 
 /**
  * Initializes a new instance of the SubscriptionClientImpl class.
  */
 public class SubscriptionClientImpl extends AzureServiceClient {
+    /** The Retrofit service to perform REST calls. */
+    private SubscriptionClientService service;
     /** the {@link AzureClient} used for long running operations. */
     private AzureClient azureClient;
 
@@ -173,6 +194,7 @@ public class SubscriptionClientImpl extends AzureServiceClient {
         this.subscriptions = new SubscriptionsInner(restClient().retrofit(), this);
         this.tenants = new TenantsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
+        initializeService();
     }
 
     /**
@@ -184,4 +206,239 @@ public class SubscriptionClientImpl extends AzureServiceClient {
     public String userAgent() {
         return String.format("%s (%s, %s)", super.userAgent(), "SubscriptionClient", "2016-06-01");
     }
+
+    private void initializeService() {
+        service = restClient().retrofit().create(SubscriptionClientService.class);
+    }
+
+    /**
+     * The interface defining all the services for SubscriptionClient to be
+     * used by Retrofit to perform actually REST calls.
+     */
+    interface SubscriptionClientService {
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.v2016_06_01.SubscriptionClient listOperations" })
+        @GET("providers/Microsoft.Resources/operations")
+        Observable<Response<ResponseBody>> listOperations(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.v2016_06_01.SubscriptionClient listOperationsNext" })
+        @GET
+        Observable<Response<ResponseBody>> listOperationsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+    }
+
+    /**
+     * Lists all of the available Microsoft.Resources REST API operations.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;OperationInner&gt; object if successful.
+     */
+    public PagedList<OperationInner> listOperations() {
+        ServiceResponse<Page<OperationInner>> response = listOperationsSinglePageAsync().toBlocking().single();
+        return new PagedList<OperationInner>(response.body()) {
+            @Override
+            public Page<OperationInner> nextPage(String nextPageLink) {
+                return listOperationsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists all of the available Microsoft.Resources REST API operations.
+     *
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<OperationInner>> listOperationsAsync(final ListOperationCallback<OperationInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listOperationsSinglePageAsync(),
+            new Func1<String, Observable<ServiceResponse<Page<OperationInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<OperationInner>>> call(String nextPageLink) {
+                    return listOperationsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists all of the available Microsoft.Resources REST API operations.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;OperationInner&gt; object
+     */
+    public Observable<Page<OperationInner>> listOperationsAsync() {
+        return listOperationsWithServiceResponseAsync()
+            .map(new Func1<ServiceResponse<Page<OperationInner>>, Page<OperationInner>>() {
+                @Override
+                public Page<OperationInner> call(ServiceResponse<Page<OperationInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists all of the available Microsoft.Resources REST API operations.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;OperationInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<OperationInner>>> listOperationsWithServiceResponseAsync() {
+        return listOperationsSinglePageAsync()
+            .concatMap(new Func1<ServiceResponse<Page<OperationInner>>, Observable<ServiceResponse<Page<OperationInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<OperationInner>>> call(ServiceResponse<Page<OperationInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listOperationsNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists all of the available Microsoft.Resources REST API operations.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;OperationInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<OperationInner>>> listOperationsSinglePageAsync() {
+        if (this.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
+        }
+        return service.listOperations(this.apiVersion(), this.acceptLanguage(), this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<OperationInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<OperationInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<OperationInner>> result = listOperationsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<OperationInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<OperationInner>> listOperationsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<PageImpl<OperationInner>, CloudException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<OperationInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Lists all of the available Microsoft.Resources REST API operations.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;OperationInner&gt; object if successful.
+     */
+    public PagedList<OperationInner> listOperationsNext(final String nextPageLink) {
+        ServiceResponse<Page<OperationInner>> response = listOperationsNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<OperationInner>(response.body()) {
+            @Override
+            public Page<OperationInner> nextPage(String nextPageLink) {
+                return listOperationsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists all of the available Microsoft.Resources REST API operations.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<OperationInner>> listOperationsNextAsync(final String nextPageLink, final ServiceFuture<List<OperationInner>> serviceFuture, final ListOperationCallback<OperationInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listOperationsNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<OperationInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<OperationInner>>> call(String nextPageLink) {
+                    return listOperationsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists all of the available Microsoft.Resources REST API operations.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;OperationInner&gt; object
+     */
+    public Observable<Page<OperationInner>> listOperationsNextAsync(final String nextPageLink) {
+        return listOperationsNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<OperationInner>>, Page<OperationInner>>() {
+                @Override
+                public Page<OperationInner> call(ServiceResponse<Page<OperationInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists all of the available Microsoft.Resources REST API operations.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;OperationInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<OperationInner>>> listOperationsNextWithServiceResponseAsync(final String nextPageLink) {
+        return listOperationsNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<OperationInner>>, Observable<ServiceResponse<Page<OperationInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<OperationInner>>> call(ServiceResponse<Page<OperationInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listOperationsNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists all of the available Microsoft.Resources REST API operations.
+     *
+    ServiceResponse<PageImpl<OperationInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;OperationInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<OperationInner>>> listOperationsNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listOperationsNext(nextUrl, this.acceptLanguage(), this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<OperationInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<OperationInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<OperationInner>> result = listOperationsNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<OperationInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<OperationInner>> listOperationsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<PageImpl<OperationInner>, CloudException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<OperationInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
 }
