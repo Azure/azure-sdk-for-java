@@ -77,33 +77,13 @@ For more information on using Java with Azure, see [here](https://azure.microsof
 
 ## Download
 
-To get the binaries of this library as distributed by Microsoft, ready for use within your project, you can use Maven.
+To get the binaries of this library as distributed by Microsoft, ready for use within your project, you can use Maven. Add the following fragment to you POM's dependencies.
 
 ```xml
 <dependency>
     <groupId>com.microsoft.azure</groupId>
-    <artifactId>azure-keyvault</artifactId>
-    <version>1.1</version>
-</dependency>
-<dependency>
-    <groupId>com.microsoft.azure</groupId>
-    <artifactId>azure-keyvault-cryptography</artifactId>
-    <version>1.1</version>
-</dependency>
-<dependency>
-    <groupId>com.microsoft.azure</groupId>
-    <artifactId>azure-keyvault-extensions</artifactId>
-    <version>1.1</version>
-</dependency>
-<dependency>
-    <groupId>com.microsoft.azure</groupId>
-    <artifactId>azure-keyvault-core</artifactId>
-    <version>1.1</version>
-</dependency>
-<dependency>
-    <groupId>com.microsoft.azure</groupId>
-    <artifactId>azure-keyvault-webkey</artifactId>
-    <version>1.1</version>
+    <artifactId>azure-keyvault-complete</artifactId>
+    <version>1.1.1</version>
 </dependency>
 ```
 
@@ -134,6 +114,7 @@ If you would like to become an active contributor to this project please follow 
 
 | Version | Comments |
 | :-------: | :-------- |
+| [1.1](https://github.com/Azure/azure-keyvault-java/tree/1.1)   | Version 1.1 release |
 | [1.1-beta-1](https://github.com/Azure/azure-keyvault-java/tree/1.1-beta-1)   | Version 1.1.0 **beta** release |
 | [1.1-alpha-2](https://github.com/Azure/azure-keyvault-java/tree/v1.1-alpha-2)   | Version 1.1.0 **alpha** release |
 | [1.0.0](https://github.com/Azure/azure-keyvault-java/tree/v1.0.0)   | Version 1.0.0 release |
