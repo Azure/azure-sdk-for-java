@@ -95,109 +95,91 @@ public interface VirtualNetwork extends HasInner<VirtualNetworkInner>, Resource,
         }
 
         /**
-         * The stage of the virtualnetwork definition allowing to specify AddressSpace.
+         * The stage of the virtualnetwork update allowing to specify AddressSpace.
          */
         interface WithAddressSpace {
             /**
              * Specifies addressSpace.
-             * @param addressSpace The AddressSpace that contains an array of IP address ranges that can be used by subnets
-             * @return the next definition stage
              */
             WithCreate withAddressSpace(AddressSpace addressSpace);
         }
 
         /**
-         * The stage of the virtualnetwork definition allowing to specify DhcpOptions.
+         * The stage of the virtualnetwork update allowing to specify DhcpOptions.
          */
         interface WithDhcpOptions {
             /**
              * Specifies dhcpOptions.
-             * @param dhcpOptions The dhcpOptions that contains an array of DNS servers available to VMs deployed in the virtual network
-             * @return the next definition stage
              */
             WithCreate withDhcpOptions(DhcpOptions dhcpOptions);
         }
 
         /**
-         * The stage of the virtualnetwork definition allowing to specify EnableDdosProtection.
+         * The stage of the virtualnetwork update allowing to specify EnableDdosProtection.
          */
         interface WithEnableDdosProtection {
             /**
              * Specifies enableDdosProtection.
-             * @param enableDdosProtection Indicates if DDoS protection is enabled for all the protected resources in a Virtual Network
-             * @return the next definition stage
              */
             WithCreate withEnableDdosProtection(Boolean enableDdosProtection);
         }
 
         /**
-         * The stage of the virtualnetwork definition allowing to specify EnableVmProtection.
+         * The stage of the virtualnetwork update allowing to specify EnableVmProtection.
          */
         interface WithEnableVmProtection {
             /**
              * Specifies enableVmProtection.
-             * @param enableVmProtection Indicates if Vm protection is enabled for all the subnets in a Virtual Network
-             * @return the next definition stage
              */
             WithCreate withEnableVmProtection(Boolean enableVmProtection);
         }
 
         /**
-         * The stage of the virtualnetwork definition allowing to specify Etag.
+         * The stage of the virtualnetwork update allowing to specify Etag.
          */
         interface WithEtag {
             /**
              * Specifies etag.
-             * @param etag Gets a unique read-only string that changes whenever the resource is updated
-             * @return the next definition stage
              */
             WithCreate withEtag(String etag);
         }
 
         /**
-         * The stage of the virtualnetwork definition allowing to specify ProvisioningState.
+         * The stage of the virtualnetwork update allowing to specify ProvisioningState.
          */
         interface WithProvisioningState {
             /**
              * Specifies provisioningState.
-             * @param provisioningState The provisioning state of the PublicIP resource. Possible values are: 'Updating', 'Deleting', and 'Failed'
-             * @return the next definition stage
              */
             WithCreate withProvisioningState(String provisioningState);
         }
 
         /**
-         * The stage of the virtualnetwork definition allowing to specify ResourceGuid.
+         * The stage of the virtualnetwork update allowing to specify ResourceGuid.
          */
         interface WithResourceGuid {
             /**
              * Specifies resourceGuid.
-             * @param resourceGuid The resourceGuid property of the Virtual Network resource
-             * @return the next definition stage
              */
             WithCreate withResourceGuid(String resourceGuid);
         }
 
         /**
-         * The stage of the virtualnetwork definition allowing to specify Subnets.
+         * The stage of the virtualnetwork update allowing to specify Subnets.
          */
         interface WithSubnets {
             /**
              * Specifies subnets.
-             * @param subnets A list of subnets in a Virtual Network
-             * @return the next definition stage
              */
             WithCreate withSubnets(List<SubnetInner> subnets);
         }
 
         /**
-         * The stage of the virtualnetwork definition allowing to specify VirtualNetworkPeerings.
+         * The stage of the virtualnetwork update allowing to specify VirtualNetworkPeerings.
          */
         interface WithVirtualNetworkPeerings {
             /**
              * Specifies virtualNetworkPeerings.
-             * @param virtualNetworkPeerings A list of peerings in a Virtual Network
-             * @return the next definition stage
              */
             WithCreate withVirtualNetworkPeerings(List<VirtualNetworkPeeringInner> virtualNetworkPeerings);
         }
@@ -221,109 +203,91 @@ public interface VirtualNetwork extends HasInner<VirtualNetworkInner>, Resource,
      */
     interface UpdateStages {
         /**
-         * The stage of the virtualnetwork update allowing to specify AddressSpace.
+         * The stage of the virtualnetwork {0} allowing to specify AddressSpace.
          */
         interface WithAddressSpace {
             /**
              * Specifies addressSpace.
-             * @param addressSpace The AddressSpace that contains an array of IP address ranges that can be used by subnets
-             * @return the next update stage
              */
             Update withAddressSpace(AddressSpace addressSpace);
         }
 
         /**
-         * The stage of the virtualnetwork update allowing to specify DhcpOptions.
+         * The stage of the virtualnetwork {0} allowing to specify DhcpOptions.
          */
         interface WithDhcpOptions {
             /**
              * Specifies dhcpOptions.
-             * @param dhcpOptions The dhcpOptions that contains an array of DNS servers available to VMs deployed in the virtual network
-             * @return the next update stage
              */
             Update withDhcpOptions(DhcpOptions dhcpOptions);
         }
 
         /**
-         * The stage of the virtualnetwork update allowing to specify EnableDdosProtection.
+         * The stage of the virtualnetwork {0} allowing to specify EnableDdosProtection.
          */
         interface WithEnableDdosProtection {
             /**
              * Specifies enableDdosProtection.
-             * @param enableDdosProtection Indicates if DDoS protection is enabled for all the protected resources in a Virtual Network
-             * @return the next update stage
              */
             Update withEnableDdosProtection(Boolean enableDdosProtection);
         }
 
         /**
-         * The stage of the virtualnetwork update allowing to specify EnableVmProtection.
+         * The stage of the virtualnetwork {0} allowing to specify EnableVmProtection.
          */
         interface WithEnableVmProtection {
             /**
              * Specifies enableVmProtection.
-             * @param enableVmProtection Indicates if Vm protection is enabled for all the subnets in a Virtual Network
-             * @return the next update stage
              */
             Update withEnableVmProtection(Boolean enableVmProtection);
         }
 
         /**
-         * The stage of the virtualnetwork update allowing to specify Etag.
+         * The stage of the virtualnetwork {0} allowing to specify Etag.
          */
         interface WithEtag {
             /**
              * Specifies etag.
-             * @param etag Gets a unique read-only string that changes whenever the resource is updated
-             * @return the next update stage
              */
             Update withEtag(String etag);
         }
 
         /**
-         * The stage of the virtualnetwork update allowing to specify ProvisioningState.
+         * The stage of the virtualnetwork {0} allowing to specify ProvisioningState.
          */
         interface WithProvisioningState {
             /**
              * Specifies provisioningState.
-             * @param provisioningState The provisioning state of the PublicIP resource. Possible values are: 'Updating', 'Deleting', and 'Failed'
-             * @return the next update stage
              */
             Update withProvisioningState(String provisioningState);
         }
 
         /**
-         * The stage of the virtualnetwork update allowing to specify ResourceGuid.
+         * The stage of the virtualnetwork {0} allowing to specify ResourceGuid.
          */
         interface WithResourceGuid {
             /**
              * Specifies resourceGuid.
-             * @param resourceGuid The resourceGuid property of the Virtual Network resource
-             * @return the next update stage
              */
             Update withResourceGuid(String resourceGuid);
         }
 
         /**
-         * The stage of the virtualnetwork update allowing to specify Subnets.
+         * The stage of the virtualnetwork {0} allowing to specify Subnets.
          */
         interface WithSubnets {
             /**
              * Specifies subnets.
-             * @param subnets A list of subnets in a Virtual Network
-             * @return the next update stage
              */
             Update withSubnets(List<SubnetInner> subnets);
         }
 
         /**
-         * The stage of the virtualnetwork update allowing to specify VirtualNetworkPeerings.
+         * The stage of the virtualnetwork {0} allowing to specify VirtualNetworkPeerings.
          */
         interface WithVirtualNetworkPeerings {
             /**
              * Specifies virtualNetworkPeerings.
-             * @param virtualNetworkPeerings A list of peerings in a Virtual Network
-             * @return the next update stage
              */
             Update withVirtualNetworkPeerings(List<VirtualNetworkPeeringInner> virtualNetworkPeerings);
         }

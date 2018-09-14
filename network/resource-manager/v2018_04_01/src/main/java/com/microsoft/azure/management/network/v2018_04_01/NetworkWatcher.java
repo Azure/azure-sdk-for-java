@@ -57,13 +57,11 @@ public interface NetworkWatcher extends HasInner<NetworkWatcherInner>, Resource,
         }
 
         /**
-         * The stage of the networkwatcher definition allowing to specify Etag.
+         * The stage of the networkwatcher update allowing to specify Etag.
          */
         interface WithEtag {
             /**
              * Specifies etag.
-             * @param etag A unique read-only string that changes whenever the resource is updated
-             * @return the next definition stage
              */
             WithCreate withEtag(String etag);
         }
@@ -87,13 +85,11 @@ public interface NetworkWatcher extends HasInner<NetworkWatcherInner>, Resource,
      */
     interface UpdateStages {
         /**
-         * The stage of the networkwatcher update allowing to specify Etag.
+         * The stage of the networkwatcher {0} allowing to specify Etag.
          */
         interface WithEtag {
             /**
              * Specifies etag.
-             * @param etag A unique read-only string that changes whenever the resource is updated
-             * @return the next update stage
              */
             Update withEtag(String etag);
         }

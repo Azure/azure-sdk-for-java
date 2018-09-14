@@ -146,9 +146,7 @@ public interface VirtualNetworkGatewayConnection extends HasInner<VirtualNetwork
         interface WithConnectionType {
            /**
             * Specifies connectionType.
-            * @param connectionType Gateway connection type. Possible values are: 'Ipsec','Vnet2Vnet','ExpressRoute', and 'VPNClient. Possible values include: 'IPsec', 'Vnet2Vnet', 'ExpressRoute', 'VPNClient'
-            * @return the next definition stage
-*/
+            */
             WithVirtualNetworkGateway1 withConnectionType(VirtualNetworkGatewayConnectionType connectionType);
         }
 
@@ -158,140 +156,116 @@ public interface VirtualNetworkGatewayConnection extends HasInner<VirtualNetwork
         interface WithVirtualNetworkGateway1 {
            /**
             * Specifies virtualNetworkGateway1.
-            * @param virtualNetworkGateway1 The reference to virtual network gateway resource
-            * @return the next definition stage
-*/
+            */
             WithCreate withVirtualNetworkGateway1(VirtualNetworkGatewayInner virtualNetworkGateway1);
         }
 
         /**
-         * The stage of the virtualnetworkgatewayconnection definition allowing to specify AuthorizationKey.
+         * The stage of the virtualnetworkgatewayconnection update allowing to specify AuthorizationKey.
          */
         interface WithAuthorizationKey {
             /**
              * Specifies authorizationKey.
-             * @param authorizationKey The authorizationKey
-             * @return the next definition stage
              */
             WithCreate withAuthorizationKey(String authorizationKey);
         }
 
         /**
-         * The stage of the virtualnetworkgatewayconnection definition allowing to specify EnableBgp.
+         * The stage of the virtualnetworkgatewayconnection update allowing to specify EnableBgp.
          */
         interface WithEnableBgp {
             /**
              * Specifies enableBgp.
-             * @param enableBgp EnableBgp flag
-             * @return the next definition stage
              */
             WithCreate withEnableBgp(Boolean enableBgp);
         }
 
         /**
-         * The stage of the virtualnetworkgatewayconnection definition allowing to specify Etag.
+         * The stage of the virtualnetworkgatewayconnection update allowing to specify Etag.
          */
         interface WithEtag {
             /**
              * Specifies etag.
-             * @param etag Gets a unique read-only string that changes whenever the resource is updated
-             * @return the next definition stage
              */
             WithCreate withEtag(String etag);
         }
 
         /**
-         * The stage of the virtualnetworkgatewayconnection definition allowing to specify IpsecPolicies.
+         * The stage of the virtualnetworkgatewayconnection update allowing to specify IpsecPolicies.
          */
         interface WithIpsecPolicies {
             /**
              * Specifies ipsecPolicies.
-             * @param ipsecPolicies The IPSec Policies to be considered by this connection
-             * @return the next definition stage
              */
             WithCreate withIpsecPolicies(List<IpsecPolicy> ipsecPolicies);
         }
 
         /**
-         * The stage of the virtualnetworkgatewayconnection definition allowing to specify LocalNetworkGateway2.
+         * The stage of the virtualnetworkgatewayconnection update allowing to specify LocalNetworkGateway2.
          */
         interface WithLocalNetworkGateway2 {
             /**
              * Specifies localNetworkGateway2.
-             * @param localNetworkGateway2 The reference to local network gateway resource
-             * @return the next definition stage
              */
             WithCreate withLocalNetworkGateway2(LocalNetworkGatewayInner localNetworkGateway2);
         }
 
         /**
-         * The stage of the virtualnetworkgatewayconnection definition allowing to specify Peer.
+         * The stage of the virtualnetworkgatewayconnection update allowing to specify Peer.
          */
         interface WithPeer {
             /**
              * Specifies peer.
-             * @param peer The reference to peerings resource
-             * @return the next definition stage
              */
             WithCreate withPeer(SubResource peer);
         }
 
         /**
-         * The stage of the virtualnetworkgatewayconnection definition allowing to specify ResourceGuid.
+         * The stage of the virtualnetworkgatewayconnection update allowing to specify ResourceGuid.
          */
         interface WithResourceGuid {
             /**
              * Specifies resourceGuid.
-             * @param resourceGuid The resource GUID property of the VirtualNetworkGatewayConnection resource
-             * @return the next definition stage
              */
             WithCreate withResourceGuid(String resourceGuid);
         }
 
         /**
-         * The stage of the virtualnetworkgatewayconnection definition allowing to specify RoutingWeight.
+         * The stage of the virtualnetworkgatewayconnection update allowing to specify RoutingWeight.
          */
         interface WithRoutingWeight {
             /**
              * Specifies routingWeight.
-             * @param routingWeight The routing weight
-             * @return the next definition stage
              */
             WithCreate withRoutingWeight(Integer routingWeight);
         }
 
         /**
-         * The stage of the virtualnetworkgatewayconnection definition allowing to specify SharedKey.
+         * The stage of the virtualnetworkgatewayconnection update allowing to specify SharedKey.
          */
         interface WithSharedKey {
             /**
              * Specifies sharedKey.
-             * @param sharedKey The IPSec shared key
-             * @return the next definition stage
              */
             WithCreate withSharedKey(String sharedKey);
         }
 
         /**
-         * The stage of the virtualnetworkgatewayconnection definition allowing to specify UsePolicyBasedTrafficSelectors.
+         * The stage of the virtualnetworkgatewayconnection update allowing to specify UsePolicyBasedTrafficSelectors.
          */
         interface WithUsePolicyBasedTrafficSelectors {
             /**
              * Specifies usePolicyBasedTrafficSelectors.
-             * @param usePolicyBasedTrafficSelectors Enable policy-based traffic selectors
-             * @return the next definition stage
              */
             WithCreate withUsePolicyBasedTrafficSelectors(Boolean usePolicyBasedTrafficSelectors);
         }
 
         /**
-         * The stage of the virtualnetworkgatewayconnection definition allowing to specify VirtualNetworkGateway2.
+         * The stage of the virtualnetworkgatewayconnection update allowing to specify VirtualNetworkGateway2.
          */
         interface WithVirtualNetworkGateway2 {
             /**
              * Specifies virtualNetworkGateway2.
-             * @param virtualNetworkGateway2 The reference to virtual network gateway resource
-             * @return the next definition stage
              */
             WithCreate withVirtualNetworkGateway2(VirtualNetworkGatewayInner virtualNetworkGateway2);
         }
@@ -315,133 +289,111 @@ public interface VirtualNetworkGatewayConnection extends HasInner<VirtualNetwork
      */
     interface UpdateStages {
         /**
-         * The stage of the virtualnetworkgatewayconnection update allowing to specify AuthorizationKey.
+         * The stage of the virtualnetworkgatewayconnection {0} allowing to specify AuthorizationKey.
          */
         interface WithAuthorizationKey {
             /**
              * Specifies authorizationKey.
-             * @param authorizationKey The authorizationKey
-             * @return the next update stage
              */
             Update withAuthorizationKey(String authorizationKey);
         }
 
         /**
-         * The stage of the virtualnetworkgatewayconnection update allowing to specify EnableBgp.
+         * The stage of the virtualnetworkgatewayconnection {0} allowing to specify EnableBgp.
          */
         interface WithEnableBgp {
             /**
              * Specifies enableBgp.
-             * @param enableBgp EnableBgp flag
-             * @return the next update stage
              */
             Update withEnableBgp(Boolean enableBgp);
         }
 
         /**
-         * The stage of the virtualnetworkgatewayconnection update allowing to specify Etag.
+         * The stage of the virtualnetworkgatewayconnection {0} allowing to specify Etag.
          */
         interface WithEtag {
             /**
              * Specifies etag.
-             * @param etag Gets a unique read-only string that changes whenever the resource is updated
-             * @return the next update stage
              */
             Update withEtag(String etag);
         }
 
         /**
-         * The stage of the virtualnetworkgatewayconnection update allowing to specify IpsecPolicies.
+         * The stage of the virtualnetworkgatewayconnection {0} allowing to specify IpsecPolicies.
          */
         interface WithIpsecPolicies {
             /**
              * Specifies ipsecPolicies.
-             * @param ipsecPolicies The IPSec Policies to be considered by this connection
-             * @return the next update stage
              */
             Update withIpsecPolicies(List<IpsecPolicy> ipsecPolicies);
         }
 
         /**
-         * The stage of the virtualnetworkgatewayconnection update allowing to specify LocalNetworkGateway2.
+         * The stage of the virtualnetworkgatewayconnection {0} allowing to specify LocalNetworkGateway2.
          */
         interface WithLocalNetworkGateway2 {
             /**
              * Specifies localNetworkGateway2.
-             * @param localNetworkGateway2 The reference to local network gateway resource
-             * @return the next update stage
              */
             Update withLocalNetworkGateway2(LocalNetworkGatewayInner localNetworkGateway2);
         }
 
         /**
-         * The stage of the virtualnetworkgatewayconnection update allowing to specify Peer.
+         * The stage of the virtualnetworkgatewayconnection {0} allowing to specify Peer.
          */
         interface WithPeer {
             /**
              * Specifies peer.
-             * @param peer The reference to peerings resource
-             * @return the next update stage
              */
             Update withPeer(SubResource peer);
         }
 
         /**
-         * The stage of the virtualnetworkgatewayconnection update allowing to specify ResourceGuid.
+         * The stage of the virtualnetworkgatewayconnection {0} allowing to specify ResourceGuid.
          */
         interface WithResourceGuid {
             /**
              * Specifies resourceGuid.
-             * @param resourceGuid The resource GUID property of the VirtualNetworkGatewayConnection resource
-             * @return the next update stage
              */
             Update withResourceGuid(String resourceGuid);
         }
 
         /**
-         * The stage of the virtualnetworkgatewayconnection update allowing to specify RoutingWeight.
+         * The stage of the virtualnetworkgatewayconnection {0} allowing to specify RoutingWeight.
          */
         interface WithRoutingWeight {
             /**
              * Specifies routingWeight.
-             * @param routingWeight The routing weight
-             * @return the next update stage
              */
             Update withRoutingWeight(Integer routingWeight);
         }
 
         /**
-         * The stage of the virtualnetworkgatewayconnection update allowing to specify SharedKey.
+         * The stage of the virtualnetworkgatewayconnection {0} allowing to specify SharedKey.
          */
         interface WithSharedKey {
             /**
              * Specifies sharedKey.
-             * @param sharedKey The IPSec shared key
-             * @return the next update stage
              */
             Update withSharedKey(String sharedKey);
         }
 
         /**
-         * The stage of the virtualnetworkgatewayconnection update allowing to specify UsePolicyBasedTrafficSelectors.
+         * The stage of the virtualnetworkgatewayconnection {0} allowing to specify UsePolicyBasedTrafficSelectors.
          */
         interface WithUsePolicyBasedTrafficSelectors {
             /**
              * Specifies usePolicyBasedTrafficSelectors.
-             * @param usePolicyBasedTrafficSelectors Enable policy-based traffic selectors
-             * @return the next update stage
              */
             Update withUsePolicyBasedTrafficSelectors(Boolean usePolicyBasedTrafficSelectors);
         }
 
         /**
-         * The stage of the virtualnetworkgatewayconnection update allowing to specify VirtualNetworkGateway2.
+         * The stage of the virtualnetworkgatewayconnection {0} allowing to specify VirtualNetworkGateway2.
          */
         interface WithVirtualNetworkGateway2 {
             /**
              * Specifies virtualNetworkGateway2.
-             * @param virtualNetworkGateway2 The reference to virtual network gateway resource
-             * @return the next update stage
              */
             Update withVirtualNetworkGateway2(VirtualNetworkGatewayInner virtualNetworkGateway2);
         }

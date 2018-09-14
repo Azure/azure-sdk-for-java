@@ -134,9 +134,6 @@ public interface ExpressRouteCrossConnectionPeering extends HasInner<ExpressRout
         interface WithExpressRouteCrossConnection {
            /**
             * Specifies resourceGroupName, crossConnectionName.
-            * @param resourceGroupName The name of the resource group
-            * @param crossConnectionName The name of the ExpressRouteCrossConnection
-            * @return the next definition stage
             */
             WithCreate withExistingExpressRouteCrossConnection(String resourceGroupName, String crossConnectionName);
         }
@@ -147,8 +144,6 @@ public interface ExpressRouteCrossConnectionPeering extends HasInner<ExpressRout
         interface WithGatewayManagerEtag {
             /**
              * Specifies gatewayManagerEtag.
-             * @param gatewayManagerEtag The GatewayManager Etag
-             * @return the next definition stage
              */
             WithCreate withGatewayManagerEtag(String gatewayManagerEtag);
         }
@@ -159,8 +154,6 @@ public interface ExpressRouteCrossConnectionPeering extends HasInner<ExpressRout
         interface WithId {
             /**
              * Specifies id.
-             * @param id Resource ID
-             * @return the next definition stage
              */
             WithCreate withId(String id);
         }
@@ -171,8 +164,6 @@ public interface ExpressRouteCrossConnectionPeering extends HasInner<ExpressRout
         interface WithIpv6PeeringConfig {
             /**
              * Specifies ipv6PeeringConfig.
-             * @param ipv6PeeringConfig The IPv6 peering configuration
-             * @return the next definition stage
              */
             WithCreate withIpv6PeeringConfig(Ipv6ExpressRouteCircuitPeeringConfig ipv6PeeringConfig);
         }
@@ -183,8 +174,6 @@ public interface ExpressRouteCrossConnectionPeering extends HasInner<ExpressRout
         interface WithLastModifiedBy {
             /**
              * Specifies lastModifiedBy.
-             * @param lastModifiedBy Gets whether the provider or the customer last modified the peering
-             * @return the next definition stage
              */
             WithCreate withLastModifiedBy(String lastModifiedBy);
         }
@@ -195,8 +184,6 @@ public interface ExpressRouteCrossConnectionPeering extends HasInner<ExpressRout
         interface WithMicrosoftPeeringConfig {
             /**
              * Specifies microsoftPeeringConfig.
-             * @param microsoftPeeringConfig The Microsoft peering configuration
-             * @return the next definition stage
              */
             WithCreate withMicrosoftPeeringConfig(ExpressRouteCircuitPeeringConfig microsoftPeeringConfig);
         }
@@ -207,8 +194,6 @@ public interface ExpressRouteCrossConnectionPeering extends HasInner<ExpressRout
         interface WithName {
             /**
              * Specifies name.
-             * @param name Gets name of the resource that is unique within a resource group. This name can be used to access the resource
-             * @return the next definition stage
              */
             WithCreate withName(String name);
         }
@@ -219,8 +204,6 @@ public interface ExpressRouteCrossConnectionPeering extends HasInner<ExpressRout
         interface WithPeerASN {
             /**
              * Specifies peerASN.
-             * @param peerASN The peer ASN
-             * @return the next definition stage
              */
             WithCreate withPeerASN(Long peerASN);
         }
@@ -231,8 +214,6 @@ public interface ExpressRouteCrossConnectionPeering extends HasInner<ExpressRout
         interface WithPeeringType {
             /**
              * Specifies peeringType.
-             * @param peeringType The peering type. Possible values include: 'AzurePublicPeering', 'AzurePrivatePeering', 'MicrosoftPeering'
-             * @return the next definition stage
              */
             WithCreate withPeeringType(ExpressRoutePeeringType peeringType);
         }
@@ -243,8 +224,6 @@ public interface ExpressRouteCrossConnectionPeering extends HasInner<ExpressRout
         interface WithPrimaryPeerAddressPrefix {
             /**
              * Specifies primaryPeerAddressPrefix.
-             * @param primaryPeerAddressPrefix The primary address prefix
-             * @return the next definition stage
              */
             WithCreate withPrimaryPeerAddressPrefix(String primaryPeerAddressPrefix);
         }
@@ -255,8 +234,6 @@ public interface ExpressRouteCrossConnectionPeering extends HasInner<ExpressRout
         interface WithSecondaryPeerAddressPrefix {
             /**
              * Specifies secondaryPeerAddressPrefix.
-             * @param secondaryPeerAddressPrefix The secondary address prefix
-             * @return the next definition stage
              */
             WithCreate withSecondaryPeerAddressPrefix(String secondaryPeerAddressPrefix);
         }
@@ -267,8 +244,6 @@ public interface ExpressRouteCrossConnectionPeering extends HasInner<ExpressRout
         interface WithSharedKey {
             /**
              * Specifies sharedKey.
-             * @param sharedKey The shared key
-             * @return the next definition stage
              */
             WithCreate withSharedKey(String sharedKey);
         }
@@ -279,8 +254,6 @@ public interface ExpressRouteCrossConnectionPeering extends HasInner<ExpressRout
         interface WithState {
             /**
              * Specifies state.
-             * @param state The peering state. Possible values include: 'Disabled', 'Enabled'
-             * @return the next definition stage
              */
             WithCreate withState(ExpressRoutePeeringState state);
         }
@@ -291,8 +264,6 @@ public interface ExpressRouteCrossConnectionPeering extends HasInner<ExpressRout
         interface WithVlanId {
             /**
              * Specifies vlanId.
-             * @param vlanId The VLAN ID
-             * @return the next definition stage
              */
             WithCreate withVlanId(Integer vlanId);
         }
@@ -321,8 +292,6 @@ public interface ExpressRouteCrossConnectionPeering extends HasInner<ExpressRout
         interface WithGatewayManagerEtag {
             /**
              * Specifies gatewayManagerEtag.
-             * @param gatewayManagerEtag The GatewayManager Etag
-             * @return the next update stage
              */
             Update withGatewayManagerEtag(String gatewayManagerEtag);
         }
@@ -333,8 +302,6 @@ public interface ExpressRouteCrossConnectionPeering extends HasInner<ExpressRout
         interface WithId {
             /**
              * Specifies id.
-             * @param id Resource ID
-             * @return the next update stage
              */
             Update withId(String id);
         }
@@ -345,8 +312,6 @@ public interface ExpressRouteCrossConnectionPeering extends HasInner<ExpressRout
         interface WithIpv6PeeringConfig {
             /**
              * Specifies ipv6PeeringConfig.
-             * @param ipv6PeeringConfig The IPv6 peering configuration
-             * @return the next update stage
              */
             Update withIpv6PeeringConfig(Ipv6ExpressRouteCircuitPeeringConfig ipv6PeeringConfig);
         }
@@ -357,8 +322,6 @@ public interface ExpressRouteCrossConnectionPeering extends HasInner<ExpressRout
         interface WithLastModifiedBy {
             /**
              * Specifies lastModifiedBy.
-             * @param lastModifiedBy Gets whether the provider or the customer last modified the peering
-             * @return the next update stage
              */
             Update withLastModifiedBy(String lastModifiedBy);
         }
@@ -369,8 +332,6 @@ public interface ExpressRouteCrossConnectionPeering extends HasInner<ExpressRout
         interface WithMicrosoftPeeringConfig {
             /**
              * Specifies microsoftPeeringConfig.
-             * @param microsoftPeeringConfig The Microsoft peering configuration
-             * @return the next update stage
              */
             Update withMicrosoftPeeringConfig(ExpressRouteCircuitPeeringConfig microsoftPeeringConfig);
         }
@@ -381,8 +342,6 @@ public interface ExpressRouteCrossConnectionPeering extends HasInner<ExpressRout
         interface WithName {
             /**
              * Specifies name.
-             * @param name Gets name of the resource that is unique within a resource group. This name can be used to access the resource
-             * @return the next update stage
              */
             Update withName(String name);
         }
@@ -393,8 +352,6 @@ public interface ExpressRouteCrossConnectionPeering extends HasInner<ExpressRout
         interface WithPeerASN {
             /**
              * Specifies peerASN.
-             * @param peerASN The peer ASN
-             * @return the next update stage
              */
             Update withPeerASN(Long peerASN);
         }
@@ -405,8 +362,6 @@ public interface ExpressRouteCrossConnectionPeering extends HasInner<ExpressRout
         interface WithPeeringType {
             /**
              * Specifies peeringType.
-             * @param peeringType The peering type. Possible values include: 'AzurePublicPeering', 'AzurePrivatePeering', 'MicrosoftPeering'
-             * @return the next update stage
              */
             Update withPeeringType(ExpressRoutePeeringType peeringType);
         }
@@ -417,8 +372,6 @@ public interface ExpressRouteCrossConnectionPeering extends HasInner<ExpressRout
         interface WithPrimaryPeerAddressPrefix {
             /**
              * Specifies primaryPeerAddressPrefix.
-             * @param primaryPeerAddressPrefix The primary address prefix
-             * @return the next update stage
              */
             Update withPrimaryPeerAddressPrefix(String primaryPeerAddressPrefix);
         }
@@ -429,8 +382,6 @@ public interface ExpressRouteCrossConnectionPeering extends HasInner<ExpressRout
         interface WithSecondaryPeerAddressPrefix {
             /**
              * Specifies secondaryPeerAddressPrefix.
-             * @param secondaryPeerAddressPrefix The secondary address prefix
-             * @return the next update stage
              */
             Update withSecondaryPeerAddressPrefix(String secondaryPeerAddressPrefix);
         }
@@ -441,8 +392,6 @@ public interface ExpressRouteCrossConnectionPeering extends HasInner<ExpressRout
         interface WithSharedKey {
             /**
              * Specifies sharedKey.
-             * @param sharedKey The shared key
-             * @return the next update stage
              */
             Update withSharedKey(String sharedKey);
         }
@@ -453,8 +402,6 @@ public interface ExpressRouteCrossConnectionPeering extends HasInner<ExpressRout
         interface WithState {
             /**
              * Specifies state.
-             * @param state The peering state. Possible values include: 'Disabled', 'Enabled'
-             * @return the next update stage
              */
             Update withState(ExpressRoutePeeringState state);
         }
@@ -465,8 +412,6 @@ public interface ExpressRouteCrossConnectionPeering extends HasInner<ExpressRout
         interface WithVlanId {
             /**
              * Specifies vlanId.
-             * @param vlanId The VLAN ID
-             * @return the next update stage
              */
             Update withVlanId(Integer vlanId);
         }

@@ -104,73 +104,61 @@ public interface ExpressRouteCrossConnection extends HasInner<ExpressRouteCrossC
         }
 
         /**
-         * The stage of the expressroutecrossconnection definition allowing to specify BandwidthInMbps.
+         * The stage of the expressroutecrossconnection update allowing to specify BandwidthInMbps.
          */
         interface WithBandwidthInMbps {
             /**
              * Specifies bandwidthInMbps.
-             * @param bandwidthInMbps The circuit bandwidth In Mbps
-             * @return the next definition stage
              */
             WithCreate withBandwidthInMbps(Integer bandwidthInMbps);
         }
 
         /**
-         * The stage of the expressroutecrossconnection definition allowing to specify ExpressRouteCircuit.
+         * The stage of the expressroutecrossconnection update allowing to specify ExpressRouteCircuit.
          */
         interface WithExpressRouteCircuit {
             /**
              * Specifies expressRouteCircuit.
-             * @param expressRouteCircuit The ExpressRouteCircuit
-             * @return the next definition stage
              */
             WithCreate withExpressRouteCircuit(ExpressRouteCircuitReference expressRouteCircuit);
         }
 
         /**
-         * The stage of the expressroutecrossconnection definition allowing to specify PeeringLocation.
+         * The stage of the expressroutecrossconnection update allowing to specify PeeringLocation.
          */
         interface WithPeeringLocation {
             /**
              * Specifies peeringLocation.
-             * @param peeringLocation The peering location of the ExpressRoute circuit
-             * @return the next definition stage
              */
             WithCreate withPeeringLocation(String peeringLocation);
         }
 
         /**
-         * The stage of the expressroutecrossconnection definition allowing to specify Peerings.
+         * The stage of the expressroutecrossconnection update allowing to specify Peerings.
          */
         interface WithPeerings {
             /**
              * Specifies peerings.
-             * @param peerings The list of peerings
-             * @return the next definition stage
              */
             WithCreate withPeerings(List<ExpressRouteCrossConnectionPeeringInner> peerings);
         }
 
         /**
-         * The stage of the expressroutecrossconnection definition allowing to specify ServiceProviderNotes.
+         * The stage of the expressroutecrossconnection update allowing to specify ServiceProviderNotes.
          */
         interface WithServiceProviderNotes {
             /**
              * Specifies serviceProviderNotes.
-             * @param serviceProviderNotes Additional read only notes set by the connectivity provider
-             * @return the next definition stage
              */
             WithCreate withServiceProviderNotes(String serviceProviderNotes);
         }
 
         /**
-         * The stage of the expressroutecrossconnection definition allowing to specify ServiceProviderProvisioningState.
+         * The stage of the expressroutecrossconnection update allowing to specify ServiceProviderProvisioningState.
          */
         interface WithServiceProviderProvisioningState {
             /**
              * Specifies serviceProviderProvisioningState.
-             * @param serviceProviderProvisioningState The provisioning state of the circuit in the connectivity provider system. Possible values are 'NotProvisioned', 'Provisioning', 'Provisioned'. Possible values include: 'NotProvisioned', 'Provisioning', 'Provisioned', 'Deprovisioning'
-             * @return the next definition stage
              */
             WithCreate withServiceProviderProvisioningState(ServiceProviderProvisioningState serviceProviderProvisioningState);
         }
@@ -194,73 +182,61 @@ public interface ExpressRouteCrossConnection extends HasInner<ExpressRouteCrossC
      */
     interface UpdateStages {
         /**
-         * The stage of the expressroutecrossconnection update allowing to specify BandwidthInMbps.
+         * The stage of the expressroutecrossconnection {0} allowing to specify BandwidthInMbps.
          */
         interface WithBandwidthInMbps {
             /**
              * Specifies bandwidthInMbps.
-             * @param bandwidthInMbps The circuit bandwidth In Mbps
-             * @return the next update stage
              */
             Update withBandwidthInMbps(Integer bandwidthInMbps);
         }
 
         /**
-         * The stage of the expressroutecrossconnection update allowing to specify ExpressRouteCircuit.
+         * The stage of the expressroutecrossconnection {0} allowing to specify ExpressRouteCircuit.
          */
         interface WithExpressRouteCircuit {
             /**
              * Specifies expressRouteCircuit.
-             * @param expressRouteCircuit The ExpressRouteCircuit
-             * @return the next update stage
              */
             Update withExpressRouteCircuit(ExpressRouteCircuitReference expressRouteCircuit);
         }
 
         /**
-         * The stage of the expressroutecrossconnection update allowing to specify PeeringLocation.
+         * The stage of the expressroutecrossconnection {0} allowing to specify PeeringLocation.
          */
         interface WithPeeringLocation {
             /**
              * Specifies peeringLocation.
-             * @param peeringLocation The peering location of the ExpressRoute circuit
-             * @return the next update stage
              */
             Update withPeeringLocation(String peeringLocation);
         }
 
         /**
-         * The stage of the expressroutecrossconnection update allowing to specify Peerings.
+         * The stage of the expressroutecrossconnection {0} allowing to specify Peerings.
          */
         interface WithPeerings {
             /**
              * Specifies peerings.
-             * @param peerings The list of peerings
-             * @return the next update stage
              */
             Update withPeerings(List<ExpressRouteCrossConnectionPeeringInner> peerings);
         }
 
         /**
-         * The stage of the expressroutecrossconnection update allowing to specify ServiceProviderNotes.
+         * The stage of the expressroutecrossconnection {0} allowing to specify ServiceProviderNotes.
          */
         interface WithServiceProviderNotes {
             /**
              * Specifies serviceProviderNotes.
-             * @param serviceProviderNotes Additional read only notes set by the connectivity provider
-             * @return the next update stage
              */
             Update withServiceProviderNotes(String serviceProviderNotes);
         }
 
         /**
-         * The stage of the expressroutecrossconnection update allowing to specify ServiceProviderProvisioningState.
+         * The stage of the expressroutecrossconnection {0} allowing to specify ServiceProviderProvisioningState.
          */
         interface WithServiceProviderProvisioningState {
             /**
              * Specifies serviceProviderProvisioningState.
-             * @param serviceProviderProvisioningState The provisioning state of the circuit in the connectivity provider system. Possible values are 'NotProvisioned', 'Provisioning', 'Provisioned'. Possible values include: 'NotProvisioned', 'Provisioning', 'Provisioned', 'Deprovisioning'
-             * @return the next update stage
              */
             Update withServiceProviderProvisioningState(ServiceProviderProvisioningState serviceProviderProvisioningState);
         }

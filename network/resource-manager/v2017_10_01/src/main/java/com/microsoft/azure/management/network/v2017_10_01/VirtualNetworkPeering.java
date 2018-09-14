@@ -100,9 +100,6 @@ public interface VirtualNetworkPeering extends HasInner<VirtualNetworkPeeringInn
         interface WithVirtualNetwork {
            /**
             * Specifies resourceGroupName, virtualNetworkName.
-            * @param resourceGroupName The name of the resource group
-            * @param virtualNetworkName The name of the virtual network
-            * @return the next definition stage
             */
             WithCreate withExistingVirtualNetwork(String resourceGroupName, String virtualNetworkName);
         }
@@ -113,8 +110,6 @@ public interface VirtualNetworkPeering extends HasInner<VirtualNetworkPeeringInn
         interface WithAllowForwardedTraffic {
             /**
              * Specifies allowForwardedTraffic.
-             * @param allowForwardedTraffic Whether the forwarded traffic from the VMs in the remote virtual network will be allowed/disallowed
-             * @return the next definition stage
              */
             WithCreate withAllowForwardedTraffic(Boolean allowForwardedTraffic);
         }
@@ -125,8 +120,6 @@ public interface VirtualNetworkPeering extends HasInner<VirtualNetworkPeeringInn
         interface WithAllowGatewayTransit {
             /**
              * Specifies allowGatewayTransit.
-             * @param allowGatewayTransit If gateway links can be used in remote virtual networking to link to this virtual network
-             * @return the next definition stage
              */
             WithCreate withAllowGatewayTransit(Boolean allowGatewayTransit);
         }
@@ -137,8 +130,6 @@ public interface VirtualNetworkPeering extends HasInner<VirtualNetworkPeeringInn
         interface WithAllowVirtualNetworkAccess {
             /**
              * Specifies allowVirtualNetworkAccess.
-             * @param allowVirtualNetworkAccess Whether the VMs in the linked virtual network space would be able to access all the VMs in local Virtual network space
-             * @return the next definition stage
              */
             WithCreate withAllowVirtualNetworkAccess(Boolean allowVirtualNetworkAccess);
         }
@@ -149,8 +140,6 @@ public interface VirtualNetworkPeering extends HasInner<VirtualNetworkPeeringInn
         interface WithEtag {
             /**
              * Specifies etag.
-             * @param etag A unique read-only string that changes whenever the resource is updated
-             * @return the next definition stage
              */
             WithCreate withEtag(String etag);
         }
@@ -161,8 +150,6 @@ public interface VirtualNetworkPeering extends HasInner<VirtualNetworkPeeringInn
         interface WithId {
             /**
              * Specifies id.
-             * @param id Resource ID
-             * @return the next definition stage
              */
             WithCreate withId(String id);
         }
@@ -173,8 +160,6 @@ public interface VirtualNetworkPeering extends HasInner<VirtualNetworkPeeringInn
         interface WithName {
             /**
              * Specifies name.
-             * @param name The name of the resource that is unique within a resource group. This name can be used to access the resource
-             * @return the next definition stage
              */
             WithCreate withName(String name);
         }
@@ -185,8 +170,6 @@ public interface VirtualNetworkPeering extends HasInner<VirtualNetworkPeeringInn
         interface WithPeeringState {
             /**
              * Specifies peeringState.
-             * @param peeringState The status of the virtual network peering. Possible values are 'Initiated', 'Connected', and 'Disconnected'. Possible values include: 'Initiated', 'Connected', 'Disconnected'
-             * @return the next definition stage
              */
             WithCreate withPeeringState(VirtualNetworkPeeringState peeringState);
         }
@@ -197,8 +180,6 @@ public interface VirtualNetworkPeering extends HasInner<VirtualNetworkPeeringInn
         interface WithProvisioningState {
             /**
              * Specifies provisioningState.
-             * @param provisioningState The provisioning state of the resource
-             * @return the next definition stage
              */
             WithCreate withProvisioningState(String provisioningState);
         }
@@ -209,8 +190,6 @@ public interface VirtualNetworkPeering extends HasInner<VirtualNetworkPeeringInn
         interface WithRemoteAddressSpace {
             /**
              * Specifies remoteAddressSpace.
-             * @param remoteAddressSpace The reference of the remote virtual network address space
-             * @return the next definition stage
              */
             WithCreate withRemoteAddressSpace(AddressSpace remoteAddressSpace);
         }
@@ -221,8 +200,6 @@ public interface VirtualNetworkPeering extends HasInner<VirtualNetworkPeeringInn
         interface WithRemoteVirtualNetwork {
             /**
              * Specifies remoteVirtualNetwork.
-             * @param remoteVirtualNetwork The reference of the remote virtual network. The remote virtual network can be in the same or different region (preview). See here to register for the preview and learn more (https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-create-peering)
-             * @return the next definition stage
              */
             WithCreate withRemoteVirtualNetwork(SubResource remoteVirtualNetwork);
         }
@@ -233,8 +210,6 @@ public interface VirtualNetworkPeering extends HasInner<VirtualNetworkPeeringInn
         interface WithUseRemoteGateways {
             /**
              * Specifies useRemoteGateways.
-             * @param useRemoteGateways If remote gateways can be used on this virtual network. If the flag is set to true, and allowGatewayTransit on remote peering is also true, virtual network will use gateways of remote virtual network for transit. Only one peering can have this flag set to true. This flag cannot be set if virtual network already has a gateway
-             * @return the next definition stage
              */
             WithCreate withUseRemoteGateways(Boolean useRemoteGateways);
         }
@@ -263,8 +238,6 @@ public interface VirtualNetworkPeering extends HasInner<VirtualNetworkPeeringInn
         interface WithAllowForwardedTraffic {
             /**
              * Specifies allowForwardedTraffic.
-             * @param allowForwardedTraffic Whether the forwarded traffic from the VMs in the remote virtual network will be allowed/disallowed
-             * @return the next update stage
              */
             Update withAllowForwardedTraffic(Boolean allowForwardedTraffic);
         }
@@ -275,8 +248,6 @@ public interface VirtualNetworkPeering extends HasInner<VirtualNetworkPeeringInn
         interface WithAllowGatewayTransit {
             /**
              * Specifies allowGatewayTransit.
-             * @param allowGatewayTransit If gateway links can be used in remote virtual networking to link to this virtual network
-             * @return the next update stage
              */
             Update withAllowGatewayTransit(Boolean allowGatewayTransit);
         }
@@ -287,8 +258,6 @@ public interface VirtualNetworkPeering extends HasInner<VirtualNetworkPeeringInn
         interface WithAllowVirtualNetworkAccess {
             /**
              * Specifies allowVirtualNetworkAccess.
-             * @param allowVirtualNetworkAccess Whether the VMs in the linked virtual network space would be able to access all the VMs in local Virtual network space
-             * @return the next update stage
              */
             Update withAllowVirtualNetworkAccess(Boolean allowVirtualNetworkAccess);
         }
@@ -299,8 +268,6 @@ public interface VirtualNetworkPeering extends HasInner<VirtualNetworkPeeringInn
         interface WithEtag {
             /**
              * Specifies etag.
-             * @param etag A unique read-only string that changes whenever the resource is updated
-             * @return the next update stage
              */
             Update withEtag(String etag);
         }
@@ -311,8 +278,6 @@ public interface VirtualNetworkPeering extends HasInner<VirtualNetworkPeeringInn
         interface WithId {
             /**
              * Specifies id.
-             * @param id Resource ID
-             * @return the next update stage
              */
             Update withId(String id);
         }
@@ -323,8 +288,6 @@ public interface VirtualNetworkPeering extends HasInner<VirtualNetworkPeeringInn
         interface WithName {
             /**
              * Specifies name.
-             * @param name The name of the resource that is unique within a resource group. This name can be used to access the resource
-             * @return the next update stage
              */
             Update withName(String name);
         }
@@ -335,8 +298,6 @@ public interface VirtualNetworkPeering extends HasInner<VirtualNetworkPeeringInn
         interface WithPeeringState {
             /**
              * Specifies peeringState.
-             * @param peeringState The status of the virtual network peering. Possible values are 'Initiated', 'Connected', and 'Disconnected'. Possible values include: 'Initiated', 'Connected', 'Disconnected'
-             * @return the next update stage
              */
             Update withPeeringState(VirtualNetworkPeeringState peeringState);
         }
@@ -347,8 +308,6 @@ public interface VirtualNetworkPeering extends HasInner<VirtualNetworkPeeringInn
         interface WithProvisioningState {
             /**
              * Specifies provisioningState.
-             * @param provisioningState The provisioning state of the resource
-             * @return the next update stage
              */
             Update withProvisioningState(String provisioningState);
         }
@@ -359,8 +318,6 @@ public interface VirtualNetworkPeering extends HasInner<VirtualNetworkPeeringInn
         interface WithRemoteAddressSpace {
             /**
              * Specifies remoteAddressSpace.
-             * @param remoteAddressSpace The reference of the remote virtual network address space
-             * @return the next update stage
              */
             Update withRemoteAddressSpace(AddressSpace remoteAddressSpace);
         }
@@ -371,8 +328,6 @@ public interface VirtualNetworkPeering extends HasInner<VirtualNetworkPeeringInn
         interface WithRemoteVirtualNetwork {
             /**
              * Specifies remoteVirtualNetwork.
-             * @param remoteVirtualNetwork The reference of the remote virtual network. The remote virtual network can be in the same or different region (preview). See here to register for the preview and learn more (https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-create-peering)
-             * @return the next update stage
              */
             Update withRemoteVirtualNetwork(SubResource remoteVirtualNetwork);
         }
@@ -383,8 +338,6 @@ public interface VirtualNetworkPeering extends HasInner<VirtualNetworkPeeringInn
         interface WithUseRemoteGateways {
             /**
              * Specifies useRemoteGateways.
-             * @param useRemoteGateways If remote gateways can be used on this virtual network. If the flag is set to true, and allowGatewayTransit on remote peering is also true, virtual network will use gateways of remote virtual network for transit. Only one peering can have this flag set to true. This flag cannot be set if virtual network already has a gateway
-             * @return the next update stage
              */
             Update withUseRemoteGateways(Boolean useRemoteGateways);
         }
