@@ -27,6 +27,9 @@ public enum TimeAggregationType {
     /** Enum value Total. */
     TOTAL("Total"),
 
+    /** Enum value Last. */
+    LAST("Last"),
+
     /** Enum value Count. */
     COUNT("Count");
 
