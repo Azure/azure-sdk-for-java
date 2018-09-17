@@ -9,32 +9,29 @@
 package com.microsoft.azure.management.appservice.v2018_02_01.implementation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.management.appservice.v2018_02_01.ProxyOnlyResource;
 
 /**
  * Network trace.
  */
-@JsonFlatten
-public class NetworkTraceInner extends ProxyOnlyResource {
+public class NetworkTraceInner {
     /**
      * Local file path for the captured network trace file.
      */
-    @JsonProperty(value = "properties.path")
+    @JsonProperty(value = "path")
     private String path;
 
     /**
      * Current status of the network trace operation, same as Operation.Status
      * (InProgress/Succeeded/Failed).
      */
-    @JsonProperty(value = "properties.status")
+    @JsonProperty(value = "status")
     private String status;
 
     /**
      * Detailed message of a network trace operation, e.g. error message in
      * case of failure.
      */
-    @JsonProperty(value = "properties.message")
+    @JsonProperty(value = "message")
     private String message;
 
     /**

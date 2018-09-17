@@ -13831,9 +13831,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws DefaultErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the OperationInner object if successful.
+     * @return the Object object if successful.
      */
-    public OperationInner getNetworkTraceOperation(String resourceGroupName, String name, String operationId) {
+    public Object getNetworkTraceOperation(String resourceGroupName, String name, String operationId) {
         return getNetworkTraceOperationWithServiceResponseAsync(resourceGroupName, name, operationId).toBlocking().single().body();
     }
 
@@ -13848,7 +13848,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<OperationInner> getNetworkTraceOperationAsync(String resourceGroupName, String name, String operationId, final ServiceCallback<OperationInner> serviceCallback) {
+    public ServiceFuture<Object> getNetworkTraceOperationAsync(String resourceGroupName, String name, String operationId, final ServiceCallback<Object> serviceCallback) {
         return ServiceFuture.fromResponse(getNetworkTraceOperationWithServiceResponseAsync(resourceGroupName, name, operationId), serviceCallback);
     }
 
@@ -13860,12 +13860,12 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param name Name of the app.
      * @param operationId GUID of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationInner object
+     * @return the observable to the Object object
      */
-    public Observable<OperationInner> getNetworkTraceOperationAsync(String resourceGroupName, String name, String operationId) {
-        return getNetworkTraceOperationWithServiceResponseAsync(resourceGroupName, name, operationId).map(new Func1<ServiceResponse<OperationInner>, OperationInner>() {
+    public Observable<Object> getNetworkTraceOperationAsync(String resourceGroupName, String name, String operationId) {
+        return getNetworkTraceOperationWithServiceResponseAsync(resourceGroupName, name, operationId).map(new Func1<ServiceResponse<Object>, Object>() {
             @Override
-            public OperationInner call(ServiceResponse<OperationInner> response) {
+            public Object call(ServiceResponse<Object> response) {
                 return response.body();
             }
         });
@@ -13879,9 +13879,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param name Name of the app.
      * @param operationId GUID of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationInner object
+     * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<OperationInner>> getNetworkTraceOperationWithServiceResponseAsync(String resourceGroupName, String name, String operationId) {
+    public Observable<ServiceResponse<Object>> getNetworkTraceOperationWithServiceResponseAsync(String resourceGroupName, String name, String operationId) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -13898,11 +13898,11 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.getNetworkTraceOperation(resourceGroupName, name, operationId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
                 @Override
-                public Observable<ServiceResponse<OperationInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<OperationInner> clientResponse = getNetworkTraceOperationDelegate(response);
+                        ServiceResponse<Object> clientResponse = getNetworkTraceOperationDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -13911,9 +13911,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
             });
     }
 
-    private ServiceResponse<OperationInner> getNetworkTraceOperationDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<OperationInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<OperationInner>() { }.getType())
+    private ServiceResponse<Object> getNetworkTraceOperationDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Object, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<List<NetworkTraceInner>>() { }.getType())
                 .register(202, new TypeToken<OperationInner>() { }.getType())
                 .registerError(DefaultErrorResponseException.class)
                 .build(response);
@@ -14116,9 +14116,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws DefaultErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the OperationInner object if successful.
+     * @return the Object object if successful.
      */
-    public OperationInner startWebSiteNetworkTraceOperation(String resourceGroupName, String name) {
+    public Object startWebSiteNetworkTraceOperation(String resourceGroupName, String name) {
         return startWebSiteNetworkTraceOperationWithServiceResponseAsync(resourceGroupName, name).toBlocking().last().body();
     }
 
@@ -14132,7 +14132,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<OperationInner> startWebSiteNetworkTraceOperationAsync(String resourceGroupName, String name, final ServiceCallback<OperationInner> serviceCallback) {
+    public ServiceFuture<Object> startWebSiteNetworkTraceOperationAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
         return ServiceFuture.fromResponse(startWebSiteNetworkTraceOperationWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
@@ -14145,10 +14145,10 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<OperationInner> startWebSiteNetworkTraceOperationAsync(String resourceGroupName, String name) {
-        return startWebSiteNetworkTraceOperationWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<OperationInner>, OperationInner>() {
+    public Observable<Object> startWebSiteNetworkTraceOperationAsync(String resourceGroupName, String name) {
+        return startWebSiteNetworkTraceOperationWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Object>, Object>() {
             @Override
-            public OperationInner call(ServiceResponse<OperationInner> response) {
+            public Object call(ServiceResponse<Object> response) {
                 return response.body();
             }
         });
@@ -14163,7 +14163,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<OperationInner>> startWebSiteNetworkTraceOperationWithServiceResponseAsync(String resourceGroupName, String name) {
+    public Observable<ServiceResponse<Object>> startWebSiteNetworkTraceOperationWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -14180,7 +14180,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         final Integer maxFrameLength = null;
         final String sasUrl = null;
         Observable<Response<ResponseBody>> observable = service.startWebSiteNetworkTraceOperation(resourceGroupName, name, this.client.subscriptionId(), durationInSeconds, maxFrameLength, sasUrl, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<OperationInner>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Object>() { }.getType());
     }
     /**
      * Start capturing network packets for the site.
@@ -14194,9 +14194,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws DefaultErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the OperationInner object if successful.
+     * @return the Object object if successful.
      */
-    public OperationInner startWebSiteNetworkTraceOperation(String resourceGroupName, String name, Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
+    public Object startWebSiteNetworkTraceOperation(String resourceGroupName, String name, Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
         return startWebSiteNetworkTraceOperationWithServiceResponseAsync(resourceGroupName, name, durationInSeconds, maxFrameLength, sasUrl).toBlocking().last().body();
     }
 
@@ -14213,7 +14213,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<OperationInner> startWebSiteNetworkTraceOperationAsync(String resourceGroupName, String name, Integer durationInSeconds, Integer maxFrameLength, String sasUrl, final ServiceCallback<OperationInner> serviceCallback) {
+    public ServiceFuture<Object> startWebSiteNetworkTraceOperationAsync(String resourceGroupName, String name, Integer durationInSeconds, Integer maxFrameLength, String sasUrl, final ServiceCallback<Object> serviceCallback) {
         return ServiceFuture.fromResponse(startWebSiteNetworkTraceOperationWithServiceResponseAsync(resourceGroupName, name, durationInSeconds, maxFrameLength, sasUrl), serviceCallback);
     }
 
@@ -14229,10 +14229,10 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<OperationInner> startWebSiteNetworkTraceOperationAsync(String resourceGroupName, String name, Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
-        return startWebSiteNetworkTraceOperationWithServiceResponseAsync(resourceGroupName, name, durationInSeconds, maxFrameLength, sasUrl).map(new Func1<ServiceResponse<OperationInner>, OperationInner>() {
+    public Observable<Object> startWebSiteNetworkTraceOperationAsync(String resourceGroupName, String name, Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
+        return startWebSiteNetworkTraceOperationWithServiceResponseAsync(resourceGroupName, name, durationInSeconds, maxFrameLength, sasUrl).map(new Func1<ServiceResponse<Object>, Object>() {
             @Override
-            public OperationInner call(ServiceResponse<OperationInner> response) {
+            public Object call(ServiceResponse<Object> response) {
                 return response.body();
             }
         });
@@ -14250,7 +14250,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<OperationInner>> startWebSiteNetworkTraceOperationWithServiceResponseAsync(String resourceGroupName, String name, Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
+    public Observable<ServiceResponse<Object>> startWebSiteNetworkTraceOperationWithServiceResponseAsync(String resourceGroupName, String name, Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -14264,7 +14264,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Observable<Response<ResponseBody>> observable = service.startWebSiteNetworkTraceOperation(resourceGroupName, name, this.client.subscriptionId(), durationInSeconds, maxFrameLength, sasUrl, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<OperationInner>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Object>() { }.getType());
     }
 
     /**
@@ -14276,9 +14276,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws DefaultErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the OperationInner object if successful.
+     * @return the Object object if successful.
      */
-    public OperationInner beginStartWebSiteNetworkTraceOperation(String resourceGroupName, String name) {
+    public Object beginStartWebSiteNetworkTraceOperation(String resourceGroupName, String name) {
         return beginStartWebSiteNetworkTraceOperationWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
@@ -14292,7 +14292,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<OperationInner> beginStartWebSiteNetworkTraceOperationAsync(String resourceGroupName, String name, final ServiceCallback<OperationInner> serviceCallback) {
+    public ServiceFuture<Object> beginStartWebSiteNetworkTraceOperationAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
         return ServiceFuture.fromResponse(beginStartWebSiteNetworkTraceOperationWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
@@ -14303,12 +14303,12 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationInner object
+     * @return the observable to the Object object
      */
-    public Observable<OperationInner> beginStartWebSiteNetworkTraceOperationAsync(String resourceGroupName, String name) {
-        return beginStartWebSiteNetworkTraceOperationWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<OperationInner>, OperationInner>() {
+    public Observable<Object> beginStartWebSiteNetworkTraceOperationAsync(String resourceGroupName, String name) {
+        return beginStartWebSiteNetworkTraceOperationWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Object>, Object>() {
             @Override
-            public OperationInner call(ServiceResponse<OperationInner> response) {
+            public Object call(ServiceResponse<Object> response) {
                 return response.body();
             }
         });
@@ -14321,9 +14321,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationInner object
+     * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<OperationInner>> beginStartWebSiteNetworkTraceOperationWithServiceResponseAsync(String resourceGroupName, String name) {
+    public Observable<ServiceResponse<Object>> beginStartWebSiteNetworkTraceOperationWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -14340,11 +14340,11 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         final Integer maxFrameLength = null;
         final String sasUrl = null;
         return service.beginStartWebSiteNetworkTraceOperation(resourceGroupName, name, this.client.subscriptionId(), durationInSeconds, maxFrameLength, sasUrl, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
                 @Override
-                public Observable<ServiceResponse<OperationInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<OperationInner> clientResponse = beginStartWebSiteNetworkTraceOperationDelegate(response);
+                        ServiceResponse<Object> clientResponse = beginStartWebSiteNetworkTraceOperationDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -14365,9 +14365,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws DefaultErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the OperationInner object if successful.
+     * @return the Object object if successful.
      */
-    public OperationInner beginStartWebSiteNetworkTraceOperation(String resourceGroupName, String name, Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
+    public Object beginStartWebSiteNetworkTraceOperation(String resourceGroupName, String name, Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
         return beginStartWebSiteNetworkTraceOperationWithServiceResponseAsync(resourceGroupName, name, durationInSeconds, maxFrameLength, sasUrl).toBlocking().single().body();
     }
 
@@ -14384,7 +14384,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<OperationInner> beginStartWebSiteNetworkTraceOperationAsync(String resourceGroupName, String name, Integer durationInSeconds, Integer maxFrameLength, String sasUrl, final ServiceCallback<OperationInner> serviceCallback) {
+    public ServiceFuture<Object> beginStartWebSiteNetworkTraceOperationAsync(String resourceGroupName, String name, Integer durationInSeconds, Integer maxFrameLength, String sasUrl, final ServiceCallback<Object> serviceCallback) {
         return ServiceFuture.fromResponse(beginStartWebSiteNetworkTraceOperationWithServiceResponseAsync(resourceGroupName, name, durationInSeconds, maxFrameLength, sasUrl), serviceCallback);
     }
 
@@ -14398,12 +14398,12 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param maxFrameLength The maximum frame length in bytes (Optional).
      * @param sasUrl The Blob URL to store capture file.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationInner object
+     * @return the observable to the Object object
      */
-    public Observable<OperationInner> beginStartWebSiteNetworkTraceOperationAsync(String resourceGroupName, String name, Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
-        return beginStartWebSiteNetworkTraceOperationWithServiceResponseAsync(resourceGroupName, name, durationInSeconds, maxFrameLength, sasUrl).map(new Func1<ServiceResponse<OperationInner>, OperationInner>() {
+    public Observable<Object> beginStartWebSiteNetworkTraceOperationAsync(String resourceGroupName, String name, Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
+        return beginStartWebSiteNetworkTraceOperationWithServiceResponseAsync(resourceGroupName, name, durationInSeconds, maxFrameLength, sasUrl).map(new Func1<ServiceResponse<Object>, Object>() {
             @Override
-            public OperationInner call(ServiceResponse<OperationInner> response) {
+            public Object call(ServiceResponse<Object> response) {
                 return response.body();
             }
         });
@@ -14419,9 +14419,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param maxFrameLength The maximum frame length in bytes (Optional).
      * @param sasUrl The Blob URL to store capture file.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationInner object
+     * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<OperationInner>> beginStartWebSiteNetworkTraceOperationWithServiceResponseAsync(String resourceGroupName, String name, Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
+    public Observable<ServiceResponse<Object>> beginStartWebSiteNetworkTraceOperationWithServiceResponseAsync(String resourceGroupName, String name, Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -14435,11 +14435,11 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.beginStartWebSiteNetworkTraceOperation(resourceGroupName, name, this.client.subscriptionId(), durationInSeconds, maxFrameLength, sasUrl, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
                 @Override
-                public Observable<ServiceResponse<OperationInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<OperationInner> clientResponse = beginStartWebSiteNetworkTraceOperationDelegate(response);
+                        ServiceResponse<Object> clientResponse = beginStartWebSiteNetworkTraceOperationDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -14448,9 +14448,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
             });
     }
 
-    private ServiceResponse<OperationInner> beginStartWebSiteNetworkTraceOperationDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<OperationInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<OperationInner>() { }.getType())
+    private ServiceResponse<Object> beginStartWebSiteNetworkTraceOperationDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Object, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<List<NetworkTraceInner>>() { }.getType())
                 .register(202, new TypeToken<OperationInner>() { }.getType())
                 .registerError(DefaultErrorResponseException.class)
                 .build(response);
@@ -14463,12 +14463,11 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the String object if successful.
      */
-    public String stopWebSiteNetworkTrace(String resourceGroupName, String name) {
-        return stopWebSiteNetworkTraceWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
+    public void stopWebSiteNetworkTrace(String resourceGroupName, String name) {
+        stopWebSiteNetworkTraceWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -14481,7 +14480,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<String> stopWebSiteNetworkTraceAsync(String resourceGroupName, String name, final ServiceCallback<String> serviceCallback) {
+    public ServiceFuture<Void> stopWebSiteNetworkTraceAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
         return ServiceFuture.fromResponse(stopWebSiteNetworkTraceWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
@@ -14492,12 +14491,12 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the String object
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<String> stopWebSiteNetworkTraceAsync(String resourceGroupName, String name) {
-        return stopWebSiteNetworkTraceWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<String>, String>() {
+    public Observable<Void> stopWebSiteNetworkTraceAsync(String resourceGroupName, String name) {
+        return stopWebSiteNetworkTraceWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
-            public String call(ServiceResponse<String> response) {
+            public Void call(ServiceResponse<Void> response) {
                 return response.body();
             }
         });
@@ -14510,9 +14509,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the String object
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<String>> stopWebSiteNetworkTraceWithServiceResponseAsync(String resourceGroupName, String name) {
+    public Observable<ServiceResponse<Void>> stopWebSiteNetworkTraceWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -14526,11 +14525,11 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.stopWebSiteNetworkTrace(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<String>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
-                public Observable<ServiceResponse<String>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<String> clientResponse = stopWebSiteNetworkTraceDelegate(response);
+                        ServiceResponse<Void> clientResponse = stopWebSiteNetworkTraceDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -14539,10 +14538,11 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
             });
     }
 
-    private ServiceResponse<String> stopWebSiteNetworkTraceDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<String, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<String>() { }.getType())
-                .registerError(DefaultErrorResponseException.class)
+    private ServiceResponse<Void> stopWebSiteNetworkTraceDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -30553,9 +30553,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws DefaultErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the OperationInner object if successful.
+     * @return the Object object if successful.
      */
-    public OperationInner getNetworkTraceOperationSlot(String resourceGroupName, String name, String operationId, String slot) {
+    public Object getNetworkTraceOperationSlot(String resourceGroupName, String name, String operationId, String slot) {
         return getNetworkTraceOperationSlotWithServiceResponseAsync(resourceGroupName, name, operationId, slot).toBlocking().single().body();
     }
 
@@ -30571,7 +30571,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<OperationInner> getNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String operationId, String slot, final ServiceCallback<OperationInner> serviceCallback) {
+    public ServiceFuture<Object> getNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String operationId, String slot, final ServiceCallback<Object> serviceCallback) {
         return ServiceFuture.fromResponse(getNetworkTraceOperationSlotWithServiceResponseAsync(resourceGroupName, name, operationId, slot), serviceCallback);
     }
 
@@ -30584,12 +30584,12 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param operationId GUID of the operation.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get an operation for the production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationInner object
+     * @return the observable to the Object object
      */
-    public Observable<OperationInner> getNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String operationId, String slot) {
-        return getNetworkTraceOperationSlotWithServiceResponseAsync(resourceGroupName, name, operationId, slot).map(new Func1<ServiceResponse<OperationInner>, OperationInner>() {
+    public Observable<Object> getNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String operationId, String slot) {
+        return getNetworkTraceOperationSlotWithServiceResponseAsync(resourceGroupName, name, operationId, slot).map(new Func1<ServiceResponse<Object>, Object>() {
             @Override
-            public OperationInner call(ServiceResponse<OperationInner> response) {
+            public Object call(ServiceResponse<Object> response) {
                 return response.body();
             }
         });
@@ -30604,9 +30604,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param operationId GUID of the operation.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get an operation for the production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationInner object
+     * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<OperationInner>> getNetworkTraceOperationSlotWithServiceResponseAsync(String resourceGroupName, String name, String operationId, String slot) {
+    public Observable<ServiceResponse<Object>> getNetworkTraceOperationSlotWithServiceResponseAsync(String resourceGroupName, String name, String operationId, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -30626,11 +30626,11 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.getNetworkTraceOperationSlot(resourceGroupName, name, operationId, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
                 @Override
-                public Observable<ServiceResponse<OperationInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<OperationInner> clientResponse = getNetworkTraceOperationSlotDelegate(response);
+                        ServiceResponse<Object> clientResponse = getNetworkTraceOperationSlotDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -30639,9 +30639,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
             });
     }
 
-    private ServiceResponse<OperationInner> getNetworkTraceOperationSlotDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<OperationInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<OperationInner>() { }.getType())
+    private ServiceResponse<Object> getNetworkTraceOperationSlotDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Object, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<List<NetworkTraceInner>>() { }.getType())
                 .register(202, new TypeToken<OperationInner>() { }.getType())
                 .registerError(DefaultErrorResponseException.class)
                 .build(response);
@@ -30859,9 +30859,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws DefaultErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the OperationInner object if successful.
+     * @return the Object object if successful.
      */
-    public OperationInner startWebSiteNetworkTraceOperationSlot(String resourceGroupName, String name, String slot) {
+    public Object startWebSiteNetworkTraceOperationSlot(String resourceGroupName, String name, String slot) {
         return startWebSiteNetworkTraceOperationSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().last().body();
     }
 
@@ -30876,7 +30876,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<OperationInner> startWebSiteNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<OperationInner> serviceCallback) {
+    public ServiceFuture<Object> startWebSiteNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Object> serviceCallback) {
         return ServiceFuture.fromResponse(startWebSiteNetworkTraceOperationSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
@@ -30890,10 +30890,10 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<OperationInner> startWebSiteNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String slot) {
-        return startWebSiteNetworkTraceOperationSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<OperationInner>, OperationInner>() {
+    public Observable<Object> startWebSiteNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String slot) {
+        return startWebSiteNetworkTraceOperationSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<Object>, Object>() {
             @Override
-            public OperationInner call(ServiceResponse<OperationInner> response) {
+            public Object call(ServiceResponse<Object> response) {
                 return response.body();
             }
         });
@@ -30909,7 +30909,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<OperationInner>> startWebSiteNetworkTraceOperationSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
+    public Observable<ServiceResponse<Object>> startWebSiteNetworkTraceOperationSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -30929,7 +30929,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         final Integer maxFrameLength = null;
         final String sasUrl = null;
         Observable<Response<ResponseBody>> observable = service.startWebSiteNetworkTraceOperationSlot(resourceGroupName, name, slot, this.client.subscriptionId(), durationInSeconds, maxFrameLength, sasUrl, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<OperationInner>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Object>() { }.getType());
     }
     /**
      * Start capturing network packets for the site.
@@ -30944,9 +30944,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws DefaultErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the OperationInner object if successful.
+     * @return the Object object if successful.
      */
-    public OperationInner startWebSiteNetworkTraceOperationSlot(String resourceGroupName, String name, String slot, Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
+    public Object startWebSiteNetworkTraceOperationSlot(String resourceGroupName, String name, String slot, Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
         return startWebSiteNetworkTraceOperationSlotWithServiceResponseAsync(resourceGroupName, name, slot, durationInSeconds, maxFrameLength, sasUrl).toBlocking().last().body();
     }
 
@@ -30964,7 +30964,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<OperationInner> startWebSiteNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String slot, Integer durationInSeconds, Integer maxFrameLength, String sasUrl, final ServiceCallback<OperationInner> serviceCallback) {
+    public ServiceFuture<Object> startWebSiteNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String slot, Integer durationInSeconds, Integer maxFrameLength, String sasUrl, final ServiceCallback<Object> serviceCallback) {
         return ServiceFuture.fromResponse(startWebSiteNetworkTraceOperationSlotWithServiceResponseAsync(resourceGroupName, name, slot, durationInSeconds, maxFrameLength, sasUrl), serviceCallback);
     }
 
@@ -30981,10 +30981,10 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<OperationInner> startWebSiteNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String slot, Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
-        return startWebSiteNetworkTraceOperationSlotWithServiceResponseAsync(resourceGroupName, name, slot, durationInSeconds, maxFrameLength, sasUrl).map(new Func1<ServiceResponse<OperationInner>, OperationInner>() {
+    public Observable<Object> startWebSiteNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String slot, Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
+        return startWebSiteNetworkTraceOperationSlotWithServiceResponseAsync(resourceGroupName, name, slot, durationInSeconds, maxFrameLength, sasUrl).map(new Func1<ServiceResponse<Object>, Object>() {
             @Override
-            public OperationInner call(ServiceResponse<OperationInner> response) {
+            public Object call(ServiceResponse<Object> response) {
                 return response.body();
             }
         });
@@ -31003,7 +31003,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<OperationInner>> startWebSiteNetworkTraceOperationSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
+    public Observable<ServiceResponse<Object>> startWebSiteNetworkTraceOperationSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -31020,7 +31020,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Observable<Response<ResponseBody>> observable = service.startWebSiteNetworkTraceOperationSlot(resourceGroupName, name, slot, this.client.subscriptionId(), durationInSeconds, maxFrameLength, sasUrl, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<OperationInner>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Object>() { }.getType());
     }
 
     /**
@@ -31033,9 +31033,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws DefaultErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the OperationInner object if successful.
+     * @return the Object object if successful.
      */
-    public OperationInner beginStartWebSiteNetworkTraceOperationSlot(String resourceGroupName, String name, String slot) {
+    public Object beginStartWebSiteNetworkTraceOperationSlot(String resourceGroupName, String name, String slot) {
         return beginStartWebSiteNetworkTraceOperationSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
@@ -31050,7 +31050,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<OperationInner> beginStartWebSiteNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<OperationInner> serviceCallback) {
+    public ServiceFuture<Object> beginStartWebSiteNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Object> serviceCallback) {
         return ServiceFuture.fromResponse(beginStartWebSiteNetworkTraceOperationSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
@@ -31062,12 +31062,12 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param name The name of the web app.
      * @param slot The name of the slot for this web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationInner object
+     * @return the observable to the Object object
      */
-    public Observable<OperationInner> beginStartWebSiteNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String slot) {
-        return beginStartWebSiteNetworkTraceOperationSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<OperationInner>, OperationInner>() {
+    public Observable<Object> beginStartWebSiteNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String slot) {
+        return beginStartWebSiteNetworkTraceOperationSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<Object>, Object>() {
             @Override
-            public OperationInner call(ServiceResponse<OperationInner> response) {
+            public Object call(ServiceResponse<Object> response) {
                 return response.body();
             }
         });
@@ -31081,9 +31081,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param name The name of the web app.
      * @param slot The name of the slot for this web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationInner object
+     * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<OperationInner>> beginStartWebSiteNetworkTraceOperationSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
+    public Observable<ServiceResponse<Object>> beginStartWebSiteNetworkTraceOperationSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -31103,11 +31103,11 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         final Integer maxFrameLength = null;
         final String sasUrl = null;
         return service.beginStartWebSiteNetworkTraceOperationSlot(resourceGroupName, name, slot, this.client.subscriptionId(), durationInSeconds, maxFrameLength, sasUrl, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
                 @Override
-                public Observable<ServiceResponse<OperationInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<OperationInner> clientResponse = beginStartWebSiteNetworkTraceOperationSlotDelegate(response);
+                        ServiceResponse<Object> clientResponse = beginStartWebSiteNetworkTraceOperationSlotDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -31129,9 +31129,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws DefaultErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the OperationInner object if successful.
+     * @return the Object object if successful.
      */
-    public OperationInner beginStartWebSiteNetworkTraceOperationSlot(String resourceGroupName, String name, String slot, Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
+    public Object beginStartWebSiteNetworkTraceOperationSlot(String resourceGroupName, String name, String slot, Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
         return beginStartWebSiteNetworkTraceOperationSlotWithServiceResponseAsync(resourceGroupName, name, slot, durationInSeconds, maxFrameLength, sasUrl).toBlocking().single().body();
     }
 
@@ -31149,7 +31149,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<OperationInner> beginStartWebSiteNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String slot, Integer durationInSeconds, Integer maxFrameLength, String sasUrl, final ServiceCallback<OperationInner> serviceCallback) {
+    public ServiceFuture<Object> beginStartWebSiteNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String slot, Integer durationInSeconds, Integer maxFrameLength, String sasUrl, final ServiceCallback<Object> serviceCallback) {
         return ServiceFuture.fromResponse(beginStartWebSiteNetworkTraceOperationSlotWithServiceResponseAsync(resourceGroupName, name, slot, durationInSeconds, maxFrameLength, sasUrl), serviceCallback);
     }
 
@@ -31164,12 +31164,12 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param maxFrameLength The maximum frame length in bytes (Optional).
      * @param sasUrl The Blob URL to store capture file.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationInner object
+     * @return the observable to the Object object
      */
-    public Observable<OperationInner> beginStartWebSiteNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String slot, Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
-        return beginStartWebSiteNetworkTraceOperationSlotWithServiceResponseAsync(resourceGroupName, name, slot, durationInSeconds, maxFrameLength, sasUrl).map(new Func1<ServiceResponse<OperationInner>, OperationInner>() {
+    public Observable<Object> beginStartWebSiteNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String slot, Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
+        return beginStartWebSiteNetworkTraceOperationSlotWithServiceResponseAsync(resourceGroupName, name, slot, durationInSeconds, maxFrameLength, sasUrl).map(new Func1<ServiceResponse<Object>, Object>() {
             @Override
-            public OperationInner call(ServiceResponse<OperationInner> response) {
+            public Object call(ServiceResponse<Object> response) {
                 return response.body();
             }
         });
@@ -31186,9 +31186,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param maxFrameLength The maximum frame length in bytes (Optional).
      * @param sasUrl The Blob URL to store capture file.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationInner object
+     * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<OperationInner>> beginStartWebSiteNetworkTraceOperationSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
+    public Observable<ServiceResponse<Object>> beginStartWebSiteNetworkTraceOperationSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -31205,11 +31205,11 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.beginStartWebSiteNetworkTraceOperationSlot(resourceGroupName, name, slot, this.client.subscriptionId(), durationInSeconds, maxFrameLength, sasUrl, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
                 @Override
-                public Observable<ServiceResponse<OperationInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<OperationInner> clientResponse = beginStartWebSiteNetworkTraceOperationSlotDelegate(response);
+                        ServiceResponse<Object> clientResponse = beginStartWebSiteNetworkTraceOperationSlotDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -31218,9 +31218,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
             });
     }
 
-    private ServiceResponse<OperationInner> beginStartWebSiteNetworkTraceOperationSlotDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<OperationInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<OperationInner>() { }.getType())
+    private ServiceResponse<Object> beginStartWebSiteNetworkTraceOperationSlotDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Object, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<List<NetworkTraceInner>>() { }.getType())
                 .register(202, new TypeToken<OperationInner>() { }.getType())
                 .registerError(DefaultErrorResponseException.class)
                 .build(response);
@@ -31234,12 +31234,11 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param name The name of the web app.
      * @param slot The name of the slot for this web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the String object if successful.
      */
-    public String stopWebSiteNetworkTraceSlot(String resourceGroupName, String name, String slot) {
-        return stopWebSiteNetworkTraceSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
+    public void stopWebSiteNetworkTraceSlot(String resourceGroupName, String name, String slot) {
+        stopWebSiteNetworkTraceSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -31253,7 +31252,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<String> stopWebSiteNetworkTraceSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<String> serviceCallback) {
+    public ServiceFuture<Void> stopWebSiteNetworkTraceSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Void> serviceCallback) {
         return ServiceFuture.fromResponse(stopWebSiteNetworkTraceSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
@@ -31265,12 +31264,12 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param name The name of the web app.
      * @param slot The name of the slot for this web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the String object
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<String> stopWebSiteNetworkTraceSlotAsync(String resourceGroupName, String name, String slot) {
-        return stopWebSiteNetworkTraceSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<String>, String>() {
+    public Observable<Void> stopWebSiteNetworkTraceSlotAsync(String resourceGroupName, String name, String slot) {
+        return stopWebSiteNetworkTraceSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
-            public String call(ServiceResponse<String> response) {
+            public Void call(ServiceResponse<Void> response) {
                 return response.body();
             }
         });
@@ -31284,9 +31283,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param name The name of the web app.
      * @param slot The name of the slot for this web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the String object
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<String>> stopWebSiteNetworkTraceSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
+    public Observable<ServiceResponse<Void>> stopWebSiteNetworkTraceSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -31303,11 +31302,11 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.stopWebSiteNetworkTraceSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<String>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
-                public Observable<ServiceResponse<String>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<String> clientResponse = stopWebSiteNetworkTraceSlotDelegate(response);
+                        ServiceResponse<Void> clientResponse = stopWebSiteNetworkTraceSlotDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -31316,10 +31315,11 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
             });
     }
 
-    private ServiceResponse<String> stopWebSiteNetworkTraceSlotDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<String, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<String>() { }.getType())
-                .registerError(DefaultErrorResponseException.class)
+    private ServiceResponse<Void> stopWebSiteNetworkTraceSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 

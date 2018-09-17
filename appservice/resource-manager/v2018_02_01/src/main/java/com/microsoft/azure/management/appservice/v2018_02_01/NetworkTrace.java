@@ -18,24 +18,9 @@ import com.microsoft.azure.management.appservice.v2018_02_01.implementation.Netw
  */
 public interface NetworkTrace extends HasInner<NetworkTraceInner>, HasManager<CertificateRegistrationManager> {
     /**
-     * @return the id value.
-     */
-    String id();
-
-    /**
-     * @return the kind value.
-     */
-    String kind();
-
-    /**
      * @return the message value.
      */
     String message();
-
-    /**
-     * @return the name value.
-     */
-    String name();
 
     /**
      * @return the path value.
@@ -46,10 +31,5 @@ public interface NetworkTrace extends HasInner<NetworkTraceInner>, HasManager<Ce
      * @return the status value.
      */
     String status();
-
-    /**
-     * @return the type value.
-     */
-    String type();
 
 }

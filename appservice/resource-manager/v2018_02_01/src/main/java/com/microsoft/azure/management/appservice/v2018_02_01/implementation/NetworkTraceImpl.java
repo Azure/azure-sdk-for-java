@@ -24,23 +24,8 @@ class NetworkTraceImpl extends WrapperImpl<NetworkTraceInner> implements Network
     }
 
     @Override
-    public String id() {
-        return this.inner().id();
-    }
-
-    @Override
-    public String kind() {
-        return this.inner().kind();
-    }
-
-    @Override
     public String message() {
         return this.inner().message();
-    }
-
-    @Override
-    public String name() {
-        return this.inner().name();
     }
 
     @Override
@@ -51,11 +36,6 @@ class NetworkTraceImpl extends WrapperImpl<NetworkTraceInner> implements Network
     @Override
     public String status() {
         return this.inner().status();
-    }
-
-    @Override
-    public String type() {
-        return this.inner().type();
     }
 
 }

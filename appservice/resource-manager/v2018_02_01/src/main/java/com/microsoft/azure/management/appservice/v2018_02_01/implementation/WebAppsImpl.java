@@ -830,21 +830,21 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     }
 
     @Override
+    public Completable getNetworkTraceOperationAsync(String resourceGroupName, String name, String operationId) {
+        WebAppsInner client = this.inner();
+        return client.getNetworkTraceOperationAsync(resourceGroupName, name, operationId).toCompletable();
+    }
+
+    @Override
     public Completable startWebSiteNetworkTraceAsync(String resourceGroupName, String name) {
         WebAppsInner client = this.inner();
         return client.startWebSiteNetworkTraceAsync(resourceGroupName, name).toCompletable();
     }
 
     @Override
-    public Observable<Operation> startWebSiteNetworkTraceOperationAsync(String resourceGroupName, String name) {
+    public Completable startWebSiteNetworkTraceOperationAsync(String resourceGroupName, String name) {
         WebAppsInner client = this.inner();
-        return client.startWebSiteNetworkTraceOperationAsync(resourceGroupName, name)
-        .map(new Func1<OperationInner, Operation>() {
-            @Override
-            public Operation call(OperationInner inner) {
-                return new OperationImpl(inner, manager());
-            }
-        });
+        return client.startWebSiteNetworkTraceOperationAsync(resourceGroupName, name).toCompletable();
     }
 
     @Override
@@ -2840,30 +2840,6 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     }
 
     @Override
-    public Observable<Operation> getNetworkTraceOperationAsync(String resourceGroupName, String name, String operationId) {
-        WebAppsInner client = this.inner();
-        return client.getNetworkTraceOperationAsync(resourceGroupName, name, operationId)
-        .map(new Func1<OperationInner, Operation>() {
-            @Override
-            public Operation call(OperationInner inner) {
-                return new OperationImpl(inner, manager());
-            }
-        });
-    }
-
-    @Override
-    public Observable<Operation> getNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String operationId, String slot) {
-        WebAppsInner client = this.inner();
-        return client.getNetworkTraceOperationSlotAsync(resourceGroupName, name, operationId, slot)
-        .map(new Func1<OperationInner, Operation>() {
-            @Override
-            public Operation call(OperationInner inner) {
-                return new OperationImpl(inner, manager());
-            }
-        });
-    }
-
-    @Override
     public Observable<PerfMonResponse> listPerfMonCountersAsync(final String resourceGroupName, final String name) {
         WebAppsInner client = this.inner();
         return client.listPerfMonCountersAsync(resourceGroupName, name)
@@ -3518,21 +3494,21 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     }
 
     @Override
+    public Completable getNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String operationId, String slot) {
+        WebAppsInner client = this.inner();
+        return client.getNetworkTraceOperationSlotAsync(resourceGroupName, name, operationId, slot).toCompletable();
+    }
+
+    @Override
     public Completable startWebSiteNetworkTraceSlotAsync(String resourceGroupName, String name, String slot) {
         WebAppsInner client = this.inner();
         return client.startWebSiteNetworkTraceSlotAsync(resourceGroupName, name, slot).toCompletable();
     }
 
     @Override
-    public Observable<Operation> startWebSiteNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String slot) {
+    public Completable startWebSiteNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String slot) {
         WebAppsInner client = this.inner();
-        return client.startWebSiteNetworkTraceOperationSlotAsync(resourceGroupName, name, slot)
-        .map(new Func1<OperationInner, Operation>() {
-            @Override
-            public Operation call(OperationInner inner) {
-                return new OperationImpl(inner, manager());
-            }
-        });
+        return client.startWebSiteNetworkTraceOperationSlotAsync(resourceGroupName, name, slot).toCompletable();
     }
 
     @Override
