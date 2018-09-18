@@ -18,13 +18,13 @@ public class AzureMetricsBaseData {
     /**
      * Gets or sets the Metric name.
      */
-    @JsonProperty(value = "metric")
+    @JsonProperty(value = "metric", required = true)
     private String metric;
 
     /**
      * Gets or sets the Metric namespace.
      */
-    @JsonProperty(value = "namespace")
+    @JsonProperty(value = "namespace", required = true)
     private String namespace;
 
     /**
@@ -37,7 +37,7 @@ public class AzureMetricsBaseData {
      * Gets or sets the list of time series data for the metric (one per unique
      * dimension combination).
      */
-    @JsonProperty(value = "series")
+    @JsonProperty(value = "series", required = true)
     private List<AzureTimeSeriesData> series;
 
     /**

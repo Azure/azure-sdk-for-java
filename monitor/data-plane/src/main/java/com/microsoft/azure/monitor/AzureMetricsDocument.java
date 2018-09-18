@@ -17,13 +17,13 @@ public class AzureMetricsDocument {
     /**
      * Gets or sets Time property (in ISO 8601 format).
      */
-    @JsonProperty(value = "time")
+    @JsonProperty(value = "time", required = true)
     private String time;
 
     /**
      * The data property.
      */
-    @JsonProperty(value = "data")
+    @JsonProperty(value = "data", required = true)
     private AzureMetricsData data;
 
     /**

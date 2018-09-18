@@ -17,7 +17,7 @@ public class AzureMetricsData {
     /**
      * The baseData property.
      */
-    @JsonProperty(value = "baseData")
+    @JsonProperty(value = "baseData", required = true)
     private AzureMetricsBaseData baseData;
 
     /**
