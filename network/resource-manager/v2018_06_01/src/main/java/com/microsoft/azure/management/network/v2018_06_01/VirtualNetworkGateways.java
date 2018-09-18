@@ -35,6 +35,16 @@ public interface VirtualNetworkGateways extends SupportsCreating<VirtualNetworkG
     Observable<VirtualNetworkGateway> resetAsync(String resourceGroupName, String virtualNetworkGatewayName);
 
     /**
+     * Resets the VPN client shared key of the virtual network gateway in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable resetVpnClientSharedKeyAsync(String resourceGroupName, String virtualNetworkGatewayName);
+
+    /**
      * Generates VPN client package for P2S client of the virtual network gateway in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group.

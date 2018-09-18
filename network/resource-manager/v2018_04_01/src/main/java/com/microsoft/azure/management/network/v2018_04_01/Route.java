@@ -79,9 +79,6 @@ public interface Route extends HasInner<RouteInner>, Indexable, Refreshable<Rout
         interface WithRouteTable {
            /**
             * Specifies resourceGroupName, routeTableName.
-            * @param resourceGroupName The name of the resource group
-            * @param routeTableName The name of the route table
-            * @return the next definition stage
             */
             WithNextHopType withExistingRouteTable(String resourceGroupName, String routeTableName);
         }
@@ -92,8 +89,6 @@ public interface Route extends HasInner<RouteInner>, Indexable, Refreshable<Rout
         interface WithNextHopType {
            /**
             * Specifies nextHopType.
-            * @param nextHopType The type of Azure hop the packet should be sent to. Possible values are: 'VirtualNetworkGateway', 'VnetLocal', 'Internet', 'VirtualAppliance', and 'None'. Possible values include: 'VirtualNetworkGateway', 'VnetLocal', 'Internet', 'VirtualAppliance', 'None'
-            * @return the next definition stage
             */
             WithCreate withNextHopType(RouteNextHopType nextHopType);
         }
@@ -104,8 +99,6 @@ public interface Route extends HasInner<RouteInner>, Indexable, Refreshable<Rout
         interface WithAddressPrefix {
             /**
              * Specifies addressPrefix.
-             * @param addressPrefix The destination CIDR to which the route applies
-             * @return the next definition stage
              */
             WithCreate withAddressPrefix(String addressPrefix);
         }
@@ -116,8 +109,6 @@ public interface Route extends HasInner<RouteInner>, Indexable, Refreshable<Rout
         interface WithEtag {
             /**
              * Specifies etag.
-             * @param etag A unique read-only string that changes whenever the resource is updated
-             * @return the next definition stage
              */
             WithCreate withEtag(String etag);
         }
@@ -128,8 +119,6 @@ public interface Route extends HasInner<RouteInner>, Indexable, Refreshable<Rout
         interface WithId {
             /**
              * Specifies id.
-             * @param id Resource ID
-             * @return the next definition stage
              */
             WithCreate withId(String id);
         }
@@ -140,8 +129,6 @@ public interface Route extends HasInner<RouteInner>, Indexable, Refreshable<Rout
         interface WithName {
             /**
              * Specifies name.
-             * @param name The name of the resource that is unique within a resource group. This name can be used to access the resource
-             * @return the next definition stage
              */
             WithCreate withName(String name);
         }
@@ -152,8 +139,6 @@ public interface Route extends HasInner<RouteInner>, Indexable, Refreshable<Rout
         interface WithNextHopIpAddress {
             /**
              * Specifies nextHopIpAddress.
-             * @param nextHopIpAddress The IP address packets should be forwarded to. Next hop values are only allowed in routes where the next hop type is VirtualAppliance
-             * @return the next definition stage
              */
             WithCreate withNextHopIpAddress(String nextHopIpAddress);
         }
@@ -164,8 +149,6 @@ public interface Route extends HasInner<RouteInner>, Indexable, Refreshable<Rout
         interface WithProvisioningState {
             /**
              * Specifies provisioningState.
-             * @param provisioningState The provisioning state of the resource. Possible values are: 'Updating', 'Deleting', and 'Failed'
-             * @return the next definition stage
              */
             WithCreate withProvisioningState(String provisioningState);
         }
@@ -194,8 +177,6 @@ public interface Route extends HasInner<RouteInner>, Indexable, Refreshable<Rout
         interface WithAddressPrefix {
             /**
              * Specifies addressPrefix.
-             * @param addressPrefix The destination CIDR to which the route applies
-             * @return the next update stage
              */
             Update withAddressPrefix(String addressPrefix);
         }
@@ -206,8 +187,6 @@ public interface Route extends HasInner<RouteInner>, Indexable, Refreshable<Rout
         interface WithEtag {
             /**
              * Specifies etag.
-             * @param etag A unique read-only string that changes whenever the resource is updated
-             * @return the next update stage
              */
             Update withEtag(String etag);
         }
@@ -218,8 +197,6 @@ public interface Route extends HasInner<RouteInner>, Indexable, Refreshable<Rout
         interface WithId {
             /**
              * Specifies id.
-             * @param id Resource ID
-             * @return the next update stage
              */
             Update withId(String id);
         }
@@ -230,8 +207,6 @@ public interface Route extends HasInner<RouteInner>, Indexable, Refreshable<Rout
         interface WithName {
             /**
              * Specifies name.
-             * @param name The name of the resource that is unique within a resource group. This name can be used to access the resource
-             * @return the next update stage
              */
             Update withName(String name);
         }
@@ -242,8 +217,6 @@ public interface Route extends HasInner<RouteInner>, Indexable, Refreshable<Rout
         interface WithNextHopIpAddress {
             /**
              * Specifies nextHopIpAddress.
-             * @param nextHopIpAddress The IP address packets should be forwarded to. Next hop values are only allowed in routes where the next hop type is VirtualAppliance
-             * @return the next update stage
              */
             Update withNextHopIpAddress(String nextHopIpAddress);
         }
@@ -254,8 +227,6 @@ public interface Route extends HasInner<RouteInner>, Indexable, Refreshable<Rout
         interface WithProvisioningState {
             /**
              * Specifies provisioningState.
-             * @param provisioningState The provisioning state of the resource. Possible values are: 'Updating', 'Deleting', and 'Failed'
-             * @return the next update stage
              */
             Update withProvisioningState(String provisioningState);
         }

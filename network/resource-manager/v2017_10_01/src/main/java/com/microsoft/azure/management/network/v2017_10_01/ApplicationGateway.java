@@ -148,229 +148,191 @@ public interface ApplicationGateway extends HasInner<ApplicationGatewayInner>, R
         }
 
         /**
-         * The stage of the applicationgateway definition allowing to specify AuthenticationCertificates.
+         * The stage of the applicationgateway update allowing to specify AuthenticationCertificates.
          */
         interface WithAuthenticationCertificates {
             /**
              * Specifies authenticationCertificates.
-             * @param authenticationCertificates Authentication certificates of the application gateway resource
-             * @return the next definition stage
              */
             WithCreate withAuthenticationCertificates(List<ApplicationGatewayAuthenticationCertificate> authenticationCertificates);
         }
 
         /**
-         * The stage of the applicationgateway definition allowing to specify BackendAddressPools.
+         * The stage of the applicationgateway update allowing to specify BackendAddressPools.
          */
         interface WithBackendAddressPools {
             /**
              * Specifies backendAddressPools.
-             * @param backendAddressPools Backend address pool of the application gateway resource
-             * @return the next definition stage
              */
             WithCreate withBackendAddressPools(List<ApplicationGatewayBackendAddressPool> backendAddressPools);
         }
 
         /**
-         * The stage of the applicationgateway definition allowing to specify BackendHttpSettingsCollection.
+         * The stage of the applicationgateway update allowing to specify BackendHttpSettingsCollection.
          */
         interface WithBackendHttpSettingsCollection {
             /**
              * Specifies backendHttpSettingsCollection.
-             * @param backendHttpSettingsCollection Backend http settings of the application gateway resource
-             * @return the next definition stage
              */
             WithCreate withBackendHttpSettingsCollection(List<ApplicationGatewayBackendHttpSettings> backendHttpSettingsCollection);
         }
 
         /**
-         * The stage of the applicationgateway definition allowing to specify EnableHttp2.
+         * The stage of the applicationgateway update allowing to specify EnableHttp2.
          */
         interface WithEnableHttp2 {
             /**
              * Specifies enableHttp2.
-             * @param enableHttp2 Whether HTTP2 is enabled on the application gateway resource
-             * @return the next definition stage
              */
             WithCreate withEnableHttp2(Boolean enableHttp2);
         }
 
         /**
-         * The stage of the applicationgateway definition allowing to specify Etag.
+         * The stage of the applicationgateway update allowing to specify Etag.
          */
         interface WithEtag {
             /**
              * Specifies etag.
-             * @param etag A unique read-only string that changes whenever the resource is updated
-             * @return the next definition stage
              */
             WithCreate withEtag(String etag);
         }
 
         /**
-         * The stage of the applicationgateway definition allowing to specify FrontendIPConfigurations.
+         * The stage of the applicationgateway update allowing to specify FrontendIPConfigurations.
          */
         interface WithFrontendIPConfigurations {
             /**
              * Specifies frontendIPConfigurations.
-             * @param frontendIPConfigurations Frontend IP addresses of the application gateway resource
-             * @return the next definition stage
              */
             WithCreate withFrontendIPConfigurations(List<ApplicationGatewayFrontendIPConfiguration> frontendIPConfigurations);
         }
 
         /**
-         * The stage of the applicationgateway definition allowing to specify FrontendPorts.
+         * The stage of the applicationgateway update allowing to specify FrontendPorts.
          */
         interface WithFrontendPorts {
             /**
              * Specifies frontendPorts.
-             * @param frontendPorts Frontend ports of the application gateway resource
-             * @return the next definition stage
              */
             WithCreate withFrontendPorts(List<ApplicationGatewayFrontendPort> frontendPorts);
         }
 
         /**
-         * The stage of the applicationgateway definition allowing to specify GatewayIPConfigurations.
+         * The stage of the applicationgateway update allowing to specify GatewayIPConfigurations.
          */
         interface WithGatewayIPConfigurations {
             /**
              * Specifies gatewayIPConfigurations.
-             * @param gatewayIPConfigurations Subnets of application the gateway resource
-             * @return the next definition stage
              */
             WithCreate withGatewayIPConfigurations(List<ApplicationGatewayIPConfiguration> gatewayIPConfigurations);
         }
 
         /**
-         * The stage of the applicationgateway definition allowing to specify HttpListeners.
+         * The stage of the applicationgateway update allowing to specify HttpListeners.
          */
         interface WithHttpListeners {
             /**
              * Specifies httpListeners.
-             * @param httpListeners Http listeners of the application gateway resource
-             * @return the next definition stage
              */
             WithCreate withHttpListeners(List<ApplicationGatewayHttpListener> httpListeners);
         }
 
         /**
-         * The stage of the applicationgateway definition allowing to specify Probes.
+         * The stage of the applicationgateway update allowing to specify Probes.
          */
         interface WithProbes {
             /**
              * Specifies probes.
-             * @param probes Probes of the application gateway resource
-             * @return the next definition stage
              */
             WithCreate withProbes(List<ApplicationGatewayProbe> probes);
         }
 
         /**
-         * The stage of the applicationgateway definition allowing to specify ProvisioningState.
+         * The stage of the applicationgateway update allowing to specify ProvisioningState.
          */
         interface WithProvisioningState {
             /**
              * Specifies provisioningState.
-             * @param provisioningState Provisioning state of the application gateway resource. Possible values are: 'Updating', 'Deleting', and 'Failed'
-             * @return the next definition stage
              */
             WithCreate withProvisioningState(String provisioningState);
         }
 
         /**
-         * The stage of the applicationgateway definition allowing to specify RedirectConfigurations.
+         * The stage of the applicationgateway update allowing to specify RedirectConfigurations.
          */
         interface WithRedirectConfigurations {
             /**
              * Specifies redirectConfigurations.
-             * @param redirectConfigurations Redirect configurations of the application gateway resource
-             * @return the next definition stage
              */
             WithCreate withRedirectConfigurations(List<ApplicationGatewayRedirectConfiguration> redirectConfigurations);
         }
 
         /**
-         * The stage of the applicationgateway definition allowing to specify RequestRoutingRules.
+         * The stage of the applicationgateway update allowing to specify RequestRoutingRules.
          */
         interface WithRequestRoutingRules {
             /**
              * Specifies requestRoutingRules.
-             * @param requestRoutingRules Request routing rules of the application gateway resource
-             * @return the next definition stage
              */
             WithCreate withRequestRoutingRules(List<ApplicationGatewayRequestRoutingRule> requestRoutingRules);
         }
 
         /**
-         * The stage of the applicationgateway definition allowing to specify ResourceGuid.
+         * The stage of the applicationgateway update allowing to specify ResourceGuid.
          */
         interface WithResourceGuid {
             /**
              * Specifies resourceGuid.
-             * @param resourceGuid Resource GUID property of the application gateway resource
-             * @return the next definition stage
              */
             WithCreate withResourceGuid(String resourceGuid);
         }
 
         /**
-         * The stage of the applicationgateway definition allowing to specify Sku.
+         * The stage of the applicationgateway update allowing to specify Sku.
          */
         interface WithSku {
             /**
              * Specifies sku.
-             * @param sku SKU of the application gateway resource
-             * @return the next definition stage
              */
             WithCreate withSku(ApplicationGatewaySku sku);
         }
 
         /**
-         * The stage of the applicationgateway definition allowing to specify SslCertificates.
+         * The stage of the applicationgateway update allowing to specify SslCertificates.
          */
         interface WithSslCertificates {
             /**
              * Specifies sslCertificates.
-             * @param sslCertificates SSL certificates of the application gateway resource
-             * @return the next definition stage
              */
             WithCreate withSslCertificates(List<ApplicationGatewaySslCertificate> sslCertificates);
         }
 
         /**
-         * The stage of the applicationgateway definition allowing to specify SslPolicy.
+         * The stage of the applicationgateway update allowing to specify SslPolicy.
          */
         interface WithSslPolicy {
             /**
              * Specifies sslPolicy.
-             * @param sslPolicy SSL policy of the application gateway resource
-             * @return the next definition stage
              */
             WithCreate withSslPolicy(ApplicationGatewaySslPolicy sslPolicy);
         }
 
         /**
-         * The stage of the applicationgateway definition allowing to specify UrlPathMaps.
+         * The stage of the applicationgateway update allowing to specify UrlPathMaps.
          */
         interface WithUrlPathMaps {
             /**
              * Specifies urlPathMaps.
-             * @param urlPathMaps URL path map of the application gateway resource
-             * @return the next definition stage
              */
             WithCreate withUrlPathMaps(List<ApplicationGatewayUrlPathMap> urlPathMaps);
         }
 
         /**
-         * The stage of the applicationgateway definition allowing to specify WebApplicationFirewallConfiguration.
+         * The stage of the applicationgateway update allowing to specify WebApplicationFirewallConfiguration.
          */
         interface WithWebApplicationFirewallConfiguration {
             /**
              * Specifies webApplicationFirewallConfiguration.
-             * @param webApplicationFirewallConfiguration Web application firewall configuration
-             * @return the next definition stage
              */
             WithCreate withWebApplicationFirewallConfiguration(ApplicationGatewayWebApplicationFirewallConfiguration webApplicationFirewallConfiguration);
         }
@@ -394,229 +356,191 @@ public interface ApplicationGateway extends HasInner<ApplicationGatewayInner>, R
      */
     interface UpdateStages {
         /**
-         * The stage of the applicationgateway update allowing to specify AuthenticationCertificates.
+         * The stage of the applicationgateway {0} allowing to specify AuthenticationCertificates.
          */
         interface WithAuthenticationCertificates {
             /**
              * Specifies authenticationCertificates.
-             * @param authenticationCertificates Authentication certificates of the application gateway resource
-             * @return the next update stage
              */
             Update withAuthenticationCertificates(List<ApplicationGatewayAuthenticationCertificate> authenticationCertificates);
         }
 
         /**
-         * The stage of the applicationgateway update allowing to specify BackendAddressPools.
+         * The stage of the applicationgateway {0} allowing to specify BackendAddressPools.
          */
         interface WithBackendAddressPools {
             /**
              * Specifies backendAddressPools.
-             * @param backendAddressPools Backend address pool of the application gateway resource
-             * @return the next update stage
              */
             Update withBackendAddressPools(List<ApplicationGatewayBackendAddressPool> backendAddressPools);
         }
 
         /**
-         * The stage of the applicationgateway update allowing to specify BackendHttpSettingsCollection.
+         * The stage of the applicationgateway {0} allowing to specify BackendHttpSettingsCollection.
          */
         interface WithBackendHttpSettingsCollection {
             /**
              * Specifies backendHttpSettingsCollection.
-             * @param backendHttpSettingsCollection Backend http settings of the application gateway resource
-             * @return the next update stage
              */
             Update withBackendHttpSettingsCollection(List<ApplicationGatewayBackendHttpSettings> backendHttpSettingsCollection);
         }
 
         /**
-         * The stage of the applicationgateway update allowing to specify EnableHttp2.
+         * The stage of the applicationgateway {0} allowing to specify EnableHttp2.
          */
         interface WithEnableHttp2 {
             /**
              * Specifies enableHttp2.
-             * @param enableHttp2 Whether HTTP2 is enabled on the application gateway resource
-             * @return the next update stage
              */
             Update withEnableHttp2(Boolean enableHttp2);
         }
 
         /**
-         * The stage of the applicationgateway update allowing to specify Etag.
+         * The stage of the applicationgateway {0} allowing to specify Etag.
          */
         interface WithEtag {
             /**
              * Specifies etag.
-             * @param etag A unique read-only string that changes whenever the resource is updated
-             * @return the next update stage
              */
             Update withEtag(String etag);
         }
 
         /**
-         * The stage of the applicationgateway update allowing to specify FrontendIPConfigurations.
+         * The stage of the applicationgateway {0} allowing to specify FrontendIPConfigurations.
          */
         interface WithFrontendIPConfigurations {
             /**
              * Specifies frontendIPConfigurations.
-             * @param frontendIPConfigurations Frontend IP addresses of the application gateway resource
-             * @return the next update stage
              */
             Update withFrontendIPConfigurations(List<ApplicationGatewayFrontendIPConfiguration> frontendIPConfigurations);
         }
 
         /**
-         * The stage of the applicationgateway update allowing to specify FrontendPorts.
+         * The stage of the applicationgateway {0} allowing to specify FrontendPorts.
          */
         interface WithFrontendPorts {
             /**
              * Specifies frontendPorts.
-             * @param frontendPorts Frontend ports of the application gateway resource
-             * @return the next update stage
              */
             Update withFrontendPorts(List<ApplicationGatewayFrontendPort> frontendPorts);
         }
 
         /**
-         * The stage of the applicationgateway update allowing to specify GatewayIPConfigurations.
+         * The stage of the applicationgateway {0} allowing to specify GatewayIPConfigurations.
          */
         interface WithGatewayIPConfigurations {
             /**
              * Specifies gatewayIPConfigurations.
-             * @param gatewayIPConfigurations Subnets of application the gateway resource
-             * @return the next update stage
              */
             Update withGatewayIPConfigurations(List<ApplicationGatewayIPConfiguration> gatewayIPConfigurations);
         }
 
         /**
-         * The stage of the applicationgateway update allowing to specify HttpListeners.
+         * The stage of the applicationgateway {0} allowing to specify HttpListeners.
          */
         interface WithHttpListeners {
             /**
              * Specifies httpListeners.
-             * @param httpListeners Http listeners of the application gateway resource
-             * @return the next update stage
              */
             Update withHttpListeners(List<ApplicationGatewayHttpListener> httpListeners);
         }
 
         /**
-         * The stage of the applicationgateway update allowing to specify Probes.
+         * The stage of the applicationgateway {0} allowing to specify Probes.
          */
         interface WithProbes {
             /**
              * Specifies probes.
-             * @param probes Probes of the application gateway resource
-             * @return the next update stage
              */
             Update withProbes(List<ApplicationGatewayProbe> probes);
         }
 
         /**
-         * The stage of the applicationgateway update allowing to specify ProvisioningState.
+         * The stage of the applicationgateway {0} allowing to specify ProvisioningState.
          */
         interface WithProvisioningState {
             /**
              * Specifies provisioningState.
-             * @param provisioningState Provisioning state of the application gateway resource. Possible values are: 'Updating', 'Deleting', and 'Failed'
-             * @return the next update stage
              */
             Update withProvisioningState(String provisioningState);
         }
 
         /**
-         * The stage of the applicationgateway update allowing to specify RedirectConfigurations.
+         * The stage of the applicationgateway {0} allowing to specify RedirectConfigurations.
          */
         interface WithRedirectConfigurations {
             /**
              * Specifies redirectConfigurations.
-             * @param redirectConfigurations Redirect configurations of the application gateway resource
-             * @return the next update stage
              */
             Update withRedirectConfigurations(List<ApplicationGatewayRedirectConfiguration> redirectConfigurations);
         }
 
         /**
-         * The stage of the applicationgateway update allowing to specify RequestRoutingRules.
+         * The stage of the applicationgateway {0} allowing to specify RequestRoutingRules.
          */
         interface WithRequestRoutingRules {
             /**
              * Specifies requestRoutingRules.
-             * @param requestRoutingRules Request routing rules of the application gateway resource
-             * @return the next update stage
              */
             Update withRequestRoutingRules(List<ApplicationGatewayRequestRoutingRule> requestRoutingRules);
         }
 
         /**
-         * The stage of the applicationgateway update allowing to specify ResourceGuid.
+         * The stage of the applicationgateway {0} allowing to specify ResourceGuid.
          */
         interface WithResourceGuid {
             /**
              * Specifies resourceGuid.
-             * @param resourceGuid Resource GUID property of the application gateway resource
-             * @return the next update stage
              */
             Update withResourceGuid(String resourceGuid);
         }
 
         /**
-         * The stage of the applicationgateway update allowing to specify Sku.
+         * The stage of the applicationgateway {0} allowing to specify Sku.
          */
         interface WithSku {
             /**
              * Specifies sku.
-             * @param sku SKU of the application gateway resource
-             * @return the next update stage
              */
             Update withSku(ApplicationGatewaySku sku);
         }
 
         /**
-         * The stage of the applicationgateway update allowing to specify SslCertificates.
+         * The stage of the applicationgateway {0} allowing to specify SslCertificates.
          */
         interface WithSslCertificates {
             /**
              * Specifies sslCertificates.
-             * @param sslCertificates SSL certificates of the application gateway resource
-             * @return the next update stage
              */
             Update withSslCertificates(List<ApplicationGatewaySslCertificate> sslCertificates);
         }
 
         /**
-         * The stage of the applicationgateway update allowing to specify SslPolicy.
+         * The stage of the applicationgateway {0} allowing to specify SslPolicy.
          */
         interface WithSslPolicy {
             /**
              * Specifies sslPolicy.
-             * @param sslPolicy SSL policy of the application gateway resource
-             * @return the next update stage
              */
             Update withSslPolicy(ApplicationGatewaySslPolicy sslPolicy);
         }
 
         /**
-         * The stage of the applicationgateway update allowing to specify UrlPathMaps.
+         * The stage of the applicationgateway {0} allowing to specify UrlPathMaps.
          */
         interface WithUrlPathMaps {
             /**
              * Specifies urlPathMaps.
-             * @param urlPathMaps URL path map of the application gateway resource
-             * @return the next update stage
              */
             Update withUrlPathMaps(List<ApplicationGatewayUrlPathMap> urlPathMaps);
         }
 
         /**
-         * The stage of the applicationgateway update allowing to specify WebApplicationFirewallConfiguration.
+         * The stage of the applicationgateway {0} allowing to specify WebApplicationFirewallConfiguration.
          */
         interface WithWebApplicationFirewallConfiguration {
             /**
              * Specifies webApplicationFirewallConfiguration.
-             * @param webApplicationFirewallConfiguration Web application firewall configuration
-             * @return the next update stage
              */
             Update withWebApplicationFirewallConfiguration(ApplicationGatewayWebApplicationFirewallConfiguration webApplicationFirewallConfiguration);
         }

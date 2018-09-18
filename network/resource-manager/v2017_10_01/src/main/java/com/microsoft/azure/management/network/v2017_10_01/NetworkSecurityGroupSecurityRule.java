@@ -141,9 +141,6 @@ public interface NetworkSecurityGroupSecurityRule extends HasInner<SecurityRuleI
         interface WithNetworkSecurityGroup {
            /**
             * Specifies resourceGroupName, networkSecurityGroupName.
-            * @param resourceGroupName The name of the resource group
-            * @param networkSecurityGroupName The name of the network security group
-            * @return the next definition stage
             */
             WithAccess withExistingNetworkSecurityGroup(String resourceGroupName, String networkSecurityGroupName);
         }
@@ -154,8 +151,6 @@ public interface NetworkSecurityGroupSecurityRule extends HasInner<SecurityRuleI
         interface WithAccess {
            /**
             * Specifies access.
-            * @param access The network traffic is allowed or denied. Possible values are: 'Allow' and 'Deny'. Possible values include: 'Allow', 'Deny'
-            * @return the next definition stage
             */
             WithDirection withAccess(SecurityRuleAccess access);
         }
@@ -166,8 +161,6 @@ public interface NetworkSecurityGroupSecurityRule extends HasInner<SecurityRuleI
         interface WithDirection {
            /**
             * Specifies direction.
-            * @param direction The direction of the rule. The direction specifies if rule will be evaluated on incoming or outcoming traffic. Possible values are: 'Inbound' and 'Outbound'. Possible values include: 'Inbound', 'Outbound'
-            * @return the next definition stage
             */
             WithProtocol withDirection(SecurityRuleDirection direction);
         }
@@ -178,8 +171,6 @@ public interface NetworkSecurityGroupSecurityRule extends HasInner<SecurityRuleI
         interface WithProtocol {
            /**
             * Specifies protocol.
-            * @param protocol Network protocol this rule applies to. Possible values are 'Tcp', 'Udp', and '*'. Possible values include: 'Tcp', 'Udp', '*'
-            * @return the next definition stage
             */
             WithCreate withProtocol(SecurityRuleProtocol protocol);
         }
@@ -190,8 +181,6 @@ public interface NetworkSecurityGroupSecurityRule extends HasInner<SecurityRuleI
         interface WithDescription {
             /**
              * Specifies description.
-             * @param description A description for this rule. Restricted to 140 chars
-             * @return the next definition stage
              */
             WithCreate withDescription(String description);
         }
@@ -202,8 +191,6 @@ public interface NetworkSecurityGroupSecurityRule extends HasInner<SecurityRuleI
         interface WithDestinationAddressPrefix {
             /**
              * Specifies destinationAddressPrefix.
-             * @param destinationAddressPrefix The destination address prefix. CIDR or destination IP range. Asterix '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used
-             * @return the next definition stage
              */
             WithCreate withDestinationAddressPrefix(String destinationAddressPrefix);
         }
@@ -214,8 +201,6 @@ public interface NetworkSecurityGroupSecurityRule extends HasInner<SecurityRuleI
         interface WithDestinationAddressPrefixes {
             /**
              * Specifies destinationAddressPrefixes.
-             * @param destinationAddressPrefixes The destination address prefixes. CIDR or destination IP ranges
-             * @return the next definition stage
              */
             WithCreate withDestinationAddressPrefixes(List<String> destinationAddressPrefixes);
         }
@@ -226,8 +211,6 @@ public interface NetworkSecurityGroupSecurityRule extends HasInner<SecurityRuleI
         interface WithDestinationApplicationSecurityGroups {
             /**
              * Specifies destinationApplicationSecurityGroups.
-             * @param destinationApplicationSecurityGroups The application security group specified as destination
-             * @return the next definition stage
              */
             WithCreate withDestinationApplicationSecurityGroups(List<ApplicationSecurityGroupInner> destinationApplicationSecurityGroups);
         }
@@ -238,8 +221,6 @@ public interface NetworkSecurityGroupSecurityRule extends HasInner<SecurityRuleI
         interface WithDestinationPortRange {
             /**
              * Specifies destinationPortRange.
-             * @param destinationPortRange The destination port or range. Integer or range between 0 and 65535. Asterix '*' can also be used to match all ports
-             * @return the next definition stage
              */
             WithCreate withDestinationPortRange(String destinationPortRange);
         }
@@ -250,8 +231,6 @@ public interface NetworkSecurityGroupSecurityRule extends HasInner<SecurityRuleI
         interface WithDestinationPortRanges {
             /**
              * Specifies destinationPortRanges.
-             * @param destinationPortRanges The destination port ranges
-             * @return the next definition stage
              */
             WithCreate withDestinationPortRanges(List<String> destinationPortRanges);
         }
@@ -262,8 +241,6 @@ public interface NetworkSecurityGroupSecurityRule extends HasInner<SecurityRuleI
         interface WithEtag {
             /**
              * Specifies etag.
-             * @param etag A unique read-only string that changes whenever the resource is updated
-             * @return the next definition stage
              */
             WithCreate withEtag(String etag);
         }
@@ -274,8 +251,6 @@ public interface NetworkSecurityGroupSecurityRule extends HasInner<SecurityRuleI
         interface WithId {
             /**
              * Specifies id.
-             * @param id Resource ID
-             * @return the next definition stage
              */
             WithCreate withId(String id);
         }
@@ -286,8 +261,6 @@ public interface NetworkSecurityGroupSecurityRule extends HasInner<SecurityRuleI
         interface WithName {
             /**
              * Specifies name.
-             * @param name The name of the resource that is unique within a resource group. This name can be used to access the resource
-             * @return the next definition stage
              */
             WithCreate withName(String name);
         }
@@ -298,8 +271,6 @@ public interface NetworkSecurityGroupSecurityRule extends HasInner<SecurityRuleI
         interface WithPriority {
             /**
              * Specifies priority.
-             * @param priority The priority of the rule. The value can be between 100 and 4096. The priority number must be unique for each rule in the collection. The lower the priority number, the higher the priority of the rule
-             * @return the next definition stage
              */
             WithCreate withPriority(Integer priority);
         }
@@ -310,8 +281,6 @@ public interface NetworkSecurityGroupSecurityRule extends HasInner<SecurityRuleI
         interface WithProvisioningState {
             /**
              * Specifies provisioningState.
-             * @param provisioningState The provisioning state of the public IP resource. Possible values are: 'Updating', 'Deleting', and 'Failed'
-             * @return the next definition stage
              */
             WithCreate withProvisioningState(String provisioningState);
         }
@@ -322,8 +291,6 @@ public interface NetworkSecurityGroupSecurityRule extends HasInner<SecurityRuleI
         interface WithSourceAddressPrefix {
             /**
              * Specifies sourceAddressPrefix.
-             * @param sourceAddressPrefix The CIDR or source IP range. Asterix '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used. If this is an ingress rule, specifies where network traffic originates from
-             * @return the next definition stage
              */
             WithCreate withSourceAddressPrefix(String sourceAddressPrefix);
         }
@@ -334,8 +301,6 @@ public interface NetworkSecurityGroupSecurityRule extends HasInner<SecurityRuleI
         interface WithSourceAddressPrefixes {
             /**
              * Specifies sourceAddressPrefixes.
-             * @param sourceAddressPrefixes The CIDR or source IP ranges
-             * @return the next definition stage
              */
             WithCreate withSourceAddressPrefixes(List<String> sourceAddressPrefixes);
         }
@@ -346,8 +311,6 @@ public interface NetworkSecurityGroupSecurityRule extends HasInner<SecurityRuleI
         interface WithSourceApplicationSecurityGroups {
             /**
              * Specifies sourceApplicationSecurityGroups.
-             * @param sourceApplicationSecurityGroups The application security group specified as source
-             * @return the next definition stage
              */
             WithCreate withSourceApplicationSecurityGroups(List<ApplicationSecurityGroupInner> sourceApplicationSecurityGroups);
         }
@@ -358,8 +321,6 @@ public interface NetworkSecurityGroupSecurityRule extends HasInner<SecurityRuleI
         interface WithSourcePortRange {
             /**
              * Specifies sourcePortRange.
-             * @param sourcePortRange The source port or range. Integer or range between 0 and 65535. Asterix '*' can also be used to match all ports
-             * @return the next definition stage
              */
             WithCreate withSourcePortRange(String sourcePortRange);
         }
@@ -370,8 +331,6 @@ public interface NetworkSecurityGroupSecurityRule extends HasInner<SecurityRuleI
         interface WithSourcePortRanges {
             /**
              * Specifies sourcePortRanges.
-             * @param sourcePortRanges The source port ranges
-             * @return the next definition stage
              */
             WithCreate withSourcePortRanges(List<String> sourcePortRanges);
         }
@@ -400,8 +359,6 @@ public interface NetworkSecurityGroupSecurityRule extends HasInner<SecurityRuleI
         interface WithDescription {
             /**
              * Specifies description.
-             * @param description A description for this rule. Restricted to 140 chars
-             * @return the next update stage
              */
             Update withDescription(String description);
         }
@@ -412,8 +369,6 @@ public interface NetworkSecurityGroupSecurityRule extends HasInner<SecurityRuleI
         interface WithDestinationAddressPrefix {
             /**
              * Specifies destinationAddressPrefix.
-             * @param destinationAddressPrefix The destination address prefix. CIDR or destination IP range. Asterix '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used
-             * @return the next update stage
              */
             Update withDestinationAddressPrefix(String destinationAddressPrefix);
         }
@@ -424,8 +379,6 @@ public interface NetworkSecurityGroupSecurityRule extends HasInner<SecurityRuleI
         interface WithDestinationAddressPrefixes {
             /**
              * Specifies destinationAddressPrefixes.
-             * @param destinationAddressPrefixes The destination address prefixes. CIDR or destination IP ranges
-             * @return the next update stage
              */
             Update withDestinationAddressPrefixes(List<String> destinationAddressPrefixes);
         }
@@ -436,8 +389,6 @@ public interface NetworkSecurityGroupSecurityRule extends HasInner<SecurityRuleI
         interface WithDestinationApplicationSecurityGroups {
             /**
              * Specifies destinationApplicationSecurityGroups.
-             * @param destinationApplicationSecurityGroups The application security group specified as destination
-             * @return the next update stage
              */
             Update withDestinationApplicationSecurityGroups(List<ApplicationSecurityGroupInner> destinationApplicationSecurityGroups);
         }
@@ -448,8 +399,6 @@ public interface NetworkSecurityGroupSecurityRule extends HasInner<SecurityRuleI
         interface WithDestinationPortRange {
             /**
              * Specifies destinationPortRange.
-             * @param destinationPortRange The destination port or range. Integer or range between 0 and 65535. Asterix '*' can also be used to match all ports
-             * @return the next update stage
              */
             Update withDestinationPortRange(String destinationPortRange);
         }
@@ -460,8 +409,6 @@ public interface NetworkSecurityGroupSecurityRule extends HasInner<SecurityRuleI
         interface WithDestinationPortRanges {
             /**
              * Specifies destinationPortRanges.
-             * @param destinationPortRanges The destination port ranges
-             * @return the next update stage
              */
             Update withDestinationPortRanges(List<String> destinationPortRanges);
         }
@@ -472,8 +419,6 @@ public interface NetworkSecurityGroupSecurityRule extends HasInner<SecurityRuleI
         interface WithEtag {
             /**
              * Specifies etag.
-             * @param etag A unique read-only string that changes whenever the resource is updated
-             * @return the next update stage
              */
             Update withEtag(String etag);
         }
@@ -484,8 +429,6 @@ public interface NetworkSecurityGroupSecurityRule extends HasInner<SecurityRuleI
         interface WithId {
             /**
              * Specifies id.
-             * @param id Resource ID
-             * @return the next update stage
              */
             Update withId(String id);
         }
@@ -496,8 +439,6 @@ public interface NetworkSecurityGroupSecurityRule extends HasInner<SecurityRuleI
         interface WithName {
             /**
              * Specifies name.
-             * @param name The name of the resource that is unique within a resource group. This name can be used to access the resource
-             * @return the next update stage
              */
             Update withName(String name);
         }
@@ -508,8 +449,6 @@ public interface NetworkSecurityGroupSecurityRule extends HasInner<SecurityRuleI
         interface WithPriority {
             /**
              * Specifies priority.
-             * @param priority The priority of the rule. The value can be between 100 and 4096. The priority number must be unique for each rule in the collection. The lower the priority number, the higher the priority of the rule
-             * @return the next update stage
              */
             Update withPriority(Integer priority);
         }
@@ -520,8 +459,6 @@ public interface NetworkSecurityGroupSecurityRule extends HasInner<SecurityRuleI
         interface WithProvisioningState {
             /**
              * Specifies provisioningState.
-             * @param provisioningState The provisioning state of the public IP resource. Possible values are: 'Updating', 'Deleting', and 'Failed'
-             * @return the next update stage
              */
             Update withProvisioningState(String provisioningState);
         }
@@ -532,8 +469,6 @@ public interface NetworkSecurityGroupSecurityRule extends HasInner<SecurityRuleI
         interface WithSourceAddressPrefix {
             /**
              * Specifies sourceAddressPrefix.
-             * @param sourceAddressPrefix The CIDR or source IP range. Asterix '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used. If this is an ingress rule, specifies where network traffic originates from
-             * @return the next update stage
              */
             Update withSourceAddressPrefix(String sourceAddressPrefix);
         }
@@ -544,8 +479,6 @@ public interface NetworkSecurityGroupSecurityRule extends HasInner<SecurityRuleI
         interface WithSourceAddressPrefixes {
             /**
              * Specifies sourceAddressPrefixes.
-             * @param sourceAddressPrefixes The CIDR or source IP ranges
-             * @return the next update stage
              */
             Update withSourceAddressPrefixes(List<String> sourceAddressPrefixes);
         }
@@ -556,8 +489,6 @@ public interface NetworkSecurityGroupSecurityRule extends HasInner<SecurityRuleI
         interface WithSourceApplicationSecurityGroups {
             /**
              * Specifies sourceApplicationSecurityGroups.
-             * @param sourceApplicationSecurityGroups The application security group specified as source
-             * @return the next update stage
              */
             Update withSourceApplicationSecurityGroups(List<ApplicationSecurityGroupInner> sourceApplicationSecurityGroups);
         }
@@ -568,8 +499,6 @@ public interface NetworkSecurityGroupSecurityRule extends HasInner<SecurityRuleI
         interface WithSourcePortRange {
             /**
              * Specifies sourcePortRange.
-             * @param sourcePortRange The source port or range. Integer or range between 0 and 65535. Asterix '*' can also be used to match all ports
-             * @return the next update stage
              */
             Update withSourcePortRange(String sourcePortRange);
         }
@@ -580,8 +509,6 @@ public interface NetworkSecurityGroupSecurityRule extends HasInner<SecurityRuleI
         interface WithSourcePortRanges {
             /**
              * Specifies sourcePortRanges.
-             * @param sourcePortRanges The source port ranges
-             * @return the next update stage
              */
             Update withSourcePortRanges(List<String> sourcePortRanges);
         }

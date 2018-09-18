@@ -103,121 +103,101 @@ public interface PublicIPAddress extends HasInner<PublicIPAddressInner>, Resourc
         }
 
         /**
-         * The stage of the publicipaddress definition allowing to specify DnsSettings.
+         * The stage of the publicipaddress update allowing to specify DnsSettings.
          */
         interface WithDnsSettings {
             /**
              * Specifies dnsSettings.
-             * @param dnsSettings The FQDN of the DNS record associated with the public IP address
-             * @return the next definition stage
              */
             WithCreate withDnsSettings(PublicIPAddressDnsSettings dnsSettings);
         }
 
         /**
-         * The stage of the publicipaddress definition allowing to specify Etag.
+         * The stage of the publicipaddress update allowing to specify Etag.
          */
         interface WithEtag {
             /**
              * Specifies etag.
-             * @param etag A unique read-only string that changes whenever the resource is updated
-             * @return the next definition stage
              */
             WithCreate withEtag(String etag);
         }
 
         /**
-         * The stage of the publicipaddress definition allowing to specify IdleTimeoutInMinutes.
+         * The stage of the publicipaddress update allowing to specify IdleTimeoutInMinutes.
          */
         interface WithIdleTimeoutInMinutes {
             /**
              * Specifies idleTimeoutInMinutes.
-             * @param idleTimeoutInMinutes The idle timeout of the public IP address
-             * @return the next definition stage
              */
             WithCreate withIdleTimeoutInMinutes(Integer idleTimeoutInMinutes);
         }
 
         /**
-         * The stage of the publicipaddress definition allowing to specify IpAddress.
+         * The stage of the publicipaddress update allowing to specify IpAddress.
          */
         interface WithIpAddress {
             /**
              * Specifies ipAddress.
-             * @param ipAddress The IP address associated with the public IP address resource
-             * @return the next definition stage
              */
             WithCreate withIpAddress(String ipAddress);
         }
 
         /**
-         * The stage of the publicipaddress definition allowing to specify ProvisioningState.
+         * The stage of the publicipaddress update allowing to specify ProvisioningState.
          */
         interface WithProvisioningState {
             /**
              * Specifies provisioningState.
-             * @param provisioningState The provisioning state of the PublicIP resource. Possible values are: 'Updating', 'Deleting', and 'Failed'
-             * @return the next definition stage
              */
             WithCreate withProvisioningState(String provisioningState);
         }
 
         /**
-         * The stage of the publicipaddress definition allowing to specify PublicIPAddressVersion.
+         * The stage of the publicipaddress update allowing to specify PublicIPAddressVersion.
          */
         interface WithPublicIPAddressVersion {
             /**
              * Specifies publicIPAddressVersion.
-             * @param publicIPAddressVersion The public IP address version. Possible values are: 'IPv4' and 'IPv6'. Possible values include: 'IPv4', 'IPv6'
-             * @return the next definition stage
              */
             WithCreate withPublicIPAddressVersion(IPVersion publicIPAddressVersion);
         }
 
         /**
-         * The stage of the publicipaddress definition allowing to specify PublicIPAllocationMethod.
+         * The stage of the publicipaddress update allowing to specify PublicIPAllocationMethod.
          */
         interface WithPublicIPAllocationMethod {
             /**
              * Specifies publicIPAllocationMethod.
-             * @param publicIPAllocationMethod The public IP allocation method. Possible values are: 'Static' and 'Dynamic'. Possible values include: 'Static', 'Dynamic'
-             * @return the next definition stage
              */
             WithCreate withPublicIPAllocationMethod(IPAllocationMethod publicIPAllocationMethod);
         }
 
         /**
-         * The stage of the publicipaddress definition allowing to specify ResourceGuid.
+         * The stage of the publicipaddress update allowing to specify ResourceGuid.
          */
         interface WithResourceGuid {
             /**
              * Specifies resourceGuid.
-             * @param resourceGuid The resource GUID property of the public IP resource
-             * @return the next definition stage
              */
             WithCreate withResourceGuid(String resourceGuid);
         }
 
         /**
-         * The stage of the publicipaddress definition allowing to specify Sku.
+         * The stage of the publicipaddress update allowing to specify Sku.
          */
         interface WithSku {
             /**
              * Specifies sku.
-             * @param sku The public IP address SKU
-             * @return the next definition stage
              */
             WithCreate withSku(PublicIPAddressSku sku);
         }
 
         /**
-         * The stage of the publicipaddress definition allowing to specify Zones.
+         * The stage of the publicipaddress update allowing to specify Zones.
          */
         interface WithZones {
             /**
              * Specifies zones.
-             * @param zones A list of availability zones denoting the IP allocated for the resource needs to come from
-             * @return the next definition stage
              */
             WithCreate withZones(List<String> zones);
         }
@@ -241,121 +221,101 @@ public interface PublicIPAddress extends HasInner<PublicIPAddressInner>, Resourc
      */
     interface UpdateStages {
         /**
-         * The stage of the publicipaddress update allowing to specify DnsSettings.
+         * The stage of the publicipaddress {0} allowing to specify DnsSettings.
          */
         interface WithDnsSettings {
             /**
              * Specifies dnsSettings.
-             * @param dnsSettings The FQDN of the DNS record associated with the public IP address
-             * @return the next update stage
              */
             Update withDnsSettings(PublicIPAddressDnsSettings dnsSettings);
         }
 
         /**
-         * The stage of the publicipaddress update allowing to specify Etag.
+         * The stage of the publicipaddress {0} allowing to specify Etag.
          */
         interface WithEtag {
             /**
              * Specifies etag.
-             * @param etag A unique read-only string that changes whenever the resource is updated
-             * @return the next update stage
              */
             Update withEtag(String etag);
         }
 
         /**
-         * The stage of the publicipaddress update allowing to specify IdleTimeoutInMinutes.
+         * The stage of the publicipaddress {0} allowing to specify IdleTimeoutInMinutes.
          */
         interface WithIdleTimeoutInMinutes {
             /**
              * Specifies idleTimeoutInMinutes.
-             * @param idleTimeoutInMinutes The idle timeout of the public IP address
-             * @return the next update stage
              */
             Update withIdleTimeoutInMinutes(Integer idleTimeoutInMinutes);
         }
 
         /**
-         * The stage of the publicipaddress update allowing to specify IpAddress.
+         * The stage of the publicipaddress {0} allowing to specify IpAddress.
          */
         interface WithIpAddress {
             /**
              * Specifies ipAddress.
-             * @param ipAddress The IP address associated with the public IP address resource
-             * @return the next update stage
              */
             Update withIpAddress(String ipAddress);
         }
 
         /**
-         * The stage of the publicipaddress update allowing to specify ProvisioningState.
+         * The stage of the publicipaddress {0} allowing to specify ProvisioningState.
          */
         interface WithProvisioningState {
             /**
              * Specifies provisioningState.
-             * @param provisioningState The provisioning state of the PublicIP resource. Possible values are: 'Updating', 'Deleting', and 'Failed'
-             * @return the next update stage
              */
             Update withProvisioningState(String provisioningState);
         }
 
         /**
-         * The stage of the publicipaddress update allowing to specify PublicIPAddressVersion.
+         * The stage of the publicipaddress {0} allowing to specify PublicIPAddressVersion.
          */
         interface WithPublicIPAddressVersion {
             /**
              * Specifies publicIPAddressVersion.
-             * @param publicIPAddressVersion The public IP address version. Possible values are: 'IPv4' and 'IPv6'. Possible values include: 'IPv4', 'IPv6'
-             * @return the next update stage
              */
             Update withPublicIPAddressVersion(IPVersion publicIPAddressVersion);
         }
 
         /**
-         * The stage of the publicipaddress update allowing to specify PublicIPAllocationMethod.
+         * The stage of the publicipaddress {0} allowing to specify PublicIPAllocationMethod.
          */
         interface WithPublicIPAllocationMethod {
             /**
              * Specifies publicIPAllocationMethod.
-             * @param publicIPAllocationMethod The public IP allocation method. Possible values are: 'Static' and 'Dynamic'. Possible values include: 'Static', 'Dynamic'
-             * @return the next update stage
              */
             Update withPublicIPAllocationMethod(IPAllocationMethod publicIPAllocationMethod);
         }
 
         /**
-         * The stage of the publicipaddress update allowing to specify ResourceGuid.
+         * The stage of the publicipaddress {0} allowing to specify ResourceGuid.
          */
         interface WithResourceGuid {
             /**
              * Specifies resourceGuid.
-             * @param resourceGuid The resource GUID property of the public IP resource
-             * @return the next update stage
              */
             Update withResourceGuid(String resourceGuid);
         }
 
         /**
-         * The stage of the publicipaddress update allowing to specify Sku.
+         * The stage of the publicipaddress {0} allowing to specify Sku.
          */
         interface WithSku {
             /**
              * Specifies sku.
-             * @param sku The public IP address SKU
-             * @return the next update stage
              */
             Update withSku(PublicIPAddressSku sku);
         }
 
         /**
-         * The stage of the publicipaddress update allowing to specify Zones.
+         * The stage of the publicipaddress {0} allowing to specify Zones.
          */
         interface WithZones {
             /**
              * Specifies zones.
-             * @param zones A list of availability zones denoting the IP allocated for the resource needs to come from
-             * @return the next update stage
              */
             Update withZones(List<String> zones);
         }

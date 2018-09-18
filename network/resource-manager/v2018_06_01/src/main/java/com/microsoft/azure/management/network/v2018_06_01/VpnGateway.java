@@ -80,61 +80,51 @@ public interface VpnGateway extends HasInner<VpnGatewayInner>, Resource, Groupab
         }
 
         /**
-         * The stage of the vpngateway definition allowing to specify BgpSettings.
+         * The stage of the vpngateway update allowing to specify BgpSettings.
          */
         interface WithBgpSettings {
             /**
              * Specifies bgpSettings.
-             * @param bgpSettings Local network gateway's BGP speaker settings
-             * @return the next definition stage
              */
             WithCreate withBgpSettings(BgpSettings bgpSettings);
         }
 
         /**
-         * The stage of the vpngateway definition allowing to specify Connections.
+         * The stage of the vpngateway update allowing to specify Connections.
          */
         interface WithConnections {
             /**
              * Specifies connections.
-             * @param connections list of all vpn connections to the gateway
-             * @return the next definition stage
              */
             WithCreate withConnections(List<VpnConnectionInner> connections);
         }
 
         /**
-         * The stage of the vpngateway definition allowing to specify Policies.
+         * The stage of the vpngateway update allowing to specify Policies.
          */
         interface WithPolicies {
             /**
              * Specifies policies.
-             * @param policies The policies applied to this vpn gateway
-             * @return the next definition stage
              */
             WithCreate withPolicies(Policies policies);
         }
 
         /**
-         * The stage of the vpngateway definition allowing to specify ProvisioningState.
+         * The stage of the vpngateway update allowing to specify ProvisioningState.
          */
         interface WithProvisioningState {
             /**
              * Specifies provisioningState.
-             * @param provisioningState The provisioning state of the resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
-             * @return the next definition stage
              */
             WithCreate withProvisioningState(ProvisioningState provisioningState);
         }
 
         /**
-         * The stage of the vpngateway definition allowing to specify VirtualHub.
+         * The stage of the vpngateway update allowing to specify VirtualHub.
          */
         interface WithVirtualHub {
             /**
              * Specifies virtualHub.
-             * @param virtualHub The VirtualHub to which the gateway belongs
-             * @return the next definition stage
              */
             WithCreate withVirtualHub(SubResource virtualHub);
         }
@@ -158,61 +148,51 @@ public interface VpnGateway extends HasInner<VpnGatewayInner>, Resource, Groupab
      */
     interface UpdateStages {
         /**
-         * The stage of the vpngateway update allowing to specify BgpSettings.
+         * The stage of the vpngateway {0} allowing to specify BgpSettings.
          */
         interface WithBgpSettings {
             /**
              * Specifies bgpSettings.
-             * @param bgpSettings Local network gateway's BGP speaker settings
-             * @return the next update stage
              */
             Update withBgpSettings(BgpSettings bgpSettings);
         }
 
         /**
-         * The stage of the vpngateway update allowing to specify Connections.
+         * The stage of the vpngateway {0} allowing to specify Connections.
          */
         interface WithConnections {
             /**
              * Specifies connections.
-             * @param connections list of all vpn connections to the gateway
-             * @return the next update stage
              */
             Update withConnections(List<VpnConnectionInner> connections);
         }
 
         /**
-         * The stage of the vpngateway update allowing to specify Policies.
+         * The stage of the vpngateway {0} allowing to specify Policies.
          */
         interface WithPolicies {
             /**
              * Specifies policies.
-             * @param policies The policies applied to this vpn gateway
-             * @return the next update stage
              */
             Update withPolicies(Policies policies);
         }
 
         /**
-         * The stage of the vpngateway update allowing to specify ProvisioningState.
+         * The stage of the vpngateway {0} allowing to specify ProvisioningState.
          */
         interface WithProvisioningState {
             /**
              * Specifies provisioningState.
-             * @param provisioningState The provisioning state of the resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
-             * @return the next update stage
              */
             Update withProvisioningState(ProvisioningState provisioningState);
         }
 
         /**
-         * The stage of the vpngateway update allowing to specify VirtualHub.
+         * The stage of the vpngateway {0} allowing to specify VirtualHub.
          */
         interface WithVirtualHub {
             /**
              * Specifies virtualHub.
-             * @param virtualHub The VirtualHub to which the gateway belongs
-             * @return the next update stage
              */
             Update withVirtualHub(SubResource virtualHub);
         }

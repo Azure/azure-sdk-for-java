@@ -73,49 +73,41 @@ public interface AzureFirewall extends HasInner<AzureFirewallInner>, Resource, G
         }
 
         /**
-         * The stage of the azurefirewall definition allowing to specify ApplicationRuleCollections.
+         * The stage of the azurefirewall update allowing to specify ApplicationRuleCollections.
          */
         interface WithApplicationRuleCollections {
             /**
              * Specifies applicationRuleCollections.
-             * @param applicationRuleCollections Collection of application rule collections used by a Azure Firewall
-             * @return the next definition stage
              */
             WithCreate withApplicationRuleCollections(List<AzureFirewallApplicationRuleCollection> applicationRuleCollections);
         }
 
         /**
-         * The stage of the azurefirewall definition allowing to specify IpConfigurations.
+         * The stage of the azurefirewall update allowing to specify IpConfigurations.
          */
         interface WithIpConfigurations {
             /**
              * Specifies ipConfigurations.
-             * @param ipConfigurations IP configuration of the Azure Firewall resource
-             * @return the next definition stage
              */
             WithCreate withIpConfigurations(List<AzureFirewallIPConfiguration> ipConfigurations);
         }
 
         /**
-         * The stage of the azurefirewall definition allowing to specify NetworkRuleCollections.
+         * The stage of the azurefirewall update allowing to specify NetworkRuleCollections.
          */
         interface WithNetworkRuleCollections {
             /**
              * Specifies networkRuleCollections.
-             * @param networkRuleCollections Collection of network rule collections used by a Azure Firewall
-             * @return the next definition stage
              */
             WithCreate withNetworkRuleCollections(List<AzureFirewallNetworkRuleCollection> networkRuleCollections);
         }
 
         /**
-         * The stage of the azurefirewall definition allowing to specify ProvisioningState.
+         * The stage of the azurefirewall update allowing to specify ProvisioningState.
          */
         interface WithProvisioningState {
             /**
              * Specifies provisioningState.
-             * @param provisioningState The provisioning state of the resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
-             * @return the next definition stage
              */
             WithCreate withProvisioningState(ProvisioningState provisioningState);
         }
@@ -139,49 +131,41 @@ public interface AzureFirewall extends HasInner<AzureFirewallInner>, Resource, G
      */
     interface UpdateStages {
         /**
-         * The stage of the azurefirewall update allowing to specify ApplicationRuleCollections.
+         * The stage of the azurefirewall {0} allowing to specify ApplicationRuleCollections.
          */
         interface WithApplicationRuleCollections {
             /**
              * Specifies applicationRuleCollections.
-             * @param applicationRuleCollections Collection of application rule collections used by a Azure Firewall
-             * @return the next update stage
              */
             Update withApplicationRuleCollections(List<AzureFirewallApplicationRuleCollection> applicationRuleCollections);
         }
 
         /**
-         * The stage of the azurefirewall update allowing to specify IpConfigurations.
+         * The stage of the azurefirewall {0} allowing to specify IpConfigurations.
          */
         interface WithIpConfigurations {
             /**
              * Specifies ipConfigurations.
-             * @param ipConfigurations IP configuration of the Azure Firewall resource
-             * @return the next update stage
              */
             Update withIpConfigurations(List<AzureFirewallIPConfiguration> ipConfigurations);
         }
 
         /**
-         * The stage of the azurefirewall update allowing to specify NetworkRuleCollections.
+         * The stage of the azurefirewall {0} allowing to specify NetworkRuleCollections.
          */
         interface WithNetworkRuleCollections {
             /**
              * Specifies networkRuleCollections.
-             * @param networkRuleCollections Collection of network rule collections used by a Azure Firewall
-             * @return the next update stage
              */
             Update withNetworkRuleCollections(List<AzureFirewallNetworkRuleCollection> networkRuleCollections);
         }
 
         /**
-         * The stage of the azurefirewall update allowing to specify ProvisioningState.
+         * The stage of the azurefirewall {0} allowing to specify ProvisioningState.
          */
         interface WithProvisioningState {
             /**
              * Specifies provisioningState.
-             * @param provisioningState The provisioning state of the resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
-             * @return the next update stage
              */
             Update withProvisioningState(ProvisioningState provisioningState);
         }
