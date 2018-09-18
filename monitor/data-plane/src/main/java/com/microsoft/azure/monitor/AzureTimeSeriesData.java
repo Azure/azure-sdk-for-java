@@ -24,26 +24,26 @@ public class AzureTimeSeriesData {
     /**
      * Gets or sets Min value.
      */
-    @JsonProperty(value = "min")
-    private Double min;
+    @JsonProperty(value = "min", required = true)
+    private double min;
 
     /**
      * Gets or sets Max value.
      */
-    @JsonProperty(value = "max")
-    private Double max;
+    @JsonProperty(value = "max", required = true)
+    private double max;
 
     /**
      * Gets or sets Sum value.
      */
-    @JsonProperty(value = "sum")
-    private Double sum;
+    @JsonProperty(value = "sum", required = true)
+    private double sum;
 
     /**
      * Gets or sets Count value.
      */
-    @JsonProperty(value = "count")
-    private Integer count;
+    @JsonProperty(value = "count", required = true)
+    private int count;
 
     /**
      * Get gets or sets dimension values.
@@ -70,7 +70,7 @@ public class AzureTimeSeriesData {
      *
      * @return the min value
      */
-    public Double min() {
+    public double min() {
         return this.min;
     }
 
@@ -80,7 +80,7 @@ public class AzureTimeSeriesData {
      * @param min the min value to set
      * @return the AzureTimeSeriesData object itself.
      */
-    public AzureTimeSeriesData withMin(Double min) {
+    public AzureTimeSeriesData withMin(double min) {
         this.min = min;
         return this;
     }
@@ -90,7 +90,7 @@ public class AzureTimeSeriesData {
      *
      * @return the max value
      */
-    public Double max() {
+    public double max() {
         return this.max;
     }
 
@@ -100,7 +100,7 @@ public class AzureTimeSeriesData {
      * @param max the max value to set
      * @return the AzureTimeSeriesData object itself.
      */
-    public AzureTimeSeriesData withMax(Double max) {
+    public AzureTimeSeriesData withMax(double max) {
         this.max = max;
         return this;
     }
@@ -110,7 +110,7 @@ public class AzureTimeSeriesData {
      *
      * @return the sum value
      */
-    public Double sum() {
+    public double sum() {
         return this.sum;
     }
 
@@ -120,7 +120,7 @@ public class AzureTimeSeriesData {
      * @param sum the sum value to set
      * @return the AzureTimeSeriesData object itself.
      */
-    public AzureTimeSeriesData withSum(Double sum) {
+    public AzureTimeSeriesData withSum(double sum) {
         this.sum = sum;
         return this;
     }
@@ -130,7 +130,7 @@ public class AzureTimeSeriesData {
      *
      * @return the count value
      */
-    public Integer count() {
+    public int count() {
         return this.count;
     }
 
@@ -140,7 +140,7 @@ public class AzureTimeSeriesData {
      * @param count the count value to set
      * @return the AzureTimeSeriesData object itself.
      */
-    public AzureTimeSeriesData withCount(Integer count) {
+    public AzureTimeSeriesData withCount(int count) {
         this.count = count;
         return this;
     }
