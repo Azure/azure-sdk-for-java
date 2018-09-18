@@ -118,6 +118,13 @@ public class JobInformationBasic {
     private JobRelationshipProperties related;
 
     /**
+     * the name of hierarchy queue node this job is assigned to, null if job
+     * has not been assigned yet or the account doesn't have hierarchy queue.
+     */
+    @JsonProperty(value = "hierarchyQueueNode", access = JsonProperty.Access.WRITE_ONLY)
+    private String hierarchyQueueNode;
+
+    /**
      * Get the job's unique identifier (a GUID).
      *
      * @return the jobId value
@@ -283,6 +290,15 @@ public class JobInformationBasic {
     public JobInformationBasic withRelated(JobRelationshipProperties related) {
         this.related = related;
         return this;
+    }
+
+    /**
+     * Get the name of hierarchy queue node this job is assigned to, null if job has not been assigned yet or the account doesn't have hierarchy queue.
+     *
+     * @return the hierarchyQueueNode value
+     */
+    public String hierarchyQueueNode() {
+        return this.hierarchyQueueNode;
     }
 
 }

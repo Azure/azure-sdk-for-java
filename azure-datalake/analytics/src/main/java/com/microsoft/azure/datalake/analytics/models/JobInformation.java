@@ -112,6 +112,13 @@ public class JobInformation {
     private List<JobStateAuditRecord> stateAuditRecords;
 
     /**
+     * the name of hierarchy queue node this job is assigned to, null if job
+     * has not been assigned yet or the account doesn't have hierarchy queue.
+     */
+    @JsonProperty(value = "hierarchyQueueNode", access = JsonProperty.Access.WRITE_ONLY)
+    private String hierarchyQueueNode;
+
+    /**
      * Gets or sets the job specific properties.
      */
     @JsonProperty(value = "properties", required = true)
@@ -318,6 +325,15 @@ public class JobInformation {
      */
     public List<JobStateAuditRecord> stateAuditRecords() {
         return this.stateAuditRecords;
+    }
+
+    /**
+     * Get the name of hierarchy queue node this job is assigned to, null if job has not been assigned yet or the account doesn't have hierarchy queue.
+     *
+     * @return the hierarchyQueueNode value
+     */
+    public String hierarchyQueueNode() {
+        return this.hierarchyQueueNode;
     }
 
     /**
