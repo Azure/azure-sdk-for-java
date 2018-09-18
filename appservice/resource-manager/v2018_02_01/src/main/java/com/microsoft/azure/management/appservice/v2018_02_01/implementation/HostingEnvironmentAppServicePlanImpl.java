@@ -54,6 +54,11 @@ class HostingEnvironmentAppServicePlanImpl extends WrapperImpl<AppServicePlanInn
     }
 
     @Override
+    public Boolean hyperV() {
+        return this.inner().hyperV();
+    }
+
+    @Override
     public String id() {
         return this.inner().id();
     }

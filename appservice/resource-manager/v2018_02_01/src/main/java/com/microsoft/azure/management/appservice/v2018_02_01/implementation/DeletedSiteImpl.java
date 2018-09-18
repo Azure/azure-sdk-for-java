@@ -29,6 +29,11 @@ class DeletedSiteImpl extends WrapperImpl<DeletedSiteInner> implements DeletedSi
     }
 
     @Override
+    public String deletedSiteKind() {
+        return this.inner().deletedSiteKind();
+    }
+
+    @Override
     public String deletedSiteName() {
         return this.inner().deletedSiteName();
     }
@@ -36,6 +41,21 @@ class DeletedSiteImpl extends WrapperImpl<DeletedSiteInner> implements DeletedSi
     @Override
     public String deletedTimestamp() {
         return this.inner().deletedTimestamp();
+    }
+
+    @Override
+    public String id() {
+        return this.inner().id();
+    }
+
+    @Override
+    public String kind() {
+        return this.inner().kind();
+    }
+
+    @Override
+    public String name() {
+        return this.inner().name();
     }
 
     @Override
@@ -51,6 +71,11 @@ class DeletedSiteImpl extends WrapperImpl<DeletedSiteInner> implements DeletedSi
     @Override
     public String subscription() {
         return this.inner().subscription();
+    }
+
+    @Override
+    public String type() {
+        return this.inner().type();
     }
 
 }

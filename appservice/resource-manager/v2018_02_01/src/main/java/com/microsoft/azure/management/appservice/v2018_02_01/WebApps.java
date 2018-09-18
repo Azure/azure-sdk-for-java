@@ -19,6 +19,7 @@ import com.microsoft.azure.management.appservice.v2018_02_01.implementation.Rest
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.RelayServiceConnectionEntityInner;
 import com.microsoft.azure.management.appservice.v2018_02_01.BackupItem;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.SiteAuthSettingsInner;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AzureStoragePropertyDictionaryResourceInner;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.ConnectionStringDictionaryInner;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.SiteLogsConfigInner;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.PushSettingsInner;
@@ -515,6 +516,29 @@ public interface WebApps {
     Observable<Operation> migrateMySqlAsync(String resourceGroupName, String name, MigrateMySqlRequest migrationRequestEnvelope);
 
     /**
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param operationId GUID of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable getNetworkTraceOperationAsync(String resourceGroupName, String name, String operationId);
+
+    /**
+     * Start capturing network packets for the site (To be deprecated).
+     * Start capturing network packets for the site (To be deprecated).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name The name of the web app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable startWebSiteNetworkTraceAsync(String resourceGroupName, String name);
+
+    /**
      * Start capturing network packets for the site.
      * Start capturing network packets for the site.
      *
@@ -523,7 +547,7 @@ public interface WebApps {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable startWebSiteNetworkTraceAsync(String resourceGroupName, String name);
+    Completable startWebSiteNetworkTraceOperationAsync(String resourceGroupName, String name);
 
     /**
      * Stop ongoing capturing network packets for the site.
@@ -535,6 +559,18 @@ public interface WebApps {
      * @return the observable for the request
      */
     Completable stopWebSiteNetworkTraceAsync(String resourceGroupName, String name);
+
+    /**
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param operationId GUID of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<NetworkTrace> getNetworkTracesAsync(String resourceGroupName, String name, String operationId);
 
     /**
      * Generates a new publishing password for an app (or deployment slot, if specified).
@@ -576,10 +612,11 @@ public interface WebApps {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @param publishingProfileOptions Specifies publishingProfileOptions for publishing profile. For example, use {"format": "FileZilla3"} to get a FileZilla publishing profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable listPublishingProfileXmlWithSecretsAsync(String resourceGroupName, String name);
+    Completable listPublishingProfileXmlWithSecretsAsync(String resourceGroupName, String name, CsmPublishingProfileOptions publishingProfileOptions);
 
     /**
      * Resets the configuration settings of the current slot if they were previously modified by calling the API with POST.
@@ -929,6 +966,54 @@ public interface WebApps {
      * @return the observable for the request
      */
     Observable<SiteAuthSettings> getAuthSettingsSlotAsync(String resourceGroupName, String name, String slot);
+
+    /**
+     * Updates the Azure storage account configurations of an app.
+     * Updates the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param azureStorageAccounts Azure storage accounts of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<AzureStoragePropertyDictionaryResource> updateAzureStorageAccountsAsync(String resourceGroupName, String name, AzureStoragePropertyDictionaryResourceInner azureStorageAccounts);
+
+    /**
+     * Gets the Azure storage account configurations of an app.
+     * Gets the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<AzureStoragePropertyDictionaryResource> listAzureStorageAccountsAsync(String resourceGroupName, String name);
+
+    /**
+     * Updates the Azure storage account configurations of an app.
+     * Updates the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will update the Azure storage account configurations for the production slot.
+     * @param azureStorageAccounts Azure storage accounts of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<AzureStoragePropertyDictionaryResource> updateAzureStorageAccountsSlotAsync(String resourceGroupName, String name, String slot, AzureStoragePropertyDictionaryResourceInner azureStorageAccounts);
+
+    /**
+     * Gets the Azure storage account configurations of an app.
+     * Gets the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will update the Azure storage account configurations for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<AzureStoragePropertyDictionaryResource> listAzureStorageAccountsSlotAsync(String resourceGroupName, String name, String slot);
 
     /**
      * Replaces the connection strings of an app.
@@ -3280,6 +3365,31 @@ public interface WebApps {
     Observable<FunctionSecrets> listSyncFunctionTriggersSlotAsync(String resourceGroupName, String name, String slot);
 
     /**
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param operationId GUID of the operation.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get an operation for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable getNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String operationId, String slot);
+
+    /**
+     * Start capturing network packets for the site (To be deprecated).
+     * Start capturing network packets for the site (To be deprecated).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name The name of the web app.
+     * @param slot The name of the slot for this web app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable startWebSiteNetworkTraceSlotAsync(String resourceGroupName, String name, String slot);
+
+    /**
      * Start capturing network packets for the site.
      * Start capturing network packets for the site.
      *
@@ -3289,7 +3399,7 @@ public interface WebApps {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable startWebSiteNetworkTraceSlotAsync(String resourceGroupName, String name, String slot);
+    Completable startWebSiteNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String slot);
 
     /**
      * Stop ongoing capturing network packets for the site.
@@ -3302,6 +3412,19 @@ public interface WebApps {
      * @return the observable for the request
      */
     Completable stopWebSiteNetworkTraceSlotAsync(String resourceGroupName, String name, String slot);
+
+    /**
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param operationId GUID of the operation.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get an operation for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<NetworkTrace> getNetworkTracesSlotAsync(String resourceGroupName, String name, String operationId, String slot);
 
     /**
      * Generates a new publishing password for an app (or deployment slot, if specified).
@@ -3347,10 +3470,11 @@ public interface WebApps {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing profile for the production slot.
+     * @param publishingProfileOptions Specifies publishingProfileOptions for publishing profile. For example, use {"format": "FileZilla3"} to get a FileZilla publishing profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable listPublishingProfileXmlWithSecretsSlotAsync(String resourceGroupName, String name, String slot);
+    Completable listPublishingProfileXmlWithSecretsSlotAsync(String resourceGroupName, String name, String slot, CsmPublishingProfileOptions publishingProfileOptions);
 
     /**
      * Resets the configuration settings of the current slot if they were previously modified by calling the API with POST.

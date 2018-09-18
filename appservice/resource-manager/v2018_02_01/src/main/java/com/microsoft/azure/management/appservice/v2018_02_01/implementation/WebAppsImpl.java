@@ -16,6 +16,7 @@ import rx.functions.Func1;
 import com.microsoft.azure.management.appservice.v2018_02_01.Sites;
 import com.microsoft.azure.Page;
 import rx.Completable;
+import java.util.List;
 import com.microsoft.azure.management.appservice.v2018_02_01.CustomHostnameAnalysisResult;
 import com.microsoft.azure.management.appservice.v2018_02_01.BackupItem;
 import com.microsoft.azure.management.appservice.v2018_02_01.SiteConfigResource;
@@ -28,14 +29,17 @@ import com.microsoft.azure.management.appservice.v2018_02_01.SiteCloneability;
 import com.microsoft.azure.management.appservice.v2018_02_01.FunctionSecrets;
 import com.microsoft.azure.management.appservice.v2018_02_01.StorageMigrationResponse;
 import com.microsoft.azure.management.appservice.v2018_02_01.Operation;
+import com.microsoft.azure.management.appservice.v2018_02_01.NetworkTrace;
 import com.microsoft.azure.management.appservice.v2018_02_01.SitePhpErrorLogFlag;
 import com.microsoft.azure.management.appservice.v2018_02_01.SlotDifference;
 import com.microsoft.azure.management.appservice.v2018_02_01.CsmSlotEntity;
 import com.microsoft.azure.management.appservice.v2018_02_01.StorageMigrationOptions;
 import com.microsoft.azure.management.appservice.v2018_02_01.MigrateMySqlRequest;
+import com.microsoft.azure.management.appservice.v2018_02_01.CsmPublishingProfileOptions;
 import com.microsoft.azure.management.appservice.v2018_02_01.DeletedAppRestoreRequest;
 import com.microsoft.azure.management.appservice.v2018_02_01.SnapshotRestoreRequest;
 import com.microsoft.azure.management.appservice.v2018_02_01.SiteAuthSettings;
+import com.microsoft.azure.management.appservice.v2018_02_01.AzureStoragePropertyDictionaryResource;
 import com.microsoft.azure.management.appservice.v2018_02_01.ConnectionStringDictionary;
 import com.microsoft.azure.management.appservice.v2018_02_01.SiteLogsConfig;
 import com.microsoft.azure.management.appservice.v2018_02_01.User;
@@ -73,7 +77,6 @@ import com.microsoft.azure.management.appservice.v2018_02_01.TriggeredWebJob;
 import com.microsoft.azure.management.appservice.v2018_02_01.TriggeredJobHistory;
 import com.microsoft.azure.management.appservice.v2018_02_01.SiteCsmUsageQuota;
 import com.microsoft.azure.management.appservice.v2018_02_01.SiteVnetInfo;
-import java.util.List;
 import com.microsoft.azure.management.appservice.v2018_02_01.SiteVnetGateway;
 import com.microsoft.azure.management.appservice.v2018_02_01.WebJob;
 
@@ -827,15 +830,45 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     }
 
     @Override
+    public Completable getNetworkTraceOperationAsync(String resourceGroupName, String name, String operationId) {
+        WebAppsInner client = this.inner();
+        return client.getNetworkTraceOperationAsync(resourceGroupName, name, operationId).toCompletable();
+    }
+
+    @Override
     public Completable startWebSiteNetworkTraceAsync(String resourceGroupName, String name) {
         WebAppsInner client = this.inner();
         return client.startWebSiteNetworkTraceAsync(resourceGroupName, name).toCompletable();
     }
 
     @Override
+    public Completable startWebSiteNetworkTraceOperationAsync(String resourceGroupName, String name) {
+        WebAppsInner client = this.inner();
+        return client.startWebSiteNetworkTraceOperationAsync(resourceGroupName, name).toCompletable();
+    }
+
+    @Override
     public Completable stopWebSiteNetworkTraceAsync(String resourceGroupName, String name) {
         WebAppsInner client = this.inner();
         return client.stopWebSiteNetworkTraceAsync(resourceGroupName, name).toCompletable();
+    }
+
+    @Override
+    public Observable<NetworkTrace> getNetworkTracesAsync(String resourceGroupName, String name, String operationId) {
+        WebAppsInner client = this.inner();
+        return client.getNetworkTracesAsync(resourceGroupName, name, operationId)
+        .flatMap(new Func1<List<NetworkTraceInner>, Observable<NetworkTraceInner>>() {
+            @Override
+            public Observable<NetworkTraceInner> call(List<NetworkTraceInner> innerList) {
+                return Observable.from(innerList);
+            }
+        })
+        .map(new Func1<NetworkTraceInner, NetworkTrace>() {
+            @Override
+            public NetworkTrace call(NetworkTraceInner inner) {
+                return new NetworkTraceImpl(inner, manager());
+            }
+        });
     }
 
     @Override
@@ -863,9 +896,9 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     }
 
     @Override
-    public Completable listPublishingProfileXmlWithSecretsAsync(String resourceGroupName, String name) {
+    public Completable listPublishingProfileXmlWithSecretsAsync(String resourceGroupName, String name, CsmPublishingProfileOptions publishingProfileOptions) {
         WebAppsInner client = this.inner();
-        return client.listPublishingProfileXmlWithSecretsAsync(resourceGroupName, name).toCompletable();
+        return client.listPublishingProfileXmlWithSecretsAsync(resourceGroupName, name, publishingProfileOptions).toCompletable();
     }
 
     @Override
@@ -1146,6 +1179,54 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
             @Override
             public SiteAuthSettings call(SiteAuthSettingsInner inner) {
                 return new SiteAuthSettingsImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<AzureStoragePropertyDictionaryResource> updateAzureStorageAccountsAsync(String resourceGroupName, String name, AzureStoragePropertyDictionaryResourceInner azureStorageAccounts) {
+        WebAppsInner client = this.inner();
+        return client.updateAzureStorageAccountsAsync(resourceGroupName, name, azureStorageAccounts)
+        .map(new Func1<AzureStoragePropertyDictionaryResourceInner, AzureStoragePropertyDictionaryResource>() {
+            @Override
+            public AzureStoragePropertyDictionaryResource call(AzureStoragePropertyDictionaryResourceInner inner) {
+                return new AzureStoragePropertyDictionaryResourceImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<AzureStoragePropertyDictionaryResource> listAzureStorageAccountsAsync(String resourceGroupName, String name) {
+        WebAppsInner client = this.inner();
+        return client.listAzureStorageAccountsAsync(resourceGroupName, name)
+        .map(new Func1<AzureStoragePropertyDictionaryResourceInner, AzureStoragePropertyDictionaryResource>() {
+            @Override
+            public AzureStoragePropertyDictionaryResource call(AzureStoragePropertyDictionaryResourceInner inner) {
+                return new AzureStoragePropertyDictionaryResourceImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<AzureStoragePropertyDictionaryResource> updateAzureStorageAccountsSlotAsync(String resourceGroupName, String name, String slot, AzureStoragePropertyDictionaryResourceInner azureStorageAccounts) {
+        WebAppsInner client = this.inner();
+        return client.updateAzureStorageAccountsSlotAsync(resourceGroupName, name, slot, azureStorageAccounts)
+        .map(new Func1<AzureStoragePropertyDictionaryResourceInner, AzureStoragePropertyDictionaryResource>() {
+            @Override
+            public AzureStoragePropertyDictionaryResource call(AzureStoragePropertyDictionaryResourceInner inner) {
+                return new AzureStoragePropertyDictionaryResourceImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<AzureStoragePropertyDictionaryResource> listAzureStorageAccountsSlotAsync(String resourceGroupName, String name, String slot) {
+        WebAppsInner client = this.inner();
+        return client.listAzureStorageAccountsSlotAsync(resourceGroupName, name, slot)
+        .map(new Func1<AzureStoragePropertyDictionaryResourceInner, AzureStoragePropertyDictionaryResource>() {
+            @Override
+            public AzureStoragePropertyDictionaryResource call(AzureStoragePropertyDictionaryResourceInner inner) {
+                return new AzureStoragePropertyDictionaryResourceImpl(inner, manager());
             }
         });
     }
@@ -3413,15 +3494,45 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     }
 
     @Override
+    public Completable getNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String operationId, String slot) {
+        WebAppsInner client = this.inner();
+        return client.getNetworkTraceOperationSlotAsync(resourceGroupName, name, operationId, slot).toCompletable();
+    }
+
+    @Override
     public Completable startWebSiteNetworkTraceSlotAsync(String resourceGroupName, String name, String slot) {
         WebAppsInner client = this.inner();
         return client.startWebSiteNetworkTraceSlotAsync(resourceGroupName, name, slot).toCompletable();
     }
 
     @Override
+    public Completable startWebSiteNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String slot) {
+        WebAppsInner client = this.inner();
+        return client.startWebSiteNetworkTraceOperationSlotAsync(resourceGroupName, name, slot).toCompletable();
+    }
+
+    @Override
     public Completable stopWebSiteNetworkTraceSlotAsync(String resourceGroupName, String name, String slot) {
         WebAppsInner client = this.inner();
         return client.stopWebSiteNetworkTraceSlotAsync(resourceGroupName, name, slot).toCompletable();
+    }
+
+    @Override
+    public Observable<NetworkTrace> getNetworkTracesSlotAsync(String resourceGroupName, String name, String operationId, String slot) {
+        WebAppsInner client = this.inner();
+        return client.getNetworkTracesSlotAsync(resourceGroupName, name, operationId, slot)
+        .flatMap(new Func1<List<NetworkTraceInner>, Observable<NetworkTraceInner>>() {
+            @Override
+            public Observable<NetworkTraceInner> call(List<NetworkTraceInner> innerList) {
+                return Observable.from(innerList);
+            }
+        })
+        .map(new Func1<NetworkTraceInner, NetworkTrace>() {
+            @Override
+            public NetworkTrace call(NetworkTraceInner inner) {
+                return new NetworkTraceImpl(inner, manager());
+            }
+        });
     }
 
     @Override
@@ -3449,9 +3560,9 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     }
 
     @Override
-    public Completable listPublishingProfileXmlWithSecretsSlotAsync(String resourceGroupName, String name, String slot) {
+    public Completable listPublishingProfileXmlWithSecretsSlotAsync(String resourceGroupName, String name, String slot, CsmPublishingProfileOptions publishingProfileOptions) {
         WebAppsInner client = this.inner();
-        return client.listPublishingProfileXmlWithSecretsSlotAsync(resourceGroupName, name, slot).toCompletable();
+        return client.listPublishingProfileXmlWithSecretsSlotAsync(resourceGroupName, name, slot, publishingProfileOptions).toCompletable();
     }
 
     @Override

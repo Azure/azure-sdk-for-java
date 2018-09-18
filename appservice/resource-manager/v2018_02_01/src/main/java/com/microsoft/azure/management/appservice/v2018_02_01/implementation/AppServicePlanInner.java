@@ -116,11 +116,18 @@ public class AppServicePlanInner extends Resource {
     private Boolean reserved;
 
     /**
-     * If Hyper-V container app service plan &lt;code&gt;true&lt;/code&gt;,
-     * &lt;code&gt;false&lt;/code&gt; otherwise.
+     * Obsolete: If Hyper-V container app service plan
+     * &lt;code&gt;true&lt;/code&gt;, &lt;code&gt;false&lt;/code&gt; otherwise.
      */
     @JsonProperty(value = "properties.isXenon")
     private Boolean isXenon;
+
+    /**
+     * If Hyper-V container app service plan &lt;code&gt;true&lt;/code&gt;,
+     * &lt;code&gt;false&lt;/code&gt; otherwise.
+     */
+    @JsonProperty(value = "properties.hyperV")
+    private Boolean hyperV;
 
     /**
      * Scaling worker count.
@@ -370,7 +377,7 @@ public class AppServicePlanInner extends Resource {
     }
 
     /**
-     * Get if Hyper-V container app service plan &lt;code&gt;true&lt;/code&gt;, &lt;code&gt;false&lt;/code&gt; otherwise.
+     * Get obsolete: If Hyper-V container app service plan &lt;code&gt;true&lt;/code&gt;, &lt;code&gt;false&lt;/code&gt; otherwise.
      *
      * @return the isXenon value
      */
@@ -379,13 +386,33 @@ public class AppServicePlanInner extends Resource {
     }
 
     /**
-     * Set if Hyper-V container app service plan &lt;code&gt;true&lt;/code&gt;, &lt;code&gt;false&lt;/code&gt; otherwise.
+     * Set obsolete: If Hyper-V container app service plan &lt;code&gt;true&lt;/code&gt;, &lt;code&gt;false&lt;/code&gt; otherwise.
      *
      * @param isXenon the isXenon value to set
      * @return the AppServicePlanInner object itself.
      */
     public AppServicePlanInner withIsXenon(Boolean isXenon) {
         this.isXenon = isXenon;
+        return this;
+    }
+
+    /**
+     * Get if Hyper-V container app service plan &lt;code&gt;true&lt;/code&gt;, &lt;code&gt;false&lt;/code&gt; otherwise.
+     *
+     * @return the hyperV value
+     */
+    public Boolean hyperV() {
+        return this.hyperV;
+    }
+
+    /**
+     * Set if Hyper-V container app service plan &lt;code&gt;true&lt;/code&gt;, &lt;code&gt;false&lt;/code&gt; otherwise.
+     *
+     * @param hyperV the hyperV value to set
+     * @return the AppServicePlanInner object itself.
+     */
+    public AppServicePlanInner withHyperV(Boolean hyperV) {
+        this.hyperV = hyperV;
         return this;
     }
 

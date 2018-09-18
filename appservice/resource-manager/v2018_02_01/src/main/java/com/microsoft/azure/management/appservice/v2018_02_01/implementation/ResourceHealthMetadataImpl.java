@@ -8,15 +8,12 @@
 
 package com.microsoft.azure.management.appservice.v2018_02_01.implementation;
 
-import com.microsoft.azure.management.appservice.v2018_02_01.BackupRequest;
+import com.microsoft.azure.management.appservice.v2018_02_01.ResourceHealthMetadata;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
-import com.microsoft.azure.management.appservice.v2018_02_01.BackupSchedule;
-import java.util.List;
-import com.microsoft.azure.management.appservice.v2018_02_01.DatabaseBackupSetting;
 
-class BackupRequestImpl extends WrapperImpl<BackupRequestInner> implements BackupRequest {
+class ResourceHealthMetadataImpl extends WrapperImpl<ResourceHealthMetadataInner> implements ResourceHealthMetadata {
     private final CertificateRegistrationManager manager;
-    BackupRequestImpl(BackupRequestInner inner, CertificateRegistrationManager manager) {
+    ResourceHealthMetadataImpl(ResourceHealthMetadataInner inner, CertificateRegistrationManager manager) {
         super(inner);
         this.manager = manager;
     }
@@ -27,23 +24,8 @@ class BackupRequestImpl extends WrapperImpl<BackupRequestInner> implements Backu
     }
 
     @Override
-    public String backupName() {
-        return this.inner().backupName();
-    }
-
-    @Override
-    public BackupSchedule backupSchedule() {
-        return this.inner().backupSchedule();
-    }
-
-    @Override
-    public List<DatabaseBackupSetting> databases() {
-        return this.inner().databases();
-    }
-
-    @Override
-    public Boolean enabled() {
-        return this.inner().enabled();
+    public String category() {
+        return this.inner().category();
     }
 
     @Override
@@ -62,8 +44,8 @@ class BackupRequestImpl extends WrapperImpl<BackupRequestInner> implements Backu
     }
 
     @Override
-    public String storageAccountUrl() {
-        return this.inner().storageAccountUrl();
+    public Boolean signalAvailability() {
+        return this.inner().signalAvailability();
     }
 
     @Override

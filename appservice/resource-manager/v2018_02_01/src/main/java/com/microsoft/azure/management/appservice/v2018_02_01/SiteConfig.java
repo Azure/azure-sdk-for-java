@@ -10,6 +10,7 @@ package com.microsoft.azure.management.appservice.v2018_02_01;
 
 import java.util.List;
 import org.joda.time.DateTime;
+import java.util.Map;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.PushSettingsInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -122,6 +123,12 @@ public class SiteConfig {
      */
     @JsonProperty(value = "appSettings")
     private List<NameValuePair> appSettings;
+
+    /**
+     * User-provided Azure storage accounts.
+     */
+    @JsonProperty(value = "azureStorageAccounts")
+    private Map<String, AzureStorageInfoValue> azureStorageAccounts;
 
     /**
      * Connection strings.
@@ -671,6 +678,26 @@ public class SiteConfig {
      */
     public SiteConfig withAppSettings(List<NameValuePair> appSettings) {
         this.appSettings = appSettings;
+        return this;
+    }
+
+    /**
+     * Get user-provided Azure storage accounts.
+     *
+     * @return the azureStorageAccounts value
+     */
+    public Map<String, AzureStorageInfoValue> azureStorageAccounts() {
+        return this.azureStorageAccounts;
+    }
+
+    /**
+     * Set user-provided Azure storage accounts.
+     *
+     * @param azureStorageAccounts the azureStorageAccounts value to set
+     * @return the SiteConfig object itself.
+     */
+    public SiteConfig withAzureStorageAccounts(Map<String, AzureStorageInfoValue> azureStorageAccounts) {
+        this.azureStorageAccounts = azureStorageAccounts;
         return this;
     }
 

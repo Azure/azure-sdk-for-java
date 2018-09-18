@@ -91,6 +91,11 @@ public interface HostingEnvironmentSite extends HasInner<SiteInner>, HasManager<
     Boolean httpsOnly();
 
     /**
+     * @return the hyperV value.
+     */
+    Boolean hyperV();
+
+    /**
      * @return the id value.
      */
     String id();

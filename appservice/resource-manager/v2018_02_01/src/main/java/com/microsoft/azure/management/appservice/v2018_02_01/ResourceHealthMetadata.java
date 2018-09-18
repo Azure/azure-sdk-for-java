@@ -11,32 +11,16 @@ package com.microsoft.azure.management.appservice.v2018_02_01;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.BackupRequestInner;
-import java.util.List;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.ResourceHealthMetadataInner;
 
 /**
- * Type representing BackupRequest.
+ * Type representing ResourceHealthMetadata.
  */
-public interface BackupRequest extends HasInner<BackupRequestInner>, HasManager<CertificateRegistrationManager> {
+public interface ResourceHealthMetadata extends HasInner<ResourceHealthMetadataInner>, HasManager<CertificateRegistrationManager> {
     /**
-     * @return the backupName value.
+     * @return the category value.
      */
-    String backupName();
-
-    /**
-     * @return the backupSchedule value.
-     */
-    BackupSchedule backupSchedule();
-
-    /**
-     * @return the databases value.
-     */
-    List<DatabaseBackupSetting> databases();
-
-    /**
-     * @return the enabled value.
-     */
-    Boolean enabled();
+    String category();
 
     /**
      * @return the id value.
@@ -54,9 +38,9 @@ public interface BackupRequest extends HasInner<BackupRequestInner>, HasManager<
     String name();
 
     /**
-     * @return the storageAccountUrl value.
+     * @return the signalAvailability value.
      */
-    String storageAccountUrl();
+    Boolean signalAvailability();
 
     /**
      * @return the type value.

@@ -23,7 +23,6 @@ import com.microsoft.azure.management.appservice.v2018_02_01.DeletedAppRestoreRe
 import com.microsoft.azure.management.appservice.v2018_02_01.MigrateMySqlRequest;
 import com.microsoft.azure.management.appservice.v2018_02_01.MSDeploy;
 import com.microsoft.azure.management.appservice.v2018_02_01.PremierAddOnPatchResource;
-import com.microsoft.azure.management.appservice.v2018_02_01.PublishingProfileFormat;
 import com.microsoft.azure.management.appservice.v2018_02_01.SitePatchResource;
 import com.microsoft.azure.management.appservice.v2018_02_01.SnapshotRestoreRequest;
 import com.microsoft.azure.management.appservice.v2018_02_01.StorageMigrationOptions;
@@ -162,6 +161,14 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps getAuthSettings" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/authsettings/list")
         Observable<Response<ResponseBody>> getAuthSettings(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps updateAzureStorageAccounts" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/azurestorageaccounts")
+        Observable<Response<ResponseBody>> updateAzureStorageAccounts(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body AzureStoragePropertyDictionaryResourceInner azureStorageAccounts, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listAzureStorageAccounts" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/azurestorageaccounts/list")
+        Observable<Response<ResponseBody>> listAzureStorageAccounts(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps updateBackupConfiguration" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/backup")
@@ -534,13 +541,29 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkFeatures/{view}")
         Observable<Response<ResponseBody>> listNetworkFeatures(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("view") String view, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps getNetworkTraceOperation" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkTrace/operationresults/{operationId}")
+        Observable<Response<ResponseBody>> getNetworkTraceOperation(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("operationId") String operationId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps startWebSiteNetworkTrace" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkTrace/start")
         Observable<Response<ResponseBody>> startWebSiteNetworkTrace(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("durationInSeconds") Integer durationInSeconds, @Query("maxFrameLength") Integer maxFrameLength, @Query("sasUrl") String sasUrl, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps startWebSiteNetworkTraceOperation" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkTrace/startOperation")
+        Observable<Response<ResponseBody>> startWebSiteNetworkTraceOperation(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("durationInSeconds") Integer durationInSeconds, @Query("maxFrameLength") Integer maxFrameLength, @Query("sasUrl") String sasUrl, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps beginStartWebSiteNetworkTraceOperation" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkTrace/startOperation")
+        Observable<Response<ResponseBody>> beginStartWebSiteNetworkTraceOperation(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("durationInSeconds") Integer durationInSeconds, @Query("maxFrameLength") Integer maxFrameLength, @Query("sasUrl") String sasUrl, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps stopWebSiteNetworkTrace" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkTrace/stop")
         Observable<Response<ResponseBody>> stopWebSiteNetworkTrace(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps getNetworkTraces" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkTrace/{operationId}")
+        Observable<Response<ResponseBody>> getNetworkTraces(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("operationId") String operationId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps generateNewSitePublishingPassword" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/newpassword")
@@ -634,7 +657,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listPublishingProfileXmlWithSecrets" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/publishxml")
         @Streaming
-        Observable<Response<ResponseBody>> listPublishingProfileXmlWithSecrets(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CsmPublishingProfileOptions publishingProfileOptions, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listPublishingProfileXmlWithSecrets(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body CsmPublishingProfileOptions publishingProfileOptions, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps resetProductionSlotConfig" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/resetSlotConfig")
@@ -767,6 +790,14 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps getAuthSettingsSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/authsettings/list")
         Observable<Response<ResponseBody>> getAuthSettingsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps updateAzureStorageAccountsSlot" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/azurestorageaccounts")
+        Observable<Response<ResponseBody>> updateAzureStorageAccountsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body AzureStoragePropertyDictionaryResourceInner azureStorageAccounts, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listAzureStorageAccountsSlot" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/azurestorageaccounts/list")
+        Observable<Response<ResponseBody>> listAzureStorageAccountsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps updateBackupConfigurationSlot" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/backup")
@@ -1115,13 +1146,29 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/networkFeatures/{view}")
         Observable<Response<ResponseBody>> listNetworkFeaturesSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("view") String view, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps getNetworkTraceOperationSlot" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/networkTrace/operationresults/{operationId}")
+        Observable<Response<ResponseBody>> getNetworkTraceOperationSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("operationId") String operationId, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps startWebSiteNetworkTraceSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/networkTrace/start")
         Observable<Response<ResponseBody>> startWebSiteNetworkTraceSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("durationInSeconds") Integer durationInSeconds, @Query("maxFrameLength") Integer maxFrameLength, @Query("sasUrl") String sasUrl, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps startWebSiteNetworkTraceOperationSlot" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/networkTrace/startOperation")
+        Observable<Response<ResponseBody>> startWebSiteNetworkTraceOperationSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("durationInSeconds") Integer durationInSeconds, @Query("maxFrameLength") Integer maxFrameLength, @Query("sasUrl") String sasUrl, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps beginStartWebSiteNetworkTraceOperationSlot" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/networkTrace/startOperation")
+        Observable<Response<ResponseBody>> beginStartWebSiteNetworkTraceOperationSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("durationInSeconds") Integer durationInSeconds, @Query("maxFrameLength") Integer maxFrameLength, @Query("sasUrl") String sasUrl, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps stopWebSiteNetworkTraceSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/networkTrace/stop")
         Observable<Response<ResponseBody>> stopWebSiteNetworkTraceSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps getNetworkTracesSlot" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/networkTrace/{operationId}")
+        Observable<Response<ResponseBody>> getNetworkTracesSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("operationId") String operationId, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps generateNewSitePublishingPasswordSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/newpassword")
@@ -1215,7 +1262,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listPublishingProfileXmlWithSecretsSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/publishxml")
         @Streaming
-        Observable<Response<ResponseBody>> listPublishingProfileXmlWithSecretsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CsmPublishingProfileOptions publishingProfileOptions, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listPublishingProfileXmlWithSecretsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body CsmPublishingProfileOptions publishingProfileOptions, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps resetSlotConfigurationSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/resetSlotConfig")
@@ -4127,6 +4174,194 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     private ServiceResponse<SiteAuthSettingsInner> getAuthSettingsDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<SiteAuthSettingsInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SiteAuthSettingsInner>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Updates the Azure storage account configurations of an app.
+     * Updates the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param azureStorageAccounts Azure storage accounts of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the AzureStoragePropertyDictionaryResourceInner object if successful.
+     */
+    public AzureStoragePropertyDictionaryResourceInner updateAzureStorageAccounts(String resourceGroupName, String name, AzureStoragePropertyDictionaryResourceInner azureStorageAccounts) {
+        return updateAzureStorageAccountsWithServiceResponseAsync(resourceGroupName, name, azureStorageAccounts).toBlocking().single().body();
+    }
+
+    /**
+     * Updates the Azure storage account configurations of an app.
+     * Updates the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param azureStorageAccounts Azure storage accounts of the app.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<AzureStoragePropertyDictionaryResourceInner> updateAzureStorageAccountsAsync(String resourceGroupName, String name, AzureStoragePropertyDictionaryResourceInner azureStorageAccounts, final ServiceCallback<AzureStoragePropertyDictionaryResourceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateAzureStorageAccountsWithServiceResponseAsync(resourceGroupName, name, azureStorageAccounts), serviceCallback);
+    }
+
+    /**
+     * Updates the Azure storage account configurations of an app.
+     * Updates the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param azureStorageAccounts Azure storage accounts of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AzureStoragePropertyDictionaryResourceInner object
+     */
+    public Observable<AzureStoragePropertyDictionaryResourceInner> updateAzureStorageAccountsAsync(String resourceGroupName, String name, AzureStoragePropertyDictionaryResourceInner azureStorageAccounts) {
+        return updateAzureStorageAccountsWithServiceResponseAsync(resourceGroupName, name, azureStorageAccounts).map(new Func1<ServiceResponse<AzureStoragePropertyDictionaryResourceInner>, AzureStoragePropertyDictionaryResourceInner>() {
+            @Override
+            public AzureStoragePropertyDictionaryResourceInner call(ServiceResponse<AzureStoragePropertyDictionaryResourceInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Updates the Azure storage account configurations of an app.
+     * Updates the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param azureStorageAccounts Azure storage accounts of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AzureStoragePropertyDictionaryResourceInner object
+     */
+    public Observable<ServiceResponse<AzureStoragePropertyDictionaryResourceInner>> updateAzureStorageAccountsWithServiceResponseAsync(String resourceGroupName, String name, AzureStoragePropertyDictionaryResourceInner azureStorageAccounts) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (azureStorageAccounts == null) {
+            throw new IllegalArgumentException("Parameter azureStorageAccounts is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(azureStorageAccounts);
+        return service.updateAzureStorageAccounts(resourceGroupName, name, this.client.subscriptionId(), azureStorageAccounts, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AzureStoragePropertyDictionaryResourceInner>>>() {
+                @Override
+                public Observable<ServiceResponse<AzureStoragePropertyDictionaryResourceInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<AzureStoragePropertyDictionaryResourceInner> clientResponse = updateAzureStorageAccountsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<AzureStoragePropertyDictionaryResourceInner> updateAzureStorageAccountsDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<AzureStoragePropertyDictionaryResourceInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<AzureStoragePropertyDictionaryResourceInner>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets the Azure storage account configurations of an app.
+     * Gets the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the AzureStoragePropertyDictionaryResourceInner object if successful.
+     */
+    public AzureStoragePropertyDictionaryResourceInner listAzureStorageAccounts(String resourceGroupName, String name) {
+        return listAzureStorageAccountsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
+    }
+
+    /**
+     * Gets the Azure storage account configurations of an app.
+     * Gets the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<AzureStoragePropertyDictionaryResourceInner> listAzureStorageAccountsAsync(String resourceGroupName, String name, final ServiceCallback<AzureStoragePropertyDictionaryResourceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listAzureStorageAccountsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    }
+
+    /**
+     * Gets the Azure storage account configurations of an app.
+     * Gets the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AzureStoragePropertyDictionaryResourceInner object
+     */
+    public Observable<AzureStoragePropertyDictionaryResourceInner> listAzureStorageAccountsAsync(String resourceGroupName, String name) {
+        return listAzureStorageAccountsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<AzureStoragePropertyDictionaryResourceInner>, AzureStoragePropertyDictionaryResourceInner>() {
+            @Override
+            public AzureStoragePropertyDictionaryResourceInner call(ServiceResponse<AzureStoragePropertyDictionaryResourceInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets the Azure storage account configurations of an app.
+     * Gets the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AzureStoragePropertyDictionaryResourceInner object
+     */
+    public Observable<ServiceResponse<AzureStoragePropertyDictionaryResourceInner>> listAzureStorageAccountsWithServiceResponseAsync(String resourceGroupName, String name) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listAzureStorageAccounts(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AzureStoragePropertyDictionaryResourceInner>>>() {
+                @Override
+                public Observable<ServiceResponse<AzureStoragePropertyDictionaryResourceInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<AzureStoragePropertyDictionaryResourceInner> clientResponse = listAzureStorageAccountsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<AzureStoragePropertyDictionaryResourceInner> listAzureStorageAccountsDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<AzureStoragePropertyDictionaryResourceInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<AzureStoragePropertyDictionaryResourceInner>() { }.getType())
                 .registerError(DefaultErrorResponseException.class)
                 .build(response);
     }
@@ -12895,7 +13130,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param details Specify "true" to include metric details in the response. It is "false" by default.
-     * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws DefaultErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -12918,7 +13153,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param details Specify "true" to include metric details in the response. It is "false" by default.
-     * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -12942,7 +13177,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param details Specify "true" to include metric details in the response. It is "false" by default.
-     * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
@@ -12963,7 +13198,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param details Specify "true" to include metric details in the response. It is "false" by default.
-     * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
@@ -12988,7 +13223,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param name Name of the app.
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param details Specify "true" to include metric details in the response. It is "false" by default.
-    ServiceResponse<PageImpl<ResourceMetricInner>> * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -13587,8 +13822,106 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * Start capturing network packets for the site.
-     * Start capturing network packets for the site.
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param operationId GUID of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the Object object if successful.
+     */
+    public Object getNetworkTraceOperation(String resourceGroupName, String name, String operationId) {
+        return getNetworkTraceOperationWithServiceResponseAsync(resourceGroupName, name, operationId).toBlocking().single().body();
+    }
+
+    /**
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param operationId GUID of the operation.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Object> getNetworkTraceOperationAsync(String resourceGroupName, String name, String operationId, final ServiceCallback<Object> serviceCallback) {
+        return ServiceFuture.fromResponse(getNetworkTraceOperationWithServiceResponseAsync(resourceGroupName, name, operationId), serviceCallback);
+    }
+
+    /**
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param operationId GUID of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Object object
+     */
+    public Observable<Object> getNetworkTraceOperationAsync(String resourceGroupName, String name, String operationId) {
+        return getNetworkTraceOperationWithServiceResponseAsync(resourceGroupName, name, operationId).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param operationId GUID of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> getNetworkTraceOperationWithServiceResponseAsync(String resourceGroupName, String name, String operationId) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (operationId == null) {
+            throw new IllegalArgumentException("Parameter operationId is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getNetworkTraceOperation(resourceGroupName, name, operationId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
+                @Override
+                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Object> clientResponse = getNetworkTraceOperationDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Object> getNetworkTraceOperationDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Object, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<List<NetworkTraceInner>>() { }.getType())
+                .register(202, new TypeToken<OperationInner>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Start capturing network packets for the site (To be deprecated).
+     * Start capturing network packets for the site (To be deprecated).
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
@@ -13602,8 +13935,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * Start capturing network packets for the site.
-     * Start capturing network packets for the site.
+     * Start capturing network packets for the site (To be deprecated).
+     * Start capturing network packets for the site (To be deprecated).
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
@@ -13616,8 +13949,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * Start capturing network packets for the site.
-     * Start capturing network packets for the site.
+     * Start capturing network packets for the site (To be deprecated).
+     * Start capturing network packets for the site (To be deprecated).
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
@@ -13634,8 +13967,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * Start capturing network packets for the site.
-     * Start capturing network packets for the site.
+     * Start capturing network packets for the site (To be deprecated).
+     * Start capturing network packets for the site (To be deprecated).
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
@@ -13673,8 +14006,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * Start capturing network packets for the site.
-     * Start capturing network packets for the site.
+     * Start capturing network packets for the site (To be deprecated).
+     * Start capturing network packets for the site (To be deprecated).
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
@@ -13691,8 +14024,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * Start capturing network packets for the site.
-     * Start capturing network packets for the site.
+     * Start capturing network packets for the site (To be deprecated).
+     * Start capturing network packets for the site (To be deprecated).
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
@@ -13708,8 +14041,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * Start capturing network packets for the site.
-     * Start capturing network packets for the site.
+     * Start capturing network packets for the site (To be deprecated).
+     * Start capturing network packets for the site (To be deprecated).
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
@@ -13729,8 +14062,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * Start capturing network packets for the site.
-     * Start capturing network packets for the site.
+     * Start capturing network packets for the site (To be deprecated).
+     * Start capturing network packets for the site (To be deprecated).
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
@@ -13775,18 +14108,366 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * Stop ongoing capturing network packets for the site.
-     * Stop ongoing capturing network packets for the site.
+     * Start capturing network packets for the site.
+     * Start capturing network packets for the site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws DefaultErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the String object if successful.
+     * @return the Object object if successful.
      */
-    public String stopWebSiteNetworkTrace(String resourceGroupName, String name) {
-        return stopWebSiteNetworkTraceWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
+    public Object startWebSiteNetworkTraceOperation(String resourceGroupName, String name) {
+        return startWebSiteNetworkTraceOperationWithServiceResponseAsync(resourceGroupName, name).toBlocking().last().body();
+    }
+
+    /**
+     * Start capturing network packets for the site.
+     * Start capturing network packets for the site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name The name of the web app.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Object> startWebSiteNetworkTraceOperationAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
+        return ServiceFuture.fromResponse(startWebSiteNetworkTraceOperationWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    }
+
+    /**
+     * Start capturing network packets for the site.
+     * Start capturing network packets for the site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name The name of the web app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<Object> startWebSiteNetworkTraceOperationAsync(String resourceGroupName, String name) {
+        return startWebSiteNetworkTraceOperationWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Start capturing network packets for the site.
+     * Start capturing network packets for the site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name The name of the web app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Object>> startWebSiteNetworkTraceOperationWithServiceResponseAsync(String resourceGroupName, String name) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final Integer durationInSeconds = null;
+        final Integer maxFrameLength = null;
+        final String sasUrl = null;
+        Observable<Response<ResponseBody>> observable = service.startWebSiteNetworkTraceOperation(resourceGroupName, name, this.client.subscriptionId(), durationInSeconds, maxFrameLength, sasUrl, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Object>() { }.getType());
+    }
+    /**
+     * Start capturing network packets for the site.
+     * Start capturing network packets for the site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name The name of the web app.
+     * @param durationInSeconds The duration to keep capturing in seconds.
+     * @param maxFrameLength The maximum frame length in bytes (Optional).
+     * @param sasUrl The Blob URL to store capture file.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the Object object if successful.
+     */
+    public Object startWebSiteNetworkTraceOperation(String resourceGroupName, String name, Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
+        return startWebSiteNetworkTraceOperationWithServiceResponseAsync(resourceGroupName, name, durationInSeconds, maxFrameLength, sasUrl).toBlocking().last().body();
+    }
+
+    /**
+     * Start capturing network packets for the site.
+     * Start capturing network packets for the site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name The name of the web app.
+     * @param durationInSeconds The duration to keep capturing in seconds.
+     * @param maxFrameLength The maximum frame length in bytes (Optional).
+     * @param sasUrl The Blob URL to store capture file.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Object> startWebSiteNetworkTraceOperationAsync(String resourceGroupName, String name, Integer durationInSeconds, Integer maxFrameLength, String sasUrl, final ServiceCallback<Object> serviceCallback) {
+        return ServiceFuture.fromResponse(startWebSiteNetworkTraceOperationWithServiceResponseAsync(resourceGroupName, name, durationInSeconds, maxFrameLength, sasUrl), serviceCallback);
+    }
+
+    /**
+     * Start capturing network packets for the site.
+     * Start capturing network packets for the site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name The name of the web app.
+     * @param durationInSeconds The duration to keep capturing in seconds.
+     * @param maxFrameLength The maximum frame length in bytes (Optional).
+     * @param sasUrl The Blob URL to store capture file.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<Object> startWebSiteNetworkTraceOperationAsync(String resourceGroupName, String name, Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
+        return startWebSiteNetworkTraceOperationWithServiceResponseAsync(resourceGroupName, name, durationInSeconds, maxFrameLength, sasUrl).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Start capturing network packets for the site.
+     * Start capturing network packets for the site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name The name of the web app.
+     * @param durationInSeconds The duration to keep capturing in seconds.
+     * @param maxFrameLength The maximum frame length in bytes (Optional).
+     * @param sasUrl The Blob URL to store capture file.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Object>> startWebSiteNetworkTraceOperationWithServiceResponseAsync(String resourceGroupName, String name, Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Observable<Response<ResponseBody>> observable = service.startWebSiteNetworkTraceOperation(resourceGroupName, name, this.client.subscriptionId(), durationInSeconds, maxFrameLength, sasUrl, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Object>() { }.getType());
+    }
+
+    /**
+     * Start capturing network packets for the site.
+     * Start capturing network packets for the site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name The name of the web app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the Object object if successful.
+     */
+    public Object beginStartWebSiteNetworkTraceOperation(String resourceGroupName, String name) {
+        return beginStartWebSiteNetworkTraceOperationWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
+    }
+
+    /**
+     * Start capturing network packets for the site.
+     * Start capturing network packets for the site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name The name of the web app.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Object> beginStartWebSiteNetworkTraceOperationAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
+        return ServiceFuture.fromResponse(beginStartWebSiteNetworkTraceOperationWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    }
+
+    /**
+     * Start capturing network packets for the site.
+     * Start capturing network packets for the site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name The name of the web app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Object object
+     */
+    public Observable<Object> beginStartWebSiteNetworkTraceOperationAsync(String resourceGroupName, String name) {
+        return beginStartWebSiteNetworkTraceOperationWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Start capturing network packets for the site.
+     * Start capturing network packets for the site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name The name of the web app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> beginStartWebSiteNetworkTraceOperationWithServiceResponseAsync(String resourceGroupName, String name) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final Integer durationInSeconds = null;
+        final Integer maxFrameLength = null;
+        final String sasUrl = null;
+        return service.beginStartWebSiteNetworkTraceOperation(resourceGroupName, name, this.client.subscriptionId(), durationInSeconds, maxFrameLength, sasUrl, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
+                @Override
+                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Object> clientResponse = beginStartWebSiteNetworkTraceOperationDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Start capturing network packets for the site.
+     * Start capturing network packets for the site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name The name of the web app.
+     * @param durationInSeconds The duration to keep capturing in seconds.
+     * @param maxFrameLength The maximum frame length in bytes (Optional).
+     * @param sasUrl The Blob URL to store capture file.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the Object object if successful.
+     */
+    public Object beginStartWebSiteNetworkTraceOperation(String resourceGroupName, String name, Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
+        return beginStartWebSiteNetworkTraceOperationWithServiceResponseAsync(resourceGroupName, name, durationInSeconds, maxFrameLength, sasUrl).toBlocking().single().body();
+    }
+
+    /**
+     * Start capturing network packets for the site.
+     * Start capturing network packets for the site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name The name of the web app.
+     * @param durationInSeconds The duration to keep capturing in seconds.
+     * @param maxFrameLength The maximum frame length in bytes (Optional).
+     * @param sasUrl The Blob URL to store capture file.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Object> beginStartWebSiteNetworkTraceOperationAsync(String resourceGroupName, String name, Integer durationInSeconds, Integer maxFrameLength, String sasUrl, final ServiceCallback<Object> serviceCallback) {
+        return ServiceFuture.fromResponse(beginStartWebSiteNetworkTraceOperationWithServiceResponseAsync(resourceGroupName, name, durationInSeconds, maxFrameLength, sasUrl), serviceCallback);
+    }
+
+    /**
+     * Start capturing network packets for the site.
+     * Start capturing network packets for the site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name The name of the web app.
+     * @param durationInSeconds The duration to keep capturing in seconds.
+     * @param maxFrameLength The maximum frame length in bytes (Optional).
+     * @param sasUrl The Blob URL to store capture file.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Object object
+     */
+    public Observable<Object> beginStartWebSiteNetworkTraceOperationAsync(String resourceGroupName, String name, Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
+        return beginStartWebSiteNetworkTraceOperationWithServiceResponseAsync(resourceGroupName, name, durationInSeconds, maxFrameLength, sasUrl).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Start capturing network packets for the site.
+     * Start capturing network packets for the site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name The name of the web app.
+     * @param durationInSeconds The duration to keep capturing in seconds.
+     * @param maxFrameLength The maximum frame length in bytes (Optional).
+     * @param sasUrl The Blob URL to store capture file.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> beginStartWebSiteNetworkTraceOperationWithServiceResponseAsync(String resourceGroupName, String name, Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.beginStartWebSiteNetworkTraceOperation(resourceGroupName, name, this.client.subscriptionId(), durationInSeconds, maxFrameLength, sasUrl, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
+                @Override
+                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Object> clientResponse = beginStartWebSiteNetworkTraceOperationDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Object> beginStartWebSiteNetworkTraceOperationDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Object, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<List<NetworkTraceInner>>() { }.getType())
+                .register(202, new TypeToken<OperationInner>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Stop ongoing capturing network packets for the site.
+     * Stop ongoing capturing network packets for the site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name The name of the web app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void stopWebSiteNetworkTrace(String resourceGroupName, String name) {
+        stopWebSiteNetworkTraceWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -13799,7 +14480,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<String> stopWebSiteNetworkTraceAsync(String resourceGroupName, String name, final ServiceCallback<String> serviceCallback) {
+    public ServiceFuture<Void> stopWebSiteNetworkTraceAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
         return ServiceFuture.fromResponse(stopWebSiteNetworkTraceWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
@@ -13810,12 +14491,12 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the String object
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<String> stopWebSiteNetworkTraceAsync(String resourceGroupName, String name) {
-        return stopWebSiteNetworkTraceWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<String>, String>() {
+    public Observable<Void> stopWebSiteNetworkTraceAsync(String resourceGroupName, String name) {
+        return stopWebSiteNetworkTraceWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
-            public String call(ServiceResponse<String> response) {
+            public Void call(ServiceResponse<Void> response) {
                 return response.body();
             }
         });
@@ -13828,9 +14509,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the String object
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<String>> stopWebSiteNetworkTraceWithServiceResponseAsync(String resourceGroupName, String name) {
+    public Observable<ServiceResponse<Void>> stopWebSiteNetworkTraceWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -13844,11 +14525,11 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.stopWebSiteNetworkTrace(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<String>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
-                public Observable<ServiceResponse<String>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<String> clientResponse = stopWebSiteNetworkTraceDelegate(response);
+                        ServiceResponse<Void> clientResponse = stopWebSiteNetworkTraceDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -13857,9 +14538,107 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
             });
     }
 
-    private ServiceResponse<String> stopWebSiteNetworkTraceDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<String, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<String>() { }.getType())
+    private ServiceResponse<Void> stopWebSiteNetworkTraceDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param operationId GUID of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;NetworkTraceInner&gt; object if successful.
+     */
+    public List<NetworkTraceInner> getNetworkTraces(String resourceGroupName, String name, String operationId) {
+        return getNetworkTracesWithServiceResponseAsync(resourceGroupName, name, operationId).toBlocking().single().body();
+    }
+
+    /**
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param operationId GUID of the operation.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<NetworkTraceInner>> getNetworkTracesAsync(String resourceGroupName, String name, String operationId, final ServiceCallback<List<NetworkTraceInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(getNetworkTracesWithServiceResponseAsync(resourceGroupName, name, operationId), serviceCallback);
+    }
+
+    /**
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param operationId GUID of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;NetworkTraceInner&gt; object
+     */
+    public Observable<List<NetworkTraceInner>> getNetworkTracesAsync(String resourceGroupName, String name, String operationId) {
+        return getNetworkTracesWithServiceResponseAsync(resourceGroupName, name, operationId).map(new Func1<ServiceResponse<List<NetworkTraceInner>>, List<NetworkTraceInner>>() {
+            @Override
+            public List<NetworkTraceInner> call(ServiceResponse<List<NetworkTraceInner>> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param operationId GUID of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;NetworkTraceInner&gt; object
+     */
+    public Observable<ServiceResponse<List<NetworkTraceInner>>> getNetworkTracesWithServiceResponseAsync(String resourceGroupName, String name, String operationId) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (operationId == null) {
+            throw new IllegalArgumentException("Parameter operationId is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getNetworkTraces(resourceGroupName, name, operationId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<NetworkTraceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<NetworkTraceInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<List<NetworkTraceInner>> clientResponse = getNetworkTracesDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<List<NetworkTraceInner>> getNetworkTracesDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<List<NetworkTraceInner>, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<List<NetworkTraceInner>>() { }.getType())
                 .registerError(DefaultErrorResponseException.class)
                 .build(response);
     }
@@ -14082,7 +14861,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
-     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws DefaultErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -14104,7 +14883,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
-     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -14127,7 +14906,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
-     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PerfMonResponseInner&gt; object
      */
@@ -14147,7 +14926,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
-     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PerfMonResponseInner&gt; object
      */
@@ -14171,7 +14950,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      *
     ServiceResponse<PageImpl<PerfMonResponseInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<PerfMonResponseInner>> * @param name Name of web app.
-    ServiceResponse<PageImpl<PerfMonResponseInner>> * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+    ServiceResponse<PageImpl<PerfMonResponseInner>> * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;PerfMonResponseInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -16319,13 +17098,14 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @param publishingProfileOptions Specifies publishingProfileOptions for publishing profile. For example, use {"format": "FileZilla3"} to get a FileZilla publishing profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws DefaultErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the InputStream object if successful.
      */
-    public InputStream listPublishingProfileXmlWithSecrets(String resourceGroupName, String name) {
-        return listPublishingProfileXmlWithSecretsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
+    public InputStream listPublishingProfileXmlWithSecrets(String resourceGroupName, String name, CsmPublishingProfileOptions publishingProfileOptions) {
+        return listPublishingProfileXmlWithSecretsWithServiceResponseAsync(resourceGroupName, name, publishingProfileOptions).toBlocking().single().body();
     }
 
     /**
@@ -16334,12 +17114,13 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @param publishingProfileOptions Specifies publishingProfileOptions for publishing profile. For example, use {"format": "FileZilla3"} to get a FileZilla publishing profile.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<InputStream> listPublishingProfileXmlWithSecretsAsync(String resourceGroupName, String name, final ServiceCallback<InputStream> serviceCallback) {
-        return ServiceFuture.fromResponse(listPublishingProfileXmlWithSecretsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<InputStream> listPublishingProfileXmlWithSecretsAsync(String resourceGroupName, String name, CsmPublishingProfileOptions publishingProfileOptions, final ServiceCallback<InputStream> serviceCallback) {
+        return ServiceFuture.fromResponse(listPublishingProfileXmlWithSecretsWithServiceResponseAsync(resourceGroupName, name, publishingProfileOptions), serviceCallback);
     }
 
     /**
@@ -16348,11 +17129,12 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @param publishingProfileOptions Specifies publishingProfileOptions for publishing profile. For example, use {"format": "FileZilla3"} to get a FileZilla publishing profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InputStream object
      */
-    public Observable<InputStream> listPublishingProfileXmlWithSecretsAsync(String resourceGroupName, String name) {
-        return listPublishingProfileXmlWithSecretsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<InputStream>, InputStream>() {
+    public Observable<InputStream> listPublishingProfileXmlWithSecretsAsync(String resourceGroupName, String name, CsmPublishingProfileOptions publishingProfileOptions) {
+        return listPublishingProfileXmlWithSecretsWithServiceResponseAsync(resourceGroupName, name, publishingProfileOptions).map(new Func1<ServiceResponse<InputStream>, InputStream>() {
             @Override
             public InputStream call(ServiceResponse<InputStream> response) {
                 return response.body();
@@ -16366,10 +17148,11 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @param publishingProfileOptions Specifies publishingProfileOptions for publishing profile. For example, use {"format": "FileZilla3"} to get a FileZilla publishing profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InputStream object
      */
-    public Observable<ServiceResponse<InputStream>> listPublishingProfileXmlWithSecretsWithServiceResponseAsync(String resourceGroupName, String name) {
+    public Observable<ServiceResponse<InputStream>> listPublishingProfileXmlWithSecretsWithServiceResponseAsync(String resourceGroupName, String name, CsmPublishingProfileOptions publishingProfileOptions) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -16379,114 +17162,14 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        final PublishingProfileFormat format = null;
-        CsmPublishingProfileOptions publishingProfileOptions = new CsmPublishingProfileOptions();
-        publishingProfileOptions.withFormat(null);
-        return service.listPublishingProfileXmlWithSecrets(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), publishingProfileOptions, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<InputStream>>>() {
-                @Override
-                public Observable<ServiceResponse<InputStream>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<InputStream> clientResponse = listPublishingProfileXmlWithSecretsDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    /**
-     * Gets the publishing profile for an app (or deployment slot, if specified).
-     * Gets the publishing profile for an app (or deployment slot, if specified).
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the app.
-     * @param format Name of the format. Valid values are:
-     FileZilla3
-     WebDeploy -- default
-     Ftp. Possible values include: 'FileZilla3', 'WebDeploy', 'Ftp'
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the InputStream object if successful.
-     */
-    public InputStream listPublishingProfileXmlWithSecrets(String resourceGroupName, String name, PublishingProfileFormat format) {
-        return listPublishingProfileXmlWithSecretsWithServiceResponseAsync(resourceGroupName, name, format).toBlocking().single().body();
-    }
-
-    /**
-     * Gets the publishing profile for an app (or deployment slot, if specified).
-     * Gets the publishing profile for an app (or deployment slot, if specified).
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the app.
-     * @param format Name of the format. Valid values are:
-     FileZilla3
-     WebDeploy -- default
-     Ftp. Possible values include: 'FileZilla3', 'WebDeploy', 'Ftp'
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<InputStream> listPublishingProfileXmlWithSecretsAsync(String resourceGroupName, String name, PublishingProfileFormat format, final ServiceCallback<InputStream> serviceCallback) {
-        return ServiceFuture.fromResponse(listPublishingProfileXmlWithSecretsWithServiceResponseAsync(resourceGroupName, name, format), serviceCallback);
-    }
-
-    /**
-     * Gets the publishing profile for an app (or deployment slot, if specified).
-     * Gets the publishing profile for an app (or deployment slot, if specified).
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the app.
-     * @param format Name of the format. Valid values are:
-     FileZilla3
-     WebDeploy -- default
-     Ftp. Possible values include: 'FileZilla3', 'WebDeploy', 'Ftp'
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the InputStream object
-     */
-    public Observable<InputStream> listPublishingProfileXmlWithSecretsAsync(String resourceGroupName, String name, PublishingProfileFormat format) {
-        return listPublishingProfileXmlWithSecretsWithServiceResponseAsync(resourceGroupName, name, format).map(new Func1<ServiceResponse<InputStream>, InputStream>() {
-            @Override
-            public InputStream call(ServiceResponse<InputStream> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Gets the publishing profile for an app (or deployment slot, if specified).
-     * Gets the publishing profile for an app (or deployment slot, if specified).
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the app.
-     * @param format Name of the format. Valid values are:
-     FileZilla3
-     WebDeploy -- default
-     Ftp. Possible values include: 'FileZilla3', 'WebDeploy', 'Ftp'
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the InputStream object
-     */
-    public Observable<ServiceResponse<InputStream>> listPublishingProfileXmlWithSecretsWithServiceResponseAsync(String resourceGroupName, String name, PublishingProfileFormat format) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        if (publishingProfileOptions == null) {
+            throw new IllegalArgumentException("Parameter publishingProfileOptions is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        CsmPublishingProfileOptions publishingProfileOptions = new CsmPublishingProfileOptions();
-        publishingProfileOptions.withFormat(format);
-        return service.listPublishingProfileXmlWithSecrets(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), publishingProfileOptions, this.client.userAgent())
+        Validator.validate(publishingProfileOptions);
+        return service.listPublishingProfileXmlWithSecrets(resourceGroupName, name, this.client.subscriptionId(), publishingProfileOptions, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<InputStream>>>() {
                 @Override
                 public Observable<ServiceResponse<InputStream>> call(Response<ResponseBody> response) {
@@ -20136,6 +20819,208 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     private ServiceResponse<SiteAuthSettingsInner> getAuthSettingsSlotDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<SiteAuthSettingsInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SiteAuthSettingsInner>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Updates the Azure storage account configurations of an app.
+     * Updates the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will update the Azure storage account configurations for the production slot.
+     * @param azureStorageAccounts Azure storage accounts of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the AzureStoragePropertyDictionaryResourceInner object if successful.
+     */
+    public AzureStoragePropertyDictionaryResourceInner updateAzureStorageAccountsSlot(String resourceGroupName, String name, String slot, AzureStoragePropertyDictionaryResourceInner azureStorageAccounts) {
+        return updateAzureStorageAccountsSlotWithServiceResponseAsync(resourceGroupName, name, slot, azureStorageAccounts).toBlocking().single().body();
+    }
+
+    /**
+     * Updates the Azure storage account configurations of an app.
+     * Updates the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will update the Azure storage account configurations for the production slot.
+     * @param azureStorageAccounts Azure storage accounts of the app.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<AzureStoragePropertyDictionaryResourceInner> updateAzureStorageAccountsSlotAsync(String resourceGroupName, String name, String slot, AzureStoragePropertyDictionaryResourceInner azureStorageAccounts, final ServiceCallback<AzureStoragePropertyDictionaryResourceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateAzureStorageAccountsSlotWithServiceResponseAsync(resourceGroupName, name, slot, azureStorageAccounts), serviceCallback);
+    }
+
+    /**
+     * Updates the Azure storage account configurations of an app.
+     * Updates the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will update the Azure storage account configurations for the production slot.
+     * @param azureStorageAccounts Azure storage accounts of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AzureStoragePropertyDictionaryResourceInner object
+     */
+    public Observable<AzureStoragePropertyDictionaryResourceInner> updateAzureStorageAccountsSlotAsync(String resourceGroupName, String name, String slot, AzureStoragePropertyDictionaryResourceInner azureStorageAccounts) {
+        return updateAzureStorageAccountsSlotWithServiceResponseAsync(resourceGroupName, name, slot, azureStorageAccounts).map(new Func1<ServiceResponse<AzureStoragePropertyDictionaryResourceInner>, AzureStoragePropertyDictionaryResourceInner>() {
+            @Override
+            public AzureStoragePropertyDictionaryResourceInner call(ServiceResponse<AzureStoragePropertyDictionaryResourceInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Updates the Azure storage account configurations of an app.
+     * Updates the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will update the Azure storage account configurations for the production slot.
+     * @param azureStorageAccounts Azure storage accounts of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AzureStoragePropertyDictionaryResourceInner object
+     */
+    public Observable<ServiceResponse<AzureStoragePropertyDictionaryResourceInner>> updateAzureStorageAccountsSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, AzureStoragePropertyDictionaryResourceInner azureStorageAccounts) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (azureStorageAccounts == null) {
+            throw new IllegalArgumentException("Parameter azureStorageAccounts is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(azureStorageAccounts);
+        return service.updateAzureStorageAccountsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), azureStorageAccounts, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AzureStoragePropertyDictionaryResourceInner>>>() {
+                @Override
+                public Observable<ServiceResponse<AzureStoragePropertyDictionaryResourceInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<AzureStoragePropertyDictionaryResourceInner> clientResponse = updateAzureStorageAccountsSlotDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<AzureStoragePropertyDictionaryResourceInner> updateAzureStorageAccountsSlotDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<AzureStoragePropertyDictionaryResourceInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<AzureStoragePropertyDictionaryResourceInner>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets the Azure storage account configurations of an app.
+     * Gets the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will update the Azure storage account configurations for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the AzureStoragePropertyDictionaryResourceInner object if successful.
+     */
+    public AzureStoragePropertyDictionaryResourceInner listAzureStorageAccountsSlot(String resourceGroupName, String name, String slot) {
+        return listAzureStorageAccountsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
+    }
+
+    /**
+     * Gets the Azure storage account configurations of an app.
+     * Gets the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will update the Azure storage account configurations for the production slot.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<AzureStoragePropertyDictionaryResourceInner> listAzureStorageAccountsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<AzureStoragePropertyDictionaryResourceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listAzureStorageAccountsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    }
+
+    /**
+     * Gets the Azure storage account configurations of an app.
+     * Gets the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will update the Azure storage account configurations for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AzureStoragePropertyDictionaryResourceInner object
+     */
+    public Observable<AzureStoragePropertyDictionaryResourceInner> listAzureStorageAccountsSlotAsync(String resourceGroupName, String name, String slot) {
+        return listAzureStorageAccountsSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<AzureStoragePropertyDictionaryResourceInner>, AzureStoragePropertyDictionaryResourceInner>() {
+            @Override
+            public AzureStoragePropertyDictionaryResourceInner call(ServiceResponse<AzureStoragePropertyDictionaryResourceInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets the Azure storage account configurations of an app.
+     * Gets the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will update the Azure storage account configurations for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AzureStoragePropertyDictionaryResourceInner object
+     */
+    public Observable<ServiceResponse<AzureStoragePropertyDictionaryResourceInner>> listAzureStorageAccountsSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listAzureStorageAccountsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AzureStoragePropertyDictionaryResourceInner>>>() {
+                @Override
+                public Observable<ServiceResponse<AzureStoragePropertyDictionaryResourceInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<AzureStoragePropertyDictionaryResourceInner> clientResponse = listAzureStorageAccountsSlotDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<AzureStoragePropertyDictionaryResourceInner> listAzureStorageAccountsSlotDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<AzureStoragePropertyDictionaryResourceInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<AzureStoragePropertyDictionaryResourceInner>() { }.getType())
                 .registerError(DefaultErrorResponseException.class)
                 .build(response);
     }
@@ -29317,7 +30202,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get metrics of the production slot.
      * @param details Specify "true" to include metric details in the response. It is "false" by default.
-     * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws DefaultErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -29341,7 +30226,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get metrics of the production slot.
      * @param details Specify "true" to include metric details in the response. It is "false" by default.
-     * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -29366,7 +30251,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get metrics of the production slot.
      * @param details Specify "true" to include metric details in the response. It is "false" by default.
-     * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
@@ -29388,7 +30273,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get metrics of the production slot.
      * @param details Specify "true" to include metric details in the response. It is "false" by default.
-     * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
@@ -29414,7 +30299,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param name Name of the app.
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param slot Name of the deployment slot. If a slot is not specified, the API will get metrics of the production slot.
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param details Specify "true" to include metric details in the response. It is "false" by default.
-    ServiceResponse<PageImpl<ResourceMetricInner>> * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -29658,8 +30543,113 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * Start capturing network packets for the site.
-     * Start capturing network packets for the site.
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param operationId GUID of the operation.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get an operation for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the Object object if successful.
+     */
+    public Object getNetworkTraceOperationSlot(String resourceGroupName, String name, String operationId, String slot) {
+        return getNetworkTraceOperationSlotWithServiceResponseAsync(resourceGroupName, name, operationId, slot).toBlocking().single().body();
+    }
+
+    /**
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param operationId GUID of the operation.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get an operation for the production slot.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Object> getNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String operationId, String slot, final ServiceCallback<Object> serviceCallback) {
+        return ServiceFuture.fromResponse(getNetworkTraceOperationSlotWithServiceResponseAsync(resourceGroupName, name, operationId, slot), serviceCallback);
+    }
+
+    /**
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param operationId GUID of the operation.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get an operation for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Object object
+     */
+    public Observable<Object> getNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String operationId, String slot) {
+        return getNetworkTraceOperationSlotWithServiceResponseAsync(resourceGroupName, name, operationId, slot).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param operationId GUID of the operation.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get an operation for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> getNetworkTraceOperationSlotWithServiceResponseAsync(String resourceGroupName, String name, String operationId, String slot) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (operationId == null) {
+            throw new IllegalArgumentException("Parameter operationId is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getNetworkTraceOperationSlot(resourceGroupName, name, operationId, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
+                @Override
+                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Object> clientResponse = getNetworkTraceOperationSlotDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Object> getNetworkTraceOperationSlotDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Object, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<List<NetworkTraceInner>>() { }.getType())
+                .register(202, new TypeToken<OperationInner>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Start capturing network packets for the site (To be deprecated).
+     * Start capturing network packets for the site (To be deprecated).
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
@@ -29674,8 +30664,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * Start capturing network packets for the site.
-     * Start capturing network packets for the site.
+     * Start capturing network packets for the site (To be deprecated).
+     * Start capturing network packets for the site (To be deprecated).
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
@@ -29689,8 +30679,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * Start capturing network packets for the site.
-     * Start capturing network packets for the site.
+     * Start capturing network packets for the site (To be deprecated).
+     * Start capturing network packets for the site (To be deprecated).
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
@@ -29708,8 +30698,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * Start capturing network packets for the site.
-     * Start capturing network packets for the site.
+     * Start capturing network packets for the site (To be deprecated).
+     * Start capturing network packets for the site (To be deprecated).
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
@@ -29751,8 +30741,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * Start capturing network packets for the site.
-     * Start capturing network packets for the site.
+     * Start capturing network packets for the site (To be deprecated).
+     * Start capturing network packets for the site (To be deprecated).
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
@@ -29770,8 +30760,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * Start capturing network packets for the site.
-     * Start capturing network packets for the site.
+     * Start capturing network packets for the site (To be deprecated).
+     * Start capturing network packets for the site (To be deprecated).
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
@@ -29788,8 +30778,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * Start capturing network packets for the site.
-     * Start capturing network packets for the site.
+     * Start capturing network packets for the site (To be deprecated).
+     * Start capturing network packets for the site (To be deprecated).
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
@@ -29810,8 +30800,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * Start capturing network packets for the site.
-     * Start capturing network packets for the site.
+     * Start capturing network packets for the site (To be deprecated).
+     * Start capturing network packets for the site (To be deprecated).
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
@@ -29860,8 +30850,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * Stop ongoing capturing network packets for the site.
-     * Stop ongoing capturing network packets for the site.
+     * Start capturing network packets for the site.
+     * Start capturing network packets for the site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
@@ -29869,10 +30859,386 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws DefaultErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the String object if successful.
+     * @return the Object object if successful.
      */
-    public String stopWebSiteNetworkTraceSlot(String resourceGroupName, String name, String slot) {
-        return stopWebSiteNetworkTraceSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
+    public Object startWebSiteNetworkTraceOperationSlot(String resourceGroupName, String name, String slot) {
+        return startWebSiteNetworkTraceOperationSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().last().body();
+    }
+
+    /**
+     * Start capturing network packets for the site.
+     * Start capturing network packets for the site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name The name of the web app.
+     * @param slot The name of the slot for this web app.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Object> startWebSiteNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Object> serviceCallback) {
+        return ServiceFuture.fromResponse(startWebSiteNetworkTraceOperationSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    }
+
+    /**
+     * Start capturing network packets for the site.
+     * Start capturing network packets for the site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name The name of the web app.
+     * @param slot The name of the slot for this web app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<Object> startWebSiteNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String slot) {
+        return startWebSiteNetworkTraceOperationSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Start capturing network packets for the site.
+     * Start capturing network packets for the site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name The name of the web app.
+     * @param slot The name of the slot for this web app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Object>> startWebSiteNetworkTraceOperationSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final Integer durationInSeconds = null;
+        final Integer maxFrameLength = null;
+        final String sasUrl = null;
+        Observable<Response<ResponseBody>> observable = service.startWebSiteNetworkTraceOperationSlot(resourceGroupName, name, slot, this.client.subscriptionId(), durationInSeconds, maxFrameLength, sasUrl, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Object>() { }.getType());
+    }
+    /**
+     * Start capturing network packets for the site.
+     * Start capturing network packets for the site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name The name of the web app.
+     * @param slot The name of the slot for this web app.
+     * @param durationInSeconds The duration to keep capturing in seconds.
+     * @param maxFrameLength The maximum frame length in bytes (Optional).
+     * @param sasUrl The Blob URL to store capture file.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the Object object if successful.
+     */
+    public Object startWebSiteNetworkTraceOperationSlot(String resourceGroupName, String name, String slot, Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
+        return startWebSiteNetworkTraceOperationSlotWithServiceResponseAsync(resourceGroupName, name, slot, durationInSeconds, maxFrameLength, sasUrl).toBlocking().last().body();
+    }
+
+    /**
+     * Start capturing network packets for the site.
+     * Start capturing network packets for the site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name The name of the web app.
+     * @param slot The name of the slot for this web app.
+     * @param durationInSeconds The duration to keep capturing in seconds.
+     * @param maxFrameLength The maximum frame length in bytes (Optional).
+     * @param sasUrl The Blob URL to store capture file.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Object> startWebSiteNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String slot, Integer durationInSeconds, Integer maxFrameLength, String sasUrl, final ServiceCallback<Object> serviceCallback) {
+        return ServiceFuture.fromResponse(startWebSiteNetworkTraceOperationSlotWithServiceResponseAsync(resourceGroupName, name, slot, durationInSeconds, maxFrameLength, sasUrl), serviceCallback);
+    }
+
+    /**
+     * Start capturing network packets for the site.
+     * Start capturing network packets for the site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name The name of the web app.
+     * @param slot The name of the slot for this web app.
+     * @param durationInSeconds The duration to keep capturing in seconds.
+     * @param maxFrameLength The maximum frame length in bytes (Optional).
+     * @param sasUrl The Blob URL to store capture file.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<Object> startWebSiteNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String slot, Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
+        return startWebSiteNetworkTraceOperationSlotWithServiceResponseAsync(resourceGroupName, name, slot, durationInSeconds, maxFrameLength, sasUrl).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Start capturing network packets for the site.
+     * Start capturing network packets for the site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name The name of the web app.
+     * @param slot The name of the slot for this web app.
+     * @param durationInSeconds The duration to keep capturing in seconds.
+     * @param maxFrameLength The maximum frame length in bytes (Optional).
+     * @param sasUrl The Blob URL to store capture file.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Object>> startWebSiteNetworkTraceOperationSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Observable<Response<ResponseBody>> observable = service.startWebSiteNetworkTraceOperationSlot(resourceGroupName, name, slot, this.client.subscriptionId(), durationInSeconds, maxFrameLength, sasUrl, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Object>() { }.getType());
+    }
+
+    /**
+     * Start capturing network packets for the site.
+     * Start capturing network packets for the site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name The name of the web app.
+     * @param slot The name of the slot for this web app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the Object object if successful.
+     */
+    public Object beginStartWebSiteNetworkTraceOperationSlot(String resourceGroupName, String name, String slot) {
+        return beginStartWebSiteNetworkTraceOperationSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
+    }
+
+    /**
+     * Start capturing network packets for the site.
+     * Start capturing network packets for the site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name The name of the web app.
+     * @param slot The name of the slot for this web app.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Object> beginStartWebSiteNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Object> serviceCallback) {
+        return ServiceFuture.fromResponse(beginStartWebSiteNetworkTraceOperationSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    }
+
+    /**
+     * Start capturing network packets for the site.
+     * Start capturing network packets for the site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name The name of the web app.
+     * @param slot The name of the slot for this web app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Object object
+     */
+    public Observable<Object> beginStartWebSiteNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String slot) {
+        return beginStartWebSiteNetworkTraceOperationSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Start capturing network packets for the site.
+     * Start capturing network packets for the site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name The name of the web app.
+     * @param slot The name of the slot for this web app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> beginStartWebSiteNetworkTraceOperationSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final Integer durationInSeconds = null;
+        final Integer maxFrameLength = null;
+        final String sasUrl = null;
+        return service.beginStartWebSiteNetworkTraceOperationSlot(resourceGroupName, name, slot, this.client.subscriptionId(), durationInSeconds, maxFrameLength, sasUrl, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
+                @Override
+                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Object> clientResponse = beginStartWebSiteNetworkTraceOperationSlotDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Start capturing network packets for the site.
+     * Start capturing network packets for the site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name The name of the web app.
+     * @param slot The name of the slot for this web app.
+     * @param durationInSeconds The duration to keep capturing in seconds.
+     * @param maxFrameLength The maximum frame length in bytes (Optional).
+     * @param sasUrl The Blob URL to store capture file.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the Object object if successful.
+     */
+    public Object beginStartWebSiteNetworkTraceOperationSlot(String resourceGroupName, String name, String slot, Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
+        return beginStartWebSiteNetworkTraceOperationSlotWithServiceResponseAsync(resourceGroupName, name, slot, durationInSeconds, maxFrameLength, sasUrl).toBlocking().single().body();
+    }
+
+    /**
+     * Start capturing network packets for the site.
+     * Start capturing network packets for the site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name The name of the web app.
+     * @param slot The name of the slot for this web app.
+     * @param durationInSeconds The duration to keep capturing in seconds.
+     * @param maxFrameLength The maximum frame length in bytes (Optional).
+     * @param sasUrl The Blob URL to store capture file.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Object> beginStartWebSiteNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String slot, Integer durationInSeconds, Integer maxFrameLength, String sasUrl, final ServiceCallback<Object> serviceCallback) {
+        return ServiceFuture.fromResponse(beginStartWebSiteNetworkTraceOperationSlotWithServiceResponseAsync(resourceGroupName, name, slot, durationInSeconds, maxFrameLength, sasUrl), serviceCallback);
+    }
+
+    /**
+     * Start capturing network packets for the site.
+     * Start capturing network packets for the site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name The name of the web app.
+     * @param slot The name of the slot for this web app.
+     * @param durationInSeconds The duration to keep capturing in seconds.
+     * @param maxFrameLength The maximum frame length in bytes (Optional).
+     * @param sasUrl The Blob URL to store capture file.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Object object
+     */
+    public Observable<Object> beginStartWebSiteNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String slot, Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
+        return beginStartWebSiteNetworkTraceOperationSlotWithServiceResponseAsync(resourceGroupName, name, slot, durationInSeconds, maxFrameLength, sasUrl).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Start capturing network packets for the site.
+     * Start capturing network packets for the site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name The name of the web app.
+     * @param slot The name of the slot for this web app.
+     * @param durationInSeconds The duration to keep capturing in seconds.
+     * @param maxFrameLength The maximum frame length in bytes (Optional).
+     * @param sasUrl The Blob URL to store capture file.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> beginStartWebSiteNetworkTraceOperationSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.beginStartWebSiteNetworkTraceOperationSlot(resourceGroupName, name, slot, this.client.subscriptionId(), durationInSeconds, maxFrameLength, sasUrl, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
+                @Override
+                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Object> clientResponse = beginStartWebSiteNetworkTraceOperationSlotDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Object> beginStartWebSiteNetworkTraceOperationSlotDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Object, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<List<NetworkTraceInner>>() { }.getType())
+                .register(202, new TypeToken<OperationInner>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Stop ongoing capturing network packets for the site.
+     * Stop ongoing capturing network packets for the site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name The name of the web app.
+     * @param slot The name of the slot for this web app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void stopWebSiteNetworkTraceSlot(String resourceGroupName, String name, String slot) {
+        stopWebSiteNetworkTraceSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -29886,7 +31252,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<String> stopWebSiteNetworkTraceSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<String> serviceCallback) {
+    public ServiceFuture<Void> stopWebSiteNetworkTraceSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Void> serviceCallback) {
         return ServiceFuture.fromResponse(stopWebSiteNetworkTraceSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
@@ -29898,12 +31264,12 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param name The name of the web app.
      * @param slot The name of the slot for this web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the String object
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<String> stopWebSiteNetworkTraceSlotAsync(String resourceGroupName, String name, String slot) {
-        return stopWebSiteNetworkTraceSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<String>, String>() {
+    public Observable<Void> stopWebSiteNetworkTraceSlotAsync(String resourceGroupName, String name, String slot) {
+        return stopWebSiteNetworkTraceSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
-            public String call(ServiceResponse<String> response) {
+            public Void call(ServiceResponse<Void> response) {
                 return response.body();
             }
         });
@@ -29917,9 +31283,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param name The name of the web app.
      * @param slot The name of the slot for this web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the String object
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<String>> stopWebSiteNetworkTraceSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
+    public Observable<ServiceResponse<Void>> stopWebSiteNetworkTraceSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -29936,11 +31302,11 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.stopWebSiteNetworkTraceSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<String>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
-                public Observable<ServiceResponse<String>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<String> clientResponse = stopWebSiteNetworkTraceSlotDelegate(response);
+                        ServiceResponse<Void> clientResponse = stopWebSiteNetworkTraceSlotDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -29949,9 +31315,114 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
             });
     }
 
-    private ServiceResponse<String> stopWebSiteNetworkTraceSlotDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<String, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<String>() { }.getType())
+    private ServiceResponse<Void> stopWebSiteNetworkTraceSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param operationId GUID of the operation.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get an operation for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;NetworkTraceInner&gt; object if successful.
+     */
+    public List<NetworkTraceInner> getNetworkTracesSlot(String resourceGroupName, String name, String operationId, String slot) {
+        return getNetworkTracesSlotWithServiceResponseAsync(resourceGroupName, name, operationId, slot).toBlocking().single().body();
+    }
+
+    /**
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param operationId GUID of the operation.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get an operation for the production slot.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<NetworkTraceInner>> getNetworkTracesSlotAsync(String resourceGroupName, String name, String operationId, String slot, final ServiceCallback<List<NetworkTraceInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(getNetworkTracesSlotWithServiceResponseAsync(resourceGroupName, name, operationId, slot), serviceCallback);
+    }
+
+    /**
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param operationId GUID of the operation.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get an operation for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;NetworkTraceInner&gt; object
+     */
+    public Observable<List<NetworkTraceInner>> getNetworkTracesSlotAsync(String resourceGroupName, String name, String operationId, String slot) {
+        return getNetworkTracesSlotWithServiceResponseAsync(resourceGroupName, name, operationId, slot).map(new Func1<ServiceResponse<List<NetworkTraceInner>>, List<NetworkTraceInner>>() {
+            @Override
+            public List<NetworkTraceInner> call(ServiceResponse<List<NetworkTraceInner>> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param operationId GUID of the operation.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get an operation for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;NetworkTraceInner&gt; object
+     */
+    public Observable<ServiceResponse<List<NetworkTraceInner>>> getNetworkTracesSlotWithServiceResponseAsync(String resourceGroupName, String name, String operationId, String slot) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (operationId == null) {
+            throw new IllegalArgumentException("Parameter operationId is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getNetworkTracesSlot(resourceGroupName, name, operationId, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<NetworkTraceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<NetworkTraceInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<List<NetworkTraceInner>> clientResponse = getNetworkTracesSlotDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<List<NetworkTraceInner>> getNetworkTracesSlotDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<List<NetworkTraceInner>, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<List<NetworkTraceInner>>() { }.getType())
                 .registerError(DefaultErrorResponseException.class)
                 .build(response);
     }
@@ -30190,7 +31661,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws DefaultErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -30213,7 +31684,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -30237,7 +31708,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PerfMonResponseInner&gt; object
      */
@@ -30258,7 +31729,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PerfMonResponseInner&gt; object
      */
@@ -30283,7 +31754,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     ServiceResponse<PageImpl<PerfMonResponseInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<PerfMonResponseInner>> * @param name Name of web app.
     ServiceResponse<PageImpl<PerfMonResponseInner>> * @param slot Name of web app slot. If not specified then will default to production slot.
-    ServiceResponse<PageImpl<PerfMonResponseInner>> * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+    ServiceResponse<PageImpl<PerfMonResponseInner>> * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;PerfMonResponseInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -32579,13 +34050,14 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing profile for the production slot.
+     * @param publishingProfileOptions Specifies publishingProfileOptions for publishing profile. For example, use {"format": "FileZilla3"} to get a FileZilla publishing profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws DefaultErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the InputStream object if successful.
      */
-    public InputStream listPublishingProfileXmlWithSecretsSlot(String resourceGroupName, String name, String slot) {
-        return listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
+    public InputStream listPublishingProfileXmlWithSecretsSlot(String resourceGroupName, String name, String slot, CsmPublishingProfileOptions publishingProfileOptions) {
+        return listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(resourceGroupName, name, slot, publishingProfileOptions).toBlocking().single().body();
     }
 
     /**
@@ -32595,12 +34067,13 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing profile for the production slot.
+     * @param publishingProfileOptions Specifies publishingProfileOptions for publishing profile. For example, use {"format": "FileZilla3"} to get a FileZilla publishing profile.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<InputStream> listPublishingProfileXmlWithSecretsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<InputStream> serviceCallback) {
-        return ServiceFuture.fromResponse(listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    public ServiceFuture<InputStream> listPublishingProfileXmlWithSecretsSlotAsync(String resourceGroupName, String name, String slot, CsmPublishingProfileOptions publishingProfileOptions, final ServiceCallback<InputStream> serviceCallback) {
+        return ServiceFuture.fromResponse(listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(resourceGroupName, name, slot, publishingProfileOptions), serviceCallback);
     }
 
     /**
@@ -32610,11 +34083,12 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing profile for the production slot.
+     * @param publishingProfileOptions Specifies publishingProfileOptions for publishing profile. For example, use {"format": "FileZilla3"} to get a FileZilla publishing profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InputStream object
      */
-    public Observable<InputStream> listPublishingProfileXmlWithSecretsSlotAsync(String resourceGroupName, String name, String slot) {
-        return listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<InputStream>, InputStream>() {
+    public Observable<InputStream> listPublishingProfileXmlWithSecretsSlotAsync(String resourceGroupName, String name, String slot, CsmPublishingProfileOptions publishingProfileOptions) {
+        return listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(resourceGroupName, name, slot, publishingProfileOptions).map(new Func1<ServiceResponse<InputStream>, InputStream>() {
             @Override
             public InputStream call(ServiceResponse<InputStream> response) {
                 return response.body();
@@ -32629,10 +34103,11 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing profile for the production slot.
+     * @param publishingProfileOptions Specifies publishingProfileOptions for publishing profile. For example, use {"format": "FileZilla3"} to get a FileZilla publishing profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InputStream object
      */
-    public Observable<ServiceResponse<InputStream>> listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
+    public Observable<ServiceResponse<InputStream>> listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, CsmPublishingProfileOptions publishingProfileOptions) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -32645,121 +34120,14 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        final PublishingProfileFormat format = null;
-        CsmPublishingProfileOptions publishingProfileOptions = new CsmPublishingProfileOptions();
-        publishingProfileOptions.withFormat(null);
-        return service.listPublishingProfileXmlWithSecretsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), publishingProfileOptions, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<InputStream>>>() {
-                @Override
-                public Observable<ServiceResponse<InputStream>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<InputStream> clientResponse = listPublishingProfileXmlWithSecretsSlotDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    /**
-     * Gets the publishing profile for an app (or deployment slot, if specified).
-     * Gets the publishing profile for an app (or deployment slot, if specified).
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the app.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing profile for the production slot.
-     * @param format Name of the format. Valid values are:
-     FileZilla3
-     WebDeploy -- default
-     Ftp. Possible values include: 'FileZilla3', 'WebDeploy', 'Ftp'
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the InputStream object if successful.
-     */
-    public InputStream listPublishingProfileXmlWithSecretsSlot(String resourceGroupName, String name, String slot, PublishingProfileFormat format) {
-        return listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(resourceGroupName, name, slot, format).toBlocking().single().body();
-    }
-
-    /**
-     * Gets the publishing profile for an app (or deployment slot, if specified).
-     * Gets the publishing profile for an app (or deployment slot, if specified).
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the app.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing profile for the production slot.
-     * @param format Name of the format. Valid values are:
-     FileZilla3
-     WebDeploy -- default
-     Ftp. Possible values include: 'FileZilla3', 'WebDeploy', 'Ftp'
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<InputStream> listPublishingProfileXmlWithSecretsSlotAsync(String resourceGroupName, String name, String slot, PublishingProfileFormat format, final ServiceCallback<InputStream> serviceCallback) {
-        return ServiceFuture.fromResponse(listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(resourceGroupName, name, slot, format), serviceCallback);
-    }
-
-    /**
-     * Gets the publishing profile for an app (or deployment slot, if specified).
-     * Gets the publishing profile for an app (or deployment slot, if specified).
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the app.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing profile for the production slot.
-     * @param format Name of the format. Valid values are:
-     FileZilla3
-     WebDeploy -- default
-     Ftp. Possible values include: 'FileZilla3', 'WebDeploy', 'Ftp'
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the InputStream object
-     */
-    public Observable<InputStream> listPublishingProfileXmlWithSecretsSlotAsync(String resourceGroupName, String name, String slot, PublishingProfileFormat format) {
-        return listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(resourceGroupName, name, slot, format).map(new Func1<ServiceResponse<InputStream>, InputStream>() {
-            @Override
-            public InputStream call(ServiceResponse<InputStream> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Gets the publishing profile for an app (or deployment slot, if specified).
-     * Gets the publishing profile for an app (or deployment slot, if specified).
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the app.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing profile for the production slot.
-     * @param format Name of the format. Valid values are:
-     FileZilla3
-     WebDeploy -- default
-     Ftp. Possible values include: 'FileZilla3', 'WebDeploy', 'Ftp'
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the InputStream object
-     */
-    public Observable<ServiceResponse<InputStream>> listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, PublishingProfileFormat format) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (slot == null) {
-            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        if (publishingProfileOptions == null) {
+            throw new IllegalArgumentException("Parameter publishingProfileOptions is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        CsmPublishingProfileOptions publishingProfileOptions = new CsmPublishingProfileOptions();
-        publishingProfileOptions.withFormat(format);
-        return service.listPublishingProfileXmlWithSecretsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), publishingProfileOptions, this.client.userAgent())
+        Validator.validate(publishingProfileOptions);
+        return service.listPublishingProfileXmlWithSecretsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), publishingProfileOptions, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<InputStream>>>() {
                 @Override
                 public Observable<ServiceResponse<InputStream>> call(Response<ResponseBody> response) {
@@ -36385,7 +37753,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get quota information of the production slot.
-     * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws DefaultErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -36408,7 +37776,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get quota information of the production slot.
-     * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -36432,7 +37800,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get quota information of the production slot.
-     * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CsmUsageQuotaInner&gt; object
      */
@@ -36453,7 +37821,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get quota information of the production slot.
-     * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CsmUsageQuotaInner&gt; object
      */
@@ -36478,7 +37846,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param name Name of the app.
     ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param slot Name of the deployment slot. If a slot is not specified, the API will get quota information of the production slot.
-    ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+    ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -39691,7 +41059,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
-     * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws DefaultErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -39713,7 +41081,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
-     * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -39736,7 +41104,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
-     * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CsmUsageQuotaInner&gt; object
      */
@@ -39756,7 +41124,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
-     * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CsmUsageQuotaInner&gt; object
      */
@@ -39780,7 +41148,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      *
     ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param name Name of the app.
-    ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+    ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */

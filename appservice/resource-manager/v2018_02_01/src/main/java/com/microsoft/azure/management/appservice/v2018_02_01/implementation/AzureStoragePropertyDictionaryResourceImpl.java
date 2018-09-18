@@ -8,15 +8,14 @@
 
 package com.microsoft.azure.management.appservice.v2018_02_01.implementation;
 
-import com.microsoft.azure.management.appservice.v2018_02_01.BackupRequest;
+import com.microsoft.azure.management.appservice.v2018_02_01.AzureStoragePropertyDictionaryResource;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
-import com.microsoft.azure.management.appservice.v2018_02_01.BackupSchedule;
-import java.util.List;
-import com.microsoft.azure.management.appservice.v2018_02_01.DatabaseBackupSetting;
+import java.util.Map;
+import com.microsoft.azure.management.appservice.v2018_02_01.AzureStorageInfoValue;
 
-class BackupRequestImpl extends WrapperImpl<BackupRequestInner> implements BackupRequest {
+class AzureStoragePropertyDictionaryResourceImpl extends WrapperImpl<AzureStoragePropertyDictionaryResourceInner> implements AzureStoragePropertyDictionaryResource {
     private final CertificateRegistrationManager manager;
-    BackupRequestImpl(BackupRequestInner inner, CertificateRegistrationManager manager) {
+    AzureStoragePropertyDictionaryResourceImpl(AzureStoragePropertyDictionaryResourceInner inner, CertificateRegistrationManager manager) {
         super(inner);
         this.manager = manager;
     }
@@ -24,26 +23,6 @@ class BackupRequestImpl extends WrapperImpl<BackupRequestInner> implements Backu
     @Override
     public CertificateRegistrationManager manager() {
         return this.manager;
-    }
-
-    @Override
-    public String backupName() {
-        return this.inner().backupName();
-    }
-
-    @Override
-    public BackupSchedule backupSchedule() {
-        return this.inner().backupSchedule();
-    }
-
-    @Override
-    public List<DatabaseBackupSetting> databases() {
-        return this.inner().databases();
-    }
-
-    @Override
-    public Boolean enabled() {
-        return this.inner().enabled();
     }
 
     @Override
@@ -62,8 +41,8 @@ class BackupRequestImpl extends WrapperImpl<BackupRequestInner> implements Backu
     }
 
     @Override
-    public String storageAccountUrl() {
-        return this.inner().storageAccountUrl();
+    public Map<String, AzureStorageInfoValue> properties() {
+        return this.inner().properties();
     }
 
     @Override

@@ -11,33 +11,13 @@ package com.microsoft.azure.management.appservice.v2018_02_01;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.BackupRequestInner;
-import java.util.List;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AzureStoragePropertyDictionaryResourceInner;
+import java.util.Map;
 
 /**
- * Type representing BackupRequest.
+ * Type representing AzureStoragePropertyDictionaryResource.
  */
-public interface BackupRequest extends HasInner<BackupRequestInner>, HasManager<CertificateRegistrationManager> {
-    /**
-     * @return the backupName value.
-     */
-    String backupName();
-
-    /**
-     * @return the backupSchedule value.
-     */
-    BackupSchedule backupSchedule();
-
-    /**
-     * @return the databases value.
-     */
-    List<DatabaseBackupSetting> databases();
-
-    /**
-     * @return the enabled value.
-     */
-    Boolean enabled();
-
+public interface AzureStoragePropertyDictionaryResource extends HasInner<AzureStoragePropertyDictionaryResourceInner>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the id value.
      */
@@ -54,9 +34,9 @@ public interface BackupRequest extends HasInner<BackupRequestInner>, HasManager<
     String name();
 
     /**
-     * @return the storageAccountUrl value.
+     * @return the properties value.
      */
-    String storageAccountUrl();
+    Map<String, AzureStorageInfoValue> properties();
 
     /**
      * @return the type value.

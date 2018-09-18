@@ -173,6 +173,11 @@ class SlotsImpl extends CreatableUpdatableImpl<Slots, SiteInner, SlotsImpl> impl
     }
 
     @Override
+    public Boolean hyperV() {
+        return this.inner().hyperV();
+    }
+
+    @Override
     public String id() {
         return this.inner().id();
     }
@@ -418,6 +423,16 @@ class SlotsImpl extends CreatableUpdatableImpl<Slots, SiteInner, SlotsImpl> impl
             this.inner().withHttpsOnly(httpsOnly);
         } else {
             this.updateParameter.withHttpsOnly(httpsOnly);
+        }
+        return this;
+    }
+
+    @Override
+    public SlotsImpl withHyperV(Boolean hyperV) {
+        if (isInCreateMode()) {
+            this.inner().withHyperV(hyperV);
+        } else {
+            this.updateParameter.withHyperV(hyperV);
         }
         return this;
     }
