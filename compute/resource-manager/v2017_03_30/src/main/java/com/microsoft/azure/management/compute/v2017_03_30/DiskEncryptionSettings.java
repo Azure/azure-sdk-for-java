@@ -35,7 +35,7 @@ public class DiskEncryptionSettings {
     private Boolean enabled;
 
     /**
-     * Get the diskEncryptionKey value.
+     * Get specifies the location of the disk encryption key, which is a Key Vault Secret.
      *
      * @return the diskEncryptionKey value
      */
@@ -44,7 +44,7 @@ public class DiskEncryptionSettings {
     }
 
     /**
-     * Set the diskEncryptionKey value.
+     * Set specifies the location of the disk encryption key, which is a Key Vault Secret.
      *
      * @param diskEncryptionKey the diskEncryptionKey value to set
      * @return the DiskEncryptionSettings object itself.
@@ -55,7 +55,7 @@ public class DiskEncryptionSettings {
     }
 
     /**
-     * Get the keyEncryptionKey value.
+     * Get specifies the location of the key encryption key in Key Vault.
      *
      * @return the keyEncryptionKey value
      */
@@ -64,7 +64,7 @@ public class DiskEncryptionSettings {
     }
 
     /**
-     * Set the keyEncryptionKey value.
+     * Set specifies the location of the key encryption key in Key Vault.
      *
      * @param keyEncryptionKey the keyEncryptionKey value to set
      * @return the DiskEncryptionSettings object itself.
@@ -75,7 +75,7 @@ public class DiskEncryptionSettings {
     }
 
     /**
-     * Get the enabled value.
+     * Get specifies whether disk encryption should be enabled on the virtual machine.
      *
      * @return the enabled value
      */
@@ -84,7 +84,7 @@ public class DiskEncryptionSettings {
     }
 
     /**
-     * Set the enabled value.
+     * Set specifies whether disk encryption should be enabled on the virtual machine.
      *
      * @param enabled the enabled value to set
      * @return the DiskEncryptionSettings object itself.

@@ -27,7 +27,7 @@ public class DiagnosticsProfile {
     private BootDiagnostics bootDiagnostics;
 
     /**
-     * Get the bootDiagnostics value.
+     * Get boot Diagnostics is a debugging feature which allows you to view Console Output and Screenshot to diagnose VM status. &lt;br&gt;&lt;br&gt; For Linux Virtual Machines, you can easily view the output of your console log. &lt;br&gt;&lt;br&gt; For both Windows and Linux virtual machines, Azure also enables you to see a screenshot of the VM from the hypervisor.
      *
      * @return the bootDiagnostics value
      */
@@ -36,7 +36,7 @@ public class DiagnosticsProfile {
     }
 
     /**
-     * Set the bootDiagnostics value.
+     * Set boot Diagnostics is a debugging feature which allows you to view Console Output and Screenshot to diagnose VM status. &lt;br&gt;&lt;br&gt; For Linux Virtual Machines, you can easily view the output of your console log. &lt;br&gt;&lt;br&gt; For both Windows and Linux virtual machines, Azure also enables you to see a screenshot of the VM from the hypervisor.
      *
      * @param bootDiagnostics the bootDiagnostics value to set
      * @return the DiagnosticsProfile object itself.
