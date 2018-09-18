@@ -132,6 +132,23 @@ public class BlobURL extends StorageURL {
      *
      * @param sourceURL
      *         The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
+     *
+     * @return Emits the successful response.
+     * @apiNote ## Sample Code \n [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=start_copy
+     * "Sample code for BlobURL.startCopyFromURL")] \n [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=start_copy_helper
+     * "Helper for start_copy sample.")] \n For more samples, please see the [Samples
+     * file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     */
+    public Single<BlobStartCopyFromURLResponse> startCopyFromURL(URL sourceURL) {
+        return this.startCopyFromURL(sourceURL, null, null, null, null);
+    }
+
+    /**
+     * Copies the data at the source URL to a blob. For more information, see the <a
+     * href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a>
+     *
+     * @param sourceURL
+     *         The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      * @param metadata
      *      {@link Metadata}
      * @param sourceModifiedAccessConditions
@@ -179,6 +196,24 @@ public class BlobURL extends StorageURL {
      * @param copyId
      *      The id of the copy operation to abort. Returned as the {@code copyId} field on the {@link
      *      BlobStartCopyFromURLHeaders} object.
+     *
+     * @return Emits the successful response.
+     * @apiNote ## Sample Code \n [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=abort_copy
+     * "Sample code for BlobURL.abortCopyFromURL")] \n For more samples, please see the [Samples
+     * file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     */
+    public Single<BlobAbortCopyFromURLResponse> abortCopyFromURL(String copyId) {
+        return this.abortCopyFromURL(copyId, null, null);
+    }
+
+    /**
+     * Stops a pending copy that was previously started and leaves a destination blob with 0 length and metadata. For
+     * more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/abort-copy-blob">Azure
+     * Docs</a>.
+     *
+     * @param copyId
+     *      The id of the copy operation to abort. Returned as the {@code copyId} field on the {@link
+     *      BlobStartCopyFromURLHeaders} object.
      * @param leaseAccessConditions
      *      {@link LeaseAccessConditions}
      * @param context
@@ -198,6 +233,22 @@ public class BlobURL extends StorageURL {
 
         return addErrorWrappingToSingle(this.storageClient.generatedBlobs().abortCopyFromURLWithRestResponseAsync(
                 context, copyId, null, null, leaseAccessConditions));
+    }
+
+    /**
+     * Reads a range of bytes from a blob. The response also includes the blob's properties and metadata. For more
+     * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a>.
+     * <p>
+     * Note that the response body has reliable download functionality built in, meaning that a failed download stream
+     * will be automatically retried. This behavior may be configured with {@link ReliableDownloadOptions}.
+     *
+     * @return Emits the successful response.
+     * @apiNote ## Sample Code \n [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=upload_download
+     * "Sample code for BlobURL.download")] \n For more samples, please see the [Samples
+     * file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     */
+    public Single<DownloadResponse> download() {
+        return this.download(null, null, false, null);
     }
 
     /**
@@ -258,6 +309,19 @@ public class BlobURL extends StorageURL {
      * Deletes the specified blob or snapshot. Note that deleting a blob also deletes all its snapshots. For more
      * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/delete-blob">Azure Docs</a>.
      *
+     * @return Emits the successful response.
+     * @apiNote ## Sample Code \n [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blob_delete
+     * "Sample code for BlobURL.delete")] \n For more samples, please see the [Samples
+     * file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     */
+    public Single<BlobDeleteResponse> delete() {
+        return this.delete(null, null, null);
+    }
+
+    /**
+     * Deletes the specified blob or snapshot. Note that deleting a blob also deletes all its snapshots. For more
+     * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/delete-blob">Azure Docs</a>.
+     *
      * @param deleteBlobSnapshotOptions
      *         Specifies the behavior for deleting the snapshots on this blob. {@code Include} will delete the base blob
      *         and all snapshots. {@code Only} will delete only the snapshots. If a snapshot is being deleted, you must
@@ -289,6 +353,19 @@ public class BlobURL extends StorageURL {
      * Returns the blob's metadata and properties. For more information, see the <a
      * href="https://docs.microsoft.com/rest/api/storageservices/get-blob-properties">Azure Docs</a>.
      *
+     * @return Emits the successful response.
+     * @apiNote ## Sample Code \n [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=properties_metadata
+     * "Sample code for BlobURL.getProperties")] \n For more samples, please see the [Samples
+     * file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     */
+    public Single<BlobGetPropertiesResponse> getProperties() {
+        return this.getProperties(null, null);
+    }
+
+    /**
+     * Returns the blob's metadata and properties. For more information, see the <a
+     * href="https://docs.microsoft.com/rest/api/storageservices/get-blob-properties">Azure Docs</a>.
+     *
      * @param accessConditions
      *         {@link BlobAccessConditions}
      * @param context
@@ -309,6 +386,22 @@ public class BlobURL extends StorageURL {
         return addErrorWrappingToSingle(this.storageClient.generatedBlobs().getPropertiesWithRestResponseAsync(
                 context, null, null, null, accessConditions.leaseAccessConditions(),
                 accessConditions.modifiedAccessConditions()));
+    }
+
+    /**
+     * Changes a blob's HTTP header properties. For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-properties">Azure
+     * Docs</a>.
+     *
+     * @param headers
+     *      {@link BlobHTTPHeaders}
+     *
+     * @return Emits the successful response.
+     * @apiNote ## Sample Code \n [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=properties_metadata
+     * "Sample code for BlobURL.setHTTPHeaders")] \n For more samples, please see the [Samples
+     * file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     */
+    public Single<BlobSetHTTPHeadersResponse> setHTTPHeaders(BlobHTTPHeaders headers) {
+        return this.setHTTPHeaders(headers, null, null);
     }
 
     /**
@@ -346,6 +439,22 @@ public class BlobURL extends StorageURL {
      *
      * @param metadata
      *         {@link Metadata}
+     *
+     * @return Emits the successful response.
+     * @apiNote ## Sample Code \n [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=properties_metadata
+     * "Sample code for BlobURL.setMetadata")] \n For more samples, please see the [Samples
+     * file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     */
+    public Single<BlobSetMetadataResponse> setMetadata(Metadata metadata) {
+        return this.setMetadata(metadata, null, null);
+    }
+
+    /**
+     * Changes a blob's metadata. For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-metadata">Azure
+     * Docs</a>.
+     *
+     * @param metadata
+     *         {@link Metadata}
      * @param accessConditions
      *         {@link BlobAccessConditions}
      * @param context
@@ -374,6 +483,19 @@ public class BlobURL extends StorageURL {
      * Creates a read-only snapshot of a blob. For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/snapshot-blob">Azure
      * Docs</a>.
      *
+     * @return Emits the successful response.
+     * @apiNote ## Sample Code \n [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=snapshot
+     * "Sample code for BlobURL.createSnapshot")] \n For more samples, please see the [Samples
+     * file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     */
+    public Single<BlobCreateSnapshotResponse> createSnapshot() {
+        return this.createSnapshot(null, null, null);
+    }
+
+    /**
+     * Creates a read-only snapshot of a blob. For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/snapshot-blob">Azure
+     * Docs</a>.
+     *
      * @param metadata
      *         {@link Metadata}
      * @param accessConditions
@@ -384,6 +506,7 @@ public class BlobURL extends StorageURL {
      *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
      *      parent, forming a linked list.
+     *
      * @return Emits the successful response.
      * @apiNote ## Sample Code \n [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=snapshot
      * "Sample code for BlobURL.createSnapshot")] \n For more samples, please see the [Samples
@@ -398,6 +521,28 @@ public class BlobURL extends StorageURL {
         return addErrorWrappingToSingle(this.storageClient.generatedBlobs().createSnapshotWithRestResponseAsync(
                 context, null, metadata, null, accessConditions.modifiedAccessConditions(),
                 accessConditions.leaseAccessConditions()));
+    }
+
+    /**
+     * Sets the tier on a blob. The operation is allowed on a page blob in a premium storage account or a block blob in
+     * a blob storage or GPV2 account. A premium page blob's tier determines the allowed size, IOPS, and bandwidth of
+     * the blob. A block blob's tier determines the Hot/Cool/Archive storage type. This does not update the blob's etag.
+
+     * For detailed information about block blob level tiering see the <a href="https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blob-storage-tiers.">Azure Docs</a>.
+     *
+     * @apiNote
+     * ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=tier "Sample code for BlobURL.setTier")] \n
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     *
+     * @param tier
+     *      The new tier for the blob.
+     *
+     * @return
+     *      Emits the successful response.
+     */
+    public Single<BlobSetTierResponse> setTier(AccessTier tier) {
+        return this.setTier(tier, null, null);
     }
 
     /**
@@ -434,7 +579,6 @@ public class BlobURL extends StorageURL {
                 null, null, leaseAccessConditions));
     }
 
-
     /**
      * Undelete restores the content and metadata of a soft-deleted blob and/or any associated soft-deleted snapshots.
      * For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/undelete-blob">Azure
@@ -447,18 +591,55 @@ public class BlobURL extends StorageURL {
      *
      * @return
      *      Emits the successful response.
+     */
+    public Single<BlobUndeleteResponse> undelete() {
+        return this.undelete(null);
+    }
+
+    /**
+     * Undelete restores the content and metadata of a soft-deleted blob and/or any associated soft-deleted snapshots.
+     * For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/undelete-blob">Azure
+     * Docs</a>.
+     *
+     * @apiNote
+     * ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=undelete "Sample code for BlobURL.undelete")] \n
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     *
      * @param context
      *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
      *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
      *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
      *      parent, forming a linked list.
+     *
+     * @return
+     *      Emits the successful response.
+     *
      */
     public Single<BlobUndeleteResponse> undelete(Context context) {
         context = context == null ? Context.NONE : context;
 
         return addErrorWrappingToSingle(this.storageClient.generatedBlobs().undeleteWithRestResponseAsync(context, null,
                 null));
+    }
+
+    /**
+     * Acquires a lease on the blob for write and delete operations. The lease duration must be between 15 to 60
+     * seconds, or infinite (-1). For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/lease-blob">Azure
+     * Docs</a>.
+     *
+     * @param proposedId
+     *      A {@code String} in any valid GUID format. May be null.
+     * @param duration
+     *      The  duration of the lease, in seconds, or negative one (-1) for a lease that
+     *      never expires. A non-infinite lease can be between 15 and 60 seconds.
+     *
+     * @return
+     *      Emits the successful response.
+     */
+    public Single<BlobAcquireLeaseResponse> acquireLease(String proposedId, int duration) {
+        return this.acquireLease(proposedId, duration, null, null);
     }
 
     /**
@@ -501,6 +682,20 @@ public class BlobURL extends StorageURL {
      *
      * @param leaseID
      *      The leaseId of the active lease on the blob.
+     *
+     * @return
+     *      Emits the successful response.
+     */
+    public Single<BlobRenewLeaseResponse> renewLease(String leaseID) {
+        return this.renewLease(leaseID, null, null);
+    }
+
+    /**
+     * Renews the blob's previously-acquired lease. For more information, see the <a
+     * href="https://docs.microsoft.com/rest/api/storageservices/lease-blob">Azure Docs</a>.
+     *
+     * @param leaseID
+     *      The leaseId of the active lease on the blob.
      * @param modifiedAccessConditions
      *      {@link ModifiedAccessConditions}
      * @param context
@@ -518,6 +713,23 @@ public class BlobURL extends StorageURL {
 
         return addErrorWrappingToSingle(this.storageClient.generatedBlobs().renewLeaseWithRestResponseAsync(context,
                 leaseID, null, null, modifiedAccessConditions));
+    }
+
+    /**
+     * Releases the blob's previously-acquired lease. For more information, see the <a
+     * href="https://docs.microsoft.com/rest/api/storageservices/lease-blob">Azure Docs</a>.
+     *
+     * @param leaseID
+     *         The leaseId of the active lease on the blob.
+     *
+     * @apiNote ## Sample Code \n [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blob_lease
+     * "Sample code for BlobURL.releaseLease")] \n For more samples, please see the [Samples
+     * file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      Emits the successful response.
+     */
+    public Single<BlobReleaseLeaseResponse> releaseLease(String leaseID) {
+        return this.releaseLease(leaseID, null, null);
     }
 
     /**
@@ -546,6 +758,22 @@ public class BlobURL extends StorageURL {
 
         return addErrorWrappingToSingle(this.storageClient.generatedBlobs().releaseLeaseWithRestResponseAsync(context,
                 leaseID, null, null, modifiedAccessConditions));
+    }
+
+    /**
+     * BreakLease breaks the blob's previously-acquired lease (if it exists). Pass the LeaseBreakDefault (-1) constant
+     * to break a fixed-duration lease when it expires or an infinite lease immediately. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-blob">Azure Docs</a>.
+     *
+     * @apiNote ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blob_lease "Sample code for BlobURL.breakLease")] \n
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     *
+     * @return
+     *      Emits the successful response.
+     */
+    public Single<BlobBreakLeaseResponse> breakLease() {
+        return this.breakLease(null, null, null);
     }
 
     /**
@@ -590,6 +818,25 @@ public class BlobURL extends StorageURL {
      *         The leaseId of the active lease on the blob.
      * @param proposedID
      *         A {@code String} in any valid GUID format.
+     *
+     * @apiNote ## Sample Code \n [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blob_lease
+     * "Sample code for BlobURL.changeLease")] \n For more samples, please see the [Samples
+     * file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      Emits the successful response.
+     */
+    public Single<BlobChangeLeaseResponse> changeLease(String leaseId, String proposedID) {
+        return this.changeLease(leaseId, proposedID, null, null);
+    }
+
+    /**
+     * ChangeLease changes the blob's lease ID. For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/lease-blob">Azure
+     * Docs</a>.
+     *
+     * @param leaseId
+     *         The leaseId of the active lease on the blob.
+     * @param proposedID
+     *         A {@code String} in any valid GUID format.
      * @param modifiedAccessConditions
      *      {@link ModifiedAccessConditions}
      *@param context
@@ -611,6 +858,19 @@ public class BlobURL extends StorageURL {
 
         return addErrorWrappingToSingle(this.storageClient.generatedBlobs().changeLeaseWithRestResponseAsync(context,
                 leaseId, proposedID, null, null, modifiedAccessConditions));
+    }
+
+    /**
+     * Returns the sku name and account kind for the account. For more information, please see the <a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a>.
+     *
+     * @return Emits the successful response.
+     * @apiNote ## Sample code \n [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=account_info
+     * "Sample code for BlobURL.getAccountInfo")] \n For more samples, please see the [Samples file]
+     * (https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     */
+    public Single<BlobGetAccountInfoResponse> getAccountInfo() {
+        return this.getAccountInfo(null);
     }
 
     /**

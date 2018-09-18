@@ -122,6 +122,38 @@ public final class BlockBlobURL extends BlobURL {
      * @param length
      *      The exact length of the data. It is important that this value match precisely the length of the data
      *      emitted by the {@code Flowable}.
+     *
+     * @return
+     *      Emits the successful response.
+     */
+    public Single<BlockBlobUploadResponse> upload(Flowable<ByteBuffer> data, long length) {
+        return this.upload(data, length, null, null, null, null);
+    }
+
+    /**
+     * Creates a new block blob, or updates the content of an existing block blob.
+     * Updating an existing block blob overwrites any existing metadata on the blob. Partial updates are not
+     * supported with PutBlob; the content of the existing blob is overwritten with the new content. To
+     * perform a partial update of a block blob's, use PutBlock and PutBlockList.
+     * For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
+     *
+     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
+     * {@code Flowable} must produce the same data each time it is subscribed to.
+     *
+     * For more efficient bulk-upload scenarios, please refer to the {@link TransferManager} for convenience methods.
+     *
+     * @apiNote
+     * ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=upload_download "Sample code for BlockBlobURL.upload")] \n
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     *
+     * @param data
+     *      The data to write to the blob. Note that this {@code Flowable} must be replayable if retries are enabled
+     *      (the default). In other words, the Flowable must produce the same data each time it is subscribed to.
+     * @param length
+     *      The exact length of the data. It is important that this value match precisely the length of the data
+     *      emitted by the {@code Flowable}.
      * @param headers
      *      {@link BlobHTTPHeaders}
      * @param metadata
@@ -137,9 +169,8 @@ public final class BlockBlobURL extends BlobURL {
      * @return
      *      Emits the successful response.
      */
-    public Single<BlockBlobUploadResponse> upload(
-            Flowable<ByteBuffer> data, long length, BlobHTTPHeaders headers, Metadata metadata,
-            BlobAccessConditions accessConditions, Context context) {
+    public Single<BlockBlobUploadResponse> upload(Flowable<ByteBuffer> data, long length, BlobHTTPHeaders headers,
+            Metadata metadata, BlobAccessConditions accessConditions, Context context) {
         metadata = metadata == null ? Metadata.NONE : metadata;
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
         context = context == null ? Context.NONE : context;
@@ -147,6 +178,37 @@ public final class BlockBlobURL extends BlobURL {
         return addErrorWrappingToSingle(this.storageClient.generatedBlockBlobs().uploadWithRestResponseAsync(context,
                 data, length, null, metadata, null, headers, accessConditions.leaseAccessConditions(),
                 accessConditions.modifiedAccessConditions()));
+    }
+
+    /**
+     * Uploads the specified block to the block blob's "staging area" to be later committed by a call to
+     * commitBlockList. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs</a>.
+     *
+     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
+     * {@code Flowable} must produce the same data each time it is subscribed to.
+     *
+     * @apiNote
+     * ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blocks "Sample code for BlockBlobURL.stageBlock")] \n
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     *
+     * @param base64BlockID
+     *      A Base64 encoded {@code String} that specifies the ID for this block. Note that all block ids for a given
+     *      blob must be the same length.
+     * @param data
+     *      The data to write to the block. Note that this {@code Flowable} must be replayable if retries are enabled
+     *      (the default). In other words, the Flowable must produce the same data each time it is subscribed to.
+     * @param length
+     *      The exact length of the data. It is important that this value match precisely the length of the data
+     *      emitted by the {@code Flowable}.
+     *
+     * @return
+     *      Emits the successful response.
+     */
+    public Single<BlockBlobStageBlockResponse> stageBlock(String base64BlockID, Flowable<ByteBuffer> data,
+            long length) {
+        return this.stageBlock(base64BlockID, data, length, null, null);
     }
 
     /**
@@ -207,6 +269,32 @@ public final class BlockBlobURL extends BlobURL {
      *      authentication is required to perform the operation.
      * @param sourceRange
      *      {@link BlobRange}
+     *
+     * @return
+     *      Emits the successful response.
+     */
+    public Single<BlockBlobStageBlockFromURLResponse> stageBlockFromURL(String base64BlockID, URL sourceURL,
+            BlobRange sourceRange) {
+        return this.stageBlockFromURL(base64BlockID, sourceURL, sourceRange, null, null, null);
+    }
+
+    /**
+     * Creates a new block to be committed as part of a blob where the contents are read from a URL. For more
+     * information, see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-block-from-url">Azure Docs</a>.
+     *
+     * @apiNote
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=block_from_url "Sample code for BlockBlobURL.stageBlockFromURL")]
+     *
+     * @param base64BlockID
+     *      A Base64 encoded {@code String} that specifies the ID for this block. Note that all block ids for a given
+     *      blob must be the same length.
+     * @param sourceURL
+     *      The url to the blob that will be the source of the copy.  A source blob in the same storage account can be
+     *      authenticated via Shared Key. However, if the source is a blob in another account, the source blob must
+     *      either be public or must be authenticated via a shared access signature. If the source blob is public, no
+     *      authentication is required to perform the operation.
+     * @param sourceRange
+     *      {@link BlobRange}
      * @param sourceContentMD5
      *      An MD5 hash of the block content from the source blob. If specified, the service will calculate the MD5 of
      *      the received data and fail the request if it does not match the provided MD5.
@@ -245,6 +333,26 @@ public final class BlockBlobURL extends BlobURL {
      *
      * @param listType
      *      Specifies which type of blocks to return.
+     *
+     * @return
+     *      Emits the successful response.
+     */
+    public Single<BlockBlobGetBlockListResponse> getBlockList(BlockListType listType) {
+        return this.getBlockList(listType, null, null);
+    }
+
+    /**
+     * Returns the list of blocks that have been uploaded as part of a block blob using the specified block list filter.
+     * For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-block-list">Azure Docs</a>.
+     *
+     * @apiNote
+     * ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blocks "Sample code for BlockBlobURL.getBlockList")] \n
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     *
+     * @param listType
+     *      Specifies which type of blocks to return.
      * @param leaseAccessConditions
      *      {@link LeaseAccessConditions}
      * @param context
@@ -262,6 +370,32 @@ public final class BlockBlobURL extends BlobURL {
 
         return addErrorWrappingToSingle(this.storageClient.generatedBlockBlobs().getBlockListWithRestResponseAsync(
                 context, listType, null, null, null, leaseAccessConditions));
+    }
+
+    /**
+     * Writes a blob by specifying the list of block IDs that are to make up the blob.
+     * In order to be written as part of a blob, a block must have been successfully written
+     * to the server in a prior stageBlock operation. You can call commitBlockList to update a blob
+     * by uploading only those blocks that have changed, then committing the new and existing
+     * blocks together. Any blocks not specified in the block list and permanently deleted.
+     * For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure Docs</a>.
+     *
+     * For more efficient bulk-upload scenarios, please refer to the {@link TransferManager} for convenience methods.
+     *
+     * @apiNote
+     * ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blocks "Sample code for BlockBlobURL.commitBlockList")] \n
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     *
+     * @param base64BlockIDs
+     *      A list of base64 encode {@code String}s that specifies the block IDs to be committed.
+     *
+     * @return
+     *      Emits the successful response.
+     */
+    public Single<BlockBlobCommitBlockListResponse> commitBlockList(List<String> base64BlockIDs) {
+        return this.commitBlockList(base64BlockIDs, null, null, null, null);
     }
 
     /**
