@@ -45,7 +45,7 @@ public class ProviderOperation {
     private Object properties;
 
     /**
-     * Get the name value.
+     * Get the operation name.
      *
      * @return the name value
      */
@@ -54,7 +54,7 @@ public class ProviderOperation {
     }
 
     /**
-     * Set the name value.
+     * Set the operation name.
      *
      * @param name the name value to set
      * @return the ProviderOperation object itself.
@@ -65,7 +65,7 @@ public class ProviderOperation {
     }
 
     /**
-     * Get the displayName value.
+     * Get the operation display name.
      *
      * @return the displayName value
      */
@@ -74,7 +74,7 @@ public class ProviderOperation {
     }
 
     /**
-     * Set the displayName value.
+     * Set the operation display name.
      *
      * @param displayName the displayName value to set
      * @return the ProviderOperation object itself.
@@ -85,7 +85,7 @@ public class ProviderOperation {
     }
 
     /**
-     * Get the description value.
+     * Get the operation description.
      *
      * @return the description value
      */
@@ -94,7 +94,7 @@ public class ProviderOperation {
     }
 
     /**
-     * Set the description value.
+     * Set the operation description.
      *
      * @param description the description value to set
      * @return the ProviderOperation object itself.
@@ -105,7 +105,7 @@ public class ProviderOperation {
     }
 
     /**
-     * Get the origin value.
+     * Get the operation origin.
      *
      * @return the origin value
      */
@@ -114,7 +114,7 @@ public class ProviderOperation {
     }
 
     /**
-     * Set the origin value.
+     * Set the operation origin.
      *
      * @param origin the origin value to set
      * @return the ProviderOperation object itself.
@@ -125,7 +125,7 @@ public class ProviderOperation {
     }
 
     /**
-     * Get the properties value.
+     * Get the operation properties.
      *
      * @return the properties value
      */
@@ -134,7 +134,7 @@ public class ProviderOperation {
     }
 
     /**
-     * Set the properties value.
+     * Set the operation properties.
      *
      * @param properties the properties value to set
      * @return the ProviderOperation object itself.

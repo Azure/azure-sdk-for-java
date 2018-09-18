@@ -51,11 +51,11 @@ public class AuthorizationManagementClientImpl extends AzureServiceClient {
         return this;
     }
 
-    /** The API version to use for the operation. */
+    /** The API version to use for this operation. */
     private String apiVersion;
 
     /**
-     * Gets The API version to use for the operation.
+     * Gets The API version to use for this operation.
      *
      * @return the apiVersion value.
      */
@@ -133,19 +133,6 @@ public class AuthorizationManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The ClassicAdministratorsInner object to access its operations.
-     */
-    private ClassicAdministratorsInner classicAdministrators;
-
-    /**
-     * Gets the ClassicAdministratorsInner object to access its operations.
-     * @return the ClassicAdministratorsInner object.
-     */
-    public ClassicAdministratorsInner classicAdministrators() {
-        return this.classicAdministrators;
-    }
-
-    /**
      * The PermissionsInner object to access its operations.
      */
     private PermissionsInner permissions;
@@ -198,6 +185,19 @@ public class AuthorizationManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The ClassicAdministratorsInner object to access its operations.
+     */
+    private ClassicAdministratorsInner classicAdministrators;
+
+    /**
+     * Gets the ClassicAdministratorsInner object to access its operations.
+     * @return the ClassicAdministratorsInner object.
+     */
+    public ClassicAdministratorsInner classicAdministrators() {
+        return this.classicAdministrators;
+    }
+
+    /**
      * Initializes an instance of AuthorizationManagementClient client.
      *
      * @param credentials the management credentials for Azure
@@ -232,11 +232,11 @@ public class AuthorizationManagementClientImpl extends AzureServiceClient {
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
-        this.classicAdministrators = new ClassicAdministratorsInner(restClient().retrofit(), this);
         this.permissions = new PermissionsInner(restClient().retrofit(), this);
         this.providerOperationsMetadatas = new ProviderOperationsMetadatasInner(restClient().retrofit(), this);
         this.roleAssignments = new RoleAssignmentsInner(restClient().retrofit(), this);
         this.roleDefinitions = new RoleDefinitionsInner(restClient().retrofit(), this);
+        this.classicAdministrators = new ClassicAdministratorsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 
