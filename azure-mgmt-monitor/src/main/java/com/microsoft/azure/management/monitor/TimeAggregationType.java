@@ -27,11 +27,11 @@ public enum TimeAggregationType {
     /** Enum value Total. */
     TOTAL("Total"),
 
-    /** Enum value Last. */
-    LAST("Last"),
-
     /** Enum value Count. */
-    COUNT("Count");
+    COUNT("Count"),
+
+    /** Enum value Last. */
+    LAST("Last");
 
     /** The actual serialized value for a TimeAggregationType instance. */
     private String value;
