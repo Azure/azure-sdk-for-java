@@ -95,6 +95,11 @@ class ServiceAPITest extends APISpec {
         response.headers().version() != null
     }
 
+    def "List containers min"() {
+        expect:
+        primaryServiceURL.listContainersSegment(null, null).blockingGet().statusCode() == 200
+    }
+
     def "List containers marker"() {
         setup:
         for (int i = 0; i < 10; i++) {
@@ -246,6 +251,36 @@ class ServiceAPITest extends APISpec {
 
     // In java, we don't have support from the validator for checking the bounds on days. The service will catch these.
 
+    def "Set props min"() {
+        setup:
+        RetentionPolicy retentionPolicy = new RetentionPolicy().withDays(5).withEnabled(true)
+        Logging logging = new Logging().withRead(true).withVersion("1.0")
+                .withRetentionPolicy(retentionPolicy)
+        ArrayList<CorsRule> corsRules = new ArrayList<>()
+        corsRules.add(new CorsRule().withAllowedMethods("GET,PUT,HEAD")
+                .withAllowedOrigins("*")
+                .withAllowedHeaders("x-ms-version")
+                .withExposedHeaders("x-ms-client-request-id")
+                .withMaxAgeInSeconds(10))
+        String defaultServiceVersion = "2016-05-31"
+        Metrics hourMetrics = new Metrics().withEnabled(true).withVersion("1.0")
+                .withRetentionPolicy(retentionPolicy).withIncludeAPIs(true)
+        Metrics minuteMetrics = new Metrics().withEnabled(true).withVersion("1.0")
+                .withRetentionPolicy(retentionPolicy).withIncludeAPIs(true)
+        StaticWebsite website = new StaticWebsite().withEnabled(true)
+                .withIndexDocument("myIndex.html")
+                .withErrorDocument404Path("custom/error/path.html")
+
+        StorageServiceProperties sentProperties = new StorageServiceProperties()
+                .withLogging(logging).withCors(corsRules).withDefaultServiceVersion(defaultServiceVersion)
+                .withMinuteMetrics(minuteMetrics).withHourMetrics(hourMetrics)
+                .withDeleteRetentionPolicy(retentionPolicy)
+                .withStaticWebsite(website)
+
+        expect:
+        primaryServiceURL.setProperties(sentProperties).blockingGet().statusCode() == 202
+    }
+
     def "Set props error"() {
         when:
         new ServiceURL(new URL("https://error.blob.core.windows.net"),
@@ -269,6 +304,11 @@ class ServiceAPITest extends APISpec {
 
         then:
         notThrown(RuntimeException)
+    }
+
+    def "Get props min"() {
+        expect:
+        primaryServiceURL.getProperties().blockingGet().statusCode() == 200
     }
 
     def "Get props error"() {
@@ -311,6 +351,17 @@ class ServiceAPITest extends APISpec {
         response.body().geoReplication().lastSyncTime() != null
     }
 
+    def "Get stats min"() {
+        setup:
+        BlobURLParts parts = URLParser.parse(primaryServiceURL.toURL())
+        parts.withHost("xclientdev3-secondary.blob.core.windows.net")
+        ServiceURL secondary = new ServiceURL(parts.toURL(),
+                StorageURL.createPipeline(primaryCreds, new PipelineOptions()))
+
+        expect:
+        secondary.getStatistics(null).blockingGet().statusCode() == 200
+    }
+
     def "Get stats error"() {
         when:
         primaryServiceURL.getStatistics(null).blockingGet()
@@ -344,6 +395,11 @@ class ServiceAPITest extends APISpec {
         response.headers().requestId() != null
         response.headers().accountKind() != null
         response.headers().skuName() != null
+    }
+
+    def "Get account info min"() {
+        expect:
+        primaryServiceURL.getAccountInfo().blockingGet().statusCode() == 200
     }
 
     def "Get account info error"() {

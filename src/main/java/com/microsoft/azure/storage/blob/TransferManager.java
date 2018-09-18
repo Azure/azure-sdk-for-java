@@ -73,7 +73,8 @@ public final class TransferManager {
         Utility.assertNotNull("file", file);
         Utility.assertNotNull("blockBlobURL", blockBlobURL);
         Utility.assertInBounds("blockLength", blockLength, 1, BlockBlobURL.MAX_STAGE_BLOCK_BYTES);
-        TransferManagerUploadToBlockBlobOptions optionsReal = options == null ? TransferManagerUploadToBlockBlobOptions.DEFAULT : options;
+        TransferManagerUploadToBlockBlobOptions optionsReal = options == null ?
+                TransferManagerUploadToBlockBlobOptions.DEFAULT : options;
 
 
         // If the size of the file can fit in a single upload, do it this way.

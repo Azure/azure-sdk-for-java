@@ -96,6 +96,11 @@ class ContainerAPITest extends APISpec {
         validateBasicHeaders(response.headers())
     }
 
+    def "Create min"() {
+        expect:
+        primaryServiceURL.createContainerURL(generateContainerName()).create().blockingGet().statusCode() == 201
+    }
+
     @Unroll
     def "Create metadata"() {
         setup:
@@ -182,6 +187,11 @@ class ContainerAPITest extends APISpec {
         !headers.hasLegalHold()
     }
 
+    def "Get properties min"() {
+        expect:
+        cu.getProperties().blockingGet().statusCode() == 200
+    }
+
     def "Get properties lease"() {
         setup:
         String leaseID = setupContainerLeaseCondition(cu, receivedLeaseID)
@@ -235,6 +245,18 @@ class ContainerAPITest extends APISpec {
         response.statusCode() == 200
         validateBasicHeaders(response.headers())
         cu.getProperties(null, null).blockingGet().headers().metadata().size() == 0
+    }
+
+    def "Set metadata min"() {
+        setup:
+        Metadata metadata = new Metadata()
+        metadata.put("foo", "bar")
+
+        when:
+        cu.setMetadata(metadata).blockingGet()
+
+        then:
+        cu.getProperties().blockingGet().headers().metadata() == metadata
     }
 
     @Unroll
@@ -355,6 +377,34 @@ class ContainerAPITest extends APISpec {
         PublicAccessType.BLOB      | _
         PublicAccessType.CONTAINER | _
         null                       | _
+    }
+
+    def "Set access policy min access"() {
+        when:
+        cu.setAccessPolicy(PublicAccessType.CONTAINER, null).blockingGet()
+
+        then:
+        cu.getProperties().blockingGet().headers().blobPublicAccess() == PublicAccessType.CONTAINER
+    }
+
+    def "Set access policy min ids"() {
+        setup:
+        SignedIdentifier identifier = new SignedIdentifier()
+                .withId("0000")
+                .withAccessPolicy(new AccessPolicy()
+                .withStart(OffsetDateTime.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
+                .withExpiry(OffsetDateTime.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime()
+                .plusDays(1))
+                .withPermission("r"))
+
+        List<SignedIdentifier> ids = new ArrayList<>()
+        ids.push(identifier)
+
+        when:
+        cu.setAccessPolicy(null, ids).blockingGet()
+
+        then:
+        cu.getAccessPolicy(null, null).blockingGet().body().get(0).id() == "0000"
     }
 
     def "Set access policy ids"() {
@@ -549,6 +599,11 @@ class ContainerAPITest extends APISpec {
         response.headers().date() != null
     }
 
+    def "Delete min"() {
+        expect:
+        cu.delete().blockingGet().statusCode() == 202
+    }
+
     @Unroll
     def "Delete AC"() {
         setup:
@@ -676,6 +731,11 @@ class ContainerAPITest extends APISpec {
         blobs.get(0).properties().accessTier() == AccessTier.HOT
         blobs.get(0).properties().archiveStatus() == null
         blobs.get(0).properties().creationTime() != null
+    }
+
+    def "List blobs flat min"() {
+        expect:
+        cu.listBlobsFlatSegment(null, null).blockingGet().statusCode() == 200
     }
 
     def setupListBlobsTest(String normalName, String copyName, String metadataName, String uncommittedName) {
@@ -915,6 +975,11 @@ class ContainerAPITest extends APISpec {
         blobs.get(0).name() == name
     }
 
+    def "List blobs hierarchy min"() {
+        expect:
+        cu.listBlobsHierarchySegment(null, "/", null).blockingGet().statusCode() == 200
+    }
+
     def "List blobs hier options copy"() {
         setup:
         ListBlobsOptions options = new ListBlobsOptions().withDetails(new BlobListingDetails().withCopy(true))
@@ -1142,6 +1207,11 @@ class ContainerAPITest extends APISpec {
         UUID.randomUUID().toString() | -1        || LeaseStateType.LEASED | LeaseDurationType.INFINITE
     }
 
+    def "Acquire lease min"() {
+        expect:
+        cu.acquireLease(null, -1).blockingGet().statusCode() == 201
+    }
+
     @Unroll
     def "Acquire lease AC"() {
         setup:
@@ -1230,6 +1300,14 @@ class ContainerAPITest extends APISpec {
         headers.leaseId() != null
     }
 
+    def "Renew lease min"() {
+        setup:
+        String leaseID = setupContainerLeaseCondition(cu, receivedLeaseID)
+
+        expect:
+        cu.renewLease(leaseID).blockingGet().statusCode() == 200
+    }
+
     @Unroll
     def "Renew lease AC"() {
         setup:
@@ -1307,7 +1385,6 @@ class ContainerAPITest extends APISpec {
         notThrown(RuntimeException)
     }
 
-
     def "Release lease"() {
         setup:
         String leaseID = setupContainerLeaseCondition(cu, receivedLeaseID)
@@ -1317,6 +1394,14 @@ class ContainerAPITest extends APISpec {
         expect:
         cu.getProperties(null, null).blockingGet().headers().leaseState() == LeaseStateType.AVAILABLE
         validateBasicHeaders(headers)
+    }
+
+    def "Release lease min"() {
+        setup:
+        String leaseID = setupContainerLeaseCondition(cu, receivedLeaseID)
+
+        expect:
+        cu.releaseLease(leaseID).blockingGet().statusCode() == 200
     }
 
     @Unroll
@@ -1370,7 +1455,6 @@ class ContainerAPITest extends APISpec {
         null         | garbageEtag
     }
 
-
     def "Release lease error"() {
         setup:
         cu = primaryServiceURL.createContainerURL(generateContainerName())
@@ -1419,6 +1503,14 @@ class ContainerAPITest extends APISpec {
         -1        | 20          | 25
         20        | 15          | 16
 
+    }
+
+    def "Break lease min"() {
+        setup:
+        setupContainerLeaseCondition(cu, receivedLeaseID)
+
+        expect:
+        cu.breakLease().blockingGet().statusCode() == 202
     }
 
     @Unroll
@@ -1509,6 +1601,14 @@ class ContainerAPITest extends APISpec {
         expect:
         cu.releaseLease(leaseID, null, null).blockingGet().statusCode() == 200
         validateBasicHeaders(headers)
+    }
+
+    def "Change lease min"() {
+        setup:
+        def leaseID = setupContainerLeaseCondition(cu, receivedLeaseID)
+
+        expect:
+        cu.changeLease(leaseID, UUID.randomUUID().toString()).blockingGet().statusCode() == 200
     }
 
     @Unroll
@@ -1705,6 +1805,11 @@ class ContainerAPITest extends APISpec {
         response.headers().requestId() != null
         response.headers().accountKind() != null
         response.headers().skuName() != null
+    }
+
+    def "Get account info min"() {
+        expect:
+        primaryServiceURL.getAccountInfo().blockingGet().statusCode() == 200
     }
 
     def "Get account info error"() {

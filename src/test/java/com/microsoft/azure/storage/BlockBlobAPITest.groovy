@@ -72,6 +72,11 @@ class BlockBlobAPITest extends APISpec {
         headers.isServerEncrypted()
     }
 
+    def "Stage block min"() {
+        expect:
+        bu.stageBlock(getBlockID(), defaultFlowable, defaultDataSize).blockingGet().statusCode() == 201
+    }
+
     @Unroll
     def "Stage block illegal arguments"() {
         when:
@@ -178,6 +183,16 @@ class BlockBlobAPITest extends APISpec {
 
         FlowableUtil.collectBytesInBuffer(bu2.download(null, null, false, null)
                 .blockingGet().body(null)).blockingGet() == defaultData
+    }
+
+    def "Stage block from url min"() {
+        setup:
+        cu.setAccessPolicy(PublicAccessType.CONTAINER, null, null, null).blockingGet()
+        def bu2 = cu.createBlockBlobURL(generateBlobName())
+        def blockID = getBlockID()
+
+        expect:
+        bu2.stageBlockFromURL(blockID, bu.toURL(), null).blockingGet().statusCode() == 201
     }
 
     @Unroll
@@ -304,6 +319,18 @@ class BlockBlobAPITest extends APISpec {
         validateBasicHeaders(headers)
         headers.contentMD5()
         headers.isServerEncrypted()
+    }
+
+    def "Commit block list min"() {
+        setup:
+        String blockID = getBlockID()
+        bu.stageBlock(blockID, defaultFlowable, defaultDataSize,
+                null, null).blockingGet()
+        ArrayList<String> ids = new ArrayList<>()
+        ids.add(blockID)
+
+        expect:
+        bu.commitBlockList(ids).blockingGet().statusCode() == 201
     }
 
     def "Commit block list null"() {
@@ -468,6 +495,11 @@ class BlockBlobAPITest extends APISpec {
 
     // TODO: at least two blocks per list
 
+    def "Get block list min"() {
+        expect:
+        bu.getBlockList(BlockListType.ALL).blockingGet().statusCode() == 200
+    }
+
     @Unroll
     def "Get block list type"() {
         setup:
@@ -563,6 +595,11 @@ class BlockBlobAPITest extends APISpec {
         validateBasicHeaders(headers)
         headers.contentMD5() != null
         headers.isServerEncrypted()
+    }
+
+    def "Upload min"() {
+        expect:
+        bu.upload(defaultFlowable, defaultDataSize).blockingGet().statusCode() == 201
     }
 
     @Unroll

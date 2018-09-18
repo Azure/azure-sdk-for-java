@@ -48,6 +48,11 @@ class PageBlobAPITest extends APISpec {
         response.headers().isServerEncrypted()
     }
 
+    def "Create min"() {
+        expect:
+        bu.create(512).blockingGet().statusCode() == 201
+    }
+
     def "Create sequence number"() {
         when:
         bu.create(PageBlobURL.PAGE_BYTES, 2, null, null,
@@ -171,7 +176,6 @@ class PageBlobAPITest extends APISpec {
         notThrown(RuntimeException)
     }
 
-
     def "Upload page"() {
         when:
         PageBlobUploadPagesResponse response = bu.uploadPages(
@@ -185,6 +189,12 @@ class PageBlobAPITest extends APISpec {
         headers.contentMD5() != null
         headers.blobSequenceNumber() == 0
         headers.isServerEncrypted()
+    }
+
+    def "Upload page min"() {
+        expect:
+        bu.uploadPages(new PageRange().withStart(0).withEnd(PageBlobURL.PAGE_BYTES-1),
+                Flowable.just(getRandomData(PageBlobURL.PAGE_BYTES)))
     }
 
     @Unroll
@@ -313,6 +323,11 @@ class PageBlobAPITest extends APISpec {
         headers.blobSequenceNumber() == 0
     }
 
+    def "Clear page min"() {
+        expect:
+        bu.clearPages(new PageRange().withStart(0).withEnd(PageBlobURL.PAGE_BYTES-1))
+    }
+
     @Unroll
     def "Clear pages AC"() {
         setup:
@@ -406,7 +421,6 @@ class PageBlobAPITest extends APISpec {
         notThrown(RuntimeException)
     }
 
-
     def "Get page ranges"() {
         setup:
         bu.uploadPages(new PageRange().withStart(0).withEnd(PageBlobURL.PAGE_BYTES - 1),
@@ -422,6 +436,11 @@ class PageBlobAPITest extends APISpec {
         response.body().pageRange().size() == 1
         validateBasicHeaders(headers)
         headers.blobContentLength() == (long)PageBlobURL.PAGE_BYTES
+    }
+
+    def "Get page ranges min"() {
+        expect:
+        bu.getPageRanges(null).blockingGet().statusCode() == 200
     }
 
     @Unroll
@@ -526,6 +545,14 @@ class PageBlobAPITest extends APISpec {
         response.body().clearRange().get(0).end() == PageBlobURL.PAGE_BYTES * 2 - 1
         validateBasicHeaders(headers)
         headers.blobContentLength() == PageBlobURL.PAGE_BYTES * 2
+    }
+
+    def "Get page ranges diff min"() {
+        setup:
+        def snapshot = bu.createSnapshot().blockingGet().headers().snapshot()
+
+        expect:
+        bu.getPageRangesDiff(null, snapshot).blockingGet().statusCode() == 200
     }
 
     @Unroll
@@ -638,6 +665,11 @@ class PageBlobAPITest extends APISpec {
         headers.blobSequenceNumber() != null
     }
 
+    def "Resize min"() {
+        expect:
+        bu.resize(PageBlobURL.PAGE_BYTES).blockingGet().statusCode() == 200
+    }
+
     @Unroll
     def "Resize AC"() {
         setup:
@@ -731,6 +763,11 @@ class PageBlobAPITest extends APISpec {
         SequenceNumberActionType.MAX       | 2      || 2
     }
 
+    def "Sequence number min"() {
+        expect:
+        bu.updateSequenceNumber(SequenceNumberActionType.INCREMENT, null).blockingGet().statusCode() == 200
+    }
+
     @Unroll
     def "Sequence number AC"() {
         setup:
@@ -821,6 +858,16 @@ class PageBlobAPITest extends APISpec {
         validateBasicHeaders(headers)
         headers.copyId() != null
         headers.copyStatus() != null
+    }
+
+    def "Start incremental copy min"() {
+        setup:
+        cu.setAccessPolicy(PublicAccessType.BLOB, null, null, null).blockingGet()
+        PageBlobURL bu2 = cu.createPageBlobURL(generateBlobName())
+        String snapshot = bu.createSnapshot(null, null, null).blockingGet().headers().snapshot()
+
+        expect:
+        bu2.copyIncremental(bu.toURL(), snapshot, null, null).blockingGet().statusCode() == 202
     }
 
     @Unroll

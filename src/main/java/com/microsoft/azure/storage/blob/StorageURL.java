@@ -98,6 +98,55 @@ public abstract class StorageURL {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_url "Sample code for StorageURL.createPipeline")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      *
+     * @return
+     *      The pipeline.
+     */
+    public static HttpPipeline createPipeline() {
+        return createPipeline(new AnonymousCredentials(), new PipelineOptions());
+    }
+
+    /**
+     * Creates an pipeline to process the HTTP requests and Responses.
+     *
+     * @apiNote
+     * ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_url "Sample code for StorageURL.createPipeline")] \n
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     *
+     * @param credentials
+     *      The credentials the pipeline will use to authenticate the requests.
+     * @return
+     *      The pipeline.
+     */
+    public static HttpPipeline createPipeline(ICredentials credentials) {
+        return createPipeline(credentials, new PipelineOptions());
+    }
+
+    /**
+     * Creates an pipeline to process the HTTP requests and Responses.
+     *
+     * @apiNote
+     * ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_url "Sample code for StorageURL.createPipeline")] \n
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     *
+     * @param pipelineOptions
+     *      Configurations for each policy in the pipeline.
+     * @return
+     *      The pipeline.
+     */
+    public static HttpPipeline createPipeline(PipelineOptions pipelineOptions) {
+        return createPipeline(new AnonymousCredentials(), pipelineOptions);
+    }
+
+    /**
+     * Creates an pipeline to process the HTTP requests and Responses.
+     *
+     * @apiNote
+     * ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_url "Sample code for StorageURL.createPipeline")] \n
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     *
      * @param credentials
      *      The credentials the pipeline will use to authenticate the requests.
      * @param pipelineOptions

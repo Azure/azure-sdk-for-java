@@ -70,6 +70,11 @@ class BlobAPITest extends APISpec {
         headers.blobContentMD5() != null
     }
 
+    def "Download min"() {
+        expect:
+        FlowableUtil.collectBytesInBuffer(bu.download().blockingGet().body(null)).blockingGet() == defaultData
+    }
+
     @Unroll
     def "Download range"() {
         setup:
@@ -174,7 +179,7 @@ class BlobAPITest extends APISpec {
         e.getMessage().contains("eTag")
     }
 
-    def "Get properties all null"() {
+    def "Get properties default"() {
         when:
         BlobGetPropertiesHeaders headers = bu.getProperties(null, null).blockingGet().headers()
 
@@ -208,6 +213,11 @@ class BlobAPITest extends APISpec {
         headers.accessTierInferred()
         headers.archiveStatus() == null
         headers.creationTime() != null
+    }
+
+    def "Get properties min"() {
+        expect:
+        bu.getProperties().blockingGet().statusCode() == 200
     }
 
     @Unroll
@@ -289,6 +299,14 @@ class BlobAPITest extends APISpec {
         response.statusCode() == 200
         validateBasicHeaders(response.headers())
         response.headers().blobSequenceNumber() == null
+    }
+
+    def "Set HTTP headers min"() {
+        when:
+        bu.setHTTPHeaders(new BlobHTTPHeaders().withBlobContentType("type")).blockingGet()
+
+        then:
+        bu.getProperties().blockingGet().headers().contentType() == "type"
     }
 
     @Unroll
@@ -399,6 +417,18 @@ class BlobAPITest extends APISpec {
         response.statusCode() == 200
         validateBasicHeaders(response.headers())
         response.headers().isServerEncrypted()
+    }
+
+    def "Set metadata min"() {
+        setup:
+        Metadata metadata = new Metadata()
+        metadata.put("foo", "bar")
+
+        when:
+        bu.setMetadata(metadata).blockingGet()
+
+        then:
+        bu.getProperties().blockingGet().headers().metadata() == metadata
     }
 
     @Unroll
@@ -519,6 +549,11 @@ class BlobAPITest extends APISpec {
         UUID.randomUUID().toString() | -1        || LeaseStateType.LEASED | LeaseDurationType.INFINITE
     }
 
+    def "Acquire lease min"() {
+        setup:
+        bu.acquireLease(null, -1).blockingGet().statusCode() == 201
+    }
+
     @Unroll
     def "Acquire lease AC"() {
         setup:
@@ -597,6 +632,14 @@ class BlobAPITest extends APISpec {
         headers.leaseId() != null
     }
 
+    def "Renew lease min"() {
+        setup:
+        String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
+
+        expect:
+        bu.renewLease(leaseID).blockingGet().statusCode() == 200
+    }
+
     @Unroll
     def "Renew lease AC"() {
         setup:
@@ -672,6 +715,14 @@ class BlobAPITest extends APISpec {
         expect:
         bu.getProperties(null, null).blockingGet().headers().leaseState() == LeaseStateType.AVAILABLE
         validateBasicHeaders(headers)
+    }
+
+    def "Release lease min"() {
+        setup:
+        String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
+
+        expect:
+        bu.releaseLease(leaseID).blockingGet().statusCode() == 200
     }
 
     @Unroll
@@ -761,6 +812,14 @@ class BlobAPITest extends APISpec {
         20        | 15          | 16
     }
 
+    def "Break lease min"() {
+        setup:
+        setupBlobLeaseCondition(bu, receivedLeaseID)
+
+        expect:
+        bu.breakLease().blockingGet().statusCode() == 202
+    }
+
     @Unroll
     def "Break lease AC"() {
         setup:
@@ -842,6 +901,14 @@ class BlobAPITest extends APISpec {
         validateBasicHeaders(headers)
     }
 
+    def "Change lease min"() {
+        setup:
+        def leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
+
+        expect:
+        bu.changeLease(leaseID, UUID.randomUUID().toString()).blockingGet().statusCode() == 200
+    }
+
     @Unroll
     def "Change lease AC"() {
         setup:
@@ -917,6 +984,11 @@ class BlobAPITest extends APISpec {
         then:
         bu.withSnapshot(headers.snapshot()).getProperties(null, null).blockingGet().statusCode() == 200
         validateBasicHeaders(headers)
+    }
+
+    def "Snapshot min"() {
+        expect:
+        bu.createSnapshot().blockingGet().statusCode() == 201
     }
 
     @Unroll
@@ -1036,6 +1108,11 @@ class BlobAPITest extends APISpec {
         headers2.copySource() != null
         validateBasicHeaders(headers)
         headers.copyId() != null
+    }
+
+    def "Copy min"() {
+        expect:
+        bu.startCopyFromURL(bu.toURL()).blockingGet().statusCode() == 202
     }
 
     @Unroll
@@ -1217,6 +1294,29 @@ class BlobAPITest extends APISpec {
         cu2.delete(null, null).blockingGet().statusCode() == 202
     }
 
+    def "Abort copy min"() {
+        setup:
+        // Data has to be large enough and copied between accounts to give us enough time to abort
+        ByteBuffer data = getRandomData(8 * 1024 * 1024)
+        bu.toBlockBlobURL()
+                .upload(Flowable.just(data), 8 * 1024 * 1024, null, null, null, null)
+                .blockingGet()
+        // So we don't have to create a SAS.
+        cu.setAccessPolicy(PublicAccessType.BLOB, null, null, null).blockingGet()
+
+        ContainerURL cu2 = alternateServiceURL.createContainerURL(generateBlobName())
+        cu2.create(null, null, null).blockingGet()
+        BlobURL bu2 = cu2.createBlobURL(generateBlobName())
+
+        when:
+        String copyID =
+                bu2.startCopyFromURL(bu.toURL(), null, null, null, null)
+                        .blockingGet().headers().copyId()
+
+        then:
+        bu2.abortCopyFromURL(copyID).blockingGet().statusCode() == 204
+    }
+
     def "Abort copy lease"() {
         setup:
         // Data has to be large enough and copied between accounts to give us enough time to abort
@@ -1313,6 +1413,11 @@ class BlobAPITest extends APISpec {
         headers.requestId() != null
         headers.version() != null
         headers.date() != null
+    }
+
+    def "Delete min"() {
+        expect:
+        bu.delete().blockingGet().statusCode() == 202
     }
 
     @Unroll
@@ -1465,6 +1570,21 @@ class BlobAPITest extends APISpec {
         AccessTier.P50 | _
     }
 
+    def "Set tier min"() {
+        setup:
+        ContainerURL cu = blobStorageServiceURL.createContainerURL(generateContainerName())
+        BlockBlobURL bu = cu.createBlockBlobURL(generateBlobName())
+        cu.create(null, null, null).blockingGet()
+        bu.upload(defaultFlowable, defaultData.remaining(), null, null, null, null)
+                .blockingGet()
+
+        when:
+        def statusCode = bu.setTier(AccessTier.HOT).blockingGet().statusCode()
+
+        then:
+        statusCode == 200 || statusCode == 202
+    }
+
     def "Set tier inferred"() {
         setup:
         ContainerURL cu = blobStorageServiceURL.createContainerURL(generateBlobName())
@@ -1598,6 +1718,15 @@ class BlobAPITest extends APISpec {
         disableSoftDelete() == null
     }
 
+    def "Undelete min"() {
+        setup :
+        enableSoftDelete()
+        bu.delete().blockingGet()
+
+        expect:
+        bu.undelete().blockingGet().statusCode() == 200
+    }
+
     def "Undelete error"() {
         bu = cu.createBlockBlobURL(generateBlobName())
 
@@ -1632,6 +1761,11 @@ class BlobAPITest extends APISpec {
         response.headers().requestId() != null
         response.headers().accountKind() != null
         response.headers().skuName() != null
+    }
+
+    def "Get account info min"() {
+        expect:
+        bu.getAccountInfo().blockingGet().statusCode() == 200
     }
 
     def "Get account info error"() {

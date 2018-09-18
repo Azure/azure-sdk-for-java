@@ -101,6 +101,22 @@ public final class AppendBlobURL extends BlobURL {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_blob "Sample code for AppendBlobURL.create")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      *
+     * @return
+     *      Emits the successful response.
+     */
+    public Single<AppendBlobCreateResponse> create() {
+        return this.create(null, null, null, null);
+    }
+
+    /**
+     * Creates a 0-length append blob. Call AppendBlock to append data to an append blob. For more information, see
+     * the <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
+     *
+     * @apiNote
+     * ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_blob "Sample code for AppendBlobURL.create")] \n
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     *
      * @param headers
      *      {@link BlobHTTPHeaders}
      * @param metadata
@@ -113,6 +129,7 @@ public final class AppendBlobURL extends BlobURL {
      *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
      *      parent, forming a linked list.
+     *
      * @return
      *      Emits the successful response.
      */
@@ -125,6 +142,32 @@ public final class AppendBlobURL extends BlobURL {
         return addErrorWrappingToSingle(this.storageClient.generatedAppendBlobs().createWithRestResponseAsync(context,
                 0, null, metadata, null, headers, accessConditions.leaseAccessConditions(),
                 accessConditions.modifiedAccessConditions()));
+    }
+
+    /**
+     * Commits a new block of data to the end of the existing append blob. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/append-block">Azure Docs</a>.
+     *
+     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
+     * {@code Flowable} must produce the same data each time it is subscribed to.
+     *
+     * @apiNote
+     * ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_blob "Sample code for AppendBlobURL.appendBlock")] \n
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     *
+     * @param data
+     *      The data to write to the blob. Note that this {@code Flowable} must be replayable if retries are enabled
+     *      (the default). In other words, the Flowable must produce the same data each time it is subscribed to.
+     * @param length
+     *      The exact length of the data. It is important that this value match precisely the length of the data
+     *      emitted by the {@code Flowable}.
+     *
+     * @return
+     *      Emits the successful response.
+     */
+    public Single<AppendBlobAppendBlockResponse> appendBlock(Flowable<ByteBuffer> data, long length) {
+        return this.appendBlock(data, length, null, null);
     }
 
     /**
