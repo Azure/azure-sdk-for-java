@@ -21,7 +21,7 @@ public interface RecordSets extends HasInner<RecordSetsInner> {
     /**
      * Lists all record sets in a DNS zone.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -31,7 +31,7 @@ public interface RecordSets extends HasInner<RecordSetsInner> {
     /**
      * Updates a record set within a DNS zone.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
      * @param recordType The type of DNS record in this record set. Possible values include: 'A', 'AAAA', 'CAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
@@ -44,7 +44,7 @@ public interface RecordSets extends HasInner<RecordSetsInner> {
     /**
      * Creates or updates a record set within a DNS zone.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
      * @param recordType The type of DNS record in this record set. Record sets of type SOA can be updated but not created (they are created when the DNS zone is created). Possible values include: 'A', 'AAAA', 'CAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
@@ -57,7 +57,7 @@ public interface RecordSets extends HasInner<RecordSetsInner> {
     /**
      * Deletes a record set from a DNS zone. This operation cannot be undone.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
      * @param recordType The type of DNS record in this record set. Record sets of type SOA cannot be deleted (they are deleted when the DNS zone is deleted). Possible values include: 'A', 'AAAA', 'CAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
@@ -69,7 +69,7 @@ public interface RecordSets extends HasInner<RecordSetsInner> {
     /**
      * Gets a record set.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
      * @param recordType The type of DNS record in this record set. Possible values include: 'A', 'AAAA', 'CAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
@@ -81,7 +81,7 @@ public interface RecordSets extends HasInner<RecordSetsInner> {
     /**
      * Lists the record sets of a specified type in a DNS zone.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param recordType The type of record sets to enumerate. Possible values include: 'A', 'AAAA', 'CAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT'
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -92,7 +92,7 @@ public interface RecordSets extends HasInner<RecordSetsInner> {
     /**
      * Lists all record sets in a DNS zone.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
