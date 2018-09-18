@@ -12,20 +12,25 @@ import com.microsoft.azure.management.appservice.v2018_02_01.DeletedSite;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 
 class DeletedSiteImpl extends WrapperImpl<DeletedSiteInner> implements DeletedSite {
-    private final AppServiceManager manager;
-    DeletedSiteImpl(DeletedSiteInner inner, AppServiceManager manager) {
+    private final CertificateRegistrationManager manager;
+    DeletedSiteImpl(DeletedSiteInner inner, CertificateRegistrationManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 
     @Override
     public Integer deletedSiteId() {
         return this.inner().deletedSiteId();
+    }
+
+    @Override
+    public String deletedSiteKind() {
+        return this.inner().deletedSiteKind();
     }
 
     @Override
@@ -36,6 +41,21 @@ class DeletedSiteImpl extends WrapperImpl<DeletedSiteInner> implements DeletedSi
     @Override
     public String deletedTimestamp() {
         return this.inner().deletedTimestamp();
+    }
+
+    @Override
+    public String id() {
+        return this.inner().id();
+    }
+
+    @Override
+    public String kind() {
+        return this.inner().kind();
+    }
+
+    @Override
+    public String name() {
+        return this.inner().name();
     }
 
     @Override
@@ -51,6 +71,11 @@ class DeletedSiteImpl extends WrapperImpl<DeletedSiteInner> implements DeletedSi
     @Override
     public String subscription() {
         return this.inner().subscription();
+    }
+
+    @Override
+    public String type() {
+        return this.inner().type();
     }
 
 }

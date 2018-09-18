@@ -10,6 +10,7 @@ package com.microsoft.azure.management.appservice.v2018_02_01;
 
 import java.util.List;
 import org.joda.time.DateTime;
+import java.util.Map;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.PushSettingsInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -62,8 +63,8 @@ public class SiteConfig {
     /**
      * Xenon App Framework and version.
      */
-    @JsonProperty(value = "xenonFxVersion")
-    private String xenonFxVersion;
+    @JsonProperty(value = "windowsFxVersion")
+    private String windowsFxVersion;
 
     /**
      * &lt;code&gt;true&lt;/code&gt; if request tracing is enabled; otherwise,
@@ -122,6 +123,12 @@ public class SiteConfig {
      */
     @JsonProperty(value = "appSettings")
     private List<NameValuePair> appSettings;
+
+    /**
+     * User-provided Azure storage accounts.
+     */
+    @JsonProperty(value = "azureStorageAccounts")
+    private Map<String, AzureStorageInfoValue> azureStorageAccounts;
 
     /**
      * Connection strings.
@@ -328,6 +335,13 @@ public class SiteConfig {
     private FtpsState ftpsState;
 
     /**
+     * Number of reserved instances.
+     * This setting only applies to the Consumption Plan.
+     */
+    @JsonProperty(value = "reservedInstanceCount")
+    private Integer reservedInstanceCount;
+
+    /**
      * Get number of workers.
      *
      * @return the numberOfWorkers value
@@ -470,20 +484,20 @@ public class SiteConfig {
     /**
      * Get xenon App Framework and version.
      *
-     * @return the xenonFxVersion value
+     * @return the windowsFxVersion value
      */
-    public String xenonFxVersion() {
-        return this.xenonFxVersion;
+    public String windowsFxVersion() {
+        return this.windowsFxVersion;
     }
 
     /**
      * Set xenon App Framework and version.
      *
-     * @param xenonFxVersion the xenonFxVersion value to set
+     * @param windowsFxVersion the windowsFxVersion value to set
      * @return the SiteConfig object itself.
      */
-    public SiteConfig withXenonFxVersion(String xenonFxVersion) {
-        this.xenonFxVersion = xenonFxVersion;
+    public SiteConfig withWindowsFxVersion(String windowsFxVersion) {
+        this.windowsFxVersion = windowsFxVersion;
         return this;
     }
 
@@ -664,6 +678,26 @@ public class SiteConfig {
      */
     public SiteConfig withAppSettings(List<NameValuePair> appSettings) {
         this.appSettings = appSettings;
+        return this;
+    }
+
+    /**
+     * Get user-provided Azure storage accounts.
+     *
+     * @return the azureStorageAccounts value
+     */
+    public Map<String, AzureStorageInfoValue> azureStorageAccounts() {
+        return this.azureStorageAccounts;
+    }
+
+    /**
+     * Set user-provided Azure storage accounts.
+     *
+     * @param azureStorageAccounts the azureStorageAccounts value to set
+     * @return the SiteConfig object itself.
+     */
+    public SiteConfig withAzureStorageAccounts(Map<String, AzureStorageInfoValue> azureStorageAccounts) {
+        this.azureStorageAccounts = azureStorageAccounts;
         return this;
     }
 
@@ -1293,6 +1327,28 @@ public class SiteConfig {
      */
     public SiteConfig withFtpsState(FtpsState ftpsState) {
         this.ftpsState = ftpsState;
+        return this;
+    }
+
+    /**
+     * Get number of reserved instances.
+     This setting only applies to the Consumption Plan.
+     *
+     * @return the reservedInstanceCount value
+     */
+    public Integer reservedInstanceCount() {
+        return this.reservedInstanceCount;
+    }
+
+    /**
+     * Set number of reserved instances.
+     This setting only applies to the Consumption Plan.
+     *
+     * @param reservedInstanceCount the reservedInstanceCount value to set
+     * @return the SiteConfig object itself.
+     */
+    public SiteConfig withReservedInstanceCount(Integer reservedInstanceCount) {
+        this.reservedInstanceCount = reservedInstanceCount;
         return this;
     }
 

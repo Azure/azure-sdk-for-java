@@ -9,46 +9,55 @@
 package com.microsoft.azure.management.appservice.v2018_02_01.implementation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
+import com.microsoft.azure.management.appservice.v2018_02_01.ProxyOnlyResource;
 
 /**
  * A deleted app.
  */
-public class DeletedSiteInner {
+@JsonFlatten
+public class DeletedSiteInner extends ProxyOnlyResource {
     /**
      * Numeric id for the deleted site.
      */
-    @JsonProperty(value = "deletedSiteId")
+    @JsonProperty(value = "properties.deletedSiteId", access = JsonProperty.Access.WRITE_ONLY)
     private Integer deletedSiteId;
 
     /**
      * Time in UTC when the app was deleted.
      */
-    @JsonProperty(value = "deletedTimestamp", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.deletedTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private String deletedTimestamp;
 
     /**
      * Subscription containing the deleted site.
      */
-    @JsonProperty(value = "subscription", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.subscription", access = JsonProperty.Access.WRITE_ONLY)
     private String subscription;
 
     /**
      * ResourceGroup that contained the deleted site.
      */
-    @JsonProperty(value = "resourceGroup", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.resourceGroup", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGroup;
 
     /**
      * Name of the deleted site.
      */
-    @JsonProperty(value = "deletedSiteName", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.deletedSiteName", access = JsonProperty.Access.WRITE_ONLY)
     private String deletedSiteName;
 
     /**
      * Slot of the deleted site.
      */
-    @JsonProperty(value = "slot", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.slot", access = JsonProperty.Access.WRITE_ONLY)
     private String slot;
+
+    /**
+     * Kind of site that was deleted.
+     */
+    @JsonProperty(value = "properties.kind", access = JsonProperty.Access.WRITE_ONLY)
+    private String deletedSiteKind;
 
     /**
      * Get numeric id for the deleted site.
@@ -57,17 +66,6 @@ public class DeletedSiteInner {
      */
     public Integer deletedSiteId() {
         return this.deletedSiteId;
-    }
-
-    /**
-     * Set numeric id for the deleted site.
-     *
-     * @param deletedSiteId the deletedSiteId value to set
-     * @return the DeletedSiteInner object itself.
-     */
-    public DeletedSiteInner withDeletedSiteId(Integer deletedSiteId) {
-        this.deletedSiteId = deletedSiteId;
-        return this;
     }
 
     /**
@@ -113,6 +111,15 @@ public class DeletedSiteInner {
      */
     public String slot() {
         return this.slot;
+    }
+
+    /**
+     * Get kind of site that was deleted.
+     *
+     * @return the deletedSiteKind value
+     */
+    public String deletedSiteKind() {
+        return this.deletedSiteKind;
     }
 
 }

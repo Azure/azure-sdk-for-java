@@ -11,12 +11,12 @@ package com.microsoft.azure.management.appservice.v2018_02_01;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CapabilityInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
 
 /**
  * Type representing Capability.
  */
-public interface Capability extends HasInner<CapabilityInner>, HasManager<AppServiceManager> {
+public interface Capability extends HasInner<CapabilityInner>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the name value.
      */

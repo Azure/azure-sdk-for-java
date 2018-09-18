@@ -17,18 +17,23 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServicePlanInner;
 
 /**
  * Type representing AppServicePlan.
  */
-public interface AppServicePlan extends HasInner<AppServicePlanInner>, Resource, GroupableResourceCore<AppServiceManager, AppServicePlanInner>, HasResourceGroup, Refreshable<AppServicePlan>, Updatable<AppServicePlan.Update>, HasManager<AppServiceManager> {
+public interface AppServicePlan extends HasInner<AppServicePlanInner>, Resource, GroupableResourceCore<CertificateRegistrationManager, AppServicePlanInner>, HasResourceGroup, Refreshable<AppServicePlan>, Updatable<AppServicePlan.Update>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the adminSiteName value.
      */
     String adminSiteName();
+
+    /**
+     * @return the freeOfferExpirationTime value.
+     */
+    DateTime freeOfferExpirationTime();
 
     /**
      * @return the geoRegion value.
@@ -39,6 +44,11 @@ public interface AppServicePlan extends HasInner<AppServicePlanInner>, Resource,
      * @return the hostingEnvironmentProfile value.
      */
     HostingEnvironmentProfile hostingEnvironmentProfile();
+
+    /**
+     * @return the hyperV value.
+     */
+    Boolean hyperV();
 
     /**
      * @return the isSpot value.
@@ -153,6 +163,16 @@ public interface AppServicePlan extends HasInner<AppServicePlanInner>, Resource,
         }
 
         /**
+         * The stage of the appserviceplan update allowing to specify FreeOfferExpirationTime.
+         */
+        interface WithFreeOfferExpirationTime {
+            /**
+             * Specifies freeOfferExpirationTime.
+             */
+            WithCreate withFreeOfferExpirationTime(DateTime freeOfferExpirationTime);
+        }
+
+        /**
          * The stage of the appserviceplan update allowing to specify HostingEnvironmentProfile.
          */
         interface WithHostingEnvironmentProfile {
@@ -160,6 +180,16 @@ public interface AppServicePlan extends HasInner<AppServicePlanInner>, Resource,
              * Specifies hostingEnvironmentProfile.
              */
             WithCreate withHostingEnvironmentProfile(HostingEnvironmentProfile hostingEnvironmentProfile);
+        }
+
+        /**
+         * The stage of the appserviceplan update allowing to specify HyperV.
+         */
+        interface WithHyperV {
+            /**
+             * Specifies hyperV.
+             */
+            WithCreate withHyperV(Boolean hyperV);
         }
 
         /**
@@ -267,13 +297,13 @@ public interface AppServicePlan extends HasInner<AppServicePlanInner>, Resource,
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<AppServicePlan>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAdminSiteName, DefinitionStages.WithHostingEnvironmentProfile, DefinitionStages.WithIsSpot, DefinitionStages.WithIsXenon, DefinitionStages.WithKind, DefinitionStages.WithPerSiteScaling, DefinitionStages.WithReserved, DefinitionStages.WithSku, DefinitionStages.WithSpotExpirationTime, DefinitionStages.WithTargetWorkerCount, DefinitionStages.WithTargetWorkerSizeId, DefinitionStages.WithWorkerTierName {
+        interface WithCreate extends Creatable<AppServicePlan>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAdminSiteName, DefinitionStages.WithFreeOfferExpirationTime, DefinitionStages.WithHostingEnvironmentProfile, DefinitionStages.WithHyperV, DefinitionStages.WithIsSpot, DefinitionStages.WithIsXenon, DefinitionStages.WithKind, DefinitionStages.WithPerSiteScaling, DefinitionStages.WithReserved, DefinitionStages.WithSku, DefinitionStages.WithSpotExpirationTime, DefinitionStages.WithTargetWorkerCount, DefinitionStages.WithTargetWorkerSizeId, DefinitionStages.WithWorkerTierName {
         }
     }
     /**
      * The template for a AppServicePlan update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<AppServicePlan>, Resource.UpdateWithTags<Update>, UpdateStages.WithAdminSiteName, UpdateStages.WithHostingEnvironmentProfile, UpdateStages.WithIsSpot, UpdateStages.WithIsXenon, UpdateStages.WithKind, UpdateStages.WithPerSiteScaling, UpdateStages.WithReserved, UpdateStages.WithSpotExpirationTime, UpdateStages.WithTargetWorkerCount, UpdateStages.WithTargetWorkerSizeId, UpdateStages.WithWorkerTierName {
+    interface Update extends Appliable<AppServicePlan>, Resource.UpdateWithTags<Update>, UpdateStages.WithAdminSiteName, UpdateStages.WithFreeOfferExpirationTime, UpdateStages.WithHostingEnvironmentProfile, UpdateStages.WithHyperV, UpdateStages.WithIsSpot, UpdateStages.WithIsXenon, UpdateStages.WithKind, UpdateStages.WithPerSiteScaling, UpdateStages.WithReserved, UpdateStages.WithSpotExpirationTime, UpdateStages.WithTargetWorkerCount, UpdateStages.WithTargetWorkerSizeId, UpdateStages.WithWorkerTierName {
     }
 
     /**
@@ -291,6 +321,16 @@ public interface AppServicePlan extends HasInner<AppServicePlanInner>, Resource,
         }
 
         /**
+         * The stage of the appserviceplan {0} allowing to specify FreeOfferExpirationTime.
+         */
+        interface WithFreeOfferExpirationTime {
+            /**
+             * Specifies freeOfferExpirationTime.
+             */
+            Update withFreeOfferExpirationTime(DateTime freeOfferExpirationTime);
+        }
+
+        /**
          * The stage of the appserviceplan {0} allowing to specify HostingEnvironmentProfile.
          */
         interface WithHostingEnvironmentProfile {
@@ -298,6 +338,16 @@ public interface AppServicePlan extends HasInner<AppServicePlanInner>, Resource,
              * Specifies hostingEnvironmentProfile.
              */
             Update withHostingEnvironmentProfile(HostingEnvironmentProfile hostingEnvironmentProfile);
+        }
+
+        /**
+         * The stage of the appserviceplan {0} allowing to specify HyperV.
+         */
+        interface WithHyperV {
+            /**
+             * Specifies hyperV.
+             */
+            Update withHyperV(Boolean hyperV);
         }
 
         /**

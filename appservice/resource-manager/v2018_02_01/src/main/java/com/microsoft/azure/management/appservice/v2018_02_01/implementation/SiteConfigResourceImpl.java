@@ -14,6 +14,8 @@ import com.microsoft.azure.management.appservice.v2018_02_01.ApiDefinitionInfo;
 import java.util.List;
 import com.microsoft.azure.management.appservice.v2018_02_01.NameValuePair;
 import com.microsoft.azure.management.appservice.v2018_02_01.AutoHealRules;
+import java.util.Map;
+import com.microsoft.azure.management.appservice.v2018_02_01.AzureStorageInfoValue;
 import com.microsoft.azure.management.appservice.v2018_02_01.ConnStringInfo;
 import com.microsoft.azure.management.appservice.v2018_02_01.CorsSettings;
 import com.microsoft.azure.management.appservice.v2018_02_01.Experiments;
@@ -30,14 +32,14 @@ import com.microsoft.azure.management.appservice.v2018_02_01.ScmType;
 import com.microsoft.azure.management.appservice.v2018_02_01.VirtualApplication;
 
 class SiteConfigResourceImpl extends WrapperImpl<SiteConfigResourceInner> implements SiteConfigResource {
-    private final AppServiceManager manager;
-    SiteConfigResourceImpl(SiteConfigResourceInner inner, AppServiceManager manager) {
+    private final CertificateRegistrationManager manager;
+    SiteConfigResourceImpl(SiteConfigResourceInner inner, CertificateRegistrationManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 
@@ -74,6 +76,11 @@ class SiteConfigResourceImpl extends WrapperImpl<SiteConfigResourceInner> implem
     @Override
     public String autoSwapSlotName() {
         return this.inner().autoSwapSlotName();
+    }
+
+    @Override
+    public Map<String, AzureStorageInfoValue> azureStorageAccounts() {
+        return this.inner().azureStorageAccounts();
     }
 
     @Override
@@ -262,6 +269,11 @@ class SiteConfigResourceImpl extends WrapperImpl<SiteConfigResourceInner> implem
     }
 
     @Override
+    public Integer reservedInstanceCount() {
+        return this.inner().reservedInstanceCount();
+    }
+
+    @Override
     public ScmType scmType() {
         return this.inner().scmType();
     }
@@ -297,8 +309,8 @@ class SiteConfigResourceImpl extends WrapperImpl<SiteConfigResourceInner> implem
     }
 
     @Override
-    public String xenonFxVersion() {
-        return this.inner().xenonFxVersion();
+    public String windowsFxVersion() {
+        return this.inner().windowsFxVersion();
     }
 
     @Override

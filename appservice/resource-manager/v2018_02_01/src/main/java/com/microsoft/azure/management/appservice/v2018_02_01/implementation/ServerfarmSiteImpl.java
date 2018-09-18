@@ -20,20 +20,19 @@ import com.microsoft.azure.management.appservice.v2018_02_01.ManagedServiceIdent
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.appservice.v2018_02_01.SiteConfig;
 import com.microsoft.azure.management.appservice.v2018_02_01.SlotSwapStatus;
-import com.microsoft.azure.management.appservice.v2018_02_01.SnapshotRecoveryRequest;
 import java.util.Map;
 import com.microsoft.azure.management.appservice.v2018_02_01.UsageState;
 
 class ServerfarmSiteImpl extends WrapperImpl<SiteInner> implements ServerfarmSite {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
 
-    ServerfarmSiteImpl(SiteInner inner,  AppServiceManager manager) {
+    ServerfarmSiteImpl(SiteInner inner,  CertificateRegistrationManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 
@@ -107,6 +106,11 @@ class ServerfarmSiteImpl extends WrapperImpl<SiteInner> implements ServerfarmSit
     @Override
     public Boolean httpsOnly() {
         return this.inner().httpsOnly();
+    }
+
+    @Override
+    public Boolean hyperV() {
+        return this.inner().hyperV();
     }
 
     @Override
@@ -197,11 +201,6 @@ class ServerfarmSiteImpl extends WrapperImpl<SiteInner> implements ServerfarmSit
     @Override
     public SlotSwapStatus slotSwapStatus() {
         return this.inner().slotSwapStatus();
-    }
-
-    @Override
-    public SnapshotRecoveryRequest snapshotInfo() {
-        return this.inner().snapshotInfo();
     }
 
     @Override

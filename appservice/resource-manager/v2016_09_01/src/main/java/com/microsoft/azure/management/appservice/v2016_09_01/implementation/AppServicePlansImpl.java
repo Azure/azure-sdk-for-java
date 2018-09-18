@@ -30,14 +30,14 @@ import com.microsoft.azure.management.appservice.v2016_09_01.VnetGateway;
 import com.microsoft.azure.management.appservice.v2016_09_01.VnetRoute;
 
 class AppServicePlansImpl extends WrapperImpl<AppServicePlansInner> implements AppServicePlans {
-    private final AppServiceManager manager;
+    private final WebManager manager;
 
-    AppServicePlansImpl(AppServiceManager manager) {
+    AppServicePlansImpl(WebManager manager) {
         super(manager.inner().appServicePlans());
         this.manager = manager;
     }
 
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 

@@ -13,11 +13,13 @@ import com.microsoft.azure.management.appservice.v2018_02_01.Sites;
 import rx.Completable;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.BackupRequestInner;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.StringDictionaryInner;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.SwiftVirtualNetworkInner;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.SiteConfigResourceInner;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.RelayServiceConnectionEntityInner;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.RestoreRequestInner;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.RelayServiceConnectionEntityInner;
 import com.microsoft.azure.management.appservice.v2018_02_01.BackupItem;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.SiteAuthSettingsInner;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AzureStoragePropertyDictionaryResourceInner;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.ConnectionStringDictionaryInner;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.SiteLogsConfigInner;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.PushSettingsInner;
@@ -287,6 +289,56 @@ public interface WebApps {
     Observable<StringDictionary> listMetadataAsync(String resourceGroupName, String name);
 
     /**
+     * Gets a Swift Virtual Network connection.
+     * Gets a Swift Virtual Network connection.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<SwiftVirtualNetwork> getSwiftVirtualNetworkConnectionAsync(String resourceGroupName, String name);
+
+    /**
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+    in use by another App Service Plan other than the one this App is in.
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+    in use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<SwiftVirtualNetwork> createOrUpdateSwiftVirtualNetworkConnectionAsync(String resourceGroupName, String name, SwiftVirtualNetworkInner connectionEnvelope);
+
+    /**
+     * Deletes a Swift Virtual Network connection from an app (or deployment slot).
+     * Deletes a Swift Virtual Network connection from an app (or deployment slot).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable deleteSwiftVirtualNetworkAsync(String resourceGroupName, String name);
+
+    /**
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+    in use by another App Service Plan other than the one this App is in.
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+    in use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<SwiftVirtualNetwork> updateSwiftVirtualNetworkConnectionAsync(String resourceGroupName, String name, SwiftVirtualNetworkInner connectionEnvelope);
+
+    /**
      * Gets the configuration of an app, such as platform version and bitness, default documents, virtual applications, Always On, etc.
      * Gets the configuration of an app, such as platform version and bitness, default documents, virtual applications, Always On, etc.
      *
@@ -331,6 +383,18 @@ public interface WebApps {
      * @return the observable for the request
      */
     Completable getWebSiteContainerLogsAsync(String resourceGroupName, String name);
+
+    /**
+     * Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to get information about the databases stored in a backup.
+     * Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to get information about the databases stored in a backup.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param request A RestoreRequest object that includes Azure storage URL and blog name for discovery of backup.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<RestoreRequest> discoverBackupAsync(String resourceGroupName, String name, RestoreRequestInner request);
 
     /**
      * Fetch a short lived token that can be exchanged for a master key.
@@ -452,6 +516,29 @@ public interface WebApps {
     Observable<Operation> migrateMySqlAsync(String resourceGroupName, String name, MigrateMySqlRequest migrationRequestEnvelope);
 
     /**
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param operationId GUID of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable getNetworkTraceOperationAsync(String resourceGroupName, String name, String operationId);
+
+    /**
+     * Start capturing network packets for the site (To be deprecated).
+     * Start capturing network packets for the site (To be deprecated).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name The name of the web app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable startWebSiteNetworkTraceAsync(String resourceGroupName, String name);
+
+    /**
      * Start capturing network packets for the site.
      * Start capturing network packets for the site.
      *
@@ -460,7 +547,7 @@ public interface WebApps {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable startWebSiteNetworkTraceAsync(String resourceGroupName, String name);
+    Completable startWebSiteNetworkTraceOperationAsync(String resourceGroupName, String name);
 
     /**
      * Stop ongoing capturing network packets for the site.
@@ -472,6 +559,18 @@ public interface WebApps {
      * @return the observable for the request
      */
     Completable stopWebSiteNetworkTraceAsync(String resourceGroupName, String name);
+
+    /**
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param operationId GUID of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<NetworkTrace> getNetworkTracesAsync(String resourceGroupName, String name, String operationId);
 
     /**
      * Generates a new publishing password for an app (or deployment slot, if specified).
@@ -513,10 +612,11 @@ public interface WebApps {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @param publishingProfileOptions Specifies publishingProfileOptions for publishing profile. For example, use {"format": "FileZilla3"} to get a FileZilla publishing profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable listPublishingProfileXmlWithSecretsAsync(String resourceGroupName, String name);
+    Completable listPublishingProfileXmlWithSecretsAsync(String resourceGroupName, String name, CsmPublishingProfileOptions publishingProfileOptions);
 
     /**
      * Resets the configuration settings of the current slot if they were previously modified by calling the API with POST.
@@ -680,18 +780,6 @@ public interface WebApps {
     Completable deleteBackupAsync(String resourceGroupName, String name, String backupId);
 
     /**
-     * Discovers an existing app backup that can be restored from a blob in Azure storage.
-     * Discovers an existing app backup that can be restored from a blob in Azure storage.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the app.
-     * @param request A RestoreRequest object that includes Azure storage URL and blog name for discovery of backup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<RestoreRequest> discoverRestoreAsync(String resourceGroupName, String name, RestoreRequestInner request);
-
-    /**
      * Gets status of a web app backup that may be in progress, including secrets associated with the backup, such as the Azure Storage SAS URL. Also can be used to update the SAS URL for the backup if a new URL is passed in the request body.
      * Gets status of a web app backup that may be in progress, including secrets associated with the backup, such as the Azure Storage SAS URL. Also can be used to update the SAS URL for the backup if a new URL is passed in the request body.
      *
@@ -728,19 +816,6 @@ public interface WebApps {
      * @return the observable for the request
      */
     Observable<BackupItem> listBackupsSlotAsync(final String resourceGroupName, final String name, final String slot);
-
-    /**
-     * Discovers an existing app backup that can be restored from a blob in Azure storage.
-     * Discovers an existing app backup that can be restored from a blob in Azure storage.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the app.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will perform discovery for the production slot.
-     * @param request A RestoreRequest object that includes Azure storage URL and blog name for discovery of backup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<RestoreRequest> discoverRestoreSlotAsync(String resourceGroupName, String name, String slot, RestoreRequestInner request);
 
     /**
      * Gets a backup of an app by its ID.
@@ -891,6 +966,54 @@ public interface WebApps {
      * @return the observable for the request
      */
     Observable<SiteAuthSettings> getAuthSettingsSlotAsync(String resourceGroupName, String name, String slot);
+
+    /**
+     * Updates the Azure storage account configurations of an app.
+     * Updates the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param azureStorageAccounts Azure storage accounts of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<AzureStoragePropertyDictionaryResource> updateAzureStorageAccountsAsync(String resourceGroupName, String name, AzureStoragePropertyDictionaryResourceInner azureStorageAccounts);
+
+    /**
+     * Gets the Azure storage account configurations of an app.
+     * Gets the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<AzureStoragePropertyDictionaryResource> listAzureStorageAccountsAsync(String resourceGroupName, String name);
+
+    /**
+     * Updates the Azure storage account configurations of an app.
+     * Updates the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will update the Azure storage account configurations for the production slot.
+     * @param azureStorageAccounts Azure storage accounts of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<AzureStoragePropertyDictionaryResource> updateAzureStorageAccountsSlotAsync(String resourceGroupName, String name, String slot, AzureStoragePropertyDictionaryResourceInner azureStorageAccounts);
+
+    /**
+     * Gets the Azure storage account configurations of an app.
+     * Gets the Azure storage account configurations of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will update the Azure storage account configurations for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<AzureStoragePropertyDictionaryResource> listAzureStorageAccountsSlotAsync(String resourceGroupName, String name, String slot);
 
     /**
      * Replaces the connection strings of an app.
@@ -2641,6 +2764,20 @@ public interface WebApps {
     Completable deletePremierAddOnSlotAsync(String resourceGroupName, String name, String premierAddOnName, String slot);
 
     /**
+     * Updates a named add-on of an app.
+     * Updates a named add-on of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param premierAddOnName Add-on name.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will update the named add-on for the production slot.
+     * @param premierAddOn A JSON representation of the edited premier add-on.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<PremierAddOn> updatePremierAddOnSlotAsync(String resourceGroupName, String name, String premierAddOnName, String slot, PremierAddOnPatchResource premierAddOn);
+
+    /**
      * Gets data around private site access enablement and authorized Virtual Networks that can access the site.
      * Gets data around private site access enablement and authorized Virtual Networks that can access the site.
      *
@@ -3009,6 +3146,60 @@ public interface WebApps {
     Observable<StringDictionary> listMetadataSlotAsync(String resourceGroupName, String name, String slot);
 
     /**
+     * Gets a Swift Virtual Network connection.
+     * Gets a Swift Virtual Network connection.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get a gateway for the production slot's Virtual Network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<SwiftVirtualNetwork> getSwiftVirtualNetworkConnectionSlotAsync(String resourceGroupName, String name, String slot);
+
+    /**
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+    in use by another App Service Plan other than the one this App is in.
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+    in use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update connections for the production slot.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<SwiftVirtualNetwork> createOrUpdateSwiftVirtualNetworkConnectionSlotAsync(String resourceGroupName, String name, String slot, SwiftVirtualNetworkInner connectionEnvelope);
+
+    /**
+     * Deletes a Swift Virtual Network connection from an app (or deployment slot).
+     * Deletes a Swift Virtual Network connection from an app (or deployment slot).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the connection for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable deleteSwiftVirtualNetworkSlotAsync(String resourceGroupName, String name, String slot);
+
+    /**
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+    in use by another App Service Plan other than the one this App is in.
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+    in use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update connections for the production slot.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<SwiftVirtualNetwork> updateSwiftVirtualNetworkConnectionSlotAsync(String resourceGroupName, String name, String slot, SwiftVirtualNetworkInner connectionEnvelope);
+
+    /**
      * Gets the configuration of an app, such as platform version and bitness, default documents, virtual applications, Always On, etc.
      * Gets the configuration of an app, such as platform version and bitness, default documents, virtual applications, Always On, etc.
      *
@@ -3057,6 +3248,19 @@ public interface WebApps {
      * @return the observable for the request
      */
     Completable getWebSiteContainerLogsSlotAsync(String resourceGroupName, String name, String slot);
+
+    /**
+     * Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to get information about the databases stored in a backup.
+     * Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to get information about the databases stored in a backup.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will perform discovery for the production slot.
+     * @param request A RestoreRequest object that includes Azure storage URL and blog name for discovery of backup.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<RestoreRequest> discoverBackupSlotAsync(String resourceGroupName, String name, String slot, RestoreRequestInner request);
 
     /**
      * Fetch a short lived token that can be exchanged for a master key.
@@ -3161,6 +3365,31 @@ public interface WebApps {
     Observable<FunctionSecrets> listSyncFunctionTriggersSlotAsync(String resourceGroupName, String name, String slot);
 
     /**
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param operationId GUID of the operation.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get an operation for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable getNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String operationId, String slot);
+
+    /**
+     * Start capturing network packets for the site (To be deprecated).
+     * Start capturing network packets for the site (To be deprecated).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name The name of the web app.
+     * @param slot The name of the slot for this web app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable startWebSiteNetworkTraceSlotAsync(String resourceGroupName, String name, String slot);
+
+    /**
      * Start capturing network packets for the site.
      * Start capturing network packets for the site.
      *
@@ -3170,7 +3399,7 @@ public interface WebApps {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable startWebSiteNetworkTraceSlotAsync(String resourceGroupName, String name, String slot);
+    Completable startWebSiteNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String slot);
 
     /**
      * Stop ongoing capturing network packets for the site.
@@ -3183,6 +3412,19 @@ public interface WebApps {
      * @return the observable for the request
      */
     Completable stopWebSiteNetworkTraceSlotAsync(String resourceGroupName, String name, String slot);
+
+    /**
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param operationId GUID of the operation.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get an operation for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<NetworkTrace> getNetworkTracesSlotAsync(String resourceGroupName, String name, String operationId, String slot);
 
     /**
      * Generates a new publishing password for an app (or deployment slot, if specified).
@@ -3228,10 +3470,11 @@ public interface WebApps {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing profile for the production slot.
+     * @param publishingProfileOptions Specifies publishingProfileOptions for publishing profile. For example, use {"format": "FileZilla3"} to get a FileZilla publishing profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable listPublishingProfileXmlWithSecretsSlotAsync(String resourceGroupName, String name, String slot);
+    Completable listPublishingProfileXmlWithSecretsSlotAsync(String resourceGroupName, String name, String slot, CsmPublishingProfileOptions publishingProfileOptions);
 
     /**
      * Resets the configuration settings of the current slot if they were previously modified by calling the API with POST.
