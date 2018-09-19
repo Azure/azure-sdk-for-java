@@ -7,8 +7,10 @@
 package com.microsoft.rest.v2;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.v2.annotations.SkipParentValidation;
 import com.microsoft.rest.v2.util.TypeUtil;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.time.Duration;
@@ -61,62 +63,14 @@ public final class Validator {
             return;
         }
 
-        for (Class<?> c : TypeUtil.getAllClasses(type)) {
-            // Ignore checks for Object type.
-            if (c.isAssignableFrom(Object.class)) {
-                continue;
+        Annotation skipParentAnnotation = type.getAnnotation(SkipParentValidation.class);
+        //
+        if (skipParentAnnotation == null) {
+            for (Class<?> c : TypeUtil.getAllClasses(type)) {
+                validateClass(c, parameter);
             }
-            for (Field field : c.getDeclaredFields()) {
-                field.setAccessible(true);
-                int mod = field.getModifiers();
-                // Skip static fields since we don't have any, skip final fields since users can't modify them
-                if (Modifier.isFinal(mod) || Modifier.isStatic(mod)) {
-                    continue;
-                }
-                JsonProperty annotation = field.getAnnotation(JsonProperty.class);
-                // Skip read-only properties (WRITE_ONLY)
-                if (annotation != null && annotation.access().equals(JsonProperty.Access.WRITE_ONLY)) {
-                    continue;
-                }
-                Object property;
-                try {
-                    property = field.get(parameter);
-                } catch (IllegalAccessException e) {
-                    throw new IllegalArgumentException(e.getMessage(), e);
-                }
-                if (property == null) {
-                    if (annotation != null && annotation.required()) {
-                        throw new IllegalArgumentException(field.getName() + " is required and cannot be null.");
-                    }
-                } else {
-                    try {
-                        Class<?> propertyType = property.getClass();
-                        if (List.class.isAssignableFrom(propertyType)) {
-                            List<?> items = (List<?>) property;
-                            for (Object item : items) {
-                                Validator.validate(item);
-                            }
-                        }
-                        else if (Map.class.isAssignableFrom(propertyType)) {
-                            Map<?, ?> entries = (Map<?, ?>) property;
-                            for (Map.Entry<?, ?> entry : entries.entrySet()) {
-                                Validator.validate(entry.getKey());
-                                Validator.validate(entry.getValue());
-                            }
-                        }
-                        else if (type != propertyType) {
-                            Validator.validate(property);
-                        }
-                    } catch (IllegalArgumentException ex) {
-                        if (ex.getCause() == null) {
-                            // Build property chain
-                            throw new IllegalArgumentException(field.getName() + "." + ex.getMessage());
-                        } else {
-                            throw ex;
-                        }
-                    }
-                }
-            }
+        } else {
+            validateClass(type, parameter);
         }
     }
 
@@ -146,5 +100,64 @@ public final class Validator {
         }
 
         return clazz;
+    }
+
+    private static void validateClass(Class<?> c, Object parameter) {
+        // Ignore checks for Object type.
+        if (c.isAssignableFrom(Object.class)) {
+            return;
+        }
+        //
+        for (Field field : c.getDeclaredFields()) {
+            field.setAccessible(true);
+            int mod = field.getModifiers();
+            // Skip static fields since we don't have any, skip final fields since users can't modify them
+            if (Modifier.isFinal(mod) || Modifier.isStatic(mod)) {
+                continue;
+            }
+            JsonProperty annotation = field.getAnnotation(JsonProperty.class);
+            // Skip read-only properties (WRITE_ONLY)
+            if (annotation != null && annotation.access().equals(JsonProperty.Access.WRITE_ONLY)) {
+                continue;
+            }
+            Object property;
+            try {
+                property = field.get(parameter);
+            } catch (IllegalAccessException e) {
+                throw new IllegalArgumentException(e.getMessage(), e);
+            }
+            if (property == null) {
+                if (annotation != null && annotation.required()) {
+                    throw new IllegalArgumentException(field.getName() + " is required and cannot be null.");
+                }
+            } else {
+                try {
+                    Class<?> propertyType = property.getClass();
+                    if (List.class.isAssignableFrom(propertyType)) {
+                        List<?> items = (List<?>) property;
+                        for (Object item : items) {
+                            Validator.validate(item);
+                        }
+                    }
+                    else if (Map.class.isAssignableFrom(propertyType)) {
+                        Map<?, ?> entries = (Map<?, ?>) property;
+                        for (Map.Entry<?, ?> entry : entries.entrySet()) {
+                            Validator.validate(entry.getKey());
+                            Validator.validate(entry.getValue());
+                        }
+                    }
+                    else if (parameter.getClass() != propertyType) {
+                        Validator.validate(property);
+                    }
+                } catch (IllegalArgumentException ex) {
+                    if (ex.getCause() == null) {
+                        // Build property chain
+                        throw new IllegalArgumentException(field.getName() + "." + ex.getMessage());
+                    } else {
+                        throw ex;
+                    }
+                }
+            }
+        }
     }
 }
