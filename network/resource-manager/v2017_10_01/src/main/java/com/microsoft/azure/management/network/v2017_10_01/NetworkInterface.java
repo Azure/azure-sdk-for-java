@@ -106,133 +106,111 @@ public interface NetworkInterface extends HasInner<NetworkInterfaceInner>, Resou
         }
 
         /**
-         * The stage of the networkinterface definition allowing to specify DnsSettings.
+         * The stage of the networkinterface update allowing to specify DnsSettings.
          */
         interface WithDnsSettings {
             /**
              * Specifies dnsSettings.
-             * @param dnsSettings The DNS settings in network interface
-             * @return the next definition stage
              */
             WithCreate withDnsSettings(NetworkInterfaceDnsSettings dnsSettings);
         }
 
         /**
-         * The stage of the networkinterface definition allowing to specify EnableAcceleratedNetworking.
+         * The stage of the networkinterface update allowing to specify EnableAcceleratedNetworking.
          */
         interface WithEnableAcceleratedNetworking {
             /**
              * Specifies enableAcceleratedNetworking.
-             * @param enableAcceleratedNetworking If the network interface is accelerated networking enabled
-             * @return the next definition stage
              */
             WithCreate withEnableAcceleratedNetworking(Boolean enableAcceleratedNetworking);
         }
 
         /**
-         * The stage of the networkinterface definition allowing to specify EnableIPForwarding.
+         * The stage of the networkinterface update allowing to specify EnableIPForwarding.
          */
         interface WithEnableIPForwarding {
             /**
              * Specifies enableIPForwarding.
-             * @param enableIPForwarding Indicates whether IP forwarding is enabled on this network interface
-             * @return the next definition stage
              */
             WithCreate withEnableIPForwarding(Boolean enableIPForwarding);
         }
 
         /**
-         * The stage of the networkinterface definition allowing to specify Etag.
+         * The stage of the networkinterface update allowing to specify Etag.
          */
         interface WithEtag {
             /**
              * Specifies etag.
-             * @param etag A unique read-only string that changes whenever the resource is updated
-             * @return the next definition stage
              */
             WithCreate withEtag(String etag);
         }
 
         /**
-         * The stage of the networkinterface definition allowing to specify IpConfigurations.
+         * The stage of the networkinterface update allowing to specify IpConfigurations.
          */
         interface WithIpConfigurations {
             /**
              * Specifies ipConfigurations.
-             * @param ipConfigurations A list of IPConfigurations of the network interface
-             * @return the next definition stage
              */
             WithCreate withIpConfigurations(List<NetworkInterfaceIPConfigurationInner> ipConfigurations);
         }
 
         /**
-         * The stage of the networkinterface definition allowing to specify MacAddress.
+         * The stage of the networkinterface update allowing to specify MacAddress.
          */
         interface WithMacAddress {
             /**
              * Specifies macAddress.
-             * @param macAddress The MAC address of the network interface
-             * @return the next definition stage
              */
             WithCreate withMacAddress(String macAddress);
         }
 
         /**
-         * The stage of the networkinterface definition allowing to specify NetworkSecurityGroup.
+         * The stage of the networkinterface update allowing to specify NetworkSecurityGroup.
          */
         interface WithNetworkSecurityGroup {
             /**
              * Specifies networkSecurityGroup.
-             * @param networkSecurityGroup The reference of the NetworkSecurityGroup resource
-             * @return the next definition stage
              */
             WithCreate withNetworkSecurityGroup(NetworkSecurityGroupInner networkSecurityGroup);
         }
 
         /**
-         * The stage of the networkinterface definition allowing to specify Primary.
+         * The stage of the networkinterface update allowing to specify Primary.
          */
         interface WithPrimary {
             /**
              * Specifies primary.
-             * @param primary Gets whether this is a primary network interface on a virtual machine
-             * @return the next definition stage
              */
             WithCreate withPrimary(Boolean primary);
         }
 
         /**
-         * The stage of the networkinterface definition allowing to specify ProvisioningState.
+         * The stage of the networkinterface update allowing to specify ProvisioningState.
          */
         interface WithProvisioningState {
             /**
              * Specifies provisioningState.
-             * @param provisioningState The provisioning state of the public IP resource. Possible values are: 'Updating', 'Deleting', and 'Failed'
-             * @return the next definition stage
              */
             WithCreate withProvisioningState(String provisioningState);
         }
 
         /**
-         * The stage of the networkinterface definition allowing to specify ResourceGuid.
+         * The stage of the networkinterface update allowing to specify ResourceGuid.
          */
         interface WithResourceGuid {
             /**
              * Specifies resourceGuid.
-             * @param resourceGuid The resource GUID property of the network interface resource
-             * @return the next definition stage
              */
             WithCreate withResourceGuid(String resourceGuid);
         }
 
         /**
-         * The stage of the networkinterface definition allowing to specify VirtualMachine.
+         * The stage of the networkinterface update allowing to specify VirtualMachine.
          */
         interface WithVirtualMachine {
             /**
              * Specifies virtualMachine.
-             * @param virtualMachine The reference of a virtual machine
-             * @return the next definition stage
              */
             WithCreate withVirtualMachine(SubResource virtualMachine);
         }
@@ -256,133 +234,111 @@ public interface NetworkInterface extends HasInner<NetworkInterfaceInner>, Resou
      */
     interface UpdateStages {
         /**
-         * The stage of the networkinterface update allowing to specify DnsSettings.
+         * The stage of the networkinterface {0} allowing to specify DnsSettings.
          */
         interface WithDnsSettings {
             /**
              * Specifies dnsSettings.
-             * @param dnsSettings The DNS settings in network interface
-             * @return the next update stage
              */
             Update withDnsSettings(NetworkInterfaceDnsSettings dnsSettings);
         }
 
         /**
-         * The stage of the networkinterface update allowing to specify EnableAcceleratedNetworking.
+         * The stage of the networkinterface {0} allowing to specify EnableAcceleratedNetworking.
          */
         interface WithEnableAcceleratedNetworking {
             /**
              * Specifies enableAcceleratedNetworking.
-             * @param enableAcceleratedNetworking If the network interface is accelerated networking enabled
-             * @return the next update stage
              */
             Update withEnableAcceleratedNetworking(Boolean enableAcceleratedNetworking);
         }
 
         /**
-         * The stage of the networkinterface update allowing to specify EnableIPForwarding.
+         * The stage of the networkinterface {0} allowing to specify EnableIPForwarding.
          */
         interface WithEnableIPForwarding {
             /**
              * Specifies enableIPForwarding.
-             * @param enableIPForwarding Indicates whether IP forwarding is enabled on this network interface
-             * @return the next update stage
              */
             Update withEnableIPForwarding(Boolean enableIPForwarding);
         }
 
         /**
-         * The stage of the networkinterface update allowing to specify Etag.
+         * The stage of the networkinterface {0} allowing to specify Etag.
          */
         interface WithEtag {
             /**
              * Specifies etag.
-             * @param etag A unique read-only string that changes whenever the resource is updated
-             * @return the next update stage
              */
             Update withEtag(String etag);
         }
 
         /**
-         * The stage of the networkinterface update allowing to specify IpConfigurations.
+         * The stage of the networkinterface {0} allowing to specify IpConfigurations.
          */
         interface WithIpConfigurations {
             /**
              * Specifies ipConfigurations.
-             * @param ipConfigurations A list of IPConfigurations of the network interface
-             * @return the next update stage
              */
             Update withIpConfigurations(List<NetworkInterfaceIPConfigurationInner> ipConfigurations);
         }
 
         /**
-         * The stage of the networkinterface update allowing to specify MacAddress.
+         * The stage of the networkinterface {0} allowing to specify MacAddress.
          */
         interface WithMacAddress {
             /**
              * Specifies macAddress.
-             * @param macAddress The MAC address of the network interface
-             * @return the next update stage
              */
             Update withMacAddress(String macAddress);
         }
 
         /**
-         * The stage of the networkinterface update allowing to specify NetworkSecurityGroup.
+         * The stage of the networkinterface {0} allowing to specify NetworkSecurityGroup.
          */
         interface WithNetworkSecurityGroup {
             /**
              * Specifies networkSecurityGroup.
-             * @param networkSecurityGroup The reference of the NetworkSecurityGroup resource
-             * @return the next update stage
              */
             Update withNetworkSecurityGroup(NetworkSecurityGroupInner networkSecurityGroup);
         }
 
         /**
-         * The stage of the networkinterface update allowing to specify Primary.
+         * The stage of the networkinterface {0} allowing to specify Primary.
          */
         interface WithPrimary {
             /**
              * Specifies primary.
-             * @param primary Gets whether this is a primary network interface on a virtual machine
-             * @return the next update stage
              */
             Update withPrimary(Boolean primary);
         }
 
         /**
-         * The stage of the networkinterface update allowing to specify ProvisioningState.
+         * The stage of the networkinterface {0} allowing to specify ProvisioningState.
          */
         interface WithProvisioningState {
             /**
              * Specifies provisioningState.
-             * @param provisioningState The provisioning state of the public IP resource. Possible values are: 'Updating', 'Deleting', and 'Failed'
-             * @return the next update stage
              */
             Update withProvisioningState(String provisioningState);
         }
 
         /**
-         * The stage of the networkinterface update allowing to specify ResourceGuid.
+         * The stage of the networkinterface {0} allowing to specify ResourceGuid.
          */
         interface WithResourceGuid {
             /**
              * Specifies resourceGuid.
-             * @param resourceGuid The resource GUID property of the network interface resource
-             * @return the next update stage
              */
             Update withResourceGuid(String resourceGuid);
         }
 
         /**
-         * The stage of the networkinterface update allowing to specify VirtualMachine.
+         * The stage of the networkinterface {0} allowing to specify VirtualMachine.
          */
         interface WithVirtualMachine {
             /**
              * Specifies virtualMachine.
-             * @param virtualMachine The reference of a virtual machine
-             * @return the next update stage
              */
             Update withVirtualMachine(SubResource virtualMachine);
         }

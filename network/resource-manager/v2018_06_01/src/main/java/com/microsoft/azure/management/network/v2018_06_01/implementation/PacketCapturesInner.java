@@ -10,7 +10,7 @@ package com.microsoft.azure.management.network.v2018_06_01.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.network.v2018_06_01.ErrorResponseException;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
@@ -107,7 +107,7 @@ public class PacketCapturesInner {
      * @param packetCaptureName The name of the packet capture session.
      * @param parameters Parameters that define the create packet capture operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PacketCaptureResultInner object if successful.
      */
@@ -189,7 +189,7 @@ public class PacketCapturesInner {
      * @param packetCaptureName The name of the packet capture session.
      * @param parameters Parameters that define the create packet capture operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PacketCaptureResultInner object if successful.
      */
@@ -273,10 +273,10 @@ public class PacketCapturesInner {
             });
     }
 
-    private ServiceResponse<PacketCaptureResultInner> beginCreateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PacketCaptureResultInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PacketCaptureResultInner> beginCreateDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PacketCaptureResultInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(201, new TypeToken<PacketCaptureResultInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -287,7 +287,7 @@ public class PacketCapturesInner {
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PacketCaptureResultInner object if successful.
      */
@@ -364,10 +364,10 @@ public class PacketCapturesInner {
             });
     }
 
-    private ServiceResponse<PacketCaptureResultInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PacketCaptureResultInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PacketCaptureResultInner> getDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PacketCaptureResultInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PacketCaptureResultInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -378,7 +378,7 @@ public class PacketCapturesInner {
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String networkWatcherName, String packetCaptureName) {
@@ -451,7 +451,7 @@ public class PacketCapturesInner {
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void beginDelete(String resourceGroupName, String networkWatcherName, String packetCaptureName) {
@@ -527,11 +527,11 @@ public class PacketCapturesInner {
             });
     }
 
-    private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -542,7 +542,7 @@ public class PacketCapturesInner {
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void stop(String resourceGroupName, String networkWatcherName, String packetCaptureName) {
@@ -615,7 +615,7 @@ public class PacketCapturesInner {
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void beginStop(String resourceGroupName, String networkWatcherName, String packetCaptureName) {
@@ -691,11 +691,11 @@ public class PacketCapturesInner {
             });
     }
 
-    private ServiceResponse<Void> beginStopDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<Void> beginStopDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -706,7 +706,7 @@ public class PacketCapturesInner {
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param packetCaptureName The name given to the packet capture session.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PacketCaptureQueryStatusResultInner object if successful.
      */
@@ -780,7 +780,7 @@ public class PacketCapturesInner {
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param packetCaptureName The name given to the packet capture session.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PacketCaptureQueryStatusResultInner object if successful.
      */
@@ -857,11 +857,11 @@ public class PacketCapturesInner {
             });
     }
 
-    private ServiceResponse<PacketCaptureQueryStatusResultInner> beginGetStatusDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PacketCaptureQueryStatusResultInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PacketCaptureQueryStatusResultInner> beginGetStatusDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PacketCaptureQueryStatusResultInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PacketCaptureQueryStatusResultInner>() { }.getType())
                 .register(202, new TypeToken<PacketCaptureQueryStatusResultInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -871,7 +871,7 @@ public class PacketCapturesInner {
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;PacketCaptureResultInner&gt; object if successful.
      */
@@ -947,10 +947,10 @@ public class PacketCapturesInner {
             });
     }
 
-    private ServiceResponse<PageImpl1<PacketCaptureResultInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl1<PacketCaptureResultInner>, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl1<PacketCaptureResultInner>> listDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<PacketCaptureResultInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl1<PacketCaptureResultInner>>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 

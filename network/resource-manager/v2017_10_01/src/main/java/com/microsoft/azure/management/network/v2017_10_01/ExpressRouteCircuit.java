@@ -110,133 +110,111 @@ public interface ExpressRouteCircuit extends HasInner<ExpressRouteCircuitInner>,
         }
 
         /**
-         * The stage of the expressroutecircuit definition allowing to specify AllowClassicOperations.
+         * The stage of the expressroutecircuit update allowing to specify AllowClassicOperations.
          */
         interface WithAllowClassicOperations {
             /**
              * Specifies allowClassicOperations.
-             * @param allowClassicOperations Allow classic operations
-             * @return the next definition stage
              */
             WithCreate withAllowClassicOperations(Boolean allowClassicOperations);
         }
 
         /**
-         * The stage of the expressroutecircuit definition allowing to specify Authorizations.
+         * The stage of the expressroutecircuit update allowing to specify Authorizations.
          */
         interface WithAuthorizations {
             /**
              * Specifies authorizations.
-             * @param authorizations The list of authorizations
-             * @return the next definition stage
              */
             WithCreate withAuthorizations(List<ExpressRouteCircuitAuthorizationInner> authorizations);
         }
 
         /**
-         * The stage of the expressroutecircuit definition allowing to specify CircuitProvisioningState.
+         * The stage of the expressroutecircuit update allowing to specify CircuitProvisioningState.
          */
         interface WithCircuitProvisioningState {
             /**
              * Specifies circuitProvisioningState.
-             * @param circuitProvisioningState The CircuitProvisioningState state of the resource
-             * @return the next definition stage
              */
             WithCreate withCircuitProvisioningState(String circuitProvisioningState);
         }
 
         /**
-         * The stage of the expressroutecircuit definition allowing to specify GatewayManagerEtag.
+         * The stage of the expressroutecircuit update allowing to specify GatewayManagerEtag.
          */
         interface WithGatewayManagerEtag {
             /**
              * Specifies gatewayManagerEtag.
-             * @param gatewayManagerEtag The GatewayManager Etag
-             * @return the next definition stage
              */
             WithCreate withGatewayManagerEtag(String gatewayManagerEtag);
         }
 
         /**
-         * The stage of the expressroutecircuit definition allowing to specify Peerings.
+         * The stage of the expressroutecircuit update allowing to specify Peerings.
          */
         interface WithPeerings {
             /**
              * Specifies peerings.
-             * @param peerings The list of peerings
-             * @return the next definition stage
              */
             WithCreate withPeerings(List<ExpressRouteCircuitPeeringInner> peerings);
         }
 
         /**
-         * The stage of the expressroutecircuit definition allowing to specify ProvisioningState.
+         * The stage of the expressroutecircuit update allowing to specify ProvisioningState.
          */
         interface WithProvisioningState {
             /**
              * Specifies provisioningState.
-             * @param provisioningState Gets the provisioning state of the public IP resource. Possible values are: 'Updating', 'Deleting', and 'Failed'
-             * @return the next definition stage
              */
             WithCreate withProvisioningState(String provisioningState);
         }
 
         /**
-         * The stage of the expressroutecircuit definition allowing to specify ServiceKey.
+         * The stage of the expressroutecircuit update allowing to specify ServiceKey.
          */
         interface WithServiceKey {
             /**
              * Specifies serviceKey.
-             * @param serviceKey The ServiceKey
-             * @return the next definition stage
              */
             WithCreate withServiceKey(String serviceKey);
         }
 
         /**
-         * The stage of the expressroutecircuit definition allowing to specify ServiceProviderNotes.
+         * The stage of the expressroutecircuit update allowing to specify ServiceProviderNotes.
          */
         interface WithServiceProviderNotes {
             /**
              * Specifies serviceProviderNotes.
-             * @param serviceProviderNotes The ServiceProviderNotes
-             * @return the next definition stage
              */
             WithCreate withServiceProviderNotes(String serviceProviderNotes);
         }
 
         /**
-         * The stage of the expressroutecircuit definition allowing to specify ServiceProviderProperties.
+         * The stage of the expressroutecircuit update allowing to specify ServiceProviderProperties.
          */
         interface WithServiceProviderProperties {
             /**
              * Specifies serviceProviderProperties.
-             * @param serviceProviderProperties The ServiceProviderProperties
-             * @return the next definition stage
              */
             WithCreate withServiceProviderProperties(ExpressRouteCircuitServiceProviderProperties serviceProviderProperties);
         }
 
         /**
-         * The stage of the expressroutecircuit definition allowing to specify ServiceProviderProvisioningState.
+         * The stage of the expressroutecircuit update allowing to specify ServiceProviderProvisioningState.
          */
         interface WithServiceProviderProvisioningState {
             /**
              * Specifies serviceProviderProvisioningState.
-             * @param serviceProviderProvisioningState The ServiceProviderProvisioningState state of the resource. Possible values are 'NotProvisioned', 'Provisioning', 'Provisioned', and 'Deprovisioning'. Possible values include: 'NotProvisioned', 'Provisioning', 'Provisioned', 'Deprovisioning'
-             * @return the next definition stage
              */
             WithCreate withServiceProviderProvisioningState(ServiceProviderProvisioningState serviceProviderProvisioningState);
         }
 
         /**
-         * The stage of the expressroutecircuit definition allowing to specify Sku.
+         * The stage of the expressroutecircuit update allowing to specify Sku.
          */
         interface WithSku {
             /**
              * Specifies sku.
-             * @param sku The SKU
-             * @return the next definition stage
              */
             WithCreate withSku(ExpressRouteCircuitSku sku);
         }
@@ -260,133 +238,111 @@ public interface ExpressRouteCircuit extends HasInner<ExpressRouteCircuitInner>,
      */
     interface UpdateStages {
         /**
-         * The stage of the expressroutecircuit update allowing to specify AllowClassicOperations.
+         * The stage of the expressroutecircuit {0} allowing to specify AllowClassicOperations.
          */
         interface WithAllowClassicOperations {
             /**
              * Specifies allowClassicOperations.
-             * @param allowClassicOperations Allow classic operations
-             * @return the next update stage
              */
             Update withAllowClassicOperations(Boolean allowClassicOperations);
         }
 
         /**
-         * The stage of the expressroutecircuit update allowing to specify Authorizations.
+         * The stage of the expressroutecircuit {0} allowing to specify Authorizations.
          */
         interface WithAuthorizations {
             /**
              * Specifies authorizations.
-             * @param authorizations The list of authorizations
-             * @return the next update stage
              */
             Update withAuthorizations(List<ExpressRouteCircuitAuthorizationInner> authorizations);
         }
 
         /**
-         * The stage of the expressroutecircuit update allowing to specify CircuitProvisioningState.
+         * The stage of the expressroutecircuit {0} allowing to specify CircuitProvisioningState.
          */
         interface WithCircuitProvisioningState {
             /**
              * Specifies circuitProvisioningState.
-             * @param circuitProvisioningState The CircuitProvisioningState state of the resource
-             * @return the next update stage
              */
             Update withCircuitProvisioningState(String circuitProvisioningState);
         }
 
         /**
-         * The stage of the expressroutecircuit update allowing to specify GatewayManagerEtag.
+         * The stage of the expressroutecircuit {0} allowing to specify GatewayManagerEtag.
          */
         interface WithGatewayManagerEtag {
             /**
              * Specifies gatewayManagerEtag.
-             * @param gatewayManagerEtag The GatewayManager Etag
-             * @return the next update stage
              */
             Update withGatewayManagerEtag(String gatewayManagerEtag);
         }
 
         /**
-         * The stage of the expressroutecircuit update allowing to specify Peerings.
+         * The stage of the expressroutecircuit {0} allowing to specify Peerings.
          */
         interface WithPeerings {
             /**
              * Specifies peerings.
-             * @param peerings The list of peerings
-             * @return the next update stage
              */
             Update withPeerings(List<ExpressRouteCircuitPeeringInner> peerings);
         }
 
         /**
-         * The stage of the expressroutecircuit update allowing to specify ProvisioningState.
+         * The stage of the expressroutecircuit {0} allowing to specify ProvisioningState.
          */
         interface WithProvisioningState {
             /**
              * Specifies provisioningState.
-             * @param provisioningState Gets the provisioning state of the public IP resource. Possible values are: 'Updating', 'Deleting', and 'Failed'
-             * @return the next update stage
              */
             Update withProvisioningState(String provisioningState);
         }
 
         /**
-         * The stage of the expressroutecircuit update allowing to specify ServiceKey.
+         * The stage of the expressroutecircuit {0} allowing to specify ServiceKey.
          */
         interface WithServiceKey {
             /**
              * Specifies serviceKey.
-             * @param serviceKey The ServiceKey
-             * @return the next update stage
              */
             Update withServiceKey(String serviceKey);
         }
 
         /**
-         * The stage of the expressroutecircuit update allowing to specify ServiceProviderNotes.
+         * The stage of the expressroutecircuit {0} allowing to specify ServiceProviderNotes.
          */
         interface WithServiceProviderNotes {
             /**
              * Specifies serviceProviderNotes.
-             * @param serviceProviderNotes The ServiceProviderNotes
-             * @return the next update stage
              */
             Update withServiceProviderNotes(String serviceProviderNotes);
         }
 
         /**
-         * The stage of the expressroutecircuit update allowing to specify ServiceProviderProperties.
+         * The stage of the expressroutecircuit {0} allowing to specify ServiceProviderProperties.
          */
         interface WithServiceProviderProperties {
             /**
              * Specifies serviceProviderProperties.
-             * @param serviceProviderProperties The ServiceProviderProperties
-             * @return the next update stage
              */
             Update withServiceProviderProperties(ExpressRouteCircuitServiceProviderProperties serviceProviderProperties);
         }
 
         /**
-         * The stage of the expressroutecircuit update allowing to specify ServiceProviderProvisioningState.
+         * The stage of the expressroutecircuit {0} allowing to specify ServiceProviderProvisioningState.
          */
         interface WithServiceProviderProvisioningState {
             /**
              * Specifies serviceProviderProvisioningState.
-             * @param serviceProviderProvisioningState The ServiceProviderProvisioningState state of the resource. Possible values are 'NotProvisioned', 'Provisioning', 'Provisioned', and 'Deprovisioning'. Possible values include: 'NotProvisioned', 'Provisioning', 'Provisioned', 'Deprovisioning'
-             * @return the next update stage
              */
             Update withServiceProviderProvisioningState(ServiceProviderProvisioningState serviceProviderProvisioningState);
         }
 
         /**
-         * The stage of the expressroutecircuit update allowing to specify Sku.
+         * The stage of the expressroutecircuit {0} allowing to specify Sku.
          */
         interface WithSku {
             /**
              * Specifies sku.
-             * @param sku The SKU
-             * @return the next update stage
              */
             Update withSku(ExpressRouteCircuitSku sku);
         }

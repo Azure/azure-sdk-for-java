@@ -108,133 +108,111 @@ public interface LoadBalancer extends HasInner<LoadBalancerInner>, Resource, Gro
         }
 
         /**
-         * The stage of the loadbalancer definition allowing to specify BackendAddressPools.
+         * The stage of the loadbalancer update allowing to specify BackendAddressPools.
          */
         interface WithBackendAddressPools {
             /**
              * Specifies backendAddressPools.
-             * @param backendAddressPools Collection of backend address pools used by a load balancer
-             * @return the next definition stage
              */
             WithCreate withBackendAddressPools(List<BackendAddressPoolInner> backendAddressPools);
         }
 
         /**
-         * The stage of the loadbalancer definition allowing to specify Etag.
+         * The stage of the loadbalancer update allowing to specify Etag.
          */
         interface WithEtag {
             /**
              * Specifies etag.
-             * @param etag A unique read-only string that changes whenever the resource is updated
-             * @return the next definition stage
              */
             WithCreate withEtag(String etag);
         }
 
         /**
-         * The stage of the loadbalancer definition allowing to specify FrontendIPConfigurations.
+         * The stage of the loadbalancer update allowing to specify FrontendIPConfigurations.
          */
         interface WithFrontendIPConfigurations {
             /**
              * Specifies frontendIPConfigurations.
-             * @param frontendIPConfigurations Object representing the frontend IPs to be used for the load balancer
-             * @return the next definition stage
              */
             WithCreate withFrontendIPConfigurations(List<FrontendIPConfigurationInner> frontendIPConfigurations);
         }
 
         /**
-         * The stage of the loadbalancer definition allowing to specify InboundNatPools.
+         * The stage of the loadbalancer update allowing to specify InboundNatPools.
          */
         interface WithInboundNatPools {
             /**
              * Specifies inboundNatPools.
-             * @param inboundNatPools Defines an external port range for inbound NAT to a single backend port on NICs associated with a load balancer. Inbound NAT rules are created automatically for each NIC associated with the Load Balancer using an external port from this range. Defining an Inbound NAT pool on your Load Balancer is mutually exclusive with defining inbound Nat rules. Inbound NAT pools are referenced from virtual machine scale sets. NICs that are associated with individual virtual machines cannot reference an inbound NAT pool. They have to reference individual inbound NAT rules
-             * @return the next definition stage
              */
             WithCreate withInboundNatPools(List<InboundNatPool> inboundNatPools);
         }
 
         /**
-         * The stage of the loadbalancer definition allowing to specify InboundNatRules.
+         * The stage of the loadbalancer update allowing to specify InboundNatRules.
          */
         interface WithInboundNatRules {
             /**
              * Specifies inboundNatRules.
-             * @param inboundNatRules Collection of inbound NAT Rules used by a load balancer. Defining inbound NAT rules on your load balancer is mutually exclusive with defining an inbound NAT pool. Inbound NAT pools are referenced from virtual machine scale sets. NICs that are associated with individual virtual machines cannot reference an Inbound NAT pool. They have to reference individual inbound NAT rules
-             * @return the next definition stage
              */
             WithCreate withInboundNatRules(List<InboundNatRuleInner> inboundNatRules);
         }
 
         /**
-         * The stage of the loadbalancer definition allowing to specify LoadBalancingRules.
+         * The stage of the loadbalancer update allowing to specify LoadBalancingRules.
          */
         interface WithLoadBalancingRules {
             /**
              * Specifies loadBalancingRules.
-             * @param loadBalancingRules Object collection representing the load balancing rules Gets the provisioning
-             * @return the next definition stage
              */
             WithCreate withLoadBalancingRules(List<LoadBalancingRuleInner> loadBalancingRules);
         }
 
         /**
-         * The stage of the loadbalancer definition allowing to specify OutboundNatRules.
+         * The stage of the loadbalancer update allowing to specify OutboundNatRules.
          */
         interface WithOutboundNatRules {
             /**
              * Specifies outboundNatRules.
-             * @param outboundNatRules The outbound NAT rules
-             * @return the next definition stage
              */
             WithCreate withOutboundNatRules(List<OutboundNatRule> outboundNatRules);
         }
 
         /**
-         * The stage of the loadbalancer definition allowing to specify Probes.
+         * The stage of the loadbalancer update allowing to specify Probes.
          */
         interface WithProbes {
             /**
              * Specifies probes.
-             * @param probes Collection of probe objects used in the load balancer
-             * @return the next definition stage
              */
             WithCreate withProbes(List<ProbeInner> probes);
         }
 
         /**
-         * The stage of the loadbalancer definition allowing to specify ProvisioningState.
+         * The stage of the loadbalancer update allowing to specify ProvisioningState.
          */
         interface WithProvisioningState {
             /**
              * Specifies provisioningState.
-             * @param provisioningState Gets the provisioning state of the PublicIP resource. Possible values are: 'Updating', 'Deleting', and 'Failed'
-             * @return the next definition stage
              */
             WithCreate withProvisioningState(String provisioningState);
         }
 
         /**
-         * The stage of the loadbalancer definition allowing to specify ResourceGuid.
+         * The stage of the loadbalancer update allowing to specify ResourceGuid.
          */
         interface WithResourceGuid {
             /**
              * Specifies resourceGuid.
-             * @param resourceGuid The resource GUID property of the load balancer resource
-             * @return the next definition stage
              */
             WithCreate withResourceGuid(String resourceGuid);
         }
 
         /**
-         * The stage of the loadbalancer definition allowing to specify Sku.
+         * The stage of the loadbalancer update allowing to specify Sku.
          */
         interface WithSku {
             /**
              * Specifies sku.
-             * @param sku The load balancer SKU
-             * @return the next definition stage
              */
             WithCreate withSku(LoadBalancerSku sku);
         }
@@ -258,133 +236,111 @@ public interface LoadBalancer extends HasInner<LoadBalancerInner>, Resource, Gro
      */
     interface UpdateStages {
         /**
-         * The stage of the loadbalancer update allowing to specify BackendAddressPools.
+         * The stage of the loadbalancer {0} allowing to specify BackendAddressPools.
          */
         interface WithBackendAddressPools {
             /**
              * Specifies backendAddressPools.
-             * @param backendAddressPools Collection of backend address pools used by a load balancer
-             * @return the next update stage
              */
             Update withBackendAddressPools(List<BackendAddressPoolInner> backendAddressPools);
         }
 
         /**
-         * The stage of the loadbalancer update allowing to specify Etag.
+         * The stage of the loadbalancer {0} allowing to specify Etag.
          */
         interface WithEtag {
             /**
              * Specifies etag.
-             * @param etag A unique read-only string that changes whenever the resource is updated
-             * @return the next update stage
              */
             Update withEtag(String etag);
         }
 
         /**
-         * The stage of the loadbalancer update allowing to specify FrontendIPConfigurations.
+         * The stage of the loadbalancer {0} allowing to specify FrontendIPConfigurations.
          */
         interface WithFrontendIPConfigurations {
             /**
              * Specifies frontendIPConfigurations.
-             * @param frontendIPConfigurations Object representing the frontend IPs to be used for the load balancer
-             * @return the next update stage
              */
             Update withFrontendIPConfigurations(List<FrontendIPConfigurationInner> frontendIPConfigurations);
         }
 
         /**
-         * The stage of the loadbalancer update allowing to specify InboundNatPools.
+         * The stage of the loadbalancer {0} allowing to specify InboundNatPools.
          */
         interface WithInboundNatPools {
             /**
              * Specifies inboundNatPools.
-             * @param inboundNatPools Defines an external port range for inbound NAT to a single backend port on NICs associated with a load balancer. Inbound NAT rules are created automatically for each NIC associated with the Load Balancer using an external port from this range. Defining an Inbound NAT pool on your Load Balancer is mutually exclusive with defining inbound Nat rules. Inbound NAT pools are referenced from virtual machine scale sets. NICs that are associated with individual virtual machines cannot reference an inbound NAT pool. They have to reference individual inbound NAT rules
-             * @return the next update stage
              */
             Update withInboundNatPools(List<InboundNatPool> inboundNatPools);
         }
 
         /**
-         * The stage of the loadbalancer update allowing to specify InboundNatRules.
+         * The stage of the loadbalancer {0} allowing to specify InboundNatRules.
          */
         interface WithInboundNatRules {
             /**
              * Specifies inboundNatRules.
-             * @param inboundNatRules Collection of inbound NAT Rules used by a load balancer. Defining inbound NAT rules on your load balancer is mutually exclusive with defining an inbound NAT pool. Inbound NAT pools are referenced from virtual machine scale sets. NICs that are associated with individual virtual machines cannot reference an Inbound NAT pool. They have to reference individual inbound NAT rules
-             * @return the next update stage
              */
             Update withInboundNatRules(List<InboundNatRuleInner> inboundNatRules);
         }
 
         /**
-         * The stage of the loadbalancer update allowing to specify LoadBalancingRules.
+         * The stage of the loadbalancer {0} allowing to specify LoadBalancingRules.
          */
         interface WithLoadBalancingRules {
             /**
              * Specifies loadBalancingRules.
-             * @param loadBalancingRules Object collection representing the load balancing rules Gets the provisioning
-             * @return the next update stage
              */
             Update withLoadBalancingRules(List<LoadBalancingRuleInner> loadBalancingRules);
         }
 
         /**
-         * The stage of the loadbalancer update allowing to specify OutboundNatRules.
+         * The stage of the loadbalancer {0} allowing to specify OutboundNatRules.
          */
         interface WithOutboundNatRules {
             /**
              * Specifies outboundNatRules.
-             * @param outboundNatRules The outbound NAT rules
-             * @return the next update stage
              */
             Update withOutboundNatRules(List<OutboundNatRule> outboundNatRules);
         }
 
         /**
-         * The stage of the loadbalancer update allowing to specify Probes.
+         * The stage of the loadbalancer {0} allowing to specify Probes.
          */
         interface WithProbes {
             /**
              * Specifies probes.
-             * @param probes Collection of probe objects used in the load balancer
-             * @return the next update stage
              */
             Update withProbes(List<ProbeInner> probes);
         }
 
         /**
-         * The stage of the loadbalancer update allowing to specify ProvisioningState.
+         * The stage of the loadbalancer {0} allowing to specify ProvisioningState.
          */
         interface WithProvisioningState {
             /**
              * Specifies provisioningState.
-             * @param provisioningState Gets the provisioning state of the PublicIP resource. Possible values are: 'Updating', 'Deleting', and 'Failed'
-             * @return the next update stage
              */
             Update withProvisioningState(String provisioningState);
         }
 
         /**
-         * The stage of the loadbalancer update allowing to specify ResourceGuid.
+         * The stage of the loadbalancer {0} allowing to specify ResourceGuid.
          */
         interface WithResourceGuid {
             /**
              * Specifies resourceGuid.
-             * @param resourceGuid The resource GUID property of the load balancer resource
-             * @return the next update stage
              */
             Update withResourceGuid(String resourceGuid);
         }
 
         /**
-         * The stage of the loadbalancer update allowing to specify Sku.
+         * The stage of the loadbalancer {0} allowing to specify Sku.
          */
         interface WithSku {
             /**
              * Specifies sku.
-             * @param sku The load balancer SKU
-             * @return the next update stage
              */
             Update withSku(LoadBalancerSku sku);
         }

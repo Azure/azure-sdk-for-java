@@ -263,6 +263,32 @@ public class SqlManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The ManagedInstanceKeysInner object to access its operations.
+     */
+    private ManagedInstanceKeysInner managedInstanceKeys;
+
+    /**
+     * Gets the ManagedInstanceKeysInner object to access its operations.
+     * @return the ManagedInstanceKeysInner object.
+     */
+    public ManagedInstanceKeysInner managedInstanceKeys() {
+        return this.managedInstanceKeys;
+    }
+
+    /**
+     * The ManagedInstanceEncryptionProtectorsInner object to access its operations.
+     */
+    private ManagedInstanceEncryptionProtectorsInner managedInstanceEncryptionProtectors;
+
+    /**
+     * Gets the ManagedInstanceEncryptionProtectorsInner object to access its operations.
+     * @return the ManagedInstanceEncryptionProtectorsInner object.
+     */
+    public ManagedInstanceEncryptionProtectorsInner managedInstanceEncryptionProtectors() {
+        return this.managedInstanceEncryptionProtectors;
+    }
+
+    /**
      * Initializes an instance of SqlManagementClient client.
      *
      * @param credentials the management credentials for Azure
@@ -307,6 +333,8 @@ public class SqlManagementClientImpl extends AzureServiceClient {
         this.backupShortTermRetentionPolicies = new BackupShortTermRetentionPoliciesInner(restClient().retrofit(), this);
         this.tdeCertificates = new TdeCertificatesInner(restClient().retrofit(), this);
         this.managedInstanceTdeCertificates = new ManagedInstanceTdeCertificatesInner(restClient().retrofit(), this);
+        this.managedInstanceKeys = new ManagedInstanceKeysInner(restClient().retrofit(), this);
+        this.managedInstanceEncryptionProtectors = new ManagedInstanceEncryptionProtectorsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 

@@ -11,12 +11,16 @@ package com.microsoft.azure.management.authorization.v2015_07_01.implementation;
 import com.microsoft.azure.management.authorization.v2015_07_01.RoleAssignment;
 import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
+import com.microsoft.azure.management.authorization.v2015_07_01.RoleAssignmentProperties;
 import com.microsoft.azure.management.authorization.v2015_07_01.RoleAssignmentPropertiesWithScope;
+import rx.functions.Func1;
 
 class RoleAssignmentImpl extends CreatableUpdatableImpl<RoleAssignment, RoleAssignmentInner, RoleAssignmentImpl> implements RoleAssignment, RoleAssignment.Definition, RoleAssignment.Update {
     private final AuthorizationManager manager;
     private String scope;
     private String roleAssignmentName;
+    private RoleAssignmentProperties cproperties;
+    private RoleAssignmentProperties uproperties;
 
     RoleAssignmentImpl(String name, AuthorizationManager manager) {
         super(name, new RoleAssignmentInner());
@@ -24,6 +28,8 @@ class RoleAssignmentImpl extends CreatableUpdatableImpl<RoleAssignment, RoleAssi
         // Set resource name
         this.roleAssignmentName = name;
         //
+        this.cproperties = new RoleAssignmentProperties();
+        this.uproperties = new RoleAssignmentProperties();
     }
 
     RoleAssignmentImpl(RoleAssignmentInner inner, AuthorizationManager manager) {
@@ -35,6 +41,8 @@ class RoleAssignmentImpl extends CreatableUpdatableImpl<RoleAssignment, RoleAssi
         this.roleAssignmentName = IdParsingUtils.getValueFromIdByName(inner.id(), "roleAssignments");
         this.scope = IdParsingUtils.getValueFromIdByPosition(inner.id(), 0);
         //
+        this.cproperties = new RoleAssignmentProperties();
+        this.uproperties = new RoleAssignmentProperties();
     }
 
     @Override
@@ -45,14 +53,28 @@ class RoleAssignmentImpl extends CreatableUpdatableImpl<RoleAssignment, RoleAssi
     @Override
     public Observable<RoleAssignment> createResourceAsync() {
         RoleAssignmentsInner client = this.manager().inner().roleAssignments();
-        return client.createAsync(this.scope, this.roleAssignmentName)
+        return client.createAsync(this.scope, this.roleAssignmentName, this.cproperties)
+            .map(new Func1<RoleAssignmentInner, RoleAssignmentInner>() {
+               @Override
+               public RoleAssignmentInner call(RoleAssignmentInner resource) {
+                   resetCreateUpdateParameters();
+                   return resource;
+               }
+            })
             .map(innerToFluentMap(this));
     }
 
     @Override
     public Observable<RoleAssignment> updateResourceAsync() {
         RoleAssignmentsInner client = this.manager().inner().roleAssignments();
-        return client.createAsync(this.scope, this.roleAssignmentName)
+        return client.createAsync(this.scope, this.roleAssignmentName, this.uproperties)
+            .map(new Func1<RoleAssignmentInner, RoleAssignmentInner>() {
+               @Override
+               public RoleAssignmentInner call(RoleAssignmentInner resource) {
+                   resetCreateUpdateParameters();
+                   return resource;
+               }
+            })
             .map(innerToFluentMap(this));
     }
 
@@ -67,6 +89,10 @@ class RoleAssignmentImpl extends CreatableUpdatableImpl<RoleAssignment, RoleAssi
         return this.inner().id() == null;
     }
 
+    private void resetCreateUpdateParameters() {
+        this.cproperties = new RoleAssignmentProperties();
+        this.uproperties = new RoleAssignmentProperties();
+    }
 
     @Override
     public String id() {
@@ -96,6 +122,16 @@ class RoleAssignmentImpl extends CreatableUpdatableImpl<RoleAssignment, RoleAssi
     @Override
     public RoleAssignmentImpl withScope(String scope) {
         this.scope = scope;
+        return this;
+    }
+
+    @Override
+    public RoleAssignmentImpl withProperties(RoleAssignmentProperties properties) {
+        if (isInCreateMode()) {
+            this.cproperties = properties;
+        } else {
+            this.uproperties = properties;
+        }
         return this;
     }
 

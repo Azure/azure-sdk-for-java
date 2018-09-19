@@ -54,7 +54,7 @@ public class ProviderOperationsMetadataInner {
     private List<ProviderOperation> operations;
 
     /**
-     * Get the id value.
+     * Get the provider id.
      *
      * @return the id value
      */
@@ -63,7 +63,7 @@ public class ProviderOperationsMetadataInner {
     }
 
     /**
-     * Set the id value.
+     * Set the provider id.
      *
      * @param id the id value to set
      * @return the ProviderOperationsMetadataInner object itself.
@@ -74,7 +74,7 @@ public class ProviderOperationsMetadataInner {
     }
 
     /**
-     * Get the name value.
+     * Get the provider name.
      *
      * @return the name value
      */
@@ -83,7 +83,7 @@ public class ProviderOperationsMetadataInner {
     }
 
     /**
-     * Set the name value.
+     * Set the provider name.
      *
      * @param name the name value to set
      * @return the ProviderOperationsMetadataInner object itself.
@@ -94,7 +94,7 @@ public class ProviderOperationsMetadataInner {
     }
 
     /**
-     * Get the type value.
+     * Get the provider type.
      *
      * @return the type value
      */
@@ -103,7 +103,7 @@ public class ProviderOperationsMetadataInner {
     }
 
     /**
-     * Set the type value.
+     * Set the provider type.
      *
      * @param type the type value to set
      * @return the ProviderOperationsMetadataInner object itself.
@@ -114,7 +114,7 @@ public class ProviderOperationsMetadataInner {
     }
 
     /**
-     * Get the displayName value.
+     * Get the provider display name.
      *
      * @return the displayName value
      */
@@ -123,7 +123,7 @@ public class ProviderOperationsMetadataInner {
     }
 
     /**
-     * Set the displayName value.
+     * Set the provider display name.
      *
      * @param displayName the displayName value to set
      * @return the ProviderOperationsMetadataInner object itself.
@@ -134,7 +134,7 @@ public class ProviderOperationsMetadataInner {
     }
 
     /**
-     * Get the resourceTypes value.
+     * Get the provider resource types.
      *
      * @return the resourceTypes value
      */
@@ -143,7 +143,7 @@ public class ProviderOperationsMetadataInner {
     }
 
     /**
-     * Set the resourceTypes value.
+     * Set the provider resource types.
      *
      * @param resourceTypes the resourceTypes value to set
      * @return the ProviderOperationsMetadataInner object itself.
@@ -154,7 +154,7 @@ public class ProviderOperationsMetadataInner {
     }
 
     /**
-     * Get the operations value.
+     * Get the provider operations.
      *
      * @return the operations value
      */
@@ -163,7 +163,7 @@ public class ProviderOperationsMetadataInner {
     }
 
     /**
-     * Set the operations value.
+     * Set the provider operations.
      *
      * @param operations the operations value to set
      * @return the ProviderOperationsMetadataInner object itself.

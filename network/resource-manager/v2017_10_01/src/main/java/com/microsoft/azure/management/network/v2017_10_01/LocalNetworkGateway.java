@@ -77,61 +77,51 @@ public interface LocalNetworkGateway extends HasInner<LocalNetworkGatewayInner>,
         }
 
         /**
-         * The stage of the localnetworkgateway definition allowing to specify BgpSettings.
+         * The stage of the localnetworkgateway update allowing to specify BgpSettings.
          */
         interface WithBgpSettings {
             /**
              * Specifies bgpSettings.
-             * @param bgpSettings Local network gateway's BGP speaker settings
-             * @return the next definition stage
              */
             WithCreate withBgpSettings(BgpSettings bgpSettings);
         }
 
         /**
-         * The stage of the localnetworkgateway definition allowing to specify Etag.
+         * The stage of the localnetworkgateway update allowing to specify Etag.
          */
         interface WithEtag {
             /**
              * Specifies etag.
-             * @param etag A unique read-only string that changes whenever the resource is updated
-             * @return the next definition stage
              */
             WithCreate withEtag(String etag);
         }
 
         /**
-         * The stage of the localnetworkgateway definition allowing to specify GatewayIpAddress.
+         * The stage of the localnetworkgateway update allowing to specify GatewayIpAddress.
          */
         interface WithGatewayIpAddress {
             /**
              * Specifies gatewayIpAddress.
-             * @param gatewayIpAddress IP address of local network gateway
-             * @return the next definition stage
              */
             WithCreate withGatewayIpAddress(String gatewayIpAddress);
         }
 
         /**
-         * The stage of the localnetworkgateway definition allowing to specify LocalNetworkAddressSpace.
+         * The stage of the localnetworkgateway update allowing to specify LocalNetworkAddressSpace.
          */
         interface WithLocalNetworkAddressSpace {
             /**
              * Specifies localNetworkAddressSpace.
-             * @param localNetworkAddressSpace Local network site address space
-             * @return the next definition stage
              */
             WithCreate withLocalNetworkAddressSpace(AddressSpace localNetworkAddressSpace);
         }
 
         /**
-         * The stage of the localnetworkgateway definition allowing to specify ResourceGuid.
+         * The stage of the localnetworkgateway update allowing to specify ResourceGuid.
          */
         interface WithResourceGuid {
             /**
              * Specifies resourceGuid.
-             * @param resourceGuid The resource GUID property of the LocalNetworkGateway resource
-             * @return the next definition stage
              */
             WithCreate withResourceGuid(String resourceGuid);
         }
@@ -155,61 +145,51 @@ public interface LocalNetworkGateway extends HasInner<LocalNetworkGatewayInner>,
      */
     interface UpdateStages {
         /**
-         * The stage of the localnetworkgateway update allowing to specify BgpSettings.
+         * The stage of the localnetworkgateway {0} allowing to specify BgpSettings.
          */
         interface WithBgpSettings {
             /**
              * Specifies bgpSettings.
-             * @param bgpSettings Local network gateway's BGP speaker settings
-             * @return the next update stage
              */
             Update withBgpSettings(BgpSettings bgpSettings);
         }
 
         /**
-         * The stage of the localnetworkgateway update allowing to specify Etag.
+         * The stage of the localnetworkgateway {0} allowing to specify Etag.
          */
         interface WithEtag {
             /**
              * Specifies etag.
-             * @param etag A unique read-only string that changes whenever the resource is updated
-             * @return the next update stage
              */
             Update withEtag(String etag);
         }
 
         /**
-         * The stage of the localnetworkgateway update allowing to specify GatewayIpAddress.
+         * The stage of the localnetworkgateway {0} allowing to specify GatewayIpAddress.
          */
         interface WithGatewayIpAddress {
             /**
              * Specifies gatewayIpAddress.
-             * @param gatewayIpAddress IP address of local network gateway
-             * @return the next update stage
              */
             Update withGatewayIpAddress(String gatewayIpAddress);
         }
 
         /**
-         * The stage of the localnetworkgateway update allowing to specify LocalNetworkAddressSpace.
+         * The stage of the localnetworkgateway {0} allowing to specify LocalNetworkAddressSpace.
          */
         interface WithLocalNetworkAddressSpace {
             /**
              * Specifies localNetworkAddressSpace.
-             * @param localNetworkAddressSpace Local network site address space
-             * @return the next update stage
              */
             Update withLocalNetworkAddressSpace(AddressSpace localNetworkAddressSpace);
         }
 
         /**
-         * The stage of the localnetworkgateway update allowing to specify ResourceGuid.
+         * The stage of the localnetworkgateway {0} allowing to specify ResourceGuid.
          */
         interface WithResourceGuid {
             /**
              * Specifies resourceGuid.
-             * @param resourceGuid The resource GUID property of the LocalNetworkGateway resource
-             * @return the next update stage
              */
             Update withResourceGuid(String resourceGuid);
         }
