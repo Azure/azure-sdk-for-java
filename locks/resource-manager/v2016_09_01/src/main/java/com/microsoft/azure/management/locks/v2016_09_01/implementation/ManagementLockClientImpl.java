@@ -226,7 +226,7 @@ public class ManagementLockClientImpl extends AzureServiceClient {
      */
     interface ManagementLockClientService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.locks.v2016_09_01.ManagementLockClient listOperations" })
-        @GET("providers/Microsoft.Features/operations")
+        @GET("providers/Microsoft.Authorization/operations")
         Observable<Response<ResponseBody>> listOperations(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.locks.v2016_09_01.ManagementLockClient listOperationsNext" })
