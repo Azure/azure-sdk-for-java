@@ -144,6 +144,7 @@ public class JacksonAdapter implements SerializerAdapter<ObjectMapper> {
     private static <T extends ObjectMapper> T initializeObjectMapper(T mapper) {
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
                 .configure(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS, true)
+                .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
                 .configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true)
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
                 .configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true)
