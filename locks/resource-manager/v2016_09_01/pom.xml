@@ -17,8 +17,8 @@
     <artifactId>azure-mgmt-locks</artifactId>
     <version>1.0.0-beta</version>
     <packaging>jar</packaging>
-    <name>Microsoft Azure SDK for Features Management</name>
-    <description>This package contains Microsoft Features Management SDK.</description>
+    <name>Microsoft Azure SDK for Authorization Management</name>
+    <description>This package contains Microsoft Authorization Management SDK.</description>
     <url>https://github.com/Azure/azure-libraries-for-java</url>
     <licenses>
         <license>
