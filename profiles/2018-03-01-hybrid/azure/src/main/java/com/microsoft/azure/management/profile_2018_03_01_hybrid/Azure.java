@@ -78,13 +78,7 @@ import com.microsoft.azure.management.network.v2017_10_01.VirtualNetworkGatewayC
 import com.microsoft.azure.management.network.v2017_10_01.VirtualNetworkGateways;
 import com.microsoft.azure.management.network.v2017_10_01.VirtualNetworkPeerings;
 import com.microsoft.azure.management.network.v2017_10_01.VirtualNetworks;
-import com.microsoft.azure.management.resources.fluentcore.utils.ProviderRegistrationInterceptor;
-import com.microsoft.azure.management.resources.v2018_02_01.DeploymentOperations;
-import com.microsoft.azure.management.resources.v2018_02_01.Deployments;
-import com.microsoft.azure.management.resources.v2018_02_01.Providers;
-import com.microsoft.azure.management.resources.v2018_02_01.ResourceGroups;
-import com.microsoft.azure.management.resources.v2018_02_01.Resources;
-import com.microsoft.azure.management.resources.v2018_02_01.Tags;
+import com.microsoft.azure.management.resources.v2018_02_01.*;
 import com.microsoft.azure.management.storage.v2016_01_01.StorageAccounts;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
@@ -112,7 +106,7 @@ public final class Azure {
         return new Azure.ConfigurableImpl();
     }
     /**
-     * Creates an instance of Azure that exposes ContainerService resource management API entry points.
+     * Creates an instance of Azure that exposes stack resources API entry points.
      *
      * @param credentials the credentials to use
      * @param subscriptionId the subscription UUID
@@ -127,6 +121,13 @@ public final class Azure {
                 .build(), subscriptionId);
     }
 
+    /**
+     * Creates an instance of Azure that exposes stack resources API entry points.
+     *
+     * @param credentials the credentials to use
+     * @param subscriptionId the subscription UUID
+     * @return the Azure
+     */
     public static Azure authenticate(ApplicationTokenCredentials credentials, String subscriptionId) {
         return new Azure(new RestClient.Builder()
                 .withBaseUrl(credentials.environment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
