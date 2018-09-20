@@ -23,6 +23,7 @@ import rx.functions.Func1;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.management.iotcentral.v2018_09_01.AppNameAvailabilityInfo;
+import com.microsoft.azure.management.iotcentral.v2018_09_01.OperationInputs;
 
 class AppsImpl extends GroupableResourcesCoreImpl<App, AppImpl, AppInner, AppsInner, IoTCentralManager>  implements Apps {
     protected AppsImpl(IoTCentralManager manager) {
@@ -127,9 +128,9 @@ class AppsImpl extends GroupableResourcesCoreImpl<App, AppImpl, AppInner, AppsIn
     }
 
     @Override
-    public Observable<AppNameAvailabilityInfo> checkNameAvailabilityAsync(String name) {
+    public Observable<AppNameAvailabilityInfo> checkNameAvailabilityAsync(OperationInputs operationInputs) {
         AppsInner client = this.inner();
-        return client.checkNameAvailabilityAsync(name)
+        return client.checkNameAvailabilityAsync(operationInputs)
         .map(new Func1<AppNameAvailabilityInfoInner, AppNameAvailabilityInfo>() {
             @Override
             public AppNameAvailabilityInfo call(AppNameAvailabilityInfoInner inner) {
