@@ -145,11 +145,9 @@ public class PolicyEventsInner {
         if (managementGroupName == null) {
             throw new IllegalArgumentException("Parameter managementGroupName is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         final String policyEventsResource = "default";
         final String managementGroupsNamespace = "Microsoft.Management";
+        final String apiVersion = "2018-04-04";
         final QueryOptions queryOptions = null;
         Integer top = null;
         String orderBy = null;
@@ -158,7 +156,7 @@ public class PolicyEventsInner {
         DateTime to = null;
         String filter = null;
         String apply = null;
-        return service.listQueryResultsForManagementGroup(policyEventsResource, managementGroupsNamespace, managementGroupName, this.client.apiVersion(), this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
+        return service.listQueryResultsForManagementGroup(policyEventsResource, managementGroupsNamespace, managementGroupName, apiVersion, this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PolicyEventsQueryResultsInner>>>() {
                 @Override
                 public Observable<ServiceResponse<PolicyEventsQueryResultsInner>> call(Response<ResponseBody> response) {
@@ -228,12 +226,10 @@ public class PolicyEventsInner {
         if (managementGroupName == null) {
             throw new IllegalArgumentException("Parameter managementGroupName is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(queryOptions);
         final String policyEventsResource = "default";
         final String managementGroupsNamespace = "Microsoft.Management";
+        final String apiVersion = "2018-04-04";
         Integer top = null;
         if (queryOptions != null) {
             top = queryOptions.top();
@@ -262,7 +258,7 @@ public class PolicyEventsInner {
         if (queryOptions != null) {
             apply = queryOptions.apply();
         }
-        return service.listQueryResultsForManagementGroup(policyEventsResource, managementGroupsNamespace, managementGroupName, this.client.apiVersion(), this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
+        return service.listQueryResultsForManagementGroup(policyEventsResource, managementGroupsNamespace, managementGroupName, apiVersion, this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PolicyEventsQueryResultsInner>>>() {
                 @Override
                 public Observable<ServiceResponse<PolicyEventsQueryResultsInner>> call(Response<ResponseBody> response) {
@@ -335,10 +331,8 @@ public class PolicyEventsInner {
         if (subscriptionId == null) {
             throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         final String policyEventsResource = "default";
+        final String apiVersion = "2018-04-04";
         final QueryOptions queryOptions = null;
         Integer top = null;
         String orderBy = null;
@@ -347,7 +341,7 @@ public class PolicyEventsInner {
         DateTime to = null;
         String filter = null;
         String apply = null;
-        return service.listQueryResultsForSubscription(policyEventsResource, subscriptionId, this.client.apiVersion(), this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
+        return service.listQueryResultsForSubscription(policyEventsResource, subscriptionId, apiVersion, this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PolicyEventsQueryResultsInner>>>() {
                 @Override
                 public Observable<ServiceResponse<PolicyEventsQueryResultsInner>> call(Response<ResponseBody> response) {
@@ -417,11 +411,9 @@ public class PolicyEventsInner {
         if (subscriptionId == null) {
             throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(queryOptions);
         final String policyEventsResource = "default";
+        final String apiVersion = "2018-04-04";
         Integer top = null;
         if (queryOptions != null) {
             top = queryOptions.top();
@@ -450,7 +442,7 @@ public class PolicyEventsInner {
         if (queryOptions != null) {
             apply = queryOptions.apply();
         }
-        return service.listQueryResultsForSubscription(policyEventsResource, subscriptionId, this.client.apiVersion(), this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
+        return service.listQueryResultsForSubscription(policyEventsResource, subscriptionId, apiVersion, this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PolicyEventsQueryResultsInner>>>() {
                 @Override
                 public Observable<ServiceResponse<PolicyEventsQueryResultsInner>> call(Response<ResponseBody> response) {
@@ -530,10 +522,8 @@ public class PolicyEventsInner {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         final String policyEventsResource = "default";
+        final String apiVersion = "2018-04-04";
         final QueryOptions queryOptions = null;
         Integer top = null;
         String orderBy = null;
@@ -542,7 +532,7 @@ public class PolicyEventsInner {
         DateTime to = null;
         String filter = null;
         String apply = null;
-        return service.listQueryResultsForResourceGroup(policyEventsResource, subscriptionId, resourceGroupName, this.client.apiVersion(), this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
+        return service.listQueryResultsForResourceGroup(policyEventsResource, subscriptionId, resourceGroupName, apiVersion, this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PolicyEventsQueryResultsInner>>>() {
                 @Override
                 public Observable<ServiceResponse<PolicyEventsQueryResultsInner>> call(Response<ResponseBody> response) {
@@ -619,11 +609,9 @@ public class PolicyEventsInner {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(queryOptions);
         final String policyEventsResource = "default";
+        final String apiVersion = "2018-04-04";
         Integer top = null;
         if (queryOptions != null) {
             top = queryOptions.top();
@@ -652,7 +640,7 @@ public class PolicyEventsInner {
         if (queryOptions != null) {
             apply = queryOptions.apply();
         }
-        return service.listQueryResultsForResourceGroup(policyEventsResource, subscriptionId, resourceGroupName, this.client.apiVersion(), this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
+        return service.listQueryResultsForResourceGroup(policyEventsResource, subscriptionId, resourceGroupName, apiVersion, this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PolicyEventsQueryResultsInner>>>() {
                 @Override
                 public Observable<ServiceResponse<PolicyEventsQueryResultsInner>> call(Response<ResponseBody> response) {
@@ -725,10 +713,8 @@ public class PolicyEventsInner {
         if (resourceId == null) {
             throw new IllegalArgumentException("Parameter resourceId is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         final String policyEventsResource = "default";
+        final String apiVersion = "2018-04-04";
         final QueryOptions queryOptions = null;
         Integer top = null;
         String orderBy = null;
@@ -737,7 +723,7 @@ public class PolicyEventsInner {
         DateTime to = null;
         String filter = null;
         String apply = null;
-        return service.listQueryResultsForResource(policyEventsResource, resourceId, this.client.apiVersion(), this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
+        return service.listQueryResultsForResource(policyEventsResource, resourceId, apiVersion, this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PolicyEventsQueryResultsInner>>>() {
                 @Override
                 public Observable<ServiceResponse<PolicyEventsQueryResultsInner>> call(Response<ResponseBody> response) {
@@ -807,11 +793,9 @@ public class PolicyEventsInner {
         if (resourceId == null) {
             throw new IllegalArgumentException("Parameter resourceId is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(queryOptions);
         final String policyEventsResource = "default";
+        final String apiVersion = "2018-04-04";
         Integer top = null;
         if (queryOptions != null) {
             top = queryOptions.top();
@@ -840,7 +824,7 @@ public class PolicyEventsInner {
         if (queryOptions != null) {
             apply = queryOptions.apply();
         }
-        return service.listQueryResultsForResource(policyEventsResource, resourceId, this.client.apiVersion(), this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
+        return service.listQueryResultsForResource(policyEventsResource, resourceId, apiVersion, this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PolicyEventsQueryResultsInner>>>() {
                 @Override
                 public Observable<ServiceResponse<PolicyEventsQueryResultsInner>> call(Response<ResponseBody> response) {
@@ -920,11 +904,9 @@ public class PolicyEventsInner {
         if (policySetDefinitionName == null) {
             throw new IllegalArgumentException("Parameter policySetDefinitionName is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         final String policyEventsResource = "default";
         final String authorizationNamespace = "Microsoft.Authorization";
+        final String apiVersion = "2018-04-04";
         final QueryOptions queryOptions = null;
         Integer top = null;
         String orderBy = null;
@@ -933,7 +915,7 @@ public class PolicyEventsInner {
         DateTime to = null;
         String filter = null;
         String apply = null;
-        return service.listQueryResultsForPolicySetDefinition(policyEventsResource, subscriptionId, authorizationNamespace, policySetDefinitionName, this.client.apiVersion(), this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
+        return service.listQueryResultsForPolicySetDefinition(policyEventsResource, subscriptionId, authorizationNamespace, policySetDefinitionName, apiVersion, this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PolicyEventsQueryResultsInner>>>() {
                 @Override
                 public Observable<ServiceResponse<PolicyEventsQueryResultsInner>> call(Response<ResponseBody> response) {
@@ -1010,12 +992,10 @@ public class PolicyEventsInner {
         if (policySetDefinitionName == null) {
             throw new IllegalArgumentException("Parameter policySetDefinitionName is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(queryOptions);
         final String policyEventsResource = "default";
         final String authorizationNamespace = "Microsoft.Authorization";
+        final String apiVersion = "2018-04-04";
         Integer top = null;
         if (queryOptions != null) {
             top = queryOptions.top();
@@ -1044,7 +1024,7 @@ public class PolicyEventsInner {
         if (queryOptions != null) {
             apply = queryOptions.apply();
         }
-        return service.listQueryResultsForPolicySetDefinition(policyEventsResource, subscriptionId, authorizationNamespace, policySetDefinitionName, this.client.apiVersion(), this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
+        return service.listQueryResultsForPolicySetDefinition(policyEventsResource, subscriptionId, authorizationNamespace, policySetDefinitionName, apiVersion, this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PolicyEventsQueryResultsInner>>>() {
                 @Override
                 public Observable<ServiceResponse<PolicyEventsQueryResultsInner>> call(Response<ResponseBody> response) {
@@ -1124,11 +1104,9 @@ public class PolicyEventsInner {
         if (policyDefinitionName == null) {
             throw new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         final String policyEventsResource = "default";
         final String authorizationNamespace = "Microsoft.Authorization";
+        final String apiVersion = "2018-04-04";
         final QueryOptions queryOptions = null;
         Integer top = null;
         String orderBy = null;
@@ -1137,7 +1115,7 @@ public class PolicyEventsInner {
         DateTime to = null;
         String filter = null;
         String apply = null;
-        return service.listQueryResultsForPolicyDefinition(policyEventsResource, subscriptionId, authorizationNamespace, policyDefinitionName, this.client.apiVersion(), this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
+        return service.listQueryResultsForPolicyDefinition(policyEventsResource, subscriptionId, authorizationNamespace, policyDefinitionName, apiVersion, this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PolicyEventsQueryResultsInner>>>() {
                 @Override
                 public Observable<ServiceResponse<PolicyEventsQueryResultsInner>> call(Response<ResponseBody> response) {
@@ -1214,12 +1192,10 @@ public class PolicyEventsInner {
         if (policyDefinitionName == null) {
             throw new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(queryOptions);
         final String policyEventsResource = "default";
         final String authorizationNamespace = "Microsoft.Authorization";
+        final String apiVersion = "2018-04-04";
         Integer top = null;
         if (queryOptions != null) {
             top = queryOptions.top();
@@ -1248,7 +1224,7 @@ public class PolicyEventsInner {
         if (queryOptions != null) {
             apply = queryOptions.apply();
         }
-        return service.listQueryResultsForPolicyDefinition(policyEventsResource, subscriptionId, authorizationNamespace, policyDefinitionName, this.client.apiVersion(), this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
+        return service.listQueryResultsForPolicyDefinition(policyEventsResource, subscriptionId, authorizationNamespace, policyDefinitionName, apiVersion, this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PolicyEventsQueryResultsInner>>>() {
                 @Override
                 public Observable<ServiceResponse<PolicyEventsQueryResultsInner>> call(Response<ResponseBody> response) {
@@ -1328,11 +1304,9 @@ public class PolicyEventsInner {
         if (policyAssignmentName == null) {
             throw new IllegalArgumentException("Parameter policyAssignmentName is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         final String policyEventsResource = "default";
         final String authorizationNamespace = "Microsoft.Authorization";
+        final String apiVersion = "2018-04-04";
         final QueryOptions queryOptions = null;
         Integer top = null;
         String orderBy = null;
@@ -1341,7 +1315,7 @@ public class PolicyEventsInner {
         DateTime to = null;
         String filter = null;
         String apply = null;
-        return service.listQueryResultsForSubscriptionLevelPolicyAssignment(policyEventsResource, subscriptionId, authorizationNamespace, policyAssignmentName, this.client.apiVersion(), this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
+        return service.listQueryResultsForSubscriptionLevelPolicyAssignment(policyEventsResource, subscriptionId, authorizationNamespace, policyAssignmentName, apiVersion, this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PolicyEventsQueryResultsInner>>>() {
                 @Override
                 public Observable<ServiceResponse<PolicyEventsQueryResultsInner>> call(Response<ResponseBody> response) {
@@ -1418,12 +1392,10 @@ public class PolicyEventsInner {
         if (policyAssignmentName == null) {
             throw new IllegalArgumentException("Parameter policyAssignmentName is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(queryOptions);
         final String policyEventsResource = "default";
         final String authorizationNamespace = "Microsoft.Authorization";
+        final String apiVersion = "2018-04-04";
         Integer top = null;
         if (queryOptions != null) {
             top = queryOptions.top();
@@ -1452,7 +1424,7 @@ public class PolicyEventsInner {
         if (queryOptions != null) {
             apply = queryOptions.apply();
         }
-        return service.listQueryResultsForSubscriptionLevelPolicyAssignment(policyEventsResource, subscriptionId, authorizationNamespace, policyAssignmentName, this.client.apiVersion(), this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
+        return service.listQueryResultsForSubscriptionLevelPolicyAssignment(policyEventsResource, subscriptionId, authorizationNamespace, policyAssignmentName, apiVersion, this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PolicyEventsQueryResultsInner>>>() {
                 @Override
                 public Observable<ServiceResponse<PolicyEventsQueryResultsInner>> call(Response<ResponseBody> response) {
@@ -1539,11 +1511,9 @@ public class PolicyEventsInner {
         if (policyAssignmentName == null) {
             throw new IllegalArgumentException("Parameter policyAssignmentName is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         final String policyEventsResource = "default";
         final String authorizationNamespace = "Microsoft.Authorization";
+        final String apiVersion = "2018-04-04";
         final QueryOptions queryOptions = null;
         Integer top = null;
         String orderBy = null;
@@ -1552,7 +1522,7 @@ public class PolicyEventsInner {
         DateTime to = null;
         String filter = null;
         String apply = null;
-        return service.listQueryResultsForResourceGroupLevelPolicyAssignment(policyEventsResource, subscriptionId, resourceGroupName, authorizationNamespace, policyAssignmentName, this.client.apiVersion(), this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
+        return service.listQueryResultsForResourceGroupLevelPolicyAssignment(policyEventsResource, subscriptionId, resourceGroupName, authorizationNamespace, policyAssignmentName, apiVersion, this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PolicyEventsQueryResultsInner>>>() {
                 @Override
                 public Observable<ServiceResponse<PolicyEventsQueryResultsInner>> call(Response<ResponseBody> response) {
@@ -1636,12 +1606,10 @@ public class PolicyEventsInner {
         if (policyAssignmentName == null) {
             throw new IllegalArgumentException("Parameter policyAssignmentName is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(queryOptions);
         final String policyEventsResource = "default";
         final String authorizationNamespace = "Microsoft.Authorization";
+        final String apiVersion = "2018-04-04";
         Integer top = null;
         if (queryOptions != null) {
             top = queryOptions.top();
@@ -1670,7 +1638,7 @@ public class PolicyEventsInner {
         if (queryOptions != null) {
             apply = queryOptions.apply();
         }
-        return service.listQueryResultsForResourceGroupLevelPolicyAssignment(policyEventsResource, subscriptionId, resourceGroupName, authorizationNamespace, policyAssignmentName, this.client.apiVersion(), this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
+        return service.listQueryResultsForResourceGroupLevelPolicyAssignment(policyEventsResource, subscriptionId, resourceGroupName, authorizationNamespace, policyAssignmentName, apiVersion, this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PolicyEventsQueryResultsInner>>>() {
                 @Override
                 public Observable<ServiceResponse<PolicyEventsQueryResultsInner>> call(Response<ResponseBody> response) {
@@ -1743,10 +1711,8 @@ public class PolicyEventsInner {
         if (scope == null) {
             throw new IllegalArgumentException("Parameter scope is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.getMetadata(scope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2018-04-04";
+        return service.getMetadata(scope, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<String>>>() {
                 @Override
                 public Observable<ServiceResponse<String>> call(Response<ResponseBody> response) {

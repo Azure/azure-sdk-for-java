@@ -16,6 +16,8 @@ import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.arm.resources.AzureConfigurable;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
+import com.microsoft.azure.management.policyinsights.v2018_07_01_preview.PolicyTrackedResources;
+import com.microsoft.azure.management.policyinsights.v2018_07_01_preview.Remediations;
 import com.microsoft.azure.management.policyinsights.v2018_07_01_preview.PolicyEvents;
 import com.microsoft.azure.management.policyinsights.v2018_07_01_preview.PolicyStates;
 import com.microsoft.azure.management.policyinsights.v2018_07_01_preview.Operations;
@@ -26,6 +28,8 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
  * Entry point to Azure PolicyInsights resource management.
  */
 public final class PolicyInsightsManager extends ManagerCore<PolicyInsightsManager, PolicyInsightsClientImpl> {
+    private PolicyTrackedResources policyTrackedResources;
+    private Remediations remediations;
     private PolicyEvents policyEvents;
     private PolicyStates policyStates;
     private Operations operations;
@@ -71,6 +75,26 @@ public final class PolicyInsightsManager extends ManagerCore<PolicyInsightsManag
         * @return the interface exposing PolicyInsights management API entry points that work across subscriptions
         */
         PolicyInsightsManager authenticate(AzureTokenCredentials credentials);
+    }
+
+    /**
+     * @return Entry point to manage PolicyTrackedResources.
+     */
+    public PolicyTrackedResources policyTrackedResources() {
+        if (this.policyTrackedResources == null) {
+            this.policyTrackedResources = new PolicyTrackedResourcesImpl(this);
+        }
+        return this.policyTrackedResources;
+    }
+
+    /**
+     * @return Entry point to manage Remediations.
+     */
+    public Remediations remediations() {
+        if (this.remediations == null) {
+            this.remediations = new RemediationsImpl(this);
+        }
+        return this.remediations;
     }
 
     /**

@@ -28,18 +28,6 @@ public class PolicyInsightsClientImpl extends AzureServiceClient {
         return this.azureClient;
     }
 
-    /** API version to use with the client requests. */
-    private String apiVersion;
-
-    /**
-     * Gets API version to use with the client requests.
-     *
-     * @return the apiVersion value.
-     */
-    public String apiVersion() {
-        return this.apiVersion;
-    }
-
     /** Gets or sets the preferred language for the response. */
     private String acceptLanguage;
 
@@ -107,6 +95,32 @@ public class PolicyInsightsClientImpl extends AzureServiceClient {
     public PolicyInsightsClientImpl withGenerateClientRequestId(boolean generateClientRequestId) {
         this.generateClientRequestId = generateClientRequestId;
         return this;
+    }
+
+    /**
+     * The PolicyTrackedResourcesInner object to access its operations.
+     */
+    private PolicyTrackedResourcesInner policyTrackedResources;
+
+    /**
+     * Gets the PolicyTrackedResourcesInner object to access its operations.
+     * @return the PolicyTrackedResourcesInner object.
+     */
+    public PolicyTrackedResourcesInner policyTrackedResources() {
+        return this.policyTrackedResources;
+    }
+
+    /**
+     * The RemediationsInner object to access its operations.
+     */
+    private RemediationsInner remediations;
+
+    /**
+     * Gets the RemediationsInner object to access its operations.
+     * @return the RemediationsInner object.
+     */
+    public RemediationsInner remediations() {
+        return this.remediations;
     }
 
     /**
@@ -179,10 +193,11 @@ public class PolicyInsightsClientImpl extends AzureServiceClient {
     }
 
     protected void initialize() {
-        this.apiVersion = "2018-04-04";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
+        this.policyTrackedResources = new PolicyTrackedResourcesInner(restClient().retrofit(), this);
+        this.remediations = new RemediationsInner(restClient().retrofit(), this);
         this.policyEvents = new PolicyEventsInner(restClient().retrofit(), this);
         this.policyStates = new PolicyStatesInner(restClient().retrofit(), this);
         this.operations = new OperationsInner(restClient().retrofit(), this);
@@ -196,6 +211,6 @@ public class PolicyInsightsClientImpl extends AzureServiceClient {
      */
     @Override
     public String userAgent() {
-        return String.format("%s (%s, %s)", super.userAgent(), "PolicyInsightsClient", "2018-04-04");
+        return String.format("%s (%s)", super.userAgent(), "PolicyInsightsClient");
     }
 }

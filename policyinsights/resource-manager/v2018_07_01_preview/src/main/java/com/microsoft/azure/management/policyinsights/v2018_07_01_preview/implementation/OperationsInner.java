@@ -101,10 +101,8 @@ public class OperationsInner {
      * @return the observable to the OperationsListResultsInner object
      */
     public Observable<ServiceResponse<OperationsListResultsInner>> listWithServiceResponseAsync() {
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.list(this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2018-04-04";
+        return service.list(apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationsListResultsInner>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationsListResultsInner>> call(Response<ResponseBody> response) {
@@ -118,7 +116,7 @@ public class OperationsInner {
             });
     }
 
-    private ServiceResponse<OperationsListResultsInner> listDelegate(Response<ResponseBody> response) throws QueryFailureException, IOException, IllegalArgumentException {
+    private ServiceResponse<OperationsListResultsInner> listDelegate(Response<ResponseBody> response) throws QueryFailureException, IOException {
         return this.client.restClient().responseBuilderFactory().<OperationsListResultsInner, QueryFailureException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<OperationsListResultsInner>() { }.getType())
                 .registerError(QueryFailureException.class)

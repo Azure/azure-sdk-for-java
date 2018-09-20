@@ -22,6 +22,12 @@ public class QueryOptions {
     private Integer top;
 
     /**
+     * OData filter expression.
+     */
+    @JsonProperty(value = "")
+    private String filter;
+
+    /**
      * Ordering expression using OData notation. One or more comma-separated
      * column names with an optional "desc" (the default) or "asc", e.g.
      * "$orderby=PolicyAssignmentId, ResourceId asc".
@@ -52,12 +58,6 @@ public class QueryOptions {
     private DateTime to;
 
     /**
-     * OData filter expression.
-     */
-    @JsonProperty(value = "")
-    private String filter;
-
-    /**
      * OData apply expression for aggregations.
      */
     @JsonProperty(value = "")
@@ -80,6 +80,26 @@ public class QueryOptions {
      */
     public QueryOptions withTop(Integer top) {
         this.top = top;
+        return this;
+    }
+
+    /**
+     * Get oData filter expression.
+     *
+     * @return the filter value
+     */
+    public String filter() {
+        return this.filter;
+    }
+
+    /**
+     * Set oData filter expression.
+     *
+     * @param filter the filter value to set
+     * @return the QueryOptions object itself.
+     */
+    public QueryOptions withFilter(String filter) {
+        this.filter = filter;
         return this;
     }
 
@@ -160,26 +180,6 @@ public class QueryOptions {
      */
     public QueryOptions withTo(DateTime to) {
         this.to = to;
-        return this;
-    }
-
-    /**
-     * Get oData filter expression.
-     *
-     * @return the filter value
-     */
-    public String filter() {
-        return this.filter;
-    }
-
-    /**
-     * Set oData filter expression.
-     *
-     * @param filter the filter value to set
-     * @return the QueryOptions object itself.
-     */
-    public QueryOptions withFilter(String filter) {
-        this.filter = filter;
         return this;
     }
 
