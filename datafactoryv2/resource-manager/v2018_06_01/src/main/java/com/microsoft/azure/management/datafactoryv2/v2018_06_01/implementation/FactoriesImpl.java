@@ -23,7 +23,9 @@ import rx.functions.Func1;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.GitHubAccessTokenResponse;
+import com.microsoft.azure.management.datafactoryv2.v2018_06_01.DataPlaneReadOnlyTokenResponse;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.GitHubAccessTokenRequest;
+import com.microsoft.azure.management.datafactoryv2.v2018_06_01.DataPlaneReadOnlyTokenRequest;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.FactoryRepoUpdate;
 
 class FactoriesImpl extends GroupableResourcesCoreImpl<Factory, FactoryImpl, FactoryInner, FactoriesInner, DataFactoryManager>  implements Factories {
@@ -136,6 +138,18 @@ class FactoriesImpl extends GroupableResourcesCoreImpl<Factory, FactoryImpl, Fac
             @Override
             public GitHubAccessTokenResponse call(GitHubAccessTokenResponseInner inner) {
                 return new GitHubAccessTokenResponseImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<DataPlaneReadOnlyTokenResponse> getDataPlaneReadOnlyTokenAsync(String resourceGroupName, String factoryName, DataPlaneReadOnlyTokenRequest dataPlaneReadOnlyTokenRequest) {
+        FactoriesInner client = this.inner();
+        return client.getDataPlaneReadOnlyTokenAsync(resourceGroupName, factoryName, dataPlaneReadOnlyTokenRequest)
+        .map(new Func1<DataPlaneReadOnlyTokenResponseInner, DataPlaneReadOnlyTokenResponse>() {
+            @Override
+            public DataPlaneReadOnlyTokenResponse call(DataPlaneReadOnlyTokenResponseInner inner) {
+                return new DataPlaneReadOnlyTokenResponseImpl(inner, manager());
             }
         });
     }
