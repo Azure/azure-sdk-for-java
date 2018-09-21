@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.iotcentral.v2018_09_01;
 
+import com.microsoft.rest.ErrorResponseBody;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**

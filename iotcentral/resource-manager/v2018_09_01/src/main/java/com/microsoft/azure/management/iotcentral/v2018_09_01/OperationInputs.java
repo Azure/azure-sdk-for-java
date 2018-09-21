@@ -17,8 +17,14 @@ public class OperationInputs {
     /**
      * The name of the IoT Central application instance to check.
      */
-    @JsonProperty(value = "name", required = true)
+    @JsonProperty(value = "name")
     private String name;
+
+    /**
+     * The subdomain of the IoT Central application instance to check.
+     */
+    @JsonProperty(value = "subdomain")
+    private String subdomain;
 
     /**
      * The name of the IoT Central resource name to query.
@@ -43,6 +49,26 @@ public class OperationInputs {
      */
     public OperationInputs withName(String name) {
         this.name = name;
+        return this;
+    }
+
+    /**
+     * Get the subdomain of the IoT Central application instance to check.
+     *
+     * @return the subdomain value
+     */
+    public String subdomain() {
+        return this.subdomain;
+    }
+
+    /**
+     * Set the subdomain of the IoT Central application instance to check.
+     *
+     * @param subdomain the subdomain value to set
+     * @return the OperationInputs object itself.
+     */
+    public OperationInputs withSubdomain(String subdomain) {
+        this.subdomain = subdomain;
         return this;
     }
 
