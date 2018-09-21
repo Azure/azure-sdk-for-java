@@ -32,10 +32,10 @@ public class SendLargeMessageTest extends ApiTestBase {
 
     public static void initializeEventHubClients(ConnectionStringBuilder connStr) throws Exception {
 
-        ehClient = EventHubClient.create(connStr.toString(), TestContext.EXECUTOR_SERVICE).get();
+        ehClient = EventHubClient.createSync(connStr.toString(), TestContext.EXECUTOR_SERVICE);
         sender = ehClient.createPartitionSender(partitionId).get();
 
-        receiverHub = EventHubClient.create(connStr.toString(), TestContext.EXECUTOR_SERVICE).get();
+        receiverHub = EventHubClient.createSync(connStr.toString(), TestContext.EXECUTOR_SERVICE);
         receiver = receiverHub.createReceiver(TestContext.getConsumerGroupName(), partitionId, EventPosition.fromEnqueuedTime(Instant.now())).get();
     }
 

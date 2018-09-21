@@ -4,6 +4,7 @@
  */
 package com.microsoft.azure.eventhubs.impl;
 
+import com.microsoft.azure.eventhubs.TransportType;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
@@ -29,10 +30,28 @@ public class ConnectionHandler extends BaseHandler {
 
     private final AmqpConnection messagingFactory;
 
-    public ConnectionHandler(final AmqpConnection messagingFactory) {
+    protected ConnectionHandler(final AmqpConnection messagingFactory) {
 
         add(new Handshaker());
         this.messagingFactory = messagingFactory;
+    }
+
+    static ConnectionHandler create(TransportType transportType, AmqpConnection messagingFactory) {
+        switch (transportType) {
+            case AMQP_WEB_SOCKETS:
+                if (WebSocketProxyConnectionHandler.shouldUseProxy(messagingFactory.getHostName())) {
+                    return new WebSocketProxyConnectionHandler(messagingFactory);
+                } else {
+                    return new WebSocketConnectionHandler(messagingFactory);
+                }
+            case AMQP:
+            default:
+                return new ConnectionHandler(messagingFactory);
+        }
+    }
+
+    protected AmqpConnection getMessagingFactory() {
+        return this.messagingFactory;
     }
 
     private static SslDomain makeDomain(SslDomain.Mode mode) {
@@ -49,7 +68,10 @@ public class ConnectionHandler extends BaseHandler {
     public void onConnectionInit(Event event) {
 
         final Connection connection = event.getConnection();
-        final String hostName = event.getReactor().getConnectionAddress(connection);
+        final String hostName = new StringBuilder(this.messagingFactory.getHostName())
+                                    .append(":")
+                                    .append(String.valueOf(this.getProtocolPort()))
+                                        .toString();
 
         connection.setHostname(hostName);
         connection.setContainer(StringUtil.getRandomString());
@@ -72,9 +94,37 @@ public class ConnectionHandler extends BaseHandler {
     }
 
     protected void addTransportLayers(final Event event, final TransportInternal transport) {
+        final SslDomain domain = makeDomain(SslDomain.Mode.CLIENT);
+        transport.ssl(domain);
     }
 
-    protected int getPort() {
+    protected void notifyTransportErrors(final Event event) {
+        // no-op
+    }
+
+    /**
+     * HostName to be used for socket creation.
+     * for ex: in case of proxy server - this could be proxy ip address
+     * @return host name
+     */
+    public String getOutboundSocketHostName() {
+        return messagingFactory.getHostName();
+    }
+
+    /**
+     * port used to create socket.
+     * for ex: in case of talking to event hubs service via proxy - use proxy port
+     * @return port
+     */
+    protected int getOutboundSocketPort() {
+        return this.getProtocolPort();
+    }
+
+    /**
+     * Port used on connection open frame
+     * @return port
+     */
+    protected int getProtocolPort() {
         return ClientConstants.AMQPS_PORT;
     }
 
@@ -88,9 +138,6 @@ public class ConnectionHandler extends BaseHandler {
         final Transport transport = event.getTransport();
 
         this.addTransportLayers(event, (TransportInternal) transport);
-
-        final SslDomain domain = makeDomain(SslDomain.Mode.CLIENT);
-        transport.ssl(domain);
     }
 
     @Override
@@ -126,6 +173,8 @@ public class ConnectionHandler extends BaseHandler {
 
         // onTransportError event is not handled by the global IO Handler for cleanup
         transport.unbind();
+
+        this.notifyTransportErrors(event);
     }
 
     @Override
