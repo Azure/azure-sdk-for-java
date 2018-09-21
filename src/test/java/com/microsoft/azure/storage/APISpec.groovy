@@ -171,8 +171,14 @@ class APISpec extends Specification {
     }
 
     static getGenericCreds(String accountType) {
-        return new SharedKeyCredentials(System.getenv().get(accountType + "ACCOUNT_NAME"),
-                System.getenv().get(accountType + "ACCOUNT_KEY"))
+        String accountName = System.getenv().get(accountType + "ACCOUNT_NAME")
+        String accountKey = System.getenv().get(accountType + "ACCOUNT_KEY")
+        if (accountName == null || accountKey == null) {
+            System.out.println("Account name or key for the " + accountType + " account was null. Test's requiring " +
+                    "these credentials will fail.")
+            throw new Exception()
+        }
+        return new SharedKeyCredentials(accountName, accountKey)
     }
 
     static HttpClient getHttpClient() {
@@ -187,13 +193,25 @@ class APISpec extends Specification {
         PipelineOptions po = new PipelineOptions()
         po.withClient(getHttpClient())
 
+        // Logging errors can be helpful for debugging in Travis.
+        po.withLogger(new HttpPipelineLogger() {
+            @Override
+            HttpPipelineLogLevel minimumLogLevel() {
+                HttpPipelineLogLevel.ERROR
+            }
+
+            @Override
+            void log(HttpPipelineLogLevel httpPipelineLogLevel, String s, Object... objects) {
+                System.out.println(String.format(s, objects))
+            }
+        })
+
         HttpPipeline pipeline = StorageURL.createPipeline(creds, po)
 
         return new ServiceURL(new URL("http://" + creds.getAccountName() + ".blob.core.windows.net"), pipeline)
     }
 
     static void cleanupContainers() throws MalformedURLException {
-        // We don't need to clean up containers if we are playing back
         // Create a new pipeline without any proxies
         HttpPipeline pipeline = StorageURL.createPipeline(primaryCreds, new PipelineOptions())
 
@@ -239,6 +257,36 @@ class APISpec extends Specification {
     }
 
     def setup() {
+        /*
+        We'll let primary creds throw and crash if there are no credentials specified because everything else will fail.
+         */
+        primaryCreds = getGenericCreds("")
+        primaryServiceURL = getGenericServiceURL(primaryCreds)
+
+        /*
+        It's feasible someone wants to test a specific subset of tests, so we'll still attempt to create each of the
+        ServiceURLs separately. We don't really need to take any action here, as we've already reported to the user,
+        so we just swallow the exception and let the relevant tests fail later. Perhaps we can add annotations or
+        something in the future.
+         */
+        try {
+            alternateCreds = getGenericCreds("SECONDARY_")
+            alternateServiceURL = getGenericServiceURL(alternateCreds)
+        }
+        catch (Exception e) {
+        }
+        try {
+            blobStorageServiceURL = getGenericServiceURL(getGenericCreds("BLOB_STORAGE_"))
+        }
+        catch (Exception e) {
+        }
+        try {
+            premiumServiceURL = getGenericServiceURL(getGenericCreds("PREMIUM_"))
+        }
+        catch (Exception e) {
+        }
+
+
         cu = primaryServiceURL.createContainerURL(generateContainerName())
         cu.create(null, null, null).blockingGet()
     }
