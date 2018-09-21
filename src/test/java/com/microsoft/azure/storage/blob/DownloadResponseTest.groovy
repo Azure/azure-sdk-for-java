@@ -138,7 +138,8 @@ class DownloadResponseTest extends APISpec {
 
     def "Getter IA"() {
         setup:
-        def flowable = new DownloadResponseMockFlowable(DownloadResponseMockFlowable.RR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK)
+        def flowable = new DownloadResponseMockFlowable(
+                DownloadResponseMockFlowable.RR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK)
 
         when:
         def response = new DownloadResponse(flowable.getter(new HTTPGetterInfo()).blockingGet()

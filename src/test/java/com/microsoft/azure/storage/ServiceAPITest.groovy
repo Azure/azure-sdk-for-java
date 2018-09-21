@@ -15,31 +15,8 @@
 
 package com.microsoft.azure.storage
 
-import com.microsoft.azure.storage.blob.AnonymousCredentials
-import com.microsoft.azure.storage.blob.BlobURLParts
-import com.microsoft.azure.storage.blob.ContainerListingDetails
-import com.microsoft.azure.storage.blob.ContainerURL
-import com.microsoft.azure.storage.blob.ListContainersOptions
-import com.microsoft.azure.storage.blob.Metadata
-import com.microsoft.azure.storage.blob.PipelineOptions
-import com.microsoft.azure.storage.blob.ServiceURL
-import com.microsoft.azure.storage.blob.StorageException
-import com.microsoft.azure.storage.blob.StorageURL
-import com.microsoft.azure.storage.blob.URLParser
-import com.microsoft.azure.storage.blob.models.ContainerItem
-import com.microsoft.azure.storage.blob.models.CorsRule
-import com.microsoft.azure.storage.blob.models.Logging
-import com.microsoft.azure.storage.blob.models.Metrics
-import com.microsoft.azure.storage.blob.models.RetentionPolicy
-import com.microsoft.azure.storage.blob.models.ServiceGetAccountInfoHeaders
-import com.microsoft.azure.storage.blob.models.ServiceGetPropertiesHeaders
-import com.microsoft.azure.storage.blob.models.ServiceGetStatisticsHeaders
-import com.microsoft.azure.storage.blob.models.ServiceGetStatisticsResponse
-import com.microsoft.azure.storage.blob.models.ServiceListContainersSegmentHeaders
-import com.microsoft.azure.storage.blob.models.ServiceListContainersSegmentResponse
-import com.microsoft.azure.storage.blob.models.ServiceSetPropertiesHeaders
-import com.microsoft.azure.storage.blob.models.StaticWebsite
-import com.microsoft.azure.storage.blob.models.StorageServiceProperties
+import com.microsoft.azure.storage.blob.*
+import com.microsoft.azure.storage.blob.models.*
 import com.microsoft.rest.v2.http.HttpPipeline
 
 class ServiceAPITest extends APISpec {

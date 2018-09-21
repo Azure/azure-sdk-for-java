@@ -17,8 +17,8 @@ package com.microsoft.azure.storage
 
 import com.microsoft.azure.storage.blob.*
 import com.microsoft.azure.storage.blob.models.*
-import com.microsoft.rest.v2.http.UnexpectedLengthException
 import com.microsoft.rest.v2.http.HttpPipeline
+import com.microsoft.rest.v2.http.UnexpectedLengthException
 import io.reactivex.Flowable
 import spock.lang.Unroll
 
@@ -50,7 +50,7 @@ class PageBlobAPITest extends APISpec {
 
     def "Create min"() {
         expect:
-        bu.create(512).blockingGet().statusCode() == 201
+        bu.create(PageBlobURL.PAGE_BYTES).blockingGet().statusCode() == 201
     }
 
     def "Create sequence number"() {
@@ -193,7 +193,7 @@ class PageBlobAPITest extends APISpec {
 
     def "Upload page min"() {
         expect:
-        bu.uploadPages(new PageRange().withStart(0).withEnd(PageBlobURL.PAGE_BYTES-1),
+        bu.uploadPages(new PageRange().withStart(0).withEnd(PageBlobURL.PAGE_BYTES - 1),
                 Flowable.just(getRandomData(PageBlobURL.PAGE_BYTES)))
     }
 
@@ -325,7 +325,7 @@ class PageBlobAPITest extends APISpec {
 
     def "Clear page min"() {
         expect:
-        bu.clearPages(new PageRange().withStart(0).withEnd(PageBlobURL.PAGE_BYTES-1))
+        bu.clearPages(new PageRange().withStart(0).withEnd(PageBlobURL.PAGE_BYTES - 1))
     }
 
     @Unroll
@@ -435,7 +435,7 @@ class PageBlobAPITest extends APISpec {
         response.statusCode() == 200
         response.body().pageRange().size() == 1
         validateBasicHeaders(headers)
-        headers.blobContentLength() == (long)PageBlobURL.PAGE_BYTES
+        headers.blobContentLength() == (long) PageBlobURL.PAGE_BYTES
     }
 
     def "Get page ranges min"() {

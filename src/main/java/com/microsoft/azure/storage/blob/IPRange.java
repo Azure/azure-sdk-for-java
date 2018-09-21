@@ -15,7 +15,6 @@
 package com.microsoft.azure.storage.blob;
 
 import java.net.Inet4Address;
-import java.net.UnknownHostException;
 
 /**
  * This type specifies a continuous range of IP addresses. It is used to limit permissions on SAS tokens. Null may be
@@ -30,15 +29,36 @@ public final class IPRange {
 
     private String ipMax;
 
+    public IPRange() {
+    }
+
     /**
-     * A {@link Inet4Address} representing the minimum IP address of the range.
+     * Creates a {@code IPRange} from the specified string.
+     *
+     * @param rangeStr
+     *         The {@code String} representation of the {@code IPRange}.
+     *
+     * @return The {@code IPRange} generated from the {@code String}.
+     */
+    public static IPRange parse(String rangeStr) {
+        String[] addrs = rangeStr.split("-");
+        IPRange range = new IPRange();
+        range.ipMin = addrs[0];
+        if (addrs.length > 1) {
+            range.ipMax = addrs[1];
+        }
+        return range;
+    }
+
+    /**
+     * The minimum IP address of the range.
      */
     public String ipMin() {
         return ipMin;
     }
 
     /**
-     * A {@link Inet4Address} representing the minimum IP address of the range.
+     * The minimum IP address of the range.
      */
     public IPRange withIpMin(String ipMin) {
         this.ipMin = ipMin;
@@ -46,27 +66,24 @@ public final class IPRange {
     }
 
     /**
-     * A {@link Inet4Address} representing the maximum IP address of the range.
+     * The maximum IP address of the range.
      */
     public String ipMax() {
         return ipMax;
     }
 
     /**
-     * A {@link Inet4Address} representing the maximum IP address of the range.
+     * The maximum IP address of the range.
      */
     public IPRange withIpMax(String ipMax) {
         this.ipMax = ipMax;
         return this;
     }
 
-    public IPRange() { }
-
     /**
      * Output the single IP address or range of IP addresses for.
      *
-     * @return
-     *      The single IP address or range of IP addresses formatted as a {@code String}.
+     * @return The single IP address or range of IP addresses formatted as a {@code String}.
      */
     @Override
     public String toString() {
@@ -81,24 +98,5 @@ public final class IPRange {
         }
 
         return str.toString();
-    }
-
-    /**
-     * Creates a {@code IPRange} from the specified string.
-     *
-     * @param rangeStr
-     *      The {@code String} representation of the {@code IPRange}.
-     *
-     * @return
-     *      The {@code IPRange} generated from the {@code String}.
-     */
-    public static IPRange parse(String rangeStr) {
-        String[] addrs = rangeStr.split("-");
-        IPRange range = new IPRange();
-        range.ipMin = addrs[0];
-        if (addrs.length > 1) {
-            range.ipMax = addrs[1];
-        }
-        return range;
     }
 }

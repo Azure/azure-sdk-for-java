@@ -32,17 +32,18 @@ public final class AnonymousCredentials implements ICredentials {
     /**
      * Returns an empty instance of {@code AnonymousCredentials}.
      */
-    public AnonymousCredentials(){}
+    public AnonymousCredentials() {
+    }
 
     /**
      * Creates a new {@code AnonymousCredentialsPolicy}.
      *
      * @param nextRequestPolicy
-     *      The next {@code RequestPolicy} in the pipeline which will be called after this policy completes.
+     *         The next {@code RequestPolicy} in the pipeline which will be called after this policy completes.
      * @param options
-     *      Unused.
-     * @return
-     *      A {@code RequestPolicy} object to be inserted into the {@link HttpPipeline}.
+     *         Unused.
+     *
+     * @return A {@code RequestPolicy} object to be inserted into the {@link HttpPipeline}.
      */
     @Override
     public RequestPolicy create(RequestPolicy nextRequestPolicy, RequestPolicyOptions options) {
@@ -68,10 +69,12 @@ public final class AnonymousCredentials implements ICredentials {
          * For anonymous credentials, this is effectively a no-op.
          *
          * @param request
-         *      An {@link HttpRequest} object representing the storage request.
-         * @return
-         *      A Single containing the {@link HttpResponse} if successful.
+         *         An {@link HttpRequest} object representing the storage request.
+         *
+         * @return A Single containing the {@link HttpResponse} if successful.
          */
-        public Single<HttpResponse> sendAsync(HttpRequest request) { return nextPolicy.sendAsync(request); }
+        public Single<HttpResponse> sendAsync(HttpRequest request) {
+            return nextPolicy.sendAsync(request);
+        }
     }
 }

@@ -33,6 +33,10 @@ public final class ListContainersOptions {
 
     private Integer maxResults;
 
+    public ListContainersOptions() {
+        this.details = ContainerListingDetails.NONE;
+    }
+
     /**
      * {@link ContainerListingDetails}
      */
@@ -81,9 +85,5 @@ public final class ListContainersOptions {
         }
         this.maxResults = maxResults;
         return this;
-    }
-
-    public ListContainersOptions() {
-        this.details = ContainerListingDetails.NONE;
     }
 }

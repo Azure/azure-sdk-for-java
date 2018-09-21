@@ -15,9 +15,6 @@
 
 package com.microsoft.azure.storage.blob;
 
-import java.io.IOException;
-import java.nio.ByteBuffer;
-
 import com.microsoft.azure.storage.APISpec;
 import com.microsoft.azure.storage.blob.models.BlobDownloadHeaders;
 import com.microsoft.azure.storage.blob.models.BlobDownloadResponse;
@@ -28,6 +25,8 @@ import io.reactivex.Flowable;
 import io.reactivex.Single;
 import org.reactivestreams.Subscriber;
 
+import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.HashMap;
 
 public class DownloadResponseMockFlowable extends Flowable<ByteBuffer> {
@@ -54,19 +53,11 @@ public class DownloadResponseMockFlowable extends Flowable<ByteBuffer> {
 
     private ByteBuffer scenarioData;
 
-    public ByteBuffer getScenarioData() {
-        return this.scenarioData;
-    }
-
-    public int getTryNumber() {
-        return this.tryNumber;
-    }
-
     public DownloadResponseMockFlowable(int scenario) {
         this.scenario = scenario;
-        switch(this.scenario) {
+        switch (this.scenario) {
             case RR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK:
-                this.scenarioData = APISpec.getRandomData(512*1024);
+                this.scenarioData = APISpec.getRandomData(512 * 1024);
                 break;
             case RR_TEST_SCENARIO_SUCCESSFUL_MULTI_CHUNK:
                 // Fall through
@@ -75,19 +66,27 @@ public class DownloadResponseMockFlowable extends Flowable<ByteBuffer> {
         }
     }
 
+    public ByteBuffer getScenarioData() {
+        return this.scenarioData;
+    }
+
+    public int getTryNumber() {
+        return this.tryNumber;
+    }
+
     @Override
     protected void subscribeActual(Subscriber<? super ByteBuffer> s) {
-        switch(this.scenario) {
+        switch (this.scenario) {
             case RR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK:
                 s.onNext(this.scenarioData.duplicate());
                 s.onComplete();
                 break;
 
             case RR_TEST_SCENARIO_SUCCESSFUL_MULTI_CHUNK:
-                for (int i=0; i<4; i++) {
+                for (int i = 0; i < 4; i++) {
                     ByteBuffer toSend = this.scenarioData.duplicate();
-                    toSend.position(i*256);
-                    toSend.limit((i+1)*256);
+                    toSend.position(i * 256);
+                    toSend.limit((i + 1) * 256);
                     s.onNext(toSend);
                 }
                 s.onComplete();
@@ -96,26 +95,26 @@ public class DownloadResponseMockFlowable extends Flowable<ByteBuffer> {
             case RR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES:
                 if (this.tryNumber <= 3) {
                     // tryNumber is 1 indexed, so we have to sub 1.
-                    if (this.info.offset() != (this.tryNumber-1)*256 ||
-                            this.info.count() != this.scenarioData.remaining() - (this.tryNumber-1) * 256) {
+                    if (this.info.offset() != (this.tryNumber - 1) * 256 ||
+                            this.info.count() != this.scenarioData.remaining() - (this.tryNumber - 1) * 256) {
                         s.onError(new IllegalArgumentException("Info values are incorrect."));
                         return;
                     }
                     ByteBuffer toSend = this.scenarioData.duplicate();
-                    toSend.position((this.tryNumber-1)*256);
-                    toSend.limit(this.tryNumber*256);
+                    toSend.position((this.tryNumber - 1) * 256);
+                    toSend.limit(this.tryNumber * 256);
                     s.onNext(toSend);
                     s.onError(new IOException());
                     break;
                 }
-                if (this.info.offset() != (this.tryNumber-1)*256 ||
-                        this.info.count() != this.scenarioData.remaining() - (this.tryNumber-1) * 256) {
+                if (this.info.offset() != (this.tryNumber - 1) * 256 ||
+                        this.info.count() != this.scenarioData.remaining() - (this.tryNumber - 1) * 256) {
                     s.onError(new IllegalArgumentException("Info values are incorrect."));
                     return;
                 }
                 ByteBuffer toSend = this.scenarioData.duplicate();
-                toSend.position((this.tryNumber-1)*256);
-                toSend.limit(this.tryNumber*256);
+                toSend.position((this.tryNumber - 1) * 256);
+                toSend.limit(this.tryNumber * 256);
                 s.onNext(toSend);
                 s.onComplete();
                 break;
@@ -171,7 +170,7 @@ public class DownloadResponseMockFlowable extends Flowable<ByteBuffer> {
                 new BlobDownloadResponse(null, 200, new BlobDownloadHeaders(), new HashMap<>(), this);
         DownloadResponse response = new DownloadResponse(rawResponse, info, this::getter);
 
-        switch(this.scenario) {
+        switch (this.scenario) {
             case RR_TEST_SCENARIO_ERROR_GETTER_MIDDLE:
                 switch (this.tryNumber) {
                     case 1:

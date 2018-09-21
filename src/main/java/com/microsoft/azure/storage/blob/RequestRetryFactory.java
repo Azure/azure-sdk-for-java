@@ -18,16 +18,12 @@ import com.microsoft.rest.v2.http.*;
 import com.microsoft.rest.v2.policy.RequestPolicy;
 import com.microsoft.rest.v2.policy.RequestPolicyFactory;
 import com.microsoft.rest.v2.policy.RequestPolicyOptions;
-import io.netty.channel.ChannelException;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.SocketException;
-import java.net.SocketTimeoutException;
 import java.nio.ByteBuffer;
-import java.nio.channels.ClosedChannelException;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -54,13 +50,16 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
         this.requestRetryOptions = requestRetryOptions == null ? RequestRetryOptions.DEFAULT : requestRetryOptions;
     }
 
+    @Override
+    public RequestPolicy create(RequestPolicy next, RequestPolicyOptions options) {
+        return new RequestRetryPolicy(next, this.requestRetryOptions);
+    }
+
     private final class RequestRetryPolicy implements RequestPolicy {
 
         private final RequestPolicy nextPolicy;
 
         private final RequestRetryOptions requestRetryOptions;
-
-        // TODO: It looked like there was some stuff in here to log how long the operation took. Do we want that?
 
         private RequestRetryPolicy(RequestPolicy nextPolicy, RequestRetryOptions requestRetryOptions) {
             this.nextPolicy = nextPolicy;
@@ -99,6 +98,7 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
          *         Before each try, we'll select either the primary or secondary URL if appropriate.
          * @param attempt
          *         This indicates the total number of attempts to send the request.
+         *
          * @return A single containing either the successful response or an error that was not retryable because either
          * the maxTries was exceeded or retries will not mitigate the issue.
          */
@@ -195,11 +195,11 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
                         the root cause.
                          */
                         if (throwable instanceof UnexpectedLengthException && attempt > 1) {
-                                return Single.error(new IllegalStateException("The request failed because the " +
-                                        "size of the contents of the provided Flowable did not match the provided " +
-                                        "data size upon attempting to retry. This is likely caused by the Flowable " +
-                                        "not being replayable. To support retries, all Flowables must produce the " +
-                                        "same data for each subscriber. Please ensure this behavior.", throwable));
+                            return Single.error(new IllegalStateException("The request failed because the " +
+                                    "size of the contents of the provided Flowable did not match the provided " +
+                                    "data size upon attempting to retry. This is likely caused by the Flowable " +
+                                    "not being replayable. To support retries, all Flowables must produce the " +
+                                    "same data for each subscriber. Please ensure this behavior.", throwable));
                         }
                         String action;
                         /*
@@ -227,16 +227,11 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
                             int newPrimaryTry = !tryingPrimary || !considerSecondary ?
                                     primaryTry + 1 : primaryTry;
                             return attemptAsync(httpRequest, newPrimaryTry, considerSecondary,
-                                            attempt + 1);
+                                    attempt + 1);
 
                         }
                         return Single.error(throwable);
                     });
         }
-    }
-
-    @Override
-    public RequestPolicy create(RequestPolicy next, RequestPolicyOptions options) {
-        return new RequestRetryPolicy(next, this.requestRetryOptions);
     }
 }

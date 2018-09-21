@@ -21,7 +21,7 @@ public enum RetryPolicyType {
     /**
      * Tells the pipeline to use an exponential back-off retry policy.
      */
-	EXPONENTIAL,
+    EXPONENTIAL,
 
     /**
      * Tells the pipeline to use a fixed back-off retry policy.

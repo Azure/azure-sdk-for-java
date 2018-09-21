@@ -14,8 +14,8 @@
  */
 package com.microsoft.azure.storage.blob;
 
-import com.microsoft.azure.storage.blob.models.ModifiedAccessConditions;
 import com.microsoft.azure.storage.blob.models.LeaseAccessConditions;
+import com.microsoft.azure.storage.blob.models.ModifiedAccessConditions;
 
 /**
  * This class contains values which will restrict the successful operation of a variety of requests to the conditions
@@ -33,14 +33,26 @@ public final class BlobAccessConditions {
     private LeaseAccessConditions leaseAccessConditions;
 
     /**
-     * {@link ModifiedAccessConditions}
+     * Creates an instance which has fields set to non-null, empty values.
+     */
+    public BlobAccessConditions() {
+        modifiedAccessConditions = new ModifiedAccessConditions();
+        leaseAccessConditions = new LeaseAccessConditions();
+    }
+
+    /**
+     * Standard HTTP Access conditions related to the modification of data. ETag and LastModifiedTime are used to
+     * construct conditions related to when the blob was changed relative to the given request. The request
+     * will fail if the specified condition is not satisfied.
      */
     public ModifiedAccessConditions modifiedAccessConditions() {
         return modifiedAccessConditions;
     }
 
     /**
-     * {@link ModifiedAccessConditions}
+     * Standard HTTP Access conditions related to the modification of data. ETag and LastModifiedTime are used to
+     * construct conditions related to when the blob was changed relative to the given request. The request
+     * will fail if the specified condition is not satisfied.
      */
     public BlobAccessConditions withModifiedAccessConditions(ModifiedAccessConditions modifiedAccessConditions) {
         this.modifiedAccessConditions = modifiedAccessConditions;
@@ -48,22 +60,19 @@ public final class BlobAccessConditions {
     }
 
     /**
-     * {@link LeaseAccessConditions}
+     * By setting lease access conditions, requests will fail if the provided lease does not match the active lease on
+     * the blob.
      */
     public LeaseAccessConditions leaseAccessConditions() {
         return leaseAccessConditions;
     }
 
     /**
-     * {@link LeaseAccessConditions}
+     * By setting lease access conditions, requests will fail if the provided lease does not match the active lease on
+     * the blob.
      */
     public BlobAccessConditions withLeaseAccessConditions(LeaseAccessConditions leaseAccessConditions) {
         this.leaseAccessConditions = leaseAccessConditions;
         return this;
-    }
-
-    public BlobAccessConditions() {
-        modifiedAccessConditions = new ModifiedAccessConditions();
-        leaseAccessConditions = new LeaseAccessConditions();
     }
 }

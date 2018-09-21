@@ -14,10 +14,10 @@
  */
 package com.microsoft.azure.storage.blob;
 
+import com.microsoft.rest.v2.http.HttpPipeline;
 import com.microsoft.rest.v2.http.HttpPipelineLogLevel;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
-import com.microsoft.rest.v2.http.HttpPipeline;
 import com.microsoft.rest.v2.policy.RequestPolicy;
 import com.microsoft.rest.v2.policy.RequestPolicyFactory;
 import com.microsoft.rest.v2.policy.RequestPolicyOptions;
@@ -41,10 +41,15 @@ public final class LoggingFactory implements RequestPolicyFactory {
      * requests and responses.
      *
      * @param loggingOptions
-     *      The configurations for this factory. Null will indicate use of the default options.
+     *         The configurations for this factory. Null will indicate use of the default options.
      */
     public LoggingFactory(LoggingOptions loggingOptions) {
         this.loggingOptions = loggingOptions == null ? LoggingOptions.DEFAULT : loggingOptions;
+    }
+
+    @Override
+    public RequestPolicy create(RequestPolicy next, RequestPolicyOptions options) {
+        return new LoggingPolicy(this, next, options);
     }
 
     private final class LoggingPolicy implements RequestPolicy {
@@ -67,11 +72,11 @@ public final class LoggingFactory implements RequestPolicyFactory {
          * {@link com.microsoft.rest.v2.http.HttpPipeline}.
          *
          * @param nextPolicy
-         *      {@link RequestPolicy}
+         *         {@link RequestPolicy}
          * @param options
-         *      {@link RequestPolicyOptions}
+         *         {@link RequestPolicyOptions}
          * @param factory
-         *      {@link LoggingFactory}
+         *         {@link LoggingFactory}
          */
         private LoggingPolicy(LoggingFactory factory, RequestPolicy nextPolicy, RequestPolicyOptions options) {
             this.factory = factory;
@@ -83,9 +88,9 @@ public final class LoggingFactory implements RequestPolicyFactory {
          * Logs as appropriate.
          *
          * @param request
-         *      The request to log.
-         * @return
-         *      A {@link Single} representing the {@link HttpResponse} that will arrive asynchronously.
+         *         The request to log.
+         *
+         * @return A {@link Single} representing the {@link HttpResponse} that will arrive asynchronously.
          */
         @Override
         public Single<HttpResponse> sendAsync(final HttpRequest request) {
@@ -150,8 +155,7 @@ public final class LoggingFactory implements RequestPolicyFactory {
                                     response.statusCode());
                             if (currentLevel == HttpPipelineLogLevel.WARNING) {
                                 logMessage += errorString;
-                            }
-                            else {
+                            } else {
                                 logMessage = errorString;
                             }
 
@@ -167,10 +171,5 @@ public final class LoggingFactory implements RequestPolicyFactory {
                         }
                     });
         }
-    }
-
-    @Override
-    public RequestPolicy create(RequestPolicy next, RequestPolicyOptions options) {
-        return new LoggingPolicy(this, next, options);
     }
 }

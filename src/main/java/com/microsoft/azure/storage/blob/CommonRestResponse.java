@@ -31,6 +31,11 @@ public final class CommonRestResponse {
 
     private BlockBlobCommitBlockListResponse commitBlockListResponse;
 
+    private CommonRestResponse() {
+        uploadBlobResponse = null;
+        commitBlockListResponse = null;
+    }
+
     static CommonRestResponse createFromPutBlobResponse(BlockBlobUploadResponse response) {
         CommonRestResponse commonRestResponse = new CommonRestResponse();
         commonRestResponse.uploadBlobResponse = response;
@@ -43,14 +48,8 @@ public final class CommonRestResponse {
         return commonRestResponse;
     }
 
-    private CommonRestResponse() {
-        uploadBlobResponse = null;
-        commitBlockListResponse = null;
-    }
-
     /**
-     * @return
-     *      The status code for the response
+     * @return The status code for the response
      */
     public int statusCode() {
         if (uploadBlobResponse != null) {
@@ -60,8 +59,7 @@ public final class CommonRestResponse {
     }
 
     /**
-     * @return
-     *      An HTTP Etag for the blob at the time of the request.
+     * @return An HTTP Etag for the blob at the time of the request.
      */
     public String eTag() {
         if (uploadBlobResponse != null) {
@@ -71,8 +69,7 @@ public final class CommonRestResponse {
     }
 
     /**
-     * @return
-     *      The time when the blob was last modified.
+     * @return The time when the blob was last modified.
      */
     public OffsetDateTime lastModified() {
         if (uploadBlobResponse != null) {
@@ -82,8 +79,7 @@ public final class CommonRestResponse {
     }
 
     /**
-     * @return
-     *      The id of the service request for which this is the response.
+     * @return The id of the service request for which this is the response.
      */
     public String requestId() {
         if (uploadBlobResponse != null) {
@@ -93,8 +89,7 @@ public final class CommonRestResponse {
     }
 
     /**
-     * @return
-     *      The date of the response.
+     * @return The date of the response.
      */
     public OffsetDateTime date() {
         if (uploadBlobResponse != null) {
@@ -104,8 +99,7 @@ public final class CommonRestResponse {
     }
 
     /**
-     * @return
-     *       The service version responding to the request.
+     * @return The service version responding to the request.
      */
     public String version() {
         if (uploadBlobResponse != null) {
@@ -115,8 +109,7 @@ public final class CommonRestResponse {
     }
 
     /**
-     * @return
-     *      The underlying response.
+     * @return The underlying response.
      */
     public RestResponse response() {
         if (uploadBlobResponse != null) {

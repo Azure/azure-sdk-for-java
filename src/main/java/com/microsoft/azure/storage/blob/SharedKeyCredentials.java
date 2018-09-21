@@ -19,7 +19,6 @@ import com.microsoft.rest.v2.policy.RequestPolicy;
 import com.microsoft.rest.v2.policy.RequestPolicyOptions;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.QueryStringDecoder;
-import io.reactivex.functions.Consumer;
 import io.reactivex.Single;
 
 import javax.crypto.Mac;
@@ -49,11 +48,12 @@ public final class SharedKeyCredentials implements ICredentials {
      * accountKey.
      *
      * @param accountName
-     *      The account name associated with the request.
+     *         The account name associated with the request.
      * @param accountKey
-     *      The account access key used to authenticate the request.
+     *         The account access key used to authenticate the request.
+     *
      * @throws InvalidKeyException
-     *      Thrown when the accountKey is ill-formatted.
+     *         Thrown when the accountKey is ill-formatted.
      */
     public SharedKeyCredentials(String accountName, String accountKey) throws InvalidKeyException {
         this.accountName = accountName;
@@ -63,65 +63,10 @@ public final class SharedKeyCredentials implements ICredentials {
     /**
      * Gets the account name associated with the request.
      *
-     * @return
-     *      The account name.
+     * @return The account name.
      */
     public String getAccountName() {
         return accountName;
-    }
-
-    private final class SharedKeyCredentialsPolicy implements RequestPolicy {
-
-        private final SharedKeyCredentials factory;
-
-        private final RequestPolicy nextPolicy;
-
-        private final RequestPolicyOptions options;
-
-        SharedKeyCredentialsPolicy(SharedKeyCredentials factory, RequestPolicy nextPolicy,
-                                   RequestPolicyOptions options) {
-            this.factory = factory;
-            this.nextPolicy = nextPolicy;
-            this.options = options;
-        }
-
-        /**
-         * Sign the request.
-         *
-         * @param request
-         *      The request to sign.
-         * @return
-         *      A {@link Single} representing the HTTP response that will arrive asynchronously.
-         */
-        @Override
-        public Single<HttpResponse> sendAsync(final HttpRequest request) {
-            if (request.headers().value(Constants.HeaderConstants.DATE) == null) {
-                request.headers().set(Constants.HeaderConstants.DATE,
-                        Utility.RFC1123GMTDateFormatter.format(OffsetDateTime.now()));
-            }
-            final String stringToSign = this.factory.buildStringToSign(request);
-            try {
-                final String computedBase64Signature = this.factory.computeHmac256(stringToSign);
-                request.headers().set(Constants.HeaderConstants.AUTHORIZATION,
-                        "SharedKey " + this.factory.accountName + ":" + computedBase64Signature);
-            } catch (Exception e) {
-                return Single.error(e);
-            }
-
-            Single<HttpResponse> response = nextPolicy.sendAsync(request);
-            return response.doOnSuccess(new Consumer<HttpResponse>() {
-                @Override
-                public void accept(HttpResponse response) {
-                    if (response.statusCode() == HttpResponseStatus.FORBIDDEN.code()) {
-                        if (options.shouldLog(HttpPipelineLogLevel.ERROR)) {
-                            options.log(HttpPipelineLogLevel.ERROR,
-                                    "===== HTTP Forbidden status, String-to-Sign:%n'%s'%n==================%n",
-                                    stringToSign);
-                        }
-                    }
-                }
-            });
-        }
     }
 
     @Override
@@ -133,9 +78,9 @@ public final class SharedKeyCredentials implements ICredentials {
      * Constructs a canonicalized string for signing a request.
      *
      * @param request
-     *      The request to canonicalize.
-     * @return
-     *      A canonicalized string.
+     *         The request to canonicalize.
+     *
+     * @return A canonicalized string.
      */
     private String buildStringToSign(final HttpRequest request) {
         final HttpHeaders httpHeaders = request.headers();
@@ -168,7 +113,7 @@ public final class SharedKeyCredentials implements ICredentials {
 
     private String getAdditionalXmsHeaders(final HttpHeaders headers) {
         // Add only headers that begin with 'x-ms-'
-        final ArrayList<String> xmsHeaderNameArray = new ArrayList<String>();
+        final ArrayList<String> xmsHeaderNameArray = new ArrayList<>();
         for (HttpHeader header : headers) {
             String lowerCaseHeader = header.name().toLowerCase(Locale.ROOT);
             if (lowerCaseHeader.startsWith(Constants.PREFIX_FOR_STORAGE_HEADER)) {
@@ -200,9 +145,9 @@ public final class SharedKeyCredentials implements ICredentials {
      * Canonicalized the resource to sign.
      *
      * @param requestURL
-     *      A {@code java.net.URL} of the request.
-     * @return
-     *      The canonicalized resource to sign.
+     *         A {@code java.net.URL} of the request.
+     *
+     * @return The canonicalized resource to sign.
      */
     private String getCanonicalizedResource(URL requestURL) {
 
@@ -211,15 +156,14 @@ public final class SharedKeyCredentials implements ICredentials {
         canonicalizedResource.append(this.accountName);
 
         // Note that AbsolutePath starts with a '/'.
-        if(requestURL.getPath().length() > 0) {
+        if (requestURL.getPath().length() > 0) {
             canonicalizedResource.append(requestURL.getPath());
-        }
-        else {
+        } else {
             canonicalizedResource.append('/');
         }
 
         // check for no query params and return
-        if(requestURL.getQuery() == null) {
+        if (requestURL.getQuery() == null) {
             return canonicalizedResource.toString();
         }
 
@@ -227,7 +171,7 @@ public final class SharedKeyCredentials implements ICredentials {
         QueryStringDecoder queryDecoder = new QueryStringDecoder("?" + requestURL.getQuery());
         Map<String, List<String>> queryParams = queryDecoder.parameters();
 
-        ArrayList<String> queryParamNames = new ArrayList<String>(queryParams.keySet());
+        ArrayList<String> queryParamNames = new ArrayList<>(queryParams.keySet());
         Collections.sort(queryParamNames);
 
         for (String queryParamName : queryParamNames) {
@@ -247,11 +191,12 @@ public final class SharedKeyCredentials implements ICredentials {
      * has been specified for the request.
      *
      * @param httpHeaders
-     *      A {@code HttpHeaders} object that represents the headers for the request.
+     *         A {@code HttpHeaders} object that represents the headers for the request.
      * @param headerName
-     *      A {@code String} that represents the name of the header being requested.
+     *         A {@code String} that represents the name of the header being requested.
+     *
      * @return A {@code String} that represents the header value, or {@code null} if there is no corresponding
-     *      header value for {@code headerName}.
+     * header value for {@code headerName}.
      */
     private String getStandardHeaderValue(final HttpHeaders httpHeaders, final String headerName) {
         final String headerValue = httpHeaders.value(headerName);
@@ -264,11 +209,12 @@ public final class SharedKeyCredentials implements ICredentials {
      * Package-private because it is used to generate SAS signatures.
      *
      * @param stringToSign
-     *      The UTF-8-encoded string to sign.
-     * @return
-     *      A {@code String} that contains the HMAC-SHA256-encoded signature.
+     *         The UTF-8-encoded string to sign.
+     *
+     * @return A {@code String} that contains the HMAC-SHA256-encoded signature.
+     *
      * @throws InvalidKeyException
-     *      If the accountKey is not a valid Base64-encoded string.
+     *         If the accountKey is not a valid Base64-encoded string.
      */
     String computeHmac256(final String stringToSign) throws InvalidKeyException {
         try {
@@ -281,9 +227,59 @@ public final class SharedKeyCredentials implements ICredentials {
             hmacSha256.init(new SecretKeySpec(this.accountKey, "HmacSHA256"));
             byte[] utf8Bytes = stringToSign.getBytes(Constants.UTF8_CHARSET);
             return Base64.getEncoder().encodeToString(hmacSha256.doFinal(utf8Bytes));
-        }
-        catch (final UnsupportedEncodingException | NoSuchAlgorithmException e) {
+        } catch (final UnsupportedEncodingException | NoSuchAlgorithmException e) {
             throw new Error(e);
+        }
+    }
+
+    private final class SharedKeyCredentialsPolicy implements RequestPolicy {
+
+        private final SharedKeyCredentials factory;
+
+        private final RequestPolicy nextPolicy;
+
+        private final RequestPolicyOptions options;
+
+        SharedKeyCredentialsPolicy(SharedKeyCredentials factory, RequestPolicy nextPolicy,
+                RequestPolicyOptions options) {
+            this.factory = factory;
+            this.nextPolicy = nextPolicy;
+            this.options = options;
+        }
+
+        /**
+         * Sign the request.
+         *
+         * @param request
+         *         The request to sign.
+         *
+         * @return A {@link Single} representing the HTTP response that will arrive asynchronously.
+         */
+        @Override
+        public Single<HttpResponse> sendAsync(final HttpRequest request) {
+            if (request.headers().value(Constants.HeaderConstants.DATE) == null) {
+                request.headers().set(Constants.HeaderConstants.DATE,
+                        Utility.RFC1123GMTDateFormatter.format(OffsetDateTime.now()));
+            }
+            final String stringToSign = this.factory.buildStringToSign(request);
+            try {
+                final String computedBase64Signature = this.factory.computeHmac256(stringToSign);
+                request.headers().set(Constants.HeaderConstants.AUTHORIZATION,
+                        "SharedKey " + this.factory.accountName + ":" + computedBase64Signature);
+            } catch (Exception e) {
+                return Single.error(e);
+            }
+
+            Single<HttpResponse> response = nextPolicy.sendAsync(request);
+            return response.doOnSuccess(response1 -> {
+                if (response1.statusCode() == HttpResponseStatus.FORBIDDEN.code()) {
+                    if (options.shouldLog(HttpPipelineLogLevel.ERROR)) {
+                        options.log(HttpPipelineLogLevel.ERROR,
+                                "===== HTTP Forbidden status, String-to-Sign:%n'%s'%n==================%n",
+                                stringToSign);
+                    }
+                }
+            });
         }
     }
 }

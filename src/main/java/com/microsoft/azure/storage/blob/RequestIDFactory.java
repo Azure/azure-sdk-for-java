@@ -32,6 +32,11 @@ import java.util.UUID;
  */
 public final class RequestIDFactory implements RequestPolicyFactory {
 
+    @Override
+    public RequestPolicy create(RequestPolicy next, RequestPolicyOptions options) {
+        return new RequestIDPolicy(next, options);
+    }
+
     private final class RequestIDPolicy implements RequestPolicy {
         private final RequestPolicy nextPolicy;
 
@@ -46,18 +51,13 @@ public final class RequestIDFactory implements RequestPolicyFactory {
          * Add the unique client request ID to the request.
          *
          * @param request
-         *      the request to populate with the client request ID
-         * @return
-         *      A {@link Single} representing the {@link HttpResponse} that will arrive asynchronously.
+         *         the request to populate with the client request ID
+         *
+         * @return A {@link Single} representing the {@link HttpResponse} that will arrive asynchronously.
          */
         public Single<HttpResponse> sendAsync(HttpRequest request) {
             request.headers().set(Constants.HeaderConstants.CLIENT_REQUEST_ID_HEADER, UUID.randomUUID().toString());
             return nextPolicy.sendAsync(request);
         }
-    }
-
-    @Override
-    public RequestPolicy create(RequestPolicy next, RequestPolicyOptions options) {
-        return new RequestIDPolicy(next, options);
     }
 }

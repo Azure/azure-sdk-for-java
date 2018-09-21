@@ -49,10 +49,6 @@ public final class TransferManager {
     /**
      * Uploads the contents of a file to a block blob in parallel, breaking it into block-size chunks if necessary.
      *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=tm_file "Sample code for TransferManager.uploadFileToBlockBlob")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
-     *
      * @param file
      *         The file to upload.
      * @param blockBlobURL
@@ -65,7 +61,12 @@ public final class TransferManager {
      *         {@code fileLength/blockLength} must be less than or equal to {@link BlockBlobURL#MAX_BLOCKS}.
      * @param options
      *         {@link TransferManagerUploadToBlockBlobOptions}
+     *
      * @return Emits the successful response.
+     *
+     * @apiNote ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=tm_file "Sample code for TransferManager.uploadFileToBlockBlob")] \n
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public static Single<CommonRestResponse> uploadFileToBlockBlob(
             final AsynchronousFileChannel file, final BlockBlobURL blockBlobURL, final int blockLength,
@@ -79,9 +80,6 @@ public final class TransferManager {
 
         // If the size of the file can fit in a single upload, do it this way.
         if (file.size() < BlockBlobURL.MAX_UPLOAD_BLOB_BYTES) {
-            if (optionsReal.progressReceiver() != null) {
-                // TODO: Wrap in a progress stream once progress is written.
-            }
 
             // Transform the specific RestResponse into a CommonRestResponse.
             return blockBlobURL.upload(FlowableUtil.readFile(file), file.size(), optionsReal.httpHeaders(),
@@ -104,8 +102,6 @@ public final class TransferManager {
                 .concatMapEager(i -> {
                     int count = Math.min(blockLength, (int) (file.size() - i * blockLength));
                     Flowable<ByteBuffer> data = FlowableUtil.readFile(file, i * blockLength, count);
-
-                    // TODO: progress
 
                     final String blockId = Base64.getEncoder().encodeToString(
                             UUID.randomUUID().toString().getBytes());
@@ -161,10 +157,6 @@ public final class TransferManager {
     /**
      * Downloads a file directly into a file, splitting the download into chunks and parallelizing as necessary.
      *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=tm_file "Sample code for TransferManager.downloadBlobToFile")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
-     *
      * @param file
      *         The destination file to which the blob will be written.
      * @param blobURL
@@ -173,12 +165,18 @@ public final class TransferManager {
      *         {@link BlobRange}
      * @param options
      *         {@link TransferManagerDownloadFromBlobOptions}
+     *
      * @return A {@code Completable} that will signal when the download is complete.
+     *
+     * @apiNote ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=tm_file "Sample code for TransferManager.downloadBlobToFile")] \n
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public static Single<BlobDownloadHeaders> downloadBlobToFile(AsynchronousFileChannel file, BlobURL blobURL,
             BlobRange range, TransferManagerDownloadFromBlobOptions options) {
         BlobRange r = range == null ? BlobRange.DEFAULT : range;
-        TransferManagerDownloadFromBlobOptions o = options == null ? TransferManagerDownloadFromBlobOptions.DEFAULT : options;
+        TransferManagerDownloadFromBlobOptions o = options == null ?
+                TransferManagerDownloadFromBlobOptions.DEFAULT : options;
         Utility.assertNotNull("blobURL", blobURL);
         Utility.assertNotNull("file", file);
 
@@ -221,7 +219,6 @@ public final class TransferManager {
                     .lastOrError();
         });
     }
-
 
 
     private static Single<Pair<Long, BlobAccessConditions>> getSetupSingle(BlobURL blobURL, BlobRange r,

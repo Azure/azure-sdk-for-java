@@ -16,14 +16,8 @@
 package com.microsoft.azure.storage.blob
 
 import com.microsoft.azure.storage.APISpec
-import com.microsoft.rest.v2.http.HttpHeaders
-import com.microsoft.rest.v2.http.HttpMethod
-import com.microsoft.rest.v2.http.HttpPipeline
-import com.microsoft.rest.v2.http.HttpRequest
-import com.microsoft.rest.v2.http.HttpResponse
-import com.microsoft.rest.v2.http.UnexpectedLengthException
+import com.microsoft.rest.v2.http.*
 import io.reactivex.Flowable
-
 import spock.lang.Unroll
 
 // Tests for package-private functionality.
@@ -72,9 +66,9 @@ class RetryTest extends APISpec {
         HttpPipeline pipeline = HttpPipeline.build(new RequestRetryFactory(retryTestOptions), retryTestFactory)
 
         when:
-       HttpResponse response = pipeline.sendRequestAsync(new HttpRequest(null, HttpMethod.GET, retryTestURL,
-               new HttpHeaders(), Flowable.just(RequestRetryTestFactory.RETRY_TEST_DEFAULT_DATA), null))
-               .blockingGet()
+        HttpResponse response = pipeline.sendRequestAsync(new HttpRequest(null, HttpMethod.GET, retryTestURL,
+                new HttpHeaders(), Flowable.just(RequestRetryTestFactory.RETRY_TEST_DEFAULT_DATA), null))
+                .blockingGet()
 
         then:
         response.statusCode() == 400

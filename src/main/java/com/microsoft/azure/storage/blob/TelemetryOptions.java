@@ -25,16 +25,15 @@ public final class TelemetryOptions {
 
     /**
      * @param userAgentPrefix
-     *      A string prepended to each request's User-Agent and sent to the service. The service records.
-     *      the user-agent in logs for diagnostics and tracking of client requests.
+     *         A string prepended to each request's User-Agent and sent to the service. The service records.
+     *         the user-agent in logs for diagnostics and tracking of client requests.
      */
     public TelemetryOptions(String userAgentPrefix) {
         this.userAgentPrefix = userAgentPrefix;
     }
 
     /**
-     * @return
-     *      The user agent prefix.
+     * @return The user agent prefix.
      */
     public String userAgentPrefix() {
         return this.userAgentPrefix;
