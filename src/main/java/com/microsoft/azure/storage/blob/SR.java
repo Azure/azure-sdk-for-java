@@ -118,7 +118,7 @@ final class SR {
     public static final String STREAM_LENGTH_GREATER_THAN_4MB = "Invalid stream length, length must be less than or equal to 4 MB in size.";
     public static final String STREAM_LENGTH_GREATER_THAN_100MB = "Invalid stream length, length must be less than or equal to 100 MB in size.";
     public static final String STREAM_LENGTH_NEGATIVE = "Invalid stream length, specify -1 for unknown length stream, or a positive number of bytes.";
-    public static final String STRING_NOT_VALID = "The String is not a valid Base64-encoded string.";;
+    public static final String STRING_NOT_VALID = "The String is not a valid Base64-encoded string.";
     public static final String TAKE_COUNT_ZERO_OR_NEGATIVE = "Take count must be positive and greater than 0.";
     public static final String TOO_MANY_PATH_SEGMENTS = "The count of URL path segments (strings between '/' characters) as part of the blob name cannot exceed 254.";
     public static final String TOO_MANY_SHARED_ACCESS_POLICY_IDENTIFIERS = "Too many %d shared access policy identifiers provided. Server does not support setting more than %d on a single container, queue, or table.";

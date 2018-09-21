@@ -15,58 +15,8 @@
 
 package com.microsoft.azure.storage
 
-import com.microsoft.azure.storage.blob.AnonymousCredentials
-import com.microsoft.azure.storage.blob.AppendBlobURL
-import com.microsoft.azure.storage.blob.BlobURL
-import com.microsoft.azure.storage.blob.BlobListingDetails
-import com.microsoft.azure.storage.blob.BlockBlobURL
-import com.microsoft.azure.storage.blob.ContainerAccessConditions
-import com.microsoft.azure.storage.blob.ContainerURL
-
-import com.microsoft.azure.storage.blob.ListBlobsOptions
-import com.microsoft.azure.storage.blob.Metadata
-import com.microsoft.azure.storage.blob.PageBlobURL
-import com.microsoft.azure.storage.blob.PipelineOptions
-import com.microsoft.azure.storage.blob.ServiceURL
-import com.microsoft.azure.storage.blob.StorageException
-import com.microsoft.azure.storage.blob.StorageURL
-import com.microsoft.azure.storage.blob.models.AccessPolicy
-import com.microsoft.azure.storage.blob.models.AccessTier
-import com.microsoft.azure.storage.blob.models.AppendBlobCreateResponse
-import com.microsoft.azure.storage.blob.models.BlobGetPropertiesResponse
-import com.microsoft.azure.storage.blob.models.BlobItem
-import com.microsoft.azure.storage.blob.models.BlobType
-import com.microsoft.azure.storage.blob.models.ContainerAcquireLeaseHeaders
-import com.microsoft.azure.storage.blob.models.ContainerBreakLeaseHeaders
-import com.microsoft.azure.storage.blob.models.ContainerChangeLeaseHeaders
-import com.microsoft.azure.storage.blob.models.ContainerCreateHeaders
-import com.microsoft.azure.storage.blob.models.ContainerCreateResponse
-import com.microsoft.azure.storage.blob.models.ContainerDeleteHeaders
-import com.microsoft.azure.storage.blob.models.ContainerDeleteResponse
-import com.microsoft.azure.storage.blob.models.ContainerGetAccessPolicyHeaders
-import com.microsoft.azure.storage.blob.models.ContainerGetAccessPolicyResponse
-import com.microsoft.azure.storage.blob.models.ContainerGetAccountInfoHeaders
-import com.microsoft.azure.storage.blob.models.ContainerGetPropertiesHeaders
-import com.microsoft.azure.storage.blob.models.ContainerGetPropertiesResponse
-import com.microsoft.azure.storage.blob.models.ContainerListBlobFlatSegmentHeaders
-import com.microsoft.azure.storage.blob.models.ContainerListBlobFlatSegmentResponse
-import com.microsoft.azure.storage.blob.models.ContainerListBlobHierarchySegmentHeaders
-import com.microsoft.azure.storage.blob.models.ContainerListBlobHierarchySegmentResponse
-import com.microsoft.azure.storage.blob.models.ContainerReleaseLeaseHeaders
-import com.microsoft.azure.storage.blob.models.ContainerRenewLeaseHeaders
-import com.microsoft.azure.storage.blob.models.ContainerSetAccessPolicyHeaders
-import com.microsoft.azure.storage.blob.models.ContainerSetAccessPolicyResponse
-import com.microsoft.azure.storage.blob.models.ContainerSetMetadataHeaders
-import com.microsoft.azure.storage.blob.models.ContainerSetMetadataResponse
-import com.microsoft.azure.storage.blob.models.CopyStatusType
-import com.microsoft.azure.storage.blob.models.LeaseAccessConditions
-import com.microsoft.azure.storage.blob.models.LeaseDurationType
-import com.microsoft.azure.storage.blob.models.LeaseStateType
-import com.microsoft.azure.storage.blob.models.LeaseStatusType
-import com.microsoft.azure.storage.blob.models.ModifiedAccessConditions
-import com.microsoft.azure.storage.blob.models.PublicAccessType
-import com.microsoft.azure.storage.blob.models.SignedIdentifier
-import com.microsoft.azure.storage.blob.models.StorageErrorCode
+import com.microsoft.azure.storage.blob.*
+import com.microsoft.azure.storage.blob.models.*
 import com.microsoft.rest.v2.http.HttpPipeline
 import com.microsoft.rest.v2.http.HttpRequest
 import com.microsoft.rest.v2.http.HttpResponse
@@ -75,11 +25,10 @@ import com.microsoft.rest.v2.policy.RequestPolicyFactory
 import com.microsoft.rest.v2.policy.RequestPolicyOptions
 import io.reactivex.Flowable
 import io.reactivex.Single
-import spock.lang.*
+import spock.lang.Unroll
 
 import java.time.OffsetDateTime
 import java.time.ZoneId
-
 
 class ContainerAPITest extends APISpec {
 
@@ -278,7 +227,6 @@ class ContainerAPITest extends APISpec {
         key1  | value1 | key2   | value2
         null  | null   | null   | null
         "foo" | "bar"  | "fizz" | "buzz"
-        //TODO: invalid characters. empty metadata
     }
 
     @Unroll
@@ -990,7 +938,8 @@ class ContainerAPITest extends APISpec {
         setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         when:
-        List<BlobItem> blobs = cu.listBlobsHierarchySegment(null, "", options, null).blockingGet().body().segment().blobItems()
+        List<BlobItem> blobs = cu.listBlobsHierarchySegment(null, "", options, null)
+                .blockingGet().body().segment().blobItems()
 
         then:
         blobs.get(0).name() == normalName
@@ -1827,5 +1776,4 @@ class ContainerAPITest extends APISpec {
         then:
         notThrown(RuntimeException)
     }
-
 }

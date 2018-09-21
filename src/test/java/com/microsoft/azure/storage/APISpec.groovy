@@ -15,31 +15,10 @@
 
 package com.microsoft.azure.storage
 
-import com.microsoft.azure.storage.blob.BlobURL
-import com.microsoft.azure.storage.blob.ContainerURL
-
-import com.microsoft.azure.storage.blob.ListContainersOptions
-import com.microsoft.azure.storage.blob.PipelineOptions
-import com.microsoft.azure.storage.blob.ServiceURL
-import com.microsoft.azure.storage.blob.SharedKeyCredentials
-import com.microsoft.azure.storage.blob.StorageURL
-import com.microsoft.azure.storage.blob.models.AppendBlobCreateHeaders
-import com.microsoft.azure.storage.blob.models.BlobAcquireLeaseHeaders
-import com.microsoft.azure.storage.blob.models.BlobGetPropertiesHeaders
-import com.microsoft.azure.storage.blob.models.ContainerAcquireLeaseHeaders
-import com.microsoft.azure.storage.blob.models.ContainerGetPropertiesHeaders
-import com.microsoft.azure.storage.blob.models.ContainerItem
-import com.microsoft.azure.storage.blob.models.CopyStatusType
-import com.microsoft.azure.storage.blob.models.LeaseStateType
-import com.microsoft.azure.storage.blob.models.RetentionPolicy
-import com.microsoft.azure.storage.blob.models.StorageServiceProperties
+import com.microsoft.azure.storage.blob.*
+import com.microsoft.azure.storage.blob.models.*
 import com.microsoft.rest.v2.Context
-import com.microsoft.rest.v2.http.HttpClient
-import com.microsoft.rest.v2.http.HttpClientConfiguration
-import com.microsoft.rest.v2.http.HttpHeaders
-import com.microsoft.rest.v2.http.HttpPipeline
-import com.microsoft.rest.v2.http.HttpRequest
-import com.microsoft.rest.v2.http.HttpResponse
+import com.microsoft.rest.v2.http.*
 import com.microsoft.rest.v2.policy.RequestPolicy
 import com.microsoft.rest.v2.policy.RequestPolicyFactory
 import io.reactivex.Flowable
@@ -201,8 +180,7 @@ class APISpec extends Specification {
             HttpClientConfiguration configuration = new HttpClientConfiguration(
                     new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)))
             return HttpClient.createDefault(configuration)
-        }
-        else return HttpClient.createDefault()
+        } else return HttpClient.createDefault()
     }
 
     static ServiceURL getGenericServiceURL(SharedKeyCredentials creds) {
@@ -280,7 +258,7 @@ class APISpec extends Specification {
      *      The ETag value for this test. If {@code receivedEtag} is passed, that will signal that the test is expecting
      *      the blob's actual etag for this test, so it is retrieved.
      * @return
-     *      The appropriate etag value to run the current test.
+     * The appropriate etag value to run the current test.
      */
     def setupBlobMatchCondition(BlobURL bu, String match) {
         if (match == receivedEtag) {
@@ -302,7 +280,8 @@ class APISpec extends Specification {
      * @param leaseID
      *      The signalID. Values should only ever be {@code receivedLeaseID}, {@code garbageLeaseID}, or {@code null}.
      * @return
-     *      The actual leaseAccessConditions of the blob if recievedLeaseID is passed, otherwise whatever was passed will be returned.
+     * The actual leaseAccessConditions of the blob if recievedLeaseID is passed, otherwise whatever was passed will be
+     * returned.
      */
     def setupBlobLeaseCondition(BlobURL bu, String leaseID) {
         BlobAcquireLeaseHeaders headers = null
@@ -353,7 +332,7 @@ class APISpec extends Specification {
      * @param headers
      *      The object (may be headers object or response object) that has properties which expose these common headers.
      * @return
-     *      Whether or not the header values are appropriate.
+     * Whether or not the header values are appropriate.
      */
     def validateBasicHeaders(Object headers) {
         return headers.class.getMethod("eTag").invoke(headers) != null &&
@@ -370,7 +349,7 @@ class APISpec extends Specification {
                 headers.class.getMethod("contentEncoding").invoke(headers) == contentEncoding &&
                 headers.class.getMethod("contentLanguage").invoke(headers) == contentLangauge &&
                 headers.class.getMethod("contentMD5").invoke(headers) == contentMD5 &&
-                headers.class.getMethod("contentType").invoke(headers)  == contentType
+                headers.class.getMethod("contentType").invoke(headers) == contentType
 
     }
 
@@ -393,6 +372,7 @@ class APISpec extends Specification {
      about the status code, so we stub a response that always returns a given value for the status code. We never care
      about the number or nature of interactions with this stub.
      */
+
     def getStubResponse(int code) {
         return Stub(HttpResponse) {
             statusCode() >> code
@@ -404,6 +384,7 @@ class APISpec extends Specification {
     to play too nicely with mocked objects and the complex reflection stuff on both ends made it more difficult to work
     with than was worth it.
      */
+
     def getStubResponse(int code, Class responseHeadersType) {
         return new HttpResponse() {
 
@@ -454,8 +435,7 @@ class APISpec extends Specification {
             sendAsync(_) >> { HttpRequest request ->
                 if (!request.context().getData(defaultContextKey).isPresent()) {
                     return Single.error(new RuntimeException("Context key not present."))
-                }
-                else {
+                } else {
                     return Single.just(getStubResponse(successCode, responseHeadersType))
                 }
             }

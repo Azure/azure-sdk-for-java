@@ -32,6 +32,45 @@ public final class AccountSASResourceType {
     private boolean object;
 
     /**
+     * Initializes an {@code AccountSASResourceType} object with all fields set to false.
+     */
+    public AccountSASResourceType() {
+    }
+
+    /**
+     * Creates an {@code AccountSASResourceType} from the specified resource types string. This method will throw an
+     * {@code IllegalArgumentException} if it encounters a character that does not correspond to a valid resource type.
+     *
+     * @param resourceTypesString
+     *         A {@code String} which represents the {@code AccountSASResourceTypes}.
+     *
+     * @return A {@code AccountSASResourceType} generated from the given {@code String}.
+     */
+    public static AccountSASResourceType parse(String resourceTypesString) {
+        AccountSASResourceType resourceType = new AccountSASResourceType();
+
+        for (int i = 0; i < resourceTypesString.length(); i++) {
+            char c = resourceTypesString.charAt(i);
+            switch (c) {
+                case 's':
+                    resourceType.service = true;
+                    break;
+                case 'c':
+                    resourceType.container = true;
+                    break;
+                case 'o':
+                    resourceType.object = true;
+                    break;
+                default:
+                    throw new IllegalArgumentException(
+                            String.format(Locale.ROOT, SR.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE,
+                                    "Resource Types", resourceTypesString, c));
+            }
+        }
+        return resourceType;
+    }
+
+    /**
      * Permission to access service level APIs granted.
      */
     public boolean service() {
@@ -77,16 +116,10 @@ public final class AccountSASResourceType {
     }
 
     /**
-     * Initializes an {@code AccountSASResourceType} object with all fields set to false.
-     */
-    public AccountSASResourceType() {}
-
-    /**
      * Converts the given resource types to a {@code String}. Using this method will guarantee the resource types are in
      * an order accepted by the service.
      *
-     * @return
-     *      A {@code String} which represents the {@code AccountSASResourceTypes}.
+     * @return A {@code String} which represents the {@code AccountSASResourceTypes}.
      */
     @Override
     public String toString() {
@@ -107,38 +140,5 @@ public final class AccountSASResourceType {
         }
 
         return builder.toString();
-    }
-
-    /**
-     * Creates an {@code AccountSASResourceType} from the specified resource types string. This method will throw an
-     * {@code IllegalArgumentException} if it encounters a character that does not correspond to a valid resource type.
-     *
-     * @param resourceTypesString
-     *      A {@code String} which represents the {@code AccountSASResourceTypes}.
-     * @return
-     *      A {@code AccountSASResourceType} generated from the given {@code String}.
-     */
-    public static AccountSASResourceType parse(String resourceTypesString) {
-        AccountSASResourceType resourceType = new AccountSASResourceType();
-
-        for (int i=0; i<resourceTypesString.length(); i++) {
-            char c = resourceTypesString.charAt(i);
-            switch (c) {
-                case 's':
-                    resourceType.service = true;
-                    break;
-                case 'c':
-                    resourceType.container = true;
-                    break;
-                case 'o':
-                    resourceType.object = true;
-                    break;
-                default:
-                    throw new IllegalArgumentException(
-                            String.format(Locale.ROOT, SR.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE,
-                                    "Resource Types", resourceTypesString, c));
-            }
-        }
-        return resourceType;
     }
 }

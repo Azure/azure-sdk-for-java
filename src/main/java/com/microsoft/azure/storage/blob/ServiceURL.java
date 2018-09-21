@@ -22,7 +22,7 @@ import io.reactivex.Single;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import static com.microsoft.azure.storage.blob.Utility.*;
+import static com.microsoft.azure.storage.blob.Utility.addErrorWrappingToSingle;
 
 /**
  * Represents a URL to a blob service. This class does not hold any state about a particular storage account but is
@@ -37,16 +37,15 @@ public final class ServiceURL extends StorageURL {
      * Creates a {@code ServiceURL} object pointing to the account specified by the URL and using the provided pipeline
      * to make HTTP requests.
      *
-     * @apiNote
-     * ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_url "Sample code for ServiceURL constructor")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
-     *
      * @param url
-     *      A url to an Azure Storage account.
+     *         A url to an Azure Storage account.
      * @param pipeline
-     *      A pipeline which configures the behavior of HTTP exchanges. Please refer to the createPipeline method on
-     *      {@link StorageURL} for more information.
+     *         A {@code HttpPipeline} which configures the behavior of HTTP exchanges. Please refer to
+     *         {@link StorageURL#createPipeline(ICredentials, PipelineOptions)} for more information.
+     *
+     * @apiNote ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_url "Sample code for ServiceURL constructor")] \n
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public ServiceURL(URL url, HttpPipeline pipeline) {
         super(url, pipeline);
@@ -65,17 +64,16 @@ public final class ServiceURL extends StorageURL {
      * Creates a new {@link ServiceURL} with the given pipeline.
      *
      * @param pipeline
-     *      An {@link HttpPipeline} object to set.
-     * @return
-     *      A {@link ServiceURL} object with the given pipeline.
+     *         An {@link HttpPipeline} object to set.
+     *
+     * @return A {@link ServiceURL} object with the given pipeline.
      */
     public ServiceURL withPipeline(HttpPipeline pipeline) {
         try {
             return new ServiceURL(new URL(super.storageClient.url()), pipeline);
         } catch (MalformedURLException e) {
-            // TODO: remove
+            throw new RuntimeException(e);
         }
-        return null;
     }
 
     /**
@@ -85,21 +83,19 @@ public final class ServiceURL extends StorageURL {
      * Marker) to get the next segment. For more information, see
      * the <a href="https://docs.microsoft.com/rest/api/storageservices/list-containers2">Azure Docs</a>.
      *
-     * @apiNote
-     * ## Sample Code \n
+     * @param marker
+     *         Identifies the portion of the list to be returned with the next list operation.
+     *         This value is returned in the response of a previous list operation as the
+     *         ListContainersSegmentResponse.body().nextMarker(). Set to null to list the first segment.
+     * @param options
+     *         A {@link ListContainersOptions} which specifies what data should be returned by the service.
+     *
+     * @return Emits the successful response.
+     *
+     * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_list "Sample code for ServiceURL.listContainersSegment")] \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_list_helper "Helper code for ServiceURL.listContainersSegment")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
-     *
-     * @param marker
-     *      Identifies the portion of the list to be returned with the next list operation.
-     *      This value is returned in the response of a previous list operation as the
-     *      ListContainersSegmentResponse.body().nextMarker(). Set to null to list the first segment.
-     * @param options
-     *      A {@link ListContainersOptions} which specifies what data should be returned by the service.
-     *
-     * @return
-     *      Emits the successful response.
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<ServiceListContainersSegmentResponse> listContainersSegment(String marker,
             ListContainersOptions options) {
@@ -113,26 +109,25 @@ public final class ServiceURL extends StorageURL {
      * Marker) to get the next segment. For more information, see
      * the <a href="https://docs.microsoft.com/rest/api/storageservices/list-containers2">Azure Docs</a>.
      *
-     * @apiNote
-     * ## Sample Code \n
+     * @param marker
+     *         Identifies the portion of the list to be returned with the next list operation.
+     *         This value is returned in the response of a previous list operation as the
+     *         ListContainersSegmentResponse.body().nextMarker(). Set to null to list the first segment.
+     * @param options
+     *         A {@link ListContainersOptions} which specifies what data should be returned by the service.
+     * @param context
+     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *         {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
+     *         its parent, forming a linked list.
+     *
+     * @return Emits the successful response.
+     *
+     * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_list "Sample code for ServiceURL.listContainersSegment")] \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_list_helper "Helper code for ServiceURL.listContainersSegment")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
-     *
-     * @param marker
-     *      Identifies the portion of the list to be returned with the next list operation.
-     *      This value is returned in the response of a previous list operation as the
-     *      ListContainersSegmentResponse.body().nextMarker(). Set to null to list the first segment.
-     * @param options
-     *      A {@link ListContainersOptions} which specifies what data should be returned by the service.
-     * @param context
-     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *      parent, forming a linked list.
-     * @return
-     *      Emits the successful response.
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<ServiceListContainersSegmentResponse> listContainersSegment(String marker,
             ListContainersOptions options, Context context) {
@@ -148,13 +143,11 @@ public final class ServiceURL extends StorageURL {
      * Gets the properties of a storage account’s Blob service. For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-service-properties">Azure Docs</a>.
      *
-     * @apiNote
-     * ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_getsetprops "Sample code for ServiceURL.getProperties")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return Emits the successful response.
      *
-     * @return
-     *      Emits the successful response.
+     * @apiNote ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_getsetprops "Sample code for ServiceURL.getProperties")] \n
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<ServiceGetPropertiesResponse> getProperties() {
         return this.getProperties(null);
@@ -164,21 +157,18 @@ public final class ServiceURL extends StorageURL {
      * Gets the properties of a storage account’s Blob service. For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-service-properties">Azure Docs</a>.
      *
-     * @apiNote
-     * ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_getsetprops "Sample code for ServiceURL.getProperties")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
-     *
      * @param context
-     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *      parent, forming a linked list.
+     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *         {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
+     *         its parent, forming a linked list.
      *
-     * @return
-     *      Emits the successful response.
+     * @return Emits the successful response.
      *
+     * @apiNote ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_getsetprops "Sample code for ServiceURL.getProperties")] \n
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<ServiceGetPropertiesResponse> getProperties(Context context) {
         context = context == null ? Context.NONE : context;
@@ -193,16 +183,14 @@ public final class ServiceURL extends StorageURL {
      * Note that setting the default service version has no effect when using this client because this client explicitly
      * sets the version header on each request, overriding the default.
      *
-     * @apiNote
-     * ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_getsetprops "Sample code for ServiceURL.setProperties")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
-     *
      * @param properties
-     *      Configures the service.
+     *         Configures the service.
      *
-     * @return
-     *      Emits the successful response.
+     * @return Emits the successful response.
+     *
+     * @apiNote ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_getsetprops "Sample code for ServiceURL.setProperties")] \n
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<ServiceSetPropertiesResponse> setProperties(StorageServiceProperties properties) {
         return this.setProperties(properties, null);
@@ -214,28 +202,27 @@ public final class ServiceURL extends StorageURL {
      * Note that setting the default service version has no effect when using this client because this client explicitly
      * sets the version header on each request, overriding the default.
      *
-     * @apiNote
-     * ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_getsetprops "Sample code for ServiceURL.setProperties")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
-     *
      * @param properties
-     *      Configures the service.
+     *         Configures the service.
      * @param context
-     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *      parent, forming a linked list.
-     * @return
-     *      Emits the successful response.
+     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *         {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
+     *         its parent, forming a linked list.
+     *
+     * @return Emits the successful response.
+     *
+     * @apiNote ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_getsetprops "Sample code for ServiceURL.setProperties")] \n
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<ServiceSetPropertiesResponse> setProperties(StorageServiceProperties properties, Context context) {
         context = context == null ? Context.NONE : context;
 
         return addErrorWrappingToSingle(
                 this.storageClient.generatedServices().setPropertiesWithRestResponseAsync(context, properties, null,
-                null));
+                        null));
     }
 
     /**
@@ -244,13 +231,11 @@ public final class ServiceURL extends StorageURL {
      * information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-service-stats">Azure Docs</a>.
      *
-     * @apiNote
-     * ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_stats "Sample code for ServiceURL.getStats")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return Emits the successful response.
      *
-     * @return
-     *      Emits the successful response.
+     * @apiNote ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_stats "Sample code for ServiceURL.getStats")] \n
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<ServiceGetStatisticsResponse> getStatistics() {
         return this.getStatistics(null);
@@ -262,19 +247,18 @@ public final class ServiceURL extends StorageURL {
      * information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-service-stats">Azure Docs</a>.
      *
-     * @apiNote
-     * ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_stats "Sample code for ServiceURL.getStats")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
-     *
      * @param context
-     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *      parent, forming a linked list.
-     * @return
-     *      Emits the successful response.
+     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *         {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
+     *         its parent, forming a linked list.
+     *
+     * @return Emits the successful response.
+     *
+     * @apiNote ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_stats "Sample code for ServiceURL.getStats")] \n
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<ServiceGetStatisticsResponse> getStatistics(Context context) {
         context = context == null ? Context.NONE : context;
@@ -287,13 +271,11 @@ public final class ServiceURL extends StorageURL {
      * Returns the sku name and account kind for the account. For more information, please see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a>.
      *
-     * @apiNote
-     * ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=account_info "Sample code for ServiceURL.getAccountInfo")] \n
-     * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return Emits the successful response.
      *
-     * @return
-     *      Emits the successful response.
+     * @apiNote ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=account_info "Sample code for ServiceURL.getAccountInfo")] \n
+     * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<ServiceGetAccountInfoResponse> getAccountInfo() {
         return this.getAccountInfo(null);
@@ -303,19 +285,18 @@ public final class ServiceURL extends StorageURL {
      * Returns the sku name and account kind for the account. For more information, please see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a>.
      *
-     * @apiNote
-     * ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=account_info "Sample code for ServiceURL.getAccountInfo")] \n
-     * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
-     *
      * @param context
-     *      {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *      {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *      arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *      immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *      parent, forming a linked list.
-     * @return
-     *      Emits the successful response.
+     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *         {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
+     *         its parent, forming a linked list.
+     *
+     * @return Emits the successful response.
+     *
+     * @apiNote ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=account_info "Sample code for ServiceURL.getAccountInfo")] \n
+     * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<ServiceGetAccountInfoResponse> getAccountInfo(Context context) {
         context = context == null ? Context.NONE : context;

@@ -16,7 +16,6 @@
 package com.microsoft.azure.storage.blob;
 
 import com.microsoft.azure.storage.blob.models.BlobDownloadHeaders;
-import com.microsoft.azure.storage.blob.models.ModifiedAccessConditions;
 import com.microsoft.rest.v2.RestResponse;
 import com.microsoft.rest.v2.http.HttpPipeline;
 import io.reactivex.Flowable;
@@ -65,6 +64,7 @@ public final class DownloadResponse {
      *
      * @param options
      *         {@link ReliableDownloadOptions}
+     *
      * @return A {@code Flowable} which emits the data as {@code ByteBuffer}s.
      */
     public Flowable<ByteBuffer> body(ReliableDownloadOptions options) {
@@ -94,12 +94,11 @@ public final class DownloadResponse {
         // If all the errors are exhausted, return this error to the user.
         if (retryCount > options.maxRetryRequests() || !(t instanceof IOException)) {
             return Flowable.error(t);
-        }
-        else {
+        } else {
             try {
                 // Get a new response and try reading from it.
                 return getter.apply(this.info)
-                        .flatMapPublisher(response ->{
+                        .flatMapPublisher(response -> {
                             // Do not compound the number of retries; just get the raw body.
                             ReliableDownloadOptions newOptions = new ReliableDownloadOptions()
                                     .withMaxRetryRequests(0);

@@ -37,27 +37,26 @@ public enum SASProtocol {
         this.protocols = p;
     }
 
-    @Override
-    public String toString() {
-        return this.protocols;
-    }
-
     /**
      * Parses a {@code String} into a {@code SASProtocl} value if possible.
      *
      * @param str
-     *      The value to try to parse.
-     * @return
-     *      A {@code SASProtocol} value that represents the string if possible.
+     *         The value to try to parse.
+     *
+     * @return A {@code SASProtocol} value that represents the string if possible.
      */
     public static SASProtocol parse(String str) {
         if (str.equals(Constants.HTTPS)) {
             return SASProtocol.HTTPS_ONLY;
-        }
-        else if (str.equals(Constants.HTTPS_HTTP)) {
+        } else if (str.equals(Constants.HTTPS_HTTP)) {
             return SASProtocol.HTTPS_HTTP;
         }
         throw new IllegalArgumentException(String.format(Locale.ROOT,
                 "%s could not be parsed into a SASProtocl value.", str));
+    }
+
+    @Override
+    public String toString() {
+        return this.protocols;
     }
 }

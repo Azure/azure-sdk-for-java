@@ -1,15 +1,7 @@
 package com.microsoft.azure.storage
 
 import com.microsoft.azure.storage.blob.*
-import com.microsoft.azure.storage.blob.models.BlobDownloadHeaders
-import com.microsoft.azure.storage.blob.models.BlobGetPropertiesResponse
-import com.microsoft.azure.storage.blob.models.BlobHTTPHeaders
-import com.microsoft.azure.storage.blob.models.BlobType
-import com.microsoft.azure.storage.blob.models.BlockBlobCommitBlockListResponse
-import com.microsoft.azure.storage.blob.models.BlockBlobUploadResponse
-import com.microsoft.azure.storage.blob.models.LeaseAccessConditions
-import com.microsoft.azure.storage.blob.models.ModifiedAccessConditions
-import com.microsoft.azure.storage.blob.models.StorageErrorCode
+import com.microsoft.azure.storage.blob.models.*
 import com.microsoft.rest.v2.http.HttpPipeline
 import com.microsoft.rest.v2.http.HttpRequest
 import com.microsoft.rest.v2.http.HttpResponse
@@ -41,8 +33,7 @@ class TransferManagerTest extends APISpec {
         // Block length will be ignored for single shot.
         CommonRestResponse response = TransferManager.uploadFileToBlockBlob(channel,
                 bu, (int) (BlockBlobURL.MAX_STAGE_BLOCK_BYTES / 10),
-                new TransferManagerUploadToBlockBlobOptions(null, null, null,
-                        null, 20)).blockingGet()
+                new TransferManagerUploadToBlockBlobOptions(null, null, null, null, 20)).blockingGet()
 
         then:
         responseType.isInstance(response.response()) // Ensure we did the correct type of operation.
@@ -131,8 +122,7 @@ class TransferManagerTest extends APISpec {
                 new TransferManagerUploadToBlockBlobOptions(null, new BlobHTTPHeaders()
                         .withBlobCacheControl(cacheControl).withBlobContentDisposition(contentDisposition)
                         .withBlobContentEncoding(contentEncoding).withBlobContentLanguage(contentLanguage)
-                        .withBlobContentMD5(contentMD5).withBlobContentType(contentType), null,
-                        null, null)).blockingGet()
+                        .withBlobContentMD5(contentMD5).withBlobContentType(contentType), null, null, null)).blockingGet()
 
         BlobGetPropertiesResponse response = bu.getProperties(null, null).blockingGet()
 
@@ -169,8 +159,7 @@ class TransferManagerTest extends APISpec {
 
         when:
         TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES,
-                new TransferManagerUploadToBlockBlobOptions(null, null, metadata,
-                        null, null)).blockingGet()
+                new TransferManagerUploadToBlockBlobOptions(null, null, metadata, null, null)).blockingGet()
         BlobGetPropertiesResponse response = bu.getProperties(null, null).blockingGet()
 
         then:
@@ -202,8 +191,7 @@ class TransferManagerTest extends APISpec {
 
         expect:
         TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES,
-                new TransferManagerUploadToBlockBlobOptions(null, null, null, bac,
-                        null))
+                new TransferManagerUploadToBlockBlobOptions(null, null, null, bac, null))
                 .blockingGet().statusCode() == 201
 
         cleanup:
@@ -239,9 +227,7 @@ class TransferManagerTest extends APISpec {
 
         when:
         TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES,
-                new TransferManagerUploadToBlockBlobOptions(null, null, null,
-                        bac, null))
-                .blockingGet()
+                new TransferManagerUploadToBlockBlobOptions(null, null, null, bac, null)).blockingGet()
 
         then:
         def e = thrown(StorageException)
@@ -319,11 +305,18 @@ class TransferManagerTest extends APISpec {
 
     def "Upload options fail"() {
         when:
-        new TransferManagerUploadToBlockBlobOptions(null, null, null,
-                null, -1)
+        new TransferManagerUploadToBlockBlobOptions(null, null, null, null, -1)
 
         then:
         thrown(IllegalArgumentException)
+    }
+
+    def "Upload options progress receiver"() {
+        when:
+        new TransferManagerUploadToBlockBlobOptions(Mock(IProgressReceiver), null, null, null, null)
+
+        then:
+        thrown(UnsupportedOperationException)
     }
 
     @Unroll
@@ -483,8 +476,7 @@ class TransferManagerTest extends APISpec {
 
         when:
         TransferManager.downloadBlobToFile(outChannel, bu, null,
-                new TransferManagerDownloadFromBlobOptions(null, null, bac, null,
-                        null)).blockingGet()
+                new TransferManagerDownloadFromBlobOptions(null, null, bac, null, null)).blockingGet()
 
         then:
         def e = thrown(StorageException)
@@ -514,8 +506,7 @@ class TransferManagerTest extends APISpec {
          */
         def success = false
         TransferManager.downloadBlobToFile(outChannel, bu, null,
-                new TransferManagerDownloadFromBlobOptions(1024, null, null,
-                        null, null))
+                new TransferManagerDownloadFromBlobOptions(1024, null, null, null, null))
                 .subscribe(
                 new Consumer<BlobDownloadHeaders>() {
                     @Override
@@ -562,7 +553,7 @@ class TransferManagerTest extends APISpec {
 
         when:
         TransferManager.downloadBlobToFile(outChannel, bu, null, new TransferManagerDownloadFromBlobOptions(
-                blockSize, null, null, parallelism, reliableDownloadOptions)).blockingGet()
+                blockSize, null, null, reliableDownloadOptions, parallelism)).blockingGet()
 
         then:
         compareFiles(channel, 0, channel.size(), outChannel)
@@ -600,8 +591,8 @@ class TransferManagerTest extends APISpec {
     @Unroll
     def "Download options fail"() {
         when:
-        new TransferManagerDownloadFromBlobOptions(blockSize, null, null, parallelism,
-                null)
+        new TransferManagerDownloadFromBlobOptions(blockSize, null, null, null, parallelism
+        )
 
         then:
         thrown(IllegalArgumentException)
@@ -610,6 +601,14 @@ class TransferManagerTest extends APISpec {
         parallelism | blockSize
         0           | 40
         2           | 0
+    }
+
+    def "Download options progress receiver"() {
+        when:
+        new TransferManagerDownloadFromBlobOptions(null, Mock(IProgressReceiver), null, null, null)
+
+        then:
+        thrown(UnsupportedOperationException)
     }
 }
 

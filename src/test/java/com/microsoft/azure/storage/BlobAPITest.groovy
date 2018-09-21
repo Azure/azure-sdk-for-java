@@ -335,7 +335,6 @@ class BlobAPITest extends APISpec {
     }
 
 
-
     @Unroll
     def "Set HTTP headers AC"() {
         setup:
@@ -1719,7 +1718,7 @@ class BlobAPITest extends APISpec {
     }
 
     def "Undelete min"() {
-        setup :
+        setup:
         enableSoftDelete()
         bu.delete().blockingGet()
 

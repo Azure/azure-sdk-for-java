@@ -28,73 +28,65 @@ public final class RequestRetryOptions {
      * maxRetryDelayInMs=120000, secondaryHost=null.
      */
     public static final RequestRetryOptions DEFAULT = new RequestRetryOptions(RetryPolicyType.EXPONENTIAL, null,
-            null,null, null, null);
-
+            null, null, null, null);
+    final private int maxTries;
+    final private int tryTimeout;
+    final private long retryDelayInMs;
+    final private long maxRetryDelayInMs;
     /**
      * A {@link RetryPolicyType} telling the pipeline what kind of retry policy to use.
      */
     private RetryPolicyType retryPolicyType = RetryPolicyType.EXPONENTIAL;
-
-    final private int maxTries;
-
-    final private int tryTimeout;
-
-    final private long retryDelayInMs;
-
-    final private long maxRetryDelayInMs;
-
     private String secondaryHost;
 
     /**
      * Configures how the {@link com.microsoft.rest.v2.http.HttpPipeline} should retry requests.
      *
-     * @apiNote
-     * ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=pipeline_options "Sample code for RequestRetryOptions constructor")] \n
-     * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
-     *
      * @param retryPolicyType
-     *      A {@link RetryPolicyType} specifying the type of retry pattern to use. A value of {@code null} accepts the
-     *      default.
+     *         A {@link RetryPolicyType} specifying the type of retry pattern to use. A value of {@code null} accepts
+     *         the default.
      * @param maxTries
-     *      Specifies the maximum number of attempts an operation will be tried before producing an error. A value of
-     *      {@code null} means that you accept our default policy. A value of 1 means 1 try and no retries.
+     *         Specifies the maximum number of attempts an operation will be tried before producing an error. A value of
+     *         {@code null} means that you accept our default policy. A value of 1 means 1 try and no retries.
      * @param tryTimeout
-     *      Indicates the maximum time allowed for any single try of an HTTP request. A value of {@code null} means that
-     *      you accept our default. NOTE: When transferring large amounts of data, the default TryTimeout will probably
-     *      not be sufficient. You should override this value based on the bandwidth available to the host machine and
-     *      proximity to the Storage service. A good starting point may be something like (60 seconds per MB of
-     *      anticipated-payload-size).
+     *         Indicates the maximum time allowed for any single try of an HTTP request. A value of {@code null} means
+     *         that you accept our default. NOTE: When transferring large amounts of data, the default TryTimeout will
+     *         probably not be sufficient. You should override this value based on the bandwidth available to the host
+     *         machine and proximity to the Storage service. A good starting point may be something like (60 seconds per
+     *         MB of anticipated-payload-size).
      * @param retryDelayInMs
-     *      Specifies the amount of delay to use before retrying an operation. A value of {@code null} means you accept
-     *      the default value. The delay increases (exponentially or linearly) with each retry up to a maximum specified
-     *      by MaxRetryDelay. If you specify {@code null}, then you must also specify {@code null} for MaxRetryDelay.
+     *         Specifies the amount of delay to use before retrying an operation. A value of {@code null} means you
+     *         accept the default value. The delay increases (exponentially or linearly) with each retry up to a maximum
+     *         specified by MaxRetryDelay. If you specify {@code null}, then you must also specify {@code null} for
+     *         MaxRetryDelay.
      * @param maxRetryDelayInMs
-     *      Specifies the maximum delay allowed before retrying an operation. A value of {@code null} means you accept
-     *      the default value. If you specify {@code null}, then you must also specify {@code null} for RetryDelay.
+     *         Specifies the maximum delay allowed before retrying an operation. A value of {@code null} means you
+     *         accept the default value. If you specify {@code null}, then you must also specify {@code null} for
+     *         RetryDelay.
      * @param secondaryHost
-     *      If a secondaryHost is specified, retries will be tried against this host. If secondaryHost is {@code null}
-     *      (the default) then operations are not retried against another host. NOTE: Before setting this field, make
-     *      sure you understand the issues around reading stale and potentially-inconsistent data at
-     *      <a href=https://docs.microsoft.com/en-us/azure/storage/common/storage-designing-ha-apps-with-ragrs>this webpage</a>
-     *      this web page.
+     *         If a secondaryHost is specified, retries will be tried against this host. If secondaryHost is
+     *         {@code null} (the default) then operations are not retried against another host. NOTE: Before setting
+     *         this field, make sure you understand the issues around reading stale and potentially-inconsistent data at
+     *         <a href=https://docs.microsoft.com/en-us/azure/storage/common/storage-designing-ha-apps-with-ragrs>this webpage</a>
+     *
+     * @apiNote ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=pipeline_options "Sample code for RequestRetryOptions constructor")] \n
+     * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public RequestRetryOptions(RetryPolicyType retryPolicyType, Integer maxTries, Integer tryTimeout,
-                               Long retryDelayInMs, Long maxRetryDelayInMs, String secondaryHost) {
+            Long retryDelayInMs, Long maxRetryDelayInMs, String secondaryHost) {
         this.retryPolicyType = retryPolicyType == null ? RetryPolicyType.EXPONENTIAL : retryPolicyType;
         if (maxTries != null) {
             Utility.assertInBounds("maxRetries", maxTries, 1, Integer.MAX_VALUE);
             this.maxTries = maxTries;
-        }
-        else {
+        } else {
             this.maxTries = 4;
         }
 
         if (tryTimeout != null) {
             Utility.assertInBounds("tryTimeoutInMs", tryTimeout, 1, Long.MAX_VALUE);
             this.tryTimeout = tryTimeout;
-        }
-        else {
+        } else {
             this.tryTimeout = 60;
         }
 
@@ -108,8 +100,7 @@ public final class RequestRetryOptions {
             Utility.assertInBounds("retryDelayInMs", retryDelayInMs, 1, maxRetryDelayInMs);
             this.maxRetryDelayInMs = maxRetryDelayInMs;
             this.retryDelayInMs = retryDelayInMs;
-        }
-        else {
+        } else {
             switch (this.retryPolicyType) {
                 case EXPONENTIAL:
                     this.retryDelayInMs = TimeUnit.SECONDS.toMillis(4);
@@ -150,9 +141,9 @@ public final class RequestRetryOptions {
      * Calculates how long to delay before sending the next request.
      *
      * @param tryCount
-     *      An {@code int} indicating which try we are on.
-     * @return
-     *      A {@code long} value of how many milliseconds to delay.
+     *         An {@code int} indicating which try we are on.
+     *
+     * @return A {@code long} value of how many milliseconds to delay.
      */
     long calculateDelayInMs(int tryCount) {
         long delay = 0;

@@ -129,19 +129,19 @@ public final class BlobListingDetails {
      */
     ArrayList<ListBlobsIncludeItem> toList() {
         ArrayList<ListBlobsIncludeItem> details = new ArrayList<ListBlobsIncludeItem>();
-        if(this.copy) {
+        if (this.copy) {
             details.add(ListBlobsIncludeItem.COPY);
         }
-        if(this.deletedBlobs) {
+        if (this.deletedBlobs) {
             details.add(ListBlobsIncludeItem.DELETED);
         }
-        if(this.metadata) {
+        if (this.metadata) {
             details.add(ListBlobsIncludeItem.METADATA);
         }
-        if(this.snapshots) {
+        if (this.snapshots) {
             details.add(ListBlobsIncludeItem.SNAPSHOTS);
         }
-        if(this.uncommittedBlobs) {
+        if (this.uncommittedBlobs) {
             details.add(ListBlobsIncludeItem.UNCOMMITTEDBLOBS);
         }
         return details;

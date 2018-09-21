@@ -21,17 +21,13 @@ import com.microsoft.rest.v2.policy.RequestPolicy;
 import com.microsoft.rest.v2.policy.RequestPolicyFactory;
 import com.microsoft.rest.v2.policy.RequestPolicyOptions;
 import com.microsoft.rest.v2.util.FlowableUtil;
-import io.netty.channel.ChannelException;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.SingleObserver;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.SocketException;
-import java.net.SocketTimeoutException;
 import java.nio.ByteBuffer;
-import java.nio.channels.ClosedChannelException;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.concurrent.TimeUnit;
@@ -63,13 +59,9 @@ public class RequestRetryTestFactory implements RequestPolicyFactory {
     public static final String RETRY_TEST_PRIMARY_HOST = "PrimaryDC";
 
     public static final String RETRY_TEST_SECONDARY_HOST = "SecondaryDC";
-
-    private static final String RETRY_TEST_HEADER = "TestHeader";
-
-    private static final String RETRY_TEST_QUERY_PARAM = "TestQueryParam";
-
     public static final ByteBuffer RETRY_TEST_DEFAULT_DATA = ByteBuffer.wrap("Default data".getBytes());
-
+    private static final String RETRY_TEST_HEADER = "TestHeader";
+    private static final String RETRY_TEST_QUERY_PARAM = "TestQueryParam";
     private static final Single<HttpResponse> RETRY_TEST_OK_RESPONSE =
             Single.just(new RetryTestResponse(200));
 
@@ -114,6 +106,46 @@ public class RequestRetryTestFactory implements RequestPolicyFactory {
     @Override
     public RequestPolicy create(RequestPolicy next, RequestPolicyOptions options) {
         return new RetryTestPolicy(this);
+    }
+
+    // The retry factory only really cares about the status code.
+    private static final class RetryTestResponse extends HttpResponse {
+
+        int statusCode;
+
+        RetryTestResponse(int statusCode) {
+            this.statusCode = statusCode;
+        }
+
+        @Override
+        public int statusCode() {
+            return this.statusCode;
+        }
+
+        @Override
+        public String headerValue(String headerName) {
+            return null;
+        }
+
+        @Override
+        public HttpHeaders headers() {
+            return null;
+        }
+
+        @Override
+        public Flowable<ByteBuffer> body() {
+            return null;
+        }
+
+        @Override
+        public Single<byte[]> bodyAsByteArray() {
+            return null;
+        }
+
+        @Override
+        public Single<String> bodyAsString() {
+            return null;
+        }
     }
 
     private final class RetryTestPolicy implements RequestPolicy {
@@ -365,7 +397,7 @@ public class RequestRetryTestFactory implements RequestPolicyFactory {
                     try {
                         if (OffsetDateTime.now().isAfter(calcUpperBound(factory.time, primaryTryNumber, tryingPrimary))
                                 || OffsetDateTime.now()
-                                        .isBefore(calcLowerBound(factory.time, primaryTryNumber, tryingPrimary))) {
+                                .isBefore(calcLowerBound(factory.time, primaryTryNumber, tryingPrimary))) {
                             throw new IllegalArgumentException("Delay was not within jitter bounds");
                         }
                         factory.time = OffsetDateTime.now();
@@ -398,52 +430,11 @@ public class RequestRetryTestFactory implements RequestPolicyFactory {
                         factory.time = OffsetDateTime.now();
                         HttpResponse unwrappedResponse = response.blockingGet();
                         observer.onSuccess(unwrappedResponse);
-                    }
-                    catch (StorageErrorException | IllegalArgumentException e) {
+                    } catch (StorageErrorException | IllegalArgumentException e) {
                         observer.onError(e);
                     }
                 }
             };
-        }
-    }
-
-    // The retry factory only really cares about the status code.
-    private static final class RetryTestResponse extends HttpResponse {
-
-        int statusCode;
-
-        RetryTestResponse(int statusCode) {
-            this.statusCode = statusCode;
-        }
-
-        @Override
-        public int statusCode() {
-            return this.statusCode;
-        }
-
-        @Override
-        public String headerValue(String headerName) {
-            return null;
-        }
-
-        @Override
-        public HttpHeaders headers() {
-            return null;
-        }
-
-        @Override
-        public Flowable<ByteBuffer> body() {
-            return null;
-        }
-
-        @Override
-        public Single<byte[]> bodyAsByteArray() {
-            return null;
-        }
-
-        @Override
-        public Single<String> bodyAsString() {
-            return null;
         }
     }
 }

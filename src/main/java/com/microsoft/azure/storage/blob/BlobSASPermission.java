@@ -36,6 +36,50 @@ public final class BlobSASPermission {
     private boolean delete;
 
     /**
+     * Initializes a {@code BlobSASPermission} object with all fields set to false.
+     */
+    public BlobSASPermission() {
+    }
+
+    /**
+     * Creates a {@code BlobSASPermission} from the specified permissions string. This method will throw an
+     * {@code IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
+     *
+     * @param permString
+     *         A {@code String} which represents the {@code BlobSASPermission}.
+     *
+     * @return A {@code BlobSASPermission} generated from the given {@code String}.
+     */
+    public static BlobSASPermission parse(String permString) {
+        BlobSASPermission permissions = new BlobSASPermission();
+
+        for (int i = 0; i < permString.length(); i++) {
+            char c = permString.charAt(i);
+            switch (c) {
+                case 'r':
+                    permissions.read = true;
+                    break;
+                case 'a':
+                    permissions.add = true;
+                    break;
+                case 'c':
+                    permissions.create = true;
+                    break;
+                case 'w':
+                    permissions.write = true;
+                    break;
+                case 'd':
+                    permissions.delete = true;
+                    break;
+                default:
+                    throw new IllegalArgumentException(
+                            String.format(Locale.ROOT, SR.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE, "Permissions", permString, c));
+            }
+        }
+        return permissions;
+    }
+
+    /**
      * Specifies Read access granted.
      */
     public boolean read() {
@@ -111,16 +155,10 @@ public final class BlobSASPermission {
     }
 
     /**
-     * Initializes a {@code BlobSASPermission} object with all fields set to false.
-     */
-    public BlobSASPermission() {}
-
-    /**
      * Converts the given permissions to a {@code String}. Using this method will guarantee the permissions are in an
      * order accepted by the service.
      *
-     * @return
-     *      A {@code String} which represents the {@code BlobSASPermission}.
+     * @return A {@code String} which represents the {@code BlobSASPermission}.
      */
     @Override
     public String toString() {
@@ -150,43 +188,5 @@ public final class BlobSASPermission {
         }
 
         return builder.toString();
-    }
-
-    /**
-     * Creates a {@code BlobSASPermission} from the specified permissions string. This method will throw an
-     * {@code IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
-     *
-     * @param permString
-     *      A {@code String} which represents the {@code BlobSASPermission}.
-     * @return
-     *      A {@code BlobSASPermission} generated from the given {@code String}.
-     */
-    public static BlobSASPermission parse(String permString) {
-        BlobSASPermission permissions = new BlobSASPermission();
-
-        for (int i=0; i<permString.length(); i++) {
-            char c = permString.charAt(i);
-            switch (c) {
-                case 'r':
-                    permissions.read = true;
-                    break;
-                case 'a':
-                    permissions.add = true;
-                    break;
-                case 'c':
-                    permissions.create = true;
-                    break;
-                case 'w':
-                    permissions.write = true;
-                    break;
-                case 'd':
-                    permissions.delete = true;
-                    break;
-                default:
-                    throw new IllegalArgumentException(
-                        String.format(Locale.ROOT, SR.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE, "Permissions", permString, c));
-            }
-        }
-        return permissions;
     }
 }
