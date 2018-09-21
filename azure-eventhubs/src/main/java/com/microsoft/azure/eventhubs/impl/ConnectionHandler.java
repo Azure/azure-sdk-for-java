@@ -4,6 +4,7 @@
  */
 package com.microsoft.azure.eventhubs.impl;
 
+import com.microsoft.azure.eventhubs.TransportType;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
@@ -27,12 +28,30 @@ public class ConnectionHandler extends BaseHandler {
 
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(ConnectionHandler.class);
 
-    private final AmqpConnection messagingFactory;
+    private final AmqpConnection amqpConnection;
 
-    public ConnectionHandler(final AmqpConnection messagingFactory) {
+    protected ConnectionHandler(final AmqpConnection amqpConnection) {
 
         add(new Handshaker());
-        this.messagingFactory = messagingFactory;
+        this.amqpConnection = amqpConnection;
+    }
+
+    static ConnectionHandler create(TransportType transportType, AmqpConnection amqpConnection) {
+        switch (transportType) {
+            case AMQP_WEB_SOCKETS:
+                if (WebSocketProxyConnectionHandler.shouldUseProxy(amqpConnection.getHostName())) {
+                    return new WebSocketProxyConnectionHandler(amqpConnection);
+                } else {
+                    return new WebSocketConnectionHandler(amqpConnection);
+                }
+            case AMQP:
+            default:
+                return new ConnectionHandler(amqpConnection);
+        }
+    }
+
+    protected AmqpConnection getAmqpConnection() {
+        return this.amqpConnection;
     }
 
     private static SslDomain makeDomain(SslDomain.Mode mode) {
@@ -49,7 +68,10 @@ public class ConnectionHandler extends BaseHandler {
     public void onConnectionInit(Event event) {
 
         final Connection connection = event.getConnection();
-        final String hostName = event.getReactor().getConnectionAddress(connection);
+        final String hostName = new StringBuilder(this.amqpConnection.getHostName())
+                                    .append(":")
+                                    .append(String.valueOf(this.getProtocolPort()))
+                                        .toString();
 
         connection.setHostname(hostName);
         connection.setContainer(StringUtil.getRandomString());
@@ -72,9 +94,37 @@ public class ConnectionHandler extends BaseHandler {
     }
 
     protected void addTransportLayers(final Event event, final TransportInternal transport) {
+        final SslDomain domain = makeDomain(SslDomain.Mode.CLIENT);
+        transport.ssl(domain);
     }
 
-    protected int getPort() {
+    protected void notifyTransportErrors(final Event event) {
+        // no-op
+    }
+
+    /**
+     * HostName to be used for socket creation.
+     * for ex: in case of proxy server - this could be proxy ip address
+     * @return host name
+     */
+    public String getRemoteHostName() {
+        return amqpConnection.getHostName();
+    }
+
+    /**
+     * port used to create socket.
+     * for ex: in case of talking to event hubs service via proxy - use proxy port
+     * @return port
+     */
+    protected int getRemotePort() {
+        return this.getProtocolPort();
+    }
+
+    /**
+     * Port used on connection open frame
+     * @return port
+     */
+    protected int getProtocolPort() {
         return ClientConstants.AMQPS_PORT;
     }
 
@@ -88,9 +138,6 @@ public class ConnectionHandler extends BaseHandler {
         final Transport transport = event.getTransport();
 
         this.addTransportLayers(event, (TransportInternal) transport);
-
-        final SslDomain domain = makeDomain(SslDomain.Mode.CLIENT);
-        transport.ssl(domain);
     }
 
     @Override
@@ -121,11 +168,13 @@ public class ConnectionHandler extends BaseHandler {
         if (connection != null && connection.getRemoteState() != EndpointState.CLOSED) {
             // if the remote-peer abruptly closes the connection without issuing close frame
             // issue one
-            this.messagingFactory.onConnectionError(condition);
+            this.amqpConnection.onConnectionError(condition);
         }
 
         // onTransportError event is not handled by the global IO Handler for cleanup
         transport.unbind();
+
+        this.notifyTransportErrors(event);
     }
 
     @Override
@@ -142,7 +191,7 @@ public class ConnectionHandler extends BaseHandler {
         if (connection != null && connection.getRemoteState() != EndpointState.CLOSED) {
             // if the remote-peer abruptly closes the connection without issuing close frame
             // issue one
-            this.messagingFactory.onConnectionError(condition);
+            this.amqpConnection.onConnectionError(condition);
         }
     }
 
@@ -153,7 +202,7 @@ public class ConnectionHandler extends BaseHandler {
             TRACE_LOGGER.info("onConnectionRemoteOpen: hostname[" + event.getConnection().getHostname() + ", " + event.getConnection().getRemoteContainer() + "]");
         }
 
-        this.messagingFactory.onOpenComplete(null);
+        this.amqpConnection.onOpenComplete(null);
     }
 
     @Override
@@ -191,6 +240,6 @@ public class ConnectionHandler extends BaseHandler {
                             : "]"));
         }
 
-        this.messagingFactory.onConnectionError(error);
+        this.amqpConnection.onConnectionError(error);
     }
 }

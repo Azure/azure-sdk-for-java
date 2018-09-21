@@ -41,6 +41,7 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
      * It will be truncated to 128 characters
      */
     public static String USER_AGENT = null;
+
     private final String eventHubName;
     private final Object senderCreateSync;
     private volatile boolean isSenderCreateStarted;

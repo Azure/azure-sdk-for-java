@@ -37,7 +37,6 @@ import com.microsoft.azure.eventhubs.EventHubException;
 import com.microsoft.azure.eventhubs.OperationCancelledException;
 import com.microsoft.azure.eventhubs.RetryPolicy;
 import com.microsoft.azure.eventhubs.TimeoutException;
-import com.microsoft.azure.eventhubs.TransportType;
 
 /**
  * Abstracts all amqp related details and exposes AmqpConnection object
@@ -82,10 +81,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
         this.retryPolicy = retryPolicy;
         this.registeredLinks = new LinkedList<>();
         this.reactorLock = new Object();
-        this.connectionHandler =
-                        builder.getTransportType() == TransportType.AMQP
-                        ? new ConnectionHandler(this)
-                        : new WebSocketConnectionHandler(this);
+        this.connectionHandler = ConnectionHandler.create(builder.getTransportType(), this);
         this.cbsChannelCreateLock = new Object();
         this.mgmtChannelCreateLock = new Object();
         this.tokenProvider = builder.getSharedAccessSignature() == null
@@ -146,6 +142,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
         return messagingFactory.open;
     }
 
+    @Override
     public String getHostName() {
         return this.hostName;
     }
@@ -174,7 +171,10 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
                 super.onReactorInit(e);
 
                 final Reactor r = e.getReactor();
-                connection = r.connectionToHost(hostName, connectionHandler.getPort(), connectionHandler);
+                connection = r.connectionToHost(
+                        connectionHandler.getRemoteHostName(),
+                        connectionHandler.getRemotePort(),
+                        connectionHandler);
             }
         });
     }
@@ -219,7 +219,10 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
         }
 
         if (this.connection == null || this.connection.getLocalState() == EndpointState.CLOSED || this.connection.getRemoteState() == EndpointState.CLOSED) {
-            this.connection = this.getReactor().connectionToHost(this.hostName, this.connectionHandler.getPort(), this.connectionHandler);
+            this.connection = this.getReactor().connectionToHost(
+                    this.connectionHandler.getRemoteHostName(),
+                    this.connectionHandler.getRemotePort(),
+                    this.connectionHandler);
         }
 
         final Session session = this.connection.session();

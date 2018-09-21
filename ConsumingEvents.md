@@ -26,7 +26,7 @@ following dependency declaration inside of your Maven project file:
     <dependency> 
    		<groupId>com.microsoft.azure</groupId> 
    		<artifactId>azure-eventhubs</artifactId>
-   		<version>1.1.0</version>
+   		<version>1.2.0</version>
     </dependency>
 ```
  
@@ -199,7 +199,7 @@ an outdated offset.
 Azure Event Hubs requires using the AMQP 1.0 protocol for consuming events. 
 
 AMQP 1.0 is a TCP based protocol. For Azure Event Hubs, all traffic *must* be protected using TLS (SSL) and is using 
-TCP port 5672. For the WebSocket binding of AMQP, traffic flows via port 443.  
+TCP port 5671. For the WebSocket binding of AMQP, traffic flows via port 443.  
 
 ## Connection Strings
 
