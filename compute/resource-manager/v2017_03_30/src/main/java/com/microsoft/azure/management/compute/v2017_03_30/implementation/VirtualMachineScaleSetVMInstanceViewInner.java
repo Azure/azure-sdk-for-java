@@ -65,9 +65,8 @@ public class VirtualMachineScaleSetVMInstanceViewInner {
 
     /**
      * Boot Diagnostics is a debugging feature which allows you to view Console
-     * Output and Screenshot to diagnose VM status. &lt;br&gt;&lt;br&gt; For
-     * Linux Virtual Machines, you can easily view the output of your console
-     * log. &lt;br&gt;&lt;br&gt; For both Windows and Linux virtual machines,
+     * Output and Screenshot to diagnose VM status. &lt;br&gt;&lt;br&gt; You
+     * can easily view the output of your console log. &lt;br&gt;&lt;br&gt;
      * Azure also enables you to see a screenshot of the VM from the
      * hypervisor.
      */
@@ -217,7 +216,7 @@ public class VirtualMachineScaleSetVMInstanceViewInner {
     }
 
     /**
-     * Get boot Diagnostics is a debugging feature which allows you to view Console Output and Screenshot to diagnose VM status. &lt;br&gt;&lt;br&gt; For Linux Virtual Machines, you can easily view the output of your console log. &lt;br&gt;&lt;br&gt; For both Windows and Linux virtual machines, Azure also enables you to see a screenshot of the VM from the hypervisor.
+     * Get boot Diagnostics is a debugging feature which allows you to view Console Output and Screenshot to diagnose VM status. &lt;br&gt;&lt;br&gt; You can easily view the output of your console log. &lt;br&gt;&lt;br&gt; Azure also enables you to see a screenshot of the VM from the hypervisor.
      *
      * @return the bootDiagnostics value
      */
@@ -226,7 +225,7 @@ public class VirtualMachineScaleSetVMInstanceViewInner {
     }
 
     /**
-     * Set boot Diagnostics is a debugging feature which allows you to view Console Output and Screenshot to diagnose VM status. &lt;br&gt;&lt;br&gt; For Linux Virtual Machines, you can easily view the output of your console log. &lt;br&gt;&lt;br&gt; For both Windows and Linux virtual machines, Azure also enables you to see a screenshot of the VM from the hypervisor.
+     * Set boot Diagnostics is a debugging feature which allows you to view Console Output and Screenshot to diagnose VM status. &lt;br&gt;&lt;br&gt; You can easily view the output of your console log. &lt;br&gt;&lt;br&gt; Azure also enables you to see a screenshot of the VM from the hypervisor.
      *
      * @param bootDiagnostics the bootDiagnostics value to set
      * @return the VirtualMachineScaleSetVMInstanceViewInner object itself.
