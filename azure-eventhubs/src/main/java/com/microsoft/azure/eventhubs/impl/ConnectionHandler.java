@@ -28,30 +28,30 @@ public class ConnectionHandler extends BaseHandler {
 
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(ConnectionHandler.class);
 
-    private final AmqpConnection messagingFactory;
+    private final AmqpConnection amqpConnection;
 
-    protected ConnectionHandler(final AmqpConnection messagingFactory) {
+    protected ConnectionHandler(final AmqpConnection amqpConnection) {
 
         add(new Handshaker());
-        this.messagingFactory = messagingFactory;
+        this.amqpConnection = amqpConnection;
     }
 
-    static ConnectionHandler create(TransportType transportType, AmqpConnection messagingFactory) {
+    static ConnectionHandler create(TransportType transportType, AmqpConnection amqpConnection) {
         switch (transportType) {
             case AMQP_WEB_SOCKETS:
-                if (WebSocketProxyConnectionHandler.shouldUseProxy(messagingFactory.getHostName())) {
-                    return new WebSocketProxyConnectionHandler(messagingFactory);
+                if (WebSocketProxyConnectionHandler.shouldUseProxy(amqpConnection.getHostName())) {
+                    return new WebSocketProxyConnectionHandler(amqpConnection);
                 } else {
-                    return new WebSocketConnectionHandler(messagingFactory);
+                    return new WebSocketConnectionHandler(amqpConnection);
                 }
             case AMQP:
             default:
-                return new ConnectionHandler(messagingFactory);
+                return new ConnectionHandler(amqpConnection);
         }
     }
 
-    protected AmqpConnection getMessagingFactory() {
-        return this.messagingFactory;
+    protected AmqpConnection getAmqpConnection() {
+        return this.amqpConnection;
     }
 
     private static SslDomain makeDomain(SslDomain.Mode mode) {
@@ -68,7 +68,7 @@ public class ConnectionHandler extends BaseHandler {
     public void onConnectionInit(Event event) {
 
         final Connection connection = event.getConnection();
-        final String hostName = new StringBuilder(this.messagingFactory.getHostName())
+        final String hostName = new StringBuilder(this.amqpConnection.getHostName())
                                     .append(":")
                                     .append(String.valueOf(this.getProtocolPort()))
                                         .toString();
@@ -107,8 +107,8 @@ public class ConnectionHandler extends BaseHandler {
      * for ex: in case of proxy server - this could be proxy ip address
      * @return host name
      */
-    public String getOutboundSocketHostName() {
-        return messagingFactory.getHostName();
+    public String getRemoteHostName() {
+        return amqpConnection.getHostName();
     }
 
     /**
@@ -116,7 +116,7 @@ public class ConnectionHandler extends BaseHandler {
      * for ex: in case of talking to event hubs service via proxy - use proxy port
      * @return port
      */
-    protected int getOutboundSocketPort() {
+    protected int getRemotePort() {
         return this.getProtocolPort();
     }
 
@@ -168,7 +168,7 @@ public class ConnectionHandler extends BaseHandler {
         if (connection != null && connection.getRemoteState() != EndpointState.CLOSED) {
             // if the remote-peer abruptly closes the connection without issuing close frame
             // issue one
-            this.messagingFactory.onConnectionError(condition);
+            this.amqpConnection.onConnectionError(condition);
         }
 
         // onTransportError event is not handled by the global IO Handler for cleanup
@@ -191,7 +191,7 @@ public class ConnectionHandler extends BaseHandler {
         if (connection != null && connection.getRemoteState() != EndpointState.CLOSED) {
             // if the remote-peer abruptly closes the connection without issuing close frame
             // issue one
-            this.messagingFactory.onConnectionError(condition);
+            this.amqpConnection.onConnectionError(condition);
         }
     }
 
@@ -202,7 +202,7 @@ public class ConnectionHandler extends BaseHandler {
             TRACE_LOGGER.info("onConnectionRemoteOpen: hostname[" + event.getConnection().getHostname() + ", " + event.getConnection().getRemoteContainer() + "]");
         }
 
-        this.messagingFactory.onOpenComplete(null);
+        this.amqpConnection.onOpenComplete(null);
     }
 
     @Override
@@ -240,6 +240,6 @@ public class ConnectionHandler extends BaseHandler {
                             : "]"));
         }
 
-        this.messagingFactory.onConnectionError(error);
+        this.amqpConnection.onConnectionError(error);
     }
 }

@@ -44,8 +44,8 @@ public class WebSocketProxyConnectionHandler extends WebSocketConnectionHandler 
         return isProxyAddressLegal(proxies);
     }
 
-    public WebSocketProxyConnectionHandler(AmqpConnection messagingFactory) {
-        super(messagingFactory);
+    public WebSocketProxyConnectionHandler(AmqpConnection amqpConnection) {
+        super(amqpConnection);
     }
 
     @Override
@@ -102,28 +102,28 @@ public class WebSocketProxyConnectionHandler extends WebSocketConnectionHandler 
 
         final IOException ioException = reconstructIOException(errorCondition);
         proxySelector.connectFailed(
-                createURIFromHostNamePort(this.getMessagingFactory().getHostName(), this.getProtocolPort()),
+                createURIFromHostNamePort(this.getAmqpConnection().getHostName(), this.getProtocolPort()),
                 new InetSocketAddress(hostNameParts[0], port),
                 ioException);
     }
 
     @Override
-    public String getOutboundSocketHostName() {
+    public String getRemoteHostName() {
         final InetSocketAddress socketAddress = getProxyAddress();
         return socketAddress.getHostString();
     }
 
     @Override
-    public int getOutboundSocketPort() {
+    public int getRemotePort() {
         final InetSocketAddress socketAddress = getProxyAddress();
         return socketAddress.getPort();
     }
 
     private Map<String, String> getAuthorizationHeader() {
         final PasswordAuthentication authentication = Authenticator.requestPasswordAuthentication(
-                getOutboundSocketHostName(),
+                getRemoteHostName(),
                 null,
-                getOutboundSocketPort(),
+                getRemotePort(),
                 null,
                 null,
                 "http",
@@ -153,7 +153,7 @@ public class WebSocketProxyConnectionHandler extends WebSocketConnectionHandler 
 
     private InetSocketAddress getProxyAddress() {
         final URI serviceUri = createURIFromHostNamePort(
-                this.getMessagingFactory().getHostName(),
+                this.getAmqpConnection().getHostName(),
                 this.getProtocolPort());
         final ProxySelector proxySelector = ProxySelector.getDefault();
         if (proxySelector == null) {

@@ -429,7 +429,8 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
 
     private void drainPendingReceives(final Exception exception) {
         WorkItem<Collection<Message>> workItem;
-        final boolean shouldReturnNull = (exception == null || exception instanceof TimeoutException);
+        final boolean shouldReturnNull = (exception == null
+                || (exception instanceof EventHubException && ((EventHubException) exception).getIsTransient()));
 
         while ((workItem = this.pendingReceives.poll()) != null) {
             final CompletableFuture<Collection<Message>> future = workItem.getWork();

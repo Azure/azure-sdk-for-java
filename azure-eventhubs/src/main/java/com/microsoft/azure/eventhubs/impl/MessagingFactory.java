@@ -37,7 +37,6 @@ import com.microsoft.azure.eventhubs.EventHubException;
 import com.microsoft.azure.eventhubs.OperationCancelledException;
 import com.microsoft.azure.eventhubs.RetryPolicy;
 import com.microsoft.azure.eventhubs.TimeoutException;
-import com.microsoft.azure.eventhubs.TransportType;
 
 /**
  * Abstracts all amqp related details and exposes AmqpConnection object
@@ -173,8 +172,8 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
 
                 final Reactor r = e.getReactor();
                 connection = r.connectionToHost(
-                        connectionHandler.getOutboundSocketHostName(),
-                        connectionHandler.getOutboundSocketPort(),
+                        connectionHandler.getRemoteHostName(),
+                        connectionHandler.getRemotePort(),
                         connectionHandler);
             }
         });
@@ -221,8 +220,8 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
 
         if (this.connection == null || this.connection.getLocalState() == EndpointState.CLOSED || this.connection.getRemoteState() == EndpointState.CLOSED) {
             this.connection = this.getReactor().connectionToHost(
-                    this.connectionHandler.getOutboundSocketHostName(),
-                    this.connectionHandler.getOutboundSocketPort(),
+                    this.connectionHandler.getRemoteHostName(),
+                    this.connectionHandler.getRemotePort(),
                     this.connectionHandler);
         }
 

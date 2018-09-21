@@ -6,7 +6,6 @@ package com.microsoft.azure.eventhubs.connstrbuilder;
 
 import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
 import com.microsoft.azure.eventhubs.EventHubClient;
-import com.microsoft.azure.eventhubs.EventHubException;
 import com.microsoft.azure.eventhubs.TransportType;
 import com.microsoft.azure.eventhubs.impl.ConnectionHandler;
 import com.microsoft.azure.eventhubs.impl.EventHubClientImpl;
@@ -15,9 +14,7 @@ import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
 
 import org.jutils.jproxy.ProxyServer;
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -47,7 +44,7 @@ public class TransportTypeTest extends ApiTestBase {
             connectionHandlerField.setAccessible(true);
             final ConnectionHandler connectionHandler = (ConnectionHandler) connectionHandlerField.get(underlyingFactory);
 
-            final Method outboundSocketPort = ConnectionHandler.class.getDeclaredMethod("getOutboundSocketPort");
+            final Method outboundSocketPort = ConnectionHandler.class.getDeclaredMethod("getRemotePort");
             outboundSocketPort.setAccessible(true);
 
             final Method protocolPort = ConnectionHandler.class.getDeclaredMethod("getProtocolPort");
@@ -76,7 +73,7 @@ public class TransportTypeTest extends ApiTestBase {
             connectionHandlerField.setAccessible(true);
             final ConnectionHandler connectionHandler = (ConnectionHandler) connectionHandlerField.get(underlyingFactory);
 
-            final Method outboundSocketPort = ConnectionHandler.class.getDeclaredMethod("getOutboundSocketPort");
+            final Method outboundSocketPort = ConnectionHandler.class.getDeclaredMethod("getRemotePort");
             outboundSocketPort.setAccessible(true);
 
             final Method protocolPort = ConnectionHandler.class.getDeclaredMethod("getProtocolPort");
@@ -127,7 +124,7 @@ public class TransportTypeTest extends ApiTestBase {
                 connectionHandlerField.setAccessible(true);
                 final ConnectionHandler connectionHandler = (ConnectionHandler) connectionHandlerField.get(underlyingFactory);
 
-                final Method outboundSocketPort = ConnectionHandler.class.getDeclaredMethod("getOutboundSocketPort");
+                final Method outboundSocketPort = ConnectionHandler.class.getDeclaredMethod("getRemotePort");
                 outboundSocketPort.setAccessible(true);
 
                 final Method protocolPort = ConnectionHandler.class.getDeclaredMethod("getProtocolPort");

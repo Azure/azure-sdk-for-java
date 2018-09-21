@@ -13,8 +13,8 @@ import org.slf4j.LoggerFactory;
 public class WebSocketConnectionHandler extends ConnectionHandler {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(WebSocketConnectionHandler.class);
 
-    public WebSocketConnectionHandler(AmqpConnection messagingFactory) {
-        super(messagingFactory);
+    public WebSocketConnectionHandler(AmqpConnection amqpConnection) {
+        super(amqpConnection);
     }
 
     @Override
