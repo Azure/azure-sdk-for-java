@@ -6,6 +6,6 @@
 
 /**
  * This package contains the classes for AzureDeploymentManager.
- * REST APIs for orchestrating deployments using the Azure Deployment Manager (ADM).
+ * REST APIs for orchestrating deployments using the Azure Deployment Manager (ADM). See https://docs.microsoft.com/en-us/azure/azure-resource-manager/deployment-manager-overview for more information.
  */
 package com.microsoft.azure.management.deploymentmanager.v2018-09-01-preview;
