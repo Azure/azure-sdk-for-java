@@ -22,7 +22,6 @@
  */
 package com.microsoft.azure.cosmosdb.rx.internal;
 
-
 public class RMResources {
     public static final String UnknownResourceType = "Resource type %s is unknown";
     public static final String InvalidDocumentCollection = "The specified document collection is invalid.";
@@ -40,5 +39,8 @@ public class RMResources {
     public static final String InternalServerError = "Unknown server error occurred when processing this request.";
     public static final String InvalidBackendResponse  = "The backend response was not in the correct format.";
     public static final String PartitionKeyRangeNotFound = "PartitionKeyRange with id %s in collection %s doesn't exist";
+    public static final String InvalidConflictResolutionMode = "Invalid mode '%s' for setting '%s'. MODE expected is '%s'.";
+    public static final String InvalidRegionsInSessionToken = "Compared session tokens '%s' and '%s' has unexpected regions.";
+    public static final String InvalidSessionToken = "The session token provided '%s' is invalid.";
     public static final String ResourceTokenNotFound = "Resource token not found.";
 }

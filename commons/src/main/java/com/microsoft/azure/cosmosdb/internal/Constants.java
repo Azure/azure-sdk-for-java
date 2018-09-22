@@ -23,8 +23,6 @@
 
 package com.microsoft.azure.cosmosdb.internal;
 
-import io.reactivex.netty.pipeline.ssl.SSLEngineFactory;
-
 /**
  * Used internally. Constants in the Azure Cosmos DB database service Java SDK.
  */
@@ -189,6 +187,12 @@ public final class Constants {
 
         public static final int DEFAULT_MAX_PAGE_SIZE = 100;
         public static final String ENABLE_MULTIPLE_WRITE_LOCATIONS = "enableMultipleWriteLocations";
+
+        // Conflict resolution policy
+        public static final String CONFLICT_RESOLUTION_POLICY = "conflictResolutionPolicy";
+        public static final String MODE = "mode";
+        public static final String CONFLICT_RESOLUTION_PATH = "conflictResolutionPath";
+        public static final String CONFLICT_RESOLUTION_PROCEDURE = "conflictResolutionProcedure";
 
         //Handler names for RXNetty httpClient
         public static final String SSL_HANDLER_NAME = "ssl-handler";

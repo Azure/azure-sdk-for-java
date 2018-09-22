@@ -60,6 +60,18 @@ public interface FailureValidator {
             });
             return this;
         }
+
+        public <T extends Throwable> Builder errorMessageContains(String errorMsg) {
+            validators.add(new FailureValidator() {
+                @Override
+                public void validate(Throwable t) {
+                    assertThat(t).isNotNull();
+                    assertThat(t).isInstanceOf(DocumentClientException.class);
+                    assertThat(((DocumentClientException) t).getMessage()).contains(errorMsg);
+                }
+            });
+            return this;
+        }
         
         public <T extends Throwable> Builder errorMessageContain(int statusCode) {
             validators.add(new FailureValidator() {

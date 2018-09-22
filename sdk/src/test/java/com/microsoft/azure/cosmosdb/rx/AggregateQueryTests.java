@@ -190,9 +190,18 @@ public class AggregateQueryTests extends TestSuiteBase {
 
             query = String.format(aggregateSinglePartitionQueryFormatSelect, config.operator, field, partitionKey, uniquePartitionKey);
             testName = String.format("%s SinglePartition %s", config.operator, "SELECT");
-            queryConfigs.add(new QueryConfig(testName, query, new Document("{'$1':" + config.expected + "}")));
+            queryConfigs.add(new QueryConfig(testName, query, new Document("{'$1':" + removeTrailingZerosIfInteger(config.expected) + "}")));
         }
+    }
 
+    private Object removeTrailingZerosIfInteger(Object obj) {
+        if (obj instanceof Number) {
+            Number num = (Number) obj;
+            if (num.doubleValue() == num.intValue()) {
+                return num.intValue();
+            }
+        }
+        return obj;
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

@@ -148,7 +148,18 @@ public class Utils {
     }
 
     public static class ValueHolder<V> {
+
+        public ValueHolder() {
+        }
+
+        public ValueHolder(V v) {
+            this.v = v;
+        }
         public V v;
+
+        public static <T> ValueHolder<T> initialize(T v) {
+            return new ValueHolder<T>(v);
+        }
     }
 
     public static <K, V> boolean tryGetValue(Map<K, V> dictionary, K key, ValueHolder<V> holder) {

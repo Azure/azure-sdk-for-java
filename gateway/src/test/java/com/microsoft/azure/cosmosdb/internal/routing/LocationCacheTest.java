@@ -29,6 +29,7 @@ import com.microsoft.azure.cosmosdb.BridgeInternal;
 import com.microsoft.azure.cosmosdb.BridgeUtils;
 import com.microsoft.azure.cosmosdb.ConnectionPolicy;
 import com.microsoft.azure.cosmosdb.DatabaseAccount;
+import com.microsoft.azure.cosmosdb.DatabaseAccountLocation;
 import com.microsoft.azure.cosmosdb.internal.OperationType;
 import com.microsoft.azure.cosmosdb.internal.ResourceType;
 import com.microsoft.azure.cosmosdb.rx.internal.GlobalEndpointManager;
@@ -40,15 +41,19 @@ import org.apache.commons.collections4.list.UnmodifiableList;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import rx.Completable;
+import rx.Observable;
 
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -56,22 +61,16 @@ import java.util.stream.StreamSupport;
 
 import static com.microsoft.azure.cosmosdb.BridgeUtils.createDatabaseAccountLocation;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.atMost;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.reset;
-import static org.mockito.Mockito.verify;
 
 /**
  * Tests for {@link LocationCache}
  */
 public class LocationCacheTest {
-    private static URL DefaultEndpoint = createUrl("https://default.documents.azure.com");
-    private static URL Location1Endpoint = createUrl("https://location1.documents.azure.com");
-    private static URL Location2Endpoint = createUrl("https://location2.documents.azure.com");
-    private static URL Location3Endpoint = createUrl("https://location3.documents.azure.com");
-    private static URL Location4Endpoint = createUrl("https://location4.documents.azure.com");
+    private final static URL DefaultEndpoint = createUrl("https://default.documents.azure.com");
+    private final static URL Location1Endpoint = createUrl("https://location1.documents.azure.com");
+    private final static URL Location2Endpoint = createUrl("https://location2.documents.azure.com");
+    private final static URL Location3Endpoint = createUrl("https://location3.documents.azure.com");
+    private final static URL Location4Endpoint = createUrl("https://location4.documents.azure.com");
 
     private static HashMap<String, URL> EndpointByLocation = new HashMap<>();
 
@@ -93,7 +92,7 @@ public class LocationCacheTest {
     private DatabaseAccount databaseAccount;
     private LocationCache cache;
     private GlobalEndpointManager endpointManager;
-    private DatabaseAccountManagerInternal mockedClient;
+    private DatabaseAccountManagerInternalMock mockedClient;
 
     @DataProvider(name = "paramsProvider")
     public Object[][] paramsProvider() {
@@ -110,13 +109,21 @@ public class LocationCacheTest {
         return list.toArray(new Object[][]{});
     }
 
-    @Test(groups = "unit", dataProvider = "paramsProvider")
+    @Test(groups = "internal", dataProvider = "paramsProvider")
     public void validateAsync(boolean useMultipleWriteEndpoints,
                               boolean endpointDiscoveryEnabled,
                               boolean isPreferredListEmpty) throws Exception {
         validateLocationCacheAsync(useMultipleWriteEndpoints,
                 endpointDiscoveryEnabled,
                 isPreferredListEmpty);
+    }
+
+    @Test(groups = "internal")
+    public void validateWriteEndpointOrderWithClientSideDisableMultipleWriteLocation()  throws Exception {
+        this.initialize(false, true, false);
+        assertThat(this.cache.getWriteEndpoints().get(0)).isEqualTo(LocationCacheTest.Location1Endpoint);
+        assertThat(this.cache.getWriteEndpoints().get(1)).isEqualTo(LocationCacheTest.Location2Endpoint);
+        assertThat(this.cache.getWriteEndpoints().get(2)).isEqualTo(LocationCacheTest.Location3Endpoint);
     }
 
     private static DatabaseAccount createDatabaseAccount(boolean useMultipleWriteLocations) {
@@ -142,6 +149,8 @@ public class LocationCacheTest {
             boolean useMultipleWriteLocations,
             boolean enableEndpointDiscovery,
             boolean isPreferredLocationsListEmpty) throws Exception {
+
+        this.mockedClient = new DatabaseAccountManagerInternalMock();
         this.databaseAccount = LocationCacheTest.createDatabaseAccount(useMultipleWriteLocations);
 
         this.preferredLocations = isPreferredLocationsListEmpty ?
@@ -157,10 +166,6 @@ public class LocationCacheTest {
 
         this.cache.onDatabaseAccountRead(this.databaseAccount);
 
-        this.mockedClient = mock(DatabaseAccountManagerInternal.class);
-
-        resetAndPrepareMockedClient();
-
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
         connectionPolicy.setEnableEndpointDiscovery(enableEndpointDiscovery);
         BridgeInternal.setUseMultipleWriteLocations(connectionPolicy, useMultipleWriteLocations);
@@ -169,10 +174,35 @@ public class LocationCacheTest {
         this.endpointManager = new GlobalEndpointManager(mockedClient, connectionPolicy, configs);
     }
 
-    private void resetAndPrepareMockedClient() throws Exception {
-        reset(mockedClient);
-        doReturn(LocationCacheTest.DefaultEndpoint.toURI()).when(mockedClient).getServiceEndpoint();
-        doReturn(rx.Observable.just(this.databaseAccount)).when(mockedClient).getDatabaseAccountFromEndpoint(any());
+    class DatabaseAccountManagerInternalMock implements DatabaseAccountManagerInternal {
+        private final AtomicInteger counter = new AtomicInteger(0);
+
+        private void reset() {
+            counter.set(0);
+        }
+
+        private int getInvocationCounter() {
+            return counter.get();
+        }
+
+        @Override
+        public Observable<DatabaseAccount> getDatabaseAccountFromEndpoint(URI endpoint) {
+            return rx.Observable.just(LocationCacheTest.this.databaseAccount);
+        }
+
+        @Override
+        public ConnectionPolicy getConnectionPolicy() {
+            throw new RuntimeException("not supported");
+        }
+
+        @Override
+        public URI getServiceEndpoint() {
+            try {
+                return LocationCacheTest.DefaultEndpoint.toURI();
+            } catch (Exception e) {
+                throw new RuntimeException();
+            }
+        }
     }
 
     private static <T> Stream<T> toStream(Iterable<T> iterable) {
@@ -192,15 +222,13 @@ public class LocationCacheTest {
 
                 UnmodifiableList<URL> currentWriteEndpoints = this.cache.getWriteEndpoints();
                 UnmodifiableList<URL> currentReadEndpoints = this.cache.getReadEndpoints();
-
                 for (int i = 0; i < readLocationIndex; i++) {
-                    this.cache.markCurrentLocationUnavailableForRead();
-                    this.endpointManager.markCurrentLocationUnavailableForRead();
+                    this.cache.markEndpointUnavailableForRead(createUrl(Iterables.get(this.databaseAccount.getReadableLocations(), i).getEndpoint()));
+                    this.endpointManager.markEndpointUnavailableForRead(createUrl(Iterables.get(this.databaseAccount.getReadableLocations(), i).getEndpoint()));;
                 }
-
                 for (int i = 0; i < writeLocationIndex; i++) {
-                    this.cache.markCurrentLocationUnavailableForWrite();
-                    this.endpointManager.markCurrentLocationUnavailableForWrite();
+                    this.cache.markEndpointUnavailableForWrite(createUrl(Iterables.get(this.databaseAccount.getWritableLocations(), i).getEndpoint()));
+                    this.endpointManager.markEndpointUnavailableForWrite(createUrl(Iterables.get(this.databaseAccount.getWritableLocations(), i).getEndpoint()));
                 }
 
                 Map<String, URL> writeEndpointByLocation = toStream(this.databaseAccount.getWritableLocations())
@@ -300,17 +328,15 @@ public class LocationCacheTest {
 
     private void validateGlobalEndpointLocationCacheRefreshAsync() throws Exception {
 
-        resetAndPrepareMockedClient();
-
+        mockedClient.reset();
         List<Completable> list = IntStream.range(0, 10)
                 .mapToObj(index -> this.endpointManager.refreshLocationAsync(null))
                 .collect(Collectors.toList());
 
         rx.Completable.merge(list).await();
 
-        verify(mockedClient, atMost(1)).getDatabaseAccountFromEndpoint(any());
-
-        resetAndPrepareMockedClient();
+        assertThat(mockedClient.getInvocationCounter()).isLessThanOrEqualTo(1);
+        mockedClient.reset();
 
         IntStream.range(0, 10)
                 .mapToObj(index -> this.endpointManager.refreshLocationAsync(null))
@@ -319,14 +345,14 @@ public class LocationCacheTest {
             completable.await();
         }
 
-        verify(mockedClient, atMost(1)).getDatabaseAccountFromEndpoint(any());
+        assertThat(mockedClient.getInvocationCounter()).isLessThanOrEqualTo(1);
     }
 
     private void validateRequestEndpointResolution(
             boolean useMultipleWriteLocations,
             boolean endpointDiscoveryEnabled,
             URL[] availableWriteEndpoints,
-            URL[] availableReadEndpoints) {
+            URL[] availableReadEndpoints) throws MalformedURLException {
         URL firstAvailableWriteEndpoint;
         URL secondAvailableWriteEndpoint;
 
@@ -341,10 +367,11 @@ public class LocationCacheTest {
             secondAvailableWriteEndpoint = availableWriteEndpoints[1];
         } else if (availableWriteEndpoints.length > 0) {
             firstAvailableWriteEndpoint = availableWriteEndpoints[0];
-            secondAvailableWriteEndpoint =
-                    Iterables.get(this.databaseAccount.getWritableLocations(), 0).getEndpoint().equals(firstAvailableWriteEndpoint.toString()) ?
-                            createUrl(Iterables.get(this.databaseAccount.getWritableLocations(), 0).getEndpoint()) :
-                            createUrl(Iterables.get(this.databaseAccount.getWritableLocations(), 1).getEndpoint());
+            Iterator<DatabaseAccountLocation> writeLocationsIterator = databaseAccount.getWritableLocations().iterator();        
+            String writeEndpoint = writeLocationsIterator.next().getEndpoint();
+            secondAvailableWriteEndpoint = writeEndpoint != firstAvailableWriteEndpoint.toString()
+                    ? new URL(writeEndpoint)
+                    : new URL(writeLocationsIterator.next().getEndpoint());
         } else {
             firstAvailableWriteEndpoint = LocationCacheTest.DefaultEndpoint;
             secondAvailableWriteEndpoint = LocationCacheTest.DefaultEndpoint;
@@ -362,36 +389,25 @@ public class LocationCacheTest {
             firstAvailableReadEndpoint = LocationCacheTest.EndpointByLocation.get(this.preferredLocations.get(0));
         }
 
-        URL firstWriteEnpoint = !endpointDiscoveryEnabled || this.preferredLocations.size() == 0 ?
+        URL firstWriteEnpoint = !endpointDiscoveryEnabled ?
                 LocationCacheTest.DefaultEndpoint :
-                LocationCacheTest.EndpointByLocation.get(this.preferredLocations.get(0));
+                    createUrl(Iterables.get(this.databaseAccount.getWritableLocations(), 0).getEndpoint());
 
-        URL secondWriteEnpoint = !endpointDiscoveryEnabled || this.preferredLocations.size() < 2 ?
+        URL secondWriteEnpoint = !endpointDiscoveryEnabled ?
                 LocationCacheTest.DefaultEndpoint :
-                LocationCacheTest.EndpointByLocation.get(this.preferredLocations.get(1));
+                    createUrl(Iterables.get(this.databaseAccount.getWritableLocations(), 1).getEndpoint());
 
-        if (useMultipleWriteLocations) {
-            // If all write endpoints are unavailable, we switch to default endpoint
-            assertThat(firstAvailableWriteEndpoint).isEqualTo(cache.getWriteEndpoints().get(0));
+        // If current write endpoint is unavailable, write endpoints order doesn't change
+        // All write requests flip-flop between current write and alternate write endpoint
+        UnmodifiableList<URL> writeEndpoints = this.cache.getWriteEndpoints();
 
-            // Document writes should be directed to first available write endpoint
-            assertThat(firstAvailableWriteEndpoint).isEqualTo(this.resolveEndpointForWriteRequest(ResourceType.Document, true));
-            assertThat(firstAvailableWriteEndpoint).isEqualTo(this.resolveEndpointForWriteRequest(ResourceType.Document, false));
+        assertThat(firstAvailableWriteEndpoint).isEqualTo(writeEndpoints.get(0));
+        assertThat(secondAvailableWriteEndpoint).isEqualTo(this.resolveEndpointForWriteRequest(ResourceType.Document, true));
+        assertThat(firstAvailableWriteEndpoint).isEqualTo(this.resolveEndpointForWriteRequest(ResourceType.Document, false));
 
-            // Writes to other resource types should be directed to first/second write endpoint
-            assertThat(firstWriteEnpoint).isEqualTo(this.resolveEndpointForWriteRequest(ResourceType.Database, false));
-            assertThat(secondWriteEnpoint).isEqualTo(this.resolveEndpointForWriteRequest(ResourceType.Database, true));
-        } else {
-            // If current write endpoint is unavailable, write endpoints order doesn't change
-            // All write requests flip-flop between current write and alternate write endpoint
-            UnmodifiableList<URL> writeEndpoints = this.cache.getWriteEndpoints();
-
-            assertThat(firstAvailableWriteEndpoint).isEqualTo(writeEndpoints.get(0));
-            assertThat(secondAvailableWriteEndpoint).isEqualTo(this.resolveEndpointForWriteRequest(ResourceType.Document, true));
-            assertThat(firstAvailableWriteEndpoint).isEqualTo(this.resolveEndpointForWriteRequest(ResourceType.Document, false));
-            assertThat(secondAvailableWriteEndpoint).isEqualTo(this.resolveEndpointForWriteRequest(ResourceType.Database, true));
-            assertThat(firstAvailableWriteEndpoint).isEqualTo(this.resolveEndpointForWriteRequest(ResourceType.Database, false));
-        }
+        // Writes to other resource types should be directed to first/second write endpoint
+        assertThat(firstWriteEnpoint).isEqualTo(this.resolveEndpointForWriteRequest(ResourceType.Database, false));
+        assertThat(secondWriteEnpoint).isEqualTo(this.resolveEndpointForWriteRequest(ResourceType.Database, true));
 
         // Reads should be directed to available read endpoints regardless of resource type
         assertThat(firstAvailableReadEndpoint).isEqualTo(this.resolveEndpointForReadRequest(true));
@@ -406,10 +422,18 @@ public class LocationCacheTest {
 
     private URL resolveEndpointForWriteRequest(ResourceType resourceType, boolean useAlternateWriteEndpoint) {
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Create, resourceType);
-        request.useAlternateWriteEndpoint = useAlternateWriteEndpoint;
+        request.requestContext.RouteToLocation(useAlternateWriteEndpoint ? 1 : 0, resourceType.isCollectionChild());
         return this.cache.resolveServiceEndpoint(request);
     }
 
+    private RxDocumentServiceRequest CreateRequest(boolean isReadRequest, boolean isMasterResourceType)
+    {
+        if (isReadRequest) {
+            return RxDocumentServiceRequest.create(OperationType.Read, isMasterResourceType ? ResourceType.Database : ResourceType.Document);
+        } else {
+            return RxDocumentServiceRequest.create(OperationType.Create, isMasterResourceType ? ResourceType.Database : ResourceType.Document);
+        }
+    }
     private static URL createUrl(String url) {
         try {
             return new URL(url);

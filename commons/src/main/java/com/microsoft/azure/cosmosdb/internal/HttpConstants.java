@@ -210,6 +210,7 @@ public class HttpConstants {
 
         // ChangeFeed
         public static final String A_IM = "A-IM";
+        public static final String ALLOW_TENTATIVE_WRITES = "x-ms-cosmos-allow-tentative-writes";
     }
 
     public static class A_IMHeaderValues {
@@ -217,11 +218,11 @@ public class HttpConstants {
     }
 
     public static class Versions {
-        public static final String CURRENT_VERSION = "2017-11-15";
+        public static final String CURRENT_VERSION = "2018-06-18";
 
         // TODO: FIXME we can use maven plugin for generating a version file
         // @see https://stackoverflow.com/questions/2469922/generate-a-version-java-file-in-maven
-        public static final String SDK_VERSION = "2.1.0";
+        public static final String SDK_VERSION = "2.2.0";
         public static final String SDK_NAME = "cosmosdb-java-sdk";
     }
 

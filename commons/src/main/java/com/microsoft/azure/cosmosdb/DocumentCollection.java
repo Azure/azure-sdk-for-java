@@ -23,9 +23,8 @@
 
 package com.microsoft.azure.cosmosdb;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.microsoft.azure.cosmosdb.internal.Constants;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Represents a document collection in the Azure Cosmos DB database service. A collection is a named logical container
@@ -179,6 +178,31 @@ public final class DocumentCollection extends Resource {
         this.uniqueKeyPolicy = uniqueKeyPolicy;
         super.set(Constants.Properties.UNIQUE_KEY_POLICY, uniqueKeyPolicy);
     }
+
+    /**
+     * Gets the conflictResolutionPolicy that is used for resolving conflicting writes
+     * on documents in different regions, in a collection in the Azure Cosmos DB service.
+     *
+     * @return ConflictResolutionPolicy
+     */
+    public ConflictResolutionPolicy getConflictResolutionPolicy() {
+        return super.getObject(Constants.Properties.CONFLICT_RESOLUTION_POLICY, ConflictResolutionPolicy.class);
+    }
+
+    /**
+     * Sets the conflictResolutionPolicy that is used for resolving conflicting writes
+     * on documents in different regions, in a collection in the Azure Cosmos DB service.
+     *
+     * @param value ConflictResolutionPolicy to be used.
+     */
+    public void setConflictResolutionPolicy(ConflictResolutionPolicy value) {
+        if (value == null) {
+            throw new IllegalArgumentException("CONFLICT_RESOLUTION_POLICY cannot be null.");
+        }
+
+        super.set(Constants.Properties.CONFLICT_RESOLUTION_POLICY, value);
+    }
+
 
     /**
      * Gets the self-link for documents in a collection.

@@ -23,8 +23,10 @@
 package com.microsoft.azure.cosmosdb.rx.internal;
 
 import java.io.IOException;
+import java.net.URL;
 import java.time.Duration;
 
+import org.apache.commons.collections4.list.UnmodifiableList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,10 +54,11 @@ public class ClientRetryPolicy implements IDocumentClientRetryPolicy {
     private final boolean enableEndpointDiscovery;
     private int failoverRetryCount;
 
-    private boolean useAlternateWriteEndpoint;
-    private boolean useWriteEndpoint;
     private int sessionTokenRetryCount;
     private boolean isReadRequest;
+    private boolean canUseMultipleWriteLocations;
+    private URL locationEndpoint;
+    private RetryContext retryContext;
 
     public ClientRetryPolicy(GlobalEndpointManager globalEndpointManager,
                              boolean enableEndpointDiscovery,
@@ -69,12 +72,12 @@ public class ClientRetryPolicy implements IDocumentClientRetryPolicy {
         this.failoverRetryCount = 0;
         this.enableEndpointDiscovery = enableEndpointDiscovery;
         this.sessionTokenRetryCount = 0;
-        this.useAlternateWriteEndpoint = false;
-        this.useWriteEndpoint = false;
+        this.canUseMultipleWriteLocations = false;
     }
 
     @Override
     public Single<ShouldRetryResult> shouldRetry(Exception e) {
+        this.retryContext = null;
         // Received 403.3 on write region, initiate the endpoint re-discovery
         DocumentClientException clientException = Utils.as(e, DocumentClientException.class);
         if (clientException != null && 
@@ -114,13 +117,33 @@ public class ClientRetryPolicy implements IDocumentClientRetryPolicy {
 
     private ShouldRetryResult shouldRetryOnSessionNotAvailable() {
         this.sessionTokenRetryCount++;
-        if (!this.enableEndpointDiscovery || this.useWriteEndpoint || this.sessionTokenRetryCount > 1) {
-            return ShouldRetryResult.noRetry();
-        }
 
-        logger.warn("Read session not available. Will retry using write endpoint.");
-        this.useWriteEndpoint = true;
-        return ShouldRetryResult.retryAfter(Duration.ZERO);
+        if (!this.enableEndpointDiscovery) {
+            // if endpoint discovery is disabled, the request cannot be retried anywhere else
+            return ShouldRetryResult.noRetry();
+        } else {
+            if (this.canUseMultipleWriteLocations) {
+                UnmodifiableList<URL> endpoints = this.isReadRequest ? this.globalEndpointManager.getReadEndpoints() : this.globalEndpointManager.getWriteEndpoints();
+
+                if (this.sessionTokenRetryCount > endpoints.size()) {
+                    // When use multiple write locations is true and the request has been tried
+                    // on all locations, then don't retry the request
+                    return ShouldRetryResult.noRetry();
+                } else {
+                    this.retryContext = new RetryContext(this.sessionTokenRetryCount - 1, this.sessionTokenRetryCount > 1,this.sessionTokenRetryCount == endpoints.size());
+                    return ShouldRetryResult.retryAfter(Duration.ZERO);
+                }
+            } else {
+                if (this.sessionTokenRetryCount > 1) {
+                    // When cannot use multiple write locations, then don't retry the request if
+                    // we have already tried this request on the write location
+                    return ShouldRetryResult.noRetry();
+                } else {
+                    this.retryContext = new RetryContext(this.sessionTokenRetryCount - 1, false, true);
+                    return ShouldRetryResult.retryAfter(Duration.ZERO);
+                }
+            }
+        }
     }
 
     private Single<ShouldRetryResult> shouldRetryOnEndpointFailureAsync(boolean isReadRequest) {
@@ -132,12 +155,12 @@ public class ClientRetryPolicy implements IDocumentClientRetryPolicy {
         this.failoverRetryCount++;
 
         // Mark the current read endpoint as unavailable
-        if (isReadRequest) {
-            logger.warn("marking the endpoint as unavailable for read");
-            this.globalEndpointManager.markCurrentLocationUnavailableForRead();
+        if (this.isReadRequest) {
+            logger.warn("marking the endpoint {} as unavailable for read",this.locationEndpoint);
+            this.globalEndpointManager.markEndpointUnavailableForRead(this.locationEndpoint);
         } else {
-            logger.warn("marking the endpoint as unavailable for write");
-            this.globalEndpointManager.markCurrentLocationUnavailableForWrite();
+            logger.warn("marking the endpoint {} as unavailable for write",this.locationEndpoint);
+            this.globalEndpointManager.markEndpointUnavailableForWrite(this.locationEndpoint);
         }
 
         // Some requests may be in progress when the endpoint manager and client are closed.
@@ -145,14 +168,8 @@ public class ClientRetryPolicy implements IDocumentClientRetryPolicy {
         // Therefore just skip the retry here to avoid the delay because retrying won't go through in the end.
 
         Duration retryDelay = Duration.ZERO;
-        if (!isReadRequest) {
-            //if the alternate write endpoint is set, alternate between writeEndpoint and alternateWriteEndpoint
-            this.useAlternateWriteEndpoint = !this.useAlternateWriteEndpoint;
-            logger.debug(
-                    String.format("Failover happening. UseAlternateWriteEndpoint [{}] RetryCount [{}]",
-                            this.useAlternateWriteEndpoint,
-                            this.failoverRetryCount));
-
+        if (!this.isReadRequest) {
+            logger.debug("Failover happening. retryCount {0}",  this.failoverRetryCount);
             if (this.failoverRetryCount > 1) {
                 //if retried both endpoints, follow regular retry interval.
                 retryDelay = Duration.ofMillis(ClientRetryPolicy.RetryIntervalInMS);
@@ -160,16 +177,45 @@ public class ClientRetryPolicy implements IDocumentClientRetryPolicy {
         } else {
             retryDelay = Duration.ofMillis(ClientRetryPolicy.RetryIntervalInMS);
         }
-
+        this.retryContext = new RetryContext(this.failoverRetryCount, false, false);
         return this.globalEndpointManager.refreshLocationAsync(null)
                 .andThen(Single.just(ShouldRetryResult.retryAfter(retryDelay)));
     }
 
     @Override
     public void onBeforeSendRequest(RxDocumentServiceRequest request) {
-        request.useAlternateWriteEndpoint = this.useAlternateWriteEndpoint;
-        request.useWriteEndpoint = this.useWriteEndpoint;
-        request.clearSessionTokenOnSessionReadFailure = this.sessionTokenRetryCount >= 1;
         this.isReadRequest = request.isReadOnlyRequest();
+        this.canUseMultipleWriteLocations = this.globalEndpointManager.CanUseMultipleWriteLocations(request);
+
+        // clear previous location-based routing directive
+        if (request.requestContext != null) {
+            request.requestContext.ClearRouteToLocation();
+        }
+        if (this.retryContext != null) {
+            // set location-based routing directive based on request retry context
+            request.requestContext.RouteToLocation(this.retryContext.retryCount, this.retryContext.retryRequestOnPreferredLocations);
+            request.clearSessionTokenOnSessionReadFailure = this.retryContext.clearSessionTokenOnSessionNotAvailable;
+        }
+
+        // Resolve the endpoint for the request and pin the resolution to the resolved endpoint
+        // This enables marking the endpoint unavailability on endpoint failover/unreachability
+        this.locationEndpoint = this.globalEndpointManager.resolveServiceEndpoint(request);
+        if (request.requestContext != null) {
+            request.requestContext.RouteToLocation(this.locationEndpoint);
+        }
+    }
+    private class RetryContext {
+
+        public int retryCount;
+        public boolean retryRequestOnPreferredLocations;
+        public boolean clearSessionTokenOnSessionNotAvailable;
+
+        public RetryContext(int retryCount,
+                            boolean retryRequestOnPreferredLocations,
+                            boolean clearSessionTokenOnSessionNotAvailable) {
+            this.retryCount = retryCount;
+            this.retryRequestOnPreferredLocations = retryRequestOnPreferredLocations;
+            this.clearSessionTokenOnSessionNotAvailable = clearSessionTokenOnSessionNotAvailable;
+        }
     }
 }

@@ -90,7 +90,8 @@ public class GlobalEndpointManager {
             throw new IllegalArgumentException(e);
         }
 
-        startRefreshLocationTimerAsync();
+        // TODO: should we block on the first initialization?
+        startRefreshLocationTimerAsync(true);
     }
 
     public UnmodifiableList<URL> getReadEndpoints() {
@@ -129,14 +130,18 @@ public class GlobalEndpointManager {
         return this.locationCache.resolveServiceEndpoint(request);
     }
 
-    public void markCurrentLocationUnavailableForRead() {
-        logger.debug("Marking current location unavailable for read");
-        this.locationCache.markCurrentLocationUnavailableForRead();
+    public void markEndpointUnavailableForRead(URL endpoint) {
+        logger.debug("Marking endpoint {} unavailable for read",endpoint);
+        this.locationCache.markEndpointUnavailableForRead(endpoint);;
     }
 
-    public void markCurrentLocationUnavailableForWrite() {
-        logger.debug("Marking current location unavailable for Write");
-        this.locationCache.markCurrentLocationUnavailableForWrite();
+    public void markEndpointUnavailableForWrite(URL endpoint) {
+        logger.debug("Marking  endpoint {} unavailable for Write",endpoint);
+        this.locationCache.markEndpointUnavailableForWrite(endpoint);
+    }
+
+    public boolean CanUseMultipleWriteLocations(RxDocumentServiceRequest request) {
+        return this.locationCache.canUseMultipleWriteLocations(request);
     }
 
     public void close() {
@@ -200,8 +205,11 @@ public class GlobalEndpointManager {
         });
     }
 
-
     private void startRefreshLocationTimerAsync() {
+        startRefreshLocationTimerAsync(false);
+    }
+
+    private void startRefreshLocationTimerAsync(boolean initialization) {
 
         if (this.isClosed) {
             logger.info("startRefreshLocationTimerAsync: nothing to do, it is closed");
@@ -211,9 +219,16 @@ public class GlobalEndpointManager {
         logger.debug("registering a refresh in [{}] ms", this.backgroundRefreshLocationTimeIntervalInMS);
         LocalDateTime now = LocalDateTime.now();
 
-        Observable.timer(this.backgroundRefreshLocationTimeIntervalInMS, TimeUnit.MILLISECONDS)
+        int delayInMillis = initialization ? 0: this.backgroundRefreshLocationTimeIntervalInMS;
+
+        Observable.timer(delayInMillis, TimeUnit.MILLISECONDS)
                 .toSingle().flatMapCompletable(
                         t -> {
+                            if (this.isClosed) {
+                                logger.warn("client already closed");
+                                return Completable.error(new IllegalStateException("Client already closed"));
+                            }
+
                             logger.debug("startRefreshLocationTimerAsync() - Invoking refresh, I was registered on [{}]", now);
                             Single<DatabaseAccount> databaseAccountObs = GlobalEndpointManager.getDatabaseAccountFromAnyLocationsAsync(this.defaultEndpoint, new ArrayList<>(this.connectionPolicy.getPreferredLocations()),
                                     url -> this.getDatabaseAccountAsync(url)).toObservable().toSingle();

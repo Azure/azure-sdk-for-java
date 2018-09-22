@@ -232,6 +232,7 @@ public class DocumentClientException extends Exception {
                 "error=" + error +
                 ", resourceAddress='" + resourceAddress + '\'' +
                 ", statusCode=" + statusCode +
+                ", message=" + getMessage() +
                 ", responseHeaders=" + responseHeaders +
                 '}';
     }

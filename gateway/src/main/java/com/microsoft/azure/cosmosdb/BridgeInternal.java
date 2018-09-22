@@ -165,10 +165,10 @@ public class BridgeInternal {
     }
 
     public static boolean getUseMultipleWriteLocations(ConnectionPolicy policy) {
-        return policy.getUseMultipleWriteLocations();
+        return policy.isUsingMultipleWriteLocations();
     }
 
     public static void setUseMultipleWriteLocations(ConnectionPolicy policy, boolean value) {
-        policy.setUseMultipleWriteLocations(value);
+        policy.setUsingMultipleWriteLocations(value);
     }
 }

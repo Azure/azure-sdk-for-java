@@ -26,7 +26,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-cosmosdb-parent</artifactId>
-  <version>2.1.0</version>
+  <version>2.2.0</version>
   <packaging>pom</packaging>
   <name>Azure Cosmos DB SQL API</name>
   <description>Java Async SDK (with Reactive Extension RX support) for Azure Cosmos DB SQL API</description>
@@ -41,6 +41,7 @@
   </modules>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <commons-io.version>2.5</commons-io.version>
     <commons-lang3.version>3.5</commons-lang3.version>
     <jackson-databind.version>2.9.5</jackson-databind.version>
@@ -57,10 +58,156 @@
     <mockito.version>1.10.8</mockito.version>
     <guava.version>25.1-jre</guava.version>
     <test.groups>unit</test.groups>
-    <cosmosdb-sdk-direct-impl.version>2.1.0</cosmosdb-sdk-direct-impl.version>
+    <cosmosdb-sdk-direct-impl.version>2.2.0</cosmosdb-sdk-direct-impl.version>
     <javadoc.opts/>
+    <skipTests>false</skipTests>
   </properties>
+  <profiles>
+  <profile>
+    <!-- unit test -->
+    <id>unit</id>
+    <properties>
+      <env>default</env>
+      <test.groups>unit</test.groups>
+    </properties>
+    <activation>
+      <activeByDefault>true</activeByDefault>
+    </activation>
+    <build>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <configuration>
+            <skipTests>${skipTests}</skipTests>
+          </configuration>
+        </plugin>
+      </plugins>
+    </build>
+  </profile>
+  <profile>
+    <!-- integration tests, requires Cosmos DB endpoint -->
+    <id>fast</id>
+    <properties>
+      <test.groups>simple,internal</test.groups>
+    </properties>
+    <build>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-failsafe-plugin</artifactId>
+        </plugin>
+      </plugins>
+    </build>
+  </profile>
+  <profile>
+    <!-- integration tests, requires Cosmos DB endpoint -->
+    <id>direct</id>
+    <properties>
+      <test.groups>direct</test.groups>
+    </properties>
+    <build>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-failsafe-plugin</artifactId>
+        </plugin>
+      </plugins>
+    </build>
+  </profile>
+  <profile>
+    <!-- integration tests, requires Cosmos DB endpoint with multi master support -->
+    <id>multi-master</id>
+    <properties>
+      <test.groups>multi-master</test.groups>
+    </properties>
+    <build>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-failsafe-plugin</artifactId>
+        </plugin>
+      </plugins>
+    </build>
+  </profile>
+    <profile>
+      <!-- integration tests, requires Cosmos DB endpoint -->
+      <id>examples</id>
+      <properties>
+        <!-- reset the test group as examples have no test group -->
+        <test.groups></test.groups>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <configuration>
+              <includes>
+                <include>**/examples/*.java</include>
+              </includes>
+            </configuration>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>integration-test</goal>
+                  <goal>verify</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
   <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>2.22.0</version>
+          <configuration>
+            <groups>unit</groups>
+            <includes>
+              <include>%regex[.*], !%regex[.*examples.*]</include>
+            </includes>
+            <skipTests>true</skipTests>
+            <properties>
+              <property>
+                <name>surefire.testng.verbose</name>
+                <value>2</value>
+              </property>
+            </properties>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-failsafe-plugin</artifactId>
+          <version>2.22.0</version>
+          <configuration>
+            <includes>
+              <include>**/*.java</include>
+            </includes>
+            <properties>
+              <property>
+                <name>surefire.testng.verbose</name>
+                <value>2</value>
+              </property>
+            </properties>
+            <groups>${test.groups}</groups>
+          </configuration>
+          <executions>
+            <execution>
+              <goals>
+                <goal>integration-test</goal>
+                <goal>verify</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
     <plugins>
       <plugin>
         <artifactId>maven-javadoc-plugin</artifactId>
@@ -69,7 +216,7 @@
         <configuration>
           <quiet>true</quiet>
           <verbose>false</verbose>
-          <additionalparam>${javadoc.opts}</additionalparam>
+          <additionalOptions>${javadoc.opts}</additionalOptions>
           <sourceFileExcludes>
             <sourceFileExclude>**/internal/**/*.java</sourceFileExclude>
           </sourceFileExcludes>
@@ -83,8 +230,40 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>2.2.1</version>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar-no-fork</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+                <version>2.22.0</version>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>findbugs-maven-plugin</artifactId>
+                <version>3.0.4</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jxr-plugin</artifactId>
+                <version>2.1</version>
+            </plugin>
+        </plugins>
+    </reporting>
   <dependencyManagement>
     <dependencies>
       <dependency>

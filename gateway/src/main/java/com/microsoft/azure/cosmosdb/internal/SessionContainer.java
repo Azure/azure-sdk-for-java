@@ -27,6 +27,7 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.microsoft.azure.cosmosdb.DocumentClientException;
 import org.apache.commons.lang3.StringUtils;
 
 import com.microsoft.azure.cosmosdb.rx.internal.RxDocumentServiceRequest;
@@ -39,7 +40,7 @@ public final class SessionContainer {
     /**
      * Session token cache that maps collection ResourceID to session tokens
      */
-    private final ConcurrentHashMap<Long, ConcurrentHashMap<String, Long>> collectionResourceIdToSessionTokens;
+    private final ConcurrentHashMap<Long, ConcurrentHashMap<String, ISessionToken>> collectionResourceIdToSessionTokens;
     /**
      * Collection ResourceID cache that maps collection name to collection ResourceID
      * When collection name is provided instead of self-link, this is used in combination with
@@ -50,13 +51,13 @@ public final class SessionContainer {
 
     public SessionContainer(final String hostName) {
         this(hostName,
-                new ConcurrentHashMap<String, Long>(),
-                new ConcurrentHashMap<Long, ConcurrentHashMap<String, Long>>());
+                new ConcurrentHashMap<>(),
+                new ConcurrentHashMap<>());
     }
 
     public SessionContainer(final String hostName,
                             ConcurrentHashMap<String, Long> nameToRidMap,
-                            ConcurrentHashMap<Long, ConcurrentHashMap<String, Long>> ridToTokensMap) {
+                            ConcurrentHashMap<Long, ConcurrentHashMap<String, ISessionToken>> ridToTokensMap) {
         this.hostName = hostName;
         this.collectionResourceIdToSessionTokens = ridToTokensMap;
         this.collectionNameToCollectionResourceId = nameToRidMap;
@@ -66,12 +67,12 @@ public final class SessionContainer {
         return this.hostName;
     }
 
-    private ConcurrentHashMap<String, Long> getPartitionKeyRangeIdToTokenMap(RxDocumentServiceRequest request) {
+    private ConcurrentHashMap<String, ISessionToken> getPartitionKeyRangeIdToTokenMap(RxDocumentServiceRequest request) {
         return getPartitionKeyRangeIdToTokenMap(request.getIsNameBased(), request.getResourceId(), request.getResourceAddress());
     }
 
-    private ConcurrentHashMap<String, Long> getPartitionKeyRangeIdToTokenMap(boolean isNameBased, String rId, String resourceAddress) {
-        ConcurrentHashMap<String, Long> rangeIdToTokenMap = null;
+    private ConcurrentHashMap<String, ISessionToken> getPartitionKeyRangeIdToTokenMap(boolean isNameBased, String rId, String resourceAddress) {
+        ConcurrentHashMap<String, ISessionToken> rangeIdToTokenMap = null;
         if (!isNameBased) {
             if (!StringUtils.isEmpty(rId)) {
                 ResourceId resourceId = ResourceId.parse(rId);
@@ -99,7 +100,7 @@ public final class SessionContainer {
     }
 
     private String resolveGlobalSessionToken(boolean isNameBased, String rId, String resourceAddress) {
-        ConcurrentHashMap<String, Long> rangeIdToTokenMap = this.getPartitionKeyRangeIdToTokenMap(isNameBased, rId, resourceAddress);
+        ConcurrentHashMap<String, ISessionToken> rangeIdToTokenMap = this.getPartitionKeyRangeIdToTokenMap(isNameBased, rId, resourceAddress);
         if (rangeIdToTokenMap != null) {
             return this.getCombinedSessionToken(rangeIdToTokenMap);
         }
@@ -142,12 +143,12 @@ public final class SessionContainer {
         }
     }
 
-    public void setSessionToken(RxDocumentServiceRequest request, RxDocumentServiceResponse response) {        
+    public void setSessionToken(RxDocumentServiceRequest request, RxDocumentServiceResponse response) {
         if (response != null && !request.isReadingFromMaster()) {
             String sessionToken = response.getResponseHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
 
             if (!StringUtils.isEmpty(sessionToken)) {
-                
+
                 String ownerFullName = response.getResponseHeaders().get(HttpConstants.HttpHeaders.OWNER_FULL_NAME);
                 if (StringUtils.isEmpty(ownerFullName)) ownerFullName = request.getResourceAddress();
 
@@ -161,7 +162,7 @@ public final class SessionContainer {
                     ownerId = response.getResponseHeaders().get(HttpConstants.HttpHeaders.OWNER_ID);
                     if (StringUtils.isEmpty(ownerId)) ownerId = request.getResourceId();
                 }
-                
+
                 if (!StringUtils.isEmpty(ownerId)) {
                     ResourceId resourceId = ResourceId.parse(ownerId);
 
@@ -175,17 +176,17 @@ public final class SessionContainer {
     }
 
     private void setSessionToken(long collectionRid, String collectionName, String sessionToken) {
-        this.collectionResourceIdToSessionTokens.putIfAbsent(collectionRid, new ConcurrentHashMap<String, Long>());
+        this.collectionResourceIdToSessionTokens.putIfAbsent(collectionRid, new ConcurrentHashMap<>());
         this.compareAndSetToken(sessionToken, this.collectionResourceIdToSessionTokens.get(collectionRid));
         this.collectionNameToCollectionResourceId.putIfAbsent(collectionName, collectionRid);
     }
 
-    private String getCombinedSessionToken(ConcurrentHashMap<String, Long> tokens) {
+    private String getCombinedSessionToken(ConcurrentHashMap<String, ISessionToken> tokens) {
         StringBuilder result = new StringBuilder();
         if (tokens != null) {
-            for (Iterator<Entry<String, Long>> iterator = tokens.entrySet().iterator(); iterator.hasNext(); ) {
-                Entry<String, Long> entry = iterator.next();
-                result = result.append(entry.getKey()).append(":").append(entry.getValue());
+            for (Iterator<Entry<String, ISessionToken>> iterator = tokens.entrySet().iterator(); iterator.hasNext(); ) {
+                Entry<String, ISessionToken> entry = iterator.next();
+                result = result.append(entry.getKey()).append(":").append(entry.getValue().convertToString());
                 if (iterator.hasNext()) {
                     result = result.append(",");
                 }
@@ -195,28 +196,30 @@ public final class SessionContainer {
         return result.toString();
     }
 
-    private void compareAndSetToken(String newToken, ConcurrentHashMap<String, Long> oldTokens) {
+    private void compareAndSetToken(String newToken, ConcurrentHashMap<String, ISessionToken> oldTokens) {
         if (StringUtils.isNotEmpty(newToken)) {
             String[] newTokenParts = newToken.split(":");
             if (newTokenParts.length == 2) {
                 String range = newTokenParts[0];
-                Long newLSN = Long.parseLong(newTokenParts[1]);
-                Boolean success;
-                do {
-                    Long oldLSN = oldTokens.putIfAbsent(range, newLSN);
-                    // If there exists no previous value or if the previous value is greater than
-                    // the current value, then we're done.
-                    success = (oldLSN == null || newLSN < oldLSN);
-                    if (!success) {
-                        // replace the previous value with the current value.
-                        success = oldTokens.replace(range, oldLSN, newLSN);
+                ISessionToken newLSN = SessionTokenHelper.parse(newTokenParts[1]);
+                oldTokens.merge(range, newLSN, (oldSessionToken, newSessionToken) -> {
+                    try {
+                        if (oldSessionToken == null) {
+                            return newSessionToken;
+                        }
+
+                        return oldSessionToken.merge(newSessionToken);
+                    } catch (DocumentClientException e) {
+                        throw new IllegalStateException(e);
                     }
-                } while (!success);
+                });
+            } else {
+                assert false : "service returned an invalid session token";
             }
         }
     }
 
-    Long resolvePartitionLocalSessionToken(RxDocumentServiceRequest request, String partitionKeyRangeId) {
+    ISessionToken resolvePartitionLocalSessionToken(RxDocumentServiceRequest request, String partitionKeyRangeId) {
         return SessionTokenHelper.resolvePartitionLocalSessionToken(request, partitionKeyRangeId,
                 this.getPartitionKeyRangeIdToTokenMap(request));
     }

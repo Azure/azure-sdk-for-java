@@ -46,6 +46,7 @@ import java.util.concurrent.TimeUnit;
 import javax.net.ssl.SSLEngine;
 import javax.net.ssl.SSLException;
 
+import io.netty.handler.logging.LogLevel;
 import org.apache.commons.lang3.StringUtils;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
@@ -166,6 +167,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final CompositeHttpClient<ByteBuf, ByteBuf> rxClient;
     private final GlobalEndpointManager globalEndpointManager;
     private final RetryPolicy retryPolicy;
+    private volatile boolean useMultipleWriteLocations;
+
     private static final ObjectMapper mapper = Utils.getSimpleObjectMapper();
     private Configs config = Configs.getInstance();
 
@@ -798,10 +801,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private Map<String, String> getRequestHeaders(RequestOptions options) {
-        if (options == null)
-            return null;
-
         Map<String, String> headers = new HashMap<>();
+
+        if (this.useMultipleWriteLocations) {
+            headers.put(HttpConstants.HttpHeaders.ALLOW_TENTATIVE_WRITES, Boolean.TRUE.toString());
+        }
+
+        if (options == null) {
+            return headers;
+        }
 
         if (options.getAccessCondition() != null) {
             if (options.getAccessCondition().getType() == AccessConditionType.IfMatch) {
@@ -2847,7 +2855,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                     ? e.getCause().toString()
                                     : e.toString());
                 logger.warn(message);
-            }).map(rsp -> rsp.getResource(DatabaseAccount.class)).onErrorReturn(error -> null);
+            }).map(rsp -> rsp.getResource(DatabaseAccount.class))
+                    .doOnNext(databaseAccount -> {
+                        this.useMultipleWriteLocations = this.connectionPolicy.isUsingMultipleWriteLocations()
+                                && BridgeInternal.isEnableMultipleWriteLocations(databaseAccount);
+                    });
         });
     }
 

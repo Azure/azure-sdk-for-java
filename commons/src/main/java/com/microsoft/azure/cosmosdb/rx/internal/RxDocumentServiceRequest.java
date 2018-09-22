@@ -74,8 +74,6 @@ public class RxDocumentServiceRequest {
     // so it means most likely the corresponding features are also missing from the main sdk
     // we need to wire this up.
     public boolean UseGatewayMode;
-    public boolean useWriteEndpoint;
-    public boolean useAlternateWriteEndpoint;
     public boolean clearSessionTokenOnSessionReadFailure;
 
     public boolean isReadOnlyRequest() {
@@ -105,7 +103,7 @@ public class RxDocumentServiceRequest {
         this.operationType = operationType;
         this.resourceType = resourceType;
         this.path = path;
-        this.requestContext.sessionLsn = -1;
+        this.requestContext.sessionToken = null;
         this.headers = headers != null ? headers : new HashMap<>();
         this.isNameBased = Utils.isNameBased(path);
         this.activityId = Utils.randomUUID().toString();
