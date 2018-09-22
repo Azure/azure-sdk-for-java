@@ -57,9 +57,9 @@ public class StepsInner implements InnerSupportsGet<StepResourceInner>, InnerSup
      * used by Retrofit to perform actually REST calls.
      */
     interface StepsService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.deploymentmanager.v2018-09-01-preview.Steps create" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.deploymentmanager.v2018-09-01-preview.Steps createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager/steps/{stepName}")
-        Observable<Response<ResponseBody>> create(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("stepName") String stepName, @Query("api-version") String apiVersion, @Body StepResourceInner stepInfo, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("stepName") String stepName, @Query("api-version") String apiVersion, @Body StepResourceInner stepInfo, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.deploymentmanager.v2018-09-01-preview.Steps getByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager/steps/{stepName}")
@@ -72,8 +72,8 @@ public class StepsInner implements InnerSupportsGet<StepResourceInner>, InnerSup
     }
 
     /**
-     * Creates a new deployment step.
-     * This is an asynchronous operation and can be polled to completion using the operation resource returned by this operation.
+     * Creates or updates a deployment step.
+     * Synchronously creates a new step or updates an existing step.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param stepName The name of the deployment step.
@@ -82,13 +82,13 @@ public class StepsInner implements InnerSupportsGet<StepResourceInner>, InnerSup
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the StepResourceInner object if successful.
      */
-    public StepResourceInner create(String resourceGroupName, String stepName) {
-        return createWithServiceResponseAsync(resourceGroupName, stepName).toBlocking().single().body();
+    public StepResourceInner createOrUpdate(String resourceGroupName, String stepName) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, stepName).toBlocking().single().body();
     }
 
     /**
-     * Creates a new deployment step.
-     * This is an asynchronous operation and can be polled to completion using the operation resource returned by this operation.
+     * Creates or updates a deployment step.
+     * Synchronously creates a new step or updates an existing step.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param stepName The name of the deployment step.
@@ -96,21 +96,21 @@ public class StepsInner implements InnerSupportsGet<StepResourceInner>, InnerSup
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<StepResourceInner> createAsync(String resourceGroupName, String stepName, final ServiceCallback<StepResourceInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createWithServiceResponseAsync(resourceGroupName, stepName), serviceCallback);
+    public ServiceFuture<StepResourceInner> createOrUpdateAsync(String resourceGroupName, String stepName, final ServiceCallback<StepResourceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, stepName), serviceCallback);
     }
 
     /**
-     * Creates a new deployment step.
-     * This is an asynchronous operation and can be polled to completion using the operation resource returned by this operation.
+     * Creates or updates a deployment step.
+     * Synchronously creates a new step or updates an existing step.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param stepName The name of the deployment step.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the StepResourceInner object
      */
-    public Observable<StepResourceInner> createAsync(String resourceGroupName, String stepName) {
-        return createWithServiceResponseAsync(resourceGroupName, stepName).map(new Func1<ServiceResponse<StepResourceInner>, StepResourceInner>() {
+    public Observable<StepResourceInner> createOrUpdateAsync(String resourceGroupName, String stepName) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, stepName).map(new Func1<ServiceResponse<StepResourceInner>, StepResourceInner>() {
             @Override
             public StepResourceInner call(ServiceResponse<StepResourceInner> response) {
                 return response.body();
@@ -119,15 +119,15 @@ public class StepsInner implements InnerSupportsGet<StepResourceInner>, InnerSup
     }
 
     /**
-     * Creates a new deployment step.
-     * This is an asynchronous operation and can be polled to completion using the operation resource returned by this operation.
+     * Creates or updates a deployment step.
+     * Synchronously creates a new step or updates an existing step.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param stepName The name of the deployment step.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the StepResourceInner object
      */
-    public Observable<ServiceResponse<StepResourceInner>> createWithServiceResponseAsync(String resourceGroupName, String stepName) {
+    public Observable<ServiceResponse<StepResourceInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String stepName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -141,12 +141,12 @@ public class StepsInner implements InnerSupportsGet<StepResourceInner>, InnerSup
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final StepResourceInner stepInfo = null;
-        return service.create(this.client.subscriptionId(), resourceGroupName, stepName, this.client.apiVersion(), stepInfo, this.client.acceptLanguage(), this.client.userAgent())
+        return service.createOrUpdate(this.client.subscriptionId(), resourceGroupName, stepName, this.client.apiVersion(), stepInfo, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<StepResourceInner>>>() {
                 @Override
                 public Observable<ServiceResponse<StepResourceInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<StepResourceInner> clientResponse = createDelegate(response);
+                        ServiceResponse<StepResourceInner> clientResponse = createOrUpdateDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -156,8 +156,8 @@ public class StepsInner implements InnerSupportsGet<StepResourceInner>, InnerSup
     }
 
     /**
-     * Creates a new deployment step.
-     * This is an asynchronous operation and can be polled to completion using the operation resource returned by this operation.
+     * Creates or updates a deployment step.
+     * Synchronously creates a new step or updates an existing step.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param stepName The name of the deployment step.
@@ -167,13 +167,13 @@ public class StepsInner implements InnerSupportsGet<StepResourceInner>, InnerSup
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the StepResourceInner object if successful.
      */
-    public StepResourceInner create(String resourceGroupName, String stepName, StepResourceInner stepInfo) {
-        return createWithServiceResponseAsync(resourceGroupName, stepName, stepInfo).toBlocking().single().body();
+    public StepResourceInner createOrUpdate(String resourceGroupName, String stepName, StepResourceInner stepInfo) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, stepName, stepInfo).toBlocking().single().body();
     }
 
     /**
-     * Creates a new deployment step.
-     * This is an asynchronous operation and can be polled to completion using the operation resource returned by this operation.
+     * Creates or updates a deployment step.
+     * Synchronously creates a new step or updates an existing step.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param stepName The name of the deployment step.
@@ -182,13 +182,13 @@ public class StepsInner implements InnerSupportsGet<StepResourceInner>, InnerSup
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<StepResourceInner> createAsync(String resourceGroupName, String stepName, StepResourceInner stepInfo, final ServiceCallback<StepResourceInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createWithServiceResponseAsync(resourceGroupName, stepName, stepInfo), serviceCallback);
+    public ServiceFuture<StepResourceInner> createOrUpdateAsync(String resourceGroupName, String stepName, StepResourceInner stepInfo, final ServiceCallback<StepResourceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, stepName, stepInfo), serviceCallback);
     }
 
     /**
-     * Creates a new deployment step.
-     * This is an asynchronous operation and can be polled to completion using the operation resource returned by this operation.
+     * Creates or updates a deployment step.
+     * Synchronously creates a new step or updates an existing step.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param stepName The name of the deployment step.
@@ -196,8 +196,8 @@ public class StepsInner implements InnerSupportsGet<StepResourceInner>, InnerSup
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the StepResourceInner object
      */
-    public Observable<StepResourceInner> createAsync(String resourceGroupName, String stepName, StepResourceInner stepInfo) {
-        return createWithServiceResponseAsync(resourceGroupName, stepName, stepInfo).map(new Func1<ServiceResponse<StepResourceInner>, StepResourceInner>() {
+    public Observable<StepResourceInner> createOrUpdateAsync(String resourceGroupName, String stepName, StepResourceInner stepInfo) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, stepName, stepInfo).map(new Func1<ServiceResponse<StepResourceInner>, StepResourceInner>() {
             @Override
             public StepResourceInner call(ServiceResponse<StepResourceInner> response) {
                 return response.body();
@@ -206,8 +206,8 @@ public class StepsInner implements InnerSupportsGet<StepResourceInner>, InnerSup
     }
 
     /**
-     * Creates a new deployment step.
-     * This is an asynchronous operation and can be polled to completion using the operation resource returned by this operation.
+     * Creates or updates a deployment step.
+     * Synchronously creates a new step or updates an existing step.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param stepName The name of the deployment step.
@@ -215,7 +215,7 @@ public class StepsInner implements InnerSupportsGet<StepResourceInner>, InnerSup
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the StepResourceInner object
      */
-    public Observable<ServiceResponse<StepResourceInner>> createWithServiceResponseAsync(String resourceGroupName, String stepName, StepResourceInner stepInfo) {
+    public Observable<ServiceResponse<StepResourceInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String stepName, StepResourceInner stepInfo) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -229,12 +229,12 @@ public class StepsInner implements InnerSupportsGet<StepResourceInner>, InnerSup
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(stepInfo);
-        return service.create(this.client.subscriptionId(), resourceGroupName, stepName, this.client.apiVersion(), stepInfo, this.client.acceptLanguage(), this.client.userAgent())
+        return service.createOrUpdate(this.client.subscriptionId(), resourceGroupName, stepName, this.client.apiVersion(), stepInfo, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<StepResourceInner>>>() {
                 @Override
                 public Observable<ServiceResponse<StepResourceInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<StepResourceInner> clientResponse = createDelegate(response);
+                        ServiceResponse<StepResourceInner> clientResponse = createOrUpdateDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -243,7 +243,7 @@ public class StepsInner implements InnerSupportsGet<StepResourceInner>, InnerSup
             });
     }
 
-    private ServiceResponse<StepResourceInner> createDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<StepResourceInner> createOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<StepResourceInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(201, new TypeToken<StepResourceInner>() { }.getType())
                 .registerError(CloudException.class)

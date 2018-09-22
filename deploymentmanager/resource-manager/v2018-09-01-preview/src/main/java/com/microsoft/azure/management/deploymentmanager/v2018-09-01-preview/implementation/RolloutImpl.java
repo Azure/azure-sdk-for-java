@@ -30,7 +30,7 @@ class RolloutImpl extends GroupableResourceCoreImpl<Rollout, RolloutInner, Rollo
         RolloutsInner client = this.manager().inner().rollouts();
         this.createOrUpdateParameter.withLocation(inner().location());
         this.createOrUpdateParameter.withTags(inner().getTags());
-        return client.createAsync(this.resourceGroupName(), this.name(), this.createOrUpdateParameter)
+        return client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.createOrUpdateParameter)
             .map(new Func1<RolloutInner, RolloutInner>() {
                @Override
                public RolloutInner call(RolloutInner resource) {
@@ -44,7 +44,7 @@ class RolloutImpl extends GroupableResourceCoreImpl<Rollout, RolloutInner, Rollo
     @Override
     public Observable<Rollout> updateResourceAsync() {
         RolloutsInner client = this.manager().inner().rollouts();
-        return client.createAsync(this.resourceGroupName(), this.name(), this.createOrUpdateParameter)
+        return client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.createOrUpdateParameter)
             .map(new Func1<RolloutInner, RolloutInner>() {
                @Override
                public RolloutInner call(RolloutInner resource) {

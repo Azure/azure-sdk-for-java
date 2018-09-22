@@ -57,9 +57,9 @@ public class ServiceTopologiesInner implements InnerSupportsGet<ServiceTopologyR
      * used by Retrofit to perform actually REST calls.
      */
     interface ServiceTopologiesService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.deploymentmanager.v2018-09-01-preview.ServiceTopologies create" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.deploymentmanager.v2018-09-01-preview.ServiceTopologies createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager/serviceTopologies/{serviceTopologyName}")
-        Observable<Response<ResponseBody>> create(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serviceTopologyName") String serviceTopologyName, @Body ServiceTopologyResourceInner serviceTopologyInfo, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serviceTopologyName") String serviceTopologyName, @Body ServiceTopologyResourceInner serviceTopologyInfo, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.deploymentmanager.v2018-09-01-preview.ServiceTopologies getByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager/serviceTopologies/{serviceTopologyName}")
@@ -72,8 +72,8 @@ public class ServiceTopologiesInner implements InnerSupportsGet<ServiceTopologyR
     }
 
     /**
-     * Creates a new service topology.
-     * This is an asynchronous operation and can be polled to completion using the operation resource returned by this operation.
+     * Creates or updates a service topology.
+     * Synchronously creates a new service topology or updates an existing service topology.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
@@ -83,13 +83,13 @@ public class ServiceTopologiesInner implements InnerSupportsGet<ServiceTopologyR
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ServiceTopologyResourceInner object if successful.
      */
-    public ServiceTopologyResourceInner create(String resourceGroupName, String serviceTopologyName, ServiceTopologyResourceInner serviceTopologyInfo) {
-        return createWithServiceResponseAsync(resourceGroupName, serviceTopologyName, serviceTopologyInfo).toBlocking().single().body();
+    public ServiceTopologyResourceInner createOrUpdate(String resourceGroupName, String serviceTopologyName, ServiceTopologyResourceInner serviceTopologyInfo) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, serviceTopologyName, serviceTopologyInfo).toBlocking().single().body();
     }
 
     /**
-     * Creates a new service topology.
-     * This is an asynchronous operation and can be polled to completion using the operation resource returned by this operation.
+     * Creates or updates a service topology.
+     * Synchronously creates a new service topology or updates an existing service topology.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
@@ -98,13 +98,13 @@ public class ServiceTopologiesInner implements InnerSupportsGet<ServiceTopologyR
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ServiceTopologyResourceInner> createAsync(String resourceGroupName, String serviceTopologyName, ServiceTopologyResourceInner serviceTopologyInfo, final ServiceCallback<ServiceTopologyResourceInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createWithServiceResponseAsync(resourceGroupName, serviceTopologyName, serviceTopologyInfo), serviceCallback);
+    public ServiceFuture<ServiceTopologyResourceInner> createOrUpdateAsync(String resourceGroupName, String serviceTopologyName, ServiceTopologyResourceInner serviceTopologyInfo, final ServiceCallback<ServiceTopologyResourceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, serviceTopologyName, serviceTopologyInfo), serviceCallback);
     }
 
     /**
-     * Creates a new service topology.
-     * This is an asynchronous operation and can be polled to completion using the operation resource returned by this operation.
+     * Creates or updates a service topology.
+     * Synchronously creates a new service topology or updates an existing service topology.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
@@ -112,8 +112,8 @@ public class ServiceTopologiesInner implements InnerSupportsGet<ServiceTopologyR
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ServiceTopologyResourceInner object
      */
-    public Observable<ServiceTopologyResourceInner> createAsync(String resourceGroupName, String serviceTopologyName, ServiceTopologyResourceInner serviceTopologyInfo) {
-        return createWithServiceResponseAsync(resourceGroupName, serviceTopologyName, serviceTopologyInfo).map(new Func1<ServiceResponse<ServiceTopologyResourceInner>, ServiceTopologyResourceInner>() {
+    public Observable<ServiceTopologyResourceInner> createOrUpdateAsync(String resourceGroupName, String serviceTopologyName, ServiceTopologyResourceInner serviceTopologyInfo) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, serviceTopologyName, serviceTopologyInfo).map(new Func1<ServiceResponse<ServiceTopologyResourceInner>, ServiceTopologyResourceInner>() {
             @Override
             public ServiceTopologyResourceInner call(ServiceResponse<ServiceTopologyResourceInner> response) {
                 return response.body();
@@ -122,8 +122,8 @@ public class ServiceTopologiesInner implements InnerSupportsGet<ServiceTopologyR
     }
 
     /**
-     * Creates a new service topology.
-     * This is an asynchronous operation and can be polled to completion using the operation resource returned by this operation.
+     * Creates or updates a service topology.
+     * Synchronously creates a new service topology or updates an existing service topology.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
@@ -131,7 +131,7 @@ public class ServiceTopologiesInner implements InnerSupportsGet<ServiceTopologyR
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ServiceTopologyResourceInner object
      */
-    public Observable<ServiceResponse<ServiceTopologyResourceInner>> createWithServiceResponseAsync(String resourceGroupName, String serviceTopologyName, ServiceTopologyResourceInner serviceTopologyInfo) {
+    public Observable<ServiceResponse<ServiceTopologyResourceInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String serviceTopologyName, ServiceTopologyResourceInner serviceTopologyInfo) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -148,12 +148,12 @@ public class ServiceTopologiesInner implements InnerSupportsGet<ServiceTopologyR
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(serviceTopologyInfo);
-        return service.create(this.client.subscriptionId(), resourceGroupName, serviceTopologyName, serviceTopologyInfo, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.createOrUpdate(this.client.subscriptionId(), resourceGroupName, serviceTopologyName, serviceTopologyInfo, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ServiceTopologyResourceInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ServiceTopologyResourceInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<ServiceTopologyResourceInner> clientResponse = createDelegate(response);
+                        ServiceResponse<ServiceTopologyResourceInner> clientResponse = createOrUpdateDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -162,7 +162,7 @@ public class ServiceTopologiesInner implements InnerSupportsGet<ServiceTopologyR
             });
     }
 
-    private ServiceResponse<ServiceTopologyResourceInner> createDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<ServiceTopologyResourceInner> createOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<ServiceTopologyResourceInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(201, new TypeToken<ServiceTopologyResourceInner>() { }.getType())
                 .registerError(CloudException.class)

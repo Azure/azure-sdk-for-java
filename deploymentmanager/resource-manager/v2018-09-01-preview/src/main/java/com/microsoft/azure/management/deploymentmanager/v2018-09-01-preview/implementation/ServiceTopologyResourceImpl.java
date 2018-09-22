@@ -20,14 +20,14 @@ class ServiceTopologyResourceImpl extends GroupableResourceCoreImpl<ServiceTopol
     @Override
     public Observable<ServiceTopologyResource> createResourceAsync() {
         ServiceTopologiesInner client = this.manager().inner().serviceTopologies();
-        return client.createAsync(this.resourceGroupName(), this.name(), this.inner())
+        return client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
             .map(innerToFluentMap(this));
     }
 
     @Override
     public Observable<ServiceTopologyResource> updateResourceAsync() {
         ServiceTopologiesInner client = this.manager().inner().serviceTopologies();
-        return client.createAsync(this.resourceGroupName(), this.name(), this.inner())
+        return client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
             .map(innerToFluentMap(this));
     }
 

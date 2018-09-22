@@ -21,14 +21,14 @@ class ArtifactSourceImpl extends GroupableResourceCoreImpl<ArtifactSource, Artif
     @Override
     public Observable<ArtifactSource> createResourceAsync() {
         ArtifactSourcesInner client = this.manager().inner().artifactSources();
-        return client.createAsync(this.resourceGroupName(), this.name(), this.inner())
+        return client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
             .map(innerToFluentMap(this));
     }
 
     @Override
     public Observable<ArtifactSource> updateResourceAsync() {
         ArtifactSourcesInner client = this.manager().inner().artifactSources();
-        return client.createAsync(this.resourceGroupName(), this.name(), this.inner())
+        return client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
             .map(innerToFluentMap(this));
     }
 

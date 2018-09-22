@@ -55,9 +55,9 @@ public class ServicesInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface ServicesService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.deploymentmanager.v2018-09-01-preview.Services create" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.deploymentmanager.v2018-09-01-preview.Services createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager/serviceTopologies/{serviceTopologyName}/services/{serviceName}")
-        Observable<Response<ResponseBody>> create(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serviceTopologyName") String serviceTopologyName, @Path("serviceName") String serviceName, @Query("api-version") String apiVersion, @Body ServiceResourceInner serviceInfo, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serviceTopologyName") String serviceTopologyName, @Path("serviceName") String serviceName, @Query("api-version") String apiVersion, @Body ServiceResourceInner serviceInfo, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.deploymentmanager.v2018-09-01-preview.Services get" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager/serviceTopologies/{serviceTopologyName}/services/{serviceName}")
@@ -71,7 +71,7 @@ public class ServicesInner {
 
     /**
      * Creates or updates a service in the topology.
-     * This is an asynchronous operation and can be polled to completion using the operation resource returned by this operation.
+     * Synchronously creates a new service or updates an existing service.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
@@ -82,13 +82,13 @@ public class ServicesInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ServiceResourceInner object if successful.
      */
-    public ServiceResourceInner create(String resourceGroupName, String serviceTopologyName, String serviceName, ServiceResourceInner serviceInfo) {
-        return createWithServiceResponseAsync(resourceGroupName, serviceTopologyName, serviceName, serviceInfo).toBlocking().single().body();
+    public ServiceResourceInner createOrUpdate(String resourceGroupName, String serviceTopologyName, String serviceName, ServiceResourceInner serviceInfo) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, serviceTopologyName, serviceName, serviceInfo).toBlocking().single().body();
     }
 
     /**
      * Creates or updates a service in the topology.
-     * This is an asynchronous operation and can be polled to completion using the operation resource returned by this operation.
+     * Synchronously creates a new service or updates an existing service.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
@@ -98,13 +98,13 @@ public class ServicesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ServiceResourceInner> createAsync(String resourceGroupName, String serviceTopologyName, String serviceName, ServiceResourceInner serviceInfo, final ServiceCallback<ServiceResourceInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createWithServiceResponseAsync(resourceGroupName, serviceTopologyName, serviceName, serviceInfo), serviceCallback);
+    public ServiceFuture<ServiceResourceInner> createOrUpdateAsync(String resourceGroupName, String serviceTopologyName, String serviceName, ServiceResourceInner serviceInfo, final ServiceCallback<ServiceResourceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, serviceTopologyName, serviceName, serviceInfo), serviceCallback);
     }
 
     /**
      * Creates or updates a service in the topology.
-     * This is an asynchronous operation and can be polled to completion using the operation resource returned by this operation.
+     * Synchronously creates a new service or updates an existing service.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
@@ -113,8 +113,8 @@ public class ServicesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ServiceResourceInner object
      */
-    public Observable<ServiceResourceInner> createAsync(String resourceGroupName, String serviceTopologyName, String serviceName, ServiceResourceInner serviceInfo) {
-        return createWithServiceResponseAsync(resourceGroupName, serviceTopologyName, serviceName, serviceInfo).map(new Func1<ServiceResponse<ServiceResourceInner>, ServiceResourceInner>() {
+    public Observable<ServiceResourceInner> createOrUpdateAsync(String resourceGroupName, String serviceTopologyName, String serviceName, ServiceResourceInner serviceInfo) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, serviceTopologyName, serviceName, serviceInfo).map(new Func1<ServiceResponse<ServiceResourceInner>, ServiceResourceInner>() {
             @Override
             public ServiceResourceInner call(ServiceResponse<ServiceResourceInner> response) {
                 return response.body();
@@ -124,7 +124,7 @@ public class ServicesInner {
 
     /**
      * Creates or updates a service in the topology.
-     * This is an asynchronous operation and can be polled to completion using the operation resource returned by this operation.
+     * Synchronously creates a new service or updates an existing service.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
@@ -133,7 +133,7 @@ public class ServicesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ServiceResourceInner object
      */
-    public Observable<ServiceResponse<ServiceResourceInner>> createWithServiceResponseAsync(String resourceGroupName, String serviceTopologyName, String serviceName, ServiceResourceInner serviceInfo) {
+    public Observable<ServiceResponse<ServiceResourceInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String serviceTopologyName, String serviceName, ServiceResourceInner serviceInfo) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -153,12 +153,12 @@ public class ServicesInner {
             throw new IllegalArgumentException("Parameter serviceInfo is required and cannot be null.");
         }
         Validator.validate(serviceInfo);
-        return service.create(this.client.subscriptionId(), resourceGroupName, serviceTopologyName, serviceName, this.client.apiVersion(), serviceInfo, this.client.acceptLanguage(), this.client.userAgent())
+        return service.createOrUpdate(this.client.subscriptionId(), resourceGroupName, serviceTopologyName, serviceName, this.client.apiVersion(), serviceInfo, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ServiceResourceInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ServiceResourceInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<ServiceResourceInner> clientResponse = createDelegate(response);
+                        ServiceResponse<ServiceResourceInner> clientResponse = createOrUpdateDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -167,7 +167,7 @@ public class ServicesInner {
             });
     }
 
-    private ServiceResponse<ServiceResourceInner> createDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<ServiceResourceInner> createOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<ServiceResourceInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(201, new TypeToken<ServiceResourceInner>() { }.getType())
                 .registerError(CloudException.class)

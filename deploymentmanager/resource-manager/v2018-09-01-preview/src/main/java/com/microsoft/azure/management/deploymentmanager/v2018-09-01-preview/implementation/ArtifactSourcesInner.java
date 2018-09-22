@@ -57,9 +57,9 @@ public class ArtifactSourcesInner implements InnerSupportsGet<ArtifactSourceInne
      * used by Retrofit to perform actually REST calls.
      */
     interface ArtifactSourcesService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.deploymentmanager.v2018-09-01-preview.ArtifactSources create" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.deploymentmanager.v2018-09-01-preview.ArtifactSources createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager/artifactSources/{artifactSourceName}")
-        Observable<Response<ResponseBody>> create(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("artifactSourceName") String artifactSourceName, @Query("api-version") String apiVersion, @Body ArtifactSourceInner artifactSourceInfo, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("artifactSourceName") String artifactSourceName, @Query("api-version") String apiVersion, @Body ArtifactSourceInner artifactSourceInfo, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.deploymentmanager.v2018-09-01-preview.ArtifactSources getByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager/artifactSources/{artifactSourceName}")
@@ -72,8 +72,8 @@ public class ArtifactSourcesInner implements InnerSupportsGet<ArtifactSourceInne
     }
 
     /**
-     * Creates a new Artifact source.
-     * This is an asynchronous operation and can be polled to completion using the operation resource returned by this operation.
+     * Creates or updates an Artifact source.
+     * Synchronously creates a new artifact source or updates an existing artifact source.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param artifactSourceName The name of the artifact source.
@@ -82,13 +82,13 @@ public class ArtifactSourcesInner implements InnerSupportsGet<ArtifactSourceInne
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ArtifactSourceInner object if successful.
      */
-    public ArtifactSourceInner create(String resourceGroupName, String artifactSourceName) {
-        return createWithServiceResponseAsync(resourceGroupName, artifactSourceName).toBlocking().single().body();
+    public ArtifactSourceInner createOrUpdate(String resourceGroupName, String artifactSourceName) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, artifactSourceName).toBlocking().single().body();
     }
 
     /**
-     * Creates a new Artifact source.
-     * This is an asynchronous operation and can be polled to completion using the operation resource returned by this operation.
+     * Creates or updates an Artifact source.
+     * Synchronously creates a new artifact source or updates an existing artifact source.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param artifactSourceName The name of the artifact source.
@@ -96,21 +96,21 @@ public class ArtifactSourcesInner implements InnerSupportsGet<ArtifactSourceInne
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ArtifactSourceInner> createAsync(String resourceGroupName, String artifactSourceName, final ServiceCallback<ArtifactSourceInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createWithServiceResponseAsync(resourceGroupName, artifactSourceName), serviceCallback);
+    public ServiceFuture<ArtifactSourceInner> createOrUpdateAsync(String resourceGroupName, String artifactSourceName, final ServiceCallback<ArtifactSourceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, artifactSourceName), serviceCallback);
     }
 
     /**
-     * Creates a new Artifact source.
-     * This is an asynchronous operation and can be polled to completion using the operation resource returned by this operation.
+     * Creates or updates an Artifact source.
+     * Synchronously creates a new artifact source or updates an existing artifact source.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param artifactSourceName The name of the artifact source.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ArtifactSourceInner object
      */
-    public Observable<ArtifactSourceInner> createAsync(String resourceGroupName, String artifactSourceName) {
-        return createWithServiceResponseAsync(resourceGroupName, artifactSourceName).map(new Func1<ServiceResponse<ArtifactSourceInner>, ArtifactSourceInner>() {
+    public Observable<ArtifactSourceInner> createOrUpdateAsync(String resourceGroupName, String artifactSourceName) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, artifactSourceName).map(new Func1<ServiceResponse<ArtifactSourceInner>, ArtifactSourceInner>() {
             @Override
             public ArtifactSourceInner call(ServiceResponse<ArtifactSourceInner> response) {
                 return response.body();
@@ -119,15 +119,15 @@ public class ArtifactSourcesInner implements InnerSupportsGet<ArtifactSourceInne
     }
 
     /**
-     * Creates a new Artifact source.
-     * This is an asynchronous operation and can be polled to completion using the operation resource returned by this operation.
+     * Creates or updates an Artifact source.
+     * Synchronously creates a new artifact source or updates an existing artifact source.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param artifactSourceName The name of the artifact source.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ArtifactSourceInner object
      */
-    public Observable<ServiceResponse<ArtifactSourceInner>> createWithServiceResponseAsync(String resourceGroupName, String artifactSourceName) {
+    public Observable<ServiceResponse<ArtifactSourceInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String artifactSourceName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -141,12 +141,12 @@ public class ArtifactSourcesInner implements InnerSupportsGet<ArtifactSourceInne
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final ArtifactSourceInner artifactSourceInfo = null;
-        return service.create(this.client.subscriptionId(), resourceGroupName, artifactSourceName, this.client.apiVersion(), artifactSourceInfo, this.client.acceptLanguage(), this.client.userAgent())
+        return service.createOrUpdate(this.client.subscriptionId(), resourceGroupName, artifactSourceName, this.client.apiVersion(), artifactSourceInfo, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ArtifactSourceInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ArtifactSourceInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<ArtifactSourceInner> clientResponse = createDelegate(response);
+                        ServiceResponse<ArtifactSourceInner> clientResponse = createOrUpdateDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -156,8 +156,8 @@ public class ArtifactSourcesInner implements InnerSupportsGet<ArtifactSourceInne
     }
 
     /**
-     * Creates a new Artifact source.
-     * This is an asynchronous operation and can be polled to completion using the operation resource returned by this operation.
+     * Creates or updates an Artifact source.
+     * Synchronously creates a new artifact source or updates an existing artifact source.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param artifactSourceName The name of the artifact source.
@@ -167,13 +167,13 @@ public class ArtifactSourcesInner implements InnerSupportsGet<ArtifactSourceInne
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ArtifactSourceInner object if successful.
      */
-    public ArtifactSourceInner create(String resourceGroupName, String artifactSourceName, ArtifactSourceInner artifactSourceInfo) {
-        return createWithServiceResponseAsync(resourceGroupName, artifactSourceName, artifactSourceInfo).toBlocking().single().body();
+    public ArtifactSourceInner createOrUpdate(String resourceGroupName, String artifactSourceName, ArtifactSourceInner artifactSourceInfo) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, artifactSourceName, artifactSourceInfo).toBlocking().single().body();
     }
 
     /**
-     * Creates a new Artifact source.
-     * This is an asynchronous operation and can be polled to completion using the operation resource returned by this operation.
+     * Creates or updates an Artifact source.
+     * Synchronously creates a new artifact source or updates an existing artifact source.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param artifactSourceName The name of the artifact source.
@@ -182,13 +182,13 @@ public class ArtifactSourcesInner implements InnerSupportsGet<ArtifactSourceInne
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ArtifactSourceInner> createAsync(String resourceGroupName, String artifactSourceName, ArtifactSourceInner artifactSourceInfo, final ServiceCallback<ArtifactSourceInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createWithServiceResponseAsync(resourceGroupName, artifactSourceName, artifactSourceInfo), serviceCallback);
+    public ServiceFuture<ArtifactSourceInner> createOrUpdateAsync(String resourceGroupName, String artifactSourceName, ArtifactSourceInner artifactSourceInfo, final ServiceCallback<ArtifactSourceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, artifactSourceName, artifactSourceInfo), serviceCallback);
     }
 
     /**
-     * Creates a new Artifact source.
-     * This is an asynchronous operation and can be polled to completion using the operation resource returned by this operation.
+     * Creates or updates an Artifact source.
+     * Synchronously creates a new artifact source or updates an existing artifact source.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param artifactSourceName The name of the artifact source.
@@ -196,8 +196,8 @@ public class ArtifactSourcesInner implements InnerSupportsGet<ArtifactSourceInne
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ArtifactSourceInner object
      */
-    public Observable<ArtifactSourceInner> createAsync(String resourceGroupName, String artifactSourceName, ArtifactSourceInner artifactSourceInfo) {
-        return createWithServiceResponseAsync(resourceGroupName, artifactSourceName, artifactSourceInfo).map(new Func1<ServiceResponse<ArtifactSourceInner>, ArtifactSourceInner>() {
+    public Observable<ArtifactSourceInner> createOrUpdateAsync(String resourceGroupName, String artifactSourceName, ArtifactSourceInner artifactSourceInfo) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, artifactSourceName, artifactSourceInfo).map(new Func1<ServiceResponse<ArtifactSourceInner>, ArtifactSourceInner>() {
             @Override
             public ArtifactSourceInner call(ServiceResponse<ArtifactSourceInner> response) {
                 return response.body();
@@ -206,8 +206,8 @@ public class ArtifactSourcesInner implements InnerSupportsGet<ArtifactSourceInne
     }
 
     /**
-     * Creates a new Artifact source.
-     * This is an asynchronous operation and can be polled to completion using the operation resource returned by this operation.
+     * Creates or updates an Artifact source.
+     * Synchronously creates a new artifact source or updates an existing artifact source.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param artifactSourceName The name of the artifact source.
@@ -215,7 +215,7 @@ public class ArtifactSourcesInner implements InnerSupportsGet<ArtifactSourceInne
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ArtifactSourceInner object
      */
-    public Observable<ServiceResponse<ArtifactSourceInner>> createWithServiceResponseAsync(String resourceGroupName, String artifactSourceName, ArtifactSourceInner artifactSourceInfo) {
+    public Observable<ServiceResponse<ArtifactSourceInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String artifactSourceName, ArtifactSourceInner artifactSourceInfo) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -229,12 +229,12 @@ public class ArtifactSourcesInner implements InnerSupportsGet<ArtifactSourceInne
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(artifactSourceInfo);
-        return service.create(this.client.subscriptionId(), resourceGroupName, artifactSourceName, this.client.apiVersion(), artifactSourceInfo, this.client.acceptLanguage(), this.client.userAgent())
+        return service.createOrUpdate(this.client.subscriptionId(), resourceGroupName, artifactSourceName, this.client.apiVersion(), artifactSourceInfo, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ArtifactSourceInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ArtifactSourceInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<ArtifactSourceInner> clientResponse = createDelegate(response);
+                        ServiceResponse<ArtifactSourceInner> clientResponse = createOrUpdateDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -243,7 +243,7 @@ public class ArtifactSourcesInner implements InnerSupportsGet<ArtifactSourceInne
             });
     }
 
-    private ServiceResponse<ArtifactSourceInner> createDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<ArtifactSourceInner> createOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<ArtifactSourceInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(201, new TypeToken<ArtifactSourceInner>() { }.getType())
                 .registerError(CloudException.class)

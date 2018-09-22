@@ -13,7 +13,7 @@ import com.microsoft.azure.arm.collection.InnerSupportsDelete;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.management.deploymentmanager.v2018-09-01-preview.RolloutsCreateHeaders;
+import com.microsoft.azure.management.deploymentmanager.v2018-09-01-preview.RolloutsCreateOrUpdateHeaders;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
@@ -60,13 +60,13 @@ public class RolloutsInner implements InnerSupportsGet<RolloutInner>, InnerSuppo
      * used by Retrofit to perform actually REST calls.
      */
     interface RolloutsService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.deploymentmanager.v2018-09-01-preview.Rollouts create" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.deploymentmanager.v2018-09-01-preview.Rollouts createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager/rollouts/{rolloutName}")
-        Observable<Response<ResponseBody>> create(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("rolloutName") String rolloutName, @Query("api-version") String apiVersion, @Body RolloutRequestInner rolloutRequest, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("rolloutName") String rolloutName, @Query("api-version") String apiVersion, @Body RolloutRequestInner rolloutRequest, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.deploymentmanager.v2018-09-01-preview.Rollouts beginCreate" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.deploymentmanager.v2018-09-01-preview.Rollouts beginCreateOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager/rollouts/{rolloutName}")
-        Observable<Response<ResponseBody>> beginCreate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("rolloutName") String rolloutName, @Query("api-version") String apiVersion, @Body RolloutRequestInner rolloutRequest, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("rolloutName") String rolloutName, @Query("api-version") String apiVersion, @Body RolloutRequestInner rolloutRequest, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.deploymentmanager.v2018-09-01-preview.Rollouts getByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager/rollouts/{rolloutName}")
@@ -87,8 +87,8 @@ public class RolloutsInner implements InnerSupportsGet<RolloutInner>, InnerSuppo
     }
 
     /**
-     * Creates a new rollout.
-     * This is an asynchronous operation and can be polled to completion using the rollout identifier returned by this operation.
+     * Creates or updates a rollout.
+     * This is an asynchronous operation and can be polled to completion using the location header returned by this operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rolloutName The rollout name.
@@ -97,13 +97,13 @@ public class RolloutsInner implements InnerSupportsGet<RolloutInner>, InnerSuppo
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RolloutRequestInner object if successful.
      */
-    public RolloutRequestInner create(String resourceGroupName, String rolloutName) {
-        return createWithServiceResponseAsync(resourceGroupName, rolloutName).toBlocking().last().body();
+    public RolloutRequestInner createOrUpdate(String resourceGroupName, String rolloutName) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, rolloutName).toBlocking().last().body();
     }
 
     /**
-     * Creates a new rollout.
-     * This is an asynchronous operation and can be polled to completion using the rollout identifier returned by this operation.
+     * Creates or updates a rollout.
+     * This is an asynchronous operation and can be polled to completion using the location header returned by this operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rolloutName The rollout name.
@@ -111,38 +111,38 @@ public class RolloutsInner implements InnerSupportsGet<RolloutInner>, InnerSuppo
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<RolloutRequestInner> createAsync(String resourceGroupName, String rolloutName, final ServiceCallback<RolloutRequestInner> serviceCallback) {
-        return ServiceFuture.fromHeaderResponse(createWithServiceResponseAsync(resourceGroupName, rolloutName), serviceCallback);
+    public ServiceFuture<RolloutRequestInner> createOrUpdateAsync(String resourceGroupName, String rolloutName, final ServiceCallback<RolloutRequestInner> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, rolloutName), serviceCallback);
     }
 
     /**
-     * Creates a new rollout.
-     * This is an asynchronous operation and can be polled to completion using the rollout identifier returned by this operation.
+     * Creates or updates a rollout.
+     * This is an asynchronous operation and can be polled to completion using the location header returned by this operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rolloutName The rollout name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<RolloutRequestInner> createAsync(String resourceGroupName, String rolloutName) {
-        return createWithServiceResponseAsync(resourceGroupName, rolloutName).map(new Func1<ServiceResponseWithHeaders<RolloutRequestInner, RolloutsCreateHeaders>, RolloutRequestInner>() {
+    public Observable<RolloutRequestInner> createOrUpdateAsync(String resourceGroupName, String rolloutName) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, rolloutName).map(new Func1<ServiceResponseWithHeaders<RolloutRequestInner, RolloutsCreateOrUpdateHeaders>, RolloutRequestInner>() {
             @Override
-            public RolloutRequestInner call(ServiceResponseWithHeaders<RolloutRequestInner, RolloutsCreateHeaders> response) {
+            public RolloutRequestInner call(ServiceResponseWithHeaders<RolloutRequestInner, RolloutsCreateOrUpdateHeaders> response) {
                 return response.body();
             }
         });
     }
 
     /**
-     * Creates a new rollout.
-     * This is an asynchronous operation and can be polled to completion using the rollout identifier returned by this operation.
+     * Creates or updates a rollout.
+     * This is an asynchronous operation and can be polled to completion using the location header returned by this operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rolloutName The rollout name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponseWithHeaders<RolloutRequestInner, RolloutsCreateHeaders>> createWithServiceResponseAsync(String resourceGroupName, String rolloutName) {
+    public Observable<ServiceResponseWithHeaders<RolloutRequestInner, RolloutsCreateOrUpdateHeaders>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String rolloutName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -156,12 +156,12 @@ public class RolloutsInner implements InnerSupportsGet<RolloutInner>, InnerSuppo
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final RolloutRequestInner rolloutRequest = null;
-        Observable<Response<ResponseBody>> observable = service.create(this.client.subscriptionId(), resourceGroupName, rolloutName, this.client.apiVersion(), rolloutRequest, this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPutOrPatchResultWithHeadersAsync(observable, new TypeToken<RolloutRequestInner>() { }.getType(), RolloutsCreateHeaders.class);
+        Observable<Response<ResponseBody>> observable = service.createOrUpdate(this.client.subscriptionId(), resourceGroupName, rolloutName, this.client.apiVersion(), rolloutRequest, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultWithHeadersAsync(observable, new TypeToken<RolloutRequestInner>() { }.getType(), RolloutsCreateOrUpdateHeaders.class);
     }
     /**
-     * Creates a new rollout.
-     * This is an asynchronous operation and can be polled to completion using the rollout identifier returned by this operation.
+     * Creates or updates a rollout.
+     * This is an asynchronous operation and can be polled to completion using the location header returned by this operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rolloutName The rollout name.
@@ -171,13 +171,13 @@ public class RolloutsInner implements InnerSupportsGet<RolloutInner>, InnerSuppo
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RolloutRequestInner object if successful.
      */
-    public RolloutRequestInner create(String resourceGroupName, String rolloutName, RolloutRequestInner rolloutRequest) {
-        return createWithServiceResponseAsync(resourceGroupName, rolloutName, rolloutRequest).toBlocking().last().body();
+    public RolloutRequestInner createOrUpdate(String resourceGroupName, String rolloutName, RolloutRequestInner rolloutRequest) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, rolloutName, rolloutRequest).toBlocking().last().body();
     }
 
     /**
-     * Creates a new rollout.
-     * This is an asynchronous operation and can be polled to completion using the rollout identifier returned by this operation.
+     * Creates or updates a rollout.
+     * This is an asynchronous operation and can be polled to completion using the location header returned by this operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rolloutName The rollout name.
@@ -186,13 +186,13 @@ public class RolloutsInner implements InnerSupportsGet<RolloutInner>, InnerSuppo
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<RolloutRequestInner> createAsync(String resourceGroupName, String rolloutName, RolloutRequestInner rolloutRequest, final ServiceCallback<RolloutRequestInner> serviceCallback) {
-        return ServiceFuture.fromHeaderResponse(createWithServiceResponseAsync(resourceGroupName, rolloutName, rolloutRequest), serviceCallback);
+    public ServiceFuture<RolloutRequestInner> createOrUpdateAsync(String resourceGroupName, String rolloutName, RolloutRequestInner rolloutRequest, final ServiceCallback<RolloutRequestInner> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, rolloutName, rolloutRequest), serviceCallback);
     }
 
     /**
-     * Creates a new rollout.
-     * This is an asynchronous operation and can be polled to completion using the rollout identifier returned by this operation.
+     * Creates or updates a rollout.
+     * This is an asynchronous operation and can be polled to completion using the location header returned by this operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rolloutName The rollout name.
@@ -200,18 +200,18 @@ public class RolloutsInner implements InnerSupportsGet<RolloutInner>, InnerSuppo
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<RolloutRequestInner> createAsync(String resourceGroupName, String rolloutName, RolloutRequestInner rolloutRequest) {
-        return createWithServiceResponseAsync(resourceGroupName, rolloutName, rolloutRequest).map(new Func1<ServiceResponseWithHeaders<RolloutRequestInner, RolloutsCreateHeaders>, RolloutRequestInner>() {
+    public Observable<RolloutRequestInner> createOrUpdateAsync(String resourceGroupName, String rolloutName, RolloutRequestInner rolloutRequest) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, rolloutName, rolloutRequest).map(new Func1<ServiceResponseWithHeaders<RolloutRequestInner, RolloutsCreateOrUpdateHeaders>, RolloutRequestInner>() {
             @Override
-            public RolloutRequestInner call(ServiceResponseWithHeaders<RolloutRequestInner, RolloutsCreateHeaders> response) {
+            public RolloutRequestInner call(ServiceResponseWithHeaders<RolloutRequestInner, RolloutsCreateOrUpdateHeaders> response) {
                 return response.body();
             }
         });
     }
 
     /**
-     * Creates a new rollout.
-     * This is an asynchronous operation and can be polled to completion using the rollout identifier returned by this operation.
+     * Creates or updates a rollout.
+     * This is an asynchronous operation and can be polled to completion using the location header returned by this operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rolloutName The rollout name.
@@ -219,7 +219,7 @@ public class RolloutsInner implements InnerSupportsGet<RolloutInner>, InnerSuppo
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponseWithHeaders<RolloutRequestInner, RolloutsCreateHeaders>> createWithServiceResponseAsync(String resourceGroupName, String rolloutName, RolloutRequestInner rolloutRequest) {
+    public Observable<ServiceResponseWithHeaders<RolloutRequestInner, RolloutsCreateOrUpdateHeaders>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String rolloutName, RolloutRequestInner rolloutRequest) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -233,13 +233,13 @@ public class RolloutsInner implements InnerSupportsGet<RolloutInner>, InnerSuppo
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(rolloutRequest);
-        Observable<Response<ResponseBody>> observable = service.create(this.client.subscriptionId(), resourceGroupName, rolloutName, this.client.apiVersion(), rolloutRequest, this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPutOrPatchResultWithHeadersAsync(observable, new TypeToken<RolloutRequestInner>() { }.getType(), RolloutsCreateHeaders.class);
+        Observable<Response<ResponseBody>> observable = service.createOrUpdate(this.client.subscriptionId(), resourceGroupName, rolloutName, this.client.apiVersion(), rolloutRequest, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultWithHeadersAsync(observable, new TypeToken<RolloutRequestInner>() { }.getType(), RolloutsCreateOrUpdateHeaders.class);
     }
 
     /**
-     * Creates a new rollout.
-     * This is an asynchronous operation and can be polled to completion using the rollout identifier returned by this operation.
+     * Creates or updates a rollout.
+     * This is an asynchronous operation and can be polled to completion using the location header returned by this operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rolloutName The rollout name.
@@ -248,13 +248,13 @@ public class RolloutsInner implements InnerSupportsGet<RolloutInner>, InnerSuppo
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RolloutRequestInner object if successful.
      */
-    public RolloutRequestInner beginCreate(String resourceGroupName, String rolloutName) {
-        return beginCreateWithServiceResponseAsync(resourceGroupName, rolloutName).toBlocking().single().body();
+    public RolloutRequestInner beginCreateOrUpdate(String resourceGroupName, String rolloutName) {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, rolloutName).toBlocking().single().body();
     }
 
     /**
-     * Creates a new rollout.
-     * This is an asynchronous operation and can be polled to completion using the rollout identifier returned by this operation.
+     * Creates or updates a rollout.
+     * This is an asynchronous operation and can be polled to completion using the location header returned by this operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rolloutName The rollout name.
@@ -262,38 +262,38 @@ public class RolloutsInner implements InnerSupportsGet<RolloutInner>, InnerSuppo
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<RolloutRequestInner> beginCreateAsync(String resourceGroupName, String rolloutName, final ServiceCallback<RolloutRequestInner> serviceCallback) {
-        return ServiceFuture.fromHeaderResponse(beginCreateWithServiceResponseAsync(resourceGroupName, rolloutName), serviceCallback);
+    public ServiceFuture<RolloutRequestInner> beginCreateOrUpdateAsync(String resourceGroupName, String rolloutName, final ServiceCallback<RolloutRequestInner> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, rolloutName), serviceCallback);
     }
 
     /**
-     * Creates a new rollout.
-     * This is an asynchronous operation and can be polled to completion using the rollout identifier returned by this operation.
+     * Creates or updates a rollout.
+     * This is an asynchronous operation and can be polled to completion using the location header returned by this operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rolloutName The rollout name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RolloutRequestInner object
      */
-    public Observable<RolloutRequestInner> beginCreateAsync(String resourceGroupName, String rolloutName) {
-        return beginCreateWithServiceResponseAsync(resourceGroupName, rolloutName).map(new Func1<ServiceResponseWithHeaders<RolloutRequestInner, RolloutsCreateHeaders>, RolloutRequestInner>() {
+    public Observable<RolloutRequestInner> beginCreateOrUpdateAsync(String resourceGroupName, String rolloutName) {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, rolloutName).map(new Func1<ServiceResponseWithHeaders<RolloutRequestInner, RolloutsCreateOrUpdateHeaders>, RolloutRequestInner>() {
             @Override
-            public RolloutRequestInner call(ServiceResponseWithHeaders<RolloutRequestInner, RolloutsCreateHeaders> response) {
+            public RolloutRequestInner call(ServiceResponseWithHeaders<RolloutRequestInner, RolloutsCreateOrUpdateHeaders> response) {
                 return response.body();
             }
         });
     }
 
     /**
-     * Creates a new rollout.
-     * This is an asynchronous operation and can be polled to completion using the rollout identifier returned by this operation.
+     * Creates or updates a rollout.
+     * This is an asynchronous operation and can be polled to completion using the location header returned by this operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rolloutName The rollout name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RolloutRequestInner object
      */
-    public Observable<ServiceResponseWithHeaders<RolloutRequestInner, RolloutsCreateHeaders>> beginCreateWithServiceResponseAsync(String resourceGroupName, String rolloutName) {
+    public Observable<ServiceResponseWithHeaders<RolloutRequestInner, RolloutsCreateOrUpdateHeaders>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String rolloutName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -307,12 +307,12 @@ public class RolloutsInner implements InnerSupportsGet<RolloutInner>, InnerSuppo
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final RolloutRequestInner rolloutRequest = null;
-        return service.beginCreate(this.client.subscriptionId(), resourceGroupName, rolloutName, this.client.apiVersion(), rolloutRequest, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<RolloutRequestInner, RolloutsCreateHeaders>>>() {
+        return service.beginCreateOrUpdate(this.client.subscriptionId(), resourceGroupName, rolloutName, this.client.apiVersion(), rolloutRequest, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<RolloutRequestInner, RolloutsCreateOrUpdateHeaders>>>() {
                 @Override
-                public Observable<ServiceResponseWithHeaders<RolloutRequestInner, RolloutsCreateHeaders>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<RolloutRequestInner, RolloutsCreateOrUpdateHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponseWithHeaders<RolloutRequestInner, RolloutsCreateHeaders> clientResponse = beginCreateDelegate(response);
+                        ServiceResponseWithHeaders<RolloutRequestInner, RolloutsCreateOrUpdateHeaders> clientResponse = beginCreateOrUpdateDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -322,8 +322,8 @@ public class RolloutsInner implements InnerSupportsGet<RolloutInner>, InnerSuppo
     }
 
     /**
-     * Creates a new rollout.
-     * This is an asynchronous operation and can be polled to completion using the rollout identifier returned by this operation.
+     * Creates or updates a rollout.
+     * This is an asynchronous operation and can be polled to completion using the location header returned by this operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rolloutName The rollout name.
@@ -333,13 +333,13 @@ public class RolloutsInner implements InnerSupportsGet<RolloutInner>, InnerSuppo
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RolloutRequestInner object if successful.
      */
-    public RolloutRequestInner beginCreate(String resourceGroupName, String rolloutName, RolloutRequestInner rolloutRequest) {
-        return beginCreateWithServiceResponseAsync(resourceGroupName, rolloutName, rolloutRequest).toBlocking().single().body();
+    public RolloutRequestInner beginCreateOrUpdate(String resourceGroupName, String rolloutName, RolloutRequestInner rolloutRequest) {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, rolloutName, rolloutRequest).toBlocking().single().body();
     }
 
     /**
-     * Creates a new rollout.
-     * This is an asynchronous operation and can be polled to completion using the rollout identifier returned by this operation.
+     * Creates or updates a rollout.
+     * This is an asynchronous operation and can be polled to completion using the location header returned by this operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rolloutName The rollout name.
@@ -348,13 +348,13 @@ public class RolloutsInner implements InnerSupportsGet<RolloutInner>, InnerSuppo
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<RolloutRequestInner> beginCreateAsync(String resourceGroupName, String rolloutName, RolloutRequestInner rolloutRequest, final ServiceCallback<RolloutRequestInner> serviceCallback) {
-        return ServiceFuture.fromHeaderResponse(beginCreateWithServiceResponseAsync(resourceGroupName, rolloutName, rolloutRequest), serviceCallback);
+    public ServiceFuture<RolloutRequestInner> beginCreateOrUpdateAsync(String resourceGroupName, String rolloutName, RolloutRequestInner rolloutRequest, final ServiceCallback<RolloutRequestInner> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, rolloutName, rolloutRequest), serviceCallback);
     }
 
     /**
-     * Creates a new rollout.
-     * This is an asynchronous operation and can be polled to completion using the rollout identifier returned by this operation.
+     * Creates or updates a rollout.
+     * This is an asynchronous operation and can be polled to completion using the location header returned by this operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rolloutName The rollout name.
@@ -362,18 +362,18 @@ public class RolloutsInner implements InnerSupportsGet<RolloutInner>, InnerSuppo
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RolloutRequestInner object
      */
-    public Observable<RolloutRequestInner> beginCreateAsync(String resourceGroupName, String rolloutName, RolloutRequestInner rolloutRequest) {
-        return beginCreateWithServiceResponseAsync(resourceGroupName, rolloutName, rolloutRequest).map(new Func1<ServiceResponseWithHeaders<RolloutRequestInner, RolloutsCreateHeaders>, RolloutRequestInner>() {
+    public Observable<RolloutRequestInner> beginCreateOrUpdateAsync(String resourceGroupName, String rolloutName, RolloutRequestInner rolloutRequest) {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, rolloutName, rolloutRequest).map(new Func1<ServiceResponseWithHeaders<RolloutRequestInner, RolloutsCreateOrUpdateHeaders>, RolloutRequestInner>() {
             @Override
-            public RolloutRequestInner call(ServiceResponseWithHeaders<RolloutRequestInner, RolloutsCreateHeaders> response) {
+            public RolloutRequestInner call(ServiceResponseWithHeaders<RolloutRequestInner, RolloutsCreateOrUpdateHeaders> response) {
                 return response.body();
             }
         });
     }
 
     /**
-     * Creates a new rollout.
-     * This is an asynchronous operation and can be polled to completion using the rollout identifier returned by this operation.
+     * Creates or updates a rollout.
+     * This is an asynchronous operation and can be polled to completion using the location header returned by this operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rolloutName The rollout name.
@@ -381,7 +381,7 @@ public class RolloutsInner implements InnerSupportsGet<RolloutInner>, InnerSuppo
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RolloutRequestInner object
      */
-    public Observable<ServiceResponseWithHeaders<RolloutRequestInner, RolloutsCreateHeaders>> beginCreateWithServiceResponseAsync(String resourceGroupName, String rolloutName, RolloutRequestInner rolloutRequest) {
+    public Observable<ServiceResponseWithHeaders<RolloutRequestInner, RolloutsCreateOrUpdateHeaders>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String rolloutName, RolloutRequestInner rolloutRequest) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -395,12 +395,12 @@ public class RolloutsInner implements InnerSupportsGet<RolloutInner>, InnerSuppo
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(rolloutRequest);
-        return service.beginCreate(this.client.subscriptionId(), resourceGroupName, rolloutName, this.client.apiVersion(), rolloutRequest, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<RolloutRequestInner, RolloutsCreateHeaders>>>() {
+        return service.beginCreateOrUpdate(this.client.subscriptionId(), resourceGroupName, rolloutName, this.client.apiVersion(), rolloutRequest, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<RolloutRequestInner, RolloutsCreateOrUpdateHeaders>>>() {
                 @Override
-                public Observable<ServiceResponseWithHeaders<RolloutRequestInner, RolloutsCreateHeaders>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<RolloutRequestInner, RolloutsCreateOrUpdateHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponseWithHeaders<RolloutRequestInner, RolloutsCreateHeaders> clientResponse = beginCreateDelegate(response);
+                        ServiceResponseWithHeaders<RolloutRequestInner, RolloutsCreateOrUpdateHeaders> clientResponse = beginCreateOrUpdateDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -409,11 +409,11 @@ public class RolloutsInner implements InnerSupportsGet<RolloutInner>, InnerSuppo
             });
     }
 
-    private ServiceResponseWithHeaders<RolloutRequestInner, RolloutsCreateHeaders> beginCreateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponseWithHeaders<RolloutRequestInner, RolloutsCreateOrUpdateHeaders> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<RolloutRequestInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(201, new TypeToken<RolloutRequestInner>() { }.getType())
                 .registerError(CloudException.class)
-                .buildWithHeaders(response, RolloutsCreateHeaders.class);
+                .buildWithHeaders(response, RolloutsCreateOrUpdateHeaders.class);
     }
 
     /**

@@ -11,7 +11,7 @@ package com.microsoft.azure.management.deploymentmanager.v2018-09-01-preview.imp
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.management.deploymentmanager.v2018-09-01-preview.ServiceUnitsCreateHeaders;
+import com.microsoft.azure.management.deploymentmanager.v2018-09-01-preview.ServiceUnitsCreateOrUpdateHeaders;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
@@ -57,13 +57,13 @@ public class ServiceUnitsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface ServiceUnitsService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.deploymentmanager.v2018-09-01-preview.ServiceUnits create" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.deploymentmanager.v2018-09-01-preview.ServiceUnits createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager/serviceTopologies/{serviceTopologyName}/services/{serviceName}/serviceUnits/{serviceUnitName}")
-        Observable<Response<ResponseBody>> create(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serviceTopologyName") String serviceTopologyName, @Path("serviceName") String serviceName, @Path("serviceUnitName") String serviceUnitName, @Query("api-version") String apiVersion, @Body ServiceUnitResourceInner serviceUnitInfo, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serviceTopologyName") String serviceTopologyName, @Path("serviceName") String serviceName, @Path("serviceUnitName") String serviceUnitName, @Query("api-version") String apiVersion, @Body ServiceUnitResourceInner serviceUnitInfo, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.deploymentmanager.v2018-09-01-preview.ServiceUnits beginCreate" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.deploymentmanager.v2018-09-01-preview.ServiceUnits beginCreateOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager/serviceTopologies/{serviceTopologyName}/services/{serviceName}/serviceUnits/{serviceUnitName}")
-        Observable<Response<ResponseBody>> beginCreate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serviceTopologyName") String serviceTopologyName, @Path("serviceName") String serviceName, @Path("serviceUnitName") String serviceUnitName, @Query("api-version") String apiVersion, @Body ServiceUnitResourceInner serviceUnitInfo, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serviceTopologyName") String serviceTopologyName, @Path("serviceName") String serviceName, @Path("serviceUnitName") String serviceUnitName, @Query("api-version") String apiVersion, @Body ServiceUnitResourceInner serviceUnitInfo, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.deploymentmanager.v2018-09-01-preview.ServiceUnits get" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager/serviceTopologies/{serviceTopologyName}/services/{serviceName}/serviceUnits/{serviceUnitName}")
@@ -89,8 +89,8 @@ public class ServiceUnitsInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ServiceUnitResourceInner object if successful.
      */
-    public ServiceUnitResourceInner create(String resourceGroupName, String serviceTopologyName, String serviceName, String serviceUnitName, ServiceUnitResourceInner serviceUnitInfo) {
-        return createWithServiceResponseAsync(resourceGroupName, serviceTopologyName, serviceName, serviceUnitName, serviceUnitInfo).toBlocking().last().body();
+    public ServiceUnitResourceInner createOrUpdate(String resourceGroupName, String serviceTopologyName, String serviceName, String serviceUnitName, ServiceUnitResourceInner serviceUnitInfo) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, serviceTopologyName, serviceName, serviceUnitName, serviceUnitInfo).toBlocking().last().body();
     }
 
     /**
@@ -106,8 +106,8 @@ public class ServiceUnitsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ServiceUnitResourceInner> createAsync(String resourceGroupName, String serviceTopologyName, String serviceName, String serviceUnitName, ServiceUnitResourceInner serviceUnitInfo, final ServiceCallback<ServiceUnitResourceInner> serviceCallback) {
-        return ServiceFuture.fromHeaderResponse(createWithServiceResponseAsync(resourceGroupName, serviceTopologyName, serviceName, serviceUnitName, serviceUnitInfo), serviceCallback);
+    public ServiceFuture<ServiceUnitResourceInner> createOrUpdateAsync(String resourceGroupName, String serviceTopologyName, String serviceName, String serviceUnitName, ServiceUnitResourceInner serviceUnitInfo, final ServiceCallback<ServiceUnitResourceInner> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, serviceTopologyName, serviceName, serviceUnitName, serviceUnitInfo), serviceCallback);
     }
 
     /**
@@ -122,10 +122,10 @@ public class ServiceUnitsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceUnitResourceInner> createAsync(String resourceGroupName, String serviceTopologyName, String serviceName, String serviceUnitName, ServiceUnitResourceInner serviceUnitInfo) {
-        return createWithServiceResponseAsync(resourceGroupName, serviceTopologyName, serviceName, serviceUnitName, serviceUnitInfo).map(new Func1<ServiceResponseWithHeaders<ServiceUnitResourceInner, ServiceUnitsCreateHeaders>, ServiceUnitResourceInner>() {
+    public Observable<ServiceUnitResourceInner> createOrUpdateAsync(String resourceGroupName, String serviceTopologyName, String serviceName, String serviceUnitName, ServiceUnitResourceInner serviceUnitInfo) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, serviceTopologyName, serviceName, serviceUnitName, serviceUnitInfo).map(new Func1<ServiceResponseWithHeaders<ServiceUnitResourceInner, ServiceUnitsCreateOrUpdateHeaders>, ServiceUnitResourceInner>() {
             @Override
-            public ServiceUnitResourceInner call(ServiceResponseWithHeaders<ServiceUnitResourceInner, ServiceUnitsCreateHeaders> response) {
+            public ServiceUnitResourceInner call(ServiceResponseWithHeaders<ServiceUnitResourceInner, ServiceUnitsCreateOrUpdateHeaders> response) {
                 return response.body();
             }
         });
@@ -143,7 +143,7 @@ public class ServiceUnitsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponseWithHeaders<ServiceUnitResourceInner, ServiceUnitsCreateHeaders>> createWithServiceResponseAsync(String resourceGroupName, String serviceTopologyName, String serviceName, String serviceUnitName, ServiceUnitResourceInner serviceUnitInfo) {
+    public Observable<ServiceResponseWithHeaders<ServiceUnitResourceInner, ServiceUnitsCreateOrUpdateHeaders>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String serviceTopologyName, String serviceName, String serviceUnitName, ServiceUnitResourceInner serviceUnitInfo) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -166,8 +166,8 @@ public class ServiceUnitsInner {
             throw new IllegalArgumentException("Parameter serviceUnitInfo is required and cannot be null.");
         }
         Validator.validate(serviceUnitInfo);
-        Observable<Response<ResponseBody>> observable = service.create(this.client.subscriptionId(), resourceGroupName, serviceTopologyName, serviceName, serviceUnitName, this.client.apiVersion(), serviceUnitInfo, this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPutOrPatchResultWithHeadersAsync(observable, new TypeToken<ServiceUnitResourceInner>() { }.getType(), ServiceUnitsCreateHeaders.class);
+        Observable<Response<ResponseBody>> observable = service.createOrUpdate(this.client.subscriptionId(), resourceGroupName, serviceTopologyName, serviceName, serviceUnitName, this.client.apiVersion(), serviceUnitInfo, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultWithHeadersAsync(observable, new TypeToken<ServiceUnitResourceInner>() { }.getType(), ServiceUnitsCreateOrUpdateHeaders.class);
     }
 
     /**
@@ -184,8 +184,8 @@ public class ServiceUnitsInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ServiceUnitResourceInner object if successful.
      */
-    public ServiceUnitResourceInner beginCreate(String resourceGroupName, String serviceTopologyName, String serviceName, String serviceUnitName, ServiceUnitResourceInner serviceUnitInfo) {
-        return beginCreateWithServiceResponseAsync(resourceGroupName, serviceTopologyName, serviceName, serviceUnitName, serviceUnitInfo).toBlocking().single().body();
+    public ServiceUnitResourceInner beginCreateOrUpdate(String resourceGroupName, String serviceTopologyName, String serviceName, String serviceUnitName, ServiceUnitResourceInner serviceUnitInfo) {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, serviceTopologyName, serviceName, serviceUnitName, serviceUnitInfo).toBlocking().single().body();
     }
 
     /**
@@ -201,8 +201,8 @@ public class ServiceUnitsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ServiceUnitResourceInner> beginCreateAsync(String resourceGroupName, String serviceTopologyName, String serviceName, String serviceUnitName, ServiceUnitResourceInner serviceUnitInfo, final ServiceCallback<ServiceUnitResourceInner> serviceCallback) {
-        return ServiceFuture.fromHeaderResponse(beginCreateWithServiceResponseAsync(resourceGroupName, serviceTopologyName, serviceName, serviceUnitName, serviceUnitInfo), serviceCallback);
+    public ServiceFuture<ServiceUnitResourceInner> beginCreateOrUpdateAsync(String resourceGroupName, String serviceTopologyName, String serviceName, String serviceUnitName, ServiceUnitResourceInner serviceUnitInfo, final ServiceCallback<ServiceUnitResourceInner> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, serviceTopologyName, serviceName, serviceUnitName, serviceUnitInfo), serviceCallback);
     }
 
     /**
@@ -217,10 +217,10 @@ public class ServiceUnitsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ServiceUnitResourceInner object
      */
-    public Observable<ServiceUnitResourceInner> beginCreateAsync(String resourceGroupName, String serviceTopologyName, String serviceName, String serviceUnitName, ServiceUnitResourceInner serviceUnitInfo) {
-        return beginCreateWithServiceResponseAsync(resourceGroupName, serviceTopologyName, serviceName, serviceUnitName, serviceUnitInfo).map(new Func1<ServiceResponseWithHeaders<ServiceUnitResourceInner, ServiceUnitsCreateHeaders>, ServiceUnitResourceInner>() {
+    public Observable<ServiceUnitResourceInner> beginCreateOrUpdateAsync(String resourceGroupName, String serviceTopologyName, String serviceName, String serviceUnitName, ServiceUnitResourceInner serviceUnitInfo) {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, serviceTopologyName, serviceName, serviceUnitName, serviceUnitInfo).map(new Func1<ServiceResponseWithHeaders<ServiceUnitResourceInner, ServiceUnitsCreateOrUpdateHeaders>, ServiceUnitResourceInner>() {
             @Override
-            public ServiceUnitResourceInner call(ServiceResponseWithHeaders<ServiceUnitResourceInner, ServiceUnitsCreateHeaders> response) {
+            public ServiceUnitResourceInner call(ServiceResponseWithHeaders<ServiceUnitResourceInner, ServiceUnitsCreateOrUpdateHeaders> response) {
                 return response.body();
             }
         });
@@ -238,7 +238,7 @@ public class ServiceUnitsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ServiceUnitResourceInner object
      */
-    public Observable<ServiceResponseWithHeaders<ServiceUnitResourceInner, ServiceUnitsCreateHeaders>> beginCreateWithServiceResponseAsync(String resourceGroupName, String serviceTopologyName, String serviceName, String serviceUnitName, ServiceUnitResourceInner serviceUnitInfo) {
+    public Observable<ServiceResponseWithHeaders<ServiceUnitResourceInner, ServiceUnitsCreateOrUpdateHeaders>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String serviceTopologyName, String serviceName, String serviceUnitName, ServiceUnitResourceInner serviceUnitInfo) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -261,12 +261,12 @@ public class ServiceUnitsInner {
             throw new IllegalArgumentException("Parameter serviceUnitInfo is required and cannot be null.");
         }
         Validator.validate(serviceUnitInfo);
-        return service.beginCreate(this.client.subscriptionId(), resourceGroupName, serviceTopologyName, serviceName, serviceUnitName, this.client.apiVersion(), serviceUnitInfo, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<ServiceUnitResourceInner, ServiceUnitsCreateHeaders>>>() {
+        return service.beginCreateOrUpdate(this.client.subscriptionId(), resourceGroupName, serviceTopologyName, serviceName, serviceUnitName, this.client.apiVersion(), serviceUnitInfo, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<ServiceUnitResourceInner, ServiceUnitsCreateOrUpdateHeaders>>>() {
                 @Override
-                public Observable<ServiceResponseWithHeaders<ServiceUnitResourceInner, ServiceUnitsCreateHeaders>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<ServiceUnitResourceInner, ServiceUnitsCreateOrUpdateHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponseWithHeaders<ServiceUnitResourceInner, ServiceUnitsCreateHeaders> clientResponse = beginCreateDelegate(response);
+                        ServiceResponseWithHeaders<ServiceUnitResourceInner, ServiceUnitsCreateOrUpdateHeaders> clientResponse = beginCreateOrUpdateDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -275,11 +275,11 @@ public class ServiceUnitsInner {
             });
     }
 
-    private ServiceResponseWithHeaders<ServiceUnitResourceInner, ServiceUnitsCreateHeaders> beginCreateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponseWithHeaders<ServiceUnitResourceInner, ServiceUnitsCreateOrUpdateHeaders> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<ServiceUnitResourceInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(201, new TypeToken<ServiceUnitResourceInner>() { }.getType())
                 .registerError(CloudException.class)
-                .buildWithHeaders(response, ServiceUnitsCreateHeaders.class);
+                .buildWithHeaders(response, ServiceUnitsCreateOrUpdateHeaders.class);
     }
 
     /**

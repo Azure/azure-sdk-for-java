@@ -47,14 +47,14 @@ class ServiceResourceImpl extends CreatableUpdatableImpl<ServiceResource, Servic
     @Override
     public Observable<ServiceResource> createResourceAsync() {
         ServicesInner client = this.manager().inner().services();
-        return client.createAsync(this.resourceGroupName, this.serviceTopologyName, this.serviceName, this.inner())
+        return client.createOrUpdateAsync(this.resourceGroupName, this.serviceTopologyName, this.serviceName, this.inner())
             .map(innerToFluentMap(this));
     }
 
     @Override
     public Observable<ServiceResource> updateResourceAsync() {
         ServicesInner client = this.manager().inner().services();
-        return client.createAsync(this.resourceGroupName, this.serviceTopologyName, this.serviceName, this.inner())
+        return client.createOrUpdateAsync(this.resourceGroupName, this.serviceTopologyName, this.serviceName, this.inner())
             .map(innerToFluentMap(this));
     }
 

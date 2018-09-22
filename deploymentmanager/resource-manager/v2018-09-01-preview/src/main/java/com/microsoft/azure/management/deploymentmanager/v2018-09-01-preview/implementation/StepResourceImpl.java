@@ -21,14 +21,14 @@ class StepResourceImpl extends GroupableResourceCoreImpl<StepResource, StepResou
     @Override
     public Observable<StepResource> createResourceAsync() {
         StepsInner client = this.manager().inner().steps();
-        return client.createAsync(this.resourceGroupName(), this.name(), this.inner())
+        return client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
             .map(innerToFluentMap(this));
     }
 
     @Override
     public Observable<StepResource> updateResourceAsync() {
         StepsInner client = this.manager().inner().steps();
-        return client.createAsync(this.resourceGroupName(), this.name(), this.inner())
+        return client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
             .map(innerToFluentMap(this));
     }
 
