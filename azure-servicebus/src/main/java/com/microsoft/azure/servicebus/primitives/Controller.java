@@ -59,7 +59,7 @@ class Controller {
                     postSenderCreationFuture.completeExceptionally(cause);
                 }
                 return null;
-            });
+            }, MessagingFactory.INTERNAL_THREAD_POOL);
             return postSenderCreationFuture;
         }
     }

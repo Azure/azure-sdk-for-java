@@ -6,6 +6,9 @@ package com.microsoft.azure.servicebus;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ForkJoinPool;
+import java.util.jar.JarException;
 
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 
@@ -16,41 +19,96 @@ interface IMessageAndSessionPump {
 
     /**
      * Receive messages continuously from the entity. Registers a message handler and begins a new thread to receive messages.
+     * IMessageHandler methods are executed on java.util.concurrent.commonPool()
      *
      * @param handler The {@link IMessageHandler} instance
      * @throws InterruptedException if the current thread was interrupted while waiting
      * @throws ServiceBusException  if register failed
+     * @deprecated Use {@link #registerMessageHandler(IMessageHandler, ExecutorService)}
      */
+	@Deprecated
     public void registerMessageHandler(IMessageHandler handler) throws InterruptedException, ServiceBusException;
+    
+    /**
+     * Receive messages continuously from the entity. Registers a message handler and begins a new thread to receive messages.
+     * IMessageHandler methods are executed on the passed executor service.
+     *
+     * @param handler The {@link IMessageHandler} instance
+     * @param executorService ExecutorService which is used to execute {@link IMessageHandler} methods. If there are 
+     * @throws InterruptedException if the current thread was interrupted while waiting
+     * @throws ServiceBusException  if register failed
+     */
+    public void registerMessageHandler(IMessageHandler handler, ExecutorService executorService) throws InterruptedException, ServiceBusException;
 
     /**
      * Receive messages continuously from the entity. Registers a message handler and begins a new thread to receive messages.
+     * IMessageHandler methods are executed on java.util.concurrent.commonPool()
      *
      * @param handler        The {@link IMessageHandler} instance
      * @param handlerOptions {@link MessageHandlerOptions}
      * @throws InterruptedException if the current thread was interrupted while waiting
      * @throws ServiceBusException  if register failed
      */
+    @Deprecated
     public void registerMessageHandler(IMessageHandler handler, MessageHandlerOptions handlerOptions) throws InterruptedException, ServiceBusException;
+    
+    /**
+     * Receive messages continuously from the entity. Registers a message handler and begins a new thread to receive messages.
+     * IMessageHandler methods are executed on the passed executor service.
+     *
+     * @param handler        The {@link IMessageHandler} instance
+     * @param handlerOptions {@link MessageHandlerOptions}
+     * @param executorService ExecutorService which is used to execute {@link IMessageHandler} methods
+     * @throws InterruptedException if the current thread was interrupted while waiting
+     * @throws ServiceBusException  if register failed
+     */
+    public void registerMessageHandler(IMessageHandler handler, MessageHandlerOptions handlerOptions, ExecutorService executorService) throws InterruptedException, ServiceBusException;
 
     /**
-     * Receive session messages continously from the queue. Registers a message handler and begins a new thread to receive session-messages.
-     *
+     * Receive session messages continuously from the queue. Registers a message handler and begins a new thread to receive session-messages.
+     * ISessionHandler methods are executed on java.util.concurrent.commonPool()
+     * 
      * @param handler The {@link ISessionHandler} instance
      * @throws InterruptedException if the current thread was interrupted while waiting
      * @throws ServiceBusException  if register failed
      */
+    @Deprecated
     public void registerSessionHandler(ISessionHandler handler) throws InterruptedException, ServiceBusException;
+    
+    /**
+     * Receive session messages continuously from the queue. Registers a message handler and begins a new thread to receive session-messages.
+     * ISessionHandler methods are executed on the passed executor service.
+     *
+     * @param handler The {@link ISessionHandler} instance
+     * @param executorService ExecutorService which is used to execute {@link ISessionHandler} methods
+     * @throws InterruptedException if the current thread was interrupted while waiting
+     * @throws ServiceBusException  if register failed
+     */
+    public void registerSessionHandler(ISessionHandler handler, ExecutorService executorService) throws InterruptedException, ServiceBusException;
 
     /**
-     * Receive session messages continously from the queue. Registers a message handler and begins a new thread to receive session-messages.
+     * Receive session messages continuously from the queue. Registers a message handler and begins a new thread to receive session-messages.
+     * ISessionHandler methods are executed on java.util.concurrent.commonPool()
      *
      * @param handler        The {@link ISessionHandler} instance
      * @param handlerOptions {@link SessionHandlerOptions}
      * @throws InterruptedException if the current thread was interrupted while waiting
      * @throws ServiceBusException  if register failed
      */
+    @Deprecated
     public void registerSessionHandler(ISessionHandler handler, SessionHandlerOptions handlerOptions) throws InterruptedException, ServiceBusException;
+    
+    /**
+     * Receive session messages continuously from the queue. Registers a message handler and begins a new thread to receive session-messages.
+     * ISessionHandler methods are executed on the passed executor service.
+     *
+     * @param handler        The {@link ISessionHandler} instance
+     * @param handlerOptions {@link SessionHandlerOptions}
+     * @param executorService ExecutorService which is used to execute {@link ISessionHandler} methods
+     * @throws InterruptedException if the current thread was interrupted while waiting
+     * @throws ServiceBusException  if register failed
+     */
+    public void registerSessionHandler(ISessionHandler handler, SessionHandlerOptions handlerOptions, ExecutorService executorService) throws InterruptedException, ServiceBusException;
 
     /**
      * Abandon {@link Message} with lock token. This will make the message available again for processing. Abandoning a message will increase the delivery count on the message

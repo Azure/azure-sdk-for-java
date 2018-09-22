@@ -106,9 +106,9 @@ final class MessageSender extends InitializableEntity implements IMessageSender 
                         postSenderCreationFuture.completeExceptionally(cause);
                     }
                     return null;
-                });
+                }, MessagingFactory.INTERNAL_THREAD_POOL);
                 return postSenderCreationFuture;
-            });
+            }, MessagingFactory.INTERNAL_THREAD_POOL);
         }
     }
 
@@ -178,7 +178,7 @@ final class MessageSender extends InitializableEntity implements IMessageSender 
                 } else {
                     return CompletableFuture.completedFuture(null);
                 }
-            });
+            }, MessagingFactory.INTERNAL_THREAD_POOL);
         } else {
             return CompletableFuture.completedFuture(null);
         }

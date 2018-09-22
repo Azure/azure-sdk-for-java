@@ -11,6 +11,7 @@ import java.util.concurrent.CompletableFuture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.microsoft.azure.servicebus.primitives.MessagingFactory;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 
 final class MessageBrowser implements IMessageBrowser {
@@ -66,7 +67,7 @@ final class MessageBrowser implements IMessageBrowser {
                 iterator.remove();
             }
             return message;
-        });
+        }, MessagingFactory.INTERNAL_THREAD_POOL);
     }
 
     @Override
@@ -106,6 +107,6 @@ final class MessageBrowser implements IMessageBrowser {
             }
 
             return convertedMessages;
-        });
+        }, MessagingFactory.INTERNAL_THREAD_POOL);
     }
 }

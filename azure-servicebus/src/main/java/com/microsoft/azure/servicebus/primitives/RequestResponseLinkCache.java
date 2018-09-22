@@ -163,7 +163,7 @@ class RequestResponseLinkCache
                 }
 
                 return null;
-            });
+            }, MessagingFactory.INTERNAL_THREAD_POOL);
         }
 
         public CompletableFuture<RequestResponseLink> acquireReferenceAsync()

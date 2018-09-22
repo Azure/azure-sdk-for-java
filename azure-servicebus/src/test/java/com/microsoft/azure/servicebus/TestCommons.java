@@ -23,7 +23,7 @@ import com.microsoft.azure.servicebus.primitives.StringUtil;
 public class TestCommons {
 	
 	public static final Duration SHORT_WAIT_TIME = Duration.ofSeconds(5);
-	private static final Duration DRAIN_MESSAGES_WAIT_TIME = Duration.ofSeconds(5);
+	private static final Duration DRAIN_MESSAGES_WAIT_TIME = Duration.ofSeconds(2);
 	
 	public static void testBasicSend(IMessageSender sender) throws InterruptedException, ServiceBusException
 	{		

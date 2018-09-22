@@ -83,7 +83,7 @@ public abstract class ClientEntity
 					ClientEntity.this.isClosing = false;
 					ClientEntity.this.isClosed = true;
 				}
-			}});
+			}}, MessagingFactory.INTERNAL_THREAD_POOL);
 	}
 
 	public final void close() throws ServiceBusException

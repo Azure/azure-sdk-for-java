@@ -72,7 +72,7 @@ final class CommonRequestResponseOperations {
 				returningFuture.completeExceptionally(failureException);
 			}
 			return returningFuture;
-		});
+		}, MessagingFactory.INTERNAL_THREAD_POOL);
 	}
 	
 	static CompletableFuture<Void> sendCBSTokenAsync(RequestResponseLink requestResponseLink, Duration operationTimeout, SecurityToken securityToken)
@@ -99,6 +99,6 @@ final class CommonRequestResponseOperations {
                 returningFuture.completeExceptionally(failureException);
             }
             return returningFuture;
-        });
+        }, MessagingFactory.INTERNAL_THREAD_POOL);
 	}
 }

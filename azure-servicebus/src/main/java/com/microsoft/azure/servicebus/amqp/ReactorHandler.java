@@ -25,7 +25,8 @@ public class ReactorHandler extends BaseHandler
 		reactor.setTimeout(ClientConstants.REACTOR_IO_POLL_TIMEOUT);
 	}
 
-	@Override public void onReactorFinal(Event e)
+	@Override 
+	public void onReactorFinal(Event e)
 	{		
 		TRACE_LOGGER.debug("reactor.onReactorFinal");
 	}

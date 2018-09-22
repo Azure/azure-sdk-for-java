@@ -8,6 +8,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
@@ -19,6 +22,7 @@ public class MessageAndSessionPumpTests {
 	private static final int DEFAULT_MAX_CONCURRENT_CALLS = 5;
 	private static final int DEFAULT_MAX_CONCURRENT_SESSIONS = 5;
 	private static final int DEFAULT_MAX_CONCURRENT_CALLS_PER_SESSION = 5;
+	static final ExecutorService EXECUTOR_SERVICE = Executors.newFixedThreadPool(10);
 	
 	public static void testMessagePumpAutoComplete(IMessageSender sender, IMessageAndSessionPump messagePump) throws InterruptedException, ServiceBusException
 	{
@@ -29,7 +33,7 @@ public class MessageAndSessionPumpTests {
 		}
 		boolean autoComplete = true;
 		CountingMessageHandler messageHandler = new CountingMessageHandler(messagePump, !autoComplete, numMessages, false);		
-		messagePump.registerMessageHandler(messageHandler, new MessageHandlerOptions(DEFAULT_MAX_CONCURRENT_CALLS, autoComplete, Duration.ofMinutes(10)));
+		messagePump.registerMessageHandler(messageHandler, new MessageHandlerOptions(DEFAULT_MAX_CONCURRENT_CALLS, autoComplete, Duration.ofMinutes(10)), EXECUTOR_SERVICE);
 		if(!messageHandler.getMessageCountDownLatch().await(2, TimeUnit.MINUTES))
 		{
 			Assert.assertEquals("All messages not pumped even after waiting for 2 minutes.", numMessages, numMessages - messageHandler.getMessageCountDownLatch().getCount());
@@ -51,7 +55,7 @@ public class MessageAndSessionPumpTests {
 		}
 		boolean autoComplete = false;
 		CountingMessageHandler messageHandler = new CountingMessageHandler(messagePump, !autoComplete, numMessages, false);		
-		messagePump.registerMessageHandler(messageHandler, new MessageHandlerOptions(DEFAULT_MAX_CONCURRENT_CALLS, autoComplete, Duration.ofMinutes(10)));
+		messagePump.registerMessageHandler(messageHandler, new MessageHandlerOptions(DEFAULT_MAX_CONCURRENT_CALLS, autoComplete, Duration.ofMinutes(10)), EXECUTOR_SERVICE);
 		if(!messageHandler.getMessageCountDownLatch().await(2, TimeUnit.MINUTES))
 		{
 			Assert.assertEquals("All messages not pumped even after waiting for 2 minutes.", numMessages, numMessages - messageHandler.getMessageCountDownLatch().getCount());
@@ -69,7 +73,7 @@ public class MessageAndSessionPumpTests {
 		}
 		boolean autoComplete = false;
 		CountingMessageHandler messageHandler = new CountingMessageHandler(messagePump, !autoComplete, numMessages, true);
-		messagePump.registerMessageHandler(messageHandler, new MessageHandlerOptions(DEFAULT_MAX_CONCURRENT_CALLS, autoComplete, Duration.ofMinutes(10)));
+		messagePump.registerMessageHandler(messageHandler, new MessageHandlerOptions(DEFAULT_MAX_CONCURRENT_CALLS, autoComplete, Duration.ofMinutes(10)), EXECUTOR_SERVICE);
 		if(!messageHandler.getMessageCountDownLatch().await(4, TimeUnit.MINUTES))
 		{
 			Assert.assertEquals("All messages not pumped even after waiting for 4 minutes.", numMessages * 2, numMessages * 2 - messageHandler.getMessageCountDownLatch().getCount());
@@ -88,7 +92,7 @@ public class MessageAndSessionPumpTests {
 		boolean autoComplete = true;
 		int sleepMinutes = 1; // This should be less than message lock duration of the queue or subscription
 		CountingMessageHandler messageHandler = new CountingMessageHandler(messagePump, !autoComplete, numMessages, false, Duration.ofMinutes(sleepMinutes));		
-		messagePump.registerMessageHandler(messageHandler, new MessageHandlerOptions(numMessages, autoComplete, Duration.ofMinutes(10)));
+		messagePump.registerMessageHandler(messageHandler, new MessageHandlerOptions(numMessages, autoComplete, Duration.ofMinutes(10)), EXECUTOR_SERVICE);
 		int waitMinutes = 2 * sleepMinutes;
 		if(!messageHandler.getMessageCountDownLatch().await(waitMinutes, TimeUnit.MINUTES))
 		{
@@ -103,11 +107,11 @@ public class MessageAndSessionPumpTests {
 	public static void testRegisterAnotherHandlerAfterMessageHandler(IMessageAndSessionPump messagePump) throws InterruptedException, ServiceBusException
 	{
 		CountingMessageHandler messageHandler = new CountingMessageHandler(messagePump, true, 1, false, Duration.ofMinutes(1));
-		messagePump.registerMessageHandler(messageHandler);
+		messagePump.registerMessageHandler(messageHandler, EXECUTOR_SERVICE);
 		
 		try
 		{
-			messagePump.registerMessageHandler(messageHandler);
+			messagePump.registerMessageHandler(messageHandler, EXECUTOR_SERVICE);
 			Assert.fail("Once a handler is already registered, another handle shouldn't be registered.");
 		}
 		catch(UnsupportedOperationException e)
@@ -117,7 +121,7 @@ public class MessageAndSessionPumpTests {
 		
 		try
 		{
-			messagePump.registerSessionHandler(new CountingSessionHandler(messagePump, true, 1, false, Duration.ofMinutes(1)));
+			messagePump.registerSessionHandler(new CountingSessionHandler(messagePump, true, 1, false, Duration.ofMinutes(1)), EXECUTOR_SERVICE);
 			Assert.fail("Once a handler is already registered, another handle shouldn't be registered.");
 		}
 		catch(UnsupportedOperationException e)
@@ -129,11 +133,11 @@ public class MessageAndSessionPumpTests {
 	public static void testRegisterAnotherHandlerAfterSessionHandler(IMessageAndSessionPump messagePump) throws InterruptedException, ServiceBusException
 	{
 		CountingSessionHandler countingSessionHandler = new CountingSessionHandler(messagePump, true, 1, false, Duration.ofMinutes(1));
-		messagePump.registerSessionHandler(countingSessionHandler);
+		messagePump.registerSessionHandler(countingSessionHandler, EXECUTOR_SERVICE);
 		
 		try
 		{
-			messagePump.registerSessionHandler(countingSessionHandler);
+			messagePump.registerSessionHandler(countingSessionHandler, EXECUTOR_SERVICE);
 			Assert.fail("Once a handler is already registered, another handle shouldn't be registered.");
 		}
 		catch(UnsupportedOperationException e)
@@ -143,7 +147,7 @@ public class MessageAndSessionPumpTests {
 		
 		try
 		{
-			messagePump.registerMessageHandler(new CountingMessageHandler(messagePump, true, 1, false, Duration.ofMinutes(1)));
+			messagePump.registerMessageHandler(new CountingMessageHandler(messagePump, true, 1, false, Duration.ofMinutes(1)), EXECUTOR_SERVICE);
 			Assert.fail("Once a handler is already registered, another handle shouldn't be registered.");
 		}
 		catch(UnsupportedOperationException e)
@@ -181,7 +185,7 @@ public class MessageAndSessionPumpTests {
 		
 		boolean autoComplete = true;
 		CountingSessionHandler sessionHandler = new CountingSessionHandler(sessionPump, !autoComplete, numSessions * numMessagePerSession, false);
-		sessionPump.registerSessionHandler(sessionHandler, new SessionHandlerOptions(DEFAULT_MAX_CONCURRENT_SESSIONS, maxConcurrentCallsPerSession, autoComplete, Duration.ofMinutes(10)));
+		sessionPump.registerSessionHandler(sessionHandler, new SessionHandlerOptions(DEFAULT_MAX_CONCURRENT_SESSIONS, maxConcurrentCallsPerSession, autoComplete, Duration.ofMinutes(10)), EXECUTOR_SERVICE);
 		if(!sessionHandler.getMessageCountDownLatch().await(5, TimeUnit.MINUTES))
 		{
 			Assert.assertEquals("All messages not pumped even after waiting for 5 minutes.", numSessions * numMessagePerSession, numSessions * numMessagePerSession - sessionHandler.getMessageCountDownLatch().getCount());
@@ -214,7 +218,7 @@ public class MessageAndSessionPumpTests {
 		
 		boolean autoComplete = false;
 		CountingSessionHandler sessionHandler = new CountingSessionHandler(sessionPump, !autoComplete, numSessions * numMessagePerSession, false);
-		sessionPump.registerSessionHandler(sessionHandler, new SessionHandlerOptions(DEFAULT_MAX_CONCURRENT_SESSIONS, DEFAULT_MAX_CONCURRENT_CALLS_PER_SESSION, autoComplete, Duration.ofMinutes(10)));
+		sessionPump.registerSessionHandler(sessionHandler, new SessionHandlerOptions(DEFAULT_MAX_CONCURRENT_SESSIONS, DEFAULT_MAX_CONCURRENT_CALLS_PER_SESSION, autoComplete, Duration.ofMinutes(10)), EXECUTOR_SERVICE);
 		if(!sessionHandler.getMessageCountDownLatch().await(5, TimeUnit.MINUTES))
 		{			
 			Assert.assertEquals("All messages not pumped even after waiting for 5 minutes.", numSessions * numMessagePerSession, numSessions * numMessagePerSession - sessionHandler.getMessageCountDownLatch().getCount());
@@ -245,7 +249,7 @@ public class MessageAndSessionPumpTests {
 		
 		boolean autoComplete = true;
 		CountingSessionHandler sessionHandler = new CountingSessionHandler(sessionPump, !autoComplete, numSessions * numMessagePerSession, true);
-		sessionPump.registerSessionHandler(sessionHandler, new SessionHandlerOptions(DEFAULT_MAX_CONCURRENT_SESSIONS, DEFAULT_MAX_CONCURRENT_CALLS_PER_SESSION, autoComplete, Duration.ofMinutes(10)));
+		sessionPump.registerSessionHandler(sessionHandler, new SessionHandlerOptions(DEFAULT_MAX_CONCURRENT_SESSIONS, DEFAULT_MAX_CONCURRENT_CALLS_PER_SESSION, autoComplete, Duration.ofMinutes(10)), EXECUTOR_SERVICE);
 		if(!sessionHandler.getMessageCountDownLatch().await(5, TimeUnit.MINUTES))
 		{			
 			Assert.assertEquals("All messages not pumped even after waiting for 5 minutes.", 2 * numSessions * numMessagePerSession, 2 * numSessions * numMessagePerSession - sessionHandler.getMessageCountDownLatch().getCount());
@@ -279,7 +283,7 @@ public class MessageAndSessionPumpTests {
 		boolean autoComplete = true;
 		int sleepMinutes = 2; // This should be less than message lock duration of the queue or subscription
 		CountingSessionHandler sessionHandler = new CountingSessionHandler(sessionPump, !autoComplete, numSessions * numMessagePerSession, false, Duration.ofMinutes(sleepMinutes));
-		sessionPump.registerSessionHandler(sessionHandler, new SessionHandlerOptions(DEFAULT_MAX_CONCURRENT_SESSIONS, 1, autoComplete, Duration.ofMinutes(10)));
+		sessionPump.registerSessionHandler(sessionHandler, new SessionHandlerOptions(DEFAULT_MAX_CONCURRENT_SESSIONS, 1, autoComplete, Duration.ofMinutes(10)), EXECUTOR_SERVICE);
 		int waitMinutes = 5 * sleepMinutes;
 		if(!sessionHandler.getMessageCountDownLatch().await(waitMinutes, TimeUnit.MINUTES))
 		{			
@@ -351,7 +355,7 @@ public class MessageAndSessionPumpTests {
 			CompletableFuture<Void> completeFuture = countingFuture;
 			if(this.completeMessage)
 			{
-				completeFuture = countingFuture.thenComposeAsync((v) -> this.messagePump.completeAsync(message.getLockToken()));
+				completeFuture = countingFuture.thenComposeAsync((v) -> this.messagePump.completeAsync(message.getLockToken()), EXECUTOR_SERVICE);
 			}
 			else
 			{
@@ -361,7 +365,7 @@ public class MessageAndSessionPumpTests {
 			return completeFuture.thenRunAsync(() -> {
 				this.messageCountDownLatch.countDown();
 				this.maxConcurrencyCounter.decrementCount();
-				});
+				}, EXECUTOR_SERVICE);
 		}
 		
 		public CountDownLatch getMessageCountDownLatch()
@@ -434,7 +438,7 @@ public class MessageAndSessionPumpTests {
 			CompletableFuture<Void> completeFuture = countingFuture;
 			if(this.completeMessage)
 			{
-				completeFuture = countingFuture.thenComposeAsync((v) -> session.completeAsync(message.getLockToken()));
+				completeFuture = countingFuture.thenComposeAsync((v) -> session.completeAsync(message.getLockToken()), EXECUTOR_SERVICE);
 			}
 			else
 			{
@@ -444,7 +448,7 @@ public class MessageAndSessionPumpTests {
 			return completeFuture.thenRunAsync(() -> {
 				this.messageCountDownLatch.countDown();
 				this.maxConcurrencyCounter.decrementCount();
-				});
+				}, EXECUTOR_SERVICE);
 		}
 
 		@Override

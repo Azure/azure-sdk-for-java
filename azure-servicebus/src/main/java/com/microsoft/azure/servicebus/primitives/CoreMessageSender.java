@@ -154,7 +154,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 			}
 
 			return null;
-		});
+        }, MessagingFactory.INTERNAL_THREAD_POOL);
 
 		return msgSender.linkFirstOpen;
 	}
@@ -183,7 +183,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 						}
 					}
 					return null;
-				});
+                }, MessagingFactory.INTERNAL_THREAD_POOL);
 			}
 
 			return this.requestResponseLinkCreationFuture;
@@ -732,7 +732,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 									String.format(Locale.US, "Open operation on SendLink(%s) on Entity(%s) timed out at %s.",	CoreMessageSender.this.sendLink.getName(), CoreMessageSender.this.getSendPath(), ZonedDateTime.now().toString()),
 									CoreMessageSender.this.lastKnownErrorReportedAt.isAfter(Instant.now().minusSeconds(ClientConstants.SERVER_BUSY_BASE_SLEEP_TIME_IN_SECS)) ? CoreMessageSender.this.lastKnownLinkError : null);
 							TRACE_LOGGER.warn(operationTimedout.getMessage());
-							ExceptionUtil.completeExceptionally(CoreMessageSender.this.linkFirstOpen, operationTimedout, CoreMessageSender.this, false);
+							ExceptionUtil.completeExceptionally(CoreMessageSender.this.linkFirstOpen, operationTimedout, CoreMessageSender.this, true);
 						}
 					}
 				}
@@ -832,7 +832,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 						}
 					}
 					return null;
-				});
+				}, MessagingFactory.INTERNAL_THREAD_POOL);
 			}
 
 			return this.sendLinkReopenFuture;
@@ -994,7 +994,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 							Exception operationTimedout = new TimeoutException(String.format(Locale.US, "%s operation on Send Link(%s) timed out at %s", "Close", CoreMessageSender.this.sendLink.getName(), ZonedDateTime.now()));
 							TRACE_LOGGER.warn(operationTimedout.getMessage());
 
-							ExceptionUtil.completeExceptionally(linkClose, operationTimedout, CoreMessageSender.this, false);
+							ExceptionUtil.completeExceptionally(linkClose, operationTimedout, CoreMessageSender.this, true);
 						}
 					}
 				}
@@ -1152,8 +1152,8 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 					returningFuture.completeExceptionally(scheduleException);
 				}
 				return returningFuture;
-			});
-		});
+			}, MessagingFactory.INTERNAL_THREAD_POOL);
+		}, MessagingFactory.INTERNAL_THREAD_POOL);
 	}
 
 	public CompletableFuture<Void> cancelScheduledMessageAsync(Long[] sequenceNumbers, Duration timeout)
@@ -1185,8 +1185,8 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 					returningFuture.completeExceptionally(failureException);
 				}
 				return returningFuture;
-			});
-		});
+			}, MessagingFactory.INTERNAL_THREAD_POOL);
+		}, MessagingFactory.INTERNAL_THREAD_POOL);
 	}
 
 	// In case we need to support peek on a topic
@@ -1196,6 +1196,6 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 		return this.createRequestResponseLink().thenComposeAsync((v) ->
 		{
 			return CommonRequestResponseOperations.peekMessagesAsync(this.requestResponseLink, this.operationTimeout, fromSequenceNumber, messageCount, null, this.sendLink.getName());
-		});
+		}, MessagingFactory.INTERNAL_THREAD_POOL);
 	}
 }

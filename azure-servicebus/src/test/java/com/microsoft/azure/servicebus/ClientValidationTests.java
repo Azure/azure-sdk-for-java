@@ -120,7 +120,7 @@ public class ClientValidationTests
 					@Override
 					public void notifyException(Throwable exception, ExceptionPhase phase) {
 					}
-				});
+				}, MessageAndSessionPumpTests.EXECUTOR_SERVICE);
 				Assert.fail("QueueClient created to a subscription which shouldn't be allowed.");
 			}
 			finally
@@ -147,7 +147,7 @@ public class ClientValidationTests
 					@Override
 					public void notifyException(Throwable exception, ExceptionPhase phase) {
 					}
-				});
+				}, MessageAndSessionPumpTests.EXECUTOR_SERVICE);
 				Assert.fail("SubscriptionClient created to a queue which shouldn't be allowed.");
 			} finally {
 				sc.close();
@@ -183,7 +183,7 @@ public class ClientValidationTests
 					public CompletableFuture<Void> OnCloseSessionAsync(IMessageSession session) {
 						return CompletableFuture.completedFuture(null);
 					}
-				});
+				}, MessageAndSessionPumpTests.EXECUTOR_SERVICE);
 
 				Thread.sleep(1000); // Sleep for a second for the exception
 				Assert.assertTrue("QueueClient created to a subscription which shouldn't be allowed.", unsupportedExceptionOccured.get());
@@ -221,7 +221,7 @@ public class ClientValidationTests
 					public CompletableFuture<Void> OnCloseSessionAsync(IMessageSession session) {
 						return CompletableFuture.completedFuture(null);
 					}
-				});
+				}, MessageAndSessionPumpTests.EXECUTOR_SERVICE);
 
 				Thread.sleep(1000); // Sleep for a second for the exception
 				Assert.assertTrue("SubscriptionClient created to a queue which shouldn't be allowed.", unsupportedExceptionOccured.get());

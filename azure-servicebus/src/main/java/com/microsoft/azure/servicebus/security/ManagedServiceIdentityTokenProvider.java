@@ -9,12 +9,12 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ForkJoinPool;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
+import com.microsoft.azure.servicebus.primitives.MessagingFactory;
 
 /**
  * This is a token provider that obtains token using Managed Service Identity(MSI). This token provider automatically detects MSI settings.
@@ -38,7 +38,7 @@ public class ManagedServiceIdentityTokenProvider extends TokenProvider
     public CompletableFuture<SecurityToken> getSecurityTokenAsync(String audience) {
         String addAudienceForSB = SecurityConstants.SERVICEBUS_AAD_AUDIENCE_RESOURCE_URL;
         CompletableFuture<SecurityToken> tokenGeneratingFuture = new CompletableFuture<>();
-        ForkJoinPool.commonPool().execute(() -> {
+        MessagingFactory.INTERNAL_THREAD_POOL.execute(() -> {
             try
             {
                 MSIToken msiToken = getMSIToken(addAudienceForSB);

@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
 import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
@@ -48,7 +49,7 @@ public final class SubscriptionClient extends InitializableEntity implements ISu
 	{
 		this(receiveMode, amqpConnectionStringBuilder.getEntityPath());
 		CompletableFuture<MessagingFactory> factoryFuture = MessagingFactory.createFromConnectionStringBuilderAsync(amqpConnectionStringBuilder);
-		Utils.completeFuture(factoryFuture.thenComposeAsync((f) -> this.createPumpAndBrowserAsync(f)));
+		Utils.completeFuture(factoryFuture.thenComposeAsync((f) -> this.createPumpAndBrowserAsync(f), MessagingFactory.INTERNAL_THREAD_POOL));
 		if(TRACE_LOGGER.isInfoEnabled())
         {
             TRACE_LOGGER.info("Created subscription client to connection string '{}'", amqpConnectionStringBuilder.toLoggableString());
@@ -64,7 +65,7 @@ public final class SubscriptionClient extends InitializableEntity implements ISu
     {
         this(receiveMode, subscriptionPath);
         CompletableFuture<MessagingFactory> factoryFuture = MessagingFactory.createFromNamespaceEndpointURIAsyc(namespaceEndpointURI, clientSettings);
-        Utils.completeFuture(factoryFuture.thenComposeAsync((f) -> this.createPumpAndBrowserAsync(f)));
+        Utils.completeFuture(factoryFuture.thenComposeAsync((f) -> this.createPumpAndBrowserAsync(f), MessagingFactory.INTERNAL_THREAD_POOL));
         if (TRACE_LOGGER.isInfoEnabled()) {
             TRACE_LOGGER.info("Created subscription client to subscription '{}/{}'", namespaceEndpointURI.toString(), subscriptionPath);
         }
@@ -83,7 +84,7 @@ public final class SubscriptionClient extends InitializableEntity implements ISu
 		CompletableFuture<Void> postSessionBrowserFuture = MiscRequestResponseOperationHandler.create(factory, this.subscriptionPath, MessagingEntityType.SUBSCRIPTION).thenAcceptAsync((msoh) -> {
 			this.miscRequestResponseHandler = msoh;
 			this.sessionBrowser = new SessionBrowser(factory, this.subscriptionPath, MessagingEntityType.SUBSCRIPTION, msoh);
-		});		
+		}, MessagingFactory.INTERNAL_THREAD_POOL);		
 		
 		this.messageAndSessionPump = new MessageAndSessionPump(factory, this.subscriptionPath, MessagingEntityType.SUBSCRIPTION, receiveMode);
 		CompletableFuture<Void> messagePumpInitFuture = this.messageAndSessionPump.initializeAsync();
@@ -145,25 +146,49 @@ public final class SubscriptionClient extends InitializableEntity implements ISu
 		return this.miscRequestResponseHandler.getRulesAsync(skip, top);
 	}
 
+	@Deprecated
 	@Override
 	public void registerMessageHandler(IMessageHandler handler) throws InterruptedException, ServiceBusException {
 		this.messageAndSessionPump.registerMessageHandler(handler);		
 	}
 
+	@Deprecated
 	@Override
 	public void registerMessageHandler(IMessageHandler handler, MessageHandlerOptions handlerOptions) throws InterruptedException, ServiceBusException {
 		this.messageAndSessionPump.registerMessageHandler(handler, handlerOptions);		
 	}
 
+	@Deprecated
 	@Override
 	public void registerSessionHandler(ISessionHandler handler) throws InterruptedException, ServiceBusException {
 		this.messageAndSessionPump.registerSessionHandler(handler);		
 	}
 
+	@Deprecated
 	@Override
 	public void registerSessionHandler(ISessionHandler handler, SessionHandlerOptions handlerOptions) throws InterruptedException, ServiceBusException {
 		this.messageAndSessionPump.registerSessionHandler(handler, handlerOptions);		
 	}
+	
+	@Override
+    public void registerMessageHandler(IMessageHandler handler, ExecutorService executorService) throws InterruptedException, ServiceBusException {
+        this.messageAndSessionPump.registerMessageHandler(handler, executorService);
+    }
+
+    @Override
+    public void registerMessageHandler(IMessageHandler handler, MessageHandlerOptions handlerOptions, ExecutorService executorService) throws InterruptedException, ServiceBusException {
+        this.messageAndSessionPump.registerMessageHandler(handler, handlerOptions, executorService);
+    }
+
+    @Override
+    public void registerSessionHandler(ISessionHandler handler, ExecutorService executorService) throws InterruptedException, ServiceBusException {
+        this.messageAndSessionPump.registerSessionHandler(handler, executorService);
+    }
+
+    @Override
+    public void registerSessionHandler(ISessionHandler handler, SessionHandlerOptions handlerOptions, ExecutorService executorService) throws InterruptedException, ServiceBusException {
+        this.messageAndSessionPump.registerSessionHandler(handler, handlerOptions, executorService);
+    }
 
 	// No op now
 	@Override

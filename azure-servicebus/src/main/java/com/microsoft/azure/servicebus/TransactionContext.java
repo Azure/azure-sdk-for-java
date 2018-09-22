@@ -1,6 +1,5 @@
 package com.microsoft.azure.servicebus;
 
-import com.microsoft.azure.servicebus.primitives.ExceptionUtil;
 import com.microsoft.azure.servicebus.primitives.MessagingFactory;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 

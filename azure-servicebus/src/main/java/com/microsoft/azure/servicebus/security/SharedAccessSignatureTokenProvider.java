@@ -4,11 +4,11 @@ import java.security.InvalidKeyException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ForkJoinPool;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.microsoft.azure.servicebus.primitives.MessagingFactory;
 import com.microsoft.azure.servicebus.primitives.SASUtil;
 
 /**
@@ -77,7 +77,7 @@ public class SharedAccessSignatureTokenProvider extends TokenProvider
         else
         {
             CompletableFuture<SecurityToken> tokenGeneratingFuture = new CompletableFuture<>();
-            ForkJoinPool.commonPool().execute(() -> {
+            MessagingFactory.INTERNAL_THREAD_POOL.execute(() -> {
                 try {
                     String genereatedSASToken = SASUtil.generateSharedAccessSignatureToken(this.sasKeyName, this.sasKey, audience, this.tokenValidityInSeconds);
                     tokenGeneratingFuture.complete(new SecurityToken(SecurityTokenType.SAS, audience, genereatedSASToken, Instant.now(), Instant.now().plus(Duration.ofSeconds(this.tokenValidityInSeconds))));

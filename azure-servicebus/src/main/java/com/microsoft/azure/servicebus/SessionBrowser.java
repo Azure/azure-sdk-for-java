@@ -59,7 +59,7 @@ final class SessionBrowser {
                     initFutures[initFutureIndex++] = browsableSession.initializeAsync();
                 }
                 CompletableFuture<Void> allInitFuture = CompletableFuture.allOf(initFutures);
-                return allInitFuture.thenComposeAsync((v) -> getMessageSessionsAsync(lastUpdatedTime, newLastReceivedSkip, newLastSessionId)).thenApply((c) -> {
+                return allInitFuture.thenComposeAsync((v) -> getMessageSessionsAsync(lastUpdatedTime, newLastReceivedSkip, newLastSessionId), MessagingFactory.INTERNAL_THREAD_POOL).thenApply((c) -> {
                     sessionsList.addAll(c);
                     return sessionsList;
                 });
@@ -67,6 +67,6 @@ final class SessionBrowser {
                 TRACE_LOGGER.debug("Got no browsable sessions from entity '{}'", this.entityPath);
                 return CompletableFuture.completedFuture(sessionsList);
             }
-        });
+        }, MessagingFactory.INTERNAL_THREAD_POOL);
     }
 }

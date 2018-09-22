@@ -3,19 +3,15 @@ package com.microsoft.azure.servicebus.primitives;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ForkJoinPool;
 
 // To complete futures using a different thread. Otherwise every future is completed on the single reactor thread
 // which badly affects perf and a client can potentially kill the thread or lock the thread.
 class AsyncUtil {
-	// Use default asynchronous executor of the CompletableFuture
-	static ExecutorService executorService = ForkJoinPool.commonPool();
 	
 	public static <T> boolean completeFutureAndGetStatus(CompletableFuture<T> future, T result)
 	{
 		try {
-			return executorService.submit(new CompleteCallable<T>(future, result)).get();
+			return MessagingFactory.INTERNAL_THREAD_POOL.submit(new CompleteCallable<T>(future, result)).get();
 		} catch (InterruptedException | ExecutionException e) {			
 			e.printStackTrace();
 			return false;
@@ -24,13 +20,13 @@ class AsyncUtil {
 	
 	public static <T> void completeFuture(CompletableFuture<T> future, T result)
 	{
-		executorService.submit(new CompleteCallable<T>(future, result));			
+		MessagingFactory.INTERNAL_THREAD_POOL.submit(new CompleteCallable<T>(future, result));			
 	}
 	
 	public static <T> boolean completeFutureExceptionallyAndGetStatus(CompletableFuture<T> future, Throwable exception)
 	{
 		try {
-			return executorService.submit(new CompleteExceptionallyCallable<T>(future, exception)).get();
+			return MessagingFactory.INTERNAL_THREAD_POOL.submit(new CompleteExceptionallyCallable<T>(future, exception)).get();
 		} catch (InterruptedException | ExecutionException e) {			
 			e.printStackTrace();
 			return false;
@@ -39,12 +35,12 @@ class AsyncUtil {
 	
 	public static <T> void completeFutureExceptionally(CompletableFuture<T> future, Throwable exception)
 	{
-		executorService.submit(new CompleteExceptionallyCallable<T>(future, exception));
+		MessagingFactory.INTERNAL_THREAD_POOL.submit(new CompleteExceptionallyCallable<T>(future, exception));
 	}
 	
 	public static void run(Runnable runnable)
 	{
-		executorService.submit(runnable);
+		MessagingFactory.INTERNAL_THREAD_POOL.submit(runnable);
 	}
 	
 	private static class CompleteCallable<T> implements Callable<Boolean>

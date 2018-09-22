@@ -12,6 +12,7 @@ import com.microsoft.aad.adal4j.AuthenticationCallback;
 import com.microsoft.aad.adal4j.AuthenticationContext;
 import com.microsoft.aad.adal4j.AuthenticationResult;
 import com.microsoft.aad.adal4j.ClientCredential;
+import com.microsoft.azure.servicebus.primitives.MessagingFactory;
 
 /**
  * This is a token provider that obtains tokens from Azure Active Directory. It supports multiple modes of authentication with active directory
@@ -114,13 +115,13 @@ public class AzureActiveDirectoryTokenProvider extends TokenProvider
         @Override
         public void onFailure(Throwable authException) {
             TRACE_LOGGER.error("Getting token from Azure Active Directory failed", authException);
-            this.tokenGeneratingFutue.completeExceptionally(authException);
+            MessagingFactory.INTERNAL_THREAD_POOL.execute(() -> {this.tokenGeneratingFutue.completeExceptionally(authException);});
         }
 
         @Override
         public void onSuccess(AuthenticationResult authResult) {
             SecurityToken generatedToken = new SecurityToken(SecurityTokenType.JWT, this.audience, authResult.getAccessToken(), Instant.now(), Instant.now().plus(Duration.ofSeconds(authResult.getExpiresAfter())));
-            tokenGeneratingFutue.complete(generatedToken);
+            MessagingFactory.INTERNAL_THREAD_POOL.execute(() -> {tokenGeneratingFutue.complete(generatedToken);});
         }
         
     }
