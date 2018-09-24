@@ -16,9 +16,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class Source {
     /**
-     * Log search query.
+     * Log search query. Required for action type - AlertingAction.
      */
-    @JsonProperty(value = "query", required = true)
+    @JsonProperty(value = "query")
     private String query;
 
     /**
@@ -40,7 +40,7 @@ public class Source {
     private QueryType queryType;
 
     /**
-     * Get log search query.
+     * Get log search query. Required for action type - AlertingAction.
      *
      * @return the query value
      */
@@ -49,7 +49,7 @@ public class Source {
     }
 
     /**
-     * Set log search query.
+     * Set log search query. Required for action type - AlertingAction.
      *
      * @param query the query value to set
      * @return the Source object itself.
