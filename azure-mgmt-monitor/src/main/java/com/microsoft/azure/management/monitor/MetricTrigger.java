@@ -53,7 +53,7 @@ public class MetricTrigger {
     /**
      * time aggregation type. How the data that is collected should be combined
      * over time. The default value is Average. Possible values include:
-     * 'Average', 'Minimum', 'Maximum', 'Total', 'Count'.
+     * 'Average', 'Minimum', 'Maximum', 'Total', 'Count', 'Last'.
      */
     @JsonProperty(value = "timeAggregation", required = true)
     private TimeAggregationType timeAggregation;
@@ -173,7 +173,7 @@ public class MetricTrigger {
     }
 
     /**
-     * Get time aggregation type. How the data that is collected should be combined over time. The default value is Average. Possible values include: 'Average', 'Minimum', 'Maximum', 'Total', 'Count'.
+     * Get time aggregation type. How the data that is collected should be combined over time. The default value is Average. Possible values include: 'Average', 'Minimum', 'Maximum', 'Total', 'Count', 'Last'.
      *
      * @return the timeAggregation value
      */
@@ -182,7 +182,7 @@ public class MetricTrigger {
     }
 
     /**
-     * Set time aggregation type. How the data that is collected should be combined over time. The default value is Average. Possible values include: 'Average', 'Minimum', 'Maximum', 'Total', 'Count'.
+     * Set time aggregation type. How the data that is collected should be combined over time. The default value is Average. Possible values include: 'Average', 'Minimum', 'Maximum', 'Total', 'Count', 'Last'.
      *
      * @param timeAggregation the timeAggregation value to set
      * @return the MetricTrigger object itself.

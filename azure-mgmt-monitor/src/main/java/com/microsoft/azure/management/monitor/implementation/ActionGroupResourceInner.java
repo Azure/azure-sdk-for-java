@@ -18,7 +18,6 @@ import com.microsoft.azure.management.monitor.AutomationRunbookReceiver;
 import com.microsoft.azure.management.monitor.VoiceReceiver;
 import com.microsoft.azure.management.monitor.LogicAppReceiver;
 import com.microsoft.azure.management.monitor.AzureFunctionReceiver;
-import com.microsoft.azure.management.monitor.ArmRoleReceiver;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
@@ -95,12 +94,6 @@ public class ActionGroupResourceInner extends Resource {
      */
     @JsonProperty(value = "properties.azureFunctionReceivers")
     private List<AzureFunctionReceiver> azureFunctionReceivers;
-
-    /**
-     * The list of arm role receivers that are part of this action group.
-     */
-    @JsonProperty(value = "properties.armRoleReceivers")
-    private List<ArmRoleReceiver> armRoleReceivers;
 
     /**
      * Get the short name of the action group. This will be used in SMS messages.
@@ -319,26 +312,6 @@ public class ActionGroupResourceInner extends Resource {
      */
     public ActionGroupResourceInner withAzureFunctionReceivers(List<AzureFunctionReceiver> azureFunctionReceivers) {
         this.azureFunctionReceivers = azureFunctionReceivers;
-        return this;
-    }
-
-    /**
-     * Get the list of arm role receivers that are part of this action group.
-     *
-     * @return the armRoleReceivers value
-     */
-    public List<ArmRoleReceiver> armRoleReceivers() {
-        return this.armRoleReceivers;
-    }
-
-    /**
-     * Set the list of arm role receivers that are part of this action group.
-     *
-     * @param armRoleReceivers the armRoleReceivers value to set
-     * @return the ActionGroupResourceInner object itself.
-     */
-    public ActionGroupResourceInner withArmRoleReceivers(List<ArmRoleReceiver> armRoleReceivers) {
-        this.armRoleReceivers = armRoleReceivers;
         return this;
     }
 
