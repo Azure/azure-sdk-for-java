@@ -465,7 +465,6 @@ class BlockBlobAPITest extends APISpec {
         String blockID4 = getBlockID()
         bu.stageBlock(blockID3, defaultFlowable, defaultDataSize, null, null).blockingGet()
         bu.stageBlock(blockID4, defaultFlowable, defaultDataSize, null, null).blockingGet()
-        bu.commitBlockList(Arrays.asList(blockID3, blockID4), null, null, null, null).blockingGet()
 
         when:
         BlockBlobGetBlockListResponse response = bu.getBlockList(BlockListType.ALL, null, null)

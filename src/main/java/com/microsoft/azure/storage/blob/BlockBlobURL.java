@@ -120,7 +120,7 @@ public final class BlockBlobURL extends BlobURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=upload_download "Sample code for BlockBlobURL.upload")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<BlockBlobUploadResponse> upload(Flowable<ByteBuffer> data, long length) {
         return this.upload(data, length, null, null, null, null);
@@ -162,7 +162,7 @@ public final class BlockBlobURL extends BlobURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=upload_download "Sample code for BlockBlobURL.upload")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<BlockBlobUploadResponse> upload(Flowable<ByteBuffer> data, long length, BlobHTTPHeaders headers,
             Metadata metadata, BlobAccessConditions accessConditions, Context context) {
@@ -197,7 +197,7 @@ public final class BlockBlobURL extends BlobURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blocks "Sample code for BlockBlobURL.stageBlock")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<BlockBlobStageBlockResponse> stageBlock(String base64BlockID, Flowable<ByteBuffer> data,
             long length) {
@@ -235,7 +235,7 @@ public final class BlockBlobURL extends BlobURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blocks "Sample code for BlockBlobURL.stageBlock")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<BlockBlobStageBlockResponse> stageBlock(String base64BlockID, Flowable<ByteBuffer> data, long length,
             LeaseAccessConditions leaseAccessConditions, Context context) {
@@ -264,7 +264,7 @@ public final class BlockBlobURL extends BlobURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=block_from_url "Sample code for BlockBlobURL.stageBlockFromURL")]
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<BlockBlobStageBlockFromURLResponse> stageBlockFromURL(String base64BlockID, URL sourceURL,
             BlobRange sourceRange) {
@@ -302,7 +302,7 @@ public final class BlockBlobURL extends BlobURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=block_from_url "Sample code for BlockBlobURL.stageBlockFromURL")]
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<BlockBlobStageBlockFromURLResponse> stageBlockFromURL(String base64BlockID, URL sourceURL,
             BlobRange sourceRange, byte[] sourceContentMD5, LeaseAccessConditions leaseAccessConditions,
@@ -328,7 +328,7 @@ public final class BlockBlobURL extends BlobURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blocks "Sample code for BlockBlobURL.getBlockList")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<BlockBlobGetBlockListResponse> getBlockList(BlockListType listType) {
         return this.getBlockList(listType, null, null);
@@ -355,7 +355,7 @@ public final class BlockBlobURL extends BlobURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blocks "Sample code for BlockBlobURL.getBlockList")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<BlockBlobGetBlockListResponse> getBlockList(BlockListType listType,
             LeaseAccessConditions leaseAccessConditions, Context context) {
@@ -383,7 +383,7 @@ public final class BlockBlobURL extends BlobURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blocks "Sample code for BlockBlobURL.commitBlockList")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<BlockBlobCommitBlockListResponse> commitBlockList(List<String> base64BlockIDs) {
         return this.commitBlockList(base64BlockIDs, null, null, null, null);
@@ -419,7 +419,7 @@ public final class BlockBlobURL extends BlobURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blocks "Sample code for BlockBlobURL.commitBlockList")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<BlockBlobCommitBlockListResponse> commitBlockList(List<String> base64BlockIDs,
             BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions, Context context) {

@@ -136,7 +136,7 @@ public class BlobURL extends StorageURL {
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=start_copy "Sample code for BlobURL.startCopyFromURL")] \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=start_copy_helper "Helper for start_copy sample.")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<BlobStartCopyFromURLResponse> startCopyFromURL(URL sourceURL) {
         return this.startCopyFromURL(sourceURL, null, null, null, null);
@@ -168,7 +168,7 @@ public class BlobURL extends StorageURL {
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=start_copy "Sample code for BlobURL.startCopyFromURL")] \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=start_copy_helper "Helper for start_copy sample.")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<BlobStartCopyFromURLResponse> startCopyFromURL(URL sourceURL, Metadata metadata,
             ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions,
@@ -203,7 +203,7 @@ public class BlobURL extends StorageURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=abort_copy "Sample code for BlobURL.abortCopyFromURL")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<BlobAbortCopyFromURLResponse> abortCopyFromURL(String copyId) {
         return this.abortCopyFromURL(copyId, null, null);
@@ -230,7 +230,7 @@ public class BlobURL extends StorageURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=abort_copy "Sample code for BlobURL.abortCopyFromURL")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<BlobAbortCopyFromURLResponse> abortCopyFromURL(String copyId,
             LeaseAccessConditions leaseAccessConditions, Context context) {
@@ -270,7 +270,7 @@ public class BlobURL extends StorageURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=upload_download "Sample code for BlobURL.download")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<DownloadResponse> download(BlobRange range) {
         return this.download(range, null, false, null);
@@ -300,7 +300,7 @@ public class BlobURL extends StorageURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=upload_download "Sample code for BlobURL.download")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<DownloadResponse> download(BlobRange range, BlobAccessConditions accessConditions,
             boolean rangeGetContentMD5, Context context) {
@@ -365,7 +365,7 @@ public class BlobURL extends StorageURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blob_delete "Sample code for BlobURL.delete")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<BlobDeleteResponse> delete(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
             BlobAccessConditions accessConditions, Context context) {
@@ -385,7 +385,7 @@ public class BlobURL extends StorageURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=properties_metadata "Sample code for BlobURL.getProperties")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<BlobGetPropertiesResponse> getProperties() {
         return this.getProperties(null, null);
@@ -407,7 +407,7 @@ public class BlobURL extends StorageURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=properties_metadata "Sample code for BlobURL.getProperties")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<BlobGetPropertiesResponse> getProperties(BlobAccessConditions accessConditions, Context context) {
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
@@ -429,7 +429,7 @@ public class BlobURL extends StorageURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=properties_metadata "Sample code for BlobURL.setHTTPHeaders")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<BlobSetHTTPHeadersResponse> setHTTPHeaders(BlobHTTPHeaders headers) {
         return this.setHTTPHeaders(headers, null, null);
@@ -453,7 +453,7 @@ public class BlobURL extends StorageURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=properties_metadata "Sample code for BlobURL.setHTTPHeaders")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<BlobSetHTTPHeadersResponse> setHTTPHeaders(BlobHTTPHeaders headers,
             BlobAccessConditions accessConditions, Context context) {
@@ -475,7 +475,7 @@ public class BlobURL extends StorageURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=properties_metadata "Sample code for BlobURL.setMetadata")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<BlobSetMetadataResponse> setMetadata(Metadata metadata) {
         return this.setMetadata(metadata, null, null);
@@ -499,7 +499,7 @@ public class BlobURL extends StorageURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=properties_metadata "Sample code for BlobURL.setMetadata")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<BlobSetMetadataResponse> setMetadata(Metadata metadata, BlobAccessConditions accessConditions,
             Context context) {
@@ -519,7 +519,7 @@ public class BlobURL extends StorageURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=snapshot "Sample code for BlobURL.createSnapshot")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<BlobCreateSnapshotResponse> createSnapshot() {
         return this.createSnapshot(null, null, null);
@@ -543,7 +543,7 @@ public class BlobURL extends StorageURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=snapshot "Sample code for BlobURL.createSnapshot")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<BlobCreateSnapshotResponse> createSnapshot(Metadata metadata, BlobAccessConditions accessConditions,
             Context context) {
@@ -570,7 +570,7 @@ public class BlobURL extends StorageURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=tier "Sample code for BlobURL.setTier")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<BlobSetTierResponse> setTier(AccessTier tier) {
         return this.setTier(tier, null, null);
@@ -599,7 +599,7 @@ public class BlobURL extends StorageURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=tier "Sample code for BlobURL.setTier")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<BlobSetTierResponse> setTier(AccessTier tier, LeaseAccessConditions leaseAccessConditions,
             Context context) {
@@ -618,7 +618,7 @@ public class BlobURL extends StorageURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=undelete "Sample code for BlobURL.undelete")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<BlobUndeleteResponse> undelete() {
         return this.undelete(null);
@@ -639,7 +639,7 @@ public class BlobURL extends StorageURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=undelete "Sample code for BlobURL.undelete")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<BlobUndeleteResponse> undelete(Context context) {
         context = context == null ? Context.NONE : context;
@@ -662,7 +662,7 @@ public class BlobURL extends StorageURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blob_lease "Sample code for BlobURL.acquireLease")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<BlobAcquireLeaseResponse> acquireLease(String proposedId, int duration) {
         return this.acquireLease(proposedId, duration, null, null);
@@ -692,7 +692,7 @@ public class BlobURL extends StorageURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blob_lease "Sample code for BlobURL.acquireLease")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<BlobAcquireLeaseResponse> acquireLease(String proposedID, int duration,
             ModifiedAccessConditions modifiedAccessConditions, Context context) {
@@ -717,7 +717,7 @@ public class BlobURL extends StorageURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blob_lease "Sample code for BlobURL.renewLease")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<BlobRenewLeaseResponse> renewLease(String leaseID) {
         return this.renewLease(leaseID, null, null);
@@ -743,7 +743,7 @@ public class BlobURL extends StorageURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blob_lease "Sample code for BlobURL.renewLease")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<BlobRenewLeaseResponse> renewLease(String leaseID, ModifiedAccessConditions modifiedAccessConditions,
             Context context) {
@@ -763,7 +763,7 @@ public class BlobURL extends StorageURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blob_lease "Sample code for BlobURL.releaseLease")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<BlobReleaseLeaseResponse> releaseLease(String leaseID) {
         return this.releaseLease(leaseID, null, null);
@@ -789,7 +789,7 @@ public class BlobURL extends StorageURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blob_lease "Sample code for BlobURL.releaseLease")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<BlobReleaseLeaseResponse> releaseLease(String leaseID,
             ModifiedAccessConditions modifiedAccessConditions, Context context) {
@@ -841,7 +841,7 @@ public class BlobURL extends StorageURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blob_lease "Sample code for BlobURL.breakLease")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<BlobBreakLeaseResponse> breakLease(Integer breakPeriodInSeconds,
             ModifiedAccessConditions modifiedAccessConditions, Context context) {
@@ -863,7 +863,7 @@ public class BlobURL extends StorageURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blob_lease "Sample code for BlobURL.changeLease")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<BlobChangeLeaseResponse> changeLease(String leaseId, String proposedID) {
         return this.changeLease(leaseId, proposedID, null, null);
@@ -891,7 +891,7 @@ public class BlobURL extends StorageURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blob_lease "Sample code for BlobURL.changeLease")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<BlobChangeLeaseResponse> changeLease(String leaseId, String proposedID,
             ModifiedAccessConditions modifiedAccessConditions, Context context) {
@@ -908,7 +908,7 @@ public class BlobURL extends StorageURL {
      *
      * @apiNote ## Sample code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=account_info "Sample code for BlobURL.getAccountInfo")] \n
-     * For more samples, please see the [Samples file](https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<BlobGetAccountInfoResponse> getAccountInfo() {
         return this.getAccountInfo(null);
@@ -928,7 +928,7 @@ public class BlobURL extends StorageURL {
      *
      * @apiNote ## Sample code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=account_info "Sample code for BlobURL.getAccountInfo")] \n
-     * For more samples, please see the [Samples file](https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<BlobGetAccountInfoResponse> getAccountInfo(Context context) {
         context = context == null ? Context.NONE : context;

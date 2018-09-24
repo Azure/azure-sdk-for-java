@@ -30,7 +30,7 @@ import com.microsoft.rest.v2.RestException;
  *
  * @apiNote ## Sample Code \n
  * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=exception "Sample code for StorageExceptions")] \n
- * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+ * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
  */
 public final class StorageException extends RestException {
 

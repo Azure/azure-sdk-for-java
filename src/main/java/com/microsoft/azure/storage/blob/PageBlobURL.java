@@ -121,7 +121,7 @@ public final class PageBlobURL extends BlobURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobURL.create")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<PageBlobCreateResponse> create(long size) {
         return this.create(size, null, null, null, null, null);
@@ -155,7 +155,7 @@ public final class PageBlobURL extends BlobURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobURL.create")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<PageBlobCreateResponse> create(long size, Long sequenceNumber, BlobHTTPHeaders headers,
             Metadata metadata, BlobAccessConditions accessConditions, Context context) {
@@ -199,7 +199,7 @@ public final class PageBlobURL extends BlobURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobURL.uploadPages")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<PageBlobUploadPagesResponse> uploadPages(PageRange pageRange, Flowable<ByteBuffer> body) {
         return this.uploadPages(pageRange, body, null, null);
@@ -233,7 +233,7 @@ public final class PageBlobURL extends BlobURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobURL.uploadPages")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<PageBlobUploadPagesResponse> uploadPages(PageRange pageRange, Flowable<ByteBuffer> body,
             PageBlobAccessConditions pageBlobAccessConditions, Context context) {
@@ -269,7 +269,7 @@ public final class PageBlobURL extends BlobURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobURL.clearPages")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<PageBlobClearPagesResponse> clearPages(PageRange pageRange) {
         return this.clearPages(pageRange, null, null);
@@ -297,7 +297,7 @@ public final class PageBlobURL extends BlobURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobURL.clearPages")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<PageBlobClearPagesResponse> clearPages(PageRange pageRange,
             PageBlobAccessConditions pageBlobAccessConditions, Context context) {
@@ -328,7 +328,7 @@ public final class PageBlobURL extends BlobURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobURL.getPageRanges")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<PageBlobGetPageRangesResponse> getPageRanges(BlobRange blobRange) {
         return this.getPageRanges(blobRange, null, null);
@@ -353,7 +353,7 @@ public final class PageBlobURL extends BlobURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobURL.getPageRanges")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<PageBlobGetPageRangesResponse> getPageRanges(BlobRange blobRange,
             BlobAccessConditions accessConditions, Context context) {
@@ -381,7 +381,7 @@ public final class PageBlobURL extends BlobURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_diff "Sample code for PageBlobURL.getPageRangesDiff")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<PageBlobGetPageRangesDiffResponse> getPageRangesDiff(BlobRange blobRange, String prevSnapshot) {
         return this.getPageRangesDiff(blobRange, prevSnapshot, null, null);
@@ -410,7 +410,7 @@ public final class PageBlobURL extends BlobURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_diff "Sample code for PageBlobURL.getPageRangesDiff")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<PageBlobGetPageRangesDiffResponse> getPageRangesDiff(BlobRange blobRange, String prevSnapshot,
             BlobAccessConditions accessConditions, Context context) {
@@ -439,7 +439,7 @@ public final class PageBlobURL extends BlobURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobURL.resize")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<PageBlobResizeResponse> resize(long size) {
         return this.resize(size, null, null);
@@ -465,7 +465,7 @@ public final class PageBlobURL extends BlobURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobURL.resize")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<PageBlobResizeResponse> resize(long size, BlobAccessConditions accessConditions, Context context) {
         if (size % PageBlobURL.PAGE_BYTES != 0) {
@@ -495,7 +495,7 @@ public final class PageBlobURL extends BlobURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobURL.updateSequenceNumber")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<PageBlobUpdateSequenceNumberResponse> updateSequenceNumber(SequenceNumberActionType action,
             Long sequenceNumber) {
@@ -524,7 +524,7 @@ public final class PageBlobURL extends BlobURL {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobURL.updateSequenceNumber")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Single<PageBlobUpdateSequenceNumberResponse> updateSequenceNumber(SequenceNumberActionType action,
             Long sequenceNumber, BlobAccessConditions accessConditions, Context context) {
