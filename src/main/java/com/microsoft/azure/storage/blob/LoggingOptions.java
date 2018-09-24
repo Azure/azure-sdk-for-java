@@ -34,7 +34,7 @@ public final class LoggingOptions {
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=pipeline_options "Sample code for LoggingOptions constructor")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/vNext/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public LoggingOptions(long minDurationToLogSlowRequestsInMs) {
         this.minDurationToLogSlowRequestsInMs = minDurationToLogSlowRequestsInMs;

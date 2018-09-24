@@ -276,7 +276,7 @@ class ContainerAPITest extends APISpec {
         cu.setMetadata(null, new ContainerAccessConditions().withModifiedAccessConditions(mac), null)
 
         then:
-        thrown(IllegalArgumentException)
+        thrown(UnsupportedOperationException)
 
         where:
         unmodified | match        | noneMatch
@@ -439,7 +439,7 @@ class ContainerAPITest extends APISpec {
         cu.setAccessPolicy(null, null, new ContainerAccessConditions().withModifiedAccessConditions(mac), null)
 
         then:
-        thrown(IllegalArgumentException)
+        thrown(UnsupportedOperationException)
 
         where:
         match        | noneMatch
@@ -601,7 +601,7 @@ class ContainerAPITest extends APISpec {
         cu.delete(new ContainerAccessConditions().withModifiedAccessConditions(mac), null)
 
         then:
-        thrown(IllegalArgumentException)
+        thrown(UnsupportedOperationException)
 
         where:
         match        | noneMatch
@@ -1059,12 +1059,13 @@ class ContainerAPITest extends APISpec {
         cu.listBlobsHierarchySegment(null, null, options, null)
 
         then:
-        thrown(IllegalArgumentException)
+        def e = thrown(Exception)
+        exceptionType.isInstance(e)
 
         where:
-        snapshots | maxResults
-        true      | 5
-        false     | 0
+        snapshots | maxResults | exceptionType
+        true      | 5          | UnsupportedOperationException
+        false     | 0          | IllegalArgumentException
     }
 
     def "List blobs hier delim"() {
@@ -1202,7 +1203,7 @@ class ContainerAPITest extends APISpec {
         cu.acquireLease(null, -1, mac, null).blockingGet()
 
         then:
-        thrown(IllegalArgumentException)
+        thrown(UnsupportedOperationException)
 
         where:
         match        | noneMatch
@@ -1300,7 +1301,7 @@ class ContainerAPITest extends APISpec {
         cu.renewLease(receivedLeaseID, mac, null).blockingGet()
 
         then:
-        thrown(IllegalArgumentException)
+        thrown(UnsupportedOperationException)
 
         where:
         match        | noneMatch
@@ -1396,7 +1397,7 @@ class ContainerAPITest extends APISpec {
         cu.releaseLease(receivedLeaseID, mac, null).blockingGet()
 
         then:
-        thrown(IllegalArgumentException)
+        thrown(UnsupportedOperationException)
 
         where:
         match        | noneMatch
@@ -1505,7 +1506,7 @@ class ContainerAPITest extends APISpec {
         cu.breakLease(null, mac, null).blockingGet()
 
         then:
-        thrown(IllegalArgumentException)
+        thrown(UnsupportedOperationException)
 
         where:
         match        | noneMatch
@@ -1603,7 +1604,7 @@ class ContainerAPITest extends APISpec {
         cu.changeLease(receivedLeaseID, garbageLeaseID, mac, null).blockingGet()
 
         then:
-        thrown(IllegalArgumentException)
+        thrown(UnsupportedOperationException)
 
         where:
         match        | noneMatch

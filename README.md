@@ -41,12 +41,11 @@ To get the source code of the SDK via git just type:
 
     git clone git://github.com/Azure/azure-storage-java.git
     cd ./azure-storage-java
-    git checkout vNext
     mvn compile
 
 ### Option 3: Source Zip
 
-To download a copy of the source code, use the drop down menu on the left to select the branch vNext and click "Download ZIP" on the right side of the page or click [here](https://github.com/Azure/azure-storage-java/archive/master.zip). Unzip and navigate to the microsoft-azure-storage folder.
+To download a copy of the source code, click "Download ZIP" on the right side of the page or click [here](https://github.com/Azure/azure-storage-java/archive/master.zip). Unzip and navigate to the microsoft-azure-storage folder.
 
 ## Minimum Requirements
 
