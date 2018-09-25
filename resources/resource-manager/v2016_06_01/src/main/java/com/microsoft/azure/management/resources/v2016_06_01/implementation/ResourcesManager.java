@@ -16,6 +16,7 @@ import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.arm.resources.AzureConfigurable;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
+import com.microsoft.azure.management.resources.v2016_06_01.Operations;
 import com.microsoft.azure.management.resources.v2016_06_01.Subscriptions;
 import com.microsoft.azure.management.resources.v2016_06_01.Tenants;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
@@ -25,6 +26,7 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
  * Entry point to Azure Resources resource management.
  */
 public final class ResourcesManager extends ManagerCore<ResourcesManager, SubscriptionClientImpl> {
+    private Operations operations;
     private Subscriptions subscriptions;
     private Tenants tenants;
     /**
@@ -69,6 +71,16 @@ public final class ResourcesManager extends ManagerCore<ResourcesManager, Subscr
         * @return the interface exposing Resources management API entry points that work across subscriptions
         */
         ResourcesManager authenticate(AzureTokenCredentials credentials);
+    }
+
+    /**
+     * @return Entry point to manage Operations.
+     */
+    public Operations operations() {
+        if (this.operations == null) {
+            this.operations = new OperationsImpl(this);
+        }
+        return this.operations;
     }
 
     /**

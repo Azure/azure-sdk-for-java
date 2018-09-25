@@ -16,14 +16,16 @@ import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.arm.resources.AzureConfigurable;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
+import com.microsoft.azure.management.locks.v2016_09_01.AuthorizationOperations;
 import com.microsoft.azure.management.locks.v2016_09_01.ManagementLocks;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
 /**
- * Entry point to Azure Features resource management.
+ * Entry point to Azure Authorization resource management.
  */
 public final class LocksManager extends ManagerCore<LocksManager, ManagementLockClientImpl> {
+    private AuthorizationOperations authorizationOperations;
     private ManagementLocks managementLocks;
     /**
     * Get a Configurable instance that can be used to create LocksManager with optional configuration.
@@ -34,7 +36,7 @@ public final class LocksManager extends ManagerCore<LocksManager, ManagementLock
         return new LocksManager.ConfigurableImpl();
     }
     /**
-    * Creates an instance of LocksManager that exposes Features resource management API entry points.
+    * Creates an instance of LocksManager that exposes Authorization resource management API entry points.
     *
     * @param credentials the credentials to use
     * @param subscriptionId the subscription UUID
@@ -49,7 +51,7 @@ public final class LocksManager extends ManagerCore<LocksManager, ManagementLock
             .build(), subscriptionId);
     }
     /**
-    * Creates an instance of LocksManager that exposes Features resource management API entry points.
+    * Creates an instance of LocksManager that exposes Authorization resource management API entry points.
     *
     * @param restClient the RestClient to be used for API calls.
     * @param subscriptionId the subscription UUID
@@ -63,13 +65,23 @@ public final class LocksManager extends ManagerCore<LocksManager, ManagementLock
     */
     public interface Configurable extends AzureConfigurable<Configurable> {
         /**
-        * Creates an instance of LocksManager that exposes Features management API entry points.
+        * Creates an instance of LocksManager that exposes Authorization management API entry points.
         *
         * @param credentials the credentials to use
         * @param subscriptionId the subscription UUID
-        * @return the interface exposing Features management API entry points that work across subscriptions
+        * @return the interface exposing Authorization management API entry points that work across subscriptions
         */
         LocksManager authenticate(AzureTokenCredentials credentials, String subscriptionId);
+    }
+
+    /**
+     * @return Entry point to manage AuthorizationOperations.
+     */
+    public AuthorizationOperations authorizationOperations() {
+        if (this.authorizationOperations == null) {
+            this.authorizationOperations = new AuthorizationOperationsImpl(this);
+        }
+        return this.authorizationOperations;
     }
 
     /**
