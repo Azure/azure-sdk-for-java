@@ -84,9 +84,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
 	    this.registeredLinks = new LinkedList<Link>();
         this.connetionCloseFuture = new CompletableFuture<Void>();
         this.reactorLock = new Object();
-        this.connectionHandler =   clientSettings.getTransportType() == TransportType.AMQP
-				? new ConnectionHandler(this)
-				: new WebSocketConnectionHandler(this);
+        this.connectionHandler =   ConnectionHandler.create(clientSettings.getTransportType(), this);
         this.factoryOpenFuture = new CompletableFuture<MessagingFactory>();
         this.cbsLinkCreationFuture = new CompletableFuture<Void>();
         this.managementLinksCache = new RequestResponseLinkCache(this);
@@ -98,8 +96,13 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
                 super.onReactorInit(e);
 
                 final Reactor r = e.getReactor();
-                TRACE_LOGGER.info("Creating connection to host '{}:{}'", hostName, connectionHandler.getPort());
-                connection = r.connectionToHost(hostName, connectionHandler.getPort(), connectionHandler);
+                TRACE_LOGGER.info("Creating connection to host '{}:{}'",
+						connectionHandler.getOutboundSocketHostName(),
+						connectionHandler.getOutboundSocketPort());
+                connection = r.connectionToHost(
+                		connectionHandler.getOutboundSocketHostName(),
+						connectionHandler.getOutboundSocketPort(),
+						connectionHandler);
             }
         };
         Timer.register(this.getClientId());
@@ -178,11 +181,11 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
         });
     }
 
-	String getHostName()
+	public String getHostName()
 	{
 		return this.hostName;
 	}
-	
+
 	private Reactor getReactor()
 	{
 		synchronized (this.reactorLock)
@@ -220,7 +223,10 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
 		if (this.connection == null || this.connection.getLocalState() == EndpointState.CLOSED || this.connection.getRemoteState() == EndpointState.CLOSED)
 		{
 		    TRACE_LOGGER.info("Creating connection to host '{}:{}'", hostName, ClientConstants.AMQPS_PORT);
-			this.connection = this.getReactor().connectionToHost(this.hostName, connectionHandler.getPort(), this.connectionHandler);
+            this.connection = this.getReactor().connectionToHost(
+                    this.connectionHandler.getOutboundSocketHostName(),
+                    this.connectionHandler.getOutboundSocketPort(),
+                    this.connectionHandler);
 		}
 
 		return this.connection;
@@ -244,7 +250,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
 		return this.clientSettings.getRetryPolicy();
 	}
 	
-	public ClientSettings getClientSetttings()
+	public ClientSettings getClientSettings()
 	{
 	    return this.clientSettings;
 	}
@@ -546,8 +552,8 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
 			{
 				this.rctr.setTimeout(3141);
 				this.rctr.start();
-				boolean continuteProcessing = true;
-                while(!Thread.interrupted() && continuteProcessing)
+				boolean continueProcessing = true;
+                while(!Thread.interrupted() && continueProcessing)
                 {
                     // If factory is closed, stop reactor too
                     if(MessagingFactory.this.getIsClosed())
@@ -555,7 +561,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
                         TRACE_LOGGER.info("Gracefully releasing reactor thread as messaging factory is closed");
                         break;
                     }
-                    continuteProcessing = this.rctr.process();
+                    continueProcessing = this.rctr.process();
                 }				
 				TRACE_LOGGER.info("Stopping reactor");
 				this.rctr.stop();

@@ -10,6 +10,11 @@ public class TestUtils {
 	
 	private static final String NAMESPACE_CONNECTION_STRING_ENVIRONMENT_VARIABLE_NAME = "AZURE_SERVICEBUS_JAVA_CLIENT_TEST_CONNECTION_STRING";
     public static final String FIRST_SUBSCRIPTION_NAME = "subscription1";
+
+    private static final String RUN_WITH_PROXY_ENV_VAR = "RUN_WITH_PROXY";
+    private static final String PROXY_HOSTNAME_ENV_VAR = "PROXY_HOSTNAME";
+    private static final String PROXY_PORT_ENV_VAR = "PROXY_PORT";
+
 	private static String namespaceConnectionString;
 	private static ConnectionStringBuilder namespaceConnectionStringBuilder;
 	
@@ -31,7 +36,11 @@ public class TestUtils {
     
     public static ClientSettings getClientSettings()
     {
-        return Util.getClientSettingsFromConnectionStringBuilder(namespaceConnectionStringBuilder);
+        if (Boolean.valueOf(System.getenv(RUN_WITH_PROXY_ENV_VAR))) {
+            return TestUtils.getProxyClientSettings();
+        } else {
+            return Util.getClientSettingsFromConnectionStringBuilder(namespaceConnectionStringBuilder);
+        }
     }
     
     // AADTokens cannot yet be used for management operations, sent directly to gateway
@@ -39,7 +48,18 @@ public class TestUtils {
     {
         return Util.getClientSettingsFromConnectionStringBuilder(namespaceConnectionStringBuilder);
     }
-	
+
+    private static ClientSettings getProxyClientSettings()
+    {
+        ClientSettings clientSettings =
+                Util.getClientSettingsFromConnectionStringBuilder(namespaceConnectionStringBuilder);
+
+        clientSettings.setProxyHostName(System.getenv(PROXY_HOSTNAME_ENV_VAR));
+        clientSettings.setProxyHostPort(Integer.valueOf(System.getenv(PROXY_PORT_ENV_VAR)));
+
+        return clientSettings;
+    }
+
 	public static String randomizeEntityName(String entityName)
 	{
 	    return entityName + getRandomString();

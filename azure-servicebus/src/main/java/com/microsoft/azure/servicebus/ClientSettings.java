@@ -18,7 +18,12 @@ public class ClientSettings {
     private RetryPolicy retryPolicy;
     private Duration operationTimeout;
     private TransportType transportType;
-    
+
+    private String proxyHostName = null;
+    private int proxyHostPort = 0;
+    private String proxyUserName = null;
+    private String proxyPassword = null;
+
     /**
      * Creates a new instance with the given token provider, default retry policy and default operation timeout.
      * @param tokenProvider {@link TokenProvider} instance
@@ -29,12 +34,24 @@ public class ClientSettings {
     {
         this(tokenProvider, RetryPolicy.getDefault(), Duration.ofSeconds(ClientConstants.DEFAULT_OPERATION_TIMEOUT_IN_SECONDS), TransportType.AMQP);
     }
-    
+
     /**
      * Creates a new instance with the given token provider, retry policy and operation timeout.
      * @param tokenProvider {@link TokenProvider} instance
      * @param retryPolicy {@link RetryPolicy} instance
      * @param operationTimeout default operation timeout to be used for all client operations. Client can override this value by explicitly specifying a timeout in the operation.
+     */
+    public ClientSettings(TokenProvider tokenProvider, RetryPolicy retryPolicy, Duration operationTimeout)
+    {
+        this(tokenProvider, retryPolicy, operationTimeout, TransportType.AMQP);
+    }
+
+    /**
+     * Creates a new instance with the given token provider, retry policy and operation timeout.
+     * @param tokenProvider {@link TokenProvider} instance
+     * @param retryPolicy {@link RetryPolicy} instance
+     * @param operationTimeout default operation timeout to be used for all client operations. Client can override this value by explicitly specifying a timeout in the operation.
+     * @param transportType {@link TransportType} instance
      */
     public ClientSettings(TokenProvider tokenProvider, RetryPolicy retryPolicy, Duration operationTimeout, TransportType transportType)
     {
@@ -71,5 +88,61 @@ public class ClientSettings {
         return operationTimeout;
     }
 
+    /**
+     * Gets the transport type for this instance
+     * @return transport type for the instance
+     */
     public TransportType getTransportType() { return transportType; }
+
+    /**
+     * Sets the proxy hostname. Required for proxy connection
+     * Proxy settings are only valid with transport type AMQP_WEB_SOCKETS
+     * @param proxyHostName
+     */
+    public void setProxyHostName(String proxyHostName) { this.proxyHostName = proxyHostName; }
+
+    /**
+     * Sets the proxy host port. Required for proxy connection
+     * Proxy settings are only valid with transport type AMQP_WEB_SOCKETS
+     * @param proxyHostPort
+     */
+    public void setProxyHostPort(int proxyHostPort) { this.proxyHostPort = proxyHostPort; }
+
+    /**
+     * Sets the proxy username
+     * Proxy settings are only valid with transport type AMQP_WEB_SOCKETS
+     * @param proxyUserName
+     */
+    public void setProxyUserName(String proxyUserName) { this.proxyUserName = proxyUserName; }
+
+    /**
+     * Sets the proxy password
+     * Proxy settings are only valid with transport type AMQP_WEB_SOCKETS
+     * @param proxyPassword
+     */
+    public void setProxyPassword(String proxyPassword) { this.proxyPassword = proxyPassword; }
+
+    /**
+     * Gets the proxy host name
+     * @return proxy host name
+     */
+    public String getProxyHostName() { return proxyHostName; }
+
+    /**
+     * Gets the proxy port
+     * @return proxy port
+     */
+    public int getProxyHostPort() { return proxyHostPort; }
+
+    /**
+     * Gets the proxy username
+     * @return proxy username
+     */
+    public String getProxyUserName() { return proxyUserName; }
+
+    /**
+     * Gets the proxy password
+     * @return proxy password
+     */
+    public String getProxyPassword() { return proxyPassword; }
 }

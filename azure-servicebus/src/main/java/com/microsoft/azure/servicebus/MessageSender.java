@@ -201,14 +201,14 @@ final class MessageSender extends InitializableEntity implements IMessageSender 
         return this.internalSender.scheduleMessageAsync(
                 new org.apache.qpid.proton.message.Message[]{amqpMessage},
                 transaction,
-                this.messagingFactory.getClientSetttings().getOperationTimeout()).thenApply(sequenceNumbers -> sequenceNumbers[0]);
+                this.messagingFactory.getClientSettings().getOperationTimeout()).thenApply(sequenceNumbers -> sequenceNumbers[0]);
     }
 
     @Override
     public CompletableFuture<Void> cancelScheduledMessageAsync(long sequenceNumber) {
         return this.internalSender.cancelScheduledMessageAsync(
                 new Long[]{sequenceNumber},
-                this.messagingFactory.getClientSetttings().getOperationTimeout());
+                this.messagingFactory.getClientSettings().getOperationTimeout());
     }
 
     @Override

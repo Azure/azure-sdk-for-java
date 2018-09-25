@@ -7,6 +7,8 @@ package com.microsoft.azure.servicebus.amqp;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.microsoft.azure.servicebus.primitives.MessagingFactory;
+import com.microsoft.azure.servicebus.primitives.TransportType;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
@@ -30,19 +32,37 @@ import com.microsoft.azure.servicebus.primitives.StringUtil;
 public class ConnectionHandler extends BaseHandler
 {
 	private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(ConnectionHandler.class);
-	private final IAmqpConnection messagingFactory;
+	protected final IAmqpConnection messagingFactory;
 
-	public ConnectionHandler(final IAmqpConnection messagingFactory)
+	protected ConnectionHandler(final IAmqpConnection messagingFactory)
 	{
 		add(new Handshaker());
 		this.messagingFactory = messagingFactory;
+	}
+
+	public static ConnectionHandler create(TransportType transportType, IAmqpConnection messagingFactory)
+	{
+		switch(transportType) {
+			case AMQP_WEB_SOCKETS:
+				if (ProxyConnectionHandler.shouldUseProxy(messagingFactory)) {
+					return new ProxyConnectionHandler(messagingFactory);
+				} else {
+					return new WebSocketConnectionHandler(messagingFactory);
+				}
+			case AMQP:
+			default:
+				return new ConnectionHandler(messagingFactory);
+		}
 	}
 	
 	@Override
 	public void onConnectionInit(Event event)
 	{
 		final Connection connection = event.getConnection();
-		final String hostName = event.getReactor().getConnectionAddress(connection);
+		final String hostName = new StringBuilder(((MessagingFactory)messagingFactory).getHostName())
+									.append(":")
+									.append(String.valueOf(this.getProtocolPort()))
+									.toString();
 		TRACE_LOGGER.debug("onConnectionInit: hostname:{}", hostName);
 		connection.setHostname(hostName);
 		connection.setContainer(StringUtil.getShortRandomString());
@@ -58,14 +78,21 @@ public class ConnectionHandler extends BaseHandler
 
 	public void addTransportLayers(final Event event, final TransportInternal transport)
 	{
+		final SslDomain domain = makeDomain(SslDomain.Mode.CLIENT);
+		transport.ssl(domain);
 	}
-	public int getPort()
+
+	public String getOutboundSocketHostName() { return ((MessagingFactory)messagingFactory).getHostName(); }
+
+	public int getOutboundSocketPort() { return this.getProtocolPort(); }
+
+	public int getProtocolPort()
 	{
 		return ClientConstants.AMQPS_PORT;
 	}
+
 	public int getMaxFrameSize()
 	{
-
 		return AmqpConstants.MAX_FRAME_SIZE;
 	}
 
@@ -76,9 +103,6 @@ public class ConnectionHandler extends BaseHandler
 		Transport transport = event.getTransport();
 
 		this.addTransportLayers(event, (TransportInternal) transport);
-
-		SslDomain domain = makeDomain(SslDomain.Mode.CLIENT);
-		transport.ssl(domain);
 
 		Sasl sasl = transport.sasl();
 		sasl.setMechanisms("ANONYMOUS");

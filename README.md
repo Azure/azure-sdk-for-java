@@ -77,6 +77,8 @@ Only prerequisite to running tests is setting an environment variable named 'AZU
 And test classes also have methods to specify whether to create entities per test or once for all tests in a suite. Creating entities per test is better
 as it keeps test independent of each other.
 
+To use a proxy for unit tests, set an environment variable `RUN_WITH_PROXY` to `true`. Then set the environment variables `PROXY_HOSTNAME` and `PROXY_PORT` to your values.
+
 #### Please see a sample using Eclipse below
 
 1. First clone the repository to your local machine: git clone https://github.com/Azure/azure-service-bus-java.git

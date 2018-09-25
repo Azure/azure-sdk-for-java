@@ -54,7 +54,7 @@
 		 <dependency>
 			 <groupId>com.microsoft.azure</groupId>
 			 <artifactId>qpid-proton-j-extensions</artifactId>
-			 <version>${qpid-proton-j-extensions-version}</version>
+			 <version>1.1.0</version>
 		 </dependency>
 	 	<dependency>
 	 	    <groupId>org.bouncycastle</groupId> 
