@@ -8,6 +8,7 @@ package com.microsoft.azure.eventgrid.customization;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.eventgrid.models.EventGridEvent;
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.protocol.SerializerAdapter;
 
@@ -20,6 +21,7 @@ import java.util.Map;
 /**
  * The type that can be used to de-serialize events.
  */
+@Beta
 public class EventGridSubscriber {
     /**
      * The default adapter for to be used for de-serializing the events
@@ -30,6 +32,7 @@ public class EventGridSubscriber {
      */
     private Map<String, Type> eventTypeToEventDataMapping;
 
+    @Beta
     public EventGridSubscriber() {
         this.defaultSerializerAdapter = new AzureJacksonAdapter();
         this.eventTypeToEventDataMapping =  new HashMap<>();
@@ -42,6 +45,7 @@ public class EventGridSubscriber {
      * @param eventType the event type name
      * @param eventDataType type of the Java model that the event type name mapped to
      */
+    @Beta
     public void putCustomEventMapping(String eventType, Type eventDataType) {
         if (eventType == null || eventType.isEmpty()) {
             throw new IllegalArgumentException("eventType parameter is required and cannot be null or empty");
@@ -58,6 +62,7 @@ public class EventGridSubscriber {
      * @param eventType the event type name
      * @return type of the Java model id mapping exists, null otherwise
      */
+    @Beta
     public Type getCustomEventMapping(String eventType) {
         if (eventType == null || eventType.isEmpty()) {
             throw new IllegalArgumentException("eventType parameter is required and cannot be null or empty");
@@ -74,6 +79,7 @@ public class EventGridSubscriber {
      * @param eventType the event type name
      * @return true if the mapping exists and removed, false if mapping does not exists
      */
+    @Beta
     public boolean removeCustomEventMapping(String eventType) {
         if (eventType == null || eventType.isEmpty()) {
             throw new IllegalArgumentException("eventType parameter is required and cannot be null or empty");
@@ -91,6 +97,7 @@ public class EventGridSubscriber {
      * @param eventType the event type name
      * @return true if the mapping exists, false otherwise
      */
+    @Beta
     public boolean containsEventMappingFor(String eventType) {
         if (eventType == null || eventType.isEmpty()) {
             throw new IllegalArgumentException("eventType parameter is required and cannot be null or empty");
@@ -106,6 +113,7 @@ public class EventGridSubscriber {
      *
      * @throws IOException
      */
+    @Beta
     public EventGridEvent[] DeserializeEventGridEvents(final String requestContent) throws IOException {
         return this.DeserializeEventGridEvents(requestContent, this.defaultSerializerAdapter);
     }
@@ -118,6 +126,7 @@ public class EventGridSubscriber {
      * @return e-serialized events.
      * @throws IOException
      */
+    @Beta
     public EventGridEvent[] DeserializeEventGridEvents(final String requestContent, final SerializerAdapter<ObjectMapper> serializerAdapter) throws IOException {
         EventGridEvent[] eventGridEvents = serializerAdapter.<EventGridEvent[]>deserialize(requestContent, EventGridEvent[].class);
         for (EventGridEvent receivedEvent : eventGridEvents) {
@@ -126,7 +135,7 @@ public class EventGridSubscriber {
             } else {
                 final String dataStr = serializerAdapter.serializeRaw(receivedEvent.data());
                 final String eventType = receivedEvent.eventType();
-                if (SystemEventTypeMappings.mappingExists(eventType)) {
+                if (SystemEventTypeMappings.containsMappingFor(eventType)) {
                     final Object eventData = serializerAdapter.<Object>deserialize(dataStr, SystemEventTypeMappings.getMapping(eventType));
                     setEventData(receivedEvent, eventData);
                 } else if (containsEventMappingFor(eventType)) {
@@ -139,6 +148,8 @@ public class EventGridSubscriber {
     }
 
     private void setEventData(EventGridEvent event, Object data) {
+        // This reflection based way to set the data field needs to be removed once
+        // we expose a wither in EventGridEvent to set the data. (Check swagger + codegen)
         try {
             Field dataField = event.getClass().getDeclaredField("data");
             dataField.setAccessible(true);

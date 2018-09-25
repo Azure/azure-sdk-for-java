@@ -1,10 +1,12 @@
 package com.microsoft.azure.eventgrid.customization;
 
+import com.microsoft.azure.management.apigeneration.Beta;
+
 /**
  *  Represents the names of the various event types for the system events published to Azure Event Grid.
  */
-public class SystemEventTypes
-{
+@Beta
+public class SystemEventTypes {
     // Keep this sorted by the name of the service publishing the events.
 
     // ContainerRegistry events

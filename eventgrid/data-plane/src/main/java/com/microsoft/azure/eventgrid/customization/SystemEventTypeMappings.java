@@ -20,6 +20,7 @@ import com.microsoft.azure.eventgrid.models.ServiceBusActiveMessagesAvailableWit
 import com.microsoft.azure.eventgrid.models.ServiceBusDeadletterMessagesAvailableWithNoListenersEventData;
 import com.microsoft.azure.eventgrid.models.StorageBlobCreatedEventData;
 import com.microsoft.azure.eventgrid.models.StorageBlobDeletedEventData;
+import com.microsoft.azure.management.apigeneration.Beta;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -28,6 +29,7 @@ import java.util.Map;
 /**
  * Mapping of system event type name to corresponding type of the Java model.
  */
+@Beta
 final class SystemEventTypeMappings {
     /**
      * The map containing system eventType to Java model type mapping.
@@ -72,7 +74,8 @@ final class SystemEventTypeMappings {
      * @param eventType the event type
      * @return true if mapping exists, false otherwise.
      */
-    public static boolean mappingExists(final String eventType) {
+    @Beta
+    public static boolean containsMappingFor(final String eventType) {
         return systemEventMappings.containsKey(eventType.toLowerCase());
     }
 
@@ -82,6 +85,7 @@ final class SystemEventTypeMappings {
      * @param eventType the event type
      * @return the Java model type if mapping exists, null otherwise.
      */
+    @Beta
     public static Type getMapping(final String eventType) {
         if (!systemEventMappings.containsKey(eventType.toLowerCase())) {
             return null;
