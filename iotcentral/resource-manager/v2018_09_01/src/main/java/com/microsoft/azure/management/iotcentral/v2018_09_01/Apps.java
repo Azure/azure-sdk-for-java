@@ -34,7 +34,7 @@ public interface Apps extends SupportsCreating<App.DefinitionStages.Blank>, Supp
     /**
      * Check if an IoT Central application subdomain is available.
      *
-     * @param subdomainAvailabilityInputs Set the subdomain parameter in the SubdomainAvailabilityInputs model to the subdomain of the IoT Central application to check.
+     * @param subdomainAvailabilityInputs Set the subdomain parameter in the SubdomainAvailabilityInputs structure to the subdomain of the IoT Central application to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
