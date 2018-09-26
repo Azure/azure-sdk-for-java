@@ -1887,6 +1887,18 @@ public class Samples {
                 .subscribe();
         // </abort_copy>
 
+        // <sync_copy>
+        // Create the container.
+        containerURL.create()
+                .flatMap(response ->
+                        /*
+                        Copy from the source url to the destination, which is the url pointed to by blobURL. Note that
+                        the service will not return a response until the copy is complete, hence "sync" copy.
+                         */
+                        blobURL.syncCopyFromURL(new URL("https://cdn2.auth0.com/docs/media/addons/azure_blob.svg")))
+                .subscribe();
+        // </sync_copy>
+
         // <blob_delete>
         blobURL.delete(null, null, null)
                 .subscribe();

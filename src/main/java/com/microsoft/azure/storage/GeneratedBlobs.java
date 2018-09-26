@@ -15,6 +15,7 @@ import com.microsoft.azure.storage.blob.models.BlobAbortCopyFromURLResponse;
 import com.microsoft.azure.storage.blob.models.BlobAcquireLeaseResponse;
 import com.microsoft.azure.storage.blob.models.BlobBreakLeaseResponse;
 import com.microsoft.azure.storage.blob.models.BlobChangeLeaseResponse;
+import com.microsoft.azure.storage.blob.models.BlobCopyFromURLResponse;
 import com.microsoft.azure.storage.blob.models.BlobCreateSnapshotResponse;
 import com.microsoft.azure.storage.blob.models.BlobDeleteResponse;
 import com.microsoft.azure.storage.blob.models.BlobDownloadResponse;
@@ -156,6 +157,11 @@ public final class GeneratedBlobs {
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Single<BlobStartCopyFromURLResponse> startCopyFromURL(Context context, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-copy-source") URL copySource, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-source-if-modified-since") DateTimeRfc1123 sourceIfModifiedSince, @HeaderParam("x-ms-source-if-unmodified-since") DateTimeRfc1123 sourceIfUnmodifiedSince, @HeaderParam("x-ms-source-if-match") String sourceIfMatch, @HeaderParam("x-ms-source-if-none-match") String sourceIfNoneMatch, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("x-ms-lease-id") String leaseId);
+
+        @PUT("{containerName}/{blob}")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        Single<BlobCopyFromURLResponse> copyFromURL(Context context, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-copy-source") URL copySource, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-requires-sync") String xMsRequiresSync, @HeaderParam("x-ms-source-if-modified-since") DateTimeRfc1123 sourceIfModifiedSince, @HeaderParam("x-ms-source-if-unmodified-since") DateTimeRfc1123 sourceIfUnmodifiedSince, @HeaderParam("x-ms-source-if-match") String sourceIfMatch, @HeaderParam("x-ms-source-if-none-match") String sourceIfNoneMatch, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("x-ms-lease-id") String leaseId);
 
         @PUT("{containerName}/{blob}")
         @ExpectedResponses({204})
@@ -1535,6 +1541,148 @@ public final class GeneratedBlobs {
      */
     public Completable startCopyFromURLAsync(Context context, @NonNull URL copySource, Integer timeout, Map<String, String> metadata, String requestId, SourceModifiedAccessConditions sourceModifiedAccessConditions, ModifiedAccessConditions modifiedAccessConditions, LeaseAccessConditions leaseAccessConditions) {
         return startCopyFromURLWithRestResponseAsync(context, copySource, timeout, metadata, requestId, sourceModifiedAccessConditions, modifiedAccessConditions, leaseAccessConditions)
+            .toCompletable();
+    }
+
+    /**
+     * The Copy From URL operation copies a blob or an internet resource to a new blob. It will not return a response until the copy is complete.
+     *
+     * @param context The context to associate with this operation.
+     * @param copySource Specifies the name of the source page blob snapshot. This value is a URL of up to 2 KB in length that specifies a page blob snapshot. The value should be URL-encoded as it would appear in a request URI. The source blob must either be public or must be authenticated via a shared access signature.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the operation will copy the metadata from the source blob or file to the destination blob. If one or more name-value pairs are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers. See Naming and Referencing Containers, Blobs, and Metadata for more information.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param sourceModifiedAccessConditions Additional parameters for the operation.
+     * @param modifiedAccessConditions Additional parameters for the operation.
+     * @param leaseAccessConditions Additional parameters for the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void copyFromURL(Context context, @NonNull URL copySource, Integer timeout, Map<String, String> metadata, String requestId, SourceModifiedAccessConditions sourceModifiedAccessConditions, ModifiedAccessConditions modifiedAccessConditions, LeaseAccessConditions leaseAccessConditions) {
+        copyFromURLAsync(context, copySource, timeout, metadata, requestId, sourceModifiedAccessConditions, modifiedAccessConditions, leaseAccessConditions).blockingAwait();
+    }
+
+    /**
+     * The Copy From URL operation copies a blob or an internet resource to a new blob. It will not return a response until the copy is complete.
+     *
+     * @param context The context to associate with this operation.
+     * @param copySource Specifies the name of the source page blob snapshot. This value is a URL of up to 2 KB in length that specifies a page blob snapshot. The value should be URL-encoded as it would appear in a request URI. The source blob must either be public or must be authenticated via a shared access signature.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the operation will copy the metadata from the source blob or file to the destination blob. If one or more name-value pairs are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers. See Naming and Referencing Containers, Blobs, and Metadata for more information.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param sourceModifiedAccessConditions Additional parameters for the operation.
+     * @param modifiedAccessConditions Additional parameters for the operation.
+     * @param leaseAccessConditions Additional parameters for the operation.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a ServiceFuture which will be completed with the result of the network request.
+     */
+    public ServiceFuture<Void> copyFromURLAsync(Context context, @NonNull URL copySource, Integer timeout, Map<String, String> metadata, String requestId, SourceModifiedAccessConditions sourceModifiedAccessConditions, ModifiedAccessConditions modifiedAccessConditions, LeaseAccessConditions leaseAccessConditions, ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromBody(copyFromURLAsync(context, copySource, timeout, metadata, requestId, sourceModifiedAccessConditions, modifiedAccessConditions, leaseAccessConditions), serviceCallback);
+    }
+
+    /**
+     * The Copy From URL operation copies a blob or an internet resource to a new blob. It will not return a response until the copy is complete.
+     *
+     * @param context The context to associate with this operation.
+     * @param copySource Specifies the name of the source page blob snapshot. This value is a URL of up to 2 KB in length that specifies a page blob snapshot. The value should be URL-encoded as it would appear in a request URI. The source blob must either be public or must be authenticated via a shared access signature.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the operation will copy the metadata from the source blob or file to the destination blob. If one or more name-value pairs are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers. See Naming and Referencing Containers, Blobs, and Metadata for more information.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param sourceModifiedAccessConditions Additional parameters for the operation.
+     * @param modifiedAccessConditions Additional parameters for the operation.
+     * @param leaseAccessConditions Additional parameters for the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Single which performs the network request upon subscription.
+     */
+    public Single<BlobCopyFromURLResponse> copyFromURLWithRestResponseAsync(Context context, @NonNull URL copySource, Integer timeout, Map<String, String> metadata, String requestId, SourceModifiedAccessConditions sourceModifiedAccessConditions, ModifiedAccessConditions modifiedAccessConditions, LeaseAccessConditions leaseAccessConditions) {
+        if (this.client.url() == null) {
+            throw new IllegalArgumentException("Parameter this.client.url() is required and cannot be null.");
+        }
+        if (copySource == null) {
+            throw new IllegalArgumentException("Parameter copySource is required and cannot be null.");
+        }
+        if (this.client.version() == null) {
+            throw new IllegalArgumentException("Parameter this.client.version() is required and cannot be null.");
+        }
+        Validator.validate(metadata);
+        Validator.validate(copySource);
+        Validator.validate(sourceModifiedAccessConditions);
+        Validator.validate(modifiedAccessConditions);
+        Validator.validate(leaseAccessConditions);
+        final String xMsRequiresSync = "true";
+        OffsetDateTime sourceIfModifiedSince = null;
+        if (sourceModifiedAccessConditions != null) {
+            sourceIfModifiedSince = sourceModifiedAccessConditions.sourceIfModifiedSince();
+        }
+        OffsetDateTime sourceIfUnmodifiedSince = null;
+        if (sourceModifiedAccessConditions != null) {
+            sourceIfUnmodifiedSince = sourceModifiedAccessConditions.sourceIfUnmodifiedSince();
+        }
+        String sourceIfMatch = null;
+        if (sourceModifiedAccessConditions != null) {
+            sourceIfMatch = sourceModifiedAccessConditions.sourceIfMatch();
+        }
+        String sourceIfNoneMatch = null;
+        if (sourceModifiedAccessConditions != null) {
+            sourceIfNoneMatch = sourceModifiedAccessConditions.sourceIfNoneMatch();
+        }
+        OffsetDateTime ifModifiedSince = null;
+        if (modifiedAccessConditions != null) {
+            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+        }
+        OffsetDateTime ifUnmodifiedSince = null;
+        if (modifiedAccessConditions != null) {
+            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+        }
+        String ifMatch = null;
+        if (modifiedAccessConditions != null) {
+            ifMatch = modifiedAccessConditions.ifMatch();
+        }
+        String ifNoneMatch = null;
+        if (modifiedAccessConditions != null) {
+            ifNoneMatch = modifiedAccessConditions.ifNoneMatch();
+        }
+        String leaseId = null;
+        if (leaseAccessConditions != null) {
+            leaseId = leaseAccessConditions.leaseId();
+        }
+        DateTimeRfc1123 sourceIfModifiedSinceConverted = null;
+        if (sourceIfModifiedSince != null) {
+            sourceIfModifiedSinceConverted = new DateTimeRfc1123(sourceIfModifiedSince);
+        }
+        DateTimeRfc1123 sourceIfUnmodifiedSinceConverted = null;
+        if (sourceIfUnmodifiedSince != null) {
+            sourceIfUnmodifiedSinceConverted = new DateTimeRfc1123(sourceIfUnmodifiedSince);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
+        return service.copyFromURL(context, this.client.url(), timeout, metadata, copySource, this.client.version(), requestId, xMsRequiresSync, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, leaseId);
+    }
+
+    /**
+     * The Copy From URL operation copies a blob or an internet resource to a new blob. It will not return a response until the copy is complete.
+     *
+     * @param context The context to associate with this operation.
+     * @param copySource Specifies the name of the source page blob snapshot. This value is a URL of up to 2 KB in length that specifies a page blob snapshot. The value should be URL-encoded as it would appear in a request URI. The source blob must either be public or must be authenticated via a shared access signature.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the operation will copy the metadata from the source blob or file to the destination blob. If one or more name-value pairs are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers. See Naming and Referencing Containers, Blobs, and Metadata for more information.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param sourceModifiedAccessConditions Additional parameters for the operation.
+     * @param modifiedAccessConditions Additional parameters for the operation.
+     * @param leaseAccessConditions Additional parameters for the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Single which performs the network request upon subscription.
+     */
+    public Completable copyFromURLAsync(Context context, @NonNull URL copySource, Integer timeout, Map<String, String> metadata, String requestId, SourceModifiedAccessConditions sourceModifiedAccessConditions, ModifiedAccessConditions modifiedAccessConditions, LeaseAccessConditions leaseAccessConditions) {
+        return copyFromURLWithRestResponseAsync(context, copySource, timeout, metadata, requestId, sourceModifiedAccessConditions, modifiedAccessConditions, leaseAccessConditions)
             .toCompletable();
     }
 
