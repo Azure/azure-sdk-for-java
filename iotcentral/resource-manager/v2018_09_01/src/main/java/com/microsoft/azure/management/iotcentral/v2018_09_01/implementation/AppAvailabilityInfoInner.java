@@ -22,6 +22,12 @@ public class AppAvailabilityInfoInner {
     private Boolean nameAvailable;
 
     /**
+     * The value which indicates whether the provided subdomain is available.
+     */
+    @JsonProperty(value = "subdomain", access = JsonProperty.Access.WRITE_ONLY)
+    private String subdomain;
+
+    /**
      * The reason for unavailability.
      */
     @JsonProperty(value = "reason", access = JsonProperty.Access.WRITE_ONLY)
@@ -40,6 +46,15 @@ public class AppAvailabilityInfoInner {
      */
     public Boolean nameAvailable() {
         return this.nameAvailable;
+    }
+
+    /**
+     * Get the value which indicates whether the provided subdomain is available.
+     *
+     * @return the subdomain value
+     */
+    public String subdomain() {
+        return this.subdomain;
     }
 
     /**
