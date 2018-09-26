@@ -454,7 +454,7 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebSiteManagementClient listGeoRegions" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/geoRegions")
-        Observable<Response<ResponseBody>> listGeoRegions(@Path("subscriptionId") String subscriptionId, @Query("sku") SkuName sku, @Query("linuxWorkersEnabled") Boolean linuxWorkersEnabled, @Query("xenonWorkersEnabled") Boolean xenonWorkersEnabled, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listGeoRegions(@Path("subscriptionId") String subscriptionId, @Query("sku") SkuName sku, @Query("linuxWorkersEnabled") Boolean linuxWorkersEnabled, @Query("xenonWorkersEnabled") Boolean xenonWorkersEnabled, @Query("linuxDynamicWorkersEnabled") Boolean linuxDynamicWorkersEnabled, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebSiteManagementClient listSiteIdentifiersAssignedToHostName" })
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.Web/listSitesAssignedToHostName")
@@ -1522,7 +1522,8 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
         final SkuName sku = null;
         final Boolean linuxWorkersEnabled = null;
         final Boolean xenonWorkersEnabled = null;
-        return service.listGeoRegions(this.subscriptionId(), sku, linuxWorkersEnabled, xenonWorkersEnabled, this.apiVersion(), this.acceptLanguage(), this.userAgent())
+        final Boolean linuxDynamicWorkersEnabled = null;
+        return service.listGeoRegions(this.subscriptionId(), sku, linuxWorkersEnabled, xenonWorkersEnabled, linuxDynamicWorkersEnabled, this.apiVersion(), this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<GeoRegionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<GeoRegionInner>>> call(Response<ResponseBody> response) {
@@ -1543,13 +1544,14 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
      * @param sku Name of SKU used to filter the regions. Possible values include: 'Free', 'Shared', 'Basic', 'Standard', 'Premium', 'Dynamic', 'Isolated', 'PremiumV2', 'ElasticPremium', 'ElasticIsolated'
      * @param linuxWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that support Linux workers.
      * @param xenonWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that support Xenon workers.
+     * @param linuxDynamicWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that support Linux Consumption Workers.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws DefaultErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;GeoRegionInner&gt; object if successful.
      */
-    public PagedList<GeoRegionInner> listGeoRegions(final SkuName sku, final Boolean linuxWorkersEnabled, final Boolean xenonWorkersEnabled) {
-        ServiceResponse<Page<GeoRegionInner>> response = listGeoRegionsSinglePageAsync(sku, linuxWorkersEnabled, xenonWorkersEnabled).toBlocking().single();
+    public PagedList<GeoRegionInner> listGeoRegions(final SkuName sku, final Boolean linuxWorkersEnabled, final Boolean xenonWorkersEnabled, final Boolean linuxDynamicWorkersEnabled) {
+        ServiceResponse<Page<GeoRegionInner>> response = listGeoRegionsSinglePageAsync(sku, linuxWorkersEnabled, xenonWorkersEnabled, linuxDynamicWorkersEnabled).toBlocking().single();
         return new PagedList<GeoRegionInner>(response.body()) {
             @Override
             public Page<GeoRegionInner> nextPage(String nextPageLink) {
@@ -1565,13 +1567,14 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
      * @param sku Name of SKU used to filter the regions. Possible values include: 'Free', 'Shared', 'Basic', 'Standard', 'Premium', 'Dynamic', 'Isolated', 'PremiumV2', 'ElasticPremium', 'ElasticIsolated'
      * @param linuxWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that support Linux workers.
      * @param xenonWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that support Xenon workers.
+     * @param linuxDynamicWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that support Linux Consumption Workers.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<GeoRegionInner>> listGeoRegionsAsync(final SkuName sku, final Boolean linuxWorkersEnabled, final Boolean xenonWorkersEnabled, final ListOperationCallback<GeoRegionInner> serviceCallback) {
+    public ServiceFuture<List<GeoRegionInner>> listGeoRegionsAsync(final SkuName sku, final Boolean linuxWorkersEnabled, final Boolean xenonWorkersEnabled, final Boolean linuxDynamicWorkersEnabled, final ListOperationCallback<GeoRegionInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listGeoRegionsSinglePageAsync(sku, linuxWorkersEnabled, xenonWorkersEnabled),
+            listGeoRegionsSinglePageAsync(sku, linuxWorkersEnabled, xenonWorkersEnabled, linuxDynamicWorkersEnabled),
             new Func1<String, Observable<ServiceResponse<Page<GeoRegionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<GeoRegionInner>>> call(String nextPageLink) {
@@ -1588,11 +1591,12 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
      * @param sku Name of SKU used to filter the regions. Possible values include: 'Free', 'Shared', 'Basic', 'Standard', 'Premium', 'Dynamic', 'Isolated', 'PremiumV2', 'ElasticPremium', 'ElasticIsolated'
      * @param linuxWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that support Linux workers.
      * @param xenonWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that support Xenon workers.
+     * @param linuxDynamicWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that support Linux Consumption Workers.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;GeoRegionInner&gt; object
      */
-    public Observable<Page<GeoRegionInner>> listGeoRegionsAsync(final SkuName sku, final Boolean linuxWorkersEnabled, final Boolean xenonWorkersEnabled) {
-        return listGeoRegionsWithServiceResponseAsync(sku, linuxWorkersEnabled, xenonWorkersEnabled)
+    public Observable<Page<GeoRegionInner>> listGeoRegionsAsync(final SkuName sku, final Boolean linuxWorkersEnabled, final Boolean xenonWorkersEnabled, final Boolean linuxDynamicWorkersEnabled) {
+        return listGeoRegionsWithServiceResponseAsync(sku, linuxWorkersEnabled, xenonWorkersEnabled, linuxDynamicWorkersEnabled)
             .map(new Func1<ServiceResponse<Page<GeoRegionInner>>, Page<GeoRegionInner>>() {
                 @Override
                 public Page<GeoRegionInner> call(ServiceResponse<Page<GeoRegionInner>> response) {
@@ -1608,11 +1612,12 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
      * @param sku Name of SKU used to filter the regions. Possible values include: 'Free', 'Shared', 'Basic', 'Standard', 'Premium', 'Dynamic', 'Isolated', 'PremiumV2', 'ElasticPremium', 'ElasticIsolated'
      * @param linuxWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that support Linux workers.
      * @param xenonWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that support Xenon workers.
+     * @param linuxDynamicWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that support Linux Consumption Workers.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;GeoRegionInner&gt; object
      */
-    public Observable<ServiceResponse<Page<GeoRegionInner>>> listGeoRegionsWithServiceResponseAsync(final SkuName sku, final Boolean linuxWorkersEnabled, final Boolean xenonWorkersEnabled) {
-        return listGeoRegionsSinglePageAsync(sku, linuxWorkersEnabled, xenonWorkersEnabled)
+    public Observable<ServiceResponse<Page<GeoRegionInner>>> listGeoRegionsWithServiceResponseAsync(final SkuName sku, final Boolean linuxWorkersEnabled, final Boolean xenonWorkersEnabled, final Boolean linuxDynamicWorkersEnabled) {
+        return listGeoRegionsSinglePageAsync(sku, linuxWorkersEnabled, xenonWorkersEnabled, linuxDynamicWorkersEnabled)
             .concatMap(new Func1<ServiceResponse<Page<GeoRegionInner>>, Observable<ServiceResponse<Page<GeoRegionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<GeoRegionInner>>> call(ServiceResponse<Page<GeoRegionInner>> page) {
@@ -1632,17 +1637,18 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
     ServiceResponse<PageImpl<GeoRegionInner>> * @param sku Name of SKU used to filter the regions. Possible values include: 'Free', 'Shared', 'Basic', 'Standard', 'Premium', 'Dynamic', 'Isolated', 'PremiumV2', 'ElasticPremium', 'ElasticIsolated'
     ServiceResponse<PageImpl<GeoRegionInner>> * @param linuxWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that support Linux workers.
     ServiceResponse<PageImpl<GeoRegionInner>> * @param xenonWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that support Xenon workers.
+    ServiceResponse<PageImpl<GeoRegionInner>> * @param linuxDynamicWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that support Linux Consumption Workers.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;GeoRegionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<GeoRegionInner>>> listGeoRegionsSinglePageAsync(final SkuName sku, final Boolean linuxWorkersEnabled, final Boolean xenonWorkersEnabled) {
+    public Observable<ServiceResponse<Page<GeoRegionInner>>> listGeoRegionsSinglePageAsync(final SkuName sku, final Boolean linuxWorkersEnabled, final Boolean xenonWorkersEnabled, final Boolean linuxDynamicWorkersEnabled) {
         if (this.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
         }
         if (this.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
-        return service.listGeoRegions(this.subscriptionId(), sku, linuxWorkersEnabled, xenonWorkersEnabled, this.apiVersion(), this.acceptLanguage(), this.userAgent())
+        return service.listGeoRegions(this.subscriptionId(), sku, linuxWorkersEnabled, xenonWorkersEnabled, linuxDynamicWorkersEnabled, this.apiVersion(), this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<GeoRegionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<GeoRegionInner>>> call(Response<ResponseBody> response) {
