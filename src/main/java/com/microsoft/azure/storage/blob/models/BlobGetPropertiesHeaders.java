@@ -24,8 +24,8 @@ import java.util.Map;
 @JacksonXmlRootElement(localName = "Blob-GetProperties-Headers")
 public final class BlobGetPropertiesHeaders {
     /**
-     * Returns the date and time the container was last modified. Any operation
-     * that modifies the blob, including an update of the blob's metadata or
+     * Returns the date and time the blob was last modified. Any operation that
+     * modifies the blob, including an update of the blob's metadata or
      * properties, changes the last-modified time of the blob.
      */
     @JsonProperty(value = "Last-Modified")

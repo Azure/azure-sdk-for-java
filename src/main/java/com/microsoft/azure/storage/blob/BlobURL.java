@@ -241,6 +241,72 @@ public class BlobURL extends StorageURL {
     }
 
     /**
+     * Copies the data at the source URL to a blob and waits for the copy to complete before returning a response.
+     * For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a>
+     *
+     * @param copySource
+     *         The source URL to copy from.
+     *
+     * @return Emits the successful response.
+     *
+     * @apiNote ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=sync_copy "Sample code for BlobURL.syncCopyFromURL")] \n
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     */
+    public Single<BlobCopyFromURLResponse> syncCopyFromURL(URL copySource) {
+        return this.syncCopyFromURL(copySource, null, null, null, null);
+    }
+
+    /**
+     * Copies the data at the source URL to a blob and waits for the copy to complete before returning a response.
+     * For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a>
+     *
+     * @param copySource
+     *         The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
+     * @param metadata
+     *         {@link Metadata}
+     * @param sourceModifiedAccessConditions
+     *         {@link ModifiedAccessConditions} against the source. Standard HTTP Access conditions related to the
+     *         modification of data. ETag and LastModifiedTime are used to construct conditions related to when the blob
+     *         was changed relative to the given request. The request will fail if the specified condition is not
+     *         satisfied.
+     * @param destAccessConditions
+     *         {@link BlobAccessConditions} against the destination.
+     * @param context
+     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
+     *         {@link com.microsoft.rest.v2.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
+     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
+     *         its parent, forming a linked list.
+     *
+     * @return Emits the successful response.
+     *
+     * @apiNote ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=sync_copy "Sample code for BlobURL.syncCopyFromURL")] \n
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     */
+    public Single<BlobCopyFromURLResponse> syncCopyFromURL(URL copySource, Metadata metadata,
+            ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions,
+            Context context) {
+        metadata = metadata == null ? Metadata.NONE : metadata;
+        sourceModifiedAccessConditions = sourceModifiedAccessConditions == null ?
+                new ModifiedAccessConditions() : sourceModifiedAccessConditions;
+        destAccessConditions = destAccessConditions == null ? BlobAccessConditions.NONE : destAccessConditions;
+        context = context == null ? Context.NONE : context;
+
+        // We want to hide the SourceAccessConditions type from the user for consistency's sake, so we convert here.
+        SourceModifiedAccessConditions sourceConditions = new SourceModifiedAccessConditions()
+                .withSourceIfModifiedSince(sourceModifiedAccessConditions.ifModifiedSince())
+                .withSourceIfUnmodifiedSince(sourceModifiedAccessConditions.ifUnmodifiedSince())
+                .withSourceIfMatch(sourceModifiedAccessConditions.ifMatch())
+                .withSourceIfNoneMatch(sourceModifiedAccessConditions.ifNoneMatch());
+
+        return addErrorWrappingToSingle(this.storageClient.generatedBlobs().copyFromURLWithRestResponseAsync(
+                context, copySource, null, metadata, null, sourceConditions,
+                destAccessConditions.modifiedAccessConditions(), destAccessConditions.leaseAccessConditions()));
+    }
+
+    /**
      * Reads a range of bytes from a blob. The response also includes the blob's properties and metadata. For more
      * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a>.
      * <p>

@@ -1009,9 +1009,9 @@ class BlobAPITest extends APISpec {
                 .getProperties(null, null).blockingGet().headers().metadata() == metadata
 
         where:
-        key1  | value1 | key2   | value2 || statusCode
-        null  | null   | null   | null   || 200
-        "foo" | "bar"  | "fizz" | "buzz" || 200
+        key1  | value1 | key2   | value2
+        null  | null   | null   | null
+        "foo" | "bar"  | "fizz" | "buzz"
     }
 
     @Unroll
@@ -1135,9 +1135,9 @@ class BlobAPITest extends APISpec {
         bu2.getProperties(null, null).blockingGet().headers().metadata() == metadata
 
         where:
-        key1  | value1 | key2   | value2 || statusCode
-        null  | null   | null   | null   || 200
-        "foo" | "bar"  | "fizz" | "buzz" || 200
+        key1  | value1 | key2   | value2
+        null  | null   | null   | null
+        "foo" | "bar"  | "fizz" | "buzz"
     }
 
     @Unroll
@@ -1152,12 +1152,12 @@ class BlobAPITest extends APISpec {
         bu2.startCopyFromURL(bu.toURL(), null, mac, null, null).blockingGet().statusCode() == 202
 
         where:
-        modified | unmodified | match        | noneMatch   | leaseID
-        null     | null       | null         | null        | null
-        oldDate  | null       | null         | null        | null
-        null     | newDate    | null         | null        | null
-        null     | null       | receivedEtag | null        | null
-        null     | null       | null         | garbageEtag | null
+        modified | unmodified | match        | noneMatch
+        null     | null       | null         | null
+        oldDate  | null       | null         | null
+        null     | newDate    | null         | null
+        null     | null       | receivedEtag | null
+        null     | null       | null         | garbageEtag
     }
 
     @Unroll
@@ -1175,11 +1175,11 @@ class BlobAPITest extends APISpec {
         thrown(StorageException)
 
         where:
-        modified | unmodified | match       | noneMatch    | leaseID
-        newDate  | null       | null        | null         | null
-        null     | oldDate    | null        | null         | null
-        null     | null       | garbageEtag | null         | null
-        null     | null       | null        | receivedEtag | null
+        modified | unmodified | match       | noneMatch
+        newDate  | null       | null        | null
+        null     | oldDate    | null        | null
+        null     | null       | garbageEtag | null
+        null     | null       | null        | receivedEtag
     }
 
     @Unroll
@@ -1397,6 +1397,178 @@ class BlobAPITest extends APISpec {
         when:
         // No service call is made. Just satisfy the parameters.
         bu.abortCopyFromURL("id", null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
+    }
+
+    def "Sync copy"() {
+        setup:
+        // Sync copy is a deep copy, which requires either sas or public access.
+        cu.setAccessPolicy(PublicAccessType.CONTAINER, null).blockingGet()
+        BlobURL bu2 = cu.createBlockBlobURL(generateBlobName())
+        def headers = bu2.syncCopyFromURL(bu.toURL(), null, null,null, null).blockingGet().headers()
+
+        expect:
+        headers.copyStatus() == SyncCopyStatusType.SUCCESS
+        headers.copyId() != null
+        validateBasicHeaders(headers)
+    }
+
+    def "Sync copy min"() {
+        setup:
+        cu.setAccessPolicy(PublicAccessType.CONTAINER, null).blockingGet()
+        BlobURL bu2 = cu.createBlockBlobURL(generateBlobName())
+
+        expect:
+        bu2.syncCopyFromURL(bu.toURL()).blockingGet().statusCode() == 202
+    }
+
+    @Unroll
+    def "Sync copy metadata"() {
+        setup:
+        cu.setAccessPolicy(PublicAccessType.CONTAINER, null).blockingGet()
+        BlobURL bu2 = cu.createBlockBlobURL(generateBlobName())
+        Metadata metadata = new Metadata()
+        if (key1 != null && value1 != null) {
+            metadata.put(key1, value1)
+        }
+        if (key2 != null && value2 != null) {
+            metadata.put(key2, value2)
+        }
+
+        when:
+        bu2.syncCopyFromURL(bu.toURL(), metadata, null, null, null).blockingGet()
+
+        then:
+        bu2.getProperties().blockingGet().headers().metadata() == metadata
+
+        where:
+        key1  | value1 | key2   | value2
+        null  | null   | null   | null
+        "foo" | "bar"  | "fizz" | "buzz"
+    }
+
+    @Unroll
+    def "Sync copy source AC"() {
+        setup:
+        cu.setAccessPolicy(PublicAccessType.CONTAINER, null).blockingGet()
+        BlobURL bu2 = cu.createBlockBlobURL(generateBlobName())
+        match = setupBlobMatchCondition(bu, match)
+        def mac = new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
+                .withIfMatch(match).withIfNoneMatch(noneMatch)
+
+        expect:
+        bu2.syncCopyFromURL(bu.toURL(), null, mac, null, null).blockingGet().statusCode() == 202
+
+        where:
+        modified | unmodified | match        | noneMatch
+        null     | null       | null         | null
+        oldDate  | null       | null         | null
+        null     | newDate    | null         | null
+        null     | null       | receivedEtag | null
+        null     | null       | null         | garbageEtag
+    }
+
+    @Unroll
+    def "Sync copy source AC fail"() {
+        setup:
+        cu.setAccessPolicy(PublicAccessType.CONTAINER, null).blockingGet()
+        BlobURL bu2 = cu.createBlockBlobURL(generateBlobName())
+        noneMatch = setupBlobMatchCondition(bu, noneMatch)
+        def mac = new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
+                .withIfMatch(match).withIfNoneMatch(noneMatch)
+
+        when:
+        bu2.syncCopyFromURL(bu.toURL(), null, mac, null, null).blockingGet()
+
+        then:
+        thrown(StorageException)
+
+        where:
+        modified | unmodified | match       | noneMatch
+        newDate  | null       | null        | null
+        null     | oldDate    | null        | null
+        null     | null       | garbageEtag | null
+        null     | null       | null        | receivedEtag
+    }
+
+    @Unroll
+    def "Sync copy dest AC"() {
+        setup:
+        cu.setAccessPolicy(PublicAccessType.CONTAINER, null).blockingGet()
+        BlobURL bu2 = cu.createBlockBlobURL(generateBlobName())
+        bu2.upload(defaultFlowable, defaultDataSize, null, null,
+                null, null).blockingGet()
+        match = setupBlobMatchCondition(bu2, match)
+        leaseID = setupBlobLeaseCondition(bu2, leaseID)
+        BlobAccessConditions bac = new BlobAccessConditions().withModifiedAccessConditions(
+                new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
+                        .withIfMatch(match).withIfNoneMatch(noneMatch))
+                .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
+
+        expect:
+        bu2.syncCopyFromURL(bu.toURL(), null, null, bac, null).blockingGet().statusCode() == 202
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | receivedLeaseID
+    }
+
+    @Unroll
+    def "Sync copy dest AC fail"() {
+        setup:
+        cu.setAccessPolicy(PublicAccessType.CONTAINER, null).blockingGet()
+        BlobURL bu2 = cu.createBlockBlobURL(generateBlobName())
+        bu2.upload(defaultFlowable, defaultDataSize, null, null,
+                null, null).blockingGet()
+        noneMatch = setupBlobMatchCondition(bu2, noneMatch)
+        setupBlobLeaseCondition(bu2, leaseID)
+        BlobAccessConditions bac = new BlobAccessConditions().withModifiedAccessConditions(
+                new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
+                        .withIfMatch(match).withIfNoneMatch(noneMatch))
+                .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
+
+        when:
+        bu2.syncCopyFromURL(bu.toURL(), null, null, bac, null).blockingGet()
+
+        then:
+        thrown(StorageException)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
+    }
+
+    def "Sync copy error"() {
+        setup:
+        def bu2 = cu.createBlockBlobURL(generateBlobName())
+
+        when:
+        bu2.syncCopyFromURL(bu.toURL(), null, null, null, null).blockingGet()
+
+        then:
+        thrown(StorageException)
+    }
+
+    def "Sync copy context"() {
+        setup:
+        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(202, BlobCopyFromURLHeaders)))
+
+        bu = bu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        bu.syncCopyFromURL(new URL("http://www.example.com"), null, null, null, defaultContext).blockingGet()
 
         then:
         notThrown(RuntimeException)
