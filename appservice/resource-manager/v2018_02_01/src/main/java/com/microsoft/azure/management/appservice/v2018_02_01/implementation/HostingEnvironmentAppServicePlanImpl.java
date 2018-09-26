@@ -84,6 +84,11 @@ class HostingEnvironmentAppServicePlanImpl extends WrapperImpl<AppServicePlanInn
     }
 
     @Override
+    public Integer maximumElasticWorkerCount() {
+        return this.inner().maximumElasticWorkerCount();
+    }
+
+    @Override
     public Integer maximumNumberOfWorkers() {
         return this.inner().maximumNumberOfWorkers();
     }

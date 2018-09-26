@@ -110,6 +110,11 @@ class AppServicePlanImpl extends GroupableResourceCoreImpl<AppServicePlan, AppSe
     }
 
     @Override
+    public Integer maximumElasticWorkerCount() {
+        return this.inner().maximumElasticWorkerCount();
+    }
+
+    @Override
     public Integer maximumNumberOfWorkers() {
         return this.inner().maximumNumberOfWorkers();
     }
@@ -246,6 +251,16 @@ class AppServicePlanImpl extends GroupableResourceCoreImpl<AppServicePlan, AppSe
             this.inner().withKind(kind);
         } else {
             this.updateParameter.withKind(kind);
+        }
+        return this;
+    }
+
+    @Override
+    public AppServicePlanImpl withMaximumElasticWorkerCount(Integer maximumElasticWorkerCount) {
+        if (isInCreateMode()) {
+            this.inner().withMaximumElasticWorkerCount(maximumElasticWorkerCount);
+        } else {
+            this.updateParameter.withMaximumElasticWorkerCount(maximumElasticWorkerCount);
         }
         return this;
     }

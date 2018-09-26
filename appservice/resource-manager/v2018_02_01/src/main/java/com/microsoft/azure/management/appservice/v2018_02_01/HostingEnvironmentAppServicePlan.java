@@ -70,6 +70,11 @@ public interface HostingEnvironmentAppServicePlan extends HasInner<AppServicePla
     String location();
 
     /**
+     * @return the maximumElasticWorkerCount value.
+     */
+    Integer maximumElasticWorkerCount();
+
+    /**
      * @return the maximumNumberOfWorkers value.
      */
     Integer maximumNumberOfWorkers();
