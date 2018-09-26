@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.iotcentral.v2018_09_01.implementation;
 
+import com.microsoft.azure.management.iotcentral.v2018_09_01.AppNameUnavailabilityReason;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -22,15 +23,16 @@ public class AppNameAvailabilityInfoInner {
     private Boolean nameAvailable;
 
     /**
-     * The reason for unavailability.
+     * The reason for unavailability. Possible values include: 'Invalid',
+     * 'AlreadyExists'.
      */
     @JsonProperty(value = "reason", access = JsonProperty.Access.WRITE_ONLY)
-    private String reason;
+    private AppNameUnavailabilityReason reason;
 
     /**
      * The detailed reason message.
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "message")
     private String message;
 
     /**
@@ -43,11 +45,11 @@ public class AppNameAvailabilityInfoInner {
     }
 
     /**
-     * Get the reason for unavailability.
+     * Get the reason for unavailability. Possible values include: 'Invalid', 'AlreadyExists'.
      *
      * @return the reason value
      */
-    public String reason() {
+    public AppNameUnavailabilityReason reason() {
         return this.reason;
     }
 
@@ -58,6 +60,17 @@ public class AppNameAvailabilityInfoInner {
      */
     public String message() {
         return this.message;
+    }
+
+    /**
+     * Set the detailed reason message.
+     *
+     * @param message the message value to set
+     * @return the AppNameAvailabilityInfoInner object itself.
+     */
+    public AppNameAvailabilityInfoInner withMessage(String message) {
+        this.message = message;
+        return this;
     }
 
 }

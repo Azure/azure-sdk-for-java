@@ -10,6 +10,7 @@ package com.microsoft.azure.management.iotcentral.v2018_09_01.implementation;
 
 import com.microsoft.azure.management.iotcentral.v2018_09_01.AppNameAvailabilityInfo;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
+import com.microsoft.azure.management.iotcentral.v2018_09_01.AppNameUnavailabilityReason;
 
 class AppNameAvailabilityInfoImpl extends WrapperImpl<AppNameAvailabilityInfoInner> implements AppNameAvailabilityInfo {
     private final IoTCentralManager manager;
@@ -34,7 +35,7 @@ class AppNameAvailabilityInfoImpl extends WrapperImpl<AppNameAvailabilityInfoInn
     }
 
     @Override
-    public String reason() {
+    public AppNameUnavailabilityReason reason() {
         return this.inner().reason();
     }
 
