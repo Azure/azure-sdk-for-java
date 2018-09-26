@@ -13,13 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Input values.
  */
-public class OperationInputs {
-    /**
-     * The name of the IoT Central application instance to check.
-     */
-    @JsonProperty(value = "name")
-    private String name;
-
+public class SubdomainAvailabilityInputs {
     /**
      * The subdomain of the IoT Central application instance to check.
      */
@@ -31,26 +25,6 @@ public class OperationInputs {
      */
     @JsonProperty(value = "type")
     private String type;
-
-    /**
-     * Get the name of the IoT Central application instance to check.
-     *
-     * @return the name value
-     */
-    public String name() {
-        return this.name;
-    }
-
-    /**
-     * Set the name of the IoT Central application instance to check.
-     *
-     * @param name the name value to set
-     * @return the OperationInputs object itself.
-     */
-    public OperationInputs withName(String name) {
-        this.name = name;
-        return this;
-    }
 
     /**
      * Get the subdomain of the IoT Central application instance to check.
@@ -65,9 +39,9 @@ public class OperationInputs {
      * Set the subdomain of the IoT Central application instance to check.
      *
      * @param subdomain the subdomain value to set
-     * @return the OperationInputs object itself.
+     * @return the SubdomainAvailabilityInputs object itself.
      */
-    public OperationInputs withSubdomain(String subdomain) {
+    public SubdomainAvailabilityInputs withSubdomain(String subdomain) {
         this.subdomain = subdomain;
         return this;
     }
@@ -85,9 +59,9 @@ public class OperationInputs {
      * Set the name of the IoT Central resource name to query.
      *
      * @param type the type value to set
-     * @return the OperationInputs object itself.
+     * @return the SubdomainAvailabilityInputs object itself.
      */
-    public OperationInputs withType(String type) {
+    public SubdomainAvailabilityInputs withType(String type) {
         this.type = type;
         return this;
     }

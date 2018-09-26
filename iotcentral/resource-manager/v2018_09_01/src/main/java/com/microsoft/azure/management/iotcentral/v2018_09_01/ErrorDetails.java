@@ -15,48 +15,29 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ErrorDetails {
     /**
-     * The error code.
+     * The error property.
      */
-    @JsonProperty(value = "code", access = JsonProperty.Access.WRITE_ONLY)
-    private String code;
+    @JsonProperty(value = "error")
+    private ErrorResponseBody error;
 
     /**
-     * The error message.
-     */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
-    private String message;
-
-    /**
-     * The target of the particular error.
-     */
-    @JsonProperty(value = "target", access = JsonProperty.Access.WRITE_ONLY)
-    private String target;
-
-    /**
-     * Get the error code.
+     * Get the error value.
      *
-     * @return the code value
+     * @return the error value
      */
-    public String code() {
-        return this.code;
+    public ErrorResponseBody error() {
+        return this.error;
     }
 
     /**
-     * Get the error message.
+     * Set the error value.
      *
-     * @return the message value
+     * @param error the error value to set
+     * @return the ErrorDetails object itself.
      */
-    public String message() {
-        return this.message;
-    }
-
-    /**
-     * Get the target of the particular error.
-     *
-     * @return the target value
-     */
-    public String target() {
-        return this.target;
+    public ErrorDetails withError(ErrorResponseBody error) {
+        this.error = error;
+        return this;
     }
 
 }

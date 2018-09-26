@@ -13,18 +13,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Input values.
  */
-public class OperationInputs {
+public class NameAvailabilityInputs {
     /**
      * The name of the IoT Central application instance to check.
      */
     @JsonProperty(value = "name")
     private String name;
-
-    /**
-     * The subdomain of the IoT Central application instance to check.
-     */
-    @JsonProperty(value = "subdomain")
-    private String subdomain;
 
     /**
      * The name of the IoT Central resource name to query.
@@ -45,30 +39,10 @@ public class OperationInputs {
      * Set the name of the IoT Central application instance to check.
      *
      * @param name the name value to set
-     * @return the OperationInputs object itself.
+     * @return the NameAvailabilityInputs object itself.
      */
-    public OperationInputs withName(String name) {
+    public NameAvailabilityInputs withName(String name) {
         this.name = name;
-        return this;
-    }
-
-    /**
-     * Get the subdomain of the IoT Central application instance to check.
-     *
-     * @return the subdomain value
-     */
-    public String subdomain() {
-        return this.subdomain;
-    }
-
-    /**
-     * Set the subdomain of the IoT Central application instance to check.
-     *
-     * @param subdomain the subdomain value to set
-     * @return the OperationInputs object itself.
-     */
-    public OperationInputs withSubdomain(String subdomain) {
-        this.subdomain = subdomain;
         return this;
     }
 
@@ -85,9 +59,9 @@ public class OperationInputs {
      * Set the name of the IoT Central resource name to query.
      *
      * @param type the type value to set
-     * @return the OperationInputs object itself.
+     * @return the NameAvailabilityInputs object itself.
      */
-    public OperationInputs withType(String type) {
+    public NameAvailabilityInputs withType(String type) {
         this.type = type;
         return this;
     }
