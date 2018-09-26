@@ -30,11 +30,6 @@ public interface AppAvailabilityInfo extends HasInner<AppAvailabilityInfoInner>,
     /**
      * @return the reason value.
      */
-    String reason();
-
-    /**
-     * @return the subdomain value.
-     */
-    String subdomain();
+    AppNameUnavailabilityReason reason();
 
 }

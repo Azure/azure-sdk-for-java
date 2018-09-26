@@ -933,9 +933,9 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorDetailsException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the AppNameAvailabilityInfoInner object if successful.
+     * @return the AppAvailabilityInfoInner object if successful.
      */
-    public AppNameAvailabilityInfoInner checkNameAvailability(String name) {
+    public AppAvailabilityInfoInner checkNameAvailability(String name) {
         return checkNameAvailabilityWithServiceResponseAsync(name).toBlocking().single().body();
     }
 
@@ -947,7 +947,7 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<AppNameAvailabilityInfoInner> checkNameAvailabilityAsync(String name, final ServiceCallback<AppNameAvailabilityInfoInner> serviceCallback) {
+    public ServiceFuture<AppAvailabilityInfoInner> checkNameAvailabilityAsync(String name, final ServiceCallback<AppAvailabilityInfoInner> serviceCallback) {
         return ServiceFuture.fromResponse(checkNameAvailabilityWithServiceResponseAsync(name), serviceCallback);
     }
 
@@ -956,12 +956,12 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
      *
      * @param name The name of the IoT Central application instance to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the AppNameAvailabilityInfoInner object
+     * @return the observable to the AppAvailabilityInfoInner object
      */
-    public Observable<AppNameAvailabilityInfoInner> checkNameAvailabilityAsync(String name) {
-        return checkNameAvailabilityWithServiceResponseAsync(name).map(new Func1<ServiceResponse<AppNameAvailabilityInfoInner>, AppNameAvailabilityInfoInner>() {
+    public Observable<AppAvailabilityInfoInner> checkNameAvailabilityAsync(String name) {
+        return checkNameAvailabilityWithServiceResponseAsync(name).map(new Func1<ServiceResponse<AppAvailabilityInfoInner>, AppAvailabilityInfoInner>() {
             @Override
-            public AppNameAvailabilityInfoInner call(ServiceResponse<AppNameAvailabilityInfoInner> response) {
+            public AppAvailabilityInfoInner call(ServiceResponse<AppAvailabilityInfoInner> response) {
                 return response.body();
             }
         });
@@ -972,9 +972,9 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
      *
      * @param name The name of the IoT Central application instance to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the AppNameAvailabilityInfoInner object
+     * @return the observable to the AppAvailabilityInfoInner object
      */
-    public Observable<ServiceResponse<AppNameAvailabilityInfoInner>> checkNameAvailabilityWithServiceResponseAsync(String name) {
+    public Observable<ServiceResponse<AppAvailabilityInfoInner>> checkNameAvailabilityWithServiceResponseAsync(String name) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -987,11 +987,11 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
         OperationInputs operationInputs = new OperationInputs();
         operationInputs.withName(name);
         return service.checkNameAvailability(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), operationInputs, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AppNameAvailabilityInfoInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AppAvailabilityInfoInner>>>() {
                 @Override
-                public Observable<ServiceResponse<AppNameAvailabilityInfoInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<AppAvailabilityInfoInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<AppNameAvailabilityInfoInner> clientResponse = checkNameAvailabilityDelegate(response);
+                        ServiceResponse<AppAvailabilityInfoInner> clientResponse = checkNameAvailabilityDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1000,9 +1000,9 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
             });
     }
 
-    private ServiceResponse<AppNameAvailabilityInfoInner> checkNameAvailabilityDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<AppNameAvailabilityInfoInner, ErrorDetailsException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<AppNameAvailabilityInfoInner>() { }.getType())
+    private ServiceResponse<AppAvailabilityInfoInner> checkNameAvailabilityDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<AppAvailabilityInfoInner, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<AppAvailabilityInfoInner>() { }.getType())
                 .registerError(ErrorDetailsException.class)
                 .build(response);
     }

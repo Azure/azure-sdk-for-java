@@ -22,7 +22,7 @@ import com.microsoft.azure.arm.utils.RXMapper;
 import rx.functions.Func1;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
-import com.microsoft.azure.management.iotcentral.v2018_09_01.AppNameAvailabilityInfo;
+import com.microsoft.azure.management.iotcentral.v2018_09_01.AppAvailabilityInfo;
 
 class AppsImpl extends GroupableResourcesCoreImpl<App, AppImpl, AppInner, AppsInner, IoTCentralManager>  implements Apps {
     protected AppsImpl(IoTCentralManager manager) {
@@ -127,13 +127,13 @@ class AppsImpl extends GroupableResourcesCoreImpl<App, AppImpl, AppInner, AppsIn
     }
 
     @Override
-    public Observable<AppNameAvailabilityInfo> checkNameAvailabilityAsync(String name) {
+    public Observable<AppAvailabilityInfo> checkNameAvailabilityAsync(String name) {
         AppsInner client = this.inner();
         return client.checkNameAvailabilityAsync(name)
-        .map(new Func1<AppNameAvailabilityInfoInner, AppNameAvailabilityInfo>() {
+        .map(new Func1<AppAvailabilityInfoInner, AppAvailabilityInfo>() {
             @Override
-            public AppNameAvailabilityInfo call(AppNameAvailabilityInfoInner inner) {
-                return new AppNameAvailabilityInfoImpl(inner, manager());
+            public AppAvailabilityInfo call(AppAvailabilityInfoInner inner) {
+                return new AppAvailabilityInfoImpl(inner, manager());
             }
         });
     }

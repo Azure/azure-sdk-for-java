@@ -29,6 +29,6 @@ public interface Apps extends SupportsCreating<App.DefinitionStages.Blank>, Supp
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<AppNameAvailabilityInfo> checkNameAvailabilityAsync(String name);
+    Observable<AppAvailabilityInfo> checkNameAvailabilityAsync(String name);
 
 }
