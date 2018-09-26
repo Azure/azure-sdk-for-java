@@ -12,9 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Boot Diagnostics is a debugging feature which allows you to view Console
- * Output and Screenshot to diagnose VM status. &lt;br&gt;&lt;br&gt; For Linux
- * Virtual Machines, you can easily view the output of your console log.
- * &lt;br&gt;&lt;br&gt; For both Windows and Linux virtual machines, Azure also
+ * Output and Screenshot to diagnose VM status. &lt;br&gt;&lt;br&gt; You can
+ * easily view the output of your console log. &lt;br&gt;&lt;br&gt; Azure also
  * enables you to see a screenshot of the VM from the hypervisor.
  */
 public class BootDiagnostics {
