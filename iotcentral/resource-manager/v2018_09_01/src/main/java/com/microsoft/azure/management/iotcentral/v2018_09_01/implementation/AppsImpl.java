@@ -23,7 +23,8 @@ import rx.functions.Func1;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.management.iotcentral.v2018_09_01.AppAvailabilityInfo;
-import com.microsoft.azure.management.iotcentral.v2018_09_01.OperationInputs;
+import com.microsoft.azure.management.iotcentral.v2018_09_01.NameAvailabilityInputs;
+import com.microsoft.azure.management.iotcentral.v2018_09_01.SubdomainAvailabilityInputs;
 
 class AppsImpl extends GroupableResourcesCoreImpl<App, AppImpl, AppInner, AppsInner, IoTCentralManager>  implements Apps {
     protected AppsImpl(IoTCentralManager manager) {
@@ -128,9 +129,9 @@ class AppsImpl extends GroupableResourcesCoreImpl<App, AppImpl, AppInner, AppsIn
     }
 
     @Override
-    public Observable<AppAvailabilityInfo> checkNameAvailabilityAsync(OperationInputs operationInputs) {
+    public Observable<AppAvailabilityInfo> checkNameAvailabilityAsync(NameAvailabilityInputs nameAvailabilityInputs) {
         AppsInner client = this.inner();
-        return client.checkNameAvailabilityAsync(operationInputs)
+        return client.checkNameAvailabilityAsync(nameAvailabilityInputs)
         .map(new Func1<AppAvailabilityInfoInner, AppAvailabilityInfo>() {
             @Override
             public AppAvailabilityInfo call(AppAvailabilityInfoInner inner) {
@@ -140,9 +141,9 @@ class AppsImpl extends GroupableResourcesCoreImpl<App, AppImpl, AppInner, AppsIn
     }
 
     @Override
-    public Observable<AppAvailabilityInfo> checkSubdomainAvailabilityAsync(OperationInputs operationInputs) {
+    public Observable<AppAvailabilityInfo> checkSubdomainAvailabilityAsync(SubdomainAvailabilityInputs subdomainAvailabilityInputs) {
         AppsInner client = this.inner();
-        return client.checkSubdomainAvailabilityAsync(operationInputs)
+        return client.checkSubdomainAvailabilityAsync(subdomainAvailabilityInputs)
         .map(new Func1<AppAvailabilityInfoInner, AppAvailabilityInfo>() {
             @Override
             public AppAvailabilityInfo call(AppAvailabilityInfoInner inner) {
