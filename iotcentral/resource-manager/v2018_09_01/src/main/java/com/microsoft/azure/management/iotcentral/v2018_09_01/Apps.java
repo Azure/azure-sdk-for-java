@@ -25,10 +25,9 @@ public interface Apps extends SupportsCreating<App.DefinitionStages.Blank>, Supp
     /**
      * Check if an IoT Central application name is available.
      *
-     * @param name The name of the IoT Central application instance to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<AppAvailabilityInfo> checkNameAvailabilityAsync(String name);
+    Observable<AppAvailabilityInfo> checkNameAvailabilityAsync();
 
 }

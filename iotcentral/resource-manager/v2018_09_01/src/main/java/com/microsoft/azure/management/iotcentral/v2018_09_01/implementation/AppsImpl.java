@@ -127,9 +127,9 @@ class AppsImpl extends GroupableResourcesCoreImpl<App, AppImpl, AppInner, AppsIn
     }
 
     @Override
-    public Observable<AppAvailabilityInfo> checkNameAvailabilityAsync(String name) {
+    public Observable<AppAvailabilityInfo> checkNameAvailabilityAsync() {
         AppsInner client = this.inner();
-        return client.checkNameAvailabilityAsync(name)
+        return client.checkNameAvailabilityAsync()
         .map(new Func1<AppAvailabilityInfoInner, AppAvailabilityInfo>() {
             @Override
             public AppAvailabilityInfo call(AppAvailabilityInfoInner inner) {
