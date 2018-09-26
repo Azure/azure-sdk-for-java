@@ -1014,7 +1014,7 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
     /**
      * Check if an IoT Central application subdomain is available.
      *
-     * @param subdomainAvailabilityInputs Set the subdomain parameter in the SubdomainAvailabilityInputs structure to the subdomain of the IoT Central application to check.
+     * @param subdomainAvailabilityInputs Set the subdomain parameter in the SubdomainAvailabilityInputs model to the subdomain of the IoT Central application to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorDetailsException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -1027,7 +1027,7 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
     /**
      * Check if an IoT Central application subdomain is available.
      *
-     * @param subdomainAvailabilityInputs Set the subdomain parameter in the SubdomainAvailabilityInputs structure to the subdomain of the IoT Central application to check.
+     * @param subdomainAvailabilityInputs Set the subdomain parameter in the SubdomainAvailabilityInputs model to the subdomain of the IoT Central application to check.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -1039,7 +1039,7 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
     /**
      * Check if an IoT Central application subdomain is available.
      *
-     * @param subdomainAvailabilityInputs Set the subdomain parameter in the SubdomainAvailabilityInputs structure to the subdomain of the IoT Central application to check.
+     * @param subdomainAvailabilityInputs Set the subdomain parameter in the SubdomainAvailabilityInputs model to the subdomain of the IoT Central application to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AppAvailabilityInfoInner object
      */
@@ -1055,7 +1055,7 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
     /**
      * Check if an IoT Central application subdomain is available.
      *
-     * @param subdomainAvailabilityInputs Set the subdomain parameter in the SubdomainAvailabilityInputs structure to the subdomain of the IoT Central application to check.
+     * @param subdomainAvailabilityInputs Set the subdomain parameter in the SubdomainAvailabilityInputs model to the subdomain of the IoT Central application to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AppAvailabilityInfoInner object
      */
