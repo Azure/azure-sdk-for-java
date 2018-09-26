@@ -106,11 +106,11 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.iotcentral.v2018_09_01.Apps checkNameAvailability" })
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.IoTCentral/checkNameAvailability")
-        Observable<Response<ResponseBody>> checkNameAvailability(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Body OperationInputs operationInputs, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> checkNameAvailability(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body OperationInputs operationInputs, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.iotcentral.v2018_09_01.Apps checkSubdomainAvailability" })
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.IoTCentral/checkSubdomainAvailability")
-        Observable<Response<ResponseBody>> checkSubdomainAvailability(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Body OperationInputs operationInputs, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> checkSubdomainAvailability(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body OperationInputs operationInputs, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.iotcentral.v2018_09_01.Apps listNext" })
         @GET
@@ -933,37 +933,34 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
     /**
      * Check if an IoT Central application name is available.
      *
-     * @param operationInputs Set the name parameter in the OperationInputs structure to the name of the IoT Central application to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorDetailsException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AppAvailabilityInfoInner object if successful.
      */
-    public AppAvailabilityInfoInner checkNameAvailability(OperationInputs operationInputs) {
-        return checkNameAvailabilityWithServiceResponseAsync(operationInputs).toBlocking().single().body();
+    public AppAvailabilityInfoInner checkNameAvailability() {
+        return checkNameAvailabilityWithServiceResponseAsync().toBlocking().single().body();
     }
 
     /**
      * Check if an IoT Central application name is available.
      *
-     * @param operationInputs Set the name parameter in the OperationInputs structure to the name of the IoT Central application to check.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<AppAvailabilityInfoInner> checkNameAvailabilityAsync(OperationInputs operationInputs, final ServiceCallback<AppAvailabilityInfoInner> serviceCallback) {
-        return ServiceFuture.fromResponse(checkNameAvailabilityWithServiceResponseAsync(operationInputs), serviceCallback);
+    public ServiceFuture<AppAvailabilityInfoInner> checkNameAvailabilityAsync(final ServiceCallback<AppAvailabilityInfoInner> serviceCallback) {
+        return ServiceFuture.fromResponse(checkNameAvailabilityWithServiceResponseAsync(), serviceCallback);
     }
 
     /**
      * Check if an IoT Central application name is available.
      *
-     * @param operationInputs Set the name parameter in the OperationInputs structure to the name of the IoT Central application to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AppAvailabilityInfoInner object
      */
-    public Observable<AppAvailabilityInfoInner> checkNameAvailabilityAsync(OperationInputs operationInputs) {
-        return checkNameAvailabilityWithServiceResponseAsync(operationInputs).map(new Func1<ServiceResponse<AppAvailabilityInfoInner>, AppAvailabilityInfoInner>() {
+    public Observable<AppAvailabilityInfoInner> checkNameAvailabilityAsync() {
+        return checkNameAvailabilityWithServiceResponseAsync().map(new Func1<ServiceResponse<AppAvailabilityInfoInner>, AppAvailabilityInfoInner>() {
             @Override
             public AppAvailabilityInfoInner call(ServiceResponse<AppAvailabilityInfoInner> response) {
                 return response.body();
@@ -974,22 +971,91 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
     /**
      * Check if an IoT Central application name is available.
      *
-     * @param operationInputs Set the name parameter in the OperationInputs structure to the name of the IoT Central application to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AppAvailabilityInfoInner object
      */
-    public Observable<ServiceResponse<AppAvailabilityInfoInner>> checkNameAvailabilityWithServiceResponseAsync(OperationInputs operationInputs) {
+    public Observable<ServiceResponse<AppAvailabilityInfoInner>> checkNameAvailabilityWithServiceResponseAsync() {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        if (operationInputs == null) {
-            throw new IllegalArgumentException("Parameter operationInputs is required and cannot be null.");
+        final String name = null;
+        OperationInputs operationInputs = new OperationInputs();
+        operationInputs.withName(null);
+        return service.checkNameAvailability(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), operationInputs, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AppAvailabilityInfoInner>>>() {
+                @Override
+                public Observable<ServiceResponse<AppAvailabilityInfoInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<AppAvailabilityInfoInner> clientResponse = checkNameAvailabilityDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Check if an IoT Central application name is available.
+     *
+     * @param name The name of the IoT Central application instance to check.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the AppAvailabilityInfoInner object if successful.
+     */
+    public AppAvailabilityInfoInner checkNameAvailability(String name) {
+        return checkNameAvailabilityWithServiceResponseAsync(name).toBlocking().single().body();
+    }
+
+    /**
+     * Check if an IoT Central application name is available.
+     *
+     * @param name The name of the IoT Central application instance to check.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<AppAvailabilityInfoInner> checkNameAvailabilityAsync(String name, final ServiceCallback<AppAvailabilityInfoInner> serviceCallback) {
+        return ServiceFuture.fromResponse(checkNameAvailabilityWithServiceResponseAsync(name), serviceCallback);
+    }
+
+    /**
+     * Check if an IoT Central application name is available.
+     *
+     * @param name The name of the IoT Central application instance to check.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AppAvailabilityInfoInner object
+     */
+    public Observable<AppAvailabilityInfoInner> checkNameAvailabilityAsync(String name) {
+        return checkNameAvailabilityWithServiceResponseAsync(name).map(new Func1<ServiceResponse<AppAvailabilityInfoInner>, AppAvailabilityInfoInner>() {
+            @Override
+            public AppAvailabilityInfoInner call(ServiceResponse<AppAvailabilityInfoInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Check if an IoT Central application name is available.
+     *
+     * @param name The name of the IoT Central application instance to check.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AppAvailabilityInfoInner object
+     */
+    public Observable<ServiceResponse<AppAvailabilityInfoInner>> checkNameAvailabilityWithServiceResponseAsync(String name) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        Validator.validate(operationInputs);
-        return service.checkNameAvailability(this.client.subscriptionId(), this.client.apiVersion(), operationInputs, this.client.acceptLanguage(), this.client.userAgent())
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        OperationInputs operationInputs = new OperationInputs();
+        operationInputs.withName(name);
+        return service.checkNameAvailability(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), operationInputs, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AppAvailabilityInfoInner>>>() {
                 @Override
                 public Observable<ServiceResponse<AppAvailabilityInfoInner>> call(Response<ResponseBody> response) {
@@ -1013,37 +1079,34 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
     /**
      * Check if an IoT Central application subdomain is available.
      *
-     * @param operationInputs Set the subdomain parameter in the OperationInputs model to the subdomain of the IoT Central application to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorDetailsException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AppAvailabilityInfoInner object if successful.
      */
-    public AppAvailabilityInfoInner checkSubdomainAvailability(OperationInputs operationInputs) {
-        return checkSubdomainAvailabilityWithServiceResponseAsync(operationInputs).toBlocking().single().body();
+    public AppAvailabilityInfoInner checkSubdomainAvailability() {
+        return checkSubdomainAvailabilityWithServiceResponseAsync().toBlocking().single().body();
     }
 
     /**
      * Check if an IoT Central application subdomain is available.
      *
-     * @param operationInputs Set the subdomain parameter in the OperationInputs model to the subdomain of the IoT Central application to check.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<AppAvailabilityInfoInner> checkSubdomainAvailabilityAsync(OperationInputs operationInputs, final ServiceCallback<AppAvailabilityInfoInner> serviceCallback) {
-        return ServiceFuture.fromResponse(checkSubdomainAvailabilityWithServiceResponseAsync(operationInputs), serviceCallback);
+    public ServiceFuture<AppAvailabilityInfoInner> checkSubdomainAvailabilityAsync(final ServiceCallback<AppAvailabilityInfoInner> serviceCallback) {
+        return ServiceFuture.fromResponse(checkSubdomainAvailabilityWithServiceResponseAsync(), serviceCallback);
     }
 
     /**
      * Check if an IoT Central application subdomain is available.
      *
-     * @param operationInputs Set the subdomain parameter in the OperationInputs model to the subdomain of the IoT Central application to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AppAvailabilityInfoInner object
      */
-    public Observable<AppAvailabilityInfoInner> checkSubdomainAvailabilityAsync(OperationInputs operationInputs) {
-        return checkSubdomainAvailabilityWithServiceResponseAsync(operationInputs).map(new Func1<ServiceResponse<AppAvailabilityInfoInner>, AppAvailabilityInfoInner>() {
+    public Observable<AppAvailabilityInfoInner> checkSubdomainAvailabilityAsync() {
+        return checkSubdomainAvailabilityWithServiceResponseAsync().map(new Func1<ServiceResponse<AppAvailabilityInfoInner>, AppAvailabilityInfoInner>() {
             @Override
             public AppAvailabilityInfoInner call(ServiceResponse<AppAvailabilityInfoInner> response) {
                 return response.body();
@@ -1054,22 +1117,91 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
     /**
      * Check if an IoT Central application subdomain is available.
      *
-     * @param operationInputs Set the subdomain parameter in the OperationInputs model to the subdomain of the IoT Central application to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AppAvailabilityInfoInner object
      */
-    public Observable<ServiceResponse<AppAvailabilityInfoInner>> checkSubdomainAvailabilityWithServiceResponseAsync(OperationInputs operationInputs) {
+    public Observable<ServiceResponse<AppAvailabilityInfoInner>> checkSubdomainAvailabilityWithServiceResponseAsync() {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        if (operationInputs == null) {
-            throw new IllegalArgumentException("Parameter operationInputs is required and cannot be null.");
+        final String name = null;
+        OperationInputs operationInputs = new OperationInputs();
+        operationInputs.withName(null);
+        return service.checkSubdomainAvailability(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), operationInputs, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AppAvailabilityInfoInner>>>() {
+                @Override
+                public Observable<ServiceResponse<AppAvailabilityInfoInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<AppAvailabilityInfoInner> clientResponse = checkSubdomainAvailabilityDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Check if an IoT Central application subdomain is available.
+     *
+     * @param name The name of the IoT Central application instance to check.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the AppAvailabilityInfoInner object if successful.
+     */
+    public AppAvailabilityInfoInner checkSubdomainAvailability(String name) {
+        return checkSubdomainAvailabilityWithServiceResponseAsync(name).toBlocking().single().body();
+    }
+
+    /**
+     * Check if an IoT Central application subdomain is available.
+     *
+     * @param name The name of the IoT Central application instance to check.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<AppAvailabilityInfoInner> checkSubdomainAvailabilityAsync(String name, final ServiceCallback<AppAvailabilityInfoInner> serviceCallback) {
+        return ServiceFuture.fromResponse(checkSubdomainAvailabilityWithServiceResponseAsync(name), serviceCallback);
+    }
+
+    /**
+     * Check if an IoT Central application subdomain is available.
+     *
+     * @param name The name of the IoT Central application instance to check.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AppAvailabilityInfoInner object
+     */
+    public Observable<AppAvailabilityInfoInner> checkSubdomainAvailabilityAsync(String name) {
+        return checkSubdomainAvailabilityWithServiceResponseAsync(name).map(new Func1<ServiceResponse<AppAvailabilityInfoInner>, AppAvailabilityInfoInner>() {
+            @Override
+            public AppAvailabilityInfoInner call(ServiceResponse<AppAvailabilityInfoInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Check if an IoT Central application subdomain is available.
+     *
+     * @param name The name of the IoT Central application instance to check.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AppAvailabilityInfoInner object
+     */
+    public Observable<ServiceResponse<AppAvailabilityInfoInner>> checkSubdomainAvailabilityWithServiceResponseAsync(String name) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        Validator.validate(operationInputs);
-        return service.checkSubdomainAvailability(this.client.subscriptionId(), this.client.apiVersion(), operationInputs, this.client.acceptLanguage(), this.client.userAgent())
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        OperationInputs operationInputs = new OperationInputs();
+        operationInputs.withName(name);
+        return service.checkSubdomainAvailability(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), operationInputs, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AppAvailabilityInfoInner>>>() {
                 @Override
                 public Observable<ServiceResponse<AppAvailabilityInfoInner>> call(Response<ResponseBody> response) {

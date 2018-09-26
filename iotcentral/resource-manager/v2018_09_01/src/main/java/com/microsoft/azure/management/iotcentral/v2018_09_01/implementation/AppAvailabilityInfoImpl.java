@@ -38,9 +38,4 @@ class AppAvailabilityInfoImpl extends WrapperImpl<AppAvailabilityInfoInner> impl
         return this.inner().reason();
     }
 
-    @Override
-    public String subdomain() {
-        return this.inner().subdomain();
-    }
-
 }
