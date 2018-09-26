@@ -58,6 +58,8 @@ public class ApplicationInsightsDataClientTests extends TestBase {
     public void canGetMetric() {
         MetricsResult metricResult = applicationInsightsClient.metrics().get(appId, MetricId.AVAILABILITY_RESULTSAVAILABILITY_PERCENTAGE);
         // Validate properties
+        Assert.assertNotNull(metricResult.value().additionalProperties());
+        System.out.println(metricResult.value().additionalProperties().keySet());
         Assert.assertNotNull(metricResult.value().start());
         Assert.assertTrue(metricResult.value().start() instanceof DateTime);
     }
@@ -89,8 +91,6 @@ public class ApplicationInsightsDataClientTests extends TestBase {
     @Test 
     public void canGetEventsByType() {
         EventsResults eventsResult = applicationInsightsClient.events().getByType(appId, EventType.AVAILABILITY_RESULTS);
-        System.out.println(eventsResult.value().get(0));
-        System.out.println(eventsResult.value().get(0).id());
         Assert.assertNotNull(eventsResult.value().get(0).id());
     }
 
@@ -100,11 +100,4 @@ public class ApplicationInsightsDataClientTests extends TestBase {
         EventsResults eventsResult = applicationInsightsClient.events().get(appId, EventType.AVAILABILITY_RESULTS, eventId);
         Assert.assertNotNull(eventsResult.value().get(0).id());
     }
-
-    @Test
-    public void canGetEventsOdataMetadata() {
-        Object metadata = applicationInsightsClient.events().getOdataMetadata(appId);
-        // Sanity check
-        Assert.assertNotNull(metadata);
-    }   
 }
