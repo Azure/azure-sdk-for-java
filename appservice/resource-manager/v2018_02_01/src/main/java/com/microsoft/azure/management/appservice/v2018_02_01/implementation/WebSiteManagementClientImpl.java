@@ -1540,7 +1540,7 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
      * Get a list of available geographical regions.
      * Get a list of available geographical regions.
      *
-     * @param sku Name of SKU used to filter the regions. Possible values include: 'Free', 'Shared', 'Basic', 'Standard', 'Premium', 'Dynamic', 'Isolated', 'PremiumV2'
+     * @param sku Name of SKU used to filter the regions. Possible values include: 'Free', 'Shared', 'Basic', 'Standard', 'Premium', 'Dynamic', 'Isolated', 'PremiumV2', 'ElasticPremium', 'ElasticIsolated'
      * @param linuxWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that support Linux workers.
      * @param xenonWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that support Xenon workers.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1562,7 +1562,7 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
      * Get a list of available geographical regions.
      * Get a list of available geographical regions.
      *
-     * @param sku Name of SKU used to filter the regions. Possible values include: 'Free', 'Shared', 'Basic', 'Standard', 'Premium', 'Dynamic', 'Isolated', 'PremiumV2'
+     * @param sku Name of SKU used to filter the regions. Possible values include: 'Free', 'Shared', 'Basic', 'Standard', 'Premium', 'Dynamic', 'Isolated', 'PremiumV2', 'ElasticPremium', 'ElasticIsolated'
      * @param linuxWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that support Linux workers.
      * @param xenonWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that support Xenon workers.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -1585,7 +1585,7 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
      * Get a list of available geographical regions.
      * Get a list of available geographical regions.
      *
-     * @param sku Name of SKU used to filter the regions. Possible values include: 'Free', 'Shared', 'Basic', 'Standard', 'Premium', 'Dynamic', 'Isolated', 'PremiumV2'
+     * @param sku Name of SKU used to filter the regions. Possible values include: 'Free', 'Shared', 'Basic', 'Standard', 'Premium', 'Dynamic', 'Isolated', 'PremiumV2', 'ElasticPremium', 'ElasticIsolated'
      * @param linuxWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that support Linux workers.
      * @param xenonWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that support Xenon workers.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1605,7 +1605,7 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
      * Get a list of available geographical regions.
      * Get a list of available geographical regions.
      *
-     * @param sku Name of SKU used to filter the regions. Possible values include: 'Free', 'Shared', 'Basic', 'Standard', 'Premium', 'Dynamic', 'Isolated', 'PremiumV2'
+     * @param sku Name of SKU used to filter the regions. Possible values include: 'Free', 'Shared', 'Basic', 'Standard', 'Premium', 'Dynamic', 'Isolated', 'PremiumV2', 'ElasticPremium', 'ElasticIsolated'
      * @param linuxWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that support Linux workers.
      * @param xenonWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that support Xenon workers.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1629,7 +1629,7 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
      * Get a list of available geographical regions.
      * Get a list of available geographical regions.
      *
-    ServiceResponse<PageImpl<GeoRegionInner>> * @param sku Name of SKU used to filter the regions. Possible values include: 'Free', 'Shared', 'Basic', 'Standard', 'Premium', 'Dynamic', 'Isolated', 'PremiumV2'
+    ServiceResponse<PageImpl<GeoRegionInner>> * @param sku Name of SKU used to filter the regions. Possible values include: 'Free', 'Shared', 'Basic', 'Standard', 'Premium', 'Dynamic', 'Isolated', 'PremiumV2', 'ElasticPremium', 'ElasticIsolated'
     ServiceResponse<PageImpl<GeoRegionInner>> * @param linuxWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that support Linux workers.
     ServiceResponse<PageImpl<GeoRegionInner>> * @param xenonWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that support Xenon workers.
      * @throws IllegalArgumentException thrown if parameters fail the validation

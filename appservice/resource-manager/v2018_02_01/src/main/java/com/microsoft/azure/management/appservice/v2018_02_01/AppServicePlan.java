@@ -66,6 +66,11 @@ public interface AppServicePlan extends HasInner<AppServicePlanInner>, Resource,
     String kind();
 
     /**
+     * @return the maximumElasticWorkerCount value.
+     */
+    Integer maximumElasticWorkerCount();
+
+    /**
      * @return the maximumNumberOfWorkers value.
      */
     Integer maximumNumberOfWorkers();
@@ -223,6 +228,16 @@ public interface AppServicePlan extends HasInner<AppServicePlanInner>, Resource,
         }
 
         /**
+         * The stage of the appserviceplan update allowing to specify MaximumElasticWorkerCount.
+         */
+        interface WithMaximumElasticWorkerCount {
+            /**
+             * Specifies maximumElasticWorkerCount.
+             */
+            WithCreate withMaximumElasticWorkerCount(Integer maximumElasticWorkerCount);
+        }
+
+        /**
          * The stage of the appserviceplan update allowing to specify PerSiteScaling.
          */
         interface WithPerSiteScaling {
@@ -297,13 +312,13 @@ public interface AppServicePlan extends HasInner<AppServicePlanInner>, Resource,
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<AppServicePlan>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAdminSiteName, DefinitionStages.WithFreeOfferExpirationTime, DefinitionStages.WithHostingEnvironmentProfile, DefinitionStages.WithHyperV, DefinitionStages.WithIsSpot, DefinitionStages.WithIsXenon, DefinitionStages.WithKind, DefinitionStages.WithPerSiteScaling, DefinitionStages.WithReserved, DefinitionStages.WithSku, DefinitionStages.WithSpotExpirationTime, DefinitionStages.WithTargetWorkerCount, DefinitionStages.WithTargetWorkerSizeId, DefinitionStages.WithWorkerTierName {
+        interface WithCreate extends Creatable<AppServicePlan>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAdminSiteName, DefinitionStages.WithFreeOfferExpirationTime, DefinitionStages.WithHostingEnvironmentProfile, DefinitionStages.WithHyperV, DefinitionStages.WithIsSpot, DefinitionStages.WithIsXenon, DefinitionStages.WithKind, DefinitionStages.WithMaximumElasticWorkerCount, DefinitionStages.WithPerSiteScaling, DefinitionStages.WithReserved, DefinitionStages.WithSku, DefinitionStages.WithSpotExpirationTime, DefinitionStages.WithTargetWorkerCount, DefinitionStages.WithTargetWorkerSizeId, DefinitionStages.WithWorkerTierName {
         }
     }
     /**
      * The template for a AppServicePlan update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<AppServicePlan>, Resource.UpdateWithTags<Update>, UpdateStages.WithAdminSiteName, UpdateStages.WithFreeOfferExpirationTime, UpdateStages.WithHostingEnvironmentProfile, UpdateStages.WithHyperV, UpdateStages.WithIsSpot, UpdateStages.WithIsXenon, UpdateStages.WithKind, UpdateStages.WithPerSiteScaling, UpdateStages.WithReserved, UpdateStages.WithSpotExpirationTime, UpdateStages.WithTargetWorkerCount, UpdateStages.WithTargetWorkerSizeId, UpdateStages.WithWorkerTierName {
+    interface Update extends Appliable<AppServicePlan>, Resource.UpdateWithTags<Update>, UpdateStages.WithAdminSiteName, UpdateStages.WithFreeOfferExpirationTime, UpdateStages.WithHostingEnvironmentProfile, UpdateStages.WithHyperV, UpdateStages.WithIsSpot, UpdateStages.WithIsXenon, UpdateStages.WithKind, UpdateStages.WithMaximumElasticWorkerCount, UpdateStages.WithPerSiteScaling, UpdateStages.WithReserved, UpdateStages.WithSpotExpirationTime, UpdateStages.WithTargetWorkerCount, UpdateStages.WithTargetWorkerSizeId, UpdateStages.WithWorkerTierName {
     }
 
     /**
@@ -378,6 +393,16 @@ public interface AppServicePlan extends HasInner<AppServicePlanInner>, Resource,
              * Specifies kind.
              */
             Update withKind(String kind);
+        }
+
+        /**
+         * The stage of the appserviceplan {0} allowing to specify MaximumElasticWorkerCount.
+         */
+        interface WithMaximumElasticWorkerCount {
+            /**
+             * Specifies maximumElasticWorkerCount.
+             */
+            Update withMaximumElasticWorkerCount(Integer maximumElasticWorkerCount);
         }
 
         /**

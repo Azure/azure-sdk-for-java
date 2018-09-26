@@ -72,6 +72,13 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
     private Boolean perSiteScaling;
 
     /**
+     * Maximum number of total workers allowed for this ElasticScaleEnabled App
+     * Service Plan.
+     */
+    @JsonProperty(value = "properties.maximumElasticWorkerCount")
+    private Integer maximumElasticWorkerCount;
+
+    /**
      * Number of apps assigned to this App Service plan.
      */
     @JsonProperty(value = "properties.numberOfSites", access = JsonProperty.Access.WRITE_ONLY)
@@ -258,6 +265,26 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
      */
     public AppServicePlanPatchResource withPerSiteScaling(Boolean perSiteScaling) {
         this.perSiteScaling = perSiteScaling;
+        return this;
+    }
+
+    /**
+     * Get maximum number of total workers allowed for this ElasticScaleEnabled App Service Plan.
+     *
+     * @return the maximumElasticWorkerCount value
+     */
+    public Integer maximumElasticWorkerCount() {
+        return this.maximumElasticWorkerCount;
+    }
+
+    /**
+     * Set maximum number of total workers allowed for this ElasticScaleEnabled App Service Plan.
+     *
+     * @param maximumElasticWorkerCount the maximumElasticWorkerCount value to set
+     * @return the AppServicePlanPatchResource object itself.
+     */
+    public AppServicePlanPatchResource withMaximumElasticWorkerCount(Integer maximumElasticWorkerCount) {
+        this.maximumElasticWorkerCount = maximumElasticWorkerCount;
         return this;
     }
 
