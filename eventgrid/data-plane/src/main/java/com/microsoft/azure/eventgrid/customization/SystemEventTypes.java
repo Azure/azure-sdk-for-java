@@ -97,7 +97,6 @@ public class SystemEventTypes {
      */
     public final static String RESOURCE_ACTION_CANCEL_EVENT = "Microsoft.Resources.ResourceActionCancel";
 
-
     // ServiceBus events.
     /**
      * indicate an event of active messages with no listener for them.

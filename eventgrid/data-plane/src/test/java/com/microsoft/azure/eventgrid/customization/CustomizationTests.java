@@ -39,6 +39,9 @@ import org.junit.Test;
 import sun.misc.IOUtils;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.Map;
+import java.util.Set;
 
 public class CustomizationTests {
 
@@ -141,6 +144,33 @@ public class CustomizationTests {
         Assert.assertTrue(eventData0.shippingInfo() instanceof DroneShippingInfo);
         ContosoItemSentEventData eventData1 = (ContosoItemSentEventData)events[1].data();
         Assert.assertTrue(eventData1.shippingInfo() instanceof RocketShippingInfo);
+    }
+
+    @Test
+    public void testCustomEventMappings() {
+        EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
+        eventGridSubscriber.putCustomEventMapping("Contoso.Items.ItemSent", ContosoItemSentEventData.class);
+        eventGridSubscriber.putCustomEventMapping("Contoso.Items.ItemReceived", ContosoItemReceivedEventData.class);
+
+        Set<Map.Entry<String, Type>> mappings = eventGridSubscriber.getAllCustomEventMappings();
+
+        Assert.assertEquals(2, mappings.size());
+
+        Type mapping = eventGridSubscriber.getCustomEventMapping("Contoso.Items.ItemSent");
+        Assert.assertNotNull(mapping);
+        // Ensure lookup is case-insensitive
+        mapping = eventGridSubscriber.getCustomEventMapping("contoso.Items.Itemsent");
+        Assert.assertNotNull(mapping);
+
+        mapping = eventGridSubscriber.getCustomEventMapping("Contoso.Items.NotExists");
+        Assert.assertNull(mapping);
+
+        boolean removed = eventGridSubscriber.removeCustomEventMapping("Contoso.Items.ItemReceived");
+        Assert.assertTrue(removed);
+        Assert.assertEquals(1, mappings.size());
+
+       boolean contains = eventGridSubscriber.containsCustomEventMappingFor("Contoso.Items.ItemSent");
+        Assert.assertTrue(contains);
     }
 
     @Test

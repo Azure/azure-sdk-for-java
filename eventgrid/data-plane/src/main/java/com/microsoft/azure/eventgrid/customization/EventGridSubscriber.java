@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * The type that can be used to de-serialize events.
+ * The type that can be used to de-serialize eventgrid events.
  */
 @Beta
 public class EventGridSubscriber {
@@ -79,7 +79,7 @@ public class EventGridSubscriber {
      * @return get all registered custom event mappings.
      */
     @Beta
-    public Set<Map.Entry<String, Type>> getAllCustomEventMapping() {
+    public Set<Map.Entry<String, Type>> getAllCustomEventMappings() {
         return Collections.unmodifiableSet(this.eventTypeToEventDataMapping.entrySet());
     }
 
