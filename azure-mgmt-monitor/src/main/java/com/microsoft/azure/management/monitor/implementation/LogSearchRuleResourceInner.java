@@ -56,9 +56,10 @@ public class LogSearchRuleResourceInner extends Resource {
     private Source source;
 
     /**
-     * Schedule (Frequnecy, Time Window) for rule.
+     * Schedule (Frequnecy, Time Window) for rule. Required for action type -
+     * AlertingAction.
      */
-    @JsonProperty(value = "properties.schedule", required = true)
+    @JsonProperty(value = "properties.schedule")
     private Schedule schedule;
 
     /**
@@ -146,7 +147,7 @@ public class LogSearchRuleResourceInner extends Resource {
     }
 
     /**
-     * Get schedule (Frequnecy, Time Window) for rule.
+     * Get schedule (Frequnecy, Time Window) for rule. Required for action type - AlertingAction.
      *
      * @return the schedule value
      */
@@ -155,7 +156,7 @@ public class LogSearchRuleResourceInner extends Resource {
     }
 
     /**
-     * Set schedule (Frequnecy, Time Window) for rule.
+     * Set schedule (Frequnecy, Time Window) for rule. Required for action type - AlertingAction.
      *
      * @param schedule the schedule value to set
      * @return the LogSearchRuleResourceInner object itself.
