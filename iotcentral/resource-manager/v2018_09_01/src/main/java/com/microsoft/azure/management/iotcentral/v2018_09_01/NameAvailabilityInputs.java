@@ -17,7 +17,7 @@ public class NameAvailabilityInputs {
     /**
      * The name of the IoT Central application instance to check.
      */
-    @JsonProperty(value = "name")
+    @JsonProperty(value = "name", required = true)
     private String name;
 
     /**
