@@ -13,8 +13,15 @@ import com.microsoft.azure.eventgrid.models.ContainerRegistryImageDeletedEventDa
 import com.microsoft.azure.eventgrid.models.ContainerRegistryImagePushedEventData;
 import com.microsoft.azure.eventgrid.models.EventGridEvent;
 import com.microsoft.azure.eventgrid.models.EventHubCaptureFileCreatedEventData;
+import com.microsoft.azure.eventgrid.models.IotHubDeviceConnectedEventData;
 import com.microsoft.azure.eventgrid.models.IotHubDeviceCreatedEventData;
 import com.microsoft.azure.eventgrid.models.IotHubDeviceDeletedEventData;
+import com.microsoft.azure.eventgrid.models.IotHubDeviceDisconnectedEventData;
+import com.microsoft.azure.eventgrid.models.JobState;
+import com.microsoft.azure.eventgrid.models.MediaJobStateChangeEventData;
+import com.microsoft.azure.eventgrid.models.ResourceActionCancelData;
+import com.microsoft.azure.eventgrid.models.ResourceActionFailureData;
+import com.microsoft.azure.eventgrid.models.ResourceActionSuccessData;
 import com.microsoft.azure.eventgrid.models.ResourceDeleteCancelData;
 import com.microsoft.azure.eventgrid.models.ResourceDeleteFailureData;
 import com.microsoft.azure.eventgrid.models.ResourceDeleteSuccessData;
@@ -25,6 +32,8 @@ import com.microsoft.azure.eventgrid.models.ServiceBusActiveMessagesAvailableWit
 import com.microsoft.azure.eventgrid.models.ServiceBusDeadletterMessagesAvailableWithNoListenersEventData;
 import com.microsoft.azure.eventgrid.models.StorageBlobCreatedEventData;
 import com.microsoft.azure.eventgrid.models.StorageBlobDeletedEventData;
+import com.microsoft.azure.eventgrid.models.SubscriptionDeletedEventData;
+import com.microsoft.azure.eventgrid.models.SubscriptionValidationEventData;
 import org.junit.Assert;
 import org.junit.Test;
 import sun.misc.IOUtils;
@@ -34,17 +43,34 @@ import java.io.IOException;
 public class CustomizationTests {
 
     @Test
-    public void consumeStorageBlobDeletedEventWithExtraProperty()throws IOException {
+    public void consumeStorageBlobDeletedEventWithExtraProperty() throws IOException {
         String jsonData = getTestPayloadFromFile("StorageBlobDeletedEventWithExtraProperty.json");
         //
         EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
 
-        EventGridEvent[] events = eventGridSubscriber.DeserializeEventGridEvents(jsonData);
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof StorageBlobDeletedEventData);
         StorageBlobDeletedEventData eventData = (StorageBlobDeletedEventData)events[0].data();
         Assert.assertEquals("https://example.blob.core.windows.net/testcontainer/testfile.txt", eventData.url());
+    }
+
+    @Test
+    public void ConsumeCustomEvents() throws IOException {
+        String jsonData = getTestPayloadFromFile("CustomEvents.json");
+        //
+        EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
+        eventGridSubscriber.putCustomEventMapping("Contoso.Items.ItemReceived", ContosoItemSentEventData.class);
+        eventGridSubscriber.putCustomEventMapping("Contoso.Items.ItemReceived", ContosoItemReceivedEventData.class);
+
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
+
+        Assert.assertNotNull(events);
+        Assert.assertEquals(1, events.length);
+        Assert.assertTrue(events[0].data() instanceof ContosoItemReceivedEventData);
+        ContosoItemReceivedEventData eventData = (ContosoItemReceivedEventData) events[0].data();
+        Assert.assertEquals("512d38b6-c7b8-40c8-89fe-f46f9e9622b6", eventData.itemSku());
     }
 
     @Test
@@ -56,7 +82,7 @@ public class CustomizationTests {
         ContosoItemReceivedEventData[] arr = { new ContosoItemReceivedEventData() };
         eventGridSubscriber.putCustomEventMapping("Contoso.Items.ItemReceived", arr.getClass());
 
-        EventGridEvent[] events = eventGridSubscriber.DeserializeEventGridEvents(jsonData);
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
 
         Assert.assertNotNull(events);
         Assert.assertEquals(1, events.length);
@@ -73,7 +99,7 @@ public class CustomizationTests {
 
         eventGridSubscriber.putCustomEventMapping("Contoso.Items.ItemReceived", Boolean.class);
 
-        EventGridEvent[] events = eventGridSubscriber.DeserializeEventGridEvents(jsonData);
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
 
         Assert.assertNotNull(events);
         Assert.assertEquals(1, events.length);
@@ -88,7 +114,7 @@ public class CustomizationTests {
         //
         EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
 
-        EventGridEvent[] events = eventGridSubscriber.DeserializeEventGridEvents(jsonData);
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
 
         Assert.assertNotNull(events);
         Assert.assertEquals(1, events.length);
@@ -105,7 +131,7 @@ public class CustomizationTests {
 
         eventGridSubscriber.putCustomEventMapping("Contoso.Items.ItemSent", ContosoItemSentEventData.class);
 
-        EventGridEvent[] events = eventGridSubscriber.DeserializeEventGridEvents(jsonData);
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
 
         Assert.assertNotNull(events);
         Assert.assertEquals(2, events.length);
@@ -122,7 +148,7 @@ public class CustomizationTests {
         String jsonData = getTestPayloadFromFile("MultipleEventsInSameBatch.json");
         //
         EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
-        EventGridEvent[] events = eventGridSubscriber.DeserializeEventGridEvents(jsonData);
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
 
         Assert.assertNotNull(events);
         Assert.assertEquals(4, events.length);
@@ -140,7 +166,7 @@ public class CustomizationTests {
         String jsonData = getTestPayloadFromFile("ContainerRegistryImagePushedEvent.json");
         //
         EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
-        EventGridEvent[] events = eventGridSubscriber.DeserializeEventGridEvents(jsonData);
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof ContainerRegistryImagePushedEventData);
@@ -153,7 +179,7 @@ public class CustomizationTests {
         String jsonData = getTestPayloadFromFile("ContainerRegistryImageDeletedEvent.json");
         //
         EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
-        EventGridEvent[] events = eventGridSubscriber.DeserializeEventGridEvents(jsonData);
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof ContainerRegistryImageDeletedEventData);
@@ -167,7 +193,7 @@ public class CustomizationTests {
         String jsonData = getTestPayloadFromFile("IoTHubDeviceCreatedEvent.json");
         //
         EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
-        EventGridEvent[] events = eventGridSubscriber.DeserializeEventGridEvents(jsonData);
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof IotHubDeviceCreatedEventData);
@@ -180,7 +206,7 @@ public class CustomizationTests {
         String jsonData = getTestPayloadFromFile("IoTHubDeviceDeletedEvent.json");
         //
         EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
-        EventGridEvent[] events = eventGridSubscriber.DeserializeEventGridEvents(jsonData);
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof IotHubDeviceDeletedEventData);
@@ -188,38 +214,58 @@ public class CustomizationTests {
         Assert.assertEquals("AAAAAAAAAAE=", eventData.twin().etag());
     }
 
-    /**
-    // TODO: Enable the test once SubscriptionValidationEventData model in available in SDK
+    @Test
+    public void consumeIoTHubDeviceConnectedEvent() throws IOException {
+        String jsonData = getTestPayloadFromFile("IoTHubDeviceConnectedEvent.json");
+        //
+        EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
+
+        Assert.assertNotNull(events);
+        Assert.assertTrue(events[0].data() instanceof IotHubDeviceConnectedEventData);
+        IotHubDeviceConnectedEventData eventData = (IotHubDeviceConnectedEventData)events[0].data();
+        Assert.assertEquals("EGTESTHUB1", eventData.hubName());
+    }
+
+    @Test
+    public void consumeIoTHubDeviceDisconnectedEvent() throws IOException {
+        String jsonData = getTestPayloadFromFile("IoTHubDeviceDisconnectedEvent.json");
+        //
+        EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
+
+        Assert.assertNotNull(events);
+        Assert.assertTrue(events[0].data() instanceof IotHubDeviceDisconnectedEventData);
+        IotHubDeviceDisconnectedEventData eventData = (IotHubDeviceDisconnectedEventData)events[0].data();
+        Assert.assertEquals("000000000000000001D4132452F67CE200000002000000000000000000000002", eventData.deviceConnectionStateEventInfo().sequenceNumber());
+    }
+
     // EventGrid events
     @Test
     public void ConsumeEventGridSubscriptionValidationEvent() throws IOException {
-        String jsonData = getTestPayloadFromFile("IoTHubDeviceDeletedEvent.json");
+        String jsonData = getTestPayloadFromFile("EventGridSubscriptionValidationEvent.json");
         //
         EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
-        EventGridEvent[] events = eventGridSubscriber.DeserializeEventGridEvents(jsonData);
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof SubscriptionValidationEventData);
         SubscriptionValidationEventData eventData = (SubscriptionValidationEventData)events[0].data();
-        Assert.assertEqual("512d38b6-c7b8-40c8-89fe-f46f9e9622b6", eventData.ValidationCode);
+        Assert.assertEquals("512d38b6-c7b8-40c8-89fe-f46f9e9622b6", eventData.validationCode());
     }
-    **/
 
-    /**
-    // TODO: Enable the test once SubscriptionDeletedEventData model in available in SDK
     @Test
     public void consumeEventGridSubscriptionDeletedEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("EventGridSubscriptionDeletedEvent.json");
         //
         EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
-        EventGridEvent[] events = eventGridSubscriber.DeserializeEventGridEvents(jsonData);
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof SubscriptionDeletedEventData);
         SubscriptionDeletedEventData eventData = (SubscriptionDeletedEventData)events[0].data();
         Assert.assertEquals("/subscriptions/id/resourceGroups/rg/providers/Microsoft.EventGrid/topics/topic1/providers/Microsoft.EventGrid/eventSubscriptions/eventsubscription1", eventData.eventSubscriptionId());
     }
-    **/
 
     // Event Hub Events
     @Test
@@ -227,7 +273,7 @@ public class CustomizationTests {
         String jsonData = getTestPayloadFromFile("EventHubCaptureFileCreatedEvent.json");
         //
         EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
-        EventGridEvent[] events = eventGridSubscriber.DeserializeEventGridEvents(jsonData);
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof EventHubCaptureFileCreatedEventData);
@@ -235,22 +281,18 @@ public class CustomizationTests {
         Assert.assertEquals("AzureBlockBlob", eventData.fileType());
     }
 
-    /**
-    // TODO: Enable the test once MediaJobStateChangeEventData model in available in SDK
-    // Media Services events
     @Test
     public void consumeMediaServicesJobStateChangedEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("MediaServicesJobStateChangedEvent.json");
         //
         EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
-        EventGridEvent[] events = eventGridSubscriber.DeserializeEventGridEvents(jsonData);
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof MediaJobStateChangeEventData);
         MediaJobStateChangeEventData eventData = (MediaJobStateChangeEventData)events[0].data();
-        Assert.assertEqual("Finished", eventData.state());
+        Assert.assertEquals(JobState.FINISHED, eventData.state());
     }
-    **/
 
     // Resource Manager (Azure Subscription/Resource Group) events
     @Test
@@ -258,7 +300,7 @@ public class CustomizationTests {
         String jsonData = getTestPayloadFromFile("ResourceWriteFailureEvent.json");
         //
         EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
-        EventGridEvent[] events = eventGridSubscriber.DeserializeEventGridEvents(jsonData);
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof ResourceWriteFailureData);
@@ -271,7 +313,7 @@ public class CustomizationTests {
         String jsonData = getTestPayloadFromFile("ResourceWriteCancelEvent.json");
         //
         EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
-        EventGridEvent[] events = eventGridSubscriber.DeserializeEventGridEvents(jsonData);
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof ResourceWriteCancelData);
@@ -284,7 +326,7 @@ public class CustomizationTests {
         String jsonData = getTestPayloadFromFile("ResourceDeleteSuccessEvent.json");
         //
         EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
-        EventGridEvent[] events = eventGridSubscriber.DeserializeEventGridEvents(jsonData);
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof ResourceDeleteSuccessData);
@@ -292,12 +334,12 @@ public class CustomizationTests {
         Assert.assertEquals("72f988bf-86f1-41af-91ab-2d7cd011db47", eventData.tenantId());
     }
 
-        @Test
+    @Test
     public void consumeResourceDeleteFailureEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("ResourceDeleteFailureEvent.json");
         //
         EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
-        EventGridEvent[] events = eventGridSubscriber.DeserializeEventGridEvents(jsonData);
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof ResourceDeleteFailureData);
@@ -305,16 +347,55 @@ public class CustomizationTests {
         Assert.assertEquals("72f988bf-86f1-41af-91ab-2d7cd011db47", eventData.tenantId());
     }
 
-        @Test
+    @Test
     public void consumeResourceDeleteCancelEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("ResourceDeleteCancelEvent.json");
         //
         EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
-        EventGridEvent[] events = eventGridSubscriber.DeserializeEventGridEvents(jsonData);
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof ResourceDeleteCancelData);
         ResourceDeleteCancelData eventData = (ResourceDeleteCancelData)events[0].data();
+        Assert.assertEquals("72f988bf-86f1-41af-91ab-2d7cd011db47", eventData.tenantId());
+    }
+
+    @Test
+    public void consumeResourceActionSuccessEvent() throws IOException {
+        String jsonData = getTestPayloadFromFile("ResourceActionSuccessEvent.json");
+        //
+        EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
+
+        Assert.assertNotNull(events);
+        Assert.assertTrue(events[0].data() instanceof ResourceActionSuccessData);
+        ResourceActionSuccessData eventData = (ResourceActionSuccessData)events[0].data();
+        Assert.assertEquals("72f988bf-86f1-41af-91ab-2d7cd011db47", eventData.tenantId());
+    }
+
+    @Test
+    public void consumeResourceActionFailureEvent() throws IOException {
+        String jsonData = getTestPayloadFromFile("ResourceActionFailureEvent.json");
+        //
+        EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
+
+        Assert.assertNotNull(events);
+        Assert.assertTrue(events[0].data() instanceof ResourceActionFailureData);
+        ResourceActionFailureData eventData = (ResourceActionFailureData)events[0].data();
+        Assert.assertEquals("72f988bf-86f1-41af-91ab-2d7cd011db47", eventData.tenantId());
+    }
+
+    @Test
+    public void consumeResourceActionCancelEvent() throws IOException {
+        String jsonData = getTestPayloadFromFile("ResourceActionCancelEvent.json");
+        //
+        EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
+
+        Assert.assertNotNull(events);
+        Assert.assertTrue(events[0].data() instanceof ResourceActionCancelData);
+        ResourceActionCancelData eventData = (ResourceActionCancelData)events[0].data();
         Assert.assertEquals("72f988bf-86f1-41af-91ab-2d7cd011db47", eventData.tenantId());
     }
 
@@ -324,7 +405,7 @@ public class CustomizationTests {
         String jsonData = getTestPayloadFromFile("ServiceBusActiveMessagesAvailableWithNoListenersEvent.json");
         //
         EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
-        EventGridEvent[] events = eventGridSubscriber.DeserializeEventGridEvents(jsonData);
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof ServiceBusActiveMessagesAvailableWithNoListenersEventData);
@@ -337,7 +418,7 @@ public class CustomizationTests {
         String jsonData = getTestPayloadFromFile("ServiceBusDeadletterMessagesAvailableWithNoListenersEvent.json");
         //
         EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
-        EventGridEvent[] events = eventGridSubscriber.DeserializeEventGridEvents(jsonData);
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof ServiceBusDeadletterMessagesAvailableWithNoListenersEventData);
@@ -351,7 +432,7 @@ public class CustomizationTests {
         String jsonData = getTestPayloadFromFile("StorageBlobCreatedEvent.json");
         //
         EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
-        EventGridEvent[] events = eventGridSubscriber.DeserializeEventGridEvents(jsonData);
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof StorageBlobCreatedEventData);
@@ -364,7 +445,7 @@ public class CustomizationTests {
         String jsonData = getTestPayloadFromFile("StorageBlobDeletedEvent.json");
         //
         EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
-        EventGridEvent[] events = eventGridSubscriber.DeserializeEventGridEvents(jsonData);
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof StorageBlobDeletedEventData);
@@ -378,7 +459,7 @@ public class CustomizationTests {
         String jsonData = getTestPayloadFromFile("ResourceWriteSuccessEvent.json");
         //
         EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
-        EventGridEvent[] events = eventGridSubscriber.DeserializeEventGridEvents(jsonData);
+        EventGridEvent[] events = eventGridSubscriber.deserializeEventGridEvents(jsonData);
 
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof ResourceWriteSuccessData);
