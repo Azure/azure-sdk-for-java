@@ -25,19 +25,19 @@ public interface Apps extends SupportsCreating<App.DefinitionStages.Blank>, Supp
     /**
      * Check if an IoT Central application name is available.
      *
-     * @param nameAvailabilityInputs Set the name parameter in the NameAvailabilityInputs structure to the name of the IoT Central application to check.
+     * @param operationInputs Set the name parameter in the OperationInputs structure to the name of the IoT Central application to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<AppAvailabilityInfo> checkNameAvailabilityAsync(NameAvailabilityInputs nameAvailabilityInputs);
+    Observable<AppAvailabilityInfo> checkNameAvailabilityAsync(OperationInputs operationInputs);
 
     /**
      * Check if an IoT Central application subdomain is available.
      *
-     * @param subdomainAvailabilityInputs Set the subdomain parameter in the SubdomainAvailabilityInputs structure to the subdomain of the IoT Central application to check.
+     * @param operationInputs Set the name parameter in the OperationInputs structure to the subdomain of the IoT Central application to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<AppAvailabilityInfo> checkSubdomainAvailabilityAsync(SubdomainAvailabilityInputs subdomainAvailabilityInputs);
+    Observable<AppAvailabilityInfo> checkSubdomainAvailabilityAsync(OperationInputs operationInputs);
 
 }
