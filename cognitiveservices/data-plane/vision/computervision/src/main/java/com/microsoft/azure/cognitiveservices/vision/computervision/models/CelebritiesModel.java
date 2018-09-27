@@ -24,7 +24,7 @@ public class CelebritiesModel {
      * Level of confidence ranging from 0 to 1.
      */
     @JsonProperty(value = "confidence")
-    private Double confidence;
+    private double confidence;
 
     /**
      * The faceRectangle property.
@@ -57,7 +57,7 @@ public class CelebritiesModel {
      *
      * @return the confidence value
      */
-    public Double confidence() {
+    public double confidence() {
         return this.confidence;
     }
 
@@ -67,7 +67,7 @@ public class CelebritiesModel {
      * @param confidence the confidence value to set
      * @return the CelebritiesModel object itself.
      */
-    public CelebritiesModel withConfidence(Double confidence) {
+    public CelebritiesModel withConfidence(double confidence) {
         this.confidence = confidence;
         return this;
     }

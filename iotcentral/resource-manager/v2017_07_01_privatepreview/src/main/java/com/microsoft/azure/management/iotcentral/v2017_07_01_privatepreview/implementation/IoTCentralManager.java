@@ -21,8 +21,6 @@ import com.microsoft.azure.management.iotcentral.v2017_07_01_privatepreview.Oper
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
-import java.util.UUID;
-
 /**
  * Entry point to Azure IoTCentral resource management.
  */
@@ -108,6 +106,6 @@ public final class IoTCentralManager extends ManagerCore<IoTCentralManager, IotC
         super(
             restClient,
             subscriptionId,
-            new IotCentralClientImpl(restClient).withSubscriptionId(UUID.fromString(subscriptionId)));
+            new IotCentralClientImpl(restClient).withSubscriptionId(subscriptionId));
     }
 }

@@ -22,6 +22,12 @@ public class CategoryDetail {
     private List<CelebritiesModel> celebrities;
 
     /**
+     * An array of landmarks if any identified.
+     */
+    @JsonProperty(value = "landmarks")
+    private List<LandmarksModel> landmarks;
+
+    /**
      * Get the celebrities value.
      *
      * @return the celebrities value
@@ -38,6 +44,26 @@ public class CategoryDetail {
      */
     public CategoryDetail withCelebrities(List<CelebritiesModel> celebrities) {
         this.celebrities = celebrities;
+        return this;
+    }
+
+    /**
+     * Get the landmarks value.
+     *
+     * @return the landmarks value
+     */
+    public List<LandmarksModel> landmarks() {
+        return this.landmarks;
+    }
+
+    /**
+     * Set the landmarks value.
+     *
+     * @param landmarks the landmarks value to set
+     * @return the CategoryDetail object itself.
+     */
+    public CategoryDetail withLandmarks(List<LandmarksModel> landmarks) {
+        this.landmarks = landmarks;
         return this;
     }
 
