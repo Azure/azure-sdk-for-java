@@ -15,15 +15,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 
 /**
- * The rule criteria that defines the conditions of the alert rule.
+ * The types of conditions for a multi resource alert.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata.type")
-@JsonTypeName("MetricAlertCriteria")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "criterionType")
+@JsonTypeName("MultiMetricCriteria")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria", value = MetricAlertSingleResourceMultipleMetricCriteria.class),
-    @JsonSubTypes.Type(name = "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria", value = MetricAlertMultipleResourceMultipleMetricCriteria.class)
+    @JsonSubTypes.Type(name = "StaticThresholdCriterion", value = MetricCriteria.class)
 })
-public class MetricAlertCriteria {
+public class MultiMetricCriteria {
     /**
      * Unmatched properties from the message are deserialized this collection.
      */
@@ -43,9 +42,9 @@ public class MetricAlertCriteria {
      * Set unmatched properties from the message are deserialized this collection.
      *
      * @param additionalProperties the additionalProperties value to set
-     * @return the MetricAlertCriteria object itself.
+     * @return the MultiMetricCriteria object itself.
      */
-    public MetricAlertCriteria withAdditionalProperties(Map<String, Object> additionalProperties) {
+    public MultiMetricCriteria withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }
