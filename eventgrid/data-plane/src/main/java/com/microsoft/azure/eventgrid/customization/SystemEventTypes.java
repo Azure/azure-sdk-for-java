@@ -9,7 +9,7 @@ import com.microsoft.azure.management.apigeneration.Beta;
 public class SystemEventTypes {
     // Keep this sorted by the name of the service publishing the events.
 
-    // ContainerRegistry events
+    // ContainerRegistry events.
     /**
      * indicate an event of pushing an image to container registry.
      */
@@ -19,7 +19,7 @@ public class SystemEventTypes {
      */
     public final static String CONTAINER_REGISTRY_IMAGE_DELETED_EVENT = "Microsoft.ContainerRegistry.ImageDeleted";
 
-    // Device events
+    // Device events.
     /**
      * indicate an event of creating an IoT hub device.
      */
@@ -28,8 +28,16 @@ public class SystemEventTypes {
      * indicate an event of deleting an IoT hub device.
      */
     public final static String IOT_HUB_DEVICE_DELETED_EVENT = "Microsoft.Devices.DeviceDeleted";
+    /**
+     * indicate an event of connecting an IoT hub device.
+     */
+    public final static String IOT_HUB_DEVICE_CONNECTED_EVENT = "Microsoft.Devices.DeviceConnected";
+    /**
+     * indicate an event of disconnecting an IoT hub device.
+     */
+    public final static String IOT_HUB_DEVICE_DISCONNECTED_EVENT = "Microsoft.Devices.DeviceDisconnected";
 
-    // EventGrid events
+    // EventGrid events.
     /**
      * indicate an event of validating eventgrid subscription.
      */
@@ -39,13 +47,13 @@ public class SystemEventTypes {
      */
     public final static String EVENT_GRID_SUBSCRIPTION_DELETED_EVENT = "Microsoft.EventGrid.SubscriptionDeletedEvent";
 
-    // Event Hub Events
+    // Event Hub Events.
     /**
      * indicate an event of creation of capture file in eventhub.
      */
     public final static String EVENT_HUB_CAPTURE_FILE_CREATED_EVENT = "Microsoft.EventHub.CaptureFileCreated";
 
-    // Media Services events
+    // Media Services events.
     /**
      * indicate an event of change of media service job state.
      */
@@ -76,8 +84,21 @@ public class SystemEventTypes {
      * indicate an event of cancellation of resource deletion.
      */
     public final static String RESOURCE_DELETE_CANCEL_EVENT = "Microsoft.Resources.ResourceDeleteCancel";
+    /**
+     * indicate an event of successful action on a resource.
+     */
+    public final static String RESOURCE_ACTION_SUCCESS_EVENT = "Microsoft.Resources.ResourceActionSuccess";
+    /**
+     * indicate an event of failure in performing an action on a resource.
+     */
+    public final static String RESOURCE_ACTION_FAILURE_EVENT = "Microsoft.Resources.ResourceActionFailure";
+    /**
+     * indicate an event of cancellation of resource action.
+     */
+    public final static String RESOURCE_ACTION_CANCEL_EVENT = "Microsoft.Resources.ResourceActionCancel";
 
-    // ServiceBus events
+
+    // ServiceBus events.
     /**
      * indicate an event of active messages with no listener for them.
      */
@@ -87,7 +108,7 @@ public class SystemEventTypes {
      */
     public final static String SERVICE_BUS_DEADLETTER_MESSAGES_AVAILABLE_WITH_NO_LISTENER_EVENT = "Microsoft.ServiceBus.DeadletterMessagesAvailableWithNoListener";
 
-    // Storage events
+    // Storage events.
     /**
      * indicates an event of blob creation.
      */
