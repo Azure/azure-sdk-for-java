@@ -17,7 +17,7 @@ public class SubdomainAvailabilityInputs {
     /**
      * The subdomain of the IoT Central application instance to check.
      */
-    @JsonProperty(value = "subdomain", required = true)
+    @JsonProperty(value = "subdomain")
     private String subdomain;
 
     /**
