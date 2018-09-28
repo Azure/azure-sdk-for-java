@@ -19,8 +19,14 @@ public final class RunType extends ExpandableStringEnum<RunType> {
     /** Static value QuickBuild for RunType. */
     public static final RunType QUICK_BUILD = fromString("QuickBuild");
 
+    /** Static value QuickRun for RunType. */
+    public static final RunType QUICK_RUN = fromString("QuickRun");
+
     /** Static value AutoBuild for RunType. */
     public static final RunType AUTO_BUILD = fromString("AutoBuild");
+
+    /** Static value AutoRun for RunType. */
+    public static final RunType AUTO_RUN = fromString("AutoRun");
 
     /**
      * Creates or finds a RunType from its string representation.

@@ -53,14 +53,6 @@ public class DockerBuildStepUpdateParameters extends TaskStepUpdateParameters {
     private List<Argument> arguments;
 
     /**
-     * The URL(absolute or relative) of the source context for the build task.
-     * If it is relative, the context will be relative to the source repository
-     * URL of the build task.
-     */
-    @JsonProperty(value = "contextPath")
-    private String contextPath;
-
-    /**
      * Get the fully qualified image names including the repository and tag.
      *
      * @return the imageNames value
@@ -157,28 +149,6 @@ public class DockerBuildStepUpdateParameters extends TaskStepUpdateParameters {
      */
     public DockerBuildStepUpdateParameters withArguments(List<Argument> arguments) {
         this.arguments = arguments;
-        return this;
-    }
-
-    /**
-     * Get the URL(absolute or relative) of the source context for the build task.
-     If it is relative, the context will be relative to the source repository URL of the build task.
-     *
-     * @return the contextPath value
-     */
-    public String contextPath() {
-        return this.contextPath;
-    }
-
-    /**
-     * Set the URL(absolute or relative) of the source context for the build task.
-     If it is relative, the context will be relative to the source repository URL of the build task.
-     *
-     * @param contextPath the contextPath value to set
-     * @return the DockerBuildStepUpdateParameters object itself.
-     */
-    public DockerBuildStepUpdateParameters withContextPath(String contextPath) {
-        this.contextPath = contextPath;
         return this;
     }
 

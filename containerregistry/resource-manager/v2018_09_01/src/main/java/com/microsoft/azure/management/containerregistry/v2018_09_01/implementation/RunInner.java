@@ -48,7 +48,8 @@ public class RunInner extends ProxyResource {
     private DateTime lastUpdatedTime;
 
     /**
-     * The type of run. Possible values include: 'QuickBuild', 'AutoBuild'.
+     * The type of run. Possible values include: 'QuickBuild', 'QuickRun',
+     * 'AutoBuild', 'AutoRun'.
      */
     @JsonProperty(value = "properties.runType")
     private RunType runType;
@@ -73,7 +74,7 @@ public class RunInner extends ProxyResource {
 
     /**
      * The list of all images that were generated from the run. This is
-     * applicable if the run is of type Build.
+     * applicable if the run generates base image dependencies.
      */
     @JsonProperty(value = "properties.outputImages")
     private List<ImageDescriptor> outputImages;
@@ -86,7 +87,7 @@ public class RunInner extends ProxyResource {
 
     /**
      * The image update trigger that caused the run. This is applicable if the
-     * task is of build type.
+     * task has base image trigger configured.
      */
     @JsonProperty(value = "properties.imageUpdateTrigger")
     private ImageUpdateTrigger imageUpdateTrigger;
@@ -183,7 +184,7 @@ public class RunInner extends ProxyResource {
     }
 
     /**
-     * Get the type of run. Possible values include: 'QuickBuild', 'AutoBuild'.
+     * Get the type of run. Possible values include: 'QuickBuild', 'QuickRun', 'AutoBuild', 'AutoRun'.
      *
      * @return the runType value
      */
@@ -192,7 +193,7 @@ public class RunInner extends ProxyResource {
     }
 
     /**
-     * Set the type of run. Possible values include: 'QuickBuild', 'AutoBuild'.
+     * Set the type of run. Possible values include: 'QuickBuild', 'QuickRun', 'AutoBuild', 'AutoRun'.
      *
      * @param runType the runType value to set
      * @return the RunInner object itself.
@@ -263,7 +264,7 @@ public class RunInner extends ProxyResource {
     }
 
     /**
-     * Get the list of all images that were generated from the run. This is applicable if the run is of type Build.
+     * Get the list of all images that were generated from the run. This is applicable if the run generates base image dependencies.
      *
      * @return the outputImages value
      */
@@ -272,7 +273,7 @@ public class RunInner extends ProxyResource {
     }
 
     /**
-     * Set the list of all images that were generated from the run. This is applicable if the run is of type Build.
+     * Set the list of all images that were generated from the run. This is applicable if the run generates base image dependencies.
      *
      * @param outputImages the outputImages value to set
      * @return the RunInner object itself.
@@ -303,7 +304,7 @@ public class RunInner extends ProxyResource {
     }
 
     /**
-     * Get the image update trigger that caused the run. This is applicable if the task is of build type.
+     * Get the image update trigger that caused the run. This is applicable if the task has base image trigger configured.
      *
      * @return the imageUpdateTrigger value
      */
@@ -312,7 +313,7 @@ public class RunInner extends ProxyResource {
     }
 
     /**
-     * Set the image update trigger that caused the run. This is applicable if the task is of build type.
+     * Set the image update trigger that caused the run. This is applicable if the task has base image trigger configured.
      *
      * @param imageUpdateTrigger the imageUpdateTrigger value to set
      * @return the RunInner object itself.
