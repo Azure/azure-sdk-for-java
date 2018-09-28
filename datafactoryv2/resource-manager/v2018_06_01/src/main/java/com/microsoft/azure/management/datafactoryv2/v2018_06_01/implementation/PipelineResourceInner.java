@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.List;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.Activity;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.ParameterSpecification;
+import com.microsoft.azure.management.datafactoryv2.v2018_06_01.VariableSpecification;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.PipelineFolder;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
@@ -45,6 +46,12 @@ public class PipelineResourceInner extends SubResource {
      */
     @JsonProperty(value = "properties.parameters")
     private Map<String, ParameterSpecification> parameters;
+
+    /**
+     * List of variables for pipeline.
+     */
+    @JsonProperty(value = "properties.variables")
+    private Map<String, VariableSpecification> variables;
 
     /**
      * The max number of concurrent runs for the pipeline.
@@ -160,6 +167,26 @@ public class PipelineResourceInner extends SubResource {
      */
     public PipelineResourceInner withParameters(Map<String, ParameterSpecification> parameters) {
         this.parameters = parameters;
+        return this;
+    }
+
+    /**
+     * Get list of variables for pipeline.
+     *
+     * @return the variables value
+     */
+    public Map<String, VariableSpecification> variables() {
+        return this.variables;
+    }
+
+    /**
+     * Set list of variables for pipeline.
+     *
+     * @param variables the variables value to set
+     * @return the PipelineResourceInner object itself.
+     */
+    public PipelineResourceInner withVariables(Map<String, VariableSpecification> variables) {
+        this.variables = variables;
         return this;
     }
 
