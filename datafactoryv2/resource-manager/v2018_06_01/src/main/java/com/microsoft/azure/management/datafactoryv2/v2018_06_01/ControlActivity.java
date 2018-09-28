@@ -18,6 +18,8 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Container")
 @JsonSubTypes({
+    @JsonSubTypes.Type(name = "AppendVariable", value = AppendVariableActivity.class),
+    @JsonSubTypes.Type(name = "SetVariable", value = SetVariableActivity.class),
     @JsonSubTypes.Type(name = "Filter", value = FilterActivity.class),
     @JsonSubTypes.Type(name = "Until", value = UntilActivity.class),
     @JsonSubTypes.Type(name = "Wait", value = WaitActivity.class),
