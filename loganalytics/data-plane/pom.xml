@@ -29,7 +29,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
-        <runtime.version>1.6.1</runtime.version>
+        <runtime.version>1.6.3</runtime.version>
         <testMode>record</testMode>
     </properties>
     <developers>
@@ -42,7 +42,7 @@
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-client-runtime</artifactId>
-            <version>1.6.1</version>
+            <version>${runtime.version}</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -66,11 +66,6 @@
             <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-arm-client-runtime</artifactId>
-            <version>${runtime.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.microsoft.azure</groupId>
-            <artifactId>azure-client-runtime</artifactId>
             <version>${runtime.version}</version>
         </dependency>
     </dependencies>
