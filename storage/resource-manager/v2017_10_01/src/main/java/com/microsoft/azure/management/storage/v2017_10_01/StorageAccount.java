@@ -10,12 +10,12 @@ package com.microsoft.azure.management.storage.v2017_10_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.Resource;
+import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
 import com.microsoft.azure.arm.resources.models.HasResourceGroup;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
-import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.storage.v2017_10_01.implementation.StorageManager;
 import com.microsoft.azure.management.storage.v2017_10_01.implementation.SkuInner;

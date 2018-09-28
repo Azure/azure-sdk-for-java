@@ -9,23 +9,21 @@
 package com.microsoft.azure.management.compute.v2017_03_30;
 
 import com.microsoft.azure.arm.model.HasInner;
-import com.microsoft.azure.arm.resources.models.Resource;
-import com.microsoft.azure.arm.resources.models.HasResourceGroup;
-import com.microsoft.azure.arm.model.Refreshable;
+import com.microsoft.azure.management.compute.v2017_03_30.implementation.VirtualMachineInner;
+import com.microsoft.azure.arm.model.Indexable;
 import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
-import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.compute.v2017_03_30.implementation.ComputeManager;
+import java.util.Map;
 import com.microsoft.azure.SubResource;
 import java.util.List;
-import com.microsoft.azure.management.compute.v2017_03_30.implementation.VirtualMachineInner;
 
 /**
  * Type representing VirtualMachine.
  */
-public interface VirtualMachine extends HasInner<VirtualMachineInner>, Resource, GroupableResourceCore<ComputeManager, VirtualMachineInner>, HasResourceGroup, Refreshable<VirtualMachine>, Updatable<VirtualMachine.Update>, HasManager<ComputeManager> {
+public interface VirtualMachine extends HasInner<VirtualMachineInner>, Indexable, Updatable<VirtualMachine.Update>, HasManager<ComputeManager> {
     /**
      * @return the availabilitySet value.
      */
@@ -42,6 +40,11 @@ public interface VirtualMachine extends HasInner<VirtualMachineInner>, Resource,
     HardwareProfile hardwareProfile();
 
     /**
+     * @return the id value.
+     */
+    String id();
+
+    /**
      * @return the identity value.
      */
     VirtualMachineIdentity identity();
@@ -55,6 +58,16 @@ public interface VirtualMachine extends HasInner<VirtualMachineInner>, Resource,
      * @return the licenseType value.
      */
     String licenseType();
+
+    /**
+     * @return the location value.
+     */
+    String location();
+
+    /**
+     * @return the name value.
+     */
+    String name();
 
     /**
      * @return the networkProfile value.
@@ -87,6 +100,16 @@ public interface VirtualMachine extends HasInner<VirtualMachineInner>, Resource,
     StorageProfile storageProfile();
 
     /**
+     * @return the tags value.
+     */
+    Map<String, String> tags();
+
+    /**
+     * @return the type value.
+     */
+    String type();
+
+    /**
      * @return the vmId value.
      */
     String vmId();
@@ -99,7 +122,7 @@ public interface VirtualMachine extends HasInner<VirtualMachineInner>, Resource,
     /**
      * The entirety of the VirtualMachine definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation, DefinitionStages.WithLocation, DefinitionStages.WithCreate {
     }
 
     /**
@@ -109,17 +132,31 @@ public interface VirtualMachine extends HasInner<VirtualMachineInner>, Resource,
         /**
          * The first stage of a VirtualMachine definition.
          */
-        interface Blank extends GroupableResourceCore.DefinitionWithRegion<WithGroup> {
+        interface Blank extends WithLocation {
         }
 
         /**
-         * The stage of the VirtualMachine definition allowing to specify the resource group.
+         * The stage of the virtualmachine definition allowing to specify Location.
          */
-        interface WithGroup extends GroupableResourceCore.DefinitionStages.WithGroup<WithCreate> {
+        interface WithLocation {
+           /**
+            * Specifies resourceGroupName.
+            */
+            WithLocation withExistingLocation(String resourceGroupName);
         }
 
         /**
-         * The stage of the virtualmachine update allowing to specify AvailabilitySet.
+         * The stage of the virtualmachine definition allowing to specify Location.
+         */
+        interface WithLocation {
+           /**
+            * Specifies location.
+            */
+            WithCreate withLocation(String location);
+        }
+
+        /**
+         * The stage of the virtualmachine definition allowing to specify AvailabilitySet.
          */
         interface WithAvailabilitySet {
             /**
@@ -129,7 +166,7 @@ public interface VirtualMachine extends HasInner<VirtualMachineInner>, Resource,
         }
 
         /**
-         * The stage of the virtualmachine update allowing to specify DiagnosticsProfile.
+         * The stage of the virtualmachine definition allowing to specify DiagnosticsProfile.
          */
         interface WithDiagnosticsProfile {
             /**
@@ -139,7 +176,7 @@ public interface VirtualMachine extends HasInner<VirtualMachineInner>, Resource,
         }
 
         /**
-         * The stage of the virtualmachine update allowing to specify HardwareProfile.
+         * The stage of the virtualmachine definition allowing to specify HardwareProfile.
          */
         interface WithHardwareProfile {
             /**
@@ -149,7 +186,7 @@ public interface VirtualMachine extends HasInner<VirtualMachineInner>, Resource,
         }
 
         /**
-         * The stage of the virtualmachine update allowing to specify Identity.
+         * The stage of the virtualmachine definition allowing to specify Identity.
          */
         interface WithIdentity {
             /**
@@ -159,7 +196,7 @@ public interface VirtualMachine extends HasInner<VirtualMachineInner>, Resource,
         }
 
         /**
-         * The stage of the virtualmachine update allowing to specify LicenseType.
+         * The stage of the virtualmachine definition allowing to specify LicenseType.
          */
         interface WithLicenseType {
             /**
@@ -169,7 +206,7 @@ public interface VirtualMachine extends HasInner<VirtualMachineInner>, Resource,
         }
 
         /**
-         * The stage of the virtualmachine update allowing to specify NetworkProfile.
+         * The stage of the virtualmachine definition allowing to specify NetworkProfile.
          */
         interface WithNetworkProfile {
             /**
@@ -179,7 +216,7 @@ public interface VirtualMachine extends HasInner<VirtualMachineInner>, Resource,
         }
 
         /**
-         * The stage of the virtualmachine update allowing to specify OsProfile.
+         * The stage of the virtualmachine definition allowing to specify OsProfile.
          */
         interface WithOsProfile {
             /**
@@ -189,7 +226,7 @@ public interface VirtualMachine extends HasInner<VirtualMachineInner>, Resource,
         }
 
         /**
-         * The stage of the virtualmachine update allowing to specify Plan.
+         * The stage of the virtualmachine definition allowing to specify Plan.
          */
         interface WithPlan {
             /**
@@ -199,7 +236,7 @@ public interface VirtualMachine extends HasInner<VirtualMachineInner>, Resource,
         }
 
         /**
-         * The stage of the virtualmachine update allowing to specify StorageProfile.
+         * The stage of the virtualmachine definition allowing to specify StorageProfile.
          */
         interface WithStorageProfile {
             /**
@@ -209,7 +246,17 @@ public interface VirtualMachine extends HasInner<VirtualMachineInner>, Resource,
         }
 
         /**
-         * The stage of the virtualmachine update allowing to specify Zones.
+         * The stage of the virtualmachine definition allowing to specify Tags.
+         */
+        interface WithTags {
+            /**
+             * Specifies tags.
+             */
+            WithCreate withTags(Map<String, String> tags);
+        }
+
+        /**
+         * The stage of the virtualmachine definition allowing to specify Zones.
          */
         interface WithZones {
             /**
@@ -223,13 +270,13 @@ public interface VirtualMachine extends HasInner<VirtualMachineInner>, Resource,
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<VirtualMachine>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAvailabilitySet, DefinitionStages.WithDiagnosticsProfile, DefinitionStages.WithHardwareProfile, DefinitionStages.WithIdentity, DefinitionStages.WithLicenseType, DefinitionStages.WithNetworkProfile, DefinitionStages.WithOsProfile, DefinitionStages.WithPlan, DefinitionStages.WithStorageProfile, DefinitionStages.WithZones {
+        interface WithCreate extends Creatable<VirtualMachine>, DefinitionStages.WithAvailabilitySet, DefinitionStages.WithDiagnosticsProfile, DefinitionStages.WithHardwareProfile, DefinitionStages.WithIdentity, DefinitionStages.WithLicenseType, DefinitionStages.WithNetworkProfile, DefinitionStages.WithOsProfile, DefinitionStages.WithPlan, DefinitionStages.WithStorageProfile, DefinitionStages.WithTags, DefinitionStages.WithZones {
         }
     }
     /**
      * The template for a VirtualMachine update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<VirtualMachine>, Resource.UpdateWithTags<Update>, UpdateStages.WithAvailabilitySet, UpdateStages.WithDiagnosticsProfile, UpdateStages.WithHardwareProfile, UpdateStages.WithIdentity, UpdateStages.WithLicenseType, UpdateStages.WithNetworkProfile, UpdateStages.WithOsProfile, UpdateStages.WithPlan, UpdateStages.WithStorageProfile, UpdateStages.WithZones {
+    interface Update extends Appliable<VirtualMachine>, UpdateStages.WithAvailabilitySet, UpdateStages.WithDiagnosticsProfile, UpdateStages.WithHardwareProfile, UpdateStages.WithIdentity, UpdateStages.WithLicenseType, UpdateStages.WithNetworkProfile, UpdateStages.WithOsProfile, UpdateStages.WithPlan, UpdateStages.WithStorageProfile, UpdateStages.WithTags, UpdateStages.WithZones {
     }
 
     /**
@@ -237,7 +284,7 @@ public interface VirtualMachine extends HasInner<VirtualMachineInner>, Resource,
      */
     interface UpdateStages {
         /**
-         * The stage of the virtualmachine {0} allowing to specify AvailabilitySet.
+         * The stage of the virtualmachine update allowing to specify AvailabilitySet.
          */
         interface WithAvailabilitySet {
             /**
@@ -247,7 +294,7 @@ public interface VirtualMachine extends HasInner<VirtualMachineInner>, Resource,
         }
 
         /**
-         * The stage of the virtualmachine {0} allowing to specify DiagnosticsProfile.
+         * The stage of the virtualmachine update allowing to specify DiagnosticsProfile.
          */
         interface WithDiagnosticsProfile {
             /**
@@ -257,7 +304,7 @@ public interface VirtualMachine extends HasInner<VirtualMachineInner>, Resource,
         }
 
         /**
-         * The stage of the virtualmachine {0} allowing to specify HardwareProfile.
+         * The stage of the virtualmachine update allowing to specify HardwareProfile.
          */
         interface WithHardwareProfile {
             /**
@@ -267,7 +314,7 @@ public interface VirtualMachine extends HasInner<VirtualMachineInner>, Resource,
         }
 
         /**
-         * The stage of the virtualmachine {0} allowing to specify Identity.
+         * The stage of the virtualmachine update allowing to specify Identity.
          */
         interface WithIdentity {
             /**
@@ -277,7 +324,7 @@ public interface VirtualMachine extends HasInner<VirtualMachineInner>, Resource,
         }
 
         /**
-         * The stage of the virtualmachine {0} allowing to specify LicenseType.
+         * The stage of the virtualmachine update allowing to specify LicenseType.
          */
         interface WithLicenseType {
             /**
@@ -287,7 +334,7 @@ public interface VirtualMachine extends HasInner<VirtualMachineInner>, Resource,
         }
 
         /**
-         * The stage of the virtualmachine {0} allowing to specify NetworkProfile.
+         * The stage of the virtualmachine update allowing to specify NetworkProfile.
          */
         interface WithNetworkProfile {
             /**
@@ -297,7 +344,7 @@ public interface VirtualMachine extends HasInner<VirtualMachineInner>, Resource,
         }
 
         /**
-         * The stage of the virtualmachine {0} allowing to specify OsProfile.
+         * The stage of the virtualmachine update allowing to specify OsProfile.
          */
         interface WithOsProfile {
             /**
@@ -307,7 +354,7 @@ public interface VirtualMachine extends HasInner<VirtualMachineInner>, Resource,
         }
 
         /**
-         * The stage of the virtualmachine {0} allowing to specify Plan.
+         * The stage of the virtualmachine update allowing to specify Plan.
          */
         interface WithPlan {
             /**
@@ -317,7 +364,7 @@ public interface VirtualMachine extends HasInner<VirtualMachineInner>, Resource,
         }
 
         /**
-         * The stage of the virtualmachine {0} allowing to specify StorageProfile.
+         * The stage of the virtualmachine update allowing to specify StorageProfile.
          */
         interface WithStorageProfile {
             /**
@@ -327,7 +374,17 @@ public interface VirtualMachine extends HasInner<VirtualMachineInner>, Resource,
         }
 
         /**
-         * The stage of the virtualmachine {0} allowing to specify Zones.
+         * The stage of the virtualmachine update allowing to specify Tags.
+         */
+        interface WithTags {
+            /**
+             * Specifies tags.
+             */
+            Update withTags(Map<String, String> tags);
+        }
+
+        /**
+         * The stage of the virtualmachine update allowing to specify Zones.
          */
         interface WithZones {
             /**

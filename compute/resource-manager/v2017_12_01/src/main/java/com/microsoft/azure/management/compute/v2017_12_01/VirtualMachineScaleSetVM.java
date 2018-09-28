@@ -52,7 +52,7 @@ public interface VirtualMachineScaleSetVM extends HasInner<VirtualMachineScaleSe
     /**
      * @return the instanceView value.
      */
-    VirtualMachineInstanceView instanceView();
+    VirtualMachineScaleSetVMInstanceView instanceView();
 
     /**
      * @return the latestModelApplied value.

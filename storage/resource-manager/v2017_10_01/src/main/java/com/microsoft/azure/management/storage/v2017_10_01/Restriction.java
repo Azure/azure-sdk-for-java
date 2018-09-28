@@ -30,17 +30,17 @@ public class Restriction {
     private List<String> values;
 
     /**
-     * The reason for the restriction. As of now this can be “QuotaId” or
-     * “NotAvailableForSubscription”. Quota Id is set when the SKU has
+     * The reason for the restriction. As of now this can be "QuotaId" or
+     * "NotAvailableForSubscription". Quota Id is set when the SKU has
      * requiredQuotas parameter as the subscription does not belong to that
-     * quota. The “NotAvailableForSubscription” is related to capacity at DC.
+     * quota. The "NotAvailableForSubscription" is related to capacity at DC.
      * Possible values include: 'QuotaId', 'NotAvailableForSubscription'.
      */
     @JsonProperty(value = "reasonCode")
     private ReasonCode reasonCode;
 
     /**
-     * Get the type value.
+     * Get the type of restrictions. As of now only possible value for this is location.
      *
      * @return the type value
      */
@@ -49,7 +49,7 @@ public class Restriction {
     }
 
     /**
-     * Get the values value.
+     * Get the value of restrictions. If the restriction type is set to location. This would be different locations where the SKU is restricted.
      *
      * @return the values value
      */
@@ -58,7 +58,7 @@ public class Restriction {
     }
 
     /**
-     * Get the reasonCode value.
+     * Get the reason for the restriction. As of now this can be "QuotaId" or "NotAvailableForSubscription". Quota Id is set when the SKU has requiredQuotas parameter as the subscription does not belong to that quota. The "NotAvailableForSubscription" is related to capacity at DC. Possible values include: 'QuotaId', 'NotAvailableForSubscription'.
      *
      * @return the reasonCode value
      */
@@ -67,7 +67,7 @@ public class Restriction {
     }
 
     /**
-     * Set the reasonCode value.
+     * Set the reason for the restriction. As of now this can be "QuotaId" or "NotAvailableForSubscription". Quota Id is set when the SKU has requiredQuotas parameter as the subscription does not belong to that quota. The "NotAvailableForSubscription" is related to capacity at DC. Possible values include: 'QuotaId', 'NotAvailableForSubscription'.
      *
      * @param reasonCode the reasonCode value to set
      * @return the Restriction object itself.

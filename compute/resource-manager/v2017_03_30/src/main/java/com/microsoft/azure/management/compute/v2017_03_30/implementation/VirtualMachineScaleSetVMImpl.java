@@ -14,7 +14,7 @@ import rx.Observable;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.compute.v2017_03_30.DiagnosticsProfile;
 import com.microsoft.azure.management.compute.v2017_03_30.HardwareProfile;
-import com.microsoft.azure.management.compute.v2017_03_30.VirtualMachineInstanceView;
+import com.microsoft.azure.management.compute.v2017_03_30.VirtualMachineScaleSetVMInstanceView;
 import com.microsoft.azure.management.compute.v2017_03_30.NetworkProfile;
 import com.microsoft.azure.management.compute.v2017_03_30.OSProfile;
 import com.microsoft.azure.management.compute.v2017_03_30.Plan;
@@ -78,10 +78,10 @@ class VirtualMachineScaleSetVMImpl extends IndexableRefreshableWrapperImpl<Virtu
     }
 
     @Override
-    public VirtualMachineInstanceView instanceView() {
-        VirtualMachineInstanceViewInner inner = this.inner().instanceView();
+    public VirtualMachineScaleSetVMInstanceView instanceView() {
+        VirtualMachineScaleSetVMInstanceViewInner inner = this.inner().instanceView();
         if (inner != null) {
-            return  new VirtualMachineInstanceViewImpl(inner, manager());
+            return  new VirtualMachineScaleSetVMInstanceViewImpl(inner, manager());
         } else {
             return null;
         }
