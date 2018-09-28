@@ -59,7 +59,6 @@ public class ApplicationInsightsDataClientTests extends TestBase {
         MetricsResult metricResult = applicationInsightsClient.metrics().get(appId, MetricId.AVAILABILITY_RESULTSAVAILABILITY_PERCENTAGE);
         // Validate properties
         Assert.assertNotNull(metricResult.value().additionalProperties());
-        System.out.println(metricResult.value().additionalProperties().keySet());
         Assert.assertNotNull(metricResult.value().start());
         Assert.assertTrue(metricResult.value().start() instanceof DateTime);
     }
