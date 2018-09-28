@@ -231,6 +231,14 @@ public class HDInsightOnDemandLinkedService extends LinkedServiceInner {
     private Object zookeeperNodeSize;
 
     /**
+     * Custom script actions to run on HDI ondemand cluster once it's up.
+     * Please refer to
+     * https://docs.microsoft.com/en-us/azure/hdinsight/hdinsight-hadoop-customize-cluster-linux?toc=%2Fen-us%2Fazure%2Fhdinsight%2Fr-server%2FTOC.json&amp;bc=%2Fen-us%2Fazure%2Fbread%2Ftoc.json#understanding-script-actions.
+     */
+    @JsonProperty(value = "typeProperties.scriptActions")
+    private List<ScriptAction> scriptActions;
+
+    /**
      * Get number of worker/data nodes in the cluster. Suggestion value: 4. Type: string (or Expression with resultType string).
      *
      * @return the clusterSize value
@@ -827,6 +835,26 @@ public class HDInsightOnDemandLinkedService extends LinkedServiceInner {
      */
     public HDInsightOnDemandLinkedService withZookeeperNodeSize(Object zookeeperNodeSize) {
         this.zookeeperNodeSize = zookeeperNodeSize;
+        return this;
+    }
+
+    /**
+     * Get custom script actions to run on HDI ondemand cluster once it's up. Please refer to https://docs.microsoft.com/en-us/azure/hdinsight/hdinsight-hadoop-customize-cluster-linux?toc=%2Fen-us%2Fazure%2Fhdinsight%2Fr-server%2FTOC.json&amp;bc=%2Fen-us%2Fazure%2Fbread%2Ftoc.json#understanding-script-actions.
+     *
+     * @return the scriptActions value
+     */
+    public List<ScriptAction> scriptActions() {
+        return this.scriptActions;
+    }
+
+    /**
+     * Set custom script actions to run on HDI ondemand cluster once it's up. Please refer to https://docs.microsoft.com/en-us/azure/hdinsight/hdinsight-hadoop-customize-cluster-linux?toc=%2Fen-us%2Fazure%2Fhdinsight%2Fr-server%2FTOC.json&amp;bc=%2Fen-us%2Fazure%2Fbread%2Ftoc.json#understanding-script-actions.
+     *
+     * @param scriptActions the scriptActions value to set
+     * @return the HDInsightOnDemandLinkedService object itself.
+     */
+    public HDInsightOnDemandLinkedService withScriptActions(List<ScriptAction> scriptActions) {
+        this.scriptActions = scriptActions;
         return this;
     }
 
