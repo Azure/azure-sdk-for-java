@@ -45,7 +45,7 @@ public class NetworkRuleSet {
     private DefaultAction defaultAction;
 
     /**
-     * Get the bypass value.
+     * Get specifies whether traffic is bypassed for Logging/Metrics/AzureServices. Possible values are any combination of Logging|Metrics|AzureServices (For example, "Logging, Metrics"), or None to bypass none of those traffics. Possible values include: 'None', 'Logging', 'Metrics', 'AzureServices'.
      *
      * @return the bypass value
      */
@@ -54,7 +54,7 @@ public class NetworkRuleSet {
     }
 
     /**
-     * Set the bypass value.
+     * Set specifies whether traffic is bypassed for Logging/Metrics/AzureServices. Possible values are any combination of Logging|Metrics|AzureServices (For example, "Logging, Metrics"), or None to bypass none of those traffics. Possible values include: 'None', 'Logging', 'Metrics', 'AzureServices'.
      *
      * @param bypass the bypass value to set
      * @return the NetworkRuleSet object itself.
@@ -65,7 +65,7 @@ public class NetworkRuleSet {
     }
 
     /**
-     * Get the virtualNetworkRules value.
+     * Get sets the virtual network rules.
      *
      * @return the virtualNetworkRules value
      */
@@ -74,7 +74,7 @@ public class NetworkRuleSet {
     }
 
     /**
-     * Set the virtualNetworkRules value.
+     * Set sets the virtual network rules.
      *
      * @param virtualNetworkRules the virtualNetworkRules value to set
      * @return the NetworkRuleSet object itself.
@@ -85,7 +85,7 @@ public class NetworkRuleSet {
     }
 
     /**
-     * Get the ipRules value.
+     * Get sets the IP ACL rules.
      *
      * @return the ipRules value
      */
@@ -94,7 +94,7 @@ public class NetworkRuleSet {
     }
 
     /**
-     * Set the ipRules value.
+     * Set sets the IP ACL rules.
      *
      * @param ipRules the ipRules value to set
      * @return the NetworkRuleSet object itself.
@@ -105,7 +105,7 @@ public class NetworkRuleSet {
     }
 
     /**
-     * Get the defaultAction value.
+     * Get specifies the default action of allow or deny when no other rules match. Possible values include: 'Allow', 'Deny'.
      *
      * @return the defaultAction value
      */
@@ -114,7 +114,7 @@ public class NetworkRuleSet {
     }
 
     /**
-     * Set the defaultAction value.
+     * Set specifies the default action of allow or deny when no other rules match. Possible values include: 'Allow', 'Deny'.
      *
      * @param defaultAction the defaultAction value to set
      * @return the NetworkRuleSet object itself.
