@@ -10,12 +10,13 @@ package com.microsoft.azure.management.storagesync;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
+import com.microsoft.azure.ProxyResource;
 
 /**
- * The parameters used when creating a storage sync service.
+ * The parameters used when creating a registered server.
  */
 @JsonFlatten
-public class RegisteredServerCreateParameters {
+public class RegisteredServerCreateParameters extends ProxyResource {
     /**
      * Registered Server Certificate.
      */

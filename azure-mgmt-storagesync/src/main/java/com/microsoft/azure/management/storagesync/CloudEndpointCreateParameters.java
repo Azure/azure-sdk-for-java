@@ -10,12 +10,13 @@ package com.microsoft.azure.management.storagesync;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
+import com.microsoft.azure.ProxyResource;
 
 /**
  * The parameters used when creating a storage sync service.
  */
 @JsonFlatten
-public class CloudEndpointCreateParameters {
+public class CloudEndpointCreateParameters extends ProxyResource {
     /**
      * Storage Account Resource Id.
      */

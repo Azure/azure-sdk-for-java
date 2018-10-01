@@ -9,11 +9,12 @@
 package com.microsoft.azure.management.storagesync;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.azure.ProxyResource;
 
 /**
  * The parameters used when creating a sync group.
  */
-public class SyncGroupCreateParameters {
+public class SyncGroupCreateParameters extends ProxyResource {
     /**
      * The parameters used to create the sync group.
      */
