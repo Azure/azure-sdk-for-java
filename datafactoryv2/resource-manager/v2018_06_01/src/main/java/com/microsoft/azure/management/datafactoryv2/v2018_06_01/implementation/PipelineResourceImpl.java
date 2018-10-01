@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.List;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.Activity;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.ParameterSpecification;
+import com.microsoft.azure.management.datafactoryv2.v2018_06_01.VariableSpecification;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.PipelineFolder;
 
 class PipelineResourceImpl extends CreatableUpdatableImpl<PipelineResource, PipelineResourceInner, PipelineResourceImpl> implements PipelineResource, PipelineResource.Definition, PipelineResource.Update {
@@ -130,6 +131,11 @@ class PipelineResourceImpl extends CreatableUpdatableImpl<PipelineResource, Pipe
     }
 
     @Override
+    public Map<String, VariableSpecification> variables() {
+        return this.inner().variables();
+    }
+
+    @Override
     public PipelineResourceImpl withExistingFactory(String resourceGroupName, String factoryName) {
         this.resourceGroupName = resourceGroupName;
         this.factoryName = factoryName;
@@ -175,6 +181,12 @@ class PipelineResourceImpl extends CreatableUpdatableImpl<PipelineResource, Pipe
     @Override
     public PipelineResourceImpl withParameters(Map<String, ParameterSpecification> parameters) {
         this.inner().withParameters(parameters);
+        return this;
+    }
+
+    @Override
+    public PipelineResourceImpl withVariables(Map<String, VariableSpecification> variables) {
+        this.inner().withVariables(variables);
         return this;
     }
 
