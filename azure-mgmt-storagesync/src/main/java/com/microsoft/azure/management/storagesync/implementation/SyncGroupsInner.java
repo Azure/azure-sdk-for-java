@@ -19,7 +19,6 @@ import com.microsoft.azure.management.storagesync.SyncGroupsListByStorageSyncSer
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponseWithHeaders;
-import com.microsoft.rest.Validator;
 import java.io.IOException;
 import java.util.List;
 import okhttp3.ResponseBody;
@@ -67,7 +66,7 @@ public class SyncGroupsInner {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.storagesync.SyncGroups create" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/syncGroups/{syncGroupName}")
-        Observable<Response<ResponseBody>> create(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("storageSyncServiceName") String storageSyncServiceName, @Path("syncGroupName") String syncGroupName, @Query("api-version") String apiVersion, @Body SyncGroupCreateParameters parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> create(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("storageSyncServiceName") String storageSyncServiceName, @Path("syncGroupName") String syncGroupName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body SyncGroupCreateParameters parameters, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.storagesync.SyncGroups get" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/syncGroups/{syncGroupName}")
@@ -176,14 +175,13 @@ public class SyncGroupsInner {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageSyncServiceName Name of Storage Sync Service resource.
      * @param syncGroupName Name of Sync Group resource.
-     * @param parameters Sync Group Body
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws StorageSyncErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SyncGroupInner object if successful.
      */
-    public SyncGroupInner create(String resourceGroupName, String storageSyncServiceName, String syncGroupName, SyncGroupCreateParameters parameters) {
-        return createWithServiceResponseAsync(resourceGroupName, storageSyncServiceName, syncGroupName, parameters).toBlocking().single().body();
+    public SyncGroupInner create(String resourceGroupName, String storageSyncServiceName, String syncGroupName) {
+        return createWithServiceResponseAsync(resourceGroupName, storageSyncServiceName, syncGroupName).toBlocking().single().body();
     }
 
     /**
@@ -192,13 +190,12 @@ public class SyncGroupsInner {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageSyncServiceName Name of Storage Sync Service resource.
      * @param syncGroupName Name of Sync Group resource.
-     * @param parameters Sync Group Body
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<SyncGroupInner> createAsync(String resourceGroupName, String storageSyncServiceName, String syncGroupName, SyncGroupCreateParameters parameters, final ServiceCallback<SyncGroupInner> serviceCallback) {
-        return ServiceFuture.fromHeaderResponse(createWithServiceResponseAsync(resourceGroupName, storageSyncServiceName, syncGroupName, parameters), serviceCallback);
+    public ServiceFuture<SyncGroupInner> createAsync(String resourceGroupName, String storageSyncServiceName, String syncGroupName, final ServiceCallback<SyncGroupInner> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(createWithServiceResponseAsync(resourceGroupName, storageSyncServiceName, syncGroupName), serviceCallback);
     }
 
     /**
@@ -207,12 +204,11 @@ public class SyncGroupsInner {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageSyncServiceName Name of Storage Sync Service resource.
      * @param syncGroupName Name of Sync Group resource.
-     * @param parameters Sync Group Body
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SyncGroupInner object
      */
-    public Observable<SyncGroupInner> createAsync(String resourceGroupName, String storageSyncServiceName, String syncGroupName, SyncGroupCreateParameters parameters) {
-        return createWithServiceResponseAsync(resourceGroupName, storageSyncServiceName, syncGroupName, parameters).map(new Func1<ServiceResponseWithHeaders<SyncGroupInner, SyncGroupsCreateHeaders>, SyncGroupInner>() {
+    public Observable<SyncGroupInner> createAsync(String resourceGroupName, String storageSyncServiceName, String syncGroupName) {
+        return createWithServiceResponseAsync(resourceGroupName, storageSyncServiceName, syncGroupName).map(new Func1<ServiceResponseWithHeaders<SyncGroupInner, SyncGroupsCreateHeaders>, SyncGroupInner>() {
             @Override
             public SyncGroupInner call(ServiceResponseWithHeaders<SyncGroupInner, SyncGroupsCreateHeaders> response) {
                 return response.body();
@@ -226,11 +222,10 @@ public class SyncGroupsInner {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageSyncServiceName Name of Storage Sync Service resource.
      * @param syncGroupName Name of Sync Group resource.
-     * @param parameters Sync Group Body
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SyncGroupInner object
      */
-    public Observable<ServiceResponseWithHeaders<SyncGroupInner, SyncGroupsCreateHeaders>> createWithServiceResponseAsync(String resourceGroupName, String storageSyncServiceName, String syncGroupName, SyncGroupCreateParameters parameters) {
+    public Observable<ServiceResponseWithHeaders<SyncGroupInner, SyncGroupsCreateHeaders>> createWithServiceResponseAsync(String resourceGroupName, String storageSyncServiceName, String syncGroupName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -246,11 +241,102 @@ public class SyncGroupsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        if (parameters == null) {
-            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        final Object properties = null;
+        SyncGroupCreateParameters parameters = new SyncGroupCreateParameters();
+        parameters.withProperties(null);
+        return service.create(this.client.subscriptionId(), resourceGroupName, storageSyncServiceName, syncGroupName, this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<SyncGroupInner, SyncGroupsCreateHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<SyncGroupInner, SyncGroupsCreateHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<SyncGroupInner, SyncGroupsCreateHeaders> clientResponse = createDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Create a new SyncGroup.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageSyncServiceName Name of Storage Sync Service resource.
+     * @param syncGroupName Name of Sync Group resource.
+     * @param properties The parameters used to create the sync group
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws StorageSyncErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SyncGroupInner object if successful.
+     */
+    public SyncGroupInner create(String resourceGroupName, String storageSyncServiceName, String syncGroupName, Object properties) {
+        return createWithServiceResponseAsync(resourceGroupName, storageSyncServiceName, syncGroupName, properties).toBlocking().single().body();
+    }
+
+    /**
+     * Create a new SyncGroup.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageSyncServiceName Name of Storage Sync Service resource.
+     * @param syncGroupName Name of Sync Group resource.
+     * @param properties The parameters used to create the sync group
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<SyncGroupInner> createAsync(String resourceGroupName, String storageSyncServiceName, String syncGroupName, Object properties, final ServiceCallback<SyncGroupInner> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(createWithServiceResponseAsync(resourceGroupName, storageSyncServiceName, syncGroupName, properties), serviceCallback);
+    }
+
+    /**
+     * Create a new SyncGroup.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageSyncServiceName Name of Storage Sync Service resource.
+     * @param syncGroupName Name of Sync Group resource.
+     * @param properties The parameters used to create the sync group
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SyncGroupInner object
+     */
+    public Observable<SyncGroupInner> createAsync(String resourceGroupName, String storageSyncServiceName, String syncGroupName, Object properties) {
+        return createWithServiceResponseAsync(resourceGroupName, storageSyncServiceName, syncGroupName, properties).map(new Func1<ServiceResponseWithHeaders<SyncGroupInner, SyncGroupsCreateHeaders>, SyncGroupInner>() {
+            @Override
+            public SyncGroupInner call(ServiceResponseWithHeaders<SyncGroupInner, SyncGroupsCreateHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Create a new SyncGroup.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageSyncServiceName Name of Storage Sync Service resource.
+     * @param syncGroupName Name of Sync Group resource.
+     * @param properties The parameters used to create the sync group
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SyncGroupInner object
+     */
+    public Observable<ServiceResponseWithHeaders<SyncGroupInner, SyncGroupsCreateHeaders>> createWithServiceResponseAsync(String resourceGroupName, String storageSyncServiceName, String syncGroupName, Object properties) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        Validator.validate(parameters);
-        return service.create(this.client.subscriptionId(), resourceGroupName, storageSyncServiceName, syncGroupName, this.client.apiVersion(), parameters, this.client.acceptLanguage(), this.client.userAgent())
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (storageSyncServiceName == null) {
+            throw new IllegalArgumentException("Parameter storageSyncServiceName is required and cannot be null.");
+        }
+        if (syncGroupName == null) {
+            throw new IllegalArgumentException("Parameter syncGroupName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        SyncGroupCreateParameters parameters = new SyncGroupCreateParameters();
+        parameters.withProperties(properties);
+        return service.create(this.client.subscriptionId(), resourceGroupName, storageSyncServiceName, syncGroupName, this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<SyncGroupInner, SyncGroupsCreateHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<SyncGroupInner, SyncGroupsCreateHeaders>> call(Response<ResponseBody> response) {

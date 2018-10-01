@@ -36,6 +36,12 @@ public class ServerEndpointInner extends ProxyResource {
     private Integer volumeFreeSpacePercent;
 
     /**
+     * Tier files older than days.
+     */
+    @JsonProperty(value = "properties.tierFilesOlderThanDays")
+    private Integer tierFilesOlderThanDays;
+
+    /**
      * Friendly Name.
      */
     @JsonProperty(value = "properties.friendlyName")
@@ -128,6 +134,26 @@ public class ServerEndpointInner extends ProxyResource {
      */
     public ServerEndpointInner withVolumeFreeSpacePercent(Integer volumeFreeSpacePercent) {
         this.volumeFreeSpacePercent = volumeFreeSpacePercent;
+        return this;
+    }
+
+    /**
+     * Get tier files older than days.
+     *
+     * @return the tierFilesOlderThanDays value
+     */
+    public Integer tierFilesOlderThanDays() {
+        return this.tierFilesOlderThanDays;
+    }
+
+    /**
+     * Set tier files older than days.
+     *
+     * @param tierFilesOlderThanDays the tierFilesOlderThanDays value to set
+     * @return the ServerEndpointInner object itself.
+     */
+    public ServerEndpointInner withTierFilesOlderThanDays(Integer tierFilesOlderThanDays) {
+        this.tierFilesOlderThanDays = tierFilesOlderThanDays;
         return this;
     }
 
