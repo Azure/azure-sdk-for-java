@@ -401,6 +401,6 @@ public class ApplicationInsightsManagementClientImpl extends AzureServiceClient 
      */
     @Override
     public String userAgent() {
-        return String.format("%s (%s, %s)", super.userAgent(), "ApplicationInsightsManagementClient", "2015-05-01");
+        return String.format("%s (%s, %s, auto-generated)", super.userAgent(), "ApplicationInsightsManagementClient", "2015-05-01");
     }
 }
