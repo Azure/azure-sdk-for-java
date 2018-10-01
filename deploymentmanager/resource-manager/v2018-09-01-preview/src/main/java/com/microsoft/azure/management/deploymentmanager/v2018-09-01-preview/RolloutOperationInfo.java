@@ -16,15 +16,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class RolloutOperationInfo {
     /**
-     * The ordinal count of retry attempt. 0 if no retries of the rollout have
-     * been performed.
+     * The ordinal count of the number of retry attempts on a rollout. 0 if no
+     * retries of the rollout have been performed. If the rollout is updated
+     * with a PUT, this count is reset to 0.
      */
     @JsonProperty(value = "retryAttempt", access = JsonProperty.Access.WRITE_ONLY)
     private Integer retryAttempt;
 
     /**
-     * True if skipping all successful steps in the given retry attempt was
-     * chosen. False otherwise.
+     * True, if all steps that succeeded on the previous run/attempt were
+     * chosen to be skipped in this retry attempt. False, otherwise.
      */
     @JsonProperty(value = "skipSucceededOnRetry", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean skipSucceededOnRetry;
@@ -49,7 +50,7 @@ public class RolloutOperationInfo {
     private CloudErrorBody error;
 
     /**
-     * Get the ordinal count of retry attempt. 0 if no retries of the rollout have been performed.
+     * Get the ordinal count of the number of retry attempts on a rollout. 0 if no retries of the rollout have been performed. If the rollout is updated with a PUT, this count is reset to 0.
      *
      * @return the retryAttempt value
      */
@@ -58,7 +59,7 @@ public class RolloutOperationInfo {
     }
 
     /**
-     * Get true if skipping all successful steps in the given retry attempt was chosen. False otherwise.
+     * Get true, if all steps that succeeded on the previous run/attempt were chosen to be skipped in this retry attempt. False, otherwise.
      *
      * @return the skipSucceededOnRetry value
      */

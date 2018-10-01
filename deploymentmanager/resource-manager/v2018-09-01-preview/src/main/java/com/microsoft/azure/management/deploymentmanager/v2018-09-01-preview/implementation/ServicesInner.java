@@ -70,13 +70,13 @@ public class ServicesInner {
     }
 
     /**
-     * Creates or updates a service in the topology.
+     * Creates or updates a service in the service topology.
      * Synchronously creates a new service or updates an existing service.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
      * @param serviceName The name of the service resource.
-     * @param serviceInfo The topoogy group resource object
+     * @param serviceInfo The service object
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -87,13 +87,13 @@ public class ServicesInner {
     }
 
     /**
-     * Creates or updates a service in the topology.
+     * Creates or updates a service in the service topology.
      * Synchronously creates a new service or updates an existing service.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
      * @param serviceName The name of the service resource.
-     * @param serviceInfo The topoogy group resource object
+     * @param serviceInfo The service object
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -103,13 +103,13 @@ public class ServicesInner {
     }
 
     /**
-     * Creates or updates a service in the topology.
+     * Creates or updates a service in the service topology.
      * Synchronously creates a new service or updates an existing service.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
      * @param serviceName The name of the service resource.
-     * @param serviceInfo The topoogy group resource object
+     * @param serviceInfo The service object
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ServiceResourceInner object
      */
@@ -123,13 +123,13 @@ public class ServicesInner {
     }
 
     /**
-     * Creates or updates a service in the topology.
+     * Creates or updates a service in the service topology.
      * Synchronously creates a new service or updates an existing service.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
      * @param serviceName The name of the service resource.
-     * @param serviceInfo The topoogy group resource object
+     * @param serviceInfo The service object
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ServiceResourceInner object
      */
@@ -175,7 +175,7 @@ public class ServicesInner {
     }
 
     /**
-     * Gets a service resource.
+     * Gets the service.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
@@ -190,7 +190,7 @@ public class ServicesInner {
     }
 
     /**
-     * Gets a service resource.
+     * Gets the service.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
@@ -204,7 +204,7 @@ public class ServicesInner {
     }
 
     /**
-     * Gets a service resource.
+     * Gets the service.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
@@ -222,7 +222,7 @@ public class ServicesInner {
     }
 
     /**
-     * Gets a service resource.
+     * Gets the service.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
@@ -268,7 +268,7 @@ public class ServicesInner {
     }
 
     /**
-     * Deletes a service resource.
+     * Deletes the service.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
@@ -282,7 +282,7 @@ public class ServicesInner {
     }
 
     /**
-     * Deletes a service resource.
+     * Deletes the service.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
@@ -296,7 +296,7 @@ public class ServicesInner {
     }
 
     /**
-     * Deletes a service resource.
+     * Deletes the service.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
@@ -314,7 +314,7 @@ public class ServicesInner {
     }
 
     /**
-     * Deletes a service resource.
+     * Deletes the service.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .

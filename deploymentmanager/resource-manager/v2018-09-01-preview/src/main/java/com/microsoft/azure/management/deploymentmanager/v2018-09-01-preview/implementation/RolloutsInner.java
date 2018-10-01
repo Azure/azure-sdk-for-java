@@ -417,7 +417,7 @@ public class RolloutsInner implements InnerSupportsGet<RolloutInner>, InnerSuppo
     }
 
     /**
-     * Gets detailed information of an ongoing or completed rollout.
+     * Gets detailed information of a rollout.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rolloutName The rollout name.
@@ -431,7 +431,7 @@ public class RolloutsInner implements InnerSupportsGet<RolloutInner>, InnerSuppo
     }
 
     /**
-     * Gets detailed information of an ongoing or completed rollout.
+     * Gets detailed information of a rollout.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rolloutName The rollout name.
@@ -444,7 +444,7 @@ public class RolloutsInner implements InnerSupportsGet<RolloutInner>, InnerSuppo
     }
 
     /**
-     * Gets detailed information of an ongoing or completed rollout.
+     * Gets detailed information of a rollout.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rolloutName The rollout name.
@@ -461,7 +461,7 @@ public class RolloutsInner implements InnerSupportsGet<RolloutInner>, InnerSuppo
     }
 
     /**
-     * Gets detailed information of an ongoing or completed rollout.
+     * Gets detailed information of a rollout.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rolloutName The rollout name.
@@ -497,7 +497,7 @@ public class RolloutsInner implements InnerSupportsGet<RolloutInner>, InnerSuppo
     }
 
     /**
-     * Gets detailed information of an ongoing or completed rollout.
+     * Gets detailed information of a rollout.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rolloutName The rollout name.
@@ -512,7 +512,7 @@ public class RolloutsInner implements InnerSupportsGet<RolloutInner>, InnerSuppo
     }
 
     /**
-     * Gets detailed information of an ongoing or completed rollout.
+     * Gets detailed information of a rollout.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rolloutName The rollout name.
@@ -526,7 +526,7 @@ public class RolloutsInner implements InnerSupportsGet<RolloutInner>, InnerSuppo
     }
 
     /**
-     * Gets detailed information of an ongoing or completed rollout.
+     * Gets detailed information of a rollout.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rolloutName The rollout name.
@@ -544,7 +544,7 @@ public class RolloutsInner implements InnerSupportsGet<RolloutInner>, InnerSuppo
     }
 
     /**
-     * Gets detailed information of an ongoing or completed rollout.
+     * Gets detailed information of a rollout.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rolloutName The rollout name.
@@ -588,7 +588,7 @@ public class RolloutsInner implements InnerSupportsGet<RolloutInner>, InnerSuppo
 
     /**
      * Deletes a rollout resource.
-     * A rollout can only be deleted if it is in a terminal state.
+     * Only rollouts in terminal state can be deleted.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rolloutName The rollout name.
@@ -602,7 +602,7 @@ public class RolloutsInner implements InnerSupportsGet<RolloutInner>, InnerSuppo
 
     /**
      * Deletes a rollout resource.
-     * A rollout can only be deleted if it is in a terminal state.
+     * Only rollouts in terminal state can be deleted.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rolloutName The rollout name.
@@ -616,7 +616,7 @@ public class RolloutsInner implements InnerSupportsGet<RolloutInner>, InnerSuppo
 
     /**
      * Deletes a rollout resource.
-     * A rollout can only be deleted if it is in a terminal state.
+     * Only rollouts in terminal state can be deleted.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rolloutName The rollout name.
@@ -634,7 +634,7 @@ public class RolloutsInner implements InnerSupportsGet<RolloutInner>, InnerSuppo
 
     /**
      * Deletes a rollout resource.
-     * A rollout can only be deleted if it is in a terminal state.
+     * Only rollouts in terminal state can be deleted.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rolloutName The rollout name.
@@ -678,7 +678,7 @@ public class RolloutsInner implements InnerSupportsGet<RolloutInner>, InnerSuppo
 
     /**
      * Stops a running rollout.
-     * A rollout can be canceled only if it is in running state.
+     * Only running rollouts can be canceled.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rolloutName The rollout name.
@@ -693,7 +693,7 @@ public class RolloutsInner implements InnerSupportsGet<RolloutInner>, InnerSuppo
 
     /**
      * Stops a running rollout.
-     * A rollout can be canceled only if it is in running state.
+     * Only running rollouts can be canceled.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rolloutName The rollout name.
@@ -707,7 +707,7 @@ public class RolloutsInner implements InnerSupportsGet<RolloutInner>, InnerSuppo
 
     /**
      * Stops a running rollout.
-     * A rollout can be canceled only if it is in running state.
+     * Only running rollouts can be canceled.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rolloutName The rollout name.
@@ -725,7 +725,7 @@ public class RolloutsInner implements InnerSupportsGet<RolloutInner>, InnerSuppo
 
     /**
      * Stops a running rollout.
-     * A rollout can be canceled only if it is in running state.
+     * Only running rollouts can be canceled.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rolloutName The rollout name.
@@ -768,7 +768,7 @@ public class RolloutsInner implements InnerSupportsGet<RolloutInner>, InnerSuppo
 
     /**
      * Restarts a failed rollout and optionally skips all succeeded steps.
-     * A rollout can be restarted only if is in a terminal state and failed.
+     * Only failed rollouts can be restarted.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rolloutName The rollout name.
@@ -783,7 +783,7 @@ public class RolloutsInner implements InnerSupportsGet<RolloutInner>, InnerSuppo
 
     /**
      * Restarts a failed rollout and optionally skips all succeeded steps.
-     * A rollout can be restarted only if is in a terminal state and failed.
+     * Only failed rollouts can be restarted.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rolloutName The rollout name.
@@ -797,7 +797,7 @@ public class RolloutsInner implements InnerSupportsGet<RolloutInner>, InnerSuppo
 
     /**
      * Restarts a failed rollout and optionally skips all succeeded steps.
-     * A rollout can be restarted only if is in a terminal state and failed.
+     * Only failed rollouts can be restarted.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rolloutName The rollout name.
@@ -815,7 +815,7 @@ public class RolloutsInner implements InnerSupportsGet<RolloutInner>, InnerSuppo
 
     /**
      * Restarts a failed rollout and optionally skips all succeeded steps.
-     * A rollout can be restarted only if is in a terminal state and failed.
+     * Only failed rollouts can be restarted.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rolloutName The rollout name.
@@ -852,7 +852,7 @@ public class RolloutsInner implements InnerSupportsGet<RolloutInner>, InnerSuppo
 
     /**
      * Restarts a failed rollout and optionally skips all succeeded steps.
-     * A rollout can be restarted only if is in a terminal state and failed.
+     * Only failed rollouts can be restarted.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rolloutName The rollout name.
@@ -868,7 +868,7 @@ public class RolloutsInner implements InnerSupportsGet<RolloutInner>, InnerSuppo
 
     /**
      * Restarts a failed rollout and optionally skips all succeeded steps.
-     * A rollout can be restarted only if is in a terminal state and failed.
+     * Only failed rollouts can be restarted.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rolloutName The rollout name.
@@ -883,7 +883,7 @@ public class RolloutsInner implements InnerSupportsGet<RolloutInner>, InnerSuppo
 
     /**
      * Restarts a failed rollout and optionally skips all succeeded steps.
-     * A rollout can be restarted only if is in a terminal state and failed.
+     * Only failed rollouts can be restarted.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rolloutName The rollout name.
@@ -902,7 +902,7 @@ public class RolloutsInner implements InnerSupportsGet<RolloutInner>, InnerSuppo
 
     /**
      * Restarts a failed rollout and optionally skips all succeeded steps.
-     * A rollout can be restarted only if is in a terminal state and failed.
+     * Only failed rollouts can be restarted.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rolloutName The rollout name.

@@ -13,17 +13,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.azure.Resource;
 
 /**
- * The resource representation of a deployment step.
+ * The resource representation of a rollout step.
  */
 public class StepResourceInner extends Resource {
     /**
-     * The properties for the resource.
+     * The properties that define the step.
      */
     @JsonProperty(value = "properties", required = true)
     private StepProperties properties;
 
     /**
-     * Get the properties for the resource.
+     * Get the properties that define the step.
      *
      * @return the properties value
      */
@@ -32,7 +32,7 @@ public class StepResourceInner extends Resource {
     }
 
     /**
-     * Set the properties for the resource.
+     * Set the properties that define the step.
      *
      * @param properties the properties value to set
      * @return the StepResourceInner object itself.

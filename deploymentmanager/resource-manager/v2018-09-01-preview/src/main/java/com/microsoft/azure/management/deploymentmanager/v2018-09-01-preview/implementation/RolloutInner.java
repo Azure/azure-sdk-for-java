@@ -16,7 +16,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
- * Defines the rollout resource.
+ * Defines the rollout.
  */
 @JsonFlatten
 public class RolloutInner extends Resource {
@@ -33,20 +33,21 @@ public class RolloutInner extends Resource {
     private String buildVersion;
 
     /**
-     * The reference to the ARM resource Id where the payload is located.
+     * The reference to the artifact source resource Id where the payload is
+     * located.
      */
     @JsonProperty(value = "properties.artifactSourceId")
     private String artifactSourceId;
 
     /**
-     * The reference to the resource Id of the service topology from which
-     * services are chosen to be deployed.
+     * The resource Id of the service topology from which service units are
+     * being referenced in step groups to be deployed.
      */
     @JsonProperty(value = "properties.targetServiceTopologyId", required = true)
     private String targetServiceTopologyId;
 
     /**
-     * The list of steps that define the orchestration.
+     * The list of step groups that define the orchestration.
      */
     @JsonProperty(value = "properties.stepGroups", required = true)
     private List<StepInner> stepGroups;
@@ -71,7 +72,7 @@ public class RolloutInner extends Resource {
     private RolloutOperationInfo operationInfo;
 
     /**
-     * Set of detailed step result information on target resource groups.
+     * The detailed information on the services being deployed.
      */
     @JsonProperty(value = "properties.services", access = JsonProperty.Access.WRITE_ONLY)
     private List<ServiceInner> services;
@@ -117,7 +118,7 @@ public class RolloutInner extends Resource {
     }
 
     /**
-     * Get the reference to the ARM resource Id where the payload is located.
+     * Get the reference to the artifact source resource Id where the payload is located.
      *
      * @return the artifactSourceId value
      */
@@ -126,7 +127,7 @@ public class RolloutInner extends Resource {
     }
 
     /**
-     * Set the reference to the ARM resource Id where the payload is located.
+     * Set the reference to the artifact source resource Id where the payload is located.
      *
      * @param artifactSourceId the artifactSourceId value to set
      * @return the RolloutInner object itself.
@@ -137,7 +138,7 @@ public class RolloutInner extends Resource {
     }
 
     /**
-     * Get the reference to the resource Id of the service topology from which services are chosen to be deployed.
+     * Get the resource Id of the service topology from which service units are being referenced in step groups to be deployed.
      *
      * @return the targetServiceTopologyId value
      */
@@ -146,7 +147,7 @@ public class RolloutInner extends Resource {
     }
 
     /**
-     * Set the reference to the resource Id of the service topology from which services are chosen to be deployed.
+     * Set the resource Id of the service topology from which service units are being referenced in step groups to be deployed.
      *
      * @param targetServiceTopologyId the targetServiceTopologyId value to set
      * @return the RolloutInner object itself.
@@ -157,7 +158,7 @@ public class RolloutInner extends Resource {
     }
 
     /**
-     * Get the list of steps that define the orchestration.
+     * Get the list of step groups that define the orchestration.
      *
      * @return the stepGroups value
      */
@@ -166,7 +167,7 @@ public class RolloutInner extends Resource {
     }
 
     /**
-     * Set the list of steps that define the orchestration.
+     * Set the list of step groups that define the orchestration.
      *
      * @param stepGroups the stepGroups value to set
      * @return the RolloutInner object itself.
@@ -204,7 +205,7 @@ public class RolloutInner extends Resource {
     }
 
     /**
-     * Get set of detailed step result information on target resource groups.
+     * Get the detailed information on the services being deployed.
      *
      * @return the services value
      */

@@ -17,37 +17,38 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class StepInner {
     /**
-     * The name of the step.
+     * The name of the step group.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
 
     /**
-     * The list of step names on which this step depends.
+     * The list of step group names on which this step group depends on.
      */
-    @JsonProperty(value = "dependsOnStepGroup")
-    private List<String> dependsOnStepGroup;
+    @JsonProperty(value = "dependsOnStepGroups")
+    private List<String> dependsOnStepGroups;
 
     /**
-     * The list of step names to be run before deploying the target.
+     * The list of steps to be run before deploying the target.
      */
     @JsonProperty(value = "preDeploymentSteps")
     private List<PrePostStep> preDeploymentSteps;
 
     /**
-     * The reference to the ARM service unit resource to be deployed.
+     * The resource Id of service unit to be deployed. The service unit should
+     * be from the service topology referenced in targetServiceTopologyId.
      */
     @JsonProperty(value = "deploymentTargetId", required = true)
     private String deploymentTargetId;
 
     /**
-     * The list of step names to be run after deploying the target.
+     * The list of steps to be run after deploying the target.
      */
     @JsonProperty(value = "postDeploymentSteps")
     private List<PrePostStep> postDeploymentSteps;
 
     /**
-     * Get the name of the step.
+     * Get the name of the step group.
      *
      * @return the name value
      */
@@ -56,7 +57,7 @@ public class StepInner {
     }
 
     /**
-     * Set the name of the step.
+     * Set the name of the step group.
      *
      * @param name the name value to set
      * @return the StepInner object itself.
@@ -67,27 +68,27 @@ public class StepInner {
     }
 
     /**
-     * Get the list of step names on which this step depends.
+     * Get the list of step group names on which this step group depends on.
      *
-     * @return the dependsOnStepGroup value
+     * @return the dependsOnStepGroups value
      */
-    public List<String> dependsOnStepGroup() {
-        return this.dependsOnStepGroup;
+    public List<String> dependsOnStepGroups() {
+        return this.dependsOnStepGroups;
     }
 
     /**
-     * Set the list of step names on which this step depends.
+     * Set the list of step group names on which this step group depends on.
      *
-     * @param dependsOnStepGroup the dependsOnStepGroup value to set
+     * @param dependsOnStepGroups the dependsOnStepGroups value to set
      * @return the StepInner object itself.
      */
-    public StepInner withDependsOnStepGroup(List<String> dependsOnStepGroup) {
-        this.dependsOnStepGroup = dependsOnStepGroup;
+    public StepInner withDependsOnStepGroups(List<String> dependsOnStepGroups) {
+        this.dependsOnStepGroups = dependsOnStepGroups;
         return this;
     }
 
     /**
-     * Get the list of step names to be run before deploying the target.
+     * Get the list of steps to be run before deploying the target.
      *
      * @return the preDeploymentSteps value
      */
@@ -96,7 +97,7 @@ public class StepInner {
     }
 
     /**
-     * Set the list of step names to be run before deploying the target.
+     * Set the list of steps to be run before deploying the target.
      *
      * @param preDeploymentSteps the preDeploymentSteps value to set
      * @return the StepInner object itself.
@@ -107,7 +108,7 @@ public class StepInner {
     }
 
     /**
-     * Get the reference to the ARM service unit resource to be deployed.
+     * Get the resource Id of service unit to be deployed. The service unit should be from the service topology referenced in targetServiceTopologyId.
      *
      * @return the deploymentTargetId value
      */
@@ -116,7 +117,7 @@ public class StepInner {
     }
 
     /**
-     * Set the reference to the ARM service unit resource to be deployed.
+     * Set the resource Id of service unit to be deployed. The service unit should be from the service topology referenced in targetServiceTopologyId.
      *
      * @param deploymentTargetId the deploymentTargetId value to set
      * @return the StepInner object itself.
@@ -127,7 +128,7 @@ public class StepInner {
     }
 
     /**
-     * Get the list of step names to be run after deploying the target.
+     * Get the list of steps to be run after deploying the target.
      *
      * @return the postDeploymentSteps value
      */
@@ -136,7 +137,7 @@ public class StepInner {
     }
 
     /**
-     * Set the list of step names to be run after deploying the target.
+     * Set the list of steps to be run after deploying the target.
      *
      * @param postDeploymentSteps the postDeploymentSteps value to set
      * @return the StepInner object itself.

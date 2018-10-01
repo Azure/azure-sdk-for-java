@@ -18,14 +18,14 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class ServiceTopologyResourceInner extends Resource {
     /**
-     * The artifact source that contains the artifacts that can be referenced
-     * in the service units.
+     * The resource Id of the artifact source that contains the artifacts that
+     * can be referenced in the service units.
      */
     @JsonProperty(value = "properties.artifactSourceId")
     private String artifactSourceId;
 
     /**
-     * Get the artifact source that contains the artifacts that can be referenced in the service units.
+     * Get the resource Id of the artifact source that contains the artifacts that can be referenced in the service units.
      *
      * @return the artifactSourceId value
      */
@@ -34,7 +34,7 @@ public class ServiceTopologyResourceInner extends Resource {
     }
 
     /**
-     * Set the artifact source that contains the artifacts that can be referenced in the service units.
+     * Set the resource Id of the artifact source that contains the artifacts that can be referenced in the service units.
      *
      * @param artifactSourceId the artifactSourceId value to set
      * @return the ServiceTopologyResourceInner object itself.

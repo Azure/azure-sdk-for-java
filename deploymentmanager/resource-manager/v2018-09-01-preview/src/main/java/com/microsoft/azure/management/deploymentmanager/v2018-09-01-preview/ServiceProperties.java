@@ -15,19 +15,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ServiceProperties {
     /**
-     * The Azure location to which the resources in the service belong to.
+     * The Azure location to which the resources in the service belong to or
+     * should be deployed to.
      */
     @JsonProperty(value = "targetLocation", required = true)
     private String targetLocation;
 
     /**
-     * The subscription to which the resources in the service belong to.
+     * The subscription to which the resources in the service belong to or
+     * should be deployed to.
      */
     @JsonProperty(value = "targetSubscriptionId", required = true)
     private String targetSubscriptionId;
 
     /**
-     * Get the Azure location to which the resources in the service belong to.
+     * Get the Azure location to which the resources in the service belong to or should be deployed to.
      *
      * @return the targetLocation value
      */
@@ -36,7 +38,7 @@ public class ServiceProperties {
     }
 
     /**
-     * Set the Azure location to which the resources in the service belong to.
+     * Set the Azure location to which the resources in the service belong to or should be deployed to.
      *
      * @param targetLocation the targetLocation value to set
      * @return the ServiceProperties object itself.
@@ -47,7 +49,7 @@ public class ServiceProperties {
     }
 
     /**
-     * Get the subscription to which the resources in the service belong to.
+     * Get the subscription to which the resources in the service belong to or should be deployed to.
      *
      * @return the targetSubscriptionId value
      */
@@ -56,7 +58,7 @@ public class ServiceProperties {
     }
 
     /**
-     * Set the subscription to which the resources in the service belong to.
+     * Set the subscription to which the resources in the service belong to or should be deployed to.
      *
      * @param targetSubscriptionId the targetSubscriptionId value to set
      * @return the ServiceProperties object itself.

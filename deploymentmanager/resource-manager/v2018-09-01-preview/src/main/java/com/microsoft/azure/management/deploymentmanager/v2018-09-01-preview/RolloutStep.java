@@ -16,8 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class RolloutStep {
     /**
-     * Name of the step as specified in the rollout specification input
-     * artifact.
+     * Name of the step.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
@@ -41,8 +40,8 @@ public class RolloutStep {
     private StepOperationInfo operationInfo;
 
     /**
-     * Set of resource operations that were performed on the Azure resource
-     * that the action acted upon.
+     * Set of resource operations that were performed, if any, on an Azure
+     * resource.
      */
     @JsonProperty(value = "resourceOperations", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceOperation> resourceOperations;
@@ -54,7 +53,7 @@ public class RolloutStep {
     private List<Message> messages;
 
     /**
-     * Get name of the step as specified in the rollout specification input artifact.
+     * Get name of the step.
      *
      * @return the name value
      */
@@ -63,7 +62,7 @@ public class RolloutStep {
     }
 
     /**
-     * Set name of the step as specified in the rollout specification input artifact.
+     * Set name of the step.
      *
      * @param name the name value to set
      * @return the RolloutStep object itself.
@@ -112,7 +111,7 @@ public class RolloutStep {
     }
 
     /**
-     * Get set of resource operations that were performed on the Azure resource that the action acted upon.
+     * Get set of resource operations that were performed, if any, on an Azure resource.
      *
      * @return the resourceOperations value
      */

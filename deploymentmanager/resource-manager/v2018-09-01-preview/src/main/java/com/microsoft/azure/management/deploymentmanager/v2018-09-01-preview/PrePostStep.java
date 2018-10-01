@@ -15,13 +15,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class PrePostStep {
     /**
-     * The reference to the ARM resource Id of a step.
+     * The resource Id of the step to be run.
      */
     @JsonProperty(value = "stepId", required = true)
     private String stepId;
 
     /**
-     * Get the reference to the ARM resource Id of a step.
+     * Get the resource Id of the step to be run.
      *
      * @return the stepId value
      */
@@ -30,7 +30,7 @@ public class PrePostStep {
     }
 
     /**
-     * Set the reference to the ARM resource Id of a step.
+     * Set the resource Id of the step to be run.
      *
      * @param stepId the stepId value to set
      * @return the PrePostStep object itself.

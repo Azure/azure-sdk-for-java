@@ -21,7 +21,7 @@ import com.microsoft.azure.Resource;
 public class ServiceUnitResourceInner extends Resource {
     /**
      * The Azure Resource Group to which the resources in the service unit
-     * belong to.
+     * belong to or should be deployed to.
      */
     @JsonProperty(value = "properties.targetResourceGroup", required = true)
     private String targetResourceGroup;
@@ -40,7 +40,7 @@ public class ServiceUnitResourceInner extends Resource {
     private ServiceUnitArtifacts artifacts;
 
     /**
-     * Get the Azure Resource Group to which the resources in the service unit belong to.
+     * Get the Azure Resource Group to which the resources in the service unit belong to or should be deployed to.
      *
      * @return the targetResourceGroup value
      */
@@ -49,7 +49,7 @@ public class ServiceUnitResourceInner extends Resource {
     }
 
     /**
-     * Set the Azure Resource Group to which the resources in the service unit belong to.
+     * Set the Azure Resource Group to which the resources in the service unit belong to or should be deployed to.
      *
      * @param targetResourceGroup the targetResourceGroup value to set
      * @return the ServiceUnitResourceInner object itself.

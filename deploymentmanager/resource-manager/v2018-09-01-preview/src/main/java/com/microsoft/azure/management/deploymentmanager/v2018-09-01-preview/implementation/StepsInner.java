@@ -72,7 +72,7 @@ public class StepsInner implements InnerSupportsGet<StepResourceInner>, InnerSup
     }
 
     /**
-     * Creates or updates a deployment step.
+     * Creates or updates a rollout step with the given step properties.
      * Synchronously creates a new step or updates an existing step.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -87,7 +87,7 @@ public class StepsInner implements InnerSupportsGet<StepResourceInner>, InnerSup
     }
 
     /**
-     * Creates or updates a deployment step.
+     * Creates or updates a rollout step with the given step properties.
      * Synchronously creates a new step or updates an existing step.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -101,7 +101,7 @@ public class StepsInner implements InnerSupportsGet<StepResourceInner>, InnerSup
     }
 
     /**
-     * Creates or updates a deployment step.
+     * Creates or updates a rollout step with the given step properties.
      * Synchronously creates a new step or updates an existing step.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -119,7 +119,7 @@ public class StepsInner implements InnerSupportsGet<StepResourceInner>, InnerSup
     }
 
     /**
-     * Creates or updates a deployment step.
+     * Creates or updates a rollout step with the given step properties.
      * Synchronously creates a new step or updates an existing step.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -156,12 +156,12 @@ public class StepsInner implements InnerSupportsGet<StepResourceInner>, InnerSup
     }
 
     /**
-     * Creates or updates a deployment step.
+     * Creates or updates a rollout step with the given step properties.
      * Synchronously creates a new step or updates an existing step.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param stepName The name of the deployment step.
-     * @param stepInfo The resource object.
+     * @param stepInfo The step object.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -172,12 +172,12 @@ public class StepsInner implements InnerSupportsGet<StepResourceInner>, InnerSup
     }
 
     /**
-     * Creates or updates a deployment step.
+     * Creates or updates a rollout step with the given step properties.
      * Synchronously creates a new step or updates an existing step.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param stepName The name of the deployment step.
-     * @param stepInfo The resource object.
+     * @param stepInfo The step object.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -187,12 +187,12 @@ public class StepsInner implements InnerSupportsGet<StepResourceInner>, InnerSup
     }
 
     /**
-     * Creates or updates a deployment step.
+     * Creates or updates a rollout step with the given step properties.
      * Synchronously creates a new step or updates an existing step.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param stepName The name of the deployment step.
-     * @param stepInfo The resource object.
+     * @param stepInfo The step object.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the StepResourceInner object
      */
@@ -206,12 +206,12 @@ public class StepsInner implements InnerSupportsGet<StepResourceInner>, InnerSup
     }
 
     /**
-     * Creates or updates a deployment step.
+     * Creates or updates a rollout step with the given step properties.
      * Synchronously creates a new step or updates an existing step.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param stepName The name of the deployment step.
-     * @param stepInfo The resource object.
+     * @param stepInfo The step object.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the StepResourceInner object
      */
@@ -251,7 +251,7 @@ public class StepsInner implements InnerSupportsGet<StepResourceInner>, InnerSup
     }
 
     /**
-     * Gets a topology resource.
+     * Gets the step.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param stepName The name of the deployment step.
@@ -265,7 +265,7 @@ public class StepsInner implements InnerSupportsGet<StepResourceInner>, InnerSup
     }
 
     /**
-     * Gets a topology resource.
+     * Gets the step.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param stepName The name of the deployment step.
@@ -278,7 +278,7 @@ public class StepsInner implements InnerSupportsGet<StepResourceInner>, InnerSup
     }
 
     /**
-     * Gets a topology resource.
+     * Gets the step.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param stepName The name of the deployment step.
@@ -295,7 +295,7 @@ public class StepsInner implements InnerSupportsGet<StepResourceInner>, InnerSup
     }
 
     /**
-     * Gets a topology resource.
+     * Gets the step.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param stepName The name of the deployment step.
@@ -337,7 +337,7 @@ public class StepsInner implements InnerSupportsGet<StepResourceInner>, InnerSup
     }
 
     /**
-     * Deletes a deployment step.
+     * Deletes the step.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param stepName The name of the deployment step.
@@ -350,7 +350,7 @@ public class StepsInner implements InnerSupportsGet<StepResourceInner>, InnerSup
     }
 
     /**
-     * Deletes a deployment step.
+     * Deletes the step.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param stepName The name of the deployment step.
@@ -363,7 +363,7 @@ public class StepsInner implements InnerSupportsGet<StepResourceInner>, InnerSup
     }
 
     /**
-     * Deletes a deployment step.
+     * Deletes the step.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param stepName The name of the deployment step.
@@ -380,7 +380,7 @@ public class StepsInner implements InnerSupportsGet<StepResourceInner>, InnerSup
     }
 
     /**
-     * Deletes a deployment step.
+     * Deletes the step.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param stepName The name of the deployment step.

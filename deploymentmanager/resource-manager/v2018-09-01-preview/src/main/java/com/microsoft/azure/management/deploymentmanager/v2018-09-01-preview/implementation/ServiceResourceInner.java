@@ -13,24 +13,26 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
- * The resource representation of a service in a topology.
+ * The resource representation of a service in a service topology.
  */
 @JsonFlatten
 public class ServiceResourceInner extends Resource {
     /**
-     * The Azure location to which the resources in the service belong to.
+     * The Azure location to which the resources in the service belong to or
+     * should be deployed to.
      */
     @JsonProperty(value = "properties.targetLocation", required = true)
     private String targetLocation;
 
     /**
-     * The subscription to which the resources in the service belong to.
+     * The subscription to which the resources in the service belong to or
+     * should be deployed to.
      */
     @JsonProperty(value = "properties.targetSubscriptionId", required = true)
     private String targetSubscriptionId;
 
     /**
-     * Get the Azure location to which the resources in the service belong to.
+     * Get the Azure location to which the resources in the service belong to or should be deployed to.
      *
      * @return the targetLocation value
      */
@@ -39,7 +41,7 @@ public class ServiceResourceInner extends Resource {
     }
 
     /**
-     * Set the Azure location to which the resources in the service belong to.
+     * Set the Azure location to which the resources in the service belong to or should be deployed to.
      *
      * @param targetLocation the targetLocation value to set
      * @return the ServiceResourceInner object itself.
@@ -50,7 +52,7 @@ public class ServiceResourceInner extends Resource {
     }
 
     /**
-     * Get the subscription to which the resources in the service belong to.
+     * Get the subscription to which the resources in the service belong to or should be deployed to.
      *
      * @return the targetSubscriptionId value
      */
@@ -59,7 +61,7 @@ public class ServiceResourceInner extends Resource {
     }
 
     /**
-     * Set the subscription to which the resources in the service belong to.
+     * Set the subscription to which the resources in the service belong to or should be deployed to.
      *
      * @param targetSubscriptionId the targetSubscriptionId value to set
      * @return the ServiceResourceInner object itself.
