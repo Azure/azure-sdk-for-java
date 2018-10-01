@@ -12,12 +12,11 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Detailed information of specific step execution.
+ * Detailed information of a specific step run.
  */
 public class StepOperationInfo {
     /**
-     * The name of the Azure Resource Manager deployment initiated as part of
-     * the step.
+     * The name of the ARM deployment initiated as part of the step.
      */
     @JsonProperty(value = "deploymentName", access = JsonProperty.Access.WRITE_ONLY)
     private String deploymentName;
@@ -53,7 +52,7 @@ public class StepOperationInfo {
     private CloudErrorBody error;
 
     /**
-     * Get the name of the Azure Resource Manager deployment initiated as part of the step.
+     * Get the name of the ARM deployment initiated as part of the step.
      *
      * @return the deploymentName value
      */

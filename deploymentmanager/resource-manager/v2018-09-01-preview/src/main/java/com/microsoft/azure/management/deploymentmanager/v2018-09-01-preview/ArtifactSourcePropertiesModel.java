@@ -22,8 +22,13 @@ public class ArtifactSourcePropertiesModel {
     private String sourceType;
 
     /**
-     * The root folder under which all artifacts for all environments are
-     * expected to be organized.
+     * The path from the location that the 'authentication' property [say, a
+     * SAS URI to the blob container] refers to, to the location of the
+     * artifacts. This can be used to differentiate different versions of the
+     * artifacts. Or, different types of artifacts like binaries or templates.
+     * The location referenced by the authentication property concatenated with
+     * this optional artifactRoot path forms the artifact source location where
+     * the artifacts are expected to be found.
      */
     @JsonProperty(value = "artifactRoot")
     private String artifactRoot;
@@ -55,7 +60,7 @@ public class ArtifactSourcePropertiesModel {
     }
 
     /**
-     * Get the root folder under which all artifacts for all environments are expected to be organized.
+     * Get the path from the location that the 'authentication' property [say, a SAS URI to the blob container] refers to, to the location of the artifacts. This can be used to differentiate different versions of the artifacts. Or, different types of artifacts like binaries or templates. The location referenced by the authentication property concatenated with this optional artifactRoot path forms the artifact source location where the artifacts are expected to be found.
      *
      * @return the artifactRoot value
      */
@@ -64,7 +69,7 @@ public class ArtifactSourcePropertiesModel {
     }
 
     /**
-     * Set the root folder under which all artifacts for all environments are expected to be organized.
+     * Set the path from the location that the 'authentication' property [say, a SAS URI to the blob container] refers to, to the location of the artifacts. This can be used to differentiate different versions of the artifacts. Or, different types of artifacts like binaries or templates. The location referenced by the authentication property concatenated with this optional artifactRoot path forms the artifact source location where the artifacts are expected to be found.
      *
      * @param artifactRoot the artifactRoot value to set
      * @return the ArtifactSourcePropertiesModel object itself.

@@ -36,7 +36,7 @@ public class RolloutPropertiesModel {
     private RolloutOperationInfo operationInfo;
 
     /**
-     * Set of detailed step result information on target resource groups.
+     * The detailed information on the services being deployed.
      */
     @JsonProperty(value = "services", access = JsonProperty.Access.WRITE_ONLY)
     private List<ServiceInner> services;
@@ -69,7 +69,7 @@ public class RolloutPropertiesModel {
     }
 
     /**
-     * Get set of detailed step result information on target resource groups.
+     * Get the detailed information on the services being deployed.
      *
      * @return the services value
      */

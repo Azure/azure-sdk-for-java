@@ -19,7 +19,7 @@ import com.microsoft.azure.arm.model.HasInner;
  */
 public interface Services extends SupportsCreating<ServiceResource.DefinitionStages.Blank>, HasInner<ServicesInner> {
     /**
-     * Gets a service resource.
+     * Gets the service.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
@@ -30,7 +30,7 @@ public interface Services extends SupportsCreating<ServiceResource.DefinitionSta
     Observable<ServiceResource> getAsync(String resourceGroupName, String serviceTopologyName, String serviceName);
 
     /**
-     * Deletes a service resource.
+     * Deletes the service.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .

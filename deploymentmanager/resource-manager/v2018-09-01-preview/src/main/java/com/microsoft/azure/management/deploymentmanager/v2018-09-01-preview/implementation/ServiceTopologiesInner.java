@@ -170,7 +170,7 @@ public class ServiceTopologiesInner implements InnerSupportsGet<ServiceTopologyR
     }
 
     /**
-     * Gets a topology resource.
+     * Gets the service topology.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
@@ -184,7 +184,7 @@ public class ServiceTopologiesInner implements InnerSupportsGet<ServiceTopologyR
     }
 
     /**
-     * Gets a topology resource.
+     * Gets the service topology.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
@@ -197,7 +197,7 @@ public class ServiceTopologiesInner implements InnerSupportsGet<ServiceTopologyR
     }
 
     /**
-     * Gets a topology resource.
+     * Gets the service topology.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
@@ -214,7 +214,7 @@ public class ServiceTopologiesInner implements InnerSupportsGet<ServiceTopologyR
     }
 
     /**
-     * Gets a topology resource.
+     * Gets the service topology.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
@@ -256,7 +256,7 @@ public class ServiceTopologiesInner implements InnerSupportsGet<ServiceTopologyR
     }
 
     /**
-     * Deletes a topology resource.
+     * Deletes the service topology.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
@@ -269,7 +269,7 @@ public class ServiceTopologiesInner implements InnerSupportsGet<ServiceTopologyR
     }
 
     /**
-     * Deletes a topology resource.
+     * Deletes the service topology.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
@@ -282,7 +282,7 @@ public class ServiceTopologiesInner implements InnerSupportsGet<ServiceTopologyR
     }
 
     /**
-     * Deletes a topology resource.
+     * Deletes the service topology.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
@@ -299,7 +299,7 @@ public class ServiceTopologiesInner implements InnerSupportsGet<ServiceTopologyR
     }
 
     /**
-     * Deletes a topology resource.
+     * Deletes the service topology.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .

@@ -76,7 +76,7 @@ public class ServiceUnitsInner {
     }
 
     /**
-     * Creates or updates a service unit in the service within the referenced topology resource.
+     * Creates or updates a service unit under the service in the service topology.
      * This is an asynchronous operation and can be polled to completion using the operation resource returned by this operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -94,7 +94,7 @@ public class ServiceUnitsInner {
     }
 
     /**
-     * Creates or updates a service unit in the service within the referenced topology resource.
+     * Creates or updates a service unit under the service in the service topology.
      * This is an asynchronous operation and can be polled to completion using the operation resource returned by this operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -111,7 +111,7 @@ public class ServiceUnitsInner {
     }
 
     /**
-     * Creates or updates a service unit in the service within the referenced topology resource.
+     * Creates or updates a service unit under the service in the service topology.
      * This is an asynchronous operation and can be polled to completion using the operation resource returned by this operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -132,7 +132,7 @@ public class ServiceUnitsInner {
     }
 
     /**
-     * Creates or updates a service unit in the service within the referenced topology resource.
+     * Creates or updates a service unit under the service in the service topology.
      * This is an asynchronous operation and can be polled to completion using the operation resource returned by this operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -171,7 +171,7 @@ public class ServiceUnitsInner {
     }
 
     /**
-     * Creates or updates a service unit in the service within the referenced topology resource.
+     * Creates or updates a service unit under the service in the service topology.
      * This is an asynchronous operation and can be polled to completion using the operation resource returned by this operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -189,7 +189,7 @@ public class ServiceUnitsInner {
     }
 
     /**
-     * Creates or updates a service unit in the service within the referenced topology resource.
+     * Creates or updates a service unit under the service in the service topology.
      * This is an asynchronous operation and can be polled to completion using the operation resource returned by this operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -206,7 +206,7 @@ public class ServiceUnitsInner {
     }
 
     /**
-     * Creates or updates a service unit in the service within the referenced topology resource.
+     * Creates or updates a service unit under the service in the service topology.
      * This is an asynchronous operation and can be polled to completion using the operation resource returned by this operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -227,7 +227,7 @@ public class ServiceUnitsInner {
     }
 
     /**
-     * Creates or updates a service unit in the service within the referenced topology resource.
+     * Creates or updates a service unit under the service in the service topology.
      * This is an asynchronous operation and can be polled to completion using the operation resource returned by this operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -283,7 +283,7 @@ public class ServiceUnitsInner {
     }
 
     /**
-     * Gets a service unit resource.
+     * Gets the service unit.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
@@ -299,7 +299,7 @@ public class ServiceUnitsInner {
     }
 
     /**
-     * Gets a service unit resource.
+     * Gets the service unit.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
@@ -314,7 +314,7 @@ public class ServiceUnitsInner {
     }
 
     /**
-     * Gets a service unit resource.
+     * Gets the service unit.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
@@ -333,7 +333,7 @@ public class ServiceUnitsInner {
     }
 
     /**
-     * Gets a service unit resource.
+     * Gets the service unit.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
@@ -383,7 +383,7 @@ public class ServiceUnitsInner {
     }
 
     /**
-     * Deletes a service unit resource.
+     * Deletes the service unit.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
@@ -398,7 +398,7 @@ public class ServiceUnitsInner {
     }
 
     /**
-     * Deletes a service unit resource.
+     * Deletes the service unit.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
@@ -413,7 +413,7 @@ public class ServiceUnitsInner {
     }
 
     /**
-     * Deletes a service unit resource.
+     * Deletes the service unit.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
@@ -432,7 +432,7 @@ public class ServiceUnitsInner {
     }
 
     /**
-     * Deletes a service unit resource.
+     * Deletes the service unit.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .

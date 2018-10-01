@@ -15,14 +15,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ServiceTopologyProperties {
     /**
-     * The artifact source that contains the artifacts that can be referenced
-     * in the service units.
+     * The resource Id of the artifact source that contains the artifacts that
+     * can be referenced in the service units.
      */
     @JsonProperty(value = "artifactSourceId")
     private String artifactSourceId;
 
     /**
-     * Get the artifact source that contains the artifacts that can be referenced in the service units.
+     * Get the resource Id of the artifact source that contains the artifacts that can be referenced in the service units.
      *
      * @return the artifactSourceId value
      */
@@ -31,7 +31,7 @@ public class ServiceTopologyProperties {
     }
 
     /**
-     * Set the artifact source that contains the artifacts that can be referenced in the service units.
+     * Set the resource Id of the artifact source that contains the artifacts that can be referenced in the service units.
      *
      * @param artifactSourceId the artifactSourceId value to set
      * @return the ServiceTopologyProperties object itself.

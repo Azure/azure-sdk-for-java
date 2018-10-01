@@ -22,7 +22,7 @@ import com.microsoft.azure.arm.model.HasInner;
 public interface Rollouts extends SupportsCreating<Rollout.DefinitionStages.Blank>, SupportsDeletingByResourceGroup, SupportsBatchDeletion, SupportsGettingByResourceGroup<Rollout>, HasInner<RolloutsInner> {
     /**
      * Stops a running rollout.
-     * A rollout can be canceled only if it is in running state.
+     * Only running rollouts can be canceled.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rolloutName The rollout name.
@@ -33,7 +33,7 @@ public interface Rollouts extends SupportsCreating<Rollout.DefinitionStages.Blan
 
     /**
      * Restarts a failed rollout and optionally skips all succeeded steps.
-     * A rollout can be restarted only if is in a terminal state and failed.
+     * Only failed rollouts can be restarted.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rolloutName The rollout name.

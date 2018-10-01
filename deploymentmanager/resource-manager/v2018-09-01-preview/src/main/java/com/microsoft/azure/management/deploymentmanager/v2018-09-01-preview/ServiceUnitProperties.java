@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class ServiceUnitProperties {
     /**
      * The Azure Resource Group to which the resources in the service unit
-     * belong to.
+     * belong to or should be deployed to.
      */
     @JsonProperty(value = "targetResourceGroup", required = true)
     private String targetResourceGroup;
@@ -35,7 +35,7 @@ public class ServiceUnitProperties {
     private ServiceUnitArtifacts artifacts;
 
     /**
-     * Get the Azure Resource Group to which the resources in the service unit belong to.
+     * Get the Azure Resource Group to which the resources in the service unit belong to or should be deployed to.
      *
      * @return the targetResourceGroup value
      */
@@ -44,7 +44,7 @@ public class ServiceUnitProperties {
     }
 
     /**
-     * Set the Azure Resource Group to which the resources in the service unit belong to.
+     * Set the Azure Resource Group to which the resources in the service unit belong to or should be deployed to.
      *
      * @param targetResourceGroup the targetResourceGroup value to set
      * @return the ServiceUnitProperties object itself.

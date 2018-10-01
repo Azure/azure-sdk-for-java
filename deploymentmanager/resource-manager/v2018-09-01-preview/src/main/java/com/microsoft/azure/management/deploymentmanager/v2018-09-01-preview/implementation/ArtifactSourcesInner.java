@@ -72,7 +72,7 @@ public class ArtifactSourcesInner implements InnerSupportsGet<ArtifactSourceInne
     }
 
     /**
-     * Creates or updates an Artifact source.
+     * Creates or updates an artifact source.
      * Synchronously creates a new artifact source or updates an existing artifact source.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -87,7 +87,7 @@ public class ArtifactSourcesInner implements InnerSupportsGet<ArtifactSourceInne
     }
 
     /**
-     * Creates or updates an Artifact source.
+     * Creates or updates an artifact source.
      * Synchronously creates a new artifact source or updates an existing artifact source.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -101,7 +101,7 @@ public class ArtifactSourcesInner implements InnerSupportsGet<ArtifactSourceInne
     }
 
     /**
-     * Creates or updates an Artifact source.
+     * Creates or updates an artifact source.
      * Synchronously creates a new artifact source or updates an existing artifact source.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -119,7 +119,7 @@ public class ArtifactSourcesInner implements InnerSupportsGet<ArtifactSourceInne
     }
 
     /**
-     * Creates or updates an Artifact source.
+     * Creates or updates an artifact source.
      * Synchronously creates a new artifact source or updates an existing artifact source.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -156,7 +156,7 @@ public class ArtifactSourcesInner implements InnerSupportsGet<ArtifactSourceInne
     }
 
     /**
-     * Creates or updates an Artifact source.
+     * Creates or updates an artifact source.
      * Synchronously creates a new artifact source or updates an existing artifact source.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -172,7 +172,7 @@ public class ArtifactSourcesInner implements InnerSupportsGet<ArtifactSourceInne
     }
 
     /**
-     * Creates or updates an Artifact source.
+     * Creates or updates an artifact source.
      * Synchronously creates a new artifact source or updates an existing artifact source.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -187,7 +187,7 @@ public class ArtifactSourcesInner implements InnerSupportsGet<ArtifactSourceInne
     }
 
     /**
-     * Creates or updates an Artifact source.
+     * Creates or updates an artifact source.
      * Synchronously creates a new artifact source or updates an existing artifact source.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -206,7 +206,7 @@ public class ArtifactSourcesInner implements InnerSupportsGet<ArtifactSourceInne
     }
 
     /**
-     * Creates or updates an Artifact source.
+     * Creates or updates an artifact source.
      * Synchronously creates a new artifact source or updates an existing artifact source.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -251,7 +251,7 @@ public class ArtifactSourcesInner implements InnerSupportsGet<ArtifactSourceInne
     }
 
     /**
-     * Gets an artifact resource.
+     * Gets an artifact source.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param artifactSourceName The name of the artifact source.
@@ -265,7 +265,7 @@ public class ArtifactSourcesInner implements InnerSupportsGet<ArtifactSourceInne
     }
 
     /**
-     * Gets an artifact resource.
+     * Gets an artifact source.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param artifactSourceName The name of the artifact source.
@@ -278,7 +278,7 @@ public class ArtifactSourcesInner implements InnerSupportsGet<ArtifactSourceInne
     }
 
     /**
-     * Gets an artifact resource.
+     * Gets an artifact source.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param artifactSourceName The name of the artifact source.
@@ -295,7 +295,7 @@ public class ArtifactSourcesInner implements InnerSupportsGet<ArtifactSourceInne
     }
 
     /**
-     * Gets an artifact resource.
+     * Gets an artifact source.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param artifactSourceName The name of the artifact source.
@@ -337,7 +337,7 @@ public class ArtifactSourcesInner implements InnerSupportsGet<ArtifactSourceInne
     }
 
     /**
-     * Deletes an artifact source resource.
+     * Deletes an artifact source.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param artifactSourceName The name of the artifact source.
@@ -350,7 +350,7 @@ public class ArtifactSourcesInner implements InnerSupportsGet<ArtifactSourceInne
     }
 
     /**
-     * Deletes an artifact source resource.
+     * Deletes an artifact source.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param artifactSourceName The name of the artifact source.
@@ -363,7 +363,7 @@ public class ArtifactSourcesInner implements InnerSupportsGet<ArtifactSourceInne
     }
 
     /**
-     * Deletes an artifact source resource.
+     * Deletes an artifact source.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param artifactSourceName The name of the artifact source.
@@ -380,7 +380,7 @@ public class ArtifactSourcesInner implements InnerSupportsGet<ArtifactSourceInne
     }
 
     /**
-     * Deletes an artifact source resource.
+     * Deletes an artifact source.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param artifactSourceName The name of the artifact source.

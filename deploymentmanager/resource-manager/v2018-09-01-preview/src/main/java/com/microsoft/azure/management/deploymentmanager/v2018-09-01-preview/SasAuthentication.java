@@ -14,21 +14,23 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
- * Defines the authentication properties to access the artifacts using Azure
- * Storage SAS URI.
+ * Defines the properties to access the artifacts using an Azure Storage SAS
+ * URI.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Sas")
 @JsonFlatten
 public class SasAuthentication extends Authentication {
     /**
-     * The complete SAS URI to the location of the artifacts.
+     * The SAS URI to the Azure Storage blob container. Any offset from the
+     * root of the container to where the artifacts are located can be defined
+     * in the artifactRoot.
      */
     @JsonProperty(value = "properties.sasUri", required = true)
     private String sasUri;
 
     /**
-     * Get the complete SAS URI to the location of the artifacts.
+     * Get the SAS URI to the Azure Storage blob container. Any offset from the root of the container to where the artifacts are located can be defined in the artifactRoot.
      *
      * @return the sasUri value
      */
@@ -37,7 +39,7 @@ public class SasAuthentication extends Authentication {
     }
 
     /**
-     * Set the complete SAS URI to the location of the artifacts.
+     * Set the SAS URI to the Azure Storage blob container. Any offset from the root of the container to where the artifacts are located can be defined in the artifactRoot.
      *
      * @param sasUri the sasUri value to set
      * @return the SasAuthentication object itself.
