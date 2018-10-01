@@ -14,6 +14,7 @@ import com.microsoft.azure.applicationinsights.query.models.EventType;
 import com.microsoft.azure.applicationinsights.query.models.EventsResult;
 import com.microsoft.azure.applicationinsights.query.models.EventsResults;
 import com.microsoft.azure.applicationinsights.query.models.QueryResults;
+import com.microsoft.azure.applicationinsights.query.models.Column;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 
 /**
@@ -68,7 +69,7 @@ public class ApplicationInsightsClientExample
             System.out.println("The value of " + columnNames.get(i).name() + " is " + row.get(i));
         }
         
-        System.out.println(metricResultMultiple..value().additionalProperties());
+        System.out.println(metricResultMultiple.get(0).body().value().additionalProperties());
         
     }
 }
