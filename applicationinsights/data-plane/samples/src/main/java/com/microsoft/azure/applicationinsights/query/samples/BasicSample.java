@@ -57,18 +57,15 @@ public class ApplicationInsightsClientExample
         EventsResults eventsResultByType = client.events().getByType(appId, EventType.AVAILABILITY_RESULTS);
         EventsResults eventsResult = client.events().get(appId, EventType.AVAILABILITY_RESULTS, eventId);
 
-        // Process and print query results results
+        // Process and print results
         List<Object> row = queryResults.tables().get(0).rows().get(0);
-        List<String> columnNames = queryResults
+        List<Column> columnNames = queryResults
             .tables()
             .get(0)
-            .columns()
-            .stream()
-            .map(elt -> elt.name())
-            .collect(Collectors.toList());
+            .columns();
 
         for (int i = 0; i < row.size(); i++){        
-            System.out.println("The value of " + columnNames.get(i) + " is " + row.get(i));
+            System.out.println("The value of " + columnNames.get(i).name() + " is " + row.get(i));
         }
         
         System.out.println(metricResultMultiple..value().additionalProperties());
