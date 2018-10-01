@@ -32,12 +32,38 @@ public class TaskStepProperties {
     private List<BaseImageDependency> baseImageDependencies;
 
     /**
+     * The URL(absolute or relative) of the source context for the task step.
+     */
+    @JsonProperty(value = "contextPath")
+    private String contextPath;
+
+    /**
      * Get list of base image dependencies for a step.
      *
      * @return the baseImageDependencies value
      */
     public List<BaseImageDependency> baseImageDependencies() {
         return this.baseImageDependencies;
+    }
+
+    /**
+     * Get the URL(absolute or relative) of the source context for the task step.
+     *
+     * @return the contextPath value
+     */
+    public String contextPath() {
+        return this.contextPath;
+    }
+
+    /**
+     * Set the URL(absolute or relative) of the source context for the task step.
+     *
+     * @param contextPath the contextPath value to set
+     * @return the TaskStepProperties object itself.
+     */
+    public TaskStepProperties withContextPath(String contextPath) {
+        this.contextPath = contextPath;
+        return this;
     }
 
 }

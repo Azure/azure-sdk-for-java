@@ -28,8 +28,8 @@ public class SourceTriggerUpdateParameters {
     private List<SourceTriggerEvent> sourceTriggerEvents;
 
     /**
-     * The current status of build trigger. Possible values include:
-     * 'Disabled', 'Enabled'.
+     * The current status of trigger. Possible values include: 'Disabled',
+     * 'Enabled'.
      */
     @JsonProperty(value = "status")
     private TriggerStatus status;
@@ -81,7 +81,7 @@ public class SourceTriggerUpdateParameters {
     }
 
     /**
-     * Get the current status of build trigger. Possible values include: 'Disabled', 'Enabled'.
+     * Get the current status of trigger. Possible values include: 'Disabled', 'Enabled'.
      *
      * @return the status value
      */
@@ -90,7 +90,7 @@ public class SourceTriggerUpdateParameters {
     }
 
     /**
-     * Set the current status of build trigger. Possible values include: 'Disabled', 'Enabled'.
+     * Set the current status of trigger. Possible values include: 'Disabled', 'Enabled'.
      *
      * @param status the status value to set
      * @return the SourceTriggerUpdateParameters object itself.

@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.containerregistry.v2018_09_01;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -23,4 +24,30 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
     @JsonSubTypes.Type(name = "EncodedTask", value = EncodedTaskStepUpdateParameters.class)
 })
 public class TaskStepUpdateParameters {
+    /**
+     * The URL(absolute or relative) of the source context for the task step.
+     */
+    @JsonProperty(value = "contextPath")
+    private String contextPath;
+
+    /**
+     * Get the URL(absolute or relative) of the source context for the task step.
+     *
+     * @return the contextPath value
+     */
+    public String contextPath() {
+        return this.contextPath;
+    }
+
+    /**
+     * Set the URL(absolute or relative) of the source context for the task step.
+     *
+     * @param contextPath the contextPath value to set
+     * @return the TaskStepUpdateParameters object itself.
+     */
+    public TaskStepUpdateParameters withContextPath(String contextPath) {
+        this.contextPath = contextPath;
+        return this;
+    }
+
 }

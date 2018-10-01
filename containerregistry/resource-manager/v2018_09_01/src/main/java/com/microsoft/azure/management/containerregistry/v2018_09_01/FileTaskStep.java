@@ -39,14 +39,6 @@ public class FileTaskStep extends TaskStepProperties {
     private List<SetValue> values;
 
     /**
-     * The URL(absolute or relative) of the source context for the build task.
-     * If it is relative, the context will be relative to the source repository
-     * URL of the build task.
-     */
-    @JsonProperty(value = "contextPath")
-    private String contextPath;
-
-    /**
      * Get the task template/definition file path relative to the source context.
      *
      * @return the taskFilePath value
@@ -103,28 +95,6 @@ public class FileTaskStep extends TaskStepProperties {
      */
     public FileTaskStep withValues(List<SetValue> values) {
         this.values = values;
-        return this;
-    }
-
-    /**
-     * Get the URL(absolute or relative) of the source context for the build task.
-     If it is relative, the context will be relative to the source repository URL of the build task.
-     *
-     * @return the contextPath value
-     */
-    public String contextPath() {
-        return this.contextPath;
-    }
-
-    /**
-     * Set the URL(absolute or relative) of the source context for the build task.
-     If it is relative, the context will be relative to the source repository URL of the build task.
-     *
-     * @param contextPath the contextPath value to set
-     * @return the FileTaskStep object itself.
-     */
-    public FileTaskStep withContextPath(String contextPath) {
-        this.contextPath = contextPath;
         return this;
     }
 
