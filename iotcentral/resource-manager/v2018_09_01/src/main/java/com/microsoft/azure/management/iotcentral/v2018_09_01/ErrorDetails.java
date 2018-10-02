@@ -8,35 +8,83 @@
 
 package com.microsoft.azure.management.iotcentral.v2018_09_01;
 
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
  * Error details.
  */
+@JsonFlatten
 public class ErrorDetails {
     /**
-     * The error property.
+     * The error code.
      */
-    @JsonProperty(value = "error")
-    private ErrorResponseBody error;
+    @JsonProperty(value = "error.code", access = JsonProperty.Access.WRITE_ONLY)
+    private String code;
 
     /**
-     * Get the error value.
-     *
-     * @return the error value
+     * The error message.
      */
-    public ErrorResponseBody error() {
-        return this.error;
+    @JsonProperty(value = "error.message", access = JsonProperty.Access.WRITE_ONLY)
+    private String message;
+
+    /**
+     * The target of the particular error.
+     */
+    @JsonProperty(value = "error.target", access = JsonProperty.Access.WRITE_ONLY)
+    private String target;
+
+    /**
+     * A list of additional details about the error.
+     */
+    @JsonProperty(value = "error.details")
+    private List<ErrorResponseBody> details;
+
+    /**
+     * Get the error code.
+     *
+     * @return the code value
+     */
+    public String code() {
+        return this.code;
     }
 
     /**
-     * Set the error value.
+     * Get the error message.
      *
-     * @param error the error value to set
+     * @return the message value
+     */
+    public String message() {
+        return this.message;
+    }
+
+    /**
+     * Get the target of the particular error.
+     *
+     * @return the target value
+     */
+    public String target() {
+        return this.target;
+    }
+
+    /**
+     * Get a list of additional details about the error.
+     *
+     * @return the details value
+     */
+    public List<ErrorResponseBody> details() {
+        return this.details;
+    }
+
+    /**
+     * Set a list of additional details about the error.
+     *
+     * @param details the details value to set
      * @return the ErrorDetails object itself.
      */
-    public ErrorDetails withError(ErrorResponseBody error) {
-        this.error = error;
+    public ErrorDetails withDetails(List<ErrorResponseBody> details) {
+        this.details = details;
         return this;
     }
 
