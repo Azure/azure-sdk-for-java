@@ -19,6 +19,9 @@ import com.microsoft.rest.RestClient;
 import com.microsoft.azure.management.sql.v2017_10_01_preview.DatabaseOperations;
 import com.microsoft.azure.management.sql.v2017_10_01_preview.ElasticPoolOperations;
 import com.microsoft.azure.management.sql.v2017_10_01_preview.DatabaseVulnerabilityAssessmentScans;
+import com.microsoft.azure.management.sql.v2017_10_01_preview.ManagedDatabaseVulnerabilityAssessmentRuleBaselines;
+import com.microsoft.azure.management.sql.v2017_10_01_preview.ManagedDatabaseVulnerabilityAssessmentScans;
+import com.microsoft.azure.management.sql.v2017_10_01_preview.ManagedDatabaseVulnerabilityAssessments;
 import com.microsoft.azure.management.sql.v2017_10_01_preview.Capabilities;
 import com.microsoft.azure.management.sql.v2017_10_01_preview.Databases;
 import com.microsoft.azure.management.sql.v2017_10_01_preview.ElasticPools;
@@ -38,6 +41,9 @@ public final class SqlManager extends ManagerCore<SqlManager, SqlManagementClien
     private DatabaseOperations databaseOperations;
     private ElasticPoolOperations elasticPoolOperations;
     private DatabaseVulnerabilityAssessmentScans databaseVulnerabilityAssessmentScans;
+    private ManagedDatabaseVulnerabilityAssessmentRuleBaselines managedDatabaseVulnerabilityAssessmentRuleBaselines;
+    private ManagedDatabaseVulnerabilityAssessmentScans managedDatabaseVulnerabilityAssessmentScans;
+    private ManagedDatabaseVulnerabilityAssessments managedDatabaseVulnerabilityAssessments;
     private Capabilities capabilities;
     private Databases databases;
     private ElasticPools elasticPools;
@@ -122,6 +128,36 @@ public final class SqlManager extends ManagerCore<SqlManager, SqlManagementClien
             this.databaseVulnerabilityAssessmentScans = new DatabaseVulnerabilityAssessmentScansImpl(this);
         }
         return this.databaseVulnerabilityAssessmentScans;
+    }
+
+    /**
+     * @return Entry point to manage ManagedDatabaseVulnerabilityAssessmentRuleBaselines.
+     */
+    public ManagedDatabaseVulnerabilityAssessmentRuleBaselines managedDatabaseVulnerabilityAssessmentRuleBaselines() {
+        if (this.managedDatabaseVulnerabilityAssessmentRuleBaselines == null) {
+            this.managedDatabaseVulnerabilityAssessmentRuleBaselines = new ManagedDatabaseVulnerabilityAssessmentRuleBaselinesImpl(this);
+        }
+        return this.managedDatabaseVulnerabilityAssessmentRuleBaselines;
+    }
+
+    /**
+     * @return Entry point to manage ManagedDatabaseVulnerabilityAssessmentScans.
+     */
+    public ManagedDatabaseVulnerabilityAssessmentScans managedDatabaseVulnerabilityAssessmentScans() {
+        if (this.managedDatabaseVulnerabilityAssessmentScans == null) {
+            this.managedDatabaseVulnerabilityAssessmentScans = new ManagedDatabaseVulnerabilityAssessmentScansImpl(this);
+        }
+        return this.managedDatabaseVulnerabilityAssessmentScans;
+    }
+
+    /**
+     * @return Entry point to manage ManagedDatabaseVulnerabilityAssessments.
+     */
+    public ManagedDatabaseVulnerabilityAssessments managedDatabaseVulnerabilityAssessments() {
+        if (this.managedDatabaseVulnerabilityAssessments == null) {
+            this.managedDatabaseVulnerabilityAssessments = new ManagedDatabaseVulnerabilityAssessmentsImpl(this);
+        }
+        return this.managedDatabaseVulnerabilityAssessments;
     }
 
     /**
