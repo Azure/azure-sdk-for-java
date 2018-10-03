@@ -16,7 +16,8 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.implementation.TriggerInner;
 
 /**
- * Trigger?that?schedules?pipeline?reruns?for?all?fixed?time?interval?windows?from?a?requested?start?time?to?requested?end?time.
+ * Trigger that schedules pipeline reruns for all fixed time interval windows
+ * from a requested start time to requested end time.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("RerunTumblingWindowTrigger")
@@ -29,21 +30,22 @@ public class RerunTumblingWindowTrigger extends TriggerInner {
     private Object parentTrigger;
 
     /**
-     * The?start?time?for?the?time?period?for?which?restatement?is?initiated.
-     * Only?UTC?time?is?currently?supported.
+     * The start time for the time period for which restatement is initiated.
+     * Only UTC time is currently supported.
      */
     @JsonProperty(value = "typeProperties.requestedStartTime", required = true)
     private DateTime requestedStartTime;
 
     /**
-     * The?end?time?for?the?time?period?for?which?restatement?is?initiated.
-     * Only?UTC?time?is?currently?supported.
+     * The end time for the time period for which restatement is initiated.
+     * Only UTC time is currently supported.
      */
     @JsonProperty(value = "typeProperties.requestedEndTime", required = true)
     private DateTime requestedEndTime;
 
     /**
-     * The?max?number?of?parallel?time?windows?(ready?for?execution)?for?which?a?rerun?is?triggered.
+     * The max number of parallel time windows (ready for execution) for which
+     * a rerun is triggered.
      */
     @JsonProperty(value = "typeProperties.maxConcurrency", required = true)
     private int maxConcurrency;
@@ -69,7 +71,7 @@ public class RerunTumblingWindowTrigger extends TriggerInner {
     }
 
     /**
-     * Get the?start?time?for?the?time?period?for?which?restatement?is?initiated. Only?UTC?time?is?currently?supported.
+     * Get the start time for the time period for which restatement is initiated. Only UTC time is currently supported.
      *
      * @return the requestedStartTime value
      */
@@ -78,7 +80,7 @@ public class RerunTumblingWindowTrigger extends TriggerInner {
     }
 
     /**
-     * Set the?start?time?for?the?time?period?for?which?restatement?is?initiated. Only?UTC?time?is?currently?supported.
+     * Set the start time for the time period for which restatement is initiated. Only UTC time is currently supported.
      *
      * @param requestedStartTime the requestedStartTime value to set
      * @return the RerunTumblingWindowTrigger object itself.
@@ -89,7 +91,7 @@ public class RerunTumblingWindowTrigger extends TriggerInner {
     }
 
     /**
-     * Get the?end?time?for?the?time?period?for?which?restatement?is?initiated. Only?UTC?time?is?currently?supported.
+     * Get the end time for the time period for which restatement is initiated. Only UTC time is currently supported.
      *
      * @return the requestedEndTime value
      */
@@ -98,7 +100,7 @@ public class RerunTumblingWindowTrigger extends TriggerInner {
     }
 
     /**
-     * Set the?end?time?for?the?time?period?for?which?restatement?is?initiated. Only?UTC?time?is?currently?supported.
+     * Set the end time for the time period for which restatement is initiated. Only UTC time is currently supported.
      *
      * @param requestedEndTime the requestedEndTime value to set
      * @return the RerunTumblingWindowTrigger object itself.
@@ -109,7 +111,7 @@ public class RerunTumblingWindowTrigger extends TriggerInner {
     }
 
     /**
-     * Get the?max?number?of?parallel?time?windows?(ready?for?execution)?for?which?a?rerun?is?triggered.
+     * Get the max number of parallel time windows (ready for execution) for which a rerun is triggered.
      *
      * @return the maxConcurrency value
      */
@@ -118,7 +120,7 @@ public class RerunTumblingWindowTrigger extends TriggerInner {
     }
 
     /**
-     * Set the?max?number?of?parallel?time?windows?(ready?for?execution)?for?which?a?rerun?is?triggered.
+     * Set the max number of parallel time windows (ready for execution) for which a rerun is triggered.
      *
      * @param maxConcurrency the maxConcurrency value to set
      * @return the RerunTumblingWindowTrigger object itself.

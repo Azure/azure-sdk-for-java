@@ -12,32 +12,32 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Rerun?tumbling?window?trigger?Parameters.
+ * Rerun tumbling window trigger Parameters.
  */
 public class RerunTumblingWindowTriggerActionParameters {
     /**
-     * The?start?time?for?the?time?period?for?which?restatement?is?initiated.
-     * Only?UTC?time?is?currently?supported.
+     * The start time for the time period for which restatement is initiated.
+     * Only UTC time is currently supported.
      */
     @JsonProperty(value = "startTime", required = true)
     private DateTime startTime;
 
     /**
-     * The?end?time?for?the?time?period?for?which?restatement?is?initiated.
-     * Only?UTC?time?is?currently?supported.
+     * The end time for the time period for which restatement is initiated.
+     * Only UTC time is currently supported.
      */
     @JsonProperty(value = "endTime", required = true)
     private DateTime endTime;
 
     /**
-     * The?max?number?of?parallel?time?windows?(ready?for?execution)?for?which
-     * a?rerun?is?triggered.
+     * The max number of parallel time windows (ready for execution) for which
+     * a rerun is triggered.
      */
     @JsonProperty(value = "maxConcurrency", required = true)
     private int maxConcurrency;
 
     /**
-     * Get the?start?time?for?the?time?period?for?which?restatement?is?initiated. Only?UTC?time?is?currently?supported.
+     * Get the start time for the time period for which restatement is initiated. Only UTC time is currently supported.
      *
      * @return the startTime value
      */
@@ -46,7 +46,7 @@ public class RerunTumblingWindowTriggerActionParameters {
     }
 
     /**
-     * Set the?start?time?for?the?time?period?for?which?restatement?is?initiated. Only?UTC?time?is?currently?supported.
+     * Set the start time for the time period for which restatement is initiated. Only UTC time is currently supported.
      *
      * @param startTime the startTime value to set
      * @return the RerunTumblingWindowTriggerActionParameters object itself.
@@ -57,7 +57,7 @@ public class RerunTumblingWindowTriggerActionParameters {
     }
 
     /**
-     * Get the?end?time?for?the?time?period?for?which?restatement?is?initiated. Only?UTC?time?is?currently?supported.
+     * Get the end time for the time period for which restatement is initiated. Only UTC time is currently supported.
      *
      * @return the endTime value
      */
@@ -66,7 +66,7 @@ public class RerunTumblingWindowTriggerActionParameters {
     }
 
     /**
-     * Set the?end?time?for?the?time?period?for?which?restatement?is?initiated. Only?UTC?time?is?currently?supported.
+     * Set the end time for the time period for which restatement is initiated. Only UTC time is currently supported.
      *
      * @param endTime the endTime value to set
      * @return the RerunTumblingWindowTriggerActionParameters object itself.
@@ -77,7 +77,7 @@ public class RerunTumblingWindowTriggerActionParameters {
     }
 
     /**
-     * Get the?max?number?of?parallel?time?windows?(ready?for?execution)?for?which a?rerun?is?triggered.
+     * Get the max number of parallel time windows (ready for execution) for which a rerun is triggered.
      *
      * @return the maxConcurrency value
      */
@@ -86,7 +86,7 @@ public class RerunTumblingWindowTriggerActionParameters {
     }
 
     /**
-     * Set the?max?number?of?parallel?time?windows?(ready?for?execution)?for?which a?rerun?is?triggered.
+     * Set the max number of parallel time windows (ready for execution) for which a rerun is triggered.
      *
      * @param maxConcurrency the maxConcurrency value to set
      * @return the RerunTumblingWindowTriggerActionParameters object itself.

@@ -101,13 +101,13 @@ public class RerunTriggersInner {
     }
 
     /**
-     * Creates?a?rerun?trigger.
+     * Creates a rerun trigger.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
      * @param rerunTriggerName The rerun trigger name.
-     * @param rerunTumblingWindowTriggerActionParameters Rerun?tumbling?window?trigger?action?parameters.
+     * @param rerunTumblingWindowTriggerActionParameters Rerun tumbling window trigger action parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -118,13 +118,13 @@ public class RerunTriggersInner {
     }
 
     /**
-     * Creates?a?rerun?trigger.
+     * Creates a rerun trigger.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
      * @param rerunTriggerName The rerun trigger name.
-     * @param rerunTumblingWindowTriggerActionParameters Rerun?tumbling?window?trigger?action?parameters.
+     * @param rerunTumblingWindowTriggerActionParameters Rerun tumbling window trigger action parameters.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -134,13 +134,13 @@ public class RerunTriggersInner {
     }
 
     /**
-     * Creates?a?rerun?trigger.
+     * Creates a rerun trigger.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
      * @param rerunTriggerName The rerun trigger name.
-     * @param rerunTumblingWindowTriggerActionParameters Rerun?tumbling?window?trigger?action?parameters.
+     * @param rerunTumblingWindowTriggerActionParameters Rerun tumbling window trigger action parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TriggerResourceInner object
      */
@@ -154,13 +154,13 @@ public class RerunTriggersInner {
     }
 
     /**
-     * Creates?a?rerun?trigger.
+     * Creates a rerun trigger.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
      * @param rerunTriggerName The rerun trigger name.
-     * @param rerunTumblingWindowTriggerActionParameters Rerun?tumbling?window?trigger?action?parameters.
+     * @param rerunTumblingWindowTriggerActionParameters Rerun tumbling window trigger action parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TriggerResourceInner object
      */
