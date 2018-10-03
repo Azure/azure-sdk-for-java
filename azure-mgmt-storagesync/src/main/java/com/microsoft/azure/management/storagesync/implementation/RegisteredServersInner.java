@@ -638,7 +638,7 @@ public class RegisteredServersInner {
     }
 
     /**
-     * Recall a serverendpoint.
+     * Triggers Server certificate rollover.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageSyncServiceName Name of Storage Sync Service resource.
@@ -652,7 +652,7 @@ public class RegisteredServersInner {
     }
 
     /**
-     * Recall a serverendpoint.
+     * Triggers Server certificate rollover.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageSyncServiceName Name of Storage Sync Service resource.
@@ -666,7 +666,7 @@ public class RegisteredServersInner {
     }
 
     /**
-     * Recall a serverendpoint.
+     * Triggers Server certificate rollover.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageSyncServiceName Name of Storage Sync Service resource.
@@ -684,7 +684,7 @@ public class RegisteredServersInner {
     }
 
     /**
-     * Recall a serverendpoint.
+     * Triggers Server certificate rollover.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageSyncServiceName Name of Storage Sync Service resource.
@@ -715,7 +715,7 @@ public class RegisteredServersInner {
         return client.getAzureClient().getPostOrDeleteResultWithHeadersAsync(observable, new TypeToken<Void>() { }.getType(), RegisteredServersTriggerRolloverHeaders.class);
     }
     /**
-     * Recall a serverendpoint.
+     * Triggers Server certificate rollover.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageSyncServiceName Name of Storage Sync Service resource.
@@ -730,7 +730,7 @@ public class RegisteredServersInner {
     }
 
     /**
-     * Recall a serverendpoint.
+     * Triggers Server certificate rollover.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageSyncServiceName Name of Storage Sync Service resource.
@@ -745,7 +745,7 @@ public class RegisteredServersInner {
     }
 
     /**
-     * Recall a serverendpoint.
+     * Triggers Server certificate rollover.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageSyncServiceName Name of Storage Sync Service resource.
@@ -764,7 +764,7 @@ public class RegisteredServersInner {
     }
 
     /**
-     * Recall a serverendpoint.
+     * Triggers Server certificate rollover.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageSyncServiceName Name of Storage Sync Service resource.
@@ -796,7 +796,7 @@ public class RegisteredServersInner {
     }
 
     /**
-     * Recall a serverendpoint.
+     * Triggers Server certificate rollover.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageSyncServiceName Name of Storage Sync Service resource.
@@ -810,7 +810,7 @@ public class RegisteredServersInner {
     }
 
     /**
-     * Recall a serverendpoint.
+     * Triggers Server certificate rollover.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageSyncServiceName Name of Storage Sync Service resource.
@@ -824,7 +824,7 @@ public class RegisteredServersInner {
     }
 
     /**
-     * Recall a serverendpoint.
+     * Triggers Server certificate rollover.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageSyncServiceName Name of Storage Sync Service resource.
@@ -842,7 +842,7 @@ public class RegisteredServersInner {
     }
 
     /**
-     * Recall a serverendpoint.
+     * Triggers Server certificate rollover.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageSyncServiceName Name of Storage Sync Service resource.
@@ -884,7 +884,7 @@ public class RegisteredServersInner {
     }
 
     /**
-     * Recall a serverendpoint.
+     * Triggers Server certificate rollover.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageSyncServiceName Name of Storage Sync Service resource.
@@ -899,7 +899,7 @@ public class RegisteredServersInner {
     }
 
     /**
-     * Recall a serverendpoint.
+     * Triggers Server certificate rollover.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageSyncServiceName Name of Storage Sync Service resource.
@@ -914,7 +914,7 @@ public class RegisteredServersInner {
     }
 
     /**
-     * Recall a serverendpoint.
+     * Triggers Server certificate rollover.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageSyncServiceName Name of Storage Sync Service resource.
@@ -933,7 +933,7 @@ public class RegisteredServersInner {
     }
 
     /**
-     * Recall a serverendpoint.
+     * Triggers Server certificate rollover.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageSyncServiceName Name of Storage Sync Service resource.
