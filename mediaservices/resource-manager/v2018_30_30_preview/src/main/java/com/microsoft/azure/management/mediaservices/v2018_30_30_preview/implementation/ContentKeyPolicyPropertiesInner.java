@@ -49,7 +49,7 @@ public class ContentKeyPolicyPropertiesInner {
     private List<ContentKeyPolicyOption> options;
 
     /**
-     * Get the policyId value.
+     * Get the legacy Policy ID.
      *
      * @return the policyId value
      */
@@ -58,7 +58,7 @@ public class ContentKeyPolicyPropertiesInner {
     }
 
     /**
-     * Get the created value.
+     * Get the creation date of the Policy.
      *
      * @return the created value
      */
@@ -67,7 +67,7 @@ public class ContentKeyPolicyPropertiesInner {
     }
 
     /**
-     * Get the lastModified value.
+     * Get the last modified date of the Policy.
      *
      * @return the lastModified value
      */
@@ -76,7 +76,7 @@ public class ContentKeyPolicyPropertiesInner {
     }
 
     /**
-     * Get the description value.
+     * Get a description for the Policy.
      *
      * @return the description value
      */
@@ -85,7 +85,7 @@ public class ContentKeyPolicyPropertiesInner {
     }
 
     /**
-     * Set the description value.
+     * Set a description for the Policy.
      *
      * @param description the description value to set
      * @return the ContentKeyPolicyPropertiesInner object itself.
@@ -96,7 +96,7 @@ public class ContentKeyPolicyPropertiesInner {
     }
 
     /**
-     * Get the options value.
+     * Get the Key Policy options.
      *
      * @return the options value
      */
@@ -105,7 +105,7 @@ public class ContentKeyPolicyPropertiesInner {
     }
 
     /**
-     * Set the options value.
+     * Set the Key Policy options.
      *
      * @param options the options value to set
      * @return the ContentKeyPolicyPropertiesInner object itself.

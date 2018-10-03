@@ -30,7 +30,7 @@ public class SKUCapability {
     private String value;
 
     /**
-     * Get the name value.
+     * Get the name of capability, The capability information in the specified sku, including file encryption, network acls, change notification, etc.
      *
      * @return the name value
      */
@@ -39,7 +39,7 @@ public class SKUCapability {
     }
 
     /**
-     * Get the value value.
+     * Get a string value to indicate states of given capability. Possibly 'true' or 'false'.
      *
      * @return the value value
      */

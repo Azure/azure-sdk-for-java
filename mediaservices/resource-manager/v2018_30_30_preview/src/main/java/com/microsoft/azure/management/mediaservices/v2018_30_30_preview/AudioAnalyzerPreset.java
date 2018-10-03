@@ -34,7 +34,7 @@ public class AudioAnalyzerPreset extends Preset {
     private String audioLanguage;
 
     /**
-     * Get the audioLanguage value.
+     * Get the language for the audio payload in the input using the BCP-47 format of 'language tag-region' (e.g: 'en-US'). The list of supported languages are, 'en-US', 'en-GB', 'es-ES', 'es-MX', 'fr-FR', 'it-IT', 'ja-JP', 'pt-BR', 'zh-CN'.
      *
      * @return the audioLanguage value
      */
@@ -43,7 +43,7 @@ public class AudioAnalyzerPreset extends Preset {
     }
 
     /**
-     * Set the audioLanguage value.
+     * Set the language for the audio payload in the input using the BCP-47 format of 'language tag-region' (e.g: 'en-US'). The list of supported languages are, 'en-US', 'en-GB', 'es-ES', 'es-MX', 'fr-FR', 'it-IT', 'ja-JP', 'pt-BR', 'zh-CN'.
      *
      * @param audioLanguage the audioLanguage value to set
      * @return the AudioAnalyzerPreset object itself.

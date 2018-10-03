@@ -21,7 +21,7 @@ public class Provider {
     private String providerName;
 
     /**
-     * Get the providerName value.
+     * Get the provider name.
      *
      * @return the providerName value
      */
@@ -30,7 +30,7 @@ public class Provider {
     }
 
     /**
-     * Set the providerName value.
+     * Set the provider name.
      *
      * @param providerName the providerName value to set
      * @return the Provider object itself.

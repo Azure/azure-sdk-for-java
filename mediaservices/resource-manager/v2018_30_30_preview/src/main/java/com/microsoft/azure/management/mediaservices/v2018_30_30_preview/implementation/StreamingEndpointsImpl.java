@@ -60,41 +60,22 @@ class StreamingEndpointsImpl extends WrapperImpl<StreamingEndpointsInner> implem
         return client.scaleAsync(resourceGroupName, accountName, streamingEndpointName).toCompletable();
     }
 
-    private Observable<Page<StreamingEndpointInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        StreamingEndpointsInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<StreamingEndpointInner>, Observable<Page<StreamingEndpointInner>>>() {
-            @Override
-            public Observable<Page<StreamingEndpointInner>> call(Page<StreamingEndpointInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<StreamingEndpoint> listAsync(final String resourceGroupName, final String accountName) {
         StreamingEndpointsInner client = this.inner();
         return client.listAsync(resourceGroupName, accountName)
-        .flatMap(new Func1<Page<StreamingEndpointInner>, Observable<Page<StreamingEndpointInner>>>() {
-            @Override
-            public Observable<Page<StreamingEndpointInner>> call(Page<StreamingEndpointInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<StreamingEndpointInner>, Iterable<StreamingEndpointInner>>() {
             @Override
             public Iterable<StreamingEndpointInner> call(Page<StreamingEndpointInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<StreamingEndpointInner, StreamingEndpoint>() {
             @Override
             public StreamingEndpoint call(StreamingEndpointInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override

@@ -27,7 +27,7 @@ public class JpgImage extends Image {
     private List<JpgLayer> layers;
 
     /**
-     * Get the layers value.
+     * Get a collection of output JPEG image layers to be produced by the encoder.
      *
      * @return the layers value
      */
@@ -36,7 +36,7 @@ public class JpgImage extends Image {
     }
 
     /**
-     * Set the layers value.
+     * Set a collection of output JPEG image layers to be produced by the encoder.
      *
      * @param layers the layers value to set
      * @return the JpgImage object itself.

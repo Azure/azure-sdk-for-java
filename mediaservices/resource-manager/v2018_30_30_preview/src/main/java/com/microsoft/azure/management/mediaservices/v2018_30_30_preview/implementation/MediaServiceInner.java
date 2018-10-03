@@ -35,7 +35,7 @@ public class MediaServiceInner extends Resource {
     private List<StorageAccount> storageAccounts;
 
     /**
-     * Get the mediaServiceId value.
+     * Get the Media Services account ID.
      *
      * @return the mediaServiceId value
      */
@@ -44,7 +44,7 @@ public class MediaServiceInner extends Resource {
     }
 
     /**
-     * Get the storageAccounts value.
+     * Get the storage accounts for this resource.
      *
      * @return the storageAccounts value
      */
@@ -53,7 +53,7 @@ public class MediaServiceInner extends Resource {
     }
 
     /**
-     * Set the storageAccounts value.
+     * Set the storage accounts for this resource.
      *
      * @param storageAccounts the storageAccounts value to set
      * @return the MediaServiceInner object itself.

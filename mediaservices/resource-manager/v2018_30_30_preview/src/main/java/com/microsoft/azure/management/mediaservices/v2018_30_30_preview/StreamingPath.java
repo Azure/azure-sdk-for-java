@@ -36,7 +36,7 @@ public class StreamingPath {
     private List<String> paths;
 
     /**
-     * Get the streamingProtocol value.
+     * Get streaming protocol. Possible values include: 'Hls', 'Dash', 'SmoothStreaming', 'Download'.
      *
      * @return the streamingProtocol value
      */
@@ -45,7 +45,7 @@ public class StreamingPath {
     }
 
     /**
-     * Set the streamingProtocol value.
+     * Set streaming protocol. Possible values include: 'Hls', 'Dash', 'SmoothStreaming', 'Download'.
      *
      * @param streamingProtocol the streamingProtocol value to set
      * @return the StreamingPath object itself.
@@ -56,7 +56,7 @@ public class StreamingPath {
     }
 
     /**
-     * Get the encryptionScheme value.
+     * Get encryption scheme. Possible values include: 'NoEncryption', 'EnvelopeEncryption', 'CommonEncryptionCenc', 'CommonEncryptionCbcs'.
      *
      * @return the encryptionScheme value
      */
@@ -65,7 +65,7 @@ public class StreamingPath {
     }
 
     /**
-     * Set the encryptionScheme value.
+     * Set encryption scheme. Possible values include: 'NoEncryption', 'EnvelopeEncryption', 'CommonEncryptionCenc', 'CommonEncryptionCbcs'.
      *
      * @param encryptionScheme the encryptionScheme value to set
      * @return the StreamingPath object itself.
@@ -76,7 +76,7 @@ public class StreamingPath {
     }
 
     /**
-     * Get the paths value.
+     * Get streaming paths for each protocol and encryptionScheme pair.
      *
      * @return the paths value
      */
@@ -85,7 +85,7 @@ public class StreamingPath {
     }
 
     /**
-     * Set the paths value.
+     * Set streaming paths for each protocol and encryptionScheme pair.
      *
      * @param paths the paths value to set
      * @return the StreamingPath object itself.

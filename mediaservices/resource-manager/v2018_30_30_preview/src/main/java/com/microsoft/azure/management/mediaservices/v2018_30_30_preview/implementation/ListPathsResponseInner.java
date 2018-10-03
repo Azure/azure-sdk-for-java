@@ -29,7 +29,7 @@ public class ListPathsResponseInner {
     private List<String> downloadPaths;
 
     /**
-     * Get the streamingPaths value.
+     * Get streaming Paths supported by current Streaming Locator.
      *
      * @return the streamingPaths value
      */
@@ -38,7 +38,7 @@ public class ListPathsResponseInner {
     }
 
     /**
-     * Set the streamingPaths value.
+     * Set streaming Paths supported by current Streaming Locator.
      *
      * @param streamingPaths the streamingPaths value to set
      * @return the ListPathsResponseInner object itself.
@@ -49,7 +49,7 @@ public class ListPathsResponseInner {
     }
 
     /**
-     * Get the downloadPaths value.
+     * Get download Paths supported by current Streaming Locator.
      *
      * @return the downloadPaths value
      */
@@ -58,7 +58,7 @@ public class ListPathsResponseInner {
     }
 
     /**
-     * Set the downloadPaths value.
+     * Set download Paths supported by current Streaming Locator.
      *
      * @param downloadPaths the downloadPaths value to set
      * @return the ListPathsResponseInner object itself.

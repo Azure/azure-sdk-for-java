@@ -28,7 +28,7 @@ public class OperationInner {
     private OperationDisplay display;
 
     /**
-     * Get the name value.
+     * Get the operation name.
      *
      * @return the name value
      */
@@ -37,7 +37,7 @@ public class OperationInner {
     }
 
     /**
-     * Set the name value.
+     * Set the operation name.
      *
      * @param name the name value to set
      * @return the OperationInner object itself.
@@ -48,7 +48,7 @@ public class OperationInner {
     }
 
     /**
-     * Get the display value.
+     * Get the operation display name.
      *
      * @return the display value
      */
@@ -57,7 +57,7 @@ public class OperationInner {
     }
 
     /**
-     * Set the display value.
+     * Set the operation display name.
      *
      * @param display the display value to set
      * @return the OperationInner object itself.

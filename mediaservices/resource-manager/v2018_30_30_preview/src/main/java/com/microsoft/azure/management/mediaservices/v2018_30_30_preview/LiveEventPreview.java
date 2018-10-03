@@ -40,7 +40,7 @@ public class LiveEventPreview {
     private String streamingPolicyName;
 
     /**
-     * Get the endpoints value.
+     * Get the endpoints for preview.
      *
      * @return the endpoints value
      */
@@ -49,7 +49,7 @@ public class LiveEventPreview {
     }
 
     /**
-     * Set the endpoints value.
+     * Set the endpoints for preview.
      *
      * @param endpoints the endpoints value to set
      * @return the LiveEventPreview object itself.
@@ -60,7 +60,7 @@ public class LiveEventPreview {
     }
 
     /**
-     * Get the accessControl value.
+     * Get the access control for LiveEvent preview.
      *
      * @return the accessControl value
      */
@@ -69,7 +69,7 @@ public class LiveEventPreview {
     }
 
     /**
-     * Set the accessControl value.
+     * Set the access control for LiveEvent preview.
      *
      * @param accessControl the accessControl value to set
      * @return the LiveEventPreview object itself.
@@ -80,7 +80,7 @@ public class LiveEventPreview {
     }
 
     /**
-     * Get the previewLocator value.
+     * Get the preview locator Guid.
      *
      * @return the previewLocator value
      */
@@ -89,7 +89,7 @@ public class LiveEventPreview {
     }
 
     /**
-     * Set the previewLocator value.
+     * Set the preview locator Guid.
      *
      * @param previewLocator the previewLocator value to set
      * @return the LiveEventPreview object itself.
@@ -100,7 +100,7 @@ public class LiveEventPreview {
     }
 
     /**
-     * Get the streamingPolicyName value.
+     * Get the name of streaming policy used for LiveEvent preview.
      *
      * @return the streamingPolicyName value
      */
@@ -109,7 +109,7 @@ public class LiveEventPreview {
     }
 
     /**
-     * Set the streamingPolicyName value.
+     * Set the name of streaming policy used for LiveEvent preview.
      *
      * @param streamingPolicyName the streamingPolicyName value to set
      * @return the LiveEventPreview object itself.

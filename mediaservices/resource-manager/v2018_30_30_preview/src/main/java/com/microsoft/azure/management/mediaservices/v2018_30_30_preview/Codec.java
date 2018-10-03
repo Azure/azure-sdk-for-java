@@ -33,7 +33,7 @@ public class Codec {
     private String label;
 
     /**
-     * Get the label value.
+     * Get an optional label for the codec. The label can be used to control muxing behavior.
      *
      * @return the label value
      */
@@ -42,7 +42,7 @@ public class Codec {
     }
 
     /**
-     * Set the label value.
+     * Set an optional label for the codec. The label can be used to control muxing behavior.
      *
      * @param label the label value to set
      * @return the Codec object itself.

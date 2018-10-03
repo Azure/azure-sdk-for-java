@@ -24,7 +24,13 @@ public class ImageTag {
      * The level of confidence the service has in the caption.
      */
     @JsonProperty(value = "confidence")
-    private Double confidence;
+    private double confidence;
+
+    /**
+     * Optional categorization for the tag.
+     */
+    @JsonProperty(value = "hint")
+    private String hint;
 
     /**
      * Get the name value.
@@ -51,7 +57,7 @@ public class ImageTag {
      *
      * @return the confidence value
      */
-    public Double confidence() {
+    public double confidence() {
         return this.confidence;
     }
 
@@ -61,8 +67,28 @@ public class ImageTag {
      * @param confidence the confidence value to set
      * @return the ImageTag object itself.
      */
-    public ImageTag withConfidence(Double confidence) {
+    public ImageTag withConfidence(double confidence) {
         this.confidence = confidence;
+        return this;
+    }
+
+    /**
+     * Get the hint value.
+     *
+     * @return the hint value
+     */
+    public String hint() {
+        return this.hint;
+    }
+
+    /**
+     * Set the hint value.
+     *
+     * @param hint the hint value to set
+     * @return the ImageTag object itself.
+     */
+    public ImageTag withHint(String hint) {
+        this.hint = hint;
         return this;
     }
 

@@ -69,41 +69,22 @@ class AssetsImpl extends WrapperImpl<AssetsInner> implements Assets {
         });
     }
 
-    private Observable<Page<AssetInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        AssetsInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<AssetInner>, Observable<Page<AssetInner>>>() {
-            @Override
-            public Observable<Page<AssetInner>> call(Page<AssetInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<Asset> listAsync(final String resourceGroupName, final String accountName) {
         AssetsInner client = this.inner();
         return client.listAsync(resourceGroupName, accountName)
-        .flatMap(new Func1<Page<AssetInner>, Observable<Page<AssetInner>>>() {
-            @Override
-            public Observable<Page<AssetInner>> call(Page<AssetInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<AssetInner>, Iterable<AssetInner>>() {
             @Override
             public Iterable<AssetInner> call(Page<AssetInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<AssetInner, Asset>() {
             @Override
             public Asset call(AssetInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override

@@ -28,7 +28,7 @@ public class StreamingPolicyPlayReadyConfiguration {
     private String playReadyCustomAttributes;
 
     /**
-     * Get the customLicenseAcquisitionUrlTemplate value.
+     * Get the template for a customer service to deliver keys to end users.  Not needed when using Azure Media Services for issuing keys.
      *
      * @return the customLicenseAcquisitionUrlTemplate value
      */
@@ -37,7 +37,7 @@ public class StreamingPolicyPlayReadyConfiguration {
     }
 
     /**
-     * Set the customLicenseAcquisitionUrlTemplate value.
+     * Set the template for a customer service to deliver keys to end users.  Not needed when using Azure Media Services for issuing keys.
      *
      * @param customLicenseAcquisitionUrlTemplate the customLicenseAcquisitionUrlTemplate value to set
      * @return the StreamingPolicyPlayReadyConfiguration object itself.
@@ -48,7 +48,7 @@ public class StreamingPolicyPlayReadyConfiguration {
     }
 
     /**
-     * Get the playReadyCustomAttributes value.
+     * Get custom attributes for PlayReady.
      *
      * @return the playReadyCustomAttributes value
      */
@@ -57,7 +57,7 @@ public class StreamingPolicyPlayReadyConfiguration {
     }
 
     /**
-     * Set the playReadyCustomAttributes value.
+     * Set custom attributes for PlayReady.
      *
      * @param playReadyCustomAttributes the playReadyCustomAttributes value to set
      * @return the StreamingPolicyPlayReadyConfiguration object itself.

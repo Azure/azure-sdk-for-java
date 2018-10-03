@@ -35,7 +35,7 @@ public class StreamingLocatorUserDefinedContentKey {
     private String value;
 
     /**
-     * Get the id value.
+     * Get iD of Content Key.
      *
      * @return the id value
      */
@@ -44,7 +44,7 @@ public class StreamingLocatorUserDefinedContentKey {
     }
 
     /**
-     * Set the id value.
+     * Set iD of Content Key.
      *
      * @param id the id value to set
      * @return the StreamingLocatorUserDefinedContentKey object itself.
@@ -55,7 +55,7 @@ public class StreamingLocatorUserDefinedContentKey {
     }
 
     /**
-     * Get the label value.
+     * Get the Content Key description.
      *
      * @return the label value
      */
@@ -64,7 +64,7 @@ public class StreamingLocatorUserDefinedContentKey {
     }
 
     /**
-     * Set the label value.
+     * Set the Content Key description.
      *
      * @param label the label value to set
      * @return the StreamingLocatorUserDefinedContentKey object itself.
@@ -75,7 +75,7 @@ public class StreamingLocatorUserDefinedContentKey {
     }
 
     /**
-     * Get the value value.
+     * Get the Content Key secret.
      *
      * @return the value value
      */
@@ -84,7 +84,7 @@ public class StreamingLocatorUserDefinedContentKey {
     }
 
     /**
-     * Set the value value.
+     * Set the Content Key secret.
      *
      * @param value the value value to set
      * @return the StreamingLocatorUserDefinedContentKey object itself.

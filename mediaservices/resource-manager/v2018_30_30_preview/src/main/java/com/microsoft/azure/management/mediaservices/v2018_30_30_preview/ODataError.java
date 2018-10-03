@@ -41,7 +41,7 @@ public class ODataError {
     private List<ODataError> details;
 
     /**
-     * Get the code value.
+     * Get a language-independent error name.
      *
      * @return the code value
      */
@@ -50,7 +50,7 @@ public class ODataError {
     }
 
     /**
-     * Set the code value.
+     * Set a language-independent error name.
      *
      * @param code the code value to set
      * @return the ODataError object itself.
@@ -61,7 +61,7 @@ public class ODataError {
     }
 
     /**
-     * Get the message value.
+     * Get the error message.
      *
      * @return the message value
      */
@@ -70,7 +70,7 @@ public class ODataError {
     }
 
     /**
-     * Set the message value.
+     * Set the error message.
      *
      * @param message the message value to set
      * @return the ODataError object itself.
@@ -81,7 +81,7 @@ public class ODataError {
     }
 
     /**
-     * Get the target value.
+     * Get the target of the error (for example, the name of the property in error).
      *
      * @return the target value
      */
@@ -90,7 +90,7 @@ public class ODataError {
     }
 
     /**
-     * Set the target value.
+     * Set the target of the error (for example, the name of the property in error).
      *
      * @param target the target value to set
      * @return the ODataError object itself.
@@ -101,7 +101,7 @@ public class ODataError {
     }
 
     /**
-     * Get the details value.
+     * Get the error details.
      *
      * @return the details value
      */
@@ -110,7 +110,7 @@ public class ODataError {
     }
 
     /**
-     * Set the details value.
+     * Set the error details.
      *
      * @param details the details value to set
      * @return the ODataError object itself.

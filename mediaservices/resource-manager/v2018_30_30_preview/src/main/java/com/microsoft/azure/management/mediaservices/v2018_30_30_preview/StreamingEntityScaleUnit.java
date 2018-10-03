@@ -22,7 +22,7 @@ public class StreamingEntityScaleUnit {
     private Integer scaleUnit;
 
     /**
-     * Get the scaleUnit value.
+     * Get the scale unit number of the StreamingEndpoint.
      *
      * @return the scaleUnit value
      */
@@ -31,7 +31,7 @@ public class StreamingEntityScaleUnit {
     }
 
     /**
-     * Set the scaleUnit value.
+     * Set the scale unit number of the StreamingEndpoint.
      *
      * @param scaleUnit the scaleUnit value to set
      * @return the StreamingEntityScaleUnit object itself.

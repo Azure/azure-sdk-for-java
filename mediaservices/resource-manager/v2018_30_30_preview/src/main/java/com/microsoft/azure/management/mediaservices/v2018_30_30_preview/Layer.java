@@ -50,7 +50,7 @@ public class Layer {
     private String label;
 
     /**
-     * Get the width value.
+     * Get the width of the output video for this layer. The value can be absolute (in pixels) or relative (in percentage). For example 50% means the output video has half as many pixels in width as the input.
      *
      * @return the width value
      */
@@ -59,7 +59,7 @@ public class Layer {
     }
 
     /**
-     * Set the width value.
+     * Set the width of the output video for this layer. The value can be absolute (in pixels) or relative (in percentage). For example 50% means the output video has half as many pixels in width as the input.
      *
      * @param width the width value to set
      * @return the Layer object itself.
@@ -70,7 +70,7 @@ public class Layer {
     }
 
     /**
-     * Get the height value.
+     * Get the height of the output video for this layer. The value can be absolute (in pixels) or relative (in percentage). For example 50% means the output video has half as many pixels in height as the input.
      *
      * @return the height value
      */
@@ -79,7 +79,7 @@ public class Layer {
     }
 
     /**
-     * Set the height value.
+     * Set the height of the output video for this layer. The value can be absolute (in pixels) or relative (in percentage). For example 50% means the output video has half as many pixels in height as the input.
      *
      * @param height the height value to set
      * @return the Layer object itself.
@@ -90,7 +90,7 @@ public class Layer {
     }
 
     /**
-     * Get the label value.
+     * Get the alphanumeric label for this layer, which can be used in multiplexing different video and audio layers, or in naming the output file.
      *
      * @return the label value
      */
@@ -99,7 +99,7 @@ public class Layer {
     }
 
     /**
-     * Set the label value.
+     * Set the alphanumeric label for this layer, which can be used in multiplexing different video and audio layers, or in naming the output file.
      *
      * @param label the label value to set
      * @return the Layer object itself.

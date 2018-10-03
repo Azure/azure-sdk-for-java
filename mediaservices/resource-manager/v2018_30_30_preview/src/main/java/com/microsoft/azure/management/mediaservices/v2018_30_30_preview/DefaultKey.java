@@ -29,7 +29,7 @@ public class DefaultKey {
     private String policyName;
 
     /**
-     * Get the label value.
+     * Get label can be used to specify Content Key when creating Stremaing Locator.
      *
      * @return the label value
      */
@@ -38,7 +38,7 @@ public class DefaultKey {
     }
 
     /**
-     * Set the label value.
+     * Set label can be used to specify Content Key when creating Stremaing Locator.
      *
      * @param label the label value to set
      * @return the DefaultKey object itself.
@@ -49,7 +49,7 @@ public class DefaultKey {
     }
 
     /**
-     * Get the policyName value.
+     * Get policy used by Default Key.
      *
      * @return the policyName value
      */
@@ -58,7 +58,7 @@ public class DefaultKey {
     }
 
     /**
-     * Set the policyName value.
+     * Set policy used by Default Key.
      *
      * @param policyName the policyName value to set
      * @return the DefaultKey object itself.

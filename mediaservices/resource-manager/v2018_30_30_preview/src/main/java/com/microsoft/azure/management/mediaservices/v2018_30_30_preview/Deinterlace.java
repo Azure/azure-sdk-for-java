@@ -29,7 +29,7 @@ public class Deinterlace {
     private DeinterlaceMode mode;
 
     /**
-     * Get the parity value.
+     * Get the field parity for de-interlacing, defaults to Auto. Possible values include: 'Auto', 'TopFieldFirst', 'BottomFieldFirst'.
      *
      * @return the parity value
      */
@@ -38,7 +38,7 @@ public class Deinterlace {
     }
 
     /**
-     * Set the parity value.
+     * Set the field parity for de-interlacing, defaults to Auto. Possible values include: 'Auto', 'TopFieldFirst', 'BottomFieldFirst'.
      *
      * @param parity the parity value to set
      * @return the Deinterlace object itself.
@@ -49,7 +49,7 @@ public class Deinterlace {
     }
 
     /**
-     * Get the mode value.
+     * Get the deinterlacing mode. Defaults to AutoPixelAdaptive. Possible values include: 'Off', 'AutoPixelAdaptive'.
      *
      * @return the mode value
      */
@@ -58,7 +58,7 @@ public class Deinterlace {
     }
 
     /**
-     * Set the mode value.
+     * Set the deinterlacing mode. Defaults to AutoPixelAdaptive. Possible values include: 'Off', 'AutoPixelAdaptive'.
      *
      * @param mode the mode value to set
      * @return the Deinterlace object itself.

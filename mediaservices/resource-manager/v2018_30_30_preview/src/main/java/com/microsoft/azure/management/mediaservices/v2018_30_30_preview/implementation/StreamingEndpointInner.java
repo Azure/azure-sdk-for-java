@@ -122,7 +122,7 @@ public class StreamingEndpointInner extends Resource {
     private DateTime lastModified;
 
     /**
-     * Get the description value.
+     * Get the StreamingEndpoint description.
      *
      * @return the description value
      */
@@ -131,7 +131,7 @@ public class StreamingEndpointInner extends Resource {
     }
 
     /**
-     * Set the description value.
+     * Set the StreamingEndpoint description.
      *
      * @param description the description value to set
      * @return the StreamingEndpointInner object itself.
@@ -142,7 +142,7 @@ public class StreamingEndpointInner extends Resource {
     }
 
     /**
-     * Get the scaleUnits value.
+     * Get the number of scale units.
      *
      * @return the scaleUnits value
      */
@@ -151,7 +151,7 @@ public class StreamingEndpointInner extends Resource {
     }
 
     /**
-     * Set the scaleUnits value.
+     * Set the number of scale units.
      *
      * @param scaleUnits the scaleUnits value to set
      * @return the StreamingEndpointInner object itself.
@@ -162,7 +162,7 @@ public class StreamingEndpointInner extends Resource {
     }
 
     /**
-     * Get the availabilitySetName value.
+     * Get availabilitySet name.
      *
      * @return the availabilitySetName value
      */
@@ -171,7 +171,7 @@ public class StreamingEndpointInner extends Resource {
     }
 
     /**
-     * Set the availabilitySetName value.
+     * Set availabilitySet name.
      *
      * @param availabilitySetName the availabilitySetName value to set
      * @return the StreamingEndpointInner object itself.
@@ -182,7 +182,7 @@ public class StreamingEndpointInner extends Resource {
     }
 
     /**
-     * Get the accessControl value.
+     * Get the access control definition of the StreamingEndpoint.
      *
      * @return the accessControl value
      */
@@ -191,7 +191,7 @@ public class StreamingEndpointInner extends Resource {
     }
 
     /**
-     * Set the accessControl value.
+     * Set the access control definition of the StreamingEndpoint.
      *
      * @param accessControl the accessControl value to set
      * @return the StreamingEndpointInner object itself.
@@ -202,7 +202,7 @@ public class StreamingEndpointInner extends Resource {
     }
 
     /**
-     * Get the maxCacheAge value.
+     * Get max cache age.
      *
      * @return the maxCacheAge value
      */
@@ -211,7 +211,7 @@ public class StreamingEndpointInner extends Resource {
     }
 
     /**
-     * Set the maxCacheAge value.
+     * Set max cache age.
      *
      * @param maxCacheAge the maxCacheAge value to set
      * @return the StreamingEndpointInner object itself.
@@ -222,7 +222,7 @@ public class StreamingEndpointInner extends Resource {
     }
 
     /**
-     * Get the customHostNames value.
+     * Get the custom host names of the StreamingEndpoint.
      *
      * @return the customHostNames value
      */
@@ -231,7 +231,7 @@ public class StreamingEndpointInner extends Resource {
     }
 
     /**
-     * Set the customHostNames value.
+     * Set the custom host names of the StreamingEndpoint.
      *
      * @param customHostNames the customHostNames value to set
      * @return the StreamingEndpointInner object itself.
@@ -242,7 +242,7 @@ public class StreamingEndpointInner extends Resource {
     }
 
     /**
-     * Get the hostName value.
+     * Get the StreamingEndpoint host name.
      *
      * @return the hostName value
      */
@@ -251,7 +251,7 @@ public class StreamingEndpointInner extends Resource {
     }
 
     /**
-     * Get the cdnEnabled value.
+     * Get the CDN enabled flag.
      *
      * @return the cdnEnabled value
      */
@@ -260,7 +260,7 @@ public class StreamingEndpointInner extends Resource {
     }
 
     /**
-     * Set the cdnEnabled value.
+     * Set the CDN enabled flag.
      *
      * @param cdnEnabled the cdnEnabled value to set
      * @return the StreamingEndpointInner object itself.
@@ -271,7 +271,7 @@ public class StreamingEndpointInner extends Resource {
     }
 
     /**
-     * Get the cdnProvider value.
+     * Get the CDN provider name.
      *
      * @return the cdnProvider value
      */
@@ -280,7 +280,7 @@ public class StreamingEndpointInner extends Resource {
     }
 
     /**
-     * Set the cdnProvider value.
+     * Set the CDN provider name.
      *
      * @param cdnProvider the cdnProvider value to set
      * @return the StreamingEndpointInner object itself.
@@ -291,7 +291,7 @@ public class StreamingEndpointInner extends Resource {
     }
 
     /**
-     * Get the cdnProfile value.
+     * Get the CDN profile name.
      *
      * @return the cdnProfile value
      */
@@ -300,7 +300,7 @@ public class StreamingEndpointInner extends Resource {
     }
 
     /**
-     * Set the cdnProfile value.
+     * Set the CDN profile name.
      *
      * @param cdnProfile the cdnProfile value to set
      * @return the StreamingEndpointInner object itself.
@@ -311,7 +311,7 @@ public class StreamingEndpointInner extends Resource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get the provisioning state of the StreamingEndpoint.
      *
      * @return the provisioningState value
      */
@@ -320,7 +320,7 @@ public class StreamingEndpointInner extends Resource {
     }
 
     /**
-     * Get the resourceState value.
+     * Get the resource state of the StreamingEndpoint. Possible values include: 'Stopped', 'Starting', 'Running', 'Stopping', 'Deleting', 'Scaling'.
      *
      * @return the resourceState value
      */
@@ -329,7 +329,7 @@ public class StreamingEndpointInner extends Resource {
     }
 
     /**
-     * Get the crossSiteAccessPolicies value.
+     * Get the StreamingEndpoint access policies.
      *
      * @return the crossSiteAccessPolicies value
      */
@@ -338,7 +338,7 @@ public class StreamingEndpointInner extends Resource {
     }
 
     /**
-     * Set the crossSiteAccessPolicies value.
+     * Set the StreamingEndpoint access policies.
      *
      * @param crossSiteAccessPolicies the crossSiteAccessPolicies value to set
      * @return the StreamingEndpointInner object itself.
@@ -349,7 +349,7 @@ public class StreamingEndpointInner extends Resource {
     }
 
     /**
-     * Get the freeTrialEndTime value.
+     * Get the free trial expiration time.
      *
      * @return the freeTrialEndTime value
      */
@@ -358,7 +358,7 @@ public class StreamingEndpointInner extends Resource {
     }
 
     /**
-     * Get the created value.
+     * Get the exact time the StreamingEndpoint was created.
      *
      * @return the created value
      */
@@ -367,7 +367,7 @@ public class StreamingEndpointInner extends Resource {
     }
 
     /**
-     * Get the lastModified value.
+     * Get the exact time the StreamingEndpoint was last modified.
      *
      * @return the lastModified value
      */

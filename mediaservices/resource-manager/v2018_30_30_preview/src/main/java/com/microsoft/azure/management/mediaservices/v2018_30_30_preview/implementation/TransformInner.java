@@ -51,7 +51,7 @@ public class TransformInner extends ProxyResource {
     private List<TransformOutput> outputs;
 
     /**
-     * Get the created value.
+     * Get the UTC date and time when the Transform was created, in 'YYYY-MM-DDThh:mm:ssZ' format.
      *
      * @return the created value
      */
@@ -60,7 +60,7 @@ public class TransformInner extends ProxyResource {
     }
 
     /**
-     * Get the description value.
+     * Get an optional verbose description of the Transform.
      *
      * @return the description value
      */
@@ -69,7 +69,7 @@ public class TransformInner extends ProxyResource {
     }
 
     /**
-     * Set the description value.
+     * Set an optional verbose description of the Transform.
      *
      * @param description the description value to set
      * @return the TransformInner object itself.
@@ -80,7 +80,7 @@ public class TransformInner extends ProxyResource {
     }
 
     /**
-     * Get the lastModified value.
+     * Get the UTC date and time when the Transform was last updated, in 'YYYY-MM-DDThh:mm:ssZ' format.
      *
      * @return the lastModified value
      */
@@ -89,7 +89,7 @@ public class TransformInner extends ProxyResource {
     }
 
     /**
-     * Get the outputs value.
+     * Get an array of one or more TransformOutputs that the Transform should generate.
      *
      * @return the outputs value
      */
@@ -98,7 +98,7 @@ public class TransformInner extends ProxyResource {
     }
 
     /**
-     * Set the outputs value.
+     * Set an array of one or more TransformOutputs that the Transform should generate.
      *
      * @param outputs the outputs value to set
      * @return the TransformInner object itself.

@@ -21,7 +21,7 @@ public class SyncStorageKeysInput {
     private String id;
 
     /**
-     * Get the id value.
+     * Get the ID of the storage account resource.
      *
      * @return the id value
      */
@@ -30,7 +30,7 @@ public class SyncStorageKeysInput {
     }
 
     /**
-     * Set the id value.
+     * Set the ID of the storage account resource.
      *
      * @param id the id value to set
      * @return the SyncStorageKeysInput object itself.

@@ -21,7 +21,7 @@ public class ListServiceSasResponseInner {
     private String serviceSasToken;
 
     /**
-     * Get the serviceSasToken value.
+     * Get list service SAS credentials of speicific resource.
      *
      * @return the serviceSasToken value
      */

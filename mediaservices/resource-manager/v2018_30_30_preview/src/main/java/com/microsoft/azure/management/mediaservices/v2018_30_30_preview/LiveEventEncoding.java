@@ -28,7 +28,7 @@ public class LiveEventEncoding {
     private String presetName;
 
     /**
-     * Get the encodingType value.
+     * Get the encoding type for Live Event. Possible values include: 'None', 'Basic'.
      *
      * @return the encodingType value
      */
@@ -37,7 +37,7 @@ public class LiveEventEncoding {
     }
 
     /**
-     * Set the encodingType value.
+     * Set the encoding type for Live Event. Possible values include: 'None', 'Basic'.
      *
      * @param encodingType the encodingType value to set
      * @return the LiveEventEncoding object itself.
@@ -48,7 +48,7 @@ public class LiveEventEncoding {
     }
 
     /**
-     * Get the presetName value.
+     * Get the encoding preset name.
      *
      * @return the presetName value
      */
@@ -57,7 +57,7 @@ public class LiveEventEncoding {
     }
 
     /**
-     * Set the presetName value.
+     * Set the encoding preset name.
      *
      * @param presetName the presetName value to set
      * @return the LiveEventEncoding object itself.

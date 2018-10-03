@@ -35,7 +35,7 @@ public class StreamingPolicyContentKey {
     private List<TrackSelection> tracks;
 
     /**
-     * Get the label value.
+     * Get label can be used to specify Content Key when creating Stremaing Locator.
      *
      * @return the label value
      */
@@ -44,7 +44,7 @@ public class StreamingPolicyContentKey {
     }
 
     /**
-     * Set the label value.
+     * Set label can be used to specify Content Key when creating Stremaing Locator.
      *
      * @param label the label value to set
      * @return the StreamingPolicyContentKey object itself.
@@ -55,7 +55,7 @@ public class StreamingPolicyContentKey {
     }
 
     /**
-     * Get the policyName value.
+     * Get policy used by Content Key.
      *
      * @return the policyName value
      */
@@ -64,7 +64,7 @@ public class StreamingPolicyContentKey {
     }
 
     /**
-     * Set the policyName value.
+     * Set policy used by Content Key.
      *
      * @param policyName the policyName value to set
      * @return the StreamingPolicyContentKey object itself.
@@ -75,7 +75,7 @@ public class StreamingPolicyContentKey {
     }
 
     /**
-     * Get the tracks value.
+     * Get tracks which use this content key.
      *
      * @return the tracks value
      */
@@ -84,7 +84,7 @@ public class StreamingPolicyContentKey {
     }
 
     /**
-     * Set the tracks value.
+     * Set tracks which use this content key.
      *
      * @param tracks the tracks value to set
      * @return the StreamingPolicyContentKey object itself.

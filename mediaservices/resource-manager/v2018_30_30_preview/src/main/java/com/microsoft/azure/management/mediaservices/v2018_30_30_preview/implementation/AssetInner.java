@@ -70,7 +70,7 @@ public class AssetInner extends ProxyResource {
     private AssetStorageEncryptionFormat storageEncryptionFormat;
 
     /**
-     * Get the assetId value.
+     * Get the Asset ID.
      *
      * @return the assetId value
      */
@@ -79,7 +79,7 @@ public class AssetInner extends ProxyResource {
     }
 
     /**
-     * Get the created value.
+     * Get the creation date of the Asset.
      *
      * @return the created value
      */
@@ -88,7 +88,7 @@ public class AssetInner extends ProxyResource {
     }
 
     /**
-     * Get the lastModified value.
+     * Get the last modified date of the Asset.
      *
      * @return the lastModified value
      */
@@ -97,7 +97,7 @@ public class AssetInner extends ProxyResource {
     }
 
     /**
-     * Get the alternateId value.
+     * Get the alternate ID of the Asset.
      *
      * @return the alternateId value
      */
@@ -106,7 +106,7 @@ public class AssetInner extends ProxyResource {
     }
 
     /**
-     * Set the alternateId value.
+     * Set the alternate ID of the Asset.
      *
      * @param alternateId the alternateId value to set
      * @return the AssetInner object itself.
@@ -117,7 +117,7 @@ public class AssetInner extends ProxyResource {
     }
 
     /**
-     * Get the description value.
+     * Get the Asset description.
      *
      * @return the description value
      */
@@ -126,7 +126,7 @@ public class AssetInner extends ProxyResource {
     }
 
     /**
-     * Set the description value.
+     * Set the Asset description.
      *
      * @param description the description value to set
      * @return the AssetInner object itself.
@@ -137,7 +137,7 @@ public class AssetInner extends ProxyResource {
     }
 
     /**
-     * Get the container value.
+     * Get the name of the asset blob container.
      *
      * @return the container value
      */
@@ -146,7 +146,7 @@ public class AssetInner extends ProxyResource {
     }
 
     /**
-     * Set the container value.
+     * Set the name of the asset blob container.
      *
      * @param container the container value to set
      * @return the AssetInner object itself.
@@ -157,7 +157,7 @@ public class AssetInner extends ProxyResource {
     }
 
     /**
-     * Get the storageAccountName value.
+     * Get the name of the storage account.
      *
      * @return the storageAccountName value
      */
@@ -166,7 +166,7 @@ public class AssetInner extends ProxyResource {
     }
 
     /**
-     * Set the storageAccountName value.
+     * Set the name of the storage account.
      *
      * @param storageAccountName the storageAccountName value to set
      * @return the AssetInner object itself.
@@ -177,7 +177,7 @@ public class AssetInner extends ProxyResource {
     }
 
     /**
-     * Get the storageEncryptionFormat value.
+     * Get the Asset encryption format. One of None or MediaStorageEncryption. Possible values include: 'None', 'MediaStorageClientEncryption'.
      *
      * @return the storageEncryptionFormat value
      */

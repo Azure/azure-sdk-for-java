@@ -36,7 +36,7 @@ public class MultiBitrateFormat extends Format {
     private List<OutputFile> outputFiles;
 
     /**
-     * Get the outputFiles value.
+     * Get the list of output files to produce.  Each entry in the list is a set of audio and video layer labels to be muxed together .
      *
      * @return the outputFiles value
      */
@@ -45,7 +45,7 @@ public class MultiBitrateFormat extends Format {
     }
 
     /**
-     * Set the outputFiles value.
+     * Set the list of output files to produce.  Each entry in the list is a set of audio and video layer labels to be muxed together .
      *
      * @param outputFiles the outputFiles value to set
      * @return the MultiBitrateFormat object itself.

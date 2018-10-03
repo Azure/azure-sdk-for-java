@@ -27,7 +27,7 @@ public class ContentKeyPolicyTokenClaim {
     private String claimValue;
 
     /**
-     * Get the claimType value.
+     * Get token claim type.
      *
      * @return the claimType value
      */
@@ -36,7 +36,7 @@ public class ContentKeyPolicyTokenClaim {
     }
 
     /**
-     * Set the claimType value.
+     * Set token claim type.
      *
      * @param claimType the claimType value to set
      * @return the ContentKeyPolicyTokenClaim object itself.
@@ -47,7 +47,7 @@ public class ContentKeyPolicyTokenClaim {
     }
 
     /**
-     * Get the claimValue value.
+     * Get token claim value.
      *
      * @return the claimValue value
      */
@@ -56,7 +56,7 @@ public class ContentKeyPolicyTokenClaim {
     }
 
     /**
-     * Set the claimValue value.
+     * Set token claim value.
      *
      * @param claimValue the claimValue value to set
      * @return the ContentKeyPolicyTokenClaim object itself.

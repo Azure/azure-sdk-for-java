@@ -27,7 +27,7 @@ public class JobErrorDetail {
     private String message;
 
     /**
-     * Get the code value.
+     * Get code describing the error detail.
      *
      * @return the code value
      */
@@ -36,7 +36,7 @@ public class JobErrorDetail {
     }
 
     /**
-     * Get the message value.
+     * Get a human-readable representation of the error.
      *
      * @return the message value
      */

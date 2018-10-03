@@ -84,7 +84,7 @@ public class LiveOutputInner extends ProxyResource {
     private LiveOutputResourceState resourceState;
 
     /**
-     * Get the description value.
+     * Get the description of the Live Output.
      *
      * @return the description value
      */
@@ -93,7 +93,7 @@ public class LiveOutputInner extends ProxyResource {
     }
 
     /**
-     * Set the description value.
+     * Set the description of the Live Output.
      *
      * @param description the description value to set
      * @return the LiveOutputInner object itself.
@@ -104,7 +104,7 @@ public class LiveOutputInner extends ProxyResource {
     }
 
     /**
-     * Get the assetName value.
+     * Get the asset name.
      *
      * @return the assetName value
      */
@@ -113,7 +113,7 @@ public class LiveOutputInner extends ProxyResource {
     }
 
     /**
-     * Set the assetName value.
+     * Set the asset name.
      *
      * @param assetName the assetName value to set
      * @return the LiveOutputInner object itself.
@@ -124,7 +124,7 @@ public class LiveOutputInner extends ProxyResource {
     }
 
     /**
-     * Get the archiveWindowLength value.
+     * Get iSO 8601 timespan duration of the archive window length. This is duration that customer want to retain the recorded content.
      *
      * @return the archiveWindowLength value
      */
@@ -133,7 +133,7 @@ public class LiveOutputInner extends ProxyResource {
     }
 
     /**
-     * Set the archiveWindowLength value.
+     * Set iSO 8601 timespan duration of the archive window length. This is duration that customer want to retain the recorded content.
      *
      * @param archiveWindowLength the archiveWindowLength value to set
      * @return the LiveOutputInner object itself.
@@ -144,7 +144,7 @@ public class LiveOutputInner extends ProxyResource {
     }
 
     /**
-     * Get the manifestName value.
+     * Get the manifest file name.
      *
      * @return the manifestName value
      */
@@ -153,7 +153,7 @@ public class LiveOutputInner extends ProxyResource {
     }
 
     /**
-     * Set the manifestName value.
+     * Set the manifest file name.
      *
      * @param manifestName the manifestName value to set
      * @return the LiveOutputInner object itself.
@@ -164,7 +164,7 @@ public class LiveOutputInner extends ProxyResource {
     }
 
     /**
-     * Get the hls value.
+     * Get the HLS configuration.
      *
      * @return the hls value
      */
@@ -173,7 +173,7 @@ public class LiveOutputInner extends ProxyResource {
     }
 
     /**
-     * Set the hls value.
+     * Set the HLS configuration.
      *
      * @param hls the hls value to set
      * @return the LiveOutputInner object itself.
@@ -184,7 +184,7 @@ public class LiveOutputInner extends ProxyResource {
     }
 
     /**
-     * Get the outputSnapTime value.
+     * Get the output snapshot time.
      *
      * @return the outputSnapTime value
      */
@@ -193,7 +193,7 @@ public class LiveOutputInner extends ProxyResource {
     }
 
     /**
-     * Set the outputSnapTime value.
+     * Set the output snapshot time.
      *
      * @param outputSnapTime the outputSnapTime value to set
      * @return the LiveOutputInner object itself.
@@ -204,7 +204,7 @@ public class LiveOutputInner extends ProxyResource {
     }
 
     /**
-     * Get the created value.
+     * Get the exact time the Live Output was created.
      *
      * @return the created value
      */
@@ -213,7 +213,7 @@ public class LiveOutputInner extends ProxyResource {
     }
 
     /**
-     * Get the lastModified value.
+     * Get the exact time the Live Output was last modified.
      *
      * @return the lastModified value
      */
@@ -222,7 +222,7 @@ public class LiveOutputInner extends ProxyResource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get the provisioning state of the Live Output.
      *
      * @return the provisioningState value
      */
@@ -231,7 +231,7 @@ public class LiveOutputInner extends ProxyResource {
     }
 
     /**
-     * Get the resourceState value.
+     * Get the resource state of the Live Output. Possible values include: 'Creating', 'Running', 'Deleting'.
      *
      * @return the resourceState value
      */

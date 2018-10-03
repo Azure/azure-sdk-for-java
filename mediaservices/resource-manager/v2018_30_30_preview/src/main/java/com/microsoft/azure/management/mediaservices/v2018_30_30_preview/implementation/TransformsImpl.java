@@ -42,41 +42,22 @@ class TransformsImpl extends WrapperImpl<TransformsInner> implements Transforms 
         return new TransformImpl(name, this.manager());
     }
 
-    private Observable<Page<TransformInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        TransformsInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<TransformInner>, Observable<Page<TransformInner>>>() {
-            @Override
-            public Observable<Page<TransformInner>> call(Page<TransformInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<Transform> listAsync(final String resourceGroupName, final String accountName) {
         TransformsInner client = this.inner();
         return client.listAsync(resourceGroupName, accountName)
-        .flatMap(new Func1<Page<TransformInner>, Observable<Page<TransformInner>>>() {
-            @Override
-            public Observable<Page<TransformInner>> call(Page<TransformInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<TransformInner>, Iterable<TransformInner>>() {
             @Override
             public Iterable<TransformInner> call(Page<TransformInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<TransformInner, Transform>() {
             @Override
             public Transform call(TransformInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override

@@ -40,7 +40,7 @@ public class StandardEncoderPreset extends Preset {
     private List<Format> formats;
 
     /**
-     * Get the filters value.
+     * Get one or more filtering operations that are applied to the input media before encoding.
      *
      * @return the filters value
      */
@@ -49,7 +49,7 @@ public class StandardEncoderPreset extends Preset {
     }
 
     /**
-     * Set the filters value.
+     * Set one or more filtering operations that are applied to the input media before encoding.
      *
      * @param filters the filters value to set
      * @return the StandardEncoderPreset object itself.
@@ -60,7 +60,7 @@ public class StandardEncoderPreset extends Preset {
     }
 
     /**
-     * Get the codecs value.
+     * Get the list of codecs to be used when encoding the input video.
      *
      * @return the codecs value
      */
@@ -69,7 +69,7 @@ public class StandardEncoderPreset extends Preset {
     }
 
     /**
-     * Set the codecs value.
+     * Set the list of codecs to be used when encoding the input video.
      *
      * @param codecs the codecs value to set
      * @return the StandardEncoderPreset object itself.
@@ -80,7 +80,7 @@ public class StandardEncoderPreset extends Preset {
     }
 
     /**
-     * Get the formats value.
+     * Get the list of outputs to be produced by the encoder.
      *
      * @return the formats value
      */
@@ -89,7 +89,7 @@ public class StandardEncoderPreset extends Preset {
     }
 
     /**
-     * Set the formats value.
+     * Set the list of outputs to be produced by the encoder.
      *
      * @param formats the formats value to set
      * @return the StandardEncoderPreset object itself.

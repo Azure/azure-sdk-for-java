@@ -27,7 +27,7 @@ public class StreamingEndpointAccessControl {
     private IPAccessControl ip;
 
     /**
-     * Get the akamai value.
+     * Get the access control of Akamai.
      *
      * @return the akamai value
      */
@@ -36,7 +36,7 @@ public class StreamingEndpointAccessControl {
     }
 
     /**
-     * Set the akamai value.
+     * Set the access control of Akamai.
      *
      * @param akamai the akamai value to set
      * @return the StreamingEndpointAccessControl object itself.
@@ -47,7 +47,7 @@ public class StreamingEndpointAccessControl {
     }
 
     /**
-     * Get the ip value.
+     * Get the IP access control of the StreamingEndpoint.
      *
      * @return the ip value
      */
@@ -56,7 +56,7 @@ public class StreamingEndpointAccessControl {
     }
 
     /**
-     * Set the ip value.
+     * Set the IP access control of the StreamingEndpoint.
      *
      * @param ip the ip value to set
      * @return the StreamingEndpointAccessControl object itself.

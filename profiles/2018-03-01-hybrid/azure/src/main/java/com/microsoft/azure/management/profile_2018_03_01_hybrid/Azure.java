@@ -10,6 +10,8 @@ import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.AzureResponseBuilder;
 import com.microsoft.azure.arm.resources.AzureConfigurable;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
+import com.microsoft.azure.arm.utils.ResourceManagerThrottlingInterceptor;
+import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.appservice.v2016_03_01.BillingMeters;
 import com.microsoft.azure.management.appservice.v2016_03_01.Certificates;
@@ -76,6 +78,7 @@ import com.microsoft.azure.management.network.v2017_10_01.VirtualNetworkGatewayC
 import com.microsoft.azure.management.network.v2017_10_01.VirtualNetworkGateways;
 import com.microsoft.azure.management.network.v2017_10_01.VirtualNetworkPeerings;
 import com.microsoft.azure.management.network.v2017_10_01.VirtualNetworks;
+import com.microsoft.azure.management.resources.fluentcore.utils.ProviderRegistrationInterceptor;
 import com.microsoft.azure.management.resources.v2018_02_01.DeploymentOperations;
 import com.microsoft.azure.management.resources.v2018_02_01.Deployments;
 import com.microsoft.azure.management.resources.v2018_02_01.Providers;
@@ -123,6 +126,18 @@ public final class Azure {
                 .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
                 .build(), subscriptionId);
     }
+
+    public static Azure authenticate(ApplicationTokenCredentials credentials, String subscriptionId) {
+        return new Azure(new RestClient.Builder()
+                .withBaseUrl(credentials.environment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
+                .withCredentials(credentials)
+                .withSerializerAdapter(new AzureJacksonAdapter())
+                .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
+                .withInterceptor(new ProviderRegistrationInterceptor(credentials))
+                .withInterceptor(new ResourceManagerThrottlingInterceptor())
+                .build(), subscriptionId);
+    }
+
     /**
      * Creates an instance of Azure that exposes ContainerService resource management API entry points.
      *

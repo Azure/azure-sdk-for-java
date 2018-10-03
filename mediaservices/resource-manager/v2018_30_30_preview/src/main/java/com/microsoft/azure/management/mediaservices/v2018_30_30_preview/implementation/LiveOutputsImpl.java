@@ -42,41 +42,22 @@ class LiveOutputsImpl extends WrapperImpl<LiveOutputsInner> implements LiveOutpu
         return new LiveOutputImpl(name, this.manager());
     }
 
-    private Observable<Page<LiveOutputInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        LiveOutputsInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<LiveOutputInner>, Observable<Page<LiveOutputInner>>>() {
-            @Override
-            public Observable<Page<LiveOutputInner>> call(Page<LiveOutputInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<LiveOutput> listAsync(final String resourceGroupName, final String accountName, final String liveEventName) {
         LiveOutputsInner client = this.inner();
         return client.listAsync(resourceGroupName, accountName, liveEventName)
-        .flatMap(new Func1<Page<LiveOutputInner>, Observable<Page<LiveOutputInner>>>() {
-            @Override
-            public Observable<Page<LiveOutputInner>> call(Page<LiveOutputInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<LiveOutputInner>, Iterable<LiveOutputInner>>() {
             @Override
             public Iterable<LiveOutputInner> call(Page<LiveOutputInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<LiveOutputInner, LiveOutput>() {
             @Override
             public LiveOutput call(LiveOutputInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override

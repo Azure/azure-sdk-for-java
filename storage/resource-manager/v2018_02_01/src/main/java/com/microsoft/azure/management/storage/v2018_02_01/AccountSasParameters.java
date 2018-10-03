@@ -74,7 +74,7 @@ public class AccountSasParameters {
     private String keyToSign;
 
     /**
-     * Get the services value.
+     * Get the signed services accessible with the account SAS. Possible values include: Blob (b), Queue (q), Table (t), File (f). Possible values include: 'b', 'q', 't', 'f'.
      *
      * @return the services value
      */
@@ -83,7 +83,7 @@ public class AccountSasParameters {
     }
 
     /**
-     * Set the services value.
+     * Set the signed services accessible with the account SAS. Possible values include: Blob (b), Queue (q), Table (t), File (f). Possible values include: 'b', 'q', 't', 'f'.
      *
      * @param services the services value to set
      * @return the AccountSasParameters object itself.
@@ -94,7 +94,7 @@ public class AccountSasParameters {
     }
 
     /**
-     * Get the resourceTypes value.
+     * Get the signed resource types that are accessible with the account SAS. Service (s): Access to service-level APIs; Container (c): Access to container-level APIs; Object (o): Access to object-level APIs for blobs, queue messages, table entities, and files. Possible values include: 's', 'c', 'o'.
      *
      * @return the resourceTypes value
      */
@@ -103,7 +103,7 @@ public class AccountSasParameters {
     }
 
     /**
-     * Set the resourceTypes value.
+     * Set the signed resource types that are accessible with the account SAS. Service (s): Access to service-level APIs; Container (c): Access to container-level APIs; Object (o): Access to object-level APIs for blobs, queue messages, table entities, and files. Possible values include: 's', 'c', 'o'.
      *
      * @param resourceTypes the resourceTypes value to set
      * @return the AccountSasParameters object itself.
@@ -114,7 +114,7 @@ public class AccountSasParameters {
     }
 
     /**
-     * Get the permissions value.
+     * Get the signed permissions for the account SAS. Possible values include: Read (r), Write (w), Delete (d), List (l), Add (a), Create (c), Update (u) and Process (p). Possible values include: 'r', 'd', 'w', 'l', 'a', 'c', 'u', 'p'.
      *
      * @return the permissions value
      */
@@ -123,7 +123,7 @@ public class AccountSasParameters {
     }
 
     /**
-     * Set the permissions value.
+     * Set the signed permissions for the account SAS. Possible values include: Read (r), Write (w), Delete (d), List (l), Add (a), Create (c), Update (u) and Process (p). Possible values include: 'r', 'd', 'w', 'l', 'a', 'c', 'u', 'p'.
      *
      * @param permissions the permissions value to set
      * @return the AccountSasParameters object itself.
@@ -134,7 +134,7 @@ public class AccountSasParameters {
     }
 
     /**
-     * Get the iPAddressOrRange value.
+     * Get an IP address or a range of IP addresses from which to accept requests.
      *
      * @return the iPAddressOrRange value
      */
@@ -143,7 +143,7 @@ public class AccountSasParameters {
     }
 
     /**
-     * Set the iPAddressOrRange value.
+     * Set an IP address or a range of IP addresses from which to accept requests.
      *
      * @param iPAddressOrRange the iPAddressOrRange value to set
      * @return the AccountSasParameters object itself.
@@ -154,7 +154,7 @@ public class AccountSasParameters {
     }
 
     /**
-     * Get the protocols value.
+     * Get the protocol permitted for a request made with the account SAS. Possible values include: 'https,http', 'https'.
      *
      * @return the protocols value
      */
@@ -163,7 +163,7 @@ public class AccountSasParameters {
     }
 
     /**
-     * Set the protocols value.
+     * Set the protocol permitted for a request made with the account SAS. Possible values include: 'https,http', 'https'.
      *
      * @param protocols the protocols value to set
      * @return the AccountSasParameters object itself.
@@ -174,7 +174,7 @@ public class AccountSasParameters {
     }
 
     /**
-     * Get the sharedAccessStartTime value.
+     * Get the time at which the SAS becomes valid.
      *
      * @return the sharedAccessStartTime value
      */
@@ -183,7 +183,7 @@ public class AccountSasParameters {
     }
 
     /**
-     * Set the sharedAccessStartTime value.
+     * Set the time at which the SAS becomes valid.
      *
      * @param sharedAccessStartTime the sharedAccessStartTime value to set
      * @return the AccountSasParameters object itself.
@@ -194,7 +194,7 @@ public class AccountSasParameters {
     }
 
     /**
-     * Get the sharedAccessExpiryTime value.
+     * Get the time at which the shared access signature becomes invalid.
      *
      * @return the sharedAccessExpiryTime value
      */
@@ -203,7 +203,7 @@ public class AccountSasParameters {
     }
 
     /**
-     * Set the sharedAccessExpiryTime value.
+     * Set the time at which the shared access signature becomes invalid.
      *
      * @param sharedAccessExpiryTime the sharedAccessExpiryTime value to set
      * @return the AccountSasParameters object itself.
@@ -214,7 +214,7 @@ public class AccountSasParameters {
     }
 
     /**
-     * Get the keyToSign value.
+     * Get the key to sign the account SAS token with.
      *
      * @return the keyToSign value
      */
@@ -223,7 +223,7 @@ public class AccountSasParameters {
     }
 
     /**
-     * Set the keyToSign value.
+     * Set the key to sign the account SAS token with.
      *
      * @param keyToSign the keyToSign value to set
      * @return the AccountSasParameters object itself.

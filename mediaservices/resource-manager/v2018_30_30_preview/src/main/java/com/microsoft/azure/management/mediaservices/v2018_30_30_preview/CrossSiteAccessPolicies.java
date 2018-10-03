@@ -27,7 +27,7 @@ public class CrossSiteAccessPolicies {
     private String crossDomainPolicy;
 
     /**
-     * Get the clientAccessPolicy value.
+     * Get the content of clientaccesspolicy.xml used by Silverlight.
      *
      * @return the clientAccessPolicy value
      */
@@ -36,7 +36,7 @@ public class CrossSiteAccessPolicies {
     }
 
     /**
-     * Set the clientAccessPolicy value.
+     * Set the content of clientaccesspolicy.xml used by Silverlight.
      *
      * @param clientAccessPolicy the clientAccessPolicy value to set
      * @return the CrossSiteAccessPolicies object itself.
@@ -47,7 +47,7 @@ public class CrossSiteAccessPolicies {
     }
 
     /**
-     * Get the crossDomainPolicy value.
+     * Get the content of crossdomain.xml used by Silverlight.
      *
      * @return the crossDomainPolicy value
      */
@@ -56,7 +56,7 @@ public class CrossSiteAccessPolicies {
     }
 
     /**
-     * Set the crossDomainPolicy value.
+     * Set the content of crossdomain.xml used by Silverlight.
      *
      * @param crossDomainPolicy the crossDomainPolicy value to set
      * @return the CrossSiteAccessPolicies object itself.

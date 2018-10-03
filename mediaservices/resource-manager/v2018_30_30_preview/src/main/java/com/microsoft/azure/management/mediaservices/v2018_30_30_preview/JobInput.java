@@ -35,7 +35,7 @@ public class JobInput {
     private String label;
 
     /**
-     * Get the label value.
+     * Get a label that is assigned to a JobInput, that is used to satisfy a reference used in the Transform. For example, a Transform can be authored so as to take an image file with the label 'xyz' and apply it as an overlay onto the input video before it is encoded. When submitting a Job, exactly one of the JobInputs should be the image file, and it should have the label 'xyz'.
      *
      * @return the label value
      */
@@ -44,7 +44,7 @@ public class JobInput {
     }
 
     /**
-     * Set the label value.
+     * Set a label that is assigned to a JobInput, that is used to satisfy a reference used in the Transform. For example, a Transform can be authored so as to take an image file with the label 'xyz' and apply it as an overlay onto the input video before it is encoded. When submitting a Job, exactly one of the JobInputs should be the image file, and it should have the label 'xyz'.
      *
      * @param label the label value to set
      * @return the JobInput object itself.

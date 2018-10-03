@@ -118,7 +118,7 @@ public class BingVisualSearchAPIImpl extends AzureServiceClient implements BingV
      * @param credentials the management credentials for Azure
      */
     public BingVisualSearchAPIImpl(ServiceClientCredentials credentials) {
-        this("https://api.cognitive.microsoft.com/bing/v7.0", credentials);
+        this("https://api.cognitive.microsoft.com/bing/v7.0/", credentials);
     }
 
     /**

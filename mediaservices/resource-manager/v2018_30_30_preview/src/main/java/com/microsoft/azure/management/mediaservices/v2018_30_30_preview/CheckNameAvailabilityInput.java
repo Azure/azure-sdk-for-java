@@ -28,7 +28,7 @@ public class CheckNameAvailabilityInput {
     private String type;
 
     /**
-     * Get the name value.
+     * Get the account name.
      *
      * @return the name value
      */
@@ -37,7 +37,7 @@ public class CheckNameAvailabilityInput {
     }
 
     /**
-     * Set the name value.
+     * Set the account name.
      *
      * @param name the name value to set
      * @return the CheckNameAvailabilityInput object itself.
@@ -48,7 +48,7 @@ public class CheckNameAvailabilityInput {
     }
 
     /**
-     * Get the type value.
+     * Get the account type. For a Media Services account, this should be 'MediaServices'.
      *
      * @return the type value
      */
@@ -57,7 +57,7 @@ public class CheckNameAvailabilityInput {
     }
 
     /**
-     * Set the type value.
+     * Set the account type. For a Media Services account, this should be 'MediaServices'.
      *
      * @param type the type value to set
      * @return the CheckNameAvailabilityInput object itself.

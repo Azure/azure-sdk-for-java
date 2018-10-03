@@ -34,7 +34,7 @@ public class CbcsDrmConfiguration {
     private StreamingPolicyWidevineConfiguration widevine;
 
     /**
-     * Get the fairPlay value.
+     * Get fairplay configurations.
      *
      * @return the fairPlay value
      */
@@ -43,7 +43,7 @@ public class CbcsDrmConfiguration {
     }
 
     /**
-     * Set the fairPlay value.
+     * Set fairplay configurations.
      *
      * @param fairPlay the fairPlay value to set
      * @return the CbcsDrmConfiguration object itself.
@@ -54,7 +54,7 @@ public class CbcsDrmConfiguration {
     }
 
     /**
-     * Get the playReady value.
+     * Get playReady configurations.
      *
      * @return the playReady value
      */
@@ -63,7 +63,7 @@ public class CbcsDrmConfiguration {
     }
 
     /**
-     * Set the playReady value.
+     * Set playReady configurations.
      *
      * @param playReady the playReady value to set
      * @return the CbcsDrmConfiguration object itself.
@@ -74,7 +74,7 @@ public class CbcsDrmConfiguration {
     }
 
     /**
-     * Get the widevine value.
+     * Get widevine configurations.
      *
      * @return the widevine value
      */
@@ -83,7 +83,7 @@ public class CbcsDrmConfiguration {
     }
 
     /**
-     * Set the widevine value.
+     * Set widevine configurations.
      *
      * @param widevine the widevine value to set
      * @return the CbcsDrmConfiguration object itself.

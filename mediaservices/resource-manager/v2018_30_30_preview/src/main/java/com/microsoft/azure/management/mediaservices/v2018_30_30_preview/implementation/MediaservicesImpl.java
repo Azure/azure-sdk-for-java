@@ -80,41 +80,22 @@ class MediaservicesImpl extends GroupableResourcesCoreImpl<MediaService, MediaSe
         return this.wrapList(client.listByResourceGroup(resourceGroupName));
     }
 
-    private Observable<Page<MediaServiceInner>> listByResourceGroupNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        MediaservicesInner client = this.inner();
-        return client.listByResourceGroupNextAsync(nextLink)
-        .flatMap(new Func1<Page<MediaServiceInner>, Observable<Page<MediaServiceInner>>>() {
-            @Override
-            public Observable<Page<MediaServiceInner>> call(Page<MediaServiceInner> page) {
-                return Observable.just(page).concatWith(listByResourceGroupNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<MediaService> listByResourceGroupAsync(String resourceGroupName) {
         MediaservicesInner client = this.inner();
         return client.listByResourceGroupAsync(resourceGroupName)
-        .flatMap(new Func1<Page<MediaServiceInner>, Observable<Page<MediaServiceInner>>>() {
-            @Override
-            public Observable<Page<MediaServiceInner>> call(Page<MediaServiceInner> page) {
-                return listByResourceGroupNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<MediaServiceInner>, Iterable<MediaServiceInner>>() {
             @Override
             public Iterable<MediaServiceInner> call(Page<MediaServiceInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<MediaServiceInner, MediaService>() {
             @Override
             public MediaService call(MediaServiceInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override
@@ -142,35 +123,16 @@ class MediaservicesImpl extends GroupableResourcesCoreImpl<MediaService, MediaSe
         return converter.convert(client.list());
     }
 
-    private Observable<Page<SubscriptionMediaServiceInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        MediaservicesInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<SubscriptionMediaServiceInner>, Observable<Page<SubscriptionMediaServiceInner>>>() {
-            @Override
-            public Observable<Page<SubscriptionMediaServiceInner>> call(Page<SubscriptionMediaServiceInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<MediaService> listAsync() {
         MediaservicesInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<SubscriptionMediaServiceInner>, Observable<Page<SubscriptionMediaServiceInner>>>() {
-            @Override
-            public Observable<Page<SubscriptionMediaServiceInner>> call(Page<SubscriptionMediaServiceInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<SubscriptionMediaServiceInner>, Iterable<SubscriptionMediaServiceInner>>() {
             @Override
             public Iterable<SubscriptionMediaServiceInner> call(Page<SubscriptionMediaServiceInner> page) {
                 return page.items();
             }
-       })
+        })
         .flatMap(new Func1<SubscriptionMediaServiceInner, Observable<MediaServiceInner>>() {
             @Override
             public Observable<MediaServiceInner> call(SubscriptionMediaServiceInner inner) {
@@ -182,7 +144,7 @@ class MediaservicesImpl extends GroupableResourcesCoreImpl<MediaService, MediaSe
             public MediaService call(MediaServiceInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override

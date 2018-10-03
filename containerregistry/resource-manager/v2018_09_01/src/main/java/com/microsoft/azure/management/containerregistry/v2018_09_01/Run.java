@@ -116,12 +116,24 @@ public interface Run extends HasInner<RunInner>, Indexable, Refreshable<Run>, Up
     /**
      * The template for a Run update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<Run> {
+    interface Update extends Appliable<Run>, UpdateStages.WithIsArchiveEnabled {
     }
 
     /**
      * Grouping of Run update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the run update allowing to specify IsArchiveEnabled.
+         */
+        interface WithIsArchiveEnabled {
+            /**
+             * Specifies isArchiveEnabled.
+             * @param isArchiveEnabled The value that indicates whether archiving is enabled or not
+             * @return the next update stage
+             */
+            Update withIsArchiveEnabled(Boolean isArchiveEnabled);
+        }
+
     }
 }

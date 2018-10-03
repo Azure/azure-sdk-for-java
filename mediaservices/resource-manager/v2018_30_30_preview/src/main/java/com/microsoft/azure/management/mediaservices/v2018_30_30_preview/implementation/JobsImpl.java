@@ -48,41 +48,22 @@ class JobsImpl extends WrapperImpl<JobsInner> implements Jobs {
         return client.cancelJobAsync(resourceGroupName, accountName, transformName, jobName).toCompletable();
     }
 
-    private Observable<Page<JobInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        JobsInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<JobInner>, Observable<Page<JobInner>>>() {
-            @Override
-            public Observable<Page<JobInner>> call(Page<JobInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<Job> listAsync(final String resourceGroupName, final String accountName, final String transformName) {
         JobsInner client = this.inner();
         return client.listAsync(resourceGroupName, accountName, transformName)
-        .flatMap(new Func1<Page<JobInner>, Observable<Page<JobInner>>>() {
-            @Override
-            public Observable<Page<JobInner>> call(Page<JobInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<JobInner>, Iterable<JobInner>>() {
             @Override
             public Iterable<JobInner> call(Page<JobInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<JobInner, Job>() {
             @Override
             public Job call(JobInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override

@@ -63,7 +63,7 @@ public class ContentKeyPolicyTokenRestriction extends ContentKeyPolicyRestrictio
     private String openIdConnectDiscoveryDocument;
 
     /**
-     * Get the issuer value.
+     * Get the token issuer.
      *
      * @return the issuer value
      */
@@ -72,7 +72,7 @@ public class ContentKeyPolicyTokenRestriction extends ContentKeyPolicyRestrictio
     }
 
     /**
-     * Set the issuer value.
+     * Set the token issuer.
      *
      * @param issuer the issuer value to set
      * @return the ContentKeyPolicyTokenRestriction object itself.
@@ -83,7 +83,7 @@ public class ContentKeyPolicyTokenRestriction extends ContentKeyPolicyRestrictio
     }
 
     /**
-     * Get the audience value.
+     * Get the audience for the token.
      *
      * @return the audience value
      */
@@ -92,7 +92,7 @@ public class ContentKeyPolicyTokenRestriction extends ContentKeyPolicyRestrictio
     }
 
     /**
-     * Set the audience value.
+     * Set the audience for the token.
      *
      * @param audience the audience value to set
      * @return the ContentKeyPolicyTokenRestriction object itself.
@@ -103,7 +103,7 @@ public class ContentKeyPolicyTokenRestriction extends ContentKeyPolicyRestrictio
     }
 
     /**
-     * Get the primaryVerificationKey value.
+     * Get the primary verification key.
      *
      * @return the primaryVerificationKey value
      */
@@ -112,7 +112,7 @@ public class ContentKeyPolicyTokenRestriction extends ContentKeyPolicyRestrictio
     }
 
     /**
-     * Set the primaryVerificationKey value.
+     * Set the primary verification key.
      *
      * @param primaryVerificationKey the primaryVerificationKey value to set
      * @return the ContentKeyPolicyTokenRestriction object itself.
@@ -123,7 +123,7 @@ public class ContentKeyPolicyTokenRestriction extends ContentKeyPolicyRestrictio
     }
 
     /**
-     * Get the alternateVerificationKeys value.
+     * Get a list of alternative verification keys.
      *
      * @return the alternateVerificationKeys value
      */
@@ -132,7 +132,7 @@ public class ContentKeyPolicyTokenRestriction extends ContentKeyPolicyRestrictio
     }
 
     /**
-     * Set the alternateVerificationKeys value.
+     * Set a list of alternative verification keys.
      *
      * @param alternateVerificationKeys the alternateVerificationKeys value to set
      * @return the ContentKeyPolicyTokenRestriction object itself.
@@ -143,7 +143,7 @@ public class ContentKeyPolicyTokenRestriction extends ContentKeyPolicyRestrictio
     }
 
     /**
-     * Get the requiredClaims value.
+     * Get a list of required token claims.
      *
      * @return the requiredClaims value
      */
@@ -152,7 +152,7 @@ public class ContentKeyPolicyTokenRestriction extends ContentKeyPolicyRestrictio
     }
 
     /**
-     * Set the requiredClaims value.
+     * Set a list of required token claims.
      *
      * @param requiredClaims the requiredClaims value to set
      * @return the ContentKeyPolicyTokenRestriction object itself.
@@ -163,7 +163,7 @@ public class ContentKeyPolicyTokenRestriction extends ContentKeyPolicyRestrictio
     }
 
     /**
-     * Get the restrictionTokenType value.
+     * Get the type of token. Possible values include: 'Unknown', 'Swt', 'Jwt'.
      *
      * @return the restrictionTokenType value
      */
@@ -172,7 +172,7 @@ public class ContentKeyPolicyTokenRestriction extends ContentKeyPolicyRestrictio
     }
 
     /**
-     * Set the restrictionTokenType value.
+     * Set the type of token. Possible values include: 'Unknown', 'Swt', 'Jwt'.
      *
      * @param restrictionTokenType the restrictionTokenType value to set
      * @return the ContentKeyPolicyTokenRestriction object itself.
@@ -183,7 +183,7 @@ public class ContentKeyPolicyTokenRestriction extends ContentKeyPolicyRestrictio
     }
 
     /**
-     * Get the openIdConnectDiscoveryDocument value.
+     * Get the OpenID connect discovery document.
      *
      * @return the openIdConnectDiscoveryDocument value
      */
@@ -192,7 +192,7 @@ public class ContentKeyPolicyTokenRestriction extends ContentKeyPolicyRestrictio
     }
 
     /**
-     * Set the openIdConnectDiscoveryDocument value.
+     * Set the OpenID connect discovery document.
      *
      * @param openIdConnectDiscoveryDocument the openIdConnectDiscoveryDocument value to set
      * @return the ContentKeyPolicyTokenRestriction object itself.

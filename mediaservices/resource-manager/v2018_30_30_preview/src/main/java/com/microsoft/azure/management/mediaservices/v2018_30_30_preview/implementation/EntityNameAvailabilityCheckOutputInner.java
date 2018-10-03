@@ -33,7 +33,7 @@ public class EntityNameAvailabilityCheckOutputInner {
     private String message;
 
     /**
-     * Get the nameAvailable value.
+     * Get specifies if the name is available.
      *
      * @return the nameAvailable value
      */
@@ -42,7 +42,7 @@ public class EntityNameAvailabilityCheckOutputInner {
     }
 
     /**
-     * Set the nameAvailable value.
+     * Set specifies if the name is available.
      *
      * @param nameAvailable the nameAvailable value to set
      * @return the EntityNameAvailabilityCheckOutputInner object itself.
@@ -53,7 +53,7 @@ public class EntityNameAvailabilityCheckOutputInner {
     }
 
     /**
-     * Get the reason value.
+     * Get specifies the reason if the name is not available.
      *
      * @return the reason value
      */
@@ -62,7 +62,7 @@ public class EntityNameAvailabilityCheckOutputInner {
     }
 
     /**
-     * Set the reason value.
+     * Set specifies the reason if the name is not available.
      *
      * @param reason the reason value to set
      * @return the EntityNameAvailabilityCheckOutputInner object itself.
@@ -73,7 +73,7 @@ public class EntityNameAvailabilityCheckOutputInner {
     }
 
     /**
-     * Get the message value.
+     * Get specifies the detailed reason if the name is not available.
      *
      * @return the message value
      */
@@ -82,7 +82,7 @@ public class EntityNameAvailabilityCheckOutputInner {
     }
 
     /**
-     * Set the message value.
+     * Set specifies the detailed reason if the name is not available.
      *
      * @param message the message value to set
      * @return the EntityNameAvailabilityCheckOutputInner object itself.

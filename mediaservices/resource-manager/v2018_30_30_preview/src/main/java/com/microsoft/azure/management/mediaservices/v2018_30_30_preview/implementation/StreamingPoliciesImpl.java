@@ -42,41 +42,22 @@ class StreamingPoliciesImpl extends WrapperImpl<StreamingPoliciesInner> implemen
         return new StreamingPolicyImpl(name, this.manager());
     }
 
-    private Observable<Page<StreamingPolicyInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        StreamingPoliciesInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<StreamingPolicyInner>, Observable<Page<StreamingPolicyInner>>>() {
-            @Override
-            public Observable<Page<StreamingPolicyInner>> call(Page<StreamingPolicyInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<StreamingPolicy> listAsync(final String resourceGroupName, final String accountName) {
         StreamingPoliciesInner client = this.inner();
         return client.listAsync(resourceGroupName, accountName)
-        .flatMap(new Func1<Page<StreamingPolicyInner>, Observable<Page<StreamingPolicyInner>>>() {
-            @Override
-            public Observable<Page<StreamingPolicyInner>> call(Page<StreamingPolicyInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<StreamingPolicyInner>, Iterable<StreamingPolicyInner>>() {
             @Override
             public Iterable<StreamingPolicyInner> call(Page<StreamingPolicyInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<StreamingPolicyInner, StreamingPolicy>() {
             @Override
             public StreamingPolicy call(StreamingPolicyInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override

@@ -32,7 +32,7 @@ public class ContentKeyPolicyPlayReadyConfiguration extends ContentKeyPolicyConf
     private String responseCustomData;
 
     /**
-     * Get the licenses value.
+     * Get the PlayReady licenses.
      *
      * @return the licenses value
      */
@@ -41,7 +41,7 @@ public class ContentKeyPolicyPlayReadyConfiguration extends ContentKeyPolicyConf
     }
 
     /**
-     * Set the licenses value.
+     * Set the PlayReady licenses.
      *
      * @param licenses the licenses value to set
      * @return the ContentKeyPolicyPlayReadyConfiguration object itself.
@@ -52,7 +52,7 @@ public class ContentKeyPolicyPlayReadyConfiguration extends ContentKeyPolicyConf
     }
 
     /**
-     * Get the responseCustomData value.
+     * Get the custom response data.
      *
      * @return the responseCustomData value
      */
@@ -61,7 +61,7 @@ public class ContentKeyPolicyPlayReadyConfiguration extends ContentKeyPolicyConf
     }
 
     /**
-     * Set the responseCustomData value.
+     * Set the custom response data.
      *
      * @param responseCustomData the responseCustomData value to set
      * @return the ContentKeyPolicyPlayReadyConfiguration object itself.

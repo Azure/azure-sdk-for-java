@@ -55,41 +55,22 @@ class ContentKeyPoliciesImpl extends WrapperImpl<ContentKeyPoliciesInner> implem
         });
     }
 
-    private Observable<Page<ContentKeyPolicyInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        ContentKeyPoliciesInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<ContentKeyPolicyInner>, Observable<Page<ContentKeyPolicyInner>>>() {
-            @Override
-            public Observable<Page<ContentKeyPolicyInner>> call(Page<ContentKeyPolicyInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<ContentKeyPolicy> listAsync(final String resourceGroupName, final String accountName) {
         ContentKeyPoliciesInner client = this.inner();
         return client.listAsync(resourceGroupName, accountName)
-        .flatMap(new Func1<Page<ContentKeyPolicyInner>, Observable<Page<ContentKeyPolicyInner>>>() {
-            @Override
-            public Observable<Page<ContentKeyPolicyInner>> call(Page<ContentKeyPolicyInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<ContentKeyPolicyInner>, Iterable<ContentKeyPolicyInner>>() {
             @Override
             public Iterable<ContentKeyPolicyInner> call(Page<ContentKeyPolicyInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<ContentKeyPolicyInner, ContentKeyPolicy>() {
             @Override
             public ContentKeyPolicy call(ContentKeyPolicyInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override

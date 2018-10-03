@@ -27,7 +27,7 @@ public class JobInputHttp extends JobInputClip {
     private String baseUri;
 
     /**
-     * Get the baseUri value.
+     * Get base URI for HTTPS job input. It will be concatenated with provided file names.   If no base uri is given, then the provided file list is assumed to be fully qualified uris.
      *
      * @return the baseUri value
      */
@@ -36,7 +36,7 @@ public class JobInputHttp extends JobInputClip {
     }
 
     /**
-     * Set the baseUri value.
+     * Set base URI for HTTPS job input. It will be concatenated with provided file names.   If no base uri is given, then the provided file list is assumed to be fully qualified uris.
      *
      * @param baseUri the baseUri value to set
      * @return the JobInputHttp object itself.

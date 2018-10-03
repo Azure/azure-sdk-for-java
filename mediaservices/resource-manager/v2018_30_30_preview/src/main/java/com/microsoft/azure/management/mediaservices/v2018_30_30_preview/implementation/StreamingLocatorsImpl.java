@@ -68,41 +68,22 @@ class StreamingLocatorsImpl extends WrapperImpl<StreamingLocatorsInner> implemen
         });
     }
 
-    private Observable<Page<StreamingLocatorInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        StreamingLocatorsInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<StreamingLocatorInner>, Observable<Page<StreamingLocatorInner>>>() {
-            @Override
-            public Observable<Page<StreamingLocatorInner>> call(Page<StreamingLocatorInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<StreamingLocator> listAsync(final String resourceGroupName, final String accountName) {
         StreamingLocatorsInner client = this.inner();
         return client.listAsync(resourceGroupName, accountName)
-        .flatMap(new Func1<Page<StreamingLocatorInner>, Observable<Page<StreamingLocatorInner>>>() {
-            @Override
-            public Observable<Page<StreamingLocatorInner>> call(Page<StreamingLocatorInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<StreamingLocatorInner>, Iterable<StreamingLocatorInner>>() {
             @Override
             public Iterable<StreamingLocatorInner> call(Page<StreamingLocatorInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<StreamingLocatorInner, StreamingLocator>() {
             @Override
             public StreamingLocator call(StreamingLocatorInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override

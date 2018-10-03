@@ -21,7 +21,7 @@ public class LiveEventPreviewAccessControl {
     private IPAccessControl ip;
 
     /**
-     * Get the ip value.
+     * Get the IP access control properties.
      *
      * @return the ip value
      */
@@ -30,7 +30,7 @@ public class LiveEventPreviewAccessControl {
     }
 
     /**
-     * Set the ip value.
+     * Set the IP access control properties.
      *
      * @param ip the ip value to set
      * @return the LiveEventPreviewAccessControl object itself.

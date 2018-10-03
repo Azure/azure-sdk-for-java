@@ -28,7 +28,7 @@ public class StreamingPolicyFairPlayConfiguration {
     private boolean allowPersistentLicense;
 
     /**
-     * Get the customLicenseAcquisitionUrlTemplate value.
+     * Get the template for a customer service to deliver keys to end users.  Not needed when using Azure Media Services for issuing keys.
      *
      * @return the customLicenseAcquisitionUrlTemplate value
      */
@@ -37,7 +37,7 @@ public class StreamingPolicyFairPlayConfiguration {
     }
 
     /**
-     * Set the customLicenseAcquisitionUrlTemplate value.
+     * Set the template for a customer service to deliver keys to end users.  Not needed when using Azure Media Services for issuing keys.
      *
      * @param customLicenseAcquisitionUrlTemplate the customLicenseAcquisitionUrlTemplate value to set
      * @return the StreamingPolicyFairPlayConfiguration object itself.
@@ -48,7 +48,7 @@ public class StreamingPolicyFairPlayConfiguration {
     }
 
     /**
-     * Get the allowPersistentLicense value.
+     * Get all license to be persistent or not.
      *
      * @return the allowPersistentLicense value
      */
@@ -57,7 +57,7 @@ public class StreamingPolicyFairPlayConfiguration {
     }
 
     /**
-     * Set the allowPersistentLicense value.
+     * Set all license to be persistent or not.
      *
      * @param allowPersistentLicense the allowPersistentLicense value to set
      * @return the StreamingPolicyFairPlayConfiguration object itself.
