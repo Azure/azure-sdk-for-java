@@ -13,7 +13,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.ProxyResource;
 
 /**
- * The parameters used when creating a storage sync service.
+ * The parameters used when creating a server endpoint.
  */
 @JsonFlatten
 public class ServerEndpointCreateParameters extends ProxyResource {
