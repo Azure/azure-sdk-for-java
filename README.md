@@ -23,7 +23,7 @@ This library is build using:
 * Apache qpid - Proton J 0.22.0
 * Bouncycastle - jdk15on 1.53
 * Microsoft Azure - adal4j 1.3.0
-* SLF4J - q.8.0-alpha2
+* SLF4J - 1.7.0
 * Junit 4.12
 
 The package can be downloaded from [Maven](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22azure-servicebus%22)
@@ -32,7 +32,7 @@ The package can be downloaded from [Maven](http://search.maven.org/#search%7Cgav
 <dependency> 
   <groupId>com.microsoft.azure</groupId> 
   <artifactId>azure-servicebus</artifactId> 
-  <version>1.2.5</version>
+  <version>1.2.8</version>
 </dependency>
 ```
 
