@@ -49,23 +49,29 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
         private boolean pollingCompleted;
         private boolean pollingSucceeded;
         private boolean gotResourceResponse;
+        private final HttpMethod initialHttpMethod;
 
-        URL operationResourceUrl;
-        URL originalResourceUrl;
+        final URL operationResourceUrl;
+        final URL originalResourceUrl;
+        final URL locationUrl;
 
         /**
          * Create a new AzureAsyncOperationPollStrategyData object that will poll the provided operation
          * resource URL.
          * @param operationResourceUrl The URL of the operation resource this pollStrategy will poll.
-         * @param originalResourceUrl The URL of the resource that the long running operation is
-         *                            operating on.
-         * @param delayInMilliseconds The delay (in milliseconds) that the pollStrategy will use when
-         *                            polling.
+         * @param originalResourceUrl  The URL of the resource that the long running operation is
+         *                             operating on.
+         * @param locationUrl          The location uri received from service along with operationResourceUrl.
+         * @param initialHttpMethod    The http method used to initiate the long running operation
+         * @param delayInMilliseconds  The delay (in milliseconds) that the pollStrategy will use when
+         *                             polling.
          */
-        AzureAsyncOperationPollStrategyData(RestProxy restProxy, SwaggerMethodParser methodParser, URL operationResourceUrl, URL originalResourceUrl, long delayInMilliseconds) {
+        AzureAsyncOperationPollStrategyData(RestProxy restProxy, SwaggerMethodParser methodParser, URL operationResourceUrl, URL originalResourceUrl, URL locationUrl, HttpMethod initialHttpMethod, long delayInMilliseconds) {
             super(restProxy, methodParser, delayInMilliseconds);
             this.operationResourceUrl = operationResourceUrl;
             this.originalResourceUrl = originalResourceUrl;
+            this.locationUrl = locationUrl;
+            this.initialHttpMethod = initialHttpMethod;
         }
 
         PollStrategy initializeStrategy(RestProxy restProxy,
@@ -81,9 +87,18 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
         URL pollUrl;
         if (!data.pollingCompleted) {
             pollUrl = data.operationResourceUrl;
-        }
-        else if (data.pollingSucceeded) {
-            pollUrl = data.originalResourceUrl;
+        } else if (data.pollingSucceeded) {
+            if (data.initialHttpMethod == HttpMethod.POST || data.initialHttpMethod == HttpMethod.DELETE) {
+                if (data.locationUrl != null) {
+                    pollUrl = data.locationUrl;
+                } else {
+                    pollUrl = data.operationResourceUrl;
+                }
+            } else {
+                // For PUT|PATCH do a final get on the original resource uri.
+                //
+                pollUrl = data.originalResourceUrl;
+            }
         } else {
             throw new IllegalStateException("Polling is completed and did not succeed. Cannot create a polling request.");
         }
@@ -182,9 +197,18 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
             }
         }
 
+        urlHeader = httpResponse.headerValue("Location");
+        URL locationUrl = null;
+        if (urlHeader != null) {
+            try {
+                locationUrl = new URL(urlHeader);
+            } catch (MalformedURLException ignored) {
+            }
+        }
+
         return azureAsyncOperationUrl != null
                 ? new AzureAsyncOperationPollStrategy(
-                        new AzureAsyncOperationPollStrategyData(restProxy, methodParser, azureAsyncOperationUrl, originalHttpRequest.url(), delayInMilliseconds))
+                        new AzureAsyncOperationPollStrategyData(restProxy, methodParser, azureAsyncOperationUrl, originalHttpRequest.url(), locationUrl, originalHttpRequest.httpMethod(), delayInMilliseconds))
                 : null;
     }
 
