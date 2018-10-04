@@ -19,6 +19,9 @@ public final class SourceTriggerEvent extends ExpandableStringEnum<SourceTrigger
     /** Static value commit for SourceTriggerEvent. */
     public static final SourceTriggerEvent COMMIT = fromString("commit");
 
+    /** Static value pullrequest for SourceTriggerEvent. */
+    public static final SourceTriggerEvent PULLREQUEST = fromString("pullrequest");
+
     /**
      * Creates or finds a SourceTriggerEvent from its string representation.
      * @param name a name to look for

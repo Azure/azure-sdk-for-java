@@ -39,32 +39,31 @@ public class FileTaskRunRequest extends RunRequest {
     private List<SetValue> values;
 
     /**
-     * The URL(absolute or relative) of the source that needs to be built. For
-     * Docker build, it can be an URL to a tar or github repoistory as
-     * supported by Docker.
-     * If it is relative URL, the relative path should be obtained from calling
-     * getSourceUploadUrl API.
-     */
-    @JsonProperty(value = "sourceLocation", required = true)
-    private String sourceLocation;
-
-    /**
-     * Build timeout in seconds.
+     * Run timeout in seconds.
      */
     @JsonProperty(value = "timeout")
     private Integer timeout;
 
     /**
-     * The platform properties against which the build will happen.
+     * The platform properties against which the run has to happen.
      */
     @JsonProperty(value = "platform", required = true)
     private PlatformProperties platform;
 
     /**
-     * The machine configuration of the build agent.
+     * The machine configuration of the run agent.
      */
     @JsonProperty(value = "agentConfiguration")
     private AgentProperties agentConfiguration;
+
+    /**
+     * The URL(absolute or relative) of the source context. It can be an URL to
+     * a tar or git repoistory.
+     * If it is relative URL, the relative path should be obtained from calling
+     * listBuildSourceUploadUrl API.
+     */
+    @JsonProperty(value = "sourceLocation")
+    private String sourceLocation;
 
     /**
      * Get the template/definition file path relative to the source.
@@ -127,29 +126,7 @@ public class FileTaskRunRequest extends RunRequest {
     }
 
     /**
-     * Get the URL(absolute or relative) of the source that needs to be built. For Docker build, it can be an URL to a tar or github repoistory as supported by Docker.
-     If it is relative URL, the relative path should be obtained from calling getSourceUploadUrl API.
-     *
-     * @return the sourceLocation value
-     */
-    public String sourceLocation() {
-        return this.sourceLocation;
-    }
-
-    /**
-     * Set the URL(absolute or relative) of the source that needs to be built. For Docker build, it can be an URL to a tar or github repoistory as supported by Docker.
-     If it is relative URL, the relative path should be obtained from calling getSourceUploadUrl API.
-     *
-     * @param sourceLocation the sourceLocation value to set
-     * @return the FileTaskRunRequest object itself.
-     */
-    public FileTaskRunRequest withSourceLocation(String sourceLocation) {
-        this.sourceLocation = sourceLocation;
-        return this;
-    }
-
-    /**
-     * Get build timeout in seconds.
+     * Get run timeout in seconds.
      *
      * @return the timeout value
      */
@@ -158,7 +135,7 @@ public class FileTaskRunRequest extends RunRequest {
     }
 
     /**
-     * Set build timeout in seconds.
+     * Set run timeout in seconds.
      *
      * @param timeout the timeout value to set
      * @return the FileTaskRunRequest object itself.
@@ -169,7 +146,7 @@ public class FileTaskRunRequest extends RunRequest {
     }
 
     /**
-     * Get the platform properties against which the build will happen.
+     * Get the platform properties against which the run has to happen.
      *
      * @return the platform value
      */
@@ -178,7 +155,7 @@ public class FileTaskRunRequest extends RunRequest {
     }
 
     /**
-     * Set the platform properties against which the build will happen.
+     * Set the platform properties against which the run has to happen.
      *
      * @param platform the platform value to set
      * @return the FileTaskRunRequest object itself.
@@ -189,7 +166,7 @@ public class FileTaskRunRequest extends RunRequest {
     }
 
     /**
-     * Get the machine configuration of the build agent.
+     * Get the machine configuration of the run agent.
      *
      * @return the agentConfiguration value
      */
@@ -198,13 +175,35 @@ public class FileTaskRunRequest extends RunRequest {
     }
 
     /**
-     * Set the machine configuration of the build agent.
+     * Set the machine configuration of the run agent.
      *
      * @param agentConfiguration the agentConfiguration value to set
      * @return the FileTaskRunRequest object itself.
      */
     public FileTaskRunRequest withAgentConfiguration(AgentProperties agentConfiguration) {
         this.agentConfiguration = agentConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the URL(absolute or relative) of the source context. It can be an URL to a tar or git repoistory.
+     If it is relative URL, the relative path should be obtained from calling listBuildSourceUploadUrl API.
+     *
+     * @return the sourceLocation value
+     */
+    public String sourceLocation() {
+        return this.sourceLocation;
+    }
+
+    /**
+     * Set the URL(absolute or relative) of the source context. It can be an URL to a tar or git repoistory.
+     If it is relative URL, the relative path should be obtained from calling listBuildSourceUploadUrl API.
+     *
+     * @param sourceLocation the sourceLocation value to set
+     * @return the FileTaskRunRequest object itself.
+     */
+    public FileTaskRunRequest withSourceLocation(String sourceLocation) {
+        this.sourceLocation = sourceLocation;
         return this;
     }
 

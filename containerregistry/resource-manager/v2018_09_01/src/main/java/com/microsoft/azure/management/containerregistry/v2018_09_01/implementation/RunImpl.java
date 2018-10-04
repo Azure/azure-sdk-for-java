@@ -27,6 +27,7 @@ class RunImpl extends CreatableUpdatableImpl<Run, RunInner, RunImpl> implements 
     private String resourceGroupName;
     private String registryName;
     private String runId;
+    private Boolean uisArchiveEnabled;
 
     RunImpl(String name, ContainerRegistryManager manager) {
         super(name, new RunInner());
@@ -41,7 +42,7 @@ class RunImpl extends CreatableUpdatableImpl<Run, RunInner, RunImpl> implements 
         this.manager = manager;
         // Set resource name
         this.runId = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.registryName = IdParsingUtils.getValueFromIdByName(inner.id(), "registries");
         this.runId = IdParsingUtils.getValueFromIdByName(inner.id(), "runs");
@@ -62,7 +63,7 @@ class RunImpl extends CreatableUpdatableImpl<Run, RunInner, RunImpl> implements 
     @Override
     public Observable<Run> updateResourceAsync() {
         RunsInner client = this.manager().inner().runs();
-        return client.updateAsync(this.resourceGroupName, this.registryName, this.runId)
+        return client.updateAsync(this.resourceGroupName, this.registryName, this.runId, this.uisArchiveEnabled)
             .map(innerToFluentMap(this));
     }
 
@@ -166,6 +167,12 @@ class RunImpl extends CreatableUpdatableImpl<Run, RunInner, RunImpl> implements 
     @Override
     public String type() {
         return this.inner().type();
+    }
+
+    @Override
+    public RunImpl withIsArchiveEnabled(Boolean isArchiveEnabled) {
+        this.uisArchiveEnabled = isArchiveEnabled;
+        return this;
     }
 
 }

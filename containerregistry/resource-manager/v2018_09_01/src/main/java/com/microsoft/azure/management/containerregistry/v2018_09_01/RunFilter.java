@@ -22,7 +22,8 @@ public class RunFilter {
     private String runId;
 
     /**
-     * The type of run. Possible values include: 'QuickBuild', 'AutoBuild'.
+     * The type of run. Possible values include: 'QuickBuild', 'QuickRun',
+     * 'AutoBuild', 'AutoRun'.
      */
     @JsonProperty(value = "runType")
     private RunType runType;
@@ -88,7 +89,7 @@ public class RunFilter {
     }
 
     /**
-     * Get the type of run. Possible values include: 'QuickBuild', 'AutoBuild'.
+     * Get the type of run. Possible values include: 'QuickBuild', 'QuickRun', 'AutoBuild', 'AutoRun'.
      *
      * @return the runType value
      */
@@ -97,7 +98,7 @@ public class RunFilter {
     }
 
     /**
-     * Set the type of run. Possible values include: 'QuickBuild', 'AutoBuild'.
+     * Set the type of run. Possible values include: 'QuickBuild', 'QuickRun', 'AutoBuild', 'AutoRun'.
      *
      * @param runType the runType value to set
      * @return the RunFilter object itself.

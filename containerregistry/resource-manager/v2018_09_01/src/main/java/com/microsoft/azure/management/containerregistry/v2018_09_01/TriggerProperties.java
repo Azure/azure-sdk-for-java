@@ -12,7 +12,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The properties of a build trigger.
+ * The properties of a trigger.
  */
 public class TriggerProperties {
     /**

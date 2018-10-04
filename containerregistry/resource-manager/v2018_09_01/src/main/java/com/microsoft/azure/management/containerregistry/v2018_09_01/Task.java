@@ -111,6 +111,9 @@ public interface Task extends HasInner<TaskInner>, Indexable, Refreshable<Task>,
         interface WithRegistry {
            /**
             * Specifies resourceGroupName, registryName.
+            * @param resourceGroupName The name of the resource group to which the container registry belongs
+            * @param registryName The name of the container registry
+            * @return the next definition stage
             */
             WithLocation withExistingRegistry(String resourceGroupName, String registryName);
         }
@@ -121,6 +124,8 @@ public interface Task extends HasInner<TaskInner>, Indexable, Refreshable<Task>,
         interface WithLocation {
            /**
             * Specifies location.
+            * @param location The location of the resource. This cannot be changed after the resource is created
+            * @return the next definition stage
             */
             WithPlatform withLocation(String location);
         }
@@ -131,6 +136,8 @@ public interface Task extends HasInner<TaskInner>, Indexable, Refreshable<Task>,
         interface WithPlatform {
            /**
             * Specifies platform.
+            * @param platform The platform properties against which the run has to happen
+            * @return the next definition stage
             */
             WithStep withPlatform(PlatformProperties platform);
         }
@@ -141,6 +148,8 @@ public interface Task extends HasInner<TaskInner>, Indexable, Refreshable<Task>,
         interface WithStep {
            /**
             * Specifies step.
+            * @param step The properties of a task step
+            * @return the next definition stage
             */
             WithCreate withStep(TaskStepProperties step);
         }
@@ -151,6 +160,8 @@ public interface Task extends HasInner<TaskInner>, Indexable, Refreshable<Task>,
         interface WithAgentConfiguration {
             /**
              * Specifies agentConfiguration.
+             * @param agentConfiguration The machine configuration of the run agent
+             * @return the next definition stage
              */
             WithCreate withAgentConfiguration(AgentProperties agentConfiguration);
         }
@@ -161,6 +172,8 @@ public interface Task extends HasInner<TaskInner>, Indexable, Refreshable<Task>,
         interface WithStatus {
             /**
              * Specifies status.
+             * @param status The current status of task. Possible values include: 'Disabled', 'Enabled'
+             * @return the next definition stage
              */
             WithCreate withStatus(TaskStatus status);
         }
@@ -171,6 +184,8 @@ public interface Task extends HasInner<TaskInner>, Indexable, Refreshable<Task>,
         interface WithTags {
             /**
              * Specifies tags.
+             * @param tags The tags of the resource
+             * @return the next definition stage
              */
             WithCreate withTags(Map<String, String> tags);
         }
@@ -181,6 +196,8 @@ public interface Task extends HasInner<TaskInner>, Indexable, Refreshable<Task>,
         interface WithTimeout {
             /**
              * Specifies timeout.
+             * @param timeout Run timeout in seconds
+             * @return the next definition stage
              */
             WithCreate withTimeout(Integer timeout);
         }
@@ -191,6 +208,8 @@ public interface Task extends HasInner<TaskInner>, Indexable, Refreshable<Task>,
         interface WithTrigger {
             /**
              * Specifies trigger.
+             * @param trigger The properties that describe all triggers for the task
+             * @return the next definition stage
              */
             WithCreate withTrigger(TriggerProperties trigger);
         }
@@ -219,6 +238,8 @@ public interface Task extends HasInner<TaskInner>, Indexable, Refreshable<Task>,
         interface WithAgentConfiguration {
             /**
              * Specifies agentConfiguration.
+             * @param agentConfiguration The machine configuration of the run agent
+             * @return the next update stage
              */
             Update withAgentConfiguration(AgentProperties agentConfiguration);
         }
@@ -229,6 +250,8 @@ public interface Task extends HasInner<TaskInner>, Indexable, Refreshable<Task>,
         interface WithPlatform {
             /**
              * Specifies platform.
+             * @param platform The platform properties against which the run has to happen
+             * @return the next update stage
              */
             Update withPlatform(PlatformUpdateParameters platform);
         }
@@ -239,6 +262,8 @@ public interface Task extends HasInner<TaskInner>, Indexable, Refreshable<Task>,
         interface WithStatus {
             /**
              * Specifies status.
+             * @param status The current status of task. Possible values include: 'Disabled', 'Enabled'
+             * @return the next update stage
              */
             Update withStatus(TaskStatus status);
         }
@@ -249,6 +274,8 @@ public interface Task extends HasInner<TaskInner>, Indexable, Refreshable<Task>,
         interface WithStep {
             /**
              * Specifies step.
+             * @param step The properties for updating a task step
+             * @return the next update stage
              */
             Update withStep(TaskStepUpdateParameters step);
         }
@@ -259,6 +286,8 @@ public interface Task extends HasInner<TaskInner>, Indexable, Refreshable<Task>,
         interface WithTags {
             /**
              * Specifies tags.
+             * @param tags The ARM resource tags
+             * @return the next update stage
              */
             Update withTags(Map<String, String> tags);
         }
@@ -269,6 +298,8 @@ public interface Task extends HasInner<TaskInner>, Indexable, Refreshable<Task>,
         interface WithTimeout {
             /**
              * Specifies timeout.
+             * @param timeout Run timeout in seconds
+             * @return the next update stage
              */
             Update withTimeout(Integer timeout);
         }
@@ -279,6 +310,8 @@ public interface Task extends HasInner<TaskInner>, Indexable, Refreshable<Task>,
         interface WithTrigger {
             /**
              * Specifies trigger.
+             * @param trigger The properties for updating trigger properties
+             * @return the next update stage
              */
             Update withTrigger(TriggerUpdateParameters trigger);
         }
