@@ -15,7 +15,9 @@ import com.microsoft.azure.management.storagesync.RegisteredServersCreateHeaders
 import com.microsoft.azure.management.storagesync.RegisteredServersDeleteHeaders;
 import com.microsoft.azure.management.storagesync.RegisteredServersGetHeaders;
 import com.microsoft.azure.management.storagesync.RegisteredServersListByStorageSyncServiceHeaders;
+import com.microsoft.azure.management.storagesync.RegisteredServersTriggerRolloverHeaders;
 import com.microsoft.azure.management.storagesync.StorageSyncErrorException;
+import com.microsoft.azure.management.storagesync.TriggerRolloverRequest;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponseWithHeaders;
@@ -29,6 +31,7 @@ import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.HTTP;
 import retrofit2.http.Path;
+import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import retrofit2.Response;
@@ -84,6 +87,14 @@ public class RegisteredServersInner {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.storagesync.RegisteredServers beginDelete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/registeredServers/{serverId}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDelete(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("storageSyncServiceName") String storageSyncServiceName, @Path("serverId") String serverId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.storagesync.RegisteredServers triggerRollover" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/registeredServers/{serverId}/triggerRollover")
+        Observable<Response<ResponseBody>> triggerRollover(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("storageSyncServiceName") String storageSyncServiceName, @Path("serverId") String serverId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body TriggerRolloverRequest parameters, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.storagesync.RegisteredServers beginTriggerRollover" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/registeredServers/{serverId}/triggerRollover")
+        Observable<Response<ResponseBody>> beginTriggerRollover(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("storageSyncServiceName") String storageSyncServiceName, @Path("serverId") String serverId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body TriggerRolloverRequest parameters, @Header("User-Agent") String userAgent);
 
     }
 
@@ -624,6 +635,351 @@ public class RegisteredServersInner {
                 .register(204, new TypeToken<Void>() { }.getType())
                 .registerError(StorageSyncErrorException.class)
                 .buildWithHeaders(response, RegisteredServersDeleteHeaders.class);
+    }
+
+    /**
+     * Triggers Server certificate rollover.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageSyncServiceName Name of Storage Sync Service resource.
+     * @param serverId Server Id
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws StorageSyncErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void triggerRollover(String resourceGroupName, String storageSyncServiceName, String serverId) {
+        triggerRolloverWithServiceResponseAsync(resourceGroupName, storageSyncServiceName, serverId).toBlocking().last().body();
+    }
+
+    /**
+     * Triggers Server certificate rollover.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageSyncServiceName Name of Storage Sync Service resource.
+     * @param serverId Server Id
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> triggerRolloverAsync(String resourceGroupName, String storageSyncServiceName, String serverId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(triggerRolloverWithServiceResponseAsync(resourceGroupName, storageSyncServiceName, serverId), serviceCallback);
+    }
+
+    /**
+     * Triggers Server certificate rollover.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageSyncServiceName Name of Storage Sync Service resource.
+     * @param serverId Server Id
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<Void> triggerRolloverAsync(String resourceGroupName, String storageSyncServiceName, String serverId) {
+        return triggerRolloverWithServiceResponseAsync(resourceGroupName, storageSyncServiceName, serverId).map(new Func1<ServiceResponseWithHeaders<Void, RegisteredServersTriggerRolloverHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, RegisteredServersTriggerRolloverHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Triggers Server certificate rollover.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageSyncServiceName Name of Storage Sync Service resource.
+     * @param serverId Server Id
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponseWithHeaders<Void, RegisteredServersTriggerRolloverHeaders>> triggerRolloverWithServiceResponseAsync(String resourceGroupName, String storageSyncServiceName, String serverId) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (storageSyncServiceName == null) {
+            throw new IllegalArgumentException("Parameter storageSyncServiceName is required and cannot be null.");
+        }
+        if (serverId == null) {
+            throw new IllegalArgumentException("Parameter serverId is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final String certificateData = null;
+        TriggerRolloverRequest parameters = new TriggerRolloverRequest();
+        parameters.withCertificateData(null);
+        Observable<Response<ResponseBody>> observable = service.triggerRollover(this.client.subscriptionId(), resourceGroupName, storageSyncServiceName, serverId, this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultWithHeadersAsync(observable, new TypeToken<Void>() { }.getType(), RegisteredServersTriggerRolloverHeaders.class);
+    }
+    /**
+     * Triggers Server certificate rollover.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageSyncServiceName Name of Storage Sync Service resource.
+     * @param serverId Server Id
+     * @param certificateData Certificate Data
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws StorageSyncErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void triggerRollover(String resourceGroupName, String storageSyncServiceName, String serverId, String certificateData) {
+        triggerRolloverWithServiceResponseAsync(resourceGroupName, storageSyncServiceName, serverId, certificateData).toBlocking().last().body();
+    }
+
+    /**
+     * Triggers Server certificate rollover.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageSyncServiceName Name of Storage Sync Service resource.
+     * @param serverId Server Id
+     * @param certificateData Certificate Data
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> triggerRolloverAsync(String resourceGroupName, String storageSyncServiceName, String serverId, String certificateData, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(triggerRolloverWithServiceResponseAsync(resourceGroupName, storageSyncServiceName, serverId, certificateData), serviceCallback);
+    }
+
+    /**
+     * Triggers Server certificate rollover.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageSyncServiceName Name of Storage Sync Service resource.
+     * @param serverId Server Id
+     * @param certificateData Certificate Data
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<Void> triggerRolloverAsync(String resourceGroupName, String storageSyncServiceName, String serverId, String certificateData) {
+        return triggerRolloverWithServiceResponseAsync(resourceGroupName, storageSyncServiceName, serverId, certificateData).map(new Func1<ServiceResponseWithHeaders<Void, RegisteredServersTriggerRolloverHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, RegisteredServersTriggerRolloverHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Triggers Server certificate rollover.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageSyncServiceName Name of Storage Sync Service resource.
+     * @param serverId Server Id
+     * @param certificateData Certificate Data
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponseWithHeaders<Void, RegisteredServersTriggerRolloverHeaders>> triggerRolloverWithServiceResponseAsync(String resourceGroupName, String storageSyncServiceName, String serverId, String certificateData) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (storageSyncServiceName == null) {
+            throw new IllegalArgumentException("Parameter storageSyncServiceName is required and cannot be null.");
+        }
+        if (serverId == null) {
+            throw new IllegalArgumentException("Parameter serverId is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        TriggerRolloverRequest parameters = new TriggerRolloverRequest();
+        parameters.withCertificateData(certificateData);
+        Observable<Response<ResponseBody>> observable = service.triggerRollover(this.client.subscriptionId(), resourceGroupName, storageSyncServiceName, serverId, this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultWithHeadersAsync(observable, new TypeToken<Void>() { }.getType(), RegisteredServersTriggerRolloverHeaders.class);
+    }
+
+    /**
+     * Triggers Server certificate rollover.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageSyncServiceName Name of Storage Sync Service resource.
+     * @param serverId Server Id
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws StorageSyncErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void beginTriggerRollover(String resourceGroupName, String storageSyncServiceName, String serverId) {
+        beginTriggerRolloverWithServiceResponseAsync(resourceGroupName, storageSyncServiceName, serverId).toBlocking().single().body();
+    }
+
+    /**
+     * Triggers Server certificate rollover.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageSyncServiceName Name of Storage Sync Service resource.
+     * @param serverId Server Id
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> beginTriggerRolloverAsync(String resourceGroupName, String storageSyncServiceName, String serverId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(beginTriggerRolloverWithServiceResponseAsync(resourceGroupName, storageSyncServiceName, serverId), serviceCallback);
+    }
+
+    /**
+     * Triggers Server certificate rollover.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageSyncServiceName Name of Storage Sync Service resource.
+     * @param serverId Server Id
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<Void> beginTriggerRolloverAsync(String resourceGroupName, String storageSyncServiceName, String serverId) {
+        return beginTriggerRolloverWithServiceResponseAsync(resourceGroupName, storageSyncServiceName, serverId).map(new Func1<ServiceResponseWithHeaders<Void, RegisteredServersTriggerRolloverHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, RegisteredServersTriggerRolloverHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Triggers Server certificate rollover.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageSyncServiceName Name of Storage Sync Service resource.
+     * @param serverId Server Id
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, RegisteredServersTriggerRolloverHeaders>> beginTriggerRolloverWithServiceResponseAsync(String resourceGroupName, String storageSyncServiceName, String serverId) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (storageSyncServiceName == null) {
+            throw new IllegalArgumentException("Parameter storageSyncServiceName is required and cannot be null.");
+        }
+        if (serverId == null) {
+            throw new IllegalArgumentException("Parameter serverId is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final String certificateData = null;
+        TriggerRolloverRequest parameters = new TriggerRolloverRequest();
+        parameters.withCertificateData(null);
+        return service.beginTriggerRollover(this.client.subscriptionId(), resourceGroupName, storageSyncServiceName, serverId, this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, RegisteredServersTriggerRolloverHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, RegisteredServersTriggerRolloverHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, RegisteredServersTriggerRolloverHeaders> clientResponse = beginTriggerRolloverDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Triggers Server certificate rollover.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageSyncServiceName Name of Storage Sync Service resource.
+     * @param serverId Server Id
+     * @param certificateData Certificate Data
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws StorageSyncErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void beginTriggerRollover(String resourceGroupName, String storageSyncServiceName, String serverId, String certificateData) {
+        beginTriggerRolloverWithServiceResponseAsync(resourceGroupName, storageSyncServiceName, serverId, certificateData).toBlocking().single().body();
+    }
+
+    /**
+     * Triggers Server certificate rollover.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageSyncServiceName Name of Storage Sync Service resource.
+     * @param serverId Server Id
+     * @param certificateData Certificate Data
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> beginTriggerRolloverAsync(String resourceGroupName, String storageSyncServiceName, String serverId, String certificateData, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(beginTriggerRolloverWithServiceResponseAsync(resourceGroupName, storageSyncServiceName, serverId, certificateData), serviceCallback);
+    }
+
+    /**
+     * Triggers Server certificate rollover.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageSyncServiceName Name of Storage Sync Service resource.
+     * @param serverId Server Id
+     * @param certificateData Certificate Data
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<Void> beginTriggerRolloverAsync(String resourceGroupName, String storageSyncServiceName, String serverId, String certificateData) {
+        return beginTriggerRolloverWithServiceResponseAsync(resourceGroupName, storageSyncServiceName, serverId, certificateData).map(new Func1<ServiceResponseWithHeaders<Void, RegisteredServersTriggerRolloverHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, RegisteredServersTriggerRolloverHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Triggers Server certificate rollover.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageSyncServiceName Name of Storage Sync Service resource.
+     * @param serverId Server Id
+     * @param certificateData Certificate Data
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, RegisteredServersTriggerRolloverHeaders>> beginTriggerRolloverWithServiceResponseAsync(String resourceGroupName, String storageSyncServiceName, String serverId, String certificateData) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (storageSyncServiceName == null) {
+            throw new IllegalArgumentException("Parameter storageSyncServiceName is required and cannot be null.");
+        }
+        if (serverId == null) {
+            throw new IllegalArgumentException("Parameter serverId is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        TriggerRolloverRequest parameters = new TriggerRolloverRequest();
+        parameters.withCertificateData(certificateData);
+        return service.beginTriggerRollover(this.client.subscriptionId(), resourceGroupName, storageSyncServiceName, serverId, this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, RegisteredServersTriggerRolloverHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, RegisteredServersTriggerRolloverHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, RegisteredServersTriggerRolloverHeaders> clientResponse = beginTriggerRolloverDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponseWithHeaders<Void, RegisteredServersTriggerRolloverHeaders> beginTriggerRolloverDelegate(Response<ResponseBody> response) throws StorageSyncErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, StorageSyncErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(StorageSyncErrorException.class)
+                .buildWithHeaders(response, RegisteredServersTriggerRolloverHeaders.class);
     }
 
 }

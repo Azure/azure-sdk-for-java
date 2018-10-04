@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.management.storagesync;
 
-import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
@@ -17,12 +16,6 @@ import com.microsoft.rest.serializer.JsonFlatten;
  */
 @JsonFlatten
 public class ServerEndpointUpdateParameters {
-    /**
-     * The user-specified tags associated with the server endpoint.
-     */
-    @JsonProperty(value = "tags")
-    private Map<String, String> tags;
-
     /**
      * Cloud Tiering. Possible values include: 'on', 'off'.
      */
@@ -36,24 +29,10 @@ public class ServerEndpointUpdateParameters {
     private Integer volumeFreeSpacePercent;
 
     /**
-     * Get the user-specified tags associated with the server endpoint.
-     *
-     * @return the tags value
+     * Tier files older than days.
      */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the user-specified tags associated with the server endpoint.
-     *
-     * @param tags the tags value to set
-     * @return the ServerEndpointUpdateParameters object itself.
-     */
-    public ServerEndpointUpdateParameters withTags(Map<String, String> tags) {
-        this.tags = tags;
-        return this;
-    }
+    @JsonProperty(value = "properties.tierFilesOlderThanDays")
+    private Integer tierFilesOlderThanDays;
 
     /**
      * Get cloud Tiering. Possible values include: 'on', 'off'.
@@ -92,6 +71,26 @@ public class ServerEndpointUpdateParameters {
      */
     public ServerEndpointUpdateParameters withVolumeFreeSpacePercent(Integer volumeFreeSpacePercent) {
         this.volumeFreeSpacePercent = volumeFreeSpacePercent;
+        return this;
+    }
+
+    /**
+     * Get tier files older than days.
+     *
+     * @return the tierFilesOlderThanDays value
+     */
+    public Integer tierFilesOlderThanDays() {
+        return this.tierFilesOlderThanDays;
+    }
+
+    /**
+     * Set tier files older than days.
+     *
+     * @param tierFilesOlderThanDays the tierFilesOlderThanDays value to set
+     * @return the ServerEndpointUpdateParameters object itself.
+     */
+    public ServerEndpointUpdateParameters withTierFilesOlderThanDays(Integer tierFilesOlderThanDays) {
+        this.tierFilesOlderThanDays = tierFilesOlderThanDays;
         return this;
     }
 

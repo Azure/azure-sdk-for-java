@@ -8,35 +8,15 @@
 
 package com.microsoft.azure.management.storagesync;
 
-import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
+import com.microsoft.azure.ProxyResource;
 
 /**
- * The parameters used when creating a storage sync service.
+ * The parameters used when creating a server endpoint.
  */
 @JsonFlatten
-public class ServerEndpointCreateParameters {
-    /**
-     * Required. Gets or sets the location of the resource. This will be one of
-     * the supported and registered Azure Geo Regions (e.g. West US, East US,
-     * Southeast Asia, etc.). The geo region of a resource cannot be changed
-     * once it is created, but if an identical geo region is specified on
-     * update, the request will succeed.
-     */
-    @JsonProperty(value = "location")
-    private String location;
-
-    /**
-     * Gets or sets a list of key value pairs that describe the resource. These
-     * tags can be used for viewing and grouping this resource (across resource
-     * groups). A maximum of 15 tags can be provided for a resource. Each tag
-     * must have a key with a length no greater than 128 characters and a value
-     * with a length no greater than 256 characters.
-     */
-    @JsonProperty(value = "tags")
-    private Map<String, String> tags;
-
+public class ServerEndpointCreateParameters extends ProxyResource {
     /**
      * Server Local path.
      */
@@ -56,6 +36,12 @@ public class ServerEndpointCreateParameters {
     private Integer volumeFreeSpacePercent;
 
     /**
+     * Tier files older than days.
+     */
+    @JsonProperty(value = "properties.tierFilesOlderThanDays")
+    private Integer tierFilesOlderThanDays;
+
+    /**
      * Friendly Name.
      */
     @JsonProperty(value = "properties.friendlyName")
@@ -66,46 +52,6 @@ public class ServerEndpointCreateParameters {
      */
     @JsonProperty(value = "properties.serverResourceId")
     private String serverResourceId;
-
-    /**
-     * Get required. Gets or sets the location of the resource. This will be one of the supported and registered Azure Geo Regions (e.g. West US, East US, Southeast Asia, etc.). The geo region of a resource cannot be changed once it is created, but if an identical geo region is specified on update, the request will succeed.
-     *
-     * @return the location value
-     */
-    public String location() {
-        return this.location;
-    }
-
-    /**
-     * Set required. Gets or sets the location of the resource. This will be one of the supported and registered Azure Geo Regions (e.g. West US, East US, Southeast Asia, etc.). The geo region of a resource cannot be changed once it is created, but if an identical geo region is specified on update, the request will succeed.
-     *
-     * @param location the location value to set
-     * @return the ServerEndpointCreateParameters object itself.
-     */
-    public ServerEndpointCreateParameters withLocation(String location) {
-        this.location = location;
-        return this;
-    }
-
-    /**
-     * Get gets or sets a list of key value pairs that describe the resource. These tags can be used for viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key with a length no greater than 128 characters and a value with a length no greater than 256 characters.
-     *
-     * @return the tags value
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set gets or sets a list of key value pairs that describe the resource. These tags can be used for viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key with a length no greater than 128 characters and a value with a length no greater than 256 characters.
-     *
-     * @param tags the tags value to set
-     * @return the ServerEndpointCreateParameters object itself.
-     */
-    public ServerEndpointCreateParameters withTags(Map<String, String> tags) {
-        this.tags = tags;
-        return this;
-    }
 
     /**
      * Get server Local path.
@@ -164,6 +110,26 @@ public class ServerEndpointCreateParameters {
      */
     public ServerEndpointCreateParameters withVolumeFreeSpacePercent(Integer volumeFreeSpacePercent) {
         this.volumeFreeSpacePercent = volumeFreeSpacePercent;
+        return this;
+    }
+
+    /**
+     * Get tier files older than days.
+     *
+     * @return the tierFilesOlderThanDays value
+     */
+    public Integer tierFilesOlderThanDays() {
+        return this.tierFilesOlderThanDays;
+    }
+
+    /**
+     * Set tier files older than days.
+     *
+     * @param tierFilesOlderThanDays the tierFilesOlderThanDays value to set
+     * @return the ServerEndpointCreateParameters object itself.
+     */
+    public ServerEndpointCreateParameters withTierFilesOlderThanDays(Integer tierFilesOlderThanDays) {
+        this.tierFilesOlderThanDays = tierFilesOlderThanDays;
         return this;
     }
 

@@ -22,7 +22,7 @@ public class StorageSyncServiceCreateParameters {
      * once it is created, but if an identical geo region is specified on
      * update, the request will succeed.
      */
-    @JsonProperty(value = "location")
+    @JsonProperty(value = "location", required = true)
     private String location;
 
     /**
@@ -34,6 +34,12 @@ public class StorageSyncServiceCreateParameters {
      */
     @JsonProperty(value = "tags")
     private Map<String, String> tags;
+
+    /**
+     * The properties property.
+     */
+    @JsonProperty(value = "properties")
+    private Object properties;
 
     /**
      * Get required. Gets or sets the location of the resource. This will be one of the supported and registered Azure Geo Regions (e.g. West US, East US, Southeast Asia, etc.). The geo region of a resource cannot be changed once it is created, but if an identical geo region is specified on update, the request will succeed.
@@ -72,6 +78,26 @@ public class StorageSyncServiceCreateParameters {
      */
     public StorageSyncServiceCreateParameters withTags(Map<String, String> tags) {
         this.tags = tags;
+        return this;
+    }
+
+    /**
+     * Get the properties value.
+     *
+     * @return the properties value
+     */
+    public Object properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties value.
+     *
+     * @param properties the properties value to set
+     * @return the StorageSyncServiceCreateParameters object itself.
+     */
+    public StorageSyncServiceCreateParameters withProperties(Object properties) {
+        this.properties = properties;
         return this;
     }
 
