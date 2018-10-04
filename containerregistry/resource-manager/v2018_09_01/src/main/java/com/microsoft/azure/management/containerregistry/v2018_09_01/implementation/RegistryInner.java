@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.containerregistry.v2018_09_01.implementation;
 
 import com.microsoft.azure.management.containerregistry.v2018_09_01.Sku;
+import com.microsoft.azure.management.containerregistry.v2018_09_01.RegistryIdentity;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.containerregistry.v2018_09_01.ProvisioningState;
 import com.microsoft.azure.management.containerregistry.v2018_09_01.Status;
@@ -27,6 +28,12 @@ public class RegistryInner extends Resource {
      */
     @JsonProperty(value = "sku", required = true)
     private Sku sku;
+
+    /**
+     * The Identity of the container registry.
+     */
+    @JsonProperty(value = "identity")
+    private RegistryIdentity identity;
 
     /**
      * The URL that can be used to log into the container registry.
@@ -85,6 +92,26 @@ public class RegistryInner extends Resource {
      */
     public RegistryInner withSku(Sku sku) {
         this.sku = sku;
+        return this;
+    }
+
+    /**
+     * Get the Identity of the container registry.
+     *
+     * @return the identity value
+     */
+    public RegistryIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the Identity of the container registry.
+     *
+     * @param identity the identity value to set
+     * @return the RegistryInner object itself.
+     */
+    public RegistryInner withIdentity(RegistryIdentity identity) {
+        this.identity = identity;
         return this;
     }
 
