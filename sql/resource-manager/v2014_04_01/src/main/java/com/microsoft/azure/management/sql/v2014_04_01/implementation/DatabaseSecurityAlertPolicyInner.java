@@ -43,7 +43,8 @@ public class DatabaseSecurityAlertPolicyInner extends ProxyResource {
     /**
      * Specifies the semicolon-separated list of alerts that are disabled, or
      * empty string to disable no alerts. Possible values: Sql_Injection;
-     * Sql_Injection_Vulnerability; Access_Anomaly; Usage_Anomaly.
+     * Sql_Injection_Vulnerability; Access_Anomaly; Data_Exfiltration;
+     * Unsafe_Action.
      */
     @JsonProperty(value = "properties.disabledAlerts")
     private String disabledAlerts;
@@ -141,7 +142,7 @@ public class DatabaseSecurityAlertPolicyInner extends ProxyResource {
     }
 
     /**
-     * Get specifies the semicolon-separated list of alerts that are disabled, or empty string to disable no alerts. Possible values: Sql_Injection; Sql_Injection_Vulnerability; Access_Anomaly; Usage_Anomaly.
+     * Get specifies the semicolon-separated list of alerts that are disabled, or empty string to disable no alerts. Possible values: Sql_Injection; Sql_Injection_Vulnerability; Access_Anomaly; Data_Exfiltration; Unsafe_Action.
      *
      * @return the disabledAlerts value
      */
@@ -150,7 +151,7 @@ public class DatabaseSecurityAlertPolicyInner extends ProxyResource {
     }
 
     /**
-     * Set specifies the semicolon-separated list of alerts that are disabled, or empty string to disable no alerts. Possible values: Sql_Injection; Sql_Injection_Vulnerability; Access_Anomaly; Usage_Anomaly.
+     * Set specifies the semicolon-separated list of alerts that are disabled, or empty string to disable no alerts. Possible values: Sql_Injection; Sql_Injection_Vulnerability; Access_Anomaly; Data_Exfiltration; Unsafe_Action.
      *
      * @param disabledAlerts the disabledAlerts value to set
      * @return the DatabaseSecurityAlertPolicyInner object itself.
