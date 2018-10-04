@@ -10,11 +10,15 @@ package com.microsoft.azure.management.monitor;
 
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Criterion to filter metrics.
  */
-public class MetricCriteria {
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "criterionType")
+@JsonTypeName("StaticThresholdCriterion")
+public class MetricCriteria extends MultiMetricCriteria {
     /**
      * Name of the criteria.
      */

@@ -66,6 +66,20 @@ public class MetricAlertResourcePatch {
     private Period windowSize;
 
     /**
+     * the resource type of the target resource(s) on which the alert is
+     * created/updated. Mandatory for MultipleResourceMultipleMetricCriteria.
+     */
+    @JsonProperty(value = "properties.targetResourceType")
+    private String targetResourceType;
+
+    /**
+     * the region of the target resource(s) on which the alert is
+     * created/updated. Mandatory for MultipleResourceMultipleMetricCriteria.
+     */
+    @JsonProperty(value = "properties.targetResourceRegion")
+    private String targetResourceRegion;
+
+    /**
      * defines the specific alert criteria information.
      */
     @JsonProperty(value = "properties.criteria", required = true)
@@ -228,6 +242,46 @@ public class MetricAlertResourcePatch {
      */
     public MetricAlertResourcePatch withWindowSize(Period windowSize) {
         this.windowSize = windowSize;
+        return this;
+    }
+
+    /**
+     * Get the resource type of the target resource(s) on which the alert is created/updated. Mandatory for MultipleResourceMultipleMetricCriteria.
+     *
+     * @return the targetResourceType value
+     */
+    public String targetResourceType() {
+        return this.targetResourceType;
+    }
+
+    /**
+     * Set the resource type of the target resource(s) on which the alert is created/updated. Mandatory for MultipleResourceMultipleMetricCriteria.
+     *
+     * @param targetResourceType the targetResourceType value to set
+     * @return the MetricAlertResourcePatch object itself.
+     */
+    public MetricAlertResourcePatch withTargetResourceType(String targetResourceType) {
+        this.targetResourceType = targetResourceType;
+        return this;
+    }
+
+    /**
+     * Get the region of the target resource(s) on which the alert is created/updated. Mandatory for MultipleResourceMultipleMetricCriteria.
+     *
+     * @return the targetResourceRegion value
+     */
+    public String targetResourceRegion() {
+        return this.targetResourceRegion;
+    }
+
+    /**
+     * Set the region of the target resource(s) on which the alert is created/updated. Mandatory for MultipleResourceMultipleMetricCriteria.
+     *
+     * @param targetResourceRegion the targetResourceRegion value to set
+     * @return the MetricAlertResourcePatch object itself.
+     */
+    public MetricAlertResourcePatch withTargetResourceRegion(String targetResourceRegion) {
+        this.targetResourceRegion = targetResourceRegion;
         return this;
     }
 

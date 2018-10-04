@@ -22,7 +22,7 @@ public class MetricDimension {
     private String name;
 
     /**
-     * the dimension operator.
+     * the dimension operator. Only 'Include' and 'Exclude' are supported.
      */
     @JsonProperty(value = "operator", required = true)
     private String operator;
@@ -54,7 +54,7 @@ public class MetricDimension {
     }
 
     /**
-     * Get the dimension operator.
+     * Get the dimension operator. Only 'Include' and 'Exclude' are supported.
      *
      * @return the operator value
      */
@@ -63,7 +63,7 @@ public class MetricDimension {
     }
 
     /**
-     * Set the dimension operator.
+     * Set the dimension operator. Only 'Include' and 'Exclude' are supported.
      *
      * @param operator the operator value to set
      * @return the MetricDimension object itself.
