@@ -9,7 +9,6 @@
 package com.microsoft.azure.management.policy.v2018_05_01;
 
 import com.microsoft.azure.arm.collection.SupportsCreating;
-import com.microsoft.azure.arm.collection.SupportsListing;
 import rx.Completable;
 import rx.Observable;
 import com.microsoft.azure.management.policy.v2018_05_01.implementation.PolicySetDefinitionInner;
@@ -19,26 +18,28 @@ import com.microsoft.azure.arm.model.HasInner;
 /**
  * Type representing PolicySetDefinitions.
  */
-public interface PolicySetDefinitions extends SupportsCreating<PolicySetDefinition.DefinitionStages.Blank>, SupportsListing<PolicySetDefinition>, HasInner<PolicySetDefinitionsInner> {
+public interface PolicySetDefinitions extends SupportsCreating<PolicySetDefinition.DefinitionStages.Blank>, HasInner<PolicySetDefinitionsInner> {
     /**
      * Deletes a policy set definition.
      * This operation deletes the policy set definition in the given subscription with the given name.
      *
      * @param policySetDefinitionName The name of the policy set definition to delete.
+     * @param subscriptionId The ID of the target subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable deleteAsync(String policySetDefinitionName);
+    Completable deleteAsync(String policySetDefinitionName, String subscriptionId);
 
     /**
      * Retrieves a policy set definition.
      * This operation retrieves the policy set definition in the given subscription with the given name.
      *
      * @param policySetDefinitionName The name of the policy set definition to get.
+     * @param subscriptionId The ID of the target subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<PolicySetDefinition> getAsync(String policySetDefinitionName);
+    Observable<PolicySetDefinition> getAsync(String policySetDefinitionName, String subscriptionId);
 
     /**
      * Retrieves a built in policy set definition.
@@ -93,6 +94,16 @@ public interface PolicySetDefinitions extends SupportsCreating<PolicySetDefiniti
      * @return the observable for the request
      */
     Observable<PolicySetDefinition> listByManagementGroupAsync(final String managementGroupId);
+
+    /**
+     * Retrieves the policy set definitions for a subscription.
+     * This operation retrieves a list of all the policy set definitions in the given subscription.
+     *
+     * @param subscriptionId The ID of the target subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<PolicySetDefinition> listAsync(final String subscriptionId);
 
     /**
      * Retrieves built-in policy set definitions.

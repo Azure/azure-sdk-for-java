@@ -9,7 +9,6 @@
 package com.microsoft.azure.management.policy.v2018_05_01.implementation;
 
 import com.microsoft.azure.arm.collection.InnerSupportsDelete;
-import com.microsoft.azure.arm.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
@@ -41,7 +40,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in PolicyAssignments.
  */
-public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignmentInner>, InnerSupportsListing<PolicyAssignmentInner> {
+public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignmentInner> {
     /** The Retrofit service to perform REST calls. */
     private PolicyAssignmentsService service;
     /** The service client containing this operation class. */
@@ -388,13 +387,14 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * This operation retrieves the list of all policy assignments associated with the given resource group in the given subscription that match the optional given $filter. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If $filter is not provided, the unfiltered list includes all policy assignments associated with the resource group, including those that apply directly or apply from containing scopes, as well as any applied to resources contained within the resource group. If $filter=atScope() is provided, the returned list includes all policy assignments that apply to the resource group, which is everything in the unfiltered list except those applied to resources contained within the resource group. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes only policy assignments that apply to the resource group and assign the policy definition whose id is {value}.
      *
      * @param resourceGroupName The name of the resource group that contains policy assignments.
+     * @param subscriptionId The ID of the target subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;PolicyAssignmentInner&gt; object if successful.
      */
-    public PagedList<PolicyAssignmentInner> listByResourceGroup(final String resourceGroupName) {
-        ServiceResponse<Page<PolicyAssignmentInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName).toBlocking().single();
+    public PagedList<PolicyAssignmentInner> listByResourceGroup(final String resourceGroupName, final String subscriptionId) {
+        ServiceResponse<Page<PolicyAssignmentInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName, subscriptionId).toBlocking().single();
         return new PagedList<PolicyAssignmentInner>(response.body()) {
             @Override
             public Page<PolicyAssignmentInner> nextPage(String nextPageLink) {
@@ -408,13 +408,14 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * This operation retrieves the list of all policy assignments associated with the given resource group in the given subscription that match the optional given $filter. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If $filter is not provided, the unfiltered list includes all policy assignments associated with the resource group, including those that apply directly or apply from containing scopes, as well as any applied to resources contained within the resource group. If $filter=atScope() is provided, the returned list includes all policy assignments that apply to the resource group, which is everything in the unfiltered list except those applied to resources contained within the resource group. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes only policy assignments that apply to the resource group and assign the policy definition whose id is {value}.
      *
      * @param resourceGroupName The name of the resource group that contains policy assignments.
+     * @param subscriptionId The ID of the target subscription.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<PolicyAssignmentInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
+    public ServiceFuture<List<PolicyAssignmentInner>> listByResourceGroupAsync(final String resourceGroupName, final String subscriptionId, final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listByResourceGroupSinglePageAsync(resourceGroupName),
+            listByResourceGroupSinglePageAsync(resourceGroupName, subscriptionId),
             new Func1<String, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(String nextPageLink) {
@@ -429,11 +430,12 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * This operation retrieves the list of all policy assignments associated with the given resource group in the given subscription that match the optional given $filter. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If $filter is not provided, the unfiltered list includes all policy assignments associated with the resource group, including those that apply directly or apply from containing scopes, as well as any applied to resources contained within the resource group. If $filter=atScope() is provided, the returned list includes all policy assignments that apply to the resource group, which is everything in the unfiltered list except those applied to resources contained within the resource group. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes only policy assignments that apply to the resource group and assign the policy definition whose id is {value}.
      *
      * @param resourceGroupName The name of the resource group that contains policy assignments.
+     * @param subscriptionId The ID of the target subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
      */
-    public Observable<Page<PolicyAssignmentInner>> listByResourceGroupAsync(final String resourceGroupName) {
-        return listByResourceGroupWithServiceResponseAsync(resourceGroupName)
+    public Observable<Page<PolicyAssignmentInner>> listByResourceGroupAsync(final String resourceGroupName, final String subscriptionId) {
+        return listByResourceGroupWithServiceResponseAsync(resourceGroupName, subscriptionId)
             .map(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Page<PolicyAssignmentInner>>() {
                 @Override
                 public Page<PolicyAssignmentInner> call(ServiceResponse<Page<PolicyAssignmentInner>> response) {
@@ -447,11 +449,12 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * This operation retrieves the list of all policy assignments associated with the given resource group in the given subscription that match the optional given $filter. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If $filter is not provided, the unfiltered list includes all policy assignments associated with the resource group, including those that apply directly or apply from containing scopes, as well as any applied to resources contained within the resource group. If $filter=atScope() is provided, the returned list includes all policy assignments that apply to the resource group, which is everything in the unfiltered list except those applied to resources contained within the resource group. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes only policy assignments that apply to the resource group and assign the policy definition whose id is {value}.
      *
      * @param resourceGroupName The name of the resource group that contains policy assignments.
+     * @param subscriptionId The ID of the target subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
      */
-    public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName) {
-        return listByResourceGroupSinglePageAsync(resourceGroupName)
+    public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName, final String subscriptionId) {
+        return listByResourceGroupSinglePageAsync(resourceGroupName, subscriptionId)
             .concatMap(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(ServiceResponse<Page<PolicyAssignmentInner>> page) {
@@ -469,21 +472,22 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * This operation retrieves the list of all policy assignments associated with the given resource group in the given subscription that match the optional given $filter. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If $filter is not provided, the unfiltered list includes all policy assignments associated with the resource group, including those that apply directly or apply from containing scopes, as well as any applied to resources contained within the resource group. If $filter=atScope() is provided, the returned list includes all policy assignments that apply to the resource group, which is everything in the unfiltered list except those applied to resources contained within the resource group. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes only policy assignments that apply to the resource group and assign the policy definition whose id is {value}.
      *
      * @param resourceGroupName The name of the resource group that contains policy assignments.
+     * @param subscriptionId The ID of the target subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;PolicyAssignmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName) {
+    public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName, final String subscriptionId) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        if (subscriptionId == null) {
+            throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String filter = null;
-        return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.listByResourceGroup(resourceGroupName, subscriptionId, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(Response<ResponseBody> response) {
@@ -502,14 +506,15 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * This operation retrieves the list of all policy assignments associated with the given resource group in the given subscription that match the optional given $filter. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If $filter is not provided, the unfiltered list includes all policy assignments associated with the resource group, including those that apply directly or apply from containing scopes, as well as any applied to resources contained within the resource group. If $filter=atScope() is provided, the returned list includes all policy assignments that apply to the resource group, which is everything in the unfiltered list except those applied to resources contained within the resource group. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes only policy assignments that apply to the resource group and assign the policy definition whose id is {value}.
      *
      * @param resourceGroupName The name of the resource group that contains policy assignments.
+     * @param subscriptionId The ID of the target subscription.
      * @param filter The filter to apply on the operation. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If $filter is not provided, no filtering is performed.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;PolicyAssignmentInner&gt; object if successful.
      */
-    public PagedList<PolicyAssignmentInner> listByResourceGroup(final String resourceGroupName, final String filter) {
-        ServiceResponse<Page<PolicyAssignmentInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName, filter).toBlocking().single();
+    public PagedList<PolicyAssignmentInner> listByResourceGroup(final String resourceGroupName, final String subscriptionId, final String filter) {
+        ServiceResponse<Page<PolicyAssignmentInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName, subscriptionId, filter).toBlocking().single();
         return new PagedList<PolicyAssignmentInner>(response.body()) {
             @Override
             public Page<PolicyAssignmentInner> nextPage(String nextPageLink) {
@@ -523,14 +528,15 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * This operation retrieves the list of all policy assignments associated with the given resource group in the given subscription that match the optional given $filter. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If $filter is not provided, the unfiltered list includes all policy assignments associated with the resource group, including those that apply directly or apply from containing scopes, as well as any applied to resources contained within the resource group. If $filter=atScope() is provided, the returned list includes all policy assignments that apply to the resource group, which is everything in the unfiltered list except those applied to resources contained within the resource group. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes only policy assignments that apply to the resource group and assign the policy definition whose id is {value}.
      *
      * @param resourceGroupName The name of the resource group that contains policy assignments.
+     * @param subscriptionId The ID of the target subscription.
      * @param filter The filter to apply on the operation. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If $filter is not provided, no filtering is performed.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<PolicyAssignmentInner>> listByResourceGroupAsync(final String resourceGroupName, final String filter, final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
+    public ServiceFuture<List<PolicyAssignmentInner>> listByResourceGroupAsync(final String resourceGroupName, final String subscriptionId, final String filter, final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listByResourceGroupSinglePageAsync(resourceGroupName, filter),
+            listByResourceGroupSinglePageAsync(resourceGroupName, subscriptionId, filter),
             new Func1<String, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(String nextPageLink) {
@@ -545,12 +551,13 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * This operation retrieves the list of all policy assignments associated with the given resource group in the given subscription that match the optional given $filter. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If $filter is not provided, the unfiltered list includes all policy assignments associated with the resource group, including those that apply directly or apply from containing scopes, as well as any applied to resources contained within the resource group. If $filter=atScope() is provided, the returned list includes all policy assignments that apply to the resource group, which is everything in the unfiltered list except those applied to resources contained within the resource group. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes only policy assignments that apply to the resource group and assign the policy definition whose id is {value}.
      *
      * @param resourceGroupName The name of the resource group that contains policy assignments.
+     * @param subscriptionId The ID of the target subscription.
      * @param filter The filter to apply on the operation. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If $filter is not provided, no filtering is performed.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
      */
-    public Observable<Page<PolicyAssignmentInner>> listByResourceGroupAsync(final String resourceGroupName, final String filter) {
-        return listByResourceGroupWithServiceResponseAsync(resourceGroupName, filter)
+    public Observable<Page<PolicyAssignmentInner>> listByResourceGroupAsync(final String resourceGroupName, final String subscriptionId, final String filter) {
+        return listByResourceGroupWithServiceResponseAsync(resourceGroupName, subscriptionId, filter)
             .map(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Page<PolicyAssignmentInner>>() {
                 @Override
                 public Page<PolicyAssignmentInner> call(ServiceResponse<Page<PolicyAssignmentInner>> response) {
@@ -564,12 +571,13 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * This operation retrieves the list of all policy assignments associated with the given resource group in the given subscription that match the optional given $filter. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If $filter is not provided, the unfiltered list includes all policy assignments associated with the resource group, including those that apply directly or apply from containing scopes, as well as any applied to resources contained within the resource group. If $filter=atScope() is provided, the returned list includes all policy assignments that apply to the resource group, which is everything in the unfiltered list except those applied to resources contained within the resource group. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes only policy assignments that apply to the resource group and assign the policy definition whose id is {value}.
      *
      * @param resourceGroupName The name of the resource group that contains policy assignments.
+     * @param subscriptionId The ID of the target subscription.
      * @param filter The filter to apply on the operation. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If $filter is not provided, no filtering is performed.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
      */
-    public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName, final String filter) {
-        return listByResourceGroupSinglePageAsync(resourceGroupName, filter)
+    public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName, final String subscriptionId, final String filter) {
+        return listByResourceGroupSinglePageAsync(resourceGroupName, subscriptionId, filter)
             .concatMap(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(ServiceResponse<Page<PolicyAssignmentInner>> page) {
@@ -587,21 +595,22 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * This operation retrieves the list of all policy assignments associated with the given resource group in the given subscription that match the optional given $filter. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If $filter is not provided, the unfiltered list includes all policy assignments associated with the resource group, including those that apply directly or apply from containing scopes, as well as any applied to resources contained within the resource group. If $filter=atScope() is provided, the returned list includes all policy assignments that apply to the resource group, which is everything in the unfiltered list except those applied to resources contained within the resource group. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes only policy assignments that apply to the resource group and assign the policy definition whose id is {value}.
      *
     ServiceResponse<PageImpl<PolicyAssignmentInner>> * @param resourceGroupName The name of the resource group that contains policy assignments.
+    ServiceResponse<PageImpl<PolicyAssignmentInner>> * @param subscriptionId The ID of the target subscription.
     ServiceResponse<PageImpl<PolicyAssignmentInner>> * @param filter The filter to apply on the operation. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If $filter is not provided, no filtering is performed.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;PolicyAssignmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName, final String filter) {
+    public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName, final String subscriptionId, final String filter) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        if (subscriptionId == null) {
+            throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.listByResourceGroup(resourceGroupName, subscriptionId, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(Response<ResponseBody> response) {
@@ -631,13 +640,14 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * @param parentResourcePath The parent resource path. Use empty string if there is none.
      * @param resourceType The resource type name. For example the type name of a web app is 'sites' (from Microsoft.Web/sites).
      * @param resourceName The name of the resource.
+     * @param subscriptionId The ID of the target subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;PolicyAssignmentInner&gt; object if successful.
      */
-    public PagedList<PolicyAssignmentInner> listForResource(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName) {
-        ServiceResponse<Page<PolicyAssignmentInner>> response = listForResourceSinglePageAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName).toBlocking().single();
+    public PagedList<PolicyAssignmentInner> listForResource(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final String subscriptionId) {
+        ServiceResponse<Page<PolicyAssignmentInner>> response = listForResourceSinglePageAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, subscriptionId).toBlocking().single();
         return new PagedList<PolicyAssignmentInner>(response.body()) {
             @Override
             public Page<PolicyAssignmentInner> nextPage(String nextPageLink) {
@@ -655,13 +665,14 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * @param parentResourcePath The parent resource path. Use empty string if there is none.
      * @param resourceType The resource type name. For example the type name of a web app is 'sites' (from Microsoft.Web/sites).
      * @param resourceName The name of the resource.
+     * @param subscriptionId The ID of the target subscription.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<PolicyAssignmentInner>> listForResourceAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
+    public ServiceFuture<List<PolicyAssignmentInner>> listForResourceAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final String subscriptionId, final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listForResourceSinglePageAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName),
+            listForResourceSinglePageAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, subscriptionId),
             new Func1<String, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(String nextPageLink) {
@@ -680,11 +691,12 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * @param parentResourcePath The parent resource path. Use empty string if there is none.
      * @param resourceType The resource type name. For example the type name of a web app is 'sites' (from Microsoft.Web/sites).
      * @param resourceName The name of the resource.
+     * @param subscriptionId The ID of the target subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
      */
-    public Observable<Page<PolicyAssignmentInner>> listForResourceAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName) {
-        return listForResourceWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName)
+    public Observable<Page<PolicyAssignmentInner>> listForResourceAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final String subscriptionId) {
+        return listForResourceWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, subscriptionId)
             .map(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Page<PolicyAssignmentInner>>() {
                 @Override
                 public Page<PolicyAssignmentInner> call(ServiceResponse<Page<PolicyAssignmentInner>> response) {
@@ -702,11 +714,12 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * @param parentResourcePath The parent resource path. Use empty string if there is none.
      * @param resourceType The resource type name. For example the type name of a web app is 'sites' (from Microsoft.Web/sites).
      * @param resourceName The name of the resource.
+     * @param subscriptionId The ID of the target subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
      */
-    public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listForResourceWithServiceResponseAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName) {
-        return listForResourceSinglePageAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName)
+    public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listForResourceWithServiceResponseAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final String subscriptionId) {
+        return listForResourceSinglePageAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, subscriptionId)
             .concatMap(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(ServiceResponse<Page<PolicyAssignmentInner>> page) {
@@ -728,10 +741,11 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * @param parentResourcePath The parent resource path. Use empty string if there is none.
      * @param resourceType The resource type name. For example the type name of a web app is 'sites' (from Microsoft.Web/sites).
      * @param resourceName The name of the resource.
+     * @param subscriptionId The ID of the target subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;PolicyAssignmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listForResourceSinglePageAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName) {
+    public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listForResourceSinglePageAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final String subscriptionId) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -747,14 +761,14 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
         if (resourceName == null) {
             throw new IllegalArgumentException("Parameter resourceName is required and cannot be null.");
         }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        if (subscriptionId == null) {
+            throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String filter = null;
-        return service.listForResource(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.listForResource(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, subscriptionId, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(Response<ResponseBody> response) {
@@ -777,14 +791,15 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * @param parentResourcePath The parent resource path. Use empty string if there is none.
      * @param resourceType The resource type name. For example the type name of a web app is 'sites' (from Microsoft.Web/sites).
      * @param resourceName The name of the resource.
+     * @param subscriptionId The ID of the target subscription.
      * @param filter The filter to apply on the operation. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If $filter is not provided, no filtering is performed.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;PolicyAssignmentInner&gt; object if successful.
      */
-    public PagedList<PolicyAssignmentInner> listForResource(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final String filter) {
-        ServiceResponse<Page<PolicyAssignmentInner>> response = listForResourceSinglePageAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, filter).toBlocking().single();
+    public PagedList<PolicyAssignmentInner> listForResource(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final String subscriptionId, final String filter) {
+        ServiceResponse<Page<PolicyAssignmentInner>> response = listForResourceSinglePageAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, subscriptionId, filter).toBlocking().single();
         return new PagedList<PolicyAssignmentInner>(response.body()) {
             @Override
             public Page<PolicyAssignmentInner> nextPage(String nextPageLink) {
@@ -802,14 +817,15 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * @param parentResourcePath The parent resource path. Use empty string if there is none.
      * @param resourceType The resource type name. For example the type name of a web app is 'sites' (from Microsoft.Web/sites).
      * @param resourceName The name of the resource.
+     * @param subscriptionId The ID of the target subscription.
      * @param filter The filter to apply on the operation. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If $filter is not provided, no filtering is performed.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<PolicyAssignmentInner>> listForResourceAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final String filter, final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
+    public ServiceFuture<List<PolicyAssignmentInner>> listForResourceAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final String subscriptionId, final String filter, final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listForResourceSinglePageAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, filter),
+            listForResourceSinglePageAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, subscriptionId, filter),
             new Func1<String, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(String nextPageLink) {
@@ -828,12 +844,13 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * @param parentResourcePath The parent resource path. Use empty string if there is none.
      * @param resourceType The resource type name. For example the type name of a web app is 'sites' (from Microsoft.Web/sites).
      * @param resourceName The name of the resource.
+     * @param subscriptionId The ID of the target subscription.
      * @param filter The filter to apply on the operation. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If $filter is not provided, no filtering is performed.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
      */
-    public Observable<Page<PolicyAssignmentInner>> listForResourceAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final String filter) {
-        return listForResourceWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, filter)
+    public Observable<Page<PolicyAssignmentInner>> listForResourceAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final String subscriptionId, final String filter) {
+        return listForResourceWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, subscriptionId, filter)
             .map(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Page<PolicyAssignmentInner>>() {
                 @Override
                 public Page<PolicyAssignmentInner> call(ServiceResponse<Page<PolicyAssignmentInner>> response) {
@@ -851,12 +868,13 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * @param parentResourcePath The parent resource path. Use empty string if there is none.
      * @param resourceType The resource type name. For example the type name of a web app is 'sites' (from Microsoft.Web/sites).
      * @param resourceName The name of the resource.
+     * @param subscriptionId The ID of the target subscription.
      * @param filter The filter to apply on the operation. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If $filter is not provided, no filtering is performed.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
      */
-    public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listForResourceWithServiceResponseAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final String filter) {
-        return listForResourceSinglePageAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, filter)
+    public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listForResourceWithServiceResponseAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final String subscriptionId, final String filter) {
+        return listForResourceSinglePageAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, subscriptionId, filter)
             .concatMap(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(ServiceResponse<Page<PolicyAssignmentInner>> page) {
@@ -878,11 +896,12 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
     ServiceResponse<PageImpl<PolicyAssignmentInner>> * @param parentResourcePath The parent resource path. Use empty string if there is none.
     ServiceResponse<PageImpl<PolicyAssignmentInner>> * @param resourceType The resource type name. For example the type name of a web app is 'sites' (from Microsoft.Web/sites).
     ServiceResponse<PageImpl<PolicyAssignmentInner>> * @param resourceName The name of the resource.
+    ServiceResponse<PageImpl<PolicyAssignmentInner>> * @param subscriptionId The ID of the target subscription.
     ServiceResponse<PageImpl<PolicyAssignmentInner>> * @param filter The filter to apply on the operation. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If $filter is not provided, no filtering is performed.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;PolicyAssignmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listForResourceSinglePageAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final String filter) {
+    public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listForResourceSinglePageAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final String subscriptionId, final String filter) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -898,13 +917,13 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
         if (resourceName == null) {
             throw new IllegalArgumentException("Parameter resourceName is required and cannot be null.");
         }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        if (subscriptionId == null) {
+            throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.listForResource(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.listForResource(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, subscriptionId, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(Response<ResponseBody> response) {
@@ -929,13 +948,14 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * Retrieves all policy assignments that apply to a subscription.
      * This operation retrieves the list of all policy assignments associated with the given subscription that match the optional given $filter. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If $filter is not provided, the unfiltered list includes all policy assignments associated with the subscription, including those that apply directly or from management groups that contain the given subscription, as well as any applied to objects contained within the subscription. If $filter=atScope() is provided, the returned list includes all policy assignments that apply to the subscription, which is everything in the unfiltered list except those applied to objects contained within the subscription. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes only policy assignments that apply to the subscription and assign the policy definition whose id is {value}.
      *
+     * @param subscriptionId The ID of the target subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;PolicyAssignmentInner&gt; object if successful.
      */
-    public PagedList<PolicyAssignmentInner> list() {
-        ServiceResponse<Page<PolicyAssignmentInner>> response = listSinglePageAsync().toBlocking().single();
+    public PagedList<PolicyAssignmentInner> list(final String subscriptionId) {
+        ServiceResponse<Page<PolicyAssignmentInner>> response = listSinglePageAsync(subscriptionId).toBlocking().single();
         return new PagedList<PolicyAssignmentInner>(response.body()) {
             @Override
             public Page<PolicyAssignmentInner> nextPage(String nextPageLink) {
@@ -948,13 +968,14 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * Retrieves all policy assignments that apply to a subscription.
      * This operation retrieves the list of all policy assignments associated with the given subscription that match the optional given $filter. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If $filter is not provided, the unfiltered list includes all policy assignments associated with the subscription, including those that apply directly or from management groups that contain the given subscription, as well as any applied to objects contained within the subscription. If $filter=atScope() is provided, the returned list includes all policy assignments that apply to the subscription, which is everything in the unfiltered list except those applied to objects contained within the subscription. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes only policy assignments that apply to the subscription and assign the policy definition whose id is {value}.
      *
+     * @param subscriptionId The ID of the target subscription.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<PolicyAssignmentInner>> listAsync(final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
+    public ServiceFuture<List<PolicyAssignmentInner>> listAsync(final String subscriptionId, final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listSinglePageAsync(),
+            listSinglePageAsync(subscriptionId),
             new Func1<String, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(String nextPageLink) {
@@ -968,11 +989,12 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * Retrieves all policy assignments that apply to a subscription.
      * This operation retrieves the list of all policy assignments associated with the given subscription that match the optional given $filter. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If $filter is not provided, the unfiltered list includes all policy assignments associated with the subscription, including those that apply directly or from management groups that contain the given subscription, as well as any applied to objects contained within the subscription. If $filter=atScope() is provided, the returned list includes all policy assignments that apply to the subscription, which is everything in the unfiltered list except those applied to objects contained within the subscription. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes only policy assignments that apply to the subscription and assign the policy definition whose id is {value}.
      *
+     * @param subscriptionId The ID of the target subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
      */
-    public Observable<Page<PolicyAssignmentInner>> listAsync() {
-        return listWithServiceResponseAsync()
+    public Observable<Page<PolicyAssignmentInner>> listAsync(final String subscriptionId) {
+        return listWithServiceResponseAsync(subscriptionId)
             .map(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Page<PolicyAssignmentInner>>() {
                 @Override
                 public Page<PolicyAssignmentInner> call(ServiceResponse<Page<PolicyAssignmentInner>> response) {
@@ -985,11 +1007,12 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * Retrieves all policy assignments that apply to a subscription.
      * This operation retrieves the list of all policy assignments associated with the given subscription that match the optional given $filter. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If $filter is not provided, the unfiltered list includes all policy assignments associated with the subscription, including those that apply directly or from management groups that contain the given subscription, as well as any applied to objects contained within the subscription. If $filter=atScope() is provided, the returned list includes all policy assignments that apply to the subscription, which is everything in the unfiltered list except those applied to objects contained within the subscription. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes only policy assignments that apply to the subscription and assign the policy definition whose id is {value}.
      *
+     * @param subscriptionId The ID of the target subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
      */
-    public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listWithServiceResponseAsync() {
-        return listSinglePageAsync()
+    public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listWithServiceResponseAsync(final String subscriptionId) {
+        return listSinglePageAsync(subscriptionId)
             .concatMap(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(ServiceResponse<Page<PolicyAssignmentInner>> page) {
@@ -1006,18 +1029,19 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * Retrieves all policy assignments that apply to a subscription.
      * This operation retrieves the list of all policy assignments associated with the given subscription that match the optional given $filter. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If $filter is not provided, the unfiltered list includes all policy assignments associated with the subscription, including those that apply directly or from management groups that contain the given subscription, as well as any applied to objects contained within the subscription. If $filter=atScope() is provided, the returned list includes all policy assignments that apply to the subscription, which is everything in the unfiltered list except those applied to objects contained within the subscription. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes only policy assignments that apply to the subscription and assign the policy definition whose id is {value}.
      *
+     * @param subscriptionId The ID of the target subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;PolicyAssignmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listSinglePageAsync() {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+    public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listSinglePageAsync(final String subscriptionId) {
+        if (subscriptionId == null) {
+            throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String filter = null;
-        return service.list(this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.list(subscriptionId, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(Response<ResponseBody> response) {
@@ -1035,14 +1059,15 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * Retrieves all policy assignments that apply to a subscription.
      * This operation retrieves the list of all policy assignments associated with the given subscription that match the optional given $filter. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If $filter is not provided, the unfiltered list includes all policy assignments associated with the subscription, including those that apply directly or from management groups that contain the given subscription, as well as any applied to objects contained within the subscription. If $filter=atScope() is provided, the returned list includes all policy assignments that apply to the subscription, which is everything in the unfiltered list except those applied to objects contained within the subscription. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes only policy assignments that apply to the subscription and assign the policy definition whose id is {value}.
      *
+     * @param subscriptionId The ID of the target subscription.
      * @param filter The filter to apply on the operation. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If $filter is not provided, no filtering is performed.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;PolicyAssignmentInner&gt; object if successful.
      */
-    public PagedList<PolicyAssignmentInner> list(final String filter) {
-        ServiceResponse<Page<PolicyAssignmentInner>> response = listSinglePageAsync(filter).toBlocking().single();
+    public PagedList<PolicyAssignmentInner> list(final String subscriptionId, final String filter) {
+        ServiceResponse<Page<PolicyAssignmentInner>> response = listSinglePageAsync(subscriptionId, filter).toBlocking().single();
         return new PagedList<PolicyAssignmentInner>(response.body()) {
             @Override
             public Page<PolicyAssignmentInner> nextPage(String nextPageLink) {
@@ -1055,14 +1080,15 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * Retrieves all policy assignments that apply to a subscription.
      * This operation retrieves the list of all policy assignments associated with the given subscription that match the optional given $filter. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If $filter is not provided, the unfiltered list includes all policy assignments associated with the subscription, including those that apply directly or from management groups that contain the given subscription, as well as any applied to objects contained within the subscription. If $filter=atScope() is provided, the returned list includes all policy assignments that apply to the subscription, which is everything in the unfiltered list except those applied to objects contained within the subscription. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes only policy assignments that apply to the subscription and assign the policy definition whose id is {value}.
      *
+     * @param subscriptionId The ID of the target subscription.
      * @param filter The filter to apply on the operation. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If $filter is not provided, no filtering is performed.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<PolicyAssignmentInner>> listAsync(final String filter, final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
+    public ServiceFuture<List<PolicyAssignmentInner>> listAsync(final String subscriptionId, final String filter, final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listSinglePageAsync(filter),
+            listSinglePageAsync(subscriptionId, filter),
             new Func1<String, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(String nextPageLink) {
@@ -1076,12 +1102,13 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * Retrieves all policy assignments that apply to a subscription.
      * This operation retrieves the list of all policy assignments associated with the given subscription that match the optional given $filter. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If $filter is not provided, the unfiltered list includes all policy assignments associated with the subscription, including those that apply directly or from management groups that contain the given subscription, as well as any applied to objects contained within the subscription. If $filter=atScope() is provided, the returned list includes all policy assignments that apply to the subscription, which is everything in the unfiltered list except those applied to objects contained within the subscription. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes only policy assignments that apply to the subscription and assign the policy definition whose id is {value}.
      *
+     * @param subscriptionId The ID of the target subscription.
      * @param filter The filter to apply on the operation. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If $filter is not provided, no filtering is performed.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
      */
-    public Observable<Page<PolicyAssignmentInner>> listAsync(final String filter) {
-        return listWithServiceResponseAsync(filter)
+    public Observable<Page<PolicyAssignmentInner>> listAsync(final String subscriptionId, final String filter) {
+        return listWithServiceResponseAsync(subscriptionId, filter)
             .map(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Page<PolicyAssignmentInner>>() {
                 @Override
                 public Page<PolicyAssignmentInner> call(ServiceResponse<Page<PolicyAssignmentInner>> response) {
@@ -1094,12 +1121,13 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * Retrieves all policy assignments that apply to a subscription.
      * This operation retrieves the list of all policy assignments associated with the given subscription that match the optional given $filter. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If $filter is not provided, the unfiltered list includes all policy assignments associated with the subscription, including those that apply directly or from management groups that contain the given subscription, as well as any applied to objects contained within the subscription. If $filter=atScope() is provided, the returned list includes all policy assignments that apply to the subscription, which is everything in the unfiltered list except those applied to objects contained within the subscription. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes only policy assignments that apply to the subscription and assign the policy definition whose id is {value}.
      *
+     * @param subscriptionId The ID of the target subscription.
      * @param filter The filter to apply on the operation. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If $filter is not provided, no filtering is performed.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
      */
-    public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listWithServiceResponseAsync(final String filter) {
-        return listSinglePageAsync(filter)
+    public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listWithServiceResponseAsync(final String subscriptionId, final String filter) {
+        return listSinglePageAsync(subscriptionId, filter)
             .concatMap(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(ServiceResponse<Page<PolicyAssignmentInner>> page) {
@@ -1116,18 +1144,19 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * Retrieves all policy assignments that apply to a subscription.
      * This operation retrieves the list of all policy assignments associated with the given subscription that match the optional given $filter. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If $filter is not provided, the unfiltered list includes all policy assignments associated with the subscription, including those that apply directly or from management groups that contain the given subscription, as well as any applied to objects contained within the subscription. If $filter=atScope() is provided, the returned list includes all policy assignments that apply to the subscription, which is everything in the unfiltered list except those applied to objects contained within the subscription. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes only policy assignments that apply to the subscription and assign the policy definition whose id is {value}.
      *
+    ServiceResponse<PageImpl<PolicyAssignmentInner>> * @param subscriptionId The ID of the target subscription.
     ServiceResponse<PageImpl<PolicyAssignmentInner>> * @param filter The filter to apply on the operation. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If $filter is not provided, no filtering is performed.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;PolicyAssignmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listSinglePageAsync(final String filter) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+    public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listSinglePageAsync(final String subscriptionId, final String filter) {
+        if (subscriptionId == null) {
+            throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.list(this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.list(subscriptionId, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(Response<ResponseBody> response) {

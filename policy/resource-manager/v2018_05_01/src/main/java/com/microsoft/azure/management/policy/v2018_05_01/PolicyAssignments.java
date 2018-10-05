@@ -9,8 +9,6 @@
 package com.microsoft.azure.management.policy.v2018_05_01;
 
 import com.microsoft.azure.arm.collection.SupportsCreating;
-import com.microsoft.azure.arm.resources.collection.SupportsListingByResourceGroup;
-import com.microsoft.azure.arm.collection.SupportsListing;
 import rx.Completable;
 import rx.Observable;
 import com.microsoft.azure.management.policy.v2018_05_01.implementation.PolicyAssignmentInner;
@@ -20,7 +18,7 @@ import com.microsoft.azure.arm.model.HasInner;
 /**
  * Type representing PolicyAssignments.
  */
-public interface PolicyAssignments extends SupportsCreating<PolicyAssignment.DefinitionStages.Blank>, SupportsListingByResourceGroup<PolicyAssignment>, SupportsListing<PolicyAssignment>, HasInner<PolicyAssignmentsInner> {
+public interface PolicyAssignments extends SupportsCreating<PolicyAssignment.DefinitionStages.Blank>, HasInner<PolicyAssignmentsInner> {
     /**
      * Deletes a policy assignment.
      * This operation deletes a policy assignment, given its name and the scope it was created in. The scope of a policy assignment is the part of its ID preceding '/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'.
@@ -52,10 +50,11 @@ public interface PolicyAssignments extends SupportsCreating<PolicyAssignment.Def
      * @param parentResourcePath The parent resource path. Use empty string if there is none.
      * @param resourceType The resource type name. For example the type name of a web app is 'sites' (from Microsoft.Web/sites).
      * @param resourceName The name of the resource.
+     * @param subscriptionId The ID of the target subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<PolicyAssignment> listForResourceAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName);
+    Observable<PolicyAssignment> listForResourceAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final String subscriptionId);
 
     /**
      * Deletes a policy assignment.
@@ -87,5 +86,26 @@ public interface PolicyAssignments extends SupportsCreating<PolicyAssignment.Def
      * @return the observable for the request
      */
     Observable<PolicyAssignment> getByIdAsync(String policyAssignmentId);
+
+    /**
+     * Retrieves all policy assignments that apply to a resource group.
+     * This operation retrieves the list of all policy assignments associated with the given resource group in the given subscription that match the optional given $filter. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If $filter is not provided, the unfiltered list includes all policy assignments associated with the resource group, including those that apply directly or apply from containing scopes, as well as any applied to resources contained within the resource group. If $filter=atScope() is provided, the returned list includes all policy assignments that apply to the resource group, which is everything in the unfiltered list except those applied to resources contained within the resource group. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes only policy assignments that apply to the resource group and assign the policy definition whose id is {value}.
+     *
+     * @param resourceGroupName The name of the resource group that contains policy assignments.
+     * @param subscriptionId The ID of the target subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<PolicyAssignment> listByResourceGroupAsync(final String resourceGroupName, final String subscriptionId);
+
+    /**
+     * Retrieves all policy assignments that apply to a subscription.
+     * This operation retrieves the list of all policy assignments associated with the given subscription that match the optional given $filter. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If $filter is not provided, the unfiltered list includes all policy assignments associated with the subscription, including those that apply directly or from management groups that contain the given subscription, as well as any applied to objects contained within the subscription. If $filter=atScope() is provided, the returned list includes all policy assignments that apply to the subscription, which is everything in the unfiltered list except those applied to objects contained within the subscription. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes only policy assignments that apply to the subscription and assign the policy definition whose id is {value}.
+     *
+     * @param subscriptionId The ID of the target subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<PolicyAssignment> listAsync(final String subscriptionId);
 
 }

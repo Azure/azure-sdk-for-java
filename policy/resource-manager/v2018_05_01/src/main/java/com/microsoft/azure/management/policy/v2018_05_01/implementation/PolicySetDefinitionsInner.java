@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.policy.v2018_05_01.implementation;
 
+import com.microsoft.azure.arm.collection.InnerSupportsDelete;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
@@ -39,7 +40,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in PolicySetDefinitions.
  */
-public class PolicySetDefinitionsInner {
+public class PolicySetDefinitionsInner implements InnerSupportsDelete<Void> {
     /** The Retrofit service to perform REST calls. */
     private PolicySetDefinitionsService service;
     /** The service client containing this operation class. */
@@ -120,14 +121,15 @@ public class PolicySetDefinitionsInner {
      * This operation creates or updates a policy set definition in the given subscription with the given name.
      *
      * @param policySetDefinitionName The name of the policy set definition to create.
+     * @param subscriptionId The ID of the target subscription.
      * @param parameters The policy set definition properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PolicySetDefinitionInner object if successful.
      */
-    public PolicySetDefinitionInner createOrUpdate(String policySetDefinitionName, PolicySetDefinitionInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(policySetDefinitionName, parameters).toBlocking().single().body();
+    public PolicySetDefinitionInner createOrUpdate(String policySetDefinitionName, String subscriptionId, PolicySetDefinitionInner parameters) {
+        return createOrUpdateWithServiceResponseAsync(policySetDefinitionName, subscriptionId, parameters).toBlocking().single().body();
     }
 
     /**
@@ -135,13 +137,14 @@ public class PolicySetDefinitionsInner {
      * This operation creates or updates a policy set definition in the given subscription with the given name.
      *
      * @param policySetDefinitionName The name of the policy set definition to create.
+     * @param subscriptionId The ID of the target subscription.
      * @param parameters The policy set definition properties.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<PolicySetDefinitionInner> createOrUpdateAsync(String policySetDefinitionName, PolicySetDefinitionInner parameters, final ServiceCallback<PolicySetDefinitionInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(policySetDefinitionName, parameters), serviceCallback);
+    public ServiceFuture<PolicySetDefinitionInner> createOrUpdateAsync(String policySetDefinitionName, String subscriptionId, PolicySetDefinitionInner parameters, final ServiceCallback<PolicySetDefinitionInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(policySetDefinitionName, subscriptionId, parameters), serviceCallback);
     }
 
     /**
@@ -149,12 +152,13 @@ public class PolicySetDefinitionsInner {
      * This operation creates or updates a policy set definition in the given subscription with the given name.
      *
      * @param policySetDefinitionName The name of the policy set definition to create.
+     * @param subscriptionId The ID of the target subscription.
      * @param parameters The policy set definition properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PolicySetDefinitionInner object
      */
-    public Observable<PolicySetDefinitionInner> createOrUpdateAsync(String policySetDefinitionName, PolicySetDefinitionInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(policySetDefinitionName, parameters).map(new Func1<ServiceResponse<PolicySetDefinitionInner>, PolicySetDefinitionInner>() {
+    public Observable<PolicySetDefinitionInner> createOrUpdateAsync(String policySetDefinitionName, String subscriptionId, PolicySetDefinitionInner parameters) {
+        return createOrUpdateWithServiceResponseAsync(policySetDefinitionName, subscriptionId, parameters).map(new Func1<ServiceResponse<PolicySetDefinitionInner>, PolicySetDefinitionInner>() {
             @Override
             public PolicySetDefinitionInner call(ServiceResponse<PolicySetDefinitionInner> response) {
                 return response.body();
@@ -167,16 +171,17 @@ public class PolicySetDefinitionsInner {
      * This operation creates or updates a policy set definition in the given subscription with the given name.
      *
      * @param policySetDefinitionName The name of the policy set definition to create.
+     * @param subscriptionId The ID of the target subscription.
      * @param parameters The policy set definition properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PolicySetDefinitionInner object
      */
-    public Observable<ServiceResponse<PolicySetDefinitionInner>> createOrUpdateWithServiceResponseAsync(String policySetDefinitionName, PolicySetDefinitionInner parameters) {
+    public Observable<ServiceResponse<PolicySetDefinitionInner>> createOrUpdateWithServiceResponseAsync(String policySetDefinitionName, String subscriptionId, PolicySetDefinitionInner parameters) {
         if (policySetDefinitionName == null) {
             throw new IllegalArgumentException("Parameter policySetDefinitionName is required and cannot be null.");
         }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        if (subscriptionId == null) {
+            throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
         }
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
@@ -185,7 +190,7 @@ public class PolicySetDefinitionsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        return service.createOrUpdate(policySetDefinitionName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.createOrUpdate(policySetDefinitionName, subscriptionId, parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PolicySetDefinitionInner>>>() {
                 @Override
                 public Observable<ServiceResponse<PolicySetDefinitionInner>> call(Response<ResponseBody> response) {
@@ -212,12 +217,13 @@ public class PolicySetDefinitionsInner {
      * This operation deletes the policy set definition in the given subscription with the given name.
      *
      * @param policySetDefinitionName The name of the policy set definition to delete.
+     * @param subscriptionId The ID of the target subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void delete(String policySetDefinitionName) {
-        deleteWithServiceResponseAsync(policySetDefinitionName).toBlocking().single().body();
+    public void delete(String policySetDefinitionName, String subscriptionId) {
+        deleteWithServiceResponseAsync(policySetDefinitionName, subscriptionId).toBlocking().single().body();
     }
 
     /**
@@ -225,12 +231,13 @@ public class PolicySetDefinitionsInner {
      * This operation deletes the policy set definition in the given subscription with the given name.
      *
      * @param policySetDefinitionName The name of the policy set definition to delete.
+     * @param subscriptionId The ID of the target subscription.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> deleteAsync(String policySetDefinitionName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(policySetDefinitionName), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String policySetDefinitionName, String subscriptionId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(policySetDefinitionName, subscriptionId), serviceCallback);
     }
 
     /**
@@ -238,11 +245,12 @@ public class PolicySetDefinitionsInner {
      * This operation deletes the policy set definition in the given subscription with the given name.
      *
      * @param policySetDefinitionName The name of the policy set definition to delete.
+     * @param subscriptionId The ID of the target subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> deleteAsync(String policySetDefinitionName) {
-        return deleteWithServiceResponseAsync(policySetDefinitionName).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Void> deleteAsync(String policySetDefinitionName, String subscriptionId) {
+        return deleteWithServiceResponseAsync(policySetDefinitionName, subscriptionId).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
                 return response.body();
@@ -255,20 +263,21 @@ public class PolicySetDefinitionsInner {
      * This operation deletes the policy set definition in the given subscription with the given name.
      *
      * @param policySetDefinitionName The name of the policy set definition to delete.
+     * @param subscriptionId The ID of the target subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String policySetDefinitionName) {
+    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String policySetDefinitionName, String subscriptionId) {
         if (policySetDefinitionName == null) {
             throw new IllegalArgumentException("Parameter policySetDefinitionName is required and cannot be null.");
         }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        if (subscriptionId == null) {
+            throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.delete(policySetDefinitionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.delete(policySetDefinitionName, subscriptionId, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -295,13 +304,14 @@ public class PolicySetDefinitionsInner {
      * This operation retrieves the policy set definition in the given subscription with the given name.
      *
      * @param policySetDefinitionName The name of the policy set definition to get.
+     * @param subscriptionId The ID of the target subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PolicySetDefinitionInner object if successful.
      */
-    public PolicySetDefinitionInner get(String policySetDefinitionName) {
-        return getWithServiceResponseAsync(policySetDefinitionName).toBlocking().single().body();
+    public PolicySetDefinitionInner get(String policySetDefinitionName, String subscriptionId) {
+        return getWithServiceResponseAsync(policySetDefinitionName, subscriptionId).toBlocking().single().body();
     }
 
     /**
@@ -309,12 +319,13 @@ public class PolicySetDefinitionsInner {
      * This operation retrieves the policy set definition in the given subscription with the given name.
      *
      * @param policySetDefinitionName The name of the policy set definition to get.
+     * @param subscriptionId The ID of the target subscription.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<PolicySetDefinitionInner> getAsync(String policySetDefinitionName, final ServiceCallback<PolicySetDefinitionInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(policySetDefinitionName), serviceCallback);
+    public ServiceFuture<PolicySetDefinitionInner> getAsync(String policySetDefinitionName, String subscriptionId, final ServiceCallback<PolicySetDefinitionInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(policySetDefinitionName, subscriptionId), serviceCallback);
     }
 
     /**
@@ -322,11 +333,12 @@ public class PolicySetDefinitionsInner {
      * This operation retrieves the policy set definition in the given subscription with the given name.
      *
      * @param policySetDefinitionName The name of the policy set definition to get.
+     * @param subscriptionId The ID of the target subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PolicySetDefinitionInner object
      */
-    public Observable<PolicySetDefinitionInner> getAsync(String policySetDefinitionName) {
-        return getWithServiceResponseAsync(policySetDefinitionName).map(new Func1<ServiceResponse<PolicySetDefinitionInner>, PolicySetDefinitionInner>() {
+    public Observable<PolicySetDefinitionInner> getAsync(String policySetDefinitionName, String subscriptionId) {
+        return getWithServiceResponseAsync(policySetDefinitionName, subscriptionId).map(new Func1<ServiceResponse<PolicySetDefinitionInner>, PolicySetDefinitionInner>() {
             @Override
             public PolicySetDefinitionInner call(ServiceResponse<PolicySetDefinitionInner> response) {
                 return response.body();
@@ -339,20 +351,21 @@ public class PolicySetDefinitionsInner {
      * This operation retrieves the policy set definition in the given subscription with the given name.
      *
      * @param policySetDefinitionName The name of the policy set definition to get.
+     * @param subscriptionId The ID of the target subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PolicySetDefinitionInner object
      */
-    public Observable<ServiceResponse<PolicySetDefinitionInner>> getWithServiceResponseAsync(String policySetDefinitionName) {
+    public Observable<ServiceResponse<PolicySetDefinitionInner>> getWithServiceResponseAsync(String policySetDefinitionName, String subscriptionId) {
         if (policySetDefinitionName == null) {
             throw new IllegalArgumentException("Parameter policySetDefinitionName is required and cannot be null.");
         }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        if (subscriptionId == null) {
+            throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.get(policySetDefinitionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.get(policySetDefinitionName, subscriptionId, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PolicySetDefinitionInner>>>() {
                 @Override
                 public Observable<ServiceResponse<PolicySetDefinitionInner>> call(Response<ResponseBody> response) {
@@ -457,13 +470,14 @@ public class PolicySetDefinitionsInner {
      * Retrieves the policy set definitions for a subscription.
      * This operation retrieves a list of all the policy set definitions in the given subscription.
      *
+     * @param subscriptionId The ID of the target subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;PolicySetDefinitionInner&gt; object if successful.
      */
-    public PagedList<PolicySetDefinitionInner> list() {
-        ServiceResponse<Page<PolicySetDefinitionInner>> response = listSinglePageAsync().toBlocking().single();
+    public PagedList<PolicySetDefinitionInner> list(final String subscriptionId) {
+        ServiceResponse<Page<PolicySetDefinitionInner>> response = listSinglePageAsync(subscriptionId).toBlocking().single();
         return new PagedList<PolicySetDefinitionInner>(response.body()) {
             @Override
             public Page<PolicySetDefinitionInner> nextPage(String nextPageLink) {
@@ -476,13 +490,14 @@ public class PolicySetDefinitionsInner {
      * Retrieves the policy set definitions for a subscription.
      * This operation retrieves a list of all the policy set definitions in the given subscription.
      *
+     * @param subscriptionId The ID of the target subscription.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<PolicySetDefinitionInner>> listAsync(final ListOperationCallback<PolicySetDefinitionInner> serviceCallback) {
+    public ServiceFuture<List<PolicySetDefinitionInner>> listAsync(final String subscriptionId, final ListOperationCallback<PolicySetDefinitionInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listSinglePageAsync(),
+            listSinglePageAsync(subscriptionId),
             new Func1<String, Observable<ServiceResponse<Page<PolicySetDefinitionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PolicySetDefinitionInner>>> call(String nextPageLink) {
@@ -496,11 +511,12 @@ public class PolicySetDefinitionsInner {
      * Retrieves the policy set definitions for a subscription.
      * This operation retrieves a list of all the policy set definitions in the given subscription.
      *
+     * @param subscriptionId The ID of the target subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PolicySetDefinitionInner&gt; object
      */
-    public Observable<Page<PolicySetDefinitionInner>> listAsync() {
-        return listWithServiceResponseAsync()
+    public Observable<Page<PolicySetDefinitionInner>> listAsync(final String subscriptionId) {
+        return listWithServiceResponseAsync(subscriptionId)
             .map(new Func1<ServiceResponse<Page<PolicySetDefinitionInner>>, Page<PolicySetDefinitionInner>>() {
                 @Override
                 public Page<PolicySetDefinitionInner> call(ServiceResponse<Page<PolicySetDefinitionInner>> response) {
@@ -513,11 +529,12 @@ public class PolicySetDefinitionsInner {
      * Retrieves the policy set definitions for a subscription.
      * This operation retrieves a list of all the policy set definitions in the given subscription.
      *
+     * @param subscriptionId The ID of the target subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PolicySetDefinitionInner&gt; object
      */
-    public Observable<ServiceResponse<Page<PolicySetDefinitionInner>>> listWithServiceResponseAsync() {
-        return listSinglePageAsync()
+    public Observable<ServiceResponse<Page<PolicySetDefinitionInner>>> listWithServiceResponseAsync(final String subscriptionId) {
+        return listSinglePageAsync(subscriptionId)
             .concatMap(new Func1<ServiceResponse<Page<PolicySetDefinitionInner>>, Observable<ServiceResponse<Page<PolicySetDefinitionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PolicySetDefinitionInner>>> call(ServiceResponse<Page<PolicySetDefinitionInner>> page) {
@@ -534,17 +551,18 @@ public class PolicySetDefinitionsInner {
      * Retrieves the policy set definitions for a subscription.
      * This operation retrieves a list of all the policy set definitions in the given subscription.
      *
+    ServiceResponse<PageImpl<PolicySetDefinitionInner>> * @param subscriptionId The ID of the target subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;PolicySetDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<PolicySetDefinitionInner>>> listSinglePageAsync() {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+    public Observable<ServiceResponse<Page<PolicySetDefinitionInner>>> listSinglePageAsync(final String subscriptionId) {
+        if (subscriptionId == null) {
+            throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.list(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.list(subscriptionId, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicySetDefinitionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<PolicySetDefinitionInner>>> call(Response<ResponseBody> response) {

@@ -9,7 +9,6 @@
 package com.microsoft.azure.management.policy.v2018_05_01;
 
 import com.microsoft.azure.arm.collection.SupportsCreating;
-import com.microsoft.azure.arm.collection.SupportsListing;
 import rx.Completable;
 import rx.Observable;
 import com.microsoft.azure.management.policy.v2018_05_01.implementation.PolicyDefinitionInner;
@@ -19,26 +18,28 @@ import com.microsoft.azure.arm.model.HasInner;
 /**
  * Type representing PolicyDefinitions.
  */
-public interface PolicyDefinitions extends SupportsCreating<PolicyDefinition.DefinitionStages.Blank>, SupportsListing<PolicyDefinition>, HasInner<PolicyDefinitionsInner> {
+public interface PolicyDefinitions extends SupportsCreating<PolicyDefinition.DefinitionStages.Blank>, HasInner<PolicyDefinitionsInner> {
     /**
      * Deletes a policy definition in a subscription.
      * This operation deletes the policy definition in the given subscription with the given name.
      *
      * @param policyDefinitionName The name of the policy definition to delete.
+     * @param subscriptionId The ID of the target subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable deleteAsync(String policyDefinitionName);
+    Completable deleteAsync(String policyDefinitionName, String subscriptionId);
 
     /**
      * Retrieves a policy definition in a subscription.
      * This operation retrieves the policy definition in the given subscription with the given name.
      *
      * @param policyDefinitionName The name of the policy definition to get.
+     * @param subscriptionId The ID of the target subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<PolicyDefinition> getAsync(String policyDefinitionName);
+    Observable<PolicyDefinition> getAsync(String policyDefinitionName, String subscriptionId);
 
     /**
      * Retrieves a built-in policy definition.
@@ -93,6 +94,16 @@ public interface PolicyDefinitions extends SupportsCreating<PolicyDefinition.Def
      * @return the observable for the request
      */
     Observable<PolicyDefinition> listByManagementGroupAsync(final String managementGroupId);
+
+    /**
+     * Retrieves policy definitions in a subscription.
+     * This operation retrieves a list of all the policy definitions in a given subscription.
+     *
+     * @param subscriptionId The ID of the target subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<PolicyDefinition> listAsync(final String subscriptionId);
 
     /**
      * Retrieve built-in policy definitions.

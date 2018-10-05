@@ -11,27 +11,18 @@ package com.microsoft.azure.management.policy.v2018_05_01.implementation;
 
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.policy.v2018_05_01.PolicySetDefinitions;
-import rx.Observable;
-import rx.functions.Func1;
-import com.microsoft.azure.PagedList;
-import com.microsoft.azure.Page;
 import rx.Completable;
+import rx.functions.Func1;
+import rx.Observable;
+import com.microsoft.azure.Page;
 import com.microsoft.azure.management.policy.v2018_05_01.PolicySetDefinition;
-import com.microsoft.azure.arm.utils.PagedListConverter;
 
 class PolicySetDefinitionsImpl extends WrapperImpl<PolicySetDefinitionsInner> implements PolicySetDefinitions {
-    private PagedListConverter<PolicySetDefinitionInner, PolicySetDefinition> converter;
     private final PolicyManager manager;
 
     PolicySetDefinitionsImpl(PolicyManager manager) {
         super(manager.inner().policySetDefinitions());
         this.manager = manager;
-        this.converter = new PagedListConverter<PolicySetDefinitionInner, PolicySetDefinition>() {
-            @Override
-            public Observable<PolicySetDefinition> typeConvertAsync(PolicySetDefinitionInner inner) {
-                return Observable.just((PolicySetDefinition) wrapModel(inner));
-            }
-        };
     }
 
     public PolicyManager manager() {
@@ -52,15 +43,15 @@ class PolicySetDefinitionsImpl extends WrapperImpl<PolicySetDefinitionsInner> im
     }
 
     @Override
-    public Completable deleteAsync(String policySetDefinitionName) {
+    public Completable deleteAsync(String policySetDefinitionName, String subscriptionId) {
         PolicySetDefinitionsInner client = this.inner();
-        return client.deleteAsync(policySetDefinitionName).toCompletable();
+        return client.deleteAsync(policySetDefinitionName, subscriptionId).toCompletable();
     }
 
     @Override
-    public Observable<PolicySetDefinition> getAsync(String policySetDefinitionName) {
+    public Observable<PolicySetDefinition> getAsync(String policySetDefinitionName, String subscriptionId) {
         PolicySetDefinitionsInner client = this.inner();
-        return client.getAsync(policySetDefinitionName)
+        return client.getAsync(policySetDefinitionName, subscriptionId)
         .map(new Func1<PolicySetDefinitionInner, PolicySetDefinition>() {
             @Override
             public PolicySetDefinition call(PolicySetDefinitionInner inner) {
@@ -130,9 +121,9 @@ class PolicySetDefinitionsImpl extends WrapperImpl<PolicySetDefinitionsInner> im
     }
 
     @Override
-    public Observable<PolicySetDefinition> listBuiltInAsync() {
+    public Observable<PolicySetDefinition> listAsync(final String subscriptionId) {
         PolicySetDefinitionsInner client = this.inner();
-        return client.listBuiltInAsync()
+        return client.listAsync(subscriptionId)
         .flatMapIterable(new Func1<Page<PolicySetDefinitionInner>, Iterable<PolicySetDefinitionInner>>() {
             @Override
             public Iterable<PolicySetDefinitionInner> call(Page<PolicySetDefinitionInner> page) {
@@ -148,15 +139,9 @@ class PolicySetDefinitionsImpl extends WrapperImpl<PolicySetDefinitionsInner> im
     }
 
     @Override
-    public PagedList<PolicySetDefinition> list() {
+    public Observable<PolicySetDefinition> listBuiltInAsync() {
         PolicySetDefinitionsInner client = this.inner();
-        return converter.convert(client.list());
-    }
-
-    @Override
-    public Observable<PolicySetDefinition> listAsync() {
-        PolicySetDefinitionsInner client = this.inner();
-        return client.listAsync()
+        return client.listBuiltInAsync()
         .flatMapIterable(new Func1<Page<PolicySetDefinitionInner>, Iterable<PolicySetDefinitionInner>>() {
             @Override
             public Iterable<PolicySetDefinitionInner> call(Page<PolicySetDefinitionInner> page) {
@@ -166,7 +151,7 @@ class PolicySetDefinitionsImpl extends WrapperImpl<PolicySetDefinitionsInner> im
         .map(new Func1<PolicySetDefinitionInner, PolicySetDefinition>() {
             @Override
             public PolicySetDefinition call(PolicySetDefinitionInner inner) {
-                return wrapModel(inner);
+                return new PolicySetDefinitionImpl(inner, manager());
             }
         });
     }

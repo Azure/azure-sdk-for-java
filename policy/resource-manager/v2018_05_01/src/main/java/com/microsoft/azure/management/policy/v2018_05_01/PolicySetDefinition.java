@@ -14,7 +14,6 @@ import com.microsoft.azure.arm.model.Indexable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
-import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.policy.v2018_05_01.implementation.PolicyManager;
 import java.util.List;
@@ -22,7 +21,7 @@ import java.util.List;
 /**
  * Type representing PolicySetDefinition.
  */
-public interface PolicySetDefinition extends HasInner<PolicySetDefinitionInner>, Indexable, Updatable<PolicySetDefinition.Update>, Refreshable<PolicySetDefinition>, HasManager<PolicyManager> {
+public interface PolicySetDefinition extends HasInner<PolicySetDefinitionInner>, Indexable, Updatable<PolicySetDefinition.Update>, HasManager<PolicyManager> {
     /**
      * @return the description value.
      */
@@ -71,7 +70,7 @@ public interface PolicySetDefinition extends HasInner<PolicySetDefinitionInner>,
     /**
      * The entirety of the PolicySetDefinition definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithPolicyDefinitions, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithSubscriptionId, DefinitionStages.WithPolicyDefinitions, DefinitionStages.WithCreate {
     }
 
     /**
@@ -81,7 +80,17 @@ public interface PolicySetDefinition extends HasInner<PolicySetDefinitionInner>,
         /**
          * The first stage of a PolicySetDefinition definition.
          */
-        interface Blank extends WithPolicyDefinitions {
+        interface Blank extends WithSubscriptionId {
+        }
+
+        /**
+         * The stage of the policysetdefinition definition allowing to specify SubscriptionId.
+         */
+        interface WithSubscriptionId {
+           /**
+            * Specifies subscriptionId.
+            */
+            WithPolicyDefinitions withSubscriptionId(String subscriptionId);
         }
 
         /**
