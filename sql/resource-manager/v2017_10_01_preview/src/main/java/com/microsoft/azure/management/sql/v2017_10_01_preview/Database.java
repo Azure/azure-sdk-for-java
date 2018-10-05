@@ -217,6 +217,9 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithServer {
            /**
             * Specifies resourceGroupName, serverName.
+            * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal
+            * @param serverName The name of the server
+            * @return the next definition stage
             */
             WithLocation withExistingServer(String resourceGroupName, String serverName);
         }
@@ -227,6 +230,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithLocation {
            /**
             * Specifies location.
+            * @param location Resource location
+            * @return the next definition stage
             */
             WithCreate withLocation(String location);
         }
@@ -237,6 +242,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithCatalogCollation {
             /**
              * Specifies catalogCollation.
+             * @param catalogCollation Collation of the metadata catalog. Possible values include: 'DATABASE_DEFAULT', 'SQL_Latin1_General_CP1_CI_AS'
+             * @return the next definition stage
              */
             WithCreate withCatalogCollation(CatalogCollationType catalogCollation);
         }
@@ -247,6 +254,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithCollation {
             /**
              * Specifies collation.
+             * @param collation The collation of the database
+             * @return the next definition stage
              */
             WithCreate withCollation(String collation);
         }
@@ -257,6 +266,16 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithCreateMode {
             /**
              * Specifies createMode.
+             * @param createMode Specifies the mode of database creation.
+ Default: regular database creation.
+ Copy: creates a database as a copy of an existing database. sourceDatabaseId must be specified as the resource ID of the source database.
+ Secondary: creates a database as a secondary replica of an existing database. sourceDatabaseId must be specified as the resource ID of the existing primary database.
+ PointInTimeRestore: Creates a database by restoring a point in time backup of an existing database. sourceDatabaseId must be specified as the resource ID of the existing database, and restorePointInTime must be specified.
+ Recovery: Creates a database by restoring a geo-replicated backup. sourceDatabaseId must be specified as the recoverable database resource ID to restore.
+ Restore: Creates a database by restoring a backup of a deleted database. sourceDatabaseId must be specified. If sourceDatabaseId is the database's original resource ID, then sourceDatabaseDeletionDate must be specified. Otherwise sourceDatabaseId must be the restorable dropped database resource ID and sourceDatabaseDeletionDate is ignored. restorePointInTime may also be specified to restore from an earlier point in time.
+ RestoreLongTermRetentionBackup: Creates a database by restoring from a long term retention vault. recoveryServicesRecoveryPointResourceId must be specified as the recovery point resource ID.
+ Copy, Secondary, and RestoreLongTermRetentionBackup are not supported for DataWarehouse edition. Possible values include: 'Default', 'Copy', 'Secondary', 'PointInTimeRestore', 'Restore', 'Recovery', 'RestoreExternalBackup', 'RestoreExternalBackupSecondary', 'RestoreLongTermRetentionBackup', 'OnlineSecondary'
+             * @return the next definition stage
              */
             WithCreate withCreateMode(CreateMode createMode);
         }
@@ -267,6 +286,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithElasticPoolId {
             /**
              * Specifies elasticPoolId.
+             * @param elasticPoolId The resource identifier of the elastic pool containing this database
+             * @return the next definition stage
              */
             WithCreate withElasticPoolId(String elasticPoolId);
         }
@@ -277,6 +298,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithLicenseType {
             /**
              * Specifies licenseType.
+             * @param licenseType The license type to apply for this database. Possible values include: 'LicenseIncluded', 'BasePrice'
+             * @return the next definition stage
              */
             WithCreate withLicenseType(DatabaseLicenseType licenseType);
         }
@@ -287,6 +310,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithLongTermRetentionBackupResourceId {
             /**
              * Specifies longTermRetentionBackupResourceId.
+             * @param longTermRetentionBackupResourceId The resource identifier of the long term retention backup associated with create operation of this database
+             * @return the next definition stage
              */
             WithCreate withLongTermRetentionBackupResourceId(String longTermRetentionBackupResourceId);
         }
@@ -297,6 +322,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithMaxSizeBytes {
             /**
              * Specifies maxSizeBytes.
+             * @param maxSizeBytes The max size of the database expressed in bytes
+             * @return the next definition stage
              */
             WithCreate withMaxSizeBytes(Long maxSizeBytes);
         }
@@ -307,6 +334,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithReadScale {
             /**
              * Specifies readScale.
+             * @param readScale The state of read-only routing. If enabled, connections that have application intent set to readonly in their connection string may be routed to a readonly secondary replica in the same region. Possible values include: 'Enabled', 'Disabled'
+             * @return the next definition stage
              */
             WithCreate withReadScale(DatabaseReadScale readScale);
         }
@@ -317,6 +346,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithRecoverableDatabaseId {
             /**
              * Specifies recoverableDatabaseId.
+             * @param recoverableDatabaseId The resource identifier of the recoverable database associated with create operation of this database
+             * @return the next definition stage
              */
             WithCreate withRecoverableDatabaseId(String recoverableDatabaseId);
         }
@@ -327,6 +358,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithRecoveryServicesRecoveryPointId {
             /**
              * Specifies recoveryServicesRecoveryPointId.
+             * @param recoveryServicesRecoveryPointId The resource identifier of the recovery point associated with create operation of this database
+             * @return the next definition stage
              */
             WithCreate withRecoveryServicesRecoveryPointId(String recoveryServicesRecoveryPointId);
         }
@@ -337,6 +370,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithRestorableDroppedDatabaseId {
             /**
              * Specifies restorableDroppedDatabaseId.
+             * @param restorableDroppedDatabaseId The resource identifier of the restorable dropped database associated with create operation of this database
+             * @return the next definition stage
              */
             WithCreate withRestorableDroppedDatabaseId(String restorableDroppedDatabaseId);
         }
@@ -347,6 +382,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithRestorePointInTime {
             /**
              * Specifies restorePointInTime.
+             * @param restorePointInTime Specifies the point in time (ISO8601 format) of the source database that will be restored to create the new database
+             * @return the next definition stage
              */
             WithCreate withRestorePointInTime(DateTime restorePointInTime);
         }
@@ -357,6 +394,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithSampleName {
             /**
              * Specifies sampleName.
+             * @param sampleName The name of the sample schema to apply when creating this database. Possible values include: 'AdventureWorksLT', 'WideWorldImportersStd', 'WideWorldImportersFull'
+             * @return the next definition stage
              */
             WithCreate withSampleName(SampleName sampleName);
         }
@@ -367,6 +406,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithSku {
             /**
              * Specifies sku.
+             * @param sku The name and tier of the SKU
+             * @return the next definition stage
              */
             WithCreate withSku(Sku sku);
         }
@@ -377,6 +418,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithSourceDatabaseDeletionDate {
             /**
              * Specifies sourceDatabaseDeletionDate.
+             * @param sourceDatabaseDeletionDate Specifies the time that the database was deleted
+             * @return the next definition stage
              */
             WithCreate withSourceDatabaseDeletionDate(DateTime sourceDatabaseDeletionDate);
         }
@@ -387,6 +430,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithSourceDatabaseId {
             /**
              * Specifies sourceDatabaseId.
+             * @param sourceDatabaseId The resource identifier of the source database associated with create operation of this database
+             * @return the next definition stage
              */
             WithCreate withSourceDatabaseId(String sourceDatabaseId);
         }
@@ -397,6 +442,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithTags {
             /**
              * Specifies tags.
+             * @param tags Resource tags
+             * @return the next definition stage
              */
             WithCreate withTags(Map<String, String> tags);
         }
@@ -407,6 +454,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithZoneRedundant {
             /**
              * Specifies zoneRedundant.
+             * @param zoneRedundant Whether or not this database is zone redundant, which means the replicas of this database will be spread across multiple availability zones
+             * @return the next definition stage
              */
             WithCreate withZoneRedundant(Boolean zoneRedundant);
         }
@@ -435,6 +484,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithCatalogCollation {
             /**
              * Specifies catalogCollation.
+             * @param catalogCollation Collation of the metadata catalog. Possible values include: 'DATABASE_DEFAULT', 'SQL_Latin1_General_CP1_CI_AS'
+             * @return the next update stage
              */
             Update withCatalogCollation(CatalogCollationType catalogCollation);
         }
@@ -445,6 +496,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithCollation {
             /**
              * Specifies collation.
+             * @param collation The collation of the database
+             * @return the next update stage
              */
             Update withCollation(String collation);
         }
@@ -455,6 +508,16 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithCreateMode {
             /**
              * Specifies createMode.
+             * @param createMode Specifies the mode of database creation.
+ Default: regular database creation.
+ Copy: creates a database as a copy of an existing database. sourceDatabaseId must be specified as the resource ID of the source database.
+ Secondary: creates a database as a secondary replica of an existing database. sourceDatabaseId must be specified as the resource ID of the existing primary database.
+ PointInTimeRestore: Creates a database by restoring a point in time backup of an existing database. sourceDatabaseId must be specified as the resource ID of the existing database, and restorePointInTime must be specified.
+ Recovery: Creates a database by restoring a geo-replicated backup. sourceDatabaseId must be specified as the recoverable database resource ID to restore.
+ Restore: Creates a database by restoring a backup of a deleted database. sourceDatabaseId must be specified. If sourceDatabaseId is the database's original resource ID, then sourceDatabaseDeletionDate must be specified. Otherwise sourceDatabaseId must be the restorable dropped database resource ID and sourceDatabaseDeletionDate is ignored. restorePointInTime may also be specified to restore from an earlier point in time.
+ RestoreLongTermRetentionBackup: Creates a database by restoring from a long term retention vault. recoveryServicesRecoveryPointResourceId must be specified as the recovery point resource ID.
+ Copy, Secondary, and RestoreLongTermRetentionBackup are not supported for DataWarehouse edition. Possible values include: 'Default', 'Copy', 'Secondary', 'PointInTimeRestore', 'Restore', 'Recovery', 'RestoreExternalBackup', 'RestoreExternalBackupSecondary', 'RestoreLongTermRetentionBackup', 'OnlineSecondary'
+             * @return the next update stage
              */
             Update withCreateMode(CreateMode createMode);
         }
@@ -465,6 +528,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithElasticPoolId {
             /**
              * Specifies elasticPoolId.
+             * @param elasticPoolId The resource identifier of the elastic pool containing this database
+             * @return the next update stage
              */
             Update withElasticPoolId(String elasticPoolId);
         }
@@ -475,6 +540,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithLicenseType {
             /**
              * Specifies licenseType.
+             * @param licenseType The license type to apply for this database. Possible values include: 'LicenseIncluded', 'BasePrice'
+             * @return the next update stage
              */
             Update withLicenseType(DatabaseLicenseType licenseType);
         }
@@ -485,6 +552,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithLongTermRetentionBackupResourceId {
             /**
              * Specifies longTermRetentionBackupResourceId.
+             * @param longTermRetentionBackupResourceId The resource identifier of the long term retention backup associated with create operation of this database
+             * @return the next update stage
              */
             Update withLongTermRetentionBackupResourceId(String longTermRetentionBackupResourceId);
         }
@@ -495,6 +564,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithMaxSizeBytes {
             /**
              * Specifies maxSizeBytes.
+             * @param maxSizeBytes The max size of the database expressed in bytes
+             * @return the next update stage
              */
             Update withMaxSizeBytes(Long maxSizeBytes);
         }
@@ -505,6 +576,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithReadScale {
             /**
              * Specifies readScale.
+             * @param readScale The state of read-only routing. If enabled, connections that have application intent set to readonly in their connection string may be routed to a readonly secondary replica in the same region. Possible values include: 'Enabled', 'Disabled'
+             * @return the next update stage
              */
             Update withReadScale(DatabaseReadScale readScale);
         }
@@ -515,6 +588,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithRecoverableDatabaseId {
             /**
              * Specifies recoverableDatabaseId.
+             * @param recoverableDatabaseId The resource identifier of the recoverable database associated with create operation of this database
+             * @return the next update stage
              */
             Update withRecoverableDatabaseId(String recoverableDatabaseId);
         }
@@ -525,6 +600,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithRecoveryServicesRecoveryPointId {
             /**
              * Specifies recoveryServicesRecoveryPointId.
+             * @param recoveryServicesRecoveryPointId The resource identifier of the recovery point associated with create operation of this database
+             * @return the next update stage
              */
             Update withRecoveryServicesRecoveryPointId(String recoveryServicesRecoveryPointId);
         }
@@ -535,6 +612,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithRestorableDroppedDatabaseId {
             /**
              * Specifies restorableDroppedDatabaseId.
+             * @param restorableDroppedDatabaseId The resource identifier of the restorable dropped database associated with create operation of this database
+             * @return the next update stage
              */
             Update withRestorableDroppedDatabaseId(String restorableDroppedDatabaseId);
         }
@@ -545,6 +624,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithRestorePointInTime {
             /**
              * Specifies restorePointInTime.
+             * @param restorePointInTime Specifies the point in time (ISO8601 format) of the source database that will be restored to create the new database
+             * @return the next update stage
              */
             Update withRestorePointInTime(DateTime restorePointInTime);
         }
@@ -555,6 +636,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithSampleName {
             /**
              * Specifies sampleName.
+             * @param sampleName The name of the sample schema to apply when creating this database. Possible values include: 'AdventureWorksLT', 'WideWorldImportersStd', 'WideWorldImportersFull'
+             * @return the next update stage
              */
             Update withSampleName(SampleName sampleName);
         }
@@ -565,6 +648,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithSku {
             /**
              * Specifies sku.
+             * @param sku The name and tier of the SKU
+             * @return the next update stage
              */
             Update withSku(Sku sku);
         }
@@ -575,6 +660,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithSourceDatabaseDeletionDate {
             /**
              * Specifies sourceDatabaseDeletionDate.
+             * @param sourceDatabaseDeletionDate Specifies the time that the database was deleted
+             * @return the next update stage
              */
             Update withSourceDatabaseDeletionDate(DateTime sourceDatabaseDeletionDate);
         }
@@ -585,6 +672,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithSourceDatabaseId {
             /**
              * Specifies sourceDatabaseId.
+             * @param sourceDatabaseId The resource identifier of the source database associated with create operation of this database
+             * @return the next update stage
              */
             Update withSourceDatabaseId(String sourceDatabaseId);
         }
@@ -595,6 +684,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithTags {
             /**
              * Specifies tags.
+             * @param tags Resource tags
+             * @return the next update stage
              */
             Update withTags(Map<String, String> tags);
         }
@@ -605,6 +696,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithZoneRedundant {
             /**
              * Specifies zoneRedundant.
+             * @param zoneRedundant Whether or not this database is zone redundant, which means the replicas of this database will be spread across multiple availability zones
+             * @return the next update stage
              */
             Update withZoneRedundant(Boolean zoneRedundant);
         }
