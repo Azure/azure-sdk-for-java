@@ -6,11 +6,10 @@
 
 package com.microsoft.azure.v2.credentials;
 
-import com.microsoft.aad.adal4j.AuthenticationResult;
 import com.microsoft.azure.v2.AzureEnvironment;
 import com.microsoft.rest.v2.annotations.Beta;
+import io.reactivex.Single;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -103,7 +102,7 @@ final class AzureCliSubscription {
         } else {
             credentialInstance = new UserTokenCredentials(clientId(), tenant(), null, null, environment()) {
                 @Override
-                public synchronized String getToken(String resource) throws IOException {
+                public synchronized Single<String> getToken(String resource) {
                     AzureCliToken token = userTokens.get(resource);
                     // Management endpoint also works for resource manager
                     if (token == null && (resource.equalsIgnoreCase(environment().resourceManagerEndpoint()))) {
@@ -111,29 +110,25 @@ final class AzureCliSubscription {
                     }
                     // Exact match and token hasn't expired
                     if (token != null && !token.expired()) {
-                        return token.accessToken();
+                        return Single.just(token.accessToken());
                     }
                     // If found then refresh
                     boolean shouldRefresh = token != null;
                     // If not found for the resource, but is MRRT then also refresh
-                    if (token == null) {
+                    if (token == null && userTokens.values().size() > 0) {
                         token = new ArrayList<>(userTokens.values()).get(0);
                         shouldRefresh = token.isMRRT();
                     }
                     if (shouldRefresh) {
-                        AuthenticationResult authenticationResult = acquireAccessTokenFromRefreshToken(resource, token.refreshToken(), token.isMRRT());
-                        if (authenticationResult == null) {
-                            return null;
-                        }
-                        try {
-                            AzureCliToken newToken = token.clone().withResource(resource).withAuthenticationResult(authenticationResult);
-                            userTokens.put(resource, newToken);
-                            return newToken.accessToken();
-                        } catch (CloneNotSupportedException e) {
-                            throw new RuntimeException(e);
-                        }
+                        AzureCliToken finalToken = token;
+                        return acquireAccessTokenFromRefreshToken(resource, token.refreshToken(), token.isMRRT())
+                                .map(authenticationResult -> {
+                                    AzureCliToken newToken = finalToken.clone().withResource(resource).withAuthenticationResult(authenticationResult);
+                                    userTokens.put(resource, newToken);
+                                    return newToken.accessToken();
+                                });
                     } else {
-                        return null;
+                        return Single.error(new RuntimeException("No refresh token available for user " + userName()));
                     }
                 }
             };

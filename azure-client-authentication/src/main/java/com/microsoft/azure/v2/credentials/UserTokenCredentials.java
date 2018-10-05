@@ -9,8 +9,9 @@ package com.microsoft.azure.v2.credentials;
 import com.microsoft.aad.adal4j.AuthenticationContext;
 import com.microsoft.aad.adal4j.AuthenticationResult;
 import com.microsoft.azure.v2.AzureEnvironment;
+import io.reactivex.Completable;
+import io.reactivex.Single;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
@@ -68,12 +69,12 @@ public class UserTokenCredentials extends AzureTokenCredentials {
     }
 
     @Override
-    public synchronized String getToken(String resource) throws IOException {
+    public synchronized Single<String> getToken(String resource) {
         // Find exact match for the resource
         AuthenticationResult authenticationResult = tokens.get(resource);
         // Return if found and not expired
         if (authenticationResult != null && authenticationResult.getExpiresOnDate().after(new Date())) {
-            return authenticationResult.getAccessToken();
+            return Single.just(authenticationResult.getAccessToken());
         }
         // If found then refresh
         boolean shouldRefresh = authenticationResult != null;
@@ -82,53 +83,45 @@ public class UserTokenCredentials extends AzureTokenCredentials {
             authenticationResult = new ArrayList<>(tokens.values()).get(0);
             shouldRefresh = authenticationResult.isMultipleResourceRefreshToken();
         }
+        Completable task = Completable.complete();
         // Refresh
         if (shouldRefresh) {
-            authenticationResult = acquireAccessTokenFromRefreshToken(resource, authenticationResult.getRefreshToken(), authenticationResult.isMultipleResourceRefreshToken());
+            task = task.andThen(acquireAccessTokenFromRefreshToken(resource, authenticationResult.getRefreshToken(), authenticationResult.isMultipleResourceRefreshToken())
+                    .flatMapCompletable(ar -> Completable.fromAction(() -> tokens.put(resource, ar))));
         }
         // If refresh fails or not refreshable, acquire new token
-        if (authenticationResult == null) {
-            authenticationResult = acquireNewAccessToken(resource);
-        }
-        tokens.put(resource, authenticationResult);
-        return authenticationResult.getAccessToken();
+        task = task.onErrorResumeNext(t -> acquireNewAccessToken(resource)
+                .flatMapCompletable(ar -> Completable.fromAction(() -> tokens.put(resource, ar))));
+        return task.andThen(Single.just(tokens.get(resource).getAccessToken()));
     }
 
-    AuthenticationResult acquireNewAccessToken(String resource) throws IOException {
+    Single<AuthenticationResult> acquireNewAccessToken(String resource) {
         String authorityUrl = this.environment().activeDirectoryEndpoint() + this.domain();
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        AuthenticationContext context = new AuthenticationContext(authorityUrl, false, executor);
-        if (proxy() != null) {
-            context.setProxy(proxy());
-        }
-        try {
-            return context.acquireToken(
+        return Single.defer(() -> {
+            AuthenticationContext context = new AuthenticationContext(authorityUrl, false, executor);
+            if (proxy() != null) {
+                context.setProxy(proxy());
+            }
+            return Single.fromFuture(context.acquireToken(
                     resource,
                     this.clientId(),
                     this.username(),
                     this.password,
-                    null).get();
-        } catch (Exception e) {
-            throw new IOException(e.getMessage(), e);
-        } finally {
-            executor.shutdown();
-        }
+                    null));
+        }).doFinally(executor::shutdown);
     }
 
     // Refresh tokens are currently not used since we don't know if the refresh token has expired
-    AuthenticationResult acquireAccessTokenFromRefreshToken(String resource, String refreshToken, boolean isMultipleResourceRefreshToken) throws IOException {
+    Single<AuthenticationResult> acquireAccessTokenFromRefreshToken(String resource, String refreshToken, boolean isMultipleResourceRefreshToken) {
         String authorityUrl = this.environment().activeDirectoryEndpoint() + this.domain();
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        AuthenticationContext context = new AuthenticationContext(authorityUrl, false, executor);
-        if (proxy() != null) {
-            context.setProxy(proxy());
-        }
-        try {
-            return context.acquireTokenByRefreshToken(refreshToken, clientId(), resource, null).get();
-        } catch (Exception e) {
-            throw new IOException(e.getMessage(), e);
-        } finally {
-            executor.shutdown();
-        }
+        return Single.defer(() -> {
+            AuthenticationContext context = new AuthenticationContext(authorityUrl, false, executor);
+            if (proxy() != null) {
+                context.setProxy(proxy());
+            }
+            return Single.fromFuture(context.acquireTokenByRefreshToken(refreshToken, clientId(), resource, null));
+        }).doFinally(executor::shutdown);
     }
 }

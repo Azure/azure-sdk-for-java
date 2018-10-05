@@ -11,6 +11,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.v2.AzureEnvironment;
 import com.microsoft.rest.v2.annotations.Beta;
 import com.microsoft.rest.v2.serializer.JacksonAdapter;
+import io.reactivex.Single;
+import io.reactivex.schedulers.Schedulers;
 
 import java.io.File;
 import java.io.IOException;
@@ -116,14 +118,13 @@ public final class AzureCliCredentials extends AzureTokenCredentials {
     }
 
     @Override
-    public synchronized String getToken(String resource) throws IOException {
-        String token = subscriptions.get(defaultSubscriptionId()).credentialInstance().getToken(resource);
-        if (token == null) {
-            System.err.println("Please login in Azure CLI and press any key to continue after you've successfully logged in.");
-            System.in.read();
-            loadAccessTokens();
-            token = subscriptions.get(defaultSubscriptionId()).credentialInstance().getToken(resource);
-        }
-        return token;
+    public synchronized Single<String> getToken(String resource) {
+        return subscriptions.get(defaultSubscriptionId()).credentialInstance().getToken(resource)
+                .onErrorResumeNext(t -> {
+                    System.err.println("Please login in Azure CLI and press any key to continue after you've successfully logged in.");
+                    System.in.read();
+                    loadAccessTokens();
+                    return subscriptions.get(defaultSubscriptionId()).credentialInstance().getToken(resource).subscribeOn(Schedulers.trampoline());
+                });
     }
 }

@@ -8,6 +8,7 @@ package com.microsoft.azure.v2.credentials;
 
 import com.microsoft.azure.v2.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.v2.annotations.Beta;
+import io.reactivex.Single;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -99,16 +100,16 @@ public final class MSICredentials extends AzureTokenCredentials {
     }
 
     @Override
-    public String getToken(String tokenAudience) throws IOException {
+    public Single<String> getToken(String tokenAudience) {
         switch (hostType) {
             case VIRTUAL_MACHINE:
                 if (this.configForVM.tokenSource() == MSIConfigurationForVirtualMachine.MSITokenSource.MSI_EXTENSION) {
-                    return this.getTokenForVirtualMachineFromMSIExtension(tokenAudience == null ? this.configForVM.resource() : tokenAudience);
+                    return Single.fromCallable(() -> this.getTokenForVirtualMachineFromMSIExtension(tokenAudience == null ? this.configForVM.resource() : tokenAudience));
                 } else {
-                    return this.getTokenForVirtualMachineFromIMDSEndpoint(tokenAudience == null ? this.configForVM.resource() : tokenAudience);
+                    return Single.fromCallable(() -> this.getTokenForVirtualMachineFromIMDSEndpoint(tokenAudience == null ? this.configForVM.resource() : tokenAudience));
                 }
             case APP_SERVICE:
-                return getTokenForAppService(tokenAudience);
+                return Single.fromCallable(() -> getTokenForAppService(tokenAudience));
             default:
                 throw new IllegalArgumentException("unknown host type:" + hostType);
         }

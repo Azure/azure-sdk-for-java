@@ -13,6 +13,7 @@ import com.microsoft.rest.v2.OperationDescription;
 import com.microsoft.rest.v2.RestProxy;
 import com.microsoft.rest.v2.SwaggerInterfaceParser;
 import com.microsoft.rest.v2.SwaggerMethodParser;
+import com.microsoft.azure.v2.credentials.AsyncServiceClientCredentials;
 import com.microsoft.rest.v2.credentials.ServiceClientCredentials;
 import com.microsoft.rest.v2.http.HttpClient;
 import com.microsoft.rest.v2.http.HttpMethod;
@@ -21,6 +22,7 @@ import com.microsoft.rest.v2.http.HttpPipelineBuilder;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.http.NettyClient;
+import com.microsoft.azure.v2.policy.AsyncCredentialsPolicyFactory;
 import com.microsoft.rest.v2.policy.CookiePolicyFactory;
 import com.microsoft.rest.v2.policy.CredentialsPolicyFactory;
 import com.microsoft.rest.v2.policy.DecodingPolicyFactory;
@@ -169,6 +171,17 @@ public final class AzureProxy extends RestProxy {
      */
     public static HttpPipeline createDefaultPipeline(Class<?> swaggerInterface, ServiceClientCredentials credentials) {
         return createDefaultPipeline(swaggerInterface, new CredentialsPolicyFactory(credentials));
+    }
+
+    /**
+     * Create the default HttpPipeline.
+     * @param swaggerInterface The interface that the pipeline will use to generate a user-agent
+     *                         string.
+     * @param credentials The credentials to use to apply authentication to the pipeline.
+     * @return the default HttpPipeline.
+     */
+    public static HttpPipeline createDefaultPipeline(Class<?> swaggerInterface, AsyncServiceClientCredentials credentials) {
+        return createDefaultPipeline(swaggerInterface, new AsyncCredentialsPolicyFactory(credentials));
     }
 
     /**
