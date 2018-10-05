@@ -25,4 +25,7 @@ public final class AmqpErrorCode
 
 	// connection errors
 	public static final Symbol ConnectionForced = Symbol.getSymbol("amqp:connection:forced");
+
+	// proton library IOExceptions while performing operations on SocketChannel (in IOHandler.java)
+	public static final Symbol ProtonIOError = Symbol.getSymbol("proton:io");
 }

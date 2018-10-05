@@ -44,7 +44,7 @@ public class ConnectionHandler extends BaseHandler
 	{
 		switch(transportType) {
 			case AMQP_WEB_SOCKETS:
-				if (ProxyConnectionHandler.shouldUseProxy(messagingFactory)) {
+				if (ProxyConnectionHandler.shouldUseProxy( ((MessagingFactory)messagingFactory).getHostName()  )) {
 					return new ProxyConnectionHandler(messagingFactory);
 				} else {
 					return new WebSocketConnectionHandler(messagingFactory);
@@ -76,11 +76,18 @@ public class ConnectionHandler extends BaseHandler
 		connection.open();
 	}
 
+	protected IAmqpConnection getMessagingFactory()
+	{
+		return this.messagingFactory;
+	}
+
 	public void addTransportLayers(final Event event, final TransportInternal transport)
 	{
 		final SslDomain domain = makeDomain(SslDomain.Mode.CLIENT);
 		transport.ssl(domain);
 	}
+
+	protected void notifyTransportErrors(final Event event) { /* no-op */ }
 
 	public String getOutboundSocketHostName() { return ((MessagingFactory)messagingFactory).getHostName(); }
 
@@ -127,6 +134,8 @@ public class ConnectionHandler extends BaseHandler
 		{
 		    connection.free();
 		}
+
+		this.notifyTransportErrors(event);
 	}
 
 	@Override

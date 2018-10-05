@@ -1,9 +1,13 @@
 package com.microsoft.azure.servicebus;
 
-import java.net.URI;
+import java.io.IOException;
+import java.net.*;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.UUID;
 
 import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
+import com.microsoft.azure.servicebus.primitives.StringUtil;
 import com.microsoft.azure.servicebus.primitives.Util;
 
 public class TestUtils {
@@ -17,6 +21,10 @@ public class TestUtils {
 
 	private static String namespaceConnectionString;
 	private static ConnectionStringBuilder namespaceConnectionStringBuilder;
+
+	private static Boolean runWithProxy;
+	private static String proxyHostName;
+	private static int proxyPort;
 	
 	static
 	{
@@ -27,20 +35,30 @@ public class TestUtils {
 			System.err.println(NAMESPACE_CONNECTION_STRING_ENVIRONMENT_VARIABLE_NAME + " environment variable not set. Tests will not be able to connect to to any service bus entity.");
 		}
 		namespaceConnectionStringBuilder = new ConnectionStringBuilder(namespaceConnectionString);
+
+		// Read proxy settings only if transport type is WebSockets
+        runWithProxy = Boolean.valueOf(System.getenv(RUN_WITH_PROXY_ENV_VAR));
+        proxyHostName = System.getenv(PROXY_HOSTNAME_ENV_VAR);
+        proxyPort = System.getenv(PROXY_PORT_ENV_VAR) == null ?
+                        0 : Integer.valueOf(System.getenv(PROXY_PORT_ENV_VAR));
 	}
 	
 	public static URI getNamespaceEndpointURI()
     {
         return namespaceConnectionStringBuilder.getEndpoint();
     }
-    
-    public static ClientSettings getClientSettings()
-    {
-        if (Boolean.valueOf(System.getenv(RUN_WITH_PROXY_ENV_VAR))) {
-            return TestUtils.getProxyClientSettings();
-        } else {
-            return Util.getClientSettingsFromConnectionStringBuilder(namespaceConnectionStringBuilder);
+
+    public static String getNamespaceConnectionString() { return namespaceConnectionString; }
+
+    public static int getProxyPort() { return proxyPort; }
+
+    public static Boolean isProxyEnabled() { return !StringUtil.isNullOrEmpty(proxyHostName) && proxyPort != 0; }
+
+    public static ClientSettings getClientSettings() {
+        if (runWithProxy) {
+            setDefaultProxySelector();
         }
+        return Util.getClientSettingsFromConnectionStringBuilder(namespaceConnectionStringBuilder);
     }
     
     // AADTokens cannot yet be used for management operations, sent directly to gateway
@@ -49,15 +67,21 @@ public class TestUtils {
         return Util.getClientSettingsFromConnectionStringBuilder(namespaceConnectionStringBuilder);
     }
 
-    private static ClientSettings getProxyClientSettings()
-    {
-        ClientSettings clientSettings =
-                Util.getClientSettingsFromConnectionStringBuilder(namespaceConnectionStringBuilder);
+    private static void setDefaultProxySelector() {
+	    // TODO: this needs a less confusing name (not "set") as it doesn't allow the caller to set the default
+        ProxySelector.setDefault(new ProxySelector() {
+            @Override
+            public List<Proxy> select(URI uri) {
+                List<Proxy> proxies = new LinkedList<>();
+                proxies.add(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHostName, proxyPort)));
+                return proxies;
+            }
 
-        clientSettings.setProxyHostName(System.getenv(PROXY_HOSTNAME_ENV_VAR));
-        clientSettings.setProxyHostPort(Integer.valueOf(System.getenv(PROXY_PORT_ENV_VAR)));
-
-        return clientSettings;
+            @Override
+            public void connectFailed(URI uri, SocketAddress sa, IOException ioe) {
+                // no-op
+            }
+        });
     }
 
 	public static String randomizeEntityName(String entityName)

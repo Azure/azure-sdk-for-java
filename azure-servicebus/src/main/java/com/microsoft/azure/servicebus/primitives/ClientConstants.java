@@ -179,7 +179,9 @@ public final class ClientConstants
     public static final UnsignedLong TRUE_FILTER_DESCRIPTOR = new UnsignedLong(0x000001370000007L);
     public static final UnsignedLong FALSE_FILTER_DESCRIPTOR = new UnsignedLong(0x000001370000008L);
     public static final UnsignedLong CORRELATION_FILTER_DESCRIPTOR = new UnsignedLong(0x000001370000009L);
-    
+
+    public static final String HTTPS_URI_FORMAT = "https://%s:%s";
+
     static final int DEFAULT_SAS_TOKEN_SEND_RETRY_INTERVAL_IN_SECONDS = 5;
     static final String SAS_TOKEN_AUDIENCE_FORMAT = "amqp://%s/%s";
 
