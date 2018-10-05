@@ -7,13 +7,13 @@
  *
  */
 
-package com.microsoft.azure.management.policy.v2018_03_01.implementation;
+package com.microsoft.azure.management.policy.v2018_05_01.implementation;
 
-import com.microsoft.azure.management.policy.v2018_03_01.PolicyDefinition;
+import com.microsoft.azure.management.policy.v2018_05_01.PolicyDefinition;
 import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
-import com.microsoft.azure.management.policy.v2018_03_01.PolicyType;
-import com.microsoft.azure.management.policy.v2018_03_01.PolicyMode;
+import com.microsoft.azure.management.policy.v2018_05_01.PolicyType;
+import com.microsoft.azure.management.policy.v2018_05_01.PolicyMode;
 
 class PolicyDefinitionImpl extends CreatableUpdatableImpl<PolicyDefinition, PolicyDefinitionInner, PolicyDefinitionImpl> implements PolicyDefinition, PolicyDefinition.Definition, PolicyDefinition.Update {
     private String policyDefinitionName;

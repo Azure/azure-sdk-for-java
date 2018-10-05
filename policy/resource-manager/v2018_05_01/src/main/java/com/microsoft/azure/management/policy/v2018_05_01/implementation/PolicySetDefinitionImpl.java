@@ -7,14 +7,14 @@
  *
  */
 
-package com.microsoft.azure.management.policy.v2018_03_01.implementation;
+package com.microsoft.azure.management.policy.v2018_05_01.implementation;
 
-import com.microsoft.azure.management.policy.v2018_03_01.PolicySetDefinition;
+import com.microsoft.azure.management.policy.v2018_05_01.PolicySetDefinition;
 import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
-import com.microsoft.azure.management.policy.v2018_03_01.PolicyType;
+import com.microsoft.azure.management.policy.v2018_05_01.PolicyType;
 import java.util.List;
-import com.microsoft.azure.management.policy.v2018_03_01.PolicyDefinitionReference;
+import com.microsoft.azure.management.policy.v2018_05_01.PolicyDefinitionReference;
 
 class PolicySetDefinitionImpl extends CreatableUpdatableImpl<PolicySetDefinition, PolicySetDefinitionInner, PolicySetDefinitionImpl> implements PolicySetDefinition, PolicySetDefinition.Definition, PolicySetDefinition.Update {
     private String policySetDefinitionName;

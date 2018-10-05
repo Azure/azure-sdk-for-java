@@ -7,13 +7,14 @@
  *
  */
 
-package com.microsoft.azure.management.policy.v2018_03_01.implementation;
+package com.microsoft.azure.management.policy.v2018_05_01.implementation;
 
-import com.microsoft.azure.management.policy.v2018_03_01.PolicyAssignment;
+import com.microsoft.azure.management.policy.v2018_05_01.PolicyAssignment;
 import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 import java.util.List;
-import com.microsoft.azure.management.policy.v2018_03_01.PolicySku;
+import com.microsoft.azure.management.policy.v2018_05_01.PolicySku;
+import com.microsoft.azure.management.policy.v2018_05_01.Identity;
 
 class PolicyAssignmentImpl extends CreatableUpdatableImpl<PolicyAssignment, PolicyAssignmentInner, PolicyAssignmentImpl> implements PolicyAssignment, PolicyAssignment.Definition, PolicyAssignment.Update {
     private String scope;
@@ -86,6 +87,16 @@ class PolicyAssignmentImpl extends CreatableUpdatableImpl<PolicyAssignment, Poli
     }
 
     @Override
+    public Identity identity() {
+        return this.inner().identity();
+    }
+
+    @Override
+    public String location() {
+        return this.inner().location();
+    }
+
+    @Override
     public Object metadata() {
         return this.inner().metadata();
     }
@@ -140,6 +151,18 @@ class PolicyAssignmentImpl extends CreatableUpdatableImpl<PolicyAssignment, Poli
     @Override
     public PolicyAssignmentImpl withDisplayName(String displayName) {
         this.inner().withDisplayName(displayName);
+        return this;
+    }
+
+    @Override
+    public PolicyAssignmentImpl withIdentity(Identity identity) {
+        this.inner().withIdentity(identity);
+        return this;
+    }
+
+    @Override
+    public PolicyAssignmentImpl withLocation(String location) {
+        this.inner().withLocation(location);
         return this;
     }
 
