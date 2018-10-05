@@ -41,26 +41,24 @@ public final class PolicyManager extends ManagerCore<PolicyManager, PolicyClient
     * Creates an instance of PolicyManager that exposes Authorization resource management API entry points.
     *
     * @param credentials the credentials to use
-    * @param subscriptionId the subscription UUID
     * @return the PolicyManager
     */
-    public static PolicyManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
+    public static PolicyManager authenticate(AzureTokenCredentials credentials) {
         return new PolicyManager(new RestClient.Builder()
             .withBaseUrl(credentials.environment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
             .withCredentials(credentials)
             .withSerializerAdapter(new AzureJacksonAdapter())
             .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
-            .build(), subscriptionId);
+            .build());
     }
     /**
     * Creates an instance of PolicyManager that exposes Authorization resource management API entry points.
     *
     * @param restClient the RestClient to be used for API calls.
-    * @param subscriptionId the subscription UUID
     * @return the PolicyManager
     */
-    public static PolicyManager authenticate(RestClient restClient, String subscriptionId) {
-        return new PolicyManager(restClient, subscriptionId);
+    public static PolicyManager authenticate(RestClient restClient) {
+        return new PolicyManager(restClient);
     }
     /**
     * The interface allowing configurations to be set.
@@ -70,10 +68,9 @@ public final class PolicyManager extends ManagerCore<PolicyManager, PolicyClient
         * Creates an instance of PolicyManager that exposes Authorization management API entry points.
         *
         * @param credentials the credentials to use
-        * @param subscriptionId the subscription UUID
         * @return the interface exposing Authorization management API entry points that work across subscriptions
         */
-        PolicyManager authenticate(AzureTokenCredentials credentials, String subscriptionId);
+        PolicyManager authenticate(AzureTokenCredentials credentials);
     }
 
     /**
@@ -110,14 +107,14 @@ public final class PolicyManager extends ManagerCore<PolicyManager, PolicyClient
     * The implementation for Configurable interface.
     */
     private static final class ConfigurableImpl extends AzureConfigurableCoreImpl<Configurable> implements Configurable {
-        public PolicyManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
-           return PolicyManager.authenticate(buildRestClient(credentials), subscriptionId);
+        public PolicyManager authenticate(AzureTokenCredentials credentials) {
+           return PolicyManager.authenticate(buildRestClient(credentials));
         }
      }
-    private PolicyManager(RestClient restClient, String subscriptionId) {
+    private PolicyManager(RestClient restClient) {
         super(
             restClient,
-            subscriptionId,
-            new PolicyClientImpl(restClient).withSubscriptionId(subscriptionId));
+            null,
+            new PolicyClientImpl(restClient));
     }
 }

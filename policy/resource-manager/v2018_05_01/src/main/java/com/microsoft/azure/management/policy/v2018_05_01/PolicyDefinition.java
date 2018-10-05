@@ -14,14 +14,13 @@ import com.microsoft.azure.arm.model.Indexable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
-import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.policy.v2018_05_01.implementation.PolicyManager;
 
 /**
  * Type representing PolicyDefinition.
  */
-public interface PolicyDefinition extends HasInner<PolicyDefinitionInner>, Indexable, Updatable<PolicyDefinition.Update>, Refreshable<PolicyDefinition>, HasManager<PolicyManager> {
+public interface PolicyDefinition extends HasInner<PolicyDefinitionInner>, Indexable, Updatable<PolicyDefinition.Update>, HasManager<PolicyManager> {
     /**
      * @return the description value.
      */
@@ -75,7 +74,7 @@ public interface PolicyDefinition extends HasInner<PolicyDefinitionInner>, Index
     /**
      * The entirety of the PolicyDefinition definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithSubscriptionId, DefinitionStages.WithCreate {
     }
 
     /**
@@ -85,7 +84,17 @@ public interface PolicyDefinition extends HasInner<PolicyDefinitionInner>, Index
         /**
          * The first stage of a PolicyDefinition definition.
          */
-        interface Blank extends WithCreate {
+        interface Blank extends WithSubscriptionId {
+        }
+
+        /**
+         * The stage of the policydefinition definition allowing to specify SubscriptionId.
+         */
+        interface WithSubscriptionId {
+           /**
+            * Specifies subscriptionId.
+            */
+            WithCreate withSubscriptionId(String subscriptionId);
         }
 
         /**

@@ -28,29 +28,6 @@ public class PolicyClientImpl extends AzureServiceClient {
         return this.azureClient;
     }
 
-    /** The ID of the target subscription. */
-    private String subscriptionId;
-
-    /**
-     * Gets The ID of the target subscription.
-     *
-     * @return the subscriptionId value.
-     */
-    public String subscriptionId() {
-        return this.subscriptionId;
-    }
-
-    /**
-     * Sets The ID of the target subscription.
-     *
-     * @param subscriptionId the subscriptionId value.
-     * @return the service client itself
-     */
-    public PolicyClientImpl withSubscriptionId(String subscriptionId) {
-        this.subscriptionId = subscriptionId;
-        return this;
-    }
-
     /** The API version to use for the operation. */
     private String apiVersion;
 

@@ -11,27 +11,18 @@ package com.microsoft.azure.management.policy.v2018_05_01.implementation;
 
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.policy.v2018_05_01.PolicyDefinitions;
-import rx.Observable;
-import rx.functions.Func1;
-import com.microsoft.azure.PagedList;
-import com.microsoft.azure.Page;
 import rx.Completable;
+import rx.functions.Func1;
+import rx.Observable;
+import com.microsoft.azure.Page;
 import com.microsoft.azure.management.policy.v2018_05_01.PolicyDefinition;
-import com.microsoft.azure.arm.utils.PagedListConverter;
 
 class PolicyDefinitionsImpl extends WrapperImpl<PolicyDefinitionsInner> implements PolicyDefinitions {
-    private PagedListConverter<PolicyDefinitionInner, PolicyDefinition> converter;
     private final PolicyManager manager;
 
     PolicyDefinitionsImpl(PolicyManager manager) {
         super(manager.inner().policyDefinitions());
         this.manager = manager;
-        this.converter = new PagedListConverter<PolicyDefinitionInner, PolicyDefinition>() {
-            @Override
-            public Observable<PolicyDefinition> typeConvertAsync(PolicyDefinitionInner inner) {
-                return Observable.just((PolicyDefinition) wrapModel(inner));
-            }
-        };
     }
 
     public PolicyManager manager() {
@@ -52,15 +43,15 @@ class PolicyDefinitionsImpl extends WrapperImpl<PolicyDefinitionsInner> implemen
     }
 
     @Override
-    public Completable deleteAsync(String policyDefinitionName) {
+    public Completable deleteAsync(String policyDefinitionName, String subscriptionId) {
         PolicyDefinitionsInner client = this.inner();
-        return client.deleteAsync(policyDefinitionName).toCompletable();
+        return client.deleteAsync(policyDefinitionName, subscriptionId).toCompletable();
     }
 
     @Override
-    public Observable<PolicyDefinition> getAsync(String policyDefinitionName) {
+    public Observable<PolicyDefinition> getAsync(String policyDefinitionName, String subscriptionId) {
         PolicyDefinitionsInner client = this.inner();
-        return client.getAsync(policyDefinitionName)
+        return client.getAsync(policyDefinitionName, subscriptionId)
         .map(new Func1<PolicyDefinitionInner, PolicyDefinition>() {
             @Override
             public PolicyDefinition call(PolicyDefinitionInner inner) {
@@ -130,9 +121,9 @@ class PolicyDefinitionsImpl extends WrapperImpl<PolicyDefinitionsInner> implemen
     }
 
     @Override
-    public Observable<PolicyDefinition> listBuiltInAsync() {
+    public Observable<PolicyDefinition> listAsync(final String subscriptionId) {
         PolicyDefinitionsInner client = this.inner();
-        return client.listBuiltInAsync()
+        return client.listAsync(subscriptionId)
         .flatMapIterable(new Func1<Page<PolicyDefinitionInner>, Iterable<PolicyDefinitionInner>>() {
             @Override
             public Iterable<PolicyDefinitionInner> call(Page<PolicyDefinitionInner> page) {
@@ -148,15 +139,9 @@ class PolicyDefinitionsImpl extends WrapperImpl<PolicyDefinitionsInner> implemen
     }
 
     @Override
-    public PagedList<PolicyDefinition> list() {
+    public Observable<PolicyDefinition> listBuiltInAsync() {
         PolicyDefinitionsInner client = this.inner();
-        return converter.convert(client.list());
-    }
-
-    @Override
-    public Observable<PolicyDefinition> listAsync() {
-        PolicyDefinitionsInner client = this.inner();
-        return client.listAsync()
+        return client.listBuiltInAsync()
         .flatMapIterable(new Func1<Page<PolicyDefinitionInner>, Iterable<PolicyDefinitionInner>>() {
             @Override
             public Iterable<PolicyDefinitionInner> call(Page<PolicyDefinitionInner> page) {
@@ -166,7 +151,7 @@ class PolicyDefinitionsImpl extends WrapperImpl<PolicyDefinitionsInner> implemen
         .map(new Func1<PolicyDefinitionInner, PolicyDefinition>() {
             @Override
             public PolicyDefinition call(PolicyDefinitionInner inner) {
-                return wrapModel(inner);
+                return new PolicyDefinitionImpl(inner, manager());
             }
         });
     }

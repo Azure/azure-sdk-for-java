@@ -11,26 +11,17 @@ package com.microsoft.azure.management.policy.v2018_05_01.implementation;
 
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.policy.v2018_05_01.PolicyAssignments;
-import rx.Observable;
 import rx.functions.Func1;
-import com.microsoft.azure.PagedList;
+import rx.Observable;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.management.policy.v2018_05_01.PolicyAssignment;
-import com.microsoft.azure.arm.utils.PagedListConverter;
 
 class PolicyAssignmentsImpl extends WrapperImpl<PolicyAssignmentsInner> implements PolicyAssignments {
-    private PagedListConverter<PolicyAssignmentInner, PolicyAssignment> converter;
     private final PolicyManager manager;
 
     PolicyAssignmentsImpl(PolicyManager manager) {
         super(manager.inner().policyAssignments());
         this.manager = manager;
-        this.converter = new PagedListConverter<PolicyAssignmentInner, PolicyAssignment>() {
-            @Override
-            public Observable<PolicyAssignment> typeConvertAsync(PolicyAssignmentInner inner) {
-                return Observable.just((PolicyAssignment) wrapModel(inner));
-            }
-        };
     }
 
     public PolicyManager manager() {
@@ -75,9 +66,9 @@ class PolicyAssignmentsImpl extends WrapperImpl<PolicyAssignmentsInner> implemen
     }
 
     @Override
-    public Observable<PolicyAssignment> listForResourceAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName) {
+    public Observable<PolicyAssignment> listForResourceAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final String subscriptionId) {
         PolicyAssignmentsInner client = this.inner();
-        return client.listForResourceAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName)
+        return client.listForResourceAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, subscriptionId)
         .flatMapIterable(new Func1<Page<PolicyAssignmentInner>, Iterable<PolicyAssignmentInner>>() {
             @Override
             public Iterable<PolicyAssignmentInner> call(Page<PolicyAssignmentInner> page) {
@@ -129,15 +120,9 @@ class PolicyAssignmentsImpl extends WrapperImpl<PolicyAssignmentsInner> implemen
     }
 
     @Override
-    public PagedList<PolicyAssignment> list() {
+    public Observable<PolicyAssignment> listByResourceGroupAsync(final String resourceGroupName, final String subscriptionId) {
         PolicyAssignmentsInner client = this.inner();
-        return converter.convert(client.list());
-    }
-
-    @Override
-    public Observable<PolicyAssignment> listAsync() {
-        PolicyAssignmentsInner client = this.inner();
-        return client.listAsync()
+        return client.listByResourceGroupAsync(resourceGroupName, subscriptionId)
         .flatMapIterable(new Func1<Page<PolicyAssignmentInner>, Iterable<PolicyAssignmentInner>>() {
             @Override
             public Iterable<PolicyAssignmentInner> call(Page<PolicyAssignmentInner> page) {
@@ -147,21 +132,15 @@ class PolicyAssignmentsImpl extends WrapperImpl<PolicyAssignmentsInner> implemen
         .map(new Func1<PolicyAssignmentInner, PolicyAssignment>() {
             @Override
             public PolicyAssignment call(PolicyAssignmentInner inner) {
-                return wrapModel(inner);
+                return new PolicyAssignmentImpl(inner, manager());
             }
         });
     }
 
     @Override
-    public PagedList<PolicyAssignment> listByResourceGroup(String resourceGroupName) {
+    public Observable<PolicyAssignment> listAsync(final String subscriptionId) {
         PolicyAssignmentsInner client = this.inner();
-        return converter.convert(client.listByResourceGroup(resourceGroupName));
-    }
-
-    @Override
-    public Observable<PolicyAssignment> listByResourceGroupAsync(String resourceGroupName) {
-        PolicyAssignmentsInner client = this.inner();
-        return client.listByResourceGroupAsync(resourceGroupName)
+        return client.listAsync(subscriptionId)
         .flatMapIterable(new Func1<Page<PolicyAssignmentInner>, Iterable<PolicyAssignmentInner>>() {
             @Override
             public Iterable<PolicyAssignmentInner> call(Page<PolicyAssignmentInner> page) {
@@ -171,7 +150,7 @@ class PolicyAssignmentsImpl extends WrapperImpl<PolicyAssignmentsInner> implemen
         .map(new Func1<PolicyAssignmentInner, PolicyAssignment>() {
             @Override
             public PolicyAssignment call(PolicyAssignmentInner inner) {
-                return wrapModel(inner);
+                return new PolicyAssignmentImpl(inner, manager());
             }
         });
     }

@@ -18,13 +18,14 @@ import com.microsoft.azure.management.policy.v2018_05_01.PolicyDefinitionReferen
 
 class PolicySetDefinitionImpl extends CreatableUpdatableImpl<PolicySetDefinition, PolicySetDefinitionInner, PolicySetDefinitionImpl> implements PolicySetDefinition, PolicySetDefinition.Definition, PolicySetDefinition.Update {
     private String policySetDefinitionName;
+    private String subscriptionId;
     private final PolicyManager manager;
 
     PolicySetDefinitionImpl(String name, PolicyManager manager) {
         super(name, new PolicySetDefinitionInner());
         this.manager = manager;
         // Set resource name
-        this.policySetDefinitionName = name;
+        this.subscriptionId = name;
         //
     }
 
@@ -32,9 +33,10 @@ class PolicySetDefinitionImpl extends CreatableUpdatableImpl<PolicySetDefinition
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
-        this.policySetDefinitionName = inner.name();
+        this.subscriptionId = inner.name();
         // resource ancestor names
         this.policySetDefinitionName = IdParsingUtils.getValueFromIdByName(inner.id(), "policySetDefinitions");
+        this.subscriptionId = IdParsingUtils.getValueFromIdByName(inner.id(), "subscriptions");
         //
     }
 
@@ -46,21 +48,21 @@ class PolicySetDefinitionImpl extends CreatableUpdatableImpl<PolicySetDefinition
     @Override
     public Observable<PolicySetDefinition> createResourceAsync() {
         PolicySetDefinitionsInner client = this.manager().inner().policySetDefinitions();
-        return client.createOrUpdateAsync(this.policySetDefinitionName, this.inner())
+        return client.createOrUpdateAsync(this.policySetDefinitionName, this.subscriptionId, this.inner())
             .map(innerToFluentMap(this));
     }
 
     @Override
     public Observable<PolicySetDefinition> updateResourceAsync() {
         PolicySetDefinitionsInner client = this.manager().inner().policySetDefinitions();
-        return client.createOrUpdateAsync(this.policySetDefinitionName, this.inner())
+        return client.createOrUpdateAsync(this.policySetDefinitionName, this.subscriptionId, this.inner())
             .map(innerToFluentMap(this));
     }
 
     @Override
     protected Observable<PolicySetDefinitionInner> getInnerAsync() {
         PolicySetDefinitionsInner client = this.manager().inner().policySetDefinitions();
-        return client.getAsync(this.policySetDefinitionName);
+        return client.getBuiltInAsync(this.policySetDefinitionName, this.subscriptionId);
     }
 
     @Override
@@ -112,6 +114,12 @@ class PolicySetDefinitionImpl extends CreatableUpdatableImpl<PolicySetDefinition
     @Override
     public String type() {
         return this.inner().type();
+    }
+
+    @Override
+    public PolicySetDefinitionImpl withSubscriptionId(String subscriptionId) {
+        this.subscriptionId = subscriptionId;
+        return this;
     }
 
     @Override
