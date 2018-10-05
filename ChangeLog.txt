@@ -1,6 +1,7 @@
 XXXX.XX.XX Version XX.X.X
 * Added overloads which only accept the required parameters.
 * TransferManager options now throw if an IProgressReceiver is passed as it is not currently supported. Support will be added in a later release.
+* Added CopyFromURL, which will do a synchronous server-side copy, meaning the service will not return an HTTP response until it has completed the copy.
 
 2018.09.11 Version 10.1.0
 * Interfaces for helper types updated to be more consistent throughout the library. All types, with the exception of the options for pipeline factories, use a fluent pattern.
