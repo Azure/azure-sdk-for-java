@@ -26,6 +26,7 @@ import com.microsoft.azure.management.datafactoryv2.v2018_06_01.Pipelines;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.PipelineRuns;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.ActivityRuns;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.Triggers;
+import com.microsoft.azure.management.datafactoryv2.v2018_06_01.RerunTriggers;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.TriggerRuns;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
@@ -44,6 +45,7 @@ public final class DataFactoryManager extends ManagerCore<DataFactoryManager, Da
     private PipelineRuns pipelineRuns;
     private ActivityRuns activityRuns;
     private Triggers triggers;
+    private RerunTriggers rerunTriggers;
     private TriggerRuns triggerRuns;
     /**
     * Get a Configurable instance that can be used to create DataFactoryManager with optional configuration.
@@ -190,6 +192,16 @@ public final class DataFactoryManager extends ManagerCore<DataFactoryManager, Da
             this.triggers = new TriggersImpl(this);
         }
         return this.triggers;
+    }
+
+    /**
+     * @return Entry point to manage RerunTriggers.
+     */
+    public RerunTriggers rerunTriggers() {
+        if (this.rerunTriggers == null) {
+            this.rerunTriggers = new RerunTriggersImpl(this);
+        }
+        return this.rerunTriggers;
     }
 
     /**

@@ -263,6 +263,19 @@ public class DataFactoryManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The RerunTriggersInner object to access its operations.
+     */
+    private RerunTriggersInner rerunTriggers;
+
+    /**
+     * Gets the RerunTriggersInner object to access its operations.
+     * @return the RerunTriggersInner object.
+     */
+    public RerunTriggersInner rerunTriggers() {
+        return this.rerunTriggers;
+    }
+
+    /**
      * The TriggerRunsInner object to access its operations.
      */
     private TriggerRunsInner triggerRuns;
@@ -320,6 +333,7 @@ public class DataFactoryManagementClientImpl extends AzureServiceClient {
         this.pipelineRuns = new PipelineRunsInner(restClient().retrofit(), this);
         this.activityRuns = new ActivityRunsInner(restClient().retrofit(), this);
         this.triggers = new TriggersInner(restClient().retrofit(), this);
+        this.rerunTriggers = new RerunTriggersInner(restClient().retrofit(), this);
         this.triggerRuns = new TriggerRunsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
