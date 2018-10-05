@@ -45,10 +45,10 @@ class ResourceGroupsImpl extends WrapperImpl<ResourceGroupsInner> implements Res
     }
 
     @Override
-    public Completable checkExistenceAsync(String resourceGroupName) {
+    public Observable<Boolean> checkExistenceAsync(String resourceGroupName) {
         ResourceGroupsInner client = this.inner();
-        return client.checkExistenceAsync(resourceGroupName).toCompletable();
-    }
+        return client.checkExistenceAsync(resourceGroupName)
+    ;}
 
     @Override
     public Observable<ResourceGroupExportResult> exportTemplateAsync(String resourceGroupName, ExportTemplateRequest parameters) {

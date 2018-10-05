@@ -30,7 +30,7 @@ public interface Deployments extends SupportsCreating<DeploymentExtended.Definit
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable checkExistenceAsync(String resourceGroupName, String deploymentName);
+    Observable<Boolean> checkExistenceAsync(String resourceGroupName, String deploymentName);
 
     /**
      * Cancels a currently running template deployment.

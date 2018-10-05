@@ -11,12 +11,12 @@ package com.microsoft.azure.management.resources.v2016_06_01;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.resources.v2016_06_01.implementation.LocationInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.resources.v2016_06_01.implementation.Manager;
+import com.microsoft.azure.management.resources.v2016_06_01.implementation.ResourcesManager;
 
 /**
  * Type representing Location.
  */
-public interface Location extends HasInner<LocationInner>, HasManager<Manager> {
+public interface Location extends HasInner<LocationInner>, HasManager<ResourcesManager> {
     /**
      * @return the displayName value.
      */
