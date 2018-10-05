@@ -133,6 +133,19 @@ public class ManagementLockClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The AuthorizationOperationsInner object to access its operations.
+     */
+    private AuthorizationOperationsInner authorizationOperations;
+
+    /**
+     * Gets the AuthorizationOperationsInner object to access its operations.
+     * @return the AuthorizationOperationsInner object.
+     */
+    public AuthorizationOperationsInner authorizationOperations() {
+        return this.authorizationOperations;
+    }
+
+    /**
      * The ManagementLocksInner object to access its operations.
      */
     private ManagementLocksInner managementLocks;
@@ -180,6 +193,7 @@ public class ManagementLockClientImpl extends AzureServiceClient {
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
+        this.authorizationOperations = new AuthorizationOperationsInner(restClient().retrofit(), this);
         this.managementLocks = new ManagementLocksInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
