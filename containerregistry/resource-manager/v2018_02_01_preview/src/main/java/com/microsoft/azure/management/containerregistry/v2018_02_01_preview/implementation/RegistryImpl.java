@@ -13,6 +13,7 @@ import com.microsoft.azure.management.containerregistry.v2018_02_01_preview.Regi
 import rx.Observable;
 import com.microsoft.azure.management.containerregistry.v2018_02_01_preview.RegistryUpdateParameters;
 import com.microsoft.azure.management.containerregistry.v2018_02_01_preview.Sku;
+import com.microsoft.azure.management.containerregistry.v2018_02_01_preview.RegistryIdentity;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.containerregistry.v2018_02_01_preview.ProvisioningState;
 import com.microsoft.azure.management.containerregistry.v2018_02_01_preview.Status;
@@ -80,6 +81,11 @@ class RegistryImpl extends GroupableResourceCoreImpl<Registry, RegistryInner, Re
     }
 
     @Override
+    public RegistryIdentity identity() {
+        return this.inner().identity();
+    }
+
+    @Override
     public String loginServer() {
         return this.inner().loginServer();
     }
@@ -120,6 +126,16 @@ class RegistryImpl extends GroupableResourceCoreImpl<Registry, RegistryInner, Re
             this.inner().withAdminUserEnabled(adminUserEnabled);
         } else {
             this.updateParameter.withAdminUserEnabled(adminUserEnabled);
+        }
+        return this;
+    }
+
+    @Override
+    public RegistryImpl withIdentity(RegistryIdentity identity) {
+        if (isInCreateMode()) {
+            this.inner().withIdentity(identity);
+        } else {
+            this.updateParameter.withIdentity(identity);
         }
         return this;
     }
