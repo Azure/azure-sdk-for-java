@@ -11,7 +11,7 @@ package com.microsoft.azure.management.containerregistry.v2018_09_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The Identity of the container registry.
+ * The identity of the container registry.
  */
 public class RegistryIdentity {
     /**
@@ -21,13 +21,13 @@ public class RegistryIdentity {
     private String type;
 
     /**
-     * The principal id of registry identity.
+     * The principal ID of registry identity.
      */
     @JsonProperty(value = "principalId")
     private String principalId;
 
     /**
-     * The tenant id associated with the registry.
+     * The tenant ID associated with the registry.
      */
     @JsonProperty(value = "tenantId")
     private String tenantId;
@@ -53,7 +53,7 @@ public class RegistryIdentity {
     }
 
     /**
-     * Get the principal id of registry identity.
+     * Get the principal ID of registry identity.
      *
      * @return the principalId value
      */
@@ -62,7 +62,7 @@ public class RegistryIdentity {
     }
 
     /**
-     * Set the principal id of registry identity.
+     * Set the principal ID of registry identity.
      *
      * @param principalId the principalId value to set
      * @return the RegistryIdentity object itself.
@@ -73,7 +73,7 @@ public class RegistryIdentity {
     }
 
     /**
-     * Get the tenant id associated with the registry.
+     * Get the tenant ID associated with the registry.
      *
      * @return the tenantId value
      */
@@ -82,7 +82,7 @@ public class RegistryIdentity {
     }
 
     /**
-     * Set the tenant id associated with the registry.
+     * Set the tenant ID associated with the registry.
      *
      * @param tenantId the tenantId value to set
      * @return the RegistryIdentity object itself.

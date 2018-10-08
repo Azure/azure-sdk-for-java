@@ -117,7 +117,7 @@ public interface Registry extends HasInner<RegistryInner>, Resource, GroupableRe
         interface WithIdentity {
             /**
              * Specifies identity.
-             * @param identity The Identity of the container registry
+             * @param identity The identity of the container registry
              * @return the next definition stage
              */
             WithCreate withIdentity(RegistryIdentity identity);
@@ -171,7 +171,7 @@ public interface Registry extends HasInner<RegistryInner>, Resource, GroupableRe
         interface WithIdentity {
             /**
              * Specifies identity.
-             * @param identity The Identity of the container registry
+             * @param identity The identity of the container registry
              * @return the next update stage
              */
             Update withIdentity(RegistryIdentity identity);

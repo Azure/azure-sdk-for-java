@@ -30,7 +30,7 @@ public class RegistryInner extends Resource {
     private Sku sku;
 
     /**
-     * The Identity of the container registry.
+     * The identity of the container registry.
      */
     @JsonProperty(value = "identity")
     private RegistryIdentity identity;
@@ -96,7 +96,7 @@ public class RegistryInner extends Resource {
     }
 
     /**
-     * Get the Identity of the container registry.
+     * Get the identity of the container registry.
      *
      * @return the identity value
      */
@@ -105,7 +105,7 @@ public class RegistryInner extends Resource {
     }
 
     /**
-     * Set the Identity of the container registry.
+     * Set the identity of the container registry.
      *
      * @param identity the identity value to set
      * @return the RegistryInner object itself.

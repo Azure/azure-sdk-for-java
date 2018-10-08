@@ -30,7 +30,7 @@ public class RegistryUpdateParameters {
     private Sku sku;
 
     /**
-     * The Identity of the container registry.
+     * The identity of the container registry.
      */
     @JsonProperty(value = "identity")
     private RegistryIdentity identity;
@@ -90,7 +90,7 @@ public class RegistryUpdateParameters {
     }
 
     /**
-     * Get the Identity of the container registry.
+     * Get the identity of the container registry.
      *
      * @return the identity value
      */
@@ -99,7 +99,7 @@ public class RegistryUpdateParameters {
     }
 
     /**
-     * Set the Identity of the container registry.
+     * Set the identity of the container registry.
      *
      * @param identity the identity value to set
      * @return the RegistryUpdateParameters object itself.
