@@ -102,6 +102,10 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithTransform {
            /**
             * Specifies resourceGroupName, accountName, transformName.
+            * @param resourceGroupName The name of the resource group within the Azure subscription
+            * @param accountName The Media Services account name
+            * @param transformName The Transform name
+            * @return the next definition stage
             */
             WithInput withExistingTransform(String resourceGroupName, String accountName, String transformName);
         }
@@ -112,6 +116,8 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithInput {
            /**
             * Specifies input.
+            * @param input The inputs for the Job
+            * @return the next definition stage
             */
             WithOutputs withInput(JobInput input);
         }
@@ -122,6 +128,8 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithOutputs {
            /**
             * Specifies outputs.
+            * @param outputs The outputs for the Job
+            * @return the next definition stage
             */
             WithCreate withOutputs(List<JobOutput> outputs);
         }
@@ -132,6 +140,8 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithCorrelationData {
             /**
              * Specifies correlationData.
+             * @param correlationData Customer provided correlation data that will be returned in Job completed events
+             * @return the next definition stage
              */
             WithCreate withCorrelationData(Map<String, String> correlationData);
         }
@@ -142,6 +152,8 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithDescription {
             /**
              * Specifies description.
+             * @param description Optional customer supplied description of the Job
+             * @return the next definition stage
              */
             WithCreate withDescription(String description);
         }
@@ -152,6 +164,8 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithPriority {
             /**
              * Specifies priority.
+             * @param priority Priority with which the job should be processed. Higher priority jobs are processed before lower priority jobs. If not set, the default is normal. Possible values include: 'Low', 'Normal', 'High'
+             * @return the next definition stage
              */
             WithCreate withPriority(Priority priority);
         }
@@ -180,6 +194,8 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithCorrelationData {
             /**
              * Specifies correlationData.
+             * @param correlationData Customer provided correlation data that will be returned in Job completed events
+             * @return the next update stage
              */
             Update withCorrelationData(Map<String, String> correlationData);
         }
@@ -190,6 +206,8 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithDescription {
             /**
              * Specifies description.
+             * @param description Optional customer supplied description of the Job
+             * @return the next update stage
              */
             Update withDescription(String description);
         }
@@ -200,6 +218,8 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithPriority {
             /**
              * Specifies priority.
+             * @param priority Priority with which the job should be processed. Higher priority jobs are processed before lower priority jobs. If not set, the default is normal. Possible values include: 'Low', 'Normal', 'High'
+             * @return the next update stage
              */
             Update withPriority(Priority priority);
         }

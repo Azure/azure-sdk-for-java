@@ -107,6 +107,9 @@ public interface StreamingLocator extends HasInner<StreamingLocatorInner>, Index
         interface WithMediaservice {
            /**
             * Specifies resourceGroupName, accountName.
+            * @param resourceGroupName The name of the resource group within the Azure subscription
+            * @param accountName The Media Services account name
+            * @return the next definition stage
             */
             WithAssetName withExistingMediaservice(String resourceGroupName, String accountName);
         }
@@ -117,6 +120,8 @@ public interface StreamingLocator extends HasInner<StreamingLocatorInner>, Index
         interface WithAssetName {
            /**
             * Specifies assetName.
+            * @param assetName Asset Name
+            * @return the next definition stage
             */
             WithStreamingPolicyName withAssetName(String assetName);
         }
@@ -127,6 +132,8 @@ public interface StreamingLocator extends HasInner<StreamingLocatorInner>, Index
         interface WithStreamingPolicyName {
            /**
             * Specifies streamingPolicyName.
+            * @param streamingPolicyName Streaming policy name used by this streaming locator. Either specify the name of streaming policy you created or use one of the predefined streaming polices. The predefined streaming policies available are: 'Predefined_DownloadOnly', 'Predefined_ClearStreamingOnly', 'Predefined_DownloadAndClearStreaming', 'Predefined_ClearKey', 'Predefined_SecureStreaming' and 'Predefined_SecureStreamingWithFairPlay'
+            * @return the next definition stage
             */
             WithCreate withStreamingPolicyName(String streamingPolicyName);
         }
@@ -137,6 +144,8 @@ public interface StreamingLocator extends HasInner<StreamingLocatorInner>, Index
         interface WithAlternativeMediaId {
             /**
              * Specifies alternativeMediaId.
+             * @param alternativeMediaId An Alternative Media Identifier associated with the StreamingLocator.  This identifier can be used to distinguish different StreamingLocators for the same Asset for authorization purposes in the CustomLicenseAcquisitionUrlTemplate or the CustomKeyAcquisitionUrlTemplate of the StreamingPolicy specified in the StreamingPolicyName field
+             * @return the next definition stage
              */
             WithCreate withAlternativeMediaId(String alternativeMediaId);
         }
@@ -147,6 +156,8 @@ public interface StreamingLocator extends HasInner<StreamingLocatorInner>, Index
         interface WithContentKeys {
             /**
              * Specifies contentKeys.
+             * @param contentKeys ContentKeys used by this Streaming Locator
+             * @return the next definition stage
              */
             WithCreate withContentKeys(List<StreamingLocatorContentKey> contentKeys);
         }
@@ -157,6 +168,8 @@ public interface StreamingLocator extends HasInner<StreamingLocatorInner>, Index
         interface WithDefaultContentKeyPolicyName {
             /**
              * Specifies defaultContentKeyPolicyName.
+             * @param defaultContentKeyPolicyName Default ContentKeyPolicy used by this Streaming Locator
+             * @return the next definition stage
              */
             WithCreate withDefaultContentKeyPolicyName(String defaultContentKeyPolicyName);
         }
@@ -167,6 +180,8 @@ public interface StreamingLocator extends HasInner<StreamingLocatorInner>, Index
         interface WithEndTime {
             /**
              * Specifies endTime.
+             * @param endTime EndTime of Streaming Locator
+             * @return the next definition stage
              */
             WithCreate withEndTime(DateTime endTime);
         }
@@ -177,6 +192,8 @@ public interface StreamingLocator extends HasInner<StreamingLocatorInner>, Index
         interface WithStartTime {
             /**
              * Specifies startTime.
+             * @param startTime StartTime of Streaming Locator
+             * @return the next definition stage
              */
             WithCreate withStartTime(DateTime startTime);
         }
@@ -187,6 +204,8 @@ public interface StreamingLocator extends HasInner<StreamingLocatorInner>, Index
         interface WithStreamingLocatorId {
             /**
              * Specifies streamingLocatorId.
+             * @param streamingLocatorId StreamingLocatorId of Streaming Locator
+             * @return the next definition stage
              */
             WithCreate withStreamingLocatorId(UUID streamingLocatorId);
         }
@@ -215,6 +234,8 @@ public interface StreamingLocator extends HasInner<StreamingLocatorInner>, Index
         interface WithAlternativeMediaId {
             /**
              * Specifies alternativeMediaId.
+             * @param alternativeMediaId An Alternative Media Identifier associated with the StreamingLocator.  This identifier can be used to distinguish different StreamingLocators for the same Asset for authorization purposes in the CustomLicenseAcquisitionUrlTemplate or the CustomKeyAcquisitionUrlTemplate of the StreamingPolicy specified in the StreamingPolicyName field
+             * @return the next update stage
              */
             Update withAlternativeMediaId(String alternativeMediaId);
         }
@@ -225,6 +246,8 @@ public interface StreamingLocator extends HasInner<StreamingLocatorInner>, Index
         interface WithContentKeys {
             /**
              * Specifies contentKeys.
+             * @param contentKeys ContentKeys used by this Streaming Locator
+             * @return the next update stage
              */
             Update withContentKeys(List<StreamingLocatorContentKey> contentKeys);
         }
@@ -235,6 +258,8 @@ public interface StreamingLocator extends HasInner<StreamingLocatorInner>, Index
         interface WithDefaultContentKeyPolicyName {
             /**
              * Specifies defaultContentKeyPolicyName.
+             * @param defaultContentKeyPolicyName Default ContentKeyPolicy used by this Streaming Locator
+             * @return the next update stage
              */
             Update withDefaultContentKeyPolicyName(String defaultContentKeyPolicyName);
         }
@@ -245,6 +270,8 @@ public interface StreamingLocator extends HasInner<StreamingLocatorInner>, Index
         interface WithEndTime {
             /**
              * Specifies endTime.
+             * @param endTime EndTime of Streaming Locator
+             * @return the next update stage
              */
             Update withEndTime(DateTime endTime);
         }
@@ -255,6 +282,8 @@ public interface StreamingLocator extends HasInner<StreamingLocatorInner>, Index
         interface WithStartTime {
             /**
              * Specifies startTime.
+             * @param startTime StartTime of Streaming Locator
+             * @return the next update stage
              */
             Update withStartTime(DateTime startTime);
         }
@@ -265,6 +294,8 @@ public interface StreamingLocator extends HasInner<StreamingLocatorInner>, Index
         interface WithStreamingLocatorId {
             /**
              * Specifies streamingLocatorId.
+             * @param streamingLocatorId StreamingLocatorId of Streaming Locator
+             * @return the next update stage
              */
             Update withStreamingLocatorId(UUID streamingLocatorId);
         }

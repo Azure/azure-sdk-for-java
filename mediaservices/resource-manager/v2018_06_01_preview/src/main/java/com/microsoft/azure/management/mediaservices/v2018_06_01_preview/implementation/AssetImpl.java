@@ -34,7 +34,7 @@ class AssetImpl extends CreatableUpdatableImpl<Asset, AssetInner, AssetImpl> imp
         this.manager = manager;
         // Set resource name
         this.assetName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.accountName = IdParsingUtils.getValueFromIdByName(inner.id(), "mediaServices");
         this.assetName = IdParsingUtils.getValueFromIdByName(inner.id(), "assets");
