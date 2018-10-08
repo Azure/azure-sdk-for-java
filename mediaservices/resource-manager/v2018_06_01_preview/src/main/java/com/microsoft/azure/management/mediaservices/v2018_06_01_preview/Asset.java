@@ -101,6 +101,9 @@ public interface Asset extends HasInner<AssetInner>, Indexable, Refreshable<Asse
         interface WithMediaservice {
            /**
             * Specifies resourceGroupName, accountName.
+            * @param resourceGroupName The name of the resource group within the Azure subscription
+            * @param accountName The Media Services account name
+            * @return the next definition stage
             */
             WithCreate withExistingMediaservice(String resourceGroupName, String accountName);
         }
@@ -111,6 +114,8 @@ public interface Asset extends HasInner<AssetInner>, Indexable, Refreshable<Asse
         interface WithAlternateId {
             /**
              * Specifies alternateId.
+             * @param alternateId The alternate ID of the Asset
+             * @return the next definition stage
              */
             WithCreate withAlternateId(String alternateId);
         }
@@ -121,6 +126,8 @@ public interface Asset extends HasInner<AssetInner>, Indexable, Refreshable<Asse
         interface WithContainer {
             /**
              * Specifies container.
+             * @param container The name of the asset blob container
+             * @return the next definition stage
              */
             WithCreate withContainer(String container);
         }
@@ -131,6 +138,8 @@ public interface Asset extends HasInner<AssetInner>, Indexable, Refreshable<Asse
         interface WithDescription {
             /**
              * Specifies description.
+             * @param description The Asset description
+             * @return the next definition stage
              */
             WithCreate withDescription(String description);
         }
@@ -141,6 +150,8 @@ public interface Asset extends HasInner<AssetInner>, Indexable, Refreshable<Asse
         interface WithStorageAccountName {
             /**
              * Specifies storageAccountName.
+             * @param storageAccountName The name of the storage account
+             * @return the next definition stage
              */
             WithCreate withStorageAccountName(String storageAccountName);
         }
@@ -169,6 +180,8 @@ public interface Asset extends HasInner<AssetInner>, Indexable, Refreshable<Asse
         interface WithAlternateId {
             /**
              * Specifies alternateId.
+             * @param alternateId The alternate ID of the Asset
+             * @return the next update stage
              */
             Update withAlternateId(String alternateId);
         }
@@ -179,6 +192,8 @@ public interface Asset extends HasInner<AssetInner>, Indexable, Refreshable<Asse
         interface WithContainer {
             /**
              * Specifies container.
+             * @param container The name of the asset blob container
+             * @return the next update stage
              */
             Update withContainer(String container);
         }
@@ -189,6 +204,8 @@ public interface Asset extends HasInner<AssetInner>, Indexable, Refreshable<Asse
         interface WithDescription {
             /**
              * Specifies description.
+             * @param description The Asset description
+             * @return the next update stage
              */
             Update withDescription(String description);
         }
@@ -199,6 +216,8 @@ public interface Asset extends HasInner<AssetInner>, Indexable, Refreshable<Asse
         interface WithStorageAccountName {
             /**
              * Specifies storageAccountName.
+             * @param storageAccountName The name of the storage account
+             * @return the next update stage
              */
             Update withStorageAccountName(String storageAccountName);
         }
