@@ -133,7 +133,7 @@ public interface StreamingEndpoint extends HasInner<StreamingEndpointInner>, Ind
     /**
      * The entirety of the StreamingEndpoint definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithMediaservice, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithMediaservice, DefinitionStages.WithAutoStart, DefinitionStages.WithCreate {
     }
 
     /**
@@ -152,8 +152,23 @@ public interface StreamingEndpoint extends HasInner<StreamingEndpointInner>, Ind
         interface WithMediaservice {
            /**
             * Specifies resourceGroupName, accountName.
+            * @param resourceGroupName The name of the resource group within the Azure subscription
+            * @param accountName The Media Services account name
+            * @return the next definition stage
             */
-            WithCreate withExistingMediaservice(String resourceGroupName, String accountName);
+            WithAutoStart withExistingMediaservice(String resourceGroupName, String accountName);
+        }
+
+        /**
+         * The stage of the streamingendpoint definition allowing to specify AutoStart.
+         */
+        interface WithAutoStart {
+           /**
+            * Specifies autoStart.
+            * @param autoStart The flag indicates if auto start the Live Event
+            * @return the next definition stage
+            */
+            WithCreate withAutoStart(Boolean autoStart);
         }
 
         /**
@@ -162,6 +177,8 @@ public interface StreamingEndpoint extends HasInner<StreamingEndpointInner>, Ind
         interface WithAccessControl {
             /**
              * Specifies accessControl.
+             * @param accessControl The access control definition of the StreamingEndpoint
+             * @return the next definition stage
              */
             WithCreate withAccessControl(StreamingEndpointAccessControl accessControl);
         }
@@ -172,6 +189,8 @@ public interface StreamingEndpoint extends HasInner<StreamingEndpointInner>, Ind
         interface WithAvailabilitySetName {
             /**
              * Specifies availabilitySetName.
+             * @param availabilitySetName AvailabilitySet name
+             * @return the next definition stage
              */
             WithCreate withAvailabilitySetName(String availabilitySetName);
         }
@@ -182,6 +201,8 @@ public interface StreamingEndpoint extends HasInner<StreamingEndpointInner>, Ind
         interface WithCdnEnabled {
             /**
              * Specifies cdnEnabled.
+             * @param cdnEnabled The CDN enabled flag
+             * @return the next definition stage
              */
             WithCreate withCdnEnabled(Boolean cdnEnabled);
         }
@@ -192,6 +213,8 @@ public interface StreamingEndpoint extends HasInner<StreamingEndpointInner>, Ind
         interface WithCdnProfile {
             /**
              * Specifies cdnProfile.
+             * @param cdnProfile The CDN profile name
+             * @return the next definition stage
              */
             WithCreate withCdnProfile(String cdnProfile);
         }
@@ -202,6 +225,8 @@ public interface StreamingEndpoint extends HasInner<StreamingEndpointInner>, Ind
         interface WithCdnProvider {
             /**
              * Specifies cdnProvider.
+             * @param cdnProvider The CDN provider name
+             * @return the next definition stage
              */
             WithCreate withCdnProvider(String cdnProvider);
         }
@@ -212,6 +237,8 @@ public interface StreamingEndpoint extends HasInner<StreamingEndpointInner>, Ind
         interface WithCrossSiteAccessPolicies {
             /**
              * Specifies crossSiteAccessPolicies.
+             * @param crossSiteAccessPolicies The StreamingEndpoint access policies
+             * @return the next definition stage
              */
             WithCreate withCrossSiteAccessPolicies(CrossSiteAccessPolicies crossSiteAccessPolicies);
         }
@@ -222,6 +249,8 @@ public interface StreamingEndpoint extends HasInner<StreamingEndpointInner>, Ind
         interface WithCustomHostNames {
             /**
              * Specifies customHostNames.
+             * @param customHostNames The custom host names of the StreamingEndpoint
+             * @return the next definition stage
              */
             WithCreate withCustomHostNames(List<String> customHostNames);
         }
@@ -232,6 +261,8 @@ public interface StreamingEndpoint extends HasInner<StreamingEndpointInner>, Ind
         interface WithDescription {
             /**
              * Specifies description.
+             * @param description The StreamingEndpoint description
+             * @return the next definition stage
              */
             WithCreate withDescription(String description);
         }
@@ -242,6 +273,8 @@ public interface StreamingEndpoint extends HasInner<StreamingEndpointInner>, Ind
         interface WithLocation {
             /**
              * Specifies location.
+             * @param location The Azure Region of the resource
+             * @return the next definition stage
              */
             WithCreate withLocation(String location);
         }
@@ -252,6 +285,8 @@ public interface StreamingEndpoint extends HasInner<StreamingEndpointInner>, Ind
         interface WithMaxCacheAge {
             /**
              * Specifies maxCacheAge.
+             * @param maxCacheAge Max cache age
+             * @return the next definition stage
              */
             WithCreate withMaxCacheAge(Long maxCacheAge);
         }
@@ -262,6 +297,8 @@ public interface StreamingEndpoint extends HasInner<StreamingEndpointInner>, Ind
         interface WithScaleUnits {
             /**
              * Specifies scaleUnits.
+             * @param scaleUnits The number of scale units
+             * @return the next definition stage
              */
             WithCreate withScaleUnits(int scaleUnits);
         }
@@ -272,6 +309,8 @@ public interface StreamingEndpoint extends HasInner<StreamingEndpointInner>, Ind
         interface WithTags {
             /**
              * Specifies tags.
+             * @param tags Resource tags
+             * @return the next definition stage
              */
             WithCreate withTags(Map<String, String> tags);
         }
@@ -300,6 +339,8 @@ public interface StreamingEndpoint extends HasInner<StreamingEndpointInner>, Ind
         interface WithAccessControl {
             /**
              * Specifies accessControl.
+             * @param accessControl The access control definition of the StreamingEndpoint
+             * @return the next update stage
              */
             Update withAccessControl(StreamingEndpointAccessControl accessControl);
         }
@@ -310,6 +351,8 @@ public interface StreamingEndpoint extends HasInner<StreamingEndpointInner>, Ind
         interface WithAvailabilitySetName {
             /**
              * Specifies availabilitySetName.
+             * @param availabilitySetName AvailabilitySet name
+             * @return the next update stage
              */
             Update withAvailabilitySetName(String availabilitySetName);
         }
@@ -320,6 +363,8 @@ public interface StreamingEndpoint extends HasInner<StreamingEndpointInner>, Ind
         interface WithCdnEnabled {
             /**
              * Specifies cdnEnabled.
+             * @param cdnEnabled The CDN enabled flag
+             * @return the next update stage
              */
             Update withCdnEnabled(Boolean cdnEnabled);
         }
@@ -330,6 +375,8 @@ public interface StreamingEndpoint extends HasInner<StreamingEndpointInner>, Ind
         interface WithCdnProfile {
             /**
              * Specifies cdnProfile.
+             * @param cdnProfile The CDN profile name
+             * @return the next update stage
              */
             Update withCdnProfile(String cdnProfile);
         }
@@ -340,6 +387,8 @@ public interface StreamingEndpoint extends HasInner<StreamingEndpointInner>, Ind
         interface WithCdnProvider {
             /**
              * Specifies cdnProvider.
+             * @param cdnProvider The CDN provider name
+             * @return the next update stage
              */
             Update withCdnProvider(String cdnProvider);
         }
@@ -350,6 +399,8 @@ public interface StreamingEndpoint extends HasInner<StreamingEndpointInner>, Ind
         interface WithCrossSiteAccessPolicies {
             /**
              * Specifies crossSiteAccessPolicies.
+             * @param crossSiteAccessPolicies The StreamingEndpoint access policies
+             * @return the next update stage
              */
             Update withCrossSiteAccessPolicies(CrossSiteAccessPolicies crossSiteAccessPolicies);
         }
@@ -360,6 +411,8 @@ public interface StreamingEndpoint extends HasInner<StreamingEndpointInner>, Ind
         interface WithCustomHostNames {
             /**
              * Specifies customHostNames.
+             * @param customHostNames The custom host names of the StreamingEndpoint
+             * @return the next update stage
              */
             Update withCustomHostNames(List<String> customHostNames);
         }
@@ -370,6 +423,8 @@ public interface StreamingEndpoint extends HasInner<StreamingEndpointInner>, Ind
         interface WithDescription {
             /**
              * Specifies description.
+             * @param description The StreamingEndpoint description
+             * @return the next update stage
              */
             Update withDescription(String description);
         }
@@ -380,6 +435,8 @@ public interface StreamingEndpoint extends HasInner<StreamingEndpointInner>, Ind
         interface WithLocation {
             /**
              * Specifies location.
+             * @param location The Azure Region of the resource
+             * @return the next update stage
              */
             Update withLocation(String location);
         }
@@ -390,6 +447,8 @@ public interface StreamingEndpoint extends HasInner<StreamingEndpointInner>, Ind
         interface WithMaxCacheAge {
             /**
              * Specifies maxCacheAge.
+             * @param maxCacheAge Max cache age
+             * @return the next update stage
              */
             Update withMaxCacheAge(Long maxCacheAge);
         }
@@ -400,6 +459,8 @@ public interface StreamingEndpoint extends HasInner<StreamingEndpointInner>, Ind
         interface WithScaleUnits {
             /**
              * Specifies scaleUnits.
+             * @param scaleUnits The number of scale units
+             * @return the next update stage
              */
             Update withScaleUnits(int scaleUnits);
         }
@@ -410,6 +471,8 @@ public interface StreamingEndpoint extends HasInner<StreamingEndpointInner>, Ind
         interface WithTags {
             /**
              * Specifies tags.
+             * @param tags Resource tags
+             * @return the next update stage
              */
             Update withTags(Map<String, String> tags);
         }

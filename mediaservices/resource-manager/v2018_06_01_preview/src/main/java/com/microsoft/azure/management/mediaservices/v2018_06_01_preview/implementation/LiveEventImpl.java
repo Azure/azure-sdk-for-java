@@ -26,6 +26,7 @@ class LiveEventImpl extends CreatableUpdatableImpl<LiveEvent, LiveEventInner, Li
     private String resourceGroupName;
     private String accountName;
     private String liveEventName;
+    private Boolean cautoStart;
 
     LiveEventImpl(String name, MediaManager manager) {
         super(name, new LiveEventInner());
@@ -40,7 +41,7 @@ class LiveEventImpl extends CreatableUpdatableImpl<LiveEvent, LiveEventInner, Li
         this.manager = manager;
         // Set resource name
         this.liveEventName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.accountName = IdParsingUtils.getValueFromIdByName(inner.id(), "mediaservices");
         this.liveEventName = IdParsingUtils.getValueFromIdByName(inner.id(), "liveEvents");
@@ -55,7 +56,7 @@ class LiveEventImpl extends CreatableUpdatableImpl<LiveEvent, LiveEventInner, Li
     @Override
     public Observable<LiveEvent> createResourceAsync() {
         LiveEventsInner client = this.manager().inner().liveEvents();
-        return client.createAsync(this.resourceGroupName, this.accountName, this.liveEventName, this.inner())
+        return client.createAsync(this.resourceGroupName, this.accountName, this.liveEventName, this.inner(), this.cautoStart)
             .map(innerToFluentMap(this));
     }
 
@@ -162,6 +163,12 @@ class LiveEventImpl extends CreatableUpdatableImpl<LiveEvent, LiveEventInner, Li
     public LiveEventImpl withExistingMediaservice(String resourceGroupName, String accountName) {
         this.resourceGroupName = resourceGroupName;
         this.accountName = accountName;
+        return this;
+    }
+
+    @Override
+    public LiveEventImpl withAutoStart(Boolean autoStart) {
+        this.cautoStart = autoStart;
         return this;
     }
 
