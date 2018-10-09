@@ -126,6 +126,12 @@ public class RegisteredServerInner extends ProxyResource {
     private String managementEndpointUri;
 
     /**
+     * Monitoring Configuration.
+     */
+    @JsonProperty(value = "properties.monitoringConfiguration")
+    private String monitoringConfiguration;
+
+    /**
      * Get registered Server Certificate.
      *
      * @return the serverCertificate value
@@ -482,6 +488,26 @@ public class RegisteredServerInner extends ProxyResource {
      */
     public RegisteredServerInner withManagementEndpointUri(String managementEndpointUri) {
         this.managementEndpointUri = managementEndpointUri;
+        return this;
+    }
+
+    /**
+     * Get monitoring Configuration.
+     *
+     * @return the monitoringConfiguration value
+     */
+    public String monitoringConfiguration() {
+        return this.monitoringConfiguration;
+    }
+
+    /**
+     * Set monitoring Configuration.
+     *
+     * @param monitoringConfiguration the monitoringConfiguration value to set
+     * @return the RegisteredServerInner object itself.
+     */
+    public RegisteredServerInner withMonitoringConfiguration(String monitoringConfiguration) {
+        this.monitoringConfiguration = monitoringConfiguration;
         return this;
     }
 
