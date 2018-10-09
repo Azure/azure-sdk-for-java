@@ -133,16 +133,16 @@ public class GraphRbacManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The ObjectsInner object to access its operations.
+     * The SignedInUsersInner object to access its operations.
      */
-    private ObjectsInner objects;
+    private SignedInUsersInner signedInUsers;
 
     /**
-     * Gets the ObjectsInner object to access its operations.
-     * @return the ObjectsInner object.
+     * Gets the SignedInUsersInner object to access its operations.
+     * @return the SignedInUsersInner object.
      */
-    public ObjectsInner objects() {
-        return this.objects;
+    public SignedInUsersInner signedInUsers() {
+        return this.signedInUsers;
     }
 
     /**
@@ -156,6 +156,19 @@ public class GraphRbacManagementClientImpl extends AzureServiceClient {
      */
     public ApplicationsInner applications() {
         return this.applications;
+    }
+
+    /**
+     * The DeletedApplicationsInner object to access its operations.
+     */
+    private DeletedApplicationsInner deletedApplications;
+
+    /**
+     * Gets the DeletedApplicationsInner object to access its operations.
+     * @return the DeletedApplicationsInner object.
+     */
+    public DeletedApplicationsInner deletedApplications() {
+        return this.deletedApplications;
     }
 
     /**
@@ -195,6 +208,19 @@ public class GraphRbacManagementClientImpl extends AzureServiceClient {
      */
     public UsersInner users() {
         return this.users;
+    }
+
+    /**
+     * The ObjectsInner object to access its operations.
+     */
+    private ObjectsInner objects;
+
+    /**
+     * Gets the ObjectsInner object to access its operations.
+     * @return the ObjectsInner object.
+     */
+    public ObjectsInner objects() {
+        return this.objects;
     }
 
     /**
@@ -258,11 +284,13 @@ public class GraphRbacManagementClientImpl extends AzureServiceClient {
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
-        this.objects = new ObjectsInner(restClient().retrofit(), this);
+        this.signedInUsers = new SignedInUsersInner(restClient().retrofit(), this);
         this.applications = new ApplicationsInner(restClient().retrofit(), this);
+        this.deletedApplications = new DeletedApplicationsInner(restClient().retrofit(), this);
         this.groups = new GroupsInner(restClient().retrofit(), this);
         this.servicePrincipals = new ServicePrincipalsInner(restClient().retrofit(), this);
         this.users = new UsersInner(restClient().retrofit(), this);
+        this.objects = new ObjectsInner(restClient().retrofit(), this);
         this.domains = new DomainsInner(restClient().retrofit(), this);
         this.oAuth2s = new OAuth2sInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);

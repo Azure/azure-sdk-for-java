@@ -9,6 +9,7 @@
 package com.microsoft.azure.graphrbac.implementation;
 
 import java.util.List;
+import com.microsoft.azure.graphrbac.AppRole;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -24,6 +25,13 @@ public class ApplicationInner extends DirectoryObjectInner {
      */
     @JsonProperty(value = "appId")
     private String appId;
+
+    /**
+     * The collection of application roles that an application may declare.
+     * These roles can be assigned to users, groups or service principals.
+     */
+    @JsonProperty(value = "appRoles")
+    private List<AppRole> appRoles;
 
     /**
      * The application permissions.
@@ -84,6 +92,26 @@ public class ApplicationInner extends DirectoryObjectInner {
      */
     public ApplicationInner withAppId(String appId) {
         this.appId = appId;
+        return this;
+    }
+
+    /**
+     * Get the collection of application roles that an application may declare. These roles can be assigned to users, groups or service principals.
+     *
+     * @return the appRoles value
+     */
+    public List<AppRole> appRoles() {
+        return this.appRoles;
+    }
+
+    /**
+     * Set the collection of application roles that an application may declare. These roles can be assigned to users, groups or service principals.
+     *
+     * @param appRoles the appRoles value to set
+     * @return the ApplicationInner object itself.
+     */
+    public ApplicationInner withAppRoles(List<AppRole> appRoles) {
+        this.appRoles = appRoles;
         return this;
     }
 

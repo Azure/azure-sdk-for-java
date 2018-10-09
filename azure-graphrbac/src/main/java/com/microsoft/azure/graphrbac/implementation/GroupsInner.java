@@ -11,6 +11,7 @@ package com.microsoft.azure.graphrbac.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
+import com.microsoft.azure.graphrbac.AddOwnerParameters;
 import com.microsoft.azure.graphrbac.CheckGroupMembershipParameters;
 import com.microsoft.azure.graphrbac.GraphErrorException;
 import com.microsoft.azure.graphrbac.GroupAddMemberParameters;
@@ -101,6 +102,14 @@ public class GroupsInner {
         @POST("{tenantID}/groups/{objectId}/getMemberGroups")
         Observable<Response<ResponseBody>> getMemberGroups(@Path("objectId") String objectId, @Path("tenantID") String tenantID, @Body GroupGetMemberGroupsParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.graphrbac.Groups listOwners" })
+        @GET("{tenantID}/groups/{objectId}/owners")
+        Observable<Response<ResponseBody>> listOwners(@Path("objectId") String objectId, @Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.graphrbac.Groups addOwner" })
+        @POST("{tenantID}/groups/{objectId}/$links/owners")
+        Observable<Response<ResponseBody>> addOwner(@Path("objectId") String objectId, @Path("tenantID") String tenantID, @Body AddOwnerParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.graphrbac.Groups listNext" })
         @GET
         Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -108,6 +117,10 @@ public class GroupsInner {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.graphrbac.Groups getGroupMembersNext" })
         @GET
         Observable<Response<ResponseBody>> getGroupMembersNext(@Url String nextUrl, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.graphrbac.Groups listOwnersNext" })
+        @GET
+        Observable<Response<ResponseBody>> listOwnersNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -662,13 +675,13 @@ public class GroupsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws GraphErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PagedList&lt;AADObjectInner&gt; object if successful.
+     * @return the PagedList&lt;DirectoryObjectInner&gt; object if successful.
      */
-    public PagedList<AADObjectInner> getGroupMembers(final String objectId) {
-        ServiceResponse<Page<AADObjectInner>> response = getGroupMembersSinglePageAsync(objectId).toBlocking().single();
-        return new PagedList<AADObjectInner>(response.body()) {
+    public PagedList<DirectoryObjectInner> getGroupMembers(final String objectId) {
+        ServiceResponse<Page<DirectoryObjectInner>> response = getGroupMembersSinglePageAsync(objectId).toBlocking().single();
+        return new PagedList<DirectoryObjectInner>(response.body()) {
             @Override
-            public Page<AADObjectInner> nextPage(String nextLink) {
+            public Page<DirectoryObjectInner> nextPage(String nextLink) {
                 return getGroupMembersNextSinglePageAsync(nextLink).toBlocking().single().body();
             }
         };
@@ -682,12 +695,12 @@ public class GroupsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<AADObjectInner>> getGroupMembersAsync(final String objectId, final ListOperationCallback<AADObjectInner> serviceCallback) {
+    public ServiceFuture<List<DirectoryObjectInner>> getGroupMembersAsync(final String objectId, final ListOperationCallback<DirectoryObjectInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
             getGroupMembersSinglePageAsync(objectId),
-            new Func1<String, Observable<ServiceResponse<Page<AADObjectInner>>>>() {
+            new Func1<String, Observable<ServiceResponse<Page<DirectoryObjectInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<AADObjectInner>>> call(String nextLink) {
+                public Observable<ServiceResponse<Page<DirectoryObjectInner>>> call(String nextLink) {
                     return getGroupMembersNextSinglePageAsync(nextLink);
                 }
             },
@@ -699,13 +712,13 @@ public class GroupsInner {
      *
      * @param objectId The object ID of the group whose members should be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;AADObjectInner&gt; object
+     * @return the observable to the PagedList&lt;DirectoryObjectInner&gt; object
      */
-    public Observable<Page<AADObjectInner>> getGroupMembersAsync(final String objectId) {
+    public Observable<Page<DirectoryObjectInner>> getGroupMembersAsync(final String objectId) {
         return getGroupMembersWithServiceResponseAsync(objectId)
-            .map(new Func1<ServiceResponse<Page<AADObjectInner>>, Page<AADObjectInner>>() {
+            .map(new Func1<ServiceResponse<Page<DirectoryObjectInner>>, Page<DirectoryObjectInner>>() {
                 @Override
-                public Page<AADObjectInner> call(ServiceResponse<Page<AADObjectInner>> response) {
+                public Page<DirectoryObjectInner> call(ServiceResponse<Page<DirectoryObjectInner>> response) {
                     return response.body();
                 }
             });
@@ -716,13 +729,13 @@ public class GroupsInner {
      *
      * @param objectId The object ID of the group whose members should be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;AADObjectInner&gt; object
+     * @return the observable to the PagedList&lt;DirectoryObjectInner&gt; object
      */
-    public Observable<ServiceResponse<Page<AADObjectInner>>> getGroupMembersWithServiceResponseAsync(final String objectId) {
+    public Observable<ServiceResponse<Page<DirectoryObjectInner>>> getGroupMembersWithServiceResponseAsync(final String objectId) {
         return getGroupMembersSinglePageAsync(objectId)
-            .concatMap(new Func1<ServiceResponse<Page<AADObjectInner>>, Observable<ServiceResponse<Page<AADObjectInner>>>>() {
+            .concatMap(new Func1<ServiceResponse<Page<DirectoryObjectInner>>, Observable<ServiceResponse<Page<DirectoryObjectInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<AADObjectInner>>> call(ServiceResponse<Page<AADObjectInner>> page) {
+                public Observable<ServiceResponse<Page<DirectoryObjectInner>>> call(ServiceResponse<Page<DirectoryObjectInner>> page) {
                     String nextLink = page.body().nextPageLink();
                     if (nextLink == null) {
                         return Observable.just(page);
@@ -735,11 +748,11 @@ public class GroupsInner {
     /**
      * Gets the members of a group.
      *
-    ServiceResponse<PageImpl<AADObjectInner>> * @param objectId The object ID of the group whose members should be retrieved.
+    ServiceResponse<PageImpl<DirectoryObjectInner>> * @param objectId The object ID of the group whose members should be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;AADObjectInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;DirectoryObjectInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<AADObjectInner>>> getGroupMembersSinglePageAsync(final String objectId) {
+    public Observable<ServiceResponse<Page<DirectoryObjectInner>>> getGroupMembersSinglePageAsync(final String objectId) {
         if (objectId == null) {
             throw new IllegalArgumentException("Parameter objectId is required and cannot be null.");
         }
@@ -750,12 +763,12 @@ public class GroupsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.getGroupMembers(objectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<AADObjectInner>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<DirectoryObjectInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<AADObjectInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<DirectoryObjectInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<AADObjectInner>> result = getGroupMembersDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<AADObjectInner>>(result.body(), result.response()));
+                        ServiceResponse<PageImpl<DirectoryObjectInner>> result = getGroupMembersDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<DirectoryObjectInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -763,9 +776,9 @@ public class GroupsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<AADObjectInner>> getGroupMembersDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<AADObjectInner>, GraphErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<AADObjectInner>>() { }.getType())
+    private ServiceResponse<PageImpl<DirectoryObjectInner>> getGroupMembersDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<DirectoryObjectInner>, GraphErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<DirectoryObjectInner>>() { }.getType())
                 .registerError(GraphErrorException.class)
                 .build(response);
     }
@@ -1020,6 +1033,212 @@ public class GroupsInner {
     }
 
     /**
+     * Directory objects that are owners of the group.
+     * The owners are a set of non-admin users who are allowed to modify this object.
+     *
+     * @param objectId The object ID of the group for which to get owners.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws GraphErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;DirectoryObjectInner&gt; object if successful.
+     */
+    public PagedList<DirectoryObjectInner> listOwners(final String objectId) {
+        ServiceResponse<Page<DirectoryObjectInner>> response = listOwnersSinglePageAsync(objectId).toBlocking().single();
+        return new PagedList<DirectoryObjectInner>(response.body()) {
+            @Override
+            public Page<DirectoryObjectInner> nextPage(String nextPageLink) {
+                return listOwnersNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Directory objects that are owners of the group.
+     * The owners are a set of non-admin users who are allowed to modify this object.
+     *
+     * @param objectId The object ID of the group for which to get owners.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<DirectoryObjectInner>> listOwnersAsync(final String objectId, final ListOperationCallback<DirectoryObjectInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listOwnersSinglePageAsync(objectId),
+            new Func1<String, Observable<ServiceResponse<Page<DirectoryObjectInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<DirectoryObjectInner>>> call(String nextPageLink) {
+                    return listOwnersNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Directory objects that are owners of the group.
+     * The owners are a set of non-admin users who are allowed to modify this object.
+     *
+     * @param objectId The object ID of the group for which to get owners.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;DirectoryObjectInner&gt; object
+     */
+    public Observable<Page<DirectoryObjectInner>> listOwnersAsync(final String objectId) {
+        return listOwnersWithServiceResponseAsync(objectId)
+            .map(new Func1<ServiceResponse<Page<DirectoryObjectInner>>, Page<DirectoryObjectInner>>() {
+                @Override
+                public Page<DirectoryObjectInner> call(ServiceResponse<Page<DirectoryObjectInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Directory objects that are owners of the group.
+     * The owners are a set of non-admin users who are allowed to modify this object.
+     *
+     * @param objectId The object ID of the group for which to get owners.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;DirectoryObjectInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<DirectoryObjectInner>>> listOwnersWithServiceResponseAsync(final String objectId) {
+        return listOwnersSinglePageAsync(objectId)
+            .concatMap(new Func1<ServiceResponse<Page<DirectoryObjectInner>>, Observable<ServiceResponse<Page<DirectoryObjectInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<DirectoryObjectInner>>> call(ServiceResponse<Page<DirectoryObjectInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listOwnersNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Directory objects that are owners of the group.
+     * The owners are a set of non-admin users who are allowed to modify this object.
+     *
+    ServiceResponse<PageImpl<DirectoryObjectInner>> * @param objectId The object ID of the group for which to get owners.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;DirectoryObjectInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<DirectoryObjectInner>>> listOwnersSinglePageAsync(final String objectId) {
+        if (objectId == null) {
+            throw new IllegalArgumentException("Parameter objectId is required and cannot be null.");
+        }
+        if (this.client.tenantID() == null) {
+            throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listOwners(objectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<DirectoryObjectInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<DirectoryObjectInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<DirectoryObjectInner>> result = listOwnersDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<DirectoryObjectInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<DirectoryObjectInner>> listOwnersDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<DirectoryObjectInner>, GraphErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<DirectoryObjectInner>>() { }.getType())
+                .registerError(GraphErrorException.class)
+                .build(response);
+    }
+
+    /**
+     * Add an owner to a group.
+     *
+     * @param objectId The object ID of the application to which to add the owner.
+     * @param parameters The URL of the owner object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws GraphErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void addOwner(String objectId, AddOwnerParameters parameters) {
+        addOwnerWithServiceResponseAsync(objectId, parameters).toBlocking().single().body();
+    }
+
+    /**
+     * Add an owner to a group.
+     *
+     * @param objectId The object ID of the application to which to add the owner.
+     * @param parameters The URL of the owner object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> addOwnerAsync(String objectId, AddOwnerParameters parameters, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(addOwnerWithServiceResponseAsync(objectId, parameters), serviceCallback);
+    }
+
+    /**
+     * Add an owner to a group.
+     *
+     * @param objectId The object ID of the application to which to add the owner.
+     * @param parameters The URL of the owner object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> addOwnerAsync(String objectId, AddOwnerParameters parameters) {
+        return addOwnerWithServiceResponseAsync(objectId, parameters).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Add an owner to a group.
+     *
+     * @param objectId The object ID of the application to which to add the owner.
+     * @param parameters The URL of the owner object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> addOwnerWithServiceResponseAsync(String objectId, AddOwnerParameters parameters) {
+        if (objectId == null) {
+            throw new IllegalArgumentException("Parameter objectId is required and cannot be null.");
+        }
+        if (this.client.tenantID() == null) {
+            throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
+        }
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(parameters);
+        return service.addOwner(objectId, this.client.tenantID(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = addOwnerDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> addOwnerDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, GraphErrorException>newInstance(this.client.serializerAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(GraphErrorException.class)
+                .build(response);
+    }
+
+    /**
      * Gets a list of groups for the current tenant.
      *
      * @param nextLink Next link for the list operation.
@@ -1143,13 +1362,13 @@ public class GroupsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws GraphErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PagedList&lt;AADObjectInner&gt; object if successful.
+     * @return the PagedList&lt;DirectoryObjectInner&gt; object if successful.
      */
-    public PagedList<AADObjectInner> getGroupMembersNext(final String nextLink) {
-        ServiceResponse<Page<AADObjectInner>> response = getGroupMembersNextSinglePageAsync(nextLink).toBlocking().single();
-        return new PagedList<AADObjectInner>(response.body()) {
+    public PagedList<DirectoryObjectInner> getGroupMembersNext(final String nextLink) {
+        ServiceResponse<Page<DirectoryObjectInner>> response = getGroupMembersNextSinglePageAsync(nextLink).toBlocking().single();
+        return new PagedList<DirectoryObjectInner>(response.body()) {
             @Override
-            public Page<AADObjectInner> nextPage(String nextLink) {
+            public Page<DirectoryObjectInner> nextPage(String nextLink) {
                 return getGroupMembersNextSinglePageAsync(nextLink).toBlocking().single().body();
             }
         };
@@ -1164,12 +1383,12 @@ public class GroupsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<AADObjectInner>> getGroupMembersNextAsync(final String nextLink, final ServiceFuture<List<AADObjectInner>> serviceFuture, final ListOperationCallback<AADObjectInner> serviceCallback) {
+    public ServiceFuture<List<DirectoryObjectInner>> getGroupMembersNextAsync(final String nextLink, final ServiceFuture<List<DirectoryObjectInner>> serviceFuture, final ListOperationCallback<DirectoryObjectInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
             getGroupMembersNextSinglePageAsync(nextLink),
-            new Func1<String, Observable<ServiceResponse<Page<AADObjectInner>>>>() {
+            new Func1<String, Observable<ServiceResponse<Page<DirectoryObjectInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<AADObjectInner>>> call(String nextLink) {
+                public Observable<ServiceResponse<Page<DirectoryObjectInner>>> call(String nextLink) {
                     return getGroupMembersNextSinglePageAsync(nextLink);
                 }
             },
@@ -1181,13 +1400,13 @@ public class GroupsInner {
      *
      * @param nextLink Next link for the list operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;AADObjectInner&gt; object
+     * @return the observable to the PagedList&lt;DirectoryObjectInner&gt; object
      */
-    public Observable<Page<AADObjectInner>> getGroupMembersNextAsync(final String nextLink) {
+    public Observable<Page<DirectoryObjectInner>> getGroupMembersNextAsync(final String nextLink) {
         return getGroupMembersNextWithServiceResponseAsync(nextLink)
-            .map(new Func1<ServiceResponse<Page<AADObjectInner>>, Page<AADObjectInner>>() {
+            .map(new Func1<ServiceResponse<Page<DirectoryObjectInner>>, Page<DirectoryObjectInner>>() {
                 @Override
-                public Page<AADObjectInner> call(ServiceResponse<Page<AADObjectInner>> response) {
+                public Page<DirectoryObjectInner> call(ServiceResponse<Page<DirectoryObjectInner>> response) {
                     return response.body();
                 }
             });
@@ -1198,13 +1417,13 @@ public class GroupsInner {
      *
      * @param nextLink Next link for the list operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;AADObjectInner&gt; object
+     * @return the observable to the PagedList&lt;DirectoryObjectInner&gt; object
      */
-    public Observable<ServiceResponse<Page<AADObjectInner>>> getGroupMembersNextWithServiceResponseAsync(final String nextLink) {
+    public Observable<ServiceResponse<Page<DirectoryObjectInner>>> getGroupMembersNextWithServiceResponseAsync(final String nextLink) {
         return getGroupMembersNextSinglePageAsync(nextLink)
-            .concatMap(new Func1<ServiceResponse<Page<AADObjectInner>>, Observable<ServiceResponse<Page<AADObjectInner>>>>() {
+            .concatMap(new Func1<ServiceResponse<Page<DirectoryObjectInner>>, Observable<ServiceResponse<Page<DirectoryObjectInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<AADObjectInner>>> call(ServiceResponse<Page<AADObjectInner>> page) {
+                public Observable<ServiceResponse<Page<DirectoryObjectInner>>> call(ServiceResponse<Page<DirectoryObjectInner>> page) {
                     String nextLink = page.body().nextPageLink();
                     if (nextLink == null) {
                         return Observable.just(page);
@@ -1217,11 +1436,11 @@ public class GroupsInner {
     /**
      * Gets the members of a group.
      *
-    ServiceResponse<PageImpl<AADObjectInner>> * @param nextLink Next link for the list operation.
+    ServiceResponse<PageImpl<DirectoryObjectInner>> * @param nextLink Next link for the list operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;AADObjectInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;DirectoryObjectInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<AADObjectInner>>> getGroupMembersNextSinglePageAsync(final String nextLink) {
+    public Observable<ServiceResponse<Page<DirectoryObjectInner>>> getGroupMembersNextSinglePageAsync(final String nextLink) {
         if (nextLink == null) {
             throw new IllegalArgumentException("Parameter nextLink is required and cannot be null.");
         }
@@ -1233,12 +1452,12 @@ public class GroupsInner {
         }
         String nextUrl = String.format("%s/%s", this.client.tenantID(), nextLink);
         return service.getGroupMembersNext(nextUrl, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<AADObjectInner>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<DirectoryObjectInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<AADObjectInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<DirectoryObjectInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<AADObjectInner>> result = getGroupMembersNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<AADObjectInner>>(result.body(), result.response()));
+                        ServiceResponse<PageImpl<DirectoryObjectInner>> result = getGroupMembersNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<DirectoryObjectInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1246,9 +1465,125 @@ public class GroupsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<AADObjectInner>> getGroupMembersNextDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<AADObjectInner>, GraphErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<AADObjectInner>>() { }.getType())
+    private ServiceResponse<PageImpl<DirectoryObjectInner>> getGroupMembersNextDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<DirectoryObjectInner>, GraphErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<DirectoryObjectInner>>() { }.getType())
+                .registerError(GraphErrorException.class)
+                .build(response);
+    }
+
+    /**
+     * Directory objects that are owners of the group.
+     * The owners are a set of non-admin users who are allowed to modify this object.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws GraphErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;DirectoryObjectInner&gt; object if successful.
+     */
+    public PagedList<DirectoryObjectInner> listOwnersNext(final String nextPageLink) {
+        ServiceResponse<Page<DirectoryObjectInner>> response = listOwnersNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<DirectoryObjectInner>(response.body()) {
+            @Override
+            public Page<DirectoryObjectInner> nextPage(String nextPageLink) {
+                return listOwnersNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Directory objects that are owners of the group.
+     * The owners are a set of non-admin users who are allowed to modify this object.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<DirectoryObjectInner>> listOwnersNextAsync(final String nextPageLink, final ServiceFuture<List<DirectoryObjectInner>> serviceFuture, final ListOperationCallback<DirectoryObjectInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listOwnersNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<DirectoryObjectInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<DirectoryObjectInner>>> call(String nextPageLink) {
+                    return listOwnersNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Directory objects that are owners of the group.
+     * The owners are a set of non-admin users who are allowed to modify this object.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;DirectoryObjectInner&gt; object
+     */
+    public Observable<Page<DirectoryObjectInner>> listOwnersNextAsync(final String nextPageLink) {
+        return listOwnersNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<DirectoryObjectInner>>, Page<DirectoryObjectInner>>() {
+                @Override
+                public Page<DirectoryObjectInner> call(ServiceResponse<Page<DirectoryObjectInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Directory objects that are owners of the group.
+     * The owners are a set of non-admin users who are allowed to modify this object.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;DirectoryObjectInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<DirectoryObjectInner>>> listOwnersNextWithServiceResponseAsync(final String nextPageLink) {
+        return listOwnersNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<DirectoryObjectInner>>, Observable<ServiceResponse<Page<DirectoryObjectInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<DirectoryObjectInner>>> call(ServiceResponse<Page<DirectoryObjectInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listOwnersNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Directory objects that are owners of the group.
+     * The owners are a set of non-admin users who are allowed to modify this object.
+     *
+    ServiceResponse<PageImpl<DirectoryObjectInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;DirectoryObjectInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<DirectoryObjectInner>>> listOwnersNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listOwnersNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<DirectoryObjectInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<DirectoryObjectInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<DirectoryObjectInner>> result = listOwnersNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<DirectoryObjectInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<DirectoryObjectInner>> listOwnersNextDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<DirectoryObjectInner>, GraphErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<DirectoryObjectInner>>() { }.getType())
                 .registerError(GraphErrorException.class)
                 .build(response);
     }

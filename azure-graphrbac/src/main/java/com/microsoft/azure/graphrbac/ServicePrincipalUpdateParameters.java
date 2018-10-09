@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Request parameters for creating a new service principal.
  */
-public class ServicePrincipalCreateParameters {
+public class ServicePrincipalUpdateParameters {
     /**
      * Unmatched properties from the message are deserialized this collection.
      */
@@ -33,7 +33,7 @@ public class ServicePrincipalCreateParameters {
     /**
      * application Id.
      */
-    @JsonProperty(value = "appId", required = true)
+    @JsonProperty(value = "appId")
     private String appId;
 
     /**
@@ -117,9 +117,9 @@ public class ServicePrincipalCreateParameters {
      * Set unmatched properties from the message are deserialized this collection.
      *
      * @param additionalProperties the additionalProperties value to set
-     * @return the ServicePrincipalCreateParameters object itself.
+     * @return the ServicePrincipalUpdateParameters object itself.
      */
-    public ServicePrincipalCreateParameters withAdditionalProperties(Map<String, Object> additionalProperties) {
+    public ServicePrincipalUpdateParameters withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }
@@ -137,9 +137,9 @@ public class ServicePrincipalCreateParameters {
      * Set whether the account is enabled.
      *
      * @param accountEnabled the accountEnabled value to set
-     * @return the ServicePrincipalCreateParameters object itself.
+     * @return the ServicePrincipalUpdateParameters object itself.
      */
-    public ServicePrincipalCreateParameters withAccountEnabled(Boolean accountEnabled) {
+    public ServicePrincipalUpdateParameters withAccountEnabled(Boolean accountEnabled) {
         this.accountEnabled = accountEnabled;
         return this;
     }
@@ -157,9 +157,9 @@ public class ServicePrincipalCreateParameters {
      * Set application Id.
      *
      * @param appId the appId value to set
-     * @return the ServicePrincipalCreateParameters object itself.
+     * @return the ServicePrincipalUpdateParameters object itself.
      */
-    public ServicePrincipalCreateParameters withAppId(String appId) {
+    public ServicePrincipalUpdateParameters withAppId(String appId) {
         this.appId = appId;
         return this;
     }
@@ -177,9 +177,9 @@ public class ServicePrincipalCreateParameters {
      * Set specifies whether an AppRoleAssignment to a user or group is required before Azure AD will issue a user or access token to the application.
      *
      * @param appRoleAssignmentRequired the appRoleAssignmentRequired value to set
-     * @return the ServicePrincipalCreateParameters object itself.
+     * @return the ServicePrincipalUpdateParameters object itself.
      */
-    public ServicePrincipalCreateParameters withAppRoleAssignmentRequired(Boolean appRoleAssignmentRequired) {
+    public ServicePrincipalUpdateParameters withAppRoleAssignmentRequired(Boolean appRoleAssignmentRequired) {
         this.appRoleAssignmentRequired = appRoleAssignmentRequired;
         return this;
     }
@@ -197,9 +197,9 @@ public class ServicePrincipalCreateParameters {
      * Set the display name for the service principal.
      *
      * @param displayName the displayName value to set
-     * @return the ServicePrincipalCreateParameters object itself.
+     * @return the ServicePrincipalUpdateParameters object itself.
      */
-    public ServicePrincipalCreateParameters withDisplayName(String displayName) {
+    public ServicePrincipalUpdateParameters withDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
     }
@@ -217,9 +217,9 @@ public class ServicePrincipalCreateParameters {
      * Set the errorUrl value.
      *
      * @param errorUrl the errorUrl value to set
-     * @return the ServicePrincipalCreateParameters object itself.
+     * @return the ServicePrincipalUpdateParameters object itself.
      */
-    public ServicePrincipalCreateParameters withErrorUrl(String errorUrl) {
+    public ServicePrincipalUpdateParameters withErrorUrl(String errorUrl) {
         this.errorUrl = errorUrl;
         return this;
     }
@@ -237,9 +237,9 @@ public class ServicePrincipalCreateParameters {
      * Set the URL to the homepage of the associated application.
      *
      * @param homepage the homepage value to set
-     * @return the ServicePrincipalCreateParameters object itself.
+     * @return the ServicePrincipalUpdateParameters object itself.
      */
-    public ServicePrincipalCreateParameters withHomepage(String homepage) {
+    public ServicePrincipalUpdateParameters withHomepage(String homepage) {
         this.homepage = homepage;
         return this;
     }
@@ -257,9 +257,9 @@ public class ServicePrincipalCreateParameters {
      * Set a collection of KeyCredential objects.
      *
      * @param keyCredentials the keyCredentials value to set
-     * @return the ServicePrincipalCreateParameters object itself.
+     * @return the ServicePrincipalUpdateParameters object itself.
      */
-    public ServicePrincipalCreateParameters withKeyCredentials(List<KeyCredentialInner> keyCredentials) {
+    public ServicePrincipalUpdateParameters withKeyCredentials(List<KeyCredentialInner> keyCredentials) {
         this.keyCredentials = keyCredentials;
         return this;
     }
@@ -277,9 +277,9 @@ public class ServicePrincipalCreateParameters {
      * Set a collection of PasswordCredential objects.
      *
      * @param passwordCredentials the passwordCredentials value to set
-     * @return the ServicePrincipalCreateParameters object itself.
+     * @return the ServicePrincipalUpdateParameters object itself.
      */
-    public ServicePrincipalCreateParameters withPasswordCredentials(List<PasswordCredentialInner> passwordCredentials) {
+    public ServicePrincipalUpdateParameters withPasswordCredentials(List<PasswordCredentialInner> passwordCredentials) {
         this.passwordCredentials = passwordCredentials;
         return this;
     }
@@ -297,9 +297,9 @@ public class ServicePrincipalCreateParameters {
      * Set the display name of the tenant in which the associated application is specified.
      *
      * @param publisherName the publisherName value to set
-     * @return the ServicePrincipalCreateParameters object itself.
+     * @return the ServicePrincipalUpdateParameters object itself.
      */
-    public ServicePrincipalCreateParameters withPublisherName(String publisherName) {
+    public ServicePrincipalUpdateParameters withPublisherName(String publisherName) {
         this.publisherName = publisherName;
         return this;
     }
@@ -317,9 +317,9 @@ public class ServicePrincipalCreateParameters {
      * Set a collection of reply URLs for the service principal.
      *
      * @param replyUrls the replyUrls value to set
-     * @return the ServicePrincipalCreateParameters object itself.
+     * @return the ServicePrincipalUpdateParameters object itself.
      */
-    public ServicePrincipalCreateParameters withReplyUrls(List<String> replyUrls) {
+    public ServicePrincipalUpdateParameters withReplyUrls(List<String> replyUrls) {
         this.replyUrls = replyUrls;
         return this;
     }
@@ -337,9 +337,9 @@ public class ServicePrincipalCreateParameters {
      * Set the samlMetadataUrl value.
      *
      * @param samlMetadataUrl the samlMetadataUrl value to set
-     * @return the ServicePrincipalCreateParameters object itself.
+     * @return the ServicePrincipalUpdateParameters object itself.
      */
-    public ServicePrincipalCreateParameters withSamlMetadataUrl(String samlMetadataUrl) {
+    public ServicePrincipalUpdateParameters withSamlMetadataUrl(String samlMetadataUrl) {
         this.samlMetadataUrl = samlMetadataUrl;
         return this;
     }
@@ -357,9 +357,9 @@ public class ServicePrincipalCreateParameters {
      * Set a collection of service principal names.
      *
      * @param servicePrincipalNames the servicePrincipalNames value to set
-     * @return the ServicePrincipalCreateParameters object itself.
+     * @return the ServicePrincipalUpdateParameters object itself.
      */
-    public ServicePrincipalCreateParameters withServicePrincipalNames(List<String> servicePrincipalNames) {
+    public ServicePrincipalUpdateParameters withServicePrincipalNames(List<String> servicePrincipalNames) {
         this.servicePrincipalNames = servicePrincipalNames;
         return this;
     }
@@ -377,9 +377,9 @@ public class ServicePrincipalCreateParameters {
      * Set the tags value.
      *
      * @param tags the tags value to set
-     * @return the ServicePrincipalCreateParameters object itself.
+     * @return the ServicePrincipalUpdateParameters object itself.
      */
-    public ServicePrincipalCreateParameters withTags(List<String> tags) {
+    public ServicePrincipalUpdateParameters withTags(List<String> tags) {
         this.tags = tags;
         return this;
     }
