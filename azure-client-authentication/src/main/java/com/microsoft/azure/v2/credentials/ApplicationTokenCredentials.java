@@ -122,6 +122,18 @@ public class ApplicationTokenCredentials extends AzureTokenCredentials {
         return clientId;
     }
 
+    String clientSecret() {
+        return clientSecret;
+    }
+
+    byte[] clientCertificate() {
+        return clientCertificate;
+    }
+
+    String clientCertificatePassword() {
+        return clientCertificatePassword;
+    }
+
     @Override
     public synchronized Single<String> getToken(String resource) {
         AuthenticationResult authenticationResult = tokens.get(resource);
@@ -164,7 +176,7 @@ public class ApplicationTokenCredentials extends AzureTokenCredentials {
         }).doFinally(executor::shutdown);
     }
 
-    private PrivateKey privateKeyFromPem(String pem) {
+    static PrivateKey privateKeyFromPem(String pem) {
         Pattern pattern = Pattern.compile("(?s)-----BEGIN PRIVATE KEY-----.*-----END PRIVATE KEY-----");
         Matcher matcher = pattern.matcher(pem);
         matcher.find();
@@ -183,7 +195,7 @@ public class ApplicationTokenCredentials extends AzureTokenCredentials {
         }
     }
 
-    private X509Certificate publicKeyFromPem(String pem) {
+    static X509Certificate publicKeyFromPem(String pem) {
         Pattern pattern = Pattern.compile("(?s)-----BEGIN CERTIFICATE-----.*-----END CERTIFICATE-----");
         Matcher matcher = pattern.matcher(pem);
         matcher.find();
