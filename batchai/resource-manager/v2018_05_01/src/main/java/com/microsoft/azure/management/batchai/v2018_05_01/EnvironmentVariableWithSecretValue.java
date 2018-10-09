@@ -11,16 +11,18 @@ package com.microsoft.azure.management.batchai.v2018_05_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * A collection of environment variables with secret values to set.
+ * An environment variable with secret value definition.
  */
 public class EnvironmentVariableWithSecretValue {
     /**
+     * Name.
      * The name of the environment variable to store the secret value.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
 
     /**
+     * Value.
      * The value of the environment variable. This value will never be reported
      * back by Batch AI.
      */
@@ -28,17 +30,15 @@ public class EnvironmentVariableWithSecretValue {
     private String value;
 
     /**
-     * Specifies the location of the Azure KeyVault secret which will be used
-     * as the environment variable value.
-     * Specifies KeyVault Store and Secret which contains the value for the
-     * environment variable. One of value or valueSecretReference must be
-     * provided.
+     * KeyVault secret reference.
+     * KeyVault store and secret which contains the value for the environment
+     * variable. One of value or valueSecretReference must be provided.
      */
     @JsonProperty(value = "valueSecretReference")
     private KeyVaultSecretReference valueSecretReference;
 
     /**
-     * Get the name value.
+     * Get the name of the environment variable to store the secret value.
      *
      * @return the name value
      */
@@ -47,7 +47,7 @@ public class EnvironmentVariableWithSecretValue {
     }
 
     /**
-     * Set the name value.
+     * Set the name of the environment variable to store the secret value.
      *
      * @param name the name value to set
      * @return the EnvironmentVariableWithSecretValue object itself.
@@ -58,7 +58,7 @@ public class EnvironmentVariableWithSecretValue {
     }
 
     /**
-     * Get the value value.
+     * Get the value of the environment variable. This value will never be reported back by Batch AI.
      *
      * @return the value value
      */
@@ -67,7 +67,7 @@ public class EnvironmentVariableWithSecretValue {
     }
 
     /**
-     * Set the value value.
+     * Set the value of the environment variable. This value will never be reported back by Batch AI.
      *
      * @param value the value value to set
      * @return the EnvironmentVariableWithSecretValue object itself.
@@ -78,7 +78,7 @@ public class EnvironmentVariableWithSecretValue {
     }
 
     /**
-     * Get the valueSecretReference value.
+     * Get keyVault store and secret which contains the value for the environment variable. One of value or valueSecretReference must be provided.
      *
      * @return the valueSecretReference value
      */
@@ -87,7 +87,7 @@ public class EnvironmentVariableWithSecretValue {
     }
 
     /**
-     * Set the valueSecretReference value.
+     * Set keyVault store and secret which contains the value for the environment variable. One of value or valueSecretReference must be provided.
      *
      * @param valueSecretReference the valueSecretReference value to set
      * @return the EnvironmentVariableWithSecretValue object itself.

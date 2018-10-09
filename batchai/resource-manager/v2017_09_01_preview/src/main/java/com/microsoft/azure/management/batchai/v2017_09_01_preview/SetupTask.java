@@ -103,7 +103,7 @@ public class SetupTask {
     }
 
     /**
-     * Get the stdOutErrPathPrefix value.
+     * Get the path where the Batch AI service will upload the stdout and stderror of setup task.
      *
      * @return the stdOutErrPathPrefix value
      */
@@ -112,7 +112,7 @@ public class SetupTask {
     }
 
     /**
-     * Set the stdOutErrPathPrefix value.
+     * Set the path where the Batch AI service will upload the stdout and stderror of setup task.
      *
      * @param stdOutErrPathPrefix the stdOutErrPathPrefix value to set
      * @return the SetupTask object itself.

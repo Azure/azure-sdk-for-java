@@ -49,7 +49,7 @@ public class FileInner {
     private Long contentLength;
 
     /**
-     * Get the name value.
+     * Get file name.
      *
      * @return the name value
      */
@@ -58,7 +58,7 @@ public class FileInner {
     }
 
     /**
-     * Set the name value.
+     * Set file name.
      *
      * @param name the name value to set
      * @return the FileInner object itself.
@@ -69,7 +69,7 @@ public class FileInner {
     }
 
     /**
-     * Get the downloadUrl value.
+     * Get this will be returned only if the model has been archived. During job run, this won't be returned and customers can use SSH tunneling to download. Users can use Get Remote Login Information API to get the IP address and port information of all the compute nodes running the job.
      *
      * @return the downloadUrl value
      */
@@ -78,7 +78,7 @@ public class FileInner {
     }
 
     /**
-     * Set the downloadUrl value.
+     * Set this will be returned only if the model has been archived. During job run, this won't be returned and customers can use SSH tunneling to download. Users can use Get Remote Login Information API to get the IP address and port information of all the compute nodes running the job.
      *
      * @param downloadUrl the downloadUrl value to set
      * @return the FileInner object itself.
@@ -89,7 +89,7 @@ public class FileInner {
     }
 
     /**
-     * Get the lastModified value.
+     * Get the time at which the file was last modified.
      *
      * @return the lastModified value
      */
@@ -98,7 +98,7 @@ public class FileInner {
     }
 
     /**
-     * Set the lastModified value.
+     * Set the time at which the file was last modified.
      *
      * @param lastModified the lastModified value to set
      * @return the FileInner object itself.
@@ -109,7 +109,7 @@ public class FileInner {
     }
 
     /**
-     * Get the contentLength value.
+     * Get the file size.
      *
      * @return the contentLength value
      */
@@ -118,7 +118,7 @@ public class FileInner {
     }
 
     /**
-     * Set the contentLength value.
+     * Set the file size.
      *
      * @param contentLength the contentLength value to set
      * @return the FileInner object itself.

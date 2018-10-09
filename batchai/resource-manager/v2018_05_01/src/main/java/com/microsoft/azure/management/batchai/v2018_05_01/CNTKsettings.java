@@ -11,55 +11,59 @@ package com.microsoft.azure.management.batchai.v2018_05_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Specifies the settings for CNTK (aka Microsoft Cognitive Toolkit) job.
+ * CNTK (aka Microsoft Cognitive Toolkit) job settings.
  */
 public class CNTKsettings {
     /**
-     * Specifies the language type to use for launching CNTK (aka Microsoft
-     * Cognitive Toolkit) job.
-     * Valid values are 'BrainScript' or 'Python'.
+     * Language type.
+     * The language to use for launching CNTK (aka Microsoft Cognitive Toolkit)
+     * job. Valid values are 'BrainScript' or 'Python'.
      */
     @JsonProperty(value = "languageType")
     private String languageType;
 
     /**
-     * Specifies the path of the config file.
-     * This property can be specified only if the languageType is
-     * 'BrainScript'.
+     * Config file path.
+     * Specifies the path of the BrainScript config file. This property can be
+     * specified only if the languageType is 'BrainScript'.
      */
     @JsonProperty(value = "configFilePath")
     private String configFilePath;
 
     /**
-     * The path and file name of the python script to execute the job.
-     * This property can be specified only if the languageType is 'Python'.
+     * Python script file path.
+     * Python script to execute. This property can be specified only if the
+     * languageType is 'Python'.
      */
     @JsonProperty(value = "pythonScriptFilePath")
     private String pythonScriptFilePath;
 
     /**
-     * The path to python interpreter.
-     * This property can be specified only if the languageType is 'Python'.
+     * Python interpreter path.
+     * The path to the Python interpreter. This property can be specified only
+     * if the languageType is 'Python'.
      */
     @JsonProperty(value = "pythonInterpreterPath")
     private String pythonInterpreterPath;
 
     /**
-     * Command line arguments that needs to be passed to the python script or
-     * CNTK.exe.
+     * Command line arguments.
+     * Command line arguments that need to be passed to the python script or
+     * cntk executable.
      */
     @JsonProperty(value = "commandLineArgs")
     private String commandLineArgs;
 
     /**
-     * Number of processes parameter that is passed to MPI runtime.
-     * The default value for this property is equal to nodeCount property.
+     * Process count.
+     * Number of processes to launch for the job execution. The default value
+     * for this property is equal to nodeCount property.
      */
     @JsonProperty(value = "processCount")
     private Integer processCount;
 
     /**
-     * Get the languageType value.
+     * Get the language to use for launching CNTK (aka Microsoft Cognitive Toolkit) job. Valid values are 'BrainScript' or 'Python'.
      *
      * @return the languageType value
      */
@@ -68,7 +72,7 @@ public class CNTKsettings {
     }
 
     /**
-     * Set the languageType value.
+     * Set the language to use for launching CNTK (aka Microsoft Cognitive Toolkit) job. Valid values are 'BrainScript' or 'Python'.
      *
      * @param languageType the languageType value to set
      * @return the CNTKsettings object itself.
@@ -79,7 +83,7 @@ public class CNTKsettings {
     }
 
     /**
-     * Get the configFilePath value.
+     * Get specifies the path of the BrainScript config file. This property can be specified only if the languageType is 'BrainScript'.
      *
      * @return the configFilePath value
      */
@@ -88,7 +92,7 @@ public class CNTKsettings {
     }
 
     /**
-     * Set the configFilePath value.
+     * Set specifies the path of the BrainScript config file. This property can be specified only if the languageType is 'BrainScript'.
      *
      * @param configFilePath the configFilePath value to set
      * @return the CNTKsettings object itself.
@@ -99,7 +103,7 @@ public class CNTKsettings {
     }
 
     /**
-     * Get the pythonScriptFilePath value.
+     * Get python script to execute. This property can be specified only if the languageType is 'Python'.
      *
      * @return the pythonScriptFilePath value
      */
@@ -108,7 +112,7 @@ public class CNTKsettings {
     }
 
     /**
-     * Set the pythonScriptFilePath value.
+     * Set python script to execute. This property can be specified only if the languageType is 'Python'.
      *
      * @param pythonScriptFilePath the pythonScriptFilePath value to set
      * @return the CNTKsettings object itself.
@@ -119,7 +123,7 @@ public class CNTKsettings {
     }
 
     /**
-     * Get the pythonInterpreterPath value.
+     * Get the path to the Python interpreter. This property can be specified only if the languageType is 'Python'.
      *
      * @return the pythonInterpreterPath value
      */
@@ -128,7 +132,7 @@ public class CNTKsettings {
     }
 
     /**
-     * Set the pythonInterpreterPath value.
+     * Set the path to the Python interpreter. This property can be specified only if the languageType is 'Python'.
      *
      * @param pythonInterpreterPath the pythonInterpreterPath value to set
      * @return the CNTKsettings object itself.
@@ -139,7 +143,7 @@ public class CNTKsettings {
     }
 
     /**
-     * Get the commandLineArgs value.
+     * Get command line arguments that need to be passed to the python script or cntk executable.
      *
      * @return the commandLineArgs value
      */
@@ -148,7 +152,7 @@ public class CNTKsettings {
     }
 
     /**
-     * Set the commandLineArgs value.
+     * Set command line arguments that need to be passed to the python script or cntk executable.
      *
      * @param commandLineArgs the commandLineArgs value to set
      * @return the CNTKsettings object itself.
@@ -159,7 +163,7 @@ public class CNTKsettings {
     }
 
     /**
-     * Get the processCount value.
+     * Get number of processes to launch for the job execution. The default value for this property is equal to nodeCount property.
      *
      * @return the processCount value
      */
@@ -168,7 +172,7 @@ public class CNTKsettings {
     }
 
     /**
-     * Set the processCount value.
+     * Set number of processes to launch for the job execution. The default value for this property is equal to nodeCount property.
      *
      * @param processCount the processCount value to set
      * @return the CNTKsettings object itself.

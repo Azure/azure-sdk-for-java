@@ -36,7 +36,7 @@ public class JobsListByResourceGroupOptions {
     private Integer maxResults;
 
     /**
-     * Get the filter value.
+     * Get an OData $filter clause.. Used to filter results that are returned in the GET respnose.
      *
      * @return the filter value
      */
@@ -45,7 +45,7 @@ public class JobsListByResourceGroupOptions {
     }
 
     /**
-     * Set the filter value.
+     * Set an OData $filter clause.. Used to filter results that are returned in the GET respnose.
      *
      * @param filter the filter value to set
      * @return the JobsListByResourceGroupOptions object itself.
@@ -56,7 +56,7 @@ public class JobsListByResourceGroupOptions {
     }
 
     /**
-     * Get the select value.
+     * Get an OData $select clause. Used to select the properties to be returned in the GET respnose.
      *
      * @return the select value
      */
@@ -65,7 +65,7 @@ public class JobsListByResourceGroupOptions {
     }
 
     /**
-     * Set the select value.
+     * Set an OData $select clause. Used to select the properties to be returned in the GET respnose.
      *
      * @param select the select value to set
      * @return the JobsListByResourceGroupOptions object itself.
@@ -76,7 +76,7 @@ public class JobsListByResourceGroupOptions {
     }
 
     /**
-     * Get the maxResults value.
+     * Get the maximum number of items to return in the response. A maximum of 1000 files can be returned.
      *
      * @return the maxResults value
      */
@@ -85,7 +85,7 @@ public class JobsListByResourceGroupOptions {
     }
 
     /**
-     * Set the maxResults value.
+     * Set the maximum number of items to return in the response. A maximum of 1000 files can be returned.
      *
      * @param maxResults the maxResults value to set
      * @return the JobsListByResourceGroupOptions object itself.

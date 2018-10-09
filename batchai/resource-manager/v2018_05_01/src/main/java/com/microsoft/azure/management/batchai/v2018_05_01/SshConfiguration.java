@@ -12,25 +12,28 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * SSH configuration settings for the VM.
+ * SSH configuration.
  */
 public class SshConfiguration {
     /**
-     * List of source IP ranges to allow SSH connection to a node.
-     * Default value is '*' can be used to match all source IPs. Maximum number
-     * of IP ranges that can be specified are 400.
+     * Allowed public IPs.
+     * List of source IP ranges to allow SSH connection from. The default value
+     * is '*' (all source IPs are allowed). Maximum number of IP ranges that
+     * can be specified is 400.
      */
     @JsonProperty(value = "publicIPsToAllow")
     private List<String> publicIPsToAllow;
 
     /**
-     * Settings for user account to be created on a node.
+     * User account settings.
+     * Settings for administrator user account to be created on a node. The
+     * account can be used to establish SSH connection to the node.
      */
     @JsonProperty(value = "userAccountSettings", required = true)
     private UserAccountSettings userAccountSettings;
 
     /**
-     * Get the publicIPsToAllow value.
+     * Get list of source IP ranges to allow SSH connection from. The default value is '*' (all source IPs are allowed). Maximum number of IP ranges that can be specified is 400.
      *
      * @return the publicIPsToAllow value
      */
@@ -39,7 +42,7 @@ public class SshConfiguration {
     }
 
     /**
-     * Set the publicIPsToAllow value.
+     * Set list of source IP ranges to allow SSH connection from. The default value is '*' (all source IPs are allowed). Maximum number of IP ranges that can be specified is 400.
      *
      * @param publicIPsToAllow the publicIPsToAllow value to set
      * @return the SshConfiguration object itself.
@@ -50,7 +53,7 @@ public class SshConfiguration {
     }
 
     /**
-     * Get the userAccountSettings value.
+     * Get settings for administrator user account to be created on a node. The account can be used to establish SSH connection to the node.
      *
      * @return the userAccountSettings value
      */
@@ -59,7 +62,7 @@ public class SshConfiguration {
     }
 
     /**
-     * Set the userAccountSettings value.
+     * Set settings for administrator user account to be created on a node. The account can be used to establish SSH connection to the node.
      *
      * @param userAccountSettings the userAccountSettings value to set
      * @return the SshConfiguration object itself.

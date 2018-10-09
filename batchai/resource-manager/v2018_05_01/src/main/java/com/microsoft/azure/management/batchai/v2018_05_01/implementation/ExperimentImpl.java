@@ -33,7 +33,7 @@ class ExperimentImpl extends CreatableUpdatableImpl<Experiment, ExperimentInner,
         this.manager = manager;
         // Set resource name
         this.experimentName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.workspaceName = IdParsingUtils.getValueFromIdByName(inner.id(), "workspaces");
         this.experimentName = IdParsingUtils.getValueFromIdByName(inner.id(), "experiments");

@@ -11,31 +11,34 @@ package com.microsoft.azure.management.batchai.v2018_05_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Details of the Azure File Share to mount on the cluster.
+ * Azure File Share mounting configuration.
  */
 public class AzureFileShareReference {
     /**
-     * Name of the storage account.
+     * Account name.
+     * Name of the Azure storage account.
      */
     @JsonProperty(value = "accountName", required = true)
     private String accountName;
 
     /**
+     * Azure File URL.
      * URL to access the Azure File.
      */
     @JsonProperty(value = "azureFileUrl", required = true)
     private String azureFileUrl;
 
     /**
-     * Information of the Azure File credentials.
+     * Credentials.
+     * Information about the Azure storage credentials.
      */
     @JsonProperty(value = "credentials", required = true)
     private AzureStorageCredentialsInfo credentials;
 
     /**
-     * Specifies the relative path on the compute node where the Azure file
-     * share will be mounted.
-     * Note that all cluster level file shares will be mounted under
+     * Relative mount path.
+     * The relative path on the compute node where the Azure File share will be
+     * mounted. Note that all cluster level file shares will be mounted under
      * $AZ_BATCHAI_MOUNT_ROOT location and all job level file shares will be
      * mounted under $AZ_BATCHAI_JOB_MOUNT_ROOT.
      */
@@ -43,21 +46,22 @@ public class AzureFileShareReference {
     private String relativeMountPath;
 
     /**
-     * Specifies the file mode.
-     * Default value is 0777. Valid only if OS is linux.
+     * File mode.
+     * File mode for files on the mounted file share. Default value: 0777.
      */
     @JsonProperty(value = "fileMode")
     private String fileMode;
 
     /**
-     * Specifies the directory Mode.
-     * Default value is 0777. Valid only if OS is linux.
+     * Directory mode.
+     * File mode for directories on the mounted file share. Default value:
+     * 0777.
      */
     @JsonProperty(value = "directoryMode")
     private String directoryMode;
 
     /**
-     * Get the accountName value.
+     * Get name of the Azure storage account.
      *
      * @return the accountName value
      */
@@ -66,7 +70,7 @@ public class AzureFileShareReference {
     }
 
     /**
-     * Set the accountName value.
+     * Set name of the Azure storage account.
      *
      * @param accountName the accountName value to set
      * @return the AzureFileShareReference object itself.
@@ -77,7 +81,7 @@ public class AzureFileShareReference {
     }
 
     /**
-     * Get the azureFileUrl value.
+     * Get uRL to access the Azure File.
      *
      * @return the azureFileUrl value
      */
@@ -86,7 +90,7 @@ public class AzureFileShareReference {
     }
 
     /**
-     * Set the azureFileUrl value.
+     * Set uRL to access the Azure File.
      *
      * @param azureFileUrl the azureFileUrl value to set
      * @return the AzureFileShareReference object itself.
@@ -97,7 +101,7 @@ public class AzureFileShareReference {
     }
 
     /**
-     * Get the credentials value.
+     * Get information about the Azure storage credentials.
      *
      * @return the credentials value
      */
@@ -106,7 +110,7 @@ public class AzureFileShareReference {
     }
 
     /**
-     * Set the credentials value.
+     * Set information about the Azure storage credentials.
      *
      * @param credentials the credentials value to set
      * @return the AzureFileShareReference object itself.
@@ -117,7 +121,7 @@ public class AzureFileShareReference {
     }
 
     /**
-     * Get the relativeMountPath value.
+     * Get the relative path on the compute node where the Azure File share will be mounted. Note that all cluster level file shares will be mounted under $AZ_BATCHAI_MOUNT_ROOT location and all job level file shares will be mounted under $AZ_BATCHAI_JOB_MOUNT_ROOT.
      *
      * @return the relativeMountPath value
      */
@@ -126,7 +130,7 @@ public class AzureFileShareReference {
     }
 
     /**
-     * Set the relativeMountPath value.
+     * Set the relative path on the compute node where the Azure File share will be mounted. Note that all cluster level file shares will be mounted under $AZ_BATCHAI_MOUNT_ROOT location and all job level file shares will be mounted under $AZ_BATCHAI_JOB_MOUNT_ROOT.
      *
      * @param relativeMountPath the relativeMountPath value to set
      * @return the AzureFileShareReference object itself.
@@ -137,7 +141,7 @@ public class AzureFileShareReference {
     }
 
     /**
-     * Get the fileMode value.
+     * Get file mode for files on the mounted file share. Default value: 0777.
      *
      * @return the fileMode value
      */
@@ -146,7 +150,7 @@ public class AzureFileShareReference {
     }
 
     /**
-     * Set the fileMode value.
+     * Set file mode for files on the mounted file share. Default value: 0777.
      *
      * @param fileMode the fileMode value to set
      * @return the AzureFileShareReference object itself.
@@ -157,7 +161,7 @@ public class AzureFileShareReference {
     }
 
     /**
-     * Get the directoryMode value.
+     * Get file mode for directories on the mounted file share. Default value: 0777.
      *
      * @return the directoryMode value
      */
@@ -166,7 +170,7 @@ public class AzureFileShareReference {
     }
 
     /**
-     * Set the directoryMode value.
+     * Set file mode for directories on the mounted file share. Default value: 0777.
      *
      * @param directoryMode the directoryMode value to set
      * @return the AzureFileShareReference object itself.

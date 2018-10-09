@@ -11,29 +11,32 @@ package com.microsoft.azure.management.batchai.v2018_05_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Specifies the settings for Caffe2 job.
+ * Caffe2 job settings.
  */
 public class Caffe2Settings {
     /**
-     * The path and file name of the python script to execute the job.
+     * Python script file path.
+     * The python script to execute.
      */
     @JsonProperty(value = "pythonScriptFilePath", required = true)
     private String pythonScriptFilePath;
 
     /**
-     * The path to python interpreter.
+     * Python interpreter path.
+     * The path to the Python interpreter.
      */
     @JsonProperty(value = "pythonInterpreterPath")
     private String pythonInterpreterPath;
 
     /**
-     * Command line arguments that needs to be passed to the python script.
+     * Command line arguments.
+     * Command line arguments that need to be passed to the python script.
      */
     @JsonProperty(value = "commandLineArgs")
     private String commandLineArgs;
 
     /**
-     * Get the pythonScriptFilePath value.
+     * Get the python script to execute.
      *
      * @return the pythonScriptFilePath value
      */
@@ -42,7 +45,7 @@ public class Caffe2Settings {
     }
 
     /**
-     * Set the pythonScriptFilePath value.
+     * Set the python script to execute.
      *
      * @param pythonScriptFilePath the pythonScriptFilePath value to set
      * @return the Caffe2Settings object itself.
@@ -53,7 +56,7 @@ public class Caffe2Settings {
     }
 
     /**
-     * Get the pythonInterpreterPath value.
+     * Get the path to the Python interpreter.
      *
      * @return the pythonInterpreterPath value
      */
@@ -62,7 +65,7 @@ public class Caffe2Settings {
     }
 
     /**
-     * Set the pythonInterpreterPath value.
+     * Set the path to the Python interpreter.
      *
      * @param pythonInterpreterPath the pythonInterpreterPath value to set
      * @return the Caffe2Settings object itself.
@@ -73,7 +76,7 @@ public class Caffe2Settings {
     }
 
     /**
-     * Get the commandLineArgs value.
+     * Get command line arguments that need to be passed to the python script.
      *
      * @return the commandLineArgs value
      */
@@ -82,7 +85,7 @@ public class Caffe2Settings {
     }
 
     /**
-     * Set the commandLineArgs value.
+     * Set command line arguments that need to be passed to the python script.
      *
      * @param commandLineArgs the commandLineArgs value to set
      * @return the Caffe2Settings object itself.

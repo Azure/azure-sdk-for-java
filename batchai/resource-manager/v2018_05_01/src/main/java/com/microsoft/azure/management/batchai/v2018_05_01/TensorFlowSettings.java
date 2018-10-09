@@ -11,63 +11,69 @@ package com.microsoft.azure.management.batchai.v2018_05_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Specifies the settings for TensorFlow job.
+ * TensorFlow job settings.
  */
 public class TensorFlowSettings {
     /**
-     * The path and file name of the python script to execute the job.
+     * Python script file path.
+     * The python script to execute.
      */
     @JsonProperty(value = "pythonScriptFilePath", required = true)
     private String pythonScriptFilePath;
 
     /**
-     * The path to python interpreter.
+     * Python interpreter path.
+     * The path to the Python interpreter.
      */
     @JsonProperty(value = "pythonInterpreterPath")
     private String pythonInterpreterPath;
 
     /**
-     * Specifies the command line arguments for the master task.
+     * Master command line arguments.
+     * Command line arguments that need to be passed to the python script for
+     * the master task.
      */
     @JsonProperty(value = "masterCommandLineArgs")
     private String masterCommandLineArgs;
 
     /**
-     * Specifies the command line arguments for the worker task.
-     * This property is optional for single machine training.
+     * Worker command line arguments.
+     * Command line arguments that need to be passed to the python script for
+     * the worker task. Optional for single process jobs.
      */
     @JsonProperty(value = "workerCommandLineArgs")
     private String workerCommandLineArgs;
 
     /**
-     * Specifies the command line arguments for the parameter server task.
-     * This property is optional for single machine training.
+     * Parameter server command line arguments.
+     * Command line arguments that need to be passed to the python script for
+     * the parameter server. Optional for single process jobs.
      */
     @JsonProperty(value = "parameterServerCommandLineArgs")
     private String parameterServerCommandLineArgs;
 
     /**
-     * The number of worker tasks.
-     * If specified, the value must be less than or equal to (nodeCount *
-     * numberOfGPUs per VM). If not specified, the default value is equal to
-     * nodeCount. This property can be specified only for distributed
-     * TensorFlow training.
+     * Worker count.
+     * The number of worker tasks. If specified, the value must be less than or
+     * equal to (nodeCount * numberOfGPUs per VM). If not specified, the
+     * default value is equal to nodeCount. This property can be specified only
+     * for distributed TensorFlow training.
      */
     @JsonProperty(value = "workerCount")
     private Integer workerCount;
 
     /**
-     * The number of parmeter server tasks.
-     * If specified, the value must be less than or equal to nodeCount. If not
-     * specified, the default value is equal to 1 for distributed TensorFlow
-     * training (This property is not applicable for single machine training).
-     * This property can be specified only for distributed TensorFlow training.
+     * Parameter server count.
+     * The number of parameter server tasks. If specified, the value must be
+     * less than or equal to nodeCount. If not specified, the default value is
+     * equal to 1 for distributed TensorFlow training. This property can be
+     * specified only for distributed TensorFlow training.
      */
     @JsonProperty(value = "parameterServerCount")
     private Integer parameterServerCount;
 
     /**
-     * Get the pythonScriptFilePath value.
+     * Get the python script to execute.
      *
      * @return the pythonScriptFilePath value
      */
@@ -76,7 +82,7 @@ public class TensorFlowSettings {
     }
 
     /**
-     * Set the pythonScriptFilePath value.
+     * Set the python script to execute.
      *
      * @param pythonScriptFilePath the pythonScriptFilePath value to set
      * @return the TensorFlowSettings object itself.
@@ -87,7 +93,7 @@ public class TensorFlowSettings {
     }
 
     /**
-     * Get the pythonInterpreterPath value.
+     * Get the path to the Python interpreter.
      *
      * @return the pythonInterpreterPath value
      */
@@ -96,7 +102,7 @@ public class TensorFlowSettings {
     }
 
     /**
-     * Set the pythonInterpreterPath value.
+     * Set the path to the Python interpreter.
      *
      * @param pythonInterpreterPath the pythonInterpreterPath value to set
      * @return the TensorFlowSettings object itself.
@@ -107,7 +113,7 @@ public class TensorFlowSettings {
     }
 
     /**
-     * Get the masterCommandLineArgs value.
+     * Get command line arguments that need to be passed to the python script for the master task.
      *
      * @return the masterCommandLineArgs value
      */
@@ -116,7 +122,7 @@ public class TensorFlowSettings {
     }
 
     /**
-     * Set the masterCommandLineArgs value.
+     * Set command line arguments that need to be passed to the python script for the master task.
      *
      * @param masterCommandLineArgs the masterCommandLineArgs value to set
      * @return the TensorFlowSettings object itself.
@@ -127,7 +133,7 @@ public class TensorFlowSettings {
     }
 
     /**
-     * Get the workerCommandLineArgs value.
+     * Get command line arguments that need to be passed to the python script for the worker task. Optional for single process jobs.
      *
      * @return the workerCommandLineArgs value
      */
@@ -136,7 +142,7 @@ public class TensorFlowSettings {
     }
 
     /**
-     * Set the workerCommandLineArgs value.
+     * Set command line arguments that need to be passed to the python script for the worker task. Optional for single process jobs.
      *
      * @param workerCommandLineArgs the workerCommandLineArgs value to set
      * @return the TensorFlowSettings object itself.
@@ -147,7 +153,7 @@ public class TensorFlowSettings {
     }
 
     /**
-     * Get the parameterServerCommandLineArgs value.
+     * Get command line arguments that need to be passed to the python script for the parameter server. Optional for single process jobs.
      *
      * @return the parameterServerCommandLineArgs value
      */
@@ -156,7 +162,7 @@ public class TensorFlowSettings {
     }
 
     /**
-     * Set the parameterServerCommandLineArgs value.
+     * Set command line arguments that need to be passed to the python script for the parameter server. Optional for single process jobs.
      *
      * @param parameterServerCommandLineArgs the parameterServerCommandLineArgs value to set
      * @return the TensorFlowSettings object itself.
@@ -167,7 +173,7 @@ public class TensorFlowSettings {
     }
 
     /**
-     * Get the workerCount value.
+     * Get the number of worker tasks. If specified, the value must be less than or equal to (nodeCount * numberOfGPUs per VM). If not specified, the default value is equal to nodeCount. This property can be specified only for distributed TensorFlow training.
      *
      * @return the workerCount value
      */
@@ -176,7 +182,7 @@ public class TensorFlowSettings {
     }
 
     /**
-     * Set the workerCount value.
+     * Set the number of worker tasks. If specified, the value must be less than or equal to (nodeCount * numberOfGPUs per VM). If not specified, the default value is equal to nodeCount. This property can be specified only for distributed TensorFlow training.
      *
      * @param workerCount the workerCount value to set
      * @return the TensorFlowSettings object itself.
@@ -187,7 +193,7 @@ public class TensorFlowSettings {
     }
 
     /**
-     * Get the parameterServerCount value.
+     * Get the number of parameter server tasks. If specified, the value must be less than or equal to nodeCount. If not specified, the default value is equal to 1 for distributed TensorFlow training. This property can be specified only for distributed TensorFlow training.
      *
      * @return the parameterServerCount value
      */
@@ -196,7 +202,7 @@ public class TensorFlowSettings {
     }
 
     /**
-     * Set the parameterServerCount value.
+     * Set the number of parameter server tasks. If specified, the value must be less than or equal to nodeCount. If not specified, the default value is equal to 1 for distributed TensorFlow training. This property can be specified only for distributed TensorFlow training.
      *
      * @param parameterServerCount the parameterServerCount value to set
      * @return the TensorFlowSettings object itself.

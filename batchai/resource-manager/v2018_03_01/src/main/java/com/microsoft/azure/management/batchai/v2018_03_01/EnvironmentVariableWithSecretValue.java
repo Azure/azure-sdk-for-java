@@ -78,7 +78,7 @@ public class EnvironmentVariableWithSecretValue {
     }
 
     /**
-     * Get the valueSecretReference value.
+     * Get specifies KeyVault Store and Secret which contains the value for the environment variable. One of value or valueSecretReference must be provided.
      *
      * @return the valueSecretReference value
      */
@@ -87,7 +87,7 @@ public class EnvironmentVariableWithSecretValue {
     }
 
     /**
-     * Set the valueSecretReference value.
+     * Set specifies KeyVault Store and Secret which contains the value for the environment variable. One of value or valueSecretReference must be provided.
      *
      * @param valueSecretReference the valueSecretReference value to set
      * @return the EnvironmentVariableWithSecretValue object itself.

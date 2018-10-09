@@ -17,7 +17,6 @@ import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.batchai.v2018_05_01.implementation.BatchAIManager;
-import java.util.Map;
 import org.joda.time.DateTime;
 
 /**
@@ -38,11 +37,6 @@ public interface FileServer extends HasInner<FileServerInner>, Indexable, Refres
      * @return the id value.
      */
     String id();
-
-    /**
-     * @return the location value.
-     */
-    String location();
 
     /**
      * @return the mountSettings value.
@@ -75,11 +69,6 @@ public interface FileServer extends HasInner<FileServerInner>, Indexable, Refres
     ResourceId subnet();
 
     /**
-     * @return the tags value.
-     */
-    Map<String, String> tags();
-
-    /**
      * @return the type value.
      */
     String type();
@@ -92,7 +81,7 @@ public interface FileServer extends HasInner<FileServerInner>, Indexable, Refres
     /**
      * The entirety of the FileServer definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithWorkspace, DefinitionStages.WithDataDisks, DefinitionStages.WithLocation, DefinitionStages.WithSshConfiguration, DefinitionStages.WithVmSize, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithWorkspace, DefinitionStages.WithDataDisks, DefinitionStages.WithSshConfiguration, DefinitionStages.WithVmSize, DefinitionStages.WithCreate {
     }
 
     /**
@@ -111,6 +100,9 @@ public interface FileServer extends HasInner<FileServerInner>, Indexable, Refres
         interface WithWorkspace {
            /**
             * Specifies resourceGroupName, workspaceName.
+            * @param resourceGroupName Name of the resource group to which the resource belongs
+            * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long
+            * @return the next definition stage
             */
             WithDataDisks withExistingWorkspace(String resourceGroupName, String workspaceName);
         }
@@ -121,18 +113,10 @@ public interface FileServer extends HasInner<FileServerInner>, Indexable, Refres
         interface WithDataDisks {
            /**
             * Specifies dataDisks.
+            * @param dataDisks Settings for the data disks which will be created for the File Server
+            * @return the next definition stage
             */
-            WithLocation withDataDisks(DataDisks dataDisks);
-        }
-
-        /**
-         * The stage of the fileserver definition allowing to specify Location.
-         */
-        interface WithLocation {
-           /**
-            * Specifies location.
-            */
-            WithSshConfiguration withLocation(String location);
+            WithSshConfiguration withDataDisks(DataDisks dataDisks);
         }
 
         /**
@@ -141,6 +125,8 @@ public interface FileServer extends HasInner<FileServerInner>, Indexable, Refres
         interface WithSshConfiguration {
            /**
             * Specifies sshConfiguration.
+            * @param sshConfiguration SSH configuration for the File Server node
+            * @return the next definition stage
             */
             WithVmSize withSshConfiguration(SshConfiguration sshConfiguration);
         }
@@ -151,6 +137,8 @@ public interface FileServer extends HasInner<FileServerInner>, Indexable, Refres
         interface WithVmSize {
            /**
             * Specifies vmSize.
+            * @param vmSize The size of the virtual machine for the File Server. For information about available VM sizes from the Virtual Machines Marketplace, see Sizes for Virtual Machines (Linux)
+            * @return the next definition stage
             */
             WithCreate withVmSize(String vmSize);
         }
@@ -161,18 +149,10 @@ public interface FileServer extends HasInner<FileServerInner>, Indexable, Refres
         interface WithSubnet {
             /**
              * Specifies subnet.
+             * @param subnet Identifier of an existing virtual network subnet to put the File Server in. If not provided, a new virtual network and subnet will be created
+             * @return the next definition stage
              */
             WithCreate withSubnet(ResourceId subnet);
-        }
-
-        /**
-         * The stage of the fileserver definition allowing to specify Tags.
-         */
-        interface WithTags {
-            /**
-             * Specifies tags.
-             */
-            WithCreate withTags(Map<String, String> tags);
         }
 
         /**
@@ -180,13 +160,13 @@ public interface FileServer extends HasInner<FileServerInner>, Indexable, Refres
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<FileServer>, DefinitionStages.WithSubnet, DefinitionStages.WithTags {
+        interface WithCreate extends Creatable<FileServer>, DefinitionStages.WithSubnet {
         }
     }
     /**
      * The template for a FileServer update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<FileServer>, UpdateStages.WithSubnet, UpdateStages.WithTags {
+    interface Update extends Appliable<FileServer>, UpdateStages.WithSubnet {
     }
 
     /**
@@ -199,18 +179,10 @@ public interface FileServer extends HasInner<FileServerInner>, Indexable, Refres
         interface WithSubnet {
             /**
              * Specifies subnet.
+             * @param subnet Identifier of an existing virtual network subnet to put the File Server in. If not provided, a new virtual network and subnet will be created
+             * @return the next update stage
              */
             Update withSubnet(ResourceId subnet);
-        }
-
-        /**
-         * The stage of the fileserver update allowing to specify Tags.
-         */
-        interface WithTags {
-            /**
-             * Specifies tags.
-             */
-            Update withTags(Map<String, String> tags);
         }
 
     }

@@ -17,7 +17,6 @@ import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.batchai.v2018_05_01.implementation.BatchAIManager;
-import java.util.Map;
 import org.joda.time.DateTime;
 import java.util.List;
 
@@ -56,11 +55,6 @@ public interface Cluster extends HasInner<ClusterInner>, Indexable, Refreshable<
     String id();
 
     /**
-     * @return the location value.
-     */
-    String location();
-
-    /**
      * @return the name value.
      */
     String name();
@@ -96,11 +90,6 @@ public interface Cluster extends HasInner<ClusterInner>, Indexable, Refreshable<
     ResourceId subnet();
 
     /**
-     * @return the tags value.
-     */
-    Map<String, String> tags();
-
-    /**
      * @return the type value.
      */
     String type();
@@ -128,7 +117,7 @@ public interface Cluster extends HasInner<ClusterInner>, Indexable, Refreshable<
     /**
      * The entirety of the Cluster definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithWorkspace, DefinitionStages.WithLocation, DefinitionStages.WithUserAccountSettings, DefinitionStages.WithVmSize, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithWorkspace, DefinitionStages.WithUserAccountSettings, DefinitionStages.WithVmSize, DefinitionStages.WithCreate {
     }
 
     /**
@@ -147,18 +136,11 @@ public interface Cluster extends HasInner<ClusterInner>, Indexable, Refreshable<
         interface WithWorkspace {
            /**
             * Specifies resourceGroupName, workspaceName.
+            * @param resourceGroupName Name of the resource group to which the resource belongs
+            * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long
+            * @return the next definition stage
             */
-            WithLocation withExistingWorkspace(String resourceGroupName, String workspaceName);
-        }
-
-        /**
-         * The stage of the cluster definition allowing to specify Location.
-         */
-        interface WithLocation {
-           /**
-            * Specifies location.
-            */
-            WithUserAccountSettings withLocation(String location);
+            WithUserAccountSettings withExistingWorkspace(String resourceGroupName, String workspaceName);
         }
 
         /**
@@ -167,6 +149,8 @@ public interface Cluster extends HasInner<ClusterInner>, Indexable, Refreshable<
         interface WithUserAccountSettings {
            /**
             * Specifies userAccountSettings.
+            * @param userAccountSettings Settings for an administrator user account that will be created on each compute node in the cluster
+            * @return the next definition stage
             */
             WithVmSize withUserAccountSettings(UserAccountSettings userAccountSettings);
         }
@@ -177,6 +161,8 @@ public interface Cluster extends HasInner<ClusterInner>, Indexable, Refreshable<
         interface WithVmSize {
            /**
             * Specifies vmSize.
+            * @param vmSize The size of the virtual machines in the cluster. All nodes in a cluster have the same VM size. For information about available VM sizes for clusters using images from the Virtual Machines Marketplace see Sizes for Virtual Machines (Linux). Batch AI service supports all Azure VM sizes except STANDARD_A0 and those with premium storage (STANDARD_GS, STANDARD_DS, and STANDARD_DSV2 series)
+            * @return the next definition stage
             */
             WithCreate withVmSize(String vmSize);
         }
@@ -187,6 +173,8 @@ public interface Cluster extends HasInner<ClusterInner>, Indexable, Refreshable<
         interface WithNodeSetup {
             /**
              * Specifies nodeSetup.
+             * @param nodeSetup Setup to be performed on each compute node in the cluster
+             * @return the next definition stage
              */
             WithCreate withNodeSetup(NodeSetup nodeSetup);
         }
@@ -197,6 +185,8 @@ public interface Cluster extends HasInner<ClusterInner>, Indexable, Refreshable<
         interface WithScaleSettings {
             /**
              * Specifies scaleSettings.
+             * @param scaleSettings Scale settings for the cluster. Batch AI service supports manual and auto scale clusters
+             * @return the next definition stage
              */
             WithCreate withScaleSettings(ScaleSettings scaleSettings);
         }
@@ -207,18 +197,10 @@ public interface Cluster extends HasInner<ClusterInner>, Indexable, Refreshable<
         interface WithSubnet {
             /**
              * Specifies subnet.
+             * @param subnet Existing virtual network subnet to put the cluster nodes in. Note, if a File Server mount configured in node setup, the File Server's subnet will be used automatically
+             * @return the next definition stage
              */
             WithCreate withSubnet(ResourceId subnet);
-        }
-
-        /**
-         * The stage of the cluster definition allowing to specify Tags.
-         */
-        interface WithTags {
-            /**
-             * Specifies tags.
-             */
-            WithCreate withTags(Map<String, String> tags);
         }
 
         /**
@@ -227,6 +209,8 @@ public interface Cluster extends HasInner<ClusterInner>, Indexable, Refreshable<
         interface WithVirtualMachineConfiguration {
             /**
              * Specifies virtualMachineConfiguration.
+             * @param virtualMachineConfiguration OS image configuration for cluster nodes. All nodes in a cluster have the same OS image
+             * @return the next definition stage
              */
             WithCreate withVirtualMachineConfiguration(VirtualMachineConfiguration virtualMachineConfiguration);
         }
@@ -237,6 +221,8 @@ public interface Cluster extends HasInner<ClusterInner>, Indexable, Refreshable<
         interface WithVmPriority {
             /**
              * Specifies vmPriority.
+             * @param vmPriority VM priority. Allowed values are: dedicated (default) and lowpriority. Possible values include: 'dedicated', 'lowpriority'
+             * @return the next definition stage
              */
             WithCreate withVmPriority(VmPriority vmPriority);
         }
@@ -246,13 +232,13 @@ public interface Cluster extends HasInner<ClusterInner>, Indexable, Refreshable<
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<Cluster>, DefinitionStages.WithNodeSetup, DefinitionStages.WithScaleSettings, DefinitionStages.WithSubnet, DefinitionStages.WithTags, DefinitionStages.WithVirtualMachineConfiguration, DefinitionStages.WithVmPriority {
+        interface WithCreate extends Creatable<Cluster>, DefinitionStages.WithNodeSetup, DefinitionStages.WithScaleSettings, DefinitionStages.WithSubnet, DefinitionStages.WithVirtualMachineConfiguration, DefinitionStages.WithVmPriority {
         }
     }
     /**
      * The template for a Cluster update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<Cluster>, UpdateStages.WithScaleSettings, UpdateStages.WithTags {
+    interface Update extends Appliable<Cluster>, UpdateStages.WithScaleSettings {
     }
 
     /**
@@ -265,18 +251,10 @@ public interface Cluster extends HasInner<ClusterInner>, Indexable, Refreshable<
         interface WithScaleSettings {
             /**
              * Specifies scaleSettings.
+             * @param scaleSettings Scale settings. Desired scale settings for the cluster. Batch AI service supports manual and auto scale clusters
+             * @return the next update stage
              */
             Update withScaleSettings(ScaleSettings scaleSettings);
-        }
-
-        /**
-         * The stage of the cluster update allowing to specify Tags.
-         */
-        interface WithTags {
-            /**
-             * Specifies tags.
-             */
-            Update withTags(Map<String, String> tags);
         }
 
     }

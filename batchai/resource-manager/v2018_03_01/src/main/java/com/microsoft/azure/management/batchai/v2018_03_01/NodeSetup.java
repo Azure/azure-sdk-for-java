@@ -62,7 +62,7 @@ public class NodeSetup {
     }
 
     /**
-     * Get the mountVolumes value.
+     * Get specified mount volumes will be available to all jobs executing on the cluster. The volumes will be mounted at location specified by $AZ_BATCHAI_MOUNT_ROOT environment variable.
      *
      * @return the mountVolumes value
      */
@@ -71,7 +71,7 @@ public class NodeSetup {
     }
 
     /**
-     * Set the mountVolumes value.
+     * Set specified mount volumes will be available to all jobs executing on the cluster. The volumes will be mounted at location specified by $AZ_BATCHAI_MOUNT_ROOT environment variable.
      *
      * @param mountVolumes the mountVolumes value to set
      * @return the NodeSetup object itself.
