@@ -57,6 +57,11 @@ public interface StorageAccount extends HasInner<StorageAccountInner>, Resource,
     Encryption encryption();
 
     /**
+     * @return the failoverInProgress value.
+     */
+    Boolean failoverInProgress();
+
+    /**
      * @return the identity value.
      */
     Identity identity();

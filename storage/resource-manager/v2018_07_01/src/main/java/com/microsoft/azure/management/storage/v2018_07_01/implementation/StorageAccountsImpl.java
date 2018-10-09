@@ -25,6 +25,7 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.management.storage.v2018_07_01.StorageAccountListKeysResult;
 import com.microsoft.azure.management.storage.v2018_07_01.ListAccountSasResponse;
 import com.microsoft.azure.management.storage.v2018_07_01.ListServiceSasResponse;
+import com.microsoft.azure.management.storage.v2018_07_01.GetLastSyncTimeResult;
 import com.microsoft.azure.management.storage.v2018_07_01.CheckNameAvailabilityResult;
 import com.microsoft.azure.management.storage.v2018_07_01.AccountSasParameters;
 import com.microsoft.azure.management.storage.v2018_07_01.ServiceSasParameters;
@@ -175,6 +176,24 @@ class StorageAccountsImpl extends GroupableResourcesCoreImpl<StorageAccount, Sto
             @Override
             public ListServiceSasResponse call(ListServiceSasResponseInner inner) {
                 return new ListServiceSasResponseImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Completable failoverAsync(String resourceGroupName, String accountName) {
+        StorageAccountsInner client = this.inner();
+        return client.failoverAsync(resourceGroupName, accountName).toCompletable();
+    }
+
+    @Override
+    public Observable<GetLastSyncTimeResult> getLastSyncTimeAsync(String resourceGroupName, String accountName) {
+        StorageAccountsInner client = this.inner();
+        return client.getLastSyncTimeAsync(resourceGroupName, accountName)
+        .map(new Func1<GetLastSyncTimeResultInner, GetLastSyncTimeResult>() {
+            @Override
+            public GetLastSyncTimeResult call(GetLastSyncTimeResultInner inner) {
+                return new GetLastSyncTimeResultImpl(inner, manager());
             }
         });
     }
