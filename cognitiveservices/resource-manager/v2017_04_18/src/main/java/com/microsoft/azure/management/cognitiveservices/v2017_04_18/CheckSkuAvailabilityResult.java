@@ -58,7 +58,7 @@ public class CheckSkuAvailabilityResult {
     private String message;
 
     /**
-     * Get the kind value.
+     * Get the Kind of the resource. Possible values include: 'Bing.Autosuggest.v7', 'Bing.CustomSearch', 'Bing.Search.v7', 'Bing.Speech', 'Bing.SpellCheck.v7', 'ComputerVision', 'ContentModerator', 'CustomSpeech', 'CustomVision.Prediction', 'CustomVision.Training', 'Emotion', 'Face', 'LUIS', 'QnAMaker', 'SpeakerRecognition', 'SpeechTranslation', 'TextAnalytics', 'TextTranslation', 'WebLM'.
      *
      * @return the kind value
      */
@@ -67,7 +67,7 @@ public class CheckSkuAvailabilityResult {
     }
 
     /**
-     * Set the kind value.
+     * Set the Kind of the resource. Possible values include: 'Bing.Autosuggest.v7', 'Bing.CustomSearch', 'Bing.Search.v7', 'Bing.Speech', 'Bing.SpellCheck.v7', 'ComputerVision', 'ContentModerator', 'CustomSpeech', 'CustomVision.Prediction', 'CustomVision.Training', 'Emotion', 'Face', 'LUIS', 'QnAMaker', 'SpeakerRecognition', 'SpeechTranslation', 'TextAnalytics', 'TextTranslation', 'WebLM'.
      *
      * @param kind the kind value to set
      * @return the CheckSkuAvailabilityResult object itself.
@@ -78,7 +78,7 @@ public class CheckSkuAvailabilityResult {
     }
 
     /**
-     * Get the type value.
+     * Get the Type of the resource.
      *
      * @return the type value
      */
@@ -87,7 +87,7 @@ public class CheckSkuAvailabilityResult {
     }
 
     /**
-     * Set the type value.
+     * Set the Type of the resource.
      *
      * @param type the type value to set
      * @return the CheckSkuAvailabilityResult object itself.
@@ -98,7 +98,7 @@ public class CheckSkuAvailabilityResult {
     }
 
     /**
-     * Get the skuName value.
+     * Get the SKU of Cognitive Services account. Possible values include: 'F0', 'P0', 'P1', 'P2', 'S0', 'S1', 'S2', 'S3', 'S4', 'S5', 'S6'.
      *
      * @return the skuName value
      */
@@ -107,7 +107,7 @@ public class CheckSkuAvailabilityResult {
     }
 
     /**
-     * Set the skuName value.
+     * Set the SKU of Cognitive Services account. Possible values include: 'F0', 'P0', 'P1', 'P2', 'S0', 'S1', 'S2', 'S3', 'S4', 'S5', 'S6'.
      *
      * @param skuName the skuName value to set
      * @return the CheckSkuAvailabilityResult object itself.
@@ -118,7 +118,7 @@ public class CheckSkuAvailabilityResult {
     }
 
     /**
-     * Get the skuAvailable value.
+     * Get indicates the given SKU is available or not.
      *
      * @return the skuAvailable value
      */
@@ -127,7 +127,7 @@ public class CheckSkuAvailabilityResult {
     }
 
     /**
-     * Set the skuAvailable value.
+     * Set indicates the given SKU is available or not.
      *
      * @param skuAvailable the skuAvailable value to set
      * @return the CheckSkuAvailabilityResult object itself.
@@ -138,7 +138,7 @@ public class CheckSkuAvailabilityResult {
     }
 
     /**
-     * Get the reason value.
+     * Get reason why the SKU is not available.
      *
      * @return the reason value
      */
@@ -147,7 +147,7 @@ public class CheckSkuAvailabilityResult {
     }
 
     /**
-     * Set the reason value.
+     * Set reason why the SKU is not available.
      *
      * @param reason the reason value to set
      * @return the CheckSkuAvailabilityResult object itself.
@@ -158,7 +158,7 @@ public class CheckSkuAvailabilityResult {
     }
 
     /**
-     * Get the message value.
+     * Get additional error message.
      *
      * @return the message value
      */
@@ -167,7 +167,7 @@ public class CheckSkuAvailabilityResult {
     }
 
     /**
-     * Set the message value.
+     * Set additional error message.
      *
      * @param message the message value to set
      * @return the CheckSkuAvailabilityResult object itself.
