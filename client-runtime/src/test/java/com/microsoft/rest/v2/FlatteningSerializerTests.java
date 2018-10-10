@@ -9,12 +9,12 @@ package com.microsoft.rest.v2;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.v2.serializer.JacksonAdapter;
 import com.microsoft.rest.v2.serializer.JsonFlatten;
+import com.microsoft.rest.v2.util.Foo;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class FlatteningSerializerTests {
@@ -28,20 +28,90 @@ public class FlatteningSerializerTests {
         foo.qux = new HashMap<>();
         foo.qux.put("hello", "world");
         foo.qux.put("a.b", "c.d");
+        foo.qux.put("bar.a", "ttyy");
+        foo.qux.put("bar.b", "uuzz");
 
-        String serialized = new JacksonAdapter().serialize(foo);
-        Assert.assertEquals("{\"properties\":{\"bar\":\"hello.world\",\"props\":{\"baz\":[\"hello\",\"hello.world\"],\"q\":{\"qux\":{\"a.b\":\"c.d\",\"hello\":\"world\"}}}}}", serialized);
+        JacksonAdapter adapter = new JacksonAdapter();
+
+        // serialization
+        String serialized = adapter.serialize(foo);
+        Assert.assertEquals("{\"$type\":\"foo\",\"properties\":{\"bar\":\"hello.world\",\"props\":{\"baz\":[\"hello\",\"hello.world\"],\"q\":{\"qux\":{\"hello\":\"world\",\"a.b\":\"c.d\",\"bar.b\":\"uuzz\",\"bar.a\":\"ttyy\"}}}}}", serialized);
+
+        // deserialization
+        Foo deserialized = adapter.deserialize(serialized, Foo.class);
+        Assert.assertEquals("hello.world", deserialized.bar);
+        Assert.assertArrayEquals(new String[]{"hello", "hello.world"}, deserialized.baz.toArray());
+        Assert.assertNotNull(deserialized.qux);
+        Assert.assertEquals("world", deserialized.qux.get("hello"));
+        Assert.assertEquals("c.d", deserialized.qux.get("a.b"));
+        Assert.assertEquals("ttyy", deserialized.qux.get("bar.a"));
+        Assert.assertEquals("uuzz", deserialized.qux.get("bar.b"));
+    }
+
+    @Test
+    public void canSerializeMapKeysWithDotAndSlash() throws Exception {
+        String serialized = new JacksonAdapter().serialize(prepareSchoolModel());
+        Assert.assertEquals("{\"teacher\":{\"students\":{\"af.B/D\":{},\"af.B/C\":{}}},\"tags\":{\"foo.aa\":\"bar\",\"x.y\":\"zz\"},\"properties\":{\"name\":\"school1\"}}", serialized);
     }
 
     @JsonFlatten
-    private class Foo {
-        @JsonProperty(value = "properties.bar")
-        private String bar;
-        @JsonProperty(value = "properties.props.baz")
-        private List<String> baz;
-        @JsonProperty(value = "properties.props.q.qux")
-        private Map<String, String> qux;
-        @JsonProperty(value = "props.empty")
-        private Integer empty;
+    private class School {
+        @JsonProperty(value = "teacher")
+        private Teacher teacher;
+
+        @JsonProperty(value = "properties.name")
+        private String name;
+
+        @JsonProperty(value = "tags")
+        private Map<String, String> tags;
+
+        public School withTeacher(Teacher teacher) {
+            this.teacher = teacher;
+            return this;
+        }
+
+        public School withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public School withTags(Map<String, String> tags) {
+            this.tags = tags;
+            return this;
+        }
+    }
+
+    private class Student {
+    }
+
+    private class Teacher {
+        @JsonProperty(value = "students")
+        private Map<String, Student> students;
+
+        public Teacher withStudents(Map<String, Student> students) {
+            this.students = students;
+            return this;
+        }
+    }
+
+    private School prepareSchoolModel() {
+        Teacher teacher = new Teacher();
+
+        Map<String, Student> students = new HashMap<String, Student>();
+        students.put("af.B/C", new Student());
+        students.put("af.B/D", new Student());
+
+        teacher.withStudents(students);
+
+        School school = new School().withName("school1");
+        school.withTeacher(teacher);
+
+        Map<String, String> schoolTags = new HashMap<String, String>();
+        schoolTags.put("foo.aa", "bar");
+        schoolTags.put("x.y", "zz");
+
+        school.withTags(schoolTags);
+
+        return school;
     }
 }
