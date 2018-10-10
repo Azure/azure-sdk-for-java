@@ -30,6 +30,12 @@ public class RegistryUpdateParameters {
     private Sku sku;
 
     /**
+     * The identity of the container registry.
+     */
+    @JsonProperty(value = "identity")
+    private RegistryIdentity identity;
+
+    /**
      * The value that indicates whether the admin user is enabled.
      */
     @JsonProperty(value = "properties.adminUserEnabled")
@@ -80,6 +86,26 @@ public class RegistryUpdateParameters {
      */
     public RegistryUpdateParameters withSku(Sku sku) {
         this.sku = sku;
+        return this;
+    }
+
+    /**
+     * Get the identity of the container registry.
+     *
+     * @return the identity value
+     */
+    public RegistryIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity of the container registry.
+     *
+     * @param identity the identity value to set
+     * @return the RegistryUpdateParameters object itself.
+     */
+    public RegistryUpdateParameters withIdentity(RegistryIdentity identity) {
+        this.identity = identity;
         return this;
     }
 
