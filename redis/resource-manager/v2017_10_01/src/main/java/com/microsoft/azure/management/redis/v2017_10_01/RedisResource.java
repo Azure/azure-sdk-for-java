@@ -10,14 +10,14 @@ package com.microsoft.azure.management.redis.v2017_10_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.Resource;
+import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
 import com.microsoft.azure.arm.resources.models.HasResourceGroup;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
-import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.redis.v2017_10_01.implementation.RedisManager;
+import com.microsoft.azure.management.redis.v2017_10_01.implementation.CacheManager;
 import java.util.Map;
 import java.util.List;
 import com.microsoft.azure.management.redis.v2017_10_01.implementation.RedisResourceInner;
@@ -25,7 +25,7 @@ import com.microsoft.azure.management.redis.v2017_10_01.implementation.RedisReso
 /**
  * Type representing RedisResource.
  */
-public interface RedisResource extends HasInner<RedisResourceInner>, Resource, GroupableResourceCore<RedisManager, RedisResourceInner>, HasResourceGroup, Refreshable<RedisResource>, Updatable<RedisResource.Update>, HasManager<RedisManager> {
+public interface RedisResource extends HasInner<RedisResourceInner>, Resource, GroupableResourceCore<CacheManager, RedisResourceInner>, HasResourceGroup, Refreshable<RedisResource>, Updatable<RedisResource.Update>, HasManager<CacheManager> {
     /**
      * @return the accessKeys value.
      */
@@ -129,76 +129,92 @@ public interface RedisResource extends HasInner<RedisResourceInner>, Resource, G
         interface WithSku {
            /**
             * Specifies sku.
-            */
+            * @param sku The SKU of the Redis cache to deploy
+            * @return the next definition stage
+*/
             WithCreate withSku(Sku sku);
         }
 
         /**
-         * The stage of the redisresource update allowing to specify EnableNonSslPort.
+         * The stage of the redisresource definition allowing to specify EnableNonSslPort.
          */
         interface WithEnableNonSslPort {
             /**
              * Specifies enableNonSslPort.
+             * @param enableNonSslPort Specifies whether the non-ssl Redis server port (6379) is enabled
+             * @return the next definition stage
              */
             WithCreate withEnableNonSslPort(Boolean enableNonSslPort);
         }
 
         /**
-         * The stage of the redisresource update allowing to specify RedisConfiguration.
+         * The stage of the redisresource definition allowing to specify RedisConfiguration.
          */
         interface WithRedisConfiguration {
             /**
              * Specifies redisConfiguration.
+             * @param redisConfiguration All Redis Settings. Few possible keys: rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value etc
+             * @return the next definition stage
              */
             WithCreate withRedisConfiguration(Map<String, String> redisConfiguration);
         }
 
         /**
-         * The stage of the redisresource update allowing to specify ShardCount.
+         * The stage of the redisresource definition allowing to specify ShardCount.
          */
         interface WithShardCount {
             /**
              * Specifies shardCount.
+             * @param shardCount The number of shards to be created on a Premium Cluster Cache
+             * @return the next definition stage
              */
             WithCreate withShardCount(Integer shardCount);
         }
 
         /**
-         * The stage of the redisresource update allowing to specify StaticIP.
+         * The stage of the redisresource definition allowing to specify StaticIP.
          */
         interface WithStaticIP {
             /**
              * Specifies staticIP.
+             * @param staticIP Static IP address. Required when deploying a Redis cache inside an existing Azure Virtual Network
+             * @return the next definition stage
              */
             WithCreate withStaticIP(String staticIP);
         }
 
         /**
-         * The stage of the redisresource update allowing to specify SubnetId.
+         * The stage of the redisresource definition allowing to specify SubnetId.
          */
         interface WithSubnetId {
             /**
              * Specifies subnetId.
+             * @param subnetId The full resource ID of a subnet in a virtual network to deploy the Redis cache in. Example format: /subscriptions/{subid}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1
+             * @return the next definition stage
              */
             WithCreate withSubnetId(String subnetId);
         }
 
         /**
-         * The stage of the redisresource update allowing to specify TenantSettings.
+         * The stage of the redisresource definition allowing to specify TenantSettings.
          */
         interface WithTenantSettings {
             /**
              * Specifies tenantSettings.
+             * @param tenantSettings A dictionary of tenant settings
+             * @return the next definition stage
              */
             WithCreate withTenantSettings(Map<String, String> tenantSettings);
         }
 
         /**
-         * The stage of the redisresource update allowing to specify Zones.
+         * The stage of the redisresource definition allowing to specify Zones.
          */
         interface WithZones {
             /**
              * Specifies zones.
+             * @param zones A list of availability zones denoting where the resource needs to come from
+             * @return the next definition stage
              */
             WithCreate withZones(List<String> zones);
         }
@@ -222,51 +238,61 @@ public interface RedisResource extends HasInner<RedisResourceInner>, Resource, G
      */
     interface UpdateStages {
         /**
-         * The stage of the redisresource {0} allowing to specify EnableNonSslPort.
+         * The stage of the redisresource update allowing to specify EnableNonSslPort.
          */
         interface WithEnableNonSslPort {
             /**
              * Specifies enableNonSslPort.
+             * @param enableNonSslPort Specifies whether the non-ssl Redis server port (6379) is enabled
+             * @return the next update stage
              */
             Update withEnableNonSslPort(Boolean enableNonSslPort);
         }
 
         /**
-         * The stage of the redisresource {0} allowing to specify RedisConfiguration.
+         * The stage of the redisresource update allowing to specify RedisConfiguration.
          */
         interface WithRedisConfiguration {
             /**
              * Specifies redisConfiguration.
+             * @param redisConfiguration All Redis Settings. Few possible keys: rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value etc
+             * @return the next update stage
              */
             Update withRedisConfiguration(Map<String, String> redisConfiguration);
         }
 
         /**
-         * The stage of the redisresource {0} allowing to specify ShardCount.
+         * The stage of the redisresource update allowing to specify ShardCount.
          */
         interface WithShardCount {
             /**
              * Specifies shardCount.
+             * @param shardCount The number of shards to be created on a Premium Cluster Cache
+             * @return the next update stage
              */
             Update withShardCount(Integer shardCount);
         }
 
         /**
-         * The stage of the redisresource {0} allowing to specify Sku.
+         * The stage of the redisresource update allowing to specify Sku.
          */
         interface WithSku {
             /**
              * Specifies sku.
+             * @param sku The SKU of the Redis cache to deploy
+             * @return the next update stage
              */
             Update withSku(Sku sku);
         }
 
         /**
-         * The stage of the redisresource {0} allowing to specify TenantSettings.
+         * The stage of the redisresource update allowing to specify TenantSettings.
          */
         interface WithTenantSettings {
             /**
              * Specifies tenantSettings.
+             * @param tenantSettings A dictionary of tenant settings
+             * @return the next update stage
              */
             Update withTenantSettings(Map<String, String> tenantSettings);
         }

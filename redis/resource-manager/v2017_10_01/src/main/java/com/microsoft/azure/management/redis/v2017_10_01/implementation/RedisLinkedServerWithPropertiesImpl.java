@@ -16,13 +16,13 @@ import com.microsoft.azure.management.redis.v2017_10_01.ReplicationRole;
 import rx.functions.Func1;
 
 class RedisLinkedServerWithPropertiesImpl extends CreatableUpdatableImpl<RedisLinkedServerWithProperties, RedisLinkedServerWithPropertiesInner, RedisLinkedServerWithPropertiesImpl> implements RedisLinkedServerWithProperties, RedisLinkedServerWithProperties.Definition, RedisLinkedServerWithProperties.Update {
-    private final RedisManager manager;
+    private final CacheManager manager;
     private String resourceGroupName;
     private String name;
     private String linkedServerName;
     private RedisLinkedServerCreateParameters createOrUpdateParameter;
 
-    RedisLinkedServerWithPropertiesImpl(String name, RedisManager manager) {
+    RedisLinkedServerWithPropertiesImpl(String name, CacheManager manager) {
         super(name, new RedisLinkedServerWithPropertiesInner());
         this.manager = manager;
         // Set resource name
@@ -31,12 +31,12 @@ class RedisLinkedServerWithPropertiesImpl extends CreatableUpdatableImpl<RedisLi
         this.createOrUpdateParameter = new RedisLinkedServerCreateParameters();
     }
 
-    RedisLinkedServerWithPropertiesImpl(RedisLinkedServerWithPropertiesInner inner, RedisManager manager) {
+    RedisLinkedServerWithPropertiesImpl(RedisLinkedServerWithPropertiesInner inner, CacheManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
         this.linkedServerName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.name = IdParsingUtils.getValueFromIdByName(inner.id(), "Redis");
         this.linkedServerName = IdParsingUtils.getValueFromIdByName(inner.id(), "linkedServers");
@@ -45,7 +45,7 @@ class RedisLinkedServerWithPropertiesImpl extends CreatableUpdatableImpl<RedisLi
     }
 
     @Override
-    public RedisManager manager() {
+    public CacheManager manager() {
         return this.manager;
     }
 
@@ -128,7 +128,7 @@ class RedisLinkedServerWithPropertiesImpl extends CreatableUpdatableImpl<RedisLi
     }
 
     @Override
-    public RedisLinkedServerWithPropertiesImpl withExistingRedis(String resourceGroupName, String name) {
+    public RedisLinkedServerWithPropertiesImpl withExistingRedi(String resourceGroupName, String name) {
         this.resourceGroupName = resourceGroupName;
         this.name = name;
         return this;
