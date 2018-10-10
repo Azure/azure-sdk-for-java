@@ -27,7 +27,7 @@ public class ContainerServiceWindowsProfile {
     private String adminPassword;
 
     /**
-     * Get the adminUsername value.
+     * Get the administrator username to use for Windows VMs.
      *
      * @return the adminUsername value
      */
@@ -36,7 +36,7 @@ public class ContainerServiceWindowsProfile {
     }
 
     /**
-     * Set the adminUsername value.
+     * Set the administrator username to use for Windows VMs.
      *
      * @param adminUsername the adminUsername value to set
      * @return the ContainerServiceWindowsProfile object itself.
@@ -47,7 +47,7 @@ public class ContainerServiceWindowsProfile {
     }
 
     /**
-     * Get the adminPassword value.
+     * Get the administrator password to use for Windows VMs.
      *
      * @return the adminPassword value
      */
@@ -56,7 +56,7 @@ public class ContainerServiceWindowsProfile {
     }
 
     /**
-     * Set the adminPassword value.
+     * Set the administrator password to use for Windows VMs.
      *
      * @param adminPassword the adminPassword value to set
      * @return the ContainerServiceWindowsProfile object itself.
