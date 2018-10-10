@@ -15,13 +15,13 @@ import java.util.List;
 import com.microsoft.azure.management.redis.v2017_10_01.ScheduleEntry;
 
 class RedisPatchScheduleImpl extends CreatableUpdatableImpl<RedisPatchSchedule, RedisPatchScheduleInner, RedisPatchScheduleImpl> implements RedisPatchSchedule, RedisPatchSchedule.Definition, RedisPatchSchedule.Update {
-    private final RedisManager manager;
+    private final CacheManager manager;
     private String resourceGroupName;
     private String name;
     private List<ScheduleEntry> cscheduleEntries;
     private List<ScheduleEntry> uscheduleEntries;
 
-    RedisPatchScheduleImpl(String name, RedisManager manager) {
+    RedisPatchScheduleImpl(String name, CacheManager manager) {
         super(name, new RedisPatchScheduleInner());
         this.manager = manager;
         // Set resource name
@@ -29,19 +29,19 @@ class RedisPatchScheduleImpl extends CreatableUpdatableImpl<RedisPatchSchedule, 
         //
     }
 
-    RedisPatchScheduleImpl(RedisPatchScheduleInner inner, RedisManager manager) {
+    RedisPatchScheduleImpl(RedisPatchScheduleInner inner, CacheManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
         this.name = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.name = IdParsingUtils.getValueFromIdByName(inner.id(), "Redis");
         //
     }
 
     @Override
-    public RedisManager manager() {
+    public CacheManager manager() {
         return this.manager;
     }
 
@@ -92,7 +92,7 @@ class RedisPatchScheduleImpl extends CreatableUpdatableImpl<RedisPatchSchedule, 
     }
 
     @Override
-    public RedisPatchScheduleImpl withExistingRedis(String resourceGroupName, String name) {
+    public RedisPatchScheduleImpl withExistingRedi(String resourceGroupName, String name) {
         this.resourceGroupName = resourceGroupName;
         this.name = name;
         return this;
