@@ -22,7 +22,7 @@ public class RedisRegenerateKeyParameters {
     private RedisKeyType keyType;
 
     /**
-     * Get the keyType value.
+     * Get the Redis access key to regenerate. Possible values include: 'Primary', 'Secondary'.
      *
      * @return the keyType value
      */
@@ -31,7 +31,7 @@ public class RedisRegenerateKeyParameters {
     }
 
     /**
-     * Set the keyType value.
+     * Set the Redis access key to regenerate. Possible values include: 'Primary', 'Secondary'.
      *
      * @param keyType the keyType value to set
      * @return the RedisRegenerateKeyParameters object itself.
