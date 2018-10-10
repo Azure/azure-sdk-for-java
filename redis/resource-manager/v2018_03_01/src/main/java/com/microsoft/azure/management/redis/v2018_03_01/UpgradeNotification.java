@@ -35,7 +35,7 @@ public class UpgradeNotification {
     private Map<String, String> upsellNotification;
 
     /**
-     * Get the name value.
+     * Get name of upgrade notification.
      *
      * @return the name value
      */
@@ -44,7 +44,7 @@ public class UpgradeNotification {
     }
 
     /**
-     * Get the timestamp value.
+     * Get timestamp when upgrade notification occured.
      *
      * @return the timestamp value
      */
@@ -53,7 +53,7 @@ public class UpgradeNotification {
     }
 
     /**
-     * Get the upsellNotification value.
+     * Get details about this upgrade notification.
      *
      * @return the upsellNotification value
      */

@@ -119,7 +119,7 @@ public class RedisResourceInner extends Resource {
     private List<String> zones;
 
     /**
-     * Get the redisConfiguration value.
+     * Get all Redis Settings. Few possible keys: rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value etc.
      *
      * @return the redisConfiguration value
      */
@@ -128,7 +128,7 @@ public class RedisResourceInner extends Resource {
     }
 
     /**
-     * Set the redisConfiguration value.
+     * Set all Redis Settings. Few possible keys: rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value etc.
      *
      * @param redisConfiguration the redisConfiguration value to set
      * @return the RedisResourceInner object itself.
@@ -139,7 +139,7 @@ public class RedisResourceInner extends Resource {
     }
 
     /**
-     * Get the enableNonSslPort value.
+     * Get specifies whether the non-ssl Redis server port (6379) is enabled.
      *
      * @return the enableNonSslPort value
      */
@@ -148,7 +148,7 @@ public class RedisResourceInner extends Resource {
     }
 
     /**
-     * Set the enableNonSslPort value.
+     * Set specifies whether the non-ssl Redis server port (6379) is enabled.
      *
      * @param enableNonSslPort the enableNonSslPort value to set
      * @return the RedisResourceInner object itself.
@@ -159,7 +159,7 @@ public class RedisResourceInner extends Resource {
     }
 
     /**
-     * Get the tenantSettings value.
+     * Get a dictionary of tenant settings.
      *
      * @return the tenantSettings value
      */
@@ -168,7 +168,7 @@ public class RedisResourceInner extends Resource {
     }
 
     /**
-     * Set the tenantSettings value.
+     * Set a dictionary of tenant settings.
      *
      * @param tenantSettings the tenantSettings value to set
      * @return the RedisResourceInner object itself.
@@ -179,7 +179,7 @@ public class RedisResourceInner extends Resource {
     }
 
     /**
-     * Get the shardCount value.
+     * Get the number of shards to be created on a Premium Cluster Cache.
      *
      * @return the shardCount value
      */
@@ -188,7 +188,7 @@ public class RedisResourceInner extends Resource {
     }
 
     /**
-     * Set the shardCount value.
+     * Set the number of shards to be created on a Premium Cluster Cache.
      *
      * @param shardCount the shardCount value to set
      * @return the RedisResourceInner object itself.
@@ -199,7 +199,7 @@ public class RedisResourceInner extends Resource {
     }
 
     /**
-     * Get the sku value.
+     * Get the SKU of the Redis cache to deploy.
      *
      * @return the sku value
      */
@@ -208,7 +208,7 @@ public class RedisResourceInner extends Resource {
     }
 
     /**
-     * Set the sku value.
+     * Set the SKU of the Redis cache to deploy.
      *
      * @param sku the sku value to set
      * @return the RedisResourceInner object itself.
@@ -219,7 +219,7 @@ public class RedisResourceInner extends Resource {
     }
 
     /**
-     * Get the subnetId value.
+     * Get the full resource ID of a subnet in a virtual network to deploy the Redis cache in. Example format: /subscriptions/{subid}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1.
      *
      * @return the subnetId value
      */
@@ -228,7 +228,7 @@ public class RedisResourceInner extends Resource {
     }
 
     /**
-     * Set the subnetId value.
+     * Set the full resource ID of a subnet in a virtual network to deploy the Redis cache in. Example format: /subscriptions/{subid}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1.
      *
      * @param subnetId the subnetId value to set
      * @return the RedisResourceInner object itself.
@@ -239,7 +239,7 @@ public class RedisResourceInner extends Resource {
     }
 
     /**
-     * Get the staticIP value.
+     * Get static IP address. Required when deploying a Redis cache inside an existing Azure Virtual Network.
      *
      * @return the staticIP value
      */
@@ -248,7 +248,7 @@ public class RedisResourceInner extends Resource {
     }
 
     /**
-     * Set the staticIP value.
+     * Set static IP address. Required when deploying a Redis cache inside an existing Azure Virtual Network.
      *
      * @param staticIP the staticIP value to set
      * @return the RedisResourceInner object itself.
@@ -259,7 +259,7 @@ public class RedisResourceInner extends Resource {
     }
 
     /**
-     * Get the redisVersion value.
+     * Get redis version.
      *
      * @return the redisVersion value
      */
@@ -268,7 +268,7 @@ public class RedisResourceInner extends Resource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get redis instance provisioning status.
      *
      * @return the provisioningState value
      */
@@ -277,7 +277,7 @@ public class RedisResourceInner extends Resource {
     }
 
     /**
-     * Get the hostName value.
+     * Get redis host name.
      *
      * @return the hostName value
      */
@@ -286,7 +286,7 @@ public class RedisResourceInner extends Resource {
     }
 
     /**
-     * Get the port value.
+     * Get redis non-SSL port.
      *
      * @return the port value
      */
@@ -295,7 +295,7 @@ public class RedisResourceInner extends Resource {
     }
 
     /**
-     * Get the sslPort value.
+     * Get redis SSL port.
      *
      * @return the sslPort value
      */
@@ -304,7 +304,7 @@ public class RedisResourceInner extends Resource {
     }
 
     /**
-     * Get the accessKeys value.
+     * Get the keys of the Redis cache - not set if this object is not the response to Create or Update redis cache.
      *
      * @return the accessKeys value
      */
@@ -313,7 +313,7 @@ public class RedisResourceInner extends Resource {
     }
 
     /**
-     * Get the linkedServers value.
+     * Get list of the linked servers associated with the cache.
      *
      * @return the linkedServers value
      */
@@ -322,7 +322,7 @@ public class RedisResourceInner extends Resource {
     }
 
     /**
-     * Get the zones value.
+     * Get a list of availability zones denoting where the resource needs to come from.
      *
      * @return the zones value
      */
@@ -331,7 +331,7 @@ public class RedisResourceInner extends Resource {
     }
 
     /**
-     * Set the zones value.
+     * Set a list of availability zones denoting where the resource needs to come from.
      *
      * @param zones the zones value to set
      * @return the RedisResourceInner object itself.
