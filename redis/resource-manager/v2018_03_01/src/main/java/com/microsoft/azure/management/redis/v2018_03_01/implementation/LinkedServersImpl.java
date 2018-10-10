@@ -18,14 +18,14 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.management.redis.v2018_03_01.RedisLinkedServerWithProperties;
 
 class LinkedServersImpl extends WrapperImpl<LinkedServersInner> implements LinkedServers {
-    private final RedisManager manager;
+    private final CacheManager manager;
 
-    LinkedServersImpl(RedisManager manager) {
+    LinkedServersImpl(CacheManager manager) {
         super(manager.inner().linkedServers());
         this.manager = manager;
     }
 
-    public RedisManager manager() {
+    public CacheManager manager() {
         return this.manager;
     }
 
@@ -42,41 +42,22 @@ class LinkedServersImpl extends WrapperImpl<LinkedServersInner> implements Linke
         return new RedisLinkedServerWithPropertiesImpl(name, this.manager());
     }
 
-    private Observable<Page<RedisLinkedServerWithPropertiesInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        LinkedServersInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<RedisLinkedServerWithPropertiesInner>, Observable<Page<RedisLinkedServerWithPropertiesInner>>>() {
-            @Override
-            public Observable<Page<RedisLinkedServerWithPropertiesInner>> call(Page<RedisLinkedServerWithPropertiesInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<RedisLinkedServerWithProperties> listAsync(final String resourceGroupName, final String name) {
         LinkedServersInner client = this.inner();
         return client.listAsync(resourceGroupName, name)
-        .flatMap(new Func1<Page<RedisLinkedServerWithPropertiesInner>, Observable<Page<RedisLinkedServerWithPropertiesInner>>>() {
-            @Override
-            public Observable<Page<RedisLinkedServerWithPropertiesInner>> call(Page<RedisLinkedServerWithPropertiesInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<RedisLinkedServerWithPropertiesInner>, Iterable<RedisLinkedServerWithPropertiesInner>>() {
             @Override
             public Iterable<RedisLinkedServerWithPropertiesInner> call(Page<RedisLinkedServerWithPropertiesInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<RedisLinkedServerWithPropertiesInner, RedisLinkedServerWithProperties>() {
             @Override
             public RedisLinkedServerWithProperties call(RedisLinkedServerWithPropertiesInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override

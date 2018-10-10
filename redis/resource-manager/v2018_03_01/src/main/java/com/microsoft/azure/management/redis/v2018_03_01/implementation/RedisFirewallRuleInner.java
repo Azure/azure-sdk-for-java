@@ -31,7 +31,7 @@ public class RedisFirewallRuleInner extends ProxyResource {
     private String endIP;
 
     /**
-     * Get the startIP value.
+     * Get lowest IP address included in the range.
      *
      * @return the startIP value
      */
@@ -40,7 +40,7 @@ public class RedisFirewallRuleInner extends ProxyResource {
     }
 
     /**
-     * Set the startIP value.
+     * Set lowest IP address included in the range.
      *
      * @param startIP the startIP value to set
      * @return the RedisFirewallRuleInner object itself.
@@ -51,7 +51,7 @@ public class RedisFirewallRuleInner extends ProxyResource {
     }
 
     /**
-     * Get the endIP value.
+     * Get highest IP address included in the range.
      *
      * @return the endIP value
      */
@@ -60,7 +60,7 @@ public class RedisFirewallRuleInner extends ProxyResource {
     }
 
     /**
-     * Set the endIP value.
+     * Set highest IP address included in the range.
      *
      * @param endIP the endIP value to set
      * @return the RedisFirewallRuleInner object itself.

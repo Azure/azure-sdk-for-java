@@ -85,7 +85,7 @@ public class RedisCreateParameters {
     private Map<String, String> tags;
 
     /**
-     * Get the redisConfiguration value.
+     * Get all Redis Settings. Few possible keys: rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value etc.
      *
      * @return the redisConfiguration value
      */
@@ -94,7 +94,7 @@ public class RedisCreateParameters {
     }
 
     /**
-     * Set the redisConfiguration value.
+     * Set all Redis Settings. Few possible keys: rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value etc.
      *
      * @param redisConfiguration the redisConfiguration value to set
      * @return the RedisCreateParameters object itself.
@@ -105,7 +105,7 @@ public class RedisCreateParameters {
     }
 
     /**
-     * Get the enableNonSslPort value.
+     * Get specifies whether the non-ssl Redis server port (6379) is enabled.
      *
      * @return the enableNonSslPort value
      */
@@ -114,7 +114,7 @@ public class RedisCreateParameters {
     }
 
     /**
-     * Set the enableNonSslPort value.
+     * Set specifies whether the non-ssl Redis server port (6379) is enabled.
      *
      * @param enableNonSslPort the enableNonSslPort value to set
      * @return the RedisCreateParameters object itself.
@@ -125,7 +125,7 @@ public class RedisCreateParameters {
     }
 
     /**
-     * Get the tenantSettings value.
+     * Get a dictionary of tenant settings.
      *
      * @return the tenantSettings value
      */
@@ -134,7 +134,7 @@ public class RedisCreateParameters {
     }
 
     /**
-     * Set the tenantSettings value.
+     * Set a dictionary of tenant settings.
      *
      * @param tenantSettings the tenantSettings value to set
      * @return the RedisCreateParameters object itself.
@@ -145,7 +145,7 @@ public class RedisCreateParameters {
     }
 
     /**
-     * Get the shardCount value.
+     * Get the number of shards to be created on a Premium Cluster Cache.
      *
      * @return the shardCount value
      */
@@ -154,7 +154,7 @@ public class RedisCreateParameters {
     }
 
     /**
-     * Set the shardCount value.
+     * Set the number of shards to be created on a Premium Cluster Cache.
      *
      * @param shardCount the shardCount value to set
      * @return the RedisCreateParameters object itself.
@@ -165,7 +165,7 @@ public class RedisCreateParameters {
     }
 
     /**
-     * Get the sku value.
+     * Get the SKU of the Redis cache to deploy.
      *
      * @return the sku value
      */
@@ -174,7 +174,7 @@ public class RedisCreateParameters {
     }
 
     /**
-     * Set the sku value.
+     * Set the SKU of the Redis cache to deploy.
      *
      * @param sku the sku value to set
      * @return the RedisCreateParameters object itself.
@@ -185,7 +185,7 @@ public class RedisCreateParameters {
     }
 
     /**
-     * Get the subnetId value.
+     * Get the full resource ID of a subnet in a virtual network to deploy the Redis cache in. Example format: /subscriptions/{subid}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1.
      *
      * @return the subnetId value
      */
@@ -194,7 +194,7 @@ public class RedisCreateParameters {
     }
 
     /**
-     * Set the subnetId value.
+     * Set the full resource ID of a subnet in a virtual network to deploy the Redis cache in. Example format: /subscriptions/{subid}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1.
      *
      * @param subnetId the subnetId value to set
      * @return the RedisCreateParameters object itself.
@@ -205,7 +205,7 @@ public class RedisCreateParameters {
     }
 
     /**
-     * Get the staticIP value.
+     * Get static IP address. Required when deploying a Redis cache inside an existing Azure Virtual Network.
      *
      * @return the staticIP value
      */
@@ -214,7 +214,7 @@ public class RedisCreateParameters {
     }
 
     /**
-     * Set the staticIP value.
+     * Set static IP address. Required when deploying a Redis cache inside an existing Azure Virtual Network.
      *
      * @param staticIP the staticIP value to set
      * @return the RedisCreateParameters object itself.
@@ -225,7 +225,7 @@ public class RedisCreateParameters {
     }
 
     /**
-     * Get the zones value.
+     * Get a list of availability zones denoting where the resource needs to come from.
      *
      * @return the zones value
      */
@@ -234,7 +234,7 @@ public class RedisCreateParameters {
     }
 
     /**
-     * Set the zones value.
+     * Set a list of availability zones denoting where the resource needs to come from.
      *
      * @param zones the zones value to set
      * @return the RedisCreateParameters object itself.
@@ -245,7 +245,7 @@ public class RedisCreateParameters {
     }
 
     /**
-     * Get the location value.
+     * Get the geo-location where the resource lives.
      *
      * @return the location value
      */
@@ -254,7 +254,7 @@ public class RedisCreateParameters {
     }
 
     /**
-     * Set the location value.
+     * Set the geo-location where the resource lives.
      *
      * @param location the location value to set
      * @return the RedisCreateParameters object itself.
@@ -265,7 +265,7 @@ public class RedisCreateParameters {
     }
 
     /**
-     * Get the tags value.
+     * Get resource tags.
      *
      * @return the tags value
      */
@@ -274,7 +274,7 @@ public class RedisCreateParameters {
     }
 
     /**
-     * Set the tags value.
+     * Set resource tags.
      *
      * @param tags the tags value to set
      * @return the RedisCreateParameters object itself.

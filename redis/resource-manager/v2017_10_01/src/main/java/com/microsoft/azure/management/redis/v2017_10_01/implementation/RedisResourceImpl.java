@@ -20,10 +20,10 @@ import com.microsoft.azure.management.redis.v2017_10_01.RedisLinkedServer;
 import com.microsoft.azure.management.redis.v2017_10_01.Sku;
 import rx.functions.Func1;
 
-class RedisResourceImpl extends GroupableResourceCoreImpl<RedisResource, RedisResourceInner, RedisResourceImpl, RedisManager> implements RedisResource, RedisResource.Definition, RedisResource.Update {
+class RedisResourceImpl extends GroupableResourceCoreImpl<RedisResource, RedisResourceInner, RedisResourceImpl, CacheManager> implements RedisResource, RedisResource.Definition, RedisResource.Update {
     private RedisCreateParameters createParameter;
     private RedisUpdateParameters updateParameter;
-    RedisResourceImpl(String name, RedisResourceInner inner, RedisManager manager) {
+    RedisResourceImpl(String name, RedisResourceInner inner, CacheManager manager) {
         super(name, inner, manager);
         this.createParameter = new RedisCreateParameters();
         this.updateParameter = new RedisUpdateParameters();
