@@ -27,7 +27,7 @@ public class OrchestratorProfile {
     private String orchestratorVersion;
 
     /**
-     * Get the orchestratorType value.
+     * Get orchestrator type.
      *
      * @return the orchestratorType value
      */
@@ -36,7 +36,7 @@ public class OrchestratorProfile {
     }
 
     /**
-     * Set the orchestratorType value.
+     * Set orchestrator type.
      *
      * @param orchestratorType the orchestratorType value to set
      * @return the OrchestratorProfile object itself.
@@ -47,7 +47,7 @@ public class OrchestratorProfile {
     }
 
     /**
-     * Get the orchestratorVersion value.
+     * Get orchestrator version (major, minor, patch).
      *
      * @return the orchestratorVersion value
      */
@@ -56,7 +56,7 @@ public class OrchestratorProfile {
     }
 
     /**
-     * Set the orchestratorVersion value.
+     * Set orchestrator version (major, minor, patch).
      *
      * @param orchestratorVersion the orchestratorVersion value to set
      * @return the OrchestratorProfile object itself.
