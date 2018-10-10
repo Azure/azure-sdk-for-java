@@ -84,7 +84,7 @@ public class ContainerServiceInner extends Resource {
     private ContainerServiceDiagnosticsProfile diagnosticsProfile;
 
     /**
-     * Get the provisioningState value.
+     * Get the current deployment or provisioning state, which only appears in the response.
      *
      * @return the provisioningState value
      */
@@ -93,7 +93,7 @@ public class ContainerServiceInner extends Resource {
     }
 
     /**
-     * Get the orchestratorProfile value.
+     * Get profile for the container service orchestrator.
      *
      * @return the orchestratorProfile value
      */
@@ -102,7 +102,7 @@ public class ContainerServiceInner extends Resource {
     }
 
     /**
-     * Set the orchestratorProfile value.
+     * Set profile for the container service orchestrator.
      *
      * @param orchestratorProfile the orchestratorProfile value to set
      * @return the ContainerServiceInner object itself.
@@ -113,7 +113,7 @@ public class ContainerServiceInner extends Resource {
     }
 
     /**
-     * Get the customProfile value.
+     * Get properties to configure a custom container service cluster.
      *
      * @return the customProfile value
      */
@@ -122,7 +122,7 @@ public class ContainerServiceInner extends Resource {
     }
 
     /**
-     * Set the customProfile value.
+     * Set properties to configure a custom container service cluster.
      *
      * @param customProfile the customProfile value to set
      * @return the ContainerServiceInner object itself.
@@ -133,7 +133,7 @@ public class ContainerServiceInner extends Resource {
     }
 
     /**
-     * Get the servicePrincipalProfile value.
+     * Get information about a service principal identity for the cluster to use for manipulating Azure APIs. Exact one of secret or keyVaultSecretRef need to be specified.
      *
      * @return the servicePrincipalProfile value
      */
@@ -142,7 +142,7 @@ public class ContainerServiceInner extends Resource {
     }
 
     /**
-     * Set the servicePrincipalProfile value.
+     * Set information about a service principal identity for the cluster to use for manipulating Azure APIs. Exact one of secret or keyVaultSecretRef need to be specified.
      *
      * @param servicePrincipalProfile the servicePrincipalProfile value to set
      * @return the ContainerServiceInner object itself.
@@ -153,7 +153,7 @@ public class ContainerServiceInner extends Resource {
     }
 
     /**
-     * Get the masterProfile value.
+     * Get profile for the container service master.
      *
      * @return the masterProfile value
      */
@@ -162,7 +162,7 @@ public class ContainerServiceInner extends Resource {
     }
 
     /**
-     * Set the masterProfile value.
+     * Set profile for the container service master.
      *
      * @param masterProfile the masterProfile value to set
      * @return the ContainerServiceInner object itself.
@@ -173,7 +173,7 @@ public class ContainerServiceInner extends Resource {
     }
 
     /**
-     * Get the agentPoolProfiles value.
+     * Get properties of the agent pool.
      *
      * @return the agentPoolProfiles value
      */
@@ -182,7 +182,7 @@ public class ContainerServiceInner extends Resource {
     }
 
     /**
-     * Set the agentPoolProfiles value.
+     * Set properties of the agent pool.
      *
      * @param agentPoolProfiles the agentPoolProfiles value to set
      * @return the ContainerServiceInner object itself.
@@ -193,7 +193,7 @@ public class ContainerServiceInner extends Resource {
     }
 
     /**
-     * Get the windowsProfile value.
+     * Get profile for Windows VMs in the container service cluster.
      *
      * @return the windowsProfile value
      */
@@ -202,7 +202,7 @@ public class ContainerServiceInner extends Resource {
     }
 
     /**
-     * Set the windowsProfile value.
+     * Set profile for Windows VMs in the container service cluster.
      *
      * @param windowsProfile the windowsProfile value to set
      * @return the ContainerServiceInner object itself.
@@ -213,7 +213,7 @@ public class ContainerServiceInner extends Resource {
     }
 
     /**
-     * Get the linuxProfile value.
+     * Get profile for Linux VMs in the container service cluster.
      *
      * @return the linuxProfile value
      */
@@ -222,7 +222,7 @@ public class ContainerServiceInner extends Resource {
     }
 
     /**
-     * Set the linuxProfile value.
+     * Set profile for Linux VMs in the container service cluster.
      *
      * @param linuxProfile the linuxProfile value to set
      * @return the ContainerServiceInner object itself.
@@ -233,7 +233,7 @@ public class ContainerServiceInner extends Resource {
     }
 
     /**
-     * Get the diagnosticsProfile value.
+     * Get profile for diagnostics in the container service cluster.
      *
      * @return the diagnosticsProfile value
      */
@@ -242,7 +242,7 @@ public class ContainerServiceInner extends Resource {
     }
 
     /**
-     * Set the diagnosticsProfile value.
+     * Set profile for diagnostics in the container service cluster.
      *
      * @param diagnosticsProfile the diagnosticsProfile value to set
      * @return the ContainerServiceInner object itself.
