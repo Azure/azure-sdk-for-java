@@ -35,7 +35,7 @@ public final class AzureEnvironment implements Environment {
     public static final AzureEnvironment AZURE = new AzureEnvironment(new HashMap<String, String>() {{
         put("portalUrl", "http://go.microsoft.com/fwlink/?LinkId=254433");
         put("publishingProfileUrl", "http://go.microsoft.com/fwlink/?LinkId=254432");
-        put("managementEndpointUrl", "https://management.core.windows.net");
+        put("managementEndpointUrl", "https://management.core.windows.net/");
         put("resourceManagerEndpointUrl", "https://management.azure.com/");
         put("sqlManagementEndpointUrl", "https://management.core.windows.net:8443/");
         put("sqlServerHostnameSuffix", ".database.windows.net");
@@ -49,6 +49,8 @@ public final class AzureEnvironment implements Environment {
         put("keyVaultDnsSuffix", ".vault.azure.net");
         put("azureDataLakeStoreFileSystemEndpointSuffix", "azuredatalakestore.net");
         put("azureDataLakeAnalyticsCatalogAndJobEndpointSuffix", "azuredatalakeanalytics.net");
+        put("azureLogAnalyticsResourceId", "https://api.loganalytics.io/");
+        put("azureApplicationInsightsResourceId", "https://api.applicationinsights.io/");
     }});
 
     /**
@@ -57,8 +59,8 @@ public final class AzureEnvironment implements Environment {
     public static final AzureEnvironment AZURE_CHINA = new AzureEnvironment(new HashMap<String, String>() {{
         put("portalUrl", "http://go.microsoft.com/fwlink/?LinkId=301902");
         put("publishingProfileUrl", "http://go.microsoft.com/fwlink/?LinkID=301774");
-        put("managementEndpointUrl", "https://management.core.chinacloudapi.cn");
-        put("resourceManagerEndpointUrl", "https://management.chinacloudapi.cn");
+        put("managementEndpointUrl", "https://management.core.chinacloudapi.cn/");
+        put("resourceManagerEndpointUrl", "https://management.chinacloudapi.cn/");
         put("sqlManagementEndpointUrl", "https://management.core.chinacloudapi.cn:8443/");
         put("sqlServerHostnameSuffix", ".database.chinacloudapi.cn");
         put("galleryEndpointUrl", "https://gallery.chinacloudapi.cn/");
@@ -73,6 +75,8 @@ public final class AzureEnvironment implements Environment {
         // TODO: add dns suffixes for the china cloud for datalake store and datalake analytics once they are defined.
         put("azureDataLakeStoreFileSystemEndpointSuffix", "N/A");
         put("azureDataLakeAnalyticsCatalogAndJobEndpointSuffix", "N/A");
+        put("azureLogAnalyticsResourceId", "N/A");
+        put("azureApplicationInsightsResourceId", "N/A");
     }});
 
     /**
@@ -81,12 +85,12 @@ public final class AzureEnvironment implements Environment {
     public static final AzureEnvironment AZURE_US_GOVERNMENT = new AzureEnvironment(new HashMap<String, String>() {{
         put("portalUrl", "https://manage.windowsazure.us");
         put("publishingProfileUrl", "https://manage.windowsazure.us/publishsettings/index");
-        put("managementEndpointUrl", "https://management.core.usgovcloudapi.net");
-        put("resourceManagerEndpointUrl", "https://management.usgovcloudapi.net");
+        put("managementEndpointUrl", "https://management.core.usgovcloudapi.net/");
+        put("resourceManagerEndpointUrl", "https://management.usgovcloudapi.net/");
         put("sqlManagementEndpointUrl", "https://management.core.usgovcloudapi.net:8443/");
         put("sqlServerHostnameSuffix", ".database.usgovcloudapi.net");
         put("galleryEndpointUrl", "https://gallery.usgovcloudapi.net/");
-        put("activeDirectoryEndpointUrl", "https://login-us.microsoftonline.com/");
+        put("activeDirectoryEndpointUrl", "https://login.microsoftonline.us/");
         put("activeDirectoryResourceId", "https://management.core.usgovcloudapi.net/");
         put("activeDirectoryGraphResourceId", "https://graph.windows.net/");
         // TODO: add resource id for the US government for datalake once it is defined.
@@ -97,6 +101,8 @@ public final class AzureEnvironment implements Environment {
         // TODO: add dns suffixes for the US government for datalake store and datalake analytics once they are defined.
         put("azureDataLakeStoreFileSystemEndpointSuffix", "N/A");
         put("azureDataLakeAnalyticsCatalogAndJobEndpointSuffix", "N/A");
+        put("azureLogAnalyticsResourceId", "https://api.loganalytics.us/");
+        put("azureApplicationInsightsResourceId", "N/A");
     }});
 
     /**
@@ -105,8 +111,8 @@ public final class AzureEnvironment implements Environment {
     public static final AzureEnvironment AZURE_GERMANY = new AzureEnvironment(new HashMap<String, String>() {{
         put("portalUrl", "http://portal.microsoftazure.de/");
         put("publishingProfileUrl", "https://manage.microsoftazure.de/publishsettings/index");
-        put("managementEndpointUrl", "https://management.core.cloudapi.de");
-        put("resourceManagerEndpointUrl", "https://management.microsoftazure.de");
+        put("managementEndpointUrl", "https://management.core.cloudapi.de/");
+        put("resourceManagerEndpointUrl", "https://management.microsoftazure.de/");
         put("sqlManagementEndpointUrl", "https://management.core.cloudapi.de:8443/");
         put("sqlServerHostnameSuffix", ".database.cloudapi.de");
         put("galleryEndpointUrl", "https://gallery.cloudapi.de/");
@@ -121,6 +127,8 @@ public final class AzureEnvironment implements Environment {
         // TODO: add dns suffixes for the germany cloud for datalake store and datalake analytics once they are defined.
         put("azureDataLakeStoreFileSystemEndpointSuffix", "N/A");
         put("azureDataLakeAnalyticsCatalogAndJobEndpointSuffix", "N/A");
+        put("azureLogAnalyticsResourceId", "N/A");
+        put("azureApplicationInsightsResourceId", "N/A");
     }});
 
     /**
@@ -250,6 +258,20 @@ public final class AzureEnvironment implements Environment {
         return endpoints.get("azureDataLakeAnalyticsCatalogAndJobEndpointSuffix");
     }
 
+    /**
+     * @return the log analytics endpoint.
+     */
+    public String logAnalyticsEndpoint() {
+        return endpoints.get("azureLogAnalyticsResourceId");
+    }
+
+    /**
+     * @return the log analytics endpoint.
+     */
+    public String applicationInsightsEndpoint() {
+        return endpoints.get("azureApplicationInsightsResourceId");
+    }
+
 
     /**
      * The enum representing available endpoints in an environment.
@@ -272,7 +294,11 @@ public final class AzureEnvironment implements Environment {
         /** Azure Data Lake Store DNS suffix. */
         DATA_LAKE_STORE("azureDataLakeStoreFileSystemEndpointSuffix"),
         /** Azure Data Lake Analytics DNS suffix. */
-        DATA_LAKE_ANALYTICS("azureDataLakeAnalyticsCatalogAndJobEndpointSuffix");
+        DATA_LAKE_ANALYTICS("azureDataLakeAnalyticsCatalogAndJobEndpointSuffix"),
+        /** Azure Log Analytics endpoint. */
+        LOG_ANALYTICS("azureLogAnalyticsResourceId"),
+        /** Azure Application Insights. */
+        APPLICATION_INSIGHTS("azureApplicationInsightsResourceId");
 
         private String field;
 
