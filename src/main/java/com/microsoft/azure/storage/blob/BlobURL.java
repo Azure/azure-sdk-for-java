@@ -331,26 +331,6 @@ public class BlobURL extends StorageURL {
      *
      * @param range
      *         {@link BlobRange}
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=upload_download "Sample code for BlobURL.download")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-    public Single<DownloadResponse> download(BlobRange range) {
-        return this.download(range, null, false, null);
-    }
-
-    /**
-     * Reads a range of bytes from a blob. The response also includes the blob's properties and metadata. For more
-     * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a>.
-     * <p>
-     * Note that the response body has reliable download functionality built in, meaning that a failed download stream
-     * will be automatically retried. This behavior may be configured with {@link ReliableDownloadOptions}.
-     *
-     * @param range
-     *         {@link BlobRange}
      * @param accessConditions
      *         {@link BlobAccessConditions}
      * @param rangeGetContentMD5
@@ -374,7 +354,7 @@ public class BlobURL extends StorageURL {
         range = range == null ? BlobRange.DEFAULT : range;
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
         HTTPGetterInfo info = new HTTPGetterInfo()
-                .withCount(range.offset())
+                .withOffset(range.offset())
                 .withCount(range.count())
                 .withETag(accessConditions.modifiedAccessConditions().ifMatch());
 

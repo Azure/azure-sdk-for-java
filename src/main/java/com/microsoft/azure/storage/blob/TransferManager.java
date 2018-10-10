@@ -106,8 +106,10 @@ public final class TransferManager {
                 the list of Ids later. Eager ensures parallelism but may require some internal buffering.
                  */
                 .concatMapEager(i -> {
-                    int count = Math.min(blockLength, (int) (file.size() - i * blockLength));
-                    Flowable<ByteBuffer> data = FlowableUtil.readFile(file, i * blockLength, count);
+                    // The max number of bytes for a block is currently 100MB, so the final result must be an int.
+                    int count = (int) Math.min((long)blockLength, (file.size() - i * (long)blockLength));
+                    // i * blockLength could be a long, so we need a cast to prevent overflow.
+                    Flowable<ByteBuffer> data = FlowableUtil.readFile(file, i * (long)blockLength, count);
 
                     // Report progress as necessary.
                     data = ProgressReporter.addParallelProgressReporting(data, optionsReal.progressReceiver(),
