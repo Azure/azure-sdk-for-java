@@ -18,14 +18,14 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.management.redis.v2017_10_01.RedisPatchSchedule;
 
 class PatchSchedulesImpl extends WrapperImpl<PatchSchedulesInner> implements PatchSchedules {
-    private final RedisManager manager;
+    private final CacheManager manager;
 
-    PatchSchedulesImpl(RedisManager manager) {
+    PatchSchedulesImpl(CacheManager manager) {
         super(manager.inner().patchSchedules());
         this.manager = manager;
     }
 
-    public RedisManager manager() {
+    public CacheManager manager() {
         return this.manager;
     }
 
@@ -42,41 +42,22 @@ class PatchSchedulesImpl extends WrapperImpl<PatchSchedulesInner> implements Pat
         return new RedisPatchScheduleImpl(name, this.manager());
     }
 
-    private Observable<Page<RedisPatchScheduleInner>> listByRedisResourceNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        PatchSchedulesInner client = this.inner();
-        return client.listByRedisResourceNextAsync(nextLink)
-        .flatMap(new Func1<Page<RedisPatchScheduleInner>, Observable<Page<RedisPatchScheduleInner>>>() {
-            @Override
-            public Observable<Page<RedisPatchScheduleInner>> call(Page<RedisPatchScheduleInner> page) {
-                return Observable.just(page).concatWith(listByRedisResourceNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<RedisPatchSchedule> listByRedisResourceAsync(final String resourceGroupName, final String cacheName) {
         PatchSchedulesInner client = this.inner();
         return client.listByRedisResourceAsync(resourceGroupName, cacheName)
-        .flatMap(new Func1<Page<RedisPatchScheduleInner>, Observable<Page<RedisPatchScheduleInner>>>() {
-            @Override
-            public Observable<Page<RedisPatchScheduleInner>> call(Page<RedisPatchScheduleInner> page) {
-                return listByRedisResourceNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<RedisPatchScheduleInner>, Iterable<RedisPatchScheduleInner>>() {
             @Override
             public Iterable<RedisPatchScheduleInner> call(Page<RedisPatchScheduleInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<RedisPatchScheduleInner, RedisPatchSchedule>() {
             @Override
             public RedisPatchSchedule call(RedisPatchScheduleInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override
