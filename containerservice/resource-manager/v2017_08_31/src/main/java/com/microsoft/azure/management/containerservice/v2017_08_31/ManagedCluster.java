@@ -10,12 +10,12 @@ package com.microsoft.azure.management.containerservice.v2017_08_31;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.Resource;
+import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
 import com.microsoft.azure.arm.resources.models.HasResourceGroup;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
-import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.containerservice.v2017_08_31.implementation.ContainerServiceManager;
 import java.util.List;
@@ -83,51 +83,61 @@ public interface ManagedCluster extends HasInner<ManagedClusterInner>, Resource,
         }
 
         /**
-         * The stage of the managedcluster update allowing to specify AgentPoolProfiles.
+         * The stage of the managedcluster definition allowing to specify AgentPoolProfiles.
          */
         interface WithAgentPoolProfiles {
             /**
              * Specifies agentPoolProfiles.
+             * @param agentPoolProfiles Properties of the agent pool
+             * @return the next definition stage
              */
             WithCreate withAgentPoolProfiles(List<ContainerServiceAgentPoolProfile> agentPoolProfiles);
         }
 
         /**
-         * The stage of the managedcluster update allowing to specify DnsPrefix.
+         * The stage of the managedcluster definition allowing to specify DnsPrefix.
          */
         interface WithDnsPrefix {
             /**
              * Specifies dnsPrefix.
+             * @param dnsPrefix DNS prefix specified when creating the managed cluster
+             * @return the next definition stage
              */
             WithCreate withDnsPrefix(String dnsPrefix);
         }
 
         /**
-         * The stage of the managedcluster update allowing to specify KubernetesVersion.
+         * The stage of the managedcluster definition allowing to specify KubernetesVersion.
          */
         interface WithKubernetesVersion {
             /**
              * Specifies kubernetesVersion.
+             * @param kubernetesVersion Version of Kubernetes specified when creating the managed cluster
+             * @return the next definition stage
              */
             WithCreate withKubernetesVersion(String kubernetesVersion);
         }
 
         /**
-         * The stage of the managedcluster update allowing to specify LinuxProfile.
+         * The stage of the managedcluster definition allowing to specify LinuxProfile.
          */
         interface WithLinuxProfile {
             /**
              * Specifies linuxProfile.
+             * @param linuxProfile Profile for Linux VMs in the container service cluster
+             * @return the next definition stage
              */
             WithCreate withLinuxProfile(ContainerServiceLinuxProfile linuxProfile);
         }
 
         /**
-         * The stage of the managedcluster update allowing to specify ServicePrincipalProfile.
+         * The stage of the managedcluster definition allowing to specify ServicePrincipalProfile.
          */
         interface WithServicePrincipalProfile {
             /**
              * Specifies servicePrincipalProfile.
+             * @param servicePrincipalProfile Information about a service principal identity for the cluster to use for manipulating Azure APIs. Either secret or keyVaultSecretRef must be specified
+             * @return the next definition stage
              */
             WithCreate withServicePrincipalProfile(ContainerServiceServicePrincipalProfile servicePrincipalProfile);
         }
@@ -151,51 +161,61 @@ public interface ManagedCluster extends HasInner<ManagedClusterInner>, Resource,
      */
     interface UpdateStages {
         /**
-         * The stage of the managedcluster {0} allowing to specify AgentPoolProfiles.
+         * The stage of the managedcluster update allowing to specify AgentPoolProfiles.
          */
         interface WithAgentPoolProfiles {
             /**
              * Specifies agentPoolProfiles.
+             * @param agentPoolProfiles Properties of the agent pool
+             * @return the next update stage
              */
             Update withAgentPoolProfiles(List<ContainerServiceAgentPoolProfile> agentPoolProfiles);
         }
 
         /**
-         * The stage of the managedcluster {0} allowing to specify DnsPrefix.
+         * The stage of the managedcluster update allowing to specify DnsPrefix.
          */
         interface WithDnsPrefix {
             /**
              * Specifies dnsPrefix.
+             * @param dnsPrefix DNS prefix specified when creating the managed cluster
+             * @return the next update stage
              */
             Update withDnsPrefix(String dnsPrefix);
         }
 
         /**
-         * The stage of the managedcluster {0} allowing to specify KubernetesVersion.
+         * The stage of the managedcluster update allowing to specify KubernetesVersion.
          */
         interface WithKubernetesVersion {
             /**
              * Specifies kubernetesVersion.
+             * @param kubernetesVersion Version of Kubernetes specified when creating the managed cluster
+             * @return the next update stage
              */
             Update withKubernetesVersion(String kubernetesVersion);
         }
 
         /**
-         * The stage of the managedcluster {0} allowing to specify LinuxProfile.
+         * The stage of the managedcluster update allowing to specify LinuxProfile.
          */
         interface WithLinuxProfile {
             /**
              * Specifies linuxProfile.
+             * @param linuxProfile Profile for Linux VMs in the container service cluster
+             * @return the next update stage
              */
             Update withLinuxProfile(ContainerServiceLinuxProfile linuxProfile);
         }
 
         /**
-         * The stage of the managedcluster {0} allowing to specify ServicePrincipalProfile.
+         * The stage of the managedcluster update allowing to specify ServicePrincipalProfile.
          */
         interface WithServicePrincipalProfile {
             /**
              * Specifies servicePrincipalProfile.
+             * @param servicePrincipalProfile Information about a service principal identity for the cluster to use for manipulating Azure APIs. Either secret or keyVaultSecretRef must be specified
+             * @return the next update stage
              */
             Update withServicePrincipalProfile(ContainerServiceServicePrincipalProfile servicePrincipalProfile);
         }
