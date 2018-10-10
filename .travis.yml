@@ -13,4 +13,5 @@ env:
 script:
 - mvn clean install -B -Dstyle.color=always
 - mvn checkstyle:check -B -Dstyle.color=always
-- cd ./azure-android-client-authentication && ./gradlew check
+# (ignore android build for now)
+# - cd ./azure-android-client-authentication && ./gradlew check
