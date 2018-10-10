@@ -17,6 +17,8 @@ class BackupShortTermRetentionPolicyImpl extends CreatableUpdatableImpl<BackupSh
     private String resourceGroupName;
     private String serverName;
     private String databaseName;
+    private Integer cretentionDays;
+    private Integer uretentionDays;
 
     BackupShortTermRetentionPolicyImpl(String name, SqlManager manager) {
         super(name, new BackupShortTermRetentionPolicyInner());
@@ -31,7 +33,7 @@ class BackupShortTermRetentionPolicyImpl extends CreatableUpdatableImpl<BackupSh
         this.manager = manager;
         // Set resource name
         this.databaseName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.serverName = IdParsingUtils.getValueFromIdByName(inner.id(), "servers");
         this.databaseName = IdParsingUtils.getValueFromIdByName(inner.id(), "databases");
@@ -46,14 +48,14 @@ class BackupShortTermRetentionPolicyImpl extends CreatableUpdatableImpl<BackupSh
     @Override
     public Observable<BackupShortTermRetentionPolicy> createResourceAsync() {
         BackupShortTermRetentionPoliciesInner client = this.manager().inner().backupShortTermRetentionPolicies();
-        return client.createOrUpdateAsync(this.resourceGroupName, this.serverName, this.databaseName)
+        return client.createOrUpdateAsync(this.resourceGroupName, this.serverName, this.databaseName, this.cretentionDays)
             .map(innerToFluentMap(this));
     }
 
     @Override
     public Observable<BackupShortTermRetentionPolicy> updateResourceAsync() {
         BackupShortTermRetentionPoliciesInner client = this.manager().inner().backupShortTermRetentionPolicies();
-        return client.updateAsync(this.resourceGroupName, this.serverName, this.databaseName)
+        return client.updateAsync(this.resourceGroupName, this.serverName, this.databaseName, this.uretentionDays)
             .map(innerToFluentMap(this));
     }
 
@@ -94,6 +96,16 @@ class BackupShortTermRetentionPolicyImpl extends CreatableUpdatableImpl<BackupSh
         this.resourceGroupName = resourceGroupName;
         this.serverName = serverName;
         this.databaseName = databaseName;
+        return this;
+    }
+
+    @Override
+    public BackupShortTermRetentionPolicyImpl withRetentionDays(Integer retentionDays) {
+        if (isInCreateMode()) {
+            this.cretentionDays = retentionDays;
+        } else {
+            this.uretentionDays = retentionDays;
+        }
         return this;
     }
 

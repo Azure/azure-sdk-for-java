@@ -27,6 +27,7 @@ class RecommendedElasticPoolImpl extends IndexableRefreshableWrapperImpl<Recomme
     RecommendedElasticPoolImpl(RecommendedElasticPoolInner inner,  SqlManager manager) {
         super(null, inner);
         this.manager = manager;
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.serverName = IdParsingUtils.getValueFromIdByName(inner.id(), "servers");
         this.recommendedElasticPoolName = IdParsingUtils.getValueFromIdByName(inner.id(), "recommendedElasticPools");
