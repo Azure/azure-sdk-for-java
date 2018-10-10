@@ -29,7 +29,7 @@ public class RedisAccessKeysInner {
     private String secondaryKey;
 
     /**
-     * Get the primaryKey value.
+     * Get the current primary key that clients can use to authenticate with Redis cache.
      *
      * @return the primaryKey value
      */
@@ -38,7 +38,7 @@ public class RedisAccessKeysInner {
     }
 
     /**
-     * Get the secondaryKey value.
+     * Get the current secondary key that clients can use to authenticate with Redis cache.
      *
      * @return the secondaryKey value
      */
