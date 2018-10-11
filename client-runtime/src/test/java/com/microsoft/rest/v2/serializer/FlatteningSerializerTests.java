@@ -7,15 +7,12 @@
 package com.microsoft.rest.v2.serializer;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.microsoft.rest.v2.util.Foo;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class FlatteningSerializerTests {
@@ -32,31 +29,21 @@ public class FlatteningSerializerTests {
         foo.qux.put("bar.a", "ttyy");
         foo.qux.put("bar.b", "uuzz");
 
-        String serialized = new JacksonAdapter().serialize(foo);
+        JacksonAdapter adapter = new JacksonAdapter();
+
+        // serialization
+        String serialized = adapter.serialize(foo);
         Assert.assertEquals("{\"$type\":\"foo\",\"properties\":{\"bar\":\"hello.world\",\"props\":{\"baz\":[\"hello\",\"hello.world\"],\"q\":{\"qux\":{\"hello\":\"world\",\"a.b\":\"c.d\",\"bar.b\":\"uuzz\",\"bar.a\":\"ttyy\"}}}}}", serialized);
-    }
 
-    @JsonFlatten
-    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "$type")
-    @JsonTypeName("foo")
-    @JsonSubTypes({
-            @JsonSubTypes.Type(name = "foochild", value = FooChild.class)
-    })
-    private class Foo {
-        @JsonProperty(value = "properties.bar")
-        private String bar;
-        @JsonProperty(value = "properties.props.baz")
-        private List<String> baz;
-        @JsonProperty(value = "properties.props.q.qux")
-        private Map<String, String> qux;
-        @JsonProperty(value = "props.empty")
-        private Integer empty;
-    }
-
-    @JsonFlatten
-    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "$type")
-    @JsonTypeName("foochild")
-    private class FooChild extends Foo {
+        // deserialization
+        Foo deserialized = adapter.deserialize(serialized, Foo.class);
+        Assert.assertEquals("hello.world", deserialized.bar);
+        Assert.assertArrayEquals(new String[]{"hello", "hello.world"}, deserialized.baz.toArray());
+        Assert.assertNotNull(deserialized.qux);
+        Assert.assertEquals("world", deserialized.qux.get("hello"));
+        Assert.assertEquals("c.d", deserialized.qux.get("a.b"));
+        Assert.assertEquals("ttyy", deserialized.qux.get("bar.a"));
+        Assert.assertEquals("uuzz", deserialized.qux.get("bar.b"));
     }
 
     @Test

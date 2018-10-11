@@ -50,10 +50,15 @@ public class JacksonAdapter implements SerializerAdapter<ObjectMapper> {
         xmlMapper = initializeObjectMapper(new XmlMapper());
         xmlMapper.configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true);
         xmlMapper.setDefaultUseWrapper(false);
-        mapper = initializeObjectMapper(new ObjectMapper())
+        ObjectMapper flatteningMapper = initializeObjectMapper(new ObjectMapper())
                 .registerModule(FlatteningSerializer.getModule(simpleMapper()))
                 .registerModule(FlatteningDeserializer.getModule(simpleMapper()));
-    }
+        mapper = initializeObjectMapper(new ObjectMapper())
+                // Order matters: must register in reverse order of hierarchy
+                .registerModule(AdditionalPropertiesSerializer.getModule(flatteningMapper))
+                .registerModule(AdditionalPropertiesDeserializer.getModule(flatteningMapper))
+                .registerModule(FlatteningSerializer.getModule(simpleMapper()))
+                .registerModule(FlatteningDeserializer.getModule(simpleMapper()));    }
 
     /**
      * Gets a static instance of {@link ObjectMapper} that doesn't handle flattening.
