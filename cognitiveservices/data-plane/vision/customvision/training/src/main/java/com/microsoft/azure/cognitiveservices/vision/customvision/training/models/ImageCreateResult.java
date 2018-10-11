@@ -45,7 +45,7 @@ public class ImageCreateResult {
     }
 
     /**
-     * Get the status value.
+     * Get possible values include: 'OK', 'OKDuplicate', 'ErrorSource', 'ErrorImageFormat', 'ErrorImageSize', 'ErrorStorage', 'ErrorLimitExceed', 'ErrorTagLimitExceed', 'ErrorRegionLimitExceed', 'ErrorUnknown'.
      *
      * @return the status value
      */

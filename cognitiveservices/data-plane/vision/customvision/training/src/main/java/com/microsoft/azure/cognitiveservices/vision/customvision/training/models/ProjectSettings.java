@@ -29,7 +29,7 @@ public class ProjectSettings {
     private Classifier classificationType;
 
     /**
-     * Get the domainId value.
+     * Get gets or sets the id of the Domain to use with this project.
      *
      * @return the domainId value
      */
@@ -38,7 +38,7 @@ public class ProjectSettings {
     }
 
     /**
-     * Set the domainId value.
+     * Set gets or sets the id of the Domain to use with this project.
      *
      * @param domainId the domainId value to set
      * @return the ProjectSettings object itself.
@@ -49,7 +49,7 @@ public class ProjectSettings {
     }
 
     /**
-     * Get the classificationType value.
+     * Get gets or sets the classification type of the project. Possible values include: 'Multiclass', 'Multilabel'.
      *
      * @return the classificationType value
      */
@@ -58,7 +58,7 @@ public class ProjectSettings {
     }
 
     /**
-     * Set the classificationType value.
+     * Set gets or sets the classification type of the project. Possible values include: 'Multiclass', 'Multilabel'.
      *
      * @param classificationType the classificationType value to set
      * @return the ProjectSettings object itself.

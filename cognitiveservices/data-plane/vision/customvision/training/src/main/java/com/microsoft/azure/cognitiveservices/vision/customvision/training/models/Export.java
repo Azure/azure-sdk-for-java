@@ -45,7 +45,7 @@ public class Export {
     private boolean newerVersionAvailable;
 
     /**
-     * Get the platform value.
+     * Get possible values include: 'CoreML', 'TensorFlow', 'DockerFile', 'ONNX'.
      *
      * @return the platform value
      */
@@ -54,7 +54,7 @@ public class Export {
     }
 
     /**
-     * Get the status value.
+     * Get possible values include: 'Exporting', 'Failed', 'Done'.
      *
      * @return the status value
      */
@@ -72,7 +72,7 @@ public class Export {
     }
 
     /**
-     * Get the flavor value.
+     * Get possible values include: 'Linux', 'Windows'.
      *
      * @return the flavor value
      */

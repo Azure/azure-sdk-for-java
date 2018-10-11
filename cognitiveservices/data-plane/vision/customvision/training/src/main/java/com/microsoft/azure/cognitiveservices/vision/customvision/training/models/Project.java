@@ -59,7 +59,7 @@ public class Project {
     private String thumbnailUri;
 
     /**
-     * Get the id value.
+     * Get gets the project id.
      *
      * @return the id value
      */
@@ -68,7 +68,7 @@ public class Project {
     }
 
     /**
-     * Get the name value.
+     * Get gets or sets the name of the project.
      *
      * @return the name value
      */
@@ -77,7 +77,7 @@ public class Project {
     }
 
     /**
-     * Set the name value.
+     * Set gets or sets the name of the project.
      *
      * @param name the name value to set
      * @return the Project object itself.
@@ -88,7 +88,7 @@ public class Project {
     }
 
     /**
-     * Get the description value.
+     * Get gets or sets the description of the project.
      *
      * @return the description value
      */
@@ -97,7 +97,7 @@ public class Project {
     }
 
     /**
-     * Set the description value.
+     * Set gets or sets the description of the project.
      *
      * @param description the description value to set
      * @return the Project object itself.
@@ -108,7 +108,7 @@ public class Project {
     }
 
     /**
-     * Get the settings value.
+     * Get gets or sets the project settings.
      *
      * @return the settings value
      */
@@ -117,7 +117,7 @@ public class Project {
     }
 
     /**
-     * Set the settings value.
+     * Set gets or sets the project settings.
      *
      * @param settings the settings value to set
      * @return the Project object itself.
@@ -128,7 +128,7 @@ public class Project {
     }
 
     /**
-     * Get the created value.
+     * Get gets the date this project was created.
      *
      * @return the created value
      */
@@ -137,7 +137,7 @@ public class Project {
     }
 
     /**
-     * Get the lastModified value.
+     * Get gets the date this project was last modifed.
      *
      * @return the lastModified value
      */
@@ -146,7 +146,7 @@ public class Project {
     }
 
     /**
-     * Get the thumbnailUri value.
+     * Get gets the thumbnail url representing the project.
      *
      * @return the thumbnailUri value
      */
