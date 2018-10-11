@@ -21,14 +21,14 @@ import com.microsoft.rest.v2.util.FlowableUtil;
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
-import javafx.util.Pair;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import static java.lang.StrictMath.toIntExact;
 
@@ -77,13 +77,19 @@ public final class TransferManager {
         TransferManagerUploadToBlockBlobOptions optionsReal = options == null ?
                 TransferManagerUploadToBlockBlobOptions.DEFAULT : options;
 
+        // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
+        AtomicLong totalProgress = new AtomicLong(0);
+        Lock progressLock = new ReentrantLock();
 
         // If the size of the file can fit in a single upload, do it this way.
         if (file.size() < BlockBlobURL.MAX_UPLOAD_BLOB_BYTES) {
+            Flowable<ByteBuffer> data = FlowableUtil.readFile(file);
 
-            // Transform the specific RestResponse into a CommonRestResponse.
-            return blockBlobURL.upload(FlowableUtil.readFile(file), file.size(), optionsReal.httpHeaders(),
+            data = ProgressReporter.addProgressReporting(data, optionsReal.progressReceiver());
+
+            return blockBlobURL.upload(data, file.size(), optionsReal.httpHeaders(),
                     optionsReal.metadata(), optionsReal.accessConditions(), null)
+                    // Transform the specific RestResponse into a CommonRestResponse.
                     .map(CommonRestResponse::createFromPutBlobResponse);
         }
 
@@ -102,6 +108,10 @@ public final class TransferManager {
                 .concatMapEager(i -> {
                     int count = Math.min(blockLength, (int) (file.size() - i * blockLength));
                     Flowable<ByteBuffer> data = FlowableUtil.readFile(file, i * blockLength, count);
+
+                    // Report progress as necessary.
+                    data = ProgressReporter.addParallelProgressReporting(data, optionsReal.progressReceiver(),
+                                progressLock, totalProgress);
 
                     final String blockId = Base64.getEncoder().encodeToString(
                             UUID.randomUUID().toString().getBytes());
@@ -174,54 +184,65 @@ public final class TransferManager {
      */
     public static Single<BlobDownloadHeaders> downloadBlobToFile(AsynchronousFileChannel file, BlobURL blobURL,
             BlobRange range, TransferManagerDownloadFromBlobOptions options) {
-        BlobRange r = range == null ? BlobRange.DEFAULT : range;
-        TransferManagerDownloadFromBlobOptions o = options == null ?
+        BlobRange rangeReal = range == null ? BlobRange.DEFAULT : range;
+        TransferManagerDownloadFromBlobOptions optionsReal = options == null ?
                 TransferManagerDownloadFromBlobOptions.DEFAULT : options;
         Utility.assertNotNull("blobURL", blobURL);
         Utility.assertNotNull("file", file);
 
+        // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
+        Lock progressLock = new ReentrantLock();
+        AtomicLong totalProgress = new AtomicLong(0);
+
         // Get the size of the data and etag if not specified by the user.
-        Single<Pair<Long, BlobAccessConditions>> setupSingle = getSetupSingle(blobURL, r, o);
+        Single<List<Object>> setupSingle = getSetupSingle(blobURL, rangeReal, optionsReal);
 
         return setupSingle.flatMap(setupPair -> {
-            Long dataSize = setupPair.getKey();
-            BlobAccessConditions realConditions = setupPair.getValue();
+            Long dataSize = (Long)setupPair.get(0);
+            BlobAccessConditions realConditions = (BlobAccessConditions)setupPair.get(1);
 
-            int numChunks = calculateNumBlocks(dataSize, o.chunkSize());
+            int numChunks = calculateNumBlocks(dataSize, optionsReal.chunkSize());
 
             // In case it is an empty blob, this ensures we still actually perform a download operation.
             numChunks = numChunks == 0 ? 1 : numChunks;
 
             return Observable.range(0, numChunks)
-                    .flatMap(i -> {
+                    .flatMap(chunkNum -> {
                         // Calculate whether we need a full chunk or something smaller because we are at the end.
-                        long chunkSizeActual = Math.min(o.chunkSize(),
-                                dataSize - (i * o.chunkSize()));
-                        BlobRange chunkRange = new BlobRange().withOffset(r.offset() + (i * o.chunkSize()))
+                        long chunkSizeActual = Math.min(optionsReal.chunkSize(),
+                                dataSize - (chunkNum * optionsReal.chunkSize()));
+                        BlobRange chunkRange = new BlobRange().withOffset(
+                                rangeReal.offset() + (chunkNum * optionsReal.chunkSize()))
                                 .withCount(chunkSizeActual);
-
 
                         // Make the download call.
                         return blobURL.download(chunkRange, realConditions, false, null)
                                 // Extract the body.
-                                .flatMapObservable(response ->
-                                        // Write to the file.
-                                        FlowableUtil.writeFile(response.body(o.reliableDownloadOptionsPerBlock()), file,
-                                                i * o.chunkSize())
-                                                /*
-                                                Satisfy the return type. Observable required for flatmap to accept
-                                                maxConcurrency. We want to eventually give the user back the headers.
-                                                 */
-                                                .andThen(Single.just(response.headers()))
-                                                .toObservable());
-                    }, o.parallelism())
+                                .flatMapObservable(response -> {
+                                    Flowable<ByteBuffer> data = response.body(
+                                            optionsReal.reliableDownloadOptionsPerBlock());
+
+                                    // Report progress as necessary.
+                                    data = ProgressReporter.addParallelProgressReporting(data,
+                                            optionsReal.progressReceiver(), progressLock, totalProgress);
+
+                                    // Write to the file.
+                                    return FlowableUtil.writeFile(data, file,
+                                            chunkNum * optionsReal.chunkSize())
+                                            /*
+                                            Satisfy the return type. Observable required for flatmap to accept
+                                            maxConcurrency. We want to eventually give the user back the headers.
+                                             */
+                                            .andThen(Single.just(response.headers()))
+                                            .toObservable();
+                                });
+                    }, optionsReal.parallelism())
                     // All the headers will be the same, so we just pick the last one.
                     .lastOrError();
         });
     }
 
-
-    private static Single<Pair<Long, BlobAccessConditions>> getSetupSingle(BlobURL blobURL, BlobRange r,
+    private static Single<List<Object>> getSetupSingle(BlobURL blobURL, BlobRange r,
             TransferManagerDownloadFromBlobOptions o) {
         /*
         Construct a Single which will emit the total count of bytes to be downloaded and retrieve an etag to lock on to
@@ -257,11 +278,10 @@ public final class TransferManager {
                         } else {
                             newCount = r.count();
                         }
-                        return new Pair<>(newCount, newConditions);
+                        return Arrays.asList(newCount, newConditions);
                     });
         } else {
-            return Single.just(new Pair<>(r.count(), o.accessConditions()));
+            return Single.just(Arrays.asList(r.count(), o.accessConditions()));
         }
     }
-
 }

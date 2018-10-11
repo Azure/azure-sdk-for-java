@@ -59,10 +59,7 @@ public final class TransferManagerDownloadFromBlobOptions {
             BlobAccessConditions accessConditions, ReliableDownloadOptions reliableDownloadOptions,
             Integer parallelism) {
         this.progressReceiver = progressReceiver;
-        if (progressReceiver != null) {
-            throw new UnsupportedOperationException("Progress reporting is not currently supported. Support will be" +
-                    "added in a later release.");
-        }
+
         if (chunkSize != null) {
             Utility.assertInBounds("chunkSize", chunkSize, 1, Long.MAX_VALUE);
             this.chunkSize = chunkSize;

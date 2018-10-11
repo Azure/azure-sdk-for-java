@@ -36,6 +36,7 @@ class TransferManagerTest extends APISpec {
     def "Upload file"() {
         setup:
         def channel = AsynchronousFileChannel.open(file.toPath())
+
         when:
         // Block length will be ignored for single shot.
         CommonRestResponse response = TransferManager.uploadFileToBlockBlob(channel,
@@ -318,12 +319,85 @@ class TransferManagerTest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
-    def "Upload options progress receiver"() {
+    /*
+    Here we're testing that progress is properly added to a single upload. The size of the file must be less than
+    the max upload value.
+     */
+    def "Upload file progress sequential"() {
+        setup:
+        def channel = AsynchronousFileChannel.open(getRandomFile(BlockBlobURL.MAX_UPLOAD_BLOB_BYTES - 1).toPath())
+        def mockReceiver = Mock(IProgressReceiver)
+        def prevCount = 0
+
         when:
-        new TransferManagerUploadToBlockBlobOptions(Mock(IProgressReceiver), null, null, null, null)
+        // Block length will be ignored for single shot.
+        CommonRestResponse response = TransferManager.uploadFileToBlockBlob(channel,
+                bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES,
+                new TransferManagerUploadToBlockBlobOptions(mockReceiver, null, null, null, 20)).blockingGet()
 
         then:
-        thrown(UnsupportedOperationException)
+        /*
+        The best we can do here is to check that the total is reported at the end. It is unclear how many ByteBuffers
+        will be needed to break up the file, so we can't check intermediary values.
+         */
+        1 * mockReceiver.reportProgress(BlockBlobURL.MAX_UPLOAD_BLOB_BYTES - 1)
+
+        /*
+        We may receive any number of intermediary calls depending on the implementation. For any of these notifications,
+        we assert that they are strictly increasing.
+         */
+        _ * mockReceiver.reportProgress(!channel.size()) >> { long bytesTransferred ->
+            if (!(bytesTransferred > prevCount)) {
+                throw new IllegalArgumentException("Reported progress should monotonically increase")
+            }
+            else {
+                prevCount = bytesTransferred
+            }
+        }
+
+        0 * mockReceiver.reportProgress({it > BlockBlobURL.MAX_UPLOAD_BLOB_BYTES - 1})
+
+        cleanup:
+        channel.close()
+    }
+
+    def "Upload file progress parallel"() {
+        setup:
+        def channel = AsynchronousFileChannel.open(getRandomFile(BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 1).toPath())
+        def numBlocks = channel.size() / BlockBlobURL.MAX_STAGE_BLOCK_BYTES
+        long prevCount = 0
+        def mockReceiver = Mock(IProgressReceiver)
+
+
+        when:
+        TransferManager.uploadFileToBlockBlob(channel,
+                bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES,
+                new TransferManagerUploadToBlockBlobOptions(mockReceiver, null, null, null, 20)).blockingGet()
+
+        then:
+        // We should receive exactly one notification of the completed progress.
+        1 * mockReceiver.reportProgress(channel.size())
+
+        /*
+        We should receive at least one notification reporting an intermediary value per block, but possibly more
+        notifications will be received depending on the implementation. We specify numBlocks - 1 because the last block
+        will be the total size as above. Finally, we assert that the number reported monotonically increases.
+         */
+        (numBlocks - 1.._) * mockReceiver.reportProgress(!channel.size()) >> { long bytesTransferred ->
+            if (!(bytesTransferred > prevCount)) {
+                throw new IllegalArgumentException("Reported progress should monotonically increase")
+            }
+            else {
+                prevCount = bytesTransferred
+            }
+        }
+
+        // We should receive no notifications that report more progress than the size of the file.
+        0 * mockReceiver.reportProgress({it > channel.size()})
+        notThrown(IllegalArgumentException)
+
+        cleanup:
+        channel.close()
     }
 
     @Unroll
@@ -611,11 +685,47 @@ class TransferManagerTest extends APISpec {
     }
 
     def "Download options progress receiver"() {
+        def fileSize = 8L * 1026 * 1024 + 10
+        def channel = AsynchronousFileChannel.open(getRandomFile(fileSize).toPath(),
+                StandardOpenOption.READ, StandardOpenOption.WRITE)
+        TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null)
+                .blockingGet()
+        def outChannel = AsynchronousFileChannel.open(getRandomFile(0).toPath(), StandardOpenOption.WRITE,
+                StandardOpenOption.READ)
+
+        def mockReceiver = Mock(IProgressReceiver)
+
+        def numBlocks = fileSize / TransferManager.BLOB_DEFAULT_DOWNLOAD_BLOCK_SIZE
+        def prevCount = 0
+
         when:
-        new TransferManagerDownloadFromBlobOptions(null, Mock(IProgressReceiver), null, null, null)
+        TransferManager.downloadBlobToFile(outChannel, bu, null,
+                new TransferManagerDownloadFromBlobOptions(null, mockReceiver, null,
+                        new ReliableDownloadOptions().withMaxRetryRequests(3), 20)).blockingGet()
 
         then:
-        thrown(UnsupportedOperationException)
+        // We should receive exactly one notification of the completed progress.
+        1 * mockReceiver.reportProgress(fileSize)
+
+        /*
+        We should receive at least one notification reporting an intermediary value per block, but possibly more
+        notifications will be received depending on the implementation. We specify numBlocks - 1 because the last block
+        will be the total size as above. Finally, we assert that the number reported monotonically increases.
+         */
+        (numBlocks - 1.._) * mockReceiver.reportProgress(!channel.size()) >> { long bytesTransferred ->
+            if (!(bytesTransferred > prevCount)) {
+                throw new IllegalArgumentException("Reported progress should monotonically increase")
+            }
+            else {
+                prevCount = bytesTransferred
+            }
+        }
+
+        // We should receive no notifications that report more progress than the size of the file.
+        0 * mockReceiver.reportProgress({it > fileSize})
+
+        cleanup:
+        channel.close()
     }
 }
 

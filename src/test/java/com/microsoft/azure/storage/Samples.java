@@ -1284,6 +1284,50 @@ public class Samples {
                 .blockingGet();
     }
 
+    /*
+    This example shows how to add progress reporting to the upload and download of blobs.
+     */
+    @Test
+    public void example_progressReporting() throws MalformedURLException, InvalidKeyException {
+        // From the Azure portal, get your Storage account's name and account key.
+        String accountName = getAccountName();
+        String accountKey = getAccountKey();
+
+        // Create a BlockBlobURL object that wraps a blob's URL and a default pipeline.
+        URL u = new URL(String.format(Locale.ROOT, "https://%s.blob.core.windows.net/", accountName));
+        ServiceURL s = new ServiceURL(u,
+                StorageURL.createPipeline(new SharedKeyCredentials(accountName, accountKey), new PipelineOptions()));
+
+        ContainerURL containerURL = s.createContainerURL("myjavacontainerprogress" + System.currentTimeMillis());
+        BlockBlobURL blobURL = containerURL.createBlockBlobURL("Data.bin");
+        Flowable<ByteBuffer> data = Flowable.just(ByteBuffer.wrap("Data".getBytes()));
+
+        // Create the container.
+        containerURL.create(null, null, null)
+                .flatMap(response ->
+                        /*
+                        In the call to upload, we add progress reporting to the flowable. Here we choose to just print
+                        out the progress. Note that for operations with the TransferManager, progress reporting need
+                        not be pre-applied. A ProgressReceiver may simply be set on the options, and the TransferManager
+                        will handle coordinating the reporting between parallel requests.
+                         */
+                        blobURL.upload(ProgressReporter.addProgressReporting(data, System.out::println),
+                                4L, null, null, null, null))
+                .flatMap(response ->
+                        blobURL.download(null, null, false, null))
+                .flatMapPublisher(response ->
+                        /*
+                        Here we add progress reporting to the download response in the same manner.
+                         */
+                        ProgressReporter.addProgressReporting(response.body(null), System.out::println))
+                 /*
+                This will synchronize all the above operations. This is strongly discouraged for use in production as
+                it eliminates the benefits of asynchronous IO. We use it here to enable the sample to complete and
+                demonstrate its effectiveness.
+                 */
+                .blockingSubscribe();
+    }
+
     // This example shows how to copy a source document on the Internet to a blob.
     @Test
     public void exampleBlobURL_startCopy() throws MalformedURLException, InvalidKeyException {
@@ -2172,6 +2216,11 @@ public class Samples {
         blobURL.getAccountInfo(null)
                 .subscribe();
         // </account_info>
+
+        // <progress>
+        Flowable<ByteBuffer> flowableData = Flowable.just(ByteBuffer.wrap("Data".getBytes()));
+        flowableData = ProgressReporter.addProgressReporting(flowableData, System.out::println);
+        // </progress>
     }
 }
 

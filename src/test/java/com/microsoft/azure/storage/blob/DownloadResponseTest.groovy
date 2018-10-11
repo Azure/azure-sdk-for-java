@@ -32,7 +32,6 @@ class DownloadResponseTest extends APISpec {
     This shouldn't really be different from anything else we're doing in the other tests. Just a sanity check against
     a real use case.
      */
-
     def "Network call"() {
         expect:
         FlowableUtil.collectBytesInBuffer(bu.download(null, null, false, null).blockingGet().body(null))
