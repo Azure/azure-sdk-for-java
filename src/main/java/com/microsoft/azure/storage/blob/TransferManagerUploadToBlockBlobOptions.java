@@ -58,10 +58,6 @@ public class TransferManagerUploadToBlockBlobOptions {
     public TransferManagerUploadToBlockBlobOptions(IProgressReceiver progressReceiver, BlobHTTPHeaders httpHeaders,
             Metadata metadata, BlobAccessConditions accessConditions, Integer parallelism) {
         this.progressReceiver = progressReceiver;
-        if (progressReceiver != null) {
-            throw new UnsupportedOperationException("Progress reporting is not currently supported. Support will be" +
-                    "added in a later release.");
-        }
         if (parallelism == null) {
             this.parallelism = Constants.TRANSFER_MANAGER_DEFAULT_PARALLELISM;
         } else if (parallelism <= 0) {
@@ -73,6 +69,13 @@ public class TransferManagerUploadToBlockBlobOptions {
         this.httpHeaders = httpHeaders;
         this.metadata = metadata;
         this.accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
+    }
+
+    /**
+     * {@link IProgressReceiver}
+     */
+    public IProgressReceiver progressReceiver() {
+        return progressReceiver;
     }
 
     /**

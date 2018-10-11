@@ -144,6 +144,7 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
                     return Single.error(e);
                 }
             }
+            requestCopy.withContext(httpRequest.context());
 
             // Deadline stuff
 
@@ -172,6 +173,7 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
                         } else {
                             action = "NoRetry: Successful HTTP request";
                         }
+
                         logf("Action=%s\n", action);
                         if (action.charAt(0) == 'R' && attempt < requestRetryOptions.maxTries()) {
                             /*
@@ -201,13 +203,14 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
                                     "not being replayable. To support retries, all Flowables must produce the " +
                                     "same data for each subscriber. Please ensure this behavior.", throwable));
                         }
-                        String action;
+
                         /*
                         IOException is a catch-all for IO related errors. Technically it includes many types which may
                         not be network exceptions, but we should not hit those unless there is a bug in our logic. In
                         either case, it is better to optimistically retry instead of failing too soon.
                         A Timeout Exception is a client-side timeout coming from Rx.
                          */
+                        String action;
                         if (throwable instanceof IOException) {
                             action = "Retry: Network error";
                         } else if (throwable instanceof TimeoutException) {
@@ -215,6 +218,8 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
                         } else {
                             action = "NoRetry: Unknown error";
                         }
+
+
 
                         logf("Action=%s\n", action);
                         if (action.charAt(0) == 'R' && attempt < requestRetryOptions.maxTries()) {
@@ -228,7 +233,6 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
                                     primaryTry + 1 : primaryTry;
                             return attemptAsync(httpRequest, newPrimaryTry, considerSecondary,
                                     attempt + 1);
-
                         }
                         return Single.error(throwable);
                     });

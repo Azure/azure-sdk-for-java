@@ -286,7 +286,6 @@ class APISpec extends Specification {
         catch (Exception e) {
         }
 
-
         cu = primaryServiceURL.createContainerURL(generateContainerName())
         cu.create(null, null, null).blockingGet()
     }
