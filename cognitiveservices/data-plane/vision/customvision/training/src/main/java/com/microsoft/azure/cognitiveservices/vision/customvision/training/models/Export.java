@@ -18,7 +18,7 @@ public class Export {
      * Possible values include: 'CoreML', 'TensorFlow', 'DockerFile', 'ONNX'.
      */
     @JsonProperty(value = "platform", access = JsonProperty.Access.WRITE_ONLY)
-    private ExportPlatform platform;
+    private ExportPlatformModel platform;
 
     /**
      * Possible values include: 'Exporting', 'Failed', 'Done'.
@@ -33,10 +33,10 @@ public class Export {
     private String downloadUri;
 
     /**
-     * Possible values include: 'Linux', 'Windows'.
+     * Possible values include: 'Linux', 'Windows', 'ONNX10', 'ONNX12'.
      */
     @JsonProperty(value = "flavor", access = JsonProperty.Access.WRITE_ONLY)
-    private ExportFlavor flavor;
+    private ExportFlavorModel flavor;
 
     /**
      * The newerVersionAvailable property.
@@ -49,7 +49,7 @@ public class Export {
      *
      * @return the platform value
      */
-    public ExportPlatform platform() {
+    public ExportPlatformModel platform() {
         return this.platform;
     }
 
@@ -72,11 +72,11 @@ public class Export {
     }
 
     /**
-     * Get possible values include: 'Linux', 'Windows'.
+     * Get possible values include: 'Linux', 'Windows', 'ONNX10', 'ONNX12'.
      *
      * @return the flavor value
      */
-    public ExportFlavor flavor() {
+    public ExportFlavorModel flavor() {
         return this.flavor;
     }
 

@@ -24,10 +24,10 @@ public class ImageCreateResult {
      * Possible values include: 'OK', 'OKDuplicate', 'ErrorSource',
      * 'ErrorImageFormat', 'ErrorImageSize', 'ErrorStorage',
      * 'ErrorLimitExceed', 'ErrorTagLimitExceed', 'ErrorRegionLimitExceed',
-     * 'ErrorUnknown'.
+     * 'ErrorUnknown', 'ErrorNegativeAndRegularTagOnSameImage'.
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
-    private ImageUploadStatus status;
+    private ImageCreateStatus status;
 
     /**
      * The image property.
@@ -45,11 +45,11 @@ public class ImageCreateResult {
     }
 
     /**
-     * Get possible values include: 'OK', 'OKDuplicate', 'ErrorSource', 'ErrorImageFormat', 'ErrorImageSize', 'ErrorStorage', 'ErrorLimitExceed', 'ErrorTagLimitExceed', 'ErrorRegionLimitExceed', 'ErrorUnknown'.
+     * Get possible values include: 'OK', 'OKDuplicate', 'ErrorSource', 'ErrorImageFormat', 'ErrorImageSize', 'ErrorStorage', 'ErrorLimitExceed', 'ErrorTagLimitExceed', 'ErrorRegionLimitExceed', 'ErrorUnknown', 'ErrorNegativeAndRegularTagOnSameImage'.
      *
      * @return the status value
      */
-    public ImageUploadStatus status() {
+    public ImageCreateStatus status() {
         return this.status;
     }
 

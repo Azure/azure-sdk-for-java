@@ -34,6 +34,13 @@ public class Tag {
     private String description;
 
     /**
+     * Gets or sets the type of the tag. Possible values include: 'Regular',
+     * 'Negative'.
+     */
+    @JsonProperty(value = "type")
+    private TagType type;
+
+    /**
      * Gets the number of images with this tag.
      */
     @JsonProperty(value = "imageCount", access = JsonProperty.Access.WRITE_ONLY)
@@ -85,6 +92,26 @@ public class Tag {
      */
     public Tag withDescription(String description) {
         this.description = description;
+        return this;
+    }
+
+    /**
+     * Get gets or sets the type of the tag. Possible values include: 'Regular', 'Negative'.
+     *
+     * @return the type value
+     */
+    public TagType type() {
+        return this.type;
+    }
+
+    /**
+     * Set gets or sets the type of the tag. Possible values include: 'Regular', 'Negative'.
+     *
+     * @param type the type value to set
+     * @return the Tag object itself.
+     */
+    public Tag withType(TagType type) {
+        this.type = type;
         return this;
     }
 

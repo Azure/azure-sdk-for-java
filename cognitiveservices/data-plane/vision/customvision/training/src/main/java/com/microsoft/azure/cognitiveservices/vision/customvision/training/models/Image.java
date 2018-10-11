@@ -42,16 +42,22 @@ public class Image {
     private int height;
 
     /**
-     * The imageUri property.
+     * The Uri to the (resized) image used for training.
      */
-    @JsonProperty(value = "imageUri", access = JsonProperty.Access.WRITE_ONLY)
-    private String imageUri;
+    @JsonProperty(value = "resizedImageUri", access = JsonProperty.Access.WRITE_ONLY)
+    private String resizedImageUri;
 
     /**
-     * The thumbnailUri property.
+     * The Uri to the thumbnail of the original image.
      */
     @JsonProperty(value = "thumbnailUri", access = JsonProperty.Access.WRITE_ONLY)
     private String thumbnailUri;
+
+    /**
+     * The Uri to the original uploaded image.
+     */
+    @JsonProperty(value = "originalImageUri", access = JsonProperty.Access.WRITE_ONLY)
+    private String originalImageUri;
 
     /**
      * The tags property.
@@ -102,21 +108,30 @@ public class Image {
     }
 
     /**
-     * Get the imageUri value.
+     * Get the Uri to the (resized) image used for training.
      *
-     * @return the imageUri value
+     * @return the resizedImageUri value
      */
-    public String imageUri() {
-        return this.imageUri;
+    public String resizedImageUri() {
+        return this.resizedImageUri;
     }
 
     /**
-     * Get the thumbnailUri value.
+     * Get the Uri to the thumbnail of the original image.
      *
      * @return the thumbnailUri value
      */
     public String thumbnailUri() {
         return this.thumbnailUri;
+    }
+
+    /**
+     * Get the Uri to the original uploaded image.
+     *
+     * @return the originalImageUri value
+     */
+    public String originalImageUri() {
+        return this.originalImageUri;
     }
 
     /**

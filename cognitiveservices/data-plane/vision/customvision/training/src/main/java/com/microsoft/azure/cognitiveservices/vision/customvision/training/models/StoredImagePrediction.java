@@ -18,16 +18,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class StoredImagePrediction {
     /**
-     * The imageUri property.
+     * The Uri to the (resized) prediction image.
      */
-    @JsonProperty(value = "imageUri", access = JsonProperty.Access.WRITE_ONLY)
-    private String imageUri;
+    @JsonProperty(value = "resizedImageUri", access = JsonProperty.Access.WRITE_ONLY)
+    private String resizedImageUri;
 
     /**
-     * The thumbnailUri property.
+     * The Uri to the thumbnail of the original prediction image.
      */
     @JsonProperty(value = "thumbnailUri", access = JsonProperty.Access.WRITE_ONLY)
     private String thumbnailUri;
+
+    /**
+     * The Uri to the original prediction image.
+     */
+    @JsonProperty(value = "originalImageUri", access = JsonProperty.Access.WRITE_ONLY)
+    private String originalImageUri;
 
     /**
      * The domain property.
@@ -66,21 +72,30 @@ public class StoredImagePrediction {
     private List<Prediction> predictions;
 
     /**
-     * Get the imageUri value.
+     * Get the Uri to the (resized) prediction image.
      *
-     * @return the imageUri value
+     * @return the resizedImageUri value
      */
-    public String imageUri() {
-        return this.imageUri;
+    public String resizedImageUri() {
+        return this.resizedImageUri;
     }
 
     /**
-     * Get the thumbnailUri value.
+     * Get the Uri to the thumbnail of the original prediction image.
      *
      * @return the thumbnailUri value
      */
     public String thumbnailUri() {
         return this.thumbnailUri;
+    }
+
+    /**
+     * Get the Uri to the original prediction image.
+     *
+     * @return the originalImageUri value
+     */
+    public String originalImageUri() {
+        return this.originalImageUri;
     }
 
     /**
