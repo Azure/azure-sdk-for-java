@@ -298,7 +298,7 @@ class ServiceAPITest extends APISpec {
     def "Get stats"() {
         setup:
         BlobURLParts parts = URLParser.parse(primaryServiceURL.toURL())
-        parts.withHost("xclientdev3-secondary.blob.core.windows.net")
+        parts.withHost(primaryCreds.getAccountName() + "-secondary.blob.core.windows.net")
         ServiceURL secondary = new ServiceURL(parts.toURL(),
                 StorageURL.createPipeline(primaryCreds, new PipelineOptions()))
         ServiceGetStatisticsResponse response = secondary.getStatistics(null).blockingGet()
