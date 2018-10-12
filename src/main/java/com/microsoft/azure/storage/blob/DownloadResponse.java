@@ -86,6 +86,12 @@ public final class DownloadResponse {
         if (retryCount > options.maxRetryRequests() || !(t instanceof IOException)) {
             return Flowable.error(t);
         } else {
+            /*
+            We wrap this in a try catch because we don't know the behavior of the getter. Most errors would probably
+            come from an unsuccessful request, which would be propagated through the onError methods. However, it is
+            possible the method call that returns a Single is what throws (like how our apis throw some exceptions at
+            call time rather than at subscription time.
+             */
             try {
                 // Get a new response and try reading from it.
                 return getter.apply(this.info)

@@ -84,7 +84,7 @@ public final class RequestRetryOptions {
         }
 
         if (tryTimeout != null) {
-            Utility.assertInBounds("tryTimeoutInMs", tryTimeout, 1, Long.MAX_VALUE);
+            Utility.assertInBounds("tryTimeout", tryTimeout, 1, Integer.MAX_VALUE);
             this.tryTimeout = tryTimeout;
         } else {
             this.tryTimeout = 60;

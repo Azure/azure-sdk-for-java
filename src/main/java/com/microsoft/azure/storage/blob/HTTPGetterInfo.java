@@ -55,7 +55,7 @@ public final class HTTPGetterInfo {
      */
     public HTTPGetterInfo withCount(Long count) {
         if (count != null) {
-            Utility.assertInBounds("count", count, 0, Integer.MAX_VALUE);
+            Utility.assertInBounds("count", count, 0, Long.MAX_VALUE);
         }
         this.count = count;
         return this;

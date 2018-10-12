@@ -89,7 +89,7 @@ class BlobAPITest extends APISpec {
         setup:
         def mockPolicy = Mock(RequestPolicy) {
             sendAsync(_) >> { HttpRequest request ->
-                if (request.headers().value("x-ms-range") != "bytes=2-") {
+                if (request.headers().value("x-ms-range") != "bytes=2-6") {
                     return Single.error(new IllegalArgumentException("The range header was not set correctly on retry."))
                 }
                 else {
@@ -102,7 +102,7 @@ class BlobAPITest extends APISpec {
         bu = bu.withPipeline(pipeline)
 
         when:
-        def range = new BlobRange().withOffset(2)
+        def range = new BlobRange().withOffset(2).withCount(5)
         bu.download(range, null, false, null).blockingGet().body(new ReliableDownloadOptions().withMaxRetryRequests(3))
                 .blockingSubscribe()
 
