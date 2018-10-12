@@ -229,6 +229,9 @@ class APISpec extends Specification {
         }
     }
 
+    /*
+    Size must be an int because ByteBuffer sizes can only be an int. Long is not supported.
+     */
     static ByteBuffer getRandomData(int size) {
         Random rand = new Random(getRandomSeed())
         byte[] data = new byte[size]
@@ -236,18 +239,14 @@ class APISpec extends Specification {
         return ByteBuffer.wrap(data)
     }
 
-    static File getRandomFile(long size) {
+    /*
+    We only allow int because anything larger than 2GB (which would require a long) is left to stress/perf.
+     */
+    static File getRandomFile(int size) {
         File file = File.createTempFile(UUID.randomUUID().toString(), ".txt")
         file.deleteOnExit()
         FileOutputStream fos = new FileOutputStream(file)
-        Random rand = new Random(getRandomSeed())
-        while (size > 0) {
-            int sizeToWrite = (int) Math.min((long)(Integer.MAX_VALUE.longValue()/10L), size)
-            byte[] data = new byte[sizeToWrite]
-            rand.nextBytes(data)
-            fos.write(data)
-            size -= sizeToWrite
-        }
+        fos.write(getRandomData(size).array())
         fos.close()
         return file
     }

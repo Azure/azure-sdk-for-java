@@ -424,7 +424,7 @@ class TransferManagerTest extends APISpec {
         file                                   | _
         getRandomFile(20)                      | _ // small file
         getRandomFile(16 * 1024 * 1024)        | _ // medium file in several chunks
-        getRandomFile(8L * 1026 * 1024 + 10)   | _ // medium file not aligned to block
+        getRandomFile(8 * 1026 * 1024 + 10)   | _ // medium file not aligned to block
         getRandomFile(0)                       | _ // empty file
         // Files larger than 2GB to test no integer overflow are left to stress/perf tests to keep test passes short.
     }

@@ -5,6 +5,8 @@ XXXX.XX.XX Version XX.X.X
 * Added support for IProgressReceiver in TransferManager operations. This parameter was previously ignored but is now supported.
 * Removed internal dependency on javafx to be compatible with openjdk.
 * Fixed a bug that would cause downloading large files with the TransferManager to fail and a bug in BlobURL.download() logic for setting up reliable download.
+* Fixed a bug that would cause downloading large files with the TransferManager to fail.
+* Fixed a bug in BlobURL.download() logic for setting up reliable download. This had the potential to download the wrong range when a download stream was retried.
 
 2018.09.11 Version 10.1.0
 * Interfaces for helper types updated to be more consistent throughout the library. All types, with the exception of the options for pipeline factories, use a fluent pattern.
