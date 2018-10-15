@@ -726,37 +726,47 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
         }
     }
 
-	private CompletableFuture<Void> createCBSLinkAsync()
+	private void createCBSLinkAsync()
 	{
+		if(this.getIsClosingOrClosed())
+		{
+			return;
+		}
+		
 		if(++this.cbsLinkCreationAttempts > MAX_CBS_LINK_CREATION_ATTEMPTS )
 		{
 			Throwable completionEx = this.lastCBSLinkCreationException == null ? new Exception("CBS link creation failed multiple times.") : this.lastCBSLinkCreationException;
 			this.cbsLinkCreationFuture.completeExceptionally(completionEx);
-			return CompletableFuture.completedFuture(null);
 		}
 		else
 		{
 			String requestResponseLinkPath = RequestResponseLink.getCBSNodeLinkPath();
 			TRACE_LOGGER.info("Creating CBS link to {}", requestResponseLinkPath);
-			CompletableFuture<Void> crateAndAssignRequestResponseLink =
-					RequestResponseLink.createAsync(this, this.getClientId() + "-cbs", requestResponseLinkPath, null, null, null, null)
-							.handleAsync((cbsLink, ex) ->
-							{
-								if(ex == null)
-								{
-									TRACE_LOGGER.info("Created CBS link to {}", requestResponseLinkPath);
-									this.cbsLink = cbsLink;
-									this.cbsLinkCreationFuture.complete(null);
-								}
-								else
-								{
-									this.lastCBSLinkCreationException = ExceptionUtil.extractAsyncCompletionCause(ex);
-									TRACE_LOGGER.warn("Creating CBS link to {} failed. Attempts '{}'", requestResponseLinkPath, this.cbsLinkCreationAttempts);
-									this.createCBSLinkAsync();
-								}
-								return null;
-	                        }, MessagingFactory.INTERNAL_THREAD_POOL);       
-			return crateAndAssignRequestResponseLink;
+	        RequestResponseLink.createAsync(this, this.getClientId() + "-cbs", requestResponseLinkPath, null, null, null, null).handleAsync((cbsLink, ex) ->
+            {
+                if(ex == null)
+                {
+                    TRACE_LOGGER.info("Created CBS link to {}", requestResponseLinkPath);
+                    if(this.getIsClosingOrClosed())
+                    {
+                    	// Factory is closed before CBSLink could be created. Close the created CBS link too
+                    	cbsLink.closeAsync();
+                    }
+                    else
+                    {
+                    	this.cbsLink = cbsLink;	
+                        this.cbsLinkCreationFuture.complete(null);
+                    }                    
+                }
+                else
+                {
+                    this.lastCBSLinkCreationException = ExceptionUtil.extractAsyncCompletionCause(ex);
+                    TRACE_LOGGER.warn("Creating CBS link to {} failed. Attempts '{}'", requestResponseLinkPath, this.cbsLinkCreationAttempts);
+                    this.createCBSLinkAsync();
+                }
+                return null;
+            }, MessagingFactory.INTERNAL_THREAD_POOL);
+	                        
 		}
 	}
 	
