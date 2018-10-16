@@ -26,6 +26,9 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Queue;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ConcurrentLinkedDeque;
@@ -42,9 +45,11 @@ import java.util.concurrent.RejectedExecutionException;
  */
 class SharedChannelPool implements ChannelPool {
     private static final AttributeKey<URI> CHANNEL_URI = AttributeKey.newInstance("channel-uri");
+    private static final AttributeKey<ZonedDateTime> CHANNEL_AVAILABLE_SINCE = AttributeKey.newInstance("channel-available-since");
     private final Bootstrap bootstrap;
     private final ChannelPoolHandler handler;
     private final int poolSize;
+    private final SharedChannelPoolOptions poolOptions;
     private final Queue<ChannelRequest> requests;
     private final ConcurrentMultiHashMap<URI, Channel> available;
     private final ConcurrentMultiHashMap<URI, Channel> leased;
@@ -53,11 +58,16 @@ class SharedChannelPool implements ChannelPool {
     private final ExecutorService executor;
     private volatile boolean closed = false;
 
-    private static boolean isChannelHealthy(Channel channel) {
+    private boolean isChannelHealthy(Channel channel) {
         if (!channel.isActive()) {
             return false;
+        } else if (channel.pipeline().get("HttpResponseDecoder") == null && channel.pipeline().get("HttpClientCodec") == null) {
+            return false;
+        } else {
+            final ZonedDateTime channelAvailableSince = channel.attr(CHANNEL_AVAILABLE_SINCE).get();
+            final long channelIdleDurationInSec = ChronoUnit.SECONDS.between(channelAvailableSince, ZonedDateTime.now(ZoneOffset.UTC));
+            return channelIdleDurationInSec < this.poolOptions.idleChannelKeepAliveDurationInSec();
         }
-        return channel.pipeline().get("HttpResponseDecoder") != null || channel.pipeline().get("HttpClientCodec") != null;
     }
 
     /**
@@ -65,8 +75,10 @@ class SharedChannelPool implements ChannelPool {
      * @param bootstrap the bootstrap to create channels
      * @param handler the handler to apply to the channels on creation, acquisition and release
      * @param size the upper limit of total number of channels
+     * @param options optional settings for the pool
      */
-    SharedChannelPool(final Bootstrap bootstrap, final ChannelPoolHandler handler, int size) {
+    SharedChannelPool(final Bootstrap bootstrap, final ChannelPoolHandler handler, int size, SharedChannelPoolOptions options) {
+        this.poolOptions = options.clone();
         this.bootstrap = bootstrap.clone().handler(new ChannelInitializer<Channel>() {
             @Override
             protected void initChannel(Channel ch) throws Exception {
@@ -113,56 +125,72 @@ class SharedChannelPool implements ChannelPool {
                             break;
                         }
 
-                        if (available.containsKey(request.channelURI)) {
+                        // Try to retrieve a healthy channel from pool
+                        boolean foundHealthyChannelInPool = false;
+                        while (available.containsKey(request.channelURI)) {
                             Channel channel = available.poll(request.channelURI);
                             if (isChannelHealthy(channel)) {
                                 handler.channelAcquired(channel);
                                 request.promise.setSuccess(channel);
                                 leased.put(request.channelURI, channel);
-                                continue;
+                                foundHealthyChannelInPool = true;
+                                break;
+                            } else {
+                                channel.close();
                             }
                         }
-                        // Create a new channel - remove an available one if size overflows
-                        if (available.size() > 0 && available.size() + leased.size() >= poolSize) {
-                            available.poll().close();
-                        }
-                        int port;
-                        if (request.destinationURI.getPort() < 0) {
-                            port = "https".equals(request.destinationURI.getScheme()) ? 443 : 80;
-                        } else {
-                            port = request.destinationURI.getPort();
-                        }
-                        channelFuture = SharedChannelPool.this.bootstrap.clone().connect(request.destinationURI.getHost(), port);
-                        channelFuture.channel().eventLoop().execute(() -> {
-                            channelFuture.channel().attr(CHANNEL_URI).set(request.channelURI);
-
-                            // Apply SSL handler for https connections
-                            if ("https".equalsIgnoreCase(request.destinationURI.getScheme())) {
-                                channelFuture.channel().pipeline().addFirst(sslContext.newHandler(channelFuture.channel().alloc(), request.destinationURI.getHost(), port));
+                        if (!foundHealthyChannelInPool) {
+                            // Not found a healthy channel in pool. Create a new channel - remove an available one if size overflows
+                            if (available.size() > 0 && available.size() + leased.size() >= poolSize) {
+                                available.poll().close();
                             }
-
-                            if (request.proxy != null) {
-                                channelFuture.channel().pipeline().addFirst("HttpProxyHandler", new HttpProxyHandler(request.proxy.address()));
+                            int port;
+                            if (request.destinationURI.getPort() < 0) {
+                                port = "https".equals(request.destinationURI.getScheme()) ? 443 : 80;
+                            } else {
+                                port = request.destinationURI.getPort();
                             }
+                            channelFuture = SharedChannelPool.this.bootstrap.clone().connect(request.destinationURI.getHost(), port);
+                            channelFuture.channel().eventLoop().execute(() -> {
+                                channelFuture.channel().attr(CHANNEL_URI).set(request.channelURI);
 
-                            leased.put(request.channelURI, channelFuture.channel());
-                            channelFuture.addListener((ChannelFuture future) -> {
-                                if (future.isSuccess()) {
-                                    handler.channelAcquired(future.channel());
-                                    request.promise.setSuccess(future.channel());
-                                } else {
-                                    leased.remove(request.channelURI, future.channel());
-
-                                    request.promise.setFailure(future.cause());
+                                // Apply SSL handler for https connections
+                                if ("https".equalsIgnoreCase(request.destinationURI.getScheme())) {
+                                    channelFuture.channel().pipeline().addFirst(sslContext.newHandler(channelFuture.channel().alloc(), request.destinationURI.getHost(), port));
                                 }
+
+                                if (request.proxy != null) {
+                                    channelFuture.channel().pipeline().addFirst("HttpProxyHandler", new HttpProxyHandler(request.proxy.address()));
+                                }
+
+                                leased.put(request.channelURI, channelFuture.channel());
+                                channelFuture.addListener((ChannelFuture future) -> {
+                                    if (future.isSuccess()) {
+                                        handler.channelAcquired(future.channel());
+                                        request.promise.setSuccess(future.channel());
+                                    } else {
+                                        leased.remove(request.channelURI, future.channel());
+                                        request.promise.setFailure(future.cause());
+                                    }
+                                });
                             });
-                        });
+                        }
                     }
                 } catch (Exception e) {
                     throw Exceptions.propagate(e);
                 }
             }
         });
+    }
+
+    /**
+     * Creates an instance of the shared channel pool.
+     * @param bootstrap the bootstrap to create channels
+     * @param handler the handler to apply to the channels on creation, acquisition and release
+     * @param size the upper limit of total number of channels
+     */
+    SharedChannelPool(final Bootstrap bootstrap, final ChannelPoolHandler handler, int size) {
+        this(bootstrap, handler, size, new SharedChannelPoolOptions());
     }
 
     /**
@@ -249,6 +277,7 @@ class SharedChannelPool implements ChannelPool {
         promise.setSuccess(null);
         synchronized (sync) {
             leased.remove(channel.attr(CHANNEL_URI).get(), channel);
+            channel.attr(CHANNEL_AVAILABLE_SINCE).set(ZonedDateTime.now(ZoneOffset.UTC));
             available.put(channel.attr(CHANNEL_URI).get(), channel);
             sync.notify();
         }

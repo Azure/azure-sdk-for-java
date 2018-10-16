@@ -6,6 +6,8 @@
 
 package com.microsoft.rest.v2.http;
 
+import com.microsoft.rest.v2.annotations.Beta;
+
 import java.net.Proxy;
 
 /**
@@ -13,6 +15,7 @@ import java.net.Proxy;
  */
 public class HttpClientConfiguration {
     private final Proxy proxy;
+    private SharedChannelPoolOptions poolOptions;
 
     /**
      * @return The optional proxy to use.
@@ -27,5 +30,18 @@ public class HttpClientConfiguration {
      */
     public HttpClientConfiguration(Proxy proxy) {
         this.proxy = proxy;
+        this.poolOptions = new SharedChannelPoolOptions();
+    }
+
+    /**
+     * Sets the duration in sec to keep the connection alive in available pool before closing it.
+     *
+     * @param duration duration in seconds
+     * @return HttpClientConfiguration
+     */
+    @Beta(since = "2.0.0")
+    public HttpClientConfiguration withIdleConnectionKeepAliveDurationInSec(long duration) {
+        this.poolOptions.withIdleChannelKeepAliveDurationInSec(duration);
+        return this;
     }
 }

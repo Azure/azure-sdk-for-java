@@ -22,6 +22,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class ConcurrentMultiHashMap<K, V> {
     private final Map<K, ConcurrentLinkedQueue<V>> data;
+    // Size is the total number of elements in all ConcurrentLinkedQueues in the Map.
     private final AtomicInteger size;
 
     /**
