@@ -229,14 +229,20 @@ class APISpec extends Specification {
         }
     }
 
-    static ByteBuffer getRandomData(long size) {
+    /*
+    Size must be an int because ByteBuffer sizes can only be an int. Long is not supported.
+     */
+    static ByteBuffer getRandomData(int size) {
         Random rand = new Random(getRandomSeed())
         byte[] data = new byte[size]
         rand.nextBytes(data)
         return ByteBuffer.wrap(data)
     }
 
-    static File getRandomFile(long size) {
+    /*
+    We only allow int because anything larger than 2GB (which would require a long) is left to stress/perf.
+     */
+    static File getRandomFile(int size) {
         File file = File.createTempFile(UUID.randomUUID().toString(), ".txt")
         file.deleteOnExit()
         FileOutputStream fos = new FileOutputStream(file)
@@ -431,7 +437,6 @@ class APISpec extends Specification {
     to play too nicely with mocked objects and the complex reflection stuff on both ends made it more difficult to work
     with than was worth it.
      */
-
     def getStubResponse(int code, Class responseHeadersType) {
         return new HttpResponse() {
 
@@ -468,6 +473,58 @@ class APISpec extends Specification {
             @Override
             Object deserializedHeaders() {
                 return responseHeadersType.getConstructor().newInstance()
+            }
+
+            @Override
+            boolean isDecoded() {
+                return true
+            }
+        }
+    }
+
+    /*
+    This is for stubbing responses that will actually go through the pipeline and autorest code. Autorest does not seem
+    to play too nicely with mocked objects and the complex reflection stuff on both ends made it more difficult to work
+    with than was worth it. Because this type is just for BlobDownload, we don't need to accept a header type.
+     */
+    def getStubResponseForBlobDownload(int code, Flowable<ByteBuffer> body, String etag) {
+        return new HttpResponse() {
+
+            @Override
+            int statusCode() {
+                return code
+            }
+
+            @Override
+            String headerValue(String s) {
+                return null
+            }
+
+            @Override
+            HttpHeaders headers() {
+                return new HttpHeaders()
+            }
+
+            @Override
+            Flowable<ByteBuffer> body() {
+                return body
+            }
+
+            @Override
+            Single<byte[]> bodyAsByteArray() {
+                return null
+            }
+
+            @Override
+            Single<String> bodyAsString() {
+                return null
+            }
+
+            @Override
+            Object deserializedHeaders() {
+                def headers = new BlobDownloadHeaders()
+                headers.withETag(etag)
+                return headers
             }
 
             @Override

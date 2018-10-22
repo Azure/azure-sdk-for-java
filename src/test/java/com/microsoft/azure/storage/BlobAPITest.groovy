@@ -18,8 +18,11 @@ package com.microsoft.azure.storage
 import com.microsoft.azure.storage.blob.*
 import com.microsoft.azure.storage.blob.models.*
 import com.microsoft.rest.v2.http.HttpPipeline
+import com.microsoft.rest.v2.http.HttpRequest
+import com.microsoft.rest.v2.policy.RequestPolicy
 import com.microsoft.rest.v2.util.FlowableUtil
 import io.reactivex.Flowable
+import io.reactivex.Single
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -68,6 +71,48 @@ class BlobAPITest extends APISpec {
         headers.blobCommittedBlockCount() == null
         headers.serverEncrypted
         headers.blobContentMD5() != null
+    }
+
+    /*
+    This is to test the appropriate integration of DownloadResponse, including setting the correct range values on
+    HTTPGetterInfo.
+     */
+    def "Download with retry range"() {
+        /*
+        We are going to make a request for some range on a blob. The Flowable returned will throw an exception, forcing
+        a retry per the ReliableDownloadOptions. The next request should have the same range header, which was generated
+        from the count and offset values in HTTPGetterInfo that was constructed on the initial call to download. We
+        don't need to check the data here, but we want to ensure that the correct range is set each time. This will
+        test the correction of a bug that was found which caused HTTPGetterInfo to have an incorrect offset when it was
+        constructed in BlobURL.download().
+         */
+        setup:
+        def mockPolicy = Mock(RequestPolicy) {
+            sendAsync(_) >> { HttpRequest request ->
+                if (request.headers().value("x-ms-range") != "bytes=2-6") {
+                    return Single.error(new IllegalArgumentException("The range header was not set correctly on retry."))
+                }
+                else {
+                    // ETag can be a dummy value. It's not validated, but DownloadResponse requires one
+                    return Single.just(getStubResponseForBlobDownload(206, Flowable.error(new IOException()), "etag"))
+                }
+            }
+        }
+        def pipeline = HttpPipeline.build(getStubFactory(mockPolicy))
+        bu = bu.withPipeline(pipeline)
+
+        when:
+        def range = new BlobRange().withOffset(2).withCount(5)
+        bu.download(range, null, false, null).blockingGet().body(new ReliableDownloadOptions().withMaxRetryRequests(3))
+                .blockingSubscribe()
+
+        then:
+        /*
+        Because the dummy Flowable always throws an error. This will also validate that an IllegalArgumentException is
+        NOT thrown because the types would not match.
+         */
+        def e = thrown(RuntimeException)
+        e.getCause() instanceof IOException
     }
 
     def "Download min"() {

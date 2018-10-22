@@ -31,19 +31,20 @@ import java.util.HashMap;
 
 public class DownloadResponseMockFlowable extends Flowable<ByteBuffer> {
 
-    public static final int RR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK = 0;
+    public static final int DR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK = 0;
 
-    public static final int RR_TEST_SCENARIO_SUCCESSFUL_MULTI_CHUNK = 1;
+    public static final int DR_TEST_SCENARIO_SUCCESSFUL_MULTI_CHUNK = 1;
 
-    public static final int RR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES = 2;
+    public static final int DR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES = 2;
 
-    public static final int RR_TEST_SCENARIO_MAX_RETRIES_EXCEEDED = 3;
+    public static final int DR_TEST_SCENARIO_MAX_RETRIES_EXCEEDED = 3;
 
-    public static final int RR_TEST_SCENARIO_NON_RETRYABLE_ERROR = 4;
+    public static final int DR_TEST_SCENARIO_NON_RETRYABLE_ERROR = 4;
 
-    public static final int RR_TEST_SCENARIO_ERROR_GETTER_MIDDLE = 6;
+    public static final int DR_TEST_SCENARIO_ERROR_GETTER_MIDDLE = 6;
 
-    public static final int RR_TEST_SCENARIO_INFO_TEST = 8;
+    public static final int DR_TEST_SCENARIO_INFO_TEST = 8;
+
 
     private int scenario;
 
@@ -56,13 +57,14 @@ public class DownloadResponseMockFlowable extends Flowable<ByteBuffer> {
     public DownloadResponseMockFlowable(int scenario) {
         this.scenario = scenario;
         switch (this.scenario) {
-            case RR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK:
+            case DR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK:
                 this.scenarioData = APISpec.getRandomData(512 * 1024);
                 break;
-            case RR_TEST_SCENARIO_SUCCESSFUL_MULTI_CHUNK:
+            case DR_TEST_SCENARIO_SUCCESSFUL_MULTI_CHUNK:
                 // Fall through
-            case RR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES:
+            case DR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES:
                 this.scenarioData = APISpec.getRandomData(1024);
+                break;
         }
     }
 
@@ -77,12 +79,12 @@ public class DownloadResponseMockFlowable extends Flowable<ByteBuffer> {
     @Override
     protected void subscribeActual(Subscriber<? super ByteBuffer> s) {
         switch (this.scenario) {
-            case RR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK:
+            case DR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK:
                 s.onNext(this.scenarioData.duplicate());
                 s.onComplete();
                 break;
 
-            case RR_TEST_SCENARIO_SUCCESSFUL_MULTI_CHUNK:
+            case DR_TEST_SCENARIO_SUCCESSFUL_MULTI_CHUNK:
                 for (int i = 0; i < 4; i++) {
                     ByteBuffer toSend = this.scenarioData.duplicate();
                     toSend.position(i * 256);
@@ -92,7 +94,7 @@ public class DownloadResponseMockFlowable extends Flowable<ByteBuffer> {
                 s.onComplete();
                 break;
 
-            case RR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES:
+            case DR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES:
                 if (this.tryNumber <= 3) {
                     // tryNumber is 1 indexed, so we have to sub 1.
                     if (this.info.offset() != (this.tryNumber - 1) * 256 ||
@@ -119,15 +121,15 @@ public class DownloadResponseMockFlowable extends Flowable<ByteBuffer> {
                 s.onComplete();
                 break;
 
-            case RR_TEST_SCENARIO_MAX_RETRIES_EXCEEDED:
+            case DR_TEST_SCENARIO_MAX_RETRIES_EXCEEDED:
                 s.onError(new IOException());
                 break;
 
-            case RR_TEST_SCENARIO_NON_RETRYABLE_ERROR:
+            case DR_TEST_SCENARIO_NON_RETRYABLE_ERROR:
                 s.onError(new Exception());
                 break;
 
-            case RR_TEST_SCENARIO_ERROR_GETTER_MIDDLE:
+            case DR_TEST_SCENARIO_ERROR_GETTER_MIDDLE:
                 switch (this.tryNumber) {
                     case 1:
                         /*
@@ -141,7 +143,7 @@ public class DownloadResponseMockFlowable extends Flowable<ByteBuffer> {
                 }
                 break;
 
-            case RR_TEST_SCENARIO_INFO_TEST:
+            case DR_TEST_SCENARIO_INFO_TEST:
                 switch (this.tryNumber) {
                     case 1:
                         // Test the value of info when getting the initial response.
@@ -171,7 +173,7 @@ public class DownloadResponseMockFlowable extends Flowable<ByteBuffer> {
         DownloadResponse response = new DownloadResponse(rawResponse, info, this::getter);
 
         switch (this.scenario) {
-            case RR_TEST_SCENARIO_ERROR_GETTER_MIDDLE:
+            case DR_TEST_SCENARIO_ERROR_GETTER_MIDDLE:
                 switch (this.tryNumber) {
                     case 1:
                         return Single.just(response);
@@ -214,8 +216,8 @@ public class DownloadResponseMockFlowable extends Flowable<ByteBuffer> {
                     default:
                         throw new IllegalArgumentException("Retried after error in getter");
                 }
-            case RR_TEST_SCENARIO_INFO_TEST:
-                // We also test that the info is updated in RR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES.
+            case DR_TEST_SCENARIO_INFO_TEST:
+                // We also test that the info is updated in DR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES.
                 if (info.count() != 10 || info.offset() != 20 || !info.eTag().equals("etag")) {
                     throw new IllegalArgumentException("Info values incorrect");
                 }

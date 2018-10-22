@@ -73,21 +73,12 @@ public final class DownloadResponse {
             return this.rawResponse.body();
         }
 
-        return this.rawResponse.body()
-                /*
-                Update how much data we have received in case we need to retry and propagate to the user the data we
-                have received.
-                 */
-                .doOnNext(buffer -> {
-                    this.info.withOffset(this.info.offset() + buffer.remaining());
-                    if (info.count() != null) {
-                        this.info.withCount(this.info.count() - buffer.remaining());
-                    }
-                })
-                .onErrorResumeNext(throwable -> {
-                    // So far we have tried once but retried zero times.
-                    return tryContinueFlowable(throwable, 0, optionsReal);
-                });
+        /*
+        We pass -1 for currentRetryCount because we want tryContinueFlowable to receive a value of 0 for number of
+        retries as we have not actually retried yet, only made the initial try. Because applyReliableDownload() will
+        add 1 before calling into tryContinueFlowable, we set the initial value to -1.
+         */
+        return this.applyReliableDownload(this.rawResponse.body(), -1, optionsReal);
     }
 
     private Flowable<ByteBuffer> tryContinueFlowable(Throwable t, int retryCount, ReliableDownloadOptions options) {
@@ -95,31 +86,45 @@ public final class DownloadResponse {
         if (retryCount > options.maxRetryRequests() || !(t instanceof IOException)) {
             return Flowable.error(t);
         } else {
+            /*
+            We wrap this in a try catch because we don't know the behavior of the getter. Most errors would probably
+            come from an unsuccessful request, which would be propagated through the onError methods. However, it is
+            possible the method call that returns a Single is what throws (like how our apis throw some exceptions at
+            call time rather than at subscription time.
+             */
             try {
                 // Get a new response and try reading from it.
                 return getter.apply(this.info)
-                        .flatMapPublisher(response -> {
-                            // Do not compound the number of retries; just get the raw body.
-                            ReliableDownloadOptions newOptions = new ReliableDownloadOptions()
-                                    .withMaxRetryRequests(0);
-
-                            return response.body(newOptions)
-                                    .doOnNext(buffer -> {
-                                        this.info.withOffset(this.info.offset() + buffer.remaining());
-                                        if (info.count() != null) {
-                                            this.info.withCount(this.info.count() - buffer.remaining());
-                                        }
-                                    })
-                                    .onErrorResumeNext(t2 -> {
-                                        // Increment the retry count and try again with the new exception.
-                                        return tryContinueFlowable(t2, retryCount + 1, options);
-                                    });
-                        });
+                        .flatMapPublisher(response ->
+                            /*
+                            Do not compound the number of retries by passing in another set of downloadOptions; just get
+                            the raw body.
+                             */
+                            this.applyReliableDownload(this.rawResponse.body(), retryCount, options));
             } catch (Exception e) {
                 // If the getter fails, return the getter failure to the user.
                 return Flowable.error(e);
             }
         }
+    }
+
+    private Flowable<ByteBuffer> applyReliableDownload(Flowable<ByteBuffer> data,
+            int currentRetryCount, ReliableDownloadOptions options) {
+        return data
+                .doOnNext(buffer -> {
+                    /*
+                    Update how much data we have received in case we need to retry and propagate to the user the data we
+                    have received.
+                     */
+                    this.info.withOffset(this.info.offset() + buffer.remaining());
+                    if (this.info.count() != null) {
+                        this.info.withCount(this.info.count() - buffer.remaining());
+                    }
+                })
+                .onErrorResumeNext(t2 -> {
+                    // Increment the retry count and try again with the new exception.
+                    return tryContinueFlowable(t2, currentRetryCount + 1, options);
+                });
     }
 
     public int statusCode() {
