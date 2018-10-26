@@ -132,6 +132,18 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/listUsages")
         Observable<Response<ResponseBody>> listUsages(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("registryName") String registryName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.containerregistry.v2018_02_01_preview.Registries listPolicies" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/listPolicies")
+        Observable<Response<ResponseBody>> listPolicies(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("registryName") String registryName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.containerregistry.v2018_02_01_preview.Registries updatePolicies" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/updatePolicies")
+        Observable<Response<ResponseBody>> updatePolicies(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("registryName") String registryName, @Query("api-version") String apiVersion, @Body RegistryPoliciesInner registryPoliciesUpdateParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.containerregistry.v2018_02_01_preview.Registries beginUpdatePolicies" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/updatePolicies")
+        Observable<Response<ResponseBody>> beginUpdatePolicies(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("registryName") String registryName, @Query("api-version") String apiVersion, @Body RegistryPoliciesInner registryPoliciesUpdateParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.containerregistry.v2018_02_01_preview.Registries queueBuild" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/queueBuild")
         Observable<Response<ResponseBody>> queueBuild(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("registryName") String registryName, @Query("api-version") String apiVersion, @Body QueueBuildRequest buildRequest, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -1445,6 +1457,258 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
     private ServiceResponse<RegistryUsageListResultInner> listUsagesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<RegistryUsageListResultInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<RegistryUsageListResultInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Lists the policies for the specified container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the RegistryPoliciesInner object if successful.
+     */
+    public RegistryPoliciesInner listPolicies(String resourceGroupName, String registryName) {
+        return listPoliciesWithServiceResponseAsync(resourceGroupName, registryName).toBlocking().single().body();
+    }
+
+    /**
+     * Lists the policies for the specified container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<RegistryPoliciesInner> listPoliciesAsync(String resourceGroupName, String registryName, final ServiceCallback<RegistryPoliciesInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listPoliciesWithServiceResponseAsync(resourceGroupName, registryName), serviceCallback);
+    }
+
+    /**
+     * Lists the policies for the specified container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the RegistryPoliciesInner object
+     */
+    public Observable<RegistryPoliciesInner> listPoliciesAsync(String resourceGroupName, String registryName) {
+        return listPoliciesWithServiceResponseAsync(resourceGroupName, registryName).map(new Func1<ServiceResponse<RegistryPoliciesInner>, RegistryPoliciesInner>() {
+            @Override
+            public RegistryPoliciesInner call(ServiceResponse<RegistryPoliciesInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Lists the policies for the specified container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the RegistryPoliciesInner object
+     */
+    public Observable<ServiceResponse<RegistryPoliciesInner>> listPoliciesWithServiceResponseAsync(String resourceGroupName, String registryName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (registryName == null) {
+            throw new IllegalArgumentException("Parameter registryName is required and cannot be null.");
+        }
+        final String apiVersion = "2017-10-01";
+        return service.listPolicies(this.client.subscriptionId(), resourceGroupName, registryName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RegistryPoliciesInner>>>() {
+                @Override
+                public Observable<ServiceResponse<RegistryPoliciesInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<RegistryPoliciesInner> clientResponse = listPoliciesDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<RegistryPoliciesInner> listPoliciesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<RegistryPoliciesInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<RegistryPoliciesInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Updates the policies for the specified container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param registryPoliciesUpdateParameters The parameters for updating policies of a container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the RegistryPoliciesInner object if successful.
+     */
+    public RegistryPoliciesInner updatePolicies(String resourceGroupName, String registryName, RegistryPoliciesInner registryPoliciesUpdateParameters) {
+        return updatePoliciesWithServiceResponseAsync(resourceGroupName, registryName, registryPoliciesUpdateParameters).toBlocking().last().body();
+    }
+
+    /**
+     * Updates the policies for the specified container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param registryPoliciesUpdateParameters The parameters for updating policies of a container registry.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<RegistryPoliciesInner> updatePoliciesAsync(String resourceGroupName, String registryName, RegistryPoliciesInner registryPoliciesUpdateParameters, final ServiceCallback<RegistryPoliciesInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updatePoliciesWithServiceResponseAsync(resourceGroupName, registryName, registryPoliciesUpdateParameters), serviceCallback);
+    }
+
+    /**
+     * Updates the policies for the specified container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param registryPoliciesUpdateParameters The parameters for updating policies of a container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<RegistryPoliciesInner> updatePoliciesAsync(String resourceGroupName, String registryName, RegistryPoliciesInner registryPoliciesUpdateParameters) {
+        return updatePoliciesWithServiceResponseAsync(resourceGroupName, registryName, registryPoliciesUpdateParameters).map(new Func1<ServiceResponse<RegistryPoliciesInner>, RegistryPoliciesInner>() {
+            @Override
+            public RegistryPoliciesInner call(ServiceResponse<RegistryPoliciesInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Updates the policies for the specified container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param registryPoliciesUpdateParameters The parameters for updating policies of a container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<RegistryPoliciesInner>> updatePoliciesWithServiceResponseAsync(String resourceGroupName, String registryName, RegistryPoliciesInner registryPoliciesUpdateParameters) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (registryName == null) {
+            throw new IllegalArgumentException("Parameter registryName is required and cannot be null.");
+        }
+        if (registryPoliciesUpdateParameters == null) {
+            throw new IllegalArgumentException("Parameter registryPoliciesUpdateParameters is required and cannot be null.");
+        }
+        Validator.validate(registryPoliciesUpdateParameters);
+        final String apiVersion = "2017-10-01";
+        Observable<Response<ResponseBody>> observable = service.updatePolicies(this.client.subscriptionId(), resourceGroupName, registryName, apiVersion, registryPoliciesUpdateParameters, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<RegistryPoliciesInner>() { }.getType());
+    }
+
+    /**
+     * Updates the policies for the specified container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param registryPoliciesUpdateParameters The parameters for updating policies of a container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the RegistryPoliciesInner object if successful.
+     */
+    public RegistryPoliciesInner beginUpdatePolicies(String resourceGroupName, String registryName, RegistryPoliciesInner registryPoliciesUpdateParameters) {
+        return beginUpdatePoliciesWithServiceResponseAsync(resourceGroupName, registryName, registryPoliciesUpdateParameters).toBlocking().single().body();
+    }
+
+    /**
+     * Updates the policies for the specified container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param registryPoliciesUpdateParameters The parameters for updating policies of a container registry.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<RegistryPoliciesInner> beginUpdatePoliciesAsync(String resourceGroupName, String registryName, RegistryPoliciesInner registryPoliciesUpdateParameters, final ServiceCallback<RegistryPoliciesInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginUpdatePoliciesWithServiceResponseAsync(resourceGroupName, registryName, registryPoliciesUpdateParameters), serviceCallback);
+    }
+
+    /**
+     * Updates the policies for the specified container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param registryPoliciesUpdateParameters The parameters for updating policies of a container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the RegistryPoliciesInner object
+     */
+    public Observable<RegistryPoliciesInner> beginUpdatePoliciesAsync(String resourceGroupName, String registryName, RegistryPoliciesInner registryPoliciesUpdateParameters) {
+        return beginUpdatePoliciesWithServiceResponseAsync(resourceGroupName, registryName, registryPoliciesUpdateParameters).map(new Func1<ServiceResponse<RegistryPoliciesInner>, RegistryPoliciesInner>() {
+            @Override
+            public RegistryPoliciesInner call(ServiceResponse<RegistryPoliciesInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Updates the policies for the specified container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param registryPoliciesUpdateParameters The parameters for updating policies of a container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the RegistryPoliciesInner object
+     */
+    public Observable<ServiceResponse<RegistryPoliciesInner>> beginUpdatePoliciesWithServiceResponseAsync(String resourceGroupName, String registryName, RegistryPoliciesInner registryPoliciesUpdateParameters) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (registryName == null) {
+            throw new IllegalArgumentException("Parameter registryName is required and cannot be null.");
+        }
+        if (registryPoliciesUpdateParameters == null) {
+            throw new IllegalArgumentException("Parameter registryPoliciesUpdateParameters is required and cannot be null.");
+        }
+        Validator.validate(registryPoliciesUpdateParameters);
+        final String apiVersion = "2017-10-01";
+        return service.beginUpdatePolicies(this.client.subscriptionId(), resourceGroupName, registryName, apiVersion, registryPoliciesUpdateParameters, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RegistryPoliciesInner>>>() {
+                @Override
+                public Observable<ServiceResponse<RegistryPoliciesInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<RegistryPoliciesInner> clientResponse = beginUpdatePoliciesDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<RegistryPoliciesInner> beginUpdatePoliciesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<RegistryPoliciesInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<RegistryPoliciesInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

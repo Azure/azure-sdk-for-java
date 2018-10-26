@@ -39,7 +39,7 @@ public class OperationDisplay {
     private String description;
 
     /**
-     * Get the provider value.
+     * Get service provider: Microsoft IoT Central.
      *
      * @return the provider value
      */
@@ -48,7 +48,7 @@ public class OperationDisplay {
     }
 
     /**
-     * Get the resource value.
+     * Get resource Type: IoT Central.
      *
      * @return the resource value
      */
@@ -57,7 +57,7 @@ public class OperationDisplay {
     }
 
     /**
-     * Get the operation value.
+     * Get name of the operation.
      *
      * @return the operation value
      */
@@ -66,7 +66,7 @@ public class OperationDisplay {
     }
 
     /**
-     * Get the description value.
+     * Get friendly description for the operation,.
      *
      * @return the description value
      */

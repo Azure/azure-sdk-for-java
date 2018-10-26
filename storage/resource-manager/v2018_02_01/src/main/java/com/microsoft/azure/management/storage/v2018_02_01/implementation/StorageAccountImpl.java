@@ -112,6 +112,11 @@ class StorageAccountImpl extends GroupableResourceCoreImpl<StorageAccount, Stora
     }
 
     @Override
+    public Boolean isHnsEnabled() {
+        return this.inner().isHnsEnabled();
+    }
+
+    @Override
     public Kind kind() {
         return this.inner().kind();
     }
@@ -169,6 +174,12 @@ class StorageAccountImpl extends GroupableResourceCoreImpl<StorageAccount, Stora
     @Override
     public AccountStatus statusOfSecondary() {
         return this.inner().statusOfSecondary();
+    }
+
+    @Override
+    public StorageAccountImpl withIsHnsEnabled(Boolean isHnsEnabled) {
+        this.createParameter.withIsHnsEnabled(isHnsEnabled);
+        return this;
     }
 
     @Override

@@ -22,6 +22,9 @@ public final class WebhookAction extends ExpandableStringEnum<WebhookAction> {
     /** Static value delete for WebhookAction. */
     public static final WebhookAction DELETE = fromString("delete");
 
+    /** Static value quarantine for WebhookAction. */
+    public static final WebhookAction QUARANTINE = fromString("quarantine");
+
     /**
      * Creates or finds a WebhookAction from its string representation.
      * @param name a name to look for

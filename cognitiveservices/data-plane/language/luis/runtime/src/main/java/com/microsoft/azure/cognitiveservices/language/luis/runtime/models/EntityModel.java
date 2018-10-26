@@ -37,14 +37,14 @@ public class EntityModel {
      * utterance.
      */
     @JsonProperty(value = "startIndex", required = true)
-    private double startIndex;
+    private int startIndex;
 
     /**
      * The position of the last character of the matched entity within the
      * utterance.
      */
     @JsonProperty(value = "endIndex", required = true)
-    private double endIndex;
+    private int endIndex;
 
     /**
      * Get the additionalProperties value.
@@ -111,7 +111,7 @@ public class EntityModel {
      *
      * @return the startIndex value
      */
-    public double startIndex() {
+    public int startIndex() {
         return this.startIndex;
     }
 
@@ -121,7 +121,7 @@ public class EntityModel {
      * @param startIndex the startIndex value to set
      * @return the EntityModel object itself.
      */
-    public EntityModel withStartIndex(double startIndex) {
+    public EntityModel withStartIndex(int startIndex) {
         this.startIndex = startIndex;
         return this;
     }
@@ -131,7 +131,7 @@ public class EntityModel {
      *
      * @return the endIndex value
      */
-    public double endIndex() {
+    public int endIndex() {
         return this.endIndex;
     }
 
@@ -141,7 +141,7 @@ public class EntityModel {
      * @param endIndex the endIndex value to set
      * @return the EntityModel object itself.
      */
-    public EntityModel withEndIndex(double endIndex) {
+    public EntityModel withEndIndex(int endIndex) {
         this.endIndex = endIndex;
         return this;
     }

@@ -11,6 +11,7 @@ package com.microsoft.azure.management.containerregistry.v2018_02_01_preview.imp
 import com.microsoft.azure.management.containerregistry.v2018_02_01_preview.OperationDefinition;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.containerregistry.v2018_02_01_preview.OperationDisplayDefinition;
+import com.microsoft.azure.management.containerregistry.v2018_02_01_preview.OperationServiceSpecificationDefinition;
 
 class OperationDefinitionImpl extends WrapperImpl<OperationDefinitionInner> implements OperationDefinition {
     private final ContainerRegistryManager manager;
@@ -32,6 +33,16 @@ class OperationDefinitionImpl extends WrapperImpl<OperationDefinitionInner> impl
     @Override
     public String name() {
         return this.inner().name();
+    }
+
+    @Override
+    public String origin() {
+        return this.inner().origin();
+    }
+
+    @Override
+    public OperationServiceSpecificationDefinition serviceSpecification() {
+        return this.inner().serviceSpecification();
     }
 
 }

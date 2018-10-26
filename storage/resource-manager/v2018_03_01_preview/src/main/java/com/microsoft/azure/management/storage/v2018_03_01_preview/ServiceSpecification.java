@@ -22,7 +22,7 @@ public class ServiceSpecification {
     private List<MetricSpecification> metricSpecifications;
 
     /**
-     * Get the metricSpecifications value.
+     * Get metric specifications of operation.
      *
      * @return the metricSpecifications value
      */
@@ -31,7 +31,7 @@ public class ServiceSpecification {
     }
 
     /**
-     * Set the metricSpecifications value.
+     * Set metric specifications of operation.
      *
      * @param metricSpecifications the metricSpecifications value to set
      * @return the ServiceSpecification object itself.

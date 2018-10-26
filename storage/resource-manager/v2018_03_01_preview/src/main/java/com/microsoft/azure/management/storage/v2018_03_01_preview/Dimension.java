@@ -27,7 +27,7 @@ public class Dimension {
     private String displayName;
 
     /**
-     * Get the name value.
+     * Get display name of dimension.
      *
      * @return the name value
      */
@@ -36,7 +36,7 @@ public class Dimension {
     }
 
     /**
-     * Set the name value.
+     * Set display name of dimension.
      *
      * @param name the name value to set
      * @return the Dimension object itself.
@@ -47,7 +47,7 @@ public class Dimension {
     }
 
     /**
-     * Get the displayName value.
+     * Get display name of dimension.
      *
      * @return the displayName value
      */
@@ -56,7 +56,7 @@ public class Dimension {
     }
 
     /**
-     * Set the displayName value.
+     * Set display name of dimension.
      *
      * @param displayName the displayName value to set
      * @return the Dimension object itself.

@@ -26,6 +26,7 @@ class BuildImpl extends CreatableUpdatableImpl<Build, BuildInner, BuildImpl> imp
     private String resourceGroupName;
     private String registryName;
     private String buildId;
+    private Boolean uisArchiveEnabled;
 
     BuildImpl(String name, ContainerRegistryManager manager) {
         super(name, new BuildInner());
@@ -40,7 +41,7 @@ class BuildImpl extends CreatableUpdatableImpl<Build, BuildInner, BuildImpl> imp
         this.manager = manager;
         // Set resource name
         this.buildId = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.registryName = IdParsingUtils.getValueFromIdByName(inner.id(), "registries");
         this.buildId = IdParsingUtils.getValueFromIdByName(inner.id(), "builds");
@@ -61,7 +62,7 @@ class BuildImpl extends CreatableUpdatableImpl<Build, BuildInner, BuildImpl> imp
     @Override
     public Observable<Build> updateResourceAsync() {
         BuildsInner client = this.manager().inner().builds();
-        return client.updateAsync(this.resourceGroupName, this.registryName, this.buildId)
+        return client.updateAsync(this.resourceGroupName, this.registryName, this.buildId, this.uisArchiveEnabled)
             .map(innerToFluentMap(this));
     }
 
@@ -160,6 +161,12 @@ class BuildImpl extends CreatableUpdatableImpl<Build, BuildInner, BuildImpl> imp
     @Override
     public String type() {
         return this.inner().type();
+    }
+
+    @Override
+    public BuildImpl withIsArchiveEnabled(Boolean isArchiveEnabled) {
+        this.uisArchiveEnabled = isArchiveEnabled;
+        return this;
     }
 
 }

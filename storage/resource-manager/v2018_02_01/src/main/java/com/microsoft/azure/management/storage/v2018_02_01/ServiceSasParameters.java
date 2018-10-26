@@ -26,7 +26,7 @@ public class ServiceSasParameters {
      * include: Blob (b), Container (c), File (f), Share (s). Possible values
      * include: 'b', 'c', 'f', 's'.
      */
-    @JsonProperty(value = "signedResource", required = true)
+    @JsonProperty(value = "signedResource")
     private SignedResource resource;
 
     /**
@@ -131,7 +131,7 @@ public class ServiceSasParameters {
     private String contentType;
 
     /**
-     * Get the canonicalizedResource value.
+     * Get the canonical path to the signed resource.
      *
      * @return the canonicalizedResource value
      */
@@ -140,7 +140,7 @@ public class ServiceSasParameters {
     }
 
     /**
-     * Set the canonicalizedResource value.
+     * Set the canonical path to the signed resource.
      *
      * @param canonicalizedResource the canonicalizedResource value to set
      * @return the ServiceSasParameters object itself.
@@ -151,7 +151,7 @@ public class ServiceSasParameters {
     }
 
     /**
-     * Get the resource value.
+     * Get the signed services accessible with the service SAS. Possible values include: Blob (b), Container (c), File (f), Share (s). Possible values include: 'b', 'c', 'f', 's'.
      *
      * @return the resource value
      */
@@ -160,7 +160,7 @@ public class ServiceSasParameters {
     }
 
     /**
-     * Set the resource value.
+     * Set the signed services accessible with the service SAS. Possible values include: Blob (b), Container (c), File (f), Share (s). Possible values include: 'b', 'c', 'f', 's'.
      *
      * @param resource the resource value to set
      * @return the ServiceSasParameters object itself.
@@ -171,7 +171,7 @@ public class ServiceSasParameters {
     }
 
     /**
-     * Get the permissions value.
+     * Get the signed permissions for the service SAS. Possible values include: Read (r), Write (w), Delete (d), List (l), Add (a), Create (c), Update (u) and Process (p). Possible values include: 'r', 'd', 'w', 'l', 'a', 'c', 'u', 'p'.
      *
      * @return the permissions value
      */
@@ -180,7 +180,7 @@ public class ServiceSasParameters {
     }
 
     /**
-     * Set the permissions value.
+     * Set the signed permissions for the service SAS. Possible values include: Read (r), Write (w), Delete (d), List (l), Add (a), Create (c), Update (u) and Process (p). Possible values include: 'r', 'd', 'w', 'l', 'a', 'c', 'u', 'p'.
      *
      * @param permissions the permissions value to set
      * @return the ServiceSasParameters object itself.
@@ -191,7 +191,7 @@ public class ServiceSasParameters {
     }
 
     /**
-     * Get the iPAddressOrRange value.
+     * Get an IP address or a range of IP addresses from which to accept requests.
      *
      * @return the iPAddressOrRange value
      */
@@ -200,7 +200,7 @@ public class ServiceSasParameters {
     }
 
     /**
-     * Set the iPAddressOrRange value.
+     * Set an IP address or a range of IP addresses from which to accept requests.
      *
      * @param iPAddressOrRange the iPAddressOrRange value to set
      * @return the ServiceSasParameters object itself.
@@ -211,7 +211,7 @@ public class ServiceSasParameters {
     }
 
     /**
-     * Get the protocols value.
+     * Get the protocol permitted for a request made with the account SAS. Possible values include: 'https,http', 'https'.
      *
      * @return the protocols value
      */
@@ -220,7 +220,7 @@ public class ServiceSasParameters {
     }
 
     /**
-     * Set the protocols value.
+     * Set the protocol permitted for a request made with the account SAS. Possible values include: 'https,http', 'https'.
      *
      * @param protocols the protocols value to set
      * @return the ServiceSasParameters object itself.
@@ -231,7 +231,7 @@ public class ServiceSasParameters {
     }
 
     /**
-     * Get the sharedAccessStartTime value.
+     * Get the time at which the SAS becomes valid.
      *
      * @return the sharedAccessStartTime value
      */
@@ -240,7 +240,7 @@ public class ServiceSasParameters {
     }
 
     /**
-     * Set the sharedAccessStartTime value.
+     * Set the time at which the SAS becomes valid.
      *
      * @param sharedAccessStartTime the sharedAccessStartTime value to set
      * @return the ServiceSasParameters object itself.
@@ -251,7 +251,7 @@ public class ServiceSasParameters {
     }
 
     /**
-     * Get the sharedAccessExpiryTime value.
+     * Get the time at which the shared access signature becomes invalid.
      *
      * @return the sharedAccessExpiryTime value
      */
@@ -260,7 +260,7 @@ public class ServiceSasParameters {
     }
 
     /**
-     * Set the sharedAccessExpiryTime value.
+     * Set the time at which the shared access signature becomes invalid.
      *
      * @param sharedAccessExpiryTime the sharedAccessExpiryTime value to set
      * @return the ServiceSasParameters object itself.
@@ -271,7 +271,7 @@ public class ServiceSasParameters {
     }
 
     /**
-     * Get the identifier value.
+     * Get a unique value up to 64 characters in length that correlates to an access policy specified for the container, queue, or table.
      *
      * @return the identifier value
      */
@@ -280,7 +280,7 @@ public class ServiceSasParameters {
     }
 
     /**
-     * Set the identifier value.
+     * Set a unique value up to 64 characters in length that correlates to an access policy specified for the container, queue, or table.
      *
      * @param identifier the identifier value to set
      * @return the ServiceSasParameters object itself.
@@ -291,7 +291,7 @@ public class ServiceSasParameters {
     }
 
     /**
-     * Get the partitionKeyStart value.
+     * Get the start of partition key.
      *
      * @return the partitionKeyStart value
      */
@@ -300,7 +300,7 @@ public class ServiceSasParameters {
     }
 
     /**
-     * Set the partitionKeyStart value.
+     * Set the start of partition key.
      *
      * @param partitionKeyStart the partitionKeyStart value to set
      * @return the ServiceSasParameters object itself.
@@ -311,7 +311,7 @@ public class ServiceSasParameters {
     }
 
     /**
-     * Get the partitionKeyEnd value.
+     * Get the end of partition key.
      *
      * @return the partitionKeyEnd value
      */
@@ -320,7 +320,7 @@ public class ServiceSasParameters {
     }
 
     /**
-     * Set the partitionKeyEnd value.
+     * Set the end of partition key.
      *
      * @param partitionKeyEnd the partitionKeyEnd value to set
      * @return the ServiceSasParameters object itself.
@@ -331,7 +331,7 @@ public class ServiceSasParameters {
     }
 
     /**
-     * Get the rowKeyStart value.
+     * Get the start of row key.
      *
      * @return the rowKeyStart value
      */
@@ -340,7 +340,7 @@ public class ServiceSasParameters {
     }
 
     /**
-     * Set the rowKeyStart value.
+     * Set the start of row key.
      *
      * @param rowKeyStart the rowKeyStart value to set
      * @return the ServiceSasParameters object itself.
@@ -351,7 +351,7 @@ public class ServiceSasParameters {
     }
 
     /**
-     * Get the rowKeyEnd value.
+     * Get the end of row key.
      *
      * @return the rowKeyEnd value
      */
@@ -360,7 +360,7 @@ public class ServiceSasParameters {
     }
 
     /**
-     * Set the rowKeyEnd value.
+     * Set the end of row key.
      *
      * @param rowKeyEnd the rowKeyEnd value to set
      * @return the ServiceSasParameters object itself.
@@ -371,7 +371,7 @@ public class ServiceSasParameters {
     }
 
     /**
-     * Get the keyToSign value.
+     * Get the key to sign the account SAS token with.
      *
      * @return the keyToSign value
      */
@@ -380,7 +380,7 @@ public class ServiceSasParameters {
     }
 
     /**
-     * Set the keyToSign value.
+     * Set the key to sign the account SAS token with.
      *
      * @param keyToSign the keyToSign value to set
      * @return the ServiceSasParameters object itself.
@@ -391,7 +391,7 @@ public class ServiceSasParameters {
     }
 
     /**
-     * Get the cacheControl value.
+     * Get the response header override for cache control.
      *
      * @return the cacheControl value
      */
@@ -400,7 +400,7 @@ public class ServiceSasParameters {
     }
 
     /**
-     * Set the cacheControl value.
+     * Set the response header override for cache control.
      *
      * @param cacheControl the cacheControl value to set
      * @return the ServiceSasParameters object itself.
@@ -411,7 +411,7 @@ public class ServiceSasParameters {
     }
 
     /**
-     * Get the contentDisposition value.
+     * Get the response header override for content disposition.
      *
      * @return the contentDisposition value
      */
@@ -420,7 +420,7 @@ public class ServiceSasParameters {
     }
 
     /**
-     * Set the contentDisposition value.
+     * Set the response header override for content disposition.
      *
      * @param contentDisposition the contentDisposition value to set
      * @return the ServiceSasParameters object itself.
@@ -431,7 +431,7 @@ public class ServiceSasParameters {
     }
 
     /**
-     * Get the contentEncoding value.
+     * Get the response header override for content encoding.
      *
      * @return the contentEncoding value
      */
@@ -440,7 +440,7 @@ public class ServiceSasParameters {
     }
 
     /**
-     * Set the contentEncoding value.
+     * Set the response header override for content encoding.
      *
      * @param contentEncoding the contentEncoding value to set
      * @return the ServiceSasParameters object itself.
@@ -451,7 +451,7 @@ public class ServiceSasParameters {
     }
 
     /**
-     * Get the contentLanguage value.
+     * Get the response header override for content language.
      *
      * @return the contentLanguage value
      */
@@ -460,7 +460,7 @@ public class ServiceSasParameters {
     }
 
     /**
-     * Set the contentLanguage value.
+     * Set the response header override for content language.
      *
      * @param contentLanguage the contentLanguage value to set
      * @return the ServiceSasParameters object itself.
@@ -471,7 +471,7 @@ public class ServiceSasParameters {
     }
 
     /**
-     * Get the contentType value.
+     * Get the response header override for content type.
      *
      * @return the contentType value
      */
@@ -480,7 +480,7 @@ public class ServiceSasParameters {
     }
 
     /**
-     * Set the contentType value.
+     * Set the response header override for content type.
      *
      * @param contentType the contentType value to set
      * @return the ServiceSasParameters object itself.
