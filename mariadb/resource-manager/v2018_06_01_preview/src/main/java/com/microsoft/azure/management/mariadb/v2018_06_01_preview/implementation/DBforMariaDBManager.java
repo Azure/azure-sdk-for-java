@@ -18,6 +18,7 @@ import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
 import com.microsoft.azure.management.mariadb.v2018_06_01_preview.Servers;
 import com.microsoft.azure.management.mariadb.v2018_06_01_preview.FirewallRules;
+import com.microsoft.azure.management.mariadb.v2018_06_01_preview.VirtualNetworkRules;
 import com.microsoft.azure.management.mariadb.v2018_06_01_preview.Databases;
 import com.microsoft.azure.management.mariadb.v2018_06_01_preview.Configurations;
 import com.microsoft.azure.management.mariadb.v2018_06_01_preview.LogFiles;
@@ -34,6 +35,7 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 public final class DBforMariaDBManager extends ManagerCore<DBforMariaDBManager, MariaDBManagementClientImpl> {
     private Servers servers;
     private FirewallRules firewallRules;
+    private VirtualNetworkRules virtualNetworkRules;
     private Databases databases;
     private Configurations configurations;
     private LogFiles logFiles;
@@ -106,6 +108,16 @@ public final class DBforMariaDBManager extends ManagerCore<DBforMariaDBManager, 
             this.firewallRules = new FirewallRulesImpl(this);
         }
         return this.firewallRules;
+    }
+
+    /**
+     * @return Entry point to manage VirtualNetworkRules.
+     */
+    public VirtualNetworkRules virtualNetworkRules() {
+        if (this.virtualNetworkRules == null) {
+            this.virtualNetworkRules = new VirtualNetworkRulesImpl(this);
+        }
+        return this.virtualNetworkRules;
     }
 
     /**
