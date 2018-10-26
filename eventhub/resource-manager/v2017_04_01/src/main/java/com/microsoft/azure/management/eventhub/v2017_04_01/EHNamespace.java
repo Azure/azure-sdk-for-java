@@ -36,6 +36,11 @@ public interface EHNamespace extends HasInner<EHNamespaceInner>, Resource, Group
     Boolean isAutoInflateEnabled();
 
     /**
+     * @return the kafkaEnabled value.
+     */
+    Boolean kafkaEnabled();
+
+    /**
      * @return the maximumThroughputUnits value.
      */
     Integer maximumThroughputUnits();
@@ -98,6 +103,16 @@ public interface EHNamespace extends HasInner<EHNamespaceInner>, Resource, Group
         }
 
         /**
+         * The stage of the ehnamespace update allowing to specify KafkaEnabled.
+         */
+        interface WithKafkaEnabled {
+            /**
+             * Specifies kafkaEnabled.
+             */
+            WithCreate withKafkaEnabled(Boolean kafkaEnabled);
+        }
+
+        /**
          * The stage of the ehnamespace update allowing to specify MaximumThroughputUnits.
          */
         interface WithMaximumThroughputUnits {
@@ -122,13 +137,13 @@ public interface EHNamespace extends HasInner<EHNamespaceInner>, Resource, Group
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<EHNamespace>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithIsAutoInflateEnabled, DefinitionStages.WithMaximumThroughputUnits, DefinitionStages.WithSku {
+        interface WithCreate extends Creatable<EHNamespace>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithIsAutoInflateEnabled, DefinitionStages.WithKafkaEnabled, DefinitionStages.WithMaximumThroughputUnits, DefinitionStages.WithSku {
         }
     }
     /**
      * The template for a EHNamespace update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<EHNamespace>, Resource.UpdateWithTags<Update>, UpdateStages.WithIsAutoInflateEnabled, UpdateStages.WithMaximumThroughputUnits, UpdateStages.WithSku {
+    interface Update extends Appliable<EHNamespace>, Resource.UpdateWithTags<Update>, UpdateStages.WithIsAutoInflateEnabled, UpdateStages.WithKafkaEnabled, UpdateStages.WithMaximumThroughputUnits, UpdateStages.WithSku {
     }
 
     /**
@@ -143,6 +158,16 @@ public interface EHNamespace extends HasInner<EHNamespaceInner>, Resource, Group
              * Specifies isAutoInflateEnabled.
              */
             Update withIsAutoInflateEnabled(Boolean isAutoInflateEnabled);
+        }
+
+        /**
+         * The stage of the ehnamespace {0} allowing to specify KafkaEnabled.
+         */
+        interface WithKafkaEnabled {
+            /**
+             * Specifies kafkaEnabled.
+             */
+            Update withKafkaEnabled(Boolean kafkaEnabled);
         }
 
         /**

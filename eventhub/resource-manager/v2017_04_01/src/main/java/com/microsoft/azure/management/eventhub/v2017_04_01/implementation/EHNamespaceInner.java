@@ -73,6 +73,12 @@ public class EHNamespaceInner extends Resource {
     private Integer maximumThroughputUnits;
 
     /**
+     * Value that indicates whether Kafka is enabled for eventhub namespace.
+     */
+    @JsonProperty(value = "properties.kafkaEnabled")
+    private Boolean kafkaEnabled;
+
+    /**
      * Get properties of sku resource.
      *
      * @return the sku value
@@ -174,6 +180,26 @@ public class EHNamespaceInner extends Resource {
      */
     public EHNamespaceInner withMaximumThroughputUnits(Integer maximumThroughputUnits) {
         this.maximumThroughputUnits = maximumThroughputUnits;
+        return this;
+    }
+
+    /**
+     * Get value that indicates whether Kafka is enabled for eventhub namespace.
+     *
+     * @return the kafkaEnabled value
+     */
+    public Boolean kafkaEnabled() {
+        return this.kafkaEnabled;
+    }
+
+    /**
+     * Set value that indicates whether Kafka is enabled for eventhub namespace.
+     *
+     * @param kafkaEnabled the kafkaEnabled value to set
+     * @return the EHNamespaceInner object itself.
+     */
+    public EHNamespaceInner withKafkaEnabled(Boolean kafkaEnabled) {
+        this.kafkaEnabled = kafkaEnabled;
         return this;
     }
 

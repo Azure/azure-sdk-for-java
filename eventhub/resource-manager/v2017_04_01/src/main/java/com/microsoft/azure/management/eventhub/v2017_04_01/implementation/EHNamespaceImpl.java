@@ -56,6 +56,11 @@ class EHNamespaceImpl extends GroupableResourceCoreImpl<EHNamespace, EHNamespace
     }
 
     @Override
+    public Boolean kafkaEnabled() {
+        return this.inner().kafkaEnabled();
+    }
+
+    @Override
     public Integer maximumThroughputUnits() {
         return this.inner().maximumThroughputUnits();
     }
@@ -88,6 +93,12 @@ class EHNamespaceImpl extends GroupableResourceCoreImpl<EHNamespace, EHNamespace
     @Override
     public EHNamespaceImpl withIsAutoInflateEnabled(Boolean isAutoInflateEnabled) {
         this.inner().withIsAutoInflateEnabled(isAutoInflateEnabled);
+        return this;
+    }
+
+    @Override
+    public EHNamespaceImpl withKafkaEnabled(Boolean kafkaEnabled) {
+        this.inner().withKafkaEnabled(kafkaEnabled);
         return this;
     }
 
