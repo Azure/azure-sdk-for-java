@@ -24,7 +24,7 @@ public class EntityRecord {
     /**
      * List of instances this entity appears in the text.
      */
-    @JsonProperty(value = "matches", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "matches")
     private List<MatchRecord> matches;
 
     /**
@@ -53,6 +53,18 @@ public class EntityRecord {
     private String bingId;
 
     /**
+     * Entity type from Named Entity Recognition model.
+     */
+    @JsonProperty(value = "type")
+    private String type;
+
+    /**
+     * Entity sub type from Named Entity Recognition model.
+     */
+    @JsonProperty(value = "subType")
+    private String subType;
+
+    /**
      * Get entity formal name.
      *
      * @return the name value
@@ -79,6 +91,17 @@ public class EntityRecord {
      */
     public List<MatchRecord> matches() {
         return this.matches;
+    }
+
+    /**
+     * Set list of instances this entity appears in the text.
+     *
+     * @param matches the matches value to set
+     * @return the EntityRecord object itself.
+     */
+    public EntityRecord withMatches(List<MatchRecord> matches) {
+        this.matches = matches;
+        return this;
     }
 
     /**
@@ -147,6 +170,46 @@ public class EntityRecord {
      */
     public EntityRecord withBingId(String bingId) {
         this.bingId = bingId;
+        return this;
+    }
+
+    /**
+     * Get entity type from Named Entity Recognition model.
+     *
+     * @return the type value
+     */
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Set entity type from Named Entity Recognition model.
+     *
+     * @param type the type value to set
+     * @return the EntityRecord object itself.
+     */
+    public EntityRecord withType(String type) {
+        this.type = type;
+        return this;
+    }
+
+    /**
+     * Get entity sub type from Named Entity Recognition model.
+     *
+     * @return the subType value
+     */
+    public String subType() {
+        return this.subType;
+    }
+
+    /**
+     * Set entity sub type from Named Entity Recognition model.
+     *
+     * @param subType the subType value to set
+     * @return the EntityRecord object itself.
+     */
+    public EntityRecord withSubType(String subType) {
+        this.subType = subType;
         return this;
     }
 
