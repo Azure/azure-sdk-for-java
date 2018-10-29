@@ -685,7 +685,7 @@ class TransferManagerTest extends APISpec {
     }
 
     def "Download options progress receiver"() {
-        def fileSize = 8L * 1026 * 1024 + 10
+        def fileSize = 8 * 1026 * 1024 + 10
         def channel = AsynchronousFileChannel.open(getRandomFile(fileSize).toPath(),
                 StandardOpenOption.READ, StandardOpenOption.WRITE)
         TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null)

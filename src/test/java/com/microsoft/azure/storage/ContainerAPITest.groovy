@@ -1677,6 +1677,15 @@ class ContainerAPITest extends APISpec {
     def "Root explicit"() {
         setup:
         cu = primaryServiceURL.createContainerURL(ContainerURL.ROOT_CONTAINER_NAME)
+        // Create root container if not exist.
+        try {
+            cu.create(null, null, null).blockingGet()
+        }
+        catch (StorageException se) {
+            if (se.errorCode() != StorageErrorCode.CONTAINER_ALREADY_EXISTS) {
+                throw se
+            }
+        }
         BlobURL bu = cu.createAppendBlobURL("rootblob")
 
         expect:
@@ -1685,10 +1694,20 @@ class ContainerAPITest extends APISpec {
 
     def "Root implicit"() {
         setup:
+        cu = primaryServiceURL.createContainerURL(ContainerURL.ROOT_CONTAINER_NAME)
+        // Create root container if not exist.
+        try {
+            cu.create(null, null, null).blockingGet()
+        }
+        catch (StorageException se) {
+            if (se.errorCode() != StorageErrorCode.CONTAINER_ALREADY_EXISTS) {
+                throw se
+            }
+        }
         PipelineOptions po = new PipelineOptions()
         po.withClient(getHttpClient())
         HttpPipeline pipeline = StorageURL.createPipeline(primaryCreds, po)
-        AppendBlobURL bu = new AppendBlobURL(new URL("http://xclientdev3.blob.core.windows.net/rootblob"),
+        AppendBlobURL bu = new AppendBlobURL(new URL("http://" + primaryCreds.getAccountName() + ".blob.core.windows.net/rootblob"),
                 pipeline)
 
         when:
@@ -1704,6 +1723,16 @@ class ContainerAPITest extends APISpec {
 
     def "Web container"() {
         setup:
+        cu = primaryServiceURL.createContainerURL(ContainerURL.STATIC_WEBSITE_CONTAINER_NAME)
+        // Create root container if not exist.
+        try {
+            cu.create(null, null, null).blockingGet()
+        }
+        catch (StorageException se) {
+            if (se.errorCode() != StorageErrorCode.CONTAINER_ALREADY_EXISTS) {
+                throw se
+            }
+        }
         def webContainer = primaryServiceURL.createContainerURL(ContainerURL.STATIC_WEBSITE_CONTAINER_NAME)
 
         when:

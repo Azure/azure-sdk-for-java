@@ -1,10 +1,8 @@
-XXXX.XX.XX Version XX.X.X
+2018.10.29 Version 10.2.0
 * Added overloads which only accept the required parameters.
-* TransferManager options now throw if an IProgressReceiver is passed as it is not currently supported. Support will be added in a later release.
 * Added CopyFromURL, which will do a synchronous server-side copy, meaning the service will not return an HTTP response until it has completed the copy.
 * Added support for IProgressReceiver in TransferManager operations. This parameter was previously ignored but is now supported.
 * Removed internal dependency on javafx to be compatible with openjdk.
-* Fixed a bug that would cause downloading large files with the TransferManager to fail and a bug in BlobURL.download() logic for setting up reliable download.
 * Fixed a bug that would cause downloading large files with the TransferManager to fail.
 * Fixed a bug in BlobURL.download() logic for setting up reliable download. This had the potential to download the wrong range when a download stream was retried.
 
