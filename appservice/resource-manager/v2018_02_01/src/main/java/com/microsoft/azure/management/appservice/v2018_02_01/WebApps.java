@@ -712,6 +712,17 @@ public interface WebApps {
     Completable startAsync(String resourceGroupName, String name);
 
     /**
+     * Start capturing network packets for the site.
+     * Start capturing network packets for the site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name The name of the web app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable startNetworkTraceAsync(String resourceGroupName, String name);
+
+    /**
      * Stops an app (or deployment slot, if specified).
      * Stops an app (or deployment slot, if specified).
      *
@@ -721,6 +732,17 @@ public interface WebApps {
      * @return the observable for the request
      */
     Completable stopAsync(String resourceGroupName, String name);
+
+    /**
+     * Stop ongoing capturing network packets for the site.
+     * Stop ongoing capturing network packets for the site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name The name of the web app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable stopNetworkTraceAsync(String resourceGroupName, String name);
 
     /**
      * Sync web app repository.
@@ -2654,6 +2676,56 @@ public interface WebApps {
     Observable<NetworkFeatures> listNetworkFeaturesSlotAsync(String resourceGroupName, String name, String view, String slot);
 
     /**
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param operationId GUID of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable getNetworkTraceOperationV2Async(String resourceGroupName, String name, String operationId);
+
+    /**
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param operationId GUID of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<NetworkTrace> getNetworkTracesV2Async(String resourceGroupName, String name, String operationId);
+
+    /**
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param operationId GUID of the operation.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get an operation for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable getNetworkTraceOperationSlotV2Async(String resourceGroupName, String name, String operationId, String slot);
+
+    /**
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param operationId GUID of the operation.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get an operation for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<NetworkTrace> getNetworkTracesSlotV2Async(String resourceGroupName, String name, String operationId, String slot);
+
+    /**
      * Gets perfmon counters for web app.
      * Gets perfmon counters for web app.
      *
@@ -3578,6 +3650,18 @@ public interface WebApps {
     Completable startSlotAsync(String resourceGroupName, String name, String slot);
 
     /**
+     * Start capturing network packets for the site.
+     * Start capturing network packets for the site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name The name of the web app.
+     * @param slot The name of the slot for this web app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable startNetworkTraceSlotAsync(String resourceGroupName, String name, String slot);
+
+    /**
      * Stops an app (or deployment slot, if specified).
      * Stops an app (or deployment slot, if specified).
      *
@@ -3588,6 +3672,18 @@ public interface WebApps {
      * @return the observable for the request
      */
     Completable stopSlotAsync(String resourceGroupName, String name, String slot);
+
+    /**
+     * Stop ongoing capturing network packets for the site.
+     * Stop ongoing capturing network packets for the site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name The name of the web app.
+     * @param slot The name of the slot for this web app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable stopNetworkTraceSlotAsync(String resourceGroupName, String name, String slot);
 
     /**
      * Sync web app repository.

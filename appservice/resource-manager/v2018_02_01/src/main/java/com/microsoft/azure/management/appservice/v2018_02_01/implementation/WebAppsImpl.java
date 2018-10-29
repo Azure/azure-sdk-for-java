@@ -962,9 +962,21 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     }
 
     @Override
+    public Completable startNetworkTraceAsync(String resourceGroupName, String name) {
+        WebAppsInner client = this.inner();
+        return client.startNetworkTraceAsync(resourceGroupName, name).toCompletable();
+    }
+
+    @Override
     public Completable stopAsync(String resourceGroupName, String name) {
         WebAppsInner client = this.inner();
         return client.stopAsync(resourceGroupName, name).toCompletable();
+    }
+
+    @Override
+    public Completable stopNetworkTraceAsync(String resourceGroupName, String name) {
+        WebAppsInner client = this.inner();
+        return client.stopNetworkTraceAsync(resourceGroupName, name).toCompletable();
     }
 
     @Override
@@ -2840,6 +2852,54 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     }
 
     @Override
+    public Completable getNetworkTraceOperationV2Async(String resourceGroupName, String name, String operationId) {
+        WebAppsInner client = this.inner();
+        return client.getNetworkTraceOperationV2Async(resourceGroupName, name, operationId).toCompletable();
+    }
+
+    @Override
+    public Observable<NetworkTrace> getNetworkTracesV2Async(String resourceGroupName, String name, String operationId) {
+        WebAppsInner client = this.inner();
+        return client.getNetworkTracesV2Async(resourceGroupName, name, operationId)
+        .flatMap(new Func1<List<NetworkTraceInner>, Observable<NetworkTraceInner>>() {
+            @Override
+            public Observable<NetworkTraceInner> call(List<NetworkTraceInner> innerList) {
+                return Observable.from(innerList);
+            }
+        })
+        .map(new Func1<NetworkTraceInner, NetworkTrace>() {
+            @Override
+            public NetworkTrace call(NetworkTraceInner inner) {
+                return new NetworkTraceImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Completable getNetworkTraceOperationSlotV2Async(String resourceGroupName, String name, String operationId, String slot) {
+        WebAppsInner client = this.inner();
+        return client.getNetworkTraceOperationSlotV2Async(resourceGroupName, name, operationId, slot).toCompletable();
+    }
+
+    @Override
+    public Observable<NetworkTrace> getNetworkTracesSlotV2Async(String resourceGroupName, String name, String operationId, String slot) {
+        WebAppsInner client = this.inner();
+        return client.getNetworkTracesSlotV2Async(resourceGroupName, name, operationId, slot)
+        .flatMap(new Func1<List<NetworkTraceInner>, Observable<NetworkTraceInner>>() {
+            @Override
+            public Observable<NetworkTraceInner> call(List<NetworkTraceInner> innerList) {
+                return Observable.from(innerList);
+            }
+        })
+        .map(new Func1<NetworkTraceInner, NetworkTrace>() {
+            @Override
+            public NetworkTrace call(NetworkTraceInner inner) {
+                return new NetworkTraceImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
     public Observable<PerfMonResponse> listPerfMonCountersAsync(final String resourceGroupName, final String name) {
         WebAppsInner client = this.inner();
         return client.listPerfMonCountersAsync(resourceGroupName, name)
@@ -3626,9 +3686,21 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     }
 
     @Override
+    public Completable startNetworkTraceSlotAsync(String resourceGroupName, String name, String slot) {
+        WebAppsInner client = this.inner();
+        return client.startNetworkTraceSlotAsync(resourceGroupName, name, slot).toCompletable();
+    }
+
+    @Override
     public Completable stopSlotAsync(String resourceGroupName, String name, String slot) {
         WebAppsInner client = this.inner();
         return client.stopSlotAsync(resourceGroupName, name, slot).toCompletable();
+    }
+
+    @Override
+    public Completable stopNetworkTraceSlotAsync(String resourceGroupName, String name, String slot) {
+        WebAppsInner client = this.inner();
+        return client.stopNetworkTraceSlotAsync(resourceGroupName, name, slot).toCompletable();
     }
 
     @Override
