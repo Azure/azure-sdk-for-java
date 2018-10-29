@@ -47,7 +47,7 @@ public class RoleDefinitionProperties {
     private List<String> assignableScopes;
 
     /**
-     * Get the roleName value.
+     * Get the role name.
      *
      * @return the roleName value
      */
@@ -56,7 +56,7 @@ public class RoleDefinitionProperties {
     }
 
     /**
-     * Set the roleName value.
+     * Set the role name.
      *
      * @param roleName the roleName value to set
      * @return the RoleDefinitionProperties object itself.
@@ -67,7 +67,7 @@ public class RoleDefinitionProperties {
     }
 
     /**
-     * Get the description value.
+     * Get the role definition description.
      *
      * @return the description value
      */
@@ -76,7 +76,7 @@ public class RoleDefinitionProperties {
     }
 
     /**
-     * Set the description value.
+     * Set the role definition description.
      *
      * @param description the description value to set
      * @return the RoleDefinitionProperties object itself.
@@ -87,7 +87,7 @@ public class RoleDefinitionProperties {
     }
 
     /**
-     * Get the type value.
+     * Get the role type.
      *
      * @return the type value
      */
@@ -96,7 +96,7 @@ public class RoleDefinitionProperties {
     }
 
     /**
-     * Set the type value.
+     * Set the role type.
      *
      * @param type the type value to set
      * @return the RoleDefinitionProperties object itself.
@@ -107,7 +107,7 @@ public class RoleDefinitionProperties {
     }
 
     /**
-     * Get the permissions value.
+     * Get role definition permissions.
      *
      * @return the permissions value
      */
@@ -116,7 +116,7 @@ public class RoleDefinitionProperties {
     }
 
     /**
-     * Set the permissions value.
+     * Set role definition permissions.
      *
      * @param permissions the permissions value to set
      * @return the RoleDefinitionProperties object itself.
@@ -127,7 +127,7 @@ public class RoleDefinitionProperties {
     }
 
     /**
-     * Get the assignableScopes value.
+     * Get role definition assignable scopes.
      *
      * @return the assignableScopes value
      */
@@ -136,7 +136,7 @@ public class RoleDefinitionProperties {
     }
 
     /**
-     * Set the assignableScopes value.
+     * Set role definition assignable scopes.
      *
      * @param assignableScopes the assignableScopes value to set
      * @return the RoleDefinitionProperties object itself.

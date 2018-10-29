@@ -40,7 +40,7 @@ public class ClassicAdministratorInner {
     private ClassicAdministratorProperties properties;
 
     /**
-     * Get the id value.
+     * Get the ID of the administrator.
      *
      * @return the id value
      */
@@ -49,7 +49,7 @@ public class ClassicAdministratorInner {
     }
 
     /**
-     * Set the id value.
+     * Set the ID of the administrator.
      *
      * @param id the id value to set
      * @return the ClassicAdministratorInner object itself.
@@ -60,7 +60,7 @@ public class ClassicAdministratorInner {
     }
 
     /**
-     * Get the name value.
+     * Get the name of the administrator.
      *
      * @return the name value
      */
@@ -69,7 +69,7 @@ public class ClassicAdministratorInner {
     }
 
     /**
-     * Set the name value.
+     * Set the name of the administrator.
      *
      * @param name the name value to set
      * @return the ClassicAdministratorInner object itself.
@@ -80,7 +80,7 @@ public class ClassicAdministratorInner {
     }
 
     /**
-     * Get the type value.
+     * Get the type of the administrator.
      *
      * @return the type value
      */
@@ -89,7 +89,7 @@ public class ClassicAdministratorInner {
     }
 
     /**
-     * Set the type value.
+     * Set the type of the administrator.
      *
      * @param type the type value to set
      * @return the ClassicAdministratorInner object itself.
@@ -100,7 +100,7 @@ public class ClassicAdministratorInner {
     }
 
     /**
-     * Get the properties value.
+     * Get properties for the classic administrator.
      *
      * @return the properties value
      */
@@ -109,7 +109,7 @@ public class ClassicAdministratorInner {
     }
 
     /**
-     * Set the properties value.
+     * Set properties for the classic administrator.
      *
      * @param properties the properties value to set
      * @return the ClassicAdministratorInner object itself.

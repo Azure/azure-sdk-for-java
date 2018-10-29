@@ -17,6 +17,8 @@ import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.authorization.v2015_07_01.implementation.AuthorizationManager;
+import java.util.List;
+import com.microsoft.azure.management.authorization.v2015_07_01.implementation.PermissionInner;
 
 /**
  * Type representing RoleDefinition.
@@ -45,7 +47,7 @@ public interface RoleDefinition extends HasInner<RoleDefinitionInner>, Indexable
     /**
      * The entirety of the RoleDefinition definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithScope, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithScope, DefinitionStages.WithProperties, DefinitionStages.WithCreate {
     }
 
     /**
@@ -64,8 +66,22 @@ public interface RoleDefinition extends HasInner<RoleDefinitionInner>, Indexable
         interface WithScope {
            /**
             * Specifies scope.
+            * @param scope The scope of the role definition
+            * @return the next definition stage
             */
-            WithCreate withScope(String scope);
+            WithProperties withScope(String scope);
+        }
+
+        /**
+         * The stage of the roledefinition definition allowing to specify Properties.
+         */
+        interface WithProperties {
+           /**
+            * Specifies properties.
+            * @param properties Role definition properties
+            * @return the next definition stage
+            */
+            WithCreate withProperties(RoleDefinitionProperties properties);
         }
 
         /**
@@ -79,12 +95,24 @@ public interface RoleDefinition extends HasInner<RoleDefinitionInner>, Indexable
     /**
      * The template for a RoleDefinition update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<RoleDefinition> {
+    interface Update extends Appliable<RoleDefinition>, UpdateStages.WithProperties {
     }
 
     /**
      * Grouping of RoleDefinition update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the roledefinition update allowing to specify Properties.
+         */
+        interface WithProperties {
+            /**
+             * Specifies properties.
+             * @param properties Role definition properties
+             * @return the next update stage
+             */
+            Update withProperties(RoleDefinitionProperties properties);
+        }
+
     }
 }
