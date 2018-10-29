@@ -18,8 +18,11 @@ package com.microsoft.azure.storage
 import com.microsoft.azure.storage.blob.*
 import com.microsoft.azure.storage.blob.models.*
 import com.microsoft.rest.v2.http.HttpPipeline
+import com.microsoft.rest.v2.http.HttpRequest
+import com.microsoft.rest.v2.policy.RequestPolicy
 import com.microsoft.rest.v2.util.FlowableUtil
 import io.reactivex.Flowable
+import io.reactivex.Single
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -68,6 +71,53 @@ class BlobAPITest extends APISpec {
         headers.blobCommittedBlockCount() == null
         headers.serverEncrypted
         headers.blobContentMD5() != null
+    }
+
+    /*
+    This is to test the appropriate integration of DownloadResponse, including setting the correct range values on
+    HTTPGetterInfo.
+     */
+    def "Download with retry range"() {
+        /*
+        We are going to make a request for some range on a blob. The Flowable returned will throw an exception, forcing
+        a retry per the ReliableDownloadOptions. The next request should have the same range header, which was generated
+        from the count and offset values in HTTPGetterInfo that was constructed on the initial call to download. We
+        don't need to check the data here, but we want to ensure that the correct range is set each time. This will
+        test the correction of a bug that was found which caused HTTPGetterInfo to have an incorrect offset when it was
+        constructed in BlobURL.download().
+         */
+        setup:
+        def mockPolicy = Mock(RequestPolicy) {
+            sendAsync(_) >> { HttpRequest request ->
+                if (request.headers().value("x-ms-range") != "bytes=2-6") {
+                    return Single.error(new IllegalArgumentException("The range header was not set correctly on retry."))
+                }
+                else {
+                    // ETag can be a dummy value. It's not validated, but DownloadResponse requires one
+                    return Single.just(getStubResponseForBlobDownload(206, Flowable.error(new IOException()), "etag"))
+                }
+            }
+        }
+        def pipeline = HttpPipeline.build(getStubFactory(mockPolicy))
+        bu = bu.withPipeline(pipeline)
+
+        when:
+        def range = new BlobRange().withOffset(2).withCount(5)
+        bu.download(range, null, false, null).blockingGet().body(new ReliableDownloadOptions().withMaxRetryRequests(3))
+                .blockingSubscribe()
+
+        then:
+        /*
+        Because the dummy Flowable always throws an error. This will also validate that an IllegalArgumentException is
+        NOT thrown because the types would not match.
+         */
+        def e = thrown(RuntimeException)
+        e.getCause() instanceof IOException
+    }
+
+    def "Download min"() {
+        expect:
+        FlowableUtil.collectBytesInBuffer(bu.download().blockingGet().body(null)).blockingGet() == defaultData
     }
 
     @Unroll
@@ -174,7 +224,7 @@ class BlobAPITest extends APISpec {
         e.getMessage().contains("eTag")
     }
 
-    def "Get properties all null"() {
+    def "Get properties default"() {
         when:
         BlobGetPropertiesHeaders headers = bu.getProperties(null, null).blockingGet().headers()
 
@@ -208,6 +258,11 @@ class BlobAPITest extends APISpec {
         headers.accessTierInferred()
         headers.archiveStatus() == null
         headers.creationTime() != null
+    }
+
+    def "Get properties min"() {
+        expect:
+        bu.getProperties().blockingGet().statusCode() == 200
     }
 
     @Unroll
@@ -291,6 +346,14 @@ class BlobAPITest extends APISpec {
         response.headers().blobSequenceNumber() == null
     }
 
+    def "Set HTTP headers min"() {
+        when:
+        bu.setHTTPHeaders(new BlobHTTPHeaders().withBlobContentType("type")).blockingGet()
+
+        then:
+        bu.getProperties().blockingGet().headers().contentType() == "type"
+    }
+
     @Unroll
     def "Set HTTP headers headers"() {
         setup:
@@ -315,7 +378,6 @@ class BlobAPITest extends APISpec {
         "control"    | "disposition"      | "encoding"      | "language"      | Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(defaultData.array())) | "type"
 
     }
-
 
 
     @Unroll
@@ -399,6 +461,18 @@ class BlobAPITest extends APISpec {
         response.statusCode() == 200
         validateBasicHeaders(response.headers())
         response.headers().isServerEncrypted()
+    }
+
+    def "Set metadata min"() {
+        setup:
+        Metadata metadata = new Metadata()
+        metadata.put("foo", "bar")
+
+        when:
+        bu.setMetadata(metadata).blockingGet()
+
+        then:
+        bu.getProperties().blockingGet().headers().metadata() == metadata
     }
 
     @Unroll
@@ -519,6 +593,11 @@ class BlobAPITest extends APISpec {
         UUID.randomUUID().toString() | -1        || LeaseStateType.LEASED | LeaseDurationType.INFINITE
     }
 
+    def "Acquire lease min"() {
+        setup:
+        bu.acquireLease(null, -1).blockingGet().statusCode() == 201
+    }
+
     @Unroll
     def "Acquire lease AC"() {
         setup:
@@ -597,6 +676,14 @@ class BlobAPITest extends APISpec {
         headers.leaseId() != null
     }
 
+    def "Renew lease min"() {
+        setup:
+        String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
+
+        expect:
+        bu.renewLease(leaseID).blockingGet().statusCode() == 200
+    }
+
     @Unroll
     def "Renew lease AC"() {
         setup:
@@ -672,6 +759,14 @@ class BlobAPITest extends APISpec {
         expect:
         bu.getProperties(null, null).blockingGet().headers().leaseState() == LeaseStateType.AVAILABLE
         validateBasicHeaders(headers)
+    }
+
+    def "Release lease min"() {
+        setup:
+        String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
+
+        expect:
+        bu.releaseLease(leaseID).blockingGet().statusCode() == 200
     }
 
     @Unroll
@@ -761,6 +856,14 @@ class BlobAPITest extends APISpec {
         20        | 15          | 16
     }
 
+    def "Break lease min"() {
+        setup:
+        setupBlobLeaseCondition(bu, receivedLeaseID)
+
+        expect:
+        bu.breakLease().blockingGet().statusCode() == 202
+    }
+
     @Unroll
     def "Break lease AC"() {
         setup:
@@ -842,6 +945,14 @@ class BlobAPITest extends APISpec {
         validateBasicHeaders(headers)
     }
 
+    def "Change lease min"() {
+        setup:
+        def leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
+
+        expect:
+        bu.changeLease(leaseID, UUID.randomUUID().toString()).blockingGet().statusCode() == 200
+    }
+
     @Unroll
     def "Change lease AC"() {
         setup:
@@ -919,6 +1030,11 @@ class BlobAPITest extends APISpec {
         validateBasicHeaders(headers)
     }
 
+    def "Snapshot min"() {
+        expect:
+        bu.createSnapshot().blockingGet().statusCode() == 201
+    }
+
     @Unroll
     def "Snapshot metadata"() {
         setup:
@@ -938,9 +1054,9 @@ class BlobAPITest extends APISpec {
                 .getProperties(null, null).blockingGet().headers().metadata() == metadata
 
         where:
-        key1  | value1 | key2   | value2 || statusCode
-        null  | null   | null   | null   || 200
-        "foo" | "bar"  | "fizz" | "buzz" || 200
+        key1  | value1 | key2   | value2
+        null  | null   | null   | null
+        "foo" | "bar"  | "fizz" | "buzz"
     }
 
     @Unroll
@@ -1038,6 +1154,11 @@ class BlobAPITest extends APISpec {
         headers.copyId() != null
     }
 
+    def "Copy min"() {
+        expect:
+        bu.startCopyFromURL(bu.toURL()).blockingGet().statusCode() == 202
+    }
+
     @Unroll
     def "Copy metadata"() {
         setup:
@@ -1059,9 +1180,9 @@ class BlobAPITest extends APISpec {
         bu2.getProperties(null, null).blockingGet().headers().metadata() == metadata
 
         where:
-        key1  | value1 | key2   | value2 || statusCode
-        null  | null   | null   | null   || 200
-        "foo" | "bar"  | "fizz" | "buzz" || 200
+        key1  | value1 | key2   | value2
+        null  | null   | null   | null
+        "foo" | "bar"  | "fizz" | "buzz"
     }
 
     @Unroll
@@ -1076,12 +1197,12 @@ class BlobAPITest extends APISpec {
         bu2.startCopyFromURL(bu.toURL(), null, mac, null, null).blockingGet().statusCode() == 202
 
         where:
-        modified | unmodified | match        | noneMatch   | leaseID
-        null     | null       | null         | null        | null
-        oldDate  | null       | null         | null        | null
-        null     | newDate    | null         | null        | null
-        null     | null       | receivedEtag | null        | null
-        null     | null       | null         | garbageEtag | null
+        modified | unmodified | match        | noneMatch
+        null     | null       | null         | null
+        oldDate  | null       | null         | null
+        null     | newDate    | null         | null
+        null     | null       | receivedEtag | null
+        null     | null       | null         | garbageEtag
     }
 
     @Unroll
@@ -1099,11 +1220,11 @@ class BlobAPITest extends APISpec {
         thrown(StorageException)
 
         where:
-        modified | unmodified | match       | noneMatch    | leaseID
-        newDate  | null       | null        | null         | null
-        null     | oldDate    | null        | null         | null
-        null     | null       | garbageEtag | null         | null
-        null     | null       | null        | receivedEtag | null
+        modified | unmodified | match       | noneMatch
+        newDate  | null       | null        | null
+        null     | oldDate    | null        | null
+        null     | null       | garbageEtag | null
+        null     | null       | null        | receivedEtag
     }
 
     @Unroll
@@ -1217,6 +1338,29 @@ class BlobAPITest extends APISpec {
         cu2.delete(null, null).blockingGet().statusCode() == 202
     }
 
+    def "Abort copy min"() {
+        setup:
+        // Data has to be large enough and copied between accounts to give us enough time to abort
+        ByteBuffer data = getRandomData(8 * 1024 * 1024)
+        bu.toBlockBlobURL()
+                .upload(Flowable.just(data), 8 * 1024 * 1024, null, null, null, null)
+                .blockingGet()
+        // So we don't have to create a SAS.
+        cu.setAccessPolicy(PublicAccessType.BLOB, null, null, null).blockingGet()
+
+        ContainerURL cu2 = alternateServiceURL.createContainerURL(generateBlobName())
+        cu2.create(null, null, null).blockingGet()
+        BlobURL bu2 = cu2.createBlobURL(generateBlobName())
+
+        when:
+        String copyID =
+                bu2.startCopyFromURL(bu.toURL(), null, null, null, null)
+                        .blockingGet().headers().copyId()
+
+        then:
+        bu2.abortCopyFromURL(copyID).blockingGet().statusCode() == 204
+    }
+
     def "Abort copy lease"() {
         setup:
         // Data has to be large enough and copied between accounts to give us enough time to abort
@@ -1303,6 +1447,178 @@ class BlobAPITest extends APISpec {
         notThrown(RuntimeException)
     }
 
+    def "Sync copy"() {
+        setup:
+        // Sync copy is a deep copy, which requires either sas or public access.
+        cu.setAccessPolicy(PublicAccessType.CONTAINER, null).blockingGet()
+        BlobURL bu2 = cu.createBlockBlobURL(generateBlobName())
+        def headers = bu2.syncCopyFromURL(bu.toURL(), null, null,null, null).blockingGet().headers()
+
+        expect:
+        headers.copyStatus() == SyncCopyStatusType.SUCCESS
+        headers.copyId() != null
+        validateBasicHeaders(headers)
+    }
+
+    def "Sync copy min"() {
+        setup:
+        cu.setAccessPolicy(PublicAccessType.CONTAINER, null).blockingGet()
+        BlobURL bu2 = cu.createBlockBlobURL(generateBlobName())
+
+        expect:
+        bu2.syncCopyFromURL(bu.toURL()).blockingGet().statusCode() == 202
+    }
+
+    @Unroll
+    def "Sync copy metadata"() {
+        setup:
+        cu.setAccessPolicy(PublicAccessType.CONTAINER, null).blockingGet()
+        BlobURL bu2 = cu.createBlockBlobURL(generateBlobName())
+        Metadata metadata = new Metadata()
+        if (key1 != null && value1 != null) {
+            metadata.put(key1, value1)
+        }
+        if (key2 != null && value2 != null) {
+            metadata.put(key2, value2)
+        }
+
+        when:
+        bu2.syncCopyFromURL(bu.toURL(), metadata, null, null, null).blockingGet()
+
+        then:
+        bu2.getProperties().blockingGet().headers().metadata() == metadata
+
+        where:
+        key1  | value1 | key2   | value2
+        null  | null   | null   | null
+        "foo" | "bar"  | "fizz" | "buzz"
+    }
+
+    @Unroll
+    def "Sync copy source AC"() {
+        setup:
+        cu.setAccessPolicy(PublicAccessType.CONTAINER, null).blockingGet()
+        BlobURL bu2 = cu.createBlockBlobURL(generateBlobName())
+        match = setupBlobMatchCondition(bu, match)
+        def mac = new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
+                .withIfMatch(match).withIfNoneMatch(noneMatch)
+
+        expect:
+        bu2.syncCopyFromURL(bu.toURL(), null, mac, null, null).blockingGet().statusCode() == 202
+
+        where:
+        modified | unmodified | match        | noneMatch
+        null     | null       | null         | null
+        oldDate  | null       | null         | null
+        null     | newDate    | null         | null
+        null     | null       | receivedEtag | null
+        null     | null       | null         | garbageEtag
+    }
+
+    @Unroll
+    def "Sync copy source AC fail"() {
+        setup:
+        cu.setAccessPolicy(PublicAccessType.CONTAINER, null).blockingGet()
+        BlobURL bu2 = cu.createBlockBlobURL(generateBlobName())
+        noneMatch = setupBlobMatchCondition(bu, noneMatch)
+        def mac = new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
+                .withIfMatch(match).withIfNoneMatch(noneMatch)
+
+        when:
+        bu2.syncCopyFromURL(bu.toURL(), null, mac, null, null).blockingGet()
+
+        then:
+        thrown(StorageException)
+
+        where:
+        modified | unmodified | match       | noneMatch
+        newDate  | null       | null        | null
+        null     | oldDate    | null        | null
+        null     | null       | garbageEtag | null
+        null     | null       | null        | receivedEtag
+    }
+
+    @Unroll
+    def "Sync copy dest AC"() {
+        setup:
+        cu.setAccessPolicy(PublicAccessType.CONTAINER, null).blockingGet()
+        BlobURL bu2 = cu.createBlockBlobURL(generateBlobName())
+        bu2.upload(defaultFlowable, defaultDataSize, null, null,
+                null, null).blockingGet()
+        match = setupBlobMatchCondition(bu2, match)
+        leaseID = setupBlobLeaseCondition(bu2, leaseID)
+        BlobAccessConditions bac = new BlobAccessConditions().withModifiedAccessConditions(
+                new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
+                        .withIfMatch(match).withIfNoneMatch(noneMatch))
+                .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
+
+        expect:
+        bu2.syncCopyFromURL(bu.toURL(), null, null, bac, null).blockingGet().statusCode() == 202
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | receivedLeaseID
+    }
+
+    @Unroll
+    def "Sync copy dest AC fail"() {
+        setup:
+        cu.setAccessPolicy(PublicAccessType.CONTAINER, null).blockingGet()
+        BlobURL bu2 = cu.createBlockBlobURL(generateBlobName())
+        bu2.upload(defaultFlowable, defaultDataSize, null, null,
+                null, null).blockingGet()
+        noneMatch = setupBlobMatchCondition(bu2, noneMatch)
+        setupBlobLeaseCondition(bu2, leaseID)
+        BlobAccessConditions bac = new BlobAccessConditions().withModifiedAccessConditions(
+                new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
+                        .withIfMatch(match).withIfNoneMatch(noneMatch))
+                .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
+
+        when:
+        bu2.syncCopyFromURL(bu.toURL(), null, null, bac, null).blockingGet()
+
+        then:
+        thrown(StorageException)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
+    }
+
+    def "Sync copy error"() {
+        setup:
+        def bu2 = cu.createBlockBlobURL(generateBlobName())
+
+        when:
+        bu2.syncCopyFromURL(bu.toURL(), null, null, null, null).blockingGet()
+
+        then:
+        thrown(StorageException)
+    }
+
+    def "Sync copy context"() {
+        setup:
+        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(202, BlobCopyFromURLHeaders)))
+
+        bu = bu.withPipeline(pipeline)
+
+        when:
+        // No service call is made. Just satisfy the parameters.
+        bu.syncCopyFromURL(new URL("http://www.example.com"), null, null, null, defaultContext).blockingGet()
+
+        then:
+        notThrown(RuntimeException)
+    }
+
     def "Delete"() {
         when:
         BlobDeleteResponse response = bu.delete(null, null, null).blockingGet()
@@ -1313,6 +1629,11 @@ class BlobAPITest extends APISpec {
         headers.requestId() != null
         headers.version() != null
         headers.date() != null
+    }
+
+    def "Delete min"() {
+        expect:
+        bu.delete().blockingGet().statusCode() == 202
     }
 
     @Unroll
@@ -1465,6 +1786,21 @@ class BlobAPITest extends APISpec {
         AccessTier.P50 | _
     }
 
+    def "Set tier min"() {
+        setup:
+        ContainerURL cu = blobStorageServiceURL.createContainerURL(generateContainerName())
+        BlockBlobURL bu = cu.createBlockBlobURL(generateBlobName())
+        cu.create(null, null, null).blockingGet()
+        bu.upload(defaultFlowable, defaultData.remaining(), null, null, null, null)
+                .blockingGet()
+
+        when:
+        def statusCode = bu.setTier(AccessTier.HOT).blockingGet().statusCode()
+
+        then:
+        statusCode == 200 || statusCode == 202
+    }
+
     def "Set tier inferred"() {
         setup:
         ContainerURL cu = blobStorageServiceURL.createContainerURL(generateBlobName())
@@ -1598,6 +1934,15 @@ class BlobAPITest extends APISpec {
         disableSoftDelete() == null
     }
 
+    def "Undelete min"() {
+        setup:
+        enableSoftDelete()
+        bu.delete().blockingGet()
+
+        expect:
+        bu.undelete().blockingGet().statusCode() == 200
+    }
+
     def "Undelete error"() {
         bu = cu.createBlockBlobURL(generateBlobName())
 
@@ -1632,6 +1977,11 @@ class BlobAPITest extends APISpec {
         response.headers().requestId() != null
         response.headers().accountKind() != null
         response.headers().skuName() != null
+    }
+
+    def "Get account info min"() {
+        expect:
+        bu.getAccountInfo().blockingGet().statusCode() == 200
     }
 
     def "Get account info error"() {

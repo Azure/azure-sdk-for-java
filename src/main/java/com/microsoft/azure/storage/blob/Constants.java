@@ -20,6 +20,55 @@ package com.microsoft.azure.storage.blob;
 final class Constants {
 
     /**
+     * The master Microsoft Azure Storage header prefix.
+     */
+    static final String PREFIX_FOR_STORAGE_HEADER = "x-ms-";
+    /**
+     * Constant representing a kilobyte (Non-SI version).
+     */
+    static final int KB = 1024;
+    /**
+     * Constant representing a megabyte (Non-SI version).
+     */
+    static final int MB = 1024 * KB;
+    /**
+     * An empty {@code String} to use for comparison.
+     */
+    static final String EMPTY_STRING = "";
+    /**
+     * Specifies HTTP.
+     */
+    static final String HTTP = "http";
+    /**
+     * Specifies HTTPS.
+     */
+    static final String HTTPS = "https";
+    /**
+     * Specifies both HTTPS and HTTP.
+     */
+    static final String HTTPS_HTTP = "https,http";
+    /**
+     * The default type for content-type and accept.
+     */
+    static final String UTF8_CHARSET = "UTF-8";
+    /**
+     * The query parameter for snapshots.
+     */
+    static final String SNAPSHOT_QUERY_PARAMETER = "snapshot";
+    /**
+     * The default amount of parallelism for TransferManager operations.
+     */
+    // We chose this to match Go, which followed AWS' default.
+    static final int TRANSFER_MANAGER_DEFAULT_PARALLELISM = 5;
+
+    /**
+     * Private Default Ctor
+     */
+    private Constants() {
+        // Private to prevent construction.
+    }
+
+    /**
      * Defines constants for use with HTTP headers.
      */
     static final class HeaderConstants {
@@ -121,68 +170,10 @@ final class Constants {
         /**
          * Specifies the value to use for UserAgent header.
          */
-        static final String USER_AGENT_VERSION = "10.1.0";
+        static final String USER_AGENT_VERSION = "10.2.0";
 
         private HeaderConstants() {
             // Private to prevent construction.
         }
-    }
-
-    /**
-     * The master Microsoft Azure Storage header prefix.
-     */
-    static final String PREFIX_FOR_STORAGE_HEADER = "x-ms-";
-
-    /**
-     * Constant representing a kilobyte (Non-SI version).
-     */
-    static final int KB = 1024;
-
-    /**
-     * Constant representing a megabyte (Non-SI version).
-     */
-    static final int MB = 1024 * KB;
-
-    /**
-     * An empty {@code String} to use for comparison.
-     */
-    static final String EMPTY_STRING = "";
-
-    /**
-     * Specifies HTTP.
-     */
-    static final String HTTP = "http";
-
-    /**
-     * Specifies HTTPS.
-     */
-    static final String HTTPS = "https";
-
-    /**
-     * Specifies both HTTPS and HTTP.
-     */
-    static final String HTTPS_HTTP = "https,http";
-
-    /**
-     * The default type for content-type and accept.
-     */
-    static final String UTF8_CHARSET = "UTF-8";
-
-    /**
-     * The query parameter for snapshots.
-     */
-    static final String SNAPSHOT_QUERY_PARAMETER = "snapshot";
-
-    /**
-     * The default amount of parallelism for TransferManager operations.
-     */
-    // We chose this to match Go, which followed AWS' default.
-    static final int TRANSFER_MANAGER_DEFAULT_PARALLELISM = 5;
-
-    /**
-     * Private Default Ctor
-     */
-    private Constants() {
-        // Private to prevent construction.
     }
 }

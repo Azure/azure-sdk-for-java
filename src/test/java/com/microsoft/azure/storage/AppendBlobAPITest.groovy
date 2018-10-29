@@ -16,15 +16,7 @@
 package com.microsoft.azure.storage
 
 import com.microsoft.azure.storage.blob.*
-import com.microsoft.azure.storage.blob.models.AppendBlobAppendBlockHeaders
-import com.microsoft.azure.storage.blob.models.AppendBlobAppendBlockResponse
-import com.microsoft.azure.storage.blob.models.AppendBlobCreateHeaders
-import com.microsoft.azure.storage.blob.models.AppendBlobCreateResponse
-import com.microsoft.azure.storage.blob.models.AppendPositionAccessConditions
-import com.microsoft.azure.storage.blob.models.BlobGetPropertiesResponse
-import com.microsoft.azure.storage.blob.models.BlobHTTPHeaders
-import com.microsoft.azure.storage.blob.models.LeaseAccessConditions
-import com.microsoft.azure.storage.blob.models.ModifiedAccessConditions
+import com.microsoft.azure.storage.blob.models.*
 import com.microsoft.rest.v2.http.HttpPipeline
 import com.microsoft.rest.v2.http.UnexpectedLengthException
 import com.microsoft.rest.v2.util.FlowableUtil
@@ -34,7 +26,7 @@ import spock.lang.Unroll
 import java.nio.ByteBuffer
 import java.security.MessageDigest
 
-public class AppendBlobAPITest extends APISpec {
+class AppendBlobAPITest extends APISpec {
     AppendBlobURL bu
 
     def setup() {
@@ -52,6 +44,11 @@ public class AppendBlobAPITest extends APISpec {
         validateBasicHeaders(createResponse.headers())
         createResponse.headers().contentMD5() == null
         createResponse.headers().isServerEncrypted()
+    }
+
+    def "Create min"() {
+        expect:
+        bu.create().blockingGet().statusCode() == 201
     }
 
     def "Create error"() {
@@ -188,6 +185,11 @@ public class AppendBlobAPITest extends APISpec {
         headers.blobAppendOffset() != null
         headers.blobCommittedBlockCount() != null
         bu.getProperties(null, null).blockingGet().headers().blobCommittedBlockCount() == 1
+    }
+
+    def "Append block min"() {
+        expect:
+        bu.appendBlock(defaultFlowable, defaultDataSize).blockingGet().statusCode() == 201
     }
 
     @Unroll

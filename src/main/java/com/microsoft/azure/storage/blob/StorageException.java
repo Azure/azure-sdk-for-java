@@ -28,12 +28,11 @@ import com.microsoft.rest.v2.RestException;
  * perform a getProperties request on an entity to determine whether it exists or not. If it does not exists, an
  * exception will be thrown even though this may be considered an expected indication of absence in this case.
  *
- * @apiNote
- * ## Sample Code \n
+ * @apiNote ## Sample Code \n
  * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=exception "Sample code for StorageExceptions")] \n
- * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+ * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
  */
-public final class StorageException extends RestException{
+public final class StorageException extends RestException {
 
     private final String message;
 
@@ -41,30 +40,27 @@ public final class StorageException extends RestException{
         super(e.getMessage(), e.response(), e);
         if (e.body() != null) {
             this.message = e.body().message();
-        }
-        else {
+        } else {
             this.message = null;
         }
     }
 
     /**
-     * @return
-     *      The error code returned by the service.
+     * @return The error code returned by the service.
      */
     public StorageErrorCode errorCode() {
         return StorageErrorCode.fromString(super.response().headers().value(Constants.HeaderConstants.ERROR_CODE));
     }
 
     /**
-     * @return
-     *      The message returned by the service.
+     * @return The message returned by the service.
      */
     public String message() {
         return this.message;
     }
+
     /**
-     * @return
-     *      The status code on the response.
+     * @return The status code on the response.
      */
     public int statusCode() {
         return super.response().statusCode();

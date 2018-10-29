@@ -19,7 +19,6 @@ import com.microsoft.azure.storage.APISpec
 import com.microsoft.rest.v2.http.HttpPipelineLogLevel
 import com.microsoft.rest.v2.http.HttpPipelineLogger
 import com.microsoft.rest.v2.http.HttpRequest
-import com.microsoft.rest.v2.http.HttpResponse
 import com.microsoft.rest.v2.policy.RequestPolicy
 import com.microsoft.rest.v2.policy.RequestPolicyOptions
 import io.reactivex.Single
@@ -31,6 +30,7 @@ class LoggingTest extends APISpec {
     also allows for defining the number and kind of interactions that the unit under test has with this mocked object.
     See below for more details.
      */
+
     def getMockLogger(HttpPipelineLogLevel level) {
         return Mock(HttpPipelineLogger) {
             minimumLogLevel() >> level

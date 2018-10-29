@@ -44,7 +44,55 @@ public final class AccountSASPermission {
     /**
      * Initializes an {@code AccountSASPermission} object with all fields set to false.
      */
-    public AccountSASPermission() {}
+    public AccountSASPermission() {
+    }
+
+    /**
+     * Creates an {@code AccountSASPermission} from the specified permissions string. This method will throw an
+     * {@code IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
+     *
+     * @param permString
+     *         A {@code String} which represents the {@code SharedAccessAccountPermissions}.
+     *
+     * @return An {@code AccountSASPermission} object generated from the given {@code String}.
+     */
+    public static AccountSASPermission parse(String permString) {
+        AccountSASPermission permissions = new AccountSASPermission();
+
+        for (int i = 0; i < permString.length(); i++) {
+            char c = permString.charAt(i);
+            switch (c) {
+                case 'r':
+                    permissions.read = true;
+                    break;
+                case 'w':
+                    permissions.write = true;
+                    break;
+                case 'd':
+                    permissions.delete = true;
+                    break;
+                case 'l':
+                    permissions.list = true;
+                    break;
+                case 'a':
+                    permissions.add = true;
+                    break;
+                case 'c':
+                    permissions.create = true;
+                    break;
+                case 'u':
+                    permissions.update = true;
+                    break;
+                case 'p':
+                    permissions.processMessages = true;
+                    break;
+                default:
+                    throw new IllegalArgumentException(
+                            String.format(Locale.ROOT, SR.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE, "Permissions", permString, c));
+            }
+        }
+        return permissions;
+    }
 
     /**
      * Permission to read resources and list queues and tables granted.
@@ -170,8 +218,7 @@ public final class AccountSASPermission {
      * Converts the given permissions to a {@code String}. Using this method will guarantee the permissions are in an
      * order accepted by the service.
      *
-     * @return
-     *      A {@code String} which represents the {@code AccountSASPermissions}.
+     * @return A {@code String} which represents the {@code AccountSASPermissions}.
      */
     @Override
     public String toString() {
@@ -212,52 +259,5 @@ public final class AccountSASPermission {
         }
 
         return builder.toString();
-    }
-
-    /**
-     * Creates an {@code AccountSASPermission} from the specified permissions string. This method will throw an
-     * {@code IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
-     *
-     * @param permString
-     *      A {@code String} which represents the {@code SharedAccessAccountPermissions}.
-     * @return
-     *      An {@code AccountSASPermission} object generated from the given {@code String}.
-     */
-    public static AccountSASPermission parse(String permString) {
-        AccountSASPermission permissions = new AccountSASPermission();
-
-        for(int i=0; i<permString.length(); i++) {
-            char c = permString.charAt(i);
-            switch (c) {
-                case 'r':
-                    permissions.read = true;
-                    break;
-                case 'w':
-                    permissions.write = true;
-                    break;
-                case 'd':
-                    permissions.delete = true;
-                    break;
-                case 'l':
-                    permissions.list = true;
-                    break;
-                case 'a':
-                    permissions.add = true;
-                    break;
-                case 'c':
-                    permissions.create = true;
-                    break;
-                case 'u':
-                    permissions.update = true;
-                    break;
-                case 'p':
-                    permissions.processMessages = true;
-                    break;
-                default:
-                    throw new IllegalArgumentException(
-                            String.format(Locale.ROOT, SR.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE, "Permissions", permString, c));
-            }
-        }
-        return permissions;
     }
 }

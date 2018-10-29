@@ -47,48 +47,43 @@ public abstract class StorageURL {
         this.storageClient.withUrl(url.toString());
     }
 
-    @Override
-    public String toString() {
-        return this.storageClient.url();
-    }
-
-    /**
-     * @return
-     *      The underlying url to the resource.
-     */
-    public URL toURL() {
-        try {
-            return new URL(this.storageClient.url());
-        } catch (MalformedURLException e) {
-            // TODO: remove and update getLeaseId.
-        }
-        return null;
-    }
-
     /**
      * Appends a string to the end of a URL's path (prefixing the string with a '/' if required).
+     *
      * @param baseURL
-     *      The url to which the name should be appended.
+     *         The url to which the name should be appended.
      * @param name
-     *      The name to be appended.
+     *         The name to be appended.
+     *
+     * @return A url with the name appended.
+     *
      * @throws MalformedURLException
-     *      Appending the specified name produced an invalid URL.
-     * @return
-     *      A url with the name appended.
+     *         Appending the specified name produced an invalid URL.
      */
     protected static URL appendToURLPath(URL baseURL, String name) throws MalformedURLException {
         UrlBuilder url = UrlBuilder.parse(baseURL.toString());
-        if(url.path() == null) {
+        if (url.path() == null) {
             url.withPath("/"); // .path() will return null if it is empty, so we have to process separately from below.
-        }
-        else if (url.path().charAt(url.path().length() - 1) != '/') {
+        } else if (url.path().charAt(url.path().length() - 1) != '/') {
             url.withPath(url.path() + '/');
         }
         url.withPath(url.path() + name);
-        return new URL(url.toString()); // TODO: modify when toURL is released.
+        return new URL(url.toString());
     }
 
-    // TODO: Move this? Not discoverable.
+    /**
+     * Creates an pipeline to process the HTTP requests and Responses.
+     *
+     * @apiNote
+     * ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_url "Sample code for StorageURL.createPipeline")] \n
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     *
+     * @return The pipeline.
+     */
+    public static HttpPipeline createPipeline() {
+        return createPipeline(new AnonymousCredentials(), new PipelineOptions());
+    }
 
     /**
      * Creates an pipeline to process the HTTP requests and Responses.
@@ -99,11 +94,48 @@ public abstract class StorageURL {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      *
      * @param credentials
-     *      The credentials the pipeline will use to authenticate the requests.
+     *         The credentials the pipeline will use to authenticate the requests.
+     *
+     * @return The pipeline.
+     */
+    public static HttpPipeline createPipeline(ICredentials credentials) {
+        return createPipeline(credentials, new PipelineOptions());
+    }
+
+    /**
+     * Creates an pipeline to process the HTTP requests and Responses.
+     *
+     * @apiNote
+     * ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_url "Sample code for StorageURL.createPipeline")] \n
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     *
      * @param pipelineOptions
-     *      Configurations for each policy in the pipeline.
-     * @return
-     *      The pipeline.
+     *         Configurations for each policy in the pipeline.
+     * @return The pipeline.
+     */
+    public static HttpPipeline createPipeline(PipelineOptions pipelineOptions) {
+        return createPipeline(new AnonymousCredentials(), pipelineOptions);
+    }
+
+    /**
+     * Creates an pipeline to process the HTTP requests and Responses.
+     *
+     * @apiNote
+     * ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_url "Sample code for StorageURL.createPipeline")] \n
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+     *
+     * @param credentials
+     *         The credentials the pipeline will use to authenticate the requests.
+     * @param pipelineOptions
+     *         Configurations for each policy in the pipeline.
+     *
+     * @return The pipeline.
+     *
+     * @apiNote ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_url "Sample code for StorageURL.createPipeline")] \n
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public static HttpPipeline createPipeline(ICredentials credentials, PipelineOptions pipelineOptions) {
         /*
@@ -133,5 +165,21 @@ public abstract class StorageURL {
         return HttpPipeline.build(new HttpPipelineOptions().withHttpClient(pipelineOptions.client())
                         .withLogger(pipelineOptions.logger()),
                 factories.toArray(new RequestPolicyFactory[factories.size()]));
+    }
+
+    @Override
+    public String toString() {
+        return this.storageClient.url();
+    }
+
+    /**
+     * @return The underlying url to the resource.
+     */
+    public URL toURL() {
+        try {
+            return new URL(this.storageClient.url());
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

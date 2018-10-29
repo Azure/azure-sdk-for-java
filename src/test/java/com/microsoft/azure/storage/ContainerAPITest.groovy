@@ -15,58 +15,8 @@
 
 package com.microsoft.azure.storage
 
-import com.microsoft.azure.storage.blob.AnonymousCredentials
-import com.microsoft.azure.storage.blob.AppendBlobURL
-import com.microsoft.azure.storage.blob.BlobURL
-import com.microsoft.azure.storage.blob.BlobListingDetails
-import com.microsoft.azure.storage.blob.BlockBlobURL
-import com.microsoft.azure.storage.blob.ContainerAccessConditions
-import com.microsoft.azure.storage.blob.ContainerURL
-
-import com.microsoft.azure.storage.blob.ListBlobsOptions
-import com.microsoft.azure.storage.blob.Metadata
-import com.microsoft.azure.storage.blob.PageBlobURL
-import com.microsoft.azure.storage.blob.PipelineOptions
-import com.microsoft.azure.storage.blob.ServiceURL
-import com.microsoft.azure.storage.blob.StorageException
-import com.microsoft.azure.storage.blob.StorageURL
-import com.microsoft.azure.storage.blob.models.AccessPolicy
-import com.microsoft.azure.storage.blob.models.AccessTier
-import com.microsoft.azure.storage.blob.models.AppendBlobCreateResponse
-import com.microsoft.azure.storage.blob.models.BlobGetPropertiesResponse
-import com.microsoft.azure.storage.blob.models.BlobItem
-import com.microsoft.azure.storage.blob.models.BlobType
-import com.microsoft.azure.storage.blob.models.ContainerAcquireLeaseHeaders
-import com.microsoft.azure.storage.blob.models.ContainerBreakLeaseHeaders
-import com.microsoft.azure.storage.blob.models.ContainerChangeLeaseHeaders
-import com.microsoft.azure.storage.blob.models.ContainerCreateHeaders
-import com.microsoft.azure.storage.blob.models.ContainerCreateResponse
-import com.microsoft.azure.storage.blob.models.ContainerDeleteHeaders
-import com.microsoft.azure.storage.blob.models.ContainerDeleteResponse
-import com.microsoft.azure.storage.blob.models.ContainerGetAccessPolicyHeaders
-import com.microsoft.azure.storage.blob.models.ContainerGetAccessPolicyResponse
-import com.microsoft.azure.storage.blob.models.ContainerGetAccountInfoHeaders
-import com.microsoft.azure.storage.blob.models.ContainerGetPropertiesHeaders
-import com.microsoft.azure.storage.blob.models.ContainerGetPropertiesResponse
-import com.microsoft.azure.storage.blob.models.ContainerListBlobFlatSegmentHeaders
-import com.microsoft.azure.storage.blob.models.ContainerListBlobFlatSegmentResponse
-import com.microsoft.azure.storage.blob.models.ContainerListBlobHierarchySegmentHeaders
-import com.microsoft.azure.storage.blob.models.ContainerListBlobHierarchySegmentResponse
-import com.microsoft.azure.storage.blob.models.ContainerReleaseLeaseHeaders
-import com.microsoft.azure.storage.blob.models.ContainerRenewLeaseHeaders
-import com.microsoft.azure.storage.blob.models.ContainerSetAccessPolicyHeaders
-import com.microsoft.azure.storage.blob.models.ContainerSetAccessPolicyResponse
-import com.microsoft.azure.storage.blob.models.ContainerSetMetadataHeaders
-import com.microsoft.azure.storage.blob.models.ContainerSetMetadataResponse
-import com.microsoft.azure.storage.blob.models.CopyStatusType
-import com.microsoft.azure.storage.blob.models.LeaseAccessConditions
-import com.microsoft.azure.storage.blob.models.LeaseDurationType
-import com.microsoft.azure.storage.blob.models.LeaseStateType
-import com.microsoft.azure.storage.blob.models.LeaseStatusType
-import com.microsoft.azure.storage.blob.models.ModifiedAccessConditions
-import com.microsoft.azure.storage.blob.models.PublicAccessType
-import com.microsoft.azure.storage.blob.models.SignedIdentifier
-import com.microsoft.azure.storage.blob.models.StorageErrorCode
+import com.microsoft.azure.storage.blob.*
+import com.microsoft.azure.storage.blob.models.*
 import com.microsoft.rest.v2.http.HttpPipeline
 import com.microsoft.rest.v2.http.HttpRequest
 import com.microsoft.rest.v2.http.HttpResponse
@@ -75,11 +25,10 @@ import com.microsoft.rest.v2.policy.RequestPolicyFactory
 import com.microsoft.rest.v2.policy.RequestPolicyOptions
 import io.reactivex.Flowable
 import io.reactivex.Single
-import spock.lang.*
+import spock.lang.Unroll
 
 import java.time.OffsetDateTime
 import java.time.ZoneId
-
 
 class ContainerAPITest extends APISpec {
 
@@ -94,6 +43,11 @@ class ContainerAPITest extends APISpec {
         then:
         response.statusCode() == 201
         validateBasicHeaders(response.headers())
+    }
+
+    def "Create min"() {
+        expect:
+        primaryServiceURL.createContainerURL(generateContainerName()).create().blockingGet().statusCode() == 201
     }
 
     @Unroll
@@ -182,6 +136,11 @@ class ContainerAPITest extends APISpec {
         !headers.hasLegalHold()
     }
 
+    def "Get properties min"() {
+        expect:
+        cu.getProperties().blockingGet().statusCode() == 200
+    }
+
     def "Get properties lease"() {
         setup:
         String leaseID = setupContainerLeaseCondition(cu, receivedLeaseID)
@@ -237,6 +196,18 @@ class ContainerAPITest extends APISpec {
         cu.getProperties(null, null).blockingGet().headers().metadata().size() == 0
     }
 
+    def "Set metadata min"() {
+        setup:
+        Metadata metadata = new Metadata()
+        metadata.put("foo", "bar")
+
+        when:
+        cu.setMetadata(metadata).blockingGet()
+
+        then:
+        cu.getProperties().blockingGet().headers().metadata() == metadata
+    }
+
     @Unroll
     def "Set metadata metadata"() {
         setup:
@@ -256,7 +227,6 @@ class ContainerAPITest extends APISpec {
         key1  | value1 | key2   | value2
         null  | null   | null   | null
         "foo" | "bar"  | "fizz" | "buzz"
-        //TODO: invalid characters. empty metadata
     }
 
     @Unroll
@@ -306,7 +276,7 @@ class ContainerAPITest extends APISpec {
         cu.setMetadata(null, new ContainerAccessConditions().withModifiedAccessConditions(mac), null)
 
         then:
-        thrown(IllegalArgumentException)
+        thrown(UnsupportedOperationException)
 
         where:
         unmodified | match        | noneMatch
@@ -355,6 +325,34 @@ class ContainerAPITest extends APISpec {
         PublicAccessType.BLOB      | _
         PublicAccessType.CONTAINER | _
         null                       | _
+    }
+
+    def "Set access policy min access"() {
+        when:
+        cu.setAccessPolicy(PublicAccessType.CONTAINER, null).blockingGet()
+
+        then:
+        cu.getProperties().blockingGet().headers().blobPublicAccess() == PublicAccessType.CONTAINER
+    }
+
+    def "Set access policy min ids"() {
+        setup:
+        SignedIdentifier identifier = new SignedIdentifier()
+                .withId("0000")
+                .withAccessPolicy(new AccessPolicy()
+                .withStart(OffsetDateTime.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
+                .withExpiry(OffsetDateTime.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime()
+                .plusDays(1))
+                .withPermission("r"))
+
+        List<SignedIdentifier> ids = new ArrayList<>()
+        ids.push(identifier)
+
+        when:
+        cu.setAccessPolicy(null, ids).blockingGet()
+
+        then:
+        cu.getAccessPolicy(null, null).blockingGet().body().get(0).id() == "0000"
     }
 
     def "Set access policy ids"() {
@@ -441,7 +439,7 @@ class ContainerAPITest extends APISpec {
         cu.setAccessPolicy(null, null, new ContainerAccessConditions().withModifiedAccessConditions(mac), null)
 
         then:
-        thrown(IllegalArgumentException)
+        thrown(UnsupportedOperationException)
 
         where:
         match        | noneMatch
@@ -549,6 +547,11 @@ class ContainerAPITest extends APISpec {
         response.headers().date() != null
     }
 
+    def "Delete min"() {
+        expect:
+        cu.delete().blockingGet().statusCode() == 202
+    }
+
     @Unroll
     def "Delete AC"() {
         setup:
@@ -598,7 +601,7 @@ class ContainerAPITest extends APISpec {
         cu.delete(new ContainerAccessConditions().withModifiedAccessConditions(mac), null)
 
         then:
-        thrown(IllegalArgumentException)
+        thrown(UnsupportedOperationException)
 
         where:
         match        | noneMatch
@@ -676,6 +679,11 @@ class ContainerAPITest extends APISpec {
         blobs.get(0).properties().accessTier() == AccessTier.HOT
         blobs.get(0).properties().archiveStatus() == null
         blobs.get(0).properties().creationTime() != null
+    }
+
+    def "List blobs flat min"() {
+        expect:
+        cu.listBlobsFlatSegment(null, null).blockingGet().statusCode() == 200
     }
 
     def setupListBlobsTest(String normalName, String copyName, String metadataName, String uncommittedName) {
@@ -915,6 +923,11 @@ class ContainerAPITest extends APISpec {
         blobs.get(0).name() == name
     }
 
+    def "List blobs hierarchy min"() {
+        expect:
+        cu.listBlobsHierarchySegment(null, "/", null).blockingGet().statusCode() == 200
+    }
+
     def "List blobs hier options copy"() {
         setup:
         ListBlobsOptions options = new ListBlobsOptions().withDetails(new BlobListingDetails().withCopy(true))
@@ -925,7 +938,8 @@ class ContainerAPITest extends APISpec {
         setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         when:
-        List<BlobItem> blobs = cu.listBlobsHierarchySegment(null, "", options, null).blockingGet().body().segment().blobItems()
+        List<BlobItem> blobs = cu.listBlobsHierarchySegment(null, "", options, null)
+                .blockingGet().body().segment().blobItems()
 
         then:
         blobs.get(0).name() == normalName
@@ -1045,12 +1059,13 @@ class ContainerAPITest extends APISpec {
         cu.listBlobsHierarchySegment(null, null, options, null)
 
         then:
-        thrown(IllegalArgumentException)
+        def e = thrown(Exception)
+        exceptionType.isInstance(e)
 
         where:
-        snapshots | maxResults
-        true      | 5
-        false     | 0
+        snapshots | maxResults | exceptionType
+        true      | 5          | UnsupportedOperationException
+        false     | 0          | IllegalArgumentException
     }
 
     def "List blobs hier delim"() {
@@ -1142,6 +1157,11 @@ class ContainerAPITest extends APISpec {
         UUID.randomUUID().toString() | -1        || LeaseStateType.LEASED | LeaseDurationType.INFINITE
     }
 
+    def "Acquire lease min"() {
+        expect:
+        cu.acquireLease(null, -1).blockingGet().statusCode() == 201
+    }
+
     @Unroll
     def "Acquire lease AC"() {
         setup:
@@ -1183,7 +1203,7 @@ class ContainerAPITest extends APISpec {
         cu.acquireLease(null, -1, mac, null).blockingGet()
 
         then:
-        thrown(IllegalArgumentException)
+        thrown(UnsupportedOperationException)
 
         where:
         match        | noneMatch
@@ -1230,6 +1250,14 @@ class ContainerAPITest extends APISpec {
         headers.leaseId() != null
     }
 
+    def "Renew lease min"() {
+        setup:
+        String leaseID = setupContainerLeaseCondition(cu, receivedLeaseID)
+
+        expect:
+        cu.renewLease(leaseID).blockingGet().statusCode() == 200
+    }
+
     @Unroll
     def "Renew lease AC"() {
         setup:
@@ -1273,7 +1301,7 @@ class ContainerAPITest extends APISpec {
         cu.renewLease(receivedLeaseID, mac, null).blockingGet()
 
         then:
-        thrown(IllegalArgumentException)
+        thrown(UnsupportedOperationException)
 
         where:
         match        | noneMatch
@@ -1307,7 +1335,6 @@ class ContainerAPITest extends APISpec {
         notThrown(RuntimeException)
     }
 
-
     def "Release lease"() {
         setup:
         String leaseID = setupContainerLeaseCondition(cu, receivedLeaseID)
@@ -1317,6 +1344,14 @@ class ContainerAPITest extends APISpec {
         expect:
         cu.getProperties(null, null).blockingGet().headers().leaseState() == LeaseStateType.AVAILABLE
         validateBasicHeaders(headers)
+    }
+
+    def "Release lease min"() {
+        setup:
+        String leaseID = setupContainerLeaseCondition(cu, receivedLeaseID)
+
+        expect:
+        cu.releaseLease(leaseID).blockingGet().statusCode() == 200
     }
 
     @Unroll
@@ -1362,14 +1397,13 @@ class ContainerAPITest extends APISpec {
         cu.releaseLease(receivedLeaseID, mac, null).blockingGet()
 
         then:
-        thrown(IllegalArgumentException)
+        thrown(UnsupportedOperationException)
 
         where:
         match        | noneMatch
         receivedEtag | null
         null         | garbageEtag
     }
-
 
     def "Release lease error"() {
         setup:
@@ -1421,6 +1455,14 @@ class ContainerAPITest extends APISpec {
 
     }
 
+    def "Break lease min"() {
+        setup:
+        setupContainerLeaseCondition(cu, receivedLeaseID)
+
+        expect:
+        cu.breakLease().blockingGet().statusCode() == 202
+    }
+
     @Unroll
     def "Break lease AC"() {
         setup:
@@ -1464,7 +1506,7 @@ class ContainerAPITest extends APISpec {
         cu.breakLease(null, mac, null).blockingGet()
 
         then:
-        thrown(IllegalArgumentException)
+        thrown(UnsupportedOperationException)
 
         where:
         match        | noneMatch
@@ -1511,6 +1553,14 @@ class ContainerAPITest extends APISpec {
         validateBasicHeaders(headers)
     }
 
+    def "Change lease min"() {
+        setup:
+        def leaseID = setupContainerLeaseCondition(cu, receivedLeaseID)
+
+        expect:
+        cu.changeLease(leaseID, UUID.randomUUID().toString()).blockingGet().statusCode() == 200
+    }
+
     @Unroll
     def "Change lease AC"() {
         setup:
@@ -1554,7 +1604,7 @@ class ContainerAPITest extends APISpec {
         cu.changeLease(receivedLeaseID, garbageLeaseID, mac, null).blockingGet()
 
         then:
-        thrown(IllegalArgumentException)
+        thrown(UnsupportedOperationException)
 
         where:
         match        | noneMatch
@@ -1644,6 +1694,16 @@ class ContainerAPITest extends APISpec {
 
     def "Root implicit"() {
         setup:
+        cu = primaryServiceURL.createContainerURL(ContainerURL.ROOT_CONTAINER_NAME)
+        // Create root container if not exist.
+        try {
+            cu.create(null, null, null).blockingGet()
+        }
+        catch (StorageException se) {
+            if (se.errorCode() != StorageErrorCode.CONTAINER_ALREADY_EXISTS) {
+                throw se
+            }
+        }
         PipelineOptions po = new PipelineOptions()
         po.withClient(getHttpClient())
         HttpPipeline pipeline = StorageURL.createPipeline(primaryCreds, po)
@@ -1663,6 +1723,16 @@ class ContainerAPITest extends APISpec {
 
     def "Web container"() {
         setup:
+        cu = primaryServiceURL.createContainerURL(ContainerURL.STATIC_WEBSITE_CONTAINER_NAME)
+        // Create root container if not exist.
+        try {
+            cu.create(null, null, null).blockingGet()
+        }
+        catch (StorageException se) {
+            if (se.errorCode() != StorageErrorCode.CONTAINER_ALREADY_EXISTS) {
+                throw se
+            }
+        }
         def webContainer = primaryServiceURL.createContainerURL(ContainerURL.STATIC_WEBSITE_CONTAINER_NAME)
 
         when:
@@ -1707,6 +1777,11 @@ class ContainerAPITest extends APISpec {
         response.headers().skuName() != null
     }
 
+    def "Get account info min"() {
+        expect:
+        primaryServiceURL.getAccountInfo().blockingGet().statusCode() == 200
+    }
+
     def "Get account info error"() {
         when:
         ServiceURL serviceURL = new ServiceURL(primaryServiceURL.toURL(),
@@ -1731,5 +1806,4 @@ class ContainerAPITest extends APISpec {
         then:
         notThrown(RuntimeException)
     }
-
 }

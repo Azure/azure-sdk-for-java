@@ -24,7 +24,7 @@ import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.Locale;
 
 final class Utility {
 
@@ -33,16 +33,36 @@ final class Utility {
 
     static final DateTimeFormatter ISO8601UTCDateFormatter =
             DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ROOT).withZone(ZoneId.of("UTC"));
+    /**
+     * Stores a reference to the UTC time zone.
+     */
+    static final ZoneId UTC_ZONE = ZoneId.of("UTC");
+    /**
+     * Stores a reference to the date/time pattern with the greatest precision Java.util.Date is capable of expressing.
+     */
+    private static final String MAX_PRECISION_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS";
+    /**
+     * Stores a reference to the ISO8601 date/time pattern.
+     */
+    private static final String ISO8601_PATTERN = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+    /**
+     * Stores a reference to the ISO8601 date/time pattern.
+     */
+    private static final String ISO8601_PATTERN_NO_SECONDS = "yyyy-MM-dd'T'HH:mm'Z'";
+    /**
+     * The length of a datestring that matches the MAX_PRECISION_PATTERN.
+     */
+    private static final int MAX_PRECISION_DATESTRING_LENGTH = MAX_PRECISION_PATTERN.replaceAll("'", "").length();
 
     /**
      * Asserts that a value is not <code>null</code>.
      *
      * @param param
-     *            A {@code String} that represents the name of the parameter, which becomes the exception message
-     *            text if the <code>value</code> parameter is <code>null</code>.
+     *         A {@code String} that represents the name of the parameter, which becomes the exception message
+     *         text if the <code>value</code> parameter is <code>null</code>.
      * @param value
-     *            An <code>Object</code> object that represents the value of the specified parameter. This is the value
-     *            being asserted as not <code>null</code>.
+     *         An <code>Object</code> object that represents the value of the specified parameter. This is the value
+     *         being asserted as not <code>null</code>.
      */
     static void assertNotNull(final String param, final Object value) {
         if (value == null) {
@@ -54,7 +74,7 @@ final class Utility {
      * Returns a value that indicates whether the specified string is <code>null</code> or empty.
      *
      * @param value
-     *            A {@code String} being examined for <code>null</code> or empty.
+     *         A {@code String} being examined for <code>null</code> or empty.
      *
      * @return <code>true</code> if the specified value is <code>null</code> or empty; otherwise, <code>false</code>
      */
@@ -67,7 +87,7 @@ final class Utility {
      * than replacing it with a space character.
      *
      * @param stringToDecode
-     *            A {@code String} that represents the string to decode.
+     *         A {@code String} that represents the string to decode.
      *
      * @return A {@code String} that represents the decoded string.
      */
@@ -107,8 +127,7 @@ final class Utility {
             }
 
             return outBuilder.toString();
-        }
-        else {
+        } else {
             try {
                 return URLDecoder.decode(stringToDecode, Constants.UTF8_CHARSET);
             } catch (UnsupportedEncodingException e) {
@@ -118,42 +137,17 @@ final class Utility {
     }
 
     /**
-     * Stores a reference to the UTC time zone.
-     */
-     static final ZoneId UTC_ZONE = ZoneId.of("UTC");
-
-    /**
-     * Stores a reference to the date/time pattern with the greatest precision Java.util.Date is capable of expressing.
-     */
-    private static final String MAX_PRECISION_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS";
-
-    /**
-     * Stores a reference to the ISO8601 date/time pattern.
-     */
-    private static final String ISO8601_PATTERN = "yyyy-MM-dd'T'HH:mm:ss'Z'";
-
-    /**
-     * Stores a reference to the ISO8601 date/time pattern.
-     */
-    private static final String ISO8601_PATTERN_NO_SECONDS = "yyyy-MM-dd'T'HH:mm'Z'";
-
-    /**
-     * The length of a datestring that matches the MAX_PRECISION_PATTERN.
-     */
-    private static final int MAX_PRECISION_DATESTRING_LENGTH = MAX_PRECISION_PATTERN.replaceAll("'", "").length();
-
-    /**
      * Given a String representing a date in a form of the ISO8601 pattern, generates a Date representing it
      * with up to millisecond precision.
      *
      * @param dateString
-     *              the {@code String} to be interpreted as a <code>Date</code>
+     *         the {@code String} to be interpreted as a <code>Date</code>
      *
      * @return the corresponding <code>Date</code> object
      */
     public static OffsetDateTime parseDate(String dateString) {
         String pattern = MAX_PRECISION_PATTERN;
-        switch(dateString.length()) {
+        switch (dateString.length()) {
             case 28: // "yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'"-> [2012-01-04T23:21:59.1234567Z] length = 28
             case 27: // "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'"-> [2012-01-04T23:21:59.123456Z] length = 27
             case 26: // "yyyy-MM-dd'T'HH:mm:ss.SSSSS'Z'"-> [2012-01-04T23:21:59.12345Z] length = 26
@@ -187,14 +181,14 @@ final class Utility {
      * Asserts that the specified integer is in the valid range.
      *
      * @param param
-     *            A <code>String</code> that represents the name of the parameter, which becomes the exception message
-     *            text if the <code>value</code> parameter is out of bounds.
+     *         A <code>String</code> that represents the name of the parameter, which becomes the exception message
+     *         text if the <code>value</code> parameter is out of bounds.
      * @param value
-     *            The value of the specified parameter.
+     *         The value of the specified parameter.
      * @param min
-     *            The minimum value for the specified parameter.
+     *         The minimum value for the specified parameter.
      * @param max
-     *            The maximum value for the specified parameter.
+     *         The maximum value for the specified parameter.
      */
     public static void assertInBounds(final String param, final long value, final long min, final long max) {
         if (value < min || value > max) {
@@ -206,7 +200,7 @@ final class Utility {
      * Performs safe encoding of the specified string, taking care to insert %20 for each space character,
      * instead of inserting the + character.
      */
-    static String safeURLEncode(final String stringToEncode)  {
+    static String safeURLEncode(final String stringToEncode) {
         if (stringToEncode == null) {
             return null;
         }
@@ -239,13 +233,11 @@ final class Utility {
                 }
 
                 return outBuilder.toString();
-            }
-            else {
+            } else {
                 return tString;
             }
 
-        }
-        catch (final UnsupportedEncodingException e) {
+        } catch (final UnsupportedEncodingException e) {
             throw new Error(e); // If we can't encode UTF-8, we fail.
         }
     }

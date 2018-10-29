@@ -20,7 +20,11 @@ The Azure Storage development team uses Intellij. However, any preferred IDE or 
 ## Tests
 
 ### Configuration
-The only step to configure testing is to set the appropriate environment variable. Create environment variables named "ACCOUNT_NAME", "ACCOUNT_KEY", "SECONDARY_ACCOUNT_NAME", and "SECONDARY_ACCOUNT_KEY". The first two will be used for most requests. The second two will only be used for tests requiring two accounts.
+The only step to configure testing is to set the appropriate environment variables. Create environment variables named "ACCOUNT_NAME" and "ACCOUNT_KEY", holding your Azure storage account name and key respectively. This will satisfy most tests. 
+To run any tests requiring two accounts (generally those testing copy-related apis), set environment variables "SECONDARY_ACCOUNT_NAME", and "SECONDARY_ACCOUNT_KEY".
+To run any tests related to setting blob tiers on block blobs, set environment variables "BLOB_STORAGE_ACCOUNT_NAME" and "BLOB_STORAGE_ACCOUNT_KEY". Note that a GPV2 account is also sufficient here.
+To run any tests related to setting blob tiers on page blobs, set environment variables "PREMIUM_ACCOUNT_NAME" and "PREMIUM_ACCOUNT_KEY".
+It is valid to use a single account for multiple scenarios; a GPV2 account would work for both the primary account and the blob storage account, for instance. The only restriction is that the primary and secondary accounts must be distinct.
 
 ### Running
 To actually run tests, right click on the test class in the Package Explorer or the individual test in the Outline and select Run As->GroovyTest. Alternatively, run mvn test from the command line.

@@ -23,20 +23,19 @@ import java.time.OffsetDateTime;
  * which can actually be applied to blob urls. Note: that both this class and {@link SASQueryParameters} exist because
  * the former is mutable and a logical representation while the latter is immutable and used to generate actual REST
  * requests.
- *
+ * <p>
  * Please see
  * <a href=https://docs.microsoft.com/en-us/azure/storage/common/storage-dotnet-shared-access-signature-part-1>here</a>
  * for more conceptual information on SAS:
- *
- *
+ * <p>
+ * <p>
  * Please see
  * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-an-account-sas>here</a> for further
  * descriptions of the parameters, including which are required:
  *
- * @apiNote
- * ## Sample Code \n
+ * @apiNote ## Sample Code \n
  * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=account_sas "Sample code for AccountSASSignatureValues")] \n
- * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+ * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
  */
 public final class AccountSASSignatureValues {
 
@@ -55,6 +54,13 @@ public final class AccountSASSignatureValues {
     private String services;
 
     private String resourceTypes;
+
+    /**
+     * Initializes an {@code AccountSASSignatureValues} object with the version number set to the default and all
+     * other values empty.
+     */
+    public AccountSASSignatureValues() {
+    }
 
     /**
      * If null or empty, this defaults to the service version targeted by this version of the library.
@@ -183,19 +189,13 @@ public final class AccountSASSignatureValues {
     }
 
     /**
-     * Initializes an {@code AccountSASSignatureValues} object with the version number set to the default and all
-     * other values empty.
-     */
-    public AccountSASSignatureValues() { }
-
-    /**
      * Generates a {@link SASQueryParameters} object which contains all SAS query parameters needed to make an actual
      * REST request.
      *
      * @param sharedKeyCredentials
-     *      Credentials for the storage account and corresponding primary or secondary key.
-     * @return
-     *      {@link SASQueryParameters}
+     *         Credentials for the storage account and corresponding primary or secondary key.
+     *
+     * @return {@link SASQueryParameters}
      */
     public SASQueryParameters generateSASQueryParameters(SharedKeyCredentials sharedKeyCredentials) {
         Utility.assertNotNull("SharedKeyCredentials", sharedKeyCredentials);

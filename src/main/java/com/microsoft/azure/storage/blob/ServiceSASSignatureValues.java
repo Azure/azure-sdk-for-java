@@ -23,17 +23,16 @@ import java.time.OffsetDateTime;
  * which can actually be applied to blob urls. Note: that both this class and {@link SASQueryParameters} exist because
  * the former is mutable and a logical representation while the latter is immutable and used to generate actual REST
  * requests.
- *
+ * <p>
  * Please see <a href=https://docs.microsoft.com/en-us/azure/storage/common/storage-dotnet-shared-access-signature-part-1>here</a>
  * for more conceptual information on SAS.
- *
+ * <p>
  * Please see <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas>here </a> for
  * more details on each value, including which are required.
  *
- * @apiNote
- * ## Sample Code \n
+ * @apiNote ## Sample Code \n
  * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_sas "Sample code for ServiceSASSignatureValues")] \n
- * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+ * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
  */
 public final class ServiceSASSignatureValues {
 
@@ -64,6 +63,12 @@ public final class ServiceSASSignatureValues {
     private String contentLanguage;
 
     private String contentType;
+
+    /**
+     * Creates an object with empty values for all fields.
+     */
+    public ServiceSASSignatureValues() {
+    }
 
     /**
      * The version of the service this SAS will target. If not specified, it will default to the version targeted by the
@@ -284,18 +289,13 @@ public final class ServiceSASSignatureValues {
     }
 
     /**
-     * Creates an object with empty values for all fields.
-     */
-    public ServiceSASSignatureValues() { }
-
-    /**
      * Uses an account's shared key credential to sign these signature values to produce the proper SAS query
      * parameters.
      *
      * @param sharedKeyCredentials
-     *      A {@link SharedKeyCredentials} object used to sign the SAS values.
-     * @return
-     *      {@link SASQueryParameters}
+     *         A {@link SharedKeyCredentials} object used to sign the SAS values.
+     *
+     * @return {@link SASQueryParameters}
      */
     public SASQueryParameters generateSASQueryParameters(SharedKeyCredentials sharedKeyCredentials) {
         Utility.assertNotNull("sharedKeyCredentials", sharedKeyCredentials);
@@ -309,8 +309,7 @@ public final class ServiceSASSignatureValues {
             if (this.permissions != null) {
                 verifiedPermissions = ContainerSASPermission.parse(this.permissions).toString();
             }
-        }
-        else {
+        } else {
             if (this.permissions != null) {
                 verifiedPermissions = BlobSASPermission.parse(this.permissions).toString();
             }
@@ -347,7 +346,7 @@ public final class ServiceSASSignatureValues {
     }
 
     private String stringToSign(final String verifiedPermissions,
-                                final SharedKeyCredentials sharedKeyCredentials) {
+            final SharedKeyCredentials sharedKeyCredentials) {
         return String.join("\n",
                 verifiedPermissions == null ? "" : verifiedPermissions,
                 this.startTime == null ? "" : Utility.ISO8601UTCDateFormatter.format(this.startTime),

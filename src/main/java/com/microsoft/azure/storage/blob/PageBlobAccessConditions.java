@@ -21,7 +21,7 @@ import com.microsoft.azure.storage.blob.models.SequenceNumberAccessConditions;
 /**
  * This class contains values that restrict the successful completion of PageBlob operations to certain conditions.
  * It may be set to null if no access conditions are desired.
- *
+ * <p>
  * Please refer to the request header section
  * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/put-page>here</a> for more conceptual information.
  */
@@ -39,29 +39,43 @@ public final class PageBlobAccessConditions {
     private LeaseAccessConditions leaseAccessConditions;
 
     /**
-     * {@link SequenceNumberAccessConditions}
+     * Creates an instance which has fields set to non-null, empty values.
+     */
+    public PageBlobAccessConditions() {
+        this.sequenceNumberAccessConditions = new SequenceNumberAccessConditions();
+        this.modifiedAccessConditions = new ModifiedAccessConditions();
+        this.leaseAccessConditions = new LeaseAccessConditions();
+    }
+
+    /**
+     * Access conditions that will fail the request if the sequence number does not meet the provided condition.
      */
     public SequenceNumberAccessConditions sequenceNumberAccessConditions() {
         return sequenceNumberAccessConditions;
     }
 
     /**
-     * {@link SequenceNumberAccessConditions}
+     * Access conditions that will fail the request if the sequence number does not meet the provided condition.
      */
-    public PageBlobAccessConditions withSequenceNumberAccessConditions(SequenceNumberAccessConditions sequenceNumberAccessConditions) {
+    public PageBlobAccessConditions withSequenceNumberAccessConditions(
+            SequenceNumberAccessConditions sequenceNumberAccessConditions) {
         this.sequenceNumberAccessConditions = sequenceNumberAccessConditions;
         return this;
     }
 
     /**
-     * {@link ModifiedAccessConditions}
+     * Standard HTTP Access conditions related to the modification of data. ETag and LastModifiedTime are used to
+     * construct conditions related to when the blob was changed relative to the given request. The request
+     * will fail if the specified condition is not satisfied.
      */
     public ModifiedAccessConditions modifiedAccessConditions() {
         return modifiedAccessConditions;
     }
 
     /**
-     * {@link ModifiedAccessConditions}
+     * Standard HTTP Access conditions related to the modification of data. ETag and LastModifiedTime are used to
+     * construct conditions related to when the blob was changed relative to the given request. The request
+     * will fail if the specified condition is not satisfied.
      */
     public PageBlobAccessConditions withModifiedAccessConditions(ModifiedAccessConditions modifiedAccessConditions) {
         this.modifiedAccessConditions = modifiedAccessConditions;
@@ -69,23 +83,19 @@ public final class PageBlobAccessConditions {
     }
 
     /**
-     * {@link LeaseAccessConditions}
+     * By setting lease access conditions, requests will fail if the provided lease does not match the active lease on
+     * the blob.
      */
     public LeaseAccessConditions leaseAccessConditions() {
         return leaseAccessConditions;
     }
 
     /**
-     * {@link LeaseAccessConditions}
+     * By setting lease access conditions, requests will fail if the provided lease does not match the active lease on
+     * the blob.
      */
     public PageBlobAccessConditions withLeaseAccessConditions(LeaseAccessConditions leaseAccessConditions) {
         this.leaseAccessConditions = leaseAccessConditions;
         return this;
-    }
-
-    public PageBlobAccessConditions() {
-        this.sequenceNumberAccessConditions = new SequenceNumberAccessConditions();
-        this.modifiedAccessConditions = new ModifiedAccessConditions();
-        this.leaseAccessConditions = new LeaseAccessConditions();
     }
 }

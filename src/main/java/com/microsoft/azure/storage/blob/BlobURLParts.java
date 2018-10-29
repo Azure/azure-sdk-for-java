@@ -27,10 +27,9 @@ import java.util.Map;
  * It is also possible to use the empty constructor to build a blobURL from scratch.
  * NOTE: Changing any SAS-related field requires computing a new SAS signature.
  *
- * @apiNote
- * ## Sample Code \n
+ * @apiNote ## Sample Code \n
  * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=url_parts "Sample code for BlobURLParts")] \n
- * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
+ * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
  */
 public final class BlobURLParts {
 
@@ -47,6 +46,15 @@ public final class BlobURLParts {
     private SASQueryParameters sasQueryParameters;
 
     private Map<String, String[]> unparsedParameters;
+
+    /**
+     * Initializes a BlobURLParts object with all fields set to null, except unparsedParameters, which is an empty map.
+     * This may be useful for constructing a URL to a blob storage resource from scratch when the constituent parts are
+     * already known.
+     */
+    public BlobURLParts() {
+        unparsedParameters = new HashMap<>();
+    }
 
     /**
      * The scheme. Ex: "https://".
@@ -158,22 +166,13 @@ public final class BlobURLParts {
     }
 
     /**
-     * Initializes a BlobURLParts object with all fields set to null, except unparsedParameters, which is an empty map.
-     * This may be useful for constructing a URL to a blob storage resource from scratch when the constituent parts are
-     * already known.
-     */
-    public BlobURLParts() {
-        unparsedParameters = new HashMap<>();
-    }
-
-    /**
      * Converts the blob URL parts to a {@link URL}.
      *
+     * @return A {@code java.net.URL} to the blob resource composed of all the elements in the object.
+     *
      * @throws MalformedURLException
-     *      The fields present on the BlobURLParts object were insufficient to construct a valid URL or were
-     *      ill-formatted.
-     * @return
-     *      A {@code java.net.URL} to the blob resource composed of all the elements in the object.
+     *         The fields present on the BlobURLParts object were insufficient to construct a valid URL or were
+     *         ill-formatted.
      */
     public URL toURL() throws MalformedURLException {
         UrlBuilder url = new UrlBuilder().withScheme(this.scheme).withHost(this.host);
@@ -199,7 +198,6 @@ public final class BlobURLParts {
         }
 
         for (Map.Entry<String, String[]> entry : this.unparsedParameters.entrySet()) {
-            // TODO: Test this is the proper encoding
             // The commas are intentionally encoded.
             url.setQueryParameter(entry.getKey(),
                     Utility.safeURLEncode(String.join(",", entry.getValue())));

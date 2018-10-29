@@ -14,10 +14,14 @@
  */
 package com.microsoft.azure.storage.blob;
 
+import io.reactivex.Flowable;
+
 /**
  * An {@code IProgressReceiver} is an object that can be used to report progress on network transfers. When specified on
  * transfer operations, the {@code reportProgress} method will be called periodically with the total number of bytes
- * transferred. The user may configure this method to report progress in whatever format desired.
+ * transferred. The user may configure this method to report progress in whatever format desired. It is recommended
+ * that this type be used in conjunction with
+ * {@link ProgressReporter#addProgressReporting(Flowable, IProgressReceiver)}.
  */
 public interface IProgressReceiver {
 

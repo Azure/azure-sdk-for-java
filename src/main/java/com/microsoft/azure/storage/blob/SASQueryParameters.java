@@ -14,7 +14,6 @@
  */
 package com.microsoft.azure.storage.blob;
 
-import java.net.Inet4Address;
 import java.net.UnknownHostException;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -64,145 +63,12 @@ public final class SASQueryParameters {
     private final String contentType;
 
     /**
-     * @return
-     *      The storage version
-     */
-    public String version() {
-        return version;
-    }
-
-    /**
-     * @return
-     *      The storage services being accessed (only for Account SAS). Please refer to {@link AccountSASService} for
-     *      more details.
-     */
-    public String services() {
-        return services;
-    }
-
-    /**
-     * @return
-     *      The storage resource types being accessed (only for Account SAS). Please refer to
-     *      {@link AccountSASResourceType} for more details.
-     */
-    public String resourceTypes() {
-        return resourceTypes;
-    }
-
-    /**
-     * @return
-     *      The allowed HTTP protocol(s) or {@code null}. Please refer to {@link SASProtocol} for more details.
-     */
-    public SASProtocol protocol() {
-        return protocol;
-    }
-
-    /**
-     * @return
-     *      The start time for this SAS token or {@code null}.
-     */
-    public OffsetDateTime startTime() {
-        return startTime;
-    }
-
-    /**
-     * @return
-     *      The expiry time for this SAS token.
-     */
-    public OffsetDateTime expiryTime() {
-        return expiryTime;
-    }
-
-    /**
-     * @return
-     *      {@link IPRange}
-     */
-    public IPRange ipRange() {
-        return ipRange;
-    }
-
-    /**
-     * @return
-     *      The signed identifier (only for {@link ServiceSASSignatureValues}) or {@code null}. Please see
-     *      <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
-     *      for more information.
-     */
-    public String identifier() {
-        return identifier;
-    }
-
-    /**
-     * @return
-     *      The storage container or blob (only for {@link ServiceSASSignatureValues}).
-     */
-    public String resource() {
-        return resource;
-    }
-
-    /**
-     * @return
-     *      Please refer to {@link AccountSASPermission}, {@link BlobSASPermission}, or {@link ContainerSASPermission}
-     *      for more details.
-     */
-    public String permissions() {
-        return permissions;
-    }
-
-    /**
-     * @return
-     *      The signature for the SAS token.
-     */
-    public String signature() {
-        return signature;
-    }
-
-    /**
-     * @return
-     *      The Cache-Control header value when a client accesses the resource with this sas token.
-     */
-    public String cacheControl() {
-        return cacheControl;
-    }
-
-    /**
-     * @return
-     *      The Content-Disposition header value when a client accesses the resource with this sas token.
-     */
-    public String contentDisposition() {
-        return contentDisposition;
-    }
-
-    /**
-     * @return
-     *      The Content-Encoding header value when a client accesses the resource with this sas token.
-     */
-    public String contentEncoding() {
-        return contentEncoding;
-    }
-
-    /**
-     * @return
-     *      The Content-Language header value when a client accesses the resource with this sas token.
-     */
-    public String contentLanguage() {
-        return contentLanguage;
-    }
-
-    /**
-     * @return
-     *      The Content-Type header value when a client accesses the resource with this sas token.
-     */
-    public String contentType() {
-        return contentType;
-    }
-
-    /**
      * Creates a new {@link SASQueryParameters} object.
      *
      * @param queryParamsMap
-     *      All query parameters for the request as key-value pairs
+     *         All query parameters for the request as key-value pairs
      * @param removeSASParametersFromMap
-     *      When {@code true}, the SAS query parameters will be removed from queryParamsMap
+     *         When {@code true}, the SAS query parameters will be removed from queryParamsMap
      */
     SASQueryParameters(Map<String, String[]> queryParamsMap, boolean removeSASParametersFromMap)
             throws UnknownHostException {
@@ -213,8 +79,7 @@ public final class SASQueryParameters {
             if (removeSASParametersFromMap) {
                 queryParamsMap.remove("sv");
             }
-        }
-        else {
+        } else {
             this.version = null;
         }
 
@@ -224,8 +89,7 @@ public final class SASQueryParameters {
             if (removeSASParametersFromMap) {
                 queryParamsMap.remove("ss");
             }
-        }
-        else {
+        } else {
             this.services = null;
         }
 
@@ -235,8 +99,7 @@ public final class SASQueryParameters {
             if (removeSASParametersFromMap) {
                 queryParamsMap.remove("srt");
             }
-        }
-        else {
+        } else {
             this.resourceTypes = null;
         }
 
@@ -246,8 +109,7 @@ public final class SASQueryParameters {
             if (removeSASParametersFromMap) {
                 queryParamsMap.remove("spr");
             }
-        }
-        else {
+        } else {
             this.protocol = null;
         }
 
@@ -257,8 +119,7 @@ public final class SASQueryParameters {
             if (removeSASParametersFromMap) {
                 queryParamsMap.remove("st");
             }
-        }
-        else {
+        } else {
             this.startTime = null;
         }
 
@@ -268,8 +129,7 @@ public final class SASQueryParameters {
             if (removeSASParametersFromMap) {
                 queryParamsMap.remove("se");
             }
-        }
-        else {
+        } else {
             this.expiryTime = null;
         }
 
@@ -279,8 +139,7 @@ public final class SASQueryParameters {
             if (removeSASParametersFromMap) {
                 queryParamsMap.remove("sip");
             }
-        }
-        else {
+        } else {
             this.ipRange = null;
         }
 
@@ -290,8 +149,7 @@ public final class SASQueryParameters {
             if (removeSASParametersFromMap) {
                 queryParamsMap.remove("si");
             }
-        }
-        else {
+        } else {
             this.identifier = null;
         }
 
@@ -301,8 +159,7 @@ public final class SASQueryParameters {
             if (removeSASParametersFromMap) {
                 queryParamsMap.remove("sr");
             }
-        }
-        else {
+        } else {
             this.resource = null;
         }
 
@@ -312,8 +169,7 @@ public final class SASQueryParameters {
             if (removeSASParametersFromMap) {
                 queryParamsMap.remove("sp");
             }
-        }
-        else {
+        } else {
             this.permissions = null;
         }
 
@@ -323,8 +179,7 @@ public final class SASQueryParameters {
             if (removeSASParametersFromMap) {
                 queryParamsMap.remove("sig");
             }
-        }
-        else {
+        } else {
             this.signature = null;
         }
 
@@ -334,8 +189,7 @@ public final class SASQueryParameters {
             if (removeSASParametersFromMap) {
                 queryParamsMap.remove("rscc");
             }
-        }
-        else {
+        } else {
             this.cacheControl = null;
         }
 
@@ -345,8 +199,7 @@ public final class SASQueryParameters {
             if (removeSASParametersFromMap) {
                 queryParamsMap.remove("rscd");
             }
-        }
-        else {
+        } else {
             this.contentDisposition = null;
         }
 
@@ -356,8 +209,7 @@ public final class SASQueryParameters {
             if (removeSASParametersFromMap) {
                 queryParamsMap.remove("rsce");
             }
-        }
-        else {
+        } else {
             this.contentEncoding = null;
         }
 
@@ -367,8 +219,7 @@ public final class SASQueryParameters {
             if (removeSASParametersFromMap) {
                 queryParamsMap.remove("rscl");
             }
-        }
-        else {
+        } else {
             this.contentLanguage = null;
         }
 
@@ -378,8 +229,7 @@ public final class SASQueryParameters {
             if (removeSASParametersFromMap) {
                 queryParamsMap.remove("rsct");
             }
-        }
-        else {
+        } else {
             this.contentType = null;
         }
     }
@@ -389,32 +239,32 @@ public final class SASQueryParameters {
      * *SASSignatureValues classes.
      *
      * @param version
-     *      A {@code String} representing the storage version.
+     *         A {@code String} representing the storage version.
      * @param services
-     *      A {@code String} representing the storage services being accessed (only for Account SAS).
+     *         A {@code String} representing the storage services being accessed (only for Account SAS).
      * @param resourceTypes
-     *      A {@code String} representing the storage resource types being accessed (only for Account SAS).
+     *         A {@code String} representing the storage resource types being accessed (only for Account SAS).
      * @param protocol
-     *      A {@code String} representing the allowed HTTP protocol(s) or {@code null}.
+     *         A {@code String} representing the allowed HTTP protocol(s) or {@code null}.
      * @param startTime
-     *      A {@code java.util.Date} representing the start time for this SAS token or {@code null}.
+     *         A {@code java.util.Date} representing the start time for this SAS token or {@code null}.
      * @param expiryTime
-     *      A {@code java.util.Date} representing the expiry time for this SAS token.
+     *         A {@code java.util.Date} representing the expiry time for this SAS token.
      * @param ipRange
-     *      A {@link IPRange} representing the range of valid IP addresses for this SAS token or {@code null}.
+     *         A {@link IPRange} representing the range of valid IP addresses for this SAS token or {@code null}.
      * @param identifier
-     *      A {@code String} representing the signed identifier (only for Service SAS) or {@code null}.
+     *         A {@code String} representing the signed identifier (only for Service SAS) or {@code null}.
      * @param resource
-     *      A {@code String} representing the storage container or blob (only for Service SAS).
+     *         A {@code String} representing the storage container or blob (only for Service SAS).
      * @param permissions
-     *      A {@code String} representing the storage permissions or {@code null}.
+     *         A {@code String} representing the storage permissions or {@code null}.
      * @param signature
-     *      A {@code String} representing the signature for the SAS token.
+     *         A {@code String} representing the signature for the SAS token.
      */
-     SASQueryParameters(String version, String services, String resourceTypes, SASProtocol protocol,
-             OffsetDateTime startTime, OffsetDateTime expiryTime, IPRange ipRange, String identifier,
-             String resource, String permissions, String signature, String cacheControl, String contentDisposition,
-             String contentEncoding, String contentLanguage, String contentType) {
+    SASQueryParameters(String version, String services, String resourceTypes, SASProtocol protocol,
+            OffsetDateTime startTime, OffsetDateTime expiryTime, IPRange ipRange, String identifier,
+            String resource, String permissions, String signature, String cacheControl, String contentDisposition,
+            String contentEncoding, String contentLanguage, String contentType) {
 
         this.version = version;
         this.services = services;
@@ -434,22 +284,138 @@ public final class SASQueryParameters {
         this.contentType = contentType;
     }
 
-    private void tryAppendQueryParameter(StringBuilder sb, String param, Object value) {
-         if (value != null) {
-             if (sb.length() == 0) {
-                 sb.append('?');
-             }
-             else {
-                 sb.append('&');
-             }
-             sb.append(safeURLEncode(param)).append('=').append(safeURLEncode(value.toString()));
-         }
+    /**
+     * @return The storage version
+     */
+    public String version() {
+        return version;
     }
+
+    /**
+     * @return The storage services being accessed (only for Account SAS). Please refer to {@link AccountSASService} for
+     * more details.
+     */
+    public String services() {
+        return services;
+    }
+
+    /**
+     * @return The storage resource types being accessed (only for Account SAS). Please refer to
+     * {@link AccountSASResourceType} for more details.
+     */
+    public String resourceTypes() {
+        return resourceTypes;
+    }
+
+    /**
+     * @return The allowed HTTP protocol(s) or {@code null}. Please refer to {@link SASProtocol} for more details.
+     */
+    public SASProtocol protocol() {
+        return protocol;
+    }
+
+    /**
+     * @return The start time for this SAS token or {@code null}.
+     */
+    public OffsetDateTime startTime() {
+        return startTime;
+    }
+
+    /**
+     * @return The expiry time for this SAS token.
+     */
+    public OffsetDateTime expiryTime() {
+        return expiryTime;
+    }
+
+    /**
+     * @return {@link IPRange}
+     */
+    public IPRange ipRange() {
+        return ipRange;
+    }
+
+    /**
+     * @return The signed identifier (only for {@link ServiceSASSignatureValues}) or {@code null}. Please see
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
+     * for more information.
+     */
+    public String identifier() {
+        return identifier;
+    }
+
+    /**
+     * @return The storage container or blob (only for {@link ServiceSASSignatureValues}).
+     */
+    public String resource() {
+        return resource;
+    }
+
+    /**
+     * @return Please refer to {@link AccountSASPermission}, {@link BlobSASPermission}, or {@link ContainerSASPermission}
+     * for more details.
+     */
+    public String permissions() {
+        return permissions;
+    }
+
+    /**
+     * @return The signature for the SAS token.
+     */
+    public String signature() {
+        return signature;
+    }
+
+    /**
+     * @return The Cache-Control header value when a client accesses the resource with this sas token.
+     */
+    public String cacheControl() {
+        return cacheControl;
+    }
+
+    /**
+     * @return The Content-Disposition header value when a client accesses the resource with this sas token.
+     */
+    public String contentDisposition() {
+        return contentDisposition;
+    }
+
+    /**
+     * @return The Content-Encoding header value when a client accesses the resource with this sas token.
+     */
+    public String contentEncoding() {
+        return contentEncoding;
+    }
+
+    /**
+     * @return The Content-Language header value when a client accesses the resource with this sas token.
+     */
+    public String contentLanguage() {
+        return contentLanguage;
+    }
+
+    /**
+     * @return The Content-Type header value when a client accesses the resource with this sas token.
+     */
+    public String contentType() {
+        return contentType;
+    }
+
+    private void tryAppendQueryParameter(StringBuilder sb, String param, Object value) {
+        if (value != null) {
+            if (sb.length() == 0) {
+                sb.append('?');
+            } else {
+                sb.append('&');
+            }
+            sb.append(safeURLEncode(param)).append('=').append(safeURLEncode(value.toString()));
+        }
+    }
+
     /**
      * Encodes all SAS query parameters into a string that can be appended to a URL.
      *
-     * @return
-     *      A {@code String} representing all SAS query parameters.
+     * @return A {@code String} representing all SAS query parameters.
      */
     public String encode() {
         /*

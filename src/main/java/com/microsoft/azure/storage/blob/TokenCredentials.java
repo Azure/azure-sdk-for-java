@@ -26,7 +26,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * TokenCredentials are a means of authenticating requests to Azure Storage via OAuth user tokens. This is the preferred
  * way of authenticating with Azure Storage.
  */
-public final class TokenCredentials implements ICredentials{
+public final class TokenCredentials implements ICredentials {
 
     /*
     This is an atomic reference because it must be thread safe as all parts of the pipeline must be. It however cannot
@@ -39,7 +39,7 @@ public final class TokenCredentials implements ICredentials{
      * Creates a token credential for use with role-based access control (RBAC) access to Azure Storage resources.
      *
      * @param token
-     *      A {@code String} of the token to use for authentication.
+     *         A {@code String} of the token to use for authentication.
      */
     public TokenCredentials(String token) {
         this.token = new AtomicReference<>(token);
@@ -48,8 +48,7 @@ public final class TokenCredentials implements ICredentials{
     /**
      * Retrieve the value of the token used by this factory.
      *
-     * @return
-     *      A {@code String} with the token's value.
+     * @return A {@code String} with the token's value.
      */
     public String getToken() {
         return this.token.get();
@@ -59,7 +58,7 @@ public final class TokenCredentials implements ICredentials{
      * Update the token to a new value.
      *
      * @param token
-     *      A {@code String} containing the new token's value.
+     *         A {@code String} containing the new token's value.
      */
     public void setToken(String token) {
         this.token.set(token);

@@ -89,7 +89,8 @@ public class Samples {
             System.out.println("Hit continuation in listing at " + response.body().segment().blobItems().get(
                     response.body().segment().blobItems().size() - 1).name());
             // Recursively add the continuation items to the observable.
-            result = result.concatWith(containerURL.listBlobsFlatSegment(response.body().nextMarker(), listBlobsOptions, null)
+            result = result.concatWith(containerURL.listBlobsFlatSegment(response.body().nextMarker(), listBlobsOptions,
+                    null)
                     .flatMapObservable((r) ->
                             listContainersResultToContainerObservable(containerURL, listBlobsOptions, r)));
         }
@@ -436,21 +437,19 @@ public class Samples {
                     if (throwable instanceof StorageException) {
                         StorageException exception = (StorageException) throwable;
                         // StorageErrorCode defines constants corresponding to all error codes returned by the service.
-                        if (exception.errorCode()
-                                == StorageErrorCode.CONTAINER_BEING_DELETED) {
+                        if (exception.errorCode() == StorageErrorCode.CONTAINER_BEING_DELETED) {
                             // Log more detailed information.
                             System.out.println("Extended details: " + exception.message());
 
                             // Examine the raw response.
                             HttpResponse response = exception.response();
-                        } else if (exception.errorCode()
-                                == StorageErrorCode.CONTAINER_ALREADY_EXISTS) {
+                        } else if (exception.errorCode() == StorageErrorCode.CONTAINER_ALREADY_EXISTS) {
                             // Process the error
                         }
                     }
                     // We just fake a successful response to prevent the example from crashing.
                     return Single.just(
-                            new ContainerCreateResponse(null,200, null, null, null));
+                            new ContainerCreateResponse(null, 200, null, null, null));
                 })
                 /*
                 This will synchronize all the above operations. This is strongly discouraged for use in production as
@@ -501,8 +500,8 @@ public class Samples {
 
         // You can then change some of the fields and construct a new URL.
         parts.withSasQueryParameters(null) // Remove the SAS query parameters.
-        .withSnapshot(null) // Remove the snapshot timestamp.
-        .withContainerName("othercontainer"); // Change the container name.
+                .withSnapshot(null) // Remove the snapshot timestamp.
+                .withContainerName("othercontainer"); // Change the container name.
         // In this example, we'll keep the blob name as it is.
 
         // Construct a new URL from the parts:
@@ -527,20 +526,20 @@ public class Samples {
          */
         AccountSASSignatureValues values = new AccountSASSignatureValues();
         values.withProtocol(SASProtocol.HTTPS_ONLY) // Users MUST use HTTPS (not HTTP).
-        .withExpiryTime(OffsetDateTime.now().plusDays(2)); // 2 days before expiration.
+                .withExpiryTime(OffsetDateTime.now().plusDays(2)); // 2 days before expiration.
 
         AccountSASPermission permission = new AccountSASPermission()
-        .withRead(true)
-        .withList(true);
+                .withRead(true)
+                .withList(true);
         values.withPermissions(permission.toString());
 
         AccountSASService service = new AccountSASService()
-        .withBlob(true);
+                .withBlob(true);
         values.withServices(service.toString());
 
         AccountSASResourceType resourceType = new AccountSASResourceType()
-        .withContainer(true)
-        .withObject(true);
+                .withContainer(true)
+                .withObject(true);
         values.withResourceTypes(resourceType.toString());
 
         SASQueryParameters params = values.generateSASQueryParameters(credential);
@@ -585,19 +584,19 @@ public class Samples {
         parameters.
          */
         ServiceSASSignatureValues values = new ServiceSASSignatureValues()
-        .withProtocol(SASProtocol.HTTPS_ONLY) // Users MUST use HTTPS (not HTTP).
-        .withExpiryTime(OffsetDateTime.now().plusDays(2)) // 2 days before expiration.
-        .withContainerName(containerName)
-        .withBlobName(blobName);
+                .withProtocol(SASProtocol.HTTPS_ONLY) // Users MUST use HTTPS (not HTTP).
+                .withExpiryTime(OffsetDateTime.now().plusDays(2)) // 2 days before expiration.
+                .withContainerName(containerName)
+                .withBlobName(blobName);
 
         /*
         To produce a container SAS (as opposed to a blob SAS), assign to Permissions using ContainerSASPermissions, and
         make sure the blobName field is null (the default).
          */
         BlobSASPermission permission = new BlobSASPermission()
-        .withRead(true)
-        .withAdd(true)
-        .withWrite(true);
+                .withRead(true)
+                .withAdd(true)
+                .withWrite(true);
         values.withPermissions(permission.toString());
 
         SASQueryParameters params = values.generateSASQueryParameters(credential);
@@ -635,7 +634,7 @@ public class Samples {
 
         // Create a containerURL object that wraps the container's URL and a default pipeline.
         URL u = new URL(String.format(Locale.ROOT, "https://%s.blob.core.windows.net/myjavacontainerpermissions" +
-                        System.currentTimeMillis(), accountName));
+                System.currentTimeMillis(), accountName));
         ContainerURL containerURL = new ContainerURL(u, StorageURL.createPipeline(credential, new PipelineOptions()));
 
         /*
@@ -787,10 +786,10 @@ public class Samples {
                     return Completable.complete();
                 }).andThen(
                 // Delete the blob if it exists (succeeds).
-                                blobURL.delete(DeleteSnapshotsOptionType.INCLUDE,
-                                        new BlobAccessConditions().withModifiedAccessConditions(
-                                                // Wildcard will match any etag.
-                                                new ModifiedAccessConditions().withIfMatch("*")), null))
+                blobURL.delete(DeleteSnapshotsOptionType.INCLUDE,
+                        new BlobAccessConditions().withModifiedAccessConditions(
+                                // Wildcard will match any etag.
+                                new ModifiedAccessConditions().withIfMatch("*")), null))
                 .flatMap(blobDeleteResponse -> {
                     System.out.println("Success: " + blobDeleteResponse.statusCode());
                     return containerURL.delete(null, null);
@@ -1285,12 +1284,49 @@ public class Samples {
                 .blockingGet();
     }
 
-    public void progressUploadDownload() {
-        // TODO:
-    }
+    /*
+    This example shows how to add progress reporting to the upload and download of blobs.
+     */
+    @Test
+    public void example_progressReporting() throws MalformedURLException, InvalidKeyException {
+        // From the Azure portal, get your Storage account's name and account key.
+        String accountName = getAccountName();
+        String accountKey = getAccountKey();
 
-    // TODO: Lease? Root container?
-    // TODO: Advanced pipeline configuration
+        // Create a BlockBlobURL object that wraps a blob's URL and a default pipeline.
+        URL u = new URL(String.format(Locale.ROOT, "https://%s.blob.core.windows.net/", accountName));
+        ServiceURL s = new ServiceURL(u,
+                StorageURL.createPipeline(new SharedKeyCredentials(accountName, accountKey), new PipelineOptions()));
+
+        ContainerURL containerURL = s.createContainerURL("myjavacontainerprogress" + System.currentTimeMillis());
+        BlockBlobURL blobURL = containerURL.createBlockBlobURL("Data.bin");
+        Flowable<ByteBuffer> data = Flowable.just(ByteBuffer.wrap("Data".getBytes()));
+
+        // Create the container.
+        containerURL.create(null, null, null)
+                .flatMap(response ->
+                        /*
+                        In the call to upload, we add progress reporting to the flowable. Here we choose to just print
+                        out the progress. Note that for operations with the TransferManager, progress reporting need
+                        not be pre-applied. A ProgressReceiver may simply be set on the options, and the TransferManager
+                        will handle coordinating the reporting between parallel requests.
+                         */
+                        blobURL.upload(ProgressReporter.addProgressReporting(data, System.out::println),
+                                4L, null, null, null, null))
+                .flatMap(response ->
+                        blobURL.download(null, null, false, null))
+                .flatMapPublisher(response ->
+                        /*
+                        Here we add progress reporting to the download response in the same manner.
+                         */
+                        ProgressReporter.addProgressReporting(response.body(null), System.out::println))
+                 /*
+                This will synchronize all the above operations. This is strongly discouraged for use in production as
+                it eliminates the benefits of asynchronous IO. We use it here to enable the sample to complete and
+                demonstrate its effectiveness.
+                 */
+                .blockingSubscribe();
+    }
 
     // This example shows how to copy a source document on the Internet to a blob.
     @Test
@@ -1431,7 +1467,7 @@ public class Samples {
                         // Upload some data to a blob
                         Single.using(() -> AsynchronousFileChannel.open(file.toPath()),
                                 fileChannel -> TransferManager.uploadFileToBlockBlob(fileChannel, blobURL,
-                                BlockBlobURL.MAX_STAGE_BLOCK_BYTES, TransferManagerUploadToBlockBlobOptions.DEFAULT),
+                                        BlockBlobURL.MAX_STAGE_BLOCK_BYTES, TransferManagerUploadToBlockBlobOptions.DEFAULT),
                                 AsynchronousFileChannel::close))
                 .flatMap(response ->
                         blobURL.download(null, null, false, null))
@@ -1559,8 +1595,8 @@ public class Samples {
         RequestRetryOptions requestRetryOptions = new RequestRetryOptions(RetryPolicyType.EXPONENTIAL, 5,
                 4, 1000L, 10000L, "secondary-host");
         PipelineOptions customOptions = new PipelineOptions()
-        .withLoggingOptions(loggingOptions)
-        .withRequestRetryOptions(requestRetryOptions);
+                .withLoggingOptions(loggingOptions)
+                .withRequestRetryOptions(requestRetryOptions);
         StorageURL.createPipeline(new AnonymousCredentials(), customOptions);
         // </pipeline_options>
 
@@ -1604,21 +1640,19 @@ public class Samples {
                     if (throwable instanceof StorageException) {
                         StorageException exception = (StorageException) throwable;
                         // StorageErrorCode defines constants corresponding to all error codes returned by the service.
-                        if (exception.errorCode()
-                                == StorageErrorCode.CONTAINER_BEING_DELETED) {
+                        if (exception.errorCode() == StorageErrorCode.CONTAINER_BEING_DELETED) {
                             // Log more detailed information.
                             System.out.println("Extended details: " + exception.message());
 
                             // Examine the raw response.
                             HttpResponse response = exception.response();
-                        } else if (exception.errorCode()
-                                == StorageErrorCode.CONTAINER_ALREADY_EXISTS) {
+                        } else if (exception.errorCode() == StorageErrorCode.CONTAINER_ALREADY_EXISTS) {
                             // Process the error
                         }
                     }
                     // We just fake a successful response to prevent the example from crashing.
                     return Single.just(
-                            new ContainerCreateResponse(null,200, null, null, null));
+                            new ContainerCreateResponse(null, 200, null, null, null));
                 }).subscribe();
         // </exception>
 
@@ -1897,6 +1931,18 @@ public class Samples {
                 .subscribe();
         // </abort_copy>
 
+        // <sync_copy>
+        // Create the container.
+        containerURL.create()
+                .flatMap(response ->
+                        /*
+                        Copy from the source url to the destination, which is the url pointed to by blobURL. Note that
+                        the service will not return a response until the copy is complete, hence "sync" copy.
+                         */
+                        blobURL.syncCopyFromURL(new URL("https://cdn2.auth0.com/docs/media/addons/azure_blob.svg")))
+                .subscribe();
+        // </sync_copy>
+
         // <blob_delete>
         blobURL.delete(null, null, null)
                 .subscribe();
@@ -2111,7 +2157,7 @@ public class Samples {
 
         ByteBuffer largeData = ByteBuffer.wrap("LargeData".getBytes());
 
-        ByteBuffer largeBuffer = ByteBuffer.allocate(10*1024);
+        ByteBuffer largeBuffer = ByteBuffer.allocate(10 * 1024);
 
         File tempFile = File.createTempFile("BigFile", ".bin");
         tempFile.deleteOnExit();
@@ -2170,6 +2216,11 @@ public class Samples {
         blobURL.getAccountInfo(null)
                 .subscribe();
         // </account_info>
+
+        // <progress>
+        Flowable<ByteBuffer> flowableData = Flowable.just(ByteBuffer.wrap("Data".getBytes()));
+        flowableData = ProgressReporter.addProgressReporting(flowableData, System.out::println);
+        // </progress>
     }
 }
 

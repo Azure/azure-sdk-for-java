@@ -15,28 +15,10 @@
 
 package com.microsoft.azure.storage
 
-
+import com.microsoft.azure.storage.blob.*
 import com.microsoft.azure.storage.blob.models.*
-import com.microsoft.rest.v2.http.UnexpectedLengthException
-import com.microsoft.azure.storage.blob.BlobAccessConditions
-import com.microsoft.azure.storage.blob.BlobRange
-import com.microsoft.azure.storage.blob.BlockBlobURL
-import com.microsoft.azure.storage.blob.Metadata
-import com.microsoft.azure.storage.blob.StorageException
-import com.microsoft.azure.storage.blob.models.BlobGetPropertiesResponse
-import com.microsoft.azure.storage.blob.models.BlockBlobCommitBlockListHeaders
-import com.microsoft.azure.storage.blob.models.BlockBlobCommitBlockListResponse
-import com.microsoft.azure.storage.blob.models.BlockBlobGetBlockListHeaders
-import com.microsoft.azure.storage.blob.models.BlockBlobGetBlockListResponse
-import com.microsoft.azure.storage.blob.models.BlockBlobStageBlockFromURLHeaders
-import com.microsoft.azure.storage.blob.models.BlockBlobStageBlockHeaders
-import com.microsoft.azure.storage.blob.models.BlockBlobStageBlockResponse
-import com.microsoft.azure.storage.blob.models.BlockBlobUploadHeaders
-import com.microsoft.azure.storage.blob.models.BlockBlobUploadResponse
-import com.microsoft.azure.storage.blob.models.BlockListType
-import com.microsoft.azure.storage.blob.models.PublicAccessType
-import com.microsoft.azure.storage.blob.models.StorageErrorCode
 import com.microsoft.rest.v2.http.HttpPipeline
+import com.microsoft.rest.v2.http.UnexpectedLengthException
 import com.microsoft.rest.v2.util.FlowableUtil
 import io.reactivex.Flowable
 import spock.lang.Unroll
@@ -70,6 +52,11 @@ class BlockBlobAPITest extends APISpec {
         headers.version() != null
         headers.date() != null
         headers.isServerEncrypted()
+    }
+
+    def "Stage block min"() {
+        expect:
+        bu.stageBlock(getBlockID(), defaultFlowable, defaultDataSize).blockingGet().statusCode() == 201
     }
 
     @Unroll
@@ -178,6 +165,16 @@ class BlockBlobAPITest extends APISpec {
 
         FlowableUtil.collectBytesInBuffer(bu2.download(null, null, false, null)
                 .blockingGet().body(null)).blockingGet() == defaultData
+    }
+
+    def "Stage block from url min"() {
+        setup:
+        cu.setAccessPolicy(PublicAccessType.CONTAINER, null, null, null).blockingGet()
+        def bu2 = cu.createBlockBlobURL(generateBlobName())
+        def blockID = getBlockID()
+
+        expect:
+        bu2.stageBlockFromURL(blockID, bu.toURL(), null).blockingGet().statusCode() == 201
     }
 
     @Unroll
@@ -304,6 +301,18 @@ class BlockBlobAPITest extends APISpec {
         validateBasicHeaders(headers)
         headers.contentMD5()
         headers.isServerEncrypted()
+    }
+
+    def "Commit block list min"() {
+        setup:
+        String blockID = getBlockID()
+        bu.stageBlock(blockID, defaultFlowable, defaultDataSize,
+                null, null).blockingGet()
+        ArrayList<String> ids = new ArrayList<>()
+        ids.add(blockID)
+
+        expect:
+        bu.commitBlockList(ids).blockingGet().statusCode() == 201
     }
 
     def "Commit block list null"() {
@@ -447,10 +456,15 @@ class BlockBlobAPITest extends APISpec {
     def "Get block list"() {
         setup:
         String blockID = getBlockID()
-        bu.stageBlock(blockID, defaultFlowable, defaultDataSize, null, null).blockingGet()
-        bu.commitBlockList(Arrays.asList(blockID), null, null, null, null).blockingGet()
         String blockID2 = getBlockID()
+        bu.stageBlock(blockID, defaultFlowable, defaultDataSize, null, null).blockingGet()
         bu.stageBlock(blockID2, defaultFlowable, defaultDataSize, null, null).blockingGet()
+        bu.commitBlockList(Arrays.asList(blockID, blockID2), null, null, null, null).blockingGet()
+
+        String blockID3 = getBlockID()
+        String blockID4 = getBlockID()
+        bu.stageBlock(blockID3, defaultFlowable, defaultDataSize, null, null).blockingGet()
+        bu.stageBlock(blockID4, defaultFlowable, defaultDataSize, null, null).blockingGet()
 
         when:
         BlockBlobGetBlockListResponse response = bu.getBlockList(BlockListType.ALL, null, null)
@@ -459,14 +473,21 @@ class BlockBlobAPITest extends APISpec {
         then:
         response.body().committedBlocks().get(0).name() == blockID
         response.body().committedBlocks().get(0).size() == defaultDataSize
-        response.body().uncommittedBlocks().get(0).name() == blockID2
+        response.body().committedBlocks().get(1).name() == blockID2
+        response.body().committedBlocks().get(1).size() == defaultDataSize
+        response.body().uncommittedBlocks().get(0).name() == blockID3
         response.body().uncommittedBlocks().get(0).size() == defaultDataSize
+        response.body().uncommittedBlocks().get(1).name() == blockID4
+        response.body().uncommittedBlocks().get(1).size() == defaultDataSize
         validateBasicHeaders(response.headers())
         response.headers().contentType() != null
-        response.headers().blobContentLength() == (long) defaultDataSize
+        response.headers().blobContentLength() == defaultDataSize * 2L
     }
 
-    // TODO: at least two blocks per list
+    def "Get block list min"() {
+        expect:
+        bu.getBlockList(BlockListType.ALL).blockingGet().statusCode() == 200
+    }
 
     @Unroll
     def "Get block list type"() {
@@ -563,6 +584,11 @@ class BlockBlobAPITest extends APISpec {
         validateBasicHeaders(headers)
         headers.contentMD5() != null
         headers.isServerEncrypted()
+    }
+
+    def "Upload min"() {
+        expect:
+        bu.upload(defaultFlowable, defaultDataSize).blockingGet().statusCode() == 201
     }
 
     @Unroll

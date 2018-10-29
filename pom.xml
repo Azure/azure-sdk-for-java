@@ -14,7 +14,7 @@
 
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-storage-blob</artifactId>
-    <version>10.1.0</version>
+    <version>10.2.0</version>
 
     <name>Azure Storage Blob</name>
     <description>The Azure Storage Java Blob library.</description>
@@ -61,19 +61,6 @@
         </pluginRepository>
     </pluginRepositories>
 
-    <repositories>
-        <repository>
-            <id>ossrh</id>
-            <name>Sonatype Snapshots</name>
-            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-            <layout>default</layout>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-            </snapshots>
-        </repository>
-    </repositories>
-
     <dependencies>
         <dependency>
             <groupId>com.microsoft.rest.v2</groupId>
@@ -113,6 +100,7 @@
     </dependencies>
 
     <build>
+        <sourceDirectory>src/main/java</sourceDirectory>
         <testSourceDirectory>src/test/java</testSourceDirectory>
 
         <plugins>
@@ -145,6 +133,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.20.1</version>
                 <configuration>
+                    <useFile>false</useFile>
                     <includes>
                         <include>**/Test*.*</include>
                         <include>**/*Test.*</include>
@@ -187,6 +176,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.0.0</version>
             </plugin>
         </plugins>
     </build>

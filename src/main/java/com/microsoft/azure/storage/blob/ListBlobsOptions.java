@@ -32,6 +32,10 @@ public final class ListBlobsOptions {
 
     private Integer maxResults;
 
+    public ListBlobsOptions() {
+        this.details = BlobListingDetails.NONE;
+    }
+
     /**
      * {@link BlobListingDetails}
      */
@@ -82,10 +86,6 @@ public final class ListBlobsOptions {
         }
         this.maxResults = maxResults;
         return this;
-    }
-
-    public ListBlobsOptions() {
-        this.details = BlobListingDetails.NONE;
     }
 
 

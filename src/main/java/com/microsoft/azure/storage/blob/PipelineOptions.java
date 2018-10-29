@@ -18,10 +18,7 @@ import com.microsoft.rest.v2.http.HttpClient;
 import com.microsoft.rest.v2.http.HttpPipelineLogLevel;
 import com.microsoft.rest.v2.http.HttpPipelineLogger;
 
-import java.net.InetSocketAddress;
-import java.net.Proxy;
 import java.util.Locale;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -45,6 +42,34 @@ public final class PipelineOptions {
     private LoggingOptions loggingOptions = LoggingOptions.DEFAULT;
 
     private TelemetryOptions telemetryOptions = TelemetryOptions.DEFAULT;
+
+    /**
+     * Returns a {@code PipelineOptions} object with default values for each of the options fields. An
+     * {@link HttpClient} must still be set explicitly, however.
+     *
+     * @apiNote ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=pipeline_options "Sample code for PipelineOptions constructor")] \n
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     */
+    public PipelineOptions() {
+        this.logger = new HttpPipelineLogger() {
+            @Override
+            public HttpPipelineLogLevel minimumLogLevel() {
+                return HttpPipelineLogLevel.OFF;
+            }
+
+            @Override
+            public void log(HttpPipelineLogLevel logLevel, String s, Object... objects) {
+                if (logLevel == HttpPipelineLogLevel.INFO) {
+                    Logger.getGlobal().info(String.format(Locale.ROOT, s, objects));
+                } else if (logLevel == HttpPipelineLogLevel.WARNING) {
+                    Logger.getGlobal().warning(String.format(Locale.ROOT, s, objects));
+                } else if (logLevel == HttpPipelineLogLevel.ERROR) {
+                    Logger.getGlobal().severe(String.format(Locale.ROOT, s, objects));
+                }
+            }
+        };
+    }
 
     /**
      * Specifies which HttpClient to use to send the requests.
@@ -119,35 +144,5 @@ public final class PipelineOptions {
     public PipelineOptions withTelemetryOptions(TelemetryOptions telemetryOptions) {
         this.telemetryOptions = telemetryOptions;
         return this;
-    }
-
-    /**
-     * Returns a {@code PipelineOptions} object with default values for each of the options fields. An
-     * {@link HttpClient} must still be set explicitly, however.
-     *
-     * @apiNote
-     * ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=pipeline_options "Sample code for PipelineOptions constructor")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-    public PipelineOptions() {
-        this.logger = new HttpPipelineLogger() {
-            @Override
-            public HttpPipelineLogLevel minimumLogLevel() {
-                return HttpPipelineLogLevel.OFF;
-            }
-
-            // TODO: Revisit
-            @Override
-            public void log(HttpPipelineLogLevel logLevel, String s, Object... objects) {
-                if (logLevel == HttpPipelineLogLevel.INFO) {
-                    Logger.getGlobal().info(String.format(Locale.ROOT, s, objects));
-                } else if (logLevel == HttpPipelineLogLevel.WARNING) {
-                    Logger.getGlobal().warning(String.format(Locale.ROOT, s, objects));
-                } else if (logLevel == HttpPipelineLogLevel.ERROR) {
-                    Logger.getGlobal().severe(String.format(Locale.ROOT, s, objects));
-                }
-            }
-        };
     }
 }

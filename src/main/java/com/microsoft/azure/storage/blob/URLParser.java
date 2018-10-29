@@ -32,11 +32,12 @@ public final class URLParser {
      * BlobURLParts object.
      *
      * @param url
-     *      The {@code URL} to be parsed.
-     * @return
-     *      A {@link BlobURLParts} object containing all the components of a BlobURL.
+     *         The {@code URL} to be parsed.
+     *
+     * @return A {@link BlobURLParts} object containing all the components of a BlobURL.
+     *
      * @throws UnknownHostException
-     *      If the url contains an improperly formatted ipaddress or unknown host address.
+     *         If the url contains an improperly formatted ipaddress or unknown host address.
      */
     public static BlobURLParts parse(URL url) throws UnknownHostException {
 
@@ -58,9 +59,7 @@ public final class URLParser {
             if (containerEndIndex == -1) {
                 // path contains only a container name and no blob name
                 containerName = path;
-            }
-            else
-            {
+            } else {
                 // path contains the container name up until the slash and blob name is everything after the slash
                 containerName = path.substring(0, containerEndIndex);
                 blobName = path.substring(containerEndIndex + 1);
@@ -91,12 +90,11 @@ public final class URLParser {
      * Parses a query string into a one to many hashmap.
      *
      * @param queryParams
-     *      The string of query params to parse.
-     * @return
-     *      A {@code HashMap<String, String[]>} of the key values.
+     *         The string of query params to parse.
+     *
+     * @return A {@code HashMap<String, String[]>} of the key values.
      */
-    private static TreeMap<String, String[]> parseQueryString(String queryParams)
-             {
+    private static TreeMap<String, String[]> parseQueryString(String queryParams) {
 
         final TreeMap<String, String[]> retVals = new TreeMap<String, String[]>(new Comparator<String>() {
             @Override

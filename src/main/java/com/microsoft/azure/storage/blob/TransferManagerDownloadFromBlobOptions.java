@@ -16,7 +16,7 @@
 package com.microsoft.azure.storage.blob;
 
 /**
- * Configures the parallel download behavior for methods on the {@code TransferManager}.
+ * Configures the parallel download behavior for methods on the {@link TransferManager}.
  */
 public final class TransferManagerDownloadFromBlobOptions {
 
@@ -29,33 +29,16 @@ public final class TransferManagerDownloadFromBlobOptions {
     private final long chunkSize;
 
     private final IProgressReceiver progressReceiver;
+
     private final int parallelism;
+
     private final ReliableDownloadOptions reliableDownloadOptionsPerBlock;
+
     // Cannot be final because we may have to set this property in order to lock on the etag.
     private BlobAccessConditions accessConditions;
 
-    public long chunkSize() {
-        return chunkSize;
-    }
-
-    public IProgressReceiver progressReceiver() {
-        return progressReceiver;
-    }
-
-    public int parallelism() {
-        return parallelism;
-    }
-
-    public ReliableDownloadOptions reliableDownloadOptionsPerBlock() {
-        return reliableDownloadOptionsPerBlock;
-    }
-
-    public BlobAccessConditions accessConditions() {
-        return accessConditions;
-    }
-
     /**
-     * Returns an object that configures the parallel download behavior for methods on the {@code TransferManager}.
+     * Returns an object that configures the parallel download behavior for methods on the {@link TransferManager}.
      *
      * @param chunkSize
      *         The size of the chunk into which large download operations will be broken into. Note that if the
@@ -66,14 +49,17 @@ public final class TransferManagerDownloadFromBlobOptions {
      *         {@link IProgressReceiver}
      * @param accessConditions
      *         {@link BlobAccessConditions}
+     * @param reliableDownloadOptions
+     *         {@link ReliableDownloadOptions}
      * @param parallelism
      *         A {@code int} that indicates the maximum number of chunks to download in parallel. Must be greater
      *         than 0. May be null to accept default behavior.
-     * @param reliableDownloadOptions
-     *         {@link ReliableDownloadOptions}
      */
     public TransferManagerDownloadFromBlobOptions(Long chunkSize, IProgressReceiver progressReceiver,
-            BlobAccessConditions accessConditions, Integer parallelism, ReliableDownloadOptions reliableDownloadOptions) {
+            BlobAccessConditions accessConditions, ReliableDownloadOptions reliableDownloadOptions,
+            Integer parallelism) {
+        this.progressReceiver = progressReceiver;
+
         if (chunkSize != null) {
             Utility.assertInBounds("chunkSize", chunkSize, 1, Long.MAX_VALUE);
             this.chunkSize = chunkSize;
@@ -89,8 +75,45 @@ public final class TransferManagerDownloadFromBlobOptions {
         }
 
         this.accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
-        this.progressReceiver = progressReceiver;
         this.reliableDownloadOptionsPerBlock = reliableDownloadOptions == null ?
                 new ReliableDownloadOptions() : reliableDownloadOptions;
+    }
+
+    /**
+     * The size of the chunk into which large download operations will be broken into. Note that if the chunkSize is
+     * large, fewer but larger requests will be made as each REST request will download a single chunk in full. For
+     * larger chunk sizes, it may be helpful to configure the{@code reliableDownloadOptions} to allow more retries.
+     */
+    public long chunkSize() {
+        return chunkSize;
+    }
+
+    /**
+     * {@link IProgressReceiver}
+     */
+    public IProgressReceiver progressReceiver() {
+        return progressReceiver;
+    }
+
+    /**
+     * A {@code int} that indicates the maximum number of chunks to download in parallel. Must be greater than 0. May be
+     * null to accept default behavior.
+     */
+    public int parallelism() {
+        return parallelism;
+    }
+
+    /**
+     * {@link ReliableDownloadOptions}
+     */
+    public ReliableDownloadOptions reliableDownloadOptionsPerBlock() {
+        return reliableDownloadOptionsPerBlock;
+    }
+
+    /**
+     * {@link BlobAccessConditions}
+     */
+    public BlobAccessConditions accessConditions() {
+        return accessConditions;
     }
 }

@@ -18,15 +18,15 @@ package com.microsoft.azure.storage.blob;
 import com.microsoft.azure.storage.blob.models.BlobHTTPHeaders;
 
 /**
- * Configures the parallel upload behavior for methods on the {@code TransferManager}.
+ * Configures the parallel upload behavior for methods on the {@link TransferManager}.
  */
 public class TransferManagerUploadToBlockBlobOptions {
 
     /**
      * An object which represents the default parallel upload options.
      */
-    public static final TransferManagerUploadToBlockBlobOptions DEFAULT = new TransferManagerUploadToBlockBlobOptions(null,
-            null, null, null, null);
+    public static final TransferManagerUploadToBlockBlobOptions DEFAULT = new TransferManagerUploadToBlockBlobOptions(
+            null, null, null, null, null);
 
     private final IProgressReceiver progressReceiver;
 
@@ -38,48 +38,26 @@ public class TransferManagerUploadToBlockBlobOptions {
 
     private final int parallelism;
 
-    public IProgressReceiver progressReceiver() {
-        return progressReceiver;
-    }
-
-    public BlobHTTPHeaders httpHeaders() {
-        return httpHeaders;
-    }
-
-    public Metadata metadata() {
-        return metadata;
-    }
-
-    public BlobAccessConditions accessConditions() {
-        return accessConditions;
-    }
-
-    public int parallelism() {
-        return parallelism;
-    }
-
     /**
      * Creates a new object that configures the parallel upload behavior. Null may be passed to accept the default
      * behavior.
      *
      * @param progressReceiver
-     *         An object that implements the {@link IProgressReceiver} interface which will be invoked periodically
-     *         as bytes are sent in a PutBlock call to the BlockBlobURL. May be null if no progress reports are
-     *         desired.
+     *         {@link IProgressReceiver}
      * @param httpHeaders
-     *         Most often used when creating a blob or setting its properties, this class contains fields for typical HTTP
-     *         properties, which, if specified, will be attached to the target blob. Null may be passed to any API which takes this
-     *         type to indicate that no properties should be set.
+     *         Most often used when creating a blob or setting its properties, this class contains fields for typical
+     *         HTTP properties, which, if specified, will be attached to the target blob. Null may be passed to any API.
      * @param metadata
      *         {@link Metadata}
      * @param accessConditions
      *         {@link BlobAccessConditions}
      * @param parallelism
-     *         A {@code int} that indicates the maximum number of blocks to upload in parallel. Must be greater than
-     *         0. May be null to accept default behavior.
+     *         A {@code int} that indicates the maximum number of blocks to upload in parallel. Must be greater than 0.
+     *         May be null to accept default behavior.
      */
     public TransferManagerUploadToBlockBlobOptions(IProgressReceiver progressReceiver, BlobHTTPHeaders httpHeaders,
             Metadata metadata, BlobAccessConditions accessConditions, Integer parallelism) {
+        this.progressReceiver = progressReceiver;
         if (parallelism == null) {
             this.parallelism = Constants.TRANSFER_MANAGER_DEFAULT_PARALLELISM;
         } else if (parallelism <= 0) {
@@ -88,9 +66,45 @@ public class TransferManagerUploadToBlockBlobOptions {
             this.parallelism = parallelism;
         }
 
-        this.progressReceiver = progressReceiver;
         this.httpHeaders = httpHeaders;
         this.metadata = metadata;
         this.accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
+    }
+
+    /**
+     * {@link IProgressReceiver}
+     */
+    public IProgressReceiver progressReceiver() {
+        return progressReceiver;
+    }
+
+    /**
+     * Most often used when creating a blob or setting its properties, this class contains fields for typical HTTP
+     * properties, which, if specified, will be attached to the target blob. Null may be passed to any API.
+     */
+    public BlobHTTPHeaders httpHeaders() {
+        return httpHeaders;
+    }
+
+    /**
+     * {@link Metadata}
+     */
+    public Metadata metadata() {
+        return metadata;
+    }
+
+    /**
+     * {@link BlobAccessConditions}
+     */
+    public BlobAccessConditions accessConditions() {
+        return accessConditions;
+    }
+
+    /**
+     * A {@code int} that indicates the maximum number of blocks to upload in parallel. Must be greater than 0. May be
+     * null to accept default behavior.
+     */
+    public int parallelism() {
+        return parallelism;
     }
 }

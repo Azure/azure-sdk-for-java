@@ -39,7 +39,7 @@ public final class TelemetryFactory implements RequestPolicyFactory {
      * HTTP requests.
      *
      * @param telemetryOptions
-     *      {@link TelemetryOptions}
+     *         {@link TelemetryOptions}
      */
     public TelemetryFactory(TelemetryOptions telemetryOptions) {
         telemetryOptions = telemetryOptions == null ? TelemetryOptions.DEFAULT : telemetryOptions;
@@ -48,9 +48,14 @@ public final class TelemetryFactory implements RequestPolicyFactory {
         this.userAgent = userAgentPrefix + ' ' +
                 Constants.HeaderConstants.USER_AGENT_PREFIX + '/' + Constants.HeaderConstants.USER_AGENT_VERSION +
                 String.format(Locale.ROOT, " (JavaJRE %s; %s %s)",
-                    System.getProperty("java.version"),
-                    System.getProperty("os.name").replaceAll(" ", ""),
-                    System.getProperty("os.version"));
+                        System.getProperty("java.version"),
+                        System.getProperty("os.name").replaceAll(" ", ""),
+                        System.getProperty("os.version"));
+    }
+
+    @Override
+    public RequestPolicy create(RequestPolicy next, RequestPolicyOptions options) {
+        return new TelemetryPolicy(next, options);
     }
 
     private final class TelemetryPolicy implements RequestPolicy {
@@ -64,10 +69,5 @@ public final class TelemetryFactory implements RequestPolicyFactory {
             request.headers().set(Constants.HeaderConstants.USER_AGENT, userAgent);
             return this.nextPolicy.sendAsync(request);
         }
-    }
-
-    @Override
-    public RequestPolicy create(RequestPolicy next, RequestPolicyOptions options) {
-        return new TelemetryPolicy(next, options);
     }
 }

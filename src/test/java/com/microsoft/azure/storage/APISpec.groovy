@@ -15,31 +15,10 @@
 
 package com.microsoft.azure.storage
 
-import com.microsoft.azure.storage.blob.BlobURL
-import com.microsoft.azure.storage.blob.ContainerURL
-
-import com.microsoft.azure.storage.blob.ListContainersOptions
-import com.microsoft.azure.storage.blob.PipelineOptions
-import com.microsoft.azure.storage.blob.ServiceURL
-import com.microsoft.azure.storage.blob.SharedKeyCredentials
-import com.microsoft.azure.storage.blob.StorageURL
-import com.microsoft.azure.storage.blob.models.AppendBlobCreateHeaders
-import com.microsoft.azure.storage.blob.models.BlobAcquireLeaseHeaders
-import com.microsoft.azure.storage.blob.models.BlobGetPropertiesHeaders
-import com.microsoft.azure.storage.blob.models.ContainerAcquireLeaseHeaders
-import com.microsoft.azure.storage.blob.models.ContainerGetPropertiesHeaders
-import com.microsoft.azure.storage.blob.models.ContainerItem
-import com.microsoft.azure.storage.blob.models.CopyStatusType
-import com.microsoft.azure.storage.blob.models.LeaseStateType
-import com.microsoft.azure.storage.blob.models.RetentionPolicy
-import com.microsoft.azure.storage.blob.models.StorageServiceProperties
+import com.microsoft.azure.storage.blob.*
+import com.microsoft.azure.storage.blob.models.*
 import com.microsoft.rest.v2.Context
-import com.microsoft.rest.v2.http.HttpClient
-import com.microsoft.rest.v2.http.HttpClientConfiguration
-import com.microsoft.rest.v2.http.HttpHeaders
-import com.microsoft.rest.v2.http.HttpPipeline
-import com.microsoft.rest.v2.http.HttpRequest
-import com.microsoft.rest.v2.http.HttpResponse
+import com.microsoft.rest.v2.http.*
 import com.microsoft.rest.v2.policy.RequestPolicy
 import com.microsoft.rest.v2.policy.RequestPolicyFactory
 import io.reactivex.Flowable
@@ -192,8 +171,14 @@ class APISpec extends Specification {
     }
 
     static getGenericCreds(String accountType) {
-        return new SharedKeyCredentials(System.getenv().get(accountType + "ACCOUNT_NAME"),
-                System.getenv().get(accountType + "ACCOUNT_KEY"))
+        String accountName = System.getenv().get(accountType + "ACCOUNT_NAME")
+        String accountKey = System.getenv().get(accountType + "ACCOUNT_KEY")
+        if (accountName == null || accountKey == null) {
+            System.out.println("Account name or key for the " + accountType + " account was null. Test's requiring " +
+                    "these credentials will fail.")
+            throw new Exception()
+        }
+        return new SharedKeyCredentials(accountName, accountKey)
     }
 
     static HttpClient getHttpClient() {
@@ -201,13 +186,25 @@ class APISpec extends Specification {
             HttpClientConfiguration configuration = new HttpClientConfiguration(
                     new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)))
             return HttpClient.createDefault(configuration)
-        }
-        else return HttpClient.createDefault()
+        } else return HttpClient.createDefault()
     }
 
     static ServiceURL getGenericServiceURL(SharedKeyCredentials creds) {
         PipelineOptions po = new PipelineOptions()
         po.withClient(getHttpClient())
+
+        // Logging errors can be helpful for debugging in Travis.
+        po.withLogger(new HttpPipelineLogger() {
+            @Override
+            HttpPipelineLogLevel minimumLogLevel() {
+                HttpPipelineLogLevel.ERROR
+            }
+
+            @Override
+            void log(HttpPipelineLogLevel httpPipelineLogLevel, String s, Object... objects) {
+                System.out.println(String.format(s, objects))
+            }
+        })
 
         HttpPipeline pipeline = StorageURL.createPipeline(creds, po)
 
@@ -215,7 +212,6 @@ class APISpec extends Specification {
     }
 
     static void cleanupContainers() throws MalformedURLException {
-        // We don't need to clean up containers if we are playing back
         // Create a new pipeline without any proxies
         HttpPipeline pipeline = StorageURL.createPipeline(primaryCreds, new PipelineOptions())
 
@@ -233,14 +229,20 @@ class APISpec extends Specification {
         }
     }
 
-    static ByteBuffer getRandomData(long size) {
+    /*
+    Size must be an int because ByteBuffer sizes can only be an int. Long is not supported.
+     */
+    static ByteBuffer getRandomData(int size) {
         Random rand = new Random(getRandomSeed())
         byte[] data = new byte[size]
         rand.nextBytes(data)
         return ByteBuffer.wrap(data)
     }
 
-    static File getRandomFile(long size) {
+    /*
+    We only allow int because anything larger than 2GB (which would require a long) is left to stress/perf.
+     */
+    static File getRandomFile(int size) {
         File file = File.createTempFile(UUID.randomUUID().toString(), ".txt")
         file.deleteOnExit()
         FileOutputStream fos = new FileOutputStream(file)
@@ -261,6 +263,35 @@ class APISpec extends Specification {
     }
 
     def setup() {
+        /*
+        We'll let primary creds throw and crash if there are no credentials specified because everything else will fail.
+         */
+        primaryCreds = getGenericCreds("")
+        primaryServiceURL = getGenericServiceURL(primaryCreds)
+
+        /*
+        It's feasible someone wants to test a specific subset of tests, so we'll still attempt to create each of the
+        ServiceURLs separately. We don't really need to take any action here, as we've already reported to the user,
+        so we just swallow the exception and let the relevant tests fail later. Perhaps we can add annotations or
+        something in the future.
+         */
+        try {
+            alternateCreds = getGenericCreds("SECONDARY_")
+            alternateServiceURL = getGenericServiceURL(alternateCreds)
+        }
+        catch (Exception e) {
+        }
+        try {
+            blobStorageServiceURL = getGenericServiceURL(getGenericCreds("BLOB_STORAGE_"))
+        }
+        catch (Exception e) {
+        }
+        try {
+            premiumServiceURL = getGenericServiceURL(getGenericCreds("PREMIUM_"))
+        }
+        catch (Exception e) {
+        }
+
         cu = primaryServiceURL.createContainerURL(generateContainerName())
         cu.create(null, null, null).blockingGet()
     }
@@ -280,7 +311,7 @@ class APISpec extends Specification {
      *      The ETag value for this test. If {@code receivedEtag} is passed, that will signal that the test is expecting
      *      the blob's actual etag for this test, so it is retrieved.
      * @return
-     *      The appropriate etag value to run the current test.
+     * The appropriate etag value to run the current test.
      */
     def setupBlobMatchCondition(BlobURL bu, String match) {
         if (match == receivedEtag) {
@@ -302,7 +333,8 @@ class APISpec extends Specification {
      * @param leaseID
      *      The signalID. Values should only ever be {@code receivedLeaseID}, {@code garbageLeaseID}, or {@code null}.
      * @return
-     *      The actual leaseAccessConditions of the blob if recievedLeaseID is passed, otherwise whatever was passed will be returned.
+     * The actual leaseAccessConditions of the blob if recievedLeaseID is passed, otherwise whatever was passed will be
+     * returned.
      */
     def setupBlobLeaseCondition(BlobURL bu, String leaseID) {
         BlobAcquireLeaseHeaders headers = null
@@ -353,7 +385,7 @@ class APISpec extends Specification {
      * @param headers
      *      The object (may be headers object or response object) that has properties which expose these common headers.
      * @return
-     *      Whether or not the header values are appropriate.
+     * Whether or not the header values are appropriate.
      */
     def validateBasicHeaders(Object headers) {
         return headers.class.getMethod("eTag").invoke(headers) != null &&
@@ -370,7 +402,7 @@ class APISpec extends Specification {
                 headers.class.getMethod("contentEncoding").invoke(headers) == contentEncoding &&
                 headers.class.getMethod("contentLanguage").invoke(headers) == contentLangauge &&
                 headers.class.getMethod("contentMD5").invoke(headers) == contentMD5 &&
-                headers.class.getMethod("contentType").invoke(headers)  == contentType
+                headers.class.getMethod("contentType").invoke(headers) == contentType
 
     }
 
@@ -393,6 +425,7 @@ class APISpec extends Specification {
      about the status code, so we stub a response that always returns a given value for the status code. We never care
      about the number or nature of interactions with this stub.
      */
+
     def getStubResponse(int code) {
         return Stub(HttpResponse) {
             statusCode() >> code
@@ -449,13 +482,64 @@ class APISpec extends Specification {
         }
     }
 
+    /*
+    This is for stubbing responses that will actually go through the pipeline and autorest code. Autorest does not seem
+    to play too nicely with mocked objects and the complex reflection stuff on both ends made it more difficult to work
+    with than was worth it. Because this type is just for BlobDownload, we don't need to accept a header type.
+     */
+    def getStubResponseForBlobDownload(int code, Flowable<ByteBuffer> body, String etag) {
+        return new HttpResponse() {
+
+            @Override
+            int statusCode() {
+                return code
+            }
+
+            @Override
+            String headerValue(String s) {
+                return null
+            }
+
+            @Override
+            HttpHeaders headers() {
+                return new HttpHeaders()
+            }
+
+            @Override
+            Flowable<ByteBuffer> body() {
+                return body
+            }
+
+            @Override
+            Single<byte[]> bodyAsByteArray() {
+                return null
+            }
+
+            @Override
+            Single<String> bodyAsString() {
+                return null
+            }
+
+            @Override
+            Object deserializedHeaders() {
+                def headers = new BlobDownloadHeaders()
+                headers.withETag(etag)
+                return headers
+            }
+
+            @Override
+            boolean isDecoded() {
+                return true
+            }
+        }
+    }
+
     def getContextStubPolicy(int successCode, Class responseHeadersType) {
         return Mock(RequestPolicy) {
             sendAsync(_) >> { HttpRequest request ->
                 if (!request.context().getData(defaultContextKey).isPresent()) {
                     return Single.error(new RuntimeException("Context key not present."))
-                }
-                else {
+                } else {
                     return Single.just(getStubResponse(successCode, responseHeadersType))
                 }
             }
